@@ -147,23 +147,23 @@ Quick access to all 84 lessons:
 | Day 65 | [Day 65 – MLOps Pipelines and CI/CD Automation](./docs/lessons/day-65-mlops-pipelines-and-ci.md) |
 | Day 66 | [Day 66 – Model Deployment and Serving Patterns](./docs/lessons/day-66-model-deployment-and-serving.md) |
 | Day 67 | [Day 67 – Model Monitoring and Reliability Engineering](./docs/lessons/day-67-model-monitoring-and-reliability.md) |
-| Day 68 | [Day 68 – Business Intelligence Foundations](./docs/lessons/day-68-bi-foundations.md) |
-| Day 69 | [Day 69 – BI Skill Stack & Professional Identity](./docs/lessons/day-69-bi-skill-stack.md) |
-| Day 70 | [Day 70 – Understanding Data for BI](./docs/lessons/day-70-bi-data-fundamentals.md) |
-| Day 71 | [Day 71 – Data Sources & Governance](./docs/lessons/day-71-bi-data-governance.md) |
-| Day 72 | [Day 72 – Data Architecture & Modeling](./docs/lessons/day-72-bi-modeling.md) |
-| Day 73 | [Day 73 – ETL & Data Preparation](./docs/lessons/day-73-bi-etl-preparation.md) |
-| Day 74 | [Day 74 – Descriptive Analytics](./docs/lessons/day-74-bi-descriptive-analytics.md) |
-| Day 75 | [Day 75 – Inferential Analytics](./docs/lessons/day-75-bi-inferential-analytics.md) |
-| Day 76 | [Day 76 – Exploratory Diagnostics](./docs/lessons/day-76-bi-diagnostics.md) |
-| Day 77 | [Day 77 – Experimentation & Predictive Foundations](./docs/lessons/day-77-bi-experimentation.md) |
-| Day 78 | [Day 78 – Analytics Toolchain](./docs/lessons/day-78-bi-toolchain.md) |
-| Day 79 | [Day 79 – Self-Service Dashboards](./docs/lessons/day-79-bi-dashboards.md) |
-| Day 80 | [Day 80 – Visualization Strategy & Storytelling](./docs/lessons/day-80-bi-storytelling.md) |
-| Day 81 | [Day 81 – Operational BI Governance](./docs/lessons/day-81-bi-governance.md) |
-| Day 82 | [Day 82 – Industry Applications](./docs/lessons/day-82-bi-industry-applications.md) |
-| Day 83 | [Day 83 – Career Assets & Credentials](./docs/lessons/day-83-bi-career-assets.md) |
-| Day 84 | [Day 84 – Strategic Roadmapping & Next Steps](./docs/lessons/day-84-bi-roadmapping.md) |
+| Day 68 | [Day 68 – Business Intelligence Foundations](./docs/lessons/day-68-bi-analyst-foundations.md) |
+| Day 69 | [Day 69 – BI Skill Stack & Professional Identity](./docs/lessons/day-69-bi-strategy-and-stakeholders.md) |
+| Day 70 | [Day 70 – Understanding Data for BI](./docs/lessons/day-70-bi-metrics-and-data-literacy.md) |
+| Day 71 | [Day 71 – Data Sources & Governance](./docs/lessons/day-71-bi-data-landscape.md) |
+| Day 72 | [Day 72 – Data Architecture & Modeling](./docs/lessons/day-72-bi-data-formats-and-ingestion.md) |
+| Day 73 | [Day 73 – ETL & Data Preparation](./docs/lessons/day-73-bi-sql-and-databases.md) |
+| Day 74 | [Day 74 – Descriptive Analytics](./docs/lessons/day-74-bi-data-preparation-and-tools.md) |
+| Day 75 | [Day 75 – Inferential Analytics](./docs/lessons/day-75-bi-visualization-and-dashboard-principles.md) |
+| Day 76 | [Day 76 – Exploratory Diagnostics](./docs/lessons/day-76-bi-platforms-and-automation-tools.md) |
+| Day 77 | [Day 77 – Experimentation & Predictive Foundations](./docs/lessons/day-77-bi-domain-analytics-and-value-drivers.md) |
+| Day 78 | [Day 78 – Analytics Toolchain](./docs/lessons/day-78-bi-experimentation-and-predictive-insights.md) |
+| Day 79 | [Day 79 – Self-Service Dashboards](./docs/lessons/day-79-bi-storytelling-and-stakeholder-influence.md) |
+| Day 80 | [Day 80 – Visualization Strategy & Storytelling](./docs/lessons/day-80-bi-data-quality-and-governance.md) |
+| Day 81 | [Day 81 – Operational BI Governance](./docs/lessons/day-81-bi-architecture-and-data-modeling.md) |
+| Day 82 | [Day 82 – Industry Applications](./docs/lessons/day-82-bi-etl-and-pipeline-automation.md) |
+| Day 83 | [Day 83 – Career Assets & Credentials](./docs/lessons/day-83-bi-cloud-and-modern-data-stack.md) |
+| Day 84 | [Day 84 – Strategic Roadmapping & Next Steps](./docs/lessons/day-84-bi-career-development-and-capstone.md) |
 
 ## ⭐ Featured Lessons
 

@@ -1,8 +1,8 @@
 # Day 84 – BI Career Development and Capstone
 
 > This lesson closes Phase 5 by converting the roadmap insights into a polished career
-> narrative. Pair it with [Day 83 – BI Career Assets](../Day_83_BI_Career_Assets/README.md)
-> and the planning prompts in [Day 84 – BI Roadmapping](../Day_84_BI_Roadmapping/README.md).
+> narrative. Pair it with [Day 83 – BI Cloud and Modern Data Stack](../Day_83_BI_Cloud_and_Modern_Data_Stack/README.md)
+> and the planning prompts in this lesson.
 
 ## Why it matters
 
