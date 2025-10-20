@@ -166,12 +166,10 @@ def _notebook_links(
 ) -> str:
     """Generate interactive notebook links with multiple viewing/running options."""
     colab_url = f"https://colab.research.google.com/github/{repo_slug}/blob/main/{quote(relative_path, safe='/')}"
-    nbviewer_url = f"https://nbviewer.org/github/{repo_slug}/blob/main/{quote(relative_path, safe='/')}"
     binder_url = f"https://mybinder.org/v2/gh/{repo_slug}/main?filepath={quote(relative_path, safe='/')}"
 
     return f"""- **{name}**  
   [📁 View on GitHub]({github_url}){{ .md-button }} 
-  [📓 Open in NBViewer]({nbviewer_url}){{ .md-button }} 
   [🚀 Run in Google Colab]({colab_url}){{ .md-button .md-button--primary }} 
   [☁️ Run in Binder]({binder_url}){{ .md-button }}"""
 
