@@ -122,18 +122,6 @@ The application factory pattern encapsulates all app configuration inside a func
 
 Because `create_app()` returns a fully configured Flask instance, you can reuse it for development, testing, or even deployment without duplicating setup code.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_34_Building_an_API/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch api_server in JupyterLite](../../jupyterlite/lab?path=Day_34_Building_an_API/api_server.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch data in JupyterLite](../../jupyterlite/lab?path=Day_34_Building_an_API/data.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **api_server.ipynb**  
@@ -164,7 +152,10 @@ Run this lesson's code interactively in your browser:
 
     from flask import Flask, jsonify
 
-    from Day_34_Building_an_API.data import EMPLOYEES, PRODUCTS
+    try:
+        from Day_34_Building_an_API.data import EMPLOYEES, PRODUCTS
+    except ImportError:
+        from data import EMPLOYEES, PRODUCTS
 
 
     def create_app() -> Flask:
@@ -208,7 +199,18 @@ Run this lesson's code interactively in your browser:
 
 
     if __name__ == "__main__":
-        app.run(host="0.0.0.0", port=5000, debug=True)
+        import os
+    
+        # Skip running the server in test/automated environments
+        if os.environ.get("FLASK_RUN_TEST_MODE") != "1":
+            app.run(host="0.0.0.0", port=5000, debug=True)
+        else:
+            print("Flask app created successfully (test mode - not starting server)")
+            print("Routes available:")
+            print("  - GET /")
+            print("  - GET /api/v1/products")
+            print("  - GET /api/v1/products/<id>")
+            print("  - GET /api/v1/employees")
     ```
 
 ???+ example "data.py"
@@ -296,5 +298,17 @@ Run this lesson's code interactively in your browser:
         #    - http://127.0.0.1:5000/api/employees
         #    - http://127.0.0.1:5000/api/employees/2
         #    - http://127.0.0.1:5000/api/employees/99 (to see the 404 error)
-        app.run(debug=True)
+    
+        import os
+    
+        # Skip running the server in test/automated environments
+        if os.environ.get("FLASK_RUN_TEST_MODE") != "1":
+            # Only enable debug mode if explicitly requested via FLASK_DEBUG
+            app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
+        else:
+            print("Flask app created successfully (test mode - not starting server)")
+            print("Routes available:")
+            print("  - GET /")
+            print("  - GET /api/employees")
+            print("  - GET /api/employees/<id>")
     ```

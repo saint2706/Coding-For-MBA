@@ -54,16 +54,6 @@ ______________________________________________________________________
 - For a very fast check, use `pytest tests/test_day_48.py`. The test stubs out the dataset loader with a handful of synthetic sequences and runs a single epoch so it finishes quickly.
 - LSTM models benefit significantly from GPU acceleration. If you have CUDA/cuDNN configured, TensorFlow will pick it up automatically; otherwise the CPU execution path will still work (just slower).
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_48_Recurrent_Neural_Networks/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  
@@ -208,11 +198,17 @@ Run this lesson's code interactively in your browser:
 
 
     if __name__ == "__main__":
-        history, metrics, model = run_full_workflow()
+        import os
+    
+        # Use fewer epochs for automated testing to avoid timeouts
+        epochs = 1 if os.environ.get("QUICK_TEST_MODE") == "1" else 5
+    
+        history, metrics, model = run_full_workflow(epochs=epochs, verbose=0)
 
         print("--- RNN (LSTM) for IMDB Sentiment Classification ---")
         model.summary()
         print("-" * 30)
+        print(f"Trained for {epochs} epoch(s)")
         print("Final training accuracy:", history.history["accuracy"][-1])
         print("Test metrics:")
         for name, value in metrics.items():

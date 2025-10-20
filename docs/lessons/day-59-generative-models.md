@@ -7,16 +7,6 @@ Generative models synthesise data, compress signals, and enable controllable cre
 
 Execute `python Day_59_Generative_Models/solutions.py` to run miniature training loops that log decreasing reconstruction losses and summarise practical tuning tips.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_59_Generative_Models/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

@@ -48,17 +48,6 @@ The script for this lesson, `operators.py`, has been refactored into functions t
 
 🎉 **Excellent work!** You're now equipped with the operators needed to perform the vast majority of business calculations and logical checks you'll encounter.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch operators in JupyterLite](../../jupyterlite/lab?path=Day_03_Operators/operators.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_03_Operators/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **operators.ipynb**  

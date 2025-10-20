@@ -59,18 +59,6 @@ The content for this lesson is split into two main files:
 
 🎉 **Welcome to Pandas!** You've just learned how to create and inspect the most fundamental object in data analysis. In the next lesson, we'll dive deeper into selecting, filtering, and cleaning data.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch pandas_intro in JupyterLite](../../jupyterlite/lab?path=Day_23_Pandas/pandas_intro.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_23_Pandas/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch pandas_from_csv in JupyterLite](../../jupyterlite/lab?path=Day_23_Pandas/pandas_from_csv.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **pandas_from_csv.ipynb**  
@@ -127,10 +115,11 @@ Run this lesson's code interactively in your browser:
         if df is None or "title" not in df.columns:
             return pd.DataFrame()  # Return empty DataFrame if input is invalid
 
-        # Ensure title column is string type to use .str accessor
-        df["title"] = df["title"].astype(str)
+        # Ensure title column is string type to use .str accessor without mutating the original DataFrame
+        title_series = df["title"].astype(str)
+        mask = title_series.str.contains(keyword, case=False, na=False)
 
-        return df.loc[df["title"].str.contains(keyword, case=False, na=False)]
+        return df.loc[mask]
 
 
     def main():

@@ -63,17 +63,6 @@ The script for this lesson, `sets.py`, has been refactored into functions to mak
 
 🎉 **Well done!** Sets are a specialized but incredibly efficient tool. When you need to de-duplicate a list or analyze the overlap between two groups, sets are the best tool for the job.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch sets in JupyterLite](../../jupyterlite/lab?path=Day_07_Sets/sets.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_07_Sets/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **sets.ipynb**  

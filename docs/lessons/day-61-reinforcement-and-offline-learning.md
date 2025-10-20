@@ -7,16 +7,6 @@ Reinforcement learning (RL) balances exploration and exploitation while offline 
 
 Execute `python Day_61_Reinforcement_and_Offline_Learning/solutions.py` to walk through deterministic policy optimisation, offline evaluation diagnostics, and bandit baselines.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_61_Reinforcement_and_Offline_Learning/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

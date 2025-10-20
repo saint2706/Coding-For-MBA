@@ -10,16 +10,6 @@ performance. Day 53 introduces reproducible workflows for:
 Execute `python Day_53_Model_Tuning_and_Feature_Selection/solutions.py` to see
 both search strategies in action alongside feature importance diagnostics.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

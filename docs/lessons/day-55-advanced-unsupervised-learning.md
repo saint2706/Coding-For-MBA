@@ -9,16 +9,6 @@ unlabelled datasets. Use the resources in this folder to:
 Run `python Day_55_Advanced_Unsupervised_Learning/solutions.py` to reproduce the cluster assignments,
 embeddings, and anomaly scores featured in the lesson.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_55_Advanced_Unsupervised_Learning/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

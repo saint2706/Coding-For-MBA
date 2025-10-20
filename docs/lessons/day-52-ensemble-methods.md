@@ -10,16 +10,6 @@ than single estimators. Use the notebook or `solutions.py` helpers to:
 Execute `python Day_52_Ensemble_Methods/solutions.py` to print validation scores
 for each ensemble configuration.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_52_Ensemble_Methods/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

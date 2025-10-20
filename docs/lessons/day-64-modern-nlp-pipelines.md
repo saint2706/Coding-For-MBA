@@ -8,16 +8,6 @@ Connect discrete NLP components into a reproducible workflow. After this lesson 
 
 Run `python Day_64_Modern_NLP_Pipelines/solutions.py` to explore end-to-end text processing with seeded toy corpora.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_64_Modern_NLP_Pipelines/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  
@@ -171,9 +161,14 @@ Run this lesson's code interactively in your browser:
 
         tokenized_query = tokenize_corpus([query])[0]
         if tokenized_query:
-            query_vec = np.mean(
-                [embeddings_table[token] for token in tokenized_query], axis=0
-            )
+            # Filter tokens that exist in embeddings_table to avoid KeyError
+            valid_tokens = [token for token in tokenized_query if token in embeddings_table]
+            if valid_tokens:
+                query_vec = np.mean(
+                    [embeddings_table[token] for token in valid_tokens], axis=0
+                )
+            else:
+                query_vec = np.zeros(next(iter(embeddings_table.values())).shape, dtype=float)
         else:
             query_vec = np.zeros(next(iter(embeddings_table.values())).shape, dtype=float)
         doc_indices = retrieve_documents(query_vec, doc_embeddings, top_k=top_k)

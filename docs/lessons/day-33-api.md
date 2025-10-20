@@ -80,17 +80,6 @@ pytest tests/test_day_33.py
 To execute the entire collection of lesson tests, run `pytest` from the project
 root.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch api in JupyterLite](../../jupyterlite/lab?path=Day_33_API/api.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_33_API/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **api.ipynb**  
