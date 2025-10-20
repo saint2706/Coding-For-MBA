@@ -18,6 +18,26 @@ This lesson connects experimentation design, forecasting, and machine learning s
 - Use lightweight regression and segmentation helpers for fast predictive insights before escalating to heavier models.
 - Document p-value interpretations and error trade-offs so cross-functional partners understand the decision logic.
 
+## Additional Topic: Analytics Toolchain
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Map the technical stack that underpins BI delivery.
+
+## Developer-roadmap alignment
+
+- BI Platforms
+- Popular Databases
+- SQL Fundamentals
+- Programming Languages
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"

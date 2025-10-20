@@ -31,6 +31,26 @@ a concise dashboard table with status indicators against agreed thresholds.
 - Extend the checklists with your organisation’s specific controls—e.g., SOC2 evidence, ISO/IEC 27001 clauses, or additional
   fairness/bias diagnostics for machine-learning products.
 
+## Additional Topic: Visualization Strategy & Storytelling
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Package insights for executive audiences and decision forums.
+
+## Developer-roadmap alignment
+
+- Visualization Best Practices
+- Communication & Storytelling
+- Stakeholder Identification
+- Bias Recognition
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"

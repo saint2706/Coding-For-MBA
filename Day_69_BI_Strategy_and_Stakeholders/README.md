@@ -32,3 +32,23 @@ Encourage learners to map each persona to the operating model and strategy tier 
 - Reinforce that operating models exist to keep stakeholders coordinated, not to create bureaucracy.
 - Encourage participants to co-design escalation paths for when insights conflict with intuition.
 - Close the session with a commitment from each stakeholder persona: what decision will they make differently because of the BI strategy?
+
+## Additional Topic: BI Skill Stack & Professional Identity
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Define the personal capabilities you will cultivate throughout Phase 5.
+
+## Developer-roadmap alignment
+
+- Skills
+- Soft Skills
+- Professional Development
+- Communication & Storytelling
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.

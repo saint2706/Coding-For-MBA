@@ -49,6 +49,27 @@ graph TD
 - Pair each dataset with a lightweight notebook showing ingestion and profiling.
 - Update stakeholder playbooks with the classification and sourcing vocabulary.
 
+## Additional Topic: Data Sources & Governance
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Audit how raw data flows into governed analytics environments.
+
+## Developer-roadmap alignment
+
+- Data Sources
+- Data Formats
+- Data Quality
+- Ethical Data Use
+- Privacy
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"

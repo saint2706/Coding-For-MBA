@@ -1,6 +1,6 @@
 Day 73 rebuilds the SQL and database depth outlined in the BI roadmap so the
 track moves beyond the light touch from [Day 31 – Databases](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/README.md)
-and the tooling survey in [Day 70 – BI Data Fundamentals](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_70_BI_Data_Fundamentals/README.md).
+and the tooling survey in [Day 70 – BI Data Fundamentals](../Day_70_BI_Data_Fundamentals/README.md).
 The facilitation plan clusters the roadmap titles into two discussion blocks:
 
 - **SQL foundations** – SQL Fundamentals, Basic Queries, Advanced Queries,
@@ -23,6 +23,26 @@ warehouse built with SQLite. It demonstrates:
 Use these walkthroughs alongside Day 31's notebooks when you want learners to
 contrast Python-side DataFrame transformations with raw SQL and database
 operations.
+
+## Additional Topic: ETL & Data Preparation
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Design reliable ingestion pipelines for analytics-ready data.
+
+## Developer-roadmap alignment
+
+- ETL basics
+- ETL Tools
+- Data Transformation Techniques
+- Data Cleaning
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
 
 ## Additional Materials
 

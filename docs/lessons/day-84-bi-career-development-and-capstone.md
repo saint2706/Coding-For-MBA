@@ -1,6 +1,6 @@
 > This lesson closes Phase 5 by converting the roadmap insights into a polished career
-narrative. Pair it with [Day 83 – BI Career Assets](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_83_BI_Career_Assets/README.md)
-and the planning prompts in [Day 84 – BI Roadmapping](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_84_BI_Roadmapping/README.md).
+narrative. Pair it with [Day 83 – BI Career Assets](../Day_83_BI_Career_Assets/README.md)
+and the planning prompts in [Day 84 – BI Roadmapping](../Day_84_BI_Roadmapping/README.md).
 
 ## Why it matters
 
@@ -58,6 +58,26 @@ Focus your interview preparation with these roadmap tasks.
   phases and generate checklist templates.
 - Export the JSON checklist to your project management tool and update it as you complete
   each roadmap milestone.
+
+## Additional Topic: Strategic Roadmapping & Next Steps
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Synthesize the specialization into ongoing strategic roadmaps.
+
+## Developer-roadmap alignment
+
+- Professional Development
+- Key Business Functions
+- Types of BI Operations
+- Metrics and KPIs
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
 
 ## Additional Materials
 
