@@ -52,12 +52,10 @@ Review the code to understand the fundamental step of model persistence, which i
 
 - **bonus_flask_api.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/bonus_flask_api.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/bonus_flask_api.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/bonus_flask_api.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_50_MLOps/bonus_flask_api.ipynb){ .md-button }
 - **solutions.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/solutions.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/solutions.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/solutions.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_50_MLOps/solutions.ipynb){ .md-button }
 

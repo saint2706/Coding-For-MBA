@@ -13,7 +13,6 @@ metric summaries for the synthetic workloads.
 
 - **solutions.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button }
 

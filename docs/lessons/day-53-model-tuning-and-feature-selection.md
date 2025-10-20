@@ -14,7 +14,6 @@ both search strategies in action alongside feature importance diagnostics.
 
 - **solutions.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button }
 

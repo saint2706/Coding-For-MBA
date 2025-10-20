@@ -68,12 +68,10 @@ The script for this lesson, `tuples.py`, has been refactored to separate the log
 
 - **solutions.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_06_Tuples/solutions.ipynb){ .md-button }
 - **tuples.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_06_Tuples/tuples.ipynb){ .md-button }
 

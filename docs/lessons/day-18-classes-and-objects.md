@@ -57,12 +57,10 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
 
 - **CaO.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/CaO.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/CaO.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/CaO.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_18_Classes_and_Objects/CaO.ipynb){ .md-button }
 - **solutions.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/solutions.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/solutions.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/solutions.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_18_Classes_and_Objects/solutions.ipynb){ .md-button }
 

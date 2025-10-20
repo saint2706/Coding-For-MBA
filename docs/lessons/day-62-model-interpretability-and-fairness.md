@@ -12,7 +12,6 @@ Run `python Day_62_Model_Interpretability_and_Fairness/solutions.py` to walk thr
 
 - **solutions.ipynb**  
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/solutions.ipynb){ .md-button } 
-  [📓 Open in NBViewer](https://nbviewer.org/github/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/solutions.ipynb){ .md-button } 
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/solutions.ipynb){ .md-button .md-button--primary } 
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_62_Model_Interpretability_and_Fairness/solutions.ipynb){ .md-button }
 
