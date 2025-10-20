@@ -28,7 +28,7 @@ Additional directories:
 
 ## Development Environment
 
-- **Python version**: 3.13 (primary), with support for 3.12+
+- **Python version**: 3.13 (primary, as configured in CI/CD)
 - **Package manager**: pip with `requirements.txt` and `requirements-dev.txt`
 - **Virtual environment**: Use `python -m venv .venv` for isolation
 
@@ -110,7 +110,7 @@ Always follow this sequence when making changes:
 - **Solution**: The repository structure expects lessons to be imported from their Day directories. Ensure you're running commands from the repository root.
 
 **Issue**: Coverage below 40%
-- **Solution**: The 40% coverage requirement applies only to `Day_24_Pandas_Advanced`, `Day_25_Data_Cleaning`, and `Day_26_Statistics` modules (see `pytest.ini`). Add tests for these modules if coverage drops.
+- **Solution**: The 40% coverage requirement applies only to specific modules: `Day_24_Pandas_Advanced.pandas_adv`, `Day_25_Data_Cleaning.data_cleaning`, and `Day_26_Statistics.stats` (see `pytest.ini`). Add tests for these specific modules if coverage drops.
 
 **Issue**: Formatting check fails
 - **Solution**: Run `make format` to auto-fix most formatting issues. For notebooks, `nbqa` will handle formatting automatically.
@@ -206,9 +206,9 @@ The repository includes custom commands in `AGENTS.md` for automation:
 - The `setup` command is useful in containerized environments or GitHub Actions
 
 **Prefer Makefile over AGENTS.md for development:**
-- `make format` instead of AGENTS.md `format` (more comprehensive)
-- `make lint` instead of AGENTS.md `lint` (includes pre-commit hooks)
-- `make test` or `pytest` instead of AGENTS.md `test` (better output)
+- `make format` instead of AGENTS.md `format` (runs both ruff format and black)
+- `make lint` instead of AGENTS.md `lint` (adds mdformat and pre-commit hooks)
+- `make test` or `pytest` instead of AGENTS.md `test` (provides more detailed output)
 
 ## Contribution Guidelines
 
