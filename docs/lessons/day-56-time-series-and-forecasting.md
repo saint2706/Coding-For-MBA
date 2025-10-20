@@ -9,16 +9,6 @@ how to:
 Launch `python Day_56_Time_Series_and_Forecasting/solutions.py` to train the baseline models and print
 metric summaries for the synthetic workloads.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

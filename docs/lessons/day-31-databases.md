@@ -87,18 +87,6 @@ conn.close()
 
 🎉 **Excellent!** You can now connect to and retrieve data from a database, the primary source of truth for most businesses. Knowing how to pull data directly into a Pandas DataFrame is a workflow you will use constantly as a data analyst.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch databases in JupyterLite](../../jupyterlite/lab?path=Day_31_Databases/databases.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch databases_smoke_test in JupyterLite](../../jupyterlite/lab?path=Day_31_Databases/databases_smoke_test.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_31_Databases/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **databases.ipynb**  

@@ -52,17 +52,6 @@ The script for this lesson, `regex.py`, has been refactored to place each regex 
 
 🎉 **Excellent!** Regular expressions are a fundamental tool for any data analyst who works with text. They provide a powerful and efficient way to clean, validate, and extract information from unstructured data.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch regex in JupyterLite](../../jupyterlite/lab?path=Day_17_Regular_Expressions/regex.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_17_Regular_Expressions/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **regex.ipynb**  

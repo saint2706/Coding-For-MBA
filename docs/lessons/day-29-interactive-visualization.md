@@ -82,17 +82,6 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 
 🎉 **Incredible!** You've now stepped into the world of interactive data visualization. Being able to create and share plots that allow stakeholders to explore the data for themselves is a highly valuable skill for any modern analyst.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_29_Interactive_Visualization/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch interactive_visualization in JupyterLite](../../jupyterlite/lab?path=Day_29_Interactive_Visualization/interactive_visualization.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **interactive_visualization.ipynb**  

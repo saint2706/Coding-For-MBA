@@ -64,16 +64,6 @@ ______________________________________________________________________
 - Need a quick confidence check without the full 50-epoch run? The automated test performs a single, deterministic epoch: `pytest tests/test_day_46.py`.
 - Training on GPU hardware is optional for this small dataset, but TensorFlow will automatically leverage your GPU if it's available and correctly configured.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_46_Intro_to_Neural_Networks/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

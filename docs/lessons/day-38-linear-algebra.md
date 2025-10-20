@@ -20,16 +20,6 @@ Linear algebra underpins much of machine learning. This lesson revisits the buil
 - Run the worked examples: `python Day_38_Linear_Algebra/solutions.py`
 - Execute the automated checks: `pytest tests/test_day_38.py`
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_38_Linear_Algebra/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

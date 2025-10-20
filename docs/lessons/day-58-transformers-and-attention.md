@@ -7,16 +7,6 @@ Transformers dominate modern sequence modelling. This lesson demonstrates how to
 
 Run `python Day_58_Transformers_and_Attention/solutions.py` to simulate encoder–decoder passes, generate fine-tuning playbooks, and score demo texts with attention heatmaps.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_58_Transformers_and_Attention/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

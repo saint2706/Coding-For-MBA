@@ -63,17 +63,6 @@ The script for this lesson, `lists.py`, has been refactored into functions to ma
 
 🎉 **Great job!** Lists are the workhorse for storing collections of data in Python. Understanding how to manage and analyze data within lists is a fundamental skill for any data analyst.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_05_Lists/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch lists in JupyterLite](../../jupyterlite/lab?path=Day_05_Lists/lists.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **lists.ipynb**  

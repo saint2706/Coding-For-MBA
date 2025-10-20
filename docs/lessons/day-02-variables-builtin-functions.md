@@ -63,17 +63,6 @@ The script for this lesson, `variables.py`, has been refactored into functions t
 
 🎉 **Well done!** You've learned how to store data in variables and use Python's built-in functions for analysis—foundational skills for everything that comes next.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch variables in JupyterLite](../../jupyterlite/lab?path=Day_02_Variables_Builtin_Functions/variables.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_02_Variables_Builtin_Functions/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  
@@ -138,22 +127,30 @@ Run this lesson's code interactively in your browser:
 
     # --- Exercise 3: User Input for a Profit Calculator ---
     print("--- Solution to Exercise 3 ---")
-    # Note: To run this interactively, you would run the python file
-    # in your terminal. The input() function will pause the script
+    # Note: To run this interactively, you would need to uncomment the input() lines
+    # and run the python file in your terminal. The input() function will pause the script
     # and wait for you to type a value and press Enter.
 
-    # We wrap the code in a try...except block to handle cases where the user
-    # might enter text instead of a number, which would cause a crash.
-    try:
-        # float() converts the string from input() into a floating-point number
-        revenue_input = float(input("Enter total revenue: "))
-        expenses_input = float(input("Enter total expenses: "))
+    # For automated/non-interactive execution, we use example values:
+    print("Using example values for demonstration:")
+    revenue_input = 150000.00
+    expenses_input = 95000.00
+    profit = revenue_input - expenses_input
+    print(f"Revenue: ${revenue_input:.2f}")
+    print(f"Expenses: ${expenses_input:.2f}")
+    print(f"Calculated Profit: ${profit:.2f}")
 
-        profit = revenue_input - expenses_input
-        print(f"Calculated Profit: ${profit:.2f}")
-
-    except ValueError:
-        print("Invalid input. Please make sure to enter numbers only.")
+    # To run interactively, uncomment the lines below and comment out the lines above:
+    # try:
+    #     # float() converts the string from input() into a floating-point number
+    #     revenue_input = float(input("Enter total revenue: "))
+    #     expenses_input = float(input("Enter total expenses: "))
+    #
+    #     profit = revenue_input - expenses_input
+    #     print(f"Calculated Profit: ${profit:.2f}")
+    #
+    # except ValueError:
+    #     print("Invalid input. Please make sure to enter numbers only.")
 
     print("-" * 20)
     ```

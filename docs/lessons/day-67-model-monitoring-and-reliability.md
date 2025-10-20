@@ -46,16 +46,6 @@ canary verdicts respect latency/accuracy thresholds.
 - Integrate human-in-the-loop acknowledgement by forwarding alerts to an
   incident management platform.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_67_Model_Monitoring_and_Reliability/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

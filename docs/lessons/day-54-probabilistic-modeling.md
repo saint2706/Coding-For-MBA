@@ -10,16 +10,6 @@ probabilistic reasoning for ambiguous business signals. Use the notebook or `sol
 Execute `python Day_54_Probabilistic_Modeling/solutions.py` to print representative log-likelihood outputs
 for the reproducible toy datasets.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_54_Probabilistic_Modeling/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

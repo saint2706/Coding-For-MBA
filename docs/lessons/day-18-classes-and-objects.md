@@ -53,17 +53,6 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
 
 🎉 **Congratulations!** You've learned the basics of object-oriented programming. This will enable you to write more organized, powerful, and scalable analytical scripts that model real-world business concepts.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_18_Classes_and_Objects/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch CaO in JupyterLite](../../jupyterlite/lab?path=Day_18_Classes_and_Objects/CaO.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **CaO.ipynb**  
@@ -315,9 +304,13 @@ Run this lesson's code interactively in your browser:
     # The PersonAccount class is imported from CaO.py
 
     # Example usage:
-    person = PersonAccount(
-        "John", "Doe", {"Salary": 5000, "Bonus": 1000}, {"Rent": 1500, "Food": 500}
-    )
+    person = PersonAccount("John", "Doe")
+    # Add incomes
+    person.add_income("Salary", 5000)
+    person.add_income("Bonus", 1000)
+    # Add expenses
+    person.add_expense("Rent", 1500)
+    person.add_expense("Food", 500)
 
 
     # Additional methods that could be added to PersonAccount class:

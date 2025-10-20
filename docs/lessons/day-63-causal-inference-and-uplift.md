@@ -7,16 +7,6 @@ Understand how experimentation and counterfactual reasoning quantify impact. Aft
 
 Run `python Day_63_Causal_Inference_and_Uplift/solutions.py` to generate synthetic treatment data, estimate effects with multiple techniques, and visualise uplift segmentations.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_63_Causal_Inference_and_Uplift/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

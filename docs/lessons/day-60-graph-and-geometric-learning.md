@@ -7,16 +7,6 @@ Graph neural networks capture relational structure beyond Euclidean grids. This 
 
 Run `python Day_60_Graph_and_Geometric_Learning/solutions.py` to inspect handcrafted GraphSAGE/GAT layers, monitor training metrics on a toy citation-style graph, and export feature embeddings.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_60_Graph_and_Geometric_Learning/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

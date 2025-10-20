@@ -47,17 +47,6 @@ The script for this lesson, `functions.py`, is already well-structured, with eac
 
 🎉 **Great work!** Functions are the key to writing clean, organized, and professional code. By packaging your logic into reusable tools, you're moving from a simple scripter to a true programmer.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch functions in JupyterLite](../../jupyterlite/lab?path=Day_11_Functions/functions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_11_Functions/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **functions.ipynb**  

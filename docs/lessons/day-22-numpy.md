@@ -55,17 +55,6 @@ The script for this lesson, `numpy_examples.py`, has been refactored to place ea
 
 🎉 **Fantastic start!** NumPy is the essential first step into the world of high-performance data analysis in Python. Understanding vectorization will make all subsequent topics, especially Pandas, much easier to grasp.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_22_NumPy/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch numpy_examples in JupyterLite](../../jupyterlite/lab?path=Day_22_NumPy/numpy_examples.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **numpy_examples.ipynb**  

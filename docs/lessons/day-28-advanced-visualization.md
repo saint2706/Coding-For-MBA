@@ -89,17 +89,6 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 
 🎉 **Fantastic!** You can now create presentation-ready charts and combine them into simple dashboards. This ability to not just analyze, but also to present data in a customized and professional format is a key skill that separates great analysts from good ones.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_28_Advanced_Visualization/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch advanced_visualization in JupyterLite](../../jupyterlite/lab?path=Day_28_Advanced_Visualization/advanced_visualization.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **advanced_visualization.ipynb**  

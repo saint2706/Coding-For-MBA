@@ -60,17 +60,6 @@ This lesson is about terminal commands, not Python scripts. The best way to lear
 
 🎉 **Congratulations!** You've practiced one of the most important skills for professional Python development. Using virtual environments will save you from countless headaches and make your projects more robust and shareable.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_21_Virtual_Environments/solutions.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch virtual_environments in JupyterLite](../../jupyterlite/lab?path=Day_21_Virtual_Environments/virtual_environments.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **solutions.ipynb**  

@@ -66,17 +66,6 @@ The script for this lesson, `loops.py`, has been refactored to place each loopin
 
 🎉 **Incredible!** The combination of loops and conditionals is the foundation of almost all data processing and analysis tasks. You've completed the core structures of Python!
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch loops in JupyterLite](../../jupyterlite/lab?path=Day_10_Loops/loops.ipynb){ .md-button .md-button--primary }
-- [🚀 Launch solutions in JupyterLite](../../jupyterlite/lab?path=Day_10_Loops/solutions.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **loops.ipynb**  

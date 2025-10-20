@@ -85,16 +85,6 @@ This was a conceptual lesson to show you that while the specific connection deta
 
 There are no coding exercises for this day. The goal is to understand the concepts so you are prepared when you encounter these different database systems in the workplace.
 
-
-
-## Interactive Notebooks
-
-Run this lesson's code interactively in your browser:
-
-- [🚀 Launch other_databases in JupyterLite](../../jupyterlite/lab?path=Day_32_Other_Databases/other_databases.ipynb){ .md-button .md-button--primary }
-
-!!! tip "About JupyterLite"
-    JupyterLite runs entirely in your browser using WebAssembly. No installation or server required! Note: First launch may take a moment to load.
 ## Additional Materials
 
 - **other_databases.ipynb**  
