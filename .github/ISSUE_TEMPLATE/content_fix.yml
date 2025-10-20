@@ -1,0 +1,47 @@
+name: Content or lesson fix
+description: Suggest corrections or improvements to lesson materials
+labels: [documentation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to report typos, broken links, or confusing explanations in the curriculum.
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options:
+        - Phase 1 – Python Foundations
+        - Phase 2 – Data Workflows & Analytics Stack
+        - Phase 3 – Machine Learning Foundations
+        - Phase 4 – Advanced ML & MLOps
+        - Phase 5 – Business Intelligence
+    validations:
+      required: true
+  - type: input
+    id: lesson
+    attributes:
+      label: Lesson or resource
+      description: Provide the Day number or document path.
+      placeholder: Day_42_Supervised_Learning_Classification_Part_1/README.md
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: What needs to change?
+      description: Include direct quotes or links to the confusing section.
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested improvement
+      description: Share corrected wording, screenshots, or supporting links.
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution options
+      options:
+        - label: I will submit a pull request.
+        - label: I need a maintainer to take this on.

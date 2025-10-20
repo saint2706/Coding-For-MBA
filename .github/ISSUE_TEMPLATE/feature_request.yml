@@ -1,67 +1,42 @@
-name: Feature Request
-description: Suggest an idea or improvement for this curriculum
-title: "[Feature]: "
-labels: ["enhancement"]
+name: Feature request
+description: Propose a new capability, automation, or curriculum upgrade
+labels: [enhancement]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for suggesting a feature! Please describe your idea below.
-
-  - type: dropdown
-    id: area
+        Tell us about the opportunity. What will this unlock for learners or contributors?
+  - type: input
+    id: summary
     attributes:
-      label: Which area does this affect?
-      description: Select the area your feature request relates to
-      options:
-        - Lesson Content
-        - Documentation
-        - Code Examples
-        - Testing
-        - Tools/Infrastructure
-        - Other
+      label: Summary
+      description: Short description of the proposed change.
+      placeholder: Add BI dashboard export automation...
     validations:
       required: true
-
   - type: textarea
     id: problem
     attributes:
-      label: Problem or Need
-      description: Is your feature request related to a problem? Please describe.
-      placeholder: I'm frustrated when...
+      label: Problem statement
+      description: What problem are we solving? Who is impacted?
+      placeholder: Describe the pain point
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Outline the approach, key files, or API changes.
+      placeholder: Share the plan or mock-ups
     validations:
       required: true
-
   - type: textarea
-    id: solution
+    id: dependencies
     attributes:
-      label: Proposed Solution
-      description: Describe the solution you'd like
-      placeholder: I think we could...
-    validations:
-      required: true
-
-  - type: textarea
-    id: alternatives
-    attributes:
-      label: Alternatives Considered
-      description: Have you considered any alternative solutions?
-      placeholder: I also thought about...
-    validations:
-      required: false
-
-  - type: textarea
-    id: additional
-    attributes:
-      label: Additional Context
-      description: Add any other context, examples, or screenshots
-      placeholder: Here's an example...
-    validations:
-      required: false
-
+      label: Dependencies or related work
+      description: Link discussions, pull requests, or lessons impacted by this change.
   - type: checkboxes
-    id: contribution
+    id: readiness
     attributes:
-      label: Would you like to contribute this feature?
+      label: Ready for community collaboration?
       options:
-        - label: I would like to implement this feature myself
+        - label: I can help implement this change.
+        - label: I need help and would like to pair or hand it off.

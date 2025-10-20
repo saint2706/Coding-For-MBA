@@ -1,0 +1,21 @@
+name: links
+
+on:
+  pull_request:
+    paths: [ '**/*.md', '**/*.html' ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  lychee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: lycheeverse/lychee-action@v1
+        with:
+          args: --no-progress --accept 200,429 --timeout 30 --exclude-mail ./
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

@@ -4,6 +4,7 @@ Thank you for your interest in shaping the Coding for MBA curriculum! This guide
 
 - 🧭 [Ways to contribute](#ways-to-contribute)
 - 🛠️ [Development environment](#development-environment)
+- 🌱 [Branch naming](#branch-naming)
 - 🔄 [Contribution workflow](#contribution-workflow)
 - ✅ [Quality checklist](#quality-checklist)
 - 💬 [Community and support](#community-and-support)
@@ -28,7 +29,7 @@ If you have a new idea, open a [GitHub Discussion](https://github.com/saint2706/
    git clone https://github.com/saint2706/Coding-For-MBA.git
    cd Coding-For-MBA
    ```
-2. **Create a virtual environment** (Python 3.12+ recommended)
+2. **Create a virtual environment (Python 3.11)**
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # Windows: .venv\Scripts\activate
@@ -36,39 +37,55 @@ If you have a new idea, open a [GitHub Discussion](https://github.com/saint2706/
 3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
-   pip install -r requirements-dev.txt  # for linting and tests
+   pip install -r requirements-dev.txt
+   pip install -r docs/requirements-docs.txt  # when working on documentation
    ```
-4. **Optional extras**: Use `make format`, `make lint`, and `mkdocs serve` to work with formatting and documentation locally.
+4. **Install pre-commit hooks**
+   ```bash
+   pre-commit install
+   ```
+5. **Use the Makefile for common tasks**
+   ```bash
+   make setup       # bootstrap dependencies
+   make docs-serve  # preview MkDocs locally at http://localhost:8000
+   make lint        # run ruff, mdformat, and configured pre-commit hooks
+   ```
+
+## Branch naming
+
+Follow these prefixes to signal intent:
+
+- `feature/<short-description>` for new capabilities or curriculum expansions.
+- `chore/<short-description>` for tooling, CI, or documentation maintenance.
+- `fix/<short-description>` for bug fixes or regressions.
 
 ## Contribution Workflow
 
 1. **Discuss** – Search existing [issues](https://github.com/saint2706/Coding-For-MBA/issues) and [discussions](https://github.com/saint2706/Coding-For-MBA/discussions). Open a new thread or issue if needed to gather context.
-2. **Fork & branch** – Fork the repository and create a feature branch (`git checkout -b feature/your-feature`).
+2. **Fork & branch** – Fork the repository and create a branch using the naming conventions above.
 3. **Make focused changes** – Follow the project structure; update or add tests and documentation that reflect the change.
 4. **Run checks locally**
    ```bash
-   make format  # optional but recommended
+   make format  # optional but recommended for Python files
    make lint
    pytest
+   make docs    # ensure MkDocs builds without warnings when docs change
    ```
 5. **Commit with context** – Write clear commit messages summarizing the change and reference related issues.
 6. **Submit a pull request** – Provide:
-   - A concise summary of changes
-   - Testing evidence (commands run)
-   - Screenshots or recordings if you modified visual output
-   - Links to related discussions or issues
+   - A concise summary of changes.
+   - Testing evidence (commands run).
+   - Screenshots or recordings if you modified visual output.
+   - Links to related discussions or issues.
 7. **Collaborate on review** – Be ready to answer questions, iterate on feedback, and keep discussions respectful. Once approved, maintainers will merge your pull request.
 
 ## Quality Checklist
 
 Before requesting a review, ensure you have:
 
-- [ ] Added or updated automated tests when touching executable code.
-- [ ] Confirmed `pytest` passes locally (or explained why it fails).
-- [ ] Run `make lint` to satisfy formatting and linting standards.
-- [ ] Updated relevant documentation (`README`, lesson guides, or MkDocs pages).
-- [ ] Verified links and relative paths for any new Markdown content.
-- [ ] Included attribution for external datasets or resources where required.
+- [ ] Docs updated (if applicable).
+- [ ] Links pass (Lychee).
+- [ ] Pre-commit passes (ruff/black/nbQA/mdformat).
 
 ## Community and Support
 
