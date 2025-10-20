@@ -76,19 +76,19 @@ Eighty-four lessons, each with runnable scripts and notebooks. Use the table to 
 | Day 66 | Model Deployment and Serving | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_66_Model_Deployment_and_Serving/README.md) |
 | Day 67 | Model Monitoring and Reliability | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_67_Model_Monitoring_and_Reliability/README.md) |
 | Day 68 | BI Analyst Foundations | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_68_BI_Analyst_Foundations/README.md) |
-| Day 69 | BI Skill Stack | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Skill_Stack/README.md) |
-| Day 70 | BI Data Fundamentals | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_70_BI_Data_Fundamentals/README.md) |
-| Day 71 | BI Data Governance | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_71_BI_Data_Governance/README.md) |
+| Day 69 | BI Skill Stack | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Strategy_and_Stakeholders/README.md) |
+| Day 70 | BI Data Fundamentals | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_70_BI_Metrics_and_Data_Literacy/README.md) |
+| Day 71 | BI Data Governance | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_71_BI_Data_Landscape/README.md) |
 | Day 72 | BI Data Formats and Ingestion | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_72_BI_Data_Formats_and_Ingestion/README.md) |
-| Day 73 | BI ETL Preparation | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_73_BI_ETL_Preparation/README.md) |
+| Day 73 | BI ETL Preparation | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_73_BI_SQL_and_Databases/README.md) |
 | Day 74 | BI Data Preparation and Tools | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_74_BI_Data_Preparation_and_Tools/README.md) |
-| Day 75 | BI Inferential Analytics | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_75_BI_Inferential_Analytics/README.md) |
-| Day 76 | BI Diagnostics | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_76_BI_Diagnostics/README.md) |
+| Day 75 | BI Inferential Analytics | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_75_BI_Visualization_and_Dashboard_Principles/README.md) |
+| Day 76 | BI Diagnostics | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_76_BI_Platforms_and_Automation_Tools/README.md) |
 | Day 77 | BI Domain Analytics and Value Drivers | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md) |
 | Day 78 | BI Experimentation and Predictive Insights | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_78_BI_Experimentation_and_Predictive_Insights/README.md) |
-| Day 79 | BI Dashboards | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_79_BI_Dashboards/README.md) |
+| Day 79 | BI Dashboards | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md) |
 | Day 80 | BI Data Quality and Governance | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_80_BI_Data_Quality_and_Governance/README.md) |
 | Day 81 | BI Architecture and Data Modeling | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_81_BI_Architecture_and_Data_Modeling/README.md) |
 | Day 82 | BI ETL and Pipeline Automation | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_82_BI_ETL_and_Pipeline_Automation/README.md) |
-| Day 83 | BI Career Assets | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_83_BI_Career_Assets/README.md) |
+| Day 83 | BI Career Assets | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_83_BI_Cloud_and_Modern_Data_Stack/README.md) |
 | Day 84 | BI Career Development and Capstone | [View README](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_84_BI_Career_Development_and_Capstone/README.md) |

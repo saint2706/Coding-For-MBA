@@ -2,7 +2,7 @@
 
 Day 73 rebuilds the SQL and database depth outlined in the BI roadmap so the
 track moves beyond the light touch from [Day 31 – Databases](../Day_31_Databases/README.md)
-and the tooling survey in [Day 70 – BI Data Fundamentals](../Day_70_BI_Data_Fundamentals/README.md).
+and the tooling survey in [Day 70 – BI Metrics and Data Literacy](../Day_70_BI_Metrics_and_Data_Literacy/README.md).
 The facilitation plan clusters the roadmap titles into two discussion blocks:
 
 - **SQL foundations** – SQL Fundamentals, Basic Queries, Advanced Queries,
