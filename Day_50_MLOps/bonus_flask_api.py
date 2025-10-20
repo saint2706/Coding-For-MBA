@@ -88,7 +88,7 @@ if __name__ == "__main__":
     
     # Skip running the server in test/automated environments
     if os.environ.get("FLASK_RUN_TEST_MODE") != "1":
-        app.run(debug=True)
+        app.run(debug=False)
     else:
         print("Flask app created successfully (test mode - not starting server)")
         print("Model loaded:" if model is not None else "Model not loaded")
