@@ -77,7 +77,9 @@ def build_topic_dataframe(
             )
     frame = pd.DataFrame(records, columns=["section", "title", "description"])
     if not frame.empty:
-        frame = frame.sort_values(by=["section", "title"], kind="stable").reset_index(drop=True)
+        frame = frame.sort_values(by=["section", "title"], kind="stable").reset_index(
+            drop=True
+        )
     return frame
 
 

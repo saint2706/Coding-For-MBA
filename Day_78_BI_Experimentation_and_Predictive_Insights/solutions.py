@@ -43,7 +43,10 @@ def summarize_ab_test(
 
 
 def welch_t_p_value(
-    control: Iterable[float], treatment: Iterable[float], *, alternative: str = "two-sided"
+    control: Iterable[float],
+    treatment: Iterable[float],
+    *,
+    alternative: str = "two-sided",
 ) -> float:
     """Compute a Welch's t-test p-value without requiring SciPy."""
 
@@ -108,7 +111,11 @@ def type_error_table(alpha: float, beta: float) -> pd.DataFrame:
     if not 0 <= alpha <= 1 or not 0 <= beta <= 1:
         raise ValueError("Alpha and beta must be probabilities between 0 and 1")
     data = [
-        {"error": "Type I", "probability": float(alpha), "description": "False positive"},
+        {
+            "error": "Type I",
+            "probability": float(alpha),
+            "description": "False positive",
+        },
         {
             "error": "Type II",
             "probability": float(beta),
@@ -229,16 +236,18 @@ def forecast_business_metric(
     trend = intercept + slope * np.arange(values.size)
     pattern = seasonal_pattern(values, max(1, season_length))
     season_length = max(1, season_length)
-    seasonal_component = np.array([pattern[i % season_length] for i in range(values.size)])
+    seasonal_component = np.array(
+        [pattern[i % season_length] for i in range(values.size)]
+    )
     ordered["trend"] = trend
     ordered["seasonality"] = seasonal_component
     ordered["fitted"] = ordered["trend"] + ordered["seasonality"]
 
     future_index = np.arange(values.size, values.size + horizon)
     forecast_trend = intercept + slope * future_index
-    future_seasonal = np.array([
-        pattern[i % season_length] for i in range(values.size, values.size + horizon)
-    ])
+    future_seasonal = np.array(
+        [pattern[i % season_length] for i in range(values.size, values.size + horizon)]
+    )
     forecast_values = forecast_trend + future_seasonal
     forecast_df = pd.DataFrame(
         {
@@ -259,8 +268,12 @@ def describe_time_series_components(df: pd.DataFrame) -> pd.DataFrame:
         raise KeyError(f"DataFrame missing required columns: {sorted(required)}")
     summary = {
         "component": ["metric", "trend", "seasonality", "fitted"],
-        "mean": [df[col].mean() for col in ["metric", "trend", "seasonality", "fitted"]],
-        "std": [df[col].std(ddof=1) for col in ["metric", "trend", "seasonality", "fitted"]],
+        "mean": [
+            df[col].mean() for col in ["metric", "trend", "seasonality", "fitted"]
+        ],
+        "std": [
+            df[col].std(ddof=1) for col in ["metric", "trend", "seasonality", "fitted"]
+        ],
     }
     return pd.DataFrame(summary)
 
@@ -313,9 +326,7 @@ def fit_linear_regression(
 def regression_analysis_table(model: LinearRegressionModel) -> pd.DataFrame:
     """Return a tidy view of regression coefficients for reporting."""
 
-    rows = [
-        {"term": "intercept", "coefficient": model.intercept, "impact": "baseline"}
-    ]
+    rows = [{"term": "intercept", "coefficient": model.intercept, "impact": "baseline"}]
     for feature, value in model.coefficients.items():
         rows.append({"term": feature, "coefficient": value, "impact": "marginal"})
     return pd.DataFrame(rows)
@@ -368,7 +379,10 @@ def segment_customers_by_behavior(
 
 
 def epsilon_greedy_action(
-    values: Sequence[float], *, epsilon: float = 0.1, random_state: np.random.Generator | None = None
+    values: Sequence[float],
+    *,
+    epsilon: float = 0.1,
+    random_state: np.random.Generator | None = None,
 ) -> Tuple[int, bool]:
     """Choose an action using an epsilon-greedy policy for reinforcement learning."""
 
@@ -392,7 +406,9 @@ def supervised_predictions(
 ) -> Tuple[LinearRegressionModel, pd.Series]:
     """Train a regression model and return in-sample predictions."""
 
-    model = fit_linear_regression(frame, target_col=target_col, feature_cols=feature_cols)
+    model = fit_linear_regression(
+        frame, target_col=target_col, feature_cols=feature_cols
+    )
     features = frame[[col for col in frame.columns if col != target_col]]
     predictions = model.predict(features)
     return model, predictions
@@ -410,7 +426,11 @@ def unsupervised_scorecard(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def reinforcement_learning_report(
-    estimates: Sequence[float], *, epsilon: float = 0.1, draws: int = 100, seed: int | None = None
+    estimates: Sequence[float],
+    *,
+    epsilon: float = 0.1,
+    draws: int = 100,
+    seed: int | None = None,
 ) -> pd.DataFrame:
     """Simulate epsilon-greedy choices to illustrate exploration vs exploitation."""
 
@@ -418,7 +438,9 @@ def reinforcement_learning_report(
     choices: List[int] = []
     explore_flags: List[bool] = []
     for _ in range(draws):
-        action, explore = epsilon_greedy_action(estimates, epsilon=epsilon, random_state=rng)
+        action, explore = epsilon_greedy_action(
+            estimates, epsilon=epsilon, random_state=rng
+        )
         choices.append(action)
         explore_flags.append(explore)
     return pd.DataFrame({"action": choices, "explore": explore_flags})

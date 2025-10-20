@@ -8,17 +8,64 @@ is refactored into functions for better organization and testability.
 
 
 def get_unique_items(items_list):
-    """Converts a list to a set to get unique items."""
+    """
+    Converts a list to a set to get unique items.
+
+    Sets automatically remove duplicates. This is one of their key features!
+    Sets are unordered collections of unique elements.
+
+    Parameters
+    ----------
+    items_list : list
+        A list that may contain duplicate values
+
+    Returns
+    -------
+    set
+        A set containing only unique items
+
+    Example
+    -------
+    >>> get_unique_items(["NY", "LA", "NY", "Chicago"])
+    {'NY', 'LA', 'Chicago'}
+    """
+    # Converting a list to a set automatically removes all duplicates
     return set(items_list)
 
 
 def analyze_visitor_segments(set_a, set_b):
     """
     Performs intersection, difference, and union operations on two sets.
-    Returns a dictionary with the results.
+
+    Set operations are powerful for analyzing overlapping segments:
+    - Intersection: items in BOTH sets (overlap)
+    - Difference: items in set_a but NOT in set_b (exclusive to A)
+    - Union: items in EITHER set (combined, no duplicates)
+
+    Parameters
+    ----------
+    set_a : set
+        First set of items
+    set_b : set
+        Second set of items
+
+    Returns
+    -------
+    dict
+        Dictionary with 'intersection', 'difference_a_b', and 'union' results
+
+    Example
+    -------
+    >>> analyze_visitor_segments({"user1", "user2"}, {"user2", "user3"})
+    {'intersection': {'user2'}, 'difference_a_b': {'user1'}, 'union': {'user1', 'user2', 'user3'}}
     """
+    # .intersection() returns items that exist in both sets
     intersection = set_a.intersection(set_b)
+
+    # .difference() returns items in set_a that are NOT in set_b
     difference = set_a.difference(set_b)
+
+    # .union() combines both sets (removes duplicates automatically)
     union = set_a.union(set_b)
 
     return {"intersection": intersection, "difference_a_b": difference, "union": union}
@@ -27,8 +74,32 @@ def analyze_visitor_segments(set_a, set_b):
 def upgrade_plan_features(base_features, new_features_list):
     """
     Adds new features to a base set of features.
+
+    Demonstrates the .update() method which adds multiple items to a set.
+    We create a copy to avoid modifying the original.
+
+    Parameters
+    ----------
+    base_features : set
+        The existing set of features
+    new_features_list : list
+        List of new features to add
+
+    Returns
+    -------
+    set
+        A new set with all features combined
+
+    Example
+    -------
+    >>> upgrade_plan_features({"basic"}, ["advanced", "premium"])
+    {'basic', 'advanced', 'premium'}
     """
+    # .copy() creates a new set so we don't modify the original
     upgraded_plan = base_features.copy()
+
+    # .update() adds all items from the list to the set
+    # Duplicates are automatically ignored (set property)
     upgraded_plan.update(new_features_list)
     return upgraded_plan
 

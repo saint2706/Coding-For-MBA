@@ -44,7 +44,11 @@ def _fortune_1000_sector_rollup(data_dir: Path) -> Dict[str, object]:
         columns={"Sector": "sector", "Profits ($M)": "profits"}
     )
     df["profits"] = pd.to_numeric(df["profits"], errors="coerce").fillna(0.0)
-    grouped = df.groupby("sector", observed=True)["profits"].sum().sort_values(ascending=False)
+    grouped = (
+        df.groupby("sector", observed=True)["profits"]
+        .sum()
+        .sort_values(ascending=False)
+    )
     top5 = grouped.head(5)
     return {
         "rows": len(df),
@@ -59,7 +63,9 @@ def _hn_keyword_engagement(data_dir: Path) -> Dict[str, object]:
     keywords = ["python", "business", "data"]
     filtered = df[df["title"].str.contains("|".join(keywords), case=False, na=False)]
     summary = (
-        filtered.assign(year=pd.to_datetime(filtered["created_at"], errors="coerce").dt.year)
+        filtered.assign(
+            year=pd.to_datetime(filtered["created_at"], errors="coerce").dt.year
+        )
         .groupby("year", dropna=True)["num_comments"]
         .agg(["count", "mean", "max"])
         .reset_index()
@@ -74,7 +80,9 @@ def _hn_keyword_engagement(data_dir: Path) -> Dict[str, object]:
     }
 
 
-def _load_scenarios(repo_root: Path) -> List[Tuple[str, Callable[[Path], Dict[str, object]]]]:
+def _load_scenarios(
+    repo_root: Path,
+) -> List[Tuple[str, Callable[[Path], Dict[str, object]]]]:
     data_dir = repo_root / "data"
     return [
         ("fortune1000_sector_rollup", lambda: _fortune_1000_sector_rollup(data_dir)),
@@ -82,7 +90,9 @@ def _load_scenarios(repo_root: Path) -> List[Tuple[str, Callable[[Path], Dict[st
     ]
 
 
-def _run_scenario(name: str, fn: Callable[[], Dict[str, object]], repeats: int) -> BenchmarkResult:
+def _run_scenario(
+    name: str, fn: Callable[[], Dict[str, object]], repeats: int
+) -> BenchmarkResult:
     runtimes: List[float] = []
     peaks: List[float] = []
     metadata: Dict[str, object] | None = None
@@ -133,12 +143,18 @@ def _print_summary(results: Iterable[BenchmarkResult]) -> None:
         print(
             f"  peak memory: mean {result.mean_peak_kib:.2f} KiB ± {result.stdev_peak_kib:.2f} KiB (max {result.max_peak_kib:.2f} KiB)"
         )
-        print(f"  sample metadata: {json.dumps(result.sample_metadata, indent=2)[:200]}\n")
+        print(
+            f"  sample metadata: {json.dumps(result.sample_metadata, indent=2)[:200]}\n"
+        )
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Benchmark data-heavy lesson workloads.")
-    parser.add_argument("--repeats", type=int, default=3, help="How many times to repeat each scenario")
+    parser = argparse.ArgumentParser(
+        description="Benchmark data-heavy lesson workloads."
+    )
+    parser.add_argument(
+        "--repeats", type=int, default=3, help="How many times to repeat each scenario"
+    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -153,7 +169,10 @@ def main() -> None:
     results = run_benchmarks(repo_root=repo_root, repeats=args.repeats)
     _print_summary(results)
 
-    payload = {"benchmarks": [result.to_dict() for result in results], "repeats": args.repeats}
+    payload = {
+        "benchmarks": [result.to_dict() for result in results],
+        "repeats": args.repeats,
+    }
     args.output.write_text(json.dumps(payload, indent=2))
     print(f"Benchmark results written to {args.output.resolve()}")
 

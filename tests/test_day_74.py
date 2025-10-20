@@ -43,7 +43,9 @@ def test_handle_missing_values_drop_and_fill():
     assert dropped.shape == (2, 3)
     assert dropped["Customer ID"].tolist() == [1, 3]
 
-    filled = sol.handle_missing_values(df, strategy="fill", fill_value={"Revenue": 0.0, "Segment": "Unknown"})
+    filled = sol.handle_missing_values(
+        df, strategy="fill", fill_value={"Revenue": 0.0, "Segment": "Unknown"}
+    )
     assert filled.loc[1, "Revenue"] == 0.0
     assert filled.loc[1, "Segment"] == "Unknown"
 
@@ -54,4 +56,6 @@ def test_curriculum_sections_cover_all_titles():
     expected = set(sol.get_expected_titles())
 
     assert expected == titles
-    assert all(category in {"Data Quality", "Tooling"} for category in sections["category"]) 
+    assert all(
+        category in {"Data Quality", "Tooling"} for category in sections["category"]
+    )

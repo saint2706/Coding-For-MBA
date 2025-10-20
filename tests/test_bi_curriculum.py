@@ -38,10 +38,15 @@ def test_topics_by_titles_raises_for_missing_topic():
 
 
 def test_group_topics_by_titles_batches_results():
-    mapping = group_topics_by_titles({
-        "Foundations": ["What is BI?", "Skills"],
-        "Data": ["What is Data?"],
-    })
+    mapping = group_topics_by_titles(
+        {
+            "Foundations": ["What is BI?", "Skills"],
+            "Data": ["What is Data?"],
+        }
+    )
     assert list(mapping.keys()) == ["Foundations", "Data"]
-    assert [topic.title for topic in mapping["Foundations"]] == ["What is BI?", "Skills"]
+    assert [topic.title for topic in mapping["Foundations"]] == [
+        "What is BI?",
+        "Skills",
+    ]
     assert mapping["Data"][0].title == "What is Data?"

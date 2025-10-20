@@ -11,53 +11,103 @@ better organization and testability.
 def get_location_coordinates(location_tuple):
     """
     Returns the latitude and longitude from a location tuple.
-    Assumes the tuple is in the format (latitude, longitude).
+
+    Tuples are like lists but immutable (cannot be changed after creation).
+    They're perfect for fixed data like coordinates.
+
+    Parameters
+    ----------
+    location_tuple : tuple
+        A tuple in the format (latitude, longitude)
+
+    Returns
+    -------
+    tuple of (float, float) or (None, None)
+        The latitude and longitude, or (None, None) if invalid
+
+    Example
+    -------
+    >>> get_location_coordinates((40.7128, -74.0060))
+    (40.7128, -74.006)
     """
+    # Check if it's actually a tuple and has exactly 2 elements
     if isinstance(location_tuple, tuple) and len(location_tuple) == 2:
+        # Access tuple elements by index (just like lists)
         return location_tuple[0], location_tuple[1]
-    return None, None
+    return None, None  # Return None values if invalid
 
 
 def unpack_transaction(transaction_tuple):
     """
     Unpacks a transaction tuple into a dictionary.
-    Assumes tuple format is (id, date, amount).
+
+    Tuple unpacking is a powerful feature where we can assign tuple
+    elements to multiple variables in one line.
+
+    Parameters
+    ----------
+    transaction_tuple : tuple
+        A tuple in format (id, date, amount)
+
+    Returns
+    -------
+    dict or None
+        Dictionary with 'id', 'date', and 'amount' keys, or None if invalid
+
+    Example
+    -------
+    >>> unpack_transaction((1001, "2024-03-15", 499.99))
+    {'id': 1001, 'date': '2024-03-15', 'amount': 499.99}
     """
+    # Validate the tuple format
     if isinstance(transaction_tuple, tuple) and len(transaction_tuple) == 3:
+        # Tuple unpacking: assign each element to a named variable
+        # This makes the code more readable than using indices
         trans_id, date, amount = transaction_tuple
+
+        # Return as a dictionary for structured access
         return {"id": trans_id, "date": date, "amount": amount}
-    return None
+    return None  # Return None if format is invalid
 
 
 def demonstrate_list_vs_tuple():
     """
     Prints scenarios demonstrating when to use a list vs. a tuple.
+
+    Key difference:
+    - Lists are MUTABLE (can be changed): use for data that might change
+    - Tuples are IMMUTABLE (cannot be changed): use for fixed/constant data
+
+    This immutability makes tuples:
+    - Safer (prevents accidental changes)
+    - Faster (Python can optimize them)
+    - Suitable as dictionary keys (lists cannot be used as keys)
     """
     print("--- Choosing Between a List and a Tuple ---")
 
-    # Scenario A: Storing the monthly sales figures for the past year.
-    # Choice: List. Sales data is likely to be updated or amended.
+    # Scenario A: Data that changes over time → Use a LIST
+    # Sales data is likely to be updated or amended.
     monthly_sales = [45000, 52000, 48000, 55000]
     print(
         f"Scenario A (Monthly Sales): Use a list. Data might change. Example: {monthly_sales}"
     )
 
-    # Scenario B: Storing the RGB color code for your company's official logo.
-    # Choice: Tuple. The brand color is a fixed constant and should not change.
-    brand_color_rgb = (45, 85, 150)
+    # Scenario B: Fixed constant data → Use a TUPLE
+    # The brand color is a fixed constant and should not change.
+    brand_color_rgb = (45, 85, 150)  # RGB values for a specific color
     print(
         f"Scenario B (Brand Color): Use a tuple. Data is constant. Example: {brand_color_rgb}"
     )
 
-    # Scenario C: Storing the names of employees in a department.
-    # Choice: List. Employees can be added or removed from the department.
+    # Scenario C: Data that grows/shrinks → Use a LIST
+    # Employees can be added or removed from the department.
     marketing_team = ["Alice", "Bob", "Charlie"]
     print(
         f"Scenario C (Team Roster): Use a list. Roster changes. Example: {marketing_team}"
     )
 
-    # Scenario D: Storing the name, founding year, and stock ticker symbol for a company.
-    # Choice: Tuple. This core identifying information for a company is fixed.
+    # Scenario D: Core identifying information → Use a TUPLE
+    # This core identifying information for a company is fixed.
     company_profile = ("InnovateCorp", 2015, "INVC")
     print(
         f"Scenario D (Company Profile): Use a tuple. Core info is fixed. Example: {company_profile}"

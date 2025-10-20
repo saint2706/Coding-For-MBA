@@ -1,4 +1,5 @@
 """Interactive lesson script for Day 74: BI Data Preparation and Tools."""
+
 from __future__ import annotations
 
 import pandas as pd
@@ -38,7 +39,14 @@ def demonstrate_python_pipeline() -> pd.DataFrame:
     sales = pd.DataFrame(
         {
             "Customer ID": [101, 101, 102, 103, 104, 105],
-            "Order Date": ["2023-01-01", "2023-01-01", "2023-02-15", "2023-03-21", None, "2023-04-10"],
+            "Order Date": [
+                "2023-01-01",
+                "2023-01-01",
+                "2023-02-15",
+                "2023-03-21",
+                None,
+                "2023-04-10",
+            ],
             "Revenue": [1000.0, 1000.0, 850.0, 430.0, None, 640.0],
             "Cost": [600.0, 600.0, 500.0, 210.0, 150.0, None],
             "Segment": ["enterprise", "enterprise", "smb", None, "consumer", "smb"],
@@ -48,7 +56,13 @@ def demonstrate_python_pipeline() -> pd.DataFrame:
     pipeline = build_pipeline(
         [
             (remove_duplicates, {"subset": ["Customer ID", "Order Date"]}),
-            (handle_missing_values, {"strategy": "fill", "fill_value": {"Revenue": 0.0, "Cost": 0.0, "Segment": "Unknown"}}),
+            (
+                handle_missing_values,
+                {
+                    "strategy": "fill",
+                    "fill_value": {"Revenue": 0.0, "Cost": 0.0, "Segment": "Unknown"},
+                },
+            ),
             (standardise_types, {}),
             (enrich_metrics, {}),
         ]

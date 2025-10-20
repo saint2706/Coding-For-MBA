@@ -48,7 +48,9 @@ class ChecklistItem:
         return {"title": self.title, "status": self.status, "notes": self.notes}
 
 
-def load_career_topics(*, groups: Mapping[str, Iterable[str]] = ROADMAP_GROUPS) -> dict[str, list[BiTopic]]:
+def load_career_topics(
+    *, groups: Mapping[str, Iterable[str]] = ROADMAP_GROUPS
+) -> dict[str, list[BiTopic]]:
     """Return the roadmap topics grouped for the capstone."""
 
     return group_topics_by_titles(groups)
@@ -70,7 +72,7 @@ def generate_checklists(
 
 
 def _checklists_to_serializable(
-    checklists: Mapping[str, Iterable[ChecklistItem]]
+    checklists: Mapping[str, Iterable[ChecklistItem]],
 ) -> dict[str, list[dict[str, str]]]:
     """Convert checklist dataclasses into JSON serializable dictionaries."""
 
@@ -89,7 +91,9 @@ def serialize_checklists(
 ) -> str:
     """Return JSON for the grouped checklists and optionally persist it."""
 
-    resolved = checklists if checklists is not None else generate_checklists(groups=groups)
+    resolved = (
+        checklists if checklists is not None else generate_checklists(groups=groups)
+    )
     serializable = _checklists_to_serializable(resolved)
     json_text = json.dumps(serializable, indent=indent)
     if path is not None:

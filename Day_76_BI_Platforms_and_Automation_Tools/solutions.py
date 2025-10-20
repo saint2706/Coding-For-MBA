@@ -84,7 +84,11 @@ PLATFORM_PROFILES: Mapping[str, PlatformProfile] = {
             name="Looker",
             deployment="Cloud",
             export_formats=("Looks", "PDF", "Google Sheets", "CSV"),
-            automation_connectors=("Looker API", "Scheduled Deliveries", "Cloud Composer"),
+            automation_connectors=(
+                "Looker API",
+                "Scheduled Deliveries",
+                "Cloud Composer",
+            ),
             scripting_hooks=("Python", "LookML", "SQL"),
             notes=(
                 "Model-driven semantic layer with strong API orchestration via "
@@ -108,6 +112,7 @@ PLATFORM_PROFILES: Mapping[str, PlatformProfile] = {
 
 # --- Roadmap helpers ------------------------------------------------------
 
+
 def load_topics(
     groups: Mapping[str, Sequence[str]] = TOPIC_GROUP_TITLES,
 ) -> dict[str, list[BiTopic]]:
@@ -117,6 +122,7 @@ def load_topics(
 
 
 # --- Platform metadata helpers -------------------------------------------
+
 
 def build_platform_matrix(
     profiles: Mapping[str, PlatformProfile] = PLATFORM_PROFILES,

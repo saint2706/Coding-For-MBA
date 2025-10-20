@@ -8,7 +8,43 @@ is refactored into functions for better organization and testability.
 
 
 def create_customer_profile(cust_id, first, last, email, company, is_premium, spent):
-    """Creates a dictionary representing a customer profile."""
+    """
+    Creates a dictionary representing a customer profile.
+
+    Dictionaries store data as key-value pairs. They're perfect for
+    representing structured records like customer profiles.
+
+    Parameters
+    ----------
+    cust_id : str
+        Unique customer identifier
+    first : str
+        First name
+    last : str
+        Last name
+    email : str
+        Email address
+    company : str
+        Company name
+    is_premium : bool
+        Premium membership status
+    spent : float
+        Total amount spent
+
+    Returns
+    -------
+    dict
+        A dictionary containing all customer information
+
+    Example
+    -------
+    >>> create_customer_profile(
+    ...     "C001", "John", "Doe", "j@example.com", "Acme", True, 5000
+    ... )
+    {'customer_id': 'C001', 'first_name': 'John', ...}
+    """
+    # Dictionary syntax: {key: value, key: value, ...}
+    # Keys are strings, values can be any type
     return {
         "customer_id": cust_id,
         "first_name": first,
@@ -21,37 +57,146 @@ def create_customer_profile(cust_id, first, last, email, company, is_premium, sp
 
 
 def get_customer_attribute(customer_profile, attribute, default_value="N/A"):
-    """Safely gets an attribute from a customer profile, returning a default if not found."""
+    """
+    Safely gets an attribute from a customer profile with a default fallback.
+
+    The .get() method is safer than direct access with [] because it won't
+    cause an error if the key doesn't exist.
+
+    Parameters
+    ----------
+    customer_profile : dict
+        The customer dictionary
+    attribute : str
+        The key to look up
+    default_value : any, optional
+        Value to return if key doesn't exist (default is "N/A")
+
+    Returns
+    -------
+    any
+        The value associated with the key, or default_value if not found
+
+    Example
+    -------
+    >>> profile = {"name": "John", "age": 30}
+    >>> get_customer_attribute(profile, "email", "No email")
+    'No email'
+    """
+    # .get(key, default) returns the value for key, or default if key doesn't exist
+    # This is safer than profile[attribute] which would raise a KeyError
     return customer_profile.get(attribute, default_value)
 
 
 def update_customer_record(customer_profile, key, value, is_new=False):
-    """Updates or adds a key-value pair to a customer profile."""
+    """
+    Updates or adds a key-value pair to a customer profile.
+
+    Demonstrates dictionary modification: adding new keys or updating existing ones.
+
+    Parameters
+    ----------
+    customer_profile : dict
+        The customer dictionary
+    key : str
+        The key to add or modify
+    value : any
+        The value to set or add to existing value
+    is_new : bool, optional
+        If True, creates a new key. If False, adds to existing value (default False)
+
+    Returns
+    -------
+    dict
+        A new dictionary with the update applied
+
+    Example
+    -------
+    >>> profile = {"total_spent": 1000}
+    >>> update_customer_record(profile, "total_spent", 500, is_new=False)
+    {'total_spent': 1500}
+    """
+    # Create a copy to avoid modifying the original dictionary
     profile_copy = customer_profile.copy()
+
     if is_new:
+        # Add a new key-value pair or overwrite existing
         profile_copy[key] = value
     else:
-        # Assumes the key exists and we are modifying it (e.g., incrementing)
+        # Add to existing value (assumes the key exists and value is numeric)
         if key in profile_copy:
             profile_copy[key] += value
     return profile_copy
 
 
 def remove_customer_attribute(customer_profile, attribute):
-    """Removes an attribute from a customer profile if it exists."""
+    """
+    Removes an attribute from a customer profile if it exists.
+
+    Demonstrates the 'del' statement for removing dictionary keys.
+
+    Parameters
+    ----------
+    customer_profile : dict
+        The customer dictionary
+    attribute : str
+        The key to remove
+
+    Returns
+    -------
+    dict
+        A new dictionary with the attribute removed
+
+    Example
+    -------
+    >>> profile = {"name": "John", "temp_field": "xyz"}
+    >>> remove_customer_attribute(profile, "temp_field")
+    {'name': 'John'}
+    """
+    # Create a copy to avoid modifying the original
     profile_copy = customer_profile.copy()
+
+    # Check if the key exists before trying to delete it
     if attribute in profile_copy:
+        # 'del' removes a key-value pair from the dictionary
         del profile_copy[attribute]
     return profile_copy
 
 
 def add_project_to_employee(employee_profile, new_project):
-    """Adds a new project to an employee's project list."""
+    """
+    Adds a new project to an employee's project list.
+
+    Demonstrates working with nested data structures: a list inside a dictionary.
+
+    Parameters
+    ----------
+    employee_profile : dict
+        Employee dictionary containing a 'projects' list
+    new_project : str
+        Name of the new project to add
+
+    Returns
+    -------
+    dict
+        Updated employee profile with new project added
+
+    Example
+    -------
+    >>> emp = {"name": "Jane", "projects": ["Project A"]}
+    >>> add_project_to_employee(emp, "Project B")
+    {'name': 'Jane', 'projects': ['Project A', 'Project B']}
+    """
+    # Create a copy of the dictionary
     profile_copy = employee_profile.copy()
-    # Ensure the 'projects' key exists and is a list
+
+    # Ensure the 'projects' key exists and contains a list
     if "projects" in profile_copy and isinstance(profile_copy["projects"], list):
         # To avoid modifying a list within the original dict, we copy it too
+        # This is important when dealing with mutable objects inside dictionaries
         profile_copy["projects"] = profile_copy["projects"].copy()
+
+        # Now we can safely append to the copied list
         profile_copy["projects"].append(new_project)
     return profile_copy
 

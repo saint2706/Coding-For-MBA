@@ -12,6 +12,7 @@ from Day_69_BI_Strategy_and_Stakeholders import build_topic_dataframe, load_topi
 STRATEGY_GROUPS = load_topics()
 STRATEGY_FRAME = build_topic_dataframe()
 
+
 # %%
 def display_strategy_clusters(groups: dict[str, list]) -> None:
     """Print the topic groupings used to facilitate the session."""

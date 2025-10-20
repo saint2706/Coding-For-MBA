@@ -53,7 +53,9 @@ def _parse_tables(tables: Iterable[BeautifulSoup]) -> List[MutableMapping[str, s
             x for x in range(len(table_str)) if table_str.startswith("</span>", x)
         ]
 
-        for start_index, end_index in zip(all_values_start_indexes, all_values_end_indexes):
+        for start_index, end_index in zip(
+            all_values_start_indexes, all_values_end_indexes
+        ):
             values.append(table_str[start_index:end_index])
 
         for key, value in zip(keys, values):

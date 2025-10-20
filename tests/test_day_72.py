@@ -47,7 +47,7 @@ def test_workflow_catalogue_lists_all_formats():
 
 
 def test_detect_format_and_other_summaries():
-    assert detect_format("{\"id\":1}") == "json"
+    assert detect_format('{"id":1}') == "json"
     assert detect_format("<root></root>") == "xml"
     assert detect_format("id,name\n1,Alice") == "csv"
     assert detect_format("") == "unknown"

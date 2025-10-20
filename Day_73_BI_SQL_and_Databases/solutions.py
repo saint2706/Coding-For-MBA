@@ -106,6 +106,7 @@ def build_topic_dataframe(
 
 # --- SQLite helpers -------------------------------------------------------
 
+
 @dataclass(frozen=True, slots=True)
 class SalesRecord:
     """Simple container for populating the demo SQLite database."""

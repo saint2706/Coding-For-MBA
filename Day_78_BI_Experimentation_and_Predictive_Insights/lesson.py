@@ -12,7 +12,9 @@ def run_experimentation_examples() -> None:
     treatment = [210, 214, 208, 215, 211]
     summary = solutions.summarize_ab_test(control, treatment)
     p_value = solutions.welch_t_p_value(control, treatment, alternative="greater")
-    hypothesis = solutions.run_hypothesis_test(treatment, baseline=200, alternative="greater")
+    hypothesis = solutions.run_hypothesis_test(
+        treatment, baseline=200, alternative="greater"
+    )
     error_table = solutions.type_error_table(alpha=0.05, beta=0.2)
 
     print("=== Experimentation ===")
@@ -24,7 +26,14 @@ def run_experimentation_examples() -> None:
 
     cohort_events = pd.DataFrame(
         {
-            "cohort": ["2024-01", "2024-01", "2024-01", "2024-02", "2024-02", "2024-02"],
+            "cohort": [
+                "2024-01",
+                "2024-01",
+                "2024-01",
+                "2024-02",
+                "2024-02",
+                "2024-02",
+            ],
             "period": [0, 1, 2, 0, 1, 2],
             "active_users": [180, 135, 90, 200, 150, 120],
         }
@@ -58,13 +67,17 @@ def run_machine_learning_examples() -> None:
             "revenue": [4.0, 6.0, 8.0, 10.0, 12.0],
         }
     )
-    model, predictions = solutions.supervised_predictions(training, target_col="revenue")
+    model, predictions = solutions.supervised_predictions(
+        training, target_col="revenue"
+    )
     print("=== Machine Learning ===")
     print("Regression analysis:")
     print(solutions.regression_analysis_table(model))
     print("Predictions:", predictions.tolist())
 
-    polynomial = solutions.engineer_polynomial_features(training, column="spend", degree=3)
+    polynomial = solutions.engineer_polynomial_features(
+        training, column="spend", degree=3
+    )
     print("Polynomial features:")
     print(polynomial.head())
 
@@ -81,7 +94,9 @@ def run_machine_learning_examples() -> None:
     print("Segment scorecard:")
     print(scorecard)
 
-    report = solutions.reinforcement_learning_report([0.1, 0.3, 0.5], epsilon=0.2, draws=10, seed=42)
+    report = solutions.reinforcement_learning_report(
+        [0.1, 0.3, 0.5], epsilon=0.2, draws=10, seed=42
+    )
     print("Reinforcement learning report:")
     print(report)
 

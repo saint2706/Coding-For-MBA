@@ -92,4 +92,4 @@ if __name__ == "__main__":
     catalogue = build_normalised_catalogue()
     print(load_data_formats())
     print(catalogue)
-    print("Detected JSON sample:", detect_format("{\"id\": 1}"))
+    print("Detected JSON sample:", detect_format('{"id": 1}'))

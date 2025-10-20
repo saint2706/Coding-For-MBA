@@ -102,7 +102,9 @@ def test_dbt_project_stub_links_sources_and_models() -> None:
 
     exposures = project["exposures"]
     assert "weekly_revenue_review" in exposures
-    assert exposures["weekly_revenue_review"]["depends_on"] == ("fct_customer_lifecycle",)
+    assert exposures["weekly_revenue_review"]["depends_on"] == (
+        "fct_customer_lifecycle",
+    )
 
     assert project["final_task"] == EXPECTED_TASKS[-1]
 

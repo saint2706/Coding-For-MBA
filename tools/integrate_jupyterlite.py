@@ -59,18 +59,22 @@ def build_jupyterlite() -> None:
         sys.exit(1)
 
     print("Building JupyterLite...")
-    
+
     # Clean previous build
     if JUPYTERLITE_DIR.exists():
         shutil.rmtree(JUPYTERLITE_DIR)
-    
+
     # Build JupyterLite with all Day_* directories as content
     cmd = [
-        "jupyter", "lite", "build",
-        "--output-dir", str(JUPYTERLITE_DIR),
-        "--contents", str(ROOT),
+        "jupyter",
+        "lite",
+        "build",
+        "--output-dir",
+        str(JUPYTERLITE_DIR),
+        "--contents",
+        str(ROOT),
     ]
-    
+
     try:
         subprocess.run(cmd, check=True, cwd=ROOT)
         print(f"✓ JupyterLite built successfully at {JUPYTERLITE_DIR}")
@@ -84,10 +88,10 @@ def add_jupyterlite_buttons_to_lessons() -> None:
     if not LESSONS_DIR.exists():
         print(f"WARNING: Lessons directory not found: {LESSONS_DIR}")
         return
-    
+
     notebooks = find_notebooks()
     notebook_map = {}
-    
+
     # Create mapping of lesson pages to notebooks
     for notebook in notebooks:
         day_dir = notebook.parent
@@ -95,63 +99,63 @@ def add_jupyterlite_buttons_to_lessons() -> None:
         if lesson_slug not in notebook_map:
             notebook_map[lesson_slug] = []
         notebook_map[lesson_slug].append(notebook)
-    
+
     # Update lesson pages
     updated_count = 0
     for lesson_file in LESSONS_DIR.glob("day-*.md"):
         lesson_slug = lesson_file.stem
-        
+
         if lesson_slug not in notebook_map:
             continue
-        
+
         content = lesson_file.read_text(encoding="utf-8")
-        
+
         # Check if JupyterLite section already exists
         if "## Interactive Notebooks" in content or "🚀 Launch" in content:
             continue
-        
+
         # Build JupyterLite section
         notebooks_for_lesson = notebook_map[lesson_slug]
         notebook_links = []
-        
+
         for notebook in notebooks_for_lesson:
             relative_path = notebook.relative_to(ROOT).as_posix()
             notebook_name = notebook.stem
             jupyterlite_url = f"../../jupyterlite/lab?path={relative_path}"
-            
+
             notebook_links.append(
                 f"- [🚀 Launch {notebook_name} in JupyterLite]({jupyterlite_url})"
                 "{ .md-button .md-button--primary }"
             )
-        
+
         if not notebook_links:
             continue
-        
+
         # Add JupyterLite section before "Additional Materials" or at the end
         jupyterlite_section = (
             "\n\n## Interactive Notebooks\n\n"
             "Run this lesson's code interactively in your browser:\n\n"
             + "\n".join(notebook_links)
             + "\n\n"
-            "!!! tip \"About JupyterLite\"\n"
+            '!!! tip "About JupyterLite"\n'
             "    JupyterLite runs entirely in your browser using WebAssembly. "
             "No installation or server required! "
             "Note: First launch may take a moment to load.\n"
         )
-        
+
         # Insert before "Additional Materials" if it exists
         if "## Additional Materials" in content:
             content = content.replace(
                 "## Additional Materials",
-                jupyterlite_section + "## Additional Materials"
+                jupyterlite_section + "## Additional Materials",
             )
         else:
             # Add at the end
             content += jupyterlite_section
-        
+
         lesson_file.write_text(content, encoding="utf-8")
         updated_count += 1
-    
+
     print(f"✓ Added JupyterLite buttons to {updated_count} lesson pages")
 
 
@@ -160,7 +164,7 @@ def add_binder_badges() -> None:
     repo_slug = "saint2706/Coding-For-MBA"
     notebooks = find_notebooks()
     notebook_map = {}
-    
+
     # Create mapping
     for notebook in notebooks:
         day_dir = notebook.parent
@@ -168,40 +172,39 @@ def add_binder_badges() -> None:
         if lesson_slug not in notebook_map:
             notebook_map[lesson_slug] = []
         notebook_map[lesson_slug].append(notebook)
-    
+
     updated_count = 0
     for lesson_file in LESSONS_DIR.glob("day-*.md"):
         lesson_slug = lesson_file.stem
-        
+
         if lesson_slug not in notebook_map:
             continue
-        
+
         content = lesson_file.read_text(encoding="utf-8")
-        
+
         # Check if Binder section already exists
         if "mybinder.org" in content:
             continue
-        
+
         # Build Binder section
         notebooks_for_lesson = notebook_map[lesson_slug]
         binder_badges = []
-        
+
         for notebook in notebooks_for_lesson:
             relative_path = notebook.relative_to(ROOT).as_posix()
             binder_url = (
-                f"https://mybinder.org/v2/gh/{repo_slug}/main"
-                f"?filepath={relative_path}"
+                f"https://mybinder.org/v2/gh/{repo_slug}/main?filepath={relative_path}"
             )
             badge_url = "https://mybinder.org/badge_logo.svg"
             notebook_name = notebook.stem
-            
+
             binder_badges.append(
                 f"    [![Launch {notebook_name} in Binder]({badge_url})]({binder_url})"
             )
-        
+
         if not binder_badges:
             continue
-        
+
         # Add Binder section after JupyterLite if it exists, otherwise before Additional Materials
         binder_section = (
             "\n\n### Or Launch in Cloud\n\n"
@@ -209,32 +212,31 @@ def add_binder_badges() -> None:
             + "\n".join(binder_badges)
             + "\n"
         )
-        
+
         # Insert appropriately
         if "## Interactive Notebooks" in content:
             # Add after the JupyterLite tip
             content = content.replace(
                 "    Note: First launch may take a moment to load.\n",
-                "    Note: First launch may take a moment to load.\n" + binder_section
+                "    Note: First launch may take a moment to load.\n" + binder_section,
             )
         elif "## Additional Materials" in content:
             content = content.replace(
-                "## Additional Materials",
-                binder_section + "\n## Additional Materials"
+                "## Additional Materials", binder_section + "\n## Additional Materials"
             )
         else:
             content += binder_section
-        
+
         lesson_file.write_text(content, encoding="utf-8")
         updated_count += 1
-    
+
     print(f"✓ Added Binder badges to {updated_count} lesson pages")
 
 
 def create_jupyterlite_index() -> None:
     """Create a landing page for JupyterLite."""
     index_path = DOCS_DIR / "jupyterlite-guide.md"
-    
+
     content = """# JupyterLite Interactive Lab
 
 Welcome to the interactive coding environment for Coding for MBA!
@@ -298,7 +300,7 @@ Binder provides a cloud-based Jupyter environment with full Python support.
 
 [🚀 Launch JupyterLite Now](../jupyterlite/lab){ .md-button .md-button--primary }
 """
-    
+
     index_path.write_text(content, encoding="utf-8")
     print(f"✓ Created JupyterLite guide at {index_path}")
 
@@ -308,23 +310,23 @@ def main() -> None:
     print("=" * 60)
     print("JupyterLite Integration Tool")
     print("=" * 60)
-    
+
     # Step 1: Build JupyterLite
     print("\n[1/4] Building JupyterLite distribution...")
     build_jupyterlite()
-    
+
     # Step 2: Add launch buttons
     print("\n[2/4] Adding JupyterLite launch buttons to lessons...")
     add_jupyterlite_buttons_to_lessons()
-    
+
     # Step 3: Add Binder badges
     print("\n[3/4] Adding Binder badges...")
     add_binder_badges()
-    
+
     # Step 4: Create guide
     print("\n[4/4] Creating JupyterLite guide...")
     create_jupyterlite_index()
-    
+
     print("\n" + "=" * 60)
     print("✓ JupyterLite integration complete!")
     print("=" * 60)

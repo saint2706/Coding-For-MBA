@@ -51,6 +51,7 @@ COST_OPTIMIZATION_PROMPTS: Mapping[str, str] = {
     "Data movement": "Which provider-native services offset egress fees through in-platform processing?",
 }
 
+
 # %%
 def display_topic_groups(groups: Mapping[str, list]) -> None:
     """Print the grouped roadmap topics for facilitation."""

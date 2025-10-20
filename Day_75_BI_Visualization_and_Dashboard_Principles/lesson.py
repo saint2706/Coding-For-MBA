@@ -1,4 +1,5 @@
 """Demonstrations for BI visualization and dashboard design principles."""
+
 from __future__ import annotations
 
 from pprint import pprint
@@ -26,13 +27,17 @@ def showcase_plotly_demos() -> None:
 
     for name, factory in chart_creators.items():
         fig = factory()
-        print(f"\n{name} chart demo -> traces: {len(fig.data)}, layout title: {fig.layout.title.text}")
+        print(
+            f"\n{name} chart demo -> traces: {len(fig.data)}, layout title: {fig.layout.title.text}"
+        )
 
 
 def showcase_matplotlib_palette() -> None:
     """Render the color palette demo in a headless-safe way."""
     fig, ax = sol.create_color_palette_demo()
-    print(f"\nPalette demo ready -> title: {ax.get_title()}, swatches: {len(ax.get_xticklabels())}")
+    print(
+        f"\nPalette demo ready -> title: {ax.get_title()}, swatches: {len(ax.get_xticklabels())}"
+    )
     # Close the figure so running the script in CI does not leak GUI resources.
     fig.clf()
 

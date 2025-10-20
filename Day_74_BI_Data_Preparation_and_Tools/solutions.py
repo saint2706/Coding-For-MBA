@@ -1,4 +1,5 @@
 """Utility functions for Day 74: BI Data Preparation and Tools."""
+
 from __future__ import annotations
 
 from typing import Callable, Dict, Iterable, List, Sequence, Tuple
@@ -86,7 +87,9 @@ def assemble_curriculum_sections() -> pd.DataFrame:
             }
         )
 
-    return pd.DataFrame(entries, columns=["category", "title", "objective", "workflow_highlights"])
+    return pd.DataFrame(
+        entries, columns=["category", "title", "objective", "workflow_highlights"]
+    )
 
 
 def build_transformation_helpers() -> Dict[str, List[str]]:
@@ -111,7 +114,9 @@ def build_transformation_helpers() -> Dict[str, List[str]]:
     }
 
 
-def remove_duplicates(df: pd.DataFrame, subset: Iterable[str] | None = None) -> pd.DataFrame:
+def remove_duplicates(
+    df: pd.DataFrame, subset: Iterable[str] | None = None
+) -> pd.DataFrame:
     """Return a dataframe with duplicate rows removed.
 
     Parameters
@@ -127,7 +132,9 @@ def remove_duplicates(df: pd.DataFrame, subset: Iterable[str] | None = None) -> 
 
 
 def handle_missing_values(
-    df: pd.DataFrame, strategy: str = "drop", fill_value: Dict[str, object] | object | None = None
+    df: pd.DataFrame,
+    strategy: str = "drop",
+    fill_value: Dict[str, object] | object | None = None,
 ) -> pd.DataFrame:
     """Handle missing values using the chosen strategy.
 
@@ -152,7 +159,9 @@ def handle_missing_values(
     return df.fillna(value=fill_value).reset_index(drop=True)
 
 
-def build_pipeline(transformations: Sequence[Tuple[Callable[[pd.DataFrame], pd.DataFrame], Dict]]) -> Callable[[pd.DataFrame], pd.DataFrame]:
+def build_pipeline(
+    transformations: Sequence[Tuple[Callable[[pd.DataFrame], pd.DataFrame], Dict]],
+) -> Callable[[pd.DataFrame], pd.DataFrame]:
     """Compose a pipeline of dataframe transformations.
 
     Each transformation is a tuple of (callable, kwargs) that will be executed in

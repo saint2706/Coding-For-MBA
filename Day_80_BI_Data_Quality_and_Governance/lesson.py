@@ -34,7 +34,14 @@ def build_demo_orders() -> pd.DataFrame:
             "expected_amount": [2400.0, 1250.0, 860.0, 990.0, 540.0, 1200.0],
             "recorded_amount": [2400.0, 1200.0, 865.0, 980.0, 500.0, 1215.0],
             "source_region": ["EMEA", "NA", "NA", "APAC", "EMEA", "LATAM"],
-            "reported_region": ["EMEA", "North America", "NA", "Asia Pacific", "EMEA", "LATAM"],
+            "reported_region": [
+                "EMEA",
+                "North America",
+                "NA",
+                "Asia Pacific",
+                "EMEA",
+                "LATAM",
+            ],
             "due_at": [
                 "2024-03-05",
                 "2024-03-07",
@@ -51,7 +58,14 @@ def build_demo_orders() -> pd.DataFrame:
                 "2024-03-16",
                 "2024-03-18",
             ],
-            "owner": ["Finance", "Sales", "Sales", "Operations", "Finance", "Operations"],
+            "owner": [
+                "Finance",
+                "Sales",
+                "Sales",
+                "Operations",
+                "Finance",
+                "Operations",
+            ],
         }
     )
     orders["due_at"] = _to_datetime(orders["due_at"])
@@ -113,16 +127,22 @@ def calculate_dimension_scores() -> pd.DataFrame:
     access = build_access_audit()
     adoption = build_adoption_snapshot()
 
-    accuracy = 1 - (orders["expected_amount"] - orders["recorded_amount"]).abs().sum() / orders[
-        "expected_amount"
-    ].sum()
-    normalised_source = orders["source_region"].str.lower().str.replace(" ", "", regex=False)
-    normalised_reported = orders["reported_region"].str.lower().str.replace(" ", "", regex=False)
+    accuracy = (
+        1
+        - (orders["expected_amount"] - orders["recorded_amount"]).abs().sum()
+        / orders["expected_amount"].sum()
+    )
+    normalised_source = (
+        orders["source_region"].str.lower().str.replace(" ", "", regex=False)
+    )
+    normalised_reported = (
+        orders["reported_region"].str.lower().str.replace(" ", "", regex=False)
+    )
     coherence = (normalised_source == normalised_reported).mean()
     interpretability = metadata["documented"].mean()
     timeliness = (orders["delivered_at"] <= orders["due_at"]).mean()
-    relevance = (adoption["active_users"].sum() / adoption["eligible_users"].sum())
-    accessibility = (access["provisioned_users"].sum() / access["required_users"].sum())
+    relevance = adoption["active_users"].sum() / adoption["eligible_users"].sum()
+    accessibility = access["provisioned_users"].sum() / access["required_users"].sum()
 
     metrics = {
         "Accuracy": accuracy,

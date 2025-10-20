@@ -19,9 +19,7 @@ TOPIC_GROUP_TITLES: Mapping[str, Sequence[str]] = {
         "Airflow",
         "dbt",
     ),
-    "Delivery lifecycle": (
-        "End-to-end Analytics Project",
-    ),
+    "Delivery lifecycle": ("End-to-end Analytics Project",),
 }
 
 
@@ -34,6 +32,7 @@ def load_topics(
 
 
 # --- Pipeline sketch helpers -----------------------------------------------
+
 
 @dataclass(frozen=True, slots=True)
 class PipelineTask:
@@ -80,7 +79,9 @@ PIPELINE_STEPS: tuple[PipelineTask, ...] = (
 )
 
 
-def build_pipeline_outline(steps: Sequence[PipelineTask] = PIPELINE_STEPS) -> list[PipelineTask]:
+def build_pipeline_outline(
+    steps: Sequence[PipelineTask] = PIPELINE_STEPS,
+) -> list[PipelineTask]:
     """Return a mutable outline of the canonical ETL pipeline tasks."""
 
     return list(steps)
@@ -99,7 +100,9 @@ def build_airflow_dag_stub(
         task_definitions[task.task_id] = {
             "upstream": task.upstream,
             "owner": task.owner,
-            "retries": 2 if task.task_id in {"extract_sources", "load_warehouse"} else 1,
+            "retries": (
+                2 if task.task_id in {"extract_sources", "load_warehouse"} else 1
+            ),
         }
     return {
         "dag_id": dag_id,

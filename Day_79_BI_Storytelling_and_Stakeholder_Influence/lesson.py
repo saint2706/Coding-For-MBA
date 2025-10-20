@@ -42,7 +42,9 @@ def show_influence_prompts(template: list[dict[str, str]]) -> None:
     print(frame.to_markdown(index=False))
 
 
-def walkthrough_storytelling(metric: str, insight: str, audience: str, action: str) -> None:
+def walkthrough_storytelling(
+    metric: str, insight: str, audience: str, action: str
+) -> None:
     """Walk through how to turn metrics into executive-ready narratives."""
 
     arc = generate_story_arc(metric, insight, audience, action)

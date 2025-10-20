@@ -6,7 +6,10 @@ from __future__ import annotations
 
 from textwrap import indent
 
-from Day_84_BI_Career_Development_and_Capstone import generate_checklists, serialize_checklists
+from Day_84_BI_Career_Development_and_Capstone import (
+    generate_checklists,
+    serialize_checklists,
+)
 
 # %%
 CAPSTONE_PHASES: list[tuple[str, str]] = [
@@ -47,7 +50,7 @@ def outline_capstone(phases: list[tuple[str, str]] = CAPSTONE_PHASES) -> None:
 
 
 # %%
-def display_checklists(checklists = CHECKLISTS) -> None:
+def display_checklists(checklists=CHECKLISTS) -> None:
     """Print actionable checklists for learners."""
 
     print("Roadmap-aligned checklists\n")

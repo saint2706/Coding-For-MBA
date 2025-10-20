@@ -6,17 +6,61 @@ to perform repeatable business calculations.
 """
 
 
-# Adding type hints (e.g., revenue: float) makes the function's expected inputs clear.
-# The "-> float" indicates that the function is expected to return a float value.
+# Type hints make the function's expected inputs and outputs clear
+# revenue: float means "revenue parameter should be a float"
+# -> float means "this function returns a float"
 def get_net_profit(revenue: float, expenses: float) -> float:
-    """Calculates the net profit from revenue and expenses."""
+    """
+    Calculates the net profit from revenue and expenses.
+
+    Functions are reusable blocks of code that perform a specific task.
+    They help us avoid repeating code and make programs easier to understand.
+
+    Parameters
+    ----------
+    revenue : float
+        Total revenue (income)
+    expenses : float
+        Total expenses (costs)
+
+    Returns
+    -------
+    float
+        Net profit (revenue minus expenses)
+
+    Example
+    -------
+    >>> get_net_profit(500000, 400000)
+    100000
+    """
     net_profit = revenue - expenses
-    return net_profit
+    return net_profit  # 'return' sends the result back to the caller
 
 
 def calculate_commission(sales_amount: float) -> float:
-    """Calculates a 15% commission on a given sales amount."""
-    commission_rate = 0.15
+    """
+    Calculates a 15% commission on a given sales amount.
+
+    Functions can define their own internal variables (like commission_rate).
+    These are called "local variables" and only exist inside the function.
+
+    Parameters
+    ----------
+    sales_amount : float
+        The total sales amount
+
+    Returns
+    -------
+    float
+        The commission earned (15% of sales)
+
+    Example
+    -------
+    >>> calculate_commission(10000)
+    1500.0
+    """
+    # This variable only exists inside this function (local scope)
+    commission_rate = 0.15  # 15% commission rate
     commission = sales_amount * commission_rate
     return commission
 
@@ -25,13 +69,57 @@ def is_eligible_for_bonus(performance_rating: int, years_of_service: int) -> boo
     """
     Checks if an employee is eligible for a bonus based on performance
     and years of service.
+
+    Functions can return boolean values (True/False) which is useful
+    for yes/no questions or validation logic.
+
+    Parameters
+    ----------
+    performance_rating : int
+        Employee rating (1-5 scale)
+    years_of_service : int
+        Number of years with the company
+
+    Returns
+    -------
+    bool
+        True if eligible for bonus, False otherwise
+
+    Example
+    -------
+    >>> is_eligible_for_bonus(4, 3)
+    True
+    >>> is_eligible_for_bonus(3, 1)
+    False
     """
-    # Returns True if rating is 4 or 5 AND service is more than 2 years.
+    # This entire expression evaluates to True or False
+    # Returns True if rating is 4 or 5 AND service is more than 2 years
     return performance_rating >= 4 and years_of_service > 2
 
 
 def format_currency(amount: float) -> str:
-    """Formats a number into a currency string (e.g., $1,234.56)."""
+    """
+    Formats a number into a currency string (e.g., $1,234.56).
+
+    Functions can transform data from one type to another.
+    This one takes a number and returns a formatted string.
+
+    Parameters
+    ----------
+    amount : float
+        Dollar amount to format
+
+    Returns
+    -------
+    str
+        Formatted currency string with $ sign and 2 decimal places
+
+    Example
+    -------
+    >>> format_currency(1234.567)
+    '$1,234.57'
+    """
+    # f-string formatting: {:,.2f} means "format as float with commas and 2 decimals"
     return f"${amount:,.2f}"
 
 

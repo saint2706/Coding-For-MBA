@@ -38,7 +38,9 @@ def test_star_schema_metadata() -> None:
     assert schema["fact_table"]["name"] == "fact_sales"
     assert schema["fact_table"]["references"]["date_key"] == "dim_date.date_key"
     dimension_names = {dimension["name"] for dimension in schema["dimensions"]}
-    assert {"dim_date", "dim_customer", "dim_product", "dim_store"}.issubset(dimension_names)
+    assert {"dim_date", "dim_customer", "dim_product", "dim_store"}.issubset(
+        dimension_names
+    )
 
 
 def test_snowflake_schema_metadata() -> None:
@@ -54,5 +56,7 @@ def test_snowflake_schema_metadata() -> None:
     assert dimensions["dim_product_category"]["references"]["category_key"] == (
         "dim_product_category_group.category_key"
     )
-    assert schema["fact_table"]["references"]["product_key"] == "dim_product.product_key"
+    assert (
+        schema["fact_table"]["references"]["product_key"] == "dim_product.product_key"
+    )
     assert schema["commentary"]

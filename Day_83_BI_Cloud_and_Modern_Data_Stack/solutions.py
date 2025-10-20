@@ -25,9 +25,7 @@ CLOUD_TOPIC_GROUPS: Mapping[str, Sequence[str]] = {
         "Cloud BI Ecosystem",
         "Cloud data warehouses",
     ),
-    "Provider landscape": (
-        "Providers: AWS, GCP, Azure",
-    ),
+    "Provider landscape": ("Providers: AWS, GCP, Azure",),
 }
 
 CLOUD_TOPIC_DESCRIPTIONS: Mapping[str, str] = {
@@ -97,7 +95,9 @@ def group_cloud_topics(
 ) -> Dict[str, List[BiTopic]]:
     """Return grouped cloud topics covering foundations, ecosystem, and providers."""
 
-    return {section: topics for section, topics in group_topics_by_titles(groups).items()}
+    return {
+        section: topics for section, topics in group_topics_by_titles(groups).items()
+    }
 
 
 def build_cloud_topic_dataframe(

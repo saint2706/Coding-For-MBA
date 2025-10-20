@@ -21,18 +21,40 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = REPO_ROOT / "data"
 
 SOURCE_DATASETS: Mapping[str, tuple[str, str]] = {
-    "Data Sources": ("data/README.md", "Directory catalog describing every educational dataset."),
-    "Databases": ("data/fortune1000_final.csv", "Fortune 1000 extract emulating a warehouse fact table."),
-    "Web": ("data/hacker_news.csv", "Community discussions captured from the Hacker News website."),
-    "Mobile Apps": ("data/result.csv", "Usage metrics mirroring analytics exported from a mobile product."),
-    "Cloud": ("data/countries_data.json", "JSON payload representative of a cloud data lake feed."),
-    "APIs": ("data/countries.py", "Python client that mirrors consuming an external countries API."),
-    "IoT": ("data/weight-height.csv", "Telemetry-style body measurements similar to wearable devices."),
+    "Data Sources": (
+        "data/README.md",
+        "Directory catalog describing every educational dataset.",
+    ),
+    "Databases": (
+        "data/fortune1000_final.csv",
+        "Fortune 1000 extract emulating a warehouse fact table.",
+    ),
+    "Web": (
+        "data/hacker_news.csv",
+        "Community discussions captured from the Hacker News website.",
+    ),
+    "Mobile Apps": (
+        "data/result.csv",
+        "Usage metrics mirroring analytics exported from a mobile product.",
+    ),
+    "Cloud": (
+        "data/countries_data.json",
+        "JSON payload representative of a cloud data lake feed.",
+    ),
+    "APIs": (
+        "data/countries.py",
+        "Python client that mirrors consuming an external countries API.",
+    ),
+    "IoT": (
+        "data/weight-height.csv",
+        "Telemetry-style body measurements similar to wearable devices.",
+    ),
 }
 
 # %%
 TOPIC_GROUPS = load_topic_groups(SECTION_TOPICS)
 TOPIC_FRAME = build_topic_dataframe(sections=SECTION_TOPICS)
+
 
 # %%
 def build_source_asset_table(mapping: Mapping[str, tuple[str, str]]) -> pd.DataFrame:
@@ -81,8 +103,9 @@ def main() -> None:
     preview_source_table(build_source_asset_table(SOURCE_DATASETS))
     print("\nData classification overview:\n")
     print(
-        TOPIC_FRAME[TOPIC_FRAME["section"] != SOURCE_CHANNELS_SECTION]
-        .to_markdown(index=False)
+        TOPIC_FRAME[TOPIC_FRAME["section"] != SOURCE_CHANNELS_SECTION].to_markdown(
+            index=False
+        )
     )
 
 

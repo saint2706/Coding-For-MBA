@@ -51,7 +51,9 @@ def demonstrate_window_functions(connection) -> None:
     windowed = compute_region_window_metrics(connection)
     formatted = windowed.assign(
         cumulative_revenue=lambda df: df["cumulative_revenue"].map("${:,.0f}".format),
-        average_region_revenue=lambda df: df["average_region_revenue"].map("${:,.0f}".format),
+        average_region_revenue=lambda df: df["average_region_revenue"].map(
+            "${:,.0f}".format
+        ),
         revenue=lambda df: df["revenue"].map("${:,.0f}".format),
         revenue_change=lambda df: df["revenue_change"].map("${:,.0f}".format),
     )
