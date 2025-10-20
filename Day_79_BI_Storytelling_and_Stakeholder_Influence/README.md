@@ -12,9 +12,9 @@ Day 79 teaches analysts how to weave together storytelling craft and change lead
 ## Classroom flow
 
 1. **Roadmap orientation** – Introduce the narrative asset and influence lever groupings so learners understand how the roadmap nodes reinforce one another.
-2. **Story arc lab** – Walk teams through transforming a lagging metric into an executive-ready narrative, highlighting when to deploy storytelling, presentation, and dashboard assets.
-3. **Influence brief build** – Co-create a stakeholder plan that pairs change management tactics with project milestones and business acumen talking points.
-4. **Facilitation retro** – Reflect on which soft skills and critical thinking prompts kept the discussion grounded in outcomes.
+1. **Story arc lab** – Walk teams through transforming a lagging metric into an executive-ready narrative, highlighting when to deploy storytelling, presentation, and dashboard assets.
+1. **Influence brief build** – Co-create a stakeholder plan that pairs change management tactics with project milestones and business acumen talking points.
+1. **Facilitation retro** – Reflect on which soft skills and critical thinking prompts kept the discussion grounded in outcomes.
 
 ## Storytelling walkthroughs
 

@@ -26,13 +26,13 @@ and pushing the results into a consistent analytics model.
 
 1. **Profile source** – Collect sample rows and metadata (file size, content
    type, encoding) to determine format and potential data quality issues.
-2. **Parse with the right tool** – Choose a parser that respects the format's
+1. **Parse with the right tool** – Choose a parser that respects the format's
    schema. Handle streaming/large files with chunked readers when needed.
-3. **Normalise columns** – Standardise naming conventions, data types, and
+1. **Normalise columns** – Standardise naming conventions, data types, and
    categorical mappings. Convert nested or hierarchical data into tidy tables.
-4. **Validate and log** – Capture row counts, schema versions, and exceptions to
+1. **Validate and log** – Capture row counts, schema versions, and exceptions to
    monitor ingestion health.
-5. **Persist curated output** – Store the cleansed tables in the BI warehouse or
+1. **Persist curated output** – Store the cleansed tables in the BI warehouse or
    semantic layer, keeping raw payloads for reproducibility.
 
 ## Repository contents

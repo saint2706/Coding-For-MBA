@@ -9,19 +9,19 @@ lesson emphasises how these controls inform BI delivery—from dashboard reliabi
 1. **Profile reliability signals.** Track accuracy (variance vs source of truth), coherence (cross-system consistency),
    interpretability (metadata coverage), timeliness (pipeline latency), relevance (active usage), and accessibility (role-based
    coverage). The `build_data_quality_scorecard` helper converts these dimensions into a reusable checklist/metric template.
-2. **Instrument operational datasets.** Use the sample orders dataset in `lesson.py` to compute dashboard-friendly metrics such as
+1. **Instrument operational datasets.** Use the sample orders dataset in `lesson.py` to compute dashboard-friendly metrics such as
    reconciliation accuracy, on-time delivery rates, and adoption ratios. The script demonstrates how to convert those metrics into
-a concise dashboard table with status indicators against agreed thresholds.
-3. **Close the loop with remediation.** Highlight exception owners, SLAs, and actions in the scorecard so remediation workstreams
+   a concise dashboard table with status indicators against agreed thresholds.
+1. **Close the loop with remediation.** Highlight exception owners, SLAs, and actions in the scorecard so remediation workstreams
    can be prioritised alongside product backlogs.
 
 ## Governance and Ethics Frameworks
 
 1. **Map the roadmap.** `load_topic_groups` pulls the Business Intelligence roadmap nodes into two groups—data quality dimensions
    and governance & ethics—to ensure curriculum alignment.
-2. **Codify control expectations.** `build_governance_scorecard` translates lineage, privacy, ethical use, bias recognition,
+1. **Codify control expectations.** `build_governance_scorecard` translates lineage, privacy, ethical use, bias recognition,
    mitigation strategies, and GDPR/CCPA requirements into a checklist with evidence artefacts for audits.
-3. **Communicate the operating model.** The lesson script adds a governance highlights table summarising current control status,
+1. **Communicate the operating model.** The lesson script adds a governance highlights table summarising current control status,
    showing how BI teams can brief executives on stewardship, compliance, and mitigation programmes.
 
 ## How to Use This Lesson

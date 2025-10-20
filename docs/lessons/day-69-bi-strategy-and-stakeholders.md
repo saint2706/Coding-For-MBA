@@ -10,9 +10,9 @@ Day 69 extends the BI Analyst roadmap by pairing strategic constructs with the h
 ## Classroom flow
 
 1. **Operating model orientation** – Facilitate a discussion on how BI teams structure the work, using the roadmap topics as anchors.
-2. **Stakeholder mapping exercise** – Break cohorts into pairs to match stakeholder personas with the BI operations that unlock their outcomes.
-3. **Strategy tier decisions** – Lead a dialogue about when to apply operational vs tactical vs strategic BI and what artifacts each requires.
-4. **Action planning** – Summarize the commitments and metrics each stakeholder group should own after the session.
+1. **Stakeholder mapping exercise** – Break cohorts into pairs to match stakeholder personas with the BI operations that unlock their outcomes.
+1. **Strategy tier decisions** – Lead a dialogue about when to apply operational vs tactical vs strategic BI and what artifacts each requires.
+1. **Action planning** – Summarize the commitments and metrics each stakeholder group should own after the session.
 
 ## Stakeholder mapping exercise
 

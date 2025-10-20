@@ -20,9 +20,9 @@ moving into tooling, governance, and storytelling modules.
 ## Classroom flow
 
 1. Use `lesson.py` to preview the "Foundations" grouping sourced from the roadmap dataset.
-2. Facilitate a discussion around the markdown table to surface learner experiences with the
+1. Facilitate a discussion around the markdown table to surface learner experiences with the
    listed responsibilities and skills.
-3. Capture open questions about cross-functional collaboration to revisit during Days 69–72.
+1. Capture open questions about cross-functional collaboration to revisit during Days 69–72.
 
 ## Next steps
 

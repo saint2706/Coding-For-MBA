@@ -13,16 +13,19 @@ Day 74 focuses on the hands-on mechanics of preparing business intelligence data
 ## Tooling Workflows
 
 ### Pandas (Python)
+
 - Chain helpers with `DataFrame.pipe` to sequence deduplication, null handling, and type standardisation.
 - Store reusable helpers (e.g., `remove_duplicates`, `handle_missing_values`) in a utilities module and unit test them.
 - Use `.assign()` or dedicated functions to derive KPI columns without mutating state mid-pipeline.
 
 ### dplyr (R)
+
 - Combine `distinct()` and `arrange()` to create stable keys ahead of joins.
 - Apply `tidyr::replace_na()` and `mutate(across())` for succinct imputations across multiple columns.
 - Package pipelines as functions so R Markdown reports or Shiny dashboards reuse consistent preparation logic.
 
 ### Excel
+
 - Promote ranges to Excel Tables, enabling repeatable "Remove Duplicates" and structured references.
 - Use Power Query to encapsulate steps such as type conversions, trimming, and merges—refreshable for future data drops.
 - Maintain a "Data Quality" sheet documenting manual checks (data validation rules, conditional formatting) for auditability.
@@ -32,8 +35,8 @@ Day 74 focuses on the hands-on mechanics of preparing business intelligence data
 The accompanying `lesson.py` script demonstrates how the same workflow translates across Python, R, and Excel:
 
 1. **Python (pandas):** Deduplicate by customer/date keys, fill missing revenue/cost/segment values, standardise types, and compute gross margin.
-2. **R (dplyr):** Mirror the pipeline with `%>%`, `distinct()`, `replace_na()`, and tidyverse helpers (`lubridate`, `stringr`).
-3. **Excel:** Outline the equivalent sequence using Tables, Remove Duplicates, Go To Special for blanks, Power Query typing, and a gross-margin formula column.
+1. **R (dplyr):** Mirror the pipeline with `%>%`, `distinct()`, `replace_na()`, and tidyverse helpers (`lubridate`, `stringr`).
+1. **Excel:** Outline the equivalent sequence using Tables, Remove Duplicates, Go To Special for blanks, Power Query typing, and a gross-margin formula column.
 
 These shared patterns keep BI data reliable regardless of the toolset in play, and the helpers in `solutions.py` power automated tests to ensure regressions are caught early.
 

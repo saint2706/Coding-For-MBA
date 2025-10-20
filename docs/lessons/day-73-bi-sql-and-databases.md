@@ -16,8 +16,8 @@ The accompanying `lesson.py` script walks through a lightweight analytics
 warehouse built with SQLite. It demonstrates:
 
 1. Basic selection and filtering patterns.
-2. Aggregations that BI teams use to sanity-check staging tables.
-3. Window functions that compute cumulative revenue and period-over-period
+1. Aggregations that BI teams use to sanity-check staging tables.
+1. Window functions that compute cumulative revenue and period-over-period
    deltas.
 
 Use these walkthroughs alongside Day 31's notebooks when you want learners to

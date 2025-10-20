@@ -10,8 +10,8 @@ This lesson connects experimentation design, forecasting, and machine learning s
 ## How to use
 
 1. Run `python -m Day_78_BI_Experimentation_and_Predictive_Insights.lesson` to print reference outputs for experimentation, forecasting, and learning workflows.
-2. Import functions from `solutions.py` in your own notebook or BI job to calculate A/B lift, cohort retention tables, or supervised predictions on new datasets.
-3. Pair forecasting outputs with experimentation insights to prioritise roadmap decisions and align downstream stakeholders.
+1. Import functions from `solutions.py` in your own notebook or BI job to calculate A/B lift, cohort retention tables, or supervised predictions on new datasets.
+1. Pair forecasting outputs with experimentation insights to prioritise roadmap decisions and align downstream stakeholders.
 
 ## Practitioner checklist
 
