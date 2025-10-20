@@ -66,7 +66,8 @@ if __name__ == "__main__":
     
     # Skip running the server in test/automated environments
     if os.environ.get("FLASK_RUN_TEST_MODE") != "1":
-        app.run(debug=True)
+        # Only enable debug mode if explicitly requested via FLASK_DEBUG
+        app.run(debug=os.environ.get("FLASK_DEBUG") == "1")
     else:
         print("Flask app created successfully (test mode - not starting server)")
         print("Routes available:")
