@@ -18,6 +18,26 @@ exposures consume those assets. Use the walkthrough to frame automation
 practices such as dependency management, retries, lineage tracking, and BI
 handoffs without requiring access to a live orchestrator.
 
+## Additional Topic: Industry Applications
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Translate BI playbooks into high-impact industry verticals.
+
+## Developer-roadmap alignment
+
+- Retail & E-commerce
+- Finance
+- Healthcare
+- Manufacturing
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -42,6 +62,7 @@ handoffs without requiring access to a live orchestrator.
     PIPELINE_OUTLINE = build_pipeline_outline()
     AIRFLOW_DAG = build_airflow_dag_stub()
     DBT_PROJECT = build_dbt_project_stub()
+
 
     # %%
     def summarize_topics() -> None:
@@ -99,7 +120,9 @@ handoffs without requiring access to a live orchestrator.
         print("\nExposures:")
         for exposure, config in DBT_PROJECT["exposures"].items():
             deps = ", ".join(config["depends_on"])
-            print(f"- {exposure} ({config['type']}) depends on [{deps}] -> owner {config['owner']}")
+            print(
+                f"- {exposure} ({config['type']}) depends on [{deps}] -> owner {config['owner']}"
+            )
 
         print(f"\nPipeline completion task: {DBT_PROJECT['final_task']}")
 
@@ -144,9 +167,7 @@ handoffs without requiring access to a live orchestrator.
             "Airflow",
             "dbt",
         ),
-        "Delivery lifecycle": (
-            "End-to-end Analytics Project",
-        ),
+        "Delivery lifecycle": ("End-to-end Analytics Project",),
     }
 
 
@@ -159,6 +180,7 @@ handoffs without requiring access to a live orchestrator.
 
 
     # --- Pipeline sketch helpers -----------------------------------------------
+
 
     @dataclass(frozen=True, slots=True)
     class PipelineTask:
@@ -205,7 +227,9 @@ handoffs without requiring access to a live orchestrator.
     )
 
 
-    def build_pipeline_outline(steps: Sequence[PipelineTask] = PIPELINE_STEPS) -> list[PipelineTask]:
+    def build_pipeline_outline(
+        steps: Sequence[PipelineTask] = PIPELINE_STEPS,
+    ) -> list[PipelineTask]:
         """Return a mutable outline of the canonical ETL pipeline tasks."""
 
         return list(steps)
@@ -224,7 +248,9 @@ handoffs without requiring access to a live orchestrator.
             task_definitions[task.task_id] = {
                 "upstream": task.upstream,
                 "owner": task.owner,
-                "retries": 2 if task.task_id in {"extract_sources", "load_warehouse"} else 1,
+                "retries": (
+                    2 if task.task_id in {"extract_sources", "load_warehouse"} else 1
+                ),
             }
         return {
             "dag_id": dag_id,

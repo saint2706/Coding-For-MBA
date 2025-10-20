@@ -18,15 +18,35 @@ moving into tooling, governance, and storytelling modules.
 ## Classroom flow
 
 1. Use `lesson.py` to preview the "Foundations" grouping sourced from the roadmap dataset.
-2. Facilitate a discussion around the markdown table to surface learner experiences with the
+1. Facilitate a discussion around the markdown table to surface learner experiences with the
    listed responsibilities and skills.
-3. Capture open questions about cross-functional collaboration to revisit during Days 69–72.
+1. Capture open questions about cross-functional collaboration to revisit during Days 69–72.
 
 ## Next steps
 
 - Expand the demo notebook with scenario prompts for each responsibility.
 - Update the Phase 5 cheat sheet with language that differentiates BI Analysts from
   neighboring roles.
+
+## Additional Topic: Business Intelligence Foundations
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Connect strategic BI vision to the functions it empowers.
+
+## Developer-roadmap alignment
+
+- Introduction
+- What is BI?
+- Types of BI Operations
+- Key Business Functions
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
 
 ## Additional Materials
 
@@ -47,6 +67,7 @@ moving into tooling, governance, and storytelling modules.
     # %%
     FOUNDATION_GROUPS = load_topics()
     FOUNDATION_DF = build_topic_dataframe()
+
 
     # %%
     def preview_foundation_topics(frame: pd.DataFrame) -> None:
@@ -138,7 +159,9 @@ moving into tooling, governance, and storytelling modules.
 
 
     def build_topic_dataframe(
-        *, section: str = FOUNDATION_SECTION, descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS
+        *,
+        section: str = FOUNDATION_SECTION,
+        descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS,
     ) -> pd.DataFrame:
         """Return a pandas DataFrame describing the BI foundations topics."""
 

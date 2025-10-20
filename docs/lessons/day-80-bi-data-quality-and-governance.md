@@ -7,19 +7,19 @@ lesson emphasises how these controls inform BI delivery—from dashboard reliabi
 1. **Profile reliability signals.** Track accuracy (variance vs source of truth), coherence (cross-system consistency),
    interpretability (metadata coverage), timeliness (pipeline latency), relevance (active usage), and accessibility (role-based
    coverage). The `build_data_quality_scorecard` helper converts these dimensions into a reusable checklist/metric template.
-2. **Instrument operational datasets.** Use the sample orders dataset in `lesson.py` to compute dashboard-friendly metrics such as
+1. **Instrument operational datasets.** Use the sample orders dataset in `lesson.py` to compute dashboard-friendly metrics such as
    reconciliation accuracy, on-time delivery rates, and adoption ratios. The script demonstrates how to convert those metrics into
-a concise dashboard table with status indicators against agreed thresholds.
-3. **Close the loop with remediation.** Highlight exception owners, SLAs, and actions in the scorecard so remediation workstreams
+   a concise dashboard table with status indicators against agreed thresholds.
+1. **Close the loop with remediation.** Highlight exception owners, SLAs, and actions in the scorecard so remediation workstreams
    can be prioritised alongside product backlogs.
 
 ## Governance and Ethics Frameworks
 
 1. **Map the roadmap.** `load_topic_groups` pulls the Business Intelligence roadmap nodes into two groups—data quality dimensions
    and governance & ethics—to ensure curriculum alignment.
-2. **Codify control expectations.** `build_governance_scorecard` translates lineage, privacy, ethical use, bias recognition,
+1. **Codify control expectations.** `build_governance_scorecard` translates lineage, privacy, ethical use, bias recognition,
    mitigation strategies, and GDPR/CCPA requirements into a checklist with evidence artefacts for audits.
-3. **Communicate the operating model.** The lesson script adds a governance highlights table summarising current control status,
+1. **Communicate the operating model.** The lesson script adds a governance highlights table summarising current control status,
    showing how BI teams can brief executives on stewardship, compliance, and mitigation programmes.
 
 ## How to Use This Lesson
@@ -30,6 +30,26 @@ a concise dashboard table with status indicators against agreed thresholds.
   pipelines and linking governance status back to your data catalogue or privacy management tool.
 - Extend the checklists with your organisation’s specific controls—e.g., SOC2 evidence, ISO/IEC 27001 clauses, or additional
   fairness/bias diagnostics for machine-learning products.
+
+## Additional Topic: Visualization Strategy & Storytelling
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Package insights for executive audiences and decision forums.
+
+## Developer-roadmap alignment
+
+- Visualization Best Practices
+- Communication & Storytelling
+- Stakeholder Identification
+- Bias Recognition
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
 
 ## Additional Materials
 
@@ -73,7 +93,14 @@ a concise dashboard table with status indicators against agreed thresholds.
                 "expected_amount": [2400.0, 1250.0, 860.0, 990.0, 540.0, 1200.0],
                 "recorded_amount": [2400.0, 1200.0, 865.0, 980.0, 500.0, 1215.0],
                 "source_region": ["EMEA", "NA", "NA", "APAC", "EMEA", "LATAM"],
-                "reported_region": ["EMEA", "North America", "NA", "Asia Pacific", "EMEA", "LATAM"],
+                "reported_region": [
+                    "EMEA",
+                    "North America",
+                    "NA",
+                    "Asia Pacific",
+                    "EMEA",
+                    "LATAM",
+                ],
                 "due_at": [
                     "2024-03-05",
                     "2024-03-07",
@@ -90,7 +117,14 @@ a concise dashboard table with status indicators against agreed thresholds.
                     "2024-03-16",
                     "2024-03-18",
                 ],
-                "owner": ["Finance", "Sales", "Sales", "Operations", "Finance", "Operations"],
+                "owner": [
+                    "Finance",
+                    "Sales",
+                    "Sales",
+                    "Operations",
+                    "Finance",
+                    "Operations",
+                ],
             }
         )
         orders["due_at"] = _to_datetime(orders["due_at"])
@@ -152,16 +186,22 @@ a concise dashboard table with status indicators against agreed thresholds.
         access = build_access_audit()
         adoption = build_adoption_snapshot()
 
-        accuracy = 1 - (orders["expected_amount"] - orders["recorded_amount"]).abs().sum() / orders[
-            "expected_amount"
-        ].sum()
-        normalised_source = orders["source_region"].str.lower().str.replace(" ", "", regex=False)
-        normalised_reported = orders["reported_region"].str.lower().str.replace(" ", "", regex=False)
+        accuracy = (
+            1
+            - (orders["expected_amount"] - orders["recorded_amount"]).abs().sum()
+            / orders["expected_amount"].sum()
+        )
+        normalised_source = (
+            orders["source_region"].str.lower().str.replace(" ", "", regex=False)
+        )
+        normalised_reported = (
+            orders["reported_region"].str.lower().str.replace(" ", "", regex=False)
+        )
         coherence = (normalised_source == normalised_reported).mean()
         interpretability = metadata["documented"].mean()
         timeliness = (orders["delivered_at"] <= orders["due_at"]).mean()
-        relevance = (adoption["active_users"].sum() / adoption["eligible_users"].sum())
-        accessibility = (access["provisioned_users"].sum() / access["required_users"].sum())
+        relevance = adoption["active_users"].sum() / adoption["eligible_users"].sum()
+        accessibility = access["provisioned_users"].sum() / access["required_users"].sum()
 
         metrics = {
             "Accuracy": accuracy,

@@ -19,3 +19,23 @@ business outcomes:
 Use the script to narrate how generic BI techniques become stakeholder-relevant KPIs. Each
 function demonstrates how to plug the roadmap topics into dashboards by pairing cleaned datasets
 with helper calculations tailored to a domain conversation.
+
+## Additional Topic: Experimentation & Predictive Foundations
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Prototype predictive loops that inform operational decisions.
+
+## Developer-roadmap alignment
+
+- A/B Testing
+- Basic Machine Learning
+- Time Series Analysis
+- Metrics and KPIs
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.

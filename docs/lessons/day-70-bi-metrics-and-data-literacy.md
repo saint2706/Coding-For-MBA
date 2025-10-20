@@ -17,6 +17,26 @@ The accompanying lesson script demonstrates how to implement these concepts with
 calculating funnel conversion rates, revenue KPIs, and marketing ROI from a sample campaign
 DataFrame. Use it to guide the discussion from conceptual taxonomy to practical KPI analysis.
 
+## Additional Topic: Understanding Data for BI
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Clarify the data taxonomy BI teams depend on.
+
+## Developer-roadmap alignment
+
+- What is Data?
+- Types of data
+- Analog vs Digital Data
+- Variables and Data Types
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -36,6 +56,7 @@ DataFrame. Use it to guide the discussion from conceptual taxonomy to practical 
     # %%
     TOPIC_GROUPS = load_topics()
     TOPIC_FRAME = build_topic_dataframe()
+
 
     # %%
     def safe_divide(numerator: pd.Series, denominator: pd.Series) -> pd.Series:
@@ -83,10 +104,17 @@ DataFrame. Use it to guide the discussion from conceptual taxonomy to practical 
         """Print the KPI DataFrame with formatted percentages for discussion."""
 
         formatted = frame.copy()
-        percent_columns = ["signup_rate", "purchase_rate", "overall_conversion", "marketing_roi"]
+        percent_columns = [
+            "signup_rate",
+            "purchase_rate",
+            "overall_conversion",
+            "marketing_roi",
+        ]
         for column in percent_columns:
             formatted[column] = (formatted[column] * 100).map("{:.1f}%".format)
-        formatted["average_order_value"] = formatted["average_order_value"].map("${:,.2f}".format)
+        formatted["average_order_value"] = formatted["average_order_value"].map(
+            "${:,.2f}".format
+        )
 
         print("\nSample campaign KPI review\n")
         print(formatted.to_markdown(index=False))
@@ -194,7 +222,9 @@ DataFrame. Use it to guide the discussion from conceptual taxonomy to practical 
     }
 
 
-    def load_topics(*, sections: Mapping[str, Iterable[str]] = SECTION_TITLES) -> Dict[str, list[BiTopic]]:
+    def load_topics(
+        *, sections: Mapping[str, Iterable[str]] = SECTION_TITLES
+    ) -> Dict[str, list[BiTopic]]:
         """Return roadmap topics grouped by the requested sections."""
 
         grouped_topics: Dict[str, list[BiTopic]] = {}
@@ -223,7 +253,9 @@ DataFrame. Use it to guide the discussion from conceptual taxonomy to practical 
         frame = pd.DataFrame(records, columns=["section", "title", "description"])
         if frame.empty:
             return frame
-        deduped = frame.drop_duplicates(subset=["title"], keep="first").reset_index(drop=True)
+        deduped = frame.drop_duplicates(subset=["title"], keep="first").reset_index(
+            drop=True
+        )
         return deduped
 
 

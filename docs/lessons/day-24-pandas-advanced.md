@@ -195,9 +195,7 @@ The first command prints a truncated `cProfile` report. In our baseline run the 
         normalized_product_series = (
             df["Product"].astype("string").str.strip().str.casefold()
         )
-        normalized_region_series = (
-            df["Region"].astype("string").str.strip().str.casefold()
-        )
+        normalized_region_series = df["Region"].astype("string").str.strip().str.casefold()
 
         mask = (normalized_product_series == product_normalized) & (
             normalized_region_series == region_normalized

@@ -18,6 +18,26 @@ Use the script to narrate how generic BI techniques become stakeholder-relevant 
 function demonstrates how to plug the roadmap topics into dashboards by pairing cleaned datasets
 with helper calculations tailored to a domain conversation.
 
+## Additional Topic: Experimentation & Predictive Foundations
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Prototype predictive loops that inform operational decisions.
+
+## Developer-roadmap alignment
+
+- A/B Testing
+- Basic Machine Learning
+- Time Series Analysis
+- Metrics and KPIs
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -187,6 +207,7 @@ with helper calculations tailored to a domain conversation.
 
     # %%
 
+
     def load_fortune_1000(path: Path = DATA_PATH) -> pd.DataFrame:
         """Load a cleaned slice of the Fortune 1000 dataset for classroom demos."""
 
@@ -199,13 +220,14 @@ with helper calculations tailored to a domain conversation.
                 .str.replace("$", "", regex=False)
                 .str.replace(",", "", regex=False)
                 .str.replace(" ", "", regex=False)
-                .str.replace("\"", "", regex=False)
+                .str.replace('"', "", regex=False)
             )
             frame[column] = pd.to_numeric(frame[column], errors="coerce")
         return frame.dropna(subset=numeric_columns)
 
 
     # %%
+
 
     def build_revenue_dashboard() -> pd.DataFrame:
         """Return a table summarizing revenue-facing KPI stories."""
@@ -216,15 +238,18 @@ with helper calculations tailored to a domain conversation.
                 **{key: value for key, value in scenario.items() if key != "title"}
             )
             for metric, value in metrics.items():
-                records.append({
-                    "domain": scenario["title"],
-                    "metric": metric,
-                    "value": value,
-                })
+                records.append(
+                    {
+                        "domain": scenario["title"],
+                        "metric": metric,
+                        "value": value,
+                    }
+                )
         return pd.DataFrame(records)
 
 
     # %%
+
 
     def build_operations_dashboard() -> pd.DataFrame:
         """Return KPIs for manufacturing and supply chain storytelling."""
@@ -235,15 +260,18 @@ with helper calculations tailored to a domain conversation.
                 **{key: value for key, value in scenario.items() if key != "title"}
             )
             for metric, value in metrics.items():
-                records.append({
-                    "domain": scenario["title"],
-                    "metric": metric,
-                    "value": value,
-                })
+                records.append(
+                    {
+                        "domain": scenario["title"],
+                        "metric": metric,
+                        "value": value,
+                    }
+                )
         return pd.DataFrame(records)
 
 
     # %%
+
 
     def build_vertical_dashboard(frame: pd.DataFrame | None = None) -> pd.DataFrame:
         """Summarize KPIs by vertical using the Fortune 1000 dataset."""
@@ -254,7 +282,9 @@ with helper calculations tailored to a domain conversation.
         selectors = {
             "Finance": frame[frame["Sector"] == "Financials"],
             "Retail & E-commerce": frame[frame["Sector"] == "Retailing"],
-            "Healthcare": frame[frame["Industry"].str.contains("Health", case=False, na=False)],
+            "Healthcare": frame[
+                frame["Industry"].str.contains("Health", case=False, na=False)
+            ],
             "Manufacturing": frame[frame["Sector"] == "Industrials"],
         }
 
@@ -283,7 +313,8 @@ with helper calculations tailored to a domain conversation.
                 "vertical": "BI KPI baselines",
                 "companies": len(frame),
                 "revenue": VERTICAL_DEFAULTS["finance_revenue"],
-                "profit": VERTICAL_DEFAULTS["finance_revenue"] - VERTICAL_DEFAULTS["finance_cost"],
+                "profit": VERTICAL_DEFAULTS["finance_revenue"]
+                - VERTICAL_DEFAULTS["finance_cost"],
                 "profit_margin": default_metrics["finance_operating_margin"],
                 "avg_assets": default_metrics["manufacturing_yield"],
             }
@@ -293,6 +324,7 @@ with helper calculations tailored to a domain conversation.
 
 
     # %%
+
 
     def summarize_groups(
         groups: Mapping[str, Iterable[str]],
@@ -306,7 +338,8 @@ with helper calculations tailored to a domain conversation.
             for title in titles:
                 print(f"  • {title}")
             roadmap_titles = ", ".join(
-                getattr(topic, "title", str(topic)) for topic in grouped_topics.get(name, [])
+                getattr(topic, "title", str(topic))
+                for topic in grouped_topics.get(name, [])
             )
             if roadmap_titles:
                 print(f"    ↳ Roadmap validation: {roadmap_titles}")
@@ -314,7 +347,10 @@ with helper calculations tailored to a domain conversation.
 
     # %%
 
-    def review_dashboard(title: str, frame: pd.DataFrame, value_columns: Iterable[str]) -> None:
+
+    def review_dashboard(
+        title: str, frame: pd.DataFrame, value_columns: Iterable[str]
+    ) -> None:
         """Print a KPI dashboard with friendly formatting."""
 
         print(f"\n{title}\n")
@@ -326,6 +362,7 @@ with helper calculations tailored to a domain conversation.
 
 
     # %%
+
 
     def main() -> None:
         """Run the domain analytics classroom walk-through."""
@@ -420,9 +457,7 @@ with helper calculations tailored to a domain conversation.
     ) -> Dict[str, float]:
         """Compute foundational KPIs for revenue-facing teams."""
 
-        avg_revenue_per_customer = (
-            total_revenue / customer_count if customer_count else 0.0
-        )
+        avg_revenue_per_customer = total_revenue / customer_count if customer_count else 0.0
         marketing_roi = (
             (total_revenue - marketing_spend) / marketing_spend if marketing_spend else 0.0
         )
@@ -487,19 +522,11 @@ with helper calculations tailored to a domain conversation.
         operating_margin = (
             (finance_revenue - finance_cost) / finance_revenue if finance_revenue else 0.0
         )
-        retail_return_rate = (
-            retail_returns / retail_orders if retail_orders else 0.0
-        )
-        bed_utilization = (
-            healthcare_patients / healthcare_beds if healthcare_beds else 0.0
-        )
-        hr_turnover_rate = (
-            hr_separations / hr_headcount if hr_headcount else 0.0
-        )
+        retail_return_rate = retail_returns / retail_orders if retail_orders else 0.0
+        bed_utilization = healthcare_patients / healthcare_beds if healthcare_beds else 0.0
+        hr_turnover_rate = hr_separations / hr_headcount if hr_headcount else 0.0
         manufacturing_yield = (
-            (
-                manufacturing_units_produced - manufacturing_units_defective
-            )
+            (manufacturing_units_produced - manufacturing_units_defective)
             / manufacturing_units_produced
             if manufacturing_units_produced
             else 0.0

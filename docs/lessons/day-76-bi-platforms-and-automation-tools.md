@@ -45,6 +45,25 @@ The snippet mirrors the helper utilities in `solutions.py`: schedule a refresh
 via Python, execute R-based QA, and send downstream notifications after
 successfully validating exports.
 
+## Additional Topic: Exploratory Diagnostics
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Reveal why metrics move using diagnostic analytics.
+
+## Developer-roadmap alignment
+
+- Exploratory Data Analysis (EDA)
+- Correlation Analysis
+- Cohort Analysis
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -66,7 +85,9 @@ successfully validating exports.
 
     TOPIC_GROUPS = load_topics()
     PLATFORM_MATRIX = build_platform_matrix()
-    EXPORT_MATRIX = compare_export_formats(include_formats=("PDF", "PowerPoint", "Excel", "CSV", "Google Sheets"))
+    EXPORT_MATRIX = compare_export_formats(
+        include_formats=("PDF", "PowerPoint", "Excel", "CSV", "Google Sheets")
+    )
 
     PYTHON_R_SNIPPET = """\
     ```python
@@ -87,7 +108,9 @@ successfully validating exports.
 
         rows: list[dict[str, str]] = []
         for section, topics in TOPIC_GROUPS.items():
-            rows.append({"Section": section, "Titles": ", ".join(topic.title for topic in topics)})
+            rows.append(
+                {"Section": section, "Titles": ", ".join(topic.title for topic in topics)}
+            )
         frame = pd.DataFrame(rows)
         print("\nDay 76 roadmap groupings\n")
         print(frame.to_markdown(index=False))
@@ -105,7 +128,11 @@ successfully validating exports.
 
         print("\nExport format coverage\n")
         coverage = EXPORT_MATRIX.assign(
-            **{column: EXPORT_MATRIX[column].map(lambda value: "✅" if value else "⬜") for column in EXPORT_MATRIX.columns if column != "platform"}
+            **{
+                column: EXPORT_MATRIX[column].map(lambda value: "✅" if value else "⬜")
+                for column in EXPORT_MATRIX.columns
+                if column != "platform"
+            }
         )
         print(coverage.to_markdown(index=False))
 
@@ -225,7 +252,11 @@ successfully validating exports.
                 name="Looker",
                 deployment="Cloud",
                 export_formats=("Looks", "PDF", "Google Sheets", "CSV"),
-                automation_connectors=("Looker API", "Scheduled Deliveries", "Cloud Composer"),
+                automation_connectors=(
+                    "Looker API",
+                    "Scheduled Deliveries",
+                    "Cloud Composer",
+                ),
                 scripting_hooks=("Python", "LookML", "SQL"),
                 notes=(
                     "Model-driven semantic layer with strong API orchestration via "
@@ -249,6 +280,7 @@ successfully validating exports.
 
     # --- Roadmap helpers ------------------------------------------------------
 
+
     def load_topics(
         groups: Mapping[str, Sequence[str]] = TOPIC_GROUP_TITLES,
     ) -> dict[str, list[BiTopic]]:
@@ -258,6 +290,7 @@ successfully validating exports.
 
 
     # --- Platform metadata helpers -------------------------------------------
+
 
     def build_platform_matrix(
         profiles: Mapping[str, PlatformProfile] = PLATFORM_PROFILES,

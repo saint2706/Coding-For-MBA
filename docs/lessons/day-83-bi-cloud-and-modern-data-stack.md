@@ -1,5 +1,5 @@
 > This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md)
-to see how the developer-roadmap topics align across Days 68–84.
+> to see how the developer-roadmap topics align across Days 68–84.
 
 ## Why it matters
 
@@ -35,6 +35,26 @@ services.
 
 - Use the comparison matrix in `lesson.py` to facilitate vendor shortlists.
 - Draft cost scenarios that highlight egress, autoscaling, and reserved capacity for each provider.
+
+## Additional Topic: Career Assets & Credentials
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Design a career evidence plan that highlights BI outcomes.
+
+## Developer-roadmap alignment
+
+- Building Your Portfolio
+- Job Preparation
+- Certifications
+- Networking
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
 
 ## Additional Materials
 
@@ -94,6 +114,7 @@ services.
         "Storage tiers": "When do we archive historical BI extracts into colder tiers without hurting SLAs?",
         "Data movement": "Which provider-native services offset egress fees through in-platform processing?",
     }
+
 
     # %%
     def display_topic_groups(groups: Mapping[str, list]) -> None:
@@ -192,9 +213,7 @@ services.
             "Cloud BI Ecosystem",
             "Cloud data warehouses",
         ),
-        "Provider landscape": (
-            "Providers: AWS, GCP, Azure",
-        ),
+        "Provider landscape": ("Providers: AWS, GCP, Azure",),
     }
 
     CLOUD_TOPIC_DESCRIPTIONS: Mapping[str, str] = {
@@ -264,7 +283,9 @@ services.
     ) -> Dict[str, List[BiTopic]]:
         """Return grouped cloud topics covering foundations, ecosystem, and providers."""
 
-        return {section: topics for section, topics in group_topics_by_titles(groups).items()}
+        return {
+            section: topics for section, topics in group_topics_by_titles(groups).items()
+        }
 
 
     def build_cloud_topic_dataframe(

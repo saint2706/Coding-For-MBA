@@ -10,9 +10,9 @@ Day 79 teaches analysts how to weave together storytelling craft and change lead
 ## Classroom flow
 
 1. **Roadmap orientation** – Introduce the narrative asset and influence lever groupings so learners understand how the roadmap nodes reinforce one another.
-2. **Story arc lab** – Walk teams through transforming a lagging metric into an executive-ready narrative, highlighting when to deploy storytelling, presentation, and dashboard assets.
-3. **Influence brief build** – Co-create a stakeholder plan that pairs change management tactics with project milestones and business acumen talking points.
-4. **Facilitation retro** – Reflect on which soft skills and critical thinking prompts kept the discussion grounded in outcomes.
+1. **Story arc lab** – Walk teams through transforming a lagging metric into an executive-ready narrative, highlighting when to deploy storytelling, presentation, and dashboard assets.
+1. **Influence brief build** – Co-create a stakeholder plan that pairs change management tactics with project milestones and business acumen talking points.
+1. **Facilitation retro** – Reflect on which soft skills and critical thinking prompts kept the discussion grounded in outcomes.
 
 ## Storytelling walkthroughs
 
@@ -28,6 +28,26 @@ Use the `lesson.py` script to practice translating metrics into narratives:
 - Pair each influence lever with a question that uncovers hidden risks (e.g., "What change fatigue might surface if we accelerate this project?").
 - Encourage note-takers to capture the exact language stakeholders use; it becomes source material for executive summaries and follow-up communications.
 - Close sessions by rehearsing the call to action aloud so facilitators hear whether the ask is compelling and achievable.
+
+## Additional Topic: Self-Service Dashboards
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Build hands-on fluency with spreadsheet and dashboard tooling.
+
+## Developer-roadmap alignment
+
+- Excel
+- Calculated Fields & Measures
+- Visualization Fundamentals
+- Chart Categories
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
 
 ## Additional Materials
 
@@ -79,7 +99,9 @@ Use the `lesson.py` script to practice translating metrics into narratives:
         print(frame.to_markdown(index=False))
 
 
-    def walkthrough_storytelling(metric: str, insight: str, audience: str, action: str) -> None:
+    def walkthrough_storytelling(
+        metric: str, insight: str, audience: str, action: str
+    ) -> None:
         """Walk through how to turn metrics into executive-ready narratives."""
 
         arc = generate_story_arc(metric, insight, audience, action)
@@ -219,14 +241,18 @@ Use the `lesson.py` script to practice translating metrics into narratives:
     )
 
 
-    def load_topics(*, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS) -> Dict[str, List[BiTopic]]:
+    def load_topics(
+        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
+    ) -> Dict[str, List[BiTopic]]:
         """Return roadmap topics grouped into narrative and influence collections."""
 
         return {group: topics for group, topics in group_topics_by_titles(groups).items()}
 
 
     def narrative_asset_template(
-        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS, prompts: Mapping[str, str] = NARRATIVE_PROMPTS
+        *,
+        groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS,
+        prompts: Mapping[str, str] = NARRATIVE_PROMPTS,
     ) -> list[dict[str, str]]:
         """Provide facilitation prompts for each narrative asset roadmap topic."""
 
@@ -243,7 +269,9 @@ Use the `lesson.py` script to practice translating metrics into narratives:
 
 
     def influence_lever_template(
-        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS, prompts: Mapping[str, str] = INFLUENCE_PROMPTS
+        *,
+        groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS,
+        prompts: Mapping[str, str] = INFLUENCE_PROMPTS,
     ) -> list[dict[str, str]]:
         """Provide briefing prompts for each influence lever roadmap topic."""
 
@@ -276,7 +304,7 @@ Use the `lesson.py` script to practice translating metrics into narratives:
         arc: list[dict[str, str]] = []
         for stage, topic_title in stages:
             if topic_title not in valid_titles:
-                raise KeyError(f'Unknown narrative topic: {topic_title}')
+                raise KeyError(f"Unknown narrative topic: {topic_title}")
             arc.append(
                 {
                     "stage": stage,
@@ -312,7 +340,7 @@ Use the `lesson.py` script to practice translating metrics into narratives:
         plan: list[dict[str, str]] = []
         for title in sequence:
             if title not in valid_titles:
-                raise KeyError(f'Unknown influence topic: {title}')
+                raise KeyError(f"Unknown influence topic: {title}")
             plan.append(
                 {
                     "lever": title,

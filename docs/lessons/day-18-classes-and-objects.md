@@ -85,22 +85,70 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
     class Statistics:
         """
         A class to perform basic statistical calculations on a list of numbers.
+
+        Classes are blueprints for creating objects. They bundle data (attributes)
+        and functions (methods) together. This makes code more organized and reusable.
+
+        Think of a class as a template: you define it once, then create many
+        instances (objects) from it.
+
+        Attributes
+        ----------
+        data : list
+            The sequence of numbers to analyze
+
+        Example
+        -------
+        >>> stats = Statistics([1, 2, 3, 4, 5])
+        >>> stats.mean()
+        3.0
         """
 
         def __init__(self, data: Sequence[Union[int, float]]):
-            """Initializes the Statistics class with a sequence of numbers."""
+            """
+            Initializes the Statistics class with a sequence of numbers.
+
+            __init__ is the constructor - it runs when you create a new instance.
+            'self' refers to the specific instance being created.
+
+            Parameters
+            ----------
+            data : Sequence of numbers
+                The data to analyze (list, tuple, etc.)
+            """
             if not data:
                 # Handle empty data case gracefully
+                # self.data creates an attribute that belongs to this instance
                 self.data = []
             else:
                 self.data = data
 
         def count(self) -> int:
-            """Calculates the number of elements."""
+            """
+            Calculates the number of elements.
+
+            Methods are functions that belong to a class. They always have
+            'self' as their first parameter, which gives access to the
+            instance's attributes.
+
+            Returns
+            -------
+            int
+                Number of data points
+            """
+            # self.data accesses the data attribute of this instance
             return len(self.data)
 
         def sum(self) -> Union[int, float]:
-            """Calculates the sum of the numbers."""
+            """
+            Calculates the sum of the numbers.
+
+            Returns
+            -------
+            float or int
+                Sum of all data points, or 0 if empty
+            """
+            # Conditional expression: returns sum if data exists, else 0
             return sum(self.data) if self.data else 0
 
         def min(self) -> Union[int, float, None]:
@@ -112,7 +160,18 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
             return max(self.data) if self.data else None
 
         def range(self) -> Union[int, float]:
-            """Calculates the range of the data."""
+            """
+            Calculates the range of the data (max - min).
+
+            Methods can call other methods using self.method_name()
+            This promotes code reuse within a class.
+
+            Returns
+            -------
+            float or int
+                Range (difference between max and min)
+            """
+            # Calling self.max() and self.min() - reusing our own methods
             return self.max() - self.min() if self.data else 0
 
         def mean(self) -> float:

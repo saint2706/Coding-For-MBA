@@ -12,9 +12,9 @@ Day 79 teaches analysts how to weave together storytelling craft and change lead
 ## Classroom flow
 
 1. **Roadmap orientation** – Introduce the narrative asset and influence lever groupings so learners understand how the roadmap nodes reinforce one another.
-2. **Story arc lab** – Walk teams through transforming a lagging metric into an executive-ready narrative, highlighting when to deploy storytelling, presentation, and dashboard assets.
-3. **Influence brief build** – Co-create a stakeholder plan that pairs change management tactics with project milestones and business acumen talking points.
-4. **Facilitation retro** – Reflect on which soft skills and critical thinking prompts kept the discussion grounded in outcomes.
+1. **Story arc lab** – Walk teams through transforming a lagging metric into an executive-ready narrative, highlighting when to deploy storytelling, presentation, and dashboard assets.
+1. **Influence brief build** – Co-create a stakeholder plan that pairs change management tactics with project milestones and business acumen talking points.
+1. **Facilitation retro** – Reflect on which soft skills and critical thinking prompts kept the discussion grounded in outcomes.
 
 ## Storytelling walkthroughs
 
@@ -30,3 +30,23 @@ Use the `lesson.py` script to practice translating metrics into narratives:
 - Pair each influence lever with a question that uncovers hidden risks (e.g., "What change fatigue might surface if we accelerate this project?").
 - Encourage note-takers to capture the exact language stakeholders use; it becomes source material for executive summaries and follow-up communications.
 - Close sessions by rehearsing the call to action aloud so facilitators hear whether the ask is compelling and achievable.
+
+## Additional Topic: Self-Service Dashboards
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Build hands-on fluency with spreadsheet and dashboard tooling.
+
+## Developer-roadmap alignment
+
+- Excel
+- Calculated Fields & Measures
+- Visualization Fundamentals
+- Chart Categories
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.

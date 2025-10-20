@@ -50,6 +50,24 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
 - **Dashboard design:** Start with business questions, draft mockups before building,
   and iterate with stakeholders to validate usefulness.
 
+## Additional Topic: Inferential Analytics
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Move from descriptive reporting to evidence-backed inference.
+
+## Developer-roadmap alignment
+
+- Inferential Statistics
+- Hypothesis Testing
+- Regression Analysis
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
 
 ## Additional Materials
 
@@ -58,6 +76,7 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
 
     ```python title="lesson.py"
     """Demonstrations for BI visualization and dashboard design principles."""
+
     from __future__ import annotations
 
     from pprint import pprint
@@ -85,13 +104,17 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
 
         for name, factory in chart_creators.items():
             fig = factory()
-            print(f"\n{name} chart demo -> traces: {len(fig.data)}, layout title: {fig.layout.title.text}")
+            print(
+                f"\n{name} chart demo -> traces: {len(fig.data)}, layout title: {fig.layout.title.text}"
+            )
 
 
     def showcase_matplotlib_palette() -> None:
         """Render the color palette demo in a headless-safe way."""
         fig, ax = sol.create_color_palette_demo()
-        print(f"\nPalette demo ready -> title: {ax.get_title()}, swatches: {len(ax.get_xticklabels())}")
+        print(
+            f"\nPalette demo ready -> title: {ax.get_title()}, swatches: {len(ax.get_xticklabels())}"
+        )
         # Close the figure so running the script in CI does not leak GUI resources.
         fig.clf()
 
@@ -111,6 +134,7 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
 
     ```python title="solutions.py"
     """Reusable helpers for BI visualization and dashboard design demos."""
+
     from __future__ import annotations
 
     from typing import Dict, List, Tuple
@@ -173,6 +197,7 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
 
     # --- Plotly helpers -------------------------------------------------------
 
+
     def create_barplot() -> Figure:
         """Return a simple Plotly bar chart showing category totals."""
         data = pd.DataFrame(
@@ -193,7 +218,9 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
                 "Active Users": [120, 135, 150, 165, 170, 180],
             }
         )
-        fig = px.line(data, x="Month", y="Active Users", markers=True, title="Monthly Active Users")
+        fig = px.line(
+            data, x="Month", y="Active Users", markers=True, title="Monthly Active Users"
+        )
         return fig
 
 
@@ -245,7 +272,9 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
                 "Order Size": [5, 8, 12, 7, 9, 15, 4, 11, 6, 10, 13, 7, 9, 5],
             }
         )
-        fig = px.histogram(data, x="Order Size", nbins=5, title="Distribution of Order Sizes")
+        fig = px.histogram(
+            data, x="Order Size", nbins=5, title="Distribution of Order Sizes"
+        )
         fig.update_traces(marker_color="#636EFA")
         return fig
 
@@ -268,11 +297,14 @@ python Day_75_BI_Visualization_and_Dashboard_Principles/lesson.py
 
     # --- Matplotlib helpers ---------------------------------------------------
 
+
     def create_color_palette_demo() -> Tuple[plt.Figure, plt.Axes]:
         """Showcase accessible color choices with Matplotlib swatches."""
         fig, ax = plt.subplots(figsize=(6, 2))
         colors = ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
-        ax.imshow([list(range(len(colors)))], cmap=plt.matplotlib.colors.ListedColormap(colors))
+        ax.imshow(
+            [list(range(len(colors)))], cmap=plt.matplotlib.colors.ListedColormap(colors)
+        )
         ax.set_xticks(range(len(colors)))
         ax.set_xticklabels(["Primary", "Secondary", "Accent 1", "Accent 2", "Accent 3"])
         ax.set_yticks([])

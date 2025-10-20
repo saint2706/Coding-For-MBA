@@ -18,10 +18,30 @@ The accompanying `lesson.py` script walks through a lightweight analytics
 warehouse built with SQLite. It demonstrates:
 
 1. Basic selection and filtering patterns.
-2. Aggregations that BI teams use to sanity-check staging tables.
-3. Window functions that compute cumulative revenue and period-over-period
+1. Aggregations that BI teams use to sanity-check staging tables.
+1. Window functions that compute cumulative revenue and period-over-period
    deltas.
 
 Use these walkthroughs alongside Day 31's notebooks when you want learners to
 contrast Python-side DataFrame transformations with raw SQL and database
 operations.
+
+## Additional Topic: ETL & Data Preparation
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Design reliable ingestion pipelines for analytics-ready data.
+
+## Developer-roadmap alignment
+
+- ETL basics
+- ETL Tools
+- Data Transformation Techniques
+- Data Cleaning
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.

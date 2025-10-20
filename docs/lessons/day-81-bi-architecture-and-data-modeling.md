@@ -33,6 +33,26 @@ to see how snowflaked product dimensions appear in SQL DDL.
 - `tests/test_day_81.py` (added in this task) ensures the helpers surface all expected titles and
   schema metadata.
 
+## Additional Topic: Operational BI Governance
+
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+
+## Why it matters
+
+Codify the controls that keep BI programs trustworthy.
+
+## Developer-roadmap alignment
+
+- Data Lineage
+- Data Quality
+- Privacy
+- Bias Recognition
+
+## Next steps
+
+- Draft case studies and notebooks that exercise these roadmap nodes.
+- Update the Phase 5 cheat sheet with the insights you capture here.
+
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -55,16 +75,13 @@ to see how snowflaked product dimensions appear in SQL DDL.
     )
 
     # %%
-    STAR_SCHEMA_RESOURCE = (
-        "https://learn.microsoft.com/power-bi/guidance/star-schema"
-    )
-    SNOWFLAKE_SCHEMA_RESOURCE = (
-        "https://docs.snowflake.com/en/user-guide/sample-data-tpcds"
-    )
+    STAR_SCHEMA_RESOURCE = "https://learn.microsoft.com/power-bi/guidance/star-schema"
+    SNOWFLAKE_SCHEMA_RESOURCE = "https://docs.snowflake.com/en/user-guide/sample-data-tpcds"
 
     TOPIC_FRAME = build_topic_dataframe()
     STAR_SCHEMA = build_star_schema_example()
     SNOWFLAKE_SCHEMA = build_snowflake_schema_example()
+
 
     # %%
     def schema_to_dataframe(schema: SchemaExample) -> pd.DataFrame:
@@ -80,7 +97,8 @@ to see how snowflaked product dimensions appear in SQL DDL.
                 "keys": ", ".join(fact.get("keys", [])),
                 "business_fields": ", ".join(fact.get("measures", [])),
                 "references": ", ".join(
-                    f"{key} → {target}" for key, target in fact.get("references", {}).items()
+                    f"{key} → {target}"
+                    for key, target in fact.get("references", {}).items()
                 ),
             }
         )
@@ -95,11 +113,15 @@ to see how snowflaked product dimensions appear in SQL DDL.
                         dimension.get("attributes", dimension.get("measures", []))
                     ),
                     "references": ", ".join(
-                        f"{key} → {target}" for key, target in dimension.get("references", {}).items()
+                        f"{key} → {target}"
+                        for key, target in dimension.get("references", {}).items()
                     ),
                 }
             )
-        return pd.DataFrame(records, columns=["table", "kind", "grain", "keys", "business_fields", "references"])
+        return pd.DataFrame(
+            records,
+            columns=["table", "kind", "grain", "keys", "business_fields", "references"],
+        )
 
 
     # %%
@@ -127,7 +149,9 @@ to see how snowflaked product dimensions appear in SQL DDL.
 
         summarize_topics(TOPIC_FRAME)
         review_schema("Retail star schema", STAR_SCHEMA, STAR_SCHEMA_RESOURCE)
-        review_schema("Retail snowflake schema", SNOWFLAKE_SCHEMA, SNOWFLAKE_SCHEMA_RESOURCE)
+        review_schema(
+            "Retail snowflake schema", SNOWFLAKE_SCHEMA, SNOWFLAKE_SCHEMA_RESOURCE
+        )
 
 
     # %%
@@ -221,7 +245,9 @@ to see how snowflaked product dimensions appear in SQL DDL.
         commentary: str
 
 
-    def load_topics(*, sections: Mapping[str, Iterable[str]] = SECTION_TITLES) -> Dict[str, list[BiTopic]]:
+    def load_topics(
+        *, sections: Mapping[str, Iterable[str]] = SECTION_TITLES
+    ) -> Dict[str, list[BiTopic]]:
         """Return roadmap topics grouped by the requested sections."""
 
         grouped_topics: Dict[str, list[BiTopic]] = {}
@@ -331,7 +357,9 @@ to see how snowflaked product dimensions appear in SQL DDL.
         """Return metadata for a snowflake schema extending the retail example."""
 
         star = build_star_schema_example()
-        dim_product = next(dim for dim in star["dimensions"] if dim["name"] == "dim_product")
+        dim_product = next(
+            dim for dim in star["dimensions"] if dim["name"] == "dim_product"
+        )
 
         hierarchical_dimensions: list[SchemaTable] = list(star["dimensions"])
         product_category: SchemaTable = {
@@ -368,7 +396,9 @@ to see how snowflaked product dimensions appear in SQL DDL.
                 dimensions.append(
                     {
                         **dim_product,
-                        "references": {"subcategory_key": "dim_product_category.subcategory_key"},
+                        "references": {
+                            "subcategory_key": "dim_product_category.subcategory_key"
+                        },
                     }
                 )
             else:
@@ -376,7 +406,11 @@ to see how snowflaked product dimensions appear in SQL DDL.
 
         return cast(
             SchemaExample,
-            {"fact_table": augmented_fact, "dimensions": dimensions, "commentary": commentary},
+            {
+                "fact_table": augmented_fact,
+                "dimensions": dimensions,
+                "commentary": commentary,
+            },
         )
 
 
