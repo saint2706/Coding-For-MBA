@@ -1,37 +1,31 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
     hooks:
-      - id: check-ast
-      - id: check-merge-conflict
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
   - repo: https://github.com/psf/black
     rev: 24.8.0
     hooks:
       - id: black
-        args: ["--target-version=py313"]
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.6
-    hooks:
-      - id: ruff
-        args: ["--fix"]
-      - id: ruff-format
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.8.5
+    rev: 1.9.1
     hooks:
-      - id: nbqa-black
-        args: ["--line-length=88", "--target-version=py313"]
       - id: nbqa-ruff
-        args: ["--extend-select=I"]
-        additional_dependencies:
-          - "ruff==0.5.6"
-  - repo: local
+        additional_dependencies: [ruff==0.6.9]
+      - id: nbqa-black
+        additional_dependencies: [black==24.8.0]
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.18
     hooks:
       - id: mdformat
-        name: mdformat
-        entry: mdformat
-        language: system
-        types: [markdown]
         additional_dependencies:
-          - mdformat>=0.7.17
+          - mdformat-gfm
+          - mdformat-frontmatter
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-yaml
