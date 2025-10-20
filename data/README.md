@@ -26,8 +26,6 @@ This data directory contains curated datasets and utility files specifically des
 ### 🧭 Business Intelligence Curriculum Support
 
 - **`bi_analyst_roadmap.json`** - Phase 5 topic graph sourced from the developer-roadmap BI Analyst track (MIT license) for aligning lessons, cheat sheets, and stakeholder narratives
-- **`data_analyst_roadmap.json`** - Data Analyst roadmap graph with developer-roadmap alignment metadata for bridging Phase 4 skill-building into analyst job requirements
-- **`data_analyst_content/`** - Markdown knowledge base mirrored from developer-roadmap Data Analyst content with readable slugs and an `index.json` map for quick lookup of the original hashed IDs
 
 ### 📰 Text and Social Media Analytics
 
