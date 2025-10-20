@@ -79,7 +79,9 @@ Use the `lesson.py` script to practice translating metrics into narratives:
         print(frame.to_markdown(index=False))
 
 
-    def walkthrough_storytelling(metric: str, insight: str, audience: str, action: str) -> None:
+    def walkthrough_storytelling(
+        metric: str, insight: str, audience: str, action: str
+    ) -> None:
         """Walk through how to turn metrics into executive-ready narratives."""
 
         arc = generate_story_arc(metric, insight, audience, action)
@@ -219,14 +221,18 @@ Use the `lesson.py` script to practice translating metrics into narratives:
     )
 
 
-    def load_topics(*, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS) -> Dict[str, List[BiTopic]]:
+    def load_topics(
+        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
+    ) -> Dict[str, List[BiTopic]]:
         """Return roadmap topics grouped into narrative and influence collections."""
 
         return {group: topics for group, topics in group_topics_by_titles(groups).items()}
 
 
     def narrative_asset_template(
-        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS, prompts: Mapping[str, str] = NARRATIVE_PROMPTS
+        *,
+        groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS,
+        prompts: Mapping[str, str] = NARRATIVE_PROMPTS,
     ) -> list[dict[str, str]]:
         """Provide facilitation prompts for each narrative asset roadmap topic."""
 
@@ -243,7 +249,9 @@ Use the `lesson.py` script to practice translating metrics into narratives:
 
 
     def influence_lever_template(
-        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS, prompts: Mapping[str, str] = INFLUENCE_PROMPTS
+        *,
+        groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS,
+        prompts: Mapping[str, str] = INFLUENCE_PROMPTS,
     ) -> list[dict[str, str]]:
         """Provide briefing prompts for each influence lever roadmap topic."""
 
@@ -276,7 +284,7 @@ Use the `lesson.py` script to practice translating metrics into narratives:
         arc: list[dict[str, str]] = []
         for stage, topic_title in stages:
             if topic_title not in valid_titles:
-                raise KeyError(f'Unknown narrative topic: {topic_title}')
+                raise KeyError(f"Unknown narrative topic: {topic_title}")
             arc.append(
                 {
                     "stage": stage,
@@ -312,7 +320,7 @@ Use the `lesson.py` script to practice translating metrics into narratives:
         plan: list[dict[str, str]] = []
         for title in sequence:
             if title not in valid_titles:
-                raise KeyError(f'Unknown influence topic: {title}')
+                raise KeyError(f"Unknown influence topic: {title}")
             plan.append(
                 {
                     "lever": title,

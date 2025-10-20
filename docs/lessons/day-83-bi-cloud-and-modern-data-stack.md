@@ -95,6 +95,7 @@ services.
         "Data movement": "Which provider-native services offset egress fees through in-platform processing?",
     }
 
+
     # %%
     def display_topic_groups(groups: Mapping[str, list]) -> None:
         """Print the grouped roadmap topics for facilitation."""
@@ -192,9 +193,7 @@ services.
             "Cloud BI Ecosystem",
             "Cloud data warehouses",
         ),
-        "Provider landscape": (
-            "Providers: AWS, GCP, Azure",
-        ),
+        "Provider landscape": ("Providers: AWS, GCP, Azure",),
     }
 
     CLOUD_TOPIC_DESCRIPTIONS: Mapping[str, str] = {
@@ -264,7 +263,9 @@ services.
     ) -> Dict[str, List[BiTopic]]:
         """Return grouped cloud topics covering foundations, ecosystem, and providers."""
 
-        return {section: topics for section, topics in group_topics_by_titles(groups).items()}
+        return {
+            section: topics for section, topics in group_topics_by_titles(groups).items()
+        }
 
 
     def build_cloud_topic_dataframe(

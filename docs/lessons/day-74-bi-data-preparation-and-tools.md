@@ -44,6 +44,7 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
 
     ```python title="lesson.py"
     """Interactive lesson script for Day 74: BI Data Preparation and Tools."""
+
     from __future__ import annotations
 
     import pandas as pd
@@ -83,7 +84,14 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
         sales = pd.DataFrame(
             {
                 "Customer ID": [101, 101, 102, 103, 104, 105],
-                "Order Date": ["2023-01-01", "2023-01-01", "2023-02-15", "2023-03-21", None, "2023-04-10"],
+                "Order Date": [
+                    "2023-01-01",
+                    "2023-01-01",
+                    "2023-02-15",
+                    "2023-03-21",
+                    None,
+                    "2023-04-10",
+                ],
                 "Revenue": [1000.0, 1000.0, 850.0, 430.0, None, 640.0],
                 "Cost": [600.0, 600.0, 500.0, 210.0, 150.0, None],
                 "Segment": ["enterprise", "enterprise", "smb", None, "consumer", "smb"],
@@ -93,7 +101,13 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
         pipeline = build_pipeline(
             [
                 (remove_duplicates, {"subset": ["Customer ID", "Order Date"]}),
-                (handle_missing_values, {"strategy": "fill", "fill_value": {"Revenue": 0.0, "Cost": 0.0, "Segment": "Unknown"}}),
+                (
+                    handle_missing_values,
+                    {
+                        "strategy": "fill",
+                        "fill_value": {"Revenue": 0.0, "Cost": 0.0, "Segment": "Unknown"},
+                    },
+                ),
                 (standardise_types, {}),
                 (enrich_metrics, {}),
             ]
@@ -166,6 +180,7 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
 
     ```python title="solutions.py"
     """Utility functions for Day 74: BI Data Preparation and Tools."""
+
     from __future__ import annotations
 
     from typing import Callable, Dict, Iterable, List, Sequence, Tuple
@@ -253,7 +268,9 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
                 }
             )
 
-        return pd.DataFrame(entries, columns=["category", "title", "objective", "workflow_highlights"])
+        return pd.DataFrame(
+            entries, columns=["category", "title", "objective", "workflow_highlights"]
+        )
 
 
     def build_transformation_helpers() -> Dict[str, List[str]]:
@@ -278,7 +295,9 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
         }
 
 
-    def remove_duplicates(df: pd.DataFrame, subset: Iterable[str] | None = None) -> pd.DataFrame:
+    def remove_duplicates(
+        df: pd.DataFrame, subset: Iterable[str] | None = None
+    ) -> pd.DataFrame:
         """Return a dataframe with duplicate rows removed.
 
         Parameters
@@ -294,7 +313,9 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
 
 
     def handle_missing_values(
-        df: pd.DataFrame, strategy: str = "drop", fill_value: Dict[str, object] | object | None = None
+        df: pd.DataFrame,
+        strategy: str = "drop",
+        fill_value: Dict[str, object] | object | None = None,
     ) -> pd.DataFrame:
         """Handle missing values using the chosen strategy.
 
@@ -319,7 +340,9 @@ These shared patterns keep BI data reliable regardless of the toolset in play, a
         return df.fillna(value=fill_value).reset_index(drop=True)
 
 
-    def build_pipeline(transformations: Sequence[Tuple[Callable[[pd.DataFrame], pd.DataFrame], Dict]]) -> Callable[[pd.DataFrame], pd.DataFrame]:
+    def build_pipeline(
+        transformations: Sequence[Tuple[Callable[[pd.DataFrame], pd.DataFrame], Dict]],
+    ) -> Callable[[pd.DataFrame], pd.DataFrame]:
         """Compose a pipeline of dataframe transformations.
 
         Each transformation is a tuple of (callable, kwargs) that will be executed in

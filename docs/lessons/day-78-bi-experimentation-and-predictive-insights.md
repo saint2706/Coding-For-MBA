@@ -38,7 +38,9 @@ This lesson connects experimentation design, forecasting, and machine learning s
         treatment = [210, 214, 208, 215, 211]
         summary = solutions.summarize_ab_test(control, treatment)
         p_value = solutions.welch_t_p_value(control, treatment, alternative="greater")
-        hypothesis = solutions.run_hypothesis_test(treatment, baseline=200, alternative="greater")
+        hypothesis = solutions.run_hypothesis_test(
+            treatment, baseline=200, alternative="greater"
+        )
         error_table = solutions.type_error_table(alpha=0.05, beta=0.2)
 
         print("=== Experimentation ===")
@@ -50,7 +52,14 @@ This lesson connects experimentation design, forecasting, and machine learning s
 
         cohort_events = pd.DataFrame(
             {
-                "cohort": ["2024-01", "2024-01", "2024-01", "2024-02", "2024-02", "2024-02"],
+                "cohort": [
+                    "2024-01",
+                    "2024-01",
+                    "2024-01",
+                    "2024-02",
+                    "2024-02",
+                    "2024-02",
+                ],
                 "period": [0, 1, 2, 0, 1, 2],
                 "active_users": [180, 135, 90, 200, 150, 120],
             }
@@ -84,13 +93,17 @@ This lesson connects experimentation design, forecasting, and machine learning s
                 "revenue": [4.0, 6.0, 8.0, 10.0, 12.0],
             }
         )
-        model, predictions = solutions.supervised_predictions(training, target_col="revenue")
+        model, predictions = solutions.supervised_predictions(
+            training, target_col="revenue"
+        )
         print("=== Machine Learning ===")
         print("Regression analysis:")
         print(solutions.regression_analysis_table(model))
         print("Predictions:", predictions.tolist())
 
-        polynomial = solutions.engineer_polynomial_features(training, column="spend", degree=3)
+        polynomial = solutions.engineer_polynomial_features(
+            training, column="spend", degree=3
+        )
         print("Polynomial features:")
         print(polynomial.head())
 
@@ -107,7 +120,9 @@ This lesson connects experimentation design, forecasting, and machine learning s
         print("Segment scorecard:")
         print(scorecard)
 
-        report = solutions.reinforcement_learning_report([0.1, 0.3, 0.5], epsilon=0.2, draws=10, seed=42)
+        report = solutions.reinforcement_learning_report(
+            [0.1, 0.3, 0.5], epsilon=0.2, draws=10, seed=42
+        )
         print("Reinforcement learning report:")
         print(report)
 
@@ -171,7 +186,10 @@ This lesson connects experimentation design, forecasting, and machine learning s
 
 
     def welch_t_p_value(
-        control: Iterable[float], treatment: Iterable[float], *, alternative: str = "two-sided"
+        control: Iterable[float],
+        treatment: Iterable[float],
+        *,
+        alternative: str = "two-sided",
     ) -> float:
         """Compute a Welch's t-test p-value without requiring SciPy."""
 
@@ -236,7 +254,11 @@ This lesson connects experimentation design, forecasting, and machine learning s
         if not 0 <= alpha <= 1 or not 0 <= beta <= 1:
             raise ValueError("Alpha and beta must be probabilities between 0 and 1")
         data = [
-            {"error": "Type I", "probability": float(alpha), "description": "False positive"},
+            {
+                "error": "Type I",
+                "probability": float(alpha),
+                "description": "False positive",
+            },
             {
                 "error": "Type II",
                 "probability": float(beta),
@@ -357,16 +379,18 @@ This lesson connects experimentation design, forecasting, and machine learning s
         trend = intercept + slope * np.arange(values.size)
         pattern = seasonal_pattern(values, max(1, season_length))
         season_length = max(1, season_length)
-        seasonal_component = np.array([pattern[i % season_length] for i in range(values.size)])
+        seasonal_component = np.array(
+            [pattern[i % season_length] for i in range(values.size)]
+        )
         ordered["trend"] = trend
         ordered["seasonality"] = seasonal_component
         ordered["fitted"] = ordered["trend"] + ordered["seasonality"]
 
         future_index = np.arange(values.size, values.size + horizon)
         forecast_trend = intercept + slope * future_index
-        future_seasonal = np.array([
-            pattern[i % season_length] for i in range(values.size, values.size + horizon)
-        ])
+        future_seasonal = np.array(
+            [pattern[i % season_length] for i in range(values.size, values.size + horizon)]
+        )
         forecast_values = forecast_trend + future_seasonal
         forecast_df = pd.DataFrame(
             {
@@ -387,8 +411,12 @@ This lesson connects experimentation design, forecasting, and machine learning s
             raise KeyError(f"DataFrame missing required columns: {sorted(required)}")
         summary = {
             "component": ["metric", "trend", "seasonality", "fitted"],
-            "mean": [df[col].mean() for col in ["metric", "trend", "seasonality", "fitted"]],
-            "std": [df[col].std(ddof=1) for col in ["metric", "trend", "seasonality", "fitted"]],
+            "mean": [
+                df[col].mean() for col in ["metric", "trend", "seasonality", "fitted"]
+            ],
+            "std": [
+                df[col].std(ddof=1) for col in ["metric", "trend", "seasonality", "fitted"]
+            ],
         }
         return pd.DataFrame(summary)
 
@@ -441,9 +469,7 @@ This lesson connects experimentation design, forecasting, and machine learning s
     def regression_analysis_table(model: LinearRegressionModel) -> pd.DataFrame:
         """Return a tidy view of regression coefficients for reporting."""
 
-        rows = [
-            {"term": "intercept", "coefficient": model.intercept, "impact": "baseline"}
-        ]
+        rows = [{"term": "intercept", "coefficient": model.intercept, "impact": "baseline"}]
         for feature, value in model.coefficients.items():
             rows.append({"term": feature, "coefficient": value, "impact": "marginal"})
         return pd.DataFrame(rows)
@@ -496,7 +522,10 @@ This lesson connects experimentation design, forecasting, and machine learning s
 
 
     def epsilon_greedy_action(
-        values: Sequence[float], *, epsilon: float = 0.1, random_state: np.random.Generator | None = None
+        values: Sequence[float],
+        *,
+        epsilon: float = 0.1,
+        random_state: np.random.Generator | None = None,
     ) -> Tuple[int, bool]:
         """Choose an action using an epsilon-greedy policy for reinforcement learning."""
 
@@ -520,7 +549,9 @@ This lesson connects experimentation design, forecasting, and machine learning s
     ) -> Tuple[LinearRegressionModel, pd.Series]:
         """Train a regression model and return in-sample predictions."""
 
-        model = fit_linear_regression(frame, target_col=target_col, feature_cols=feature_cols)
+        model = fit_linear_regression(
+            frame, target_col=target_col, feature_cols=feature_cols
+        )
         features = frame[[col for col in frame.columns if col != target_col]]
         predictions = model.predict(features)
         return model, predictions
@@ -538,7 +569,11 @@ This lesson connects experimentation design, forecasting, and machine learning s
 
 
     def reinforcement_learning_report(
-        estimates: Sequence[float], *, epsilon: float = 0.1, draws: int = 100, seed: int | None = None
+        estimates: Sequence[float],
+        *,
+        epsilon: float = 0.1,
+        draws: int = 100,
+        seed: int | None = None,
     ) -> pd.DataFrame:
         """Simulate epsilon-greedy choices to illustrate exploration vs exploitation."""
 
@@ -546,7 +581,9 @@ This lesson connects experimentation design, forecasting, and machine learning s
         choices: List[int] = []
         explore_flags: List[bool] = []
         for _ in range(draws):
-            action, explore = epsilon_greedy_action(estimates, epsilon=epsilon, random_state=rng)
+            action, explore = epsilon_greedy_action(
+                estimates, epsilon=epsilon, random_state=rng
+            )
             choices.append(action)
             explore_flags.append(explore)
         return pd.DataFrame({"action": choices, "explore": explore_flags})

@@ -73,7 +73,10 @@ Focus your interview preparation with these roadmap tasks.
 
     from textwrap import indent
 
-    from Day_84_BI_Career_Development_and_Capstone import generate_checklists, serialize_checklists
+    from Day_84_BI_Career_Development_and_Capstone import (
+        generate_checklists,
+        serialize_checklists,
+    )
 
     # %%
     CAPSTONE_PHASES: list[tuple[str, str]] = [
@@ -114,7 +117,7 @@ Focus your interview preparation with these roadmap tasks.
 
 
     # %%
-    def display_checklists(checklists = CHECKLISTS) -> None:
+    def display_checklists(checklists=CHECKLISTS) -> None:
         """Print actionable checklists for learners."""
 
         print("Roadmap-aligned checklists\n")
@@ -194,7 +197,9 @@ Focus your interview preparation with these roadmap tasks.
             return {"title": self.title, "status": self.status, "notes": self.notes}
 
 
-    def load_career_topics(*, groups: Mapping[str, Iterable[str]] = ROADMAP_GROUPS) -> dict[str, list[BiTopic]]:
+    def load_career_topics(
+        *, groups: Mapping[str, Iterable[str]] = ROADMAP_GROUPS
+    ) -> dict[str, list[BiTopic]]:
         """Return the roadmap topics grouped for the capstone."""
 
         return group_topics_by_titles(groups)
@@ -216,7 +221,7 @@ Focus your interview preparation with these roadmap tasks.
 
 
     def _checklists_to_serializable(
-        checklists: Mapping[str, Iterable[ChecklistItem]]
+        checklists: Mapping[str, Iterable[ChecklistItem]],
     ) -> dict[str, list[dict[str, str]]]:
         """Convert checklist dataclasses into JSON serializable dictionaries."""
 
@@ -235,7 +240,9 @@ Focus your interview preparation with these roadmap tasks.
     ) -> str:
         """Return JSON for the grouped checklists and optionally persist it."""
 
-        resolved = checklists if checklists is not None else generate_checklists(groups=groups)
+        resolved = (
+            checklists if checklists is not None else generate_checklists(groups=groups)
+        )
         serializable = _checklists_to_serializable(resolved)
         json_text = json.dumps(serializable, indent=indent)
         if path is not None:

@@ -51,6 +51,7 @@ Encourage learners to map each persona to the operating model and strategy tier 
     STRATEGY_GROUPS = load_topics()
     STRATEGY_FRAME = build_topic_dataframe()
 
+
     # %%
     def display_strategy_clusters(groups: dict[str, list]) -> None:
         """Print the topic groupings used to facilitate the session."""
@@ -156,7 +157,9 @@ Encourage learners to map each persona to the operating model and strategy tier 
     }
 
 
-    def load_topics(*, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS) -> Dict[str, List[BiTopic]]:
+    def load_topics(
+        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
+    ) -> Dict[str, List[BiTopic]]:
         """Return roadmap topics grouped into BI operating and strategy tiers."""
 
         return {group: topics for group, topics in group_topics_by_titles(groups).items()}

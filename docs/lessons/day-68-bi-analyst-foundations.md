@@ -48,6 +48,7 @@ moving into tooling, governance, and storytelling modules.
     FOUNDATION_GROUPS = load_topics()
     FOUNDATION_DF = build_topic_dataframe()
 
+
     # %%
     def preview_foundation_topics(frame: pd.DataFrame) -> None:
         """Print a markdown table of the foundational topics for discussion."""
@@ -138,7 +139,9 @@ moving into tooling, governance, and storytelling modules.
 
 
     def build_topic_dataframe(
-        *, section: str = FOUNDATION_SECTION, descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS
+        *,
+        section: str = FOUNDATION_SECTION,
+        descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS,
     ) -> pd.DataFrame:
         """Return a pandas DataFrame describing the BI foundations topics."""
 

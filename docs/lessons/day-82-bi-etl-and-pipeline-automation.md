@@ -43,6 +43,7 @@ handoffs without requiring access to a live orchestrator.
     AIRFLOW_DAG = build_airflow_dag_stub()
     DBT_PROJECT = build_dbt_project_stub()
 
+
     # %%
     def summarize_topics() -> None:
         """Print the roadmap groupings that frame the ETL automation lesson."""
@@ -99,7 +100,9 @@ handoffs without requiring access to a live orchestrator.
         print("\nExposures:")
         for exposure, config in DBT_PROJECT["exposures"].items():
             deps = ", ".join(config["depends_on"])
-            print(f"- {exposure} ({config['type']}) depends on [{deps}] -> owner {config['owner']}")
+            print(
+                f"- {exposure} ({config['type']}) depends on [{deps}] -> owner {config['owner']}"
+            )
 
         print(f"\nPipeline completion task: {DBT_PROJECT['final_task']}")
 
@@ -144,9 +147,7 @@ handoffs without requiring access to a live orchestrator.
             "Airflow",
             "dbt",
         ),
-        "Delivery lifecycle": (
-            "End-to-end Analytics Project",
-        ),
+        "Delivery lifecycle": ("End-to-end Analytics Project",),
     }
 
 
@@ -159,6 +160,7 @@ handoffs without requiring access to a live orchestrator.
 
 
     # --- Pipeline sketch helpers -----------------------------------------------
+
 
     @dataclass(frozen=True, slots=True)
     class PipelineTask:
@@ -205,7 +207,9 @@ handoffs without requiring access to a live orchestrator.
     )
 
 
-    def build_pipeline_outline(steps: Sequence[PipelineTask] = PIPELINE_STEPS) -> list[PipelineTask]:
+    def build_pipeline_outline(
+        steps: Sequence[PipelineTask] = PIPELINE_STEPS,
+    ) -> list[PipelineTask]:
         """Return a mutable outline of the canonical ETL pipeline tasks."""
 
         return list(steps)
@@ -224,7 +228,9 @@ handoffs without requiring access to a live orchestrator.
             task_definitions[task.task_id] = {
                 "upstream": task.upstream,
                 "owner": task.owner,
-                "retries": 2 if task.task_id in {"extract_sources", "load_warehouse"} else 1,
+                "retries": (
+                    2 if task.task_id in {"extract_sources", "load_warehouse"} else 1
+                ),
             }
         return {
             "dag_id": dag_id,
