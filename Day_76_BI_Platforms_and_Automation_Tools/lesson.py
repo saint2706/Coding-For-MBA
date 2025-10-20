@@ -13,7 +13,9 @@ from Day_76_BI_Platforms_and_Automation_Tools import (
 
 TOPIC_GROUPS = load_topics()
 PLATFORM_MATRIX = build_platform_matrix()
-EXPORT_MATRIX = compare_export_formats(include_formats=("PDF", "PowerPoint", "Excel", "CSV", "Google Sheets"))
+EXPORT_MATRIX = compare_export_formats(
+    include_formats=("PDF", "PowerPoint", "Excel", "CSV", "Google Sheets")
+)
 
 PYTHON_R_SNIPPET = """\
 ```python
@@ -34,7 +36,9 @@ def preview_groupings() -> None:
 
     rows: list[dict[str, str]] = []
     for section, topics in TOPIC_GROUPS.items():
-        rows.append({"Section": section, "Titles": ", ".join(topic.title for topic in topics)})
+        rows.append(
+            {"Section": section, "Titles": ", ".join(topic.title for topic in topics)}
+        )
     frame = pd.DataFrame(rows)
     print("\nDay 76 roadmap groupings\n")
     print(frame.to_markdown(index=False))
@@ -52,7 +56,11 @@ def contrast_export_formats() -> None:
 
     print("\nExport format coverage\n")
     coverage = EXPORT_MATRIX.assign(
-        **{column: EXPORT_MATRIX[column].map(lambda value: "✅" if value else "⬜") for column in EXPORT_MATRIX.columns if column != "platform"}
+        **{
+            column: EXPORT_MATRIX[column].map(lambda value: "✅" if value else "⬜")
+            for column in EXPORT_MATRIX.columns
+            if column != "platform"
+        }
     )
     print(coverage.to_markdown(index=False))
 

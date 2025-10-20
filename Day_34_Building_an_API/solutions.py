@@ -61,9 +61,9 @@ if __name__ == "__main__":
     #    - http://127.0.0.1:5000/api/employees
     #    - http://127.0.0.1:5000/api/employees/2
     #    - http://127.0.0.1:5000/api/employees/99 (to see the 404 error)
-    
+
     import os
-    
+
     # Skip running the server in test/automated environments
     if os.environ.get("FLASK_RUN_TEST_MODE") != "1":
         # Only enable debug mode if explicitly requested via FLASK_DEBUG

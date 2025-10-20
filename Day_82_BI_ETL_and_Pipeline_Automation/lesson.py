@@ -17,6 +17,7 @@ PIPELINE_OUTLINE = build_pipeline_outline()
 AIRFLOW_DAG = build_airflow_dag_stub()
 DBT_PROJECT = build_dbt_project_stub()
 
+
 # %%
 def summarize_topics() -> None:
     """Print the roadmap groupings that frame the ETL automation lesson."""
@@ -73,7 +74,9 @@ def review_dbt_stub() -> None:
     print("\nExposures:")
     for exposure, config in DBT_PROJECT["exposures"].items():
         deps = ", ".join(config["depends_on"])
-        print(f"- {exposure} ({config['type']}) depends on [{deps}] -> owner {config['owner']}")
+        print(
+            f"- {exposure} ({config['type']}) depends on [{deps}] -> owner {config['owner']}"
+        )
 
     print(f"\nPipeline completion task: {DBT_PROJECT['final_task']}")
 

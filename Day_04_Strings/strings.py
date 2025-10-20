@@ -10,22 +10,22 @@ into functions for better organization and testability.
 def generate_report_header(title, year):
     """
     Creates a formatted report header with uppercase text and asterisks.
-    
+
     This demonstrates string formatting and the .upper() method which
     converts all letters to uppercase.
-    
+
     Parameters
     ----------
     title : str
         The report title
     year : int
         The fiscal year
-    
+
     Returns
     -------
     str
         A formatted header string
-    
+
     Example
     -------
     >>> generate_report_header("Quarterly Sales Report", 2024)
@@ -39,20 +39,20 @@ def generate_report_header(title, year):
 def clean_and_format_name(raw_name):
     """
     Cleans and capitalizes a raw name string.
-    
+
     Common data cleaning task: remove extra whitespace and ensure
     proper capitalization (Title Case).
-    
+
     Parameters
     ----------
     raw_name : str
         A name that may have extra spaces or inconsistent capitalization
-    
+
     Returns
     -------
     str
         A cleaned and properly formatted name
-    
+
     Example
     -------
     >>> clean_and_format_name("  john doe  ")
@@ -66,10 +66,10 @@ def clean_and_format_name(raw_name):
 def format_date_string(date_str, old_separator="-", new_separator="/"):
     """
     Replaces separators in a date string.
-    
+
     Demonstrates the .replace() method for string substitution.
     Useful for standardizing date formats across different systems.
-    
+
     Parameters
     ----------
     date_str : str
@@ -78,12 +78,12 @@ def format_date_string(date_str, old_separator="-", new_separator="/"):
         The separator to replace (default is "-")
     new_separator : str, optional
         The new separator (default is "/")
-    
+
     Returns
     -------
     str
         Date string with new separator
-    
+
     Example
     -------
     >>> format_date_string("2023-Jan-15")
@@ -96,20 +96,20 @@ def format_date_string(date_str, old_separator="-", new_separator="/"):
 def parse_sku(sku):
     """
     Parses a SKU (Stock Keeping Unit) string into its component parts.
-    
+
     Demonstrates the .split() method which breaks a string into a list
     based on a separator character. Common for parsing structured data.
-    
+
     Parameters
     ----------
     sku : str
         A SKU string in format "TYPE-NAME-ID"
-    
+
     Returns
     -------
     dict or None
         Dictionary with 'type', 'name', and 'id' keys, or None if format is invalid
-    
+
     Example
     -------
     >>> parse_sku("PROD-GADGET-001")
@@ -118,7 +118,7 @@ def parse_sku(sku):
     # .split("-") breaks the string into a list wherever it finds a "-"
     # For example: "A-B-C" becomes ["A", "B", "C"]
     parts = sku.split("-")
-    
+
     # Check if we got exactly 3 parts (safety check)
     if len(parts) == 3:
         # Create a dictionary with named keys for clarity
@@ -129,22 +129,22 @@ def parse_sku(sku):
 def is_transaction_type(transaction_id, prefix):
     """
     Checks if a transaction ID starts with a given prefix.
-    
+
     Demonstrates the .startswith() method - useful for categorizing
     or filtering data based on prefixes.
-    
+
     Parameters
     ----------
     transaction_id : str
         The transaction identifier
     prefix : str
         The prefix to check for (e.g., "INV" for invoice)
-    
+
     Returns
     -------
     bool
         True if transaction_id starts with prefix, False otherwise
-    
+
     Example
     -------
     >>> is_transaction_type("INV-2024-03-15", "INV")
@@ -157,21 +157,21 @@ def is_transaction_type(transaction_id, prefix):
 def has_file_extension(filename, extension):
     """
     Checks if a filename ends with a given extension.
-    
+
     Demonstrates the .endswith() method - useful for file type validation.
-    
+
     Parameters
     ----------
     filename : str
         The name of the file
     extension : str
         The file extension to check for (e.g., ".pdf")
-    
+
     Returns
     -------
     bool
         True if filename ends with extension, False otherwise
-    
+
     Example
     -------
     >>> has_file_extension("report.pdf", ".pdf")
@@ -184,22 +184,22 @@ def has_file_extension(filename, extension):
 def feedback_contains_keyword(feedback, keyword):
     """
     Checks if a feedback string contains a specific keyword.
-    
+
     Demonstrates the .find() method for searching within strings.
     Returns -1 if not found, otherwise returns the position.
-    
+
     Parameters
     ----------
     feedback : str
         Customer feedback text
     keyword : str
         The word to search for
-    
+
     Returns
     -------
     bool
         True if keyword is found in feedback, False otherwise
-    
+
     Example
     -------
     >>> feedback_contains_keyword("The service is slow", "slow")

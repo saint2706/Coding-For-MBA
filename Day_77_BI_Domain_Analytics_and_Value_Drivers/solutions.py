@@ -55,9 +55,7 @@ def calculate_revenue_kpis(
 ) -> Dict[str, float]:
     """Compute foundational KPIs for revenue-facing teams."""
 
-    avg_revenue_per_customer = (
-        total_revenue / customer_count if customer_count else 0.0
-    )
+    avg_revenue_per_customer = total_revenue / customer_count if customer_count else 0.0
     marketing_roi = (
         (total_revenue - marketing_spend) / marketing_spend if marketing_spend else 0.0
     )
@@ -122,19 +120,11 @@ def calculate_vertical_kpis(
     operating_margin = (
         (finance_revenue - finance_cost) / finance_revenue if finance_revenue else 0.0
     )
-    retail_return_rate = (
-        retail_returns / retail_orders if retail_orders else 0.0
-    )
-    bed_utilization = (
-        healthcare_patients / healthcare_beds if healthcare_beds else 0.0
-    )
-    hr_turnover_rate = (
-        hr_separations / hr_headcount if hr_headcount else 0.0
-    )
+    retail_return_rate = retail_returns / retail_orders if retail_orders else 0.0
+    bed_utilization = healthcare_patients / healthcare_beds if healthcare_beds else 0.0
+    hr_turnover_rate = hr_separations / hr_headcount if hr_headcount else 0.0
     manufacturing_yield = (
-        (
-            manufacturing_units_produced - manufacturing_units_defective
-        )
+        (manufacturing_units_produced - manufacturing_units_defective)
         / manufacturing_units_produced
         if manufacturing_units_produced
         else 0.0

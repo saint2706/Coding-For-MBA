@@ -10,10 +10,10 @@ is refactored into functions for better organization and testability.
 def create_customer_profile(cust_id, first, last, email, company, is_premium, spent):
     """
     Creates a dictionary representing a customer profile.
-    
+
     Dictionaries store data as key-value pairs. They're perfect for
     representing structured records like customer profiles.
-    
+
     Parameters
     ----------
     cust_id : str
@@ -30,15 +30,17 @@ def create_customer_profile(cust_id, first, last, email, company, is_premium, sp
         Premium membership status
     spent : float
         Total amount spent
-    
+
     Returns
     -------
     dict
         A dictionary containing all customer information
-    
+
     Example
     -------
-    >>> create_customer_profile("C001", "John", "Doe", "j@example.com", "Acme", True, 5000)
+    >>> create_customer_profile(
+    ...     "C001", "John", "Doe", "j@example.com", "Acme", True, 5000
+    ... )
     {'customer_id': 'C001', 'first_name': 'John', ...}
     """
     # Dictionary syntax: {key: value, key: value, ...}
@@ -57,10 +59,10 @@ def create_customer_profile(cust_id, first, last, email, company, is_premium, sp
 def get_customer_attribute(customer_profile, attribute, default_value="N/A"):
     """
     Safely gets an attribute from a customer profile with a default fallback.
-    
+
     The .get() method is safer than direct access with [] because it won't
     cause an error if the key doesn't exist.
-    
+
     Parameters
     ----------
     customer_profile : dict
@@ -69,12 +71,12 @@ def get_customer_attribute(customer_profile, attribute, default_value="N/A"):
         The key to look up
     default_value : any, optional
         Value to return if key doesn't exist (default is "N/A")
-    
+
     Returns
     -------
     any
         The value associated with the key, or default_value if not found
-    
+
     Example
     -------
     >>> profile = {"name": "John", "age": 30}
@@ -89,9 +91,9 @@ def get_customer_attribute(customer_profile, attribute, default_value="N/A"):
 def update_customer_record(customer_profile, key, value, is_new=False):
     """
     Updates or adds a key-value pair to a customer profile.
-    
+
     Demonstrates dictionary modification: adding new keys or updating existing ones.
-    
+
     Parameters
     ----------
     customer_profile : dict
@@ -102,12 +104,12 @@ def update_customer_record(customer_profile, key, value, is_new=False):
         The value to set or add to existing value
     is_new : bool, optional
         If True, creates a new key. If False, adds to existing value (default False)
-    
+
     Returns
     -------
     dict
         A new dictionary with the update applied
-    
+
     Example
     -------
     >>> profile = {"total_spent": 1000}
@@ -116,7 +118,7 @@ def update_customer_record(customer_profile, key, value, is_new=False):
     """
     # Create a copy to avoid modifying the original dictionary
     profile_copy = customer_profile.copy()
-    
+
     if is_new:
         # Add a new key-value pair or overwrite existing
         profile_copy[key] = value
@@ -130,21 +132,21 @@ def update_customer_record(customer_profile, key, value, is_new=False):
 def remove_customer_attribute(customer_profile, attribute):
     """
     Removes an attribute from a customer profile if it exists.
-    
+
     Demonstrates the 'del' statement for removing dictionary keys.
-    
+
     Parameters
     ----------
     customer_profile : dict
         The customer dictionary
     attribute : str
         The key to remove
-    
+
     Returns
     -------
     dict
         A new dictionary with the attribute removed
-    
+
     Example
     -------
     >>> profile = {"name": "John", "temp_field": "xyz"}
@@ -153,7 +155,7 @@ def remove_customer_attribute(customer_profile, attribute):
     """
     # Create a copy to avoid modifying the original
     profile_copy = customer_profile.copy()
-    
+
     # Check if the key exists before trying to delete it
     if attribute in profile_copy:
         # 'del' removes a key-value pair from the dictionary
@@ -164,21 +166,21 @@ def remove_customer_attribute(customer_profile, attribute):
 def add_project_to_employee(employee_profile, new_project):
     """
     Adds a new project to an employee's project list.
-    
+
     Demonstrates working with nested data structures: a list inside a dictionary.
-    
+
     Parameters
     ----------
     employee_profile : dict
         Employee dictionary containing a 'projects' list
     new_project : str
         Name of the new project to add
-    
+
     Returns
     -------
     dict
         Updated employee profile with new project added
-    
+
     Example
     -------
     >>> emp = {"name": "Jane", "projects": ["Project A"]}
@@ -187,13 +189,13 @@ def add_project_to_employee(employee_profile, new_project):
     """
     # Create a copy of the dictionary
     profile_copy = employee_profile.copy()
-    
+
     # Ensure the 'projects' key exists and contains a list
     if "projects" in profile_copy and isinstance(profile_copy["projects"], list):
         # To avoid modifying a list within the original dict, we copy it too
         # This is important when dealing with mutable objects inside dictionaries
         profile_copy["projects"] = profile_copy["projects"].copy()
-        
+
         # Now we can safely append to the copied list
         profile_copy["projects"].append(new_project)
     return profile_copy

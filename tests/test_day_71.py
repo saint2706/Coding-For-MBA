@@ -25,8 +25,12 @@ def _load_module(module_name: str, relative_path: str) -> None:
         spec.loader.exec_module(module)
 
 
-_load_module("Day_24_Pandas_Advanced.pandas_adv", "Day_24_Pandas_Advanced/pandas_adv.py")
-_load_module("Day_25_Data_Cleaning.data_cleaning", "Day_25_Data_Cleaning/data_cleaning.py")
+_load_module(
+    "Day_24_Pandas_Advanced.pandas_adv", "Day_24_Pandas_Advanced/pandas_adv.py"
+)
+_load_module(
+    "Day_25_Data_Cleaning.data_cleaning", "Day_25_Data_Cleaning/data_cleaning.py"
+)
 _load_module("Day_26_Statistics.stats", "Day_26_Statistics/stats.py")
 
 from Day_71_BI_Data_Landscape import (
@@ -93,8 +97,15 @@ def test_legacy_lessons_execute_key_paths() -> None:
     assert PANDAS_ADV.select_by_label(indexed_df, "north", ["Revenue"]) is not None
     assert PANDAS_ADV.select_by_position(indexed_df, 1, slice(0, 2)) is not None
     assert not PANDAS_ADV.filter_by_high_revenue(indexed_df, 2000.0).empty
-    assert not PANDAS_ADV.filter_by_product_and_region(indexed_df, "widget", "north").empty
-    assert not PANDAS_ADV.handle_missing_data(missing_df, strategy="fill").isna().any().any()
+    assert not PANDAS_ADV.filter_by_product_and_region(
+        indexed_df, "widget", "north"
+    ).empty
+    assert (
+        not PANDAS_ADV.handle_missing_data(missing_df, strategy="fill")
+        .isna()
+        .any()
+        .any()
+    )
     assert PANDAS_ADV.build_revenue_by_region_bar_chart(indexed_df) is not None
 
     messy = pd.DataFrame(

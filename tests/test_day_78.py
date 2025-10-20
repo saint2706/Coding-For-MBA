@@ -44,7 +44,9 @@ def test_ab_testing_summary_and_p_value() -> None:
         "lift_vs_control",
     }
     expected_lift = (np.mean(treatment) - np.mean(control)) / np.mean(control)
-    treatment_row = summary.loc[summary["group"] == "treatment", "lift_vs_control"].iat[0]
+    treatment_row = summary.loc[summary["group"] == "treatment", "lift_vs_control"].iat[
+        0
+    ]
     assert treatment_row == pytest.approx(expected_lift, rel=1e-6)
 
     p_value = solutions.welch_t_p_value(control, treatment, alternative="greater")
@@ -69,7 +71,9 @@ def test_cohort_retention_segments() -> None:
 
 def test_forecast_produces_expected_trend() -> None:
     history = pd.DataFrame({"metric": [100, 110, 120, 130]})
-    fitted, forecast = solutions.forecast_business_metric(history, value_col="metric", horizon=2)
+    fitted, forecast = solutions.forecast_business_metric(
+        history, value_col="metric", horizon=2
+    )
 
     assert {"metric", "trend", "seasonality", "fitted"}.issubset(fitted.columns)
     assert list(forecast.columns) == ["period", "forecast", "trend", "seasonality"]
@@ -97,7 +101,9 @@ def test_supervised_and_unsupervised_helpers() -> None:
 
 
 def test_reinforcement_learning_report_consistency() -> None:
-    report = solutions.reinforcement_learning_report([0.1, 0.3, 0.5], epsilon=0.0, draws=5, seed=1)
+    report = solutions.reinforcement_learning_report(
+        [0.1, 0.3, 0.5], epsilon=0.0, draws=5, seed=1
+    )
     assert set(report.columns) == {"action", "explore"}
     assert report["explore"].sum() == 0
     assert report["action"].nunique() == 1

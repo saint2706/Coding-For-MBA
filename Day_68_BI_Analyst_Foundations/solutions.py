@@ -54,7 +54,9 @@ def load_topics(*, section: str = FOUNDATION_SECTION) -> Dict[str, List[BiTopic]
 
 
 def build_topic_dataframe(
-    *, section: str = FOUNDATION_SECTION, descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS
+    *,
+    section: str = FOUNDATION_SECTION,
+    descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS,
 ) -> pd.DataFrame:
     """Return a pandas DataFrame describing the BI foundations topics."""
 

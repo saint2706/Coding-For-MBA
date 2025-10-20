@@ -12,6 +12,7 @@ from Day_70_BI_Metrics_and_Data_Literacy import build_topic_dataframe, load_topi
 TOPIC_GROUPS = load_topics()
 TOPIC_FRAME = build_topic_dataframe()
 
+
 # %%
 def safe_divide(numerator: pd.Series, denominator: pd.Series) -> pd.Series:
     """Return a ratio with zero-protection for classroom demos."""
@@ -58,10 +59,17 @@ def review_kpi_metrics(frame: pd.DataFrame) -> None:
     """Print the KPI DataFrame with formatted percentages for discussion."""
 
     formatted = frame.copy()
-    percent_columns = ["signup_rate", "purchase_rate", "overall_conversion", "marketing_roi"]
+    percent_columns = [
+        "signup_rate",
+        "purchase_rate",
+        "overall_conversion",
+        "marketing_roi",
+    ]
     for column in percent_columns:
         formatted[column] = (formatted[column] * 100).map("{:.1f}%".format)
-    formatted["average_order_value"] = formatted["average_order_value"].map("${:,.2f}".format)
+    formatted["average_order_value"] = formatted["average_order_value"].map(
+        "${:,.2f}".format
+    )
 
     print("\nSample campaign KPI review\n")
     print(formatted.to_markdown(index=False))

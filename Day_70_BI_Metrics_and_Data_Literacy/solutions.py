@@ -82,7 +82,9 @@ TOPIC_DESCRIPTIONS: Mapping[str, str] = {
 }
 
 
-def load_topics(*, sections: Mapping[str, Iterable[str]] = SECTION_TITLES) -> Dict[str, list[BiTopic]]:
+def load_topics(
+    *, sections: Mapping[str, Iterable[str]] = SECTION_TITLES
+) -> Dict[str, list[BiTopic]]:
     """Return roadmap topics grouped by the requested sections."""
 
     grouped_topics: Dict[str, list[BiTopic]] = {}
@@ -111,7 +113,9 @@ def build_topic_dataframe(
     frame = pd.DataFrame(records, columns=["section", "title", "description"])
     if frame.empty:
         return frame
-    deduped = frame.drop_duplicates(subset=["title"], keep="first").reset_index(drop=True)
+    deduped = frame.drop_duplicates(subset=["title"], keep="first").reset_index(
+        drop=True
+    )
     return deduped
 
 

@@ -12,6 +12,7 @@ from Day_68_BI_Analyst_Foundations import build_topic_dataframe, load_topics
 FOUNDATION_GROUPS = load_topics()
 FOUNDATION_DF = build_topic_dataframe()
 
+
 # %%
 def preview_foundation_topics(frame: pd.DataFrame) -> None:
     """Print a markdown table of the foundational topics for discussion."""

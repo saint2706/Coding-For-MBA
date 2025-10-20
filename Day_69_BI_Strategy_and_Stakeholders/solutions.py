@@ -52,7 +52,9 @@ TOPIC_DESCRIPTIONS: Mapping[str, str] = {
 }
 
 
-def load_topics(*, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS) -> Dict[str, List[BiTopic]]:
+def load_topics(
+    *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
+) -> Dict[str, List[BiTopic]]:
     """Return roadmap topics grouped into BI operating and strategy tiers."""
 
     return {group: topics for group, topics in group_topics_by_titles(groups).items()}

@@ -14,16 +14,13 @@ from Day_81_BI_Architecture_and_Data_Modeling import (
 )
 
 # %%
-STAR_SCHEMA_RESOURCE = (
-    "https://learn.microsoft.com/power-bi/guidance/star-schema"
-)
-SNOWFLAKE_SCHEMA_RESOURCE = (
-    "https://docs.snowflake.com/en/user-guide/sample-data-tpcds"
-)
+STAR_SCHEMA_RESOURCE = "https://learn.microsoft.com/power-bi/guidance/star-schema"
+SNOWFLAKE_SCHEMA_RESOURCE = "https://docs.snowflake.com/en/user-guide/sample-data-tpcds"
 
 TOPIC_FRAME = build_topic_dataframe()
 STAR_SCHEMA = build_star_schema_example()
 SNOWFLAKE_SCHEMA = build_snowflake_schema_example()
+
 
 # %%
 def schema_to_dataframe(schema: SchemaExample) -> pd.DataFrame:
@@ -39,7 +36,8 @@ def schema_to_dataframe(schema: SchemaExample) -> pd.DataFrame:
             "keys": ", ".join(fact.get("keys", [])),
             "business_fields": ", ".join(fact.get("measures", [])),
             "references": ", ".join(
-                f"{key} → {target}" for key, target in fact.get("references", {}).items()
+                f"{key} → {target}"
+                for key, target in fact.get("references", {}).items()
             ),
         }
     )
@@ -54,11 +52,15 @@ def schema_to_dataframe(schema: SchemaExample) -> pd.DataFrame:
                     dimension.get("attributes", dimension.get("measures", []))
                 ),
                 "references": ", ".join(
-                    f"{key} → {target}" for key, target in dimension.get("references", {}).items()
+                    f"{key} → {target}"
+                    for key, target in dimension.get("references", {}).items()
                 ),
             }
         )
-    return pd.DataFrame(records, columns=["table", "kind", "grain", "keys", "business_fields", "references"])
+    return pd.DataFrame(
+        records,
+        columns=["table", "kind", "grain", "keys", "business_fields", "references"],
+    )
 
 
 # %%
@@ -86,7 +88,9 @@ def main() -> None:
 
     summarize_topics(TOPIC_FRAME)
     review_schema("Retail star schema", STAR_SCHEMA, STAR_SCHEMA_RESOURCE)
-    review_schema("Retail snowflake schema", SNOWFLAKE_SCHEMA, SNOWFLAKE_SCHEMA_RESOURCE)
+    review_schema(
+        "Retail snowflake schema", SNOWFLAKE_SCHEMA, SNOWFLAKE_SCHEMA_RESOURCE
+    )
 
 
 # %%

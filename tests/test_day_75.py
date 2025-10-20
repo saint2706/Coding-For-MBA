@@ -16,6 +16,7 @@ from Day_75_BI_Visualization_and_Dashboard_Principles import solutions as sol
 
 # -- Figure helpers ---------------------------------------------------------
 
+
 def test_barplot_has_single_trace():
     fig = sol.create_barplot()
     assert len(fig.data) == 1
@@ -53,6 +54,7 @@ def test_map_has_single_trace():
 
 
 # -- Curriculum -------------------------------------------------------------
+
 
 def test_design_titles_present_in_dataframe():
     df = sol.build_visualization_topics_df()
@@ -132,4 +134,3 @@ def test_legacy_modules_basic_execution():
         "alpha",
         "is_significant",
     }
-

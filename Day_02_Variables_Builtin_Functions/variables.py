@@ -10,10 +10,10 @@ refactored into functions for better organization and testability.
 def display_company_profile(name, founded, revenue, is_public):
     """
     Displays the company's profile information in a formatted way.
-    
+
     This function demonstrates how variables can store different types
     of business data and how to present them clearly.
-    
+
     Parameters
     ----------
     name : str
@@ -37,18 +37,18 @@ def display_company_profile(name, founded, revenue, is_public):
 def analyze_weekly_sales(sales_data):
     """
     Analyzes and prints a summary of weekly sales data.
-    
+
     This function demonstrates Python's built-in functions:
     - len(): counts items in a list
     - sum(): adds all numbers in a list
     - min(): finds the smallest value
     - max(): finds the largest value
-    
+
     Parameters
     ----------
     sales_data : list of float
         A list of individual sale amounts
-    
+
     Returns
     -------
     dict or None
@@ -60,19 +60,19 @@ def analyze_weekly_sales(sales_data):
         return
 
     print("--- Weekly Sales Analysis ---")
-    
+
     # Built-in function len() counts how many items are in the list
     num_transactions = len(sales_data)
-    
+
     # Built-in function sum() adds up all the numbers in the list
     total_revenue = sum(sales_data)
-    
+
     # Built-in function min() finds the smallest number
     smallest_sale = min(sales_data)
-    
+
     # Built-in function max() finds the largest number
     largest_sale = max(sales_data)
-    
+
     # Calculate average: total divided by count
     # The "if...else" prevents division by zero
     average_sale = total_revenue / num_transactions if num_transactions > 0 else 0
@@ -82,7 +82,9 @@ def analyze_weekly_sales(sales_data):
     print(f"Total Weekly Revenue: ${total_revenue:.2f}")  # .2f = 2 decimal places
     print(f"Smallest Sale: ${smallest_sale:.2f}")
     print(f"Largest Sale: ${largest_sale:.2f}")
-    print(f"Average Sale Amount: ${round(average_sale, 2)}")  # round() is another built-in
+    print(
+        f"Average Sale Amount: ${round(average_sale, 2)}"
+    )  # round() is another built-in
     print("-" * 20)
 
     # Return a dictionary with all the calculated values
@@ -99,12 +101,12 @@ def analyze_weekly_sales(sales_data):
 def interactive_profit_calculator():
     """
     Handles user input to calculate and display profit.
-    
+
     This function demonstrates:
     - The input() function to get user input
     - Type conversion with float()
     - Error handling with try/except blocks
-    
+
     Returns
     -------
     float or None
@@ -116,7 +118,7 @@ def interactive_profit_calculator():
         # float() converts the text string to a decimal number
         user_revenue = float(input("Enter your total revenue: "))
         user_expenses = float(input("Enter your total expenses: "))
-        
+
         # Simple calculation: Revenue - Expenses = Profit
         profit = user_revenue - user_expenses
         print(f"Your calculated profit is: ${profit:.2f}")
@@ -130,7 +132,7 @@ def interactive_profit_calculator():
 
 if __name__ == "__main__":
     # This block only runs when the file is executed directly
-    
+
     # --- Storing Company Profile in Variables ---
     # We pass different types of data: string, int, float, and boolean
     display_company_profile("InnovateCorp", 2015, 2500000.50, False)

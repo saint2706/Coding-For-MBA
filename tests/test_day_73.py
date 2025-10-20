@@ -63,12 +63,18 @@ def test_sqlite_helpers_generate_expected_metrics() -> None:
         assert east_west_totals["2024-03"] == pytest.approx(8750.0)
 
         window_metrics = compute_region_window_metrics(connection)
-        east_feb = window_metrics[(window_metrics["region"] == "East") & (window_metrics["month"] == "2024-02")].iloc[0]
+        east_feb = window_metrics[
+            (window_metrics["region"] == "East")
+            & (window_metrics["month"] == "2024-02")
+        ].iloc[0]
         assert east_feb["cumulative_revenue"] == pytest.approx(6150.0)
         assert east_feb["average_region_revenue"] == pytest.approx(3450.0)
         assert east_feb["revenue_change"] == pytest.approx(1150.0)
 
-        west_mar = window_metrics[(window_metrics["region"] == "West") & (window_metrics["month"] == "2024-03")].iloc[0]
+        west_mar = window_metrics[
+            (window_metrics["region"] == "West")
+            & (window_metrics["month"] == "2024-03")
+        ].iloc[0]
         assert west_mar["cumulative_revenue"] == pytest.approx(9700.0)
         assert west_mar["average_region_revenue"] == pytest.approx(3233.3333333333335)
         assert west_mar["revenue_change"] == pytest.approx(1400.0)

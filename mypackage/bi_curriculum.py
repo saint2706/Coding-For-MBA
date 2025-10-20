@@ -73,7 +73,10 @@ def index_topics_by_title(topics: Iterable[BiTopic]) -> dict[str, BiTopic]:
 
 
 def topics_by_titles(
-    titles: Sequence[str], *, topics: Iterable[BiTopic] | None = None, path: str | Path | None = None
+    titles: Sequence[str],
+    *,
+    topics: Iterable[BiTopic] | None = None,
+    path: str | Path | None = None,
 ) -> list[BiTopic]:
     """Return the topics matching the provided titles."""
 

@@ -80,7 +80,9 @@ class SchemaExample(TypedDict):
     commentary: str
 
 
-def load_topics(*, sections: Mapping[str, Iterable[str]] = SECTION_TITLES) -> Dict[str, list[BiTopic]]:
+def load_topics(
+    *, sections: Mapping[str, Iterable[str]] = SECTION_TITLES
+) -> Dict[str, list[BiTopic]]:
     """Return roadmap topics grouped by the requested sections."""
 
     grouped_topics: Dict[str, list[BiTopic]] = {}
@@ -190,7 +192,9 @@ def build_snowflake_schema_example() -> SchemaExample:
     """Return metadata for a snowflake schema extending the retail example."""
 
     star = build_star_schema_example()
-    dim_product = next(dim for dim in star["dimensions"] if dim["name"] == "dim_product")
+    dim_product = next(
+        dim for dim in star["dimensions"] if dim["name"] == "dim_product"
+    )
 
     hierarchical_dimensions: list[SchemaTable] = list(star["dimensions"])
     product_category: SchemaTable = {
@@ -227,7 +231,9 @@ def build_snowflake_schema_example() -> SchemaExample:
             dimensions.append(
                 {
                     **dim_product,
-                    "references": {"subcategory_key": "dim_product_category.subcategory_key"},
+                    "references": {
+                        "subcategory_key": "dim_product_category.subcategory_key"
+                    },
                 }
             )
         else:
@@ -235,7 +241,11 @@ def build_snowflake_schema_example() -> SchemaExample:
 
     return cast(
         SchemaExample,
-        {"fact_table": augmented_fact, "dimensions": dimensions, "commentary": commentary},
+        {
+            "fact_table": augmented_fact,
+            "dimensions": dimensions,
+            "commentary": commentary,
+        },
     )
 
 

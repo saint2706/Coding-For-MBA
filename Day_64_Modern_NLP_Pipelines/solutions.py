@@ -146,7 +146,9 @@ def rag_generate(
                 [embeddings_table[token] for token in valid_tokens], axis=0
             )
         else:
-            query_vec = np.zeros(next(iter(embeddings_table.values())).shape, dtype=float)
+            query_vec = np.zeros(
+                next(iter(embeddings_table.values())).shape, dtype=float
+            )
     else:
         query_vec = np.zeros(next(iter(embeddings_table.values())).shape, dtype=float)
     doc_indices = retrieve_documents(query_vec, doc_embeddings, top_k=top_k)

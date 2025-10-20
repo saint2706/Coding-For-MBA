@@ -11,20 +11,20 @@ better organization and testability.
 def get_location_coordinates(location_tuple):
     """
     Returns the latitude and longitude from a location tuple.
-    
+
     Tuples are like lists but immutable (cannot be changed after creation).
     They're perfect for fixed data like coordinates.
-    
+
     Parameters
     ----------
     location_tuple : tuple
         A tuple in the format (latitude, longitude)
-    
+
     Returns
     -------
     tuple of (float, float) or (None, None)
         The latitude and longitude, or (None, None) if invalid
-    
+
     Example
     -------
     >>> get_location_coordinates((40.7128, -74.0060))
@@ -40,20 +40,20 @@ def get_location_coordinates(location_tuple):
 def unpack_transaction(transaction_tuple):
     """
     Unpacks a transaction tuple into a dictionary.
-    
+
     Tuple unpacking is a powerful feature where we can assign tuple
     elements to multiple variables in one line.
-    
+
     Parameters
     ----------
     transaction_tuple : tuple
         A tuple in format (id, date, amount)
-    
+
     Returns
     -------
     dict or None
         Dictionary with 'id', 'date', and 'amount' keys, or None if invalid
-    
+
     Example
     -------
     >>> unpack_transaction((1001, "2024-03-15", 499.99))
@@ -64,7 +64,7 @@ def unpack_transaction(transaction_tuple):
         # Tuple unpacking: assign each element to a named variable
         # This makes the code more readable than using indices
         trans_id, date, amount = transaction_tuple
-        
+
         # Return as a dictionary for structured access
         return {"id": trans_id, "date": date, "amount": amount}
     return None  # Return None if format is invalid
@@ -73,11 +73,11 @@ def unpack_transaction(transaction_tuple):
 def demonstrate_list_vs_tuple():
     """
     Prints scenarios demonstrating when to use a list vs. a tuple.
-    
+
     Key difference:
     - Lists are MUTABLE (can be changed): use for data that might change
     - Tuples are IMMUTABLE (cannot be changed): use for fixed/constant data
-    
+
     This immutability makes tuples:
     - Safer (prevents accidental changes)
     - Faster (Python can optimize them)

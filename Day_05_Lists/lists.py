@@ -10,22 +10,22 @@ into functions for better organization and testability.
 def get_list_element(data_list, index):
     """
     Safely gets an element from a list by its index.
-    
+
     Lists use zero-based indexing: the first element is at index 0.
     Negative indices count from the end: -1 is the last element.
-    
+
     Parameters
     ----------
     data_list : list
         The list to access
     index : int
         The position to retrieve (0-based, or negative for end-counting)
-    
+
     Returns
     -------
     Any or None
         The element at the specified index, or None if index is out of range
-    
+
     Example
     -------
     >>> get_list_element([10, 20, 30], 1)
@@ -43,20 +43,20 @@ def get_list_element(data_list, index):
 def get_first_half_sales(sales_list):
     """
     Returns the first half of a list of sales using slicing.
-    
+
     List slicing [start:end] creates a new list with elements from
     start index up to (but not including) end index.
-    
+
     Parameters
     ----------
     sales_list : list
         A list of sales figures
-    
+
     Returns
     -------
     list
         The first half of the list
-    
+
     Example
     -------
     >>> get_first_half_sales([100, 200, 300, 400])
@@ -64,7 +64,7 @@ def get_first_half_sales(sales_list):
     """
     # Calculate the midpoint using integer division (//)
     midpoint = len(sales_list) // 2
-    
+
     # [:midpoint] means "from the beginning up to (not including) midpoint"
     return sales_list[:midpoint]
 
@@ -72,22 +72,22 @@ def get_first_half_sales(sales_list):
 def add_product(product_list, new_product):
     """
     Adds a new product to a list of products.
-    
+
     Demonstrates the .append() method which adds an item to the end of a list.
     We create a copy to avoid modifying the original list.
-    
+
     Parameters
     ----------
     product_list : list
         The existing list of products
     new_product : str
         The new product to add
-    
+
     Returns
     -------
     list
         A new list with the product added
-    
+
     Example
     -------
     >>> add_product(["Laptop", "Mouse"], "Keyboard")
@@ -95,7 +95,7 @@ def add_product(product_list, new_product):
     """
     # .copy() creates a new list so we don't modify the original
     new_list = product_list.copy()
-    
+
     # .append() adds an item to the end of the list
     new_list.append(new_product)
     return new_list
@@ -104,22 +104,22 @@ def add_product(product_list, new_product):
 def remove_product(product_list, product_to_remove):
     """
     Removes a product from a list if it exists.
-    
+
     Demonstrates the .remove() method which removes the first occurrence
     of a value from a list.
-    
+
     Parameters
     ----------
     product_list : list
         The list of products
     product_to_remove : str
         The product to remove
-    
+
     Returns
     -------
     list
         A new list with the product removed (if it existed)
-    
+
     Example
     -------
     >>> remove_product(["Laptop", "Mouse", "Keyboard"], "Mouse")
@@ -127,7 +127,7 @@ def remove_product(product_list, product_to_remove):
     """
     # Create a copy to avoid modifying the original
     new_list = product_list.copy()
-    
+
     # Check if the item exists before trying to remove it
     if product_to_remove in new_list:
         # .remove() deletes the first occurrence of the value
@@ -138,23 +138,23 @@ def remove_product(product_list, product_to_remove):
 def analyze_team_sales(sales_figures):
     """
     Sorts sales, finds top performers, and returns an analysis.
-    
+
     Demonstrates several list operations:
     - sorted() to order data
     - Slicing to get top N items
     - sum() to aggregate values
-    
+
     Parameters
     ----------
     sales_figures : list of numbers
         List of individual sales amounts
-    
+
     Returns
     -------
     dict or None
         Dictionary containing sorted sales, top 3, and their total
         Returns None if list is empty
-    
+
     Example
     -------
     >>> analyze_team_sales([5000, 8000, 4500, 12000])
@@ -167,10 +167,10 @@ def analyze_team_sales(sales_figures):
     # sorted() creates a new sorted list
     # reverse=True means highest to lowest (descending order)
     sorted_sales = sorted(sales_figures, reverse=True)
-    
+
     # [:3] slices the first 3 elements (top 3 performers)
     top_3_sales = sorted_sales[:3]
-    
+
     # sum() adds all numbers in the list
     total_top_sales = sum(top_3_sales)
 

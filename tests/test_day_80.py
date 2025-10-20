@@ -50,7 +50,11 @@ def test_data_quality_scorecard_includes_all_dimensions() -> None:
     assert scorecard["dimension"].duplicated().sum() == 0
     for column in ("metric", "threshold", "checklist"):
         assert column in scorecard.columns
-        assert scorecard[column].apply(lambda value: isinstance(value, str) and value.strip() != "").all()
+        assert (
+            scorecard[column]
+            .apply(lambda value: isinstance(value, str) and value.strip() != "")
+            .all()
+        )
 
 
 def test_governance_scorecard_covers_roadmap_topics() -> None:
@@ -60,4 +64,8 @@ def test_governance_scorecard_covers_roadmap_topics() -> None:
     assert scorecard["domain"].duplicated().sum() == 0
     for column in ("control_focus", "evidence", "checklist"):
         assert column in scorecard.columns
-        assert scorecard[column].apply(lambda value: isinstance(value, str) and value.strip() != "").all()
+        assert (
+            scorecard[column]
+            .apply(lambda value: isinstance(value, str) and value.strip() != "")
+            .all()
+        )

@@ -22,8 +22,12 @@ EXPECTED_GROUPS = {"Career assets", "Job readiness"}
 def test_load_career_topics_matches_roadmap_titles() -> None:
     grouped = load_career_topics()
     assert set(grouped) == EXPECTED_GROUPS
-    assert {topic.title for topic in grouped["Career assets"]} == set(CAREER_ASSET_TITLES)
-    assert {topic.title for topic in grouped["Job readiness"]} == set(JOB_READINESS_TITLES)
+    assert {topic.title for topic in grouped["Career assets"]} == set(
+        CAREER_ASSET_TITLES
+    )
+    assert {topic.title for topic in grouped["Job readiness"]} == set(
+        JOB_READINESS_TITLES
+    )
 
 
 def test_generate_checklists_contains_all_titles() -> None:
@@ -39,7 +43,6 @@ def test_generate_checklists_contains_all_titles() -> None:
     assert {item.title for item in readiness_items} == set(JOB_READINESS_TITLES)
 
 
-
 def test_serialize_checklists_round_trip(tmp_path: Path) -> None:
     checklists = generate_checklists()
     destination = tmp_path / "career_checklists.json"
@@ -49,7 +52,9 @@ def test_serialize_checklists_round_trip(tmp_path: Path) -> None:
     assert set(payload) == EXPECTED_GROUPS
 
     assert [entry["title"] for entry in payload["Career assets"]] == CAREER_ASSET_TITLES
-    assert [entry["title"] for entry in payload["Job readiness"]] == JOB_READINESS_TITLES
+    assert [
+        entry["title"] for entry in payload["Job readiness"]
+    ] == JOB_READINESS_TITLES
 
     saved = json.loads(destination.read_text(encoding="utf-8"))
     assert saved == payload

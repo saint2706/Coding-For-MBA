@@ -10,23 +10,23 @@ business-related data points. This version is refactored to use functions.
 def calculate_gross_profit(revenue, cogs):
     """
     Calculates the gross profit from revenue and COGS.
-    
+
     Gross Profit is a key business metric that shows how much money
     a company makes after deducting the costs associated with making
     and selling its products.
-    
+
     Parameters
     ----------
     revenue : float or int
         Total sales revenue (money earned from sales)
     cogs : float or int
         Cost of Goods Sold (direct costs of producing goods)
-    
+
     Returns
     -------
     float or int
         The gross profit (revenue minus COGS)
-    
+
     Example
     -------
     >>> calculate_gross_profit(500000, 350000)
@@ -39,22 +39,22 @@ def calculate_gross_profit(revenue, cogs):
 def calculate_gross_profit_margin(gross_profit, revenue):
     """
     Calculates the gross profit margin as a percentage.
-    
+
     Gross Profit Margin shows what percentage of revenue is actual profit
     after accounting for direct costs. It's a key indicator of business efficiency.
-    
+
     Parameters
     ----------
     gross_profit : float or int
         The gross profit amount
     revenue : float or int
         Total revenue amount
-    
+
     Returns
     -------
     float
         The gross profit margin as a percentage (0-100)
-    
+
     Example
     -------
     >>> calculate_gross_profit_margin(150000, 500000)
@@ -70,10 +70,10 @@ def calculate_gross_profit_margin(gross_profit, revenue):
 def display_business_analytics(revenue, cogs):
     """
     Calculates and displays key business metrics in a formatted dashboard.
-    
+
     This function demonstrates how to combine multiple calculations
     and present them in a readable format - a common task in business analytics.
-    
+
     Parameters
     ----------
     revenue : float or int
@@ -87,7 +87,7 @@ def display_business_analytics(revenue, cogs):
 
     # Step 1: Calculate the gross profit using our helper function
     gross_profit = calculate_gross_profit(revenue, cogs)
-    
+
     # Step 2: Calculate the gross profit margin percentage
     gross_profit_margin = calculate_gross_profit_margin(gross_profit, revenue)
 
@@ -105,7 +105,7 @@ def display_business_analytics(revenue, cogs):
 def display_data_types():
     """
     Displays the types of various business-related data points.
-    
+
     Understanding data types is fundamental in Python. Different types
     of data have different capabilities and uses in business analytics.
     """
@@ -113,16 +113,16 @@ def display_data_types():
 
     # Integer (int): Whole numbers like counts or quantities
     units_sold = 1500
-    
+
     # Float: Decimal numbers like prices or percentages
     product_price = 49.99
-    
+
     # String (str): Text data like names or descriptions
     company_name = "InnovateCorp"
-    
+
     # Boolean (bool): True/False values for yes/no questions
     is_in_stock = True
-    
+
     # List: Ordered collection of items (can be mixed types)
     quarterly_sales = [110000, 120000, 135000, 140000]
 
@@ -137,12 +137,12 @@ def display_data_types():
 if __name__ == "__main__":
     # This special condition checks if this file is being run directly
     # (not imported as a module). It's a Python best practice.
-    
+
     # --- Basic Business Calculations ---
     # Define our input values (in dollars)
     revenue_main = 500000  # Half a million in revenue
-    cogs_main = 350000     # $350k in costs
-    
+    cogs_main = 350000  # $350k in costs
+
     # Call our function to calculate and display analytics
     display_business_analytics(revenue_main, cogs_main)
 

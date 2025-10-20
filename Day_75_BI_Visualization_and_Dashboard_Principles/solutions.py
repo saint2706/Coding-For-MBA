@@ -1,4 +1,5 @@
 """Reusable helpers for BI visualization and dashboard design demos."""
+
 from __future__ import annotations
 
 from typing import Dict, List, Tuple
@@ -61,6 +62,7 @@ def build_visualization_topics_df() -> pd.DataFrame:
 
 # --- Plotly helpers -------------------------------------------------------
 
+
 def create_barplot() -> Figure:
     """Return a simple Plotly bar chart showing category totals."""
     data = pd.DataFrame(
@@ -81,7 +83,9 @@ def create_lineplot() -> Figure:
             "Active Users": [120, 135, 150, 165, 170, 180],
         }
     )
-    fig = px.line(data, x="Month", y="Active Users", markers=True, title="Monthly Active Users")
+    fig = px.line(
+        data, x="Month", y="Active Users", markers=True, title="Monthly Active Users"
+    )
     return fig
 
 
@@ -133,7 +137,9 @@ def create_histogram() -> Figure:
             "Order Size": [5, 8, 12, 7, 9, 15, 4, 11, 6, 10, 13, 7, 9, 5],
         }
     )
-    fig = px.histogram(data, x="Order Size", nbins=5, title="Distribution of Order Sizes")
+    fig = px.histogram(
+        data, x="Order Size", nbins=5, title="Distribution of Order Sizes"
+    )
     fig.update_traces(marker_color="#636EFA")
     return fig
 
@@ -156,11 +162,14 @@ def create_map() -> Figure:
 
 # --- Matplotlib helpers ---------------------------------------------------
 
+
 def create_color_palette_demo() -> Tuple[plt.Figure, plt.Axes]:
     """Showcase accessible color choices with Matplotlib swatches."""
     fig, ax = plt.subplots(figsize=(6, 2))
     colors = ["#003f5c", "#58508d", "#bc5090", "#ff6361", "#ffa600"]
-    ax.imshow([list(range(len(colors)))], cmap=plt.matplotlib.colors.ListedColormap(colors))
+    ax.imshow(
+        [list(range(len(colors)))], cmap=plt.matplotlib.colors.ListedColormap(colors)
+    )
     ax.set_xticks(range(len(colors)))
     ax.set_xticklabels(["Primary", "Secondary", "Accent 1", "Accent 2", "Accent 3"])
     ax.set_yticks([])

@@ -161,6 +161,7 @@ VERTICAL_DEFAULTS = {
 
 # %%
 
+
 def load_fortune_1000(path: Path = DATA_PATH) -> pd.DataFrame:
     """Load a cleaned slice of the Fortune 1000 dataset for classroom demos."""
 
@@ -173,13 +174,14 @@ def load_fortune_1000(path: Path = DATA_PATH) -> pd.DataFrame:
             .str.replace("$", "", regex=False)
             .str.replace(",", "", regex=False)
             .str.replace(" ", "", regex=False)
-            .str.replace("\"", "", regex=False)
+            .str.replace('"', "", regex=False)
         )
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     return frame.dropna(subset=numeric_columns)
 
 
 # %%
+
 
 def build_revenue_dashboard() -> pd.DataFrame:
     """Return a table summarizing revenue-facing KPI stories."""
@@ -190,15 +192,18 @@ def build_revenue_dashboard() -> pd.DataFrame:
             **{key: value for key, value in scenario.items() if key != "title"}
         )
         for metric, value in metrics.items():
-            records.append({
-                "domain": scenario["title"],
-                "metric": metric,
-                "value": value,
-            })
+            records.append(
+                {
+                    "domain": scenario["title"],
+                    "metric": metric,
+                    "value": value,
+                }
+            )
     return pd.DataFrame(records)
 
 
 # %%
+
 
 def build_operations_dashboard() -> pd.DataFrame:
     """Return KPIs for manufacturing and supply chain storytelling."""
@@ -209,15 +214,18 @@ def build_operations_dashboard() -> pd.DataFrame:
             **{key: value for key, value in scenario.items() if key != "title"}
         )
         for metric, value in metrics.items():
-            records.append({
-                "domain": scenario["title"],
-                "metric": metric,
-                "value": value,
-            })
+            records.append(
+                {
+                    "domain": scenario["title"],
+                    "metric": metric,
+                    "value": value,
+                }
+            )
     return pd.DataFrame(records)
 
 
 # %%
+
 
 def build_vertical_dashboard(frame: pd.DataFrame | None = None) -> pd.DataFrame:
     """Summarize KPIs by vertical using the Fortune 1000 dataset."""
@@ -228,7 +236,9 @@ def build_vertical_dashboard(frame: pd.DataFrame | None = None) -> pd.DataFrame:
     selectors = {
         "Finance": frame[frame["Sector"] == "Financials"],
         "Retail & E-commerce": frame[frame["Sector"] == "Retailing"],
-        "Healthcare": frame[frame["Industry"].str.contains("Health", case=False, na=False)],
+        "Healthcare": frame[
+            frame["Industry"].str.contains("Health", case=False, na=False)
+        ],
         "Manufacturing": frame[frame["Sector"] == "Industrials"],
     }
 
@@ -257,7 +267,8 @@ def build_vertical_dashboard(frame: pd.DataFrame | None = None) -> pd.DataFrame:
             "vertical": "BI KPI baselines",
             "companies": len(frame),
             "revenue": VERTICAL_DEFAULTS["finance_revenue"],
-            "profit": VERTICAL_DEFAULTS["finance_revenue"] - VERTICAL_DEFAULTS["finance_cost"],
+            "profit": VERTICAL_DEFAULTS["finance_revenue"]
+            - VERTICAL_DEFAULTS["finance_cost"],
             "profit_margin": default_metrics["finance_operating_margin"],
             "avg_assets": default_metrics["manufacturing_yield"],
         }
@@ -267,6 +278,7 @@ def build_vertical_dashboard(frame: pd.DataFrame | None = None) -> pd.DataFrame:
 
 
 # %%
+
 
 def summarize_groups(
     groups: Mapping[str, Iterable[str]],
@@ -280,7 +292,8 @@ def summarize_groups(
         for title in titles:
             print(f"  • {title}")
         roadmap_titles = ", ".join(
-            getattr(topic, "title", str(topic)) for topic in grouped_topics.get(name, [])
+            getattr(topic, "title", str(topic))
+            for topic in grouped_topics.get(name, [])
         )
         if roadmap_titles:
             print(f"    ↳ Roadmap validation: {roadmap_titles}")
@@ -288,7 +301,10 @@ def summarize_groups(
 
 # %%
 
-def review_dashboard(title: str, frame: pd.DataFrame, value_columns: Iterable[str]) -> None:
+
+def review_dashboard(
+    title: str, frame: pd.DataFrame, value_columns: Iterable[str]
+) -> None:
     """Print a KPI dashboard with friendly formatting."""
 
     print(f"\n{title}\n")
@@ -300,6 +316,7 @@ def review_dashboard(title: str, frame: pd.DataFrame, value_columns: Iterable[st
 
 
 # %%
+
 
 def main() -> None:
     """Run the domain analytics classroom walk-through."""
