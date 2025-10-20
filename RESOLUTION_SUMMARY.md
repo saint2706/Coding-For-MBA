@@ -22,7 +22,7 @@ The GitHub Pages deployment at https://saint2706.github.io/Coding-For-MBA/ was d
 
 ## Changes Implemented
 
-### 1. Fixed `mkdocs.yml` (Commit: 76daac2)
+### 1. Fixed `mkdocs.yml`
 ```yaml
   - Lessons:
       - All Lessons: lessons/_index.md
@@ -32,7 +32,7 @@ The GitHub Pages deployment at https://saint2706.github.io/Coding-For-MBA/ was d
 - Added marker comments for lesson navigation injection
 - Allows `build_docs.py` to automatically populate the navigation with all 101 lesson pages
 
-### 2. Updated Docs Workflow (Commit: 76daac2)
+### 2. Updated Docs Workflow
 ```yaml
 - name: Generate lesson pages
   run: python tools/build_docs.py
@@ -43,7 +43,7 @@ The GitHub Pages deployment at https://saint2706.github.io/Coding-For-MBA/ was d
 - Ensures all Day_* README files are converted to proper lesson pages
 - Build runs in strict mode to catch any errors
 
-### 3. Created Documentation (Commit: 76daac2)
+### 3. Created Documentation
 - `GITHUB_PAGES_SETUP.md` - Complete setup instructions
 - Includes step-by-step guide for changing GitHub Pages source
 - Explains why the change is necessary
