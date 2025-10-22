@@ -39,14 +39,9 @@ jobs:
         python-version: "3.13"
         allow-prereleases: true
         cache: 'pip'
-
-    - name: Cache pip dependencies
-      uses: actions/cache@v4
-      with:
-        path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements*.txt') }}
-        restore-keys: |
-          ${{ runner.os }}-pip-
+        cache-dependency-path: |
+          requirements.txt
+          requirements-dev.txt
 
     - name: Install dependencies
       run: |
@@ -54,8 +49,8 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
 
-    - name: Lint and format checks
-      run: make format
+    - name: Run linters
+      run: make lint
 
     - name: Test with pytest
-      run: pytest
+      run: pytest -q

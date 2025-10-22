@@ -17,8 +17,8 @@ test:
 
 lint:
 	ruff check .
-	mdformat . --wrap 100
-	pre-commit run --all-files
+	mdformat --wrap 100 --check .
+	pre-commit run --all-files --show-diff-on-failure --color=always
 
 format:
 	ruff format .
