@@ -4,19 +4,34 @@ repo_url: https://github.com/saint2706/Coding-For-MBA
 edit_uri: edit/main/docs/
 theme:
   name: material
+  custom_dir: docs/overrides
   features:
     - navigation.instant
     - navigation.tracking
     - navigation.tabs
+    - navigation.expand
     - toc.follow
     - content.code.copy
     - content.action.edit
     - search.suggest
     - search.highlight
   palette:
-    - scheme: slate
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
       primary: indigo
       accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
 plugins:
   - search
   - tags
@@ -33,6 +48,7 @@ extra_javascript:
   - https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js
   - javascripts/pyodide-console.js
   - javascripts/progress-tracker.js
+  - assets/js/progress.js
 markdown_extensions:
   - admonition
   - footnotes
