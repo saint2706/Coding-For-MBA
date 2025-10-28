@@ -121,6 +121,29 @@ select:focus {
   }
 }
 
+/* Language switcher styling */
+.md-footer-meta__lang {
+  margin-left: auto;
+}
+
+.md-footer-meta__lang-list {
+  list-style: none;
+  display: flex;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+}
+
+.md-footer-meta__lang a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.md-footer-meta__lang a:hover,
+.md-footer-meta__lang a:focus {
+  text-decoration: underline;
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   * {
