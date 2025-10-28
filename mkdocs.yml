@@ -25,6 +25,13 @@ plugins:
   - redirects
   - minify:
       minify_html: true
+extra_css:
+  - stylesheets/extra.css
+  - stylesheets/interactive-widgets.css
+extra_javascript:
+  - https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js
+  - javascripts/pyodide-console.js
+  - javascripts/progress-tracker.js
 markdown_extensions:
   - admonition
   - footnotes
