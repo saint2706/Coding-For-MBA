@@ -243,16 +243,16 @@ Welcome to the interactive coding environment for Coding for MBA!
 
 ## What is JupyterLite?
 
-JupyterLite is a full-featured Jupyter environment that runs **entirely in your browser** using WebAssembly. 
+JupyterLite is a full-featured Jupyter environment that runs **entirely in your browser** using WebAssembly.
 No installation required, no server needed - everything runs on your computer!
 
 ## Features
 
-✅ **Full Python Support**: Run Python code with NumPy, Pandas, Matplotlib, and more  
-✅ **No Setup**: Works immediately in any modern browser  
-✅ **Private**: All code runs locally - nothing is sent to a server  
-✅ **Persistent**: Your work is saved in your browser  
-✅ **Fast**: After initial load, everything is instant  
+✅ **Full Python Support**: Run Python code with NumPy, Pandas, Matplotlib, and more
+✅ **No Setup**: Works immediately in any modern browser
+✅ **Private**: All code runs locally - nothing is sent to a server
+✅ **Persistent**: Your work is saved in your browser
+✅ **Fast**: After initial load, everything is instant
 
 ## Getting Started
 
@@ -268,7 +268,7 @@ No installation required, no server needed - everything runs on your computer!
 
 !!! note "Browser Support"
     JupyterLite requires a modern browser:
-    
+
     - ✅ Chrome/Edge 90+
     - ✅ Firefox 88+
     - ✅ Safari 14+
@@ -276,11 +276,11 @@ No installation required, no server needed - everything runs on your computer!
 
 !!! warning "Limitations"
     Some features have limitations in the browser environment:
-    
+
     - File system operations may not work
     - Some packages may not be available
     - Network requests may be restricted
-    
+
     For full functionality, use the Binder option or run locally.
 
 ## Alternative: Binder

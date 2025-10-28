@@ -1,14 +1,17 @@
 # 📘 Day 92: Data Definition Language (DDL)
 
-Welcome to Day 92! Today, we'll learn about **Data Definition Language (DDL)**, a subset of SQL used to create and manage database objects.
+Welcome to Day 92! Today, we'll learn about **Data Definition Language (DDL)**, a subset of SQL used
+to create and manage database objects.
 
 ## What is DDL?
 
-DDL is used to define the database schema. It includes commands to create, modify, and delete database objects such as tables, indexes, and users.
+DDL is used to define the database schema. It includes commands to create, modify, and delete
+database objects such as tables, indexes, and users.
 
 ## Key DDL Commands
 
 ### CREATE
+
 - **Definition:** The `CREATE` command is used to create new database objects.
 - **`CREATE DATABASE`:** Creates a new database.
 - **`CREATE TABLE`:** Creates a new table in a database.
@@ -23,7 +26,9 @@ DDL is used to define the database schema. It includes commands to create, modif
   ```
 
 ### ALTER
-- **Definition:** The `ALTER` command is used to modify the structure of an existing database object.
+
+- **Definition:** The `ALTER` command is used to modify the structure of an existing database
+  object.
 - **`ALTER TABLE`:** Used to add, delete, or modify columns in an existing table.
   - **`ADD`:** Adds a new column.
   - **`DROP COLUMN`:** Deletes a column.
@@ -35,6 +40,7 @@ DDL is used to define the database schema. It includes commands to create, modif
   ```
 
 ### DROP
+
 - **Definition:** The `DROP` command is used to delete existing database objects.
 - **`DROP DATABASE`:** Deletes an entire database.
 - **`DROP TABLE`:** Deletes a table.
@@ -44,7 +50,9 @@ DDL is used to define the database schema. It includes commands to create, modif
   ```
 
 ### TRUNCATE
-- **Definition:** The `TRUNCATE` command is used to delete all the data inside a table, but not the table itself.
+
+- **Definition:** The `TRUNCATE` command is used to delete all the data inside a table, but not the
+  table itself.
 - **Syntax:**
   ```sql
   TRUNCATE TABLE table_name;

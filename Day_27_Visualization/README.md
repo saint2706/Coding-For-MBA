@@ -1,6 +1,8 @@
 # 📘 Day 27: Data Visualization - Communicating Insights
 
-Visualising key business metrics makes it easier to communicate findings and uncover patterns. Day 27 introduces reusable Matplotlib and Seaborn helpers that create core business charts for the sales dataset you prepared in Day 24.
+Visualising key business metrics makes it easier to communicate findings and uncover patterns. Day
+27 introduces reusable Matplotlib and Seaborn helpers that create core business charts for the sales
+dataset you prepared in Day 24.
 
 ## Environment Setup
 
@@ -9,7 +11,8 @@ Visualising key business metrics makes it easier to communicate findings and unc
    ```bash
    pip install -r requirements.txt
    ```
-1. Ensure `sales_data.csv` from Day 24 is available in this lesson folder (or update the helper to point to your copy).
+1. Ensure `sales_data.csv` from Day 24 is available in this lesson folder (or update the helper to
+   point to your copy).
 
 ## Run the Script
 
@@ -19,7 +22,8 @@ Generate the four lesson visuals from the command line:
 python Day_27_Visualization/visualization.py
 ```
 
-Each call loads the shared plotting helpers, displays a chart, and waits for you to close the window before moving on.
+Each call loads the shared plotting helpers, displays a chart, and waits for you to close the window
+before moving on.
 
 ## Explore the Notebook
 
@@ -33,7 +37,8 @@ The notebook reuses the same plotting functions so you can experiment without du
 
 ## Run Tests
 
-A pytest suite validates the chart configuration (titles, labels, legends) using a headless Matplotlib backend:
+A pytest suite validates the chart configuration (titles, labels, legends) using a headless
+Matplotlib backend:
 
 ```bash
 pytest tests/test_day_27.py

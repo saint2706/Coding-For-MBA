@@ -1,6 +1,8 @@
 # 📘 Day 28: Advanced Visualization & Customization
 
-Creating a basic chart is just the first step. To effectively communicate your story, you need to customize your visualizations to make them clear, compelling, and professional. Today, we'll learn how to customize our plots and how to combine multiple plots into a single figure, like a dashboard.
+Creating a basic chart is just the first step. To effectively communicate your story, you need to
+customize your visualizations to make them clear, compelling, and professional. Today, we'll learn
+how to customize our plots and how to combine multiple plots into a single figure, like a dashboard.
 
 We'll continue to use **Seaborn** for plotting and **Matplotlib** for customization.
 
@@ -39,7 +41,8 @@ plt.show()
 
 ## Creating Multiple Plots (Subplots)
 
-Often, you want to display multiple charts together to tell a more complete story. Matplotlib's `subplots()` function is perfect for this. It creates a figure and a grid of axes.
+Often, you want to display multiple charts together to tell a more complete story. Matplotlib's
+`subplots()` function is perfect for this. It creates a figure and a grid of axes.
 
 `fig, axes = plt.subplots(nrows=, ncols=, figsize=())`
 
@@ -84,9 +87,12 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 1. **Build a 2x1 Dashboard:**
 
    - Create a figure with two rows and one column of subplots.
-   - **Top Plot:** A line chart showing the trend of `Units Sold` over `Date`. Make sure the date is on the x-axis.
+   - **Top Plot:** A line chart showing the trend of `Units Sold` over `Date`. Make sure the date is
+     on the x-axis.
    - **Bottom Plot:** A scatter plot showing the relationship between `Price` and `Units Sold`.
    - Give each plot its own descriptive title.
    - Add an overall title to the entire figure: "Sales Analysis Dashboard".
 
-🎉 **Fantastic!** You can now create presentation-ready charts and combine them into simple dashboards. This ability to not just analyze, but also to present data in a customized and professional format is a key skill that separates great analysts from good ones.
+🎉 **Fantastic!** You can now create presentation-ready charts and combine them into simple
+dashboards. This ability to not just analyze, but also to present data in a customized and
+professional format is a key skill that separates great analysts from good ones.

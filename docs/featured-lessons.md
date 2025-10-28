@@ -8,7 +8,8 @@ This page highlights key lessons that demonstrate advanced concepts and producti
 
 **File:** `Day_50_MLOps/solutions.py`
 
-Exposes reusable helpers for training, saving, loading, and predicting with a Logistic Regression Iris classifier.
+Exposes reusable helpers for training, saving, loading, and predicting with a Logistic Regression
+Iris classifier.
 
 **Quick start:**
 
@@ -56,13 +57,15 @@ Covers monitoring, drift detection, and reliability engineering for ML systems.
 
 **File:** `Day_58_Transformers_and_Attention/solutions.py`
 
-Builds encoder–decoder stacks, deterministic transformer text classifiers, Hugging Face fine-tuning playbooks, and attention visualisations for rapid experimentation.
+Builds encoder–decoder stacks, deterministic transformer text classifiers, Hugging Face fine-tuning
+playbooks, and attention visualisations for rapid experimentation.
 
 ### Day 59 – Generative Models
 
 **File:** `Day_59_Generative_Models/solutions.py`
 
-Contrasts autoencoders, VAEs, GAN dynamics, and diffusion denoisers with synthetic training loops that log reconstruction improvements.
+Contrasts autoencoders, VAEs, GAN dynamics, and diffusion denoisers with synthetic training loops
+that log reconstruction improvements.
 
 ### Day 64 – Modern NLP Pipelines
 
@@ -76,13 +79,15 @@ Implements end-to-end NLP pipelines with state-of-the-art techniques.
 
 **File:** `Day_60_Graph_and_Geometric_Learning/solutions.py`
 
-Implements GraphSAGE and graph attention message passing for toy node-classification graphs with interpretable attention matrices.
+Implements GraphSAGE and graph attention message passing for toy node-classification graphs with
+interpretable attention matrices.
 
 ### Day 61 – Reinforcement and Offline Learning
 
 **File:** `Day_61_Reinforcement_and_Offline_Learning/solutions.py`
 
-Simulates policy-gradient bandits, tabular value iteration, contextual bandits, and offline evaluation with deterministic reward thresholds for regression testing.
+Simulates policy-gradient bandits, tabular value iteration, contextual bandits, and offline
+evaluation with deterministic reward thresholds for regression testing.
 
 ### Day 62 – Model Interpretability and Fairness
 
@@ -102,31 +107,36 @@ Demonstrates causal inference techniques and uplift modeling for business decisi
 
 **File:** `Day_51_Regularized_Models/solutions.py`
 
-Compares ridge, lasso, and elastic net pipelines while introducing Poisson regression as a generalised linear model.
+Compares ridge, lasso, and elastic net pipelines while introducing Poisson regression as a
+generalised linear model.
 
 ### Day 52 – Ensemble Methods
 
 **File:** `Day_52_Ensemble_Methods/solutions.py`
 
-Trains random forests, gradient boosting, and stacking ensembles with calibration utilities for trustworthy probabilities.
+Trains random forests, gradient boosting, and stacking ensembles with calibration utilities for
+trustworthy probabilities.
 
 ### Day 53 – Model Tuning & Feature Selection
 
 **File:** `Day_53_Model_Tuning_and_Feature_Selection/solutions.py`
 
-Demonstrates grid search, Bayesian optimisation (via `skopt`), permutation importance, and recursive feature elimination on a reproducible dataset.
+Demonstrates grid search, Bayesian optimisation (via `skopt`), permutation importance, and recursive
+feature elimination on a reproducible dataset.
 
 ### Day 54 – Probabilistic Modeling
 
 **File:** `Day_54_Probabilistic_Modeling/solutions.py`
 
-Provides Gaussian mixtures, expectation-maximisation, Bayesian classifiers, and hidden Markov model log-likelihood utilities for reasoning under uncertainty.
+Provides Gaussian mixtures, expectation-maximisation, Bayesian classifiers, and hidden Markov model
+log-likelihood utilities for reasoning under uncertainty.
 
 ### Day 55 – Advanced Unsupervised Learning
 
 **File:** `Day_55_Advanced_Unsupervised_Learning/solutions.py`
 
-Explores DBSCAN, agglomerative clustering, t-SNE embeddings, autoencoders, and anomaly detection baselines.
+Explores DBSCAN, agglomerative clustering, t-SNE embeddings, autoencoders, and anomaly detection
+baselines.
 
 ## Time Series and Recommenders
 
@@ -140,7 +150,8 @@ Fits ARIMA/SARIMAX, Holt-Winters, and Prophet-style models with rolling-origin e
 
 **File:** `Day_57_Recommender_Systems/solutions.py`
 
-Implements collaborative filtering, matrix factorisation, and ranking metrics for implicit-feedback aware recommenders.
+Implements collaborative filtering, matrix factorisation, and ranking metrics for implicit-feedback
+aware recommenders.
 
 ## Data Engineering and Analytics
 
@@ -154,10 +165,12 @@ Builds and queries a SQLite database, mirroring production-ready analysis workfl
 
 **File:** `Day_32_Other_Databases/other_databases.py`
 
-Demonstrates dependency-injected connection patterns for SQL and MongoDB clients so that data access logic remains testable.
+Demonstrates dependency-injected connection patterns for SQL and MongoDB clients so that data access
+logic remains testable.
 
 ### Day 36 – Capstone Case Study
 
 **File:** `Day_36_Case_Study/case_study.py` and `solutions.py`
 
-Ties together the full analytics workflow with a real dataset, cleaning, analysis, and business recommendations.
+Ties together the full analytics workflow with a real dataset, cleaning, analysis, and business
+recommendations.

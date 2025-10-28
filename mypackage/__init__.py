@@ -27,9 +27,9 @@ __author__ = "50 Days of Python Course"
 from .arithmetics import add_numbers, divide, multiply, power, remainder, subtract
 from .bar_system import BarSystem, InventoryItem, SaleRecord
 from .bi_curriculum import (
-    BiTopic,
     DEFAULT_DATA_PATH,
     SUPPORTED_NODE_TYPES,
+    BiTopic,
     group_topics_by_titles,
     index_topics_by_title,
     load_bi_topics,

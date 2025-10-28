@@ -1,26 +1,29 @@
 # Day 76 – BI Platforms and Automation Tools
 
-Day 76 explores the major BI delivery platforms alongside the scripting and
-standardisation practices that keep report refreshes trustworthy. We contrast
-Power BI, Tableau, Qlik, Looker, and Excel with the Python/R automation surface
-that analysts lean on for orchestration.
+Day 76 explores the major BI delivery platforms alongside the scripting and standardisation
+practices that keep report refreshes trustworthy. We contrast Power BI, Tableau, Qlik, Looker, and
+Excel with the Python/R automation surface that analysts lean on for orchestration.
 
 ## Roadmap groupings
 
-| Section | Titles |
-| --- | --- |
-| BI platforms | Power BI, Tableau, Qlik, Looker, BI Platforms |
+| Section | Titles | | --- | --- | | BI platforms | Power BI, Tableau, Qlik, Looker, BI Platforms |
 | Scripting & standards | Python, R, Standardisation, Excel |
 
 ## Platform comparison matrix
 
-| Platform | Deployment | Export formats | Automation | Scripting hooks | Notes |
-| --- | --- | --- | --- | --- | --- |
-| Power BI | Cloud & desktop | PBIX, PDF, PowerPoint, Excel, CSV | Power Automate, REST API, Azure Data Factory | Python, R, DAX | Microsoft ecosystem integration with strong scheduling via Power Automate and dataset refresh APIs. |
-| Tableau | Cloud & server | TWBX, PDF, PowerPoint, Image, CSV | Tableau Prep, Tableau Server Client, REST API | Python, R, Tableau Extensions | Flexible embedding with Tableau Server Client (TSC) for scripted publishes and extracts. |
-| Qlik | Cloud & on-premises | QVF, PDF, Excel, CSV | Qlik Application Automation, REST API | Python, R, Qlik Script | Associative engine excels at governed self-service and scripted reload tasks. |
-| Looker | Cloud | Looks, PDF, Google Sheets, CSV | Looker API, Scheduled Deliveries, Cloud Composer | Python, LookML, SQL | Model-driven semantic layer with strong API orchestration via Python SDKs. |
-| Excel | Desktop & cloud | XLSX, CSV, PDF | Power Query, Office Scripts, VBA | Python, R, VBA | Ubiquitous analysis surface; serves as bridge between BI exports and finance modelling. |
+| Platform | Deployment | Export formats | Automation | Scripting hooks | Notes | | --- | --- | ---
+| --- | --- | --- | | Power BI | Cloud & desktop | PBIX, PDF, PowerPoint, Excel, CSV | Power
+Automate, REST API, Azure Data Factory | Python, R, DAX | Microsoft ecosystem integration with
+strong scheduling via Power Automate and dataset refresh APIs. | | Tableau | Cloud & server | TWBX,
+PDF, PowerPoint, Image, CSV | Tableau Prep, Tableau Server Client, REST API | Python, R, Tableau
+Extensions | Flexible embedding with Tableau Server Client (TSC) for scripted publishes and
+extracts. | | Qlik | Cloud & on-premises | QVF, PDF, Excel, CSV | Qlik Application Automation, REST
+API | Python, R, Qlik Script | Associative engine excels at governed self-service and scripted
+reload tasks. | | Looker | Cloud | Looks, PDF, Google Sheets, CSV | Looker API, Scheduled
+Deliveries, Cloud Composer | Python, LookML, SQL | Model-driven semantic layer with strong API
+orchestration via Python SDKs. | | Excel | Desktop & cloud | XLSX, CSV, PDF | Power Query, Office
+Scripts, VBA | Python, R, VBA | Ubiquitous analysis surface; serves as bridge between BI exports and
+finance modelling. |
 
 ## Python ↔ R interop for refresh automation
 
@@ -43,13 +46,14 @@ subprocess.run(
 notify_slack(channel="#bi-ops", message="Daily metrics refreshed with QA ✅")
 ```
 
-The snippet mirrors the helper utilities in `solutions.py`: schedule a refresh
-via Python, execute R-based QA, and send downstream notifications after
-successfully validating exports.
+The snippet mirrors the helper utilities in `solutions.py`: schedule a refresh via Python, execute
+R-based QA, and send downstream notifications after successfully validating exports.
 
 ## Additional Topic: Exploratory Diagnostics
 
-> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the
+> [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across
+> Days 68–84.
 
 ## Why it matters
 

@@ -115,7 +115,7 @@ select:focus {
   .md-typeset a {
     text-decoration-thickness: 2px;
   }
-  
+
   .md-typeset code {
     border: 1px solid currentColor;
   }
@@ -138,16 +138,16 @@ select:focus {
   .md-footer {
     display: none;
   }
-  
+
   .md-content {
     max-width: 100%;
   }
-  
+
   .md-typeset a {
     color: #000;
     text-decoration: underline;
   }
-  
+
   .md-typeset a[href^="http"]:after {
     content: " (" attr(href) ")";
     font-size: 0.8em;

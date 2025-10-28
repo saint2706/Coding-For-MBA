@@ -2,7 +2,10 @@
 
 ## Overview
 
-**MyPackage** is a custom Python package designed specifically for MBA students learning business analytics with Python. This package demonstrates how to create reusable business functions that can be imported and used across multiple projects - a crucial skill for building scalable business analytics solutions.
+**MyPackage** is a custom Python package designed specifically for MBA students learning business
+analytics with Python. This package demonstrates how to create reusable business functions that can
+be imported and used across multiple projects - a crucial skill for building scalable business
+analytics solutions.
 
 ## 🎯 Learning Objectives
 
@@ -19,7 +22,7 @@ By studying and using this package, you will learn:
 ```text
 mypackage/
 ├── __init__.py          # Package initialization and public interface
-├── arithmetics.py       # Mathematical operations for business calculations  
+├── arithmetics.py       # Mathematical operations for business calculations
 └── greet.py            # Business messaging and communication functions
 ```
 
@@ -176,7 +179,8 @@ This package is designed to work seamlessly with other course materials:
 
 ## 🔄 Extending the Package
 
-As you progress in your Python journey, you can extend this package with additional business functions:
+As you progress in your Python journey, you can extend this package with additional business
+functions:
 
 ```python
 # Add to arithmetics.py
@@ -184,7 +188,7 @@ def calculate_compound_interest(principal: float, rate: float, time: int) -> flo
     """Calculate compound interest for investment analysis."""
     return principal * power(1 + rate, time) - principal
 
-# Add to greet.py  
+# Add to greet.py
 def generate_invoice_message(customer_name: str, amount: float) -> str:
     """Generate professional invoice messages."""
     return f"Dear {customer_name}, your invoice amount is ${amount:.2f}"
@@ -192,4 +196,6 @@ def generate_invoice_message(customer_name: str, amount: float) -> str:
 
 ______________________________________________________________________
 
-*This package represents professional-grade Python development practices applied to business analytics. Study the code structure, documentation style, and function design to elevate your own Python business applications!* 🎯
+*This package represents professional-grade Python development practices applied to business
+analytics. Study the code structure, documentation style, and function design to elevate your own
+Python business applications!* 🎯

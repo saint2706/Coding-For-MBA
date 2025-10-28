@@ -1,10 +1,12 @@
----
-tags: [business-intelligence, bi, analytics, career, capstone, sql, cloud]
----
+______________________________________________________________________
+
+## tags: \[business-intelligence, bi, analytics, career, capstone, sql, cloud\]
 
 # Phase 6 • BI Advanced & Capstone
 
-Phase 6 culminates the Business Intelligence journey with advanced topics, cloud platforms, and a comprehensive capstone project. Learners apply all acquired skills to real-world scenarios while building career assets and exploring cutting-edge BI technologies.
+Phase 6 culminates the Business Intelligence journey with advanced topics, cloud platforms, and a
+comprehensive capstone project. Learners apply all acquired skills to real-world scenarios while
+building career assets and exploring cutting-edge BI technologies.
 
 ## What you will practice
 
@@ -17,12 +19,18 @@ Phase 6 culminates the Business Intelligence journey with advanced topics, cloud
 
 ## Lesson sprint
 
-- [:material-tag: Day 85 – Advanced SQL and Performance Tuning](../lessons/day-85-advanced-sql.md): Master CTEs, window functions, and query optimization.
-- [:material-tag: Day 86 – BI in the Cloud](../lessons/day-86-bi-cloud.md): Explore cloud BI platforms like Power BI, Tableau Online, and Google Data Studio.
-- [:material-tag: Day 87 – Data Governance and Security](../lessons/day-87-data-governance.md): Implement governance frameworks and security best practices.
-- [:material-tag: Day 88 – Capstone Project - Part 1](../lessons/day-88-capstone-part-1.md): Scope your project, collect data, and plan analysis.
-- [:material-tag: Day 89 – Capstone Project - Part 2](../lessons/day-89-capstone-part-2.md): Analyze data, create visualizations, and present findings.
-- [:material-tag: Day 90 – Career Workshop and Next Steps](../lessons/day-90-career-workshop.md): Build your resume, portfolio, and career strategy.
+- [:material-tag: Day 85 – Advanced SQL and Performance Tuning](../lessons/day-85-advanced-sql.md):
+  Master CTEs, window functions, and query optimization.
+- [:material-tag: Day 86 – BI in the Cloud](../lessons/day-86-bi-cloud.md): Explore cloud BI
+  platforms like Power BI, Tableau Online, and Google Data Studio.
+- [:material-tag: Day 87 – Data Governance and Security](../lessons/day-87-data-governance.md):
+  Implement governance frameworks and security best practices.
+- [:material-tag: Day 88 – Capstone Project - Part 1](../lessons/day-88-capstone-part-1.md): Scope
+  your project, collect data, and plan analysis.
+- [:material-tag: Day 89 – Capstone Project - Part 2](../lessons/day-89-capstone-part-2.md): Analyze
+  data, create visualizations, and present findings.
+- [:material-tag: Day 90 – Career Workshop and Next Steps](../lessons/day-90-career-workshop.md):
+  Build your resume, portfolio, and career strategy.
 
 ## Learning outcomes
 
@@ -40,11 +48,13 @@ By completing Phase 6, you will be able to:
 The capstone project (Days 88-89) is the culmination of your learning journey. You will:
 
 1. Define a real-world business problem and project scope
-2. Identify and collect relevant data sources
-3. Perform comprehensive data analysis
-4. Create compelling visualizations and dashboards
-5. Present findings with actionable recommendations
+1. Identify and collect relevant data sources
+1. Perform comprehensive data analysis
+1. Create compelling visualizations and dashboards
+1. Present findings with actionable recommendations
 
-This project becomes a centerpiece of your professional portfolio, demonstrating your ability to deliver business value through data analytics.
+This project becomes a centerpiece of your professional portfolio, demonstrating your ability to
+deliver business value through data analytics.
 
-Ready to continue? Advance to [Phase 7 – SQL & Database Mastery](phase7.md) for comprehensive database training, or revisit [Phase Overview](overview.md) to review your learning path.
+Ready to continue? Advance to [Phase 7 – SQL & Database Mastery](phase7.md) for comprehensive
+database training, or revisit [Phase Overview](overview.md) to review your learning path.

@@ -33,7 +33,7 @@ _load_module(
 )
 _load_module("Day_26_Statistics.stats", "Day_26_Statistics/stats.py")
 
-from Day_71_BI_Data_Landscape import (
+from Day_71_BI_Data_Landscape import (  # noqa: E402
     DATA_CLASSIFICATION_TITLES,
     DATA_CLASSIFICATIONS_SECTION,
     SECTION_TOPICS,

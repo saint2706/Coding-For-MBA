@@ -1,11 +1,13 @@
 # Phase 2 Cheat Sheet — Data Workflows & Analytics Stack (Days 21-39)
 
-> Translate raw data into trustworthy insights. This phase turns you into the connective tissue between business stakeholders and technical data platforms.
+> Translate raw data into trustworthy insights. This phase turns you into the connective tissue
+> between business stakeholders and technical data platforms.
 
 ## Core Outcomes
 
 - Operate confidently inside virtual environments and manage dependencies across projects.
-- Analyse datasets with NumPy and Pandas, handling missing values, joins, reshaping, and aggregations.
+- Analyse datasets with NumPy and Pandas, handling missing values, joins, reshaping, and
+  aggregations.
 - Design data-cleaning pipelines that produce reproducible, well-documented transformations.
 - Produce compelling static and interactive visualisations for executive storytelling.
 - Connect to relational databases, NoSQL stores, and third-party APIs to automate ingestion.
@@ -13,21 +15,24 @@
 
 ## Analytics Workflow Blueprint
 
-1. **Ingest** – `pandas.read_csv`, database connectors (`sqlite3`, `sqlalchemy`, `psycopg2`, `pymongo`), authenticated API calls with `requests`.
-2. **Clean** – handle nulls (`fillna`, `dropna`), enforce schema (`astype`, categorical types), deduplicate, standardise text.
-3. **Transform** – vectorised calculations, window functions (`rolling`, `expanding`), group-by aggregations, pivot/unpivot operations.
-4. **Visualise** – Matplotlib/Seaborn for executive slides; Plotly for interactive dashboards.
-5. **Operationalise** – package pipeline steps into reusable functions, schedule scripts, or expose via Flask endpoints.
+1. **Ingest** – `pandas.read_csv`, database connectors (`sqlite3`, `sqlalchemy`, `psycopg2`,
+   `pymongo`), authenticated API calls with `requests`.
+1. **Clean** – handle nulls (`fillna`, `dropna`), enforce schema (`astype`, categorical types),
+   deduplicate, standardise text.
+1. **Transform** – vectorised calculations, window functions (`rolling`, `expanding`), group-by
+   aggregations, pivot/unpivot operations.
+1. **Visualise** – Matplotlib/Seaborn for executive slides; Plotly for interactive dashboards.
+1. **Operationalise** – package pipeline steps into reusable functions, schedule scripts, or expose
+   via Flask endpoints.
 
 ## Pandas Power Moves
 
-| Situation | Method | Snippet |
-|-----------|--------|---------|
-| Combine datasets | `merge` / `join` | `orders.merge(customers, on="customer_id", how="left")` |
-| Feature scaling | `assign` | `df.assign(conversion_rate=lambda d: d.deals / d.visits)` |
-| Data quality | boolean masks | `df[df.revenue.between(0, 1_000_000)]` |
-| Multi-level analysis | `groupby` + `agg` | `sales.groupby(["region","segment"]).agg(rev=("revenue","sum"))` |
-| Share insights | `to_excel`, `to_markdown`, `to_json` | `df.to_excel("kpi-report.xlsx", index=False)` |
+| Situation | Method | Snippet | |-----------|--------|---------| | Combine datasets | `merge` /
+`join` | `orders.merge(customers, on="customer_id", how="left")` | | Feature scaling | `assign` |
+`df.assign(conversion_rate=lambda d: d.deals / d.visits)` | | Data quality | boolean masks |
+`df[df.revenue.between(0, 1_000_000)]` | | Multi-level analysis | `groupby` + `agg` |
+`sales.groupby(["region","segment"]).agg(rev=("revenue","sum"))` | | Share insights | `to_excel`,
+`to_markdown`, `to_json` | `df.to_excel("kpi-report.xlsx", index=False)` |
 
 ## Visual Storytelling Prompts
 
@@ -52,10 +57,14 @@
 
 ## 30-Minute Refresh Sprint
 
-1. **Data pull (10 min):** Request an authenticated JSON payload, normalise into a DataFrame, and persist as Parquet.
-2. **Transformation (10 min):** Chain `assign`, `groupby`, and `pivot_table` to produce a board-level KPI table.
-3. **Communication (10 min):** Export a clean PNG visual with annotations and craft a brief executive takeaway.
+1. **Data pull (10 min):** Request an authenticated JSON payload, normalise into a DataFrame, and
+   persist as Parquet.
+1. **Transformation (10 min):** Chain `assign`, `groupby`, and `pivot_table` to produce a
+   board-level KPI table.
+1. **Communication (10 min):** Export a clean PNG visual with annotations and craft a brief
+   executive takeaway.
 
----
+______________________________________________________________________
 
-**Next stop:** Phase 3 moves from analytics to machine learning. Bring your disciplined pipelines—they become the backbone of model development.
+**Next stop:** Phase 3 moves from analytics to machine learning. Bring your disciplined
+pipelines—they become the backbone of model development.

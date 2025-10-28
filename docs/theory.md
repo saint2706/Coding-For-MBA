@@ -1,6 +1,8 @@
 # Machine Learning Theory and Mathematical Foundations
 
-This document provides a comprehensive reference for the mathematical and theoretical concepts underlying the machine learning curriculum (Days 38-67). Each section builds from first principles to practical applications in modern ML systems.
+This document provides a comprehensive reference for the mathematical and theoretical concepts
+underlying the machine learning curriculum (Days 38-67). Each section builds from first principles
+to practical applications in modern ML systems.
 
 ______________________________________________________________________
 
@@ -23,7 +25,8 @@ ______________________________________________________________________
 
 ## 1. Linear Algebra Foundations
 
-Linear algebra provides the mathematical language for representing and manipulating data in machine learning.
+Linear algebra provides the mathematical language for representing and manipulating data in machine
+learning.
 
 ### 1.1 Vectors
 
@@ -46,7 +49,8 @@ v = [v₁, v₂, ..., vₙ]ᵀ
 - **Dot Product:** v · w = Σᵢ vᵢwᵢ = ||v|| ||w|| cos(θ)
 - **Norm (Length):** ||v|| = √(Σᵢ vᵢ²)
 
-**ML Application:** Feature vectors represent observations; dot products measure similarity between data points.
+**ML Application:** Feature vectors represent observations; dot products measure similarity between
+data points.
 
 ### 1.2 Matrices
 
@@ -65,7 +69,8 @@ A = [aᵢⱼ] where i ∈ {1,...,m}, j ∈ {1,...,n}
 - **Transpose:** (Aᵀ)ᵢⱼ = aⱼᵢ
 - **Inverse:** AA⁻¹ = A⁻¹A = I (when A is square and non-singular)
 
-**ML Application:** Datasets are stored as matrices where rows are observations and columns are features. Matrix multiplication implements linear transformations and neural network layers.
+**ML Application:** Datasets are stored as matrices where rows are observations and columns are
+features. Matrix multiplication implements linear transformations and neural network layers.
 
 ### 1.3 Eigenvalues and Eigenvectors
 
@@ -87,8 +92,10 @@ where Q contains eigenvectors and Λ is a diagonal matrix of eigenvalues.
 
 **ML Application:**
 
-- **Principal Component Analysis (PCA):** Uses eigenvectors of the covariance matrix to find directions of maximum variance
-- **Dimensionality Reduction:** Project data onto top-k eigenvectors to reduce dimensions while preserving variance
+- **Principal Component Analysis (PCA):** Uses eigenvectors of the covariance matrix to find
+  directions of maximum variance
+- **Dimensionality Reduction:** Project data onto top-k eigenvectors to reduce dimensions while
+  preserving variance
 - **Spectral Clustering:** Uses eigenvectors of graph Laplacian matrices
 
 ### 1.4 Singular Value Decomposition (SVD)
@@ -127,10 +134,10 @@ f'(x) = lim(h→0) [f(x + h) - f(x)] / h
 
 **Common Derivatives:**
 
-- d/dx [xⁿ] = nxⁿ⁻¹
-- d/dx [eˣ] = eˣ
-- d/dx [ln(x)] = 1/x
-- d/dx [sin(x)] = cos(x)
+- d/dx \[xⁿ\] = nxⁿ⁻¹
+- d/dx \[eˣ\] = eˣ
+- d/dx \[ln(x)\] = 1/x
+- d/dx \[sin(x)\] = cos(x)
 
 **ML Application:** Derivatives tell us how much the loss changes when we adjust a parameter.
 
@@ -154,7 +161,8 @@ The **gradient** is the vector of all partial derivatives:
 - Negative gradient points toward steepest descent
 - Gradient is zero at local minima, maxima, and saddle points
 
-**ML Application:** Gradient descent algorithms follow -∇L(θ) to minimize the loss function L with respect to parameters θ.
+**ML Application:** Gradient descent algorithms follow -∇L(θ) to minimize the loss function L with
+respect to parameters θ.
 
 ### 2.3 Chain Rule
 
@@ -170,7 +178,8 @@ For multivariate compositions:
 ∂z/∂x = (∂z/∂y)(∂y/∂x)
 ```
 
-**ML Application:** Backpropagation in neural networks repeatedly applies the chain rule to compute gradients through multiple layers.
+**ML Application:** Backpropagation in neural networks repeatedly applies the chain rule to compute
+gradients through multiple layers.
 
 ### 2.4 Gradient Descent
 
@@ -237,7 +246,8 @@ f(λx + (1-λ)y) ≤ λf(x) + (1-λ)f(y) for all λ ∈ [0,1]
 - Gradient descent converges to global optimum
 - Examples: Linear regression, logistic regression (with convex regularization)
 
-**ML Application:** Many ML loss functions are convex, guaranteeing convergence to optimal solutions.
+**ML Application:** Many ML loss functions are convex, guaranteeing convergence to optimal
+solutions.
 
 ______________________________________________________________________
 
@@ -341,7 +351,7 @@ Often use **log-likelihood** for convenience:
 - Null hypothesis H₀ vs. alternative H₁
 - p-value: Probability of observing data at least as extreme as observed, given H₀
 - Significance level α (typically 0.05)
-- Reject H₀ if p-value < α
+- Reject H₀ if p-value \< α
 
 **Confidence Intervals:**
 
@@ -357,7 +367,8 @@ ______________________________________________________________________
 
 ## 4. Supervised Learning Theory
 
-Supervised learning involves learning a mapping from inputs X to outputs Y given labeled training data.
+Supervised learning involves learning a mapping from inputs X to outputs Y given labeled training
+data.
 
 ### 4.1 Problem Formulation
 
@@ -466,7 +477,8 @@ subject to yᵢ(wᵀxᵢ + b) ≥ 1 - ξᵢ, ξᵢ ≥ 0
 - Polynomial: K(x, x') = (xᵀx' + c)ᵈ
 - RBF (Gaussian): K(x, x') = exp(-γ||x - x'||²)
 
-**ML Application:** Effective for high-dimensional spaces, memory-efficient (uses support vectors only).
+**ML Application:** Effective for high-dimensional spaces, memory-efficient (uses support vectors
+only).
 
 ### 4.5 Decision Trees
 
@@ -513,7 +525,8 @@ ______________________________________________________________________
 
 ## 5. Neural Networks and Deep Learning
 
-Neural networks are compositions of simple non-linear functions that can approximate complex mappings.
+Neural networks are compositions of simple non-linear functions that can approximate complex
+mappings.
 
 ### 5.1 Perceptron
 
@@ -593,8 +606,8 @@ Layer 2: a⁽²⁾ = g⁽²⁾(W⁽²⁾a⁽¹⁾ + b⁽²⁾)
 Output: ŷ = a⁽ᴸ⁾
 ```
 
-**Universal Approximation Theorem:**
-A neural network with a single hidden layer and enough neurons can approximate any continuous function arbitrarily well.
+**Universal Approximation Theorem:** A neural network with a single hidden layer and enough neurons
+can approximate any continuous function arbitrarily well.
 
 ### 5.4 Backpropagation
 
@@ -1208,7 +1221,7 @@ Y_t = T_t × S_t × R_t
 
 A time series is **stationary** if:
 
-1. Constant mean: E[Y_t] = μ
+1. Constant mean: E\[Y_t\] = μ
 1. Constant variance: Var(Y_t) = σ²
 1. Autocovariance depends only on lag: Cov(Y_t, Y\_{t+k}) = γ_k
 
@@ -1740,7 +1753,7 @@ R² = 1 - SS_res/SS_tot = 1 - Σ(yᵢ - ŷᵢ)²/Σ(yᵢ - ȳ)²
 
 - R² = 1: Perfect predictions
 - R² = 0: Model as good as mean baseline
-- R² < 0: Model worse than mean baseline
+- R² \< 0: Model worse than mean baseline
 
 **Adjusted R²:**
 
@@ -1802,7 +1815,9 @@ ______________________________________________________________________
 
 ## Conclusion
 
-This theory document covers the mathematical foundations underlying the ML curriculum from Days 38-67. Each concept builds on previous ones, forming a coherent framework for understanding modern machine learning:
+This theory document covers the mathematical foundations underlying the ML curriculum from Days
+38-67. Each concept builds on previous ones, forming a coherent framework for understanding modern
+machine learning:
 
 1. **Linear Algebra** provides the language for representing data and transformations
 1. **Calculus** enables optimization through gradient-based methods
@@ -1817,7 +1832,9 @@ This theory document covers the mathematical foundations underlying the ML curri
 1. **Advanced Deep Learning** tackles complex patterns in images, sequences, and text
 1. **Evaluation** ensures models generalize beyond training data
 
-For practical implementations of these concepts, refer to the corresponding lesson days (38-67) in the curriculum. Each lesson provides executable code, worked examples, and exercises to solidify understanding.
+For practical implementations of these concepts, refer to the corresponding lesson days (38-67) in
+the curriculum. Each lesson provides executable code, worked examples, and exercises to solidify
+understanding.
 
 ______________________________________________________________________
 
@@ -1869,4 +1886,6 @@ ______________________________________________________________________
 
 ______________________________________________________________________
 
-*This theory document is maintained as part of the Coding for MBA curriculum. For questions or suggestions, please open an issue on the [GitHub repository](https://github.com/saint2706/Coding-For-MBA).*
+*This theory document is maintained as part of the Coding for MBA curriculum. For questions or
+suggestions, please open an issue on the
+[GitHub repository](https://github.com/saint2706/Coding-For-MBA).*

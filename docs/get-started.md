@@ -1,6 +1,6 @@
----
-tags: [python, analytics, bi, ml, curriculum]
----
+______________________________________________________________________
+
+## tags: \[python, analytics, bi, ml, curriculum\]
 
 # Get started
 
@@ -8,7 +8,9 @@ Follow these steps to configure a local workspace that mirrors the recommended c
 
 ## 1. Prepare Python 3.11
 
-Install Python 3.11 or use the provided devcontainer (see `.devcontainer/devcontainer.json`). On macOS/Linux you can use [`pyenv`](https://github.com/pyenv/pyenv); on Windows, install from the Microsoft Store.
+Install Python 3.11 or use the provided devcontainer (see `.devcontainer/devcontainer.json`). On
+macOS/Linux you can use [`pyenv`](https://github.com/pyenv/pyenv); on Windows, install from the
+Microsoft Store.
 
 ## 2. Create and activate a virtual environment
 
@@ -46,7 +48,8 @@ Hooks enforce formatting for Python, notebooks, and Markdown before every commit
 jupyter notebook
 ```
 
-Navigate to any `Day_XX_*` directory and open the lesson notebook. Each folder includes scripts, notebooks, and (when applicable) solutions.
+Navigate to any `Day_XX_*` directory and open the lesson notebook. Each folder includes scripts,
+notebooks, and (when applicable) solutions.
 
 ## 6. Run a single lesson script
 
@@ -54,7 +57,8 @@ Navigate to any `Day_XX_*` directory and open the lesson notebook. Each folder i
 python Day_30_Web_Scraping/lesson.py
 ```
 
-Swap the folder name to execute any other lesson. The scripts are designed to run independently and print their own instructions or outputs.
+Swap the folder name to execute any other lesson. The scripts are designed to run independently and
+print their own instructions or outputs.
 
 ## 7. Use the Makefile for common tasks
 

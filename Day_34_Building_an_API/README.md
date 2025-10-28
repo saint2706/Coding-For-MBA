@@ -1,12 +1,18 @@
 # 📘 Day 34: Building a Simple API with Flask
 
-Consuming data from APIs is a core skill. But what if you need to provide data from your analysis to another person or application? Instead of sending a CSV file, you can build your own API. This allows other services (like a web dashboard or another analyst's script) to access your data programmatically.
+Consuming data from APIs is a core skill. But what if you need to provide data from your analysis to
+another person or application? Instead of sending a CSV file, you can build your own API. This
+allows other services (like a web dashboard or another analyst's script) to access your data
+programmatically.
 
-Today, we'll learn how to build a simple web API using **Flask**, a popular "micro-framework" for Python. It's called a micro-framework because it's very lightweight and simple to start with, but can be extended to build complex applications.
+Today, we'll learn how to build a simple web API using **Flask**, a popular "micro-framework" for
+Python. It's called a micro-framework because it's very lightweight and simple to start with, but
+can be extended to build complex applications.
 
 ## What is a Web Framework?
 
-A web framework like Flask handles all the low-level, complicated parts of web communication (like handling HTTP requests and responses), so you can focus on writing your application's logic.
+A web framework like Flask handles all the low-level, complicated parts of web communication (like
+handling HTTP requests and responses), so you can focus on writing your application's logic.
 
 ## Your First Flask API
 
@@ -32,7 +38,9 @@ if __name__ == '__main__':
 
 ## Returning JSON Data
 
-An API for data analysis isn't very useful if it just returns text. We need to return structured data, and the standard format for that is JSON. Flask provides a handy function called `jsonify` that converts a Python dictionary into a proper JSON response.
+An API for data analysis isn't very useful if it just returns text. We need to return structured
+data, and the standard format for that is JSON. Flask provides a handy function called `jsonify`
+that converts a Python dictionary into a proper JSON response.
 
 ```python
 from flask import Flask, jsonify
@@ -50,7 +58,8 @@ def get_products():
     return jsonify(products)
 ```
 
-Now, if you run this app and navigate to `http://127.0.0.1:5000/api/products` in your browser or an API tool, you'll get the list of products in JSON format.
+Now, if you run this app and navigate to `http://127.0.0.1:5000/api/products` in your browser or an
+API tool, you'll get the list of products in JSON format.
 
 ## Dynamic Routes
 
@@ -76,13 +85,16 @@ Now you can go to `/api/products/1` to get the laptop, or `/api/products/2` to g
 
    - Create a file named `my_api.py`.
    - Set up a basic Flask application.
-   - Create a root endpoint `/` that returns a simple welcome message like "Welcome to the Company Data API".
+   - Create a root endpoint `/` that returns a simple welcome message like "Welcome to the Company
+     Data API".
 
 1. **Serve Employee Data:**
 
-   - Inside your `my_api.py` script, create a list of employee dictionaries. Each employee should have an `id`, `name`, and `department`.
+   - Inside your `my_api.py` script, create a list of employee dictionaries. Each employee should
+     have an `id`, `name`, and `department`.
    - Create a new endpoint at `/api/employees`.
-   - When a `GET` request is made to this endpoint, it should return the full list of employees as a JSON response.
+   - When a `GET` request is made to this endpoint, it should return the full list of employees as a
+     JSON response.
 
 1. **Serve a Single Employee's Data:**
 
@@ -91,18 +103,22 @@ Now you can go to `/api/products/1` to get the laptop, or `/api/products/2` to g
    - If the employee is found, return their data as a JSON object.
    - If no employee with that ID is found, return a JSON error message with a 404 status code.
 
-🎉 **Incredible!** You've just learned how to build a web API. This is a massive step. It bridges the gap between performing analysis for yourself and providing data and services to others, forming the backbone of modern data applications and microservices.
+🎉 **Incredible!** You've just learned how to build a web API. This is a massive step. It bridges the
+gap between performing analysis for yourself and providing data and services to others, forming the
+backbone of modern data applications and microservices.
 
 ## Running the Development Server
 
-The lesson's reference implementation exposes a `create_app()` factory in `api_server.py`. You can start the local development server with:
+The lesson's reference implementation exposes a `create_app()` factory in `api_server.py`. You can
+start the local development server with:
 
 ```bash
 export FLASK_APP=Day_34_Building_an_API.api_server:create_app
 flask run --debug
 ```
 
-The `--debug` flag enables auto-reload and better error messages while you iterate on your API. Flask will serve the application on `http://127.0.0.1:5000/` by default.
+The `--debug` flag enables auto-reload and better error messages while you iterate on your API.
+Flask will serve the application on `http://127.0.0.1:5000/` by default.
 
 ## Running the Tests
 
@@ -112,14 +128,18 @@ Pytest is configured to exercise the API endpoints. From the repository root, ru
 pytest tests/test_day_34.py
 ```
 
-The tests use Flask's test client to verify that the root page and JSON endpoints respond with the expected payloads and HTTP status codes.
+The tests use Flask's test client to verify that the root page and JSON endpoints respond with the
+expected payloads and HTTP status codes.
 
 ## Why Use an Application Factory?
 
-The application factory pattern encapsulates all app configuration inside a function. This makes it easy to:
+The application factory pattern encapsulates all app configuration inside a function. This makes it
+easy to:
 
 - Create multiple instances of the app with different settings (e.g., testing versus production).
-- Avoid running application code at import time, which keeps tools like the Flask CLI and pytest fast.
+- Avoid running application code at import time, which keeps tools like the Flask CLI and pytest
+  fast.
 - Improve modularity by cleanly separating data configuration from route registration.
 
-Because `create_app()` returns a fully configured Flask instance, you can reuse it for development, testing, or even deployment without duplicating setup code.
+Because `create_app()` returns a fully configured Flask instance, you can reuse it for development,
+testing, or even deployment without duplicating setup code.

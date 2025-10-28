@@ -8,7 +8,6 @@ import pandas as pd
 
 from mypackage.bi_curriculum import BiTopic, topics_by_titles
 
-
 SECTION_TITLES: Mapping[str, list[str]] = {
     "Architectures": [
         "Data Architectures",

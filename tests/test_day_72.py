@@ -1,14 +1,16 @@
 """Tests for Day 72 – BI Data Formats and Ingestion."""
 
-from pathlib import Path
 import sys
+from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from Day_72_BI_Data_Formats_and_Ingestion.lesson import build_normalised_catalogue
-from Day_72_BI_Data_Formats_and_Ingestion.solutions import (
+from Day_72_BI_Data_Formats_and_Ingestion.lesson import (  # noqa: E402
+    build_normalised_catalogue,
+)
+from Day_72_BI_Data_Formats_and_Ingestion.solutions import (  # noqa: E402
     DATA_FORMAT_TITLES,
     detect_format,
     load_data_formats,

@@ -7,11 +7,10 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE_DIR))
 
 # Import legacy modules referenced by pytest-cov so coverage thresholds remain satisfied.
-import Day_24_Pandas_Advanced.pandas_adv  # noqa: F401  pylint: disable=unused-import
-import Day_25_Data_Cleaning.data_cleaning  # noqa: F401  pylint: disable=unused-import
-import Day_26_Statistics.stats  # noqa: F401  pylint: disable=unused-import
-
-from Day_74_BI_Data_Preparation_and_Tools import solutions as sol
+import Day_24_Pandas_Advanced.pandas_adv  # noqa: E402, F401  pylint: disable=unused-import
+import Day_25_Data_Cleaning.data_cleaning  # noqa: E402, F401  pylint: disable=unused-import
+import Day_26_Statistics.stats  # noqa: E402, F401  pylint: disable=unused-import
+from Day_74_BI_Data_Preparation_and_Tools import solutions as sol  # noqa: E402
 
 
 def test_remove_duplicates_keeps_first_occurrence():

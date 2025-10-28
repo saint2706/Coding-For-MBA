@@ -10,7 +10,6 @@ from Day_80_BI_Data_Quality_and_Governance.solutions import (
     load_topic_groups,
 )
 
-
 TARGET_THRESHOLDS = {
     "Accuracy": 0.98,
     "Coherence": 0.95,

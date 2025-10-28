@@ -1,6 +1,7 @@
 # Repository Upgrade Roadmap
 
-This document outlines the future work planned for the `Coding-For-MBA` repository, continuing the modernization and refactoring efforts.
+This document outlines the future work planned for the `Coding-For-MBA` repository, continuing the
+modernization and refactoring efforts.
 
 ## Phase 1: Core Data Science Curriculum (Days 26-37) ✅ COMPLETE
 
@@ -28,7 +29,8 @@ All Phase 1 lessons have been successfully refactored and modernized:
 
 ## Phase 2: Machine Learning Curriculum (Days 38-50) ✅ COMPLETED
 
-The Machine Learning section has been successfully refactored with clear, well-documented code and updated `README.md` files following the established pattern.
+The Machine Learning section has been successfully refactored with clear, well-documented code and
+updated `README.md` files following the established pattern.
 
 **Completed lessons:**
 
@@ -48,7 +50,8 @@ The Machine Learning section has been successfully refactored with clear, well-d
 
 ## Phase 3: Advanced ML & MLOps Curriculum (Days 51-67) ✅ COMPLETED
 
-The advanced machine learning and MLOps lessons have been successfully refactored and modernized, maintaining high code quality standards throughout these cutting-edge topics.
+The advanced machine learning and MLOps lessons have been successfully refactored and modernized,
+maintaining high code quality standards throughout these cutting-edge topics.
 
 **Completed lessons:**
 
@@ -281,10 +284,14 @@ The advanced machine learning and MLOps lessons have been successfully refactore
 
 ## High-Level Repository Goals
 
-- **Increase Test Coverage:** While unit tests have been added for the refactored lessons, there is an opportunity to increase coverage and add more integration-style tests.
-- **Performance Profiling:** The performance of other data-heavy scripts can be profiled and optimized, similar to the work done on `Day_25_Data_Cleaning`.
-- **Interactive Visualizations:** Add more interactive visualizations using `Plotly` to other data-focused lessons to improve user engagement.
-- **Dependency Review:** Periodically review and update the `requirements.txt` file to ensure all dependencies are on their latest stable versions.
+- **Increase Test Coverage:** While unit tests have been added for the refactored lessons, there is
+  an opportunity to increase coverage and add more integration-style tests.
+- **Performance Profiling:** The performance of other data-heavy scripts can be profiled and
+  optimized, similar to the work done on `Day_25_Data_Cleaning`.
+- **Interactive Visualizations:** Add more interactive visualizations using `Plotly` to other
+  data-focused lessons to improve user engagement.
+- **Dependency Review:** Periodically review and update the `requirements.txt` file to ensure all
+  dependencies are on their latest stable versions.
 - **Accessibility First:** Ensure all content meets WCAG accessibility standards.
 - **Community Driven:** Foster an active, inclusive community around the curriculum.
 - **Industry Relevant:** Keep content aligned with current business and technology needs.

@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import io
 import json
-from typing import Any, Dict, Iterable, List
 import xml.etree.ElementTree as ET
+from typing import Any, Dict, Iterable, List
 
 import pandas as pd
 

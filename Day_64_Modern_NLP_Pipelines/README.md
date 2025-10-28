@@ -8,4 +8,5 @@ Connect discrete NLP components into a reproducible workflow. After this lesson 
 - Retrieve support passages and perform retrieval-augmented generation (RAG).
 - Evaluate generations with deterministic exact-match and token-overlap metrics.
 
-Run `python Day_64_Modern_NLP_Pipelines/solutions.py` to explore end-to-end text processing with seeded toy corpora.
+Run `python Day_64_Modern_NLP_Pipelines/solutions.py` to explore end-to-end text processing with
+seeded toy corpora.
