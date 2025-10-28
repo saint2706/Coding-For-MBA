@@ -1,6 +1,7 @@
 site_name: Coding for MBA
 site_url: https://saint2706.github.io/Coding-For-MBA/
 repo_url: https://github.com/saint2706/Coding-For-MBA
+edit_uri: edit/main/docs/
 theme:
   name: material
   features:
