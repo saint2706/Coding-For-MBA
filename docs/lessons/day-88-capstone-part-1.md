@@ -4,18 +4,36 @@
 
 This lesson marks the beginning of the capstone project. In this two-part project, you will apply the skills you've learned throughout the curriculum to a real-world business problem.
 
-## Project Overview
+## Project Scoping and Data Collection
 
-The capstone project will involve a comprehensive analysis of a business case, from data collection and cleaning to visualization and presentation.
+A well-defined project scope is crucial for the success of any data analytics project. It provides a clear roadmap and helps to keep the project on track.
 
-## Part 1: Project Scoping and Data Collection
+### 1. Define Project Objectives and Scope
 
-*   **Problem Definition:** Clearly define the business problem and the key questions you will answer.
-*   **Data Sourcing:** Identify and collect the necessary data for your analysis.
-*   **Project Plan:** Develop a detailed project plan with timelines and deliverables.
+Start by clearly defining the objectives and scope of your project. What problem are you trying to solve? What are the key questions you need to answer?
+
+*   **Business Problem:** A clear, concise statement of the problem you are trying to solve.
+*   **Key Questions:** A list of the specific questions your analysis will answer.
+*   **Deliverables:** What will you produce at the end of the project? (e.g., a report, a dashboard, a presentation)
+*   **Out of Scope:** What will you *not* be doing in this project? This is just as important as defining what is in scope.
+
+### 2. Identify Data Sources and Key Metrics
+
+Once you have a clear understanding of your project's objectives, the next step is to identify the data you will need.
+
+*   **Data Sources:** Where will you get your data? (e.g., internal databases, public datasets, APIs)
+*   **Key Metrics:** What are the key performance indicators (KPIs) that will help you measure success?
+
+### 3. Develop a Data Analysis Plan
+
+Create a detailed plan for how you will analyze the data and derive insights.
+
+*   **Analysis Techniques:** What statistical or analytical techniques will you use? (e.g., regression analysis, clustering, time-series analysis)
+*   **Tools:** What tools will you use for your analysis? (e.g., Python, R, SQL, Tableau)
+*   **Timeline:** Create a realistic timeline for your project, with milestones for each phase.
 
 ## Exercises
 
-1.  Write a project proposal outlining the business problem, scope, and objectives.
-2.  Identify at least two potential data sources for your project.
-3.  Create a project plan using a tool of your choice.
+1.  **Project Proposal:** Write a one-page project proposal that outlines the business problem, key questions, deliverables, and scope of your capstone project.
+2.  **Data Source Identification:** Identify at least two potential data sources for your project. For each source, describe the data it contains and how you will access it.
+3.  **Project Plan:** Create a high-level project plan with a timeline and key milestones.
