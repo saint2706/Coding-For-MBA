@@ -6,7 +6,8 @@
 class ProgressTracker {
   constructor() {
     this.storageKey = 'coding-mba-progress';
-    this.totalLessons = 67;
+    this.defaultTotalLessons = 108;
+    this._totalLessons = null;
     this.storageListenerRegistered = false;
     this.handleStorageChange = this.handleStorageChange.bind(this);
   }
@@ -63,6 +64,61 @@ class ProgressTracker {
   }
 
   /**
+   * Get the total number of lessons
+   * @returns {number}
+   */
+  getTotalLessons() {
+    if (typeof this._totalLessons === 'number') {
+      return this._totalLessons;
+    }
+
+    const detectedTotal = this.detectTotalLessons();
+    if (typeof detectedTotal === 'number' && detectedTotal > 0) {
+      this._totalLessons = detectedTotal;
+    } else {
+      this._totalLessons = this.defaultTotalLessons;
+    }
+
+    return this._totalLessons;
+  }
+
+  /**
+   * Attempt to detect the total number of lessons from the DOM or global data
+   * @returns {number|null}
+   */
+  detectTotalLessons() {
+    if (typeof document !== 'undefined') {
+      let lessonLinks = Array.from(document.querySelectorAll('.md-nav__link[href*="/lessons/"]'));
+
+      if (lessonLinks.length === 0) {
+        lessonLinks = Array.from(document.querySelectorAll('a[href*="/lessons/"]'));
+      }
+      const lessonIds = new Set();
+
+      lessonLinks.forEach(link => {
+        const href = link.getAttribute('href') || '';
+        const match = href.match(/lessons\/(day-\d+-[^/#?]+)/i);
+        if (match) {
+          lessonIds.add(match[1].toLowerCase());
+        }
+      });
+
+      if (lessonIds.size > 0) {
+        return lessonIds.size;
+      }
+    }
+
+    if (typeof window !== 'undefined') {
+      const catalog = window.lessonCatalog || window.lessons;
+      if (Array.isArray(catalog) && catalog.length > 0) {
+        return catalog.length;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Save progress data
    * @param {Object} progress - Progress data to save
    */
@@ -81,7 +137,11 @@ class ProgressTracker {
   calculatePercentage() {
     const progress = this.getProgress();
     const completed = Object.keys(progress).length;
-    return Math.round((completed / this.totalLessons) * 100);
+    const totalLessons = this.getTotalLessons();
+    if (totalLessons === 0) {
+      return 0;
+    }
+    return Math.round((completed / totalLessons) * 100);
   }
 
   /**
@@ -92,10 +152,11 @@ class ProgressTracker {
     const progress = this.getProgress();
     const completedLessons = Object.keys(progress);
     const timestamps = completedLessons.map(id => progress[id].timestamp);
+    const totalLessons = this.getTotalLessons();
 
     return {
       completed: completedLessons.length,
-      remaining: this.totalLessons - completedLessons.length,
+      remaining: Math.max(totalLessons - completedLessons.length, 0),
       percentage: this.calculatePercentage(),
       firstLesson: timestamps.length > 0 ? Math.min(...timestamps) : null,
       lastLesson: timestamps.length > 0 ? Math.max(...timestamps) : null,
@@ -167,7 +228,7 @@ class ProgressTracker {
 
     // Update completion count
     document.querySelectorAll('.completion-count').forEach(el => {
-      el.textContent = `${stats.completed} / ${this.totalLessons}`;
+      el.textContent = `${stats.completed} / ${this.getTotalLessons()}`;
     });
 
     // Update checkbox for current lesson
@@ -260,6 +321,7 @@ class ProgressTracker {
    */
   init() {
     this.cleanupUI();
+    this._totalLessons = null;
 
     // Add progress widget to page
     this.addProgressWidget();
@@ -292,6 +354,7 @@ class ProgressTracker {
    */
   addProgressWidget() {
     const stats = this.getStats();
+    const totalLessons = this.getTotalLessons();
 
     const widget = document.createElement('div');
     widget.className = 'progress-widget';
@@ -304,7 +367,7 @@ class ProgressTracker {
         <div class="progress-bar-fill" style="width: ${stats.percentage}%"></div>
       </div>
       <div class="progress-stats">
-        <span class="completion-count">${stats.completed} / ${this.totalLessons}</span>
+        <span class="completion-count">${stats.completed} / ${totalLessons}</span>
         <span class="progress-percentage">${stats.percentage}%</span>
       </div>
       <div class="progress-actions">
