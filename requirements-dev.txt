@@ -33,6 +33,8 @@ codespell>=2.2.0
 linkchecker>=10.3.0
 
 # i18n support
+mkdocs>=1.6
+mkdocs-material>=9.6
 mkdocs-static-i18n>=1.2.0
 
 # Image processing for badges

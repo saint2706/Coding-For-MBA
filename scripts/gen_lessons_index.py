@@ -17,6 +17,52 @@ from typing import Dict, List
 
 import yaml
 
+DAY_PREFIX_PATTERN = re.compile(
+    r"^(?P<label>Day)\s+0*(?P<num>\d+)(?P<sep>\s*[.:\-\u2013\u2014\u00b7\u2022]?)\s*(?P<rest>.*)$",
+    re.IGNORECASE,
+)
+
+
+def normalize_display_title(raw_title: str) -> str:
+    """Return a cleaned title with a single day prefix."""
+
+    if not raw_title:
+        return ""
+
+    title = re.sub(r"^#+\s*", "", raw_title)
+    title = re.sub(r"[📘🌐📊🎉]", "", title).strip()
+
+    match = DAY_PREFIX_PATTERN.match(title)
+    if not match:
+        return title
+
+    day_num = int(match.group("num"))
+    remainder = match.group("rest").strip()
+
+    if remainder:
+        duplicate_pattern = re.compile(
+            rf"^(?:Day\s+0*{day_num}\s*[.:\-\u2013\u2014\u00b7\u2022]?\s*)+",
+            re.IGNORECASE,
+        )
+        remainder = duplicate_pattern.sub("", remainder).strip()
+
+    sep_token = match.group("sep") or ":"
+
+    if remainder:
+        if any(char in sep_token for char in "\u2013\u2014-"):
+            separator = " – "
+        elif any(char in sep_token for char in "\u00b7\u2022"):
+            separator = " · "
+        elif ":" in sep_token:
+            separator = ": "
+        else:
+            separator = ": "
+        cleaned = f"Day {day_num}{separator}{remainder}"
+    else:
+        cleaned = f"Day {day_num}"
+
+    return cleaned
+
 
 def extract_day_number(folder_name: str) -> int | None:
     """Extract day number from folder name."""
@@ -163,20 +209,18 @@ Browse all **{total}** lessons in the curriculum. Use the search box and tag fil
     # Generate lesson cards
     for lesson in lessons:
         day = lesson["day"]
-        title = lesson["title"].replace("|", "\\|")
+        raw_title = lesson["title"]
+        clean_title = normalize_display_title(raw_title)
+        safe_title = clean_title.replace("|", "\\|")
         desc = lesson["description"].replace("|", "\\|")
         tags = lesson["tags"]
         path = lesson["path"]
-
-        # Clean up title
-        clean_title = re.sub(r"^#+\s*", "", title)
-        clean_title = re.sub(r"[📘🌐📊🎉]", "", clean_title).strip()
 
         tag_badges = " ".join([f'<span class="tag-badge">{tag}</span>' for tag in tags])
 
         content += f"""
 <div class="lesson-card" data-day="{day}" data-tags='{json.dumps(tags)}' data-title="{clean_title.lower()}" data-desc="{desc.lower()}">
-  <h3><a href="{path}">Day {day}: {clean_title}</a></h3>
+  <h3><a href="{path}">{safe_title}</a></h3>
   <p>{desc}</p>
   <div class="lesson-tags">{tag_badges}</div>
 </div>
