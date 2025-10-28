@@ -83,3 +83,13 @@ testable function.
 
 🎉 **Incredible!** The combination of loops and conditionals is the foundation of almost all data
 processing and analysis tasks. You've completed the core structures of Python!
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](../Day_09_Conditionals/README.md) • **Next:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](../Day_11_Functions/README.md)
+
+_You are on lesson 10 of 108._
+
+<!-- LESSON_FOOTER_END -->

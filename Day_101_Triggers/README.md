@@ -39,3 +39,13 @@ triggers.
 ## 💻 Exercises: Day 101
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 100 – Day 100: Stored Procedures](../Day_100_Stored_Procedures/README.md) • **Next:** [Day 102 – Day 102: Common Table Expressions (CTEs)](../Day_102_Common_Table_Expressions/README.md)
+
+_You are on lesson 101 of 108._
+
+<!-- LESSON_FOOTER_END -->

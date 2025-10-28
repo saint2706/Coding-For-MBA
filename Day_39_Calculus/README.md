@@ -27,3 +27,13 @@ gradients, and the chain rule reveal how model parameters should change to reduc
 
 - Run the worked examples: `python Day_39_Calculus/solutions.py`
 - Execute the automated checks: `pytest tests/test_day_39.py`
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 38 – Day 38: Math Foundations - Linear Algebra](../Day_38_Linear_Algebra/README.md) • **Next:** [Day 40 – Day 40: Introduction to Machine Learning & Core Concepts](../Day_40_Intro_to_ML/README.md)
+
+_You are on lesson 39 of 108._
+
+<!-- LESSON_FOOTER_END -->

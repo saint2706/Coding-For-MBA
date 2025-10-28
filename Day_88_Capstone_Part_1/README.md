@@ -47,3 +47,13 @@ Create a detailed plan for how you will analyze the data and derive insights.
 1. **Data Source Identification:** Identify at least two potential data sources for your project.
    For each source, describe the data it contains and how you will access it.
 1. **Project Plan:** Create a high-level project plan with a timeline and key milestones.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 87 – Day 87 – Data Governance and Security](../Day_87_Data_Governance/README.md) • **Next:** [Day 89 – Day 89 – Capstone Project - Part 2](../Day_89_Capstone_Part_2/README.md)
+
+_You are on lesson 88 of 108._
+
+<!-- LESSON_FOOTER_END -->

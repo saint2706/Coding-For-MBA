@@ -68,3 +68,13 @@ logic from the data analysis logic, which is a crucial best practice.
 🎉 **Congratulations!** You now understand how to leverage the vast Python ecosystem using `pip`.
 This skill unlocks a world of powerful tools for data analysis, machine learning, web development,
 and more.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 19 – Day 19: Working with Dates and Times](../Day_19_Python_Date_Time/README.md) • **Next:** [Day 21 – Day 21: Virtual Environments - Professional Project Management](../Day_21_Virtual_Environments/README.md)
+
+_You are on lesson 20 of 108._
+
+<!-- LESSON_FOOTER_END -->

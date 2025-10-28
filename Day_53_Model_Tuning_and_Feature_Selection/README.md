@@ -11,3 +11,13 @@ introduces reproducible workflows for:
 
 Execute `python Day_53_Model_Tuning_and_Feature_Selection/solutions.py` to see both search
 strategies in action alongside feature importance diagnostics.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 52 – Day 52 – Ensemble Methods](../Day_52_Ensemble_Methods/README.md) • **Next:** [Day 54 – Day 54 – Probabilistic Modeling](../Day_54_Probabilistic_Modeling/README.md)
+
+_You are on lesson 53 of 108._
+
+<!-- LESSON_FOOTER_END -->

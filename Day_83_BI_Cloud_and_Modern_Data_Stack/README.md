@@ -65,3 +65,13 @@ Design a career evidence plan that highlights BI outcomes.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 82 – Day 82 – BI ETL and Pipeline Automation](../Day_82_BI_ETL_and_Pipeline_Automation/README.md) • **Next:** [Day 84 – Day 84 – BI Career Development and Capstone](../Day_84_BI_Career_Development_and_Capstone/README.md)
+
+_You are on lesson 83 of 108._
+
+<!-- LESSON_FOOTER_END -->

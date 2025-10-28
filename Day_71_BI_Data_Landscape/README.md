@@ -76,3 +76,13 @@ Audit how raw data flows into governed analytics environments.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 70 – Day 70 – BI Metrics and Data Literacy](../Day_70_BI_Metrics_and_Data_Literacy/README.md) • **Next:** [Day 72 – Day 72 – BI Data Formats and Ingestion](../Day_72_BI_Data_Formats_and_Ingestion/README.md)
+
+_You are on lesson 71 of 108._
+
+<!-- LESSON_FOOTER_END -->

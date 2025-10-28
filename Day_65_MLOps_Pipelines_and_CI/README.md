@@ -41,3 +41,13 @@ in topological order, promoting a versioned model artefact only after automated 
   orchestration pattern.
 - Fork the GitHub Actions example into your repository to add matrix testing (Python versions, CPU
   vs GPU runners) and continuous delivery to Kubernetes, SageMaker, or Vertex AI.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 64 – Day 64 – Modern NLP Pipelines](../Day_64_Modern_NLP_Pipelines/README.md) • **Next:** [Day 66 – Day 66 – Model Deployment and Serving Patterns](../Day_66_Model_Deployment_and_Serving/README.md)
+
+_You are on lesson 65 of 108._
+
+<!-- LESSON_FOOTER_END -->

@@ -42,3 +42,13 @@ work on the structure of the database, DML commands work on the data itself.
 ## 💻 Exercises: Day 93
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 92 – Day 92: Data Definition Language (DDL)](../Day_92_Data_Definition_Language/README.md) • **Next:** [Day 94 – Day 94: Data Query Language (DQL)](../Day_94_Data_Query_Language/README.md)
+
+_You are on lesson 93 of 108._
+
+<!-- LESSON_FOOTER_END -->

@@ -45,3 +45,13 @@ FROM products;
 ## 💻 Exercises: Day 106
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 105 – Day 105: JSON in SQL](../Day_105_JSON_in_SQL/README.md) • **Next:** [Day 107 – Day 107: SQL Security](../Day_107_Security/README.md)
+
+_You are on lesson 106 of 108._
+
+<!-- LESSON_FOOTER_END -->

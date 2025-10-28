@@ -30,3 +30,13 @@ with confidence.
 
 - Run the worked examples: `python Day_38_Linear_Algebra/solutions.py`
 - Execute the automated checks: `pytest tests/test_day_38.py`
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 37 – Day 37: Conclusion & Your Journey Forward](../Day_37_Conclusion/README.md) • **Next:** [Day 39 – Day 39: Math Foundations - Calculus](../Day_39_Calculus/README.md)
+
+_You are on lesson 38 of 108._
+
+<!-- LESSON_FOOTER_END -->

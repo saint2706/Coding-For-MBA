@@ -72,3 +72,13 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
 🎉 **Congratulations!** You've learned the basics of object-oriented programming. This will enable
 you to write more organized, powerful, and scalable analytical scripts that model real-world
 business concepts.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](../Day_17_Regular_Expressions/README.md) • **Next:** [Day 19 – Day 19: Working with Dates and Times](../Day_19_Python_Date_Time/README.md)
+
+_You are on lesson 18 of 108._
+
+<!-- LESSON_FOOTER_END -->

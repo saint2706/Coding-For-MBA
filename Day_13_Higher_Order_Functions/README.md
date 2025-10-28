@@ -91,3 +91,13 @@ into its own testable function.
 
 🎉 **Congratulations!** Higher-order functions and lambdas are a gateway to a more powerful style of
 programming that you will see everywhere in the world of data science.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 12 – Day 12: List Comprehension - Elegant Data Manipulation](../Day_12_List_Comprehension/README.md) • **Next:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](../Day_14_Modules/README.md)
+
+_You are on lesson 13 of 108._
+
+<!-- LESSON_FOOTER_END -->

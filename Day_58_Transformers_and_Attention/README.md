@@ -12,3 +12,13 @@ Transformers dominate modern sequence modelling. This lesson demonstrates how to
 
 Run `python Day_58_Transformers_and_Attention/solutions.py` to simulate encoder–decoder passes,
 generate fine-tuning playbooks, and score demo texts with attention heatmaps.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 57 – Day 57 – Recommender Systems](../Day_57_Recommender_Systems/README.md) • **Next:** [Day 59 – Day 59 – Generative Models](../Day_59_Generative_Models/README.md)
+
+_You are on lesson 58 of 108._
+
+<!-- LESSON_FOOTER_END -->

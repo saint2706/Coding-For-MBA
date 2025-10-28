@@ -88,3 +88,13 @@ ______________________________________________________________________
   deterministic epoch: `pytest tests/test_day_46.py`.
 - Training on GPU hardware is optional for this small dataset, but TensorFlow will automatically
   leverage your GPU if it's available and correctly configured.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 45 – Day 45: Feature Engineering & Model Evaluation](../Day_45_Feature_Engineering_and_Evaluation/README.md) • **Next:** [Day 47 – Day 47: Convolutional Neural Networks (CNNs) for Computer Vision](../Day_47_Convolutional_Neural_Networks/README.md)
+
+_You are on lesson 46 of 108._
+
+<!-- LESSON_FOOTER_END -->

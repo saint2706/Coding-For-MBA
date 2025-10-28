@@ -39,3 +39,13 @@ Clarify the data taxonomy BI teams depend on.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 69 – Day 69 – BI Strategy and Stakeholders](../Day_69_BI_Strategy_and_Stakeholders/README.md) • **Next:** [Day 71 – Day 71 – BI Data Landscape Fundamentals](../Day_71_BI_Data_Landscape/README.md)
+
+_You are on lesson 70 of 108._
+
+<!-- LESSON_FOOTER_END -->

@@ -77,3 +77,13 @@ tuples into testable functions.
 
 🎉 **Excellent!** You've learned about immutability and how to use tuples to ensure your data remains
 constant. Knowing when to use a tuple versus a list is a sign of a thoughtful analyst.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 05 – Day 5: Managing Collections of Business Data with Lists](../Day_05_Lists/README.md) • **Next:** [Day 07 – Day 7: Sets - Managing Unique Business Data](../Day_07_Sets/README.md)
+
+_You are on lesson 6 of 108._
+
+<!-- LESSON_FOOTER_END -->

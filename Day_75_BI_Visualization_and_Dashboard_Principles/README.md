@@ -75,3 +75,13 @@ Move from descriptive reporting to evidence-backed inference.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 74 – Day 74 – BI Data Preparation and Tools](../Day_74_BI_Data_Preparation_and_Tools/README.md) • **Next:** [Day 76 – Day 76 – BI Platforms and Automation Tools](../Day_76_BI_Platforms_and_Automation_Tools/README.md)
+
+_You are on lesson 75 of 108._
+
+<!-- LESSON_FOOTER_END -->

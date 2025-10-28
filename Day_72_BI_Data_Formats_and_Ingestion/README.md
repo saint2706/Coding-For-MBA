@@ -69,3 +69,13 @@ Blueprint a warehouse that keeps stakeholders aligned.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 71 – Day 71 – BI Data Landscape Fundamentals](../Day_71_BI_Data_Landscape/README.md) • **Next:** [Day 73 – Day 73 – BI SQL and Databases](../Day_73_BI_SQL_and_Databases/README.md)
+
+_You are on lesson 72 of 108._
+
+<!-- LESSON_FOOTER_END -->

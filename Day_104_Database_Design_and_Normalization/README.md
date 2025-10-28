@@ -41,3 +41,13 @@ understand the following concepts:
 - The goals of database design.
 - The concept of normalization and why it's important.
 - The first three normal forms (1NF, 2NF, 3NF).
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 103 – Day 103: Pivoting Data](../Day_103_Pivoting_Data/README.md) • **Next:** [Day 105 – Day 105: JSON in SQL](../Day_105_JSON_in_SQL/README.md)
+
+_You are on lesson 104 of 108._
+
+<!-- LESSON_FOOTER_END -->

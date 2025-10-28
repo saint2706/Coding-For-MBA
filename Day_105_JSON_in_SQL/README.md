@@ -56,3 +56,13 @@ FROM products;
 ## 💻 Exercises: Day 105
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 104 – Day 104: Database Design and Normalization](../Day_104_Database_Design_and_Normalization/README.md) • **Next:** [Day 106 – Day 106: XML in SQL](../Day_106_XML_in_SQL/README.md)
+
+_You are on lesson 105 of 108._
+
+<!-- LESSON_FOOTER_END -->

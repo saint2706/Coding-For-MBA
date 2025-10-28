@@ -82,3 +82,13 @@ operations into testable functions.
 🎉 **Amazing work!** Dictionaries are the cornerstone of handling structured data in Python. Almost
 every time you get data from an API or a database, it will be in the form of dictionaries. Mastering
 them is a huge step forward.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 07 – Day 7: Sets - Managing Unique Business Data](../Day_07_Sets/README.md) • **Next:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](../Day_09_Conditionals/README.md)
+
+_You are on lesson 8 of 108._
+
+<!-- LESSON_FOOTER_END -->

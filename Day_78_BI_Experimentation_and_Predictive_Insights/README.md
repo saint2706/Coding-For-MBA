@@ -49,3 +49,13 @@ Map the technical stack that underpins BI delivery.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 77 – Day 77 – BI Domain Analytics and Value Drivers](../Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md) • **Next:** [Day 79 – Day 79 – BI Storytelling and Stakeholder Influence](../Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md)
+
+_You are on lesson 78 of 108._
+
+<!-- LESSON_FOOTER_END -->

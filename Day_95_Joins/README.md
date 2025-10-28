@@ -63,3 +63,13 @@ CROSS JOIN products;
 ## 💻 Exercises: Day 95
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 94 – Day 94: Data Query Language (DQL)](../Day_94_Data_Query_Language/README.md) • **Next:** [Day 96 – Day 96: Subqueries](../Day_96_Subqueries/README.md)
+
+_You are on lesson 95 of 108._
+
+<!-- LESSON_FOOTER_END -->

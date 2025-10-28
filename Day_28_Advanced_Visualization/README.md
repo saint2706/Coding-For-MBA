@@ -96,3 +96,13 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 🎉 **Fantastic!** You can now create presentation-ready charts and combine them into simple
 dashboards. This ability to not just analyze, but also to present data in a customized and
 professional format is a key skill that separates great analysts from good ones.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 27 – Day 27: Data Visualization - Communicating Insights](../Day_27_Visualization/README.md) • **Next:** [Day 29 – Day 29: Interactive Visualization with Plotly](../Day_29_Interactive_Visualization/README.md)
+
+_You are on lesson 28 of 108._
+
+<!-- LESSON_FOOTER_END -->

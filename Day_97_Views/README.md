@@ -51,3 +51,13 @@ DROP VIEW [View Name];
 ## 💻 Exercises: Day 97
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 96 – Day 96: Subqueries](../Day_96_Subqueries/README.md) • **Next:** [Day 98 – Day 98: Indexes](../Day_98_Indexes/README.md)
+
+_You are on lesson 97 of 108._
+
+<!-- LESSON_FOOTER_END -->

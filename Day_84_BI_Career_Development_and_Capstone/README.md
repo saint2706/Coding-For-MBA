@@ -81,3 +81,13 @@ Synthesize the specialization into ongoing strategic roadmaps.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 83 – Day 83 – BI Cloud and Modern Data Stack](../Day_83_BI_Cloud_and_Modern_Data_Stack/README.md) • **Next:** [Day 85 – Day 85 – Advanced SQL and Performance Tuning](../Day_85_Advanced_SQL/README.md)
+
+_You are on lesson 84 of 108._
+
+<!-- LESSON_FOOTER_END -->

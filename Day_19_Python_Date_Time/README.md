@@ -67,3 +67,13 @@ into its own testable function.
 
 🎉 **Congratulations!** You've learned how to work with dates and times in Python. You're now ready
 to tackle time-series analysis and other time-based calculations.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 18 – Day 18: Classes and Objects - Modeling Business Concepts](../Day_18_Classes_and_Objects/README.md) • **Next:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](../Day_20_Python_Package_Manager/README.md)
+
+_You are on lesson 19 of 108._
+
+<!-- LESSON_FOOTER_END -->

@@ -51,3 +51,13 @@ To execute the entire project test suite, run `pytest` from the repository root.
   [`Day_62_Model_Interpretability_and_Fairness`](../Day_62_Model_Interpretability_and_Fairness/README.md)
   to study post-hoc explanations and mitigation strategies built atop the evaluation workflows from
   this lesson.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 44 – Day 44: Unsupervised Learning](../Day_44_Unsupervised_Learning/README.md) • **Next:** [Day 46 – Day 46: Introduction to Neural Networks & Frameworks](../Day_46_Intro_to_Neural_Networks/README.md)
+
+_You are on lesson 45 of 108._
+
+<!-- LESSON_FOOTER_END -->

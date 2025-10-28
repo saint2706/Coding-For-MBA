@@ -56,3 +56,13 @@ WHERE salary > (
 ## 💻 Exercises: Day 96
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 95 – Day 95: Joins](../Day_95_Joins/README.md) • **Next:** [Day 97 – Day 97: Views](../Day_97_Views/README.md)
+
+_You are on lesson 96 of 108._
+
+<!-- LESSON_FOOTER_END -->

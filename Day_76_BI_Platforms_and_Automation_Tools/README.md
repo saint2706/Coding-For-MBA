@@ -69,3 +69,13 @@ Reveal why metrics move using diagnostic analytics.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 75 – Day 75 – BI Visualization and Dashboard Principles](../Day_75_BI_Visualization_and_Dashboard_Principles/README.md) • **Next:** [Day 77 – Day 77 – BI Domain Analytics and Value Drivers](../Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md)
+
+_You are on lesson 76 of 108._
+
+<!-- LESSON_FOOTER_END -->

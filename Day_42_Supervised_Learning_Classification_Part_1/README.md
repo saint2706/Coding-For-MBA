@@ -31,3 +31,13 @@ Run the classification unit tests with:
 ```bash
 pytest tests/test_day_42.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 41 – Day 41 · Supervised Learning – Regression](../Day_41_Supervised_Learning_Regression/README.md) • **Next:** [Day 43 – Day 43 · Supervised Learning – Classification (Part 2)](../Day_43_Supervised_Learning_Classification_Part_2/README.md)
+
+_You are on lesson 42 of 108._
+
+<!-- LESSON_FOOTER_END -->

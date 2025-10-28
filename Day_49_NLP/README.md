@@ -35,3 +35,13 @@ All tests expect to be run from the repository root so that imports resolve corr
 - Jump to [`Day_64_Modern_NLP_Pipelines`](../Day_64_Modern_NLP_Pipelines/README.md) for transformer
   fine-tuning, retrieval-augmented generation, and robust evaluation workflows that build on the
   vectorization foundations covered here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 48 – Day 48: Recurrent Neural Networks (RNNs) for Sequence Data](../Day_48_Recurrent_Neural_Networks/README.md) • **Next:** [Day 50 – Day 50: MLOps - Model Deployment](../Day_50_MLOps/README.md)
+
+_You are on lesson 49 of 108._
+
+<!-- LESSON_FOOTER_END -->

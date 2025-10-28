@@ -77,3 +77,13 @@ each list operation reusable and testable.
 
 🎉 **Great job!** Lists are the workhorse for storing collections of data in Python. Understanding
 how to manage and analyze data within lists is a fundamental skill for any data analyst.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 04 – Day 4: Working with Text Data - Strings](../Day_04_Strings/README.md) • **Next:** [Day 06 – Day 6: Tuples - Storing Immutable Business Data](../Day_06_Tuples/README.md)
+
+_You are on lesson 5 of 108._
+
+<!-- LESSON_FOOTER_END -->

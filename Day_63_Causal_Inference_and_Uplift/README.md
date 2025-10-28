@@ -10,3 +10,13 @@ will:
 
 Run `python Day_63_Causal_Inference_and_Uplift/solutions.py` to generate synthetic treatment data,
 estimate effects with multiple techniques, and visualise uplift segmentations.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 62 – Day 62 – Model Interpretability and Fairness](../Day_62_Model_Interpretability_and_Fairness/README.md) • **Next:** [Day 64 – Day 64 – Modern NLP Pipelines](../Day_64_Modern_NLP_Pipelines/README.md)
+
+_You are on lesson 63 of 108._
+
+<!-- LESSON_FOOTER_END -->

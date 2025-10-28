@@ -3,7 +3,7 @@
 Welcome to the official documentation hub for the **Coding for MBA** curriculum. This MkDocs-powered
 site pulls content directly from the repository so you can:
 
-- Navigate the entire 84-day learning path in one place.
+- Navigate the entire 108-day learning path in one place.
 - Read every lesson summary without digging through folders.
 - Jump straight into the companion notebooks or Python scripts for each topic.
 
@@ -23,7 +23,7 @@ dark palettes.
 
 ## Lessons
 
-Use the table below to jump straight into any lesson in the 84-day journey.
+Use the table below to jump straight into any lesson in the 108-day journey.
 
 | Day | Lesson | | --- | --- | | Day 01 |
 [📘 Day 1: Python for Business Analytics - First Steps](./day-01-introduction.md) | | Day 02 |
