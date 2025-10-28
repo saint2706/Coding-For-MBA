@@ -1,3 +1,12 @@
+---
+title: 'Day 4: Working with Text Data - Strings'
+tags:
+- Basics
+- Data
+- NLP
+- Python
+---
+
 In business analytics, text data is everywhere—customer names, product reviews, addresses, and
 report narratives. In Python, we handle text using **strings**.
 
@@ -72,6 +81,16 @@ manipulation a reusable and testable unit of logic.
 
 🎉 **Fantastic!** You can now manipulate text data, which is a massive part of any real-world data
 analysis task. Cleaning, formatting, and parsing strings are skills you'll use every single day.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/README.md) • **Next:** [Day 05 – Day 5: Managing Collections of Business Data with Lists](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/README.md)
+
+_You are on lesson 4 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

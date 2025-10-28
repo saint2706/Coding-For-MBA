@@ -1,3 +1,10 @@
+---
+title: 'Day 25: Data Cleaning - The Most Important Skill in Analytics'
+tags:
+- BI
+- Data
+---
+
 It's often said that data analysts spend about 80% of their time cleaning and preparing data. Messy,
 inconsistent data leads to incorrect analysis and bad business decisions. Learning to clean data
 effectively is a true superpower.
@@ -59,6 +66,16 @@ For these exercises, you will use the provided `messy_sales_data.csv` file.
 
 🎉 **Incredible work!** Being able to take a messy, real-world dataset and turn it into a clean,
 analysis-ready format is arguably the most valuable skill a data analyst can possess.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 24 – Day 24: Advanced Pandas - Working with Real Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/README.md) • **Next:** [Day 26 – Day 26: Practical Statistics for Business Analysis](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/README.md)
+
+_You are on lesson 25 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

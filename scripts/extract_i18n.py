@@ -9,11 +9,10 @@ Usage:
 """
 
 import argparse
+import json
 import re
-import sys
 from pathlib import Path
 from typing import List, Set
-import json
 
 
 def extract_markdown_text(md_content: str) -> List[str]:
@@ -178,11 +177,11 @@ def main():
     print("\n" + "=" * 60)
     print("🎉 Extraction complete!")
     print("=" * 60)
-    print(f"\n💡 Next steps:")
+    print("\n💡 Next steps:")
     print(f"   1. Review {output_path}")
-    print(f"   2. Translate strings in locales/es/messages.json")
-    print(f"   3. Configure mkdocs.yml for i18n plugin")
-    print(f"   4. See docs/i18n.md for full workflow")
+    print("   2. Translate strings in locales/es/messages.json")
+    print("   3. Configure mkdocs.yml for i18n plugin")
+    print("   4. See docs/i18n.md for full workflow")
 
 
 if __name__ == "__main__":

@@ -1,3 +1,9 @@
+---
+title: 'Day 22: NumPy - The Foundation of Numerical Computing'
+tags:
+- Data
+---
+
 While Python lists are flexible, they aren't efficient for large-scale numerical calculations. For
 this, we use **NumPy** (Numerical Python), the fundamental package for scientific and numerical
 computing in Python. It is the bedrock upon which almost all data science libraries, including
@@ -74,6 +80,16 @@ its own testable function.
 🎉 **Fantastic start!** NumPy is the essential first step into the world of high-performance data
 analysis in Python. Understanding vectorization will make all subsequent topics, especially Pandas,
 much easier to grasp.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 21 – Day 21: Virtual Environments - Professional Project Management](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/README.md) • **Next:** [Day 23 – Day 23: Pandas - Your Data Analysis Superpower](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/README.md)
+
+_You are on lesson 22 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

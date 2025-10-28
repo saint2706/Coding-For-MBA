@@ -12,9 +12,10 @@ Usage:
 
 import argparse
 import sys
-import yaml
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, Optional
+
+import yaml
 
 QUIZ_HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">

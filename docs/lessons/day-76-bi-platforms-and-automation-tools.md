@@ -1,3 +1,9 @@
+---
+title: "Day 76 \u2013 BI Platforms and Automation Tools"
+tags:
+- BI
+---
+
 Day 76 explores the major BI delivery platforms alongside the scripting and standardisation
 practices that keep report refreshes trustworthy. We contrast Power BI, Tableau, Qlik, Looker, and
 Excel with the Python/R automation surface that analysts lean on for orchestration.
@@ -67,6 +73,16 @@ Reveal why metrics move using diagnostic analytics.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 75 – Day 75 – BI Visualization and Dashboard Principles](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_75_BI_Visualization_and_Dashboard_Principles/README.md) • **Next:** [Day 77 – Day 77 – BI Domain Analytics and Value Drivers](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md)
+
+_You are on lesson 76 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

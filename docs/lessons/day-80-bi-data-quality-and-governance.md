@@ -1,3 +1,10 @@
+---
+title: "Day 80 \u2013 BI Data Quality and Governance"
+tags:
+- BI
+- Data
+---
+
 Day 80 fills the roadmap gap on enterprise-grade data quality programmes and governance frameworks.
 We build pragmatic scorecards covering the six classic data-quality dimensions while linking them to
 ethics, privacy, and regulatory obligations (GDPR/CCPA). The lesson emphasises how these controls
@@ -59,6 +66,16 @@ Package insights for executive audiences and decision forums.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 79 – Day 79 – BI Storytelling and Stakeholder Influence](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md) • **Next:** [Day 81 – Day 81 – BI Architecture and Data Modeling](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_81_BI_Architecture_and_Data_Modeling/README.md)
+
+_You are on lesson 80 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

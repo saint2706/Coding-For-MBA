@@ -1,3 +1,9 @@
+---
+title: 'Day 96: Subqueries'
+tags:
+- SQL
+---
+
 Welcome to Day 96! Today, we'll explore **Subqueries**, also known as nested queries or inner
 queries. A subquery is a query within another SQL query.
 
@@ -54,3 +60,13 @@ WHERE salary > (
 ## 💻 Exercises: Day 96
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 95 – Day 95: Joins](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_95_Joins/README.md) • **Next:** [Day 97 – Day 97: Views](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_97_Views/README.md)
+
+_You are on lesson 96 of 108._
+
+<!-- LESSON_FOOTER_END -->

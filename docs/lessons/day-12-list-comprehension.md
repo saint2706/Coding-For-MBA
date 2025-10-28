@@ -1,3 +1,11 @@
+---
+title: 'Day 12: List Comprehension - Elegant Data Manipulation'
+tags:
+- Basics
+- Data
+- Python
+---
+
 In data analysis, you constantly create new lists by transforming or filtering existing ones. While
 `for` loops work, Python provides a more concise, powerful, and often faster way to do this: a
 **list comprehension**.
@@ -84,6 +92,16 @@ comprehension task into its own testable function.
 🎉 **Excellent!** List comprehensions are a powerful tool for writing clean, efficient, and
 professional Python code. They are heavily used in data analysis for quick and readable data
 transformations.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/README.md) • **Next:** [Day 13 – Day 13: Higher-Order Functions & Lambda](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/README.md)
+
+_You are on lesson 12 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

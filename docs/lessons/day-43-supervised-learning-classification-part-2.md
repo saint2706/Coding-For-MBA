@@ -1,3 +1,9 @@
+---
+title: "Day 43 \xB7 Supervised Learning \u2013 Classification (Part 2)"
+tags:
+- ML
+---
+
 ## What's in this folder?
 
 - `solutions.py` – modular helpers for preparing the Iris dataset, fitting SVM and decision tree
@@ -29,6 +35,16 @@ Run the advanced classification unit tests with:
 ```bash
 pytest tests/test_day_43.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 42 – Day 42 · Supervised Learning – Classification (Part 1)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_42_Supervised_Learning_Classification_Part_1/README.md) • **Next:** [Day 44 – Day 44: Unsupervised Learning](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_44_Unsupervised_Learning/README.md)
+
+_You are on lesson 43 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

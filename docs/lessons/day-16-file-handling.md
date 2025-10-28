@@ -1,3 +1,11 @@
+---
+title: 'Day 16: File Handling for Business Analytics'
+tags:
+- BI
+- Basics
+- Python
+---
+
 A huge part of data analysis involves reading data from files and writing results to them. Whether
 you're processing a sales report, a customer list, or log files, you need to interact with the file
 system. Python makes this easy.
@@ -64,6 +72,16 @@ functions for common business file-handling tasks.
 🎉 **Excellent!** You can now programmatically read from and write to the most common file types.
 This is a fundamental skill for automating data intake, processing reports, and saving your
 analysis.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 15 – Day 15: Exception Handling - Building Robust Business Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/README.md) • **Next:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/README.md)
+
+_You are on lesson 16 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

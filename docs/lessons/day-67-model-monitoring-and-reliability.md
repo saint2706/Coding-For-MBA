@@ -1,3 +1,12 @@
+---
+title: "Day 67 \u2013 Model Monitoring and Reliability Engineering"
+tags:
+- Advanced
+- BI
+- ML
+- MLOps
+---
+
 The final instalment of the MLOps arc closes the loop from deployment to operations. After mastering
 persistence (Day 50), automation (Day 65), and serving (Day 66), this lesson introduces the
 observability patterns that keep models trustworthy in production.
@@ -39,6 +48,16 @@ alerts fire, retraining queues populate, and canary verdicts respect latency/acc
   tracing across microservices.
 - Integrate human-in-the-loop acknowledgement by forwarding alerts to an incident management
   platform.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 66 – Day 66 – Model Deployment and Serving Patterns](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_66_Model_Deployment_and_Serving/README.md) • **Next:** [Day 68 – Day 68 – BI Analyst Foundations](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_68_BI_Analyst_Foundations/README.md)
+
+_You are on lesson 67 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

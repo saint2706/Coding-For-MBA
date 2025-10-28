@@ -1,3 +1,11 @@
+---
+title: 'Day 91: Relational Databases'
+tags:
+- Data
+- Database
+- SQL
+---
+
 Welcome to Day 91! Today, we'll dive deep into the foundational concepts of **Relational
 Databases**.
 
@@ -59,3 +67,13 @@ attribute, making it easy to establish relationships among data points.
 ## 💻 Exercises: Day 91
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 90 – Day 90 – Career Workshop and Next Steps](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_90_Career_Workshop/README.md) • **Next:** [Day 92 – Day 92: Data Definition Language (DDL)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_92_Data_Definition_Language/README.md)
+
+_You are on lesson 91 of 108._
+
+<!-- LESSON_FOOTER_END -->

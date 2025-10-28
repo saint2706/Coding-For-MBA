@@ -1,3 +1,9 @@
+---
+title: "Day 51 \u2013 Regularised Models"
+tags:
+- ML
+---
+
 This lesson extends the regression toolkit with L2 (ridge), L1 (lasso), and elastic net penalties
 before introducing generalised linear models (GLMs). The core notebook and `solutions.py` module
 walk through the following:
@@ -11,6 +17,16 @@ walk through the following:
 
 Run `python Day_51_Regularized_Models/solutions.py` to execute the full demo and review the printed
 comparison table.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 50 – Day 50: MLOps - Model Deployment](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/README.md) • **Next:** [Day 52 – Day 52 – Ensemble Methods](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_52_Ensemble_Methods/README.md)
+
+_You are on lesson 51 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

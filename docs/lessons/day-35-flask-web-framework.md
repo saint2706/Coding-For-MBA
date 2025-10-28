@@ -1,3 +1,10 @@
+---
+title: 'Day 35: Flask Web Framework'
+tags:
+- Data
+- Web
+---
+
 Welcome to Day 35! This lesson contains a small Flask project that analyses submitted text and
 reports simple statistics such as word counts and lexical diversity.
 
@@ -64,6 +71,16 @@ You can find the solutions to these exercises in the `solutions.py` file in this
 
 🎉 **Congratulations!** You've learned the basics of Flask, a powerful tool for building web
 applications and dashboards with Python.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 34 – Day 34: Building a Simple API with Flask](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/README.md) • **Next:** [Day 36 – Day 36 – Capstone Case Study](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/README.md)
+
+_You are on lesson 35 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

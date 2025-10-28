@@ -1,3 +1,10 @@
+---
+title: 'Day 103: Pivoting Data'
+tags:
+- Data
+- SQL
+---
+
 Welcome to Day 103! Today, we'll learn about **Pivoting Data**, a technique used to transform data
 from a row-level format to a columnar format.
 
@@ -54,3 +61,13 @@ PIVOT (
 ## 💻 Exercises: Day 103
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 102 – Day 102: Common Table Expressions (CTEs)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_102_Common_Table_Expressions/README.md) • **Next:** [Day 104 – Day 104: Database Design and Normalization](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_104_Database_Design_and_Normalization/README.md)
+
+_You are on lesson 103 of 108._
+
+<!-- LESSON_FOOTER_END -->

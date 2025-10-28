@@ -1,3 +1,12 @@
+---
+title: 'Day 7: Sets - Managing Unique Business Data'
+tags:
+- BI
+- Basics
+- Data
+- Python
+---
+
 We've seen lists for ordered data and tuples for immutable data. Now we'll learn about **sets**,
 which are powerful for two main business reasons: ensuring uniqueness and performing membership
 analysis.
@@ -75,6 +84,16 @@ de-duplication and segmentation reusable and testable.
 
 🎉 **Well done!** Sets are a specialized but incredibly efficient tool. When you need to de-duplicate
 a list or analyze the overlap between two groups, sets are the best tool for the job.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 06 – Day 6: Tuples - Storing Immutable Business Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/README.md) • **Next:** [Day 08 – Day 8: Dictionaries - Structuring Complex Business Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/README.md)
+
+_You are on lesson 7 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

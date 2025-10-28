@@ -1,3 +1,10 @@
+---
+title: "Day 75 \u2013 BI Visualization and Dashboard Principles"
+tags:
+- BI
+- Visualization
+---
+
 Day 75 codifies the BI visualization fundamentals that analysts rely on to communicate credibly, and
 it layers in the design guardrails that keep dashboards inclusive and trustworthy. Use this lesson
 to practice building each core chart type while checking your work against accessibility and
@@ -73,6 +80,16 @@ Move from descriptive reporting to evidence-backed inference.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 74 – Day 74 – BI Data Preparation and Tools](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_74_BI_Data_Preparation_and_Tools/README.md) • **Next:** [Day 76 – Day 76 – BI Platforms and Automation Tools](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_76_BI_Platforms_and_Automation_Tools/README.md)
+
+_You are on lesson 75 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

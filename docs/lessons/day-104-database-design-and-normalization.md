@@ -1,3 +1,11 @@
+---
+title: 'Day 104: Database Design and Normalization'
+tags:
+- Data
+- Database
+- SQL
+---
+
 Welcome to Day 104! Today, we'll cover the important topics of **Database Design** and
 **Normalization**.
 
@@ -39,3 +47,13 @@ understand the following concepts:
 - The goals of database design.
 - The concept of normalization and why it's important.
 - The first three normal forms (1NF, 2NF, 3NF).
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 103 – Day 103: Pivoting Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_103_Pivoting_Data/README.md) • **Next:** [Day 105 – Day 105: JSON in SQL](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_105_JSON_in_SQL/README.md)
+
+_You are on lesson 104 of 108._
+
+<!-- LESSON_FOOTER_END -->

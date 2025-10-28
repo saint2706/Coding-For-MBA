@@ -1,3 +1,11 @@
+---
+title: 'Day 32: Connecting to Other Databases (MySQL & MongoDB)'
+tags:
+- Data
+- Database
+- SQL
+---
+
 In the previous lesson, we used `sqlite3`, which is fantastic for learning and small projects
 because it's built into Python and doesn't require a separate server. However, in a corporate
 environment, you will most likely be connecting to a more powerful, server-based database like
@@ -98,6 +106,16 @@ skills you've learned are broadly applicable.
 
 There are no coding exercises for this day. The goal is to understand the concepts so you are
 prepared when you encounter these different database systems in the workplace.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 31 – Day 31: Working with Databases in Python](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/README.md) • **Next:** [Day 33 – Day 33: Accessing Web APIs with `requests`](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_33_API/README.md)
+
+_You are on lesson 32 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

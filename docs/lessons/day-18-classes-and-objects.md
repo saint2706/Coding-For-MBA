@@ -1,3 +1,12 @@
+---
+title: 'Day 18: Classes and Objects - Modeling Business Concepts'
+tags:
+- BI
+- Basics
+- ML
+- Python
+---
+
 So far, we've organized our code with functions. But what if you want to model a real-world concept,
 like a "Customer," that has both data (name, email) and actions (calculate total spending)? For
 this, we use **Object-Oriented Programming (OOP)**, and its building blocks: **classes** and
@@ -70,6 +79,16 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
 🎉 **Congratulations!** You've learned the basics of object-oriented programming. This will enable
 you to write more organized, powerful, and scalable analytical scripts that model real-world
 business concepts.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/README.md) • **Next:** [Day 19 – Day 19: Working with Dates and Times](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/README.md)
+
+_You are on lesson 18 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

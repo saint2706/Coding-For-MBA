@@ -9,12 +9,10 @@ This script:
 4. Uses idempotent markers to avoid duplicating footers
 """
 
-import os
-import re
 import argparse
+import re
 from pathlib import Path
-from typing import List, Dict, Optional
-
+from typing import List, Optional
 
 # Footer markers for idempotent updates
 FOOTER_START = "<!-- LESSON_FOOTER_START -->"

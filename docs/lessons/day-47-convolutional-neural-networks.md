@@ -1,3 +1,9 @@
+---
+title: 'Day 47: Convolutional Neural Networks (CNNs) for Computer Vision'
+tags:
+- ML
+---
+
 Welcome to Day 47! Today, we dive into **Convolutional Neural Networks (CNNs)**, a specialized type
 of neural network that has revolutionized the field of **Computer Vision**.
 
@@ -71,6 +77,16 @@ ______________________________________________________________________
   for a single epoch.
 - CNN training benefits from GPU acceleration. TensorFlow will automatically use your GPU if the
   drivers and CUDA/cuDNN stack are configured; otherwise the CPU-only run will simply take longer.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 46 – Day 46: Introduction to Neural Networks & Frameworks](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_46_Intro_to_Neural_Networks/README.md) • **Next:** [Day 48 – Day 48: Recurrent Neural Networks (RNNs) for Sequence Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_48_Recurrent_Neural_Networks/README.md)
+
+_You are on lesson 47 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

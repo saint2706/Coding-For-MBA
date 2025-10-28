@@ -1,3 +1,10 @@
+---
+title: "Day 65 \u2013 MLOps Pipelines and CI/CD Automation"
+tags:
+- Advanced
+- MLOps
+---
+
 Day 50 introduced model persistence. Day 65 expands that foundation into production-grade automation
 that glues together feature engineering, training, registration, and deployment inside a repeatable
 delivery pipeline.
@@ -39,6 +46,16 @@ in topological order, promoting a versioned model artefact only after automated 
   orchestration pattern.
 - Fork the GitHub Actions example into your repository to add matrix testing (Python versions, CPU
   vs GPU runners) and continuous delivery to Kubernetes, SageMaker, or Vertex AI.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 64 – Day 64 – Modern NLP Pipelines](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_64_Modern_NLP_Pipelines/README.md) • **Next:** [Day 66 – Day 66 – Model Deployment and Serving Patterns](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_66_Model_Deployment_and_Serving/README.md)
+
+_You are on lesson 65 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

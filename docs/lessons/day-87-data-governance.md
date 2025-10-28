@@ -1,3 +1,9 @@
+---
+title: "Day 87 \u2013 Data Governance and Security"
+tags:
+- Data
+---
+
 ## Introduction
 
 This lesson focuses on the critical importance of data governance and security in a BI environment.
@@ -70,3 +76,13 @@ regulatory requirements for data handling.
    management (CRM) system.
 1. **Compliance Plan:** Outline a plan to ensure the healthcare company's BI environment is
    compliant with HIPAA.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 86 – Day 86 – BI in the Cloud](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_86_BI_Cloud/README.md) • **Next:** [Day 88 – Day 88 – Capstone Project - Part 1](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_88_Capstone_Part_1/README.md)
+
+_You are on lesson 87 of 108._
+
+<!-- LESSON_FOOTER_END -->

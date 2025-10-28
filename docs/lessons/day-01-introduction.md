@@ -1,3 +1,11 @@
+---
+title: 'Day 1: Python for Business Analytics - First Steps'
+tags:
+- BI
+- Basics
+- Python
+---
+
 ## Welcome to the Course
 
 Welcome, future business leader! You're about to take your first step into a larger world of
@@ -76,6 +84,16 @@ The exercises are designed to help you practice the fundamental concepts introdu
 
 🎉 **Congratulations!** You've just run your first refactored Python script and are on your way to
 becoming a data-savvy leader.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** _None (First Lesson)_ • **Next:** [Day 02 – Day 2: Storing and Analyzing Business Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/README.md)
+
+_You are on lesson 1 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

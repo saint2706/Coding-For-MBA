@@ -1,3 +1,9 @@
+---
+title: "Day 69 \u2013 BI Strategy and Stakeholders"
+tags:
+- BI
+---
+
 Day 69 extends the BI Analyst roadmap by pairing strategic constructs with the humans who bring them
 to life. The lesson gives participants a toolkit for translating the roadmap nodes into facilitation
 plans, stakeholder engagement tactics, and action-oriented guidance.
@@ -61,6 +67,16 @@ Define the personal capabilities you will cultivate throughout Phase 5.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 68 – Day 68 – BI Analyst Foundations](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_68_BI_Analyst_Foundations/README.md) • **Next:** [Day 70 – Day 70 – BI Metrics and Data Literacy](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_70_BI_Metrics_and_Data_Literacy/README.md)
+
+_You are on lesson 69 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

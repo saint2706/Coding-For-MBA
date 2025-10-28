@@ -1,3 +1,10 @@
+---
+title: "Day 71 \u2013 BI Data Landscape Fundamentals"
+tags:
+- BI
+- Data
+---
+
 > This lesson expands the BI roadmap by grounding each data classification and source channel in
 > real assets from the Coding-for-MBA repository.
 
@@ -74,6 +81,16 @@ Audit how raw data flows into governed analytics environments.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 70 – Day 70 – BI Metrics and Data Literacy](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_70_BI_Metrics_and_Data_Literacy/README.md) • **Next:** [Day 72 – Day 72 – BI Data Formats and Ingestion](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_72_BI_Data_Formats_and_Ingestion/README.md)
+
+_You are on lesson 71 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

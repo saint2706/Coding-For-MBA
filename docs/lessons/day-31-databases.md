@@ -1,3 +1,12 @@
+---
+title: 'Day 31: Working with Databases in Python'
+tags:
+- Data
+- Database
+- Python
+- SQL
+---
+
 While CSV files are great for smaller datasets, most real-world business data is stored in
 **databases**. Databases are systems designed for storing, managing, and retrieving large amounts of
 structured data efficiently and safely.
@@ -102,6 +111,16 @@ conn.close()
 🎉 **Excellent!** You can now connect to and retrieve data from a database, the primary source of
 truth for most businesses. Knowing how to pull data directly into a Pandas DataFrame is a workflow
 you will use constantly as a data analyst.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 30 – Day 30: Web Scraping - Extracting Data from the Web](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/README.md) • **Next:** [Day 32 – Day 32: Connecting to Other Databases (MySQL & MongoDB)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_32_Other_Databases/README.md)
+
+_You are on lesson 31 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

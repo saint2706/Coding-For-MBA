@@ -1,3 +1,9 @@
+---
+title: "Day 68 \u2013 BI Analyst Foundations"
+tags:
+- BI
+---
+
 > This lesson is part of the Phase 5 Business Intelligence specialization. Use the
 > [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across
 > Days 68–84.
@@ -50,6 +56,16 @@ Connect strategic BI vision to the functions it empowers.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 67 – Day 67 – Model Monitoring and Reliability Engineering](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_67_Model_Monitoring_and_Reliability/README.md) • **Next:** [Day 69 – Day 69 – BI Strategy and Stakeholders](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Strategy_and_Stakeholders/README.md)
+
+_You are on lesson 68 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

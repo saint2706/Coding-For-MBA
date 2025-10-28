@@ -1,3 +1,9 @@
+---
+title: "Day 84 \u2013 BI Career Development and Capstone"
+tags:
+- BI
+---
+
 > This lesson closes Phase 5 by converting the roadmap insights into a polished career narrative.
 > Pair it with
 > [Day 83 – BI Cloud and Modern Data Stack](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_83_BI_Cloud_and_Modern_Data_Stack/README.md) and
@@ -79,6 +85,16 @@ Synthesize the specialization into ongoing strategic roadmaps.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 83 – Day 83 – BI Cloud and Modern Data Stack](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_83_BI_Cloud_and_Modern_Data_Stack/README.md) • **Next:** [Day 85 – Day 85 – Advanced SQL and Performance Tuning](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_85_Advanced_SQL/README.md)
+
+_You are on lesson 84 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

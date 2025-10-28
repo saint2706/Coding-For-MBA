@@ -1,3 +1,9 @@
+---
+title: "Day 77 \u2013 BI Domain Analytics and Value Drivers"
+tags:
+- BI
+---
+
 Day 77 bridges the roadmap's domain-specific BI topics with tangible stakeholder value stories. The
 lesson groups the nodes into three facilitation tracks and anchors each in the language of business
 outcomes:
@@ -39,6 +45,16 @@ Prototype predictive loops that inform operational decisions.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 76 – Day 76 – BI Platforms and Automation Tools](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_76_BI_Platforms_and_Automation_Tools/README.md) • **Next:** [Day 78 – Day 78 – BI Experimentation and Predictive Insights](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_78_BI_Experimentation_and_Predictive_Insights/README.md)
+
+_You are on lesson 77 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -13,11 +13,11 @@ Usage:
 """
 
 import argparse
+import json
 import sqlite3
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
-import json
 
 
 def load_events_from_db(db_path: str) -> List[Dict]:

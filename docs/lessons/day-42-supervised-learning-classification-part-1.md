@@ -1,3 +1,9 @@
+---
+title: "Day 42 \xB7 Supervised Learning \u2013 Classification (Part 1)"
+tags:
+- ML
+---
+
 ## What's in this folder?
 
 - `solutions.py` – reusable helpers for loading the Iris dataset, scaling features, and training
@@ -29,6 +35,16 @@ Run the classification unit tests with:
 ```bash
 pytest tests/test_day_42.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 41 – Day 41 · Supervised Learning – Regression](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_41_Supervised_Learning_Regression/README.md) • **Next:** [Day 43 – Day 43 · Supervised Learning – Classification (Part 2)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_43_Supervised_Learning_Classification_Part_2/README.md)
+
+_You are on lesson 42 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,9 @@
+---
+title: "Day 57 \u2013 Recommender Systems"
+tags:
+- Advanced
+---
+
 Recommender systems pair users with relevant products when catalogues explode. This lesson covers
 how to:
 
@@ -11,6 +17,16 @@ how to:
 
 Execute `python Day_57_Recommender_Systems/solutions.py` to generate rankings, matrix factorisation
 reconstructions, and evaluation metrics on compact demo datasets.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 56 – Day 56 – Time Series and Forecasting](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/README.md) • **Next:** [Day 58 – Day 58 – Transformers and Attention](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_58_Transformers_and_Attention/README.md)
+
+_You are on lesson 57 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

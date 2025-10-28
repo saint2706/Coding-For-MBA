@@ -1,3 +1,11 @@
+---
+title: "Day 81 \u2013 BI Architecture and Data Modeling"
+tags:
+- BI
+- Data
+- ML
+---
+
 ## Why it matters
 
 Business intelligence teams translate raw data into governed insights. A clear architecture keeps
@@ -53,6 +61,16 @@ Codify the controls that keep BI programs trustworthy.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 80 – Day 80 – BI Data Quality and Governance](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_80_BI_Data_Quality_and_Governance/README.md) • **Next:** [Day 82 – Day 82 – BI ETL and Pipeline Automation](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_82_BI_ETL_and_Pipeline_Automation/README.md)
+
+_You are on lesson 81 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

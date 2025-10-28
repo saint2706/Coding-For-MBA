@@ -1,3 +1,10 @@
+---
+title: 'Day 20: Python Package Manager (pip) & Third-Party Libraries'
+tags:
+- Basics
+- Python
+---
+
 The real power of Python for data analysis comes from its vast ecosystem of third-party libraries.
 These are pre-written modules, created by the community, that provide powerful tools for specific
 tasks.
@@ -66,6 +73,16 @@ logic from the data analysis logic, which is a crucial best practice.
 🎉 **Congratulations!** You now understand how to leverage the vast Python ecosystem using `pip`.
 This skill unlocks a world of powerful tools for data analysis, machine learning, web development,
 and more.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 19 – Day 19: Working with Dates and Times](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/README.md) • **Next:** [Day 21 – Day 21: Virtual Environments - Professional Project Management](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/README.md)
+
+_You are on lesson 20 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,11 @@
+---
+title: 'Day 3: Operators - The Tools for Business Calculation and Logic'
+tags:
+- BI
+- Basics
+- Python
+---
+
 An **operator** is a symbol that tells the computer to perform a specific mathematical or logical
 manipulation. For a business analyst, operators are the tools you'll use to calculate financial
 metrics, compare results, and create business rules.
@@ -66,6 +74,16 @@ clear, reusable, and testable.
 
 🎉 **Excellent work!** You're now equipped with the operators needed to perform the vast majority of
 business calculations and logical checks you'll encounter.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 02 – Day 2: Storing and Analyzing Business Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/README.md) • **Next:** [Day 04 – Day 4: Working with Text Data - Strings](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/README.md)
+
+_You are on lesson 3 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

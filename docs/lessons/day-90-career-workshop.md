@@ -1,3 +1,9 @@
+---
+title: "Day 90 \u2013 Career Workshop and Next Steps"
+tags:
+- Python
+---
+
 ## Introduction
 
 Welcome to your final lesson! This career workshop is designed to help you translate the technical
@@ -120,3 +126,13 @@ non-negotiable.
 1. **Make a LinkedIn Post:** Write a post on LinkedIn announcing the completion of your capstone
    project. Include a link to your live dashboard and a brief summary of your key findings. This
    will showcase your work to your network.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 89 – Day 89 – Capstone Project - Part 2](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_89_Capstone_Part_2/README.md) • **Next:** [Day 91 – Day 91: Relational Databases](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_91_Relational_Databases/README.md)
+
+_You are on lesson 90 of 108._
+
+<!-- LESSON_FOOTER_END -->

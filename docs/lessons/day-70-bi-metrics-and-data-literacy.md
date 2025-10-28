@@ -1,3 +1,10 @@
+---
+title: "Day 70 \u2013 BI Metrics and Data Literacy"
+tags:
+- BI
+- Data
+---
+
 Day 70 focuses on translating the BI roadmap's metrics and statistics nodes into a cohesive
 classroom conversation. The taxonomy groups the roadmap material into four facilitation modules:
 
@@ -37,6 +44,16 @@ Clarify the data taxonomy BI teams depend on.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 69 – Day 69 – BI Strategy and Stakeholders](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Strategy_and_Stakeholders/README.md) • **Next:** [Day 71 – Day 71 – BI Data Landscape Fundamentals](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_71_BI_Data_Landscape/README.md)
+
+_You are on lesson 70 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

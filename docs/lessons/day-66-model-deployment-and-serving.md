@@ -1,3 +1,11 @@
+---
+title: "Day 66 \u2013 Model Deployment and Serving Patterns"
+tags:
+- Advanced
+- ML
+- MLOps
+---
+
 Production machine learning systems expose predictions through a variety of runtime patterns.
 Building on the MLOps pipeline from Day 65, this lesson compares the trade-offs between synchronous
 APIs, high-throughput RPC services, scheduled batch scoring, streaming inference, and
@@ -40,6 +48,16 @@ share a consistent response schema and survive a stress scenario with concurrent
 - Port the load test harness to `locust`, `k6`, or `vegeta` and capture latency percentiles across
   different hardware profiles.
 - Add schema evolution examples demonstrating backwards-compatible API rollouts.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 65 – Day 65 – MLOps Pipelines and CI/CD Automation](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_65_MLOps_Pipelines_and_CI/README.md) • **Next:** [Day 67 – Day 67 – Model Monitoring and Reliability Engineering](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_67_Model_Monitoring_and_Reliability/README.md)
+
+_You are on lesson 66 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

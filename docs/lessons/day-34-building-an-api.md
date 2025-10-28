@@ -1,3 +1,10 @@
+---
+title: 'Day 34: Building a Simple API with Flask'
+tags:
+- Data
+- Web
+---
+
 Consuming data from APIs is a core skill. But what if you need to provide data from your analysis to
 another person or application? Instead of sending a CSV file, you can build your own API. This
 allows other services (like a web dashboard or another analyst's script) to access your data
@@ -141,6 +148,16 @@ easy to:
 
 Because `create_app()` returns a fully configured Flask instance, you can reuse it for development,
 testing, or even deployment without duplicating setup code.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 33 – Day 33: Accessing Web APIs with `requests`](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_33_API/README.md) • **Next:** [Day 35 – Day 35: Flask Web Framework](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_35_Flask_Web_Framework/README.md)
+
+_You are on lesson 34 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

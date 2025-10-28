@@ -1,3 +1,9 @@
+---
+title: 'Day 23: Pandas - Your Data Analysis Superpower'
+tags:
+- Data
+---
+
 If NumPy is the foundation, **Pandas** is the tool you will use every single day for practical data
 analysis. It is the most important library for data manipulation in Python, giving it the
 capabilities of a super-powered spreadsheet.
@@ -75,6 +81,16 @@ The content for this lesson is split into two main files:
 🎉 **Welcome to Pandas!** You've just learned how to create and inspect the most fundamental object
 in data analysis. In the next lesson, we'll dive deeper into selecting, filtering, and cleaning
 data.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 22 – Day 22: NumPy - The Foundation of Numerical Computing](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/README.md) • **Next:** [Day 24 – Day 24: Advanced Pandas - Working with Real Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/README.md)
+
+_You are on lesson 23 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,10 @@
+---
+title: "Day 53 \u2013 Model Tuning and Feature Selection"
+tags:
+- Advanced
+- ML
+---
+
 Optimisation is the bridge between baseline models and production-grade performance. Day 53
 introduces reproducible workflows for:
 
@@ -9,6 +16,16 @@ introduces reproducible workflows for:
 
 Execute `python Day_53_Model_Tuning_and_Feature_Selection/solutions.py` to see both search
 strategies in action alongside feature importance diagnostics.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 52 – Day 52 – Ensemble Methods](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_52_Ensemble_Methods/README.md) • **Next:** [Day 54 – Day 54 – Probabilistic Modeling](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_54_Probabilistic_Modeling/README.md)
+
+_You are on lesson 53 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

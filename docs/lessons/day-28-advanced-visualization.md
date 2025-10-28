@@ -1,3 +1,11 @@
+---
+title: 'Day 28: Advanced Visualization & Customization'
+tags:
+- Advanced
+- Data
+- Visualization
+---
+
 Creating a basic chart is just the first step. To effectively communicate your story, you need to
 customize your visualizations to make them clear, compelling, and professional. Today, we'll learn
 how to customize our plots and how to combine multiple plots into a single figure, like a dashboard.
@@ -94,6 +102,16 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 🎉 **Fantastic!** You can now create presentation-ready charts and combine them into simple
 dashboards. This ability to not just analyze, but also to present data in a customized and
 professional format is a key skill that separates great analysts from good ones.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 27 – Day 27: Data Visualization - Communicating Insights](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/README.md) • **Next:** [Day 29 – Day 29: Interactive Visualization with Plotly](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/README.md)
+
+_You are on lesson 28 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

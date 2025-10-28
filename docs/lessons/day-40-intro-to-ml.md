@@ -1,3 +1,10 @@
+---
+title: 'Day 40: Introduction to Machine Learning & Core Concepts'
+tags:
+- ML
+- Python
+---
+
 ## Overview
 
 This lesson introduces the machine learning workflow and highlights how evaluation techniques ensure
@@ -34,6 +41,16 @@ mean squared error metrics.
 
 Explore the full [Machine Learning Curriculum Roadmap](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/ml_curriculum.md) to see how the Day
 40 lesson fits into a multi-phase path covering deep learning, responsible AI, and MLOps.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 39 – Day 39: Math Foundations - Calculus](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_39_Calculus/README.md) • **Next:** [Day 41 – Day 41 · Supervised Learning – Regression](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_41_Supervised_Learning_Regression/README.md)
+
+_You are on lesson 40 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

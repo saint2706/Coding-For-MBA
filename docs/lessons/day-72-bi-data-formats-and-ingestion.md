@@ -1,3 +1,10 @@
+---
+title: "Day 72 \u2013 BI Data Formats and Ingestion"
+tags:
+- BI
+- Data
+---
+
 Business intelligence analysts encounter a wide mix of raw data files. This day focuses on
 recognising the shape of those payloads, picking the right parser, and pushing the results into a
 consistent analytics model.
@@ -67,6 +74,16 @@ Blueprint a warehouse that keeps stakeholders aligned.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 71 – Day 71 – BI Data Landscape Fundamentals](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_71_BI_Data_Landscape/README.md) • **Next:** [Day 73 – Day 73 – BI SQL and Databases](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_73_BI_SQL_and_Databases/README.md)
+
+_You are on lesson 72 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,9 @@
+---
+title: "Day 82 \u2013 BI ETL and Pipeline Automation"
+tags:
+- BI
+---
+
 Day 82 extends the roadmap by transforming the ETL and automation nodes into a workshop on
 orchestrated analytics delivery. The lesson groups the roadmap material into three facilitation
 threads:
@@ -36,6 +42,16 @@ Translate BI playbooks into high-impact industry verticals.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 81 – Day 81 – BI Architecture and Data Modeling](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_81_BI_Architecture_and_Data_Modeling/README.md) • **Next:** [Day 83 – Day 83 – BI Cloud and Modern Data Stack](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_83_BI_Cloud_and_Modern_Data_Stack/README.md)
+
+_You are on lesson 82 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

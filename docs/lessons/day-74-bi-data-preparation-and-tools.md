@@ -1,3 +1,10 @@
+---
+title: "Day 74 \u2013 BI Data Preparation and Tools"
+tags:
+- BI
+- Data
+---
+
 Day 74 focuses on the hands-on mechanics of preparing business intelligence data. We reinforce data
 quality checkpoints—handling duplicates, missing values, outliers, transformation logic, and
 exploratory profiling—before mapping them to the day-to-day tooling that teams rely on.
@@ -81,6 +88,16 @@ Summarize business performance with descriptive measures.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 73 – Day 73 – BI SQL and Databases](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_73_BI_SQL_and_Databases/README.md) • **Next:** [Day 75 – Day 75 – BI Visualization and Dashboard Principles](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_75_BI_Visualization_and_Dashboard_Principles/README.md)
+
+_You are on lesson 74 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

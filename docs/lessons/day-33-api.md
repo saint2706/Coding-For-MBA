@@ -1,3 +1,10 @@
+---
+title: 'Day 33: Accessing Web APIs with `requests`'
+tags:
+- Data
+- Web
+---
+
 ## Overview
 
 This lesson introduces a lightweight wrapper around the
@@ -75,6 +82,16 @@ pytest tests/test_day_33.py
 ```
 
 To execute the entire collection of lesson tests, run `pytest` from the project root.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 32 – Day 32: Connecting to Other Databases (MySQL & MongoDB)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_32_Other_Databases/README.md) • **Next:** [Day 34 – Day 34: Building a Simple API with Flask](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/README.md)
+
+_You are on lesson 33 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

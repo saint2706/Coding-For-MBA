@@ -1,3 +1,12 @@
+---
+title: "Day 73 \u2013 BI SQL and Databases"
+tags:
+- BI
+- Data
+- Database
+- SQL
+---
+
 Day 73 rebuilds the SQL and database depth outlined in the BI roadmap so the track moves beyond the
 light touch from [Day 31 – Databases](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/README.md) and the tooling survey in
 [Day 70 – BI Metrics and Data Literacy](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_70_BI_Metrics_and_Data_Literacy/README.md). The
@@ -42,6 +51,16 @@ Design reliable ingestion pipelines for analytics-ready data.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 72 – Day 72 – BI Data Formats and Ingestion](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_72_BI_Data_Formats_and_Ingestion/README.md) • **Next:** [Day 74 – Day 74 – BI Data Preparation and Tools](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_74_BI_Data_Preparation_and_Tools/README.md)
+
+_You are on lesson 73 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

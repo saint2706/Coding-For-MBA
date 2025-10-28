@@ -1,3 +1,9 @@
+---
+title: 'Day 107: SQL Security'
+tags:
+- SQL
+---
+
 Welcome to Day 107! Today, we'll discuss **SQL Security**, a critical topic for protecting your
 database from unauthorized access and malicious attacks.
 
@@ -40,3 +46,13 @@ understand the following concepts:
 - Authentication vs. Authorization.
 - How `GRANT` and `REVOKE` are used to manage permissions.
 - What SQL Injection is and how to prevent it.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 106 – Day 106: XML in SQL](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_106_XML_in_SQL/README.md) • **Next:** [Day 108 – Day 108: SQL Performance Tuning](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_108_Performance_Tuning/README.md)
+
+_You are on lesson 107 of 108._
+
+<!-- LESSON_FOOTER_END -->

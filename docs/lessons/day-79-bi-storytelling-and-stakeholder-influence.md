@@ -1,3 +1,9 @@
+---
+title: "Day 79 \u2013 BI Storytelling and Stakeholder Influence"
+tags:
+- BI
+---
+
 Day 79 teaches analysts how to weave together storytelling craft and change leadership so executive
 audiences commit to action. The roadmap entries covering narrative assets, stakeholder dynamics, and
 soft skills are turned into facilitation-ready walkthroughs that demonstrate how to convert metrics
@@ -65,6 +71,16 @@ Build hands-on fluency with spreadsheet and dashboard tooling.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 78 – Day 78 – BI Experimentation and Predictive Insights](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_78_BI_Experimentation_and_Predictive_Insights/README.md) • **Next:** [Day 80 – Day 80 – BI Data Quality and Governance](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_80_BI_Data_Quality_and_Governance/README.md)
+
+_You are on lesson 79 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

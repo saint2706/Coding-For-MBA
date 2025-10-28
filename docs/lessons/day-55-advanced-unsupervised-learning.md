@@ -1,3 +1,10 @@
+---
+title: "Day 55 \u2013 Advanced Unsupervised Learning"
+tags:
+- Advanced
+- ML
+---
+
 Density-based clustering, hierarchical approaches, and modern embeddings unlock structure within
 messy unlabelled datasets. Use the resources in this folder to:
 
@@ -11,6 +18,16 @@ messy unlabelled datasets. Use the resources in this folder to:
 
 Run `python Day_55_Advanced_Unsupervised_Learning/solutions.py` to reproduce the cluster
 assignments, embeddings, and anomaly scores featured in the lesson.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 54 – Day 54 – Probabilistic Modeling](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_54_Probabilistic_Modeling/README.md) • **Next:** [Day 56 – Day 56 – Time Series and Forecasting](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/README.md)
+
+_You are on lesson 55 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

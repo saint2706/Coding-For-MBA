@@ -1,3 +1,11 @@
+---
+title: 'Day 17: Regular Expressions for Text Pattern Matching'
+tags:
+- Basics
+- NLP
+- Python
+---
+
 Often, the text data you need to analyze isn't perfectly structured. You might need to find all the
 invoice numbers in a document, extract all email addresses from a messy text block, or validate that
 a product code follows a specific format. For these tasks, we use **regular expressions** (regex).
@@ -69,6 +77,16 @@ testable function.
 🎉 **Excellent!** Regular expressions are a fundamental tool for any data analyst who works with
 text. They provide a powerful and efficient way to clean, validate, and extract information from
 unstructured data.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 16 – Day 16: File Handling for Business Analytics](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/README.md) • **Next:** [Day 18 – Day 18: Classes and Objects - Modeling Business Concepts](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/README.md)
+
+_You are on lesson 17 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,10 @@
+---
+title: 'Day 27: Data Visualization - Communicating Insights'
+tags:
+- Data
+- Visualization
+---
+
 Visualising key business metrics makes it easier to communicate findings and uncover patterns. Day
 27 introduces reusable Matplotlib and Seaborn helpers that create core business charts for the sales
 dataset you prepared in Day 24.
@@ -47,6 +54,16 @@ Running the full repository test suite is also supported:
 ```bash
 pytest
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 26 – Day 26: Practical Statistics for Business Analysis](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/README.md) • **Next:** [Day 28 – Day 28: Advanced Visualization & Customization](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/README.md)
+
+_You are on lesson 27 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

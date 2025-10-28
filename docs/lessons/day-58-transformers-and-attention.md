@@ -1,3 +1,10 @@
+---
+title: "Day 58 \u2013 Transformers and Attention"
+tags:
+- Advanced
+- NLP
+---
+
 Transformers dominate modern sequence modelling. This lesson demonstrates how to:
 
 - Assemble encoder–decoder stacks with multi-head self-attention, cross-attention, and position-wise
@@ -10,6 +17,16 @@ Transformers dominate modern sequence modelling. This lesson demonstrates how to
 
 Run `python Day_58_Transformers_and_Attention/solutions.py` to simulate encoder–decoder passes,
 generate fine-tuning playbooks, and score demo texts with attention heatmaps.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 57 – Day 57 – Recommender Systems](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_57_Recommender_Systems/README.md) • **Next:** [Day 59 – Day 59 – Generative Models](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_59_Generative_Models/README.md)
+
+_You are on lesson 58 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,9 @@
+---
+title: 'Day 21: Virtual Environments - Professional Project Management'
+tags:
+- Data
+---
+
 As you work on more complex projects, you'll find they have different requirements. Project A might
 need an older version of a library, while Project B needs the latest version. Installing everything
 globally on your computer leads to conflicts.
@@ -71,6 +77,16 @@ This lesson is about terminal commands, not Python scripts. The best way to lear
 🎉 **Congratulations!** You've practiced one of the most important skills for professional Python
 development. Using virtual environments will save you from countless headaches and make your
 projects more robust and shareable.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/README.md) • **Next:** [Day 22 – Day 22: NumPy - The Foundation of Numerical Computing](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/README.md)
+
+_You are on lesson 21 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

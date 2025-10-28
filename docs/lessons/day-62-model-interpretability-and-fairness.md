@@ -1,3 +1,11 @@
+---
+title: "Day 62 \u2013 Model Interpretability and Fairness"
+tags:
+- Advanced
+- BI
+- ML
+---
+
 Explainable and responsible AI practices underpin trustworthy analytics. After this lesson you will:
 
 - Compute additive SHAP-style attributions for linear models and verify they sum to the predicted
@@ -10,6 +18,16 @@ Explainable and responsible AI practices underpin trustworthy analytics. After t
 Run `python Day_62_Model_Interpretability_and_Fairness/solutions.py` to walk through
 interpretability utilities, fairness diagnostics, and mitigation experiments on deterministic toy
 datasets.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 61 – Day 61 – Reinforcement and Offline Learning](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_61_Reinforcement_and_Offline_Learning/README.md) • **Next:** [Day 63 – Day 63 – Causal Inference and Uplift Modeling](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_63_Causal_Inference_and_Uplift/README.md)
+
+_You are on lesson 62 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

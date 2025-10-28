@@ -15,14 +15,12 @@ Usage:
 """
 
 import argparse
-import os
 import re
-import shutil
 import sys
 import zipfile
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 
 import markdown2
 
@@ -202,7 +200,7 @@ def generate_pdf_from_html(
         return True, 0
 
     try:
-        from weasyprint import HTML, CSS
+        from weasyprint import HTML
         from weasyprint.text.fonts import FontConfiguration
 
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -263,7 +261,7 @@ def generate_phase_pdf(phase: int, dry_run: bool = False) -> Tuple[bool, str]:
 
 def generate_full_pdf(dry_run: bool = False) -> Tuple[bool, str]:
     """Generate a PDF containing all lessons."""
-    print(f"\n📘 Generating Full Curriculum PDF")
+    print("\n📘 Generating Full Curriculum PDF")
 
     all_lessons = find_lesson_dirs()
     print(f"  📚 Found {len(all_lessons)} total lessons")
@@ -281,7 +279,7 @@ def generate_full_pdf(dry_run: bool = False) -> Tuple[bool, str]:
 
         # Add phase header when phase changes
         if phase != current_phase and phase > 0:
-            combined_md += f"<div class='page-break'></div>\n\n"
+            combined_md += "<div class='page-break'></div>\n\n"
             combined_md += f"# Phase {phase}: {PHASE_NAMES[phase]}\n\n---\n\n"
             current_phase = phase
 

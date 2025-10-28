@@ -1,3 +1,11 @@
+---
+title: 'Day 26: Practical Statistics for Business Analysis'
+tags:
+- BI
+- Data
+- Statistics
+---
+
 On Day 26 you expand beyond data wrangling and apply core statistical tools to business datasets.
 The refactored lesson script now exposes reusable helper functions for descriptive statistics,
 correlation analysis, and hypothesis testing so you can integrate them directly into your own
@@ -53,6 +61,16 @@ their static counterparts:
 
 🎉 **Great job!** With these reusable statistics utilities you can move from simple summaries to
 rigorous, testable insights in your analyses.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 25 – Day 25: Data Cleaning - The Most Important Skill in Analytics](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/README.md) • **Next:** [Day 27 – Day 27: Data Visualization - Communicating Insights](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/README.md)
+
+_You are on lesson 26 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

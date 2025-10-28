@@ -1,3 +1,9 @@
+---
+title: "Day 36 \u2013 Capstone Case Study"
+tags:
+- Data
+---
+
 ## Overview
 
 Day 36 ties together the full analytics workflow. You will load the `case_study_sales.csv` dataset,
@@ -33,6 +39,16 @@ Automated tests validate the helpers against the bundled dataset. From the repos
 ```bash
 pytest tests/test_day_36.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 35 – Day 35: Flask Web Framework](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_35_Flask_Web_Framework/README.md) • **Next:** [Day 37 – Day 37: Conclusion & Your Journey Forward](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_37_Conclusion/README.md)
+
+_You are on lesson 36 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

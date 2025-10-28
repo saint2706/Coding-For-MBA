@@ -1,3 +1,9 @@
+---
+title: "Day 41 \xB7 Supervised Learning \u2013 Regression"
+tags:
+- ML
+---
+
 ## What's in this folder?
 
 - `solutions.py` – modular helpers for generating synthetic regression data, training a linear
@@ -30,6 +36,16 @@ Run the regression unit tests with:
 ```bash
 pytest tests/test_day_41.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 40 – Day 40: Introduction to Machine Learning & Core Concepts](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_40_Intro_to_ML/README.md) • **Next:** [Day 42 – Day 42 · Supervised Learning – Classification (Part 1)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_42_Supervised_Learning_Classification_Part_1/README.md)
+
+_You are on lesson 41 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

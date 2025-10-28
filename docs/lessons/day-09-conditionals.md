@@ -1,3 +1,11 @@
+---
+title: 'Day 9: Conditionals - Implementing Business Logic'
+tags:
+- BI
+- Basics
+- Python
+---
+
 Business is full of rules and decisions. "If a customer spends over $100, they get a 10% discount."
 "If inventory is below 50 units, flag it for reorder." In Python, we implement this decision-making
 process using **conditional statements**.
@@ -70,6 +78,16 @@ into a separate, testable function.
 🎉 **Fantastic progress!** You can now translate complex business rules into code that makes
 decisions automatically. This is a fundamental skill for automating reports and building analytical
 models.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 08 – Day 8: Dictionaries - Structuring Complex Business Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/README.md) • **Next:** [Day 10 – Day 10: Loops - Automating Repetitive Business Tasks](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/README.md)
+
+_You are on lesson 9 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

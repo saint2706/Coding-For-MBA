@@ -1,3 +1,11 @@
+---
+title: 'Day 15: Exception Handling - Building Robust Business Logic'
+tags:
+- BI
+- Basics
+- Python
+---
+
 In the real world, data is messy and operations can fail. A file might be missing, a user might
 enter text instead of a number, or you might try to divide by zero when calculating a financial
 ratio. Without a safety net, these errors—called **exceptions**—will crash your script.
@@ -82,6 +90,16 @@ functions that include exception handling.
 🎉 **Congratulations!** You've learned how to make your Python scripts more robust and reliable.
 Exception handling is a critical skill for any data analyst or developer working with real-world
 data.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/README.md) • **Next:** [Day 16 – Day 16: File Handling for Business Analytics](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/README.md)
+
+_You are on lesson 15 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

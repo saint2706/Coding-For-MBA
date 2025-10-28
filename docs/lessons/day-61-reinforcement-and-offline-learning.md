@@ -1,3 +1,10 @@
+---
+title: "Day 61 \u2013 Reinforcement and Offline Learning"
+tags:
+- Advanced
+- ML
+---
+
 Reinforcement learning (RL) balances exploration and exploitation while offline evaluation keeps
 policies safe. After this lesson you can:
 
@@ -10,6 +17,16 @@ policies safe. After this lesson you can:
 
 Execute `python Day_61_Reinforcement_and_Offline_Learning/solutions.py` to walk through
 deterministic policy optimisation, offline evaluation diagnostics, and bandit baselines.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 60 – Day 60 – Graph and Geometric Learning](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_60_Graph_and_Geometric_Learning/README.md) • **Next:** [Day 62 – Day 62 – Model Interpretability and Fairness](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/README.md)
+
+_You are on lesson 61 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

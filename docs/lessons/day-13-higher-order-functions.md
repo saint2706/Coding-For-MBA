@@ -1,3 +1,10 @@
+---
+title: 'Day 13: Higher-Order Functions & Lambda'
+tags:
+- Basics
+- Python
+---
+
 A **higher-order function** is a function that takes another function as an argument or returns a
 function as its result. This is a powerful concept used heavily in data analysis for its conciseness
 and flexibility.
@@ -89,6 +96,16 @@ into its own testable function.
 
 🎉 **Congratulations!** Higher-order functions and lambdas are a gateway to a more powerful style of
 programming that you will see everywhere in the world of data science.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 12 – Day 12: List Comprehension - Elegant Data Manipulation](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/README.md) • **Next:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/README.md)
+
+_You are on lesson 13 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,11 @@
+---
+title: 'Day 11: Functions - Creating Reusable Business Tools'
+tags:
+- BI
+- Basics
+- Python
+---
+
 As you perform more complex analysis, you'll write the same code repeatedly. **Functions** are
 named, reusable blocks of code that perform a specific task, helping you avoid repetition and write
 cleaner, more maintainable code.
@@ -61,6 +69,16 @@ in a `main()` function, which is a standard convention.
 
 🎉 **Great work!** Functions are the key to writing clean, organized, and professional code. By
 packaging your logic into reusable tools, you're moving from a simple scripter to a true programmer.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 10 – Day 10: Loops - Automating Repetitive Business Tasks](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/README.md) • **Next:** [Day 12 – Day 12: List Comprehension - Elegant Data Manipulation](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/README.md)
+
+_You are on lesson 11 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

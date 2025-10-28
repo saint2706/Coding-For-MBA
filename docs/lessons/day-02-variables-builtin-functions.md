@@ -1,3 +1,12 @@
+---
+title: 'Day 2: Storing and Analyzing Business Data'
+tags:
+- BI
+- Basics
+- Data
+- Python
+---
+
 In Day 1, we performed basic calculations. Now, we'll learn how to store data in **variables** and
 use Python's **built-in functions** to analyze it.
 
@@ -72,6 +81,16 @@ and testability.
 
 🎉 **Well done!** You've learned how to store data in variables and use Python's built-in functions
 for analysis—foundational skills for everything that comes next.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 01 – Day 1: Python for Business Analytics - First Steps](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/README.md) • **Next:** [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/README.md)
+
+_You are on lesson 2 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

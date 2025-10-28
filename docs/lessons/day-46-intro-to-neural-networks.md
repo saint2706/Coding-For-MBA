@@ -1,3 +1,10 @@
+---
+title: 'Day 46: Introduction to Neural Networks & Frameworks'
+tags:
+- ML
+- Python
+---
+
 Welcome to Day 46! Today, we begin our exploration of **Deep Learning** by introducing the
 fundamental building block: the **Artificial Neural Network (ANN)**. We'll also discuss the major
 frameworks used to build these powerful models.
@@ -86,6 +93,16 @@ ______________________________________________________________________
   deterministic epoch: `pytest tests/test_day_46.py`.
 - Training on GPU hardware is optional for this small dataset, but TensorFlow will automatically
   leverage your GPU if it's available and correctly configured.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 45 – Day 45: Feature Engineering & Model Evaluation](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_45_Feature_Engineering_and_Evaluation/README.md) • **Next:** [Day 47 – Day 47: Convolutional Neural Networks (CNNs) for Computer Vision](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_47_Convolutional_Neural_Networks/README.md)
+
+_You are on lesson 46 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

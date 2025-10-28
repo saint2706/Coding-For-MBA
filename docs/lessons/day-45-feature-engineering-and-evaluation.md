@@ -1,3 +1,9 @@
+---
+title: 'Day 45: Feature Engineering & Model Evaluation'
+tags:
+- ML
+---
+
 ## Overview
 
 Day 45 demonstrates how thoughtful preprocessing and rigorous evaluation combine to build
@@ -49,6 +55,16 @@ To execute the entire project test suite, run `pytest` from the repository root.
   [`Day_62_Model_Interpretability_and_Fairness`](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/README.md)
   to study post-hoc explanations and mitigation strategies built atop the evaluation workflows from
   this lesson.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 44 – Day 44: Unsupervised Learning](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_44_Unsupervised_Learning/README.md) • **Next:** [Day 46 – Day 46: Introduction to Neural Networks & Frameworks](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_46_Intro_to_Neural_Networks/README.md)
+
+_You are on lesson 45 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

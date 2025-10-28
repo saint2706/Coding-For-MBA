@@ -1,3 +1,10 @@
+---
+title: 'Day 50: MLOps - Model Deployment'
+tags:
+- ML
+- MLOps
+---
+
 Welcome to our final day, Day 50! Today, we touch upon **MLOps (Machine Learning Operations)**,
 which focuses on the practical side of deploying, monitoring, and maintaining machine learning
 models in production environments. Our focus will be on a crucial first step: **saving and loading a
@@ -65,6 +72,16 @@ ______________________________________________________________________
 Review the code to understand the fundamental step of model persistence, which is the gateway to
 model deployment. When you are ready to automate full pipelines, deploy APIs, and monitor production
 behaviour, continue into Days 65–67 for the dedicated deep dives.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 49 – Day 49: Natural Language Processing (NLP)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_49_NLP/README.md) • **Next:** [Day 51 – Day 51 – Regularised Models](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_51_Regularized_Models/README.md)
+
+_You are on lesson 50 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

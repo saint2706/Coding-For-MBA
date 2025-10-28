@@ -1,3 +1,9 @@
+---
+title: 'Day 44: Unsupervised Learning'
+tags:
+- ML
+---
+
 ## Overview
 
 Day 44 introduces two foundational unsupervised learning workflows:
@@ -42,6 +48,16 @@ To execute the entire suite, simply call `pytest` from the repository root.
 - Experiment with different numbers of clusters in `fit_kmeans` to observe how centroids move.
 - Try increasing the number of PCA components and inspect the cumulative explained variance to
   decide how many dimensions to keep.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 43 – Day 43 · Supervised Learning – Classification (Part 2)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_43_Supervised_Learning_Classification_Part_2/README.md) • **Next:** [Day 45 – Day 45: Feature Engineering & Model Evaluation](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_45_Feature_Engineering_and_Evaluation/README.md)
+
+_You are on lesson 44 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

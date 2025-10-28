@@ -1,3 +1,11 @@
+---
+title: 'Day 14: Modules - Organizing Your Business Logic'
+tags:
+- BI
+- Basics
+- Python
+---
+
 As your projects grow, you need a way to organize your code. In Python, we do this with **modules**.
 A module is simply a Python file (`.py`) containing functions and variables. By grouping related
 functions into modules, you create a clean, maintainable, and scalable project.
@@ -90,6 +98,16 @@ module file.
 
 🎉 **Well done!** You've learned how to organize your code into modules. This is a critical skill for
 building any project that's more than a few dozen lines long.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 13 – Day 13: Higher-Order Functions & Lambda](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/README.md) • **Next:** [Day 15 – Day 15: Exception Handling - Building Robust Business Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/README.md)
+
+_You are on lesson 14 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

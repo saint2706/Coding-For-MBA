@@ -11,11 +11,10 @@ This script:
 6. Updates landing page files with auto-generated content
 """
 
-import os
-import re
 import argparse
+import re
 from pathlib import Path
-from typing import List, Dict, Tuple, Optional
+from typing import List, Optional
 
 
 class LessonInfo:

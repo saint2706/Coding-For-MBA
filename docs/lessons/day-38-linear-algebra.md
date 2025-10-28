@@ -1,3 +1,9 @@
+---
+title: 'Day 38: Math Foundations - Linear Algebra'
+tags:
+- Data
+---
+
 ## Overview
 
 Linear algebra underpins much of machine learning. This lesson revisits the building blocks—vectors,
@@ -28,6 +34,16 @@ with confidence.
 
 - Run the worked examples: `python Day_38_Linear_Algebra/solutions.py`
 - Execute the automated checks: `pytest tests/test_day_38.py`
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 37 – Day 37: Conclusion & Your Journey Forward](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_37_Conclusion/README.md) • **Next:** [Day 39 – Day 39: Math Foundations - Calculus](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_39_Calculus/README.md)
+
+_You are on lesson 38 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

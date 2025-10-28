@@ -1,3 +1,10 @@
+---
+title: 'Day 30: Web Scraping - Extracting Data from the Web'
+tags:
+- Data
+- Web
+---
+
 Sometimes, the data you need isn't available in a clean CSV file or through an API. It's simply
 displayed on a website. **Web scraping** is the process of automatically downloading the HTML code
 of a web page and extracting useful information from it.
@@ -117,6 +124,16 @@ designed for scraping practice.
 🎉 **Great job!** Web scraping is a powerful skill that opens up a vast new source of data for your
 analyses. While it can be complex, mastering the basics of `requests` and `BeautifulSoup` is a huge
 step forward.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 29 – Day 29: Interactive Visualization with Plotly](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/README.md) • **Next:** [Day 31 – Day 31: Working with Databases in Python](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/README.md)
+
+_You are on lesson 30 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

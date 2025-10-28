@@ -1,3 +1,12 @@
+---
+title: 'Day 8: Dictionaries - Structuring Complex Business Data'
+tags:
+- BI
+- Basics
+- Data
+- Python
+---
+
 Real-world business data is structured. A customer has a name, an email, and a location. A product
 has a price, an SKU, and an inventory count. For this, we need **dictionaries**. A dictionary is the
 most important data structure for handling structured data in Python.
@@ -80,6 +89,16 @@ operations into testable functions.
 🎉 **Amazing work!** Dictionaries are the cornerstone of handling structured data in Python. Almost
 every time you get data from an API or a database, it will be in the form of dictionaries. Mastering
 them is a huge step forward.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 07 – Day 7: Sets - Managing Unique Business Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/README.md) • **Next:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/README.md)
+
+_You are on lesson 8 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,11 @@
+---
+title: 'Day 10: Loops - Automating Repetitive Business Tasks'
+tags:
+- BI
+- Basics
+- Python
+---
+
 What if you have a list of 10,000 sales transactions? You won't write code for each one. This is
 where **loops** come in. Loops allow you to perform the same action on every item in a collection,
 automating what would otherwise be an impossibly tedious task.
@@ -81,6 +89,16 @@ testable function.
 
 🎉 **Incredible!** The combination of loops and conditionals is the foundation of almost all data
 processing and analysis tasks. You've completed the core structures of Python!
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/README.md) • **Next:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/README.md)
+
+_You are on lesson 10 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 

@@ -1,3 +1,10 @@
+---
+title: 'Day 24: Advanced Pandas - Working with Real Data'
+tags:
+- Advanced
+- Data
+---
+
 You'll rarely create data from scratch. The most common workflow is to load data from external
 sources like CSV files. Today, we'll focus on loading data and using powerful methods to select,
 filter, and clean it.
@@ -129,6 +136,16 @@ dataset across multiple analyses, load the CSV once and reuse the DataFrame rath
 🎉 **Excellent work!** You're now working with data like a real analyst—loading it from files,
 inspecting it, and using powerful tools to filter and clean it. These are foundational skills for
 every data analysis project.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 23 – Day 23: Pandas - Your Data Analysis Superpower](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/README.md) • **Next:** [Day 25 – Day 25: Data Cleaning - The Most Important Skill in Analytics](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/README.md)
+
+_You are on lesson 24 of 108._
+
+<!-- LESSON_FOOTER_END -->
 
 ## Additional Materials
 
