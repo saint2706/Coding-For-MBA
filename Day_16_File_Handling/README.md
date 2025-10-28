@@ -1,3 +1,10 @@
+---
+title: 'Day 16: File Handling for Business Analytics'
+tags:
+- BI
+- Basics
+- Python
+---
 # 📘 Day 16: File Handling for Business Analytics
 
 A huge part of data analysis involves reading data from files and writing results to them. Whether

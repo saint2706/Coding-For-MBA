@@ -1,3 +1,8 @@
+---
+title: "Day 42 \xB7 Supervised Learning \u2013 Classification (Part 1)"
+tags:
+- ML
+---
 # Day 42 · Supervised Learning – Classification (Part 1)
 
 ## What's in this folder?

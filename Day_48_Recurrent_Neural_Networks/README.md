@@ -1,3 +1,9 @@
+---
+title: 'Day 48: Recurrent Neural Networks (RNNs) for Sequence Data'
+tags:
+- Data
+- ML
+---
 # Day 48: Recurrent Neural Networks (RNNs) for Sequence Data
 
 Welcome to Day 48! Today, we explore **Recurrent Neural Networks (RNNs)**, a class of neural

@@ -1,3 +1,8 @@
+---
+title: 'Day 101: Triggers'
+tags:
+- SQL
+---
 # 📘 Day 101: Triggers
 
 Welcome to Day 101! Today, we'll learn about **Triggers**, which are special stored procedures that

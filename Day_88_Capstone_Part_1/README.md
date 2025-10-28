@@ -1,3 +1,8 @@
+---
+title: "Day 88 \u2013 Capstone Project - Part 1"
+tags:
+- Python
+---
 # Day 88 – Capstone Project - Part 1
 
 ## Introduction

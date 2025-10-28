@@ -1,3 +1,9 @@
+---
+title: 'Day 27: Data Visualization - Communicating Insights'
+tags:
+- Data
+- Visualization
+---
 # 📘 Day 27: Data Visualization - Communicating Insights
 
 Visualising key business metrics makes it easier to communicate findings and uncover patterns. Day

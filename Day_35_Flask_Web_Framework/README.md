@@ -1,3 +1,9 @@
+---
+title: 'Day 35: Flask Web Framework'
+tags:
+- Data
+- Web
+---
 # 🌐 Day 35: Flask Web Framework
 
 Welcome to Day 35! This lesson contains a small Flask project that analyses submitted text and

@@ -1,3 +1,10 @@
+---
+title: 'Day 3: Operators - The Tools for Business Calculation and Logic'
+tags:
+- BI
+- Basics
+- Python
+---
 # 📘 Day 3: Operators - The Tools for Business Calculation and Logic
 
 An **operator** is a symbol that tells the computer to perform a specific mathematical or logical

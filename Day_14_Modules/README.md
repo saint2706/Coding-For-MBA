@@ -1,3 +1,10 @@
+---
+title: 'Day 14: Modules - Organizing Your Business Logic'
+tags:
+- BI
+- Basics
+- Python
+---
 # 📘 Day 14: Modules - Organizing Your Business Logic
 
 As your projects grow, you need a way to organize your code. In Python, we do this with **modules**.

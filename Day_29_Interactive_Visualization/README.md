@@ -1,3 +1,9 @@
+---
+title: 'Day 29: Interactive Visualization with Plotly'
+tags:
+- Data
+- Visualization
+---
 # 📘 Day 29: Interactive Visualization with Plotly
 
 Static charts are good for reports, but in the modern era of business intelligence, users expect to

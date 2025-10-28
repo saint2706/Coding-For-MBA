@@ -1,3 +1,8 @@
+---
+title: 'Day 21: Virtual Environments - Professional Project Management'
+tags:
+- Data
+---
 # 📘 Day 21: Virtual Environments - Professional Project Management
 
 As you work on more complex projects, you'll find they have different requirements. Project A might

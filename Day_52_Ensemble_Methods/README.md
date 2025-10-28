@@ -1,3 +1,8 @@
+---
+title: "Day 52 \u2013 Ensemble Methods"
+tags:
+- ML
+---
 # Day 52 – Ensemble Methods
 
 Day 52 highlights how bagging, boosting, and stacking unlock better accuracy than single estimators.

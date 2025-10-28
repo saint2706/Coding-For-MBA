@@ -1,3 +1,10 @@
+---
+title: "Day 81 \u2013 BI Architecture and Data Modeling"
+tags:
+- BI
+- Data
+- ML
+---
 # Day 81 – BI Architecture and Data Modeling
 
 ## Why it matters

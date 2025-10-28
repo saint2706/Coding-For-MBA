@@ -1,3 +1,10 @@
+---
+title: 'Day 1: Python for Business Analytics - First Steps'
+tags:
+- BI
+- Basics
+- Python
+---
 # 📘 Day 1: Python for Business Analytics - First Steps
 
 ## Welcome to the Course

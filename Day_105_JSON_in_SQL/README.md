@@ -1,3 +1,8 @@
+---
+title: 'Day 105: JSON in SQL'
+tags:
+- SQL
+---
 # 📘 Day 105: JSON in SQL
 
 Welcome to Day 105! Today, we'll explore how to work with **JSON (JavaScript Object Notation)** data

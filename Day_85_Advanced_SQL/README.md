@@ -1,3 +1,9 @@
+---
+title: "Day 85 \u2013 Advanced SQL and Performance Tuning"
+tags:
+- Advanced
+- SQL
+---
 # Day 85 – Advanced SQL and Performance Tuning
 
 ## Introduction

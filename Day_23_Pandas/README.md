@@ -1,3 +1,8 @@
+---
+title: 'Day 23: Pandas - Your Data Analysis Superpower'
+tags:
+- Data
+---
 # 📘 Day 23: Pandas - Your Data Analysis Superpower
 
 If NumPy is the foundation, **Pandas** is the tool you will use every single day for practical data

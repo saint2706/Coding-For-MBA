@@ -1,3 +1,9 @@
+---
+title: 'Day 13: Higher-Order Functions & Lambda'
+tags:
+- Basics
+- Python
+---
 # 📘 Day 13: Higher-Order Functions & Lambda
 
 A **higher-order function** is a function that takes another function as an argument or returns a

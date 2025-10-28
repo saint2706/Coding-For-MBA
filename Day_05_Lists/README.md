@@ -1,3 +1,11 @@
+---
+title: 'Day 5: Managing Collections of Business Data with Lists'
+tags:
+- BI
+- Basics
+- Data
+- Python
+---
 # 📘 Day 5: Managing Collections of Business Data with Lists
 
 In business, you often work with collections of data: lists of customers, quarterly sales figures,

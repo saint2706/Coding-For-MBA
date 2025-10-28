@@ -1,3 +1,9 @@
+---
+title: 'Day 20: Python Package Manager (pip) & Third-Party Libraries'
+tags:
+- Basics
+- Python
+---
 # 📘 Day 20: Python Package Manager (pip) & Third-Party Libraries
 
 The real power of Python for data analysis comes from its vast ecosystem of third-party libraries.

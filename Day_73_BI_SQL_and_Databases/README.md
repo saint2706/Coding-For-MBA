@@ -1,3 +1,11 @@
+---
+title: "Day 73 \u2013 BI SQL and Databases"
+tags:
+- BI
+- Data
+- Database
+- SQL
+---
 # Day 73 – BI SQL and Databases
 
 Day 73 rebuilds the SQL and database depth outlined in the BI roadmap so the track moves beyond the

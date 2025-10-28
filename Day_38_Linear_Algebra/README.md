@@ -1,3 +1,8 @@
+---
+title: 'Day 38: Math Foundations - Linear Algebra'
+tags:
+- Data
+---
 # Day 38: Math Foundations - Linear Algebra
 
 ## Overview

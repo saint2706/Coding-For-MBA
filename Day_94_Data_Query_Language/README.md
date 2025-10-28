@@ -1,3 +1,10 @@
+---
+title: 'Day 94: Data Query Language (DQL)'
+tags:
+- Data
+- NLP
+- SQL
+---
 # 📘 Day 94: Data Query Language (DQL)
 
 Welcome to Day 94! Today, we'll focus on the **Data Query Language (DQL)**, which is used to

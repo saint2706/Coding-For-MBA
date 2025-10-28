@@ -1,3 +1,9 @@
+---
+title: "Day 60 \u2013 Graph and Geometric Learning"
+tags:
+- Advanced
+- ML
+---
 # Day 60 – Graph and Geometric Learning
 
 Graph neural networks capture relational structure beyond Euclidean grids. This lesson focuses on:

@@ -1,3 +1,10 @@
+---
+title: "Day 64 \u2013 Modern NLP Pipelines"
+tags:
+- Advanced
+- MLOps
+- NLP
+---
 # Day 64 – Modern NLP Pipelines
 
 Connect discrete NLP components into a reproducible workflow. After this lesson you will:

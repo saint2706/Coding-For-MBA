@@ -1,3 +1,11 @@
+---
+title: 'Day 7: Sets - Managing Unique Business Data'
+tags:
+- BI
+- Basics
+- Data
+- Python
+---
 # 📘 Day 7: Sets - Managing Unique Business Data
 
 We've seen lists for ordered data and tuples for immutable data. Now we'll learn about **sets**,

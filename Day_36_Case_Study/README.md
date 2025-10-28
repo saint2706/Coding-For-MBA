@@ -1,3 +1,8 @@
+---
+title: "Day 36 \u2013 Capstone Case Study"
+tags:
+- Data
+---
 # 📊 Day 36 – Capstone Case Study
 
 ## Overview

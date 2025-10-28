@@ -80,20 +80,28 @@ def extract_description_from_readme(readme_path: Path) -> str:
     try:
         with open(readme_path, "r", encoding="utf-8") as f:
             lines = f.readlines()
-            in_content = False
+            in_front_matter = False
+            past_front_matter = False
 
-            for line in lines:
+            for i, line in enumerate(lines):
                 stripped = line.strip()
 
-                # Skip front matter
-                if stripped == "---":
-                    in_content = not in_content
+                # Detect and skip YAML front matter
+                if i == 0 and stripped == "---":
+                    in_front_matter = True
                     continue
-                if not in_content and stripped.startswith("---"):
+                if in_front_matter:
+                    if stripped == "---":
+                        in_front_matter = False
+                        past_front_matter = True
                     continue
 
                 # Skip headers and empty lines
                 if not stripped or stripped.startswith("#"):
+                    continue
+
+                # Skip YAML-like lines (key: value)
+                if ":" in stripped and len(stripped.split(":")[0]) < 30:
                     continue
 
                 # Found first paragraph

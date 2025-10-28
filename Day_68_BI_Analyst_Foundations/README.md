@@ -1,3 +1,8 @@
+---
+title: "Day 68 \u2013 BI Analyst Foundations"
+tags:
+- BI
+---
 # Day 68 – BI Analyst Foundations
 
 > This lesson is part of the Phase 5 Business Intelligence specialization. Use the

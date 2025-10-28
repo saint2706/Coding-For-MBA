@@ -1,3 +1,8 @@
+---
+title: 'Day 37: Conclusion & Your Journey Forward'
+tags:
+- Data
+---
 # 🎉 Day 37: Conclusion & Your Journey Forward 🎉
 
 ## Congratulations

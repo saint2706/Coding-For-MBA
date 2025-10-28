@@ -1,3 +1,8 @@
+---
+title: 'Day 98: Indexes'
+tags:
+- SQL
+---
 # 📘 Day 98: Indexes
 
 Welcome to Day 98! Today, we'll learn about **Indexes**, a crucial performance-tuning feature in

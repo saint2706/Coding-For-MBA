@@ -1,3 +1,8 @@
+---
+title: 'Day 102: Common Table Expressions (CTEs)'
+tags:
+- SQL
+---
 # 📘 Day 102: Common Table Expressions (CTEs)
 
 Welcome to Day 102! Today, we'll learn about **Common Table Expressions (CTEs)**, a temporary result

@@ -1,3 +1,9 @@
+---
+title: 'Day 103: Pivoting Data'
+tags:
+- Data
+- SQL
+---
 # 📘 Day 103: Pivoting Data
 
 Welcome to Day 103! Today, we'll learn about **Pivoting Data**, a technique used to transform data

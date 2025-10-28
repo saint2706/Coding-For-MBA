@@ -1,3 +1,10 @@
+---
+title: 'Day 104: Database Design and Normalization'
+tags:
+- Data
+- Database
+- SQL
+---
 # 📘 Day 104: Database Design and Normalization
 
 Welcome to Day 104! Today, we'll cover the important topics of **Database Design** and

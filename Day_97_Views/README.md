@@ -1,3 +1,8 @@
+---
+title: 'Day 97: Views'
+tags:
+- SQL
+---
 # 📘 Day 97: Views
 
 Welcome to Day 97! Today, we'll learn about **Views**, which are virtual tables based on the

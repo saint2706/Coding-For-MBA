@@ -1,3 +1,9 @@
+---
+title: "Day 72 \u2013 BI Data Formats and Ingestion"
+tags:
+- BI
+- Data
+---
 # Day 72 – BI Data Formats and Ingestion
 
 Business intelligence analysts encounter a wide mix of raw data files. This day focuses on

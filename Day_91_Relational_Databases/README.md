@@ -1,3 +1,10 @@
+---
+title: 'Day 91: Relational Databases'
+tags:
+- Data
+- Database
+- SQL
+---
 # 📘 Day 91: Relational Databases
 
 Welcome to Day 91! Today, we'll dive deep into the foundational concepts of **Relational

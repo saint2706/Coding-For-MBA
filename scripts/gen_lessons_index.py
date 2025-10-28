@@ -70,7 +70,13 @@ def extract_lesson_metadata(readme_path: Path, folder_name: str) -> Dict:
         # Extract description
         for line in body.split("\n"):
             stripped = line.strip()
-            if stripped and not stripped.startswith("#") and len(stripped) > 30:
+            # Skip empty lines, headers, and YAML-like lines
+            if not stripped or stripped.startswith("#"):
+                continue
+            # Skip YAML-like lines (key: value)
+            if ":" in stripped and len(stripped.split(":")[0]) < 30:
+                continue
+            if len(stripped) > 30:
                 metadata["description"] = stripped[:200]
                 if len(stripped) > 200:
                     metadata["description"] += "..."

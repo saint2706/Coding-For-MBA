@@ -1,3 +1,9 @@
+---
+title: "Day 55 \u2013 Advanced Unsupervised Learning"
+tags:
+- Advanced
+- ML
+---
 # Day 55 – Advanced Unsupervised Learning
 
 Density-based clustering, hierarchical approaches, and modern embeddings unlock structure within

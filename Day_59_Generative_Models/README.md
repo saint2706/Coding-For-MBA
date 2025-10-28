@@ -1,3 +1,9 @@
+---
+title: "Day 59 \u2013 Generative Models"
+tags:
+- Advanced
+- ML
+---
 # Day 59 – Generative Models
 
 Generative models synthesise data, compress signals, and enable controllable creativity. In this

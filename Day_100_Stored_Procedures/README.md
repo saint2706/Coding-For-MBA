@@ -1,3 +1,8 @@
+---
+title: 'Day 100: Stored Procedures'
+tags:
+- SQL
+---
 # 📘 Day 100: Stored Procedures
 
 Welcome to Day 100! Today, we'll learn about **Stored Procedures**, which are prepared SQL code that

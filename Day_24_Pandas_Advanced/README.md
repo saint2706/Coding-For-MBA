@@ -1,3 +1,9 @@
+---
+title: 'Day 24: Advanced Pandas - Working with Real Data'
+tags:
+- Advanced
+- Data
+---
 # 📘 Day 24: Advanced Pandas - Working with Real Data
 
 You'll rarely create data from scratch. The most common workflow is to load data from external

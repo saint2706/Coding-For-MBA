@@ -34,6 +34,31 @@ pip install mysql-connector-python psycopg2-binary pymongo
 The documentation includes interactive examples, detailed explanations, and downloadable materials
 for each lesson.
 
+### 🆕 New Documentation Features
+
+Our enhanced documentation site now includes:
+
+- **🔍 [Interactive Lessons Index](https://saint2706.github.io/Coding-For-MBA/lessons/index.html)** - 
+  Browse all 108 lessons with live search and tag filtering
+- **📊 [Phase Overview Pages](https://saint2706.github.io/Coding-For-MBA/phases/phase_1_overview/)** - 
+  Detailed roadmaps for each of the 7 curriculum phases
+- **🏷️ Tag-Based Navigation** - Filter lessons by topics like Python, ML, SQL, BI, Data, and more
+- **📈 Progress Tracking** - Automatic progress indicators on lesson pages showing your journey
+- **🌓 Dark Mode** - Toggle between light and dark themes for comfortable reading
+- **📱 Mobile Responsive** - Full curriculum accessible on any device
+
+**How to run the docs locally:**
+
+```bash
+# Install documentation dependencies
+pip install -r docs/requirements-docs.txt
+
+# Serve locally
+mkdocs serve
+
+# Visit http://127.0.0.1:8000
+```
+
 ## 🗣️ Community & Support
 
 - **[Join GitHub Discussions →](https://github.com/saint2706/Coding-For-MBA/discussions)** – Connect
@@ -239,7 +264,28 @@ make format  # Auto-format Python, notebooks, and Markdown
 make lint    # Check formatting without changes
 ```
 
-📘 **[Full development guide →](docs/contributing.md)**
+### Documentation Scripts
+
+The repository includes automated scripts for maintaining documentation:
+
+```bash
+# Generate phase overview pages
+python scripts/gen_phase_overviews.py --apply
+
+# Add tags to lesson READMEs
+python scripts/add_tags.py --apply
+
+# Create interactive lessons index
+python scripts/gen_lessons_index.py --apply
+
+# Update navigation structure
+python scripts/gen_nav.py --apply
+
+# Revert changes if needed
+python scripts/revert_nav_changes.py --apply
+```
+
+📘 **[Script documentation →](scripts/README.md)** | **[Full development guide →](docs/contributing.md)**
 
 ## 📁 Repository Structure
 

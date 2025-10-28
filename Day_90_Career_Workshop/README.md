@@ -1,3 +1,8 @@
+---
+title: "Day 90 \u2013 Career Workshop and Next Steps"
+tags:
+- Python
+---
 # Day 90 – Career Workshop and Next Steps
 
 ## Introduction

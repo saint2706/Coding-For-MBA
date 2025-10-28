@@ -1,3 +1,8 @@
+---
+title: "Day 82 \u2013 BI ETL and Pipeline Automation"
+tags:
+- BI
+---
 # Day 82 – BI ETL and Pipeline Automation
 
 Day 82 extends the roadmap by transforming the ETL and automation nodes into a workshop on

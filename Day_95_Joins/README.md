@@ -1,3 +1,8 @@
+---
+title: 'Day 95: Joins'
+tags:
+- SQL
+---
 # 📘 Day 95: Joins
 
 Welcome to Day 95! Today, we'll learn about **Joins**, a fundamental concept in SQL for combining

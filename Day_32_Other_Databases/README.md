@@ -1,3 +1,10 @@
+---
+title: 'Day 32: Connecting to Other Databases (MySQL & MongoDB)'
+tags:
+- Data
+- Database
+- SQL
+---
 # 📘 Day 32: Connecting to Other Databases (MySQL & MongoDB)
 
 In the previous lesson, we used `sqlite3`, which is fantastic for learning and small projects

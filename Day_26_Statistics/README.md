@@ -1,3 +1,10 @@
+---
+title: 'Day 26: Practical Statistics for Business Analysis'
+tags:
+- BI
+- Data
+- Statistics
+---
 # 📘 Day 26: Practical Statistics for Business Analysis
 
 On Day 26 you expand beyond data wrangling and apply core statistical tools to business datasets.

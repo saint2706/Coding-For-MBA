@@ -1,3 +1,11 @@
+---
+title: 'Day 6: Tuples - Storing Immutable Business Data'
+tags:
+- BI
+- Basics
+- Data
+- Python
+---
 # 📘 Day 6: Tuples - Storing Immutable Business Data
 
 While lists are great for data that changes, sometimes you need to store data that *shouldn't*
