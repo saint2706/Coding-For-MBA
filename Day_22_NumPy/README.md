@@ -1,8 +1,9 @@
 ---
 title: 'Day 22: NumPy - The Foundation of Numerical Computing'
 tags:
-- Data
+  - Data
 ---
+
 # 📘 Day 22: NumPy - The Foundation of Numerical Computing
 
 While Python lists are flexible, they aren't efficient for large-scale numerical calculations. For
@@ -84,7 +85,7 @@ much easier to grasp.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 21 – Day 21: Virtual Environments - Professional Project Management](../Day_21_Virtual_Environments/README.md) • **Next:** [Day 23 – Day 23: Pandas - Your Data Analysis Superpower](../Day_23_Pandas/README.md)
 

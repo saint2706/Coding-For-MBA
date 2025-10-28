@@ -1,9 +1,10 @@
 ---
 title: 'Day 46: Introduction to Neural Networks & Frameworks'
 tags:
-- ML
-- Python
+  - ML
+  - Python
 ---
+
 # Day 46: Introduction to Neural Networks & Frameworks
 
 Welcome to Day 46! Today, we begin our exploration of **Deep Learning** by introducing the
@@ -97,7 +98,7 @@ ______________________________________________________________________
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 45 – Day 45: Feature Engineering & Model Evaluation](../Day_45_Feature_Engineering_and_Evaluation/README.md) • **Next:** [Day 47 – Day 47: Convolutional Neural Networks (CNNs) for Computer Vision](../Day_47_Convolutional_Neural_Networks/README.md)
 

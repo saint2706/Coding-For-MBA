@@ -1,11 +1,12 @@
 ---
 title: 'Day 4: Working with Text Data - Strings'
 tags:
-- Basics
-- Data
-- NLP
-- Python
+  - Basics
+  - Data
+  - NLP
+  - Python
 ---
+
 # 📘 Day 4: Working with Text Data - Strings
 
 In business analytics, text data is everywhere—customer names, product reviews, addresses, and
@@ -85,7 +86,7 @@ analysis task. Cleaning, formatting, and parsing strings are skills you'll use e
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](../Day_03_Operators/README.md) • **Next:** [Day 05 – Day 5: Managing Collections of Business Data with Lists](../Day_05_Lists/README.md)
 

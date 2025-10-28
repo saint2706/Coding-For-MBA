@@ -85,7 +85,7 @@ def main():
         else:
             failed += 1
 
-    print(f"\n📊 Summary:")
+    print("\n📊 Summary:")
     print(f"  Restored: {restored}")
     print(f"  Failed: {failed}")
 

@@ -1,9 +1,10 @@
 ---
 title: 'Day 20: Python Package Manager (pip) & Third-Party Libraries'
 tags:
-- Basics
-- Python
+  - Basics
+  - Python
 ---
+
 # 📘 Day 20: Python Package Manager (pip) & Third-Party Libraries
 
 The real power of Python for data analysis comes from its vast ecosystem of third-party libraries.
@@ -77,7 +78,7 @@ and more.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 19 – Day 19: Working with Dates and Times](../Day_19_Python_Date_Time/README.md) • **Next:** [Day 21 – Day 21: Virtual Environments - Professional Project Management](../Day_21_Virtual_Environments/README.md)
 

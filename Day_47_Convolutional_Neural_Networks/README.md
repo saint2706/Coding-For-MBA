@@ -1,8 +1,9 @@
 ---
 title: 'Day 47: Convolutional Neural Networks (CNNs) for Computer Vision'
 tags:
-- ML
+  - ML
 ---
+
 # Day 47: Convolutional Neural Networks (CNNs) for Computer Vision
 
 Welcome to Day 47! Today, we dive into **Convolutional Neural Networks (CNNs)**, a specialized type
@@ -81,7 +82,7 @@ ______________________________________________________________________
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 46 – Day 46: Introduction to Neural Networks & Frameworks](../Day_46_Intro_to_Neural_Networks/README.md) • **Next:** [Day 48 – Day 48: Recurrent Neural Networks (RNNs) for Sequence Data](../Day_48_Recurrent_Neural_Networks/README.md)
 

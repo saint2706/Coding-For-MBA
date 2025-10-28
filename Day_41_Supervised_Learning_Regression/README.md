@@ -1,8 +1,9 @@
 ---
-title: "Day 41 \xB7 Supervised Learning \u2013 Regression"
+title: Day 41 · Supervised Learning – Regression
 tags:
-- ML
+  - ML
 ---
+
 # Day 41 · Supervised Learning – Regression
 
 ## What's in this folder?
@@ -40,7 +41,7 @@ pytest tests/test_day_41.py
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 40 – Day 40: Introduction to Machine Learning & Core Concepts](../Day_40_Intro_to_ML/README.md) • **Next:** [Day 42 – Day 42 · Supervised Learning – Classification (Part 1)](../Day_42_Supervised_Learning_Classification_Part_1/README.md)
 

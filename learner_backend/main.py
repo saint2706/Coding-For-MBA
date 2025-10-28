@@ -20,15 +20,14 @@ Environment variables:
 import os
 import secrets
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, Depends, status, Request, Response
+import uvicorn
+from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-import uvicorn
 
 from . import db
 
@@ -362,7 +361,7 @@ def main():
         f"Auth mode: {'OAuth (GitHub)' if OAUTH_ENABLED else 'Cookie-only (Anonymous)'}"
     )
     print(f"Database: {DATABASE_URL}")
-    print(f"Dashboard: http://127.0.0.1:8000/static/dashboard.html")
+    print("Dashboard: http://127.0.0.1:8000/static/dashboard.html")
     print("=" * 60)
 
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,9 +1,10 @@
 ---
 title: 'Day 40: Introduction to Machine Learning & Core Concepts'
 tags:
-- ML
-- Python
+  - ML
+  - Python
 ---
+
 # Day 40: Introduction to Machine Learning & Core Concepts
 
 ## Overview
@@ -45,7 +46,7 @@ Explore the full [Machine Learning Curriculum Roadmap](../docs/ml_curriculum.md)
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 39 – Day 39: Math Foundations - Calculus](../Day_39_Calculus/README.md) • **Next:** [Day 41 – Day 41 · Supervised Learning – Regression](../Day_41_Supervised_Learning_Regression/README.md)
 

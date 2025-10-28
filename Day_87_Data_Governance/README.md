@@ -1,8 +1,9 @@
 ---
-title: "Day 87 \u2013 Data Governance and Security"
+title: Day 87 – Data Governance and Security
 tags:
-- Data
+  - Data
 ---
+
 # Day 87 – Data Governance and Security
 
 ## Introduction
@@ -80,7 +81,7 @@ regulatory requirements for data handling.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 86 – Day 86 – BI in the Cloud](../Day_86_BI_Cloud/README.md) • **Next:** [Day 88 – Day 88 – Capstone Project - Part 1](../Day_88_Capstone_Part_1/README.md)
 

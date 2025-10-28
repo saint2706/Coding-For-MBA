@@ -1,9 +1,10 @@
 ---
 title: 'Day 49: Natural Language Processing (NLP)'
 tags:
-- ML
-- NLP
+  - ML
+  - NLP
 ---
+
 # Day 49: Natural Language Processing (NLP)
 
 ## Overview
@@ -44,7 +45,7 @@ All tests expect to be run from the repository root so that imports resolve corr
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 48 – Day 48: Recurrent Neural Networks (RNNs) for Sequence Data](../Day_48_Recurrent_Neural_Networks/README.md) • **Next:** [Day 50 – Day 50: MLOps - Model Deployment](../Day_50_MLOps/README.md)
 

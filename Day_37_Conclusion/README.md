@@ -1,8 +1,9 @@
 ---
 title: 'Day 37: Conclusion & Your Journey Forward'
 tags:
-- Data
+  - Data
 ---
+
 # 🎉 Day 37: Conclusion & Your Journey Forward 🎉
 
 ## Congratulations
@@ -87,7 +88,7 @@ that will provide immense value throughout your business career.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 36 – Day 36 – Capstone Case Study](../Day_36_Case_Study/README.md) • **Next:** [Day 38 – Day 38: Math Foundations - Linear Algebra](../Day_38_Linear_Algebra/README.md)
 

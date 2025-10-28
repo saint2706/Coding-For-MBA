@@ -1,9 +1,10 @@
 ---
-title: "Day 85 \u2013 Advanced SQL and Performance Tuning"
+title: Day 85 – Advanced SQL and Performance Tuning
 tags:
-- Advanced
-- SQL
+  - Advanced
+  - SQL
 ---
+
 # Day 85 – Advanced SQL and Performance Tuning
 
 ## Introduction
@@ -117,7 +118,7 @@ retrieval. An index in a database is very similar to an index in the back of a b
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 84 – Day 84 – BI Career Development and Capstone](../Day_84_BI_Career_Development_and_Capstone/README.md) • **Next:** [Day 86 – Day 86 – BI in the Cloud](../Day_86_BI_Cloud/README.md)
 

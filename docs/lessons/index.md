@@ -1,5 +1,5 @@
 ---
-title: "All Lessons - Interactive Index"
+title: All Lessons - Interactive Index
 ---
 
 # 📚 All Lessons
@@ -8,8 +8,8 @@ Browse all **108** lessons in the curriculum. Use the search box and tag filters
 
 <div class="lesson-controls">
   <input type="text" id="lessonSearch" placeholder="🔍 Search lessons..." style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;">
-  
-  <div id="tagFilters" style="margin-bottom: 20px;">
+
+<div id="tagFilters" style="margin-bottom: 20px;">
     <strong>Filter by tag:</strong>
     <button class="tag-filter active" data-tag="all" style="margin: 5px; padding: 5px 12px; border: 1px solid #ddd; border-radius: 15px; background: #007bff; color: white; cursor: pointer;">All</button>
     <button class="tag-filter" data-tag="Advanced" style="margin: 5px; padding: 5px 12px; border: 1px solid #ddd; border-radius: 15px; background: white; color: #333; cursor: pointer;">Advanced</button>

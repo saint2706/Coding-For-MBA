@@ -1,8 +1,9 @@
 ---
 title: 'Day 95: Joins'
 tags:
-- SQL
+  - SQL
 ---
+
 # 📘 Day 95: Joins
 
 Welcome to Day 95! Today, we'll learn about **Joins**, a fundamental concept in SQL for combining
@@ -71,7 +72,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 94 – Day 94: Data Query Language (DQL)](../Day_94_Data_Query_Language/README.md) • **Next:** [Day 96 – Day 96: Subqueries](../Day_96_Subqueries/README.md)
 

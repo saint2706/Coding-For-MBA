@@ -1,8 +1,9 @@
 ---
-title: "Day 42 \xB7 Supervised Learning \u2013 Classification (Part 1)"
+title: Day 42 · Supervised Learning – Classification (Part 1)
 tags:
-- ML
+  - ML
 ---
+
 # Day 42 · Supervised Learning – Classification (Part 1)
 
 ## What's in this folder?
@@ -39,7 +40,7 @@ pytest tests/test_day_42.py
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 41 – Day 41 · Supervised Learning – Regression](../Day_41_Supervised_Learning_Regression/README.md) • **Next:** [Day 43 – Day 43 · Supervised Learning – Classification (Part 2)](../Day_43_Supervised_Learning_Classification_Part_2/README.md)
 

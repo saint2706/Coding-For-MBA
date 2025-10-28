@@ -1,3 +1,11 @@
+---
+title: 'Day 94: Data Query Language (DQL)'
+tags:
+  - Data
+  - NLP
+  - SQL
+---
+
 Welcome to Day 94! Today, we'll focus on the **Data Query Language (DQL)**, which is used to
 retrieve data from a database. While DQL technically only consists of the `SELECT` statement, it's
 the most commonly used part of SQL for data analysis.
@@ -61,3 +69,13 @@ HAVING COUNT(CustomerID) > 5;
 ## 💻 Exercises: Day 94
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+______________________________________________________________________
+
+**Previous:** [Day 93 – Day 93: Data Manipulation Language (DML)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_93_Data_Manipulation_Language/README.md) • **Next:** [Day 95 – Day 95: Joins](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_95_Joins/README.md)
+
+_You are on lesson 94 of 108._
+
+<!-- LESSON_FOOTER_END -->

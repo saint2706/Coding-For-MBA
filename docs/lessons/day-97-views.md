@@ -1,3 +1,9 @@
+---
+title: 'Day 97: Views'
+tags:
+  - SQL
+---
+
 Welcome to Day 97! Today, we'll learn about **Views**, which are virtual tables based on the
 result-set of an SQL statement.
 
@@ -49,3 +55,13 @@ DROP VIEW [View Name];
 ## 💻 Exercises: Day 97
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+______________________________________________________________________
+
+**Previous:** [Day 96 – Day 96: Subqueries](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_96_Subqueries/README.md) • **Next:** [Day 98 – Day 98: Indexes](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_98_Indexes/README.md)
+
+_You are on lesson 97 of 108._
+
+<!-- LESSON_FOOTER_END -->

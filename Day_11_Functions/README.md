@@ -1,10 +1,11 @@
 ---
 title: 'Day 11: Functions - Creating Reusable Business Tools'
 tags:
-- BI
-- Basics
-- Python
+  - BI
+  - Basics
+  - Python
 ---
+
 # 📘 Day 11: Functions - Creating Reusable Business Tools
 
 As you perform more complex analysis, you'll write the same code repeatedly. **Functions** are
@@ -73,7 +74,7 @@ packaging your logic into reusable tools, you're moving from a simple scripter t
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 10 – Day 10: Loops - Automating Repetitive Business Tasks](../Day_10_Loops/README.md) • **Next:** [Day 12 – Day 12: List Comprehension - Elegant Data Manipulation](../Day_12_List_Comprehension/README.md)
 

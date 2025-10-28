@@ -1,10 +1,11 @@
 ---
 title: 'Day 104: Database Design and Normalization'
 tags:
-- Data
-- Database
-- SQL
+  - Data
+  - Database
+  - SQL
 ---
+
 # 📘 Day 104: Database Design and Normalization
 
 Welcome to Day 104! Today, we'll cover the important topics of **Database Design** and
@@ -51,7 +52,7 @@ understand the following concepts:
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 103 – Day 103: Pivoting Data](../Day_103_Pivoting_Data/README.md) • **Next:** [Day 105 – Day 105: JSON in SQL](../Day_105_JSON_in_SQL/README.md)
 

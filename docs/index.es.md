@@ -25,15 +25,15 @@ La documentación incluye ejemplos interactivos, explicaciones detalladas y mate
 
 El plan de estudios está organizado en siete fases progresivas:
 
-| Fase | Días | Enfoque |
-|------|------|---------|
-| **Fase 1** | 01-20 | Fundamentos de Python, estructuras de datos, manejo de archivos |
-| **Fase 2** | 21-39 | Flujos de trabajo de datos, bases de datos, APIs, estadísticas, visualización |
-| **Fase 3** | 40-54 | Fundamentos de ML, redes neuronales, NLP |
-| **Fase 4** | 55-67 | ML avanzado, MLOps, transformadores, implementación |
-| **Fase 5** | 68-84 | Estrategia de Business Intelligence, herramientas y desarrollo profesional |
-| **Fase 6** | 85-90 | Temas avanzados de BI y proyecto final |
-| **Fase 7** | 91-108 | Dominio de SQL y bases de datos, diseño, optimización |
+| Fase       | Días   | Enfoque                                                                       |
+| ---------- | ------ | ----------------------------------------------------------------------------- |
+| **Fase 1** | 01-20  | Fundamentos de Python, estructuras de datos, manejo de archivos               |
+| **Fase 2** | 21-39  | Flujos de trabajo de datos, bases de datos, APIs, estadísticas, visualización |
+| **Fase 3** | 40-54  | Fundamentos de ML, redes neuronales, NLP                                      |
+| **Fase 4** | 55-67  | ML avanzado, MLOps, transformadores, implementación                           |
+| **Fase 5** | 68-84  | Estrategia de Business Intelligence, herramientas y desarrollo profesional    |
+| **Fase 6** | 85-90  | Temas avanzados de BI y proyecto final                                        |
+| **Fase 7** | 91-108 | Dominio de SQL y bases de datos, diseño, optimización                         |
 
 ## 🤝 Comunidad y Soporte
 
@@ -44,6 +44,6 @@ El plan de estudios está organizado en siete fases progresivas:
 
 Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
 
----
+______________________________________________________________________
 
 **Nota**: Esta es una traducción de muestra. Para la documentación completa en inglés, visita [README.md](README.md).

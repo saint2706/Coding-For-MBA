@@ -6,10 +6,9 @@ by changing the DATABASE_URL and using SQLAlchemy.
 """
 
 import sqlite3
-from datetime import datetime
-from typing import List, Dict, Optional
 import uuid
-
+from datetime import datetime
+from typing import Dict, List, Optional
 
 _conn = None
 

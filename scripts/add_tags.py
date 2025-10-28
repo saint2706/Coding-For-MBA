@@ -11,9 +11,8 @@ from __future__ import annotations
 import argparse
 import re
 import shutil
-import sys
 from pathlib import Path
-from typing import List, Set
+from typing import Set
 
 import yaml
 
@@ -123,7 +122,7 @@ def add_front_matter_to_readme(
 
     # Check if tags already exist
     if "tags" in front_matter and front_matter["tags"]:
-        print(f"    ⏭️  Skipped (has existing tags)")
+        print("    ⏭️  Skipped (has existing tags)")
         return False
 
     # Extract title from content
@@ -181,7 +180,7 @@ def main():
 
     repo_root = args.repo_root.resolve()
 
-    print(f"🏷️  Adding tags to lesson READMEs...")
+    print("🏷️  Adding tags to lesson READMEs...")
 
     added = 0
     skipped = 0
@@ -205,7 +204,7 @@ def main():
         else:
             skipped += 1
 
-    print(f"\n📊 Summary:")
+    print("\n📊 Summary:")
     print(f"  Added/Updated: {added}")
     print(f"  Skipped: {skipped}")
 
@@ -213,7 +212,7 @@ def main():
         print("\n💡 Run with --apply to make changes")
     else:
         print("\n🎉 Tags added successfully!")
-        print(f"  Backups created with .bak extension")
+        print("  Backups created with .bak extension")
 
 
 if __name__ == "__main__":

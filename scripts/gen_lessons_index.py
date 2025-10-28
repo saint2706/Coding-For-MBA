@@ -371,7 +371,7 @@ def main():
         print(f"❌ Lessons directory not found: {lessons_dir}", file=sys.stderr)
         sys.exit(1)
 
-    print(f"📚 Scanning lessons...")
+    print("📚 Scanning lessons...")
     lessons = scan_all_lessons(repo_root)
     print(f"✅ Found {len(lessons)} lessons")
 
@@ -393,7 +393,7 @@ def main():
         generate_site_metadata(len(lessons), docs_dir, dry_run=False)
     else:
         print(f"🔍 Would create {output_path}")
-        print(f"  Content preview (first 500 chars):")
+        print("  Content preview (first 500 chars):")
         print(content[:500])
 
         generate_site_metadata(len(lessons), docs_dir, dry_run=True)

@@ -1,8 +1,9 @@
 ---
 title: 'Day 97: Views'
 tags:
-- SQL
+  - SQL
 ---
+
 # 📘 Day 97: Views
 
 Welcome to Day 97! Today, we'll learn about **Views**, which are virtual tables based on the
@@ -59,7 +60,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 96 – Day 96: Subqueries](../Day_96_Subqueries/README.md) • **Next:** [Day 98 – Day 98: Indexes](../Day_98_Indexes/README.md)
 

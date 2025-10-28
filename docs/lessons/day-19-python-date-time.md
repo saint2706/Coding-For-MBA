@@ -1,3 +1,10 @@
+---
+title: 'Day 19: Working with Dates and Times'
+tags:
+  - Basics
+  - Python
+---
+
 Time-series analysis is at the heart of business analytics. Whether you're tracking daily sales,
 monthly user growth, or quarterly financial results, you need to work with dates and times. Python's
 built-in `datetime` module is the standard tool for these tasks.
@@ -66,6 +73,16 @@ into its own testable function.
 🎉 **Congratulations!** You've learned how to work with dates and times in Python. You're now ready
 to tackle time-series analysis and other time-based calculations.
 
+<!-- LESSON_FOOTER_START -->
+
+______________________________________________________________________
+
+**Previous:** [Day 18 – Day 18: Classes and Objects - Modeling Business Concepts](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/README.md) • **Next:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/README.md)
+
+_You are on lesson 19 of 108._
+
+<!-- LESSON_FOOTER_END -->
+
 ## Additional Materials
 
 - **date_time.ipynb**
@@ -78,126 +95,130 @@ to tackle time-series analysis and other time-based calculations.
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_19_Python_Date_Time/solutions.ipynb){ .md-button }
 
 ???+ example "date_time.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/date_time.py)
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/date_time.py)
 
-    ```python title="date_time.py"
-    """
-    Day 19: Working with Dates and Times in Python (Refactored)
+````
+```python title="date_time.py"
+"""
+Day 19: Working with Dates and Times in Python (Refactored)
 
-    This script demonstrates common date and time operations using the
-    datetime module, refactored into testable functions.
-    """
+This script demonstrates common date and time operations using the
+datetime module, refactored into testable functions.
+"""
 
-    from datetime import date, datetime, timedelta
-
-
-    def get_current_datetime_components() -> dict:
-        """Gets the current date and time and returns its components as a dictionary."""
-        now = datetime.now()
-        return {
-            "day": now.day,
-            "month": now.month,
-            "year": now.year,
-            "hour": now.hour,
-            "minute": now.minute,
-            "timestamp": now.timestamp(),
-        }
+from datetime import date, datetime, timedelta
 
 
-    def format_datetime_to_string(dt_object: datetime, format_str: str) -> str:
-        """Formats a datetime object into a string according to a format code."""
-        return dt_object.strftime(format_str)
+def get_current_datetime_components() -> dict:
+    """Gets the current date and time and returns its components as a dictionary."""
+    now = datetime.now()
+    return {
+        "day": now.day,
+        "month": now.month,
+        "year": now.year,
+        "hour": now.hour,
+        "minute": now.minute,
+        "timestamp": now.timestamp(),
+    }
 
 
-    def parse_string_to_datetime(date_string: str, format_str: str) -> datetime:
-        """Parses a string into a datetime object based on a format code."""
-        try:
-            return datetime.strptime(date_string, format_str)
-        except ValueError:
-            return None
+def format_datetime_to_string(dt_object: datetime, format_str: str) -> str:
+    """Formats a datetime object into a string according to a format code."""
+    return dt_object.strftime(format_str)
 
 
-    def calculate_date_difference(date1: date, date2: date) -> timedelta:
-        """Calculates the difference between two date objects."""
-        return date1 - date2
+def parse_string_to_datetime(date_string: str, format_str: str) -> datetime:
+    """Parses a string into a datetime object based on a format code."""
+    try:
+        return datetime.strptime(date_string, format_str)
+    except ValueError:
+        return None
 
 
-    def main():
-        """Main function to demonstrate datetime operations."""
-        print("--- Getting Current Date and Time Components ---")
-        dt_components = get_current_datetime_components()
-        print(f"Current Datetime Components: {dt_components}")
-        print("-" * 20)
-
-        print("--- Formatting a Datetime Object to a String ---")
-        now_obj = datetime.now()
-        formatted_t = format_datetime_to_string(now_obj, "%m/%d/%Y, %H:%M:%S")
-        print(f"Current datetime object: {now_obj}")
-        print(f"Formatted as a string: {formatted_t}")
-        print("-" * 20)
-
-        print("--- Parsing a String into a Datetime Object ---")
-        date_str_to_parse = "5 December, 2019"
-        parsed_date_obj = parse_string_to_datetime(date_str_to_parse, "%d %B, %Y")
-        print(f"Original string: '{date_str_to_parse}'")
-        print(f"Parsed into a datetime object: {parsed_date_obj}")
-        print("-" * 20)
-
-        print("--- Calculating the Difference Between Two Dates ---")
-        new_year_2022 = date(year=2022, month=1, day=1)
-        today_fake = date(year=2021, month=9, day=20)
-        time_difference = calculate_date_difference(new_year_2022, today_fake)
-        print(
-            f"The difference between {new_year_2022} and {today_fake} is {time_difference.days} days."
-        )
-        print("-" * 20)
+def calculate_date_difference(date1: date, date2: date) -> timedelta:
+    """Calculates the difference between two date objects."""
+    return date1 - date2
 
 
-    if __name__ == "__main__":
-        main()
-    ```
+def main():
+    """Main function to demonstrate datetime operations."""
+    print("--- Getting Current Date and Time Components ---")
+    dt_components = get_current_datetime_components()
+    print(f"Current Datetime Components: {dt_components}")
+    print("-" * 20)
+
+    print("--- Formatting a Datetime Object to a String ---")
+    now_obj = datetime.now()
+    formatted_t = format_datetime_to_string(now_obj, "%m/%d/%Y, %H:%M:%S")
+    print(f"Current datetime object: {now_obj}")
+    print(f"Formatted as a string: {formatted_t}")
+    print("-" * 20)
+
+    print("--- Parsing a String into a Datetime Object ---")
+    date_str_to_parse = "5 December, 2019"
+    parsed_date_obj = parse_string_to_datetime(date_str_to_parse, "%d %B, %Y")
+    print(f"Original string: '{date_str_to_parse}'")
+    print(f"Parsed into a datetime object: {parsed_date_obj}")
+    print("-" * 20)
+
+    print("--- Calculating the Difference Between Two Dates ---")
+    new_year_2022 = date(year=2022, month=1, day=1)
+    today_fake = date(year=2021, month=9, day=20)
+    time_difference = calculate_date_difference(new_year_2022, today_fake)
+    print(
+        f"The difference between {new_year_2022} and {today_fake} is {time_difference.days} days."
+    )
+    print("-" * 20)
+
+
+if __name__ == "__main__":
+    main()
+```
+````
 
 ???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/solutions.py)
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/solutions.py)
 
-    ```python title="solutions.py"
-    # Day 19: Python Date and Time - Solutions
+````
+```python title="solutions.py"
+# Day 19: Python Date and Time - Solutions
 
-    from datetime import date, datetime
+from datetime import date, datetime
 
-    ## Exercise 1: Format the current date
+## Exercise 1: Format the current date
 
-    now = datetime.now()
-    formatted_date = now.strftime("Today is %d %B, %Y")
-    print(formatted_date)
-
-
-    ## Exercise 2: Calculate the number of days until your next birthday
+now = datetime.now()
+formatted_date = now.strftime("Today is %d %B, %Y")
+print(formatted_date)
 
 
-    def days_until_next_birthday(birthday_month: int, birthday_day: int) -> int:
-        today = date.today()
-        next_birthday_year = today.year
-
-        # Check if the birthday has already passed this year
-        if today.month > birthday_month or (
-            today.month == birthday_month and today.day > birthday_day
-        ):
-            next_birthday_year += 1
-
-        next_birthday = date(next_birthday_year, birthday_month, birthday_day)
-        delta = next_birthday - today
-        return delta.days
+## Exercise 2: Calculate the number of days until your next birthday
 
 
-    # Example usage (replace with your own birthday)
-    days_left = days_until_next_birthday(10, 25)
-    print(f"There are {days_left} days until your next birthday.")
+def days_until_next_birthday(birthday_month: int, birthday_day: int) -> int:
+    today = date.today()
+    next_birthday_year = today.year
+
+    # Check if the birthday has already passed this year
+    if today.month > birthday_month or (
+        today.month == birthday_month and today.day > birthday_day
+    ):
+        next_birthday_year += 1
+
+    next_birthday = date(next_birthday_year, birthday_month, birthday_day)
+    delta = next_birthday - today
+    return delta.days
 
 
-    ## Exercise 3: Parse a date string
+# Example usage (replace with your own birthday)
+days_left = days_until_next_birthday(10, 25)
+print(f"There are {days_left} days until your next birthday.")
 
-    date_string = "2023-01-15"
-    parsed_date = datetime.strptime(date_string, "%Y-%m-%d")
-    print(f"The parsed date is: {parsed_date}")
-    ```
+
+## Exercise 3: Parse a date string
+
+date_string = "2023-01-15"
+parsed_date = datetime.strptime(date_string, "%Y-%m-%d")
+print(f"The parsed date is: {parsed_date}")
+```
+````

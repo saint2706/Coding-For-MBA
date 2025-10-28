@@ -1,9 +1,10 @@
 ---
 title: 'Day 19: Working with Dates and Times'
 tags:
-- Basics
-- Python
+  - Basics
+  - Python
 ---
+
 # 📘 Day 19: Working with Dates and Times
 
 Time-series analysis is at the heart of business analytics. Whether you're tracking daily sales,
@@ -76,7 +77,7 @@ to tackle time-series analysis and other time-based calculations.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 18 – Day 18: Classes and Objects - Modeling Business Concepts](../Day_18_Classes_and_Objects/README.md) • **Next:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](../Day_20_Python_Package_Manager/README.md)
 

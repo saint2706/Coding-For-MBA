@@ -1,9 +1,10 @@
 ---
 title: 'Day 50: MLOps - Model Deployment'
 tags:
-- ML
-- MLOps
+  - ML
+  - MLOps
 ---
+
 # Day 50: MLOps - Model Deployment
 
 Welcome to our final day, Day 50! Today, we touch upon **MLOps (Machine Learning Operations)**,
@@ -76,7 +77,7 @@ behaviour, continue into Days 65–67 for the dedicated deep dives.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 49 – Day 49: Natural Language Processing (NLP)](../Day_49_NLP/README.md) • **Next:** [Day 51 – Day 51 – Regularised Models](../Day_51_Regularized_Models/README.md)
 

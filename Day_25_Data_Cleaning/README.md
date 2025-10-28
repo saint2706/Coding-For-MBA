@@ -1,9 +1,10 @@
 ---
 title: 'Day 25: Data Cleaning - The Most Important Skill in Analytics'
 tags:
-- BI
-- Data
+  - BI
+  - Data
 ---
+
 # 📘 Day 25: Data Cleaning - The Most Important Skill in Analytics
 
 It's often said that data analysts spend about 80% of their time cleaning and preparing data. Messy,
@@ -70,7 +71,7 @@ analysis-ready format is arguably the most valuable skill a data analyst can pos
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 24 – Day 24: Advanced Pandas - Working with Real Data](../Day_24_Pandas_Advanced/README.md) • **Next:** [Day 26 – Day 26: Practical Statistics for Business Analysis](../Day_26_Statistics/README.md)
 

@@ -286,7 +286,7 @@ def generate_certificate_pdf(
 ) -> bool:
     """Generate PDF certificate using WeasyPrint."""
     try:
-        from weasyprint import HTML, CSS
+        from weasyprint import HTML
 
         html_content = generate_certificate_html(name, phase, date)
 

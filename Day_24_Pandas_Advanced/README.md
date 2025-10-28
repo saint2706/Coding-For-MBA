@@ -1,9 +1,10 @@
 ---
 title: 'Day 24: Advanced Pandas - Working with Real Data'
 tags:
-- Advanced
-- Data
+  - Advanced
+  - Data
 ---
+
 # 📘 Day 24: Advanced Pandas - Working with Real Data
 
 You'll rarely create data from scratch. The most common workflow is to load data from external
@@ -140,7 +141,7 @@ every data analysis project.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 23 – Day 23: Pandas - Your Data Analysis Superpower](../Day_23_Pandas/README.md) • **Next:** [Day 25 – Day 25: Data Cleaning - The Most Important Skill in Analytics](../Day_25_Data_Cleaning/README.md)
 

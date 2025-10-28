@@ -17,7 +17,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Tuple
 
-
 BINDER_BADGE_TEMPLATE = """
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/HEAD?filepath={notebook_path})
 """
@@ -154,8 +153,8 @@ def main():
     print(f"Total: {len(lessons_with_notebooks)}")
 
     if args.apply and modified > 0:
-        print(f"\n💡 Backup files created with .bak.TIMESTAMP extension")
-        print(f"💡 Review changes with: git diff")
+        print("\n💡 Backup files created with .bak.TIMESTAMP extension")
+        print("💡 Review changes with: git diff")
 
     print("\n🎉 Done!")
 

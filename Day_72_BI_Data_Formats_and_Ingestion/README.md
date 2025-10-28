@@ -1,9 +1,10 @@
 ---
-title: "Day 72 \u2013 BI Data Formats and Ingestion"
+title: Day 72 – BI Data Formats and Ingestion
 tags:
-- BI
-- Data
+  - BI
+  - Data
 ---
+
 # Day 72 – BI Data Formats and Ingestion
 
 Business intelligence analysts encounter a wide mix of raw data files. This day focuses on
@@ -78,7 +79,7 @@ Blueprint a warehouse that keeps stakeholders aligned.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 71 – Day 71 – BI Data Landscape Fundamentals](../Day_71_BI_Data_Landscape/README.md) • **Next:** [Day 73 – Day 73 – BI SQL and Databases](../Day_73_BI_SQL_and_Databases/README.md)
 

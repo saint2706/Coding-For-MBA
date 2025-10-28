@@ -81,7 +81,6 @@ def extract_description_from_readme(readme_path: Path) -> str:
         with open(readme_path, "r", encoding="utf-8") as f:
             lines = f.readlines()
             in_front_matter = False
-            past_front_matter = False
 
             for i, line in enumerate(lines):
                 stripped = line.strip()
@@ -93,7 +92,6 @@ def extract_description_from_readme(readme_path: Path) -> str:
                 if in_front_matter:
                     if stripped == "---":
                         in_front_matter = False
-                        past_front_matter = True
                     continue
 
                 # Skip headers and empty lines
@@ -221,7 +219,7 @@ def main():
         print(f"❌ Phases directory not found: {phases_dir}", file=sys.stderr)
         sys.exit(1)
 
-    print(f"📚 Generating phase overviews...")
+    print("📚 Generating phase overviews...")
 
     for phase_id, phase_info in sorted(PHASES.items()):
         lessons = scan_lessons_for_phase(repo_root, phase_id, phase_info)

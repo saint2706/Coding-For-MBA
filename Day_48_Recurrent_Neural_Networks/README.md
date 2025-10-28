@@ -1,9 +1,10 @@
 ---
 title: 'Day 48: Recurrent Neural Networks (RNNs) for Sequence Data'
 tags:
-- Data
-- ML
+  - Data
+  - ML
 ---
+
 # Day 48: Recurrent Neural Networks (RNNs) for Sequence Data
 
 Welcome to Day 48! Today, we explore **Recurrent Neural Networks (RNNs)**, a class of neural
@@ -87,7 +88,7 @@ ______________________________________________________________________
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 47 – Day 47: Convolutional Neural Networks (CNNs) for Computer Vision](../Day_47_Convolutional_Neural_Networks/README.md) • **Next:** [Day 49 – Day 49: Natural Language Processing (NLP)](../Day_49_NLP/README.md)
 

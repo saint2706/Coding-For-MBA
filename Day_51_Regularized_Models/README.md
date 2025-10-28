@@ -1,8 +1,9 @@
 ---
-title: "Day 51 \u2013 Regularised Models"
+title: Day 51 – Regularised Models
 tags:
-- ML
+  - ML
 ---
+
 # Day 51 – Regularised Models
 
 This lesson extends the regression toolkit with L2 (ridge), L1 (lasso), and elastic net penalties
@@ -21,7 +22,7 @@ comparison table.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 50 – Day 50: MLOps - Model Deployment](../Day_50_MLOps/README.md) • **Next:** [Day 52 – Day 52 – Ensemble Methods](../Day_52_Ensemble_Methods/README.md)
 

@@ -1,10 +1,11 @@
 ---
 title: 'Day 14: Modules - Organizing Your Business Logic'
 tags:
-- BI
-- Basics
-- Python
+  - BI
+  - Basics
+  - Python
 ---
+
 # 📘 Day 14: Modules - Organizing Your Business Logic
 
 As your projects grow, you need a way to organize your code. In Python, we do this with **modules**.
@@ -102,7 +103,7 @@ building any project that's more than a few dozen lines long.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 13 – Day 13: Higher-Order Functions & Lambda](../Day_13_Higher_Order_Functions/README.md) • **Next:** [Day 15 – Day 15: Exception Handling - Building Robust Business Logic](../Day_15_Exception_Handling/README.md)
 

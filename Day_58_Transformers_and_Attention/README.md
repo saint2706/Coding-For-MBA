@@ -1,9 +1,10 @@
 ---
-title: "Day 58 \u2013 Transformers and Attention"
+title: Day 58 – Transformers and Attention
 tags:
-- Advanced
-- NLP
+  - Advanced
+  - NLP
 ---
+
 # Day 58 – Transformers and Attention
 
 Transformers dominate modern sequence modelling. This lesson demonstrates how to:
@@ -21,7 +22,7 @@ generate fine-tuning playbooks, and score demo texts with attention heatmaps.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 57 – Day 57 – Recommender Systems](../Day_57_Recommender_Systems/README.md) • **Next:** [Day 59 – Day 59 – Generative Models](../Day_59_Generative_Models/README.md)
 

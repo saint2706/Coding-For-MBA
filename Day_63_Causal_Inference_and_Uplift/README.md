@@ -1,9 +1,10 @@
 ---
-title: "Day 63 \u2013 Causal Inference and Uplift Modeling"
+title: Day 63 – Causal Inference and Uplift Modeling
 tags:
-- Advanced
-- ML
+  - Advanced
+  - ML
 ---
+
 # Day 63 – Causal Inference and Uplift Modeling
 
 Understand how experimentation and counterfactual reasoning quantify impact. After this lesson you
@@ -19,7 +20,7 @@ estimate effects with multiple techniques, and visualise uplift segmentations.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 62 – Day 62 – Model Interpretability and Fairness](../Day_62_Model_Interpretability_and_Fairness/README.md) • **Next:** [Day 64 – Day 64 – Modern NLP Pipelines](../Day_64_Modern_NLP_Pipelines/README.md)
 

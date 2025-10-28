@@ -1,9 +1,10 @@
 ---
-title: "Day 75 \u2013 BI Visualization and Dashboard Principles"
+title: Day 75 – BI Visualization and Dashboard Principles
 tags:
-- BI
-- Visualization
+  - BI
+  - Visualization
 ---
+
 # Day 75 – BI Visualization and Dashboard Principles
 
 Day 75 codifies the BI visualization fundamentals that analysts rely on to communicate credibly, and
@@ -84,7 +85,7 @@ Move from descriptive reporting to evidence-backed inference.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 74 – Day 74 – BI Data Preparation and Tools](../Day_74_BI_Data_Preparation_and_Tools/README.md) • **Next:** [Day 76 – Day 76 – BI Platforms and Automation Tools](../Day_76_BI_Platforms_and_Automation_Tools/README.md)
 

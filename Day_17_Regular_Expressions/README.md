@@ -1,10 +1,11 @@
 ---
 title: 'Day 17: Regular Expressions for Text Pattern Matching'
 tags:
-- Basics
-- NLP
-- Python
+  - Basics
+  - NLP
+  - Python
 ---
+
 # 📘 Day 17: Regular Expressions for Text Pattern Matching
 
 Often, the text data you need to analyze isn't perfectly structured. You might need to find all the
@@ -81,7 +82,7 @@ unstructured data.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 16 – Day 16: File Handling for Business Analytics](../Day_16_File_Handling/README.md) • **Next:** [Day 18 – Day 18: Classes and Objects - Modeling Business Concepts](../Day_18_Classes_and_Objects/README.md)
 

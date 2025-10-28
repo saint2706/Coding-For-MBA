@@ -1,11 +1,12 @@
 ---
 title: 'Day 31: Working with Databases in Python'
 tags:
-- Data
-- Database
-- Python
-- SQL
+  - Data
+  - Database
+  - Python
+  - SQL
 ---
+
 # 📘 Day 31: Working with Databases in Python
 
 While CSV files are great for smaller datasets, most real-world business data is stored in
@@ -115,7 +116,7 @@ you will use constantly as a data analyst.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 30 – Day 30: Web Scraping - Extracting Data from the Web](../Day_30_Web_Scraping/README.md) • **Next:** [Day 32 – Day 32: Connecting to Other Databases (MySQL & MongoDB)](../Day_32_Other_Databases/README.md)
 

@@ -1,8 +1,9 @@
 ---
-title: "Day 36 \u2013 Capstone Case Study"
+title: Day 36 – Capstone Case Study
 tags:
-- Data
+  - Data
 ---
+
 # 📊 Day 36 – Capstone Case Study
 
 ## Overview
@@ -43,7 +44,7 @@ pytest tests/test_day_36.py
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 35 – Day 35: Flask Web Framework](../Day_35_Flask_Web_Framework/README.md) • **Next:** [Day 37 – Day 37: Conclusion & Your Journey Forward](../Day_37_Conclusion/README.md)
 

@@ -1,3 +1,9 @@
+---
+title: 'Day 99: Transactions'
+tags:
+  - SQL
+---
+
 Welcome to Day 99! Today, we'll learn about **Transactions**, a sequence of operations performed as
 a single logical unit of work.
 
@@ -42,3 +48,13 @@ Creates a point within a transaction to which you can later roll back.
 ## 💻 Exercises: Day 99
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+______________________________________________________________________
+
+**Previous:** [Day 98 – Day 98: Indexes](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_98_Indexes/README.md) • **Next:** [Day 100 – Day 100: Stored Procedures](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_100_Stored_Procedures/README.md)
+
+_You are on lesson 99 of 108._
+
+<!-- LESSON_FOOTER_END -->

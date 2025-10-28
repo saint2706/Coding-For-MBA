@@ -1,10 +1,11 @@
 ---
 title: 'Day 26: Practical Statistics for Business Analysis'
 tags:
-- BI
-- Data
-- Statistics
+  - BI
+  - Data
+  - Statistics
 ---
+
 # 📘 Day 26: Practical Statistics for Business Analysis
 
 On Day 26 you expand beyond data wrangling and apply core statistical tools to business datasets.
@@ -65,7 +66,7 @@ rigorous, testable insights in your analyses.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 25 – Day 25: Data Cleaning - The Most Important Skill in Analytics](../Day_25_Data_Cleaning/README.md) • **Next:** [Day 27 – Day 27: Data Visualization - Communicating Insights](../Day_27_Visualization/README.md)
 

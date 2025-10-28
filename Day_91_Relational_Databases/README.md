@@ -1,10 +1,11 @@
 ---
 title: 'Day 91: Relational Databases'
 tags:
-- Data
-- Database
-- SQL
+  - Data
+  - Database
+  - SQL
 ---
+
 # 📘 Day 91: Relational Databases
 
 Welcome to Day 91! Today, we'll dive deep into the foundational concepts of **Relational
@@ -71,7 +72,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 90 – Day 90 – Career Workshop and Next Steps](../Day_90_Career_Workshop/README.md) • **Next:** [Day 92 – Day 92: Data Definition Language (DDL)](../Day_92_Data_Definition_Language/README.md)
 

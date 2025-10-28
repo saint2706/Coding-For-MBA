@@ -1,8 +1,9 @@
 ---
-title: "Day 52 \u2013 Ensemble Methods"
+title: Day 52 – Ensemble Methods
 tags:
-- ML
+  - ML
 ---
+
 # Day 52 – Ensemble Methods
 
 Day 52 highlights how bagging, boosting, and stacking unlock better accuracy than single estimators.
@@ -19,7 +20,7 @@ configuration.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 51 – Day 51 – Regularised Models](../Day_51_Regularized_Models/README.md) • **Next:** [Day 53 – Day 53 – Model Tuning and Feature Selection](../Day_53_Model_Tuning_and_Feature_Selection/README.md)
 

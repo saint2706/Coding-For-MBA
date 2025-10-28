@@ -1,10 +1,11 @@
 ---
 title: 'Day 28: Advanced Visualization & Customization'
 tags:
-- Advanced
-- Data
-- Visualization
+  - Advanced
+  - Data
+  - Visualization
 ---
+
 # 📘 Day 28: Advanced Visualization & Customization
 
 Creating a basic chart is just the first step. To effectively communicate your story, you need to
@@ -106,7 +107,7 @@ professional format is a key skill that separates great analysts from good ones.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 27 – Day 27: Data Visualization - Communicating Insights](../Day_27_Visualization/README.md) • **Next:** [Day 29 – Day 29: Interactive Visualization with Plotly](../Day_29_Interactive_Visualization/README.md)
 

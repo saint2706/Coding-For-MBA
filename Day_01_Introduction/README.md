@@ -1,10 +1,11 @@
 ---
 title: 'Day 1: Python for Business Analytics - First Steps'
 tags:
-- BI
-- Basics
-- Python
+  - BI
+  - Basics
+  - Python
 ---
+
 # 📘 Day 1: Python for Business Analytics - First Steps
 
 ## Welcome to the Course
@@ -88,7 +89,7 @@ becoming a data-savvy leader.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** _None (First Lesson)_ • **Next:** [Day 02 – Day 2: Storing and Analyzing Business Data](../Day_02_Variables_Builtin_Functions/README.md)
 

@@ -1,3 +1,9 @@
+---
+title: 'Day 102: Common Table Expressions (CTEs)'
+tags:
+  - SQL
+---
+
 Welcome to Day 102! Today, we'll learn about **Common Table Expressions (CTEs)**, a temporary result
 set that you can reference within another SQL statement.
 
@@ -50,3 +56,13 @@ FROM cte_name;
 ## 💻 Exercises: Day 102
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+______________________________________________________________________
+
+**Previous:** [Day 101 – Day 101: Triggers](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_101_Triggers/README.md) • **Next:** [Day 103 – Day 103: Pivoting Data](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_103_Pivoting_Data/README.md)
+
+_You are on lesson 102 of 108._
+
+<!-- LESSON_FOOTER_END -->

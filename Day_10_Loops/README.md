@@ -1,10 +1,11 @@
 ---
 title: 'Day 10: Loops - Automating Repetitive Business Tasks'
 tags:
-- BI
-- Basics
-- Python
+  - BI
+  - Basics
+  - Python
 ---
+
 # 📘 Day 10: Loops - Automating Repetitive Business Tasks
 
 What if you have a list of 10,000 sales transactions? You won't write code for each one. This is
@@ -93,7 +94,7 @@ processing and analysis tasks. You've completed the core structures of Python!
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](../Day_09_Conditionals/README.md) • **Next:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](../Day_11_Functions/README.md)
 

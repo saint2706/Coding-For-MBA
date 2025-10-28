@@ -1,3 +1,11 @@
+---
+title: 'Day 92: Data Definition Language (DDL)'
+tags:
+  - Data
+  - NLP
+  - SQL
+---
+
 Welcome to Day 92! Today, we'll learn about **Data Definition Language (DDL)**, a subset of SQL used
 to create and manage database objects.
 
@@ -59,3 +67,13 @@ database objects such as tables, indexes, and users.
 ## 💻 Exercises: Day 92
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+______________________________________________________________________
+
+**Previous:** [Day 91 – Day 91: Relational Databases](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_91_Relational_Databases/README.md) • **Next:** [Day 93 – Day 93: Data Manipulation Language (DML)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_93_Data_Manipulation_Language/README.md)
+
+_You are on lesson 92 of 108._
+
+<!-- LESSON_FOOTER_END -->
