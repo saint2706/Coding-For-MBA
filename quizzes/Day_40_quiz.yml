@@ -1,0 +1,56 @@
+questions:
+  - question: "What is the main goal of machine learning?"
+    options:
+      - "To replace human programmers"
+      - "To learn patterns from data and make predictions"
+      - "To create artificial consciousness"
+      - "To optimize database queries"
+    answer: 1
+    explanation: "Machine learning aims to learn patterns from data and make predictions or decisions without being explicitly programmed."
+
+  - question: "Which type of machine learning uses labeled training data?"
+    options:
+      - "Unsupervised learning"
+      - "Reinforcement learning"
+      - "Supervised learning"
+      - "Transfer learning"
+    answer: 2
+    explanation: "Supervised learning uses labeled training data where the correct output is known."
+
+  - question: "What is overfitting in machine learning?"
+    options:
+      - "When the model is too simple"
+      - "When the model performs well on training data but poorly on new data"
+      - "When there's too much training data"
+      - "When the model trains too quickly"
+    answer: 1
+    explanation: "Overfitting occurs when a model learns the training data too well, including noise, and performs poorly on new data."
+
+  - question: "What is a common use case for classification algorithms?"
+    options:
+      - "Predicting house prices"
+      - "Forecasting stock prices"
+      - "Spam email detection"
+      - "Customer lifetime value prediction"
+    answer: 2
+    explanation: "Classification algorithms categorize data into predefined classes, like spam vs. not spam."
+
+  - question: "Which metric is commonly used to evaluate classification models?"
+    options:
+      - "Mean Squared Error (MSE)"
+      - "Accuracy"
+      - "R-squared"
+      - "Mean Absolute Error (MAE)"
+    answer: 1
+    explanation: "Accuracy (correct predictions / total predictions) is a common metric for classification models."
+
+metadata:
+  points: 5
+  passing_score: 60
+  tags:
+    - machine-learning
+    - ml-fundamentals
+    - classification
+    - supervised-learning
+  difficulty: intermediate
+  estimated_time_minutes: 5
