@@ -1,8 +1,8 @@
 # Coding for MBA
 
-> **A 90-day applied Python, analytics, and business intelligence curriculum designed for business professionals.**
+> **A comprehensive applied Python, analytics, machine learning, and database curriculum designed for business professionals.**
 
-Transform your business acumen into technical capability with this comprehensive, hands-on curriculum. Each lesson is self-contained and builds toward end-to-end data fluency—from programming fundamentals to modern ML operations.
+Transform your business acumen into technical capability with this comprehensive, hands-on curriculum. Each lesson is self-contained and builds toward end-to-end data fluency—from programming fundamentals to advanced ML operations and database mastery.
 
 [![Python CI](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml)
 [![Documentation](https://github.com/saint2706/Coding-For-MBA/actions/workflows/docs.yml/badge.svg)](https://saint2706.github.io/Coding-For-MBA/)
@@ -38,20 +38,21 @@ The documentation includes interactive examples, detailed explanations, and down
 
 ## 🗺️ Curriculum Overview
 
-The curriculum is organized into six progressive phases over 90 days:
+The curriculum is organized into seven progressive phases:
 
 | Phase | Days | Focus |
 |-------|------|-------|
-| **Phase 1** | 01-20 | Python foundations, data structures, file handling |
-| **Phase 2** | 21-39 | Data workflows, databases, APIs, statistics, visualization |
-| **Phase 3** | 40-54 | ML fundamentals, neural networks, NLP |
-| **Phase 4** | 55-67 | Advanced ML, MLOps, transformers, deployment |
-| **Phase 5** | 68-84 | Business Intelligence strategy, tooling, and career assets |
-| **Phase 6** | 85-90 | Advanced BI, capstone projects, and career development |
+| **[Phase 1](https://saint2706.github.io/Coding-For-MBA/phases/phase1/)** | 01-20 | Python foundations, data structures, file handling |
+| **[Phase 2](https://saint2706.github.io/Coding-For-MBA/phases/phase2/)** | 21-39 | Data workflows, databases, APIs, statistics, visualization |
+| **[Phase 3](https://saint2706.github.io/Coding-For-MBA/phases/phase3/)** | 40-54 | ML fundamentals, neural networks, NLP |
+| **[Phase 4](https://saint2706.github.io/Coding-For-MBA/phases/phase4/)** | 55-67 | Advanced ML, MLOps, transformers, deployment |
+| **[Phase 5](https://saint2706.github.io/Coding-For-MBA/phases/phase5/)** | 68-84 | Business Intelligence strategy, tooling, and career assets |
+| **[Phase 6](https://saint2706.github.io/Coding-For-MBA/phases/phase6/)** | 85-90 | Advanced BI and capstone projects *(under development)* |
+| **[Phase 7](https://saint2706.github.io/Coding-For-MBA/phases/phase7/)** | 91-108 | SQL & database mastery, design, optimization |
 
 📘 **[See full curriculum roadmap →](docs/ml_curriculum.md)**
 <br>
-🧭 **[Explore Phase 5 Business Intelligence overview →](docs/bi-curriculum.md)**
+🧭 **[Explore all phases →](https://saint2706.github.io/Coding-For-MBA/phases/overview/)**
 
 ## 📄 Phase Cheat Sheets
 
