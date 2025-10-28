@@ -35,3 +35,13 @@ Automated tests validate the helpers against the bundled dataset. From the repos
 ```bash
 pytest tests/test_day_36.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 35 – Day 35: Flask Web Framework](../Day_35_Flask_Web_Framework/README.md) • **Next:** [Day 37 – Day 37: Conclusion & Your Journey Forward](../Day_37_Conclusion/README.md)
+
+_You are on lesson 36 of 108._
+
+<!-- LESSON_FOOTER_END -->

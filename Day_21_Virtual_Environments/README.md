@@ -73,3 +73,13 @@ This lesson is about terminal commands, not Python scripts. The best way to lear
 🎉 **Congratulations!** You've practiced one of the most important skills for professional Python
 development. Using virtual environments will save you from countless headaches and make your
 projects more robust and shareable.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](../Day_20_Python_Package_Manager/README.md) • **Next:** [Day 22 – Day 22: NumPy - The Foundation of Numerical Computing](../Day_22_NumPy/README.md)
+
+_You are on lesson 21 of 108._
+
+<!-- LESSON_FOOTER_END -->

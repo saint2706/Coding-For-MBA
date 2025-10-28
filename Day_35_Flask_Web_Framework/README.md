@@ -66,3 +66,13 @@ You can find the solutions to these exercises in the `solutions.py` file in this
 
 🎉 **Congratulations!** You've learned the basics of Flask, a powerful tool for building web
 applications and dashboards with Python.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 34 – Day 34: Building a Simple API with Flask](../Day_34_Building_an_API/README.md) • **Next:** [Day 36 – Day 36 – Capstone Case Study](../Day_36_Case_Study/README.md)
+
+_You are on lesson 35 of 108._
+
+<!-- LESSON_FOOTER_END -->

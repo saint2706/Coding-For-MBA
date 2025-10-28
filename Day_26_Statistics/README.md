@@ -55,3 +55,13 @@ their static counterparts:
 
 🎉 **Great job!** With these reusable statistics utilities you can move from simple summaries to
 rigorous, testable insights in your analyses.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 25 – Day 25: Data Cleaning - The Most Important Skill in Analytics](../Day_25_Data_Cleaning/README.md) • **Next:** [Day 27 – Day 27: Data Visualization - Communicating Insights](../Day_27_Visualization/README.md)
+
+_You are on lesson 26 of 108._
+
+<!-- LESSON_FOOTER_END -->

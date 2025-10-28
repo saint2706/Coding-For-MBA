@@ -61,3 +61,13 @@ database objects such as tables, indexes, and users.
 ## 💻 Exercises: Day 92
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 91 – Day 91: Relational Databases](../Day_91_Relational_Databases/README.md) • **Next:** [Day 93 – Day 93: Data Manipulation Language (DML)](../Day_93_Data_Manipulation_Language/README.md)
+
+_You are on lesson 92 of 108._
+
+<!-- LESSON_FOOTER_END -->

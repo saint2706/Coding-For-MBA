@@ -32,3 +32,13 @@ Run the regression unit tests with:
 ```bash
 pytest tests/test_day_41.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 40 – Day 40: Introduction to Machine Learning & Core Concepts](../Day_40_Intro_to_ML/README.md) • **Next:** [Day 42 – Day 42 · Supervised Learning – Classification (Part 1)](../Day_42_Supervised_Learning_Classification_Part_1/README.md)
+
+_You are on lesson 41 of 108._
+
+<!-- LESSON_FOOTER_END -->

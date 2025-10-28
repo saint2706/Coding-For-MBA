@@ -61,3 +61,13 @@ For these exercises, you will use the provided `messy_sales_data.csv` file.
 
 🎉 **Incredible work!** Being able to take a messy, real-world dataset and turn it into a clean,
 analysis-ready format is arguably the most valuable skill a data analyst can possess.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 24 – Day 24: Advanced Pandas - Working with Real Data](../Day_24_Pandas_Advanced/README.md) • **Next:** [Day 26 – Day 26: Practical Statistics for Business Analysis](../Day_26_Statistics/README.md)
+
+_You are on lesson 25 of 108._
+
+<!-- LESSON_FOOTER_END -->

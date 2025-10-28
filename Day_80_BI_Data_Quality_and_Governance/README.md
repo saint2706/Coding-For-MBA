@@ -61,3 +61,13 @@ Package insights for executive audiences and decision forums.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 79 – Day 79 – BI Storytelling and Stakeholder Influence](../Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md) • **Next:** [Day 81 – Day 81 – BI Architecture and Data Modeling](../Day_81_BI_Architecture_and_Data_Modeling/README.md)
+
+_You are on lesson 80 of 108._
+
+<!-- LESSON_FOOTER_END -->

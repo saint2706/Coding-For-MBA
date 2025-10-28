@@ -68,3 +68,13 @@ clear, reusable, and testable.
 
 🎉 **Excellent work!** You're now equipped with the operators needed to perform the vast majority of
 business calculations and logical checks you'll encounter.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 02 – Day 2: Storing and Analyzing Business Data](../Day_02_Variables_Builtin_Functions/README.md) • **Next:** [Day 04 – Day 4: Working with Text Data - Strings](../Day_04_Strings/README.md)
+
+_You are on lesson 3 of 108._
+
+<!-- LESSON_FOOTER_END -->

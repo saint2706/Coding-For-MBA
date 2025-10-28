@@ -52,3 +52,13 @@ Connect strategic BI vision to the functions it empowers.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 67 – Day 67 – Model Monitoring and Reliability Engineering](../Day_67_Model_Monitoring_and_Reliability/README.md) • **Next:** [Day 69 – Day 69 – BI Strategy and Stakeholders](../Day_69_BI_Strategy_and_Stakeholders/README.md)
+
+_You are on lesson 68 of 108._
+
+<!-- LESSON_FOOTER_END -->

@@ -66,3 +66,13 @@ functions for common business file-handling tasks.
 🎉 **Excellent!** You can now programmatically read from and write to the most common file types.
 This is a fundamental skill for automating data intake, processing reports, and saving your
 analysis.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 15 – Day 15: Exception Handling - Building Robust Business Logic](../Day_15_Exception_Handling/README.md) • **Next:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](../Day_17_Regular_Expressions/README.md)
+
+_You are on lesson 16 of 108._
+
+<!-- LESSON_FOOTER_END -->

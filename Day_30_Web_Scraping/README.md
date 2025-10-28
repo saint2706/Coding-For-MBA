@@ -119,3 +119,13 @@ designed for scraping practice.
 🎉 **Great job!** Web scraping is a powerful skill that opens up a vast new source of data for your
 analyses. While it can be complex, mastering the basics of `requests` and `BeautifulSoup` is a huge
 step forward.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 29 – Day 29: Interactive Visualization with Plotly](../Day_29_Interactive_Visualization/README.md) • **Next:** [Day 31 – Day 31: Working with Databases in Python](../Day_31_Databases/README.md)
+
+_You are on lesson 30 of 108._
+
+<!-- LESSON_FOOTER_END -->

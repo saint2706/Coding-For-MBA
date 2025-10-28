@@ -100,3 +100,13 @@ skills you've learned are broadly applicable.
 
 There are no coding exercises for this day. The goal is to understand the concepts so you are
 prepared when you encounter these different database systems in the workplace.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 31 – Day 31: Working with Databases in Python](../Day_31_Databases/README.md) • **Next:** [Day 33 – Day 33: Accessing Web APIs with `requests`](../Day_33_API/README.md)
+
+_You are on lesson 32 of 108._
+
+<!-- LESSON_FOOTER_END -->

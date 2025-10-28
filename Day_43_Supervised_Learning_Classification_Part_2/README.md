@@ -31,3 +31,13 @@ Run the advanced classification unit tests with:
 ```bash
 pytest tests/test_day_43.py
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 42 – Day 42 · Supervised Learning – Classification (Part 1)](../Day_42_Supervised_Learning_Classification_Part_1/README.md) • **Next:** [Day 44 – Day 44: Unsupervised Learning](../Day_44_Unsupervised_Learning/README.md)
+
+_You are on lesson 43 of 108._
+
+<!-- LESSON_FOOTER_END -->

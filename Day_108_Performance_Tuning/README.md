@@ -45,3 +45,13 @@ understand the following concepts:
 - Basic query optimization techniques.
 - The role of indexes in performance tuning.
 - What a query execution plan is and how to use it.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 107 – Day 107: SQL Security](../Day_107_Security/README.md) • **Next:** _None (Last Lesson)_
+
+_You are on lesson 108 of 108._
+
+<!-- LESSON_FOOTER_END -->

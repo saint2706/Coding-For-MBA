@@ -49,3 +49,13 @@ Running the full repository test suite is also supported:
 ```bash
 pytest
 ```
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 26 – Day 26: Practical Statistics for Business Analysis](../Day_26_Statistics/README.md) • **Next:** [Day 28 – Day 28: Advanced Visualization & Customization](../Day_28_Advanced_Visualization/README.md)
+
+_You are on lesson 27 of 108._
+
+<!-- LESSON_FOOTER_END -->

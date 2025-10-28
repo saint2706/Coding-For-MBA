@@ -50,3 +50,13 @@ DROP INDEX index_name ON table_name;
 ## 💻 Exercises: Day 98
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 97 – Day 97: Views](../Day_97_Views/README.md) • **Next:** [Day 99 – Day 99: Transactions](../Day_99_Transactions/README.md)
+
+_You are on lesson 98 of 108._
+
+<!-- LESSON_FOOTER_END -->

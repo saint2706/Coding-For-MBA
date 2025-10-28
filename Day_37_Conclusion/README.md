@@ -79,3 +79,13 @@ Thank you for your hard work and dedication throughout this course. You have inv
 that will provide immense value throughout your business career.
 
 **Happy analyzing!**
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 36 – Day 36 – Capstone Case Study](../Day_36_Case_Study/README.md) • **Next:** [Day 38 – Day 38: Math Foundations - Linear Algebra](../Day_38_Linear_Algebra/README.md)
+
+_You are on lesson 37 of 108._
+
+<!-- LESSON_FOOTER_END -->

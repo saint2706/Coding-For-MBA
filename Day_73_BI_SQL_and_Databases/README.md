@@ -44,3 +44,13 @@ Design reliable ingestion pipelines for analytics-ready data.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 72 – Day 72 – BI Data Formats and Ingestion](../Day_72_BI_Data_Formats_and_Ingestion/README.md) • **Next:** [Day 74 – Day 74 – BI Data Preparation and Tools](../Day_74_BI_Data_Preparation_and_Tools/README.md)
+
+_You are on lesson 73 of 108._
+
+<!-- LESSON_FOOTER_END -->

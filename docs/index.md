@@ -12,7 +12,7 @@ ______________________________________________________________________
 
 # Coding for MBA
 
-> An 84-day applied Python, analytics, and business intelligence curriculum for decision-makers who
+> A 108-day applied Python, analytics, and business intelligence curriculum for decision-makers who
 > want to ship production-ready insights.
 
 ## Quick start

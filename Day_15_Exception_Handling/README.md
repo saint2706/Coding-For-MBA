@@ -84,3 +84,13 @@ functions that include exception handling.
 🎉 **Congratulations!** You've learned how to make your Python scripts more robust and reliable.
 Exception handling is a critical skill for any data analyst or developer working with real-world
 data.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](../Day_14_Modules/README.md) • **Next:** [Day 16 – Day 16: File Handling for Business Analytics](../Day_16_File_Handling/README.md)
+
+_You are on lesson 15 of 108._
+
+<!-- LESSON_FOOTER_END -->

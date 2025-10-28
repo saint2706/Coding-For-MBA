@@ -143,3 +143,13 @@ easy to:
 
 Because `create_app()` returns a fully configured Flask instance, you can reuse it for development,
 testing, or even deployment without duplicating setup code.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 33 – Day 33: Accessing Web APIs with `requests`](../Day_33_API/README.md) • **Next:** [Day 35 – Day 35: Flask Web Framework](../Day_35_Flask_Web_Framework/README.md)
+
+_You are on lesson 34 of 108._
+
+<!-- LESSON_FOOTER_END -->

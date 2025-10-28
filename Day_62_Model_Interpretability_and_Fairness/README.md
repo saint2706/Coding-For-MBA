@@ -12,3 +12,13 @@ Explainable and responsible AI practices underpin trustworthy analytics. After t
 Run `python Day_62_Model_Interpretability_and_Fairness/solutions.py` to walk through
 interpretability utilities, fairness diagnostics, and mitigation experiments on deterministic toy
 datasets.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 61 – Day 61 – Reinforcement and Offline Learning](../Day_61_Reinforcement_and_Offline_Learning/README.md) • **Next:** [Day 63 – Day 63 – Causal Inference and Uplift Modeling](../Day_63_Causal_Inference_and_Uplift/README.md)
+
+_You are on lesson 62 of 108._
+
+<!-- LESSON_FOOTER_END -->

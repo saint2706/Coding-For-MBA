@@ -50,3 +50,13 @@ guides your audience through your findings.
    initial business problem to your final recommendations.
 1. **Presentation Video:** Record a short (5-10 minute) video of you presenting your findings. This
    is a great way to practice your communication skills.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 88 – Day 88 – Capstone Project - Part 1](../Day_88_Capstone_Part_1/README.md) • **Next:** [Day 90 – Day 90 – Career Workshop and Next Steps](../Day_90_Career_Workshop/README.md)
+
+_You are on lesson 89 of 108._
+
+<!-- LESSON_FOOTER_END -->

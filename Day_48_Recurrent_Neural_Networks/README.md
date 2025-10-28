@@ -78,3 +78,13 @@ ______________________________________________________________________
 - LSTM models benefit significantly from GPU acceleration. If you have CUDA/cuDNN configured,
   TensorFlow will pick it up automatically; otherwise the CPU execution path will still work (just
   slower).
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 47 – Day 47: Convolutional Neural Networks (CNNs) for Computer Vision](../Day_47_Convolutional_Neural_Networks/README.md) • **Next:** [Day 49 – Day 49: Natural Language Processing (NLP)](../Day_49_NLP/README.md)
+
+_You are on lesson 48 of 108._
+
+<!-- LESSON_FOOTER_END -->

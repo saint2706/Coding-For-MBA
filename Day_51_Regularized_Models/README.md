@@ -13,3 +13,13 @@ walk through the following:
 
 Run `python Day_51_Regularized_Models/solutions.py` to execute the full demo and review the printed
 comparison table.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 50 – Day 50: MLOps - Model Deployment](../Day_50_MLOps/README.md) • **Next:** [Day 52 – Day 52 – Ensemble Methods](../Day_52_Ensemble_Methods/README.md)
+
+_You are on lesson 51 of 108._
+
+<!-- LESSON_FOOTER_END -->

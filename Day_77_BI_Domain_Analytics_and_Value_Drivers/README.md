@@ -41,3 +41,13 @@ Prototype predictive loops that inform operational decisions.
 
 - Draft case studies and notebooks that exercise these roadmap nodes.
 - Update the Phase 5 cheat sheet with the insights you capture here.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 76 – Day 76 – BI Platforms and Automation Tools](../Day_76_BI_Platforms_and_Automation_Tools/README.md) • **Next:** [Day 78 – Day 78 – BI Experimentation and Predictive Insights](../Day_78_BI_Experimentation_and_Predictive_Insights/README.md)
+
+_You are on lesson 77 of 108._
+
+<!-- LESSON_FOOTER_END -->

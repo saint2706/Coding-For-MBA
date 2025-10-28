@@ -49,3 +49,13 @@ review the `README.md` file and make sure you understand the following concepts:
 - The benefits of using stored procedures.
 - The basic syntax for creating and executing a stored procedure (in a database like SQL Server or
   MySQL).
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 99 – Day 99: Transactions](../Day_99_Transactions/README.md) • **Next:** [Day 101 – Day 101: Triggers](../Day_101_Triggers/README.md)
+
+_You are on lesson 100 of 108._
+
+<!-- LESSON_FOOTER_END -->

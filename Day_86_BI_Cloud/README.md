@@ -59,3 +59,13 @@ should include identity and access management, data encryption, and continuous m
    data warehouse (Snowflake, BigQuery, or Redshift) and justify your choice.
 1. **Security Plan:** Outline a security plan for the e-commerce company's cloud BI environment,
    covering IAM, data encryption, and monitoring.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 85 – Day 85 – Advanced SQL and Performance Tuning](../Day_85_Advanced_SQL/README.md) • **Next:** [Day 87 – Day 87 – Data Governance and Security](../Day_87_Data_Governance/README.md)
+
+_You are on lesson 86 of 108._
+
+<!-- LESSON_FOOTER_END -->

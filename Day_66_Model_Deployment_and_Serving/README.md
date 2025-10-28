@@ -42,3 +42,13 @@ share a consistent response schema and survive a stress scenario with concurrent
 - Port the load test harness to `locust`, `k6`, or `vegeta` and capture latency percentiles across
   different hardware profiles.
 - Add schema evolution examples demonstrating backwards-compatible API rollouts.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 65 – Day 65 – MLOps Pipelines and CI/CD Automation](../Day_65_MLOps_Pipelines_and_CI/README.md) • **Next:** [Day 67 – Day 67 – Model Monitoring and Reliability Engineering](../Day_67_Model_Monitoring_and_Reliability/README.md)
+
+_You are on lesson 66 of 108._
+
+<!-- LESSON_FOOTER_END -->

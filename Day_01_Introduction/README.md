@@ -78,3 +78,13 @@ The exercises are designed to help you practice the fundamental concepts introdu
 
 🎉 **Congratulations!** You've just run your first refactored Python script and are on your way to
 becoming a data-savvy leader.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** _None (First Lesson)_ • **Next:** [Day 02 – Day 2: Storing and Analyzing Business Data](../Day_02_Variables_Builtin_Functions/README.md)
+
+_You are on lesson 1 of 108._
+
+<!-- LESSON_FOOTER_END -->

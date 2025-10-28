@@ -73,3 +73,13 @@ ______________________________________________________________________
   for a single epoch.
 - CNN training benefits from GPU acceleration. TensorFlow will automatically use your GPU if the
   drivers and CUDA/cuDNN stack are configured; otherwise the CPU-only run will simply take longer.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 46 – Day 46: Introduction to Neural Networks & Frameworks](../Day_46_Intro_to_Neural_Networks/README.md) • **Next:** [Day 48 – Day 48: Recurrent Neural Networks (RNNs) for Sequence Data](../Day_48_Recurrent_Neural_Networks/README.md)
+
+_You are on lesson 47 of 108._
+
+<!-- LESSON_FOOTER_END -->

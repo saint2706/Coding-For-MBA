@@ -74,3 +74,13 @@ and testability.
 
 🎉 **Well done!** You've learned how to store data in variables and use Python's built-in functions
 for analysis—foundational skills for everything that comes next.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 01 – Day 1: Python for Business Analytics - First Steps](../Day_01_Introduction/README.md) • **Next:** [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](../Day_03_Operators/README.md)
+
+_You are on lesson 2 of 108._
+
+<!-- LESSON_FOOTER_END -->

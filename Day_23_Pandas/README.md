@@ -77,3 +77,13 @@ The content for this lesson is split into two main files:
 🎉 **Welcome to Pandas!** You've just learned how to create and inspect the most fundamental object
 in data analysis. In the next lesson, we'll dive deeper into selecting, filtering, and cleaning
 data.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 22 – Day 22: NumPy - The Foundation of Numerical Computing](../Day_22_NumPy/README.md) • **Next:** [Day 24 – Day 24: Advanced Pandas - Working with Real Data](../Day_24_Pandas_Advanced/README.md)
+
+_You are on lesson 23 of 108._
+
+<!-- LESSON_FOOTER_END -->

@@ -96,3 +96,13 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 🎉 **Incredible!** You've now stepped into the world of interactive data visualization. Being able to
 create and share plots that allow stakeholders to explore the data for themselves is a highly
 valuable skill for any modern analyst.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 28 – Day 28: Advanced Visualization & Customization](../Day_28_Advanced_Visualization/README.md) • **Next:** [Day 30 – Day 30: Web Scraping - Extracting Data from the Web](../Day_30_Web_Scraping/README.md)
+
+_You are on lesson 29 of 108._
+
+<!-- LESSON_FOOTER_END -->

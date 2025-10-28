@@ -72,3 +72,13 @@ into a separate, testable function.
 🎉 **Fantastic progress!** You can now translate complex business rules into code that makes
 decisions automatically. This is a fundamental skill for automating reports and building analytical
 models.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 08 – Day 8: Dictionaries - Structuring Complex Business Data](../Day_08_Dictionaries/README.md) • **Next:** [Day 10 – Day 10: Loops - Automating Repetitive Business Tasks](../Day_10_Loops/README.md)
+
+_You are on lesson 9 of 108._
+
+<!-- LESSON_FOOTER_END -->

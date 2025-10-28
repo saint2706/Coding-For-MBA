@@ -36,3 +36,13 @@ mean squared error metrics.
 
 Explore the full [Machine Learning Curriculum Roadmap](../docs/ml_curriculum.md) to see how the Day
 40 lesson fits into a multi-phase path covering deep learning, responsible AI, and MLOps.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 39 – Day 39: Math Foundations - Calculus](../Day_39_Calculus/README.md) • **Next:** [Day 41 – Day 41 · Supervised Learning – Regression](../Day_41_Supervised_Learning_Regression/README.md)
+
+_You are on lesson 40 of 108._
+
+<!-- LESSON_FOOTER_END -->

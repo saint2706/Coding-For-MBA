@@ -2,7 +2,7 @@
 
 Stay focused on the most important deliverables in each phase of the Coding for MBA journey. These
 quick-reference guides summarise the core learning outcomes, business applications, and checkpoints
-for the 84-day roadmap.
+for the 108-day roadmap.
 
 Each cheat sheet is optimised for on-the-go review. Use the download links to save an offline copy
 or attach them to internal enablement hubs.

@@ -63,3 +63,13 @@ HAVING COUNT(CustomerID) > 5;
 ## 💻 Exercises: Day 94
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 93 – Day 93: Data Manipulation Language (DML)](../Day_93_Data_Manipulation_Language/README.md) • **Next:** [Day 95 – Day 95: Joins](../Day_95_Joins/README.md)
+
+_You are on lesson 94 of 108._
+
+<!-- LESSON_FOOTER_END -->

@@ -52,3 +52,13 @@ FROM cte_name;
 ## 💻 Exercises: Day 102
 
 Please see the `exercises.sql` file for today's exercises.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 101 – Day 101: Triggers](../Day_101_Triggers/README.md) • **Next:** [Day 103 – Day 103: Pivoting Data](../Day_103_Pivoting_Data/README.md)
+
+_You are on lesson 102 of 108._
+
+<!-- LESSON_FOOTER_END -->

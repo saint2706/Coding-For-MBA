@@ -104,3 +104,13 @@ conn.close()
 🎉 **Excellent!** You can now connect to and retrieve data from a database, the primary source of
 truth for most businesses. Knowing how to pull data directly into a Pandas DataFrame is a workflow
 you will use constantly as a data analyst.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 30 – Day 30: Web Scraping - Extracting Data from the Web](../Day_30_Web_Scraping/README.md) • **Next:** [Day 32 – Day 32: Connecting to Other Databases (MySQL & MongoDB)](../Day_32_Other_Databases/README.md)
+
+_You are on lesson 31 of 108._
+
+<!-- LESSON_FOOTER_END -->

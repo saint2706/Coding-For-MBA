@@ -86,3 +86,13 @@ comprehension task into its own testable function.
 🎉 **Excellent!** List comprehensions are a powerful tool for writing clean, efficient, and
 professional Python code. They are heavily used in data analysis for quick and readable data
 transformations.
+
+<!-- LESSON_FOOTER_START -->
+
+---
+
+**Previous:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](../Day_11_Functions/README.md) • **Next:** [Day 13 – Day 13: Higher-Order Functions & Lambda](../Day_13_Higher_Order_Functions/README.md)
+
+_You are on lesson 12 of 108._
+
+<!-- LESSON_FOOTER_END -->
