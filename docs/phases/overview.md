@@ -13,7 +13,7 @@ The curriculum is structured around seven progressive phases that take learners 
 | **[Phase 3 – Machine Learning Foundations](phase3.md)** | 40-54 | Regression, classification, unsupervised learning, and neural networks with an applied business focus. |
 | **[Phase 4 – Advanced ML & MLOps](phase4.md)** | 55-67 | Transformers, generative models, deployment, monitoring, and production ML pipelines for operational excellence. |
 | **[Phase 5 – Business Intelligence](phase5.md)** | 68-84 | BI strategy, analytics enablement, and career planning to activate organization-wide insights. |
-| **[Phase 6 – BI Advanced & Capstone](phase6.md)** | 85-90 | Advanced BI topics and capstone projects *(under development)*. |
+| **[Phase 6 – BI Advanced & Capstone](phase6.md)** | 85-90 | Advanced SQL, cloud BI platforms, data governance, and comprehensive capstone project. |
 | **[Phase 7 – SQL & Database Mastery](phase7.md)** | 91-108 | Comprehensive SQL training, database design, optimization, and enterprise database features. |
 
 ## How to use this structure

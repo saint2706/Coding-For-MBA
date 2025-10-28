@@ -47,7 +47,7 @@ The curriculum is organized into seven progressive phases:
 | **[Phase 3](https://saint2706.github.io/Coding-For-MBA/phases/phase3/)** | 40-54 | ML fundamentals, neural networks, NLP |
 | **[Phase 4](https://saint2706.github.io/Coding-For-MBA/phases/phase4/)** | 55-67 | Advanced ML, MLOps, transformers, deployment |
 | **[Phase 5](https://saint2706.github.io/Coding-For-MBA/phases/phase5/)** | 68-84 | Business Intelligence strategy, tooling, and career assets |
-| **[Phase 6](https://saint2706.github.io/Coding-For-MBA/phases/phase6/)** | 85-90 | Advanced BI and capstone projects *(under development)* |
+| **[Phase 6](https://saint2706.github.io/Coding-For-MBA/phases/phase6/)** | 85-90 | Advanced SQL, cloud BI, governance, and capstone project |
 | **[Phase 7](https://saint2706.github.io/Coding-For-MBA/phases/phase7/)** | 91-108 | SQL & database mastery, design, optimization |
 
 📘 **[See full curriculum roadmap →](docs/ml_curriculum.md)**

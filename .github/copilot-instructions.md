@@ -11,7 +11,7 @@ This is an educational curriculum organized into daily lessons across seven phas
 - **Days 40-54 (Phase 3)**: ML fundamentals (regression, classification, neural networks)
 - **Days 55-67 (Phase 4)**: Advanced ML & MLOps (time series, transformers, deployment, monitoring)
 - **Days 68-84 (Phase 5)**: Business Intelligence (strategy, tooling, and career assets)
-- **Days 85-90 (Phase 6)**: Advanced BI and capstone *(under development)*
+- **Days 85-90 (Phase 6)**: Advanced BI topics (cloud platforms, governance) and capstone project
 - **Days 91-108 (Phase 7)**: SQL & database mastery (design, optimization, advanced features)
 
 Each `Day_XX_*` directory is a self-contained lesson with:
@@ -368,7 +368,7 @@ When working across multiple lessons, be aware of the phase structure:
 - **Phase 3 (Days 40-54)**: Assumes understanding of ML fundamentals
 - **Phase 4 (Days 55-67)**: Advanced techniques, production patterns
 - **Phase 5 (Days 68-84)**: Business Intelligence, career development
-- **Phase 6 (Days 85-90)**: Advanced BI and capstone *(under development)*
+- **Phase 6 (Days 85-90)**: Advanced BI topics and capstone project
 - **Phase 7 (Days 91-108)**: SQL and database mastery
 
 ### Running Individual Lessons

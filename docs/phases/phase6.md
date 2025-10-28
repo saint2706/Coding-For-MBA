@@ -1,30 +1,50 @@
 ---
-tags: [business-intelligence, bi, analytics, career]
+tags: [business-intelligence, bi, analytics, career, capstone, sql, cloud]
 ---
 
 # Phase 6 • BI Advanced & Capstone
 
-Phase 6 represents advanced Business Intelligence topics and capstone work. This phase is currently a placeholder for future content covering advanced BI implementation, industry-specific applications, and comprehensive capstone projects.
+Phase 6 culminates the Business Intelligence journey with advanced topics, cloud platforms, and a comprehensive capstone project. Learners apply all acquired skills to real-world scenarios while building career assets and exploring cutting-edge BI technologies.
 
-## Planned topics
+## What you will practice
 
-- Advanced BI platform implementations
-- Industry-specific BI solutions (finance, healthcare, retail, etc.)
-- Data warehouse optimization and performance tuning
-- Real-time analytics and streaming BI
-- BI team leadership and organizational change management
-- Comprehensive capstone projects integrating all phases
+- Advanced SQL techniques including CTEs, window functions, and query optimization
+- Cloud-based BI platforms and modern data stack architectures
+- Data governance frameworks and security best practices
+- End-to-end capstone project from scoping to presentation
+- Career development including resume building and portfolio creation
+- Professional networking and job search strategies for BI roles
+
+## Lesson sprint
+
+- [:material-tag: Day 85 – Advanced SQL and Performance Tuning](../lessons/day-85-advanced-sql.md): Master CTEs, window functions, and query optimization.
+- [:material-tag: Day 86 – BI in the Cloud](../lessons/day-86-bi-cloud.md): Explore cloud BI platforms like Power BI, Tableau Online, and Google Data Studio.
+- [:material-tag: Day 87 – Data Governance and Security](../lessons/day-87-data-governance.md): Implement governance frameworks and security best practices.
+- [:material-tag: Day 88 – Capstone Project - Part 1](../lessons/day-88-capstone-part-1.md): Scope your project, collect data, and plan analysis.
+- [:material-tag: Day 89 – Capstone Project - Part 2](../lessons/day-89-capstone-part-2.md): Analyze data, create visualizations, and present findings.
+- [:material-tag: Day 90 – Career Workshop and Next Steps](../lessons/day-90-career-workshop.md): Build your resume, portfolio, and career strategy.
 
 ## Learning outcomes
 
 By completing Phase 6, you will be able to:
 
-- Lead enterprise-scale BI initiatives
-- Design BI solutions for specific industry contexts
-- Optimize data warehouse performance
-- Build real-time analytics platforms
-- Drive organizational adoption of BI tools and practices
+- Write advanced SQL queries with CTEs and window functions for complex analytics
+- Evaluate and implement cloud-based BI solutions
+- Apply data governance frameworks to ensure data quality and security
+- Execute end-to-end analytics projects from problem definition to presentation
+- Build a professional portfolio showcasing your BI and analytics capabilities
+- Navigate the job market with a data-driven resume and interview strategy
 
-**Note:** This phase is currently under development. Content for Days 85-90 will be added in future updates. In the meantime, learners can proceed directly to [Phase 7 – SQL & Database Mastery](phase7.md) or revisit earlier phases to deepen expertise.
+## Capstone project
 
-Ready to continue? Advance to [Phase 7 – SQL & Database Mastery](phase7.md) for comprehensive database training.
+The capstone project (Days 88-89) is the culmination of your learning journey. You will:
+
+1. Define a real-world business problem and project scope
+2. Identify and collect relevant data sources
+3. Perform comprehensive data analysis
+4. Create compelling visualizations and dashboards
+5. Present findings with actionable recommendations
+
+This project becomes a centerpiece of your professional portfolio, demonstrating your ability to deliver business value through data analytics.
+
+Ready to continue? Advance to [Phase 7 – SQL & Database Mastery](phase7.md) for comprehensive database training, or revisit [Phase Overview](overview.md) to review your learning path.
