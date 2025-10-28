@@ -1,6 +1,14 @@
-______________________________________________________________________
+---
+title: Lesson library
+tags:
+  - python
+  - analytics
+  - bi
+  - ml
+  - curriculum
+---
 
-## tags: \[python, analytics, bi, ml, curriculum\]
+______________________________________________________________________
 
 # Lesson library
 

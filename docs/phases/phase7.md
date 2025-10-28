@@ -1,6 +1,13 @@
-______________________________________________________________________
+---
+title: Phase 7 • SQL & Database Mastery
+tags:
+  - sql
+  - databases
+  - data-modeling
+  - relational
+---
 
-## tags: \[sql, databases, data-modeling, relational\]
+______________________________________________________________________
 
 # Phase 7 • SQL & Database Mastery
 

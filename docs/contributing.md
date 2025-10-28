@@ -1,6 +1,14 @@
-______________________________________________________________________
+---
+title: Contributing
+tags:
+  - python
+  - analytics
+  - bi
+  - ml
+  - curriculum
+---
 
-## tags: \[python, analytics, bi, ml, curriculum\]
+______________________________________________________________________
 
 # Contributing
 

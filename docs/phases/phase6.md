@@ -1,6 +1,16 @@
-______________________________________________________________________
+---
+title: Phase 6 • BI Advanced & Capstone
+tags:
+  - business-intelligence
+  - bi
+  - analytics
+  - career
+  - capstone
+  - sql
+  - cloud
+---
 
-## tags: \[business-intelligence, bi, analytics, career, capstone, sql, cloud\]
+______________________________________________________________________
 
 # Phase 6 • BI Advanced & Capstone
 

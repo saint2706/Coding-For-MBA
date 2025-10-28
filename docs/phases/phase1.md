@@ -1,6 +1,12 @@
-______________________________________________________________________
+---
+title: Phase 1 • Python Foundations
+tags:
+  - python
+  - fundamentals
+  - programming
+---
 
-## tags: \[python, fundamentals, programming\]
+______________________________________________________________________
 
 # Phase 1 • Python Foundations
 
