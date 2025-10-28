@@ -21,4 +21,4 @@ ipykernel==7.0.1
 lexical-diversity
 mysql-connector-python==9.4.0
 pymongo==4.15.3
-pytest-cov==5.0.0
+pytest-cov==7.0.0
