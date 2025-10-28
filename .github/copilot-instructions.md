@@ -1,16 +1,18 @@
 # GitHub Copilot Instructions for Coding-For-MBA
 
-This repository contains a comprehensive 84-day Python, analytics, and machine learning curriculum designed for business professionals. When contributing to this project, please follow these guidelines.
+This repository contains a comprehensive Python, analytics, machine learning, and database curriculum designed for business professionals. When contributing to this project, please follow these guidelines.
 
 ## Repository Structure
 
-This is an educational curriculum organized into daily lessons:
+This is an educational curriculum organized into daily lessons across seven phases:
 
-- **Days 01-20**: Python foundations (syntax, data structures, file handling)
-- **Days 21-39**: Data workflows (NumPy, Pandas, databases, APIs, visualization, statistics)
-- **Days 40-54**: ML fundamentals (regression, classification, neural networks)
-- **Days 55-67**: Advanced ML & MLOps (time series, transformers, deployment, monitoring)
-- **Days 68-84**: Business Intelligence strategy, tooling, and career assets
+- **Days 01-20 (Phase 1)**: Python foundations (syntax, data structures, file handling)
+- **Days 21-39 (Phase 2)**: Data workflows (NumPy, Pandas, databases, APIs, visualization, statistics)
+- **Days 40-54 (Phase 3)**: ML fundamentals (regression, classification, neural networks)
+- **Days 55-67 (Phase 4)**: Advanced ML & MLOps (time series, transformers, deployment, monitoring)
+- **Days 68-84 (Phase 5)**: Business Intelligence (strategy, tooling, and career assets)
+- **Days 85-90 (Phase 6)**: Advanced BI topics (cloud platforms, governance) and capstone project
+- **Days 91-108 (Phase 7)**: SQL & database mastery (design, optimization, advanced features)
 
 Each `Day_XX_*` directory is a self-contained lesson with:
 
@@ -366,6 +368,8 @@ When working across multiple lessons, be aware of the phase structure:
 - **Phase 3 (Days 40-54)**: Assumes understanding of ML fundamentals
 - **Phase 4 (Days 55-67)**: Advanced techniques, production patterns
 - **Phase 5 (Days 68-84)**: Business Intelligence, career development
+- **Phase 6 (Days 85-90)**: Advanced BI topics and capstone project
+- **Phase 7 (Days 91-108)**: SQL and database mastery
 
 ### Running Individual Lessons
 
