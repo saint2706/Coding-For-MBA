@@ -1,0 +1,127 @@
+{% macro lesson_nav_title(raw_title) -%}
+  {%- set info = namespace(
+    title=(raw_title or '') | trim,
+    emoji='',
+    digits='',
+    digits_complete=False,
+    remainder='',
+    sep_char=':'
+  ) -%}
+  {%- for emoji in ['📘 ', '🌐 ', '📊 ', '🎉 '] -%}
+    {%- if info.emoji == '' and info.title.startswith(emoji) -%}
+      {%- set info.emoji = emoji -%}
+      {%- set info.title = info.title[emoji|length:] -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- if info.title[:4] == 'Day ' -%}
+    {%- set rest = info.title[4:] -%}
+    {%- for char in rest -%}
+      {%- if not info.digits_complete -%}
+        {%- if '0' <= char <= '9' -%}
+          {%- set info.digits = info.digits ~ char -%}
+        {%- else -%}
+          {%- set info.digits_complete = True -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if info.digits -%}
+      {%- set rest_tail = rest[info.digits|length:] -%}
+      {%- set trimmed_tail = rest_tail.lstrip() -%}
+      {%- if trimmed_tail -%}
+        {%- set first_char = trimmed_tail[0] -%}
+        {%- if first_char in '-–—' -%}
+          {%- set info.sep_char = '–' -%}
+          {%- set info.remainder = trimmed_tail[1:] -%}
+        {%- elif first_char in '·•' -%}
+          {%- set info.sep_char = '·' -%}
+          {%- set info.remainder = trimmed_tail[1:] -%}
+        {%- elif first_char == ':' -%}
+          {%- set info.sep_char = ':' -%}
+          {%- set info.remainder = trimmed_tail[1:] -%}
+        {%- else -%}
+          {%- set info.sep_char = ':' -%}
+          {%- set info.remainder = trimmed_tail -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- set info.remainder = (info.remainder or '') | trim -%}
+      {%- for emoji in ['📘 ', '🌐 ', '📊 ', '🎉 '] -%}
+        {%- if info.remainder.startswith(emoji) -%}
+          {%- set info.remainder = info.remainder[emoji|length:] -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {%- set duplicate_prefix = 'Day ' ~ info.digits -%}
+      {%- if info.remainder.startswith(duplicate_prefix) -%}
+        {%- set info.remainder = info.remainder[duplicate_prefix|length:] -%}
+        {%- set info.remainder = info.remainder.lstrip(' :-–—·•') -%}
+      {%- endif -%}
+      {%- if info.remainder -%}
+        {%- if info.sep_char == '–' -%}
+          {%- set info.title = 'Day ' ~ info.digits ~ ' – ' ~ info.remainder -%}
+        {%- elif info.sep_char == '·' -%}
+          {%- set info.title = 'Day ' ~ info.digits ~ ' · ' ~ info.remainder -%}
+        {%- else -%}
+          {%- set info.title = 'Day ' ~ info.digits ~ ': ' ~ info.remainder -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- set info.title = 'Day ' ~ info.digits -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+  {{ (info.emoji ~ info.title).strip() }}
+{%- endmacro %}
+
+<footer class="md-footer">
+  {% if "navigation.footer" in features %}
+    {% if page.previous_page or page.next_page %}
+      {% if page.meta and page.meta.hide %}
+        {% set hidden = "hidden" if "footer" in page.meta.hide %}
+      {% endif %}
+      <nav class="md-footer__inner md-grid" aria-label="{{ lang.t('footer') }}" {{ hidden }}>
+        {% if page.previous_page %}
+          {% set direction = lang.t("footer.previous") %}
+          {% set prev_title = lesson_nav_title(page.previous_page.title) %}
+          <a href="{{ page.previous_page.url | url }}" class="md-footer__link md-footer__link--prev" aria-label="{{ direction }}: {{ prev_title | e }}">
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.previous or "material/arrow-left" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ prev_title }}
+              </div>
+            </div>
+          </a>
+        {% endif %}
+        {% if page.next_page %}
+          {% set direction = lang.t("footer.next") %}
+          {% set next_title = lesson_nav_title(page.next_page.title) %}
+          <a href="{{ page.next_page.url | url }}" class="md-footer__link md-footer__link--next" aria-label="{{ direction }}: {{ next_title | e }}">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                {{ direction }}
+              </span>
+              <div class="md-ellipsis">
+                {{ next_title }}
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              {% set icon = config.theme.icon.next or "material/arrow-right" %}
+              {% include ".icons/" ~ icon ~ ".svg" %}
+            </div>
+          </a>
+        {% endif %}
+      </nav>
+    {% endif %}
+  {% endif %}
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      {% include "partials/copyright.html" %}
+      {% if config.extra.social %}
+        {% include "partials/social.html" %}
+      {% endif %}
+    </div>
+  </div>
+</footer>
