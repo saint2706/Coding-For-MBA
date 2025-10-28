@@ -122,6 +122,19 @@
       {% if config.extra.social %}
         {% include "partials/social.html" %}
       {% endif %}
+      {% if config.extra.alternate %}
+        <nav class="md-footer-meta__lang" aria-label="Available languages">
+          <ul class="md-footer-meta__lang-list">
+            {% for alt in config.extra.alternate %}
+              <li>
+                <a href="{{ alt.link | url }}" hreflang="{{ alt.lang }}" rel="alternate">
+                  {{ alt.name }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
     </div>
   </div>
 </footer>
