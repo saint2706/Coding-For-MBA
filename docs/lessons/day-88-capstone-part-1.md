@@ -1,5 +1,3 @@
-# Day 88 – Capstone Project - Part 1
-
 ## Introduction
 
 This lesson marks the beginning of the capstone project. In this two-part project, you will apply

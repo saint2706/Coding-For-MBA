@@ -1,5 +1,3 @@
-# Day 86 – BI in the Cloud
-
 ## Introduction
 
 This lesson explores the landscape of Business Intelligence in the cloud. We will discuss the
