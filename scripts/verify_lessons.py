@@ -14,7 +14,7 @@ This script:
 import argparse
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 
 class LessonInfo:
@@ -156,6 +156,65 @@ def generate_lesson_table_markdown(lessons: List[LessonInfo]) -> str:
     return "\n".join(lines)
 
 
+def parse_interactive_lessons(index_path: Path) -> List[Dict[str, str]]:
+    """Parse docs/lessons/index.md and extract lesson metadata from cards."""
+
+    if not index_path.exists():
+        print(f"Warning: Interactive index not found: {index_path}")
+        return []
+
+    card_pattern = re.compile(
+        r'<div class="lesson-card"[^>]*data-day="(?P<day>\d+)"[^>]*>.*?<a href="(?P<href>[^"]+)"[^>]*>',
+        re.DOTALL,
+    )
+
+    lessons = []
+
+    try:
+        with open(index_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        for match in card_pattern.finditer(content):
+            day = match.group("day")
+            href = match.group("href")
+            lessons.append({"day": int(day), "href": href})
+
+    except Exception as exc:
+        print(f"Warning: Could not parse {index_path}: {exc}")
+        return []
+
+    return lessons
+
+
+def generate_docs_index_table(
+    lessons: List[LessonInfo],
+    interactive_cards: List[Dict[str, str]],
+) -> str:
+    """Generate the table inserted into docs/lessons/_index.md."""
+
+    lesson_by_day = {lesson.day_num: lesson for lesson in lessons}
+
+    lines: List[str] = []
+    lines.append("| Day | Lesson |")
+    lines.append("| --- | --- |")
+
+    for card in sorted(interactive_cards, key=lambda entry: entry["day"]):
+        day = card["day"]
+        lesson = lesson_by_day.get(day)
+        if lesson is None:
+            raise ValueError(f"Interactive index references missing day: {day}")
+
+        github_url = (
+            "https://github.com/saint2706/Coding-For-MBA/blob/main/"
+            f"{lesson.folder_name}/README.md"
+        )
+        lines.append(
+            f"| Day {lesson.day_num:02d} | [📘 {lesson.title}]({github_url}) |"
+        )
+
+    return "\n".join(lines)
+
+
 def save_generated_content(
     output_dir: Path, lessons: List[LessonInfo], total_lessons: int
 ):
@@ -224,6 +283,7 @@ def update_landing_pages(
     repo_root: Path,
     lessons: List[LessonInfo],
     total_lessons: int,
+    interactive_cards: List[Dict[str, str]],
     dry_run: bool = False,
 ):
     """Update landing page files with generated content."""
@@ -243,6 +303,18 @@ def update_landing_pages(
             "<!-- AUTO_ALL_LESSONS_START -->",
             "<!-- AUTO_ALL_LESSONS_END -->",
             clean_list,
+            dry_run,
+        )
+
+    # Update docs/lessons/_index.md with table derived from interactive cards
+    docs_index_path = repo_root / "docs" / "lessons" / "_index.md"
+    if docs_index_path.exists() and interactive_cards:
+        table = generate_docs_index_table(lessons, interactive_cards)
+        update_file_with_placeholder(
+            docs_index_path,
+            "<!-- AUTO_LESSON_TABLE_START -->",
+            "<!-- AUTO_LESSON_TABLE_END -->",
+            table,
             dry_run,
         )
 
@@ -343,13 +415,17 @@ def main():
     missing = check_for_gaps(lessons)
     duplicates = check_for_duplicates(lessons)
 
+    has_errors = False
+
     if missing:
         print(f"⚠ Missing day numbers: {missing}")
+        has_errors = True
     else:
         print("✓ No missing day numbers")
 
     if duplicates:
         print(f"⚠ Duplicate day numbers: {duplicates}")
+        has_errors = True
     else:
         print("✓ No duplicate day numbers")
 
@@ -370,10 +446,35 @@ def main():
     print(f"✓ Generated {output_dir}/lesson_count.txt")
     print()
 
+    # Parse interactive lessons index
+    interactive_index_path = repo_root / "docs" / "lessons" / "index.md"
+    interactive_cards = parse_interactive_lessons(interactive_index_path)
+
+    if interactive_cards:
+        print(
+            f"✓ Parsed {len(interactive_cards)} lesson cards from {interactive_index_path.relative_to(repo_root)}"
+        )
+        interactive_days = sorted(card["day"] for card in interactive_cards)
+        lesson_days = sorted(lesson.day_num for lesson in lessons)
+        if interactive_days != lesson_days:
+            print("⚠ Interactive lesson cards do not match lesson folders")
+            missing_from_cards = sorted(set(lesson_days) - set(interactive_days))
+            extra_in_cards = sorted(set(interactive_days) - set(lesson_days))
+            if missing_from_cards:
+                print(f"   Missing from cards: {missing_from_cards}")
+            if extra_in_cards:
+                print(f"   Extra in cards: {extra_in_cards}")
+            has_errors = True
+    else:
+        print("⚠ Could not parse interactive lessons index; skipping sync checks")
+        has_errors = True
+
     # Update files if --apply flag is set
     if args.apply:
         print("Updating landing pages...")
-        update_landing_pages(repo_root, lessons, total_lessons, args.dry_run)
+        update_landing_pages(
+            repo_root, lessons, total_lessons, interactive_cards, args.dry_run
+        )
         print()
 
         print("Replacing '84-day' references...")
@@ -395,7 +496,7 @@ def main():
         print("Changes applied to landing pages: NO (use --apply to update)")
     print("=" * 70)
 
-    return 0 if not missing and not duplicates else 1
+    return 0 if not has_errors else 1
 
 
 if __name__ == "__main__":
