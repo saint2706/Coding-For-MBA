@@ -1,6 +1,6 @@
 # Coding for MBA
 
-> **An 84-day applied Python, analytics, and business intelligence curriculum designed for business professionals.**
+> **A 90-day applied Python, analytics, and business intelligence curriculum designed for business professionals.**
 
 Transform your business acumen into technical capability with this comprehensive, hands-on curriculum. Each lesson is self-contained and builds toward end-to-end data fluency—from programming fundamentals to modern ML operations.
 
@@ -38,7 +38,7 @@ The documentation includes interactive examples, detailed explanations, and down
 
 ## 🗺️ Curriculum Overview
 
-The curriculum is organized into five progressive phases over 84 days:
+The curriculum is organized into six progressive phases over 90 days:
 
 | Phase | Days | Focus |
 |-------|------|-------|
@@ -47,6 +47,7 @@ The curriculum is organized into five progressive phases over 84 days:
 | **Phase 3** | 40-54 | ML fundamentals, neural networks, NLP |
 | **Phase 4** | 55-67 | Advanced ML, MLOps, transformers, deployment |
 | **Phase 5** | 68-84 | Business Intelligence strategy, tooling, and career assets |
+| **Phase 6** | 85-90 | Advanced BI, capstone projects, and career development |
 
 📘 **[See full curriculum roadmap →](docs/ml_curriculum.md)**
 <br>
@@ -76,7 +77,7 @@ jupyter notebook
 
 ## 📚 All Lessons
 
-Quick access to all 84 lessons:
+Quick access to all 90 lessons:
 
 | Day | Lesson |
 | --- | --- |
@@ -164,6 +165,12 @@ Quick access to all 84 lessons:
 | Day 82 | [Day 82 – Industry Applications](./docs/lessons/day-82-bi-etl-and-pipeline-automation.md) |
 | Day 83 | [Day 83 – Career Assets & Credentials](./docs/lessons/day-83-bi-cloud-and-modern-data-stack.md) |
 | Day 84 | [Day 84 – Strategic Roadmapping & Next Steps](./docs/lessons/day-84-bi-career-development-and-capstone.md) |
+| Day 85 | [Day 85 – Advanced SQL and Performance Tuning](./docs/lessons/day-85-advanced-sql.md) |
+| Day 86 | [Day 86 – BI in the Cloud](./docs/lessons/day-86-bi-cloud.md) |
+| Day 87 | [Day 87 – Data Governance and Security](./docs/lessons/day-87-data-governance.md) |
+| Day 88 | [Day 88 – Capstone Project - Part 1](./docs/lessons/day-88-capstone-part-1.md) |
+| Day 89 | [Day 89 – Capstone Project - Part 2](./docs/lessons/day-89-capstone-part-2.md) |
+| Day 90 | [Day 90 – Career Workshop and Next Steps](./docs/lessons/day-90-career-workshop.md) |
 
 ## ⭐ Featured Lessons
 
