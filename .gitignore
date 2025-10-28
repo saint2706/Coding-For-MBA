@@ -137,4 +137,14 @@ site/
 
 # Script backup files
 *.bak
+*.bak.*
 mkdocs.yml.bak
+
+# High-effort feature artifacts
+artifacts/*.pdf
+artifacts/bundles/
+generated/badges/
+learner_backend/learner.db
+learner_backend/__pycache__/
+reports/
+locales/*.pot
