@@ -1,6 +1,13 @@
-______________________________________________________________________
+---
+title: Phase 2 • Data Analytics & Workflows
+tags:
+  - python
+  - analytics
+  - data
+  - visualization
+---
 
-## tags: \[python, analytics, data, visualization\]
+______________________________________________________________________
 
 # Phase 2 • Data Analytics & Workflows
 

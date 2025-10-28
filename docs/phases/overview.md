@@ -1,6 +1,16 @@
-______________________________________________________________________
+---
+title: Phase Overview
+tags:
+  - python
+  - analytics
+  - bi
+  - ml
+  - curriculum
+  - sql
+  - databases
+---
 
-## tags: \[python, analytics, bi, ml, curriculum, sql, databases\]
+______________________________________________________________________
 
 # Phase Overview
 

@@ -1,6 +1,14 @@
-______________________________________________________________________
+---
+title: Coding for MBA
+tags:
+  - python
+  - analytics
+  - bi
+  - ml
+  - curriculum
+---
 
-## tags: \[python, analytics, bi, ml, curriculum\]
+______________________________________________________________________
 
 # Coding for MBA
 

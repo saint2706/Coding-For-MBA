@@ -1,6 +1,13 @@
-______________________________________________________________________
+---
+title: Phase 3 • Machine Learning Foundations
+tags:
+  - machine-learning
+  - ml
+  - ai
+  - neural-networks
+---
 
-## tags: \[machine-learning, ml, ai, neural-networks\]
+______________________________________________________________________
 
 # Phase 3 • Machine Learning Foundations
 

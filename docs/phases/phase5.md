@@ -1,6 +1,14 @@
-______________________________________________________________________
+---
+title: Phase 5 • Business Intelligence
+tags:
+  - python
+  - analytics
+  - bi
+  - ml
+  - curriculum
+---
 
-## tags: \[python, analytics, bi, ml, curriculum\]
+______________________________________________________________________
 
 # Phase 5 • Business Intelligence
 

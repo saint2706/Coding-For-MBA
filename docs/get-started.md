@@ -1,6 +1,14 @@
-______________________________________________________________________
+---
+title: Get started
+tags:
+  - python
+  - analytics
+  - bi
+  - ml
+  - curriculum
+---
 
-## tags: \[python, analytics, bi, ml, curriculum\]
+______________________________________________________________________
 
 # Get started
 

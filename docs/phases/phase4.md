@@ -1,6 +1,13 @@
-______________________________________________________________________
+---
+title: Phase 4 • Advanced ML & MLOps
+tags:
+  - machine-learning
+  - mlops
+  - transformers
+  - deployment
+---
 
-## tags: \[machine-learning, mlops, transformers, deployment\]
+______________________________________________________________________
 
 # Phase 4 • Advanced ML & MLOps
 
