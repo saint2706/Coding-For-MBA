@@ -1,3 +1,8 @@
+---
+title: 'Day 107: SQL Security'
+tags:
+- SQL
+---
 # 📘 Day 107: SQL Security
 
 Welcome to Day 107! Today, we'll discuss **SQL Security**, a critical topic for protecting your

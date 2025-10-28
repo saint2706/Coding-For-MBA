@@ -1,3 +1,10 @@
+---
+title: 'Day 12: List Comprehension - Elegant Data Manipulation'
+tags:
+- Basics
+- Data
+- Python
+---
 # 📘 Day 12: List Comprehension - Elegant Data Manipulation
 
 In data analysis, you constantly create new lists by transforming or filtering existing ones. While

@@ -1,3 +1,8 @@
+---
+title: "Day 86 \u2013 BI in the Cloud"
+tags:
+- BI
+---
 # Day 86 – BI in the Cloud
 
 ## Introduction

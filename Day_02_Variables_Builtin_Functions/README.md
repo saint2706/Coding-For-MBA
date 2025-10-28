@@ -1,3 +1,11 @@
+---
+title: 'Day 2: Storing and Analyzing Business Data'
+tags:
+- BI
+- Basics
+- Data
+- Python
+---
 # 📘 Day 2: Storing and Analyzing Business Data
 
 In Day 1, we performed basic calculations. Now, we'll learn how to store data in **variables** and

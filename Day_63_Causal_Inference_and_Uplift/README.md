@@ -1,3 +1,9 @@
+---
+title: "Day 63 \u2013 Causal Inference and Uplift Modeling"
+tags:
+- Advanced
+- ML
+---
 # Day 63 – Causal Inference and Uplift Modeling
 
 Understand how experimentation and counterfactual reasoning quantify impact. After this lesson you

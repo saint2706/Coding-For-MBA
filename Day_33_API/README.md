@@ -1,3 +1,9 @@
+---
+title: 'Day 33: Accessing Web APIs with `requests`'
+tags:
+- Data
+- Web
+---
 # 📘 Day 33: Accessing Web APIs with `requests`
 
 ## Overview

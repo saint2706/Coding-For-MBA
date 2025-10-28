@@ -1,3 +1,10 @@
+---
+title: 'Day 93: Data Manipulation Language (DML)'
+tags:
+- Data
+- NLP
+- SQL
+---
 # 📘 Day 93: Data Manipulation Language (DML)
 
 Welcome to Day 93! Today, we'll learn about **Data Manipulation Language (DML)**, a subset of SQL

@@ -7,3 +7,7 @@ ruff>=0.4.5
 nbqa>=1.7.0
 mdformat>=0.7.17
 pre-commit>=3.7
+
+# Script dependencies for docs generation
+PyYAML>=6.0
+Jinja2>=3.1

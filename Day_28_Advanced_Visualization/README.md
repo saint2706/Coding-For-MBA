@@ -1,3 +1,10 @@
+---
+title: 'Day 28: Advanced Visualization & Customization'
+tags:
+- Advanced
+- Data
+- Visualization
+---
 # 📘 Day 28: Advanced Visualization & Customization
 
 Creating a basic chart is just the first step. To effectively communicate your story, you need to

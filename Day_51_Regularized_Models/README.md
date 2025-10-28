@@ -1,3 +1,8 @@
+---
+title: "Day 51 \u2013 Regularised Models"
+tags:
+- ML
+---
 # Day 51 – Regularised Models
 
 This lesson extends the regression toolkit with L2 (ridge), L1 (lasso), and elastic net penalties

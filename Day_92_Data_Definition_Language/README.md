@@ -1,3 +1,10 @@
+---
+title: 'Day 92: Data Definition Language (DDL)'
+tags:
+- Data
+- NLP
+- SQL
+---
 # 📘 Day 92: Data Definition Language (DDL)
 
 Welcome to Day 92! Today, we'll learn about **Data Definition Language (DDL)**, a subset of SQL used

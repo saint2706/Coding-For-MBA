@@ -134,3 +134,7 @@ dmypy.json
 
 /site
 site/
+
+# Script backup files
+*.bak
+mkdocs.yml.bak

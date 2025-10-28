@@ -1,3 +1,8 @@
+---
+title: 'Day 106: XML in SQL'
+tags:
+- SQL
+---
 # 📘 Day 106: XML in SQL
 
 Welcome to Day 106! Today, we'll explore how to work with **XML (eXtensible Markup Language)** data

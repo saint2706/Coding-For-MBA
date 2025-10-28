@@ -1,3 +1,8 @@
+---
+title: "Day 76 \u2013 BI Platforms and Automation Tools"
+tags:
+- BI
+---
 # Day 76 – BI Platforms and Automation Tools
 
 Day 76 explores the major BI delivery platforms alongside the scripting and standardisation

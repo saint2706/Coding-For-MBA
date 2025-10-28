@@ -1,3 +1,10 @@
+---
+title: 'Day 10: Loops - Automating Repetitive Business Tasks'
+tags:
+- BI
+- Basics
+- Python
+---
 # 📘 Day 10: Loops - Automating Repetitive Business Tasks
 
 What if you have a list of 10,000 sales transactions? You won't write code for each one. This is

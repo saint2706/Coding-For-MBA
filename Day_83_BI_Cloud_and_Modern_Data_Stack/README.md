@@ -1,3 +1,9 @@
+---
+title: "Day 83 \u2013 BI Cloud and Modern Data Stack"
+tags:
+- BI
+- Data
+---
 # Day 83 – BI Cloud and Modern Data Stack
 
 > This lesson is part of the Phase 5 Business Intelligence specialization. Use the

@@ -1,3 +1,9 @@
+---
+title: "Day 61 \u2013 Reinforcement and Offline Learning"
+tags:
+- Advanced
+- ML
+---
 # Day 61 – Reinforcement and Offline Learning
 
 Reinforcement learning (RL) balances exploration and exploitation while offline evaluation keeps

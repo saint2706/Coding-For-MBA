@@ -1,3 +1,11 @@
+---
+title: "Day 67 \u2013 Model Monitoring and Reliability Engineering"
+tags:
+- Advanced
+- BI
+- ML
+- MLOps
+---
 # Day 67 – Model Monitoring and Reliability Engineering
 
 The final instalment of the MLOps arc closes the loop from deployment to operations. After mastering

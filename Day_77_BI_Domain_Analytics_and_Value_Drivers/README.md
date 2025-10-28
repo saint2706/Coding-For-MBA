@@ -1,3 +1,8 @@
+---
+title: "Day 77 \u2013 BI Domain Analytics and Value Drivers"
+tags:
+- BI
+---
 # Day 77 – BI Domain Analytics and Value Drivers
 
 Day 77 bridges the roadmap's domain-specific BI topics with tangible stakeholder value stories. The

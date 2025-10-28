@@ -1,3 +1,10 @@
+---
+title: "Day 62 \u2013 Model Interpretability and Fairness"
+tags:
+- Advanced
+- BI
+- ML
+---
 # Day 62 – Model Interpretability and Fairness
 
 Explainable and responsible AI practices underpin trustworthy analytics. After this lesson you will:

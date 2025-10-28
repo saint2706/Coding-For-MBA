@@ -1,3 +1,9 @@
+---
+title: "Day 74 \u2013 BI Data Preparation and Tools"
+tags:
+- BI
+- Data
+---
 # Day 74 – BI Data Preparation and Tools
 
 Day 74 focuses on the hands-on mechanics of preparing business intelligence data. We reinforce data

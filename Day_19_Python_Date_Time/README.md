@@ -1,3 +1,9 @@
+---
+title: 'Day 19: Working with Dates and Times'
+tags:
+- Basics
+- Python
+---
 # 📘 Day 19: Working with Dates and Times
 
 Time-series analysis is at the heart of business analytics. Whether you're tracking daily sales,

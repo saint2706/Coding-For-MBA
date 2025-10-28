@@ -1,3 +1,9 @@
+---
+title: 'Day 30: Web Scraping - Extracting Data from the Web'
+tags:
+- Data
+- Web
+---
 # 📘 Day 30: Web Scraping - Extracting Data from the Web
 
 Sometimes, the data you need isn't available in a clean CSV file or through an API. It's simply

@@ -1,3 +1,9 @@
+---
+title: "Day 65 \u2013 MLOps Pipelines and CI/CD Automation"
+tags:
+- Advanced
+- MLOps
+---
 # Day 65 – MLOps Pipelines and CI/CD Automation
 
 Day 50 introduced model persistence. Day 65 expands that foundation into production-grade automation

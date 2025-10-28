@@ -1,3 +1,9 @@
+---
+title: 'Day 34: Building a Simple API with Flask'
+tags:
+- Data
+- Web
+---
 # 📘 Day 34: Building a Simple API with Flask
 
 Consuming data from APIs is a core skill. But what if you need to provide data from your analysis to

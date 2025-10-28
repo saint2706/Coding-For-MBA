@@ -1,3 +1,9 @@
+---
+title: "Day 54 \u2013 Probabilistic Modeling"
+tags:
+- BI
+- ML
+---
 # Day 54 – Probabilistic Modeling
 
 Gaussian mixtures, Bayesian classifiers, expectation-maximisation, and hidden Markov models power

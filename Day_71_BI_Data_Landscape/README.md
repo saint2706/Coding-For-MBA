@@ -1,3 +1,9 @@
+---
+title: "Day 71 \u2013 BI Data Landscape Fundamentals"
+tags:
+- BI
+- Data
+---
 # Day 71 – BI Data Landscape Fundamentals
 
 > This lesson expands the BI roadmap by grounding each data classification and source channel in

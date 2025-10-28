@@ -1,3 +1,9 @@
+---
+title: 'Day 46: Introduction to Neural Networks & Frameworks'
+tags:
+- ML
+- Python
+---
 # Day 46: Introduction to Neural Networks & Frameworks
 
 Welcome to Day 46! Today, we begin our exploration of **Deep Learning** by introducing the

@@ -1,3 +1,11 @@
+---
+title: 'Day 31: Working with Databases in Python'
+tags:
+- Data
+- Database
+- Python
+- SQL
+---
 # 📘 Day 31: Working with Databases in Python
 
 While CSV files are great for smaller datasets, most real-world business data is stored in

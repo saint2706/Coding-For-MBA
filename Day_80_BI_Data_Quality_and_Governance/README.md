@@ -1,3 +1,9 @@
+---
+title: "Day 80 \u2013 BI Data Quality and Governance"
+tags:
+- BI
+- Data
+---
 # Day 80 – BI Data Quality and Governance
 
 Day 80 fills the roadmap gap on enterprise-grade data quality programmes and governance frameworks.

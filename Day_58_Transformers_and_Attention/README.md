@@ -1,3 +1,9 @@
+---
+title: "Day 58 \u2013 Transformers and Attention"
+tags:
+- Advanced
+- NLP
+---
 # Day 58 – Transformers and Attention
 
 Transformers dominate modern sequence modelling. This lesson demonstrates how to:

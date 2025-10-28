@@ -1,3 +1,11 @@
+---
+title: 'Day 4: Working with Text Data - Strings'
+tags:
+- Basics
+- Data
+- NLP
+- Python
+---
 # 📘 Day 4: Working with Text Data - Strings
 
 In business analytics, text data is everywhere—customer names, product reviews, addresses, and

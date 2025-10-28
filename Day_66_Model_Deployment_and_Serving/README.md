@@ -1,3 +1,10 @@
+---
+title: "Day 66 \u2013 Model Deployment and Serving Patterns"
+tags:
+- Advanced
+- ML
+- MLOps
+---
 # Day 66 – Model Deployment and Serving Patterns
 
 Production machine learning systems expose predictions through a variety of runtime patterns.

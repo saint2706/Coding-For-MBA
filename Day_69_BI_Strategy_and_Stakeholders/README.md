@@ -1,3 +1,8 @@
+---
+title: "Day 69 \u2013 BI Strategy and Stakeholders"
+tags:
+- BI
+---
 # Day 69 – BI Strategy and Stakeholders
 
 Day 69 extends the BI Analyst roadmap by pairing strategic constructs with the humans who bring them

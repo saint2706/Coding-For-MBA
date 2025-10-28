@@ -1,3 +1,9 @@
+---
+title: 'Day 108: SQL Performance Tuning'
+tags:
+- Advanced
+- SQL
+---
 # 📘 Day 108: SQL Performance Tuning
 
 Welcome to Day 108! Today, we'll discuss **SQL Performance Tuning**, the process of optimizing your

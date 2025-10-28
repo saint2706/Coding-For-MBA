@@ -1,3 +1,8 @@
+---
+title: "Day 78 \u2013 BI Experimentation and Predictive Insights"
+tags:
+- BI
+---
 # Day 78 – BI Experimentation and Predictive Insights
 
 This lesson connects experimentation design, forecasting, and machine learning so BI teams can run

@@ -1,3 +1,9 @@
+---
+title: 'Day 50: MLOps - Model Deployment'
+tags:
+- ML
+- MLOps
+---
 # Day 50: MLOps - Model Deployment
 
 Welcome to our final day, Day 50! Today, we touch upon **MLOps (Machine Learning Operations)**,

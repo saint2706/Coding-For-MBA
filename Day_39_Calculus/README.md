@@ -1,3 +1,8 @@
+---
+title: 'Day 39: Math Foundations - Calculus'
+tags:
+- Data
+---
 # Day 39: Math Foundations - Calculus
 
 ## Overview

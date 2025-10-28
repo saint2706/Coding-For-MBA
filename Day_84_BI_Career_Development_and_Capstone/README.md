@@ -1,3 +1,8 @@
+---
+title: "Day 84 \u2013 BI Career Development and Capstone"
+tags:
+- BI
+---
 # Day 84 – BI Career Development and Capstone
 
 > This lesson closes Phase 5 by converting the roadmap insights into a polished career narrative.

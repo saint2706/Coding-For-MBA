@@ -1,3 +1,10 @@
+---
+title: 'Day 9: Conditionals - Implementing Business Logic'
+tags:
+- BI
+- Basics
+- Python
+---
 # 📘 Day 9: Conditionals - Implementing Business Logic
 
 Business is full of rules and decisions. "If a customer spends over $100, they get a 10% discount."

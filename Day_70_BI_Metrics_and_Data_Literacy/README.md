@@ -1,3 +1,9 @@
+---
+title: "Day 70 \u2013 BI Metrics and Data Literacy"
+tags:
+- BI
+- Data
+---
 # Day 70 – BI Metrics and Data Literacy
 
 Day 70 focuses on translating the BI roadmap's metrics and statistics nodes into a cohesive

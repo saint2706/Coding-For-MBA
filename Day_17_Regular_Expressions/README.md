@@ -1,3 +1,10 @@
+---
+title: 'Day 17: Regular Expressions for Text Pattern Matching'
+tags:
+- Basics
+- NLP
+- Python
+---
 # 📘 Day 17: Regular Expressions for Text Pattern Matching
 
 Often, the text data you need to analyze isn't perfectly structured. You might need to find all the
