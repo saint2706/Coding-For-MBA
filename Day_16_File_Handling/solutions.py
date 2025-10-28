@@ -37,15 +37,15 @@ def exercise_1_document_analyzer():
     Once upon a time in a bustling corporate office, there lived a data analyst named Sarah.
     Sarah worked tirelessly to transform raw business data into meaningful insights.
     Every morning, she would arrive early to review the previous day's sales reports.
-    
+
     The company had been struggling with declining market share.
     Sarah believed that data-driven decisions could turn the tide.
     She spent hours analyzing customer feedback, sales trends, and market research.
-    
+
     One day, Sarah discovered a pattern in the data that nobody had noticed before.
     Customer satisfaction was directly correlated with response time to support tickets.
     This insight led to a complete overhaul of the customer service process.
-    
+
     Within six months, the company's customer retention improved by 35%.
     Sarah's analytical skills had literally saved the company millions of dollars.
     Her story became legend in the data analytics community.

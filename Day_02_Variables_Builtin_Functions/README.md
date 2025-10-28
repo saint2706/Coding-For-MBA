@@ -1,10 +1,12 @@
 # 📘 Day 2: Storing and Analyzing Business Data
 
-In Day 1, we performed basic calculations. Now, we'll learn how to store data in **variables** and use Python's **built-in functions** to analyze it.
+In Day 1, we performed basic calculations. Now, we'll learn how to store data in **variables** and
+use Python's **built-in functions** to analyze it.
 
 ## What is a Variable?
 
-A variable is a labeled container for information. Instead of using a raw number like `500000`, we can store it in a variable called `revenue`, making our code more readable and manageable.
+A variable is a labeled container for information. Instead of using a raw number like `500000`, we
+can store it in a variable called `revenue`, making our code more readable and manageable.
 
 **`revenue = 500000`**
 
@@ -24,19 +26,23 @@ Python includes pre-built functions for common tasks:
 
 ## Environment Setup
 
-Before you begin, ensure you have followed the setup instructions in the main [README.md](../../README.md) to set up your virtual environment and install the required libraries.
+Before you begin, ensure you have followed the setup instructions in the main
+[README.md](../../README.md) to set up your virtual environment and install the required libraries.
 
 ## Exploring the Refactored Code
 
-The script for this lesson, `variables.py`, has been refactored into functions to promote code reuse and testability.
+The script for this lesson, `variables.py`, has been refactored into functions to promote code reuse
+and testability.
 
-1. **Review the Code:** Open `Day_02_Variables_Builtin_Functions/variables.py`. Notice how the logic is now organized into functions like `display_company_profile()` and `analyze_weekly_sales()`.
+1. **Review the Code:** Open `Day_02_Variables_Builtin_Functions/variables.py`. Notice how the logic
+   is now organized into functions like `display_company_profile()` and `analyze_weekly_sales()`.
 1. **Run the Script:** From the root directory of the project (`Coding-For-MBA`), run the script:
    ```bash
    python Day_02_Variables_Builtin_Functions/variables.py
    ```
    You will see the output from the example scenarios defined at the bottom of the script.
-1. **Run the Tests:** You can also run the tests for this lesson to see how we verify the functions' correctness:
+1. **Run the Tests:** You can also run the tests for this lesson to see how we verify the functions'
+   correctness:
    ```bash
    pytest tests/test_day_02.py
    ```
@@ -45,7 +51,8 @@ The script for this lesson, `variables.py`, has been refactored into functions t
 
 1. **Company Profile Variables:**
 
-   - In a new Python script (`my_solutions_02.py`), declare variables for a fictional company: `company_name`, `year_founded`, `current_revenue`, and `is_publicly_traded`.
+   - In a new Python script (`my_solutions_02.py`), declare variables for a fictional company:
+     `company_name`, `year_founded`, `current_revenue`, and `is_publicly_traded`.
    - Print each of these variables with a descriptive label.
 
 1. **Sales Analysis:**
@@ -60,7 +67,10 @@ The script for this lesson, `variables.py`, has been refactored into functions t
 
 1. **Profit Calculator Function:**
 
-   - Create a function `calculate_profit(revenue, expenses)` that takes two numbers and returns the difference.
-   - Call this function with some example numbers (e.g., `calculate_profit(50000, 35000)`) and print the result.
+   - Create a function `calculate_profit(revenue, expenses)` that takes two numbers and returns the
+     difference.
+   - Call this function with some example numbers (e.g., `calculate_profit(50000, 35000)`) and print
+     the result.
 
-🎉 **Well done!** You've learned how to store data in variables and use Python's built-in functions for analysis—foundational skills for everything that comes next.
+🎉 **Well done!** You've learned how to store data in variables and use Python's built-in functions
+for analysis—foundational skills for everything that comes next.

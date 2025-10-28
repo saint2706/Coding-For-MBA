@@ -23,9 +23,11 @@ repos:
         additional_dependencies:
           - mdformat-gfm
           - mdformat-frontmatter
+        exclude: ^(AGENTS\.md|docs/agents\.md)$
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
       - id: end-of-file-fixer
       - id: trailing-whitespace
       - id: check-yaml
+        exclude: mkdocs-enhanced.yml

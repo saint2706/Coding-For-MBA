@@ -2,11 +2,15 @@
 
 ## Executive Summary
 
-This document outlines comprehensive recommendations for enhancing the Coding-For-MBA GitHub Pages website to make it more dynamic, accessible, and interactive. The primary focus is on embedding Jupyter notebooks with runtime capabilities, improving accessibility, and creating a more engaging learning experience.
+This document outlines comprehensive recommendations for enhancing the Coding-For-MBA GitHub Pages
+website to make it more dynamic, accessible, and interactive. The primary focus is on embedding
+Jupyter notebooks with runtime capabilities, improving accessibility, and creating a more engaging
+learning experience.
 
 ## Current State Analysis
 
 ### Strengths
+
 - ✅ MkDocs with Material theme provides excellent foundation
 - ✅ Good accessibility CSS already in place
 - ✅ Automated build pipeline with GitHub Actions
@@ -14,13 +18,14 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 - ✅ Clean, organized lesson structure
 
 ### Limitations
+
 - ❌ Static notebooks only - no interactive runtime
 - ❌ Users cannot execute code directly on the website
 - ❌ Limited dynamic features
 - ❌ No progress tracking or personalization
 - ❌ Basic search functionality
 
----
+______________________________________________________________________
 
 ## Recommended Improvements
 
@@ -28,9 +33,11 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 
 #### 1.1 JupyterLite Integration
 
-**What**: JupyterLite is a lightweight JupyterLab distribution that runs entirely in the browser using WebAssembly.
+**What**: JupyterLite is a lightweight JupyterLab distribution that runs entirely in the browser
+using WebAssembly.
 
 **Benefits**:
+
 - ✅ No server infrastructure required
 - ✅ Works perfectly with GitHub Pages
 - ✅ Full Jupyter experience in the browser
@@ -40,11 +47,13 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation Steps**:
 
 1. **Install JupyterLite**:
+
    ```bash
    pip install jupyterlite-core jupyterlite-pyodide-kernel
    ```
 
-2. **Create JupyterLite configuration** (`jupyter_lite_config.json`):
+1. **Create JupyterLite configuration** (`jupyter_lite_config.json`):
+
    ```json
    {
      "LiteBuildConfig": {
@@ -59,26 +68,29 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-3. **Add build step to documentation workflow**:
+1. **Add build step to documentation workflow**:
+
    ```yaml
    - name: Build JupyterLite
      run: |
        jupyter lite build --contents . --output-dir site/jupyterlite
    ```
 
-4. **Add launch buttons to lesson pages**:
+1. **Add launch buttons to lesson pages**:
+
    ```markdown
    [🚀 Launch Interactive Notebook](../jupyterlite/lab?path=Day_01_Introduction/introduction.ipynb){ .md-button .md-button--primary }
    ```
 
-**Estimated Effort**: 4-6 hours
-**Impact**: HIGH - Enables full interactive coding experience
+**Estimated Effort**: 4-6 hours **Impact**: HIGH - Enables full interactive coding experience
 
 #### 1.2 Thebe Integration
 
-**What**: Thebe makes static HTML pages interactive by connecting code cells to a Jupyter kernel (via Binder).
+**What**: Thebe makes static HTML pages interactive by connecting code cells to a Jupyter kernel
+(via Binder).
 
 **Benefits**:
+
 - ✅ Makes existing code blocks executable
 - ✅ Less intrusive than full JupyterLite
 - ✅ Good for simple examples
@@ -86,13 +98,15 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add Thebe JavaScript** to MkDocs extra_javascript:
+
    ```yaml
    extra_javascript:
      - https://unpkg.com/thebe@latest/lib/index.js
      - javascripts/thebe-config.js
    ```
 
-2. **Create Thebe configuration** (`docs/javascripts/thebe-config.js`):
+1. **Create Thebe configuration** (`docs/javascripts/thebe-config.js`):
+
    ```javascript
    thebelab.on("ready", function() {
      thebelab.bootstrap({
@@ -110,23 +124,25 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    });
    ```
 
-3. **Mark code blocks as executable** in markdown:
-   ```markdown
+1. **Mark code blocks as executable** in markdown:
+
+   ````markdown
    <div class="executable" data-executable="true">
    ```python
    print("Hello, World!")
-   ```
+   ````
+
    </div>
    ```
 
-**Estimated Effort**: 2-3 hours
-**Impact**: MEDIUM - Good for inline examples
+**Estimated Effort**: 2-3 hours **Impact**: MEDIUM - Good for inline examples
 
 #### 1.3 Binder Integration
 
 **What**: Add "Launch Binder" badges to open notebooks in a cloud environment.
 
 **Benefits**:
+
 - ✅ Full computing environment
 - ✅ No browser limitations
 - ✅ Can handle heavy computations
@@ -134,15 +150,18 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Create Binder configuration files**:
+
    - `environment.yml` or `requirements.txt` at root
    - `.binder/` directory with configuration
 
-2. **Add Binder badges to lesson pages**:
+1. **Add Binder badges to lesson pages**:
+
    ```markdown
    [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_01_Introduction/introduction.ipynb)
    ```
 
-3. **Update build_docs.py** to automatically add badges:
+1. **Update build_docs.py** to automatically add badges:
+
    ```python
    def _add_binder_badge(day_dir: Path, notebook: Path) -> str:
        filepath = notebook.relative_to(ROOT)
@@ -150,10 +169,9 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
        return f"[![Launch Binder](https://mybinder.org/badge_logo.svg)]({url})"
    ```
 
-**Estimated Effort**: 1-2 hours
-**Impact**: MEDIUM - Good fallback option
+**Estimated Effort**: 1-2 hours **Impact**: MEDIUM - Good fallback option
 
----
+______________________________________________________________________
 
 ### 2. Enhanced Interactivity
 
@@ -164,6 +182,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add Pyodide loader** (`docs/javascripts/pyodide-console.js`):
+
    ```javascript
    async function initPyodide() {
      let pyodide = await loadPyodide();
@@ -181,7 +200,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-2. **Create interactive code widget component**:
+1. **Create interactive code widget component**:
+
    ```html
    <div class="pyodide-console">
      <textarea id="code-input" rows="5"></textarea>
@@ -190,8 +210,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    </div>
    ```
 
-**Estimated Effort**: 4-5 hours
-**Impact**: HIGH - Great for quick examples
+**Estimated Effort**: 4-5 hours **Impact**: HIGH - Great for quick examples
 
 #### 2.2 Interactive Quizzes and Exercises
 
@@ -200,13 +219,15 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Use MkDocs plugins**:
+
    ```yaml
    plugins:
      - quiz:
          questions_dir: docs/quizzes
    ```
 
-2. **Create quiz files** in YAML format:
+1. **Create quiz files** in YAML format:
+
    ```yaml
    questions:
      - question: "What is the output of `print(2 + 2)`?"
@@ -218,8 +239,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
        explanation: "Python evaluates 2 + 2 as 4"
    ```
 
-**Estimated Effort**: 6-8 hours (including content creation)
-**Impact**: MEDIUM - Improves learning outcomes
+**Estimated Effort**: 6-8 hours (including content creation) **Impact**: MEDIUM - Improves learning
+outcomes
 
 #### 2.3 Progress Tracking
 
@@ -228,6 +249,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add progress tracking JavaScript** (`docs/javascripts/progress-tracker.js`):
+
    ```javascript
    class ProgressTracker {
      constructor() {
@@ -256,7 +278,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-2. **Add UI elements**:
+1. **Add UI elements**:
+
    ```html
    <div class="progress-badge">
      <span id="progress-percentage">0%</span> Complete
@@ -266,10 +289,9 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    </button>
    ```
 
-**Estimated Effort**: 3-4 hours
-**Impact**: MEDIUM - Motivates learners
+**Estimated Effort**: 3-4 hours **Impact**: MEDIUM - Motivates learners
 
----
+______________________________________________________________________
 
 ### 3. Accessibility Enhancements
 
@@ -280,15 +302,17 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Enhancements**:
 
 1. **Add ARIA labels to interactive elements**:
+
    ```html
-   <button 
+   <button
      aria-label="Run Python code in browser"
      aria-describedby="code-output">
      Run Code
    </button>
    ```
 
-2. **Enhance keyboard navigation**:
+1. **Enhance keyboard navigation**:
+
    ```javascript
    // Add keyboard shortcuts
    document.addEventListener('keydown', (e) => {
@@ -298,7 +322,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    });
    ```
 
-3. **Add skip links for interactive components**:
+1. **Add skip links for interactive components**:
+
    ```html
    <a href="#main-content" class="skip-link">
      Skip to main content
@@ -308,37 +333,41 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    </a>
    ```
 
-**Estimated Effort**: 2-3 hours
-**Impact**: HIGH - Legal compliance and inclusivity
+**Estimated Effort**: 2-3 hours **Impact**: HIGH - Legal compliance and inclusivity
 
 #### 3.2 Screen Reader Support
 
 **Implementation**:
 
 1. **Add live regions for dynamic content**:
+
    ```html
    <div role="status" aria-live="polite" aria-atomic="true" id="code-status">
      <!-- Status messages appear here -->
    </div>
    ```
 
-2. **Add descriptive labels to code blocks**:
-   ```markdown
+1. **Add descriptive labels to code blocks**:
+
+   ````markdown
    ```python title="Example: Calculate Business Metrics" aria-label="Python code example showing calculation of revenue metrics"
    revenue = 1000000
    costs = 750000
    profit = revenue - costs
-   ```
+   ````
+
    ```
 
-**Estimated Effort**: 2 hours
-**Impact**: MEDIUM - Improves screen reader experience
+   ```
+
+**Estimated Effort**: 2 hours **Impact**: MEDIUM - Improves screen reader experience
 
 #### 3.3 Color Contrast and Visual Improvements
 
 **Enhancements**:
 
 1. **Add high-contrast theme option**:
+
    ```yaml
    theme:
      palette:
@@ -347,7 +376,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
          accent: yellow
    ```
 
-2. **Improve code block contrast** in `extra.css`:
+1. **Improve code block contrast** in `extra.css`:
+
    ```css
    /* High contrast mode for code blocks */
    @media (prefers-contrast: high) {
@@ -359,10 +389,9 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-**Estimated Effort**: 1-2 hours
-**Impact**: MEDIUM - Helps visually impaired users
+**Estimated Effort**: 1-2 hours **Impact**: MEDIUM - Helps visually impaired users
 
----
+______________________________________________________________________
 
 ### 4. Search and Discovery Improvements
 
@@ -373,6 +402,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add search plugin with custom configuration**:
+
    ```yaml
    plugins:
      - search:
@@ -382,25 +412,25 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
          prebuild_index: true
    ```
 
-2. **Index notebook cells during build**:
-   ```python
+1. **Index notebook cells during build**:
+
+   ````python
    def extract_searchable_content(notebook_path: Path) -> str:
        """Extract text from notebook cells for search indexing."""
        with open(notebook_path) as f:
            nb = nbformat.read(f, as_version=4)
-       
+
        content = []
        for cell in nb.cells:
            if cell.cell_type == 'markdown':
                content.append(cell.source)
            elif cell.cell_type == 'code':
                content.append(f"```python\n{cell.source}\n```")
-       
-       return "\n\n".join(content)
-   ```
 
-**Estimated Effort**: 3-4 hours
-**Impact**: HIGH - Better content discovery
+       return "\n\n".join(content)
+   ````
+
+**Estimated Effort**: 3-4 hours **Impact**: HIGH - Better content discovery
 
 #### 4.2 Advanced Search Filters
 
@@ -409,6 +439,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add metadata to lesson pages**:
+
    ```yaml
    ---
    tags:
@@ -419,23 +450,23 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    ---
    ```
 
-2. **Create search UI with filters**:
+1. **Create search UI with filters**:
+
    ```javascript
    class SearchFilter {
      filterByTag(tag) {
        // Filter search results by tag
      }
-     
+
      filterByDifficulty(level) {
        // Filter by difficulty
      }
    }
    ```
 
-**Estimated Effort**: 4-5 hours
-**Impact**: MEDIUM - Improved navigation
+**Estimated Effort**: 4-5 hours **Impact**: MEDIUM - Improved navigation
 
----
+______________________________________________________________________
 
 ### 5. Dynamic Features and User Experience
 
@@ -446,6 +477,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Calculate during build**:
+
    ```python
    def estimate_reading_time(content: str) -> int:
        """Estimate reading time in minutes."""
@@ -454,7 +486,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
        return max(1, words // 225)
    ```
 
-2. **Add to lesson metadata**:
+1. **Add to lesson metadata**:
+
    ```markdown
    !!! info "Lesson Overview"
        **Estimated Time**: 25 minutes
@@ -462,8 +495,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
        **Prerequisites**: Day 22 (NumPy)
    ```
 
-**Estimated Effort**: 1-2 hours
-**Impact**: LOW - Nice to have
+**Estimated Effort**: 1-2 hours **Impact**: LOW - Nice to have
 
 #### 5.2 Related Lessons and Prerequisites
 
@@ -472,6 +504,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Define relationships in config**:
+
    ```python
    LESSON_PREREQS = {
        "Day_23_Pandas": ["Day_22_NumPy"],
@@ -479,7 +512,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-2. **Generate navigation links**:
+1. **Generate navigation links**:
+
    ```markdown
    ## Prerequisites
    - [Day 22: NumPy](day-22-numpy.md)
@@ -488,8 +522,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    - [Day 24: Advanced Pandas](day-24-pandas-advanced.md)
    ```
 
-**Estimated Effort**: 2-3 hours
-**Impact**: MEDIUM - Better learning path
+**Estimated Effort**: 2-3 hours **Impact**: MEDIUM - Better learning path
 
 #### 5.3 Code Playground Sidebar
 
@@ -498,6 +531,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add sidebar widget**:
+
    ```html
    <div class="playground-sidebar">
      <h3>Quick Playground</h3>
@@ -507,7 +541,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    </div>
    ```
 
-2. **Make it sticky**:
+1. **Make it sticky**:
+
    ```css
    .playground-sidebar {
      position: sticky;
@@ -517,8 +552,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-**Estimated Effort**: 3-4 hours
-**Impact**: MEDIUM - Encourages experimentation
+**Estimated Effort**: 3-4 hours **Impact**: MEDIUM - Encourages experimentation
 
 #### 5.4 Export/Share Features
 
@@ -527,6 +561,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add export buttons**:
+
    ```javascript
    function exportCode() {
      const code = document.getElementById('code-input').value;
@@ -539,17 +574,17 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-2. **Add share buttons**:
+1. **Add share buttons**:
+
    ```html
    <button onclick="shareLesson()">
      Share this lesson
    </button>
    ```
 
-**Estimated Effort**: 2 hours
-**Impact**: LOW - Social features
+**Estimated Effort**: 2 hours **Impact**: LOW - Social features
 
----
+______________________________________________________________________
 
 ### 6. Analytics and Feedback
 
@@ -560,6 +595,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Use Plausible or similar privacy-friendly analytics**:
+
    ```yaml
    extra:
      analytics:
@@ -567,14 +603,14 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
        property: plausible
    ```
 
-2. **Add to site**:
+1. **Add to site**:
+
    ```html
-   <script defer data-domain="saint2706.github.io" 
+   <script defer data-domain="saint2706.github.io"
            src="https://plausible.io/js/script.js"></script>
    ```
 
-**Estimated Effort**: 1 hour
-**Impact**: LOW - Helps improve content
+**Estimated Effort**: 1 hour **Impact**: LOW - Helps improve content
 
 #### 6.2 Feedback Widget
 
@@ -583,6 +619,7 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
 **Implementation**:
 
 1. **Add simple feedback form**:
+
    ```html
    <div class="feedback-widget">
      <p>Was this lesson helpful?</p>
@@ -591,7 +628,8 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    </div>
    ```
 
-2. **Store in GitHub Issues or external service**:
+1. **Store in GitHub Issues or external service**:
+
    ```javascript
    async function submitFeedback(rating) {
      const lesson = getCurrentLesson();
@@ -599,44 +637,47 @@ This document outlines comprehensive recommendations for enhancing the Coding-Fo
    }
    ```
 
-**Estimated Effort**: 2-3 hours
-**Impact**: MEDIUM - Helps content improvement
+**Estimated Effort**: 2-3 hours **Impact**: MEDIUM - Helps content improvement
 
----
+______________________________________________________________________
 
 ## Implementation Priorities
 
 ### Phase 1: Essential (Week 1-2)
+
 1. ✅ JupyterLite integration
-2. ✅ Binder badges
-3. ✅ Enhanced accessibility (ARIA labels)
-4. ✅ Progress tracking
+1. ✅ Binder badges
+1. ✅ Enhanced accessibility (ARIA labels)
+1. ✅ Progress tracking
 
 **Estimated Total**: 12-16 hours
 
 ### Phase 2: Enhanced Experience (Week 3-4)
+
 1. ✅ Thebe integration
-2. ✅ Pyodide code widgets
-3. ✅ Enhanced search
-4. ✅ Related lessons navigation
+1. ✅ Pyodide code widgets
+1. ✅ Enhanced search
+1. ✅ Related lessons navigation
 
 **Estimated Total**: 12-15 hours
 
 ### Phase 3: Nice to Have (Week 5-6)
+
 1. ✅ Interactive quizzes
-2. ✅ Code playground sidebar
-3. ✅ Analytics and feedback
-4. ✅ Export/share features
+1. ✅ Code playground sidebar
+1. ✅ Analytics and feedback
+1. ✅ Export/share features
 
 **Estimated Total**: 12-15 hours
 
----
+______________________________________________________________________
 
 ## Technical Requirements
 
 ### Dependencies to Add
 
 **Python packages** (`docs/requirements.txt`):
+
 ```txt
 mkdocs-material>=9.5.16
 jupyterlite-core>=0.3.0
@@ -645,6 +686,7 @@ mkdocs-jupyter>=0.24.0
 ```
 
 **JavaScript libraries** (via CDN):
+
 ```yaml
 extra_javascript:
   - https://unpkg.com/thebe@latest/lib/index.js
@@ -655,6 +697,7 @@ extra_javascript:
 ```
 
 **MkDocs plugins**:
+
 ```yaml
 plugins:
   - search:
@@ -665,35 +708,40 @@ plugins:
       execute: false
 ```
 
----
+______________________________________________________________________
 
 ## Maintenance Considerations
 
 ### 1. JupyterLite Updates
+
 - **Frequency**: Quarterly
 - **Effort**: 1-2 hours
 - **Tasks**: Update Pyodide packages, rebuild lite distribution
 
 ### 2. Content Updates
+
 - **Frequency**: As lessons are added/modified
 - **Effort**: Automatic via CI/CD
 - **Tasks**: Ensure new notebooks are properly indexed
 
 ### 3. Dependency Management
+
 - **Frequency**: Monthly
 - **Effort**: 1 hour
 - **Tasks**: Update JavaScript libraries, Python packages
 
 ### 4. Analytics Review
+
 - **Frequency**: Monthly
 - **Effort**: 1 hour
 - **Tasks**: Review usage patterns, identify popular content
 
----
+______________________________________________________________________
 
 ## Cost Analysis
 
 ### Infrastructure Costs
+
 - **GitHub Pages**: FREE ✅
 - **JupyterLite**: FREE ✅ (runs client-side)
 - **Binder**: FREE ✅ (open service)
@@ -701,123 +749,143 @@ plugins:
 - **Total**: $0/month
 
 ### Development Costs
+
 - **Phase 1**: 12-16 hours
 - **Phase 2**: 12-15 hours
 - **Phase 3**: 12-15 hours
 - **Total**: 36-46 hours initial development
 
 ### Maintenance Costs
+
 - **Monthly**: 2-3 hours
 - **Quarterly**: 5-6 hours (includes updates)
 
----
+______________________________________________________________________
 
 ## Success Metrics
 
 ### User Engagement
+
 - ✅ Time spent on lesson pages
 - ✅ Number of code executions
 - ✅ Lesson completion rate
 - ✅ Return visitor rate
 
 ### Technical Metrics
-- ✅ Page load time (<3 seconds)
-- ✅ Interactive runtime initialization (<5 seconds)
+
+- ✅ Page load time (\<3 seconds)
+- ✅ Interactive runtime initialization (\<5 seconds)
 - ✅ Accessibility score (>95 on Lighthouse)
-- ✅ Search response time (<1 second)
+- ✅ Search response time (\<1 second)
 
 ### Learning Outcomes
+
 - ✅ Lesson completion rate
 - ✅ Quiz scores (if implemented)
 - ✅ User feedback ratings
 - ✅ GitHub repository stars/forks
 
----
+______________________________________________________________________
 
 ## Accessibility Compliance
 
 All recommendations follow:
+
 - ✅ WCAG 2.1 Level AA standards
 - ✅ Section 508 compliance
 - ✅ ARIA 1.2 specifications
 - ✅ Keyboard navigation support
 - ✅ Screen reader compatibility
 
----
+______________________________________________________________________
 
 ## Browser Compatibility
 
 ### Supported Browsers
+
 - ✅ Chrome/Edge 90+ (JupyterLite requires modern browsers)
 - ✅ Firefox 88+
 - ✅ Safari 14+
 - ❌ Internet Explorer (not supported)
 
 ### Fallbacks
+
 - Static HTML for unsupported browsers
 - Binder links as alternative
 - Download notebook option
 
----
+______________________________________________________________________
 
 ## Next Steps
 
 ### Immediate Actions
+
 1. Review and approve this proposal
-2. Set up development branch
-3. Install JupyterLite and test basic setup
-4. Create prototype with 2-3 lessons
+1. Set up development branch
+1. Install JupyterLite and test basic setup
+1. Create prototype with 2-3 lessons
 
 ### Short Term (1-2 weeks)
+
 1. Implement JupyterLite for all lessons
-2. Add Binder badges
-3. Enhance accessibility
-4. Deploy to staging environment
+1. Add Binder badges
+1. Enhance accessibility
+1. Deploy to staging environment
 
 ### Medium Term (3-4 weeks)
+
 1. Add interactive code widgets
-2. Implement progress tracking
-3. Enhance search functionality
-4. User testing and feedback
+1. Implement progress tracking
+1. Enhance search functionality
+1. User testing and feedback
 
 ### Long Term (5-6 weeks)
-1. Add quizzes and assessments
-2. Implement advanced features
-3. Monitor analytics
-4. Continuous improvement
 
----
+1. Add quizzes and assessments
+1. Implement advanced features
+1. Monitor analytics
+1. Continuous improvement
+
+______________________________________________________________________
 
 ## Resources and References
 
 ### JupyterLite
+
 - Documentation: https://jupyterlite.readthedocs.io/
 - Examples: https://jupyterlite.github.io/demo/
 - GitHub: https://github.com/jupyterlite/jupyterlite
 
 ### Thebe
+
 - Documentation: https://thebe.readthedocs.io/
 - Examples: https://thebe.readthedocs.io/en/stable/examples.html
 
 ### Binder
+
 - Documentation: https://mybinder.org/
 - Example repository: https://github.com/binder-examples/
 
 ### Accessibility
+
 - WCAG Guidelines: https://www.w3.org/WAI/WCAG21/quickref/
 - ARIA Practices: https://www.w3.org/WAI/ARIA/apg/
 
 ### MkDocs Material
+
 - Documentation: https://squidfunk.github.io/mkdocs-material/
 - Plugins: https://github.com/mkdocs/catalog
 
----
+______________________________________________________________________
 
 ## Conclusion
 
-These recommendations provide a comprehensive roadmap for transforming the Coding-For-MBA documentation site into an interactive, accessible, and engaging learning platform. The phased approach allows for incremental improvements while maintaining the current functionality.
+These recommendations provide a comprehensive roadmap for transforming the Coding-For-MBA
+documentation site into an interactive, accessible, and engaging learning platform. The phased
+approach allows for incremental improvements while maintaining the current functionality.
 
 **Key Benefits**:
+
 - 🚀 Interactive notebooks run directly in the browser
 - ♿ Enhanced accessibility for all learners
 - 📊 Better tracking and personalization

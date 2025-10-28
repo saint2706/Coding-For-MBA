@@ -4,14 +4,12 @@ from __future__ import annotations
 
 from typing import Dict, List, Tuple
 
+# Matplotlib is used for palette demonstrations where traces are not required.
+import matplotlib.pyplot as plt
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.graph_objs import Figure
-
-# Matplotlib is used for palette demonstrations where traces are not required.
-import matplotlib.pyplot as plt
-
 
 BASICS_CATEGORY = "Visualization basics"
 DESIGN_GUARDRAILS_CATEGORY = "Design guardrails"

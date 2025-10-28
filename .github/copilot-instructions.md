@@ -1,13 +1,16 @@
 # GitHub Copilot Instructions for Coding-For-MBA
 
-This repository contains a comprehensive Python, analytics, machine learning, and database curriculum designed for business professionals. When contributing to this project, please follow these guidelines.
+This repository contains a comprehensive Python, analytics, machine learning, and database
+curriculum designed for business professionals. When contributing to this project, please follow
+these guidelines.
 
 ## Repository Structure
 
 This is an educational curriculum organized into daily lessons across seven phases:
 
 - **Days 01-20 (Phase 1)**: Python foundations (syntax, data structures, file handling)
-- **Days 21-39 (Phase 2)**: Data workflows (NumPy, Pandas, databases, APIs, visualization, statistics)
+- **Days 21-39 (Phase 2)**: Data workflows (NumPy, Pandas, databases, APIs, visualization,
+  statistics)
 - **Days 40-54 (Phase 3)**: ML fundamentals (regression, classification, neural networks)
 - **Days 55-67 (Phase 4)**: Advanced ML & MLOps (time series, transformers, deployment, monitoring)
 - **Days 68-84 (Phase 5)**: Business Intelligence (strategy, tooling, and career assets)
@@ -64,7 +67,8 @@ make format
 make lint
 ```
 
-Always run `make format` before committing to ensure consistency across Python modules, Jupyter notebooks (via `nbqa`), and Markdown files (via `mdformat`).
+Always run `make format` before committing to ensure consistency across Python modules, Jupyter
+notebooks (via `nbqa`), and Markdown files (via `mdformat`).
 
 ## Build, Test, and Validation
 
@@ -96,33 +100,44 @@ mkdocs build --strict
 Always follow this sequence when making changes:
 
 1. **Before changes**: Run `pytest` to establish baseline
-2. **During development**: Run `pytest` frequently to catch issues early
-3. **After changes**: 
+1. **During development**: Run `pytest` frequently to catch issues early
+1. **After changes**:
    - Run `make format` to auto-format code
    - Run `pytest` to ensure all tests pass
    - If docs changed: Run `python tools/build_docs.py && mkdocs build --strict`
-4. **Before committing**: Run `make format` one final time
+1. **Before committing**: Run `make format` one final time
 
 ### Common Issues and Solutions
 
 **Issue**: Tests fail with `ModuleNotFoundError`
-- **Solution**: Ensure all dependencies are installed: `pip install -r requirements.txt -r requirements-dev.txt`
+
+- **Solution**: Ensure all dependencies are installed:
+  `pip install -r requirements.txt -r requirements-dev.txt`
 
 **Issue**: Import errors for lesson modules
-- **Solution**: The repository structure expects lessons to be imported from their Day directories. Ensure you're running commands from the repository root.
+
+- **Solution**: The repository structure expects lessons to be imported from their Day directories.
+  Ensure you're running commands from the repository root.
 
 **Issue**: Coverage below 40%
-- **Solution**: The 40% coverage requirement applies only to specific modules: `Day_24_Pandas_Advanced.pandas_adv`, `Day_25_Data_Cleaning.data_cleaning`, and `Day_26_Statistics.stats` (see `pytest.ini`). Add tests for these specific modules if coverage drops.
+
+- **Solution**: The 40% coverage requirement applies only to specific modules:
+  `Day_24_Pandas_Advanced.pandas_adv`, `Day_25_Data_Cleaning.data_cleaning`, and
+  `Day_26_Statistics.stats` (see `pytest.ini`). Add tests for these specific modules if coverage
+  drops.
 
 **Issue**: Formatting check fails
-- **Solution**: Run `make format` to auto-fix most formatting issues. For notebooks, `nbqa` will handle formatting automatically.
+
+- **Solution**: Run `make format` to auto-fix most formatting issues. For notebooks, `nbqa` will
+  handle formatting automatically.
 
 **Issue**: Documentation build fails
-- **Solution**: 
+
+- **Solution**:
   1. Ensure `docs/requirements-docs.txt` is installed
-  2. Run `python tools/build_docs.py` to regenerate lesson pages from Day_* READMEs
-  3. Check for broken links or invalid markdown in lesson READMEs
-  4. Use `mkdocs serve` to preview and debug locally
+  1. Run `python tools/build_docs.py` to regenerate lesson pages from Day\_\* READMEs
+  1. Check for broken links or invalid markdown in lesson READMEs
+  1. Use `mkdocs serve` to preview and debug locally
 
 ## Testing
 
@@ -203,11 +218,13 @@ The repository includes custom commands in `AGENTS.md` for automation:
 - `notebook`: Launch Jupyter Notebook server
 
 **When to use AGENTS.md commands:**
+
 - Use these for CI/CD pipelines and automated workflows
 - For development, prefer using the Makefile commands or direct pytest/pip commands
 - The `setup` command is useful in containerized environments or GitHub Actions
 
 **Prefer Makefile over AGENTS.md for development:**
+
 - `make format` instead of AGENTS.md `format` (runs both ruff format and black)
 - `make lint` instead of AGENTS.md `lint` (adds mdformat and pre-commit hooks)
 - `make test` or `pytest` instead of AGENTS.md `test` (provides more detailed output)
@@ -251,12 +268,12 @@ import pandas as pd
 def example_function(data: pd.DataFrame) -> Dict[str, float]:
     """
     Brief description of what the function does.
-    
+
     Parameters
     ----------
     data : pd.DataFrame
         Description of the input parameter
-        
+
     Returns
     -------
     Dict[str, float]
@@ -346,6 +363,7 @@ Two GitHub Actions workflows:
 ### Lesson Structure
 
 Each lesson (Day_01 through Day_84) follows a consistent structure:
+
 - **README.md**: Primary lesson content, theory, and explanations
 - **lesson.py** or topic-specific `.py` files: Executable code examples
 - **topic.ipynb**: Interactive Jupyter notebook version
@@ -354,15 +372,19 @@ Each lesson (Day_01 through Day_84) follows a consistent structure:
 ### When Modifying Lessons
 
 1. **Maintain self-containment**: Each lesson should work independently
-2. **Update all formats**: If you change a `.py` file, ensure the corresponding `.ipynb` reflects the change
-3. **Keep READMEs authoritative**: The README.md is the source of truth; docs/ files are generated from it
-4. **Test lesson code**: Run the lesson script to ensure it works: `python Day_XX_Topic/lesson.py`
-5. **Consider prerequisites**: If a lesson builds on previous days, ensure those dependencies are clear
-6. **Business context matters**: Examples should relate to business scenarios when possible
+1. **Update all formats**: If you change a `.py` file, ensure the corresponding `.ipynb` reflects
+   the change
+1. **Keep READMEs authoritative**: The README.md is the source of truth; docs/ files are generated
+   from it
+1. **Test lesson code**: Run the lesson script to ensure it works: `python Day_XX_Topic/lesson.py`
+1. **Consider prerequisites**: If a lesson builds on previous days, ensure those dependencies are
+   clear
+1. **Business context matters**: Examples should relate to business scenarios when possible
 
 ### Curriculum Phases
 
 When working across multiple lessons, be aware of the phase structure:
+
 - **Phase 1 (Days 1-20)**: Assumes no prior Python knowledge
 - **Phase 2 (Days 21-39)**: Introduces data science libraries
 - **Phase 3 (Days 40-54)**: Assumes understanding of ML fundamentals

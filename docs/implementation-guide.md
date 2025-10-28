@@ -4,7 +4,8 @@ This guide provides step-by-step instructions for implementing the recommended w
 
 ## Quick Start (Essential Features Only)
 
-If you want to implement just the core features (JupyterLite + Progress Tracking), follow these steps:
+If you want to implement just the core features (JupyterLite + Progress Tracking), follow these
+steps:
 
 ### 1. Install Required Dependencies
 
@@ -69,7 +70,7 @@ mkdocs serve
 # Visit http://127.0.0.1:8000
 ```
 
----
+______________________________________________________________________
 
 ## Phase 1: Interactive Notebooks (Week 1)
 
@@ -117,9 +118,9 @@ The integration script automatically adds buttons, or manually add to lesson pag
 #### Step 5: Test
 
 1. Build the site: `mkdocs build`
-2. Serve locally: `mkdocs serve`
-3. Navigate to a lesson and click the JupyterLite button
-4. Verify the notebook loads and runs Python code
+1. Serve locally: `mkdocs serve`
+1. Navigate to a lesson and click the JupyterLite button
+1. Verify the notebook loads and runs Python code
 
 ### Binder Integration
 
@@ -155,10 +156,10 @@ The integration script adds these automatically, or add manually:
 #### Step 3: Test Binder
 
 1. Click a Binder badge
-2. Wait for environment to build (first time takes 5-10 minutes)
-3. Verify notebook launches in JupyterLab
+1. Wait for environment to build (first time takes 5-10 minutes)
+1. Verify notebook launches in JupyterLab
 
----
+______________________________________________________________________
 
 ## Phase 2: Interactive Widgets (Week 2)
 
@@ -167,6 +168,7 @@ The integration script adds these automatically, or add manually:
 #### Step 1: Add JavaScript Files
 
 Files already created:
+
 - `docs/javascripts/pyodide-console.js`
 
 #### Step 2: Add to MkDocs Config
@@ -181,12 +183,13 @@ extra_javascript:
 
 Mark code blocks as interactive:
 
-```markdown
+````markdown
 <div class="interactive-code">
 ```python
 # This code will be executable!
 print("Hello from Pyodide!")
-```
+````
+
 </div>
 ```
 
@@ -205,15 +208,16 @@ Or use the widget directly:
 #### Step 4: Test
 
 1. Rebuild site
-2. Visit a page with interactive code
-3. Verify "Run Code" button appears
-4. Click and verify code executes
+1. Visit a page with interactive code
+1. Verify "Run Code" button appears
+1. Click and verify code executes
 
 ### Progress Tracking Setup
 
 #### Step 1: Add JavaScript
 
 File already created:
+
 - `docs/javascripts/progress-tracker.js`
 
 #### Step 2: Add to MkDocs Config
@@ -226,21 +230,22 @@ extra_javascript:
 #### Step 3: Add CSS
 
 File already created:
+
 - `docs/stylesheets/interactive-widgets.css`
 
 #### Step 4: Test
 
 1. Rebuild and serve site
-2. Navigate to any lesson page
-3. Look for:
+1. Navigate to any lesson page
+1. Look for:
    - Progress widget in sidebar
    - "Mark as Complete" button
    - Progress percentage
-4. Click "Mark as Complete"
-5. Verify progress is saved (check localStorage in browser dev tools)
-6. Refresh page and verify progress persists
+1. Click "Mark as Complete"
+1. Verify progress is saved (check localStorage in browser dev tools)
+1. Refresh page and verify progress persists
 
----
+______________________________________________________________________
 
 ## Phase 3: Enhanced Features (Week 3-4)
 
@@ -265,15 +270,15 @@ Add to `tools/build_docs.py`:
 def extract_notebook_content(notebook_path: Path) -> str:
     """Extract searchable content from notebook."""
     import nbformat
-    
+
     with open(notebook_path) as f:
         nb = nbformat.read(f, as_version=4)
-    
+
     content = []
     for cell in nb.cells:
         if cell.cell_type in ('markdown', 'code'):
             content.append(cell.source)
-    
+
     return '\n\n'.join(content)
 ```
 
@@ -312,7 +317,7 @@ plugins:
       minify_css: true
 ```
 
----
+______________________________________________________________________
 
 ## Phase 4: Advanced Features (Week 5-6)
 
@@ -355,11 +360,11 @@ For Plausible Analytics:
 
 ```html
 <!-- Add to docs/overrides/main.html -->
-<script defer data-domain="saint2706.github.io" 
+<script defer data-domain="saint2706.github.io"
         src="https://plausible.io/js/script.js"></script>
 ```
 
----
+______________________________________________________________________
 
 ## Testing Checklist
 
@@ -386,22 +391,23 @@ For Plausible Analytics:
 
 ### Performance Testing
 
-- [ ] Page load time < 3 seconds
-- [ ] JupyterLite loads < 30 seconds (first time)
-- [ ] Search responds < 1 second
+- [ ] Page load time \< 3 seconds
+- [ ] JupyterLite loads \< 30 seconds (first time)
+- [ ] Search responds \< 1 second
 - [ ] No console errors
 - [ ] Mobile responsive
 
 ### Browser Testing
 
 Test in:
+
 - [ ] Chrome (latest)
 - [ ] Firefox (latest)
 - [ ] Safari (latest)
 - [ ] Edge (latest)
 - [ ] Mobile browsers
 
----
+______________________________________________________________________
 
 ## Troubleshooting
 
@@ -410,72 +416,80 @@ Test in:
 **Problem**: JupyterLite shows blank page or errors
 
 **Solutions**:
+
 1. Check browser console for errors
-2. Verify browser supports WebAssembly
-3. Clear browser cache
-4. Try different browser
-5. Check that `pyodide.js` CDN is accessible
+1. Verify browser supports WebAssembly
+1. Clear browser cache
+1. Try different browser
+1. Check that `pyodide.js` CDN is accessible
 
 ### Notebooks Not Found in JupyterLite
 
 **Problem**: Notebooks don't appear in JupyterLite file browser
 
 **Solutions**:
+
 1. Verify notebooks are in `Day_*` directories
-2. Check `jupyter_lite_config.json` includes correct paths
-3. Rebuild JupyterLite: `python tools/integrate_jupyterlite.py`
-4. Verify notebooks are committed to git
+1. Check `jupyter_lite_config.json` includes correct paths
+1. Rebuild JupyterLite: `python tools/integrate_jupyterlite.py`
+1. Verify notebooks are committed to git
 
 ### Progress Not Saving
 
 **Problem**: Progress resets after page refresh
 
 **Solutions**:
+
 1. Check browser allows localStorage
-2. Verify JavaScript is enabled
-3. Check browser console for errors
-4. Try different browser
-5. Check if in private/incognito mode
+1. Verify JavaScript is enabled
+1. Check browser console for errors
+1. Try different browser
+1. Check if in private/incognito mode
 
 ### Pyodide Console Errors
 
 **Problem**: Code won't execute in Pyodide console
 
 **Solutions**:
+
 1. Check code syntax
-2. Verify required packages are available in Pyodide
-3. Check browser console for specific errors
-4. Some packages (like database connectors) won't work in browser
-5. Try simpler code to verify Pyodide is working
+1. Verify required packages are available in Pyodide
+1. Check browser console for specific errors
+1. Some packages (like database connectors) won't work in browser
+1. Try simpler code to verify Pyodide is working
 
 ### Build Fails
 
 **Problem**: `mkdocs build` or JupyterLite build fails
 
 **Solutions**:
-1. Check all dependencies are installed
-2. Verify Python version (3.11+ for JupyterLite)
-3. Check for syntax errors in config files
-4. Run with `--verbose` flag for detailed errors
-5. Clear build cache: `rm -rf site/`
 
----
+1. Check all dependencies are installed
+1. Verify Python version (3.11+ for JupyterLite)
+1. Check for syntax errors in config files
+1. Run with `--verbose` flag for detailed errors
+1. Clear build cache: `rm -rf site/`
+
+______________________________________________________________________
 
 ## Maintenance
 
 ### Regular Tasks (Monthly)
 
 1. **Update dependencies**:
+
    ```bash
    pip install --upgrade jupyterlite-core jupyterlite-pyodide-kernel mkdocs-material
    ```
 
-2. **Test JupyterLite**:
+1. **Test JupyterLite**:
+
    - Launch a few notebooks
    - Verify common packages work
    - Check for console errors
 
-3. **Review analytics**:
+1. **Review analytics**:
+
    - Check which lessons are popular
    - Identify issues from error logs
    - Review user feedback
@@ -483,16 +497,19 @@ Test in:
 ### Quarterly Tasks
 
 1. **Update Pyodide version**:
+
    - Check for new Pyodide releases
    - Update CDN URL in `mkdocs.yml`
    - Test thoroughly
 
-2. **Review accessibility**:
+1. **Review accessibility**:
+
    - Run Lighthouse audit
    - Test with screen reader
    - Check keyboard navigation
 
-3. **Optimize performance**:
+1. **Optimize performance**:
+
    - Review page load times
    - Optimize images
    - Minify assets
@@ -500,16 +517,18 @@ Test in:
 ### Annual Tasks
 
 1. **Major version updates**:
+
    - Update MkDocs Material
    - Update JupyterLite
    - Review breaking changes
 
-2. **Comprehensive testing**:
+1. **Comprehensive testing**:
+
    - Test all features
    - Check all browsers
    - Mobile testing
 
----
+______________________________________________________________________
 
 ## Getting Help
 
@@ -529,20 +548,21 @@ Test in:
 ### Professional Support
 
 For complex implementations, consider:
+
 - Hiring a web developer familiar with MkDocs
 - Consulting with JupyterLite community
 - Using professional services for accessibility audits
 
----
+______________________________________________________________________
 
 ## Next Steps
 
 1. ✅ Review the recommendations document
-2. ✅ Test sample implementations locally
-3. ✅ Choose which features to implement first
-4. ✅ Follow this guide for implementation
-5. ✅ Test thoroughly before deploying
-6. ✅ Deploy to GitHub Pages
-7. ✅ Monitor and iterate based on feedback
+1. ✅ Test sample implementations locally
+1. ✅ Choose which features to implement first
+1. ✅ Follow this guide for implementation
+1. ✅ Test thoroughly before deploying
+1. ✅ Deploy to GitHub Pages
+1. ✅ Monitor and iterate based on feedback
 
 Good luck with your implementation! 🚀

@@ -3,17 +3,16 @@
 ## Overview
 
 This lesson introduces a lightweight wrapper around the
-[JSONPlaceholder](https://jsonplaceholder.typicode.com/) demo API. The module
-exports three helpers—`fetch_users`, `fetch_post`, and `fetch_posts_by_user`—that
-return structured data for analytics workflows while keeping the HTTP layer easy
-to mock during tests.
+[JSONPlaceholder](https://jsonplaceholder.typicode.com/) demo API. The module exports three
+helpers—`fetch_users`, `fetch_post`, and `fetch_posts_by_user`—that return structured data for
+analytics workflows while keeping the HTTP layer easy to mock during tests.
 
 ## Learning goals
 
 - Understand how to issue HTTP GET requests with `requests`.
 - Convert JSON payloads into `pandas.DataFrame` objects for analysis.
-- Inject custom HTTP clients (for example, `requests.Session` objects or call
-  stubs) to make networked code testable.
+- Inject custom HTTP clients (for example, `requests.Session` objects or call stubs) to make
+  networked code testable.
 
 ## Requirements
 
@@ -24,8 +23,7 @@ pip install -r requirements.txt
 pip install pytest responses
 ```
 
-`responses` is only needed when you want to simulate the API locally or run the
-pytest suite.
+`responses` is only needed when you want to simulate the API locally or run the pytest suite.
 
 ## Running the lesson
 
@@ -37,14 +35,14 @@ Execute the script directly to fetch data from JSONPlaceholder:
 python Day_33_API/api.py
 ```
 
-The command prints a preview of the user list, details for post `1`, and a table
-of posts authored by user `2`.
+The command prints a preview of the user list, details for post `1`, and a table of posts authored
+by user `2`.
 
 ### Mocked endpoints
 
-The helper functions accept a `requests.Session` or any callable with the same
-signature as `requests.get`. This allows you to supply canned responses when the
-internet is unavailable or you want deterministic examples:
+The helper functions accept a `requests.Session` or any callable with the same signature as
+`requests.get`. This allows you to supply canned responses when the internet is unavailable or you
+want deterministic examples:
 
 ```python
 from Day_33_API.api import fetch_users
@@ -67,17 +65,15 @@ mocked_users = fetch_users(client=MockClient())
 print(mocked_users)
 ```
 
-The included pytest suite (see below) relies on the `responses` library to
-provide richer, request-aware mocks if you prefer a declarative API.
+The included pytest suite (see below) relies on the `responses` library to provide richer,
+request-aware mocks if you prefer a declarative API.
 
 ## Tests
 
-Run the Day 33 unit tests, which exercise both success and error paths using
-mocked HTTP responses:
+Run the Day 33 unit tests, which exercise both success and error paths using mocked HTTP responses:
 
 ```bash
 pytest tests/test_day_33.py
 ```
 
-To execute the entire collection of lesson tests, run `pytest` from the project
-root.
+To execute the entire collection of lesson tests, run `pytest` from the project root.

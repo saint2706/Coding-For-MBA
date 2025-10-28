@@ -92,7 +92,7 @@ class ProgressTracker {
     const progress = this.getProgress();
     const completedLessons = Object.keys(progress);
     const timestamps = completedLessons.map(id => progress[id].timestamp);
-    
+
     return {
       completed: completedLessons.length,
       remaining: this.totalLessons - completedLessons.length,
@@ -154,7 +154,7 @@ class ProgressTracker {
    */
   updateUI() {
     const stats = this.getStats();
-    
+
     // Update progress percentage
     document.querySelectorAll('.progress-percentage').forEach(el => {
       el.textContent = `${stats.percentage}%`;

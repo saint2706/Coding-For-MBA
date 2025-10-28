@@ -7,12 +7,12 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE_DIR))
 
 # Import legacy modules referenced by pytest-cov so coverage thresholds remain satisfied.
-from Day_24_Pandas_Advanced import pandas_adv as pandas_adv
-from Day_25_Data_Cleaning import data_cleaning as day25_cleaning
-from Day_26_Statistics import stats as day26_stats
-
-from Day_75_BI_Visualization_and_Dashboard_Principles import solutions as sol
-
+from Day_24_Pandas_Advanced import pandas_adv as pandas_adv  # noqa: E402
+from Day_25_Data_Cleaning import data_cleaning as day25_cleaning  # noqa: E402
+from Day_26_Statistics import stats as day26_stats  # noqa: E402
+from Day_75_BI_Visualization_and_Dashboard_Principles import (  # noqa: E402
+    solutions as sol,
+)
 
 # -- Figure helpers ---------------------------------------------------------
 

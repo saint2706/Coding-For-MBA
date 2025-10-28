@@ -1,6 +1,7 @@
 # 🌐 Day 35: Flask Web Framework
 
-Welcome to Day 35! This lesson contains a small Flask project that analyses submitted text and reports simple statistics such as word counts and lexical diversity.
+Welcome to Day 35! This lesson contains a small Flask project that analyses submitted text and
+reports simple statistics such as word counts and lexical diversity.
 
 ## Environment setup
 
@@ -16,7 +17,8 @@ Welcome to Day 35! This lesson contains a small Flask project that analyses subm
 
 ## Running the Flask application
 
-The application now exposes a `create_app()` factory in `Day_35_Flask_Web_Framework/app/__init__.py`, so it can be started with the Flask CLI:
+The application now exposes a `create_app()` factory in
+`Day_35_Flask_Web_Framework/app/__init__.py`, so it can be started with the Flask CLI:
 
 ```bash
 FLASK_APP=Day_35_Flask_Web_Framework.app:create_app flask run
@@ -28,11 +30,13 @@ Alternatively, you can execute the module directly:
 python -m Day_35_Flask_Web_Framework.app
 ```
 
-Once running, visit <http://127.0.0.1:5000/> to interact with the analyser. Use the **Post** page to submit text and review the calculated statistics on the **Result** page.
+Once running, visit <http://127.0.0.1:5000/> to interact with the analyser. Use the **Post** page to
+submit text and review the calculated statistics on the **Result** page.
 
 ## Running the tests
 
-Automated tests validate both the Flask routes and the helper functions that power the analyser. Execute them from the repository root:
+Automated tests validate both the Flask routes and the helper functions that power the analyser.
+Execute them from the repository root:
 
 ```bash
 pytest -k day_35
@@ -48,7 +52,8 @@ pytest -k day_35
 1. **Create a new template**:
 
    - Create a new HTML file named `contact.html` in the `templates` directory.
-   - Add a new route to the Flask app at the URL `/contact` that renders the `contact.html` template.
+   - Add a new route to the Flask app at the URL `/contact` that renders the `contact.html`
+     template.
 
 1. **Pass data to a template**:
 
@@ -59,4 +64,5 @@ pytest -k day_35
 
 You can find the solutions to these exercises in the `solutions.py` file in this directory.
 
-🎉 **Congratulations!** You've learned the basics of Flask, a powerful tool for building web applications and dashboards with Python.
+🎉 **Congratulations!** You've learned the basics of Flask, a powerful tool for building web
+applications and dashboards with Python.

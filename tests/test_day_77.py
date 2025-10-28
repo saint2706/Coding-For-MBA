@@ -15,7 +15,6 @@ from Day_77_BI_Domain_Analytics_and_Value_Drivers import (
     load_domain_topics,
 )
 
-
 EXPECTED_GROUPS = {
     "Revenue-facing": set(DOMAIN_GROUPS["Revenue-facing"]),
     "Operational excellence": set(DOMAIN_GROUPS["Operational excellence"]),

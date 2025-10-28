@@ -31,5 +31,5 @@ black = "data"
 ruff = "data"
 
 [tool.mdformat]
-wrap = 88
+wrap = 100
 number = false

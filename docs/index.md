@@ -1,10 +1,11 @@
----
-tags: [python, analytics, bi, ml, curriculum]
----
+______________________________________________________________________
+
+## tags: \[python, analytics, bi, ml, curriculum\]
 
 # Coding for MBA
 
-> An 84-day applied Python, analytics, and business intelligence curriculum for decision-makers who want to ship production-ready insights.
+> An 84-day applied Python, analytics, and business intelligence curriculum for decision-makers who
+> want to ship production-ready insights.
 
 ## Quick start
 
@@ -13,12 +14,12 @@ tags: [python, analytics, bi, ml, curriculum]
    git clone https://github.com/saint2706/Coding-For-MBA.git
    cd Coding-For-MBA
    ```
-2. **Create a virtual environment**
+1. **Create a virtual environment**
    ```bash
    python -m venv .venv
    source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
    ```
-3. **Install dependencies**
+1. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    pip install -r requirements-dev.txt

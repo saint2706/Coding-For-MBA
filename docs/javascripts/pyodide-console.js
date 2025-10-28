@@ -29,10 +29,10 @@ class PyodideConsole {
       this.pyodide = await loadPyodide({
         indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/"
       });
-      
+
       // Pre-load common packages
       await this.pyodide.loadPackage(['numpy', 'pandas', 'matplotlib']);
-      
+
       this.isReady = true;
       this.isLoading = false;
       console.log('Pyodide ready!');
@@ -77,7 +77,7 @@ sys.stderr = io.StringIO()
 
       // Get captured output
       const stdout = await this.pyodide.runPython("sys.stdout.getvalue()");
-      
+
       // Format result
       let output = stdout;
       if (result !== undefined && result !== null) {
@@ -114,11 +114,11 @@ const pyodideConsole = new PyodideConsole();
  */
 function createInteractiveWidget(container, initialCode = '') {
   const widgetId = `widget-${Math.random().toString(36).substr(2, 9)}`;
-  
+
   container.innerHTML = `
     <div class="interactive-widget" id="${widgetId}">
       <div class="widget-toolbar">
-        <button class="run-button" onclick="executeWidget('${widgetId}')" 
+        <button class="run-button" onclick="executeWidget('${widgetId}')"
                 aria-label="Run Python code">
           ▶ Run Code
         </button>
@@ -128,14 +128,14 @@ function createInteractiveWidget(container, initialCode = '') {
         </button>
         <span class="status-indicator" id="${widgetId}-status"></span>
       </div>
-      <textarea 
-        class="code-input" 
+      <textarea
+        class="code-input"
         id="${widgetId}-input"
         aria-label="Python code editor"
         spellcheck="false"
         rows="5">${initialCode}</textarea>
-      <div class="code-output" id="${widgetId}-output" 
-           role="log" 
+      <div class="code-output" id="${widgetId}-output"
+           role="log"
            aria-live="polite"
            aria-label="Code execution output"></div>
     </div>
@@ -168,7 +168,7 @@ async function executeWidget(widgetId) {
 
   try {
     const result = await pyodideConsole.runCode(code);
-    
+
     if (result.error) {
       output.innerHTML = `<div class="output-error"><strong>Error:</strong>\n${escapeHtml(result.error)}</div>`;
       status.textContent = '❌ Error';
@@ -194,7 +194,7 @@ async function executeWidget(widgetId) {
 function clearWidgetOutput(widgetId) {
   const output = document.getElementById(`${widgetId}-output`);
   const status = document.getElementById(`${widgetId}-status`);
-  
+
   if (output) {
     output.innerHTML = '';
   }

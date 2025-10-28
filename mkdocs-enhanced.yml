@@ -19,7 +19,7 @@ theme:
   custom_dir: docs/overrides  # For custom templates (create this directory)
   logo: assets/logo.png  # Add your logo
   favicon: assets/favicon.ico  # Add your favicon
-  
+
   features:
     # Navigation
     - navigation.instant  # Single-page application behavior
@@ -34,25 +34,25 @@ theme:
     - navigation.path  # Show breadcrumb navigation
     - navigation.indexes  # Section index pages
     - navigation.footer  # Previous/next links in footer
-    
+
     # Table of contents
     - toc.follow  # Sidebar automatically scrolls
     - toc.integrate  # TOC integrated into sidebar
-    
+
     # Search
     - search.suggest  # Search suggestions
     - search.highlight  # Highlight search terms
     - search.share  # Share search results
-    
+
     # Content
     - content.code.copy  # Copy button for code blocks
     - content.code.annotate  # Annotations in code blocks
     - content.tabs.link  # Link tabs across pages
     - content.tooltips  # Improved tooltips
-    
+
     # Header
     - header.autohide  # Hide header on scroll
-    
+
   palette:
     # Dark mode as default
     - scheme: slate
@@ -61,7 +61,7 @@ theme:
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
-    
+
     # Light mode
     - scheme: default
       primary: indigo
@@ -69,12 +69,12 @@ theme:
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
-  
+
   language: en
   font:
     text: Roboto
     code: Roboto Mono
-  
+
   icon:
     repo: fontawesome/brands/github
     edit: material/pencil
@@ -88,12 +88,12 @@ plugins:
       separator: '[\s\-\.,;:!?\(\)\[\]\{\}]+'
       prebuild_index: true  # Build index during build
       indexing: 'full'  # Index full content
-  
+
   # Git revision date (shows last update)
   - git-revision-date-localized:
       enable_creation_date: true
       type: timeago
-  
+
   # Minify HTML, CSS, JS
   - minify:
       minify_html: true
@@ -101,18 +101,18 @@ plugins:
       minify_css: true
       htmlmin_opts:
         remove_comments: true
-  
+
   # Social cards (generate preview images)
   - social:
       cards: true
       cards_color:
         fill: "#667eea"
         text: "#FFFFFF"
-  
+
   # Tags for content organization
   - tags:
       tags_file: tags.md
-  
+
   # Analytics (privacy-friendly)
   - privacy:
       enabled: true
@@ -134,7 +134,7 @@ markdown_extensions:
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
           case: lower
-  
+
   # PyMdown Extensions
   - pymdownx.arithmatex:  # LaTeX math
       generic: true
@@ -189,14 +189,14 @@ extra_javascript:
   # Math rendering
   - javascripts/mathjax.js
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-  
+
   # Pyodide for in-browser Python
   - https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js
   - javascripts/pyodide-console.js
-  
+
   # Progress tracking
   - javascripts/progress-tracker.js
-  
+
   # Analytics (optional - uncomment if using)
   # - javascripts/analytics.js
 
@@ -213,22 +213,22 @@ extra:
     - icon: fontawesome/solid/graduation-cap
       link: https://saint2706.github.io/Coding-For-MBA/
       name: Coding for MBA
-  
+
   # Analytics (privacy-friendly option)
   analytics:
     provider: custom
     # To enable Plausible or similar:
     # property: plausible
     # domain: saint2706.github.io
-  
+
   # Version selector (for future use)
   version:
     provider: mike
     default: latest
-  
+
   # Generator notice
   generator: false
-  
+
   # Consent for cookies (GDPR compliance)
   consent:
     title: Cookie Consent
@@ -238,7 +238,7 @@ extra:
     actions:
       - accept
       - manage
-  
+
   # Additional features
   features:
     - interactive-notebooks

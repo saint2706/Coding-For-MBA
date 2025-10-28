@@ -2,20 +2,24 @@
 
 ## Overview
 
-This data directory contains curated datasets and utility files specifically designed for business analytics education. Each file serves as a practical example of real-world data that MBA students and business analysts commonly encounter in their professional work.
+This data directory contains curated datasets and utility files specifically designed for business
+analytics education. Each file serves as a practical example of real-world data that MBA students
+and business analysts commonly encounter in their professional work.
 
 ## 📁 Dataset Categories
 
 ### 🌍 Geographic and Demographic Data
 
 - **`countries.py`** - Complete list of world countries for market analysis
-- **`countries_data.py`** - Detailed country information including population, capitals, languages, and currencies
+- **`countries_data.py`** - Detailed country information including population, capitals, languages,
+  and currencies
 - **`countries_data.json`** - JSON version of country data for web applications
 
 ### 💼 Corporate and Financial Data
 
 - **`F500.csv`** - Fortune 500 company rankings and financial metrics
-- **`fortune_500_companies_2017.csv`** - Historical Fortune 500 data with detailed company information
+- **`fortune_500_companies_2017.csv`** - Historical Fortune 500 data with detailed company
+  information
 - **`fortune1000_final.csv`** - Extended Fortune 1000 dataset for comprehensive corporate analysis
 
 ### 📈 Market and Consumer Data
@@ -25,13 +29,15 @@ This data directory contains curated datasets and utility files specifically des
 
 ### 🧭 Business Intelligence Curriculum Support
 
-- **`bi_analyst_roadmap.json`** - Phase 5 topic graph sourced from the developer-roadmap BI Analyst track (MIT license) for aligning lessons, cheat sheets, and stakeholder narratives
+- **`bi_analyst_roadmap.json`** - Phase 5 topic graph sourced from the developer-roadmap BI Analyst
+  track (MIT license) for aligning lessons, cheat sheets, and stakeholder narratives
 
 ### 📰 Text and Social Media Analytics
 
 - **`hacker_news.csv`** - Technology industry discussion data from Hacker News
 - **`HN_posts_year_to_Sep_26_2016.csv`** - Time-series social media engagement data
-- **`email_exchanges.txt` / `email_exchanges_big.txt`** - Corporate communication patterns for text analysis
+- **`email_exchanges.txt` / `email_exchanges_big.txt`** - Corporate communication patterns for text
+  analysis
 
 ### 🗣️ Speech and Sentiment Analysis
 
@@ -59,7 +65,7 @@ This data directory contains curated datasets and utility files specifically des
 # Example: Identify English-speaking markets for expansion
 from data.countries_data import data
 
-english_markets = [country for country in data 
+english_markets = [country for country in data
                    if 'English' in country.get('languages', [])]
 print(f"Found {len(english_markets)} English-speaking markets")
 ```
@@ -138,8 +144,10 @@ These datasets are used throughout the course in various day modules:
 - **Days 25-26**: Data cleaning and statistical analysis
 - **Days 27-29**: Data visualization and reporting
 - **Days 30-33**: Web scraping and API integration
-- **Days 68-84**: Business Intelligence specialization and portfolio strategy using the BI analyst roadmap
+- **Days 68-84**: Business Intelligence specialization and portfolio strategy using the BI analyst
+  roadmap
 
 ______________________________________________________________________
 
-*Ready to turn data into business insights? Start exploring these datasets and discover the power of Python for business analytics!* 🚀
+*Ready to turn data into business insights? Start exploring these datasets and discover the power of
+Python for business analytics!* 🚀

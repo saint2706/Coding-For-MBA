@@ -1,8 +1,8 @@
 # Day 77 – BI Domain Analytics and Value Drivers
 
-Day 77 bridges the roadmap's domain-specific BI topics with tangible stakeholder value stories.
-The lesson groups the nodes into three facilitation tracks and anchors each in the language of
-business outcomes:
+Day 77 bridges the roadmap's domain-specific BI topics with tangible stakeholder value stories. The
+lesson groups the nodes into three facilitation tracks and anchors each in the language of business
+outcomes:
 
 - **Revenue-facing** – Sales, marketing, customer lifetime value, and risk/compliance teams all
   ground their dashboards in unit economics. The scenarios in `lesson.py` walk through marketing
@@ -16,13 +16,15 @@ business outcomes:
   summarize operating margin, return rates, bed utilization, HR turnover, and manufacturing yield,
   showing how macro benchmarks contextualize departmental dashboards.
 
-Use the script to narrate how generic BI techniques become stakeholder-relevant KPIs. Each
-function demonstrates how to plug the roadmap topics into dashboards by pairing cleaned datasets
-with helper calculations tailored to a domain conversation.
+Use the script to narrate how generic BI techniques become stakeholder-relevant KPIs. Each function
+demonstrates how to plug the roadmap topics into dashboards by pairing cleaned datasets with helper
+calculations tailored to a domain conversation.
 
 ## Additional Topic: Experimentation & Predictive Foundations
 
-> This lesson is part of the Phase 5 Business Intelligence specialization. Use the [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across Days 68–84.
+> This lesson is part of the Phase 5 Business Intelligence specialization. Use the
+> [Phase 5 overview](../docs/bi-curriculum.md) to see how the developer-roadmap topics align across
+> Days 68–84.
 
 ## Why it matters
 
