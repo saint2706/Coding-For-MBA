@@ -240,14 +240,14 @@ def generate_quiz_html(quiz_data: Dict, day_number: int, title: str) -> str:
         if "explanation" in q:
             explanation_html = f"""
                 <div class="explanation" id="explanation-{i}">
-                    <strong>💡 Explanation:</strong> {q['explanation']}
+                    <strong>💡 Explanation:</strong> {q["explanation"]}
                 </div>
             """
 
         question_html = f"""
             <div class="question" id="question-{i}">
-                <div class="question-text">Question {i+1}: {q['question']}</div>
-                {''.join(options_html)}
+                <div class="question-text">Question {i + 1}: {q["question"]}</div>
+                {"".join(options_html)}
                 {explanation_html}
             </div>
         """

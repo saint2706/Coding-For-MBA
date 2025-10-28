@@ -1,8 +1,9 @@
 ---
 title: 'Day 96: Subqueries'
 tags:
-- SQL
+  - SQL
 ---
+
 # 📘 Day 96: Subqueries
 
 Welcome to Day 96! Today, we'll explore **Subqueries**, also known as nested queries or inner
@@ -64,7 +65,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 95 – Day 95: Joins](../Day_95_Joins/README.md) • **Next:** [Day 97 – Day 97: Views](../Day_97_Views/README.md)
 

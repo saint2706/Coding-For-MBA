@@ -1,8 +1,9 @@
 ---
 title: 'Day 102: Common Table Expressions (CTEs)'
 tags:
-- SQL
+  - SQL
 ---
+
 # 📘 Day 102: Common Table Expressions (CTEs)
 
 Welcome to Day 102! Today, we'll learn about **Common Table Expressions (CTEs)**, a temporary result
@@ -60,7 +61,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 101 – Day 101: Triggers](../Day_101_Triggers/README.md) • **Next:** [Day 103 – Day 103: Pivoting Data](../Day_103_Pivoting_Data/README.md)
 

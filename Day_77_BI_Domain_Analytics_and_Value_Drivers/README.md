@@ -1,8 +1,9 @@
 ---
-title: "Day 77 \u2013 BI Domain Analytics and Value Drivers"
+title: Day 77 – BI Domain Analytics and Value Drivers
 tags:
-- BI
+  - BI
 ---
+
 # Day 77 – BI Domain Analytics and Value Drivers
 
 Day 77 bridges the roadmap's domain-specific BI topics with tangible stakeholder value stories. The
@@ -49,7 +50,7 @@ Prototype predictive loops that inform operational decisions.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 76 – Day 76 – BI Platforms and Automation Tools](../Day_76_BI_Platforms_and_Automation_Tools/README.md) • **Next:** [Day 78 – Day 78 – BI Experimentation and Predictive Insights](../Day_78_BI_Experimentation_and_Predictive_Insights/README.md)
 

@@ -1,10 +1,11 @@
 ---
 title: 'Day 16: File Handling for Business Analytics'
 tags:
-- BI
-- Basics
-- Python
+  - BI
+  - Basics
+  - Python
 ---
+
 # 📘 Day 16: File Handling for Business Analytics
 
 A huge part of data analysis involves reading data from files and writing results to them. Whether
@@ -76,7 +77,7 @@ analysis.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 15 – Day 15: Exception Handling - Building Robust Business Logic](../Day_15_Exception_Handling/README.md) • **Next:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](../Day_17_Regular_Expressions/README.md)
 

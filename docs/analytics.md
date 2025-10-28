@@ -9,10 +9,10 @@ The Coding for MBA platform includes **optional**, privacy-first analytics to he
 ### 🔒 Privacy-First Design
 
 1. **Opt-in only**: Analytics are **disabled by default**
-2. **No personal data**: We never collect names, emails, IP addresses, or other PII
-3. **No tracking cookies**: Only session-based, anonymous tracking
-4. **No third-party trackers**: No Google Analytics, Facebook Pixel, or similar
-5. **Local-first**: Data stored locally when possible
+1. **No personal data**: We never collect names, emails, IP addresses, or other PII
+1. **No tracking cookies**: Only session-based, anonymous tracking
+1. **No third-party trackers**: No Google Analytics, Facebook Pixel, or similar
+1. **Local-first**: Data stored locally when possible
 
 ### 📊 What We Collect (When Enabled)
 
@@ -53,11 +53,13 @@ extra:
 ### For Self-Hosted Deployments
 
 1. **Option A: Use Learner Backend** (recommended)
+
    - Events stored in local SQLite database
    - Generate reports with `analytics/report.py`
    - Full control over data
 
-2. **Option B: Use Plausible Analytics** (privacy-friendly)
+1. **Option B: Use Plausible Analytics** (privacy-friendly)
+
    - Self-hosted or cloud-hosted Plausible
    - GDPR-compliant analytics
    - No cookies, respects Do Not Track
@@ -73,6 +75,7 @@ open reports/index.html
 ```
 
 Report includes:
+
 - Lesson popularity (page views)
 - Quiz performance (average scores, pass rates)
 - Traffic patterns (peak usage times)
@@ -82,10 +85,11 @@ Report includes:
 ### Data Subject Rights
 
 Users have the right to:
+
 1. **Access**: Request their data (stored locally, accessible via browser)
-2. **Delete**: Clear cookies and local storage
-3. **Port**: Export their progress data
-4. **Opt-out**: Disable analytics at any time
+1. **Delete**: Clear cookies and local storage
+1. **Port**: Export their progress data
+1. **Opt-out**: Disable analytics at any time
 
 ### Implementation
 
@@ -145,6 +149,7 @@ Privacy-friendly, GDPR-compliant analytics:
 ```
 
 Benefits:
+
 - No cookies
 - Respects Do Not Track
 - Open source
@@ -153,6 +158,7 @@ Benefits:
 ### Matomo (Self-Hosted)
 
 Full-featured, self-hosted analytics:
+
 - Install Matomo on your server
 - Configure to respect privacy settings
 - Enable IP anonymization
@@ -164,6 +170,7 @@ Running without any analytics is perfectly fine! The platform works fully offlin
 ## Questions?
 
 For questions about privacy or analytics:
+
 - Review our [Privacy Policy](../privacy.md) (if applicable)
 - Open an issue on GitHub
 - Contact the maintainers

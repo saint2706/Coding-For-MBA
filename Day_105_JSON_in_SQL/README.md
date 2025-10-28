@@ -1,8 +1,9 @@
 ---
 title: 'Day 105: JSON in SQL'
 tags:
-- SQL
+  - SQL
 ---
+
 # 📘 Day 105: JSON in SQL
 
 Welcome to Day 105! Today, we'll explore how to work with **JSON (JavaScript Object Notation)** data
@@ -64,7 +65,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 104 – Day 104: Database Design and Normalization](../Day_104_Database_Design_and_Normalization/README.md) • **Next:** [Day 106 – Day 106: XML in SQL](../Day_106_XML_in_SQL/README.md)
 

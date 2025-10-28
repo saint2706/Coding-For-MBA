@@ -1,8 +1,9 @@
 ---
 title: 'Day 21: Virtual Environments - Professional Project Management'
 tags:
-- Data
+  - Data
 ---
+
 # 📘 Day 21: Virtual Environments - Professional Project Management
 
 As you work on more complex projects, you'll find they have different requirements. Project A might
@@ -81,7 +82,7 @@ projects more robust and shareable.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](../Day_20_Python_Package_Manager/README.md) • **Next:** [Day 22 – Day 22: NumPy - The Foundation of Numerical Computing](../Day_22_NumPy/README.md)
 

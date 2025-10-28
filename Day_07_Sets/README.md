@@ -1,11 +1,12 @@
 ---
 title: 'Day 7: Sets - Managing Unique Business Data'
 tags:
-- BI
-- Basics
-- Data
-- Python
+  - BI
+  - Basics
+  - Data
+  - Python
 ---
+
 # 📘 Day 7: Sets - Managing Unique Business Data
 
 We've seen lists for ordered data and tuples for immutable data. Now we'll learn about **sets**,
@@ -88,7 +89,7 @@ a list or analyze the overlap between two groups, sets are the best tool for the
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 06 – Day 6: Tuples - Storing Immutable Business Data](../Day_06_Tuples/README.md) • **Next:** [Day 08 – Day 8: Dictionaries - Structuring Complex Business Data](../Day_08_Dictionaries/README.md)
 

@@ -1,8 +1,9 @@
 ---
-title: "Day 88 \u2013 Capstone Project - Part 1"
+title: Day 88 – Capstone Project - Part 1
 tags:
-- Python
+  - Python
 ---
+
 # Day 88 – Capstone Project - Part 1
 
 ## Introduction
@@ -55,7 +56,7 @@ Create a detailed plan for how you will analyze the data and derive insights.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 87 – Day 87 – Data Governance and Security](../Day_87_Data_Governance/README.md) • **Next:** [Day 89 – Day 89 – Capstone Project - Part 2](../Day_89_Capstone_Part_2/README.md)
 

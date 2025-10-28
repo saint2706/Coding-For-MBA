@@ -1,10 +1,11 @@
 ---
 title: 'Day 15: Exception Handling - Building Robust Business Logic'
 tags:
-- BI
-- Basics
-- Python
+  - BI
+  - Basics
+  - Python
 ---
+
 # 📘 Day 15: Exception Handling - Building Robust Business Logic
 
 In the real world, data is messy and operations can fail. A file might be missing, a user might
@@ -94,7 +95,7 @@ data.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](../Day_14_Modules/README.md) • **Next:** [Day 16 – Day 16: File Handling for Business Analytics](../Day_16_File_Handling/README.md)
 

@@ -1,8 +1,9 @@
 ---
-title: "Day 76 \u2013 BI Platforms and Automation Tools"
+title: Day 76 – BI Platforms and Automation Tools
 tags:
-- BI
+  - BI
 ---
+
 # Day 76 – BI Platforms and Automation Tools
 
 Day 76 explores the major BI delivery platforms alongside the scripting and standardisation
@@ -77,7 +78,7 @@ Reveal why metrics move using diagnostic analytics.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 75 – Day 75 – BI Visualization and Dashboard Principles](../Day_75_BI_Visualization_and_Dashboard_Principles/README.md) • **Next:** [Day 77 – Day 77 – BI Domain Analytics and Value Drivers](../Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md)
 

@@ -1,8 +1,9 @@
 ---
-title: "Day 68 \u2013 BI Analyst Foundations"
+title: Day 68 – BI Analyst Foundations
 tags:
-- BI
+  - BI
 ---
+
 # Day 68 – BI Analyst Foundations
 
 > This lesson is part of the Phase 5 Business Intelligence specialization. Use the
@@ -60,7 +61,7 @@ Connect strategic BI vision to the functions it empowers.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 67 – Day 67 – Model Monitoring and Reliability Engineering](../Day_67_Model_Monitoring_and_Reliability/README.md) • **Next:** [Day 69 – Day 69 – BI Strategy and Stakeholders](../Day_69_BI_Strategy_and_Stakeholders/README.md)
 

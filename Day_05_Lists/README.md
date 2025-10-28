@@ -1,11 +1,12 @@
 ---
 title: 'Day 5: Managing Collections of Business Data with Lists'
 tags:
-- BI
-- Basics
-- Data
-- Python
+  - BI
+  - Basics
+  - Data
+  - Python
 ---
+
 # 📘 Day 5: Managing Collections of Business Data with Lists
 
 In business, you often work with collections of data: lists of customers, quarterly sales figures,
@@ -88,7 +89,7 @@ how to manage and analyze data within lists is a fundamental skill for any data 
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 04 – Day 4: Working with Text Data - Strings](../Day_04_Strings/README.md) • **Next:** [Day 06 – Day 6: Tuples - Storing Immutable Business Data](../Day_06_Tuples/README.md)
 

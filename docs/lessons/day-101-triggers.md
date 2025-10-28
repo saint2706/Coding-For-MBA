@@ -1,7 +1,7 @@
 ---
 title: 'Day 101: Triggers'
 tags:
-- SQL
+  - SQL
 ---
 
 Welcome to Day 101! Today, we'll learn about **Triggers**, which are special stored procedures that
@@ -46,7 +46,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 100 – Day 100: Stored Procedures](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_100_Stored_Procedures/README.md) • **Next:** [Day 102 – Day 102: Common Table Expressions (CTEs)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_102_Common_Table_Expressions/README.md)
 

@@ -1,9 +1,10 @@
 ---
 title: 'Day 27: Data Visualization - Communicating Insights'
 tags:
-- Data
-- Visualization
+  - Data
+  - Visualization
 ---
+
 # 📘 Day 27: Data Visualization - Communicating Insights
 
 Visualising key business metrics makes it easier to communicate findings and uncover patterns. Day
@@ -58,7 +59,7 @@ pytest
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 26 – Day 26: Practical Statistics for Business Analysis](../Day_26_Statistics/README.md) • **Next:** [Day 28 – Day 28: Advanced Visualization & Customization](../Day_28_Advanced_Visualization/README.md)
 

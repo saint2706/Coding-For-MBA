@@ -1,8 +1,9 @@
 ---
-title: "Day 79 \u2013 BI Storytelling and Stakeholder Influence"
+title: Day 79 – BI Storytelling and Stakeholder Influence
 tags:
-- BI
+  - BI
 ---
+
 # Day 79 – BI Storytelling and Stakeholder Influence
 
 Day 79 teaches analysts how to weave together storytelling craft and change leadership so executive
@@ -75,7 +76,7 @@ Build hands-on fluency with spreadsheet and dashboard tooling.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 78 – Day 78 – BI Experimentation and Predictive Insights](../Day_78_BI_Experimentation_and_Predictive_Insights/README.md) • **Next:** [Day 80 – Day 80 – BI Data Quality and Governance](../Day_80_BI_Data_Quality_and_Governance/README.md)
 

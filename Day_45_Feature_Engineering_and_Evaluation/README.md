@@ -1,8 +1,9 @@
 ---
 title: 'Day 45: Feature Engineering & Model Evaluation'
 tags:
-- ML
+  - ML
 ---
+
 # Day 45: Feature Engineering & Model Evaluation
 
 ## Overview
@@ -59,7 +60,7 @@ To execute the entire project test suite, run `pytest` from the repository root.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 44 – Day 44: Unsupervised Learning](../Day_44_Unsupervised_Learning/README.md) • **Next:** [Day 46 – Day 46: Introduction to Neural Networks & Frameworks](../Day_46_Intro_to_Neural_Networks/README.md)
 

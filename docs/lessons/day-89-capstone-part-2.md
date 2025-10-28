@@ -1,7 +1,7 @@
 ---
-title: "Day 89 \u2013 Capstone Project - Part 2"
+title: Day 89 – Capstone Project - Part 2
 tags:
-- Python
+  - Python
 ---
 
 ## Introduction
@@ -57,7 +57,7 @@ guides your audience through your findings.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 88 – Day 88 – Capstone Project - Part 1](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_88_Capstone_Part_1/README.md) • **Next:** [Day 90 – Day 90 – Career Workshop and Next Steps](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_90_Career_Workshop/README.md)
 

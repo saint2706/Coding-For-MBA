@@ -1,8 +1,9 @@
 ---
-title: "Day 86 \u2013 BI in the Cloud"
+title: Day 86 – BI in the Cloud
 tags:
-- BI
+  - BI
 ---
+
 # Day 86 – BI in the Cloud
 
 ## Introduction
@@ -67,7 +68,7 @@ should include identity and access management, data encryption, and continuous m
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 85 – Day 85 – Advanced SQL and Performance Tuning](../Day_85_Advanced_SQL/README.md) • **Next:** [Day 87 – Day 87 – Data Governance and Security](../Day_87_Data_Governance/README.md)
 

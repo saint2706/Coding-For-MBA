@@ -36,9 +36,9 @@ The server starts at `http://127.0.0.1:8000`
 As you complete lessons, your progress is automatically tracked:
 
 1. **Mark as Started**: Click "Start" on any lesson
-2. **Mark as Completed**: Complete the lesson and click "Complete"
-3. **Take Quizzes**: Quiz scores are recorded automatically
-4. **View Progress**: Check your dashboard for overall stats
+1. **Mark as Completed**: Complete the lesson and click "Complete"
+1. **Take Quizzes**: Quiz scores are recorded automatically
+1. **View Progress**: Check your dashboard for overall stats
 
 ### Earning Badges
 
@@ -81,6 +81,7 @@ export GITHUB_CLIENT_SECRET=your_client_secret
 ```
 
 Benefits:
+
 - Persistent progress across devices
 - Optional: Share progress with mentors/instructors
 - Required for team/class deployments
@@ -142,6 +143,7 @@ See [learner_backend/README.md](../../learner_backend/README.md) for deployment 
 **SQLite (Default)**: Great for single-user or small deployments
 
 **PostgreSQL (Recommended for production)**:
+
 ```bash
 export DATABASE_URL="postgresql://user:password@localhost/dbname"
 ```
@@ -177,27 +179,27 @@ curl http://localhost:8000/api/v1/progress/user_123 > my_progress.json
 Delete all your data:
 
 1. **Cookie-only mode**: Clear browser cookies
-2. **OAuth mode**: Contact administrator or delete via API
+1. **OAuth mode**: Contact administrator or delete via API
 
 ## Troubleshooting
 
 ### Dashboard shows "Failed to load progress"
 
 1. Ensure backend is running: `python -m learner_backend.main`
-2. Check console for error messages (F12 in browser)
-3. Verify database exists: `ls learner_backend/learner.db`
+1. Check console for error messages (F12 in browser)
+1. Verify database exists: `ls learner_backend/learner.db`
 
 ### Progress not saving
 
 1. Check browser console for API errors
-2. Verify endpoint: `http://localhost:8000/api/v1/progress`
-3. Ensure cookies are enabled
+1. Verify endpoint: `http://localhost:8000/api/v1/progress`
+1. Ensure cookies are enabled
 
 ### OAuth not working
 
 1. Verify `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` are set
-2. Check OAuth callback URL: `http://localhost:8000/api/v1/auth/github`
-3. Review GitHub OAuth app settings
+1. Check OAuth callback URL: `http://localhost:8000/api/v1/auth/github`
+1. Review GitHub OAuth app settings
 
 ## Advanced Features
 
@@ -210,6 +212,7 @@ curl http://localhost:8000/api/v1/adaptive/suggest?user_id=user_123
 ```
 
 Returns next suggested lesson based on:
+
 - Current progress
 - Quiz performance
 - Learning pace
@@ -217,6 +220,7 @@ Returns next suggested lesson based on:
 ### Custom Integrations
 
 Integrate with:
+
 - **LMS systems** (Canvas, Moodle)
 - **Slack bots** for streak reminders
 - **GitHub Actions** for automated progress updates
@@ -225,6 +229,7 @@ Integrate with:
 ## Support
 
 For help:
+
 - Review API docs: `http://localhost:8000/docs`
 - Check [learner_backend/README.md](../../learner_backend/README.md)
 - Open an issue on GitHub
@@ -233,6 +238,7 @@ For help:
 ## Roadmap
 
 Upcoming features:
+
 - [ ] Team leaderboards
 - [ ] Custom learning paths
 - [ ] Mentor assignment

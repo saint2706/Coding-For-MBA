@@ -30,6 +30,7 @@ repo2docker --editable .
 ## Custom Configuration
 
 The environment includes all packages from `requirements.txt` plus Jupyter-specific tools:
+
 - JupyterLab
 - Jupyter Notebook
 - ipywidgets for interactive widgets

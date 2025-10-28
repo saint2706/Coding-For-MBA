@@ -1,9 +1,10 @@
 ---
-title: "Day 61 \u2013 Reinforcement and Offline Learning"
+title: Day 61 – Reinforcement and Offline Learning
 tags:
-- Advanced
-- ML
+  - Advanced
+  - ML
 ---
+
 # Day 61 – Reinforcement and Offline Learning
 
 Reinforcement learning (RL) balances exploration and exploitation while offline evaluation keeps
@@ -21,7 +22,7 @@ deterministic policy optimisation, offline evaluation diagnostics, and bandit ba
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 60 – Day 60 – Graph and Geometric Learning](../Day_60_Graph_and_Geometric_Learning/README.md) • **Next:** [Day 62 – Day 62 – Model Interpretability and Fairness](../Day_62_Model_Interpretability_and_Fairness/README.md)
 

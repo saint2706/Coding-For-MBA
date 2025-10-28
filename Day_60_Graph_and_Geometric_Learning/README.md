@@ -1,9 +1,10 @@
 ---
-title: "Day 60 \u2013 Graph and Geometric Learning"
+title: Day 60 – Graph and Geometric Learning
 tags:
-- Advanced
-- ML
+  - Advanced
+  - ML
 ---
+
 # Day 60 – Graph and Geometric Learning
 
 Graph neural networks capture relational structure beyond Euclidean grids. This lesson focuses on:
@@ -21,7 +22,7 @@ layers, monitor training metrics on a toy citation-style graph, and export featu
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 59 – Day 59 – Generative Models](../Day_59_Generative_Models/README.md) • **Next:** [Day 61 – Day 61 – Reinforcement and Offline Learning](../Day_61_Reinforcement_and_Offline_Learning/README.md)
 

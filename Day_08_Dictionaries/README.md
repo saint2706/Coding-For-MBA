@@ -1,11 +1,12 @@
 ---
 title: 'Day 8: Dictionaries - Structuring Complex Business Data'
 tags:
-- BI
-- Basics
-- Data
-- Python
+  - BI
+  - Basics
+  - Data
+  - Python
 ---
+
 # 📘 Day 8: Dictionaries - Structuring Complex Business Data
 
 Real-world business data is structured. A customer has a name, an email, and a location. A product
@@ -93,7 +94,7 @@ them is a huge step forward.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 07 – Day 7: Sets - Managing Unique Business Data](../Day_07_Sets/README.md) • **Next:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](../Day_09_Conditionals/README.md)
 

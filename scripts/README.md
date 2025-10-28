@@ -9,6 +9,7 @@ This directory contains Python scripts for generating and maintaining the MkDocs
 Generates collapsible phase-based navigation structure for `mkdocs.yml`.
 
 **Usage:**
+
 ```bash
 # Dry run (preview changes)
 python scripts/gen_nav.py
@@ -21,6 +22,7 @@ python scripts/gen_nav.py --phases phases.json --apply
 ```
 
 **What it does:**
+
 - Scans all `Day_XX_*` folders
 - Groups lessons by phase (1-7)
 - Generates structured navigation with collapsible phase groups
@@ -31,6 +33,7 @@ python scripts/gen_nav.py --phases phases.json --apply
 Creates overview pages for each curriculum phase.
 
 **Usage:**
+
 ```bash
 # Dry run
 python scripts/gen_phase_overviews.py
@@ -40,11 +43,13 @@ python scripts/gen_phase_overviews.py --apply
 ```
 
 **What it does:**
+
 - Generates `docs/phases/phase_X_overview.md` for phases 1-7
 - Includes phase title, day range, intro, and lesson table
 - Extracts lesson titles and descriptions from READMEs
 
 **Output files:**
+
 - `docs/phases/phase_1_overview.md`
 - `docs/phases/phase_2_overview.md`
 - ... through phase 7
@@ -54,6 +59,7 @@ python scripts/gen_phase_overviews.py --apply
 Adds YAML front-matter tags to lesson README files.
 
 **Usage:**
+
 ```bash
 # Dry run
 python scripts/add_tags.py
@@ -63,6 +69,7 @@ python scripts/add_tags.py --apply
 ```
 
 **What it does:**
+
 - Scans all `Day_XX_*/README.md` files
 - Detects tags based on folder name and content
 - Adds YAML front-matter with tags if not present
@@ -70,6 +77,7 @@ python scripts/add_tags.py --apply
 - Skips files that already have tags
 
 **Tag detection rules:**
+
 - Phase 1 (Days 1-20): Python, Basics
 - Phase 2 (Days 21-39): Data
 - Phase 3 (Days 40-54): ML
@@ -84,6 +92,7 @@ python scripts/add_tags.py --apply
 Generates an interactive lessons index page with search and filtering.
 
 **Usage:**
+
 ```bash
 # Dry run
 python scripts/gen_lessons_index.py
@@ -93,6 +102,7 @@ python scripts/gen_lessons_index.py --apply
 ```
 
 **What it does:**
+
 - Creates `docs/lessons/index.md` with all lessons
 - Includes client-side JavaScript for:
   - Text search
@@ -101,6 +111,7 @@ python scripts/gen_lessons_index.py --apply
 - Generates `docs/site_metadata.json` with total lesson count
 
 **Features:**
+
 - Interactive search box
 - Clickable tag filters
 - Lesson cards with descriptions
@@ -112,6 +123,7 @@ python scripts/gen_lessons_index.py --apply
 Safely reverts changes by restoring `.bak` backup files.
 
 **Usage:**
+
 ```bash
 # Preview what would be restored
 python scripts/revert_nav_changes.py
@@ -121,6 +133,7 @@ python scripts/revert_nav_changes.py --apply
 ```
 
 **What it does:**
+
 - Finds all `.bak` files in the repository
 - Restores them to their original locations
 - Removes backup files after restoration (unless `--keep-backups` is used)
@@ -130,30 +143,33 @@ python scripts/revert_nav_changes.py --apply
 ### Initial Setup
 
 1. **Install dependencies:**
+
    ```bash
    pip install -r requirements-dev.txt
    ```
 
-2. **Run all scripts in sequence:**
+1. **Run all scripts in sequence:**
+
    ```bash
    # Step 1: Add tags to lessons (dry run first)
    python scripts/add_tags.py
    python scripts/add_tags.py --apply
-   
+
    # Step 2: Generate phase overviews
    python scripts/gen_phase_overviews.py
    python scripts/gen_phase_overviews.py --apply
-   
+
    # Step 3: Generate lessons index
    python scripts/gen_lessons_index.py
    python scripts/gen_lessons_index.py --apply
-   
+
    # Step 4: Update navigation (do this last)
    python scripts/gen_nav.py
    python scripts/gen_nav.py --apply
    ```
 
-3. **Build and test:**
+1. **Build and test:**
+
    ```bash
    mkdocs build --strict
    mkdocs serve
@@ -164,8 +180,8 @@ python scripts/revert_nav_changes.py --apply
 When adding new lessons:
 
 1. Create the `Day_XX_*` folder with README.md
-2. Run the scripts in the same sequence as above
-3. The navigation and indexes will be automatically updated
+1. Run the scripts in the same sequence as above
+1. The navigation and indexes will be automatically updated
 
 ### Reverting Changes
 
@@ -212,6 +228,7 @@ To override, create a JSON file:
 ```
 
 Then run:
+
 ```bash
 python scripts/gen_nav.py --phases custom_phases.json --apply
 ```
@@ -266,10 +283,10 @@ Scripts create/modify these files:
 When modifying scripts:
 
 1. Maintain idempotent behavior
-2. Always create backups before modifying files
-3. Support `--apply` flag for dry-run mode
-4. Update this README with changes
-5. Test with `--apply` on a clean clone
+1. Always create backups before modifying files
+1. Support `--apply` flag for dry-run mode
+1. Update this README with changes
+1. Test with `--apply` on a clean clone
 
 ## High-Effort Feature Scripts
 
@@ -278,6 +295,7 @@ When modifying scripts:
 Generates downloadable PDFs and ZIP bundles of the curriculum.
 
 **Usage:**
+
 ```bash
 # Dry run (preview)
 python scripts/generate_pdfs.py --all --dry-run
@@ -290,12 +308,14 @@ python scripts/generate_pdfs.py --phase 1
 ```
 
 **What it does:**
+
 - Converts markdown lessons to paginated PDFs using WeasyPrint
 - Generates `artifacts/curriculum_full.pdf` (all lessons)
 - Creates per-phase PDFs: `artifacts/curriculum_phase_N.pdf`
 - Creates ZIP bundles with markdown + notebooks: `artifacts/bundles/phase_N.zip`
 
 **Requirements:**
+
 - WeasyPrint (`pip install weasyprint`)
 - System dependencies for PDF generation (see script for details)
 
@@ -304,6 +324,7 @@ python scripts/generate_pdfs.py --phase 1
 Adds "Open in Binder" buttons to lesson READMEs containing Jupyter notebooks.
 
 **Usage:**
+
 ```bash
 # Preview changes
 python scripts/add_binder_buttons.py --dry-run
@@ -313,6 +334,7 @@ python scripts/add_binder_buttons.py --apply
 ```
 
 **What it does:**
+
 - Scans for lessons with `.ipynb` files
 - Injects Binder button markdown into README
 - Creates backup files before modifying
@@ -323,6 +345,7 @@ python scripts/add_binder_buttons.py --apply
 Creates SVG badges for phase completion.
 
 **Usage:**
+
 ```bash
 # Generate specific phase badge
 python scripts/generate_badge.py --phase 1
@@ -335,6 +358,7 @@ python scripts/generate_badge.py --all --output custom/path/
 ```
 
 **What it does:**
+
 - Creates colorful SVG badges for each phase (1-7)
 - Uses phase-specific colors and names
 - Outputs to `generated/badges/` by default
@@ -345,6 +369,7 @@ python scripts/generate_badge.py --all --output custom/path/
 Generates PDF certificates for phase completion.
 
 **Usage:**
+
 ```bash
 # Generate certificate
 python scripts/generate_certificate.py --name "John Doe" --phase 1
@@ -357,12 +382,14 @@ python scripts/generate_certificate.py --name "User" --phase 5 --output certs/
 ```
 
 **What it does:**
+
 - Creates professional PDF certificates using WeasyPrint
 - Includes learner name, phase, and completion date
 - Landscape A4 format with decorative elements
 - Outputs to `artifacts/certs/` by default
 
 **Requirements:**
+
 - WeasyPrint for PDF generation
 
 ### 10. `generate_quiz_pages.py` - Quiz Page Generator
@@ -370,6 +397,7 @@ python scripts/generate_certificate.py --name "User" --phase 5 --output certs/
 Generates interactive HTML quiz pages from YAML quiz files.
 
 **Usage:**
+
 ```bash
 # Generate all quiz pages
 python scripts/generate_quiz_pages.py --all
@@ -382,12 +410,14 @@ python scripts/generate_quiz_pages.py --all --output docs/quizzes/
 ```
 
 **What it does:**
+
 - Converts `quizzes/Day_XX_quiz.yml` to interactive HTML
 - Embeds JavaScript for quiz functionality
 - Tracks scores and sends results to learner backend
 - Outputs to `docs/quizzes/` by default
 
 **Quiz YAML Format:**
+
 ```yaml
 questions:
   - question: "Question text?"
@@ -409,6 +439,7 @@ metadata:
 Extracts translatable strings from lessons and docs for internationalization.
 
 **Usage:**
+
 ```bash
 # Extract to JSON format
 python scripts/extract_i18n.py --output locales/en --format json
@@ -418,6 +449,7 @@ python scripts/extract_i18n.py --output locales/en --format pot
 ```
 
 **What it does:**
+
 - Scans all lesson READMEs and docs for translatable text
 - Excludes code blocks and technical content
 - Generates locale templates (JSON or POT format)
@@ -429,12 +461,14 @@ python scripts/extract_i18n.py --output locales/en --format pot
 Safely reverts all high-effort feature changes and restores backups.
 
 **Usage:**
+
 ```bash
 # Run from repository root
 ./scripts/revert_high_effort.sh
 ```
 
 **What it does:**
+
 - Restores all `.bak.*` backup files
 - Removes generated directories (learner_backend, analytics, etc.)
 - Removes generated files (PDFs, badges, certificates)
@@ -448,6 +482,7 @@ Safely reverts all high-effort feature changes and restores backups.
 Generates reports from analytics events.
 
 **Usage:**
+
 ```bash
 # Generate reports from learner backend database
 python analytics/report.py --input learner_backend/learner.db --output reports/
@@ -457,6 +492,7 @@ open reports/index.html
 ```
 
 **What it does:**
+
 - Analyzes lesson popularity (page views)
 - Calculates quiz performance (average scores, pass rates)
 - Generates CSV report: `reports/lessons_popularity.csv`
@@ -467,41 +503,49 @@ open reports/index.html
 ### Complete Setup
 
 1. **Install all dependencies:**
+
    ```bash
    pip install -r requirements-dev.txt
    ```
 
-2. **Generate PDFs and bundles:**
+1. **Generate PDFs and bundles:**
+
    ```bash
    python scripts/generate_pdfs.py --all
    ```
 
-3. **Add Binder buttons:**
+1. **Add Binder buttons:**
+
    ```bash
    python scripts/add_binder_buttons.py --apply
    ```
 
-4. **Generate badges:**
+1. **Generate badges:**
+
    ```bash
    python scripts/generate_badge.py --all
    ```
 
-5. **Generate sample certificate:**
+1. **Generate sample certificate:**
+
    ```bash
    python scripts/generate_certificate.py --name "Sample User" --phase 1
    ```
 
-6. **Create quiz pages:**
+1. **Create quiz pages:**
+
    ```bash
    python scripts/generate_quiz_pages.py --all
    ```
 
-7. **Extract i18n strings:**
+1. **Extract i18n strings:**
+
    ```bash
    python scripts/extract_i18n.py
    ```
 
-8. **Start learner backend:**
+1. **Start learner backend:**
+
    ```bash
    cd learner_backend
    python -m learner_backend.main
@@ -538,10 +582,12 @@ If needed, revert all changes:
 ## Dependencies Summary
 
 ### Core Scripts
+
 - PyYAML >= 6.0
 - Jinja2 >= 3.1
 
 ### High-Effort Features
+
 - WeasyPrint >= 60.0 (PDFs and certificates)
 - markdown2 >= 2.4.10 (Markdown to HTML)
 - fastapi >= 0.104.0 (Learner backend)

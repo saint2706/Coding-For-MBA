@@ -38,9 +38,9 @@ for each lesson.
 
 Our enhanced documentation site now includes:
 
-- **🔍 [Interactive Lessons Index](https://saint2706.github.io/Coding-For-MBA/lessons/index.html)** - 
+- **🔍 [Interactive Lessons Index](https://saint2706.github.io/Coding-For-MBA/lessons/index.html)** -
   Browse all 108 lessons with live search and tag filtering
-- **📊 [Phase Overview Pages](https://saint2706.github.io/Coding-For-MBA/phases/phase_1_overview/)** - 
+- **📊 [Phase Overview Pages](https://saint2706.github.io/Coding-For-MBA/phases/phase_1_overview/)** -
   Detailed roadmaps for each of the 7 curriculum phases
 - **🏷️ Tag-Based Navigation** - Filter lessons by topics like Python, ML, SQL, BI, Data, and more
 - **📈 Progress Tracking** - Automatic progress indicators on lesson pages showing your journey
@@ -64,6 +64,7 @@ mkdocs serve
 Beyond the curriculum, this repository includes a complete learning platform:
 
 ### 📊 Progress Tracking Dashboard
+
 - **Track completion** across all 108 lessons
 - **Earn badges** for completing each of the 7 phases
 - **Monitor quiz scores** and learning streaks
@@ -71,6 +72,7 @@ Beyond the curriculum, this repository includes a complete learning platform:
 - **Privacy-first**: Cookie-only mode (no registration required) or optional GitHub OAuth
 
 **Quick start:**
+
 ```bash
 # Start the learner backend
 cd learner_backend
@@ -82,6 +84,7 @@ python -m learner_backend.main
 See [learner_backend/README.md](learner_backend/README.md) and [docs/dashboard/](docs/dashboard/) for details.
 
 ### 📝 Interactive Quizzes
+
 - **Self-check quizzes** for key lessons
 - **Instant feedback** with explanations
 - **Progress tracking** integrated with dashboard
@@ -90,44 +93,52 @@ See [learner_backend/README.md](learner_backend/README.md) and [docs/dashboard/]
 Example: `quizzes/Day_02_quiz.yml`, `quizzes/Day_23_quiz.yml`
 
 ### 📚 Downloadable Resources
+
 - **Full curriculum PDF** (all lessons combined)
 - **Per-phase PDFs** (7 separate documents)
 - **ZIP bundles** with markdown + notebooks per phase
 
 Generate with:
+
 ```bash
 python scripts/generate_pdfs.py --all
 ```
 
 ### 🏆 Gamification
+
 - **SVG badges** for each phase completion
 - **PDF certificates** with professional design
 - **Streak tracking** to maintain motivation
 - **Leaderboards** (optional, for group learning)
 
 Generate certificates:
+
 ```bash
 python scripts/generate_certificate.py --name "Your Name" --phase 1
 ```
 
 ### 🚀 Interactive Notebooks
+
 - **Binder integration** for zero-install Jupyter notebooks
 - **JupyterLite** support for browser-based notebooks
 - **"Open in Binder" buttons** on lesson pages
 
 ### 🌍 Internationalization (i18n)
+
 - **Multi-language support** (English + Spanish template)
 - **Locale extraction tools** for translators
 - **Language switcher** in documentation
 - **Contribute translations** - see [docs/i18n.md](docs/i18n.md)
 
 ### 📊 Privacy-First Analytics (Optional)
+
 - **Lesson popularity** tracking
 - **Quiz performance** aggregation
 - **Anonymous, opt-in** analytics
 - **GDPR compliant** - see [docs/analytics.md](docs/analytics.md)
 
 ### 💼 Real-World Projects
+
 - **One project per phase** with business scenarios
 - **Sample datasets** and starter notebooks
 - **Evaluation rubrics** for self-assessment
@@ -180,12 +191,14 @@ Coding-For-MBA/
 ### Technology Stack
 
 **Core Curriculum:**
+
 - Python 3.13
 - Jupyter Notebooks
 - NumPy, Pandas, scikit-learn
 - TensorFlow, Matplotlib, Plotly
 
 **Platform Components:**
+
 - **Documentation**: MkDocs with Material theme
 - **Progress Tracking**: FastAPI + SQLite
 - **PDF Generation**: WeasyPrint + markdown2
@@ -196,40 +209,46 @@ Coding-For-MBA/
 ### Local Development
 
 1. **Setup environment:**
+
    ```bash
    python -m venv .venv
    source .venv/bin/activate
    pip install -r requirements.txt -r requirements-dev.txt
    ```
 
-2. **Run documentation locally:**
+1. **Run documentation locally:**
+
    ```bash
    mkdocs serve
    ```
 
-3. **Start learner backend:**
+1. **Start learner backend:**
+
    ```bash
    python -m learner_backend.main
    ```
 
-4. **Generate resources:**
+1. **Generate resources:**
+
    ```bash
    # PDFs and bundles
    python scripts/generate_pdfs.py --all
-   
+
    # Badges
    python scripts/generate_badge.py --all
-   
+
    # Quiz pages
    python scripts/generate_quiz_pages.py --all
    ```
 
-5. **Run tests:**
+1. **Run tests:**
+
    ```bash
    pytest
    ```
 
-6. **Format code:**
+1. **Format code:**
+
    ```bash
    make format
    ```
@@ -237,11 +256,13 @@ Coding-For-MBA/
 ### Deployment Options
 
 **Documentation (GitHub Pages):**
+
 - Automatic deployment via `.github/workflows/docs-ci.yml`
 - Triggered on push to `main` branch
 - Site: https://saint2706.github.io/Coding-For-MBA/
 
 **Learner Backend:**
+
 - **Local**: `python -m learner_backend.main`
 - **Heroku**: See [learner_backend/README.md](learner_backend/README.md)
 - **Fly.io**: `fly launch && fly deploy`
@@ -249,6 +270,7 @@ Coding-For-MBA/
 - **Docker**: Dockerfile included
 
 **PDF Distribution:**
+
 - Generated on releases via `.github/workflows/deploy-certs.yml`
 - Attached to GitHub releases as assets
 - Manual generation: `python scripts/generate_pdfs.py --all`
@@ -313,6 +335,7 @@ jupyter notebook
 Quick access to all 108 lessons:
 
 <!-- AUTO_ALL_LESSONS_START -->
+
 - [Day 01 – Day 1: Python for Business Analytics - First Steps](./Day_01_Introduction/README.md)
 - [Day 02 – Day 2: Storing and Analyzing Business Data](./Day_02_Variables_Builtin_Functions/README.md)
 - [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](./Day_03_Operators/README.md)
@@ -421,6 +444,7 @@ Quick access to all 108 lessons:
 - [Day 106 – Day 106: XML in SQL](./Day_106_XML_in_SQL/README.md)
 - [Day 107 – Day 107: SQL Security](./Day_107_Security/README.md)
 - [Day 108 – Day 108: SQL Performance Tuning](./Day_108_Performance_Tuning/README.md)
+
 <!-- AUTO_ALL_LESSONS_END -->
 
 _The complete list is auto-generated. See [generated/all_lessons.md](./generated/all_lessons.md) for the full list._

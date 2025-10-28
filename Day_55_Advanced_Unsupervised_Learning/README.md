@@ -1,9 +1,10 @@
 ---
-title: "Day 55 \u2013 Advanced Unsupervised Learning"
+title: Day 55 – Advanced Unsupervised Learning
 tags:
-- Advanced
-- ML
+  - Advanced
+  - ML
 ---
+
 # Day 55 – Advanced Unsupervised Learning
 
 Density-based clustering, hierarchical approaches, and modern embeddings unlock structure within
@@ -22,7 +23,7 @@ assignments, embeddings, and anomaly scores featured in the lesson.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 54 – Day 54 – Probabilistic Modeling](../Day_54_Probabilistic_Modeling/README.md) • **Next:** [Day 56 – Day 56 – Time Series and Forecasting](../Day_56_Time_Series_and_Forecasting/README.md)
 

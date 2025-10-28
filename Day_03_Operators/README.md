@@ -1,10 +1,11 @@
 ---
 title: 'Day 3: Operators - The Tools for Business Calculation and Logic'
 tags:
-- BI
-- Basics
-- Python
+  - BI
+  - Basics
+  - Python
 ---
+
 # 📘 Day 3: Operators - The Tools for Business Calculation and Logic
 
 An **operator** is a symbol that tells the computer to perform a specific mathematical or logical
@@ -78,7 +79,7 @@ business calculations and logical checks you'll encounter.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 02 – Day 2: Storing and Analyzing Business Data](../Day_02_Variables_Builtin_Functions/README.md) • **Next:** [Day 04 – Day 4: Working with Text Data - Strings](../Day_04_Strings/README.md)
 

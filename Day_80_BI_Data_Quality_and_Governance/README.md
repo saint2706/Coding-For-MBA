@@ -1,9 +1,10 @@
 ---
-title: "Day 80 \u2013 BI Data Quality and Governance"
+title: Day 80 – BI Data Quality and Governance
 tags:
-- BI
-- Data
+  - BI
+  - Data
 ---
+
 # Day 80 – BI Data Quality and Governance
 
 Day 80 fills the roadmap gap on enterprise-grade data quality programmes and governance frameworks.
@@ -70,7 +71,7 @@ Package insights for executive audiences and decision forums.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 79 – Day 79 – BI Storytelling and Stakeholder Influence](../Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md) • **Next:** [Day 81 – Day 81 – BI Architecture and Data Modeling](../Day_81_BI_Architecture_and_Data_Modeling/README.md)
 

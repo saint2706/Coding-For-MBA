@@ -1,7 +1,7 @@
 ---
 title: 'Day 106: XML in SQL'
 tags:
-- SQL
+  - SQL
 ---
 
 Welcome to Day 106! Today, we'll explore how to work with **XML (eXtensible Markup Language)** data
@@ -52,7 +52,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 105 – Day 105: JSON in SQL](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_105_JSON_in_SQL/README.md) • **Next:** [Day 107 – Day 107: SQL Security](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_107_Security/README.md)
 

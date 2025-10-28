@@ -1,10 +1,11 @@
 ---
 title: 'Day 32: Connecting to Other Databases (MySQL & MongoDB)'
 tags:
-- Data
-- Database
-- SQL
+  - Data
+  - Database
+  - SQL
 ---
+
 # 📘 Day 32: Connecting to Other Databases (MySQL & MongoDB)
 
 In the previous lesson, we used `sqlite3`, which is fantastic for learning and small projects
@@ -110,7 +111,7 @@ prepared when you encounter these different database systems in the workplace.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 31 – Day 31: Working with Databases in Python](../Day_31_Databases/README.md) • **Next:** [Day 33 – Day 33: Accessing Web APIs with `requests`](../Day_33_API/README.md)
 

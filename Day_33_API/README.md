@@ -1,9 +1,10 @@
 ---
 title: 'Day 33: Accessing Web APIs with `requests`'
 tags:
-- Data
-- Web
+  - Data
+  - Web
 ---
+
 # 📘 Day 33: Accessing Web APIs with `requests`
 
 ## Overview
@@ -86,7 +87,7 @@ To execute the entire collection of lesson tests, run `pytest` from the project 
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 32 – Day 32: Connecting to Other Databases (MySQL & MongoDB)](../Day_32_Other_Databases/README.md) • **Next:** [Day 34 – Day 34: Building a Simple API with Flask](../Day_34_Building_an_API/README.md)
 

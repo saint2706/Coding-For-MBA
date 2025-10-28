@@ -1,9 +1,10 @@
 ---
 title: 'Day 34: Building a Simple API with Flask'
 tags:
-- Data
-- Web
+  - Data
+  - Web
 ---
+
 # 📘 Day 34: Building a Simple API with Flask
 
 Consuming data from APIs is a core skill. But what if you need to provide data from your analysis to
@@ -152,7 +153,7 @@ testing, or even deployment without duplicating setup code.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 33 – Day 33: Accessing Web APIs with `requests`](../Day_33_API/README.md) • **Next:** [Day 35 – Day 35: Flask Web Framework](../Day_35_Flask_Web_Framework/README.md)
 

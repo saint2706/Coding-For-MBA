@@ -1,9 +1,10 @@
 ---
 title: 'Day 35: Flask Web Framework'
 tags:
-- Data
-- Web
+  - Data
+  - Web
 ---
+
 # 🌐 Day 35: Flask Web Framework
 
 Welcome to Day 35! This lesson contains a small Flask project that analyses submitted text and
@@ -75,7 +76,7 @@ applications and dashboards with Python.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 34 – Day 34: Building a Simple API with Flask](../Day_34_Building_an_API/README.md) • **Next:** [Day 36 – Day 36 – Capstone Case Study](../Day_36_Case_Study/README.md)
 

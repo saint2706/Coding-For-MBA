@@ -1,8 +1,9 @@
 ---
-title: "Day 69 \u2013 BI Strategy and Stakeholders"
+title: Day 69 – BI Strategy and Stakeholders
 tags:
-- BI
+  - BI
 ---
+
 # Day 69 – BI Strategy and Stakeholders
 
 Day 69 extends the BI Analyst roadmap by pairing strategic constructs with the humans who bring them
@@ -71,7 +72,7 @@ Define the personal capabilities you will cultivate throughout Phase 5.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 68 – Day 68 – BI Analyst Foundations](../Day_68_BI_Analyst_Foundations/README.md) • **Next:** [Day 70 – Day 70 – BI Metrics and Data Literacy](../Day_70_BI_Metrics_and_Data_Literacy/README.md)
 

@@ -1,8 +1,9 @@
 ---
 title: 'Day 39: Math Foundations - Calculus'
 tags:
-- Data
+  - Data
 ---
+
 # Day 39: Math Foundations - Calculus
 
 ## Overview
@@ -35,7 +36,7 @@ gradients, and the chain rule reveal how model parameters should change to reduc
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 38 – Day 38: Math Foundations - Linear Algebra](../Day_38_Linear_Algebra/README.md) • **Next:** [Day 40 – Day 40: Introduction to Machine Learning & Core Concepts](../Day_40_Intro_to_ML/README.md)
 

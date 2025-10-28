@@ -1,10 +1,11 @@
 ---
-title: "Day 64 \u2013 Modern NLP Pipelines"
+title: Day 64 – Modern NLP Pipelines
 tags:
-- Advanced
-- MLOps
-- NLP
+  - Advanced
+  - MLOps
+  - NLP
 ---
+
 # Day 64 – Modern NLP Pipelines
 
 Connect discrete NLP components into a reproducible workflow. After this lesson you will:
@@ -20,7 +21,7 @@ seeded toy corpora.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 63 – Day 63 – Causal Inference and Uplift Modeling](../Day_63_Causal_Inference_and_Uplift/README.md) • **Next:** [Day 65 – Day 65 – MLOps Pipelines and CI/CD Automation](../Day_65_MLOps_Pipelines_and_CI/README.md)
 

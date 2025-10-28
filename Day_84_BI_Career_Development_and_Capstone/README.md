@@ -1,8 +1,9 @@
 ---
-title: "Day 84 \u2013 BI Career Development and Capstone"
+title: Day 84 – BI Career Development and Capstone
 tags:
-- BI
+  - BI
 ---
+
 # Day 84 – BI Career Development and Capstone
 
 > This lesson closes Phase 5 by converting the roadmap insights into a polished career narrative.
@@ -89,7 +90,7 @@ Synthesize the specialization into ongoing strategic roadmaps.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 83 – Day 83 – BI Cloud and Modern Data Stack](../Day_83_BI_Cloud_and_Modern_Data_Stack/README.md) • **Next:** [Day 85 – Day 85 – Advanced SQL and Performance Tuning](../Day_85_Advanced_SQL/README.md)
 

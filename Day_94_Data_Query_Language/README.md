@@ -1,10 +1,11 @@
 ---
 title: 'Day 94: Data Query Language (DQL)'
 tags:
-- Data
-- NLP
-- SQL
+  - Data
+  - NLP
+  - SQL
 ---
+
 # 📘 Day 94: Data Query Language (DQL)
 
 Welcome to Day 94! Today, we'll focus on the **Data Query Language (DQL)**, which is used to
@@ -73,7 +74,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 93 – Day 93: Data Manipulation Language (DML)](../Day_93_Data_Manipulation_Language/README.md) • **Next:** [Day 95 – Day 95: Joins](../Day_95_Joins/README.md)
 

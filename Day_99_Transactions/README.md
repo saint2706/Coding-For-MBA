@@ -1,8 +1,9 @@
 ---
 title: 'Day 99: Transactions'
 tags:
-- SQL
+  - SQL
 ---
+
 # 📘 Day 99: Transactions
 
 Welcome to Day 99! Today, we'll learn about **Transactions**, a sequence of operations performed as
@@ -52,7 +53,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 98 – Day 98: Indexes](../Day_98_Indexes/README.md) • **Next:** [Day 100 – Day 100: Stored Procedures](../Day_100_Stored_Procedures/README.md)
 

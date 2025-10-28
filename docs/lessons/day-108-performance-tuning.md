@@ -1,8 +1,8 @@
 ---
 title: 'Day 108: SQL Performance Tuning'
 tags:
-- Advanced
-- SQL
+  - Advanced
+  - SQL
 ---
 
 Welcome to Day 108! Today, we'll discuss **SQL Performance Tuning**, the process of optimizing your
@@ -53,7 +53,7 @@ understand the following concepts:
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 107 – Day 107: SQL Security](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_107_Security/README.md) • **Next:** _None (Last Lesson)_
 

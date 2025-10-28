@@ -1,11 +1,12 @@
 ---
 title: 'Day 18: Classes and Objects - Modeling Business Concepts'
 tags:
-- BI
-- Basics
-- ML
-- Python
+  - BI
+  - Basics
+  - ML
+  - Python
 ---
+
 # 📘 Day 18: Classes and Objects - Modeling Business Concepts
 
 So far, we've organized our code with functions. But what if you want to model a real-world concept,
@@ -83,7 +84,7 @@ business concepts.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](../Day_17_Regular_Expressions/README.md) • **Next:** [Day 19 – Day 19: Working with Dates and Times](../Day_19_Python_Date_Time/README.md)
 

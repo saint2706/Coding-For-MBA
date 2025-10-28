@@ -1,7 +1,7 @@
 ---
 title: 'Day 98: Indexes'
 tags:
-- SQL
+  - SQL
 ---
 
 Welcome to Day 98! Today, we'll learn about **Indexes**, a crucial performance-tuning feature in
@@ -57,7 +57,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 97 – Day 97: Views](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_97_Views/README.md) • **Next:** [Day 99 – Day 99: Transactions](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_99_Transactions/README.md)
 

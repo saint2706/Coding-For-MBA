@@ -1,7 +1,7 @@
 ---
 title: 'Day 107: SQL Security'
 tags:
-- SQL
+  - SQL
 ---
 
 Welcome to Day 107! Today, we'll discuss **SQL Security**, a critical topic for protecting your
@@ -49,7 +49,7 @@ understand the following concepts:
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 106 – Day 106: XML in SQL](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_106_XML_in_SQL/README.md) • **Next:** [Day 108 – Day 108: SQL Performance Tuning](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_108_Performance_Tuning/README.md)
 

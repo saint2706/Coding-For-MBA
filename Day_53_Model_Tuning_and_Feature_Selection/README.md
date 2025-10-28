@@ -1,9 +1,10 @@
 ---
-title: "Day 53 \u2013 Model Tuning and Feature Selection"
+title: Day 53 – Model Tuning and Feature Selection
 tags:
-- Advanced
-- ML
+  - Advanced
+  - ML
 ---
+
 # Day 53 – Model Tuning and Feature Selection
 
 Optimisation is the bridge between baseline models and production-grade performance. Day 53
@@ -20,7 +21,7 @@ strategies in action alongside feature importance diagnostics.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 52 – Day 52 – Ensemble Methods](../Day_52_Ensemble_Methods/README.md) • **Next:** [Day 54 – Day 54 – Probabilistic Modeling](../Day_54_Probabilistic_Modeling/README.md)
 

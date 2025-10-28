@@ -1,9 +1,9 @@
 ---
 title: 'Day 93: Data Manipulation Language (DML)'
 tags:
-- Data
-- NLP
-- SQL
+  - Data
+  - NLP
+  - SQL
 ---
 
 Welcome to Day 93! Today, we'll learn about **Data Manipulation Language (DML)**, a subset of SQL
@@ -51,7 +51,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 92 – Day 92: Data Definition Language (DDL)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_92_Data_Definition_Language/README.md) • **Next:** [Day 94 – Day 94: Data Query Language (DQL)](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_94_Data_Query_Language/README.md)
 

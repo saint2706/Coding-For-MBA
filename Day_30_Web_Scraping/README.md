@@ -1,9 +1,10 @@
 ---
 title: 'Day 30: Web Scraping - Extracting Data from the Web'
 tags:
-- Data
-- Web
+  - Data
+  - Web
 ---
+
 # 📘 Day 30: Web Scraping - Extracting Data from the Web
 
 Sometimes, the data you need isn't available in a clean CSV file or through an API. It's simply
@@ -128,7 +129,7 @@ step forward.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 29 – Day 29: Interactive Visualization with Plotly](../Day_29_Interactive_Visualization/README.md) • **Next:** [Day 31 – Day 31: Working with Databases in Python](../Day_31_Databases/README.md)
 

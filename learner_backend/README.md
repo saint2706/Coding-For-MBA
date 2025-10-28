@@ -34,6 +34,7 @@ The server will start at `http://127.0.0.1:8000`
 ### Accessing the Dashboard
 
 Open your browser to:
+
 - Dashboard: `http://127.0.0.1:8000/static/dashboard.html`
 - API docs: `http://127.0.0.1:8000/docs`
 - API root: `http://127.0.0.1:8000/`
@@ -59,6 +60,7 @@ DATABASE_URL=learner.db
 ### Cookie-Only Mode (Default)
 
 If `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` are not set, the backend operates in cookie-only mode:
+
 - No user registration or login required
 - Anonymous user ID stored in browser cookie
 - Progress persists in local SQLite database
@@ -69,20 +71,22 @@ If `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` are not set, the backend operat
 To enable GitHub OAuth:
 
 1. Create a GitHub OAuth App:
+
    - Go to Settings → Developer settings → OAuth Apps
    - Click "New OAuth App"
    - Set Homepage URL: `http://127.0.0.1:8000`
    - Set Authorization callback URL: `http://127.0.0.1:8000/api/v1/auth/github`
-   
-2. Copy Client ID and Client Secret to `.env` file
 
-3. Restart the server
+1. Copy Client ID and Client Secret to `.env` file
+
+1. Restart the server
 
 ## API Endpoints
 
 ### Progress Management
 
 **Record Progress**
+
 ```bash
 POST /api/v1/progress
 Content-Type: application/json
@@ -96,6 +100,7 @@ Content-Type: application/json
 ```
 
 **Get User Progress**
+
 ```bash
 GET /api/v1/progress/{user_id}
 
@@ -113,6 +118,7 @@ Response:
 ### Badges
 
 **Get User Badges**
+
 ```bash
 GET /api/v1/badges/{user_id}
 
@@ -133,6 +139,7 @@ Response:
 ### Certificates
 
 **Request Certificate**
+
 ```bash
 POST /api/v1/certificates
 Content-Type: application/json
@@ -153,6 +160,7 @@ Response:
 ### Adaptive Path
 
 **Get Next Lesson Suggestion**
+
 ```bash
 GET /api/v1/adaptive/suggest?user_id=user_123
 
@@ -167,12 +175,14 @@ Response:
 ## Database Schema
 
 ### Users Table
+
 - `user_id` (TEXT, PRIMARY KEY): Unique user identifier
 - `username` (TEXT): Optional username (GitHub username if OAuth)
 - `created_at` (TEXT): Account creation timestamp
 - `last_active` (TEXT): Last activity timestamp
 
 ### Progress Table
+
 - `id` (INTEGER, PRIMARY KEY): Auto-increment ID
 - `user_id` (TEXT): User reference
 - `day` (INTEGER): Lesson day number (1-108)
@@ -181,6 +191,7 @@ Response:
 - `updated_at` (TEXT): Last update timestamp
 
 ### Badges Table
+
 - `badge_id` (TEXT, PRIMARY KEY): Unique badge identifier
 - `user_id` (TEXT): User reference
 - `phase` (INTEGER): Phase number (1-7)
@@ -230,11 +241,11 @@ fly deploy
 ### Render
 
 1. Create a new Web Service on Render
-2. Connect your GitHub repository
-3. Set build command: `pip install -r requirements-dev.txt`
-4. Set start command: `uvicorn learner_backend.main:app --host 0.0.0.0 --port $PORT`
-5. Add environment variables in Render dashboard
-6. Deploy
+1. Connect your GitHub repository
+1. Set build command: `pip install -r requirements-dev.txt`
+1. Set start command: `uvicorn learner_backend.main:app --host 0.0.0.0 --port $PORT`
+1. Add environment variables in Render dashboard
+1. Deploy
 
 ### Docker
 
@@ -314,6 +325,7 @@ alembic upgrade head
 ### Server won't start
 
 Check that port 8000 is available:
+
 ```bash
 lsof -i :8000  # Find process using port
 kill -9 <PID>  # Kill if needed
@@ -322,12 +334,14 @@ kill -9 <PID>  # Kill if needed
 ### Database locked error
 
 SQLite doesn't handle high concurrency well. For production:
+
 - Use PostgreSQL: `pip install psycopg2-binary asyncpg`
 - Update `DATABASE_URL` to PostgreSQL connection string
 
 ### CORS errors
 
 Update `allow_origins` in `main.py` to include your frontend domain:
+
 ```python
 app.add_middleware(
     CORSMiddleware,
@@ -339,6 +353,7 @@ app.add_middleware(
 ## Support
 
 For issues or questions:
+
 - Check API documentation: `http://127.0.0.1:8000/docs`
 - Review logs for error messages
 - Open an issue on GitHub

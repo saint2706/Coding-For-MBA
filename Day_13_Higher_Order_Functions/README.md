@@ -1,9 +1,10 @@
 ---
 title: 'Day 13: Higher-Order Functions & Lambda'
 tags:
-- Basics
-- Python
+  - Basics
+  - Python
 ---
+
 # 📘 Day 13: Higher-Order Functions & Lambda
 
 A **higher-order function** is a function that takes another function as an argument or returns a
@@ -100,7 +101,7 @@ programming that you will see everywhere in the world of data science.
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 12 – Day 12: List Comprehension - Elegant Data Manipulation](../Day_12_List_Comprehension/README.md) • **Next:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](../Day_14_Modules/README.md)
 

@@ -1,7 +1,7 @@
 ---
 title: 'Day 100: Stored Procedures'
 tags:
-- SQL
+  - SQL
 ---
 
 Welcome to Day 100! Today, we'll learn about **Stored Procedures**, which are prepared SQL code that
@@ -56,7 +56,7 @@ review the `README.md` file and make sure you understand the following concepts:
 
 <!-- LESSON_FOOTER_START -->
 
----
+______________________________________________________________________
 
 **Previous:** [Day 99 – Day 99: Transactions](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_99_Transactions/README.md) • **Next:** [Day 101 – Day 101: Triggers](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_101_Triggers/README.md)
 
