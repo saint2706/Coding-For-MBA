@@ -1,5 +1,3 @@
-# Day 87 – Data Governance and Security
-
 ## Introduction
 
 This lesson focuses on the critical importance of data governance and security in a BI environment.

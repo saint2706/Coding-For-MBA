@@ -1,5 +1,3 @@
-# Day 89 – Capstone Project - Part 2
-
 ## Introduction
 
 In the second part of the capstone project, you will focus on data analysis, visualization, and

@@ -43,8 +43,8 @@ their needs, then capture one actionable insight per persona.
 ## Additional Topic: BI Skill Stack & Professional Identity
 
 > This lesson is part of the Phase 5 Business Intelligence specialization. Use the
-> [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to
-> see how the developer-roadmap topics align across Days 68–84.
+> [Phase 5 overview](https://github.com/saint2706/Coding-For-MBA/blob/main/docs/bi-curriculum.md) to see how the developer-roadmap topics align across
+> Days 68–84.
 
 ## Why it matters
 
@@ -65,161 +65,157 @@ Define the personal capabilities you will cultivate throughout Phase 5.
 ## Additional Materials
 
 ???+ example "lesson.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Strategy_and_Stakeholders/lesson.py)
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Strategy_and_Stakeholders/lesson.py)
 
-````
-```python title="lesson.py"
-# %%
-"""Day 69 – BI Strategy and Stakeholders classroom script."""
+    ```python title="lesson.py"
+    # %%
+    """Day 69 – BI Strategy and Stakeholders classroom script."""
 
-# %%
-from __future__ import annotations
+    # %%
+    from __future__ import annotations
 
-import pandas as pd
+    import pandas as pd
 
-from Day_69_BI_Strategy_and_Stakeholders import build_topic_dataframe, load_topics
+    from Day_69_BI_Strategy_and_Stakeholders import build_topic_dataframe, load_topics
 
-# %%
-STRATEGY_GROUPS = load_topics()
-STRATEGY_FRAME = build_topic_dataframe()
-
-
-# %%
-def display_strategy_clusters(groups: dict[str, list]) -> None:
-    """Print the topic groupings used to facilitate the session."""
-
-    print("\nBI strategy facilitation clusters:\n")
-    for section, topics in groups.items():
-        titles = ", ".join(topic.title for topic in topics)
-        print(f"- {section}: {titles}")
+    # %%
+    STRATEGY_GROUPS = load_topics()
+    STRATEGY_FRAME = build_topic_dataframe()
 
 
-# %%
-def preview_topic_matrix(frame: pd.DataFrame) -> None:
-    """Show the strategy dataframe as a markdown table for planning."""
+    # %%
+    def display_strategy_clusters(groups: dict[str, list]) -> None:
+        """Print the topic groupings used to facilitate the session."""
 
-    print("\nRoadmap alignment matrix:\n")
-    print(frame.to_markdown(index=False))
-
-
-# %%
-def stakeholder_prompt() -> None:
-    """Provide prompts that pair stakeholder personas with BI operations."""
-
-    personas = {
-        "Marketing director": "Connect campaign pacing dashboards to tactical BI cadences.",
-        "Finance controller": "Tie compliance reporting to the key business functions node.",
-        "Operations manager": "Map frontline alerts to operational BI service levels.",
-        "Executive sponsor": "Use strategic BI discussions to prioritize long-term bets.",
-    }
-    print("\nStakeholder pairing prompts:\n")
-    for persona, guidance in personas.items():
-        print(f"- {persona}: {guidance}")
+        print("\nBI strategy facilitation clusters:\n")
+        for section, topics in groups.items():
+            titles = ", ".join(topic.title for topic in topics)
+            print(f"- {section}: {titles}")
 
 
-# %%
-def main() -> None:
-    """Run the classroom demo for Day 69."""
+    # %%
+    def preview_topic_matrix(frame: pd.DataFrame) -> None:
+        """Show the strategy dataframe as a markdown table for planning."""
 
-    display_strategy_clusters(STRATEGY_GROUPS)
-    preview_topic_matrix(STRATEGY_FRAME)
-    stakeholder_prompt()
+        print("\nRoadmap alignment matrix:\n")
+        print(frame.to_markdown(index=False))
 
 
-# %%
-if __name__ == "__main__":
-    main()
-```
-````
+    # %%
+    def stakeholder_prompt() -> None:
+        """Provide prompts that pair stakeholder personas with BI operations."""
+
+        personas = {
+            "Marketing director": "Connect campaign pacing dashboards to tactical BI cadences.",
+            "Finance controller": "Tie compliance reporting to the key business functions node.",
+            "Operations manager": "Map frontline alerts to operational BI service levels.",
+            "Executive sponsor": "Use strategic BI discussions to prioritize long-term bets.",
+        }
+        print("\nStakeholder pairing prompts:\n")
+        for persona, guidance in personas.items():
+            print(f"- {persona}: {guidance}")
+
+
+    # %%
+    def main() -> None:
+        """Run the classroom demo for Day 69."""
+
+        display_strategy_clusters(STRATEGY_GROUPS)
+        preview_topic_matrix(STRATEGY_FRAME)
+        stakeholder_prompt()
+
+
+    # %%
+    if __name__ == "__main__":
+        main()
+    ```
 
 ???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Strategy_and_Stakeholders/solutions.py)
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_69_BI_Strategy_and_Stakeholders/solutions.py)
 
-````
-```python title="solutions.py"
-"""Topic helpers for the Day 69 BI Strategy and Stakeholders lesson."""
+    ```python title="solutions.py"
+    """Topic helpers for the Day 69 BI Strategy and Stakeholders lesson."""
 
-from __future__ import annotations
+    from __future__ import annotations
 
-from typing import Dict, List, Mapping, Sequence
+    from typing import Dict, List, Mapping, Sequence
 
-import pandas as pd
+    import pandas as pd
 
-from mypackage.bi_curriculum import BiTopic, group_topics_by_titles
+    from mypackage.bi_curriculum import BiTopic, group_topics_by_titles
 
-OPERATING_MODEL_SECTION = "Operating models"
-STRATEGY_TIER_SECTION = "Strategy tiers"
+    OPERATING_MODEL_SECTION = "Operating models"
+    STRATEGY_TIER_SECTION = "Strategy tiers"
 
-TOPIC_GROUPS: Mapping[str, Sequence[str]] = {
-    OPERATING_MODEL_SECTION: [
-        "Types of BI Operations",
-        "Stakeholder Identification",
-        "Key Business Functions",
-    ],
-    STRATEGY_TIER_SECTION: [
-        "Operational BI",
-        "Tactical BI",
-        "Strategic BI",
-    ],
-}
+    TOPIC_GROUPS: Mapping[str, Sequence[str]] = {
+        OPERATING_MODEL_SECTION: [
+            "Types of BI Operations",
+            "Stakeholder Identification",
+            "Key Business Functions",
+        ],
+        STRATEGY_TIER_SECTION: [
+            "Operational BI",
+            "Tactical BI",
+            "Strategic BI",
+        ],
+    }
 
-TOPIC_DESCRIPTIONS: Mapping[str, str] = {
-    "Types of BI Operations": (
-        "Frame how BI teams deliver value across centralized, federated, and hybrid "
-        "operating models."
-    ),
-    "Stakeholder Identification": (
-        "Coach analysts to document personas, influence levels, and decision rights "
-        "before building artifacts."
-    ),
-    "Key Business Functions": (
-        "Highlight finance, marketing, operations, and executive rhythms that rely "
-        "on BI insights."
-    ),
-    "Operational BI": (
-        "Align dashboards and alerts with frontline managers who need real-time "
-        "support."
-    ),
-    "Tactical BI": (
-        "Equip business partners with weekly and monthly reviews that translate "
-        "performance into initiatives."
-    ),
-    "Strategic BI": (
-        "Focus leadership on long-range bets, portfolio management, and scenario "
-        "planning."
-    ),
-}
-
-
-def load_topics(
-    *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
-) -> Dict[str, List[BiTopic]]:
-    """Return roadmap topics grouped into BI operating and strategy tiers."""
-
-    return {group: topics for group, topics in group_topics_by_titles(groups).items()}
+    TOPIC_DESCRIPTIONS: Mapping[str, str] = {
+        "Types of BI Operations": (
+            "Frame how BI teams deliver value across centralized, federated, and hybrid "
+            "operating models."
+        ),
+        "Stakeholder Identification": (
+            "Coach analysts to document personas, influence levels, and decision rights "
+            "before building artifacts."
+        ),
+        "Key Business Functions": (
+            "Highlight finance, marketing, operations, and executive rhythms that rely "
+            "on BI insights."
+        ),
+        "Operational BI": (
+            "Align dashboards and alerts with frontline managers who need real-time "
+            "support."
+        ),
+        "Tactical BI": (
+            "Equip business partners with weekly and monthly reviews that translate "
+            "performance into initiatives."
+        ),
+        "Strategic BI": (
+            "Focus leadership on long-range bets, portfolio management, and scenario "
+            "planning."
+        ),
+    }
 
 
-def build_topic_dataframe(
-    *,
-    groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS,
-    descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS,
-) -> pd.DataFrame:
-    """Create a DataFrame summarizing Day 69 BI strategy topics."""
+    def load_topics(
+        *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
+    ) -> Dict[str, List[BiTopic]]:
+        """Return roadmap topics grouped into BI operating and strategy tiers."""
 
-    grouped_topics = load_topics(groups=groups)
-    records: list[dict[str, str]] = []
-    for section, topics in grouped_topics.items():
-        for topic in topics:
-            records.append(
-                {
-                    "section": section,
-                    "title": topic.title,
-                    "description": descriptions.get(topic.title, ""),
-                }
-            )
-    return pd.DataFrame(records, columns=["section", "title", "description"])
+        return {group: topics for group, topics in group_topics_by_titles(groups).items()}
 
 
-__all__ = ["build_topic_dataframe", "load_topics"]
-```
-````
+    def build_topic_dataframe(
+        *,
+        groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS,
+        descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS,
+    ) -> pd.DataFrame:
+        """Create a DataFrame summarizing Day 69 BI strategy topics."""
+
+        grouped_topics = load_topics(groups=groups)
+        records: list[dict[str, str]] = []
+        for section, topics in grouped_topics.items():
+            for topic in topics:
+                records.append(
+                    {
+                        "section": section,
+                        "title": topic.title,
+                        "description": descriptions.get(topic.title, ""),
+                    }
+                )
+        return pd.DataFrame(records, columns=["section", "title", "description"])
+
+
+    __all__ = ["build_topic_dataframe", "load_topics"]
+    ```

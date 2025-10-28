@@ -1,5 +1,3 @@
-# Day 85 – Advanced SQL and Performance Tuning
-
 ## Introduction
 
 This lesson delves into advanced SQL techniques and performance tuning, essential skills for any

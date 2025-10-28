@@ -1,5 +1,3 @@
-# Day 90 – Career Workshop and Next Steps
-
 ## Introduction
 
 Welcome to your final lesson! This career workshop is designed to help you translate the technical

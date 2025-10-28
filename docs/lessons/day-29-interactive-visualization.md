@@ -97,242 +97,232 @@ valuable skill for any modern analyst.
 
 ## Additional Materials
 
-- **interactive_visualization.ipynb**\
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.ipynb){
-  .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.ipynb){
-  .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_29_Interactive_Visualization/interactive_visualization.ipynb){
-  .md-button }
-- **solutions.ipynb**\
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){
-  .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){
-  .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_29_Interactive_Visualization/solutions.ipynb){
-  .md-button }
+- **interactive_visualization.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_29_Interactive_Visualization/interactive_visualization.ipynb){ .md-button }
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_29_Interactive_Visualization/solutions.ipynb){ .md-button }
 
 ???+ example "interactive_visualization.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.py)
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.py)
 
-````
-```python title="interactive_visualization.py"
-"""Reusable helpers for Day 29 interactive Plotly visualisations."""
+    ```python title="interactive_visualization.py"
+    """Reusable helpers for Day 29 interactive Plotly visualisations."""
 
-from __future__ import annotations
+    from __future__ import annotations
 
-from pathlib import Path
-from typing import Iterable
+    from pathlib import Path
+    from typing import Iterable
 
-import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
+    import pandas as pd
+    import plotly.express as px
+    import plotly.graph_objects as go
 
-__all__ = [
-    "load_sales_data",
-    "build_region_revenue_bar",
-    "build_daily_revenue_line",
-    "build_price_units_scatter",
-    "main",
-]
-
-
-def _require_columns(df: pd.DataFrame, required: Iterable[str]) -> None:
-    """Raise ``ValueError`` if ``df`` is missing any of ``required`` columns."""
-
-    missing = set(required) - set(df.columns)
-    if missing:
-        columns = ", ".join(sorted(missing))
-        raise ValueError(f"DataFrame is missing required columns: {columns}")
-    if df.empty:
-        raise ValueError("DataFrame must contain at least one row to build the figure.")
-
-
-def load_sales_data(data_path: Path | str | None = None) -> pd.DataFrame:
-    """Return the ``sales_data.csv`` dataset bundled with the lesson."""
-
-    if data_path is None:
-        resource_dir = Path(__file__).resolve().parent
-        data_path = resource_dir / "sales_data.csv"
-
-    df = pd.read_csv(data_path, parse_dates=["Date"])
-    return df.dropna().reset_index(drop=True)
-
-
-def build_region_revenue_bar(df: pd.DataFrame) -> go.Figure:
-    """Return a bar chart showing total revenue by region."""
-
-    _require_columns(df, ["Region", "Revenue"])
-
-    region_revenue = (
-        df.groupby("Region", as_index=False)["Revenue"].sum().sort_values("Region")
-    )
-
-    fig = px.bar(
-        region_revenue,
-        x="Region",
-        y="Revenue",
-        color="Region",
-        title="Total Revenue by Region",
-        labels={"Revenue": "Total Revenue (USD)"},
-    )
-    fig.update_layout(showlegend=False)
-    return fig
-
-
-def build_daily_revenue_line(df: pd.DataFrame) -> go.Figure:
-    """Return a daily revenue line chart with markers."""
-
-    _require_columns(df, ["Date", "Revenue"])
-
-    daily_revenue = (
-        df.groupby("Date", as_index=False)["Revenue"].sum().sort_values("Date")
-    )
-    # ``plotly`` preserves ``datetime64`` values when rendering, which pandas now
-    # returns from ``groupby`` aggregations.  Converting to plain ``datetime``
-    # objects keeps backwards compatibility with the existing visualisation and
-    # tests that expect Python ``datetime`` instances.
-    daily_revenue["Date"] = [
-        pd.Timestamp(ts).to_pydatetime() for ts in daily_revenue["Date"]
+    __all__ = [
+        "load_sales_data",
+        "build_region_revenue_bar",
+        "build_daily_revenue_line",
+        "build_price_units_scatter",
+        "main",
     ]
 
-    fig = px.line(
-        daily_revenue,
-        x="Date",
-        y="Revenue",
-        title="Daily Revenue Trend",
-        markers=True,
-    )
-    fig.update_traces(mode="lines+markers")
-    fig.update_layout(yaxis_title="Revenue (USD)")
-    for trace in fig.data:
-        python_datetimes = tuple(pd.Timestamp(x).to_pydatetime() for x in trace.x)
-        trace.update(x=python_datetimes)
-    return fig
+
+    def _require_columns(df: pd.DataFrame, required: Iterable[str]) -> None:
+        """Raise ``ValueError`` if ``df`` is missing any of ``required`` columns."""
+
+        missing = set(required) - set(df.columns)
+        if missing:
+            columns = ", ".join(sorted(missing))
+            raise ValueError(f"DataFrame is missing required columns: {columns}")
+        if df.empty:
+            raise ValueError("DataFrame must contain at least one row to build the figure.")
 
 
-def build_price_units_scatter(df: pd.DataFrame) -> go.Figure:
-    """Return a scatter plot comparing price and units sold with revenue sizing."""
+    def load_sales_data(data_path: Path | str | None = None) -> pd.DataFrame:
+        """Return the ``sales_data.csv`` dataset bundled with the lesson."""
 
-    _require_columns(df, ["Price", "Units Sold", "Revenue", "Product", "Region"])
+        if data_path is None:
+            resource_dir = Path(__file__).resolve().parent
+            data_path = resource_dir / "sales_data.csv"
 
-    fig = px.scatter(
-        df,
-        x="Price",
-        y="Units Sold",
-        color="Product",
-        size="Revenue",
-        hover_data=["Region", "Revenue"],
-        title="Price vs. Units Sold Analysis",
-    )
-    fig.update_layout(
-        legend_title_text="Product",
-        xaxis_title="Price (USD)",
-        yaxis_title="Units Sold",
-    )
-    return fig
+        df = pd.read_csv(data_path, parse_dates=["Date"])
+        return df.dropna().reset_index(drop=True)
 
 
-def main() -> None:
-    """Load the lesson dataset and display the interactive figures."""
+    def build_region_revenue_bar(df: pd.DataFrame) -> go.Figure:
+        """Return a bar chart showing total revenue by region."""
 
-    try:
-        df = load_sales_data()
-    except FileNotFoundError:
-        print("Error: sales_data.csv not found. Keep the CSV beside this script.")
-        return
+        _require_columns(df, ["Region", "Revenue"])
 
-    print("Data loaded successfully.")
+        region_revenue = (
+            df.groupby("Region", as_index=False)["Revenue"].sum().sort_values("Region")
+        )
 
-    print("\n--- 1. Interactive Bar Chart: Revenue by Region ---")
-    build_region_revenue_bar(df).show()
-
-    print("\n--- 2. Interactive Line Chart: Revenue Over Time ---")
-    build_daily_revenue_line(df).show()
-
-    print("\n--- 3. Interactive Scatter Plot: Price vs. Units Sold ---")
-    scatter = build_price_units_scatter(df)
-    scatter.show()
-    output_filename = "interactive_scatter_plot.html"
-    scatter.write_html(output_filename)
-    print(
-        f"\nScatter plot saved to '{output_filename}'. You can open this file in a web browser."
-    )
+        fig = px.bar(
+            region_revenue,
+            x="Region",
+            y="Revenue",
+            color="Region",
+            title="Total Revenue by Region",
+            labels={"Revenue": "Total Revenue (USD)"},
+        )
+        fig.update_layout(showlegend=False)
+        return fig
 
 
-if __name__ == "__main__":
-    main()
-```
-````
+    def build_daily_revenue_line(df: pd.DataFrame) -> go.Figure:
+        """Return a daily revenue line chart with markers."""
+
+        _require_columns(df, ["Date", "Revenue"])
+
+        daily_revenue = (
+            df.groupby("Date", as_index=False)["Revenue"].sum().sort_values("Date")
+        )
+        # ``plotly`` preserves ``datetime64`` values when rendering, which pandas now
+        # returns from ``groupby`` aggregations.  Converting to plain ``datetime``
+        # objects keeps backwards compatibility with the existing visualisation and
+        # tests that expect Python ``datetime`` instances.
+        daily_revenue["Date"] = [
+            pd.Timestamp(ts).to_pydatetime() for ts in daily_revenue["Date"]
+        ]
+
+        fig = px.line(
+            daily_revenue,
+            x="Date",
+            y="Revenue",
+            title="Daily Revenue Trend",
+            markers=True,
+        )
+        fig.update_traces(mode="lines+markers")
+        fig.update_layout(yaxis_title="Revenue (USD)")
+        for trace in fig.data:
+            python_datetimes = tuple(pd.Timestamp(x).to_pydatetime() for x in trace.x)
+            trace.update(x=python_datetimes)
+        return fig
+
+
+    def build_price_units_scatter(df: pd.DataFrame) -> go.Figure:
+        """Return a scatter plot comparing price and units sold with revenue sizing."""
+
+        _require_columns(df, ["Price", "Units Sold", "Revenue", "Product", "Region"])
+
+        fig = px.scatter(
+            df,
+            x="Price",
+            y="Units Sold",
+            color="Product",
+            size="Revenue",
+            hover_data=["Region", "Revenue"],
+            title="Price vs. Units Sold Analysis",
+        )
+        fig.update_layout(
+            legend_title_text="Product",
+            xaxis_title="Price (USD)",
+            yaxis_title="Units Sold",
+        )
+        return fig
+
+
+    def main() -> None:
+        """Load the lesson dataset and display the interactive figures."""
+
+        try:
+            df = load_sales_data()
+        except FileNotFoundError:
+            print("Error: sales_data.csv not found. Keep the CSV beside this script.")
+            return
+
+        print("Data loaded successfully.")
+
+        print("\n--- 1. Interactive Bar Chart: Revenue by Region ---")
+        build_region_revenue_bar(df).show()
+
+        print("\n--- 2. Interactive Line Chart: Revenue Over Time ---")
+        build_daily_revenue_line(df).show()
+
+        print("\n--- 3. Interactive Scatter Plot: Price vs. Units Sold ---")
+        scatter = build_price_units_scatter(df)
+        scatter.show()
+        output_filename = "interactive_scatter_plot.html"
+        scatter.write_html(output_filename)
+        print(
+            f"\nScatter plot saved to '{output_filename}'. You can open this file in a web browser."
+        )
+
+
+    if __name__ == "__main__":
+        main()
+    ```
 
 ???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.py)
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.py)
 
-````
-```python title="solutions.py"
-"""
-Day 29: Solutions to Exercises
-"""
+    ```python title="solutions.py"
+    """
+    Day 29: Solutions to Exercises
+    """
 
-from pathlib import Path
+    from pathlib import Path
 
-import pandas as pd
-import plotly.express as px
+    import pandas as pd
+    import plotly.express as px
 
-# --- Load and Prepare Data ---
-resource_dir = Path(__file__).resolve().parent
-data_path = resource_dir / "sales_data.csv"
+    # --- Load and Prepare Data ---
+    resource_dir = Path(__file__).resolve().parent
+    data_path = resource_dir / "sales_data.csv"
 
-try:
-    df = pd.read_csv(data_path, parse_dates=["Date"])
-    df.dropna(inplace=True)  # Drop rows with missing values for simplicity
-    print("Data loaded successfully for exercises.")
-except FileNotFoundError:
-    print("Error: sales_data.csv not found. Keep the CSV beside this script.")
-    df = pd.DataFrame()
+    try:
+        df = pd.read_csv(data_path, parse_dates=["Date"])
+        df.dropna(inplace=True)  # Drop rows with missing values for simplicity
+        print("Data loaded successfully for exercises.")
+    except FileNotFoundError:
+        print("Error: sales_data.csv not found. Keep the CSV beside this script.")
+        df = pd.DataFrame()
 
 
-if not df.empty:
-    # --- Exercise 1: Interactive Sales by Product ---
-    print("\n--- Solution to Exercise 1 ---")
+    if not df.empty:
+        # --- Exercise 1: Interactive Sales by Product ---
+        print("\n--- Solution to Exercise 1 ---")
 
-    # Group the data by Product to get the sum of Revenue
-    product_revenue = df.groupby("Product")["Revenue"].sum().reset_index()
+        # Group the data by Product to get the sum of Revenue
+        product_revenue = df.groupby("Product")["Revenue"].sum().reset_index()
 
-    # Create the interactive bar chart
-    fig1 = px.bar(
-        product_revenue,
-        x="Product",
-        y="Revenue",
-        title="Total Revenue by Product",
-        labels={"Revenue": "Total Revenue (USD)"},
-        color="Product",
-    )
+        # Create the interactive bar chart
+        fig1 = px.bar(
+            product_revenue,
+            x="Product",
+            y="Revenue",
+            title="Total Revenue by Product",
+            labels={"Revenue": "Total Revenue (USD)"},
+            color="Product",
+        )
 
-    # In a real environment, you would use fig1.show()
-    # For this exercise, we'll save it to an HTML file.
-    fig1.write_html("product_revenue_bar_chart.html")
-    print("Plot for Exercise 1 saved to 'product_revenue_bar_chart.html'")
+        # In a real environment, you would use fig1.show()
+        # For this exercise, we'll save it to an HTML file.
+        fig1.write_html("product_revenue_bar_chart.html")
+        print("Plot for Exercise 1 saved to 'product_revenue_bar_chart.html'")
 
-    # --- Exercise 2: Interactive Revenue vs. Units Sold ---
-    print("\n--- Solution to Exercise 2 ---")
+        # --- Exercise 2: Interactive Revenue vs. Units Sold ---
+        print("\n--- Solution to Exercise 2 ---")
 
-    # Create the interactive scatter plot
-    fig2 = px.scatter(
-        df,
-        x="Units Sold",
-        y="Revenue",
-        color="Region",
-        title="Revenue vs. Units Sold by Region",
-        labels={"Units Sold": "Number of Units Sold", "Revenue": "Total Revenue (USD)"},
-        hover_data=["Product"],  # Add Product to the hover tooltip
-    )
+        # Create the interactive scatter plot
+        fig2 = px.scatter(
+            df,
+            x="Units Sold",
+            y="Revenue",
+            color="Region",
+            title="Revenue vs. Units Sold by Region",
+            labels={"Units Sold": "Number of Units Sold", "Revenue": "Total Revenue (USD)"},
+            hover_data=["Product"],  # Add Product to the hover tooltip
+        )
 
-    # Save the chart to an HTML file
-    fig2.write_html("revenue_scatterplot.html")
-    print("Plot for Exercise 2 saved to 'revenue_scatterplot.html'")
+        # Save the chart to an HTML file
+        fig2.write_html("revenue_scatterplot.html")
+        print("Plot for Exercise 2 saved to 'revenue_scatterplot.html'")
 
-else:
-    print("\nSkipping exercises as DataFrame could not be loaded.")
-```
-````
+    else:
+        print("\nSkipping exercises as DataFrame could not be loaded.")
+    ```
