@@ -271,6 +271,284 @@ When modifying scripts:
 4. Update this README with changes
 5. Test with `--apply` on a clean clone
 
+## High-Effort Feature Scripts
+
+### 6. `generate_pdfs.py` - PDF & Bundle Generator
+
+Generates downloadable PDFs and ZIP bundles of the curriculum.
+
+**Usage:**
+```bash
+# Dry run (preview)
+python scripts/generate_pdfs.py --all --dry-run
+
+# Generate all PDFs and bundles
+python scripts/generate_pdfs.py --all
+
+# Generate specific phase
+python scripts/generate_pdfs.py --phase 1
+```
+
+**What it does:**
+- Converts markdown lessons to paginated PDFs using WeasyPrint
+- Generates `artifacts/curriculum_full.pdf` (all lessons)
+- Creates per-phase PDFs: `artifacts/curriculum_phase_N.pdf`
+- Creates ZIP bundles with markdown + notebooks: `artifacts/bundles/phase_N.zip`
+
+**Requirements:**
+- WeasyPrint (`pip install weasyprint`)
+- System dependencies for PDF generation (see script for details)
+
+### 7. `add_binder_buttons.py` - Binder Integration
+
+Adds "Open in Binder" buttons to lesson READMEs containing Jupyter notebooks.
+
+**Usage:**
+```bash
+# Preview changes
+python scripts/add_binder_buttons.py --dry-run
+
+# Apply changes
+python scripts/add_binder_buttons.py --apply
+```
+
+**What it does:**
+- Scans for lessons with `.ipynb` files
+- Injects Binder button markdown into README
+- Creates backup files before modifying
+- Skips lessons that already have Binder buttons
+
+### 8. `generate_badge.py` - Badge Generator
+
+Creates SVG badges for phase completion.
+
+**Usage:**
+```bash
+# Generate specific phase badge
+python scripts/generate_badge.py --phase 1
+
+# Generate all badges
+python scripts/generate_badge.py --all
+
+# Custom output directory
+python scripts/generate_badge.py --all --output custom/path/
+```
+
+**What it does:**
+- Creates colorful SVG badges for each phase (1-7)
+- Uses phase-specific colors and names
+- Outputs to `generated/badges/` by default
+- Shields.io-style design
+
+### 9. `generate_certificate.py` - Certificate Generator
+
+Generates PDF certificates for phase completion.
+
+**Usage:**
+```bash
+# Generate certificate
+python scripts/generate_certificate.py --name "John Doe" --phase 1
+
+# With custom date
+python scripts/generate_certificate.py --name "Jane Smith" --phase 3 --date "2024-02-15"
+
+# Custom output directory
+python scripts/generate_certificate.py --name "User" --phase 5 --output certs/
+```
+
+**What it does:**
+- Creates professional PDF certificates using WeasyPrint
+- Includes learner name, phase, and completion date
+- Landscape A4 format with decorative elements
+- Outputs to `artifacts/certs/` by default
+
+**Requirements:**
+- WeasyPrint for PDF generation
+
+### 10. `generate_quiz_pages.py` - Quiz Page Generator
+
+Generates interactive HTML quiz pages from YAML quiz files.
+
+**Usage:**
+```bash
+# Generate all quiz pages
+python scripts/generate_quiz_pages.py --all
+
+# Generate specific quiz
+python scripts/generate_quiz_pages.py --quiz Day_02
+
+# Custom output directory
+python scripts/generate_quiz_pages.py --all --output docs/quizzes/
+```
+
+**What it does:**
+- Converts `quizzes/Day_XX_quiz.yml` to interactive HTML
+- Embeds JavaScript for quiz functionality
+- Tracks scores and sends results to learner backend
+- Outputs to `docs/quizzes/` by default
+
+**Quiz YAML Format:**
+```yaml
+questions:
+  - question: "Question text?"
+    options:
+      - "Option A"
+      - "Option B"
+      - "Option C"
+    answer: 0  # Correct option index
+    explanation: "Why this is correct"
+
+metadata:
+  points: 5
+  passing_score: 60
+  tags: [python, fundamentals]
+```
+
+### 11. `extract_i18n.py` - Internationalization Extractor
+
+Extracts translatable strings from lessons and docs for internationalization.
+
+**Usage:**
+```bash
+# Extract to JSON format
+python scripts/extract_i18n.py --output locales/en --format json
+
+# Extract to POT format
+python scripts/extract_i18n.py --output locales/en --format pot
+```
+
+**What it does:**
+- Scans all lesson READMEs and docs for translatable text
+- Excludes code blocks and technical content
+- Generates locale templates (JSON or POT format)
+- Creates Spanish template as example
+- Outputs to `locales/en/messages.json` (or `.pot`)
+
+### 12. `revert_high_effort.sh` - Rollback Script
+
+Safely reverts all high-effort feature changes and restores backups.
+
+**Usage:**
+```bash
+# Run from repository root
+./scripts/revert_high_effort.sh
+```
+
+**What it does:**
+- Restores all `.bak.*` backup files
+- Removes generated directories (learner_backend, analytics, etc.)
+- Removes generated files (PDFs, badges, certificates)
+- Provides summary of reverted changes
+- Idempotent and safe to run multiple times
+
+## Analytics Scripts
+
+### `analytics/report.py` - Analytics Report Generator
+
+Generates reports from analytics events.
+
+**Usage:**
+```bash
+# Generate reports from learner backend database
+python analytics/report.py --input learner_backend/learner.db --output reports/
+
+# View HTML report
+open reports/index.html
+```
+
+**What it does:**
+- Analyzes lesson popularity (page views)
+- Calculates quiz performance (average scores, pass rates)
+- Generates CSV report: `reports/lessons_popularity.csv`
+- Creates HTML dashboard: `reports/index.html`
+
+## Workflow for High-Effort Features
+
+### Complete Setup
+
+1. **Install all dependencies:**
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+2. **Generate PDFs and bundles:**
+   ```bash
+   python scripts/generate_pdfs.py --all
+   ```
+
+3. **Add Binder buttons:**
+   ```bash
+   python scripts/add_binder_buttons.py --apply
+   ```
+
+4. **Generate badges:**
+   ```bash
+   python scripts/generate_badge.py --all
+   ```
+
+5. **Generate sample certificate:**
+   ```bash
+   python scripts/generate_certificate.py --name "Sample User" --phase 1
+   ```
+
+6. **Create quiz pages:**
+   ```bash
+   python scripts/generate_quiz_pages.py --all
+   ```
+
+7. **Extract i18n strings:**
+   ```bash
+   python scripts/extract_i18n.py
+   ```
+
+8. **Start learner backend:**
+   ```bash
+   cd learner_backend
+   python -m learner_backend.main
+   ```
+
+### Validation
+
+Before committing:
+
+```bash
+# Check formatting
+make format
+
+# Run tests
+pytest
+
+# Build documentation
+mkdocs build --strict
+
+# Verify artifacts
+ls -lh artifacts/*.pdf
+ls -lh generated/badges/*.svg
+ls -lh artifacts/certs/*.pdf
+```
+
+### Rollback
+
+If needed, revert all changes:
+
+```bash
+./scripts/revert_high_effort.sh
+```
+
+## Dependencies Summary
+
+### Core Scripts
+- PyYAML >= 6.0
+- Jinja2 >= 3.1
+
+### High-Effort Features
+- WeasyPrint >= 60.0 (PDFs and certificates)
+- markdown2 >= 2.4.10 (Markdown to HTML)
+- fastapi >= 0.104.0 (Learner backend)
+- uvicorn >= 0.24.0 (ASGI server)
+
+All dependencies are in `requirements-dev.txt`.
+
 ## License
 
 Same as parent repository.

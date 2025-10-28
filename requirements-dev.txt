@@ -11,3 +11,29 @@ pre-commit>=3.7
 # Script dependencies for docs generation
 PyYAML>=6.0
 Jinja2>=3.1
+
+# High-effort feature dependencies
+# Backend and API
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+python-jose[cryptography]>=3.3.0
+passlib[bcrypt]>=1.7.4
+aiofiles>=23.2.1
+httpx>=0.25.0
+sqlalchemy>=2.0.0
+
+# PDF and document generation
+weasyprint>=60.0
+markdown2>=2.4.10
+reportlab>=4.0.0
+
+# CI and quality tools
+codespell>=2.2.0
+linkchecker>=10.3.0
+
+# i18n support
+mkdocs-static-i18n>=1.2.0
+
+# Image processing for badges
+Pillow>=10.0.0

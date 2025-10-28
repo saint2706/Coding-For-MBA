@@ -59,6 +59,200 @@ mkdocs serve
 # Visit http://127.0.0.1:8000
 ```
 
+## 🎯 Platform Features
+
+Beyond the curriculum, this repository includes a complete learning platform:
+
+### 📊 Progress Tracking Dashboard
+- **Track completion** across all 108 lessons
+- **Earn badges** for completing each of the 7 phases
+- **Monitor quiz scores** and learning streaks
+- **Generate certificates** for phase completion
+- **Privacy-first**: Cookie-only mode (no registration required) or optional GitHub OAuth
+
+**Quick start:**
+```bash
+# Start the learner backend
+cd learner_backend
+python -m learner_backend.main
+
+# Access dashboard at http://localhost:8000/static/dashboard.html
+```
+
+See [learner_backend/README.md](learner_backend/README.md) and [docs/dashboard/](docs/dashboard/) for details.
+
+### 📝 Interactive Quizzes
+- **Self-check quizzes** for key lessons
+- **Instant feedback** with explanations
+- **Progress tracking** integrated with dashboard
+- **YAML-based** quiz format for easy contribution
+
+Example: `quizzes/Day_02_quiz.yml`, `quizzes/Day_23_quiz.yml`
+
+### 📚 Downloadable Resources
+- **Full curriculum PDF** (all lessons combined)
+- **Per-phase PDFs** (7 separate documents)
+- **ZIP bundles** with markdown + notebooks per phase
+
+Generate with:
+```bash
+python scripts/generate_pdfs.py --all
+```
+
+### 🏆 Gamification
+- **SVG badges** for each phase completion
+- **PDF certificates** with professional design
+- **Streak tracking** to maintain motivation
+- **Leaderboards** (optional, for group learning)
+
+Generate certificates:
+```bash
+python scripts/generate_certificate.py --name "Your Name" --phase 1
+```
+
+### 🚀 Interactive Notebooks
+- **Binder integration** for zero-install Jupyter notebooks
+- **JupyterLite** support for browser-based notebooks
+- **"Open in Binder" buttons** on lesson pages
+
+### 🌍 Internationalization (i18n)
+- **Multi-language support** (English + Spanish template)
+- **Locale extraction tools** for translators
+- **Language switcher** in documentation
+- **Contribute translations** - see [docs/i18n.md](docs/i18n.md)
+
+### 📊 Privacy-First Analytics (Optional)
+- **Lesson popularity** tracking
+- **Quiz performance** aggregation
+- **Anonymous, opt-in** analytics
+- **GDPR compliant** - see [docs/analytics.md](docs/analytics.md)
+
+### 💼 Real-World Projects
+- **One project per phase** with business scenarios
+- **Sample datasets** and starter notebooks
+- **Evaluation rubrics** for self-assessment
+- **Progressive difficulty** from beginner to advanced
+
+Explore: [projects/README.md](projects/README.md)
+
+## 🏗️ Architecture
+
+### Repository Structure
+
+```
+Coding-For-MBA/
+├── Day_01_Introduction/       # Lessons (Day 01-108)
+│   ├── README.md               # Lesson content
+│   ├── *.py                    # Python scripts
+│   └── *.ipynb                 # Jupyter notebooks
+├── learner_backend/            # FastAPI progress tracking server
+│   ├── main.py                 # API endpoints
+│   ├── db.py                   # Database models
+│   └── static/dashboard.html   # Progress dashboard UI
+├── docs/                       # MkDocs documentation
+│   ├── lessons/                # Generated lesson pages
+│   ├── phases/                 # Phase overviews
+│   ├── dashboard/              # Dashboard docs
+│   ├── analytics.md            # Analytics guide
+│   └── i18n.md                 # Translation guide
+├── scripts/                    # Automation scripts
+│   ├── generate_pdfs.py        # PDF generation
+│   ├── generate_badge.py       # Badge creation
+│   ├── generate_certificate.py # Certificate generation
+│   ├── generate_quiz_pages.py  # Quiz HTML generation
+│   ├── add_binder_buttons.py   # Binder integration
+│   └── extract_i18n.py         # i18n extraction
+├── analytics/                  # Analytics system
+│   ├── logger.js               # Client-side event tracker
+│   └── report.py               # Report generator
+├── quizzes/                    # Quiz YAML files
+├── projects/                   # Real-world projects
+│   ├── phase_1/                # Projects by phase
+│   └── README.md               # Projects index
+├── artifacts/                  # Generated PDFs & bundles
+├── generated/badges/           # Generated SVG badges
+├── locales/                    # i18n translations
+└── .github/workflows/          # CI/CD pipelines
+    ├── docs-ci.yml             # Docs build & deploy
+    └── deploy-certs.yml        # PDF/bundle releases
+```
+
+### Technology Stack
+
+**Core Curriculum:**
+- Python 3.13
+- Jupyter Notebooks
+- NumPy, Pandas, scikit-learn
+- TensorFlow, Matplotlib, Plotly
+
+**Platform Components:**
+- **Documentation**: MkDocs with Material theme
+- **Progress Tracking**: FastAPI + SQLite
+- **PDF Generation**: WeasyPrint + markdown2
+- **Notebooks**: Binder + JupyterLite
+- **CI/CD**: GitHub Actions
+- **Analytics**: Privacy-first JavaScript logger
+
+### Local Development
+
+1. **Setup environment:**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt -r requirements-dev.txt
+   ```
+
+2. **Run documentation locally:**
+   ```bash
+   mkdocs serve
+   ```
+
+3. **Start learner backend:**
+   ```bash
+   python -m learner_backend.main
+   ```
+
+4. **Generate resources:**
+   ```bash
+   # PDFs and bundles
+   python scripts/generate_pdfs.py --all
+   
+   # Badges
+   python scripts/generate_badge.py --all
+   
+   # Quiz pages
+   python scripts/generate_quiz_pages.py --all
+   ```
+
+5. **Run tests:**
+   ```bash
+   pytest
+   ```
+
+6. **Format code:**
+   ```bash
+   make format
+   ```
+
+### Deployment Options
+
+**Documentation (GitHub Pages):**
+- Automatic deployment via `.github/workflows/docs-ci.yml`
+- Triggered on push to `main` branch
+- Site: https://saint2706.github.io/Coding-For-MBA/
+
+**Learner Backend:**
+- **Local**: `python -m learner_backend.main`
+- **Heroku**: See [learner_backend/README.md](learner_backend/README.md)
+- **Fly.io**: `fly launch && fly deploy`
+- **Render**: One-click deploy from dashboard
+- **Docker**: Dockerfile included
+
+**PDF Distribution:**
+- Generated on releases via `.github/workflows/deploy-certs.yml`
+- Attached to GitHub releases as assets
+- Manual generation: `python scripts/generate_pdfs.py --all`
+
 ## 🗣️ Community & Support
 
 - **[Join GitHub Discussions →](https://github.com/saint2706/Coding-For-MBA/discussions)** – Connect

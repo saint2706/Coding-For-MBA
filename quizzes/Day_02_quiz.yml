@@ -1,0 +1,56 @@
+questions:
+  - question: "What is the primary purpose of Python variables?"
+    options:
+      - "To store and manipulate data"
+      - "To execute code faster"
+      - "To create functions"
+      - "To import libraries"
+    answer: 0
+    explanation: "Variables in Python are used to store and manipulate data values."
+
+  - question: "Which data type would you use to store the value True or False?"
+    options:
+      - "int"
+      - "str"
+      - "bool"
+      - "float"
+    answer: 2
+    explanation: "Boolean (bool) data type is used to represent True or False values."
+
+  - question: "What is the correct way to create a variable in Python?"
+    options:
+      - "var x = 10"
+      - "x = 10"
+      - "int x = 10"
+      - "x := 10"
+    answer: 1
+    explanation: "Python uses simple assignment: variable_name = value"
+
+  - question: "Which built-in function is used to display output in Python?"
+    options:
+      - "echo()"
+      - "console.log()"
+      - "print()"
+      - "printf()"
+    answer: 2
+    explanation: "The print() function is used to display output in Python."
+
+  - question: "What does the type() function do?"
+    options:
+      - "Converts data types"
+      - "Returns the data type of a variable"
+      - "Checks if variable is defined"
+      - "Deletes a variable"
+    answer: 1
+    explanation: "The type() function returns the data type of a given variable or value."
+
+metadata:
+  points: 5
+  passing_score: 60
+  tags:
+    - python
+    - fundamentals
+    - variables
+    - data-types
+  difficulty: beginner
+  estimated_time_minutes: 5

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Dashboard - Coding for MBA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #718096;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .progress-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-container {
+            background: #e2e8f0;
+            border-radius: 9999px;
+            height: 2rem;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .badges-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-locked {
+            background: #cbd5e0;
+            color: #718096;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .error {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .recent-activity {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-day {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .activity-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .status-in-progress {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .status-started {
+            background: #bee3f8;
+            color: #1e4e8c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Learning Dashboard</h1>
+            <p class="subtitle">Track your progress through the Coding for MBA curriculum</p>
+        </div>
+
+        <div id="loading" class="loading">
+            Loading your progress...
+        </div>
+
+        <div id="dashboard" style="display: none;">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Completion</div>
+                    <div class="stat-value" id="completion-percentage">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Lessons Completed</div>
+                    <div class="stat-value" id="completed-count">0/108</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Badges Earned</div>
+                    <div class="stat-value" id="badge-count">0/7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Current Streak</div>
+                    <div class="stat-value" id="streak">0 days</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <h2>Overall Progress</h2>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar" style="width: 0%">
+                        <span id="progress-text">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="badges-section">
+                <h2>Phase Badges</h2>
+                <div class="badges-grid" id="badges-container">
+                    <div class="badge badge-locked">Phase 1</div>
+                    <div class="badge badge-locked">Phase 2</div>
+                    <div class="badge badge-locked">Phase 3</div>
+                    <div class="badge badge-locked">Phase 4</div>
+                    <div class="badge badge-locked">Phase 5</div>
+                    <div class="badge badge-locked">Phase 6</div>
+                    <div class="badge badge-locked">Phase 7</div>
+                </div>
+            </div>
+
+            <div class="recent-activity">
+                <h2>Recent Activity</h2>
+                <div id="activity-container">
+                    <p style="text-align: center; color: #718096; padding: 2rem;">
+                        No activity yet. Start learning to see your progress here!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API base URL
+        const API_BASE = '/api/v1';
+
+        // Get user ID from cookie or generate one
+        function getUserId() {
+            const match = document.cookie.match(/learner_user_id=([^;]+)/);
+            return match ? match[1] : null;
+        }
+
+        // Fetch progress data
+        async function loadProgress() {
+            try {
+                // First, trigger a dummy progress update to get/set user ID
+                const response = await fetch(`${API_BASE}/progress`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: 'init',
+                        day: 1,
+                        status: 'started'
+                    })
+                });
+
+                const userId = getUserId();
+                if (!userId) {
+                    throw new Error('Failed to get user ID');
+                }
+
+                // Fetch actual progress
+                const progressRes = await fetch(`${API_BASE}/progress/${userId}`);
+                const progressData = await progressRes.json();
+
+                // Fetch badges
+                const badgesRes = await fetch(`${API_BASE}/badges/${userId}`);
+                const badgesData = await badgesRes.json();
+
+                // Update UI
+                updateDashboard(progressData, badgesData);
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+
+            } catch (error) {
+                console.error('Error loading progress:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div class="error">
+                        Failed to load progress. Make sure the backend is running.
+                        <br><br>
+                        Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        function updateDashboard(progressData, badgesData) {
+            // Update completion stats
+            const completionPct = progressData.completion_percentage || 0;
+            document.getElementById('completion-percentage').textContent = `${completionPct}%`;
+            document.getElementById('completed-count').textContent = 
+                `${progressData.completed}/${progressData.total_lessons || 108}`;
+            document.getElementById('badge-count').textContent = 
+                `${badgesData.badge_count}/7`;
+            document.getElementById('streak').textContent = '0 days'; // Placeholder
+
+            // Update progress bar
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            progressBar.style.width = `${completionPct}%`;
+            progressText.textContent = `${completionPct}%`;
+
+            // Update badges
+            updateBadges(badgesData.badges || []);
+
+            // Update recent activity
+            updateActivity(progressData.lessons || []);
+        }
+
+        function updateBadges(badges) {
+            const container = document.getElementById('badges-container');
+            const earnedPhases = new Set(badges.map(b => b.phase));
+
+            container.innerHTML = '';
+            for (let phase = 1; phase <= 7; phase++) {
+                const badgeEl = document.createElement('div');
+                badgeEl.className = earnedPhases.has(phase) ? 'badge' : 'badge badge-locked';
+                badgeEl.textContent = `Phase ${phase}`;
+                if (earnedPhases.has(phase)) {
+                    badgeEl.innerHTML += '<br>✅';
+                }
+                container.appendChild(badgeEl);
+            }
+        }
+
+        function updateActivity(lessons) {
+            const container = document.getElementById('activity-container');
+            
+            if (!lessons || lessons.length === 0) {
+                container.innerHTML = `
+                    <p style="text-align: center; color: #718096; padding: 2rem;">
+                        No activity yet. Start learning to see your progress here!
+                    </p>
+                `;
+                return;
+            }
+
+            // Show last 10 lessons
+            const recent = lessons.slice(-10).reverse();
+            container.innerHTML = recent.map(lesson => `
+                <div class="activity-item">
+                    <div class="activity-day">Day ${lesson.day}</div>
+                    <div class="activity-status status-${lesson.status}">
+                        ${lesson.status}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load progress on page load
+        loadProgress();
+    </script>
+</body>
+</html>

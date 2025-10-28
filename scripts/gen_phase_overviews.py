@@ -201,9 +201,7 @@ title: "{name}"
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Generate phase overview pages"
-    )
+    parser = argparse.ArgumentParser(description="Generate phase overview pages")
     parser.add_argument(
         "--apply", action="store_true", help="Apply changes (default: dry-run)"
     )
