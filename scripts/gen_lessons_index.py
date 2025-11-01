@@ -193,7 +193,9 @@ Browse all **{total}** lessons in the curriculum. Use the search box and tag fil
   <div id="tagFilters" style="margin-bottom: 20px;">
     <strong>Filter by tag:</strong>
     <button class="tag-filter active" data-tag="all" style="margin: 5px; padding: 5px 12px; border: 1px solid #ddd; border-radius: 15px; background: #007bff; color: white; cursor: pointer;">All</button>
-""".format(total=total_lessons)
+""".format(
+        total=total_lessons
+    )
 
     for tag in sorted_tags:
         content += f'    <button class="tag-filter" data-tag="{tag}" style="margin: 5px; padding: 5px 12px; border: 1px solid #ddd; border-radius: 15px; background: white; color: #333; cursor: pointer;">{tag}</button>\n'
