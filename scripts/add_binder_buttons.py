@@ -49,7 +49,11 @@ def find_lesson_dirs_with_notebooks() -> List[Tuple[Path, List[str]]]:
 
 def has_binder_button(readme_content: str) -> bool:
     """Check if README already contains a Binder button."""
-    return "mybinder.org" in readme_content.lower()
+    # Look for a markdown binder badge/link such as [![Binder](...)](https://mybinder.org/...)
+    binder_pattern = re.compile(
+        r'\[!\[Binder\]\([^\)]*mybinder\.org[^\)]*\)\]\([^\)]*mybinder\.org[^\)]*\)', re.IGNORECASE
+    )
+    return bool(binder_pattern.search(readme_content))
 
 
 def create_backup(file_path: Path) -> Path:
