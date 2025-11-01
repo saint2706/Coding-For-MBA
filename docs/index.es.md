@@ -38,12 +38,12 @@ El plan de estudios está organizado en siete fases progresivas:
 ## 🤝 Comunidad y Soporte
 
 - **[Únete a las Discusiones de GitHub →](https://github.com/saint2706/Coding-For-MBA/discussions)** – Conéctate con compañeros, haz preguntas y comparte logros.
-- **[Guía de Contribución](CONTRIBUTING.md)** – Sigue el flujo de trabajo para proponer cambios y enviar pull requests.
+- **[Guía de Contribución](https://github.com/saint2706/Coding-For-MBA/blob/main/CONTRIBUTING.md)** – Sigue el flujo de trabajo para proponer cambios y enviar pull requests.
 
 ## 📝 Licencia
 
-Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está licenciado bajo la Licencia MIT - consulta el archivo [LICENSE](https://github.com/saint2706/Coding-For-MBA/blob/main/LICENSE) para más detalles.
 
 ______________________________________________________________________
 
-**Nota**: Esta es una traducción de muestra. Para la documentación completa en inglés, visita [README.md](README.md).
+**Nota**: Esta es una traducción de muestra. Para la documentación completa en inglés, visita [README.md](https://github.com/saint2706/Coding-For-MBA/blob/main/README.md).

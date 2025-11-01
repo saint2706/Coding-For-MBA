@@ -39,15 +39,15 @@ ______________________________________________________________________
 - Repeatable lesson pattern with Python scripts, notebooks, and solution walk-throughs.
 - Tooling for local development, CI, and documentation so you can learn by doing.
 
-| Phase | Days | Focus |
-| --- | --- | --- |
-| [Phase 1 – Python Foundations](phases/phase1.md) | 01-20 | Automate workflows with core Python skills. |
-| [Phase 2 – Data Analytics & Workflows](phases/phase2.md) | 21-39 | Build analysis-ready datasets with Pandas, APIs, and visualization. |
-| [Phase 3 – Machine Learning Foundations](phases/phase3.md) | 40-54 | Apply supervised, unsupervised, and neural techniques to business problems. |
-| [Phase 4 – Advanced ML & MLOps](phases/phase4.md) | 55-67 | Operationalize models with transformers, deployment, and monitoring. |
-| [Phase 5 – Business Intelligence](phases/phase5.md) | 68-84 | Design BI programs, stakeholder journeys, and enablement playbooks. |
-| [Phase 6 – BI Advanced & Capstone](phases/phase6.md) | 85-90 | Deliver cloud BI solutions, governance, and a culminating capstone. |
-| [Phase 7 – SQL & Database Mastery](phases/phase7.md) | 91-108 | Master enterprise SQL, database design, and performance tuning. |
+| Phase                                                      | Days   | Focus                                                                       |
+| ---------------------------------------------------------- | ------ | --------------------------------------------------------------------------- |
+| [Phase 1 – Python Foundations](phases/phase1.md)           | 01-20  | Automate workflows with core Python skills.                                 |
+| [Phase 2 – Data Analytics & Workflows](phases/phase2.md)   | 21-39  | Build analysis-ready datasets with Pandas, APIs, and visualization.         |
+| [Phase 3 – Machine Learning Foundations](phases/phase3.md) | 40-54  | Apply supervised, unsupervised, and neural techniques to business problems. |
+| [Phase 4 – Advanced ML & MLOps](phases/phase4.md)          | 55-67  | Operationalize models with transformers, deployment, and monitoring.        |
+| [Phase 5 – Business Intelligence](phases/phase5.md)        | 68-84  | Design BI programs, stakeholder journeys, and enablement playbooks.         |
+| [Phase 6 – BI Advanced & Capstone](phases/phase6.md)       | 85-90  | Deliver cloud BI solutions, governance, and a culminating capstone.         |
+| [Phase 7 – SQL & Database Mastery](phases/phase7.md)       | 91-108 | Master enterprise SQL, database design, and performance tuning.             |
 
 ## Explore next
 

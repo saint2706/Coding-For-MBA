@@ -1,5 +1,5 @@
 ---
-title: "All Lessons - Interactive Index"
+title: All Lessons - Interactive Index
 ---
 
 # 📚 All Lessons
@@ -8,8 +8,8 @@ Browse all **108** lessons in the curriculum. Use the search box and tag filters
 
 <div class="lesson-controls">
   <input type="text" id="lessonSearch" placeholder="🔍 Search lessons..." style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px;">
-  
-  <div id="tagFilters" style="margin-bottom: 20px;">
+
+<div id="tagFilters" style="margin-bottom: 20px;">
     <strong>Filter by tag:</strong>
     <button class="tag-filter active" data-tag="all" style="margin: 5px; padding: 5px 12px; border: 1px solid #ddd; border-radius: 15px; background: #007bff; color: white; cursor: pointer;">All</button>
     <button class="tag-filter" data-tag="Advanced" style="margin: 5px; padding: 5px 12px; border: 1px solid #ddd; border-radius: 15px; background: white; color: #333; cursor: pointer;">Advanced</button>
@@ -739,12 +739,12 @@ Browse all **108** lessons in the curriculum. Use the search box and tag filters
     background: #2d2d2d;
     border-color: #444;
   }
-  
+
   .tag-badge {
     background: #444;
     color: #ddd;
   }
-  
+
   .tag-filter {
     background: #333 !important;
     color: #ddd !important;
@@ -760,26 +760,26 @@ Browse all **108** lessons in the curriculum. Use the search box and tag filters
   const lessonCards = document.querySelectorAll('.lesson-card');
   const lessonList = document.getElementById('lessonList');
   const noResults = document.getElementById('noResults');
-  
+
   let currentTag = 'all';
   let currentSearch = '';
-  
+
   function filterLessons() {
     let visibleCount = 0;
-    
+
     lessonCards.forEach(card => {
       const tags = JSON.parse(card.getAttribute('data-tags'));
       const title = card.getAttribute('data-title');
       const desc = card.getAttribute('data-desc');
-      
+
       // Check tag filter
       const tagMatch = currentTag === 'all' || tags.includes(currentTag);
-      
+
       // Check search filter
-      const searchMatch = !currentSearch || 
-                         title.includes(currentSearch.toLowerCase()) || 
+      const searchMatch = !currentSearch ||
+                         title.includes(currentSearch.toLowerCase()) ||
                          desc.includes(currentSearch.toLowerCase());
-      
+
       if (tagMatch && searchMatch) {
         card.style.display = 'block';
         visibleCount++;
@@ -787,7 +787,7 @@ Browse all **108** lessons in the curriculum. Use the search box and tag filters
         card.style.display = 'none';
       }
     });
-    
+
     // Show/hide no results message
     if (visibleCount === 0) {
       lessonList.style.display = 'none';
@@ -797,25 +797,25 @@ Browse all **108** lessons in the curriculum. Use the search box and tag filters
       noResults.style.display = 'none';
     }
   }
-  
+
   // Search box event
   searchBox.addEventListener('input', (e) => {
     currentSearch = e.target.value;
     filterLessons();
   });
-  
+
   // Tag filter events
   tagButtons.forEach(button => {
     button.addEventListener('click', () => {
       // Update active state
       tagButtons.forEach(b => b.classList.remove('active'));
       button.classList.add('active');
-      
+
       currentTag = button.getAttribute('data-tag');
       filterLessons();
     });
   });
-  
+
   // Initial filter
   filterLessons();
 })();

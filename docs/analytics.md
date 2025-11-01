@@ -171,8 +171,7 @@ Running without any analytics is perfectly fine! The platform works fully offlin
 
 For questions about privacy or analytics:
 
-- Review our [Privacy Policy](../privacy.md) (if applicable)
-- Open an issue on GitHub
+- Open an issue on [GitHub](https://github.com/saint2706/Coding-For-MBA/issues)
 - Contact the maintainers
 
 **Remember**: Analytics are a tool to improve the platform, not a requirement. Your privacy comes first.

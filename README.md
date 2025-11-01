@@ -335,6 +335,7 @@ jupyter notebook
 Quick access to all 108 lessons:
 
 <!-- AUTO_ALL_LESSONS_START -->
+
 - [Day 01 – Day 1: Python for Business Analytics - First Steps](./Day_01_Introduction/README.md)
 - [Day 02 – Day 2: Storing and Analyzing Business Data](./Day_02_Variables_Builtin_Functions/README.md)
 - [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](./Day_03_Operators/README.md)
@@ -443,6 +444,7 @@ Quick access to all 108 lessons:
 - [Day 106 – Day 106: XML in SQL](./Day_106_XML_in_SQL/README.md)
 - [Day 107 – Day 107: SQL Security](./Day_107_Security/README.md)
 - [Day 108 – Day 108: SQL Performance Tuning](./Day_108_Performance_Tuning/README.md)
+
 <!-- AUTO_ALL_LESSONS_END -->
 
 _The complete list is auto-generated. See [generated/all_lessons.md](./generated/all_lessons.md) for the full list._

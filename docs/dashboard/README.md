@@ -131,7 +131,7 @@ Access at `http://localhost:8000`
 
 ### Production Deployment
 
-See [learner_backend/README.md](../../learner_backend/README.md) for deployment guides:
+See the learner backend documentation for deployment guides:
 
 - Heroku
 - Fly.io
@@ -231,9 +231,9 @@ Integrate with:
 For help:
 
 - Review API docs: `http://localhost:8000/docs`
-- Check [learner_backend/README.md](../../learner_backend/README.md)
-- Open an issue on GitHub
-- Ask in [GitHub Discussions](../../discussions)
+- Check the learner backend documentation in the repository
+- Open an issue on [GitHub](https://github.com/saint2706/Coding-For-MBA/issues)
+- Ask in [GitHub Discussions](https://github.com/saint2706/Coding-For-MBA/discussions)
 
 ## Roadmap
 
