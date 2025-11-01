@@ -150,12 +150,12 @@ QUIZ_HTML_TEMPLATE = """<!DOCTYPE html>
         function gradeQuiz() {{
             let correct = 0;
             const total = quizData.questions.length;
-            
+
             quizData.questions.forEach((q, index) => {{
                 const selected = document.querySelector(`input[name="q${{index}}"]:checked`);
                 const questionDiv = document.getElementById(`question-${{index}}`);
                 const explanation = document.getElementById(`explanation-${{index}}`);
-                
+
                 if (selected) {{
                     const answer = parseInt(selected.value);
                     if (answer === q.answer) {{
@@ -164,7 +164,7 @@ QUIZ_HTML_TEMPLATE = """<!DOCTYPE html>
                     }} else {{
                         questionDiv.classList.add('incorrect');
                     }}
-                    
+
                     if (explanation) {{
                         explanation.classList.add('show');
                     }}
@@ -175,10 +175,10 @@ QUIZ_HTML_TEMPLATE = """<!DOCTYPE html>
             const passed = percentage >= quizData.metadata.passing_score;
 
             document.getElementById('scoreDisplay').textContent = `${{correct}}/${{total}} (${{percentage}}%)`;
-            document.getElementById('scoreMessage').textContent = passed 
+            document.getElementById('scoreMessage').textContent = passed
                 ? '🎉 Congratulations! You passed!'
                 : '📚 Keep studying and try again!';
-            
+
             document.getElementById('results').classList.add('show');
             document.getElementById('quizForm').querySelector('.submit-btn').style.display = 'none';
 

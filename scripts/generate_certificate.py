@@ -37,7 +37,7 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             size: A4 landscape;
             margin: 0;
         }}
-        
+
         body {{
             margin: 0;
             padding: 0;
@@ -48,7 +48,7 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             align-items: center;
             min-height: 100vh;
         }}
-        
+
         .certificate {{
             background: white;
             width: 27cm;
@@ -58,7 +58,7 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             border: 15px solid #f0f0f0;
             position: relative;
         }}
-        
+
         .border-inner {{
             border: 2px solid #333;
             padding: 1.5cm;
@@ -68,12 +68,12 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             flex-direction: column;
             justify-content: space-between;
         }}
-        
+
         .header {{
             text-align: center;
             margin-bottom: 1cm;
         }}
-        
+
         .title {{
             font-size: 48pt;
             font-weight: bold;
@@ -81,13 +81,13 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             margin: 0;
             letter-spacing: 2px;
         }}
-        
+
         .subtitle {{
             font-size: 18pt;
             color: #7f8c8d;
             margin: 10px 0 0 0;
         }}
-        
+
         .content {{
             text-align: center;
             flex-grow: 1;
@@ -95,13 +95,13 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             flex-direction: column;
             justify-content: center;
         }}
-        
+
         .presented-to {{
             font-size: 16pt;
             color: #34495e;
             margin-bottom: 20px;
         }}
-        
+
         .recipient-name {{
             font-size: 36pt;
             font-weight: bold;
@@ -111,33 +111,33 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             padding-bottom: 10px;
             display: inline-block;
         }}
-        
+
         .achievement {{
             font-size: 14pt;
             color: #555;
             margin: 30px 0;
             line-height: 1.6;
         }}
-        
+
         .phase-name {{
             font-size: 24pt;
             font-weight: bold;
             color: #3498db;
             margin: 20px 0;
         }}
-        
+
         .footer {{
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
             margin-top: 2cm;
         }}
-        
+
         .signature-block {{
             text-align: center;
             flex: 1;
         }}
-        
+
         .signature-line {{
             border-top: 2px solid #333;
             margin-top: 50px;
@@ -145,34 +145,34 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
             font-size: 12pt;
             color: #555;
         }}
-        
+
         .date {{
             text-align: right;
             font-size: 12pt;
             color: #555;
         }}
-        
+
         .decoration {{
             position: absolute;
             font-size: 72pt;
             opacity: 0.1;
         }}
-        
+
         .decoration-tl {{
             top: 10px;
             left: 10px;
         }}
-        
+
         .decoration-tr {{
             top: 10px;
             right: 10px;
         }}
-        
+
         .decoration-bl {{
             bottom: 10px;
             left: 10px;
         }}
-        
+
         .decoration-br {{
             bottom: 10px;
             right: 10px;
@@ -185,36 +185,36 @@ CERTIFICATE_HTML_TEMPLATE = """<!DOCTYPE html>
         <div class="decoration decoration-tr">📚</div>
         <div class="decoration decoration-bl">💡</div>
         <div class="decoration decoration-br">✨</div>
-        
+
         <div class="border-inner">
             <div class="header">
                 <h1 class="title">Certificate of Completion</h1>
                 <p class="subtitle">Coding for MBA Curriculum</p>
             </div>
-            
+
             <div class="content">
                 <p class="presented-to">This certificate is proudly presented to</p>
-                
+
                 <div class="recipient-name">{name}</div>
-                
+
                 <p class="achievement">
                     For successfully completing<br>
                     <span class="phase-name">Phase {phase}: {phase_name}</span><br>
                     of the Coding for MBA comprehensive curriculum
                 </p>
-                
+
                 <p style="font-size: 12pt; color: #7f8c8d; margin-top: 20px;">
                     {lessons_count} lessons • {phase_description}
                 </p>
             </div>
-            
+
             <div class="footer">
                 <div class="signature-block">
                     <div class="signature-line">
                         Course Instructor
                     </div>
                 </div>
-                
+
                 <div class="date">
                     Date of Completion:<br>
                     <strong>{date}</strong>

@@ -8,26 +8,36 @@ import yaml
 
 pytest.importorskip("mkdocs")
 
-from mkdocs.commands.build import build
-from mkdocs.config import load_config
+from mkdocs.commands.build import build  # noqa: E402
+from mkdocs.config import load_config  # noqa: E402
 
 # Ensure coverage targets are imported when running the focused docs tests.
-import Day_24_Pandas_Advanced.pandas_adv  # noqa: F401
-import Day_25_Data_Cleaning.data_cleaning  # noqa: F401
-import Day_26_Statistics.stats  # noqa: F401
+import Day_24_Pandas_Advanced.pandas_adv  # noqa: E402, F401
+import Day_25_Data_Cleaning.data_cleaning  # noqa: E402, F401
+import Day_26_Statistics.stats  # noqa: E402, F401
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT_DIR = Path(__file__).parent / "snapshots"
 
 LESSON_NAV = [
-    {"Lessons": [
-        {"Lesson Library": "lessons/index.md"},
-        {"📘 Day 1: Python for Business Analytics - First Steps": "lessons/day-01-introduction.md"},
-        {"📘 Day 2: Storing and Analyzing Business Data": "lessons/day-02-variables-builtin-functions.md"},
-        {"📊 Day 36 – Capstone Case Study": "lessons/day-36-case-study.md"},
-        {"🎉 Day 37: Conclusion & Your Journey Forward 🎉": "lessons/day-37-conclusion.md"},
-        {"📘 Day 91: Relational Databases": "lessons/day-91-relational-databases.md"},
-    ]}
+    {
+        "Lessons": [
+            {"Lesson Library": "lessons/index.md"},
+            {
+                "📘 Day 1: Python for Business Analytics - First Steps": "lessons/day-01-introduction.md"
+            },
+            {
+                "📘 Day 2: Storing and Analyzing Business Data": "lessons/day-02-variables-builtin-functions.md"
+            },
+            {"📊 Day 36 – Capstone Case Study": "lessons/day-36-case-study.md"},
+            {
+                "🎉 Day 37: Conclusion & Your Journey Forward 🎉": "lessons/day-37-conclusion.md"
+            },
+            {
+                "📘 Day 91: Relational Databases": "lessons/day-91-relational-databases.md"
+            },
+        ]
+    }
 ]
 
 
@@ -82,14 +92,18 @@ def test_lessons_index_card_snapshot(docs_site: Path) -> None:
     index_html = _read(docs_site / "lessons" / "index.html")
 
     assert "Day 2: Day 2" not in index_html
-    match = re.search(r'<h3><a href="day-02-variables-builtin-functions.md">.*?</a></h3>', index_html)
+    match = re.search(
+        r'<h3><a href="day-02-variables-builtin-functions.md">.*?</a></h3>', index_html
+    )
     assert match, "Expected lesson card for Day 2"
 
     _assert_snapshot("lessons-index-day-02-h3.html", match.group(0))
 
 
 def test_day_02_footer_snapshot(docs_site: Path) -> None:
-    html = _read(docs_site / "lessons" / "day-02-variables-builtin-functions" / "index.html")
+    html = _read(
+        docs_site / "lessons" / "day-02-variables-builtin-functions" / "index.html"
+    )
 
     assert "Day 1: Day 1" not in html
     footer_nav = _extract_footer_nav(html)

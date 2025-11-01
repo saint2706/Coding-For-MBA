@@ -33,29 +33,29 @@ SVG_TEMPLATE = """<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height
       <stop offset="100%" style="stop-color:{color_dark};stop-opacity:1" />
     </linearGradient>
   </defs>
-  
+
   <!-- Background -->
   <rect width="{width}" height="28" rx="4" fill="url(#grad{phase})"/>
-  
+
   <!-- Shadow -->
   <rect x="2" y="2" width="{width}" height="24" rx="3" fill="black" opacity="0.1"/>
-  
+
   <!-- Badge content -->
   <g>
     <!-- Icon -->
     <text x="14" y="19" font-family="Arial, sans-serif" font-size="18" fill="white">🏆</text>
-    
+
     <!-- Phase label -->
     <text x="38" y="19" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
       Phase {phase}
     </text>
-    
+
     <!-- Phase name -->
     <text x="{name_x}" y="19" font-family="Arial, sans-serif" font-size="11" fill="white" opacity="0.9">
       {name}
     </text>
   </g>
-  
+
   <!-- Checkmark -->
   <circle cx="{check_x}" cy="14" r="8" fill="white" opacity="0.3"/>
   <text x="{check_x}" y="18" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle">✓</text>
