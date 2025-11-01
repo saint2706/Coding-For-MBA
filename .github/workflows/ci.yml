@@ -33,11 +33,10 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
-    - name: Set up Python 3.13
+    - name: Set up Python 3.11
       uses: actions/setup-python@v6
       with:
-        python-version: "3.13"
-        allow-prereleases: true
+        python-version: "3.11"
         cache: 'pip'
         cache-dependency-path: |
           requirements.txt
