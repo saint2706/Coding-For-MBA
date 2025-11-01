@@ -125,187 +125,195 @@ _You are on lesson 14 of 108._
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/solutions.ipynb){ .md-button }
 
 ???+ example "business_logic.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.py)
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.py)
 
-    ```python title="business_logic.py"
-    """
-    Day 14: Business Logic Module
+````
+```python title="business_logic.py"
+"""
+Day 14: Business Logic Module
 
-    This file acts as a module containing various reusable functions
-    for common business calculations and validations.
-    """
-
-
-    def calculate_roi(investment: float, profit: float) -> float:
-        """Calculates the Return on Investment (ROI)."""
-        if investment == 0:
-            return 0
-        return (profit / investment) * 100
+This file acts as a module containing various reusable functions
+for common business calculations and validations.
+"""
 
 
-    def calculate_future_value(principal: float, rate: float, years: int) -> float:
-        """Calculates the future value of an investment with annual compounding."""
-        return principal * ((1 + rate) ** years)
+def calculate_roi(investment: float, profit: float) -> float:
+    """Calculates the Return on Investment (ROI)."""
+    if investment == 0:
+        return 0
+    return (profit / investment) * 100
 
 
-    def is_eligible_for_promotion(years_of_service: int, performance_rating: int) -> bool:
-        """Checks if an employee is eligible for promotion."""
-        # Rule: Must have > 3 years of service and a performance rating of 4 or 5.
-        return years_of_service > 3 and performance_rating >= 4
+def calculate_future_value(principal: float, rate: float, years: int) -> float:
+    """Calculates the future value of an investment with annual compounding."""
+    return principal * ((1 + rate) ** years)
 
 
-    def format_as_currency(amount: float) -> str:
-        """Formats a number into a standard currency string."""
-        return f"${amount:,.2f}"
-    ```
+def is_eligible_for_promotion(years_of_service: int, performance_rating: int) -> bool:
+    """Checks if an employee is eligible for promotion."""
+    # Rule: Must have > 3 years of service and a performance rating of 4 or 5.
+    return years_of_service > 3 and performance_rating >= 4
+
+
+def format_as_currency(amount: float) -> str:
+    """Formats a number into a standard currency string."""
+    return f"${amount:,.2f}"
+```
+````
 
 ???+ example "finance_tools.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/finance_tools.py)
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/finance_tools.py)
 
-    ```python title="finance_tools.py"
-    """
-    Finance Tools Module - Alias for business_logic module
+````
+```python title="finance_tools.py"
+"""
+Finance Tools Module - Alias for business_logic module
 
-    This module provides backward compatibility for scripts that import
-    finance_tools instead of business_logic.
-    """
+This module provides backward compatibility for scripts that import
+finance_tools instead of business_logic.
+"""
 
-    from business_logic import (
-        calculate_future_value,
-        calculate_roi,
-        format_as_currency,
-        is_eligible_for_promotion,
-    )
+from business_logic import (
+    calculate_future_value,
+    calculate_roi,
+    format_as_currency,
+    is_eligible_for_promotion,
+)
 
-    __all__ = [
-        "calculate_roi",
-        "calculate_future_value",
-        "is_eligible_for_promotion",
-        "format_as_currency",
-    ]
-    ```
+__all__ = [
+    "calculate_roi",
+    "calculate_future_value",
+    "is_eligible_for_promotion",
+    "format_as_currency",
+]
+```
+````
 
 ???+ example "modules.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.py)
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.py)
 
-    ```python title="modules.py"
-    """
-    Day 14: Using Modules to Organize Code (Refactored)
+````
+```python title="modules.py"
+"""
+Day 14: Using Modules to Organize Code (Refactored)
 
-    This script demonstrates how to import and use functions from
-    both custom-built modules and Python's built-in modules.
-    """
+This script demonstrates how to import and use functions from
+both custom-built modules and Python's built-in modules.
+"""
 
-    # We are importing the functions we created in the 'business_logic.py' file.
-    # We use an alias 'bl' to keep our code clean and concise.
-    import datetime
-    import math
+# We are importing the functions we created in the 'business_logic.py' file.
+# We use an alias 'bl' to keep our code clean and concise.
+import datetime
+import math
 
-    import business_logic as bl
-
-
-    def demonstrate_custom_module():
-        """Demonstrates using functions from the custom business_logic module."""
-        print("--- Using Custom Business Logic Module ---")
-        investment_amount = 50000
-        profit_amount = 12000
-        roi = bl.calculate_roi(investment_amount, profit_amount)
-        print(
-            f"A project with an investment of {bl.format_as_currency(investment_amount)} and profit of {bl.format_as_currency(profit_amount)} has an ROI of {roi:.2f}%."
-        )
-
-        years = 4
-        rating = 5
-        is_eligible = bl.is_eligible_for_promotion(years, rating)
-        print(
-            f"An employee with {years} years of service and a rating of {rating} is eligible for promotion: {is_eligible}"
-        )
-        print("-" * 20)
+import business_logic as bl
 
 
-    def demonstrate_builtin_modules():
-        """Demonstrates using Python's built-in datetime and math modules."""
-        print("--- Using Built-in 'datetime' and 'math' Modules ---")
-        current_datetime = datetime.datetime.now()
-        print(f"Current Date and Time: {current_datetime}")
-        print(f"Current Year: {current_datetime.year}")
-        print()
-
-        marketing_budget = 100000
-        growth_factor = math.sqrt(marketing_budget)
-        print(
-            f"The growth factor for a marketing budget of {bl.format_as_currency(marketing_budget)} is {growth_factor:.2f}."
-        )
-        print("-" * 20)
-
-
-    def main():
-        """Main function to demonstrate module usage."""
-        demonstrate_custom_module()
-        demonstrate_builtin_modules()
-
-
-    if __name__ == "__main__":
-        main()
-    ```
-
-???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.py)
-
-    ```python title="solutions.py"
-    """Day 14: Solutions to Exercises."""
-
-    import datetime
-    import math
-
-    import finance_tools as ft
-
-    # --- Exercise 1: Create a Finance Module ---
-    print("--- Solution to Exercise 1 ---")
-
-    # --- Call functions from the module ---
-    investment = 150000
-    profit = 25000
-    roi = ft.calculate_roi(investment, profit)
+def demonstrate_custom_module():
+    """Demonstrates using functions from the custom business_logic module."""
+    print("--- Using Custom Business Logic Module ---")
+    investment_amount = 50000
+    profit_amount = 12000
+    roi = bl.calculate_roi(investment_amount, profit_amount)
     print(
-        f"ROI for a ${investment:,.2f} investment with ${profit:,.2f} profit is: {roi:.2f}%"
+        f"A project with an investment of {bl.format_as_currency(investment_amount)} and profit of {bl.format_as_currency(profit_amount)} has an ROI of {roi:.2f}%."
     )
 
-    principal = 10000
-    rate = 0.05
-    years = 10
-    future_value = ft.calculate_future_value(principal, rate, years)
+    years = 4
+    rating = 5
+    is_eligible = bl.is_eligible_for_promotion(years, rating)
     print(
-        f"Future value of ${principal:,.2f} after {years} years at a {rate * 100}% rate is: ${future_value:,.2f}"
+        f"An employee with {years} years of service and a rating of {rating} is eligible for promotion: {is_eligible}"
     )
     print("-" * 20)
 
 
-    # --- Exercise 2: Use the `datetime` Module ---
-    print("--- Solution to Exercise 2 ---")
-    # import the module
-
-    # Get the current date and time
-    now = datetime.datetime.now()
-
-    print(f"Current full date and time: {now}")
-    print(f"Current date only: {now.date()}")
-    print(f"Current year: {now.year}")
-    print(f"Current month: {now.month}")
-    print(f"Current day: {now.day}")
-    print("-" * 20)
-
-
-    # --- Exercise 3: Use the `math` Module ---
-    print("--- Solution to Exercise 3 ---")
-    # import the module
+def demonstrate_builtin_modules():
+    """Demonstrates using Python's built-in datetime and math modules."""
+    print("--- Using Built-in 'datetime' and 'math' Modules ---")
+    current_datetime = datetime.datetime.now()
+    print(f"Current Date and Time: {current_datetime}")
+    print(f"Current Year: {current_datetime.year}")
+    print()
 
     marketing_budget = 100000
-    # Use the sqrt function from the math module
     growth_factor = math.sqrt(marketing_budget)
-
     print(
-        f"The growth factor for a marketing budget of ${marketing_budget:,.2f} is {growth_factor:.2f}."
+        f"The growth factor for a marketing budget of {bl.format_as_currency(marketing_budget)} is {growth_factor:.2f}."
     )
     print("-" * 20)
-    ```
+
+
+def main():
+    """Main function to demonstrate module usage."""
+    demonstrate_custom_module()
+    demonstrate_builtin_modules()
+
+
+if __name__ == "__main__":
+    main()
+```
+````
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.py)
+
+````
+```python title="solutions.py"
+"""Day 14: Solutions to Exercises."""
+
+import datetime
+import math
+
+import finance_tools as ft
+
+# --- Exercise 1: Create a Finance Module ---
+print("--- Solution to Exercise 1 ---")
+
+# --- Call functions from the module ---
+investment = 150000
+profit = 25000
+roi = ft.calculate_roi(investment, profit)
+print(
+    f"ROI for a ${investment:,.2f} investment with ${profit:,.2f} profit is: {roi:.2f}%"
+)
+
+principal = 10000
+rate = 0.05
+years = 10
+future_value = ft.calculate_future_value(principal, rate, years)
+print(
+    f"Future value of ${principal:,.2f} after {years} years at a {rate * 100}% rate is: ${future_value:,.2f}"
+)
+print("-" * 20)
+
+
+# --- Exercise 2: Use the `datetime` Module ---
+print("--- Solution to Exercise 2 ---")
+# import the module
+
+# Get the current date and time
+now = datetime.datetime.now()
+
+print(f"Current full date and time: {now}")
+print(f"Current date only: {now.date()}")
+print(f"Current year: {now.year}")
+print(f"Current month: {now.month}")
+print(f"Current day: {now.day}")
+print("-" * 20)
+
+
+# --- Exercise 3: Use the `math` Module ---
+print("--- Solution to Exercise 3 ---")
+# import the module
+
+marketing_budget = 100000
+# Use the sqrt function from the math module
+growth_factor = math.sqrt(marketing_budget)
+
+print(
+    f"The growth factor for a marketing budget of ${marketing_budget:,.2f} is {growth_factor:.2f}."
+)
+print("-" * 20)
+```
+````
