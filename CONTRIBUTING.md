@@ -51,7 +51,8 @@ Ideas** category to align on direction before building.
    ```bash
    make setup       # bootstrap dependencies
    make docs-serve  # preview MkDocs locally at http://localhost:8000
-   make lint        # run ruff, mdformat, and configured pre-commit hooks
+   make format      # auto-format all files (Python, Markdown, etc.)
+   make lint        # verify formatting and run quality checks (should pass after make format)
    ```
 
 ## Branch naming
@@ -72,10 +73,17 @@ Follow these prefixes to signal intent:
    that reflect the change.
 1. **Run checks locally**
    ```bash
-   make format  # optional but recommended for Python files
-   make lint
-   pytest
+   make format  # format Python and Markdown files (runs ruff, black, mdformat, etc.)
+   make lint    # verify all files are properly formatted and pass quality checks
+   pytest       # run test suite
    make docs    # ensure MkDocs builds without warnings when docs change
+   ```
+   **Note:** `make format` now runs all pre-commit hooks including mdformat. If you prefer to run
+   pre-commit directly:
+   ```bash
+   pre-commit run --all-files  # run all hooks once
+   # or
+   pre-commit install          # install git hooks to run automatically on commit
    ```
 1. **Commit with context** – Write clear commit messages summarizing the change and reference
    related issues.
