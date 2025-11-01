@@ -227,7 +227,7 @@ def _python_embed(candidate: Path, url: str) -> str:
 
 def _nav_entry(label: str, output_name: str) -> str:
     quoted_label = json.dumps(label, ensure_ascii=False)
-    return f"      - {quoted_label}: lessons/{output_name}"
+    return f"    - {quoted_label}: lessons/{output_name}"
 
 
 def build() -> None:
