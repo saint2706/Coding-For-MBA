@@ -115,207 +115,211 @@ Run this lesson's notebooks directly in your browser with the built-in JupyterLi
   [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_06_Tuples/tuples.ipynb){ .md-button }
 
 ???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.py)
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.py)
 
-    ```python title="solutions.py"
-    """
-    Day 6: Solutions to Exercises
-    """
+````
+```python title="solutions.py"
+"""
+Day 6: Solutions to Exercises
+"""
 
-    # --- Exercise 1: Store Geographic Coordinates ---
-    print("--- Solution to Exercise 1 ---")
-    # A tuple is perfect here because these coordinates are fixed.
-    hq_location = (40.7128, -74.0060)
+# --- Exercise 1: Store Geographic Coordinates ---
+print("--- Solution to Exercise 1 ---")
+# A tuple is perfect here because these coordinates are fixed.
+hq_location = (40.7128, -74.0060)
 
-    # "Unpacking" the tuple into separate variables
-    latitude, longitude = hq_location
+# "Unpacking" the tuple into separate variables
+latitude, longitude = hq_location
 
-    print(f"Headquarters Location: {hq_location}")
-    print(f"Latitude: {latitude}")
-    print(f"Longitude: {longitude}")
-    print("-" * 20)
-
-
-    # --- Exercise 2: Define Product Dimensions ---
-    print("--- Solution to Exercise 2 ---")
-    # Dimensions are fixed, so a tuple is the right choice.
-    package_dimensions = (25, 15, 10)
-
-    # Accessing the tuple elements by their index for the print statement.
-    print(
-        f"Package Dimensions (LxWxH): {package_dimensions[0]}cm x {package_dimensions[1]}cm x {package_dimensions[2]}cm"
-    )
-    print("-" * 20)
+print(f"Headquarters Location: {hq_location}")
+print(f"Latitude: {latitude}")
+print(f"Longitude: {longitude}")
+print("-" * 20)
 
 
-    # --- Exercise 3: List vs. Tuple - The Right Tool for the Job ---
-    print("--- Solution to Exercise 3 ---")
+# --- Exercise 2: Define Product Dimensions ---
+print("--- Solution to Exercise 2 ---")
+# Dimensions are fixed, so a tuple is the right choice.
+package_dimensions = (25, 15, 10)
 
-    # Scenario A: Storing the monthly sales figures for the past year.
-    # Choice: List. Sales figures might need to be corrected or updated. A list is mutable.
-    print("Scenario A (Monthly Sales): Use a LIST because the data may need to be changed.")
+# Accessing the tuple elements by their index for the print statement.
+print(
+    f"Package Dimensions (LxWxH): {package_dimensions[0]}cm x {package_dimensions[1]}cm x {package_dimensions[2]}cm"
+)
+print("-" * 20)
 
-    # Scenario B: Storing the RGB color code for your company's official logo.
-    # Choice: Tuple. A brand color is a constant and should not be accidentally changed. A tuple is immutable.
-    print(
-        "Scenario B (Brand Color): Use a TUPLE because the data is constant and should not change."
-    )
 
-    # Scenario C: Storing the names of employees in a department.
-    # Choice: List. The roster of employees in a department changes frequently. A list is mutable.
-    print(
-        "Scenario C (Employee Roster): Use a LIST because the roster of employees changes over time."
-    )
+# --- Exercise 3: List vs. Tuple - The Right Tool for the Job ---
+print("--- Solution to Exercise 3 ---")
 
-    # Scenario D: Storing the name, founding year, and stock ticker symbol for a company.
-    # Choice: Tuple. This is core, identifying information that is fixed and should not change. A tuple is immutable.
-    print(
-        "Scenario D (Company Profile): Use a TUPLE because this core information is fixed."
-    )
-    print("-" * 20)
-    ```
+# Scenario A: Storing the monthly sales figures for the past year.
+# Choice: List. Sales figures might need to be corrected or updated. A list is mutable.
+print("Scenario A (Monthly Sales): Use a LIST because the data may need to be changed.")
+
+# Scenario B: Storing the RGB color code for your company's official logo.
+# Choice: Tuple. A brand color is a constant and should not be accidentally changed. A tuple is immutable.
+print(
+    "Scenario B (Brand Color): Use a TUPLE because the data is constant and should not change."
+)
+
+# Scenario C: Storing the names of employees in a department.
+# Choice: List. The roster of employees in a department changes frequently. A list is mutable.
+print(
+    "Scenario C (Employee Roster): Use a LIST because the roster of employees changes over time."
+)
+
+# Scenario D: Storing the name, founding year, and stock ticker symbol for a company.
+# Choice: Tuple. This is core, identifying information that is fixed and should not change. A tuple is immutable.
+print(
+    "Scenario D (Company Profile): Use a TUPLE because this core information is fixed."
+)
+print("-" * 20)
+```
+````
 
 ???+ example "tuples.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.py)
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.py)
 
-    ```python title="tuples.py"
+````
+```python title="tuples.py"
+"""
+Day 6: Using Tuples for Immutable Business Data (Refactored)
+
+This script demonstrates the creation and use of tuples to store
+data that should not be changed, such as transaction records or
+fixed coordinates. This version is refactored into functions for
+better organization and testability.
+"""
+
+
+def get_location_coordinates(location_tuple):
     """
-    Day 6: Using Tuples for Immutable Business Data (Refactored)
+    Returns the latitude and longitude from a location tuple.
 
-    This script demonstrates the creation and use of tuples to store
-    data that should not be changed, such as transaction records or
-    fixed coordinates. This version is refactored into functions for
-    better organization and testability.
+    Tuples are like lists but immutable (cannot be changed after creation).
+    They're perfect for fixed data like coordinates.
+
+    Parameters
+    ----------
+    location_tuple : tuple
+        A tuple in the format (latitude, longitude)
+
+    Returns
+    -------
+    tuple of (float, float) or (None, None)
+        The latitude and longitude, or (None, None) if invalid
+
+    Example
+    -------
+    >>> get_location_coordinates((40.7128, -74.0060))
+    (40.7128, -74.006)
     """
+    # Check if it's actually a tuple and has exactly 2 elements
+    if isinstance(location_tuple, tuple) and len(location_tuple) == 2:
+        # Access tuple elements by index (just like lists)
+        return location_tuple[0], location_tuple[1]
+    return None, None  # Return None values if invalid
 
 
-    def get_location_coordinates(location_tuple):
-        """
-        Returns the latitude and longitude from a location tuple.
+def unpack_transaction(transaction_tuple):
+    """
+    Unpacks a transaction tuple into a dictionary.
 
-        Tuples are like lists but immutable (cannot be changed after creation).
-        They're perfect for fixed data like coordinates.
+    Tuple unpacking is a powerful feature where we can assign tuple
+    elements to multiple variables in one line.
 
-        Parameters
-        ----------
-        location_tuple : tuple
-            A tuple in the format (latitude, longitude)
+    Parameters
+    ----------
+    transaction_tuple : tuple
+        A tuple in format (id, date, amount)
 
-        Returns
-        -------
-        tuple of (float, float) or (None, None)
-            The latitude and longitude, or (None, None) if invalid
+    Returns
+    -------
+    dict or None
+        Dictionary with 'id', 'date', and 'amount' keys, or None if invalid
 
-        Example
-        -------
-        >>> get_location_coordinates((40.7128, -74.0060))
-        (40.7128, -74.006)
-        """
-        # Check if it's actually a tuple and has exactly 2 elements
-        if isinstance(location_tuple, tuple) and len(location_tuple) == 2:
-            # Access tuple elements by index (just like lists)
-            return location_tuple[0], location_tuple[1]
-        return None, None  # Return None values if invalid
+    Example
+    -------
+    >>> unpack_transaction((1001, "2024-03-15", 499.99))
+    {'id': 1001, 'date': '2024-03-15', 'amount': 499.99}
+    """
+    # Validate the tuple format
+    if isinstance(transaction_tuple, tuple) and len(transaction_tuple) == 3:
+        # Tuple unpacking: assign each element to a named variable
+        # This makes the code more readable than using indices
+        trans_id, date, amount = transaction_tuple
 
-
-    def unpack_transaction(transaction_tuple):
-        """
-        Unpacks a transaction tuple into a dictionary.
-
-        Tuple unpacking is a powerful feature where we can assign tuple
-        elements to multiple variables in one line.
-
-        Parameters
-        ----------
-        transaction_tuple : tuple
-            A tuple in format (id, date, amount)
-
-        Returns
-        -------
-        dict or None
-            Dictionary with 'id', 'date', and 'amount' keys, or None if invalid
-
-        Example
-        -------
-        >>> unpack_transaction((1001, "2024-03-15", 499.99))
-        {'id': 1001, 'date': '2024-03-15', 'amount': 499.99}
-        """
-        # Validate the tuple format
-        if isinstance(transaction_tuple, tuple) and len(transaction_tuple) == 3:
-            # Tuple unpacking: assign each element to a named variable
-            # This makes the code more readable than using indices
-            trans_id, date, amount = transaction_tuple
-
-            # Return as a dictionary for structured access
-            return {"id": trans_id, "date": date, "amount": amount}
-        return None  # Return None if format is invalid
+        # Return as a dictionary for structured access
+        return {"id": trans_id, "date": date, "amount": amount}
+    return None  # Return None if format is invalid
 
 
-    def demonstrate_list_vs_tuple():
-        """
-        Prints scenarios demonstrating when to use a list vs. a tuple.
+def demonstrate_list_vs_tuple():
+    """
+    Prints scenarios demonstrating when to use a list vs. a tuple.
 
-        Key difference:
-        - Lists are MUTABLE (can be changed): use for data that might change
-        - Tuples are IMMUTABLE (cannot be changed): use for fixed/constant data
+    Key difference:
+    - Lists are MUTABLE (can be changed): use for data that might change
+    - Tuples are IMMUTABLE (cannot be changed): use for fixed/constant data
 
-        This immutability makes tuples:
-        - Safer (prevents accidental changes)
-        - Faster (Python can optimize them)
-        - Suitable as dictionary keys (lists cannot be used as keys)
-        """
-        print("--- Choosing Between a List and a Tuple ---")
+    This immutability makes tuples:
+    - Safer (prevents accidental changes)
+    - Faster (Python can optimize them)
+    - Suitable as dictionary keys (lists cannot be used as keys)
+    """
+    print("--- Choosing Between a List and a Tuple ---")
 
-        # Scenario A: Data that changes over time → Use a LIST
-        # Sales data is likely to be updated or amended.
-        monthly_sales = [45000, 52000, 48000, 55000]
-        print(
-            f"Scenario A (Monthly Sales): Use a list. Data might change. Example: {monthly_sales}"
-        )
+    # Scenario A: Data that changes over time → Use a LIST
+    # Sales data is likely to be updated or amended.
+    monthly_sales = [45000, 52000, 48000, 55000]
+    print(
+        f"Scenario A (Monthly Sales): Use a list. Data might change. Example: {monthly_sales}"
+    )
 
-        # Scenario B: Fixed constant data → Use a TUPLE
-        # The brand color is a fixed constant and should not change.
-        brand_color_rgb = (45, 85, 150)  # RGB values for a specific color
-        print(
-            f"Scenario B (Brand Color): Use a tuple. Data is constant. Example: {brand_color_rgb}"
-        )
+    # Scenario B: Fixed constant data → Use a TUPLE
+    # The brand color is a fixed constant and should not change.
+    brand_color_rgb = (45, 85, 150)  # RGB values for a specific color
+    print(
+        f"Scenario B (Brand Color): Use a tuple. Data is constant. Example: {brand_color_rgb}"
+    )
 
-        # Scenario C: Data that grows/shrinks → Use a LIST
-        # Employees can be added or removed from the department.
-        marketing_team = ["Alice", "Bob", "Charlie"]
-        print(
-            f"Scenario C (Team Roster): Use a list. Roster changes. Example: {marketing_team}"
-        )
+    # Scenario C: Data that grows/shrinks → Use a LIST
+    # Employees can be added or removed from the department.
+    marketing_team = ["Alice", "Bob", "Charlie"]
+    print(
+        f"Scenario C (Team Roster): Use a list. Roster changes. Example: {marketing_team}"
+    )
 
-        # Scenario D: Core identifying information → Use a TUPLE
-        # This core identifying information for a company is fixed.
-        company_profile = ("InnovateCorp", 2015, "INVC")
-        print(
-            f"Scenario D (Company Profile): Use a tuple. Core info is fixed. Example: {company_profile}"
-        )
-        print("-" * 20)
+    # Scenario D: Core identifying information → Use a TUPLE
+    # This core identifying information for a company is fixed.
+    company_profile = ("InnovateCorp", 2015, "INVC")
+    print(
+        f"Scenario D (Company Profile): Use a tuple. Core info is fixed. Example: {company_profile}"
+    )
+    print("-" * 20)
 
 
-    if __name__ == "__main__":
-        # --- Using a Tuple for Fixed Data ---
-        print("--- Storing Fixed Location Data ---")
-        hq_coords = (40.7128, -74.0060)
-        lat, lon = get_location_coordinates(hq_coords)
-        if lat is not None:
-            print(f"Headquarters Latitude: {lat}")
-            print(f"Headquarters Longitude: {lon}")
-        print()
+if __name__ == "__main__":
+    # --- Using a Tuple for Fixed Data ---
+    print("--- Storing Fixed Location Data ---")
+    hq_coords = (40.7128, -74.0060)
+    lat, lon = get_location_coordinates(hq_coords)
+    if lat is not None:
+        print(f"Headquarters Latitude: {lat}")
+        print(f"Headquarters Longitude: {lon}")
+    print()
 
-        # --- Unpacking Tuples for Readability ---
-        print("--- Unpacking a Transaction Record ---")
-        transaction_data = (1001, "2024-03-15", 499.99)
-        unpacked_data = unpack_transaction(transaction_data)
-        if unpacked_data:
-            print(f"Transaction ID: {unpacked_data['id']}")
-            print(f"Date: {unpacked_data['date']}")
-            print(f"Amount: ${unpacked_data['amount']}")
-        print("-" * 20)
+    # --- Unpacking Tuples for Readability ---
+    print("--- Unpacking a Transaction Record ---")
+    transaction_data = (1001, "2024-03-15", 499.99)
+    unpacked_data = unpack_transaction(transaction_data)
+    if unpacked_data:
+        print(f"Transaction ID: {unpacked_data['id']}")
+        print(f"Date: {unpacked_data['date']}")
+        print(f"Amount: ${unpacked_data['amount']}")
+    print("-" * 20)
 
-        # --- List vs. Tuple Demonstration ---
-        demonstrate_list_vs_tuple()
-    ```
+    # --- List vs. Tuple Demonstration ---
+    demonstrate_list_vs_tuple()
+```
+````
