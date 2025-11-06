@@ -32,7 +32,8 @@ learning experience.
 - 🚧 **Pyodide widgets are prototyped** – `docs/javascripts/pyodide-console.js` ships an interactive widget, but no production lessons embed it yet.
 - ✅ **Lesson progress tracking shipped** – `docs/javascripts/progress-tracker.js` and the MkDocs override add completion buttons and sidebar stats.
 - 🚧 **Accessibility enhancements ongoing** – baseline focus/contrast styles live in `docs/stylesheets/extra.css`, yet skip links and broader ARIA coverage still need wiring.
-- ⏳ **Thebe, enhanced search, quizzes, analytics, and feedback widgets** – configuration files and content for these features are not in the repo, so they remain future work.
+- ✅ **Thebe integration live** – MkDocs now loads the CDN bundle and `docs/javascripts/thebe-config.js`, enabling inline Binder-backed execution for marked code blocks.
+- ⏳ **Enhanced search, quizzes, analytics, and feedback widgets** – configuration files and content for these features are not in the repo, so they remain future work.
 
 ______________________________________________________________________
 
@@ -103,9 +104,9 @@ using WebAssembly.
 
 **Estimated Effort**: 4-6 hours **Impact**: HIGH - Enables full interactive coding experience
 
-#### 1.2 Thebe Integration _(Status: ⏳ Not started)_
+#### 1.2 Thebe Integration _(Status: ✅ Delivered)_
 
-> **Current state**: There is no Thebe configuration in `mkdocs.yml`, and `docs/javascripts/` only ships Pyodide and progress-tracker scripts. Implementing Thebe would still require adding the CDN assets and config file described below.
+> **Current state**: The MkDocs configuration now loads the Thebe CDN bundle alongside `docs/javascripts/thebe-config.js`, which boots Binder-backed kernels for any code block wrapped in an element marked `data-executable="true"`.
 
 **What**: Thebe makes static HTML pages interactive by connecting code cells to a Jupyter kernel
 (via Binder).

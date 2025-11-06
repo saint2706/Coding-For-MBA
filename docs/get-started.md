@@ -59,7 +59,22 @@ jupyter notebook
 Navigate to any `Day_XX_*` directory and open the lesson notebook. Each folder includes scripts,
 notebooks, and (when applicable) solutions.
 
-## 6. Run a single lesson script
+## 6. Run Python inline with Thebe
+
+Activate interactive examples directly on the site by clicking the **Run** button that appears on
+hover. Thebe launches a Binder-backed kernel the first time you execute a cell; subsequent runs reuse
+the existing session.
+
+<div class="executable" data-executable="true">
+
+```python
+message = "Welcome to Coding for MBA!"
+message.upper()
+```
+
+</div>
+
+## 7. Run a single lesson script
 
 ```bash
 python Day_30_Web_Scraping/lesson.py
@@ -68,7 +83,7 @@ python Day_30_Web_Scraping/lesson.py
 Swap the folder name to execute any other lesson. The scripts are designed to run independently and
 print their own instructions or outputs.
 
-## 7. Use the Makefile for common tasks
+## 8. Use the Makefile for common tasks
 
 ```bash
 make setup       # bootstrap a fresh checkout

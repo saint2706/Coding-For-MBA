@@ -44,6 +44,8 @@ extra_css:
 - stylesheets/extra.css
 - stylesheets/interactive-widgets.css
 extra_javascript:
+- https://unpkg.com/thebe@latest/lib/index.js
+- javascripts/thebe-config.js
 - https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js
 - javascripts/pyodide-console.js
 - javascripts/progress-tracker.js
