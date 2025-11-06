@@ -15,16 +15,112 @@ assets inside ``site/jupyterlite``.
 from __future__ import annotations
 
 import argparse
+import json
+import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS_DIR = ROOT / "docs"
 LESSONS_DIR = DOCS_DIR / "lessons"
 JUPYTERLITE_DIR = ROOT / "site" / "jupyterlite"
+JUPYTERLITE_CONFIG = ROOT / "jupyter_lite_config.json"
+
+DAY_DIR_PATTERN = re.compile(r"^Day_(\d+)")
+
+
+def extract_day_number(day_name: str) -> Optional[int]:
+    """Return the numeric portion of a Day_* directory name if present."""
+
+    match = DAY_DIR_PATTERN.match(day_name)
+    if match:
+        return int(match.group(1))
+    return None
+
+
+def list_day_directories() -> List[Path]:
+    """Return a naturally sorted list of Day_* directories."""
+
+    day_dirs = [path for path in ROOT.glob("Day_*") if path.is_dir()]
+
+    def sort_key(path: Path) -> tuple[int, str]:
+        number = extract_day_number(path.name)
+        # Place numbered folders first by their integer value; fall back to name.
+        return (number if number is not None else sys.maxsize, path.name)
+
+    return sorted(day_dirs, key=sort_key)
+
+
+def update_jupyterlite_manifest(day_dirs: List[Path]) -> List[str]:
+    """Ensure the LiteBuildConfig.contents array includes every Day_* folder."""
+
+    if not JUPYTERLITE_CONFIG.exists():
+        print(f"ERROR: Missing JupyterLite config at {JUPYTERLITE_CONFIG}")
+        sys.exit(1)
+
+    try:
+        config_data = json.loads(JUPYTERLITE_CONFIG.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        print(f"ERROR: Failed to parse {JUPYTERLITE_CONFIG}: {exc}")
+        sys.exit(1)
+
+    lite_config = config_data.setdefault("LiteBuildConfig", {})
+    manifest = [f"{day_dir.name}/" for day_dir in day_dirs]
+    existing_manifest = lite_config.get("contents", [])
+
+    if existing_manifest != manifest:
+        lite_config["contents"] = manifest
+        JUPYTERLITE_CONFIG.write_text(
+            json.dumps(config_data, indent=2) + "\n", encoding="utf-8"
+        )
+        print(
+            f"✓ Updated LiteBuildConfig.contents with {len(manifest)} Day_* directories"
+        )
+    else:
+        print("✓ LiteBuildConfig.contents is already up-to-date")
+
+    return manifest
+
+
+def verify_manifest_covers_latest_day(
+    manifest: List[str], day_dirs: List[Path]
+) -> None:
+    """Exit with an error if the manifest omits the latest numbered lesson."""
+
+    if not day_dirs:
+        print("WARNING: No Day_* directories found; skipping manifest verification.")
+        return
+
+    numbered_dirs = []
+    for day_dir in day_dirs:
+        number = extract_day_number(day_dir.name)
+        if number is not None:
+            numbered_dirs.append((number, day_dir))
+
+    if not numbered_dirs:
+        print(
+            "WARNING: Could not determine numeric Day_* folders; skipping manifest check."
+        )
+        return
+
+    numbered_dirs.sort(key=lambda item: (item[0], item[1].name))
+    highest_number, highest_path = numbered_dirs[-1]
+    expected_entry = f"{highest_path.name}/"
+
+    if expected_entry not in manifest:
+        print(
+            "ERROR: JupyterLite manifest is missing the latest lesson directory "
+            f"({expected_entry})."
+        )
+        sys.exit(1)
+
+    print(
+        "✓ Manifest includes latest lesson "
+        f"Day_{highest_number:02d} ({expected_entry})"
+    )
 
 
 def find_notebooks() -> List[Path]:
@@ -341,6 +437,10 @@ def main(argv: List[str] | None = None) -> None:
     print("=" * 60)
     print("JupyterLite Integration Tool")
     print("=" * 60)
+
+    day_dirs = list_day_directories()
+    manifest = update_jupyterlite_manifest(day_dirs)
+    verify_manifest_covers_latest_day(manifest, day_dirs)
 
     if args.build_only:
         print("\n[1/1] Building JupyterLite distribution (assets only)...")
