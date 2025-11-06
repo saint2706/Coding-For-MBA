@@ -5,8 +5,8 @@ The Coding for MBA site now includes a built-in JupyterLite runtime, letting you
 ## Launching the Runtime
 
 1. Navigate to any lesson page on the site.
-2. Scroll to the **Interactive Notebooks** section directly above **Additional Materials**.
-3. Select the **🪐 Launch in JupyterLite** button.
+1. Scroll to the **Interactive Notebooks** section directly above **Additional Materials**.
+1. Select the **🪐 Launch in JupyterLite** button.
    - If the lesson has multiple notebooks, the button opens the first notebook automatically.
    - Otherwise, it opens the lesson folder so you can pick a file from the file browser.
 
