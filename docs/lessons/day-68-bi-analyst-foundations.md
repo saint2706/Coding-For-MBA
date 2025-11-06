@@ -67,140 +67,142 @@ _You are on lesson 68 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
+## Interactive Notebooks
+
+Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
+
+[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_68_BI_Analyst_Foundations){ .md-button .md-button--primary }
+
 ## Additional Materials
 
 ???+ example "lesson.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_68_BI_Analyst_Foundations/lesson.py)
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_68_BI_Analyst_Foundations/lesson.py)
 
-````
-```python title="lesson.py"
-# %%
-"""Day 68 – BI Analyst Foundations classroom script."""
+    ```python title="lesson.py"
+    # %%
+    """Day 68 – BI Analyst Foundations classroom script."""
 
-# %%
-from __future__ import annotations
+    # %%
+    from __future__ import annotations
 
-import pandas as pd
+    import pandas as pd
 
-from Day_68_BI_Analyst_Foundations import build_topic_dataframe, load_topics
+    from Day_68_BI_Analyst_Foundations import build_topic_dataframe, load_topics
 
-# %%
-FOUNDATION_GROUPS = load_topics()
-FOUNDATION_DF = build_topic_dataframe()
-
-
-# %%
-def preview_foundation_topics(frame: pd.DataFrame) -> None:
-    """Print a markdown table of the foundational topics for discussion."""
-
-    print("\nBI Analyst Foundations overview:\n")
-    print(frame.to_markdown(index=False))
+    # %%
+    FOUNDATION_GROUPS = load_topics()
+    FOUNDATION_DF = build_topic_dataframe()
 
 
-# %%
-def outline_facilitation_plan(groups: dict[str, list]) -> None:
-    """Display how the roadmap nodes cluster for classroom facilitation."""
+    # %%
+    def preview_foundation_topics(frame: pd.DataFrame) -> None:
+        """Print a markdown table of the foundational topics for discussion."""
 
-    for section, topics in groups.items():
-        formatted = ", ".join(topic.title for topic in topics)
-        print(f"- {section}: {formatted}")
-
-
-# %%
-def main() -> None:
-    """Run the classroom demo for Day 68."""
-
-    outline_facilitation_plan(FOUNDATION_GROUPS)
-    preview_foundation_topics(FOUNDATION_DF)
+        print("\nBI Analyst Foundations overview:\n")
+        print(frame.to_markdown(index=False))
 
 
-# %%
-if __name__ == "__main__":
-    main()
-```
-````
+    # %%
+    def outline_facilitation_plan(groups: dict[str, list]) -> None:
+        """Display how the roadmap nodes cluster for classroom facilitation."""
+
+        for section, topics in groups.items():
+            formatted = ", ".join(topic.title for topic in topics)
+            print(f"- {section}: {formatted}")
+
+
+    # %%
+    def main() -> None:
+        """Run the classroom demo for Day 68."""
+
+        outline_facilitation_plan(FOUNDATION_GROUPS)
+        preview_foundation_topics(FOUNDATION_DF)
+
+
+    # %%
+    if __name__ == "__main__":
+        main()
+    ```
 
 ???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_68_BI_Analyst_Foundations/solutions.py)
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_68_BI_Analyst_Foundations/solutions.py)
 
-````
-```python title="solutions.py"
-"""Utilities for the Day 68 BI Analyst Foundations lesson."""
+    ```python title="solutions.py"
+    """Utilities for the Day 68 BI Analyst Foundations lesson."""
 
-from __future__ import annotations
+    from __future__ import annotations
 
-from typing import Dict, List, Mapping
+    from typing import Dict, List, Mapping
 
-import pandas as pd
+    import pandas as pd
 
-from mypackage.bi_curriculum import BiTopic, topics_by_titles
+    from mypackage.bi_curriculum import BiTopic, topics_by_titles
 
-FOUNDATION_SECTION = "Foundations"
-FOUNDATION_TITLES: List[str] = [
-    "Introduction",
-    "What is BI?",
-    "Why BI Matters?",
-    "Responsibilities",
-    "Skills",
-    "BI Analyst vs Other Roles",
-]
+    FOUNDATION_SECTION = "Foundations"
+    FOUNDATION_TITLES: List[str] = [
+        "Introduction",
+        "What is BI?",
+        "Why BI Matters?",
+        "Responsibilities",
+        "Skills",
+        "BI Analyst vs Other Roles",
+    ]
 
-TOPIC_DESCRIPTIONS: Mapping[str, str] = {
-    "Introduction": (
-        "Orient the cohort to the BI Analyst roadmap and how Day 68 frames the "
-        "rest of Phase 5."
-    ),
-    "What is BI?": (
-        "Define business intelligence as the practice of transforming raw data into "
-        "insights for operational and strategic decisions."
-    ),
-    "Why BI Matters?": (
-        "Summarize the business value of BI for growth, efficiency, and governance "
-        "initiatives."
-    ),
-    "Responsibilities": (
-        "Outline the day-to-day analyst duties across discovery, modeling, "
-        "reporting, and stakeholder alignment."
-    ),
-    "Skills": (
-        "Call out the technical, analytical, and communication skills required to "
-        "deliver BI outcomes."
-    ),
-    "BI Analyst vs Other Roles": (
-        "Contrast the analyst role with data scientists, engineers, and product "
-        "managers to clarify collaboration touchpoints."
-    ),
-}
-
-
-def load_topics(*, section: str = FOUNDATION_SECTION) -> Dict[str, List[BiTopic]]:
-    """Return BI roadmap topics grouped under the requested section name."""
-
-    topics = topics_by_titles(FOUNDATION_TITLES)
-    return {section: topics}
+    TOPIC_DESCRIPTIONS: Mapping[str, str] = {
+        "Introduction": (
+            "Orient the cohort to the BI Analyst roadmap and how Day 68 frames the "
+            "rest of Phase 5."
+        ),
+        "What is BI?": (
+            "Define business intelligence as the practice of transforming raw data into "
+            "insights for operational and strategic decisions."
+        ),
+        "Why BI Matters?": (
+            "Summarize the business value of BI for growth, efficiency, and governance "
+            "initiatives."
+        ),
+        "Responsibilities": (
+            "Outline the day-to-day analyst duties across discovery, modeling, "
+            "reporting, and stakeholder alignment."
+        ),
+        "Skills": (
+            "Call out the technical, analytical, and communication skills required to "
+            "deliver BI outcomes."
+        ),
+        "BI Analyst vs Other Roles": (
+            "Contrast the analyst role with data scientists, engineers, and product "
+            "managers to clarify collaboration touchpoints."
+        ),
+    }
 
 
-def build_topic_dataframe(
-    *,
-    section: str = FOUNDATION_SECTION,
-    descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS,
-) -> pd.DataFrame:
-    """Return a pandas DataFrame describing the BI foundations topics."""
+    def load_topics(*, section: str = FOUNDATION_SECTION) -> Dict[str, List[BiTopic]]:
+        """Return BI roadmap topics grouped under the requested section name."""
 
-    grouped_topics = load_topics(section=section)
-    records: list[dict[str, str]] = []
-    for group, topics in grouped_topics.items():
-        for topic in topics:
-            records.append(
-                {
-                    "section": group,
-                    "title": topic.title,
-                    "description": descriptions.get(topic.title, ""),
-                }
-            )
-    return pd.DataFrame(records, columns=["section", "title", "description"])
+        topics = topics_by_titles(FOUNDATION_TITLES)
+        return {section: topics}
 
 
-__all__ = ["build_topic_dataframe", "load_topics"]
-```
-````
+    def build_topic_dataframe(
+        *,
+        section: str = FOUNDATION_SECTION,
+        descriptions: Mapping[str, str] = TOPIC_DESCRIPTIONS,
+    ) -> pd.DataFrame:
+        """Return a pandas DataFrame describing the BI foundations topics."""
+
+        grouped_topics = load_topics(section=section)
+        records: list[dict[str, str]] = []
+        for group, topics in grouped_topics.items():
+            for topic in topics:
+                records.append(
+                    {
+                        "section": group,
+                        "title": topic.title,
+                        "description": descriptions.get(topic.title, ""),
+                    }
+                )
+        return pd.DataFrame(records, columns=["section", "title", "description"])
+
+
+    __all__ = ["build_topic_dataframe", "load_topics"]
+    ```
