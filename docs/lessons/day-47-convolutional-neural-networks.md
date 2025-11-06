@@ -49,7 +49,7 @@ A common CNN architecture consists of a stack of `Conv2D` and `MaxPooling2D` lay
 or more `Dense` layers for classification.
 
 1. **Input Image**
-1. **[Conv2D -> ReLU Activation -> MaxPooling2D]** (This block can be repeated multiple times)
+1. **\[Conv2D -> ReLU Activation -> MaxPooling2D\]** (This block can be repeated multiple times)
 1. **Flatten Layer**
 1. **Dense Layer (with ReLU)**
 1. **Output Dense Layer (with Softmax for classification)**
