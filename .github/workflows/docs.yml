@@ -46,6 +46,13 @@ jobs:
           fi
       - name: Build
         run: mkdocs build --strict
+      - name: Build JupyterLite assets
+        run: |
+          if [ -f tools/integrate_jupyterlite.py ]; then
+            python tools/integrate_jupyterlite.py --build-only
+          else
+            echo "tools/integrate_jupyterlite.py not found, skipping JupyterLite build"
+          fi
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:

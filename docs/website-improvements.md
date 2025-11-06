@@ -76,6 +76,11 @@ using WebAssembly.
        jupyter lite build --contents . --output-dir site/jupyterlite
    ```
 
+   > ℹ️ Automated: The `docs.yml` and `docs-ci.yml` workflows now call
+   > `python tools/integrate_jupyterlite.py --build-only` immediately after
+   > `mkdocs build --strict`, ensuring the Lite assets persist in the published
+   > site.
+
 1. **Add launch buttons to lesson pages**:
 
    ```markdown
