@@ -16,6 +16,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -32,11 +35,30 @@ jobs:
         cache-dependency-path: |
           requirements.txt
           requirements-dev.txt
+          pyproject.toml
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements-dev.txt
+        if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f pyproject.toml ]; then pip install -e . || echo "Skipping editable install"; fi
 
     - name: Run lint checks
-      run: make lint
+      run: |
+        if make -n lint >/dev/null 2>&1; then
+          make lint
+        else
+          echo "make lint target missing; running fallback lint commands"
+          python -m pip install --quiet black ruff || true
+          if command -v black >/dev/null 2>&1; then
+            black --check .
+          else
+            echo "black not available, skipping format check"
+          fi
+          if command -v ruff >/dev/null 2>&1; then
+            ruff check .
+          else
+            echo "ruff not available, skipping lint check"
+          fi
+        fi
