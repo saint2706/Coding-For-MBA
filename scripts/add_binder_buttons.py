@@ -51,7 +51,8 @@ def has_binder_button(readme_content: str) -> bool:
     """Check if README already contains a Binder button."""
     # Look for a markdown binder badge/link such as [![Binder](...)](https://mybinder.org/...)
     binder_pattern = re.compile(
-        r'\[!\[Binder\]\([^\)]*mybinder\.org[^\)]*\)\]\([^\)]*mybinder\.org[^\)]*\)', re.IGNORECASE
+        r"\[!\[Binder\]\([^\)]*mybinder\.org[^\)]*\)\]\([^\)]*mybinder\.org[^\)]*\)",
+        re.IGNORECASE,
     )
     return bool(binder_pattern.search(readme_content))
 
