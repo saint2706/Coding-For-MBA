@@ -7,10 +7,14 @@ This script:
 2. Builds a JupyterLite distribution
 3. Adds launch buttons to lesson pages
 4. Configures packages for Pyodide environment
+
+Use ``--build-only`` to skip content updates and just refresh the JupyterLite
+assets inside ``site/jupyterlite``.
 """
 
 from __future__ import annotations
 
+import argparse
 import shutil
 import subprocess
 import sys
@@ -51,14 +55,23 @@ def ensure_jupyterlite_installed() -> bool:
         return False
 
 
-def build_jupyterlite() -> None:
-    """Build JupyterLite distribution."""
+def build_jupyterlite(full_build: bool = True) -> None:
+    """Build JupyterLite distribution.
+
+    Args:
+        full_build: When ``True`` run a full content build (the default).
+            When ``False`` only refresh the assets using ``jupyter lite build``
+            with the configured defaults.
+    """
     if not ensure_jupyterlite_installed():
         print("ERROR: JupyterLite is not installed.")
         print("Install with: pip install jupyterlite-core jupyterlite-pyodide-kernel")
         sys.exit(1)
 
-    print("Building JupyterLite...")
+    if full_build:
+        print("Building JupyterLite with full content refresh...")
+    else:
+        print("Building JupyterLite assets only (no lesson updates)...")
 
     # Clean previous build
     if JUPYTERLITE_DIR.exists():
@@ -71,9 +84,10 @@ def build_jupyterlite() -> None:
         "build",
         "--output-dir",
         str(JUPYTERLITE_DIR),
-        "--contents",
-        str(ROOT),
     ]
+
+    if full_build:
+        cmd.extend(["--contents", str(ROOT)])
 
     try:
         subprocess.run(cmd, check=True, cwd=ROOT)
@@ -305,11 +319,36 @@ Binder provides a cloud-based Jupyter environment with full Python support.
     print(f"✓ Created JupyterLite guide at {index_path}")
 
 
-def main() -> None:
+def parse_args(argv: List[str] | None = None) -> argparse.Namespace:
+    """Parse command-line arguments for the integration tool."""
+
+    parser = argparse.ArgumentParser(
+        description="Integrate JupyterLite content and assets into the docs site."
+    )
+    parser.add_argument(
+        "--build-only",
+        action="store_true",
+        help="Only build the JupyterLite assets and skip documentation updates.",
+    )
+
+    return parser.parse_args(argv)
+
+
+def main(argv: List[str] | None = None) -> None:
     """Main integration workflow."""
+    args = parse_args(argv)
+
     print("=" * 60)
     print("JupyterLite Integration Tool")
     print("=" * 60)
+
+    if args.build_only:
+        print("\n[1/1] Building JupyterLite distribution (assets only)...")
+        build_jupyterlite(full_build=False)
+        print("\n" + "=" * 60)
+        print("✓ JupyterLite asset build complete!")
+        print("=" * 60)
+        return
 
     # Step 1: Build JupyterLite
     print("\n[1/4] Building JupyterLite distribution...")
@@ -337,4 +376,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

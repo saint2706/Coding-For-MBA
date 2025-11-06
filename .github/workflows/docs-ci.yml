@@ -56,6 +56,14 @@ jobs:
     - name: Build documentation
       run: mkdocs build --strict
 
+    - name: Build JupyterLite assets
+      run: |
+        if [ -f tools/integrate_jupyterlite.py ]; then
+          python tools/integrate_jupyterlite.py --build-only
+        else
+          echo "tools/integrate_jupyterlite.py not found, skipping JupyterLite build"
+        fi
+
     - name: Check links (if linkchecker available)
       run: |
         if command -v linkchecker &> /dev/null; then
