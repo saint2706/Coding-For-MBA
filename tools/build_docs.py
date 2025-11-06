@@ -258,7 +258,9 @@ def build() -> None:
         content = _rewrite_relative_links(content, day_dir, repo_slug)
         content = _strip_first_heading(content)
 
-        other_materials, python_embeds, notebook_paths = _material_links(day_dir, repo_slug)
+        other_materials, python_embeds, notebook_paths = _material_links(
+            day_dir, repo_slug
+        )
         material_sections: list[str] = []
         if other_materials:
             material_sections.append("\n".join(other_materials))
@@ -293,7 +295,11 @@ def build() -> None:
         output_path = LESSONS_DIR / output_name
         nav_label = _nav_label(day_dir, day_number, heading)
         nav_entries.append(_nav_entry(nav_label, output_name))
-        output_path.write_text(content + materials_section, encoding="utf-8")
+        # Ensure file ends with a newline for proper formatting
+        final_content = content + materials_section
+        if not final_content.endswith("\n"):
+            final_content += "\n"
+        output_path.write_text(final_content, encoding="utf-8")
 
     generated_count = len(list(LESSONS_DIR.glob("day-*.md")))
     _update_mkdocs_nav(nav_entries)
