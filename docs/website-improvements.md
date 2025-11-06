@@ -25,6 +25,15 @@ learning experience.
 - ❌ No progress tracking or personalization
 - ❌ Basic search functionality
 
+## Status Snapshot (April 2024)
+
+- ✅ **JupyterLite build is live** – `tools/integrate_jupyterlite.py` keeps the Lite manifest current and the docs workflows rebuild the assets on every deploy.
+- ✅ **Binder badges are automated** – `tools/build_docs.py` injects Binder links for every notebook so lessons link directly to cloud runtimes.
+- 🚧 **Pyodide widgets are prototyped** – `docs/javascripts/pyodide-console.js` ships an interactive widget, but no production lessons embed it yet.
+- ✅ **Lesson progress tracking shipped** – `docs/javascripts/progress-tracker.js` and the MkDocs override add completion buttons and sidebar stats.
+- 🚧 **Accessibility enhancements ongoing** – baseline focus/contrast styles live in `docs/stylesheets/extra.css`, yet skip links and broader ARIA coverage still need wiring.
+- ⏳ **Thebe, enhanced search, quizzes, analytics, and feedback widgets** – configuration files and content for these features are not in the repo, so they remain future work.
+
 ______________________________________________________________________
 
 ## Recommended Improvements
@@ -94,7 +103,9 @@ using WebAssembly.
 
 **Estimated Effort**: 4-6 hours **Impact**: HIGH - Enables full interactive coding experience
 
-#### 1.2 Thebe Integration
+#### 1.2 Thebe Integration _(Status: ⏳ Not started)_
+
+> **Current state**: There is no Thebe configuration in `mkdocs.yml`, and `docs/javascripts/` only ships Pyodide and progress-tracker scripts. Implementing Thebe would still require adding the CDN assets and config file described below.
 
 **What**: Thebe makes static HTML pages interactive by connecting code cells to a Jupyter kernel
 (via Binder).
@@ -147,7 +158,9 @@ using WebAssembly.
 
 **Estimated Effort**: 2-3 hours **Impact**: MEDIUM - Good for inline examples
 
-#### 1.3 Binder Integration
+#### 1.3 Binder Integration _(Status: ✅ Delivered)_
+
+> **Current state**: `tools/build_docs.py` now injects Binder, Colab, and JupyterLite links for each notebook, and the generated lesson markdown already includes `[☁️ Run in Binder](https://mybinder.org/...)` buttons.
 
 **What**: Add "Launch Binder" badges to open notebooks in a cloud environment.
 
@@ -185,7 +198,9 @@ ______________________________________________________________________
 
 ### 2. Enhanced Interactivity
 
-#### 2.1 Pyodide-based Interactive Code Widgets
+#### 2.1 Pyodide-based Interactive Code Widgets _(Status: 🚧 Prototype ready)_
+
+> **Current state**: `docs/javascripts/pyodide-console.js` loads Pyodide and exposes `createInteractiveWidget`, but no production lesson under `docs/lessons/` instantiates the widget yet. Additional content updates are needed to roll it out broadly.
 
 **What**: Embed lightweight Python interpreters directly in pages using Pyodide.
 
@@ -222,7 +237,9 @@ ______________________________________________________________________
 
 **Estimated Effort**: 4-5 hours **Impact**: HIGH - Great for quick examples
 
-#### 2.2 Interactive Quizzes and Exercises
+#### 2.2 Interactive Quizzes and Exercises _(Status: ⏳ Not started)_
+
+> **Current state**: MkDocs is not configured with a quiz plugin, and there is no `docs/quizzes/` content yet.
 
 **What**: Add self-assessment tools to lessons.
 
@@ -252,7 +269,9 @@ ______________________________________________________________________
 **Estimated Effort**: 6-8 hours (including content creation) **Impact**: MEDIUM - Improves learning
 outcomes
 
-#### 2.3 Progress Tracking
+#### 2.3 Progress Tracking _(Status: ✅ Delivered)_
+
+> **Current state**: `docs/javascripts/progress-tracker.js` injects a completion button and sidebar widget on lesson pages, and `docs/overrides/main.html` ensures the script is loaded site-wide.
 
 **What**: Track lesson completion using localStorage.
 
@@ -305,7 +324,9 @@ ______________________________________________________________________
 
 ### 3. Accessibility Enhancements
 
-#### 3.1 ARIA Labels and Semantic HTML
+#### 3.1 ARIA Labels and Semantic HTML _(Status: 🚧 Partial)_
+
+> **Current state**: Interactive scripts add targeted ARIA attributes, but layout overrides do not yet inject skip links or broader semantic wrappers.
 
 **Current**: Good foundation exists in `extra.css`
 
@@ -345,7 +366,9 @@ ______________________________________________________________________
 
 **Estimated Effort**: 2-3 hours **Impact**: HIGH - Legal compliance and inclusivity
 
-#### 3.2 Screen Reader Support
+#### 3.2 Screen Reader Support _(Status: 🚧 Partial)_
+
+> **Current state**: The Pyodide widget exposes `aria-live="polite"` output regions, yet dedicated status containers and descriptive labelling for notebook embeds still need to be added.
 
 **Implementation**:
 
@@ -372,7 +395,9 @@ ______________________________________________________________________
 
 **Estimated Effort**: 2 hours **Impact**: MEDIUM - Improves screen reader experience
 
-#### 3.3 Color Contrast and Visual Improvements
+#### 3.3 Color Contrast and Visual Improvements _(Status: 🚧 Partial)_
+
+> **Current state**: `docs/stylesheets/extra.css` improves focus states and code contrast, but a high-contrast palette toggle has not been configured in `mkdocs.yml`.
 
 **Enhancements**:
 
@@ -405,7 +430,9 @@ ______________________________________________________________________
 
 ### 4. Search and Discovery Improvements
 
-#### 4.1 Enhanced Search with Notebook Content
+#### 4.1 Enhanced Search with Notebook Content _(Status: ⏳ Not started)_
+
+> **Current state**: `mkdocs.yml` still uses the default `search` plugin configuration, and no preprocessing scripts extract notebook cell text for indexing.
 
 **What**: Index notebook content in search.
 
@@ -480,7 +507,9 @@ ______________________________________________________________________
 
 ### 5. Dynamic Features and User Experience
 
-#### 5.1 Estimated Reading/Completion Time
+#### 5.1 Estimated Reading/Completion Time _(Status: ⏳ Not started)_
+
+> **Current state**: `tools/build_docs.py` does not yet estimate or surface reading time metadata.
 
 **What**: Show estimated time for each lesson.
 
@@ -507,7 +536,9 @@ ______________________________________________________________________
 
 **Estimated Effort**: 1-2 hours **Impact**: LOW - Nice to have
 
-#### 5.2 Related Lessons and Prerequisites
+#### 5.2 Related Lessons and Prerequisites _(Status: ⏳ Not started)_
+
+> **Current state**: No prerequisite graph or navigation injections exist in the build pipeline today.
 
 **What**: Show lesson relationships and prerequisites.
 
@@ -534,7 +565,9 @@ ______________________________________________________________________
 
 **Estimated Effort**: 2-3 hours **Impact**: MEDIUM - Better learning path
 
-#### 5.3 Code Playground Sidebar
+#### 5.3 Code Playground Sidebar _(Status: ⏳ Not started)_
+
+> **Current state**: Only the Pyodide widget is available; there is no persistent sidebar implementation in the overrides.
 
 **What**: Persistent code playground sidebar for experimentation.
 
@@ -564,7 +597,9 @@ ______________________________________________________________________
 
 **Estimated Effort**: 3-4 hours **Impact**: MEDIUM - Encourages experimentation
 
-#### 5.4 Export/Share Features
+#### 5.4 Export/Share Features _(Status: ⏳ Not started)_
+
+> **Current state**: Aside from the progress-tracker export/import utilities, there are no share buttons or code exporters yet.
 
 **What**: Allow users to export code snippets or share lessons.
 
@@ -598,7 +633,9 @@ ______________________________________________________________________
 
 ### 6. Analytics and Feedback
 
-#### 6.1 Anonymous Usage Analytics
+#### 6.1 Anonymous Usage Analytics _(Status: ⏳ Not started)_
+
+> **Current state**: No analytics provider is configured in `mkdocs.yml`, and no tracking snippet is present in the overrides.
 
 **What**: Track which lessons are most popular (privacy-respecting).
 
@@ -622,7 +659,9 @@ ______________________________________________________________________
 
 **Estimated Effort**: 1 hour **Impact**: LOW - Helps improve content
 
-#### 6.2 Feedback Widget
+#### 6.2 Feedback Widget _(Status: ⏳ Not started)_
+
+> **Current state**: There is no feedback UI in the overrides or JavaScript assets yet.
 
 **What**: Allow users to provide feedback on lessons.
 
@@ -655,28 +694,28 @@ ______________________________________________________________________
 
 ### Phase 1: Essential (Week 1-2)
 
-1. ✅ JupyterLite integration
-1. ✅ Binder badges
-1. ✅ Enhanced accessibility (ARIA labels)
-1. ✅ Progress tracking
+- ✅ **JupyterLite integration** – automated via `tools/integrate_jupyterlite.py` and the `docs.yml` workflow.
+- ✅ **Binder badges** – generated by `tools/build_docs.py` across all lessons.
+- 🚧 **Accessibility improvements** – base focus/contrast styles exist, but skip links and semantic wrappers are pending.
+- ✅ **Progress tracking** – live through `docs/javascripts/progress-tracker.js` and the MkDocs override hook.
 
 **Estimated Total**: 12-16 hours
 
 ### Phase 2: Enhanced Experience (Week 3-4)
 
-1. ✅ Thebe integration
-1. ✅ Pyodide code widgets
-1. ✅ Enhanced search
-1. ✅ Related lessons navigation
+- ⏳ **Thebe integration** – awaiting configuration and asset wiring.
+- 🚧 **Pyodide code widgets** – runtime shipped, lesson adoption still outstanding.
+- ⏳ **Enhanced search** – notebook indexing and plugin tuning not yet started.
+- ⏳ **Related lessons navigation** – prerequisite graph generation still to do.
 
 **Estimated Total**: 12-15 hours
 
 ### Phase 3: Nice to Have (Week 5-6)
 
-1. ✅ Interactive quizzes
-1. ✅ Code playground sidebar
-1. ✅ Analytics and feedback
-1. ✅ Export/share features
+- ⏳ **Interactive quizzes** – quiz content and plugin configuration remain TODO.
+- ⏳ **Code playground sidebar** – no persistent sidebar or styling implemented yet.
+- ⏳ **Analytics and feedback** – instrumentation and feedback widget still outstanding.
+- ⏳ **Export/share features** – beyond progress export/import, sharing utilities are not implemented.
 
 **Estimated Total**: 12-15 hours
 
@@ -774,38 +813,40 @@ ______________________________________________________________________
 
 ## Success Metrics
 
-### User Engagement
+> Instrumentation for these metrics is pending; treat them as target measurements once analytics and feedback tooling are in place.
 
-- ✅ Time spent on lesson pages
-- ✅ Number of code executions
-- ✅ Lesson completion rate
-- ✅ Return visitor rate
+### User Engagement (targets)
 
-### Technical Metrics
+- ⏳ Time spent on lesson pages
+- ⏳ Number of code executions
+- ⏳ Lesson completion rate
+- ⏳ Return visitor rate
+
+### Technical Metrics (current monitoring)
 
 - ✅ Page load time (\<3 seconds)
-- ✅ Interactive runtime initialization (\<5 seconds)
-- ✅ Accessibility score (>95 on Lighthouse)
-- ✅ Search response time (\<1 second)
+- 🚧 Interactive runtime initialization (\<5 seconds) – measure once Pyodide widgets roll out.
+- 🚧 Accessibility score (>95 on Lighthouse) – depends on completing the accessibility backlog.
+- ⏳ Search response time (\<1 second) – enhanced indexing not yet implemented.
 
-### Learning Outcomes
+### Learning Outcomes (targets)
 
-- ✅ Lesson completion rate
-- ✅ Quiz scores (if implemented)
-- ✅ User feedback ratings
+- ⏳ Lesson completion rate (requires progress tracker analytics export)
+- ⏳ Quiz scores (awaits quiz rollout)
+- ⏳ User feedback ratings (awaits feedback widget)
 - ✅ GitHub repository stars/forks
 
 ______________________________________________________________________
 
-## Accessibility Compliance
+## Accessibility Compliance Status
 
-All recommendations follow:
+Current coverage:
 
-- ✅ WCAG 2.1 Level AA standards
-- ✅ Section 508 compliance
-- ✅ ARIA 1.2 specifications
-- ✅ Keyboard navigation support
-- ✅ Screen reader compatibility
+- 🚧 **WCAG 2.1 Level AA** – focus/contrast improvements exist, but skip links and comprehensive labelling still need to land.
+- 🚧 **Section 508** – underlying Material theme support is strong; the remaining tasks mirror the WCAG gaps above.
+- 🚧 **ARIA 1.2** – interactive widgets add ARIA attributes, yet additional structural roles remain TODO.
+- ✅ **Keyboard navigation support** – baseline keyboard navigation works via MkDocs Material, with focus states enhanced in `extra.css`.
+- 🚧 **Screen reader compatibility** – dynamic content exposes polite live regions, but page-level status summaries still need to be added.
 
 ______________________________________________________________________
 
@@ -830,31 +871,31 @@ ______________________________________________________________________
 
 ### Immediate Actions
 
-1. Review and approve this proposal
-1. Set up development branch
-1. Install JupyterLite and test basic setup
-1. Create prototype with 2-3 lessons
+- Validate the existing JupyterLite build, Binder badges, and progress tracker UX on production.
+- Document outstanding accessibility gaps (skip links, semantic regions) and prioritise fixes.
+- Review the Pyodide widget prototype and decide on the first lessons that should embed it.
+- Confirm ownership and timeline for the remaining roadmap items (Thebe, search, analytics).
 
 ### Short Term (1-2 weeks)
 
-1. Implement JupyterLite for all lessons
-1. Add Binder badges
-1. Enhance accessibility
-1. Deploy to staging environment
+- Decide whether to proceed with Thebe and, if so, add the required assets/configuration.
+- Embed the Pyodide widget into a pilot set of lessons and gather learner feedback.
+- Finish the accessibility work: skip links, ARIA labelling, and keyboard shortcuts.
+- Design the data structures needed for enhanced search and related-lesson navigation.
 
 ### Medium Term (3-4 weeks)
 
-1. Add interactive code widgets
-1. Implement progress tracking
-1. Enhance search functionality
-1. User testing and feedback
+- Implement notebook-aware search indexing and prerequisite mapping in the docs build.
+- Stand up analytics/feedback instrumentation (e.g., Plausible + lightweight feedback widget).
+- Finalise quiz tooling/content strategy and prepare the first batch of assessments.
+- Run targeted user testing on the new interactive experiences.
 
 ### Long Term (5-6 weeks)
 
-1. Add quizzes and assessments
-1. Implement advanced features
-1. Monitor analytics
-1. Continuous improvement
+- Build optional enhancements such as the code playground sidebar and sharing/export utilities.
+- Launch quizzes and related-lesson navigation across the curriculum.
+- Review analytics data to drive continuous improvement of interactive content.
+- Establish an ongoing cadence for UX/accessibility audits and feature iterations.
 
 ______________________________________________________________________
 
