@@ -68,6 +68,11 @@ using WebAssembly.
    }
    ```
 
+   > ✅ Update: `tools/integrate_jupyterlite.py` now regenerates the
+   > `LiteBuildConfig.contents` manifest from the repository's `Day_*`
+   > folders and sanity-checks that the latest lesson is included, so every
+   > published lesson automatically appears in the JupyterLite runtime.
+
 1. **Add build step to documentation workflow**:
 
    ```yaml
