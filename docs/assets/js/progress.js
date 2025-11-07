@@ -92,6 +92,12 @@
    * Insert progress bar into page
    */
   function insertProgressBar(progressBar) {
+    // Remove any existing tracker instance to avoid duplicates
+    const existing = document.getElementById('lesson-progress-tracker');
+    if (existing && existing.parentNode) {
+      existing.parentNode.removeChild(existing);
+    }
+
     // Try to insert after navigation or at the top of main content
     const article = document.querySelector('article.md-content__inner');
     const main = document.querySelector('main');
@@ -110,7 +116,12 @@
    * Add CSS styles for progress bar
    */
   function addStyles() {
+    if (document.getElementById('lesson-progress-tracker-styles')) {
+      return;
+    }
+
     const style = document.createElement('style');
+    style.id = 'lesson-progress-tracker-styles';
     style.textContent = `
       .lesson-progress-tracker {
         margin-bottom: 2rem;
