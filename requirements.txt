@@ -20,5 +20,5 @@ responses==0.25.8
 ipykernel==7.1.0
 lexical-diversity
 mysql-connector-python==9.5.0
-pymongo==4.15.3
+pymongo==4.15.4
 pytest-cov==7.0.0
