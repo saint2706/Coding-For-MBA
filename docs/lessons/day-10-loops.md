@@ -100,27 +100,18 @@ _You are on lesson 10 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_10_Loops/loops.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **loops.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/loops.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/loops.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_10_Loops/loops.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_10_Loops/loops.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_10_Loops/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_10_Loops/solutions.ipynb){ .md-button }
-
-???+ example "loops.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/loops.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_10_Loops/solutions.ipynb){ .md-button }
+    ???+ example "loops.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_10_Loops/loops.py)
 
 ````
 ```python title="loops.py"
@@ -131,7 +122,6 @@ This script demonstrates how to use for and while loops to
 process collections of business data automatically. This version
 is refactored into functions for better organization and testability.
 """
-
 
 def calculate_total_from_list(numbers_list):
     """
@@ -163,7 +153,6 @@ def calculate_total_from_list(numbers_list):
         total += number  # Add current number to our running total
 
     return total
-
 
 def filter_high_value_customers(customers_list, threshold=2000):
     """
@@ -207,7 +196,6 @@ def filter_high_value_customers(customers_list, threshold=2000):
 
     return high_priority
 
-
 def check_inventory_levels(inventory_dict, threshold=50):
     """
     Checks an inventory dictionary and returns a list of products
@@ -244,7 +232,6 @@ def check_inventory_levels(inventory_dict, threshold=50):
             low_stock_alerts.append(product)
 
     return low_stock_alerts
-
 
 def simulate_investment_growth(initial_investment, target_amount, interest_rate):
     """
@@ -292,7 +279,6 @@ def simulate_investment_growth(initial_investment, target_amount, interest_rate)
             break
 
     return years
-
 
 if __name__ == "__main__":
     # --- Using a for loop to aggregate data ---
@@ -367,7 +353,6 @@ else:
     print("No employees in the list.")
 print("-" * 20)
 
-
 # --- Exercise 2: Filter High-Priority Customers ---
 print("--- Solution to Exercise 2 ---")
 customers = [
@@ -384,7 +369,6 @@ for customer in customers:
 
 print(f"High-priority customers (spent > $2000): {high_priority_customers}")
 print("-" * 20)
-
 
 # --- Exercise 3: Inventory Stock Alert ---
 print("--- Solution to Exercise 3 ---")

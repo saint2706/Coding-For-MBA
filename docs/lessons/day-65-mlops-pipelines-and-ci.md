@@ -57,22 +57,14 @@ _You are on lesson 65 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_65_MLOps_Pipelines_and_CI/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_65_MLOps_Pipelines_and_CI/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_65_MLOps_Pipelines_and_CI/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_65_MLOps_Pipelines_and_CI/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_65_MLOps_Pipelines_and_CI/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_65_MLOps_Pipelines_and_CI/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_65_MLOps_Pipelines_and_CI/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -106,7 +98,6 @@ from typing import (
 
 FeatureRow = Mapping[str, Any]
 
-
 @dataclass
 class Task:
     """Represents a node in an orchestration graph.
@@ -128,7 +119,6 @@ class Task:
     name: str
     run: Callable[[MutableMapping[str, Any]], Any]
     upstream: List[str] = field(default_factory=list)
-
 
 class PipelineDAG:
     """A minimal directed acyclic graph executor for ML pipelines."""
@@ -201,7 +191,6 @@ class PipelineDAG:
         context["execution_order"] = ordered
         return context
 
-
 def upsert_feature_store(rows: Iterable[FeatureRow]) -> Dict[str, FeatureRow]:
     """Materialise feature rows into an in-memory feature store.
 
@@ -219,7 +208,6 @@ def upsert_feature_store(rows: Iterable[FeatureRow]) -> Dict[str, FeatureRow]:
         }
     return feature_store
 
-
 def train_model_from_store(store: Mapping[str, FeatureRow]) -> Dict[str, Any]:
     """Train and evaluate a trivial model using feature store contents."""
 
@@ -233,7 +221,6 @@ def train_model_from_store(store: Mapping[str, FeatureRow]) -> Dict[str, Any]:
         "metrics": {"validation_accuracy": 0.8 + (avg_feature % 0.2)},
     }
     return model_artifact
-
 
 def register_model(
     model: Mapping[str, Any], *, name: str, stage: str
@@ -250,7 +237,6 @@ def register_model(
         "metrics": model["metrics"],
     }
     return registry_entry
-
 
 def github_actions_deploy(entry: Mapping[str, Any]) -> Dict[str, Any]:
     """Simulate a GitHub Actions job that deploys a registered model."""
@@ -270,7 +256,6 @@ def github_actions_deploy(entry: Mapping[str, Any]) -> Dict[str, Any]:
         "environment": "production",
         "commit_sha": "demo-sha",
     }
-
 
 def build_mlops_pipeline(raw_rows: Iterable[FeatureRow]) -> PipelineDAG:
     """Construct the pipeline DAG with deterministic task wiring."""
@@ -305,14 +290,12 @@ def build_mlops_pipeline(raw_rows: Iterable[FeatureRow]) -> PipelineDAG:
     dag.base_context = base_context  # type: ignore[attr-defined]
     return dag
 
-
 def run_pipeline(raw_rows: Iterable[FeatureRow]) -> Dict[str, Any]:
     """Helper for scripts/tests: build the DAG and execute it."""
 
     dag = build_mlops_pipeline(raw_rows)
     context = getattr(dag, "base_context", {})
     return dag.execute(context)
-
 
 if __name__ == "__main__":
     rows = [

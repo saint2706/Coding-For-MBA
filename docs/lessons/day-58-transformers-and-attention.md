@@ -28,22 +28,14 @@ _You are on lesson 58 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_58_Transformers_and_Attention/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_58_Transformers_and_Attention/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_58_Transformers_and_Attention/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_58_Transformers_and_Attention/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_58_Transformers_and_Attention/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_58_Transformers_and_Attention/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_58_Transformers_and_Attention/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -56,7 +48,6 @@ from typing import Dict, Iterable, List, Sequence, Tuple
 
 import numpy as np
 
-
 @dataclass
 class TransformerConfig:
     """Configuration for the tiny encoder–decoder demonstration."""
@@ -66,7 +57,6 @@ class TransformerConfig:
     num_heads: int = 2
     ff_dim: int = 16
 
-
 @dataclass
 class EncoderDecoderStates:
     """Container capturing intermediate encoder/decoder representations."""
@@ -74,7 +64,6 @@ class EncoderDecoderStates:
     encoder_hidden: np.ndarray
     decoder_hidden: np.ndarray
     cross_attention: np.ndarray
-
 
 DEFAULT_VOCAB: Tuple[str, ...] = (
     "<pad>",
@@ -95,7 +84,6 @@ DEFAULT_VOCAB: Tuple[str, ...] = (
     "exciting",
 )
 DEFAULT_LABELS: Tuple[str, ...] = ("negative", "positive")
-
 
 class TinyTransformerClassifier:
     """Deterministic self-attention classifier for miniature datasets."""
@@ -274,7 +262,6 @@ class TinyTransformerClassifier:
         _, attn = self.forward(token_ids)
         return attn.mean(axis=0)
 
-
 def build_encoder_decoder_stack(
     source_tokens: Sequence[int],
     target_tokens: Sequence[int],
@@ -361,7 +348,6 @@ def build_encoder_decoder_stack(
         cross_attention=cross_attention,
     )
 
-
 def fine_tuning_playbook(
     base_model: str = "distilbert-base-uncased",
     lr: float = 2e-5,
@@ -388,7 +374,6 @@ def fine_tuning_playbook(
         "gradient_accumulation_steps": 2,
     }
 
-
 def demo_attention_visualisation(
     text: str, classifier: TinyTransformerClassifier | None = None
 ) -> Dict[str, object]:
@@ -402,7 +387,6 @@ def demo_attention_visualisation(
         for idx in token_ids
     ]
     return {"tokens": tokens, "attention": heatmap}
-
 
 def run_demo_classification(
     texts: Iterable[str], classifier: TinyTransformerClassifier | None = None
@@ -424,7 +408,6 @@ def run_demo_classification(
         )
     return outputs
 
-
 def _demo() -> None:
     classifier = TinyTransformerClassifier()
     texts = ["Great product and amazing support", "Terrible and slow service"]
@@ -433,7 +416,6 @@ def _demo() -> None:
         print(f"Text: {report['text']}")
         print(f"Prediction: {report['prediction']} – probs: {report['probs']}")
         print(f"Attention shape: {report['attention'].shape}\n")
-
 
 if __name__ == "__main__":
     _demo()

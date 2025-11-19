@@ -103,27 +103,18 @@ _You are on lesson 12 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_12_List_Comprehension/list_comprehension.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **list_comprehension.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/list_comprehension.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/list_comprehension.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_12_List_Comprehension/list_comprehension.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_12_List_Comprehension/list_comprehension.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_12_List_Comprehension/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_12_List_Comprehension/solutions.ipynb){ .md-button }
-
-???+ example "list_comprehension.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/list_comprehension.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_12_List_Comprehension/solutions.ipynb){ .md-button }
+    ???+ example "list_comprehension.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_12_List_Comprehension/list_comprehension.py)
 
 ````
 ```python title="list_comprehension.py"
@@ -134,7 +125,6 @@ This script demonstrates how to use list comprehensions to
 efficiently transform and filter lists of business data. This version
 is refactored into functions for better organization and testability.
 """
-
 
 def apply_price_increase(prices, increase_percentage):
     """
@@ -174,7 +164,6 @@ def apply_price_increase(prices, increase_percentage):
     #     new_prices.append(price * increase_multiplier)
     return [price * increase_multiplier for price in prices]
 
-
 def filter_large_sales(sales, threshold):
     """
     Filters a list of sales to find those above a given threshold
@@ -209,7 +198,6 @@ def filter_large_sales(sales, threshold):
     #     if sale > threshold:
     #         result.append(sale)
     return [sale for sale in sales if sale > threshold]
-
 
 def get_top_sales_performers(employees, sales_target):
     """
@@ -256,7 +244,6 @@ def get_top_sales_performers(employees, sales_target):
         and employee.get("quarterly_sales", 0) > sales_target
     ]
 
-
 def main():
     """Main function to demonstrate list comprehensions."""
     # --- Example 1: Transforming Data ---
@@ -290,7 +277,6 @@ def main():
     print(f"Top performing sales staff (sales > ${target}): {top_performers_list}")
     print("-" * 20)
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -318,7 +304,6 @@ print(f"Original sales: {sales}")
 print(f"Calculated commissions (10%): {commissions}")
 print("-" * 20)
 
-
 # --- Exercise 2: Filter Products by Category ---
 print("--- Solution to Exercise 2 ---")
 products = [
@@ -339,7 +324,6 @@ electronic_products = [
 print(f"All products: {products}")
 print(f"Electronic products only: {electronic_products}")
 print("-" * 20)
-
 
 # --- Exercise 3: Format Prices for Display ---
 print("--- Solution to Exercise 3 ---")

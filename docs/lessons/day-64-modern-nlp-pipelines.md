@@ -27,22 +27,14 @@ _You are on lesson 64 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_64_Modern_NLP_Pipelines/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_64_Modern_NLP_Pipelines/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_64_Modern_NLP_Pipelines/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_64_Modern_NLP_Pipelines/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_64_Modern_NLP_Pipelines/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_64_Modern_NLP_Pipelines/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_64_Modern_NLP_Pipelines/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -57,7 +49,6 @@ from typing import Dict, List, Mapping, Sequence, Tuple
 import numpy as np
 
 TokenizedCorpus = List[List[str]]
-
 
 def tokenize_corpus(
     corpus: Sequence[str],
@@ -77,7 +68,6 @@ def tokenize_corpus(
         tokenized.append(tokens)
     return tokenized
 
-
 def build_embedding_table(
     tokens: TokenizedCorpus, embedding_dim: int = 8
 ) -> Dict[str, np.ndarray]:
@@ -91,7 +81,6 @@ def build_embedding_table(
         rng = np.random.default_rng(seed)
         table[token] = rng.normal(0, 1, size=embedding_dim)
     return table
-
 
 def document_embeddings(
     tokens: TokenizedCorpus, embeddings: Mapping[str, np.ndarray]
@@ -109,7 +98,6 @@ def document_embeddings(
             )
     return np.vstack(doc_vectors)
 
-
 @dataclass
 class MiniTransformer:
     """Lightweight classifier head operating on document embeddings."""
@@ -124,13 +112,11 @@ class MiniTransformer:
     def predict(self, embeddings: np.ndarray) -> np.ndarray:
         return (self.predict_proba(embeddings) >= 0.5).astype(int)
 
-
 @dataclass
 class FineTuneHistory:
     """Record of loss values during fine-tuning."""
 
     losses: List[float]
-
 
 def fine_tune_transformer(
     embeddings: np.ndarray,
@@ -156,7 +142,6 @@ def fine_tune_transformer(
     model = MiniTransformer(weights=weights, bias=bias)
     return model, FineTuneHistory(losses=losses)
 
-
 def retrieve_documents(
     query_embedding: np.ndarray,
     doc_embeddings: np.ndarray,
@@ -174,7 +159,6 @@ def retrieve_documents(
     )
     ranked = np.argsort(similarities)[::-1]
     return ranked[:top_k].tolist()
-
 
 def rag_generate(
     query: str,
@@ -205,7 +189,6 @@ def rag_generate(
         [f"Answer: {retrieved[0] if retrieved else ''}", "Sources:"] + retrieved
     )
 
-
 def evaluate_generation(reference: str, prediction: str) -> Dict[str, float]:
     """Compute deterministic exact-match and token-overlap metrics."""
 
@@ -226,7 +209,6 @@ def evaluate_generation(reference: str, prediction: str) -> Dict[str, float]:
         "f1": f1,
     }
 
-
 def build_pipeline(corpus: Sequence[str], labels: Sequence[int]) -> Dict[str, object]:
     """Utility for documentation walkthroughs."""
 
@@ -245,7 +227,6 @@ def build_pipeline(corpus: Sequence[str], labels: Sequence[int]) -> Dict[str, ob
         "rag_answer": rag_answer,
         "metrics": metrics,
     }
-
 
 if __name__ == "__main__":
     corpus = [

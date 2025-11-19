@@ -83,27 +83,18 @@ _You are on lesson 19 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_19_Python_Date_Time/date_time.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **date_time.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/date_time.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/date_time.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_19_Python_Date_Time/date_time.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_19_Python_Date_Time/date_time.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_19_Python_Date_Time/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_19_Python_Date_Time/solutions.ipynb){ .md-button }
-
-???+ example "date_time.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/date_time.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_19_Python_Date_Time/solutions.ipynb){ .md-button }
+    ???+ example "date_time.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_19_Python_Date_Time/date_time.py)
 
 ````
 ```python title="date_time.py"
@@ -115,7 +106,6 @@ datetime module, refactored into testable functions.
 """
 
 from datetime import date, datetime, timedelta
-
 
 def get_current_datetime_components() -> dict:
     """Gets the current date and time and returns its components as a dictionary."""
@@ -129,11 +119,9 @@ def get_current_datetime_components() -> dict:
         "timestamp": now.timestamp(),
     }
 
-
 def format_datetime_to_string(dt_object: datetime, format_str: str) -> str:
     """Formats a datetime object into a string according to a format code."""
     return dt_object.strftime(format_str)
-
 
 def parse_string_to_datetime(date_string: str, format_str: str) -> datetime:
     """Parses a string into a datetime object based on a format code."""
@@ -142,11 +130,9 @@ def parse_string_to_datetime(date_string: str, format_str: str) -> datetime:
     except ValueError:
         return None
 
-
 def calculate_date_difference(date1: date, date2: date) -> timedelta:
     """Calculates the difference between two date objects."""
     return date1 - date2
-
 
 def main():
     """Main function to demonstrate datetime operations."""
@@ -178,7 +164,6 @@ def main():
     )
     print("-" * 20)
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -199,9 +184,7 @@ now = datetime.now()
 formatted_date = now.strftime("Today is %d %B, %Y")
 print(formatted_date)
 
-
 ## Exercise 2: Calculate the number of days until your next birthday
-
 
 def days_until_next_birthday(birthday_month: int, birthday_day: int) -> int:
     today = date.today()
@@ -217,11 +200,9 @@ def days_until_next_birthday(birthday_month: int, birthday_day: int) -> int:
     delta = next_birthday - today
     return delta.days
 
-
 # Example usage (replace with your own birthday)
 days_left = days_until_next_birthday(10, 25)
 print(f"There are {days_left} days until your next birthday.")
-
 
 ## Exercise 3: Parse a date string
 

@@ -62,12 +62,6 @@ _You are on lesson 73 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_73_BI_SQL_and_Databases){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -97,13 +91,11 @@ WHERE revenue >= 3500
 ORDER BY revenue DESC;
 """
 
-
 def preview_taxonomy(frame: pd.DataFrame) -> None:
     """Print the grouped roadmap topics for discussion."""
 
     print("\nDay 73 SQL and database roadmap\n")
     print(frame.to_markdown(index=False))
-
 
 def demonstrate_basic_queries(connection) -> None:
     """Showcase foundational SELECT/WHERE patterns."""
@@ -112,14 +104,12 @@ def demonstrate_basic_queries(connection) -> None:
     results = pd.read_sql_query(BASIC_FILTER_QUERY, connection)
     print(results.to_markdown(index=False))
 
-
 def demonstrate_aggregations(connection) -> None:
     """Summarize monthly revenue for BI QA conversations."""
 
     print("\nAggregating revenue for staging-table checks\n")
     aggregated = fetch_monthly_revenue(connection)
     print(aggregated.to_markdown(index=False))
-
 
 def demonstrate_window_functions(connection) -> None:
     """Connect analytics engineering topics to SQL window functions."""
@@ -136,7 +126,6 @@ def demonstrate_window_functions(connection) -> None:
     )
     print(formatted.to_markdown(index=False))
 
-
 def main() -> None:
     """Run the Day 73 classroom walkthrough."""
 
@@ -145,7 +134,6 @@ def main() -> None:
         demonstrate_basic_queries(connection)
         demonstrate_aggregations(connection)
         demonstrate_window_functions(connection)
-
 
 if __name__ == "__main__":
     main()
@@ -231,14 +219,12 @@ TOPIC_SUMMARIES: Mapping[str, str] = {
     ),
 }
 
-
 def load_topics(
     groups: Mapping[str, Sequence[str]] = TOPIC_GROUP_TITLES,
 ) -> dict[str, list[BiTopic]]:
     """Return roadmap topics grouped by the requested sections."""
 
     return group_topics_by_titles(groups)
-
 
 def build_topic_dataframe(
     *,
@@ -262,9 +248,7 @@ def build_topic_dataframe(
         return frame
     return frame.drop_duplicates(subset=["title"]).reset_index(drop=True)
 
-
 # --- SQLite helpers -------------------------------------------------------
-
 
 @dataclass(frozen=True, slots=True)
 class SalesRecord:
@@ -277,7 +261,6 @@ class SalesRecord:
     units: int
     revenue: float
 
-
 DEFAULT_SALES_DATA: tuple[SalesRecord, ...] = (
     SalesRecord(1, "East", "2024-01", "Starter", 5, 2500.0),
     SalesRecord(2, "East", "2024-02", "Starter", 7, 3650.0),
@@ -286,7 +269,6 @@ DEFAULT_SALES_DATA: tuple[SalesRecord, ...] = (
     SalesRecord(5, "West", "2024-02", "Growth", 5, 3150.0),
     SalesRecord(6, "West", "2024-03", "Growth", 7, 4550.0),
 )
-
 
 SALES_TABLE_SCHEMA = """
 CREATE TABLE IF NOT EXISTS sales (
@@ -298,7 +280,6 @@ CREATE TABLE IF NOT EXISTS sales (
     revenue REAL NOT NULL
 );
 """
-
 
 def create_sales_database(
     records: Iterable[SalesRecord] | None = None,
@@ -318,7 +299,6 @@ def create_sales_database(
     connection.commit()
     return connection
 
-
 MONTHLY_REVENUE_QUERY = """
 SELECT
     month,
@@ -329,14 +309,12 @@ GROUP BY month
 ORDER BY month;
 """
 
-
 def fetch_monthly_revenue(
     connection: sqlite3.Connection, query: str = MONTHLY_REVENUE_QUERY
 ) -> pd.DataFrame:
     """Return aggregated revenue and units by month."""
 
     return pd.read_sql_query(query, connection)
-
 
 WINDOW_METRICS_QUERY = """
 SELECT
@@ -357,14 +335,12 @@ FROM sales
 ORDER BY region, month;
 """
 
-
 def compute_region_window_metrics(
     connection: sqlite3.Connection, query: str = WINDOW_METRICS_QUERY
 ) -> pd.DataFrame:
     """Return window function analytics for the sales table."""
 
     return pd.read_sql_query(query, connection)
-
 
 __all__ = [
     "SalesRecord",

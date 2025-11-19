@@ -46,22 +46,14 @@ _You are on lesson 43 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_43_Supervised_Learning_Classification_Part_2/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_43_Supervised_Learning_Classification_Part_2/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_43_Supervised_Learning_Classification_Part_2/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_43_Supervised_Learning_Classification_Part_2/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_43_Supervised_Learning_Classification_Part_2/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_43_Supervised_Learning_Classification_Part_2/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_43_Supervised_Learning_Classification_Part_2/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -80,7 +72,6 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
-
 @dataclass
 class IrisData:
     X_train: np.ndarray
@@ -90,7 +81,6 @@ class IrisData:
     X_train_scaled: np.ndarray
     X_test_scaled: np.ndarray
     scaler: StandardScaler
-
 
 def load_and_prepare_iris(
     test_size: float = 0.3,
@@ -118,7 +108,6 @@ def load_and_prepare_iris(
         scaler=scaler,
     )
 
-
 def train_svm_classifier(
     X_train: np.ndarray,
     y_train: np.ndarray,
@@ -131,7 +120,6 @@ def train_svm_classifier(
     model.fit(X_train, y_train)
     return model
 
-
 def train_decision_tree_classifier(
     X_train: np.ndarray,
     y_train: np.ndarray,
@@ -143,7 +131,6 @@ def train_decision_tree_classifier(
     model.fit(X_train, y_train)
     return model
 
-
 def evaluate_classifier(
     model,
     X_test: np.ndarray,
@@ -152,7 +139,6 @@ def evaluate_classifier(
     """Return a dictionary of evaluation metrics for the classifier."""
     accuracy = accuracy_score(y_test, model.predict(X_test))
     return {"accuracy": accuracy}
-
 
 def run_classification_demo() -> Dict[str, Dict[str, float]]:
     """Run the Day 43 classification demo and return the metrics."""
@@ -163,7 +149,6 @@ def run_classification_demo() -> Dict[str, Dict[str, float]]:
         "svm": evaluate_classifier(svm_model, data.X_test_scaled, data.y_test),
         "decision_tree": evaluate_classifier(tree_model, data.X_test, data.y_test),
     }
-
 
 if __name__ == "__main__":
     metrics = run_classification_demo()

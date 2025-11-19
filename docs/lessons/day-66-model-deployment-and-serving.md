@@ -59,22 +59,14 @@ _You are on lesson 66 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_66_Model_Deployment_and_Serving/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_66_Model_Deployment_and_Serving/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_66_Model_Deployment_and_Serving/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_66_Model_Deployment_and_Serving/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_66_Model_Deployment_and_Serving/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_66_Model_Deployment_and_Serving/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_66_Model_Deployment_and_Serving/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -92,7 +84,6 @@ from statistics import mean
 from time import perf_counter
 from typing import Any, Callable, Dict, Iterable, List, Mapping, Sequence
 
-
 @dataclass
 class PredictionResponse:
     """Normalised response payload shared across transports."""
@@ -103,7 +94,6 @@ class PredictionResponse:
     def to_dict(self) -> Dict[str, Any]:
         return {"predictions": self.predictions, "metadata": self.metadata}
 
-
 def _coerce_predictions(raw: Iterable[Any]) -> List[float]:
     values: List[float] = []
     for item in raw:
@@ -112,7 +102,6 @@ def _coerce_predictions(raw: Iterable[Any]) -> List[float]:
         except (TypeError, ValueError) as exc:  # pragma: no cover - defensive
             raise ValueError(f"Prediction values must be numeric: {item!r}") from exc
     return values
-
 
 def fastapi_rest_adapter(
     model: Callable[[Sequence[float]], Sequence[float]],
@@ -131,7 +120,6 @@ def fastapi_rest_adapter(
         return response.to_dict()
 
     return predict
-
 
 def grpc_streaming_adapter(
     model: Callable[[Sequence[float]], Sequence[float]],
@@ -152,7 +140,6 @@ def grpc_streaming_adapter(
 
     return handler
 
-
 def batch_scoring_runner(
     model: Callable[[Sequence[float]], Sequence[float]],
     batches: Iterable[Sequence[float]],
@@ -168,7 +155,6 @@ def batch_scoring_runner(
         )
         outputs.append(response.to_dict())
     return outputs
-
 
 def edge_inference_adapter(
     model: Callable[[Sequence[float]], Sequence[float]], *, quantise: bool = True
@@ -186,7 +172,6 @@ def edge_inference_adapter(
 
     return run
 
-
 def ensure_response_schema(payload: Mapping[str, Any]) -> None:
     """Validate that a payload follows the canonical schema."""
 
@@ -201,13 +186,11 @@ def ensure_response_schema(payload: Mapping[str, Any]) -> None:
     if not isinstance(metadata, dict):
         raise AssertionError("Metadata must be a mapping")
 
-
 @dataclass
 class LoadTestResult:
     avg_latency: float
     throughput: float
     success_rate: float
-
 
 def run_synthetic_load_test(
     endpoint: Callable[[Mapping[str, Any]], Mapping[str, Any]],
@@ -239,7 +222,6 @@ def run_synthetic_load_test(
         avg_latency=avg_latency, throughput=throughput, success_rate=success_rate
     )
 
-
 def averaged_ensembled_model(instances: Sequence[float]) -> List[float]:
     """Reference model that mimics an ensemble averaged prediction."""
 
@@ -247,7 +229,6 @@ def averaged_ensembled_model(instances: Sequence[float]) -> List[float]:
         return [0.0]
     centre = mean(float(x) for x in instances)
     return [round(centre * 0.8 + 0.1, 4)]
-
 
 def describe_serving_landscape() -> Dict[str, Any]:
     """Summarise the pros/cons of deployment patterns for quick reference."""
@@ -259,7 +240,6 @@ def describe_serving_landscape() -> Dict[str, Any]:
         "streaming": {"latency": "low", "strength": "event-driven"},
         "edge": {"latency": "ultra-low", "strength": "offline ready"},
     }
-
 
 if __name__ == "__main__":
     model = averaged_ensembled_model

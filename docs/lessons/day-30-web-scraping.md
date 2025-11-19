@@ -135,42 +135,30 @@ _You are on lesson 30 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/presidents.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **presidents.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/presidents.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/presidents.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/presidents.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/presidents.ipynb){ .md-button }
-- **profile_web_scraping.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/solutions.ipynb){ .md-button }
-- **web_scraping.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
-- **web_scraping_bu.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
-
-???+ example "presidents.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/presidents.py)
+  - **profile_web_scraping.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/solutions.ipynb){ .md-button }
+  - **web_scraping.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
+  - **web_scraping_bu.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
+    ???+ example "presidents.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/presidents.py)
 
 ````
 ```python title="presidents.py"
@@ -272,7 +260,6 @@ MOCK_PRESIDENTS_DATA = [
     },
 ]
 
-
 def scrape_presidents_data(url: str) -> Optional[pd.DataFrame]:
     """
     Scrapes the list of US presidents from a Wikipedia page.
@@ -344,7 +331,6 @@ def scrape_presidents_data(url: str) -> Optional[pd.DataFrame]:
         print(f"❌ Unexpected error occurred: {e}")
         return None
 
-
 def convert_csv_to_json(csv_file_path: str, json_file_path: str) -> None:
     """
     Converts a CSV file to a JSON file.
@@ -389,7 +375,6 @@ def convert_csv_to_json(csv_file_path: str, json_file_path: str) -> None:
     except Exception as e:
         print(f"❌ An error occurred during conversion: {e}")
 
-
 def save_mock_json(json_file_path: Path) -> None:
     """Persist the lightweight mock dataset to a JSON file."""
 
@@ -398,7 +383,6 @@ def save_mock_json(json_file_path: Path) -> None:
     with json_file_path.open("w", encoding="utf-8") as json_file:
         json.dump(data, json_file, indent=4, ensure_ascii=False)
     print(f"✅ Mock JSON file created: {json_file_path}")
-
 
 def main():
     """
@@ -486,7 +470,6 @@ def main():
         print("   • Temporary website unavailability")
         print("📦 Continuing with the mock dataset so you can keep practicing offline.")
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -522,7 +505,6 @@ except ImportError:  # pragma: no cover - allows ``python profile_web_scraping.p
         sys.path.append(str(CURRENT_DIR))
     from web_scraping import URL, process_book_data, scrape_books  # type: ignore
 
-
 def build_pipeline(url: str, html_path: Path | None) -> Callable[[], None]:
     """Return a callable that performs the scraping workflow."""
 
@@ -538,7 +520,6 @@ def build_pipeline(url: str, html_path: Path | None) -> Callable[[], None]:
             scrape_books(url)
 
     return pipeline
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -585,7 +566,6 @@ def main() -> None:
         number=args.number,
     )
     print_report(profile_report=profile_report, timing_report=timing_report)
-
 
 if __name__ == "__main__":
     main()
@@ -703,10 +683,8 @@ from bs4 import BeautifulSoup
 # This site is specifically designed for scraping practice.
 URL = "http://books.toscrape.com/"
 
-
 class ScrapingError(Exception):
     """Custom exception for scraping errors."""
-
 
 def scrape_books(
     url: str, session: Optional[requests.Session] = None
@@ -744,7 +722,6 @@ def scrape_books(
 
     # If we get here, the request was successful
     return process_book_data(response.content)
-
 
 def process_book_data(
     html_content: bytes,
@@ -835,7 +812,6 @@ def process_book_data(
 
     return book_data, clean_data, analysis
 
-
 def main():
     """
     Main function to demonstrate web scraping workflow.
@@ -903,7 +879,6 @@ def main():
     print("   • Scrape additional pages for more data")
     print("   • Add more data fields (ratings, availability, etc.)")
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -927,7 +902,6 @@ from bs4 import BeautifulSoup
 
 DEFAULT_URL = "https://www.bu.edu/president/boston-university-facts-stats/"
 OUTPUT_FILENAME = "scraped_exercise_1.json"
-
 
 def _parse_tables(tables: Iterable[BeautifulSoup]) -> List[MutableMapping[str, str]]:
     """Convert BeautifulSoup table fragments into dictionaries.
@@ -981,7 +955,6 @@ def _parse_tables(tables: Iterable[BeautifulSoup]) -> List[MutableMapping[str, s
 
     return parsed_tables
 
-
 def fetch_tables(
     url: str = DEFAULT_URL,
     *,
@@ -994,7 +967,6 @@ def fetch_tables(
     soup = BeautifulSoup(response.content, "html.parser")
     tables = soup.find_all("div", class_="facts-wrapper")
     return _parse_tables(tables)
-
 
 def save_tables(
     tables: Sequence[MutableMapping[str, str]],
@@ -1013,7 +985,6 @@ def save_tables(
 
     return resolved_path
 
-
 def main(
     url: str = DEFAULT_URL,
     output_path: Optional[Path | str] = None,
@@ -1024,7 +995,6 @@ def main(
 
     tables = fetch_tables(url, session=session)
     return save_tables(tables, output_path)
-
 
 if __name__ == "__main__":
     main()

@@ -56,12 +56,6 @@ _You are on lesson 77 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_77_BI_Domain_Analytics_and_Value_Drivers){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -232,7 +226,6 @@ VERTICAL_DEFAULTS = {
 
 # %%
 
-
 def load_fortune_1000(path: Path = DATA_PATH) -> pd.DataFrame:
     """Load a cleaned slice of the Fortune 1000 dataset for classroom demos."""
 
@@ -250,9 +243,7 @@ def load_fortune_1000(path: Path = DATA_PATH) -> pd.DataFrame:
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
     return frame.dropna(subset=numeric_columns)
 
-
 # %%
-
 
 def build_revenue_dashboard() -> pd.DataFrame:
     """Return a table summarizing revenue-facing KPI stories."""
@@ -272,9 +263,7 @@ def build_revenue_dashboard() -> pd.DataFrame:
             )
     return pd.DataFrame(records)
 
-
 # %%
-
 
 def build_operations_dashboard() -> pd.DataFrame:
     """Return KPIs for manufacturing and supply chain storytelling."""
@@ -294,9 +283,7 @@ def build_operations_dashboard() -> pd.DataFrame:
             )
     return pd.DataFrame(records)
 
-
 # %%
-
 
 def build_vertical_dashboard(frame: pd.DataFrame | None = None) -> pd.DataFrame:
     """Summarize KPIs by vertical using the Fortune 1000 dataset."""
@@ -347,9 +334,7 @@ def build_vertical_dashboard(frame: pd.DataFrame | None = None) -> pd.DataFrame:
 
     return pd.DataFrame(records)
 
-
 # %%
-
 
 def summarize_groups(
     groups: Mapping[str, Iterable[str]],
@@ -369,9 +354,7 @@ def summarize_groups(
         if roadmap_titles:
             print(f"    ↳ Roadmap validation: {roadmap_titles}")
 
-
 # %%
-
 
 def review_dashboard(
     title: str, frame: pd.DataFrame, value_columns: Iterable[str]
@@ -385,9 +368,7 @@ def review_dashboard(
             dashboard[column] = dashboard[column].map(lambda val: f"{val:,.2f}")
     print(dashboard.to_markdown(index=False))
 
-
 # %%
-
 
 def main() -> None:
     """Run the domain analytics classroom walk-through."""
@@ -414,7 +395,6 @@ def main() -> None:
         vertical_dashboard,
         ["revenue", "profit", "profit_margin", "avg_assets"],
     )
-
 
 # %%
 if __name__ == "__main__":
@@ -464,14 +444,12 @@ DOMAIN_GROUPS: Mapping[str, Sequence[str]] = {
     ),
 }
 
-
 def load_domain_topics(
     groups: Mapping[str, Sequence[str]] = DOMAIN_GROUPS,
 ) -> Dict[str, list[BiTopic]]:
     """Return roadmap topics grouped by BI business domain."""
 
     return group_topics_by_titles(groups)
-
 
 def calculate_revenue_kpis(
     *,
@@ -499,7 +477,6 @@ def calculate_revenue_kpis(
         "risk_adjusted_revenue": risk_adjusted_revenue,
         "fraud_rate": fraud_rate,
     }
-
 
 def calculate_operations_kpis(
     *,
@@ -529,7 +506,6 @@ def calculate_operations_kpis(
         "first_pass_yield": first_pass_yield,
         "units_per_hour": units_per_hour,
     }
-
 
 def calculate_vertical_kpis(
     *,
@@ -566,7 +542,6 @@ def calculate_vertical_kpis(
         "hr_turnover_rate": hr_turnover_rate,
         "manufacturing_yield": manufacturing_yield,
     }
-
 
 __all__ = [
     "DOMAIN_GROUPS",

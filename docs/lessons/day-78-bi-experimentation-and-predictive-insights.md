@@ -64,12 +64,6 @@ _You are on lesson 78 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_78_BI_Experimentation_and_Predictive_Insights){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -84,7 +78,6 @@ from __future__ import annotations
 import pandas as pd
 
 from . import solutions
-
 
 def run_experimentation_examples() -> None:
     control = [195, 202, 198, 205, 199]
@@ -121,7 +114,6 @@ def run_experimentation_examples() -> None:
     print("Cohort retention:")
     print(retention)
 
-
 def run_forecasting_examples() -> None:
     history = pd.DataFrame(
         {
@@ -136,7 +128,6 @@ def run_forecasting_examples() -> None:
     print(forecast)
     component_summary = solutions.describe_time_series_components(fitted)
     print(component_summary)
-
 
 def run_machine_learning_examples() -> None:
     training = pd.DataFrame(
@@ -179,12 +170,10 @@ def run_machine_learning_examples() -> None:
     print("Reinforcement learning report:")
     print(report)
 
-
 def main() -> None:
     run_experimentation_examples()
     run_forecasting_examples()
     run_machine_learning_examples()
-
 
 if __name__ == "__main__":
     main()
@@ -212,7 +201,6 @@ import pandas as pd
 # Experimentation
 # ---------------------------------------------------------------------------
 
-
 def summarize_ab_test(
     control: Iterable[float], treatment: Iterable[float]
 ) -> pd.DataFrame:
@@ -237,7 +225,6 @@ def summarize_ab_test(
         lambda m: 0.0 if control_mean == 0 else (m - control_mean) / control_mean
     )
     return summary
-
 
 def welch_t_p_value(
     control: Iterable[float],
@@ -267,7 +254,6 @@ def welch_t_p_value(
     if alternative == "less":
         return dist.cdf(t_stat)
     return 2 * (1 - dist.cdf(abs(t_stat)))
-
 
 def run_hypothesis_test(
     sample: Iterable[float],
@@ -301,7 +287,6 @@ def run_hypothesis_test(
         "reject_null": bool(p_value < alpha),
     }
 
-
 def type_error_table(alpha: float, beta: float) -> pd.DataFrame:
     """Summarise Type I/II error trade-offs for experimentation design."""
 
@@ -326,7 +311,6 @@ def type_error_table(alpha: float, beta: float) -> pd.DataFrame:
     ]
     return pd.DataFrame(data)
 
-
 def interpret_p_value(p_value: float) -> str:
     """Return a guideline-friendly interpretation for a p-value."""
 
@@ -339,7 +323,6 @@ def interpret_p_value(p_value: float) -> str:
     if p_value < 0.1:
         return "Suggestive evidence; consider more data"
     return "Little evidence against the null"
-
 
 def cohort_retention(
     events: pd.DataFrame,
@@ -376,11 +359,9 @@ def cohort_retention(
     pivot.columns = [f"period_{int(col)}" for col in pivot.columns]
     return pivot.reset_index()
 
-
 # ---------------------------------------------------------------------------
 # Forecasting
 # ---------------------------------------------------------------------------
-
 
 def estimate_trend_coefficients(values: Sequence[float]) -> Tuple[float, float]:
     """Estimate intercept and slope for a linear trend using least squares."""
@@ -393,7 +374,6 @@ def estimate_trend_coefficients(values: Sequence[float]) -> Tuple[float, float]:
     beta, *_ = np.linalg.lstsq(X, y, rcond=None)
     intercept, slope = beta
     return float(intercept), float(slope)
-
 
 def seasonal_pattern(values: Sequence[float], season_length: int) -> np.ndarray:
     """Return the average seasonal offsets for a given periodicity."""
@@ -414,7 +394,6 @@ def seasonal_pattern(values: Sequence[float], season_length: int) -> np.ndarray:
         counts[slot] += 1
     counts[counts == 0] = 1
     return pattern / counts
-
 
 def forecast_business_metric(
     history: pd.DataFrame,
@@ -456,7 +435,6 @@ def forecast_business_metric(
     )
     return ordered, forecast_df
 
-
 def describe_time_series_components(df: pd.DataFrame) -> pd.DataFrame:
     """Provide summary statistics for level, trend, and seasonality components."""
 
@@ -474,11 +452,9 @@ def describe_time_series_components(df: pd.DataFrame) -> pd.DataFrame:
     }
     return pd.DataFrame(summary)
 
-
 # ---------------------------------------------------------------------------
 # Machine learning
 # ---------------------------------------------------------------------------
-
 
 @dataclass
 class LinearRegressionModel:
@@ -497,7 +473,6 @@ class LinearRegressionModel:
         if missing:
             raise KeyError(f"Missing features for prediction: {sorted(missing)}")
         return self.intercept + frame[coeffs.index].astype(float).dot(coeffs)
-
 
 def fit_linear_regression(
     frame: pd.DataFrame, *, target_col: str, feature_cols: Sequence[str] | None = None
@@ -519,7 +494,6 @@ def fit_linear_regression(
     coef = {feature: float(value) for feature, value in zip(feature_cols, beta[1:])}
     return LinearRegressionModel(intercept=intercept, coefficients=coef)
 
-
 def regression_analysis_table(model: LinearRegressionModel) -> pd.DataFrame:
     """Return a tidy view of regression coefficients for reporting."""
 
@@ -527,7 +501,6 @@ def regression_analysis_table(model: LinearRegressionModel) -> pd.DataFrame:
     for feature, value in model.coefficients.items():
         rows.append({"term": feature, "coefficient": value, "impact": "marginal"})
     return pd.DataFrame(rows)
-
 
 def engineer_polynomial_features(
     frame: pd.DataFrame, *, column: str, degree: int = 2
@@ -542,7 +515,6 @@ def engineer_polynomial_features(
     for power in range(2, degree + 1):
         base[f"{column}^{power}"] = base[column] ** power
     return base
-
 
 def segment_customers_by_behavior(
     frame: pd.DataFrame,
@@ -574,7 +546,6 @@ def segment_customers_by_behavior(
     output["segment"] = output.apply(classify, axis=1)
     return output
 
-
 def epsilon_greedy_action(
     values: Sequence[float],
     *,
@@ -594,7 +565,6 @@ def epsilon_greedy_action(
     best_index = int(np.argmax(values))
     return best_index, False
 
-
 def supervised_predictions(
     frame: pd.DataFrame,
     *,
@@ -610,7 +580,6 @@ def supervised_predictions(
     predictions = model.predict(features)
     return model, predictions
 
-
 def unsupervised_scorecard(frame: pd.DataFrame) -> pd.DataFrame:
     """Summarise customer segments for dashboarding."""
 
@@ -620,7 +589,6 @@ def unsupervised_scorecard(frame: pd.DataFrame) -> pd.DataFrame:
     metric_col = frame.columns[0]
     spend = frame.groupby("segment")[metric_col].mean().rename("avg_value")
     return pd.concat([counts, spend], axis=1).reset_index()
-
 
 def reinforcement_learning_report(
     estimates: Sequence[float],
@@ -641,7 +609,6 @@ def reinforcement_learning_report(
         choices.append(action)
         explore_flags.append(explore)
     return pd.DataFrame({"action": choices, "explore": explore_flags})
-
 
 if __name__ == "__main__":
     control = [100, 104, 99, 101]

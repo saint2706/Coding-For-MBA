@@ -3,28 +3,29 @@
 > **Purpose:** Internal reference for developers working on the Coding-For-MBA repository.
 > This document maps the complete repository structure, automation workflows, and development constraints.
 
-**Last Updated:** 2025-11-19  
+**Last Updated:** 2025-11-19\
 **Repository:** `saint2706/Coding-For-MBA`
 
----
+______________________________________________________________________
 
 ## Table of Contents
 
 1. [Repository Overview](#repository-overview)
-2. [Lesson Structure & Organization](#lesson-structure--organization)
-3. [Documentation System (MkDocs)](#documentation-system-mkdocs)
-4. [Automation Scripts](#automation-scripts)
-5. [Build & Test Infrastructure](#build--test-infrastructure)
-6. [CI/CD Workflows](#cicd-workflows)
-7. [Project Structure](#project-structure)
-8. [Pain Points & Constraints](#pain-points--constraints)
-9. [Extension Guidelines](#extension-guidelines)
+1. [Lesson Structure & Organization](#lesson-structure--organization)
+1. [Documentation System (MkDocs)](#documentation-system-mkdocs)
+1. [Automation Scripts](#automation-scripts)
+1. [Build & Test Infrastructure](#build--test-infrastructure)
+1. [CI/CD Workflows](#cicd-workflows)
+1. [Project Structure](#project-structure)
+1. [Pain Points & Constraints](#pain-points--constraints)
+1. [Extension Guidelines](#extension-guidelines)
 
----
+______________________________________________________________________
 
 ## Repository Overview
 
 The repository is a comprehensive educational curriculum covering:
+
 - **108 lessons** organized into 7 phases
 - Python fundamentals → Data Science → ML → MLOps → BI → SQL
 - Self-contained, business-focused learning materials
@@ -41,18 +42,20 @@ The repository is a comprehensive educational curriculum covering:
 ### Technology Stack
 
 **Core:**
+
 - Python 3.13 (target), 3.11+ (supported)
 - MkDocs + Material theme for documentation
 - pytest for testing
 - Black + Ruff for code formatting
 
 **Platform Components:**
+
 - FastAPI backend for progress tracking (`learner_backend/`)
 - WeasyPrint for PDF generation
-- Binder + JupyterLite for interactive notebooks
+- Binder for interactive notebooks
 - GitHub Actions for CI/CD
 
----
+______________________________________________________________________
 
 ## Lesson Structure & Organization
 
@@ -82,27 +85,27 @@ Day_XX_Topic_Name/
 ### Content Hierarchy
 
 1. **README.md** is the authoritative content source
-2. `.py` scripts demonstrate executable patterns
-3. `.ipynb` notebooks provide interactivity
-4. `solutions.py` files contain advanced implementations
+1. `.py` scripts demonstrate executable patterns
+1. `.ipynb` notebooks provide interactivity
+1. `solutions.py` files contain advanced implementations
 
 ### Phase Organization
 
 Lessons are grouped into 7 phases:
 
-| Phase | Days | Focus |
-|-------|------|-------|
-| **Phase 1** | 01-20 | Python Foundations |
-| **Phase 2** | 21-39 | Data Analytics & Workflows |
-| **Phase 3** | 40-54 | ML Fundamentals |
-| **Phase 4** | 55-67 | Advanced ML & MLOps |
-| **Phase 5** | 68-84 | Business Intelligence |
-| **Phase 6** | 85-90 | Advanced BI & Capstone |
-| **Phase 7** | 91-108 | SQL & Database Mastery |
+| Phase       | Days   | Focus                      |
+| ----------- | ------ | -------------------------- |
+| **Phase 1** | 01-20  | Python Foundations         |
+| **Phase 2** | 21-39  | Data Analytics & Workflows |
+| **Phase 3** | 40-54  | ML Fundamentals            |
+| **Phase 4** | 55-67  | Advanced ML & MLOps        |
+| **Phase 5** | 68-84  | Business Intelligence      |
+| **Phase 6** | 85-90  | Advanced BI & Capstone     |
+| **Phase 7** | 91-108 | SQL & Database Mastery     |
 
 **Phase definitions** are hardcoded in scripts like `scripts/gen_phase_overviews.py` and `scripts/gen_nav.py`.
 
----
+______________________________________________________________________
 
 ## Documentation System (MkDocs)
 
@@ -134,6 +137,7 @@ docs/
 **Primary file:** `mkdocs.yml`
 
 **Structure:**
+
 - Static pages defined manually (Home, Get Started, Phases)
 - **Lesson navigation auto-generated** between markers:
   ```yaml
@@ -143,6 +147,7 @@ docs/
   ```
 
 **Generation script:** `scripts/gen_nav.py`
+
 - Scans all `Day_XX_*` folders
 - Extracts lesson titles from README.md first heading
 - Groups lessons by phase (collapsible sections)
@@ -153,33 +158,35 @@ docs/
 **Primary script:** `tools/build_docs.py`
 
 **What it does:**
+
 1. Scans all `Day_XX_*` folders
-2. Reads `README.md` from each lesson
-3. **Rewrites relative links** to GitHub blob/tree URLs
-4. Appends material download links (.py, .ipynb files)
-5. Adds interactive notebook buttons (Colab, Binder, JupyterLite)
-6. Outputs to `docs/lessons/day-XX-topic.md`
+1. Reads `README.md` from each lesson
+1. **Rewrites relative links** to GitHub blob/tree URLs
+1. Appends material download links (.py, .ipynb files)
+1. Adds interactive notebook buttons (Colab, Binder)
+1. Outputs to `docs/lessons/day-XX-topic.md`
 
 **Link rewriting logic:**
+
 - Relative paths like `../Day_02/file.py` → GitHub blob URL
 - Directory links → GitHub tree URL
 - External links (http://, https://) → left unchanged
 - Anchors and queries preserved
 
 **Notebook integration:**
+
 - Google Colab: `https://colab.research.google.com/github/...`
 - Binder: `https://mybinder.org/v2/gh/...`
-- JupyterLite: `/jupyterlite/lab?path=...`
 
 ### MkDocs Plugins
 
 Configured in `mkdocs.yml`:
 
 1. **search** - Full-text search
-2. **tags** - Tag-based filtering
-3. **mkdocs-jupyter** - Embed notebooks (execute: false)
-4. **redirects** - URL redirects for moved pages
-5. **minify** - HTML minification
+1. **tags** - Tag-based filtering
+1. **mkdocs-jupyter** - Embed notebooks (execute: false)
+1. **redirects** - URL redirects for moved pages
+1. **minify** - HTML minification
 
 ### Theme Customizations
 
@@ -189,7 +196,7 @@ Configured in `mkdocs.yml`:
 - Custom JS: Progress tracker, Pyodide console
 - Overrides in `docs/overrides/`
 
----
+______________________________________________________________________
 
 ## Automation Scripts
 
@@ -202,12 +209,14 @@ All scripts support `--dry-run` (default) and `--apply` flags for safety.
 **Purpose:** Generate collapsible phase-based navigation in `mkdocs.yml`
 
 **Usage:**
+
 ```bash
 python scripts/gen_nav.py              # Dry run
 python scripts/gen_nav.py --apply      # Apply changes
 ```
 
 **What it does:**
+
 - Scans `Day_XX_*` folders
 - Groups lessons by phase (1-7)
 - Generates structured nav between markers
@@ -218,6 +227,7 @@ python scripts/gen_nav.py --apply      # Apply changes
 **Purpose:** Create overview pages for each curriculum phase
 
 **Usage:**
+
 ```bash
 python scripts/gen_phase_overviews.py --apply
 ```
@@ -225,6 +235,7 @@ python scripts/gen_phase_overviews.py --apply
 **Output:** 7 files in `docs/phases/phase_X_overview.md`
 
 **Content:**
+
 - Phase title and day range
 - Introduction paragraph
 - Table of lessons with descriptions
@@ -234,11 +245,13 @@ python scripts/gen_phase_overviews.py --apply
 **Purpose:** Add YAML front-matter tags to lesson READMEs
 
 **Usage:**
+
 ```bash
 python scripts/add_tags.py --apply
 ```
 
 **Tag detection rules:**
+
 - Phase-based: Python, Data, ML, BI, SQL
 - Keyword-based: Specific topics (pandas, visualization, etc.)
 - Creates `.bak` files before modification
@@ -248,15 +261,18 @@ python scripts/add_tags.py --apply
 **Purpose:** Create searchable, filterable lessons index
 
 **Usage:**
+
 ```bash
 python scripts/gen_lessons_index.py --apply
 ```
 
 **Output:**
+
 - `docs/lessons/index.md` with embedded JavaScript
 - `docs/site_metadata.json` with lesson count
 
 **Features:**
+
 - Client-side text search
 - Tag-based filtering
 - Responsive design
@@ -267,11 +283,13 @@ python scripts/gen_lessons_index.py --apply
 **Purpose:** Restore `.bak` backup files
 
 **Usage:**
+
 ```bash
 python scripts/revert_nav_changes.py --apply
 ```
 
 **What it does:**
+
 - Finds all `.bak` files
 - Restores to original locations
 - Removes backups after restoration
@@ -283,12 +301,14 @@ python scripts/revert_nav_changes.py --apply
 **Purpose:** Generate downloadable PDFs and ZIP bundles
 
 **Usage:**
+
 ```bash
 python scripts/generate_pdfs.py --all
 python scripts/generate_pdfs.py --phase 1
 ```
 
 **Output:**
+
 - `artifacts/curriculum_full.pdf` (all lessons)
 - `artifacts/curriculum_phase_N.pdf` (per phase)
 - `artifacts/bundles/phase_N.zip` (markdown + notebooks)
@@ -300,6 +320,7 @@ python scripts/generate_pdfs.py --phase 1
 **Purpose:** Add "Open in Binder" buttons to lesson READMEs
 
 **Usage:**
+
 ```bash
 python scripts/add_binder_buttons.py --apply
 ```
@@ -309,6 +330,7 @@ python scripts/add_binder_buttons.py --apply
 **Purpose:** Create SVG badges for phase completion
 
 **Usage:**
+
 ```bash
 python scripts/generate_badge.py --all
 ```
@@ -320,6 +342,7 @@ python scripts/generate_badge.py --all
 **Purpose:** Generate PDF certificates for phase completion
 
 **Usage:**
+
 ```bash
 python scripts/generate_certificate.py --name "John Doe" --phase 1
 ```
@@ -331,11 +354,12 @@ python scripts/generate_certificate.py --name "John Doe" --phase 1
 **Purpose:** Convert YAML quizzes to interactive HTML
 
 **Usage:**
+
 ```bash
 python scripts/generate_quiz_pages.py --all
 ```
 
-**Input:** `quizzes/Day_XX_quiz.yml`  
+**Input:** `quizzes/Day_XX_quiz.yml`\
 **Output:** `docs/quizzes/day_XX.html`
 
 #### 11. `extract_i18n.py` - Internationalization Extractor
@@ -343,6 +367,7 @@ python scripts/generate_quiz_pages.py --all
 **Purpose:** Extract translatable strings for i18n
 
 **Usage:**
+
 ```bash
 python scripts/extract_i18n.py --output locales/en --format json
 ```
@@ -354,11 +379,13 @@ python scripts/extract_i18n.py --output locales/en --format json
 **Purpose:** Verify lesson structure integrity
 
 **Usage:**
+
 ```bash
 python scripts/verify_lessons.py
 ```
 
 **Checks:**
+
 - README.md exists in each Day_XX folder
 - Python scripts are valid syntax
 - Notebooks are valid JSON
@@ -371,6 +398,7 @@ python scripts/verify_lessons.py
 **Primary documentation builder** - already covered in MkDocs section.
 
 **Usage:**
+
 ```bash
 python tools/build_docs.py
 ```
@@ -380,37 +408,28 @@ python tools/build_docs.py
 **Purpose:** Convert Python lesson scripts to Jupyter notebooks
 
 **Usage:**
+
 ```bash
 python tools/convert_lessons_to_notebooks.py --all
 ```
 
-#### 3. `integrate_jupyterlite.py` - JupyterLite Integration
-
-**Purpose:** Build JupyterLite assets for browser-based notebooks
-
-**Usage:**
-```bash
-python tools/integrate_jupyterlite.py --build-only
-```
-
-**Output:** Browser-based Jupyter environment in `site/jupyterlite/`
-
-#### 4. `benchmark_lessons.py` - Performance Benchmarking
+#### 3. `benchmark_lessons.py` - Performance Benchmarking
 
 **Purpose:** Measure lesson execution times
 
 **Usage:**
+
 ```bash
 python tools/benchmark_lessons.py --lessons Day_22,Day_23
 ```
 
----
+______________________________________________________________________
 
 ## Build & Test Infrastructure
 
 ### Testing Setup
 
-**Framework:** pytest  
+**Framework:** pytest\
 **Configuration:** `pytest.ini`
 
 ```ini
@@ -420,6 +439,7 @@ testpaths = tests
 ```
 
 **Coverage requirement:** 40% minimum for specific modules:
+
 - `Day_24_Pandas_Advanced.pandas_adv`
 - `Day_25_Data_Cleaning.data_cleaning`
 - `Day_26_Statistics.stats`
@@ -436,6 +456,7 @@ tests/
 ```
 
 **Test patterns:**
+
 - One test file per lesson (`test_day_XX.py`)
 - Imports from `Day_XX_Topic.module`
 - Deterministic tests (fixed random seeds for ML)
@@ -444,6 +465,7 @@ tests/
 ### Code Formatting
 
 **Tools:**
+
 - **Black** - Python code formatter (line length: 88)
 - **Ruff** - Fast linter (replaces flake8, isort)
 - **nbqa** - Apply formatters to notebooks
@@ -462,6 +484,7 @@ target-version = "py313"
 ```
 
 **Pre-commit hooks:** `.pre-commit-config.yaml`
+
 - Runs black, ruff, mdformat, trailing whitespace checks
 - Install: `pre-commit install`
 
@@ -480,7 +503,7 @@ make links        # Check for broken links with lychee
 
 **Important:** `make format` should be run before commits. `make lint` verifies formatting in CI.
 
----
+______________________________________________________________________
 
 ## CI/CD Workflows
 
@@ -488,10 +511,11 @@ All workflows are in `.github/workflows/`
 
 ### 1. Python CI (`ci.yml`)
 
-**Trigger:** Push/PR on main with Python file changes  
+**Trigger:** Push/PR on main with Python file changes\
 **Delegates to:** `ci-core.yml`
 
 **What it does:**
+
 - Runs pytest suite
 - Checks code formatting
 - Enforces coverage requirements
@@ -501,23 +525,24 @@ All workflows are in `.github/workflows/`
 **Reusable workflow** called by `ci.yml` and `docs-ci.yml`
 
 **Steps:**
+
 1. Setup Python 3.11 or 3.13
-2. Install dependencies (requirements.txt + requirements-dev.txt)
-3. Run `make format` to check formatting
-4. Run `pytest` with coverage
-5. Fail if coverage < 40% for target modules
+1. Install dependencies (requirements.txt + requirements-dev.txt)
+1. Run `make format` to check formatting
+1. Run `pytest` with coverage
+1. Fail if coverage \< 40% for target modules
 
 ### 3. Documentation CI/CD (`docs.yml`)
 
 **Trigger:** Push to main (auto-deploy)
 
 **Steps:**
+
 1. Checkout code
-2. Install docs dependencies
-3. **Run `python tools/build_docs.py`** - Generate lesson pages
-4. Build MkDocs with `mkdocs build --strict`
-5. Build JupyterLite assets (`tools/integrate_jupyterlite.py`)
-6. Deploy to GitHub Pages (`gh-pages` branch)
+1. Install docs dependencies
+1. **Run `python tools/build_docs.py`** - Generate lesson pages
+1. Build MkDocs with `mkdocs build --strict`
+1. Deploy to GitHub Pages (`gh-pages` branch)
 
 **Deployment:** https://saint2706.github.io/Coding-For-MBA/
 
@@ -526,13 +551,13 @@ All workflows are in `.github/workflows/`
 **Trigger:** Push/PR on main and feature branches
 
 **Steps:**
+
 1. Run core-checks (format + tests)
-2. Verify lesson structure (`scripts/verify_lessons.py`)
-3. Install docs dependencies
-4. Build documentation (strict mode)
-5. Build JupyterLite assets
-6. Check links (optional, continue on error)
-7. Upload documentation artifacts
+1. Verify lesson structure (`scripts/verify_lessons.py`)
+1. Install docs dependencies
+1. Build documentation (strict mode)
+1. Check links (optional, continue on error)
+1. Upload documentation artifacts
 
 **Purpose:** Validate docs build without deploying
 
@@ -541,18 +566,20 @@ All workflows are in `.github/workflows/`
 **Trigger:** Release creation or manual dispatch
 
 **Steps:**
+
 1. Generate PDFs for all phases
-2. Generate ZIP bundles
-3. Attach to GitHub release as assets
+1. Generate ZIP bundles
+1. Attach to GitHub release as assets
 
 ### 6. Linting (`lint.yml`)
 
 **Trigger:** Push/PR to main
 
 **Steps:**
+
 1. Run `make lint`
-2. Check formatting with black, ruff, pre-commit
-3. Fail if any files need formatting
+1. Check formatting with black, ruff, pre-commit
+1. Fail if any files need formatting
 
 ### 7. CodeQL Security Scanning (`codeql.yml`)
 
@@ -578,7 +605,7 @@ All workflows are in `.github/workflows/`
 
 **Purpose:** Auto-label PRs based on file paths
 
----
+______________________________________________________________________
 
 ## Project Structure
 
@@ -645,17 +672,16 @@ Coding-For-MBA/
 
 ### Important Configuration Files
 
-| File | Purpose |
-|------|---------|
-| `mkdocs.yml` | Documentation site config, **navigation auto-generated** |
-| `pyproject.toml` | Black, Ruff, setuptools config |
-| `pytest.ini` | Test runner config, coverage targets |
-| `Makefile` | Development task automation |
-| `.pre-commit-config.yaml` | Pre-commit hooks for formatting |
-| `AGENTS.md` | Automation commands (setup, run, test, lint) |
-| `jupyter_lite_config.json` | JupyterLite configuration |
+| File                      | Purpose                                                  |
+| ------------------------- | -------------------------------------------------------- |
+| `mkdocs.yml`              | Documentation site config, **navigation auto-generated** |
+| `pyproject.toml`          | Black, Ruff, setuptools config                           |
+| `pytest.ini`              | Test runner config, coverage targets                     |
+| `Makefile`                | Development task automation                              |
+| `.pre-commit-config.yaml` | Pre-commit hooks for formatting                          |
+| `AGENTS.md`               | Automation commands (setup, run, test, lint)             |
 
----
+______________________________________________________________________
 
 ## Pain Points & Constraints
 
@@ -664,6 +690,7 @@ Coding-For-MBA/
 **Issue:** Lesson numbers are non-sequential (e.g., Day_01 to Day_108, but gaps exist)
 
 **Impact:**
+
 - Scripts must parse folder names with regex: `Day_(\d+)_.*`
 - Cannot assume `range(1, 109)` for iteration
 - Day 100-108 breaks 2-digit assumptions in some code
@@ -675,6 +702,7 @@ Coding-For-MBA/
 **Issue:** `mkdocs.yml` navigation is split between manual and auto-generated sections
 
 **Current markers:**
+
 ```yaml
 # AUTOGENERATED LESSON NAV START
 ...
@@ -682,6 +710,7 @@ Coding-For-MBA/
 ```
 
 **Impact:**
+
 - Manual edits outside markers are preserved
 - Edits inside markers are overwritten by `gen_nav.py`
 - Must coordinate between manual and auto sections
@@ -695,6 +724,7 @@ Coding-For-MBA/
 **Why:** MkDocs deployed on GitHub Pages can't follow relative links to source files
 
 **Impact:**
+
 - Relative links in `Day_XX/README.md` work locally but not in docs
 - Build script rewrites them to `https://github.com/...` URLs
 - Link breakage if folder structure changes
@@ -706,6 +736,7 @@ Coding-For-MBA/
 **Issue:** Phase ranges (e.g., Phase 1 = Days 1-20) are hardcoded in multiple scripts
 
 **Files with phase definitions:**
+
 - `scripts/gen_phase_overviews.py`
 - `scripts/gen_nav.py`
 - `scripts/add_tags.py`
@@ -720,6 +751,7 @@ Coding-For-MBA/
 **Issue:** Notebook generation (`tools/convert_lessons_to_notebooks.py`) depends on lesson script structure
 
 **Requirements:**
+
 - Scripts must use standard Python syntax
 - Code must be in functions (not all top-level)
 - Comments must follow Jupyter markdown conventions
@@ -731,6 +763,7 @@ Coding-For-MBA/
 ### 6. Test Coverage Pinned to Specific Modules
 
 **Issue:** `pytest.ini` hardcodes coverage for 3 specific modules:
+
 ```ini
 --cov=Day_24_Pandas_Advanced.pandas_adv
 --cov=Day_25_Data_Cleaning.data_cleaning
@@ -738,6 +771,7 @@ Coding-For-MBA/
 ```
 
 **Impact:**
+
 - Coverage is NOT measured for other lessons
 - Adding tests for new lessons doesn't affect coverage metric
 - 40% threshold only applies to these 3 modules
@@ -751,6 +785,7 @@ Coding-For-MBA/
 **Example:** `mkdocs-jupyter` with `execute: false` to avoid runtime deps
 
 **Impact:**
+
 - Can't auto-execute notebooks during build (too slow, dependencies)
 - Must pre-generate notebook outputs
 - Plugin updates may break builds
@@ -762,6 +797,7 @@ Coding-For-MBA/
 **Issue:** `scripts/generate_pdfs.py` is slow (WeasyPrint rendering)
 
 **Impact:**
+
 - Full curriculum PDF takes 5-10 minutes to generate
 - Not run in regular CI (only on releases)
 - Requires system-level dependencies (Cairo, Pango)
@@ -773,39 +809,29 @@ Coding-For-MBA/
 **Issue:** `learner_backend/db.py` uses SQLite with fixed schema
 
 **Impact:**
+
 - Schema changes require migrations (not automated)
 - Multi-user support limited (SQLite single-writer)
 - No built-in backup/restore
 
 **Constraint:** Backend is for demos/local use, not production scale
 
-### 10. JupyterLite Build Size
-
-**Issue:** JupyterLite assets are large (~50-100 MB)
-
-**Impact:**
-- Slow to build (`tools/integrate_jupyterlite.py`)
-- Not included in git (generated at deploy time)
-- GitHub Pages has size limits
-
-**Constraint:** JupyterLite only built during docs deployment
-
----
+______________________________________________________________________
 
 ## Extension Guidelines
 
 ### Adding a New Lesson
 
 1. **Create folder:** `Day_XX_New_Topic/`
-2. **Required files:**
+1. **Required files:**
    - `README.md` (with `# Day XX: Topic Title` heading)
    - `lesson.py` or `topic.py` (executable code)
    - `lesson.ipynb` or `topic.ipynb` (notebook version)
-3. **Update phase definitions** (if changing phase boundaries):
+1. **Update phase definitions** (if changing phase boundaries):
    - `scripts/gen_phase_overviews.py`
    - `scripts/gen_nav.py`
    - `docs/phases/overview.md`
-4. **Run documentation scripts:**
+1. **Run documentation scripts:**
    ```bash
    python scripts/add_tags.py --apply
    python scripts/gen_phase_overviews.py --apply
@@ -813,49 +839,49 @@ Coding-For-MBA/
    python tools/build_docs.py
    python scripts/gen_nav.py --apply
    ```
-5. **Add tests:** `tests/test_day_XX.py`
-6. **Format code:** `make format`
-7. **Build docs:** `mkdocs build --strict`
+1. **Add tests:** `tests/test_day_XX.py`
+1. **Format code:** `make format`
+1. **Build docs:** `mkdocs build --strict`
 
 ### Modifying Documentation Scripts
 
 1. **Maintain idempotency** - scripts can run multiple times safely
-2. **Create backups** - use `.bak` extension before modifying files
-3. **Support dry-run mode** - `--dry-run` flag (or no flag)
-4. **Support apply mode** - `--apply` flag for actual changes
-5. **Test on clean clone** - verify script works from scratch
-6. **Update `scripts/README.md`** - document new script
+1. **Create backups** - use `.bak` extension before modifying files
+1. **Support dry-run mode** - `--dry-run` flag (or no flag)
+1. **Support apply mode** - `--apply` flag for actual changes
+1. **Test on clean clone** - verify script works from scratch
+1. **Update `scripts/README.md`** - document new script
 
 ### Adding New CI Workflow
 
 1. Create workflow file in `.github/workflows/`
-2. Use Python 3.11 or 3.13 matrix
-3. Cache pip dependencies with `actions/setup-python@v6`
-4. Use concurrency groups to cancel outdated runs:
+1. Use Python 3.11 or 3.13 matrix
+1. Cache pip dependencies with `actions/setup-python@v6`
+1. Use concurrency groups to cancel outdated runs:
    ```yaml
    concurrency:
      group: ${{ github.workflow }}-${{ github.ref }}
      cancel-in-progress: true
    ```
-5. Test workflow on feature branch before merging
+1. Test workflow on feature branch before merging
 
 ### Modifying MkDocs Theme
 
 1. **Custom CSS:** Add to `docs/stylesheets/extra.css`
-2. **Custom JS:** Add to `docs/javascripts/`
-3. **Template overrides:** Add to `docs/overrides/`
-4. **Test locally:** `mkdocs serve` before committing
-5. **Check mobile:** Material theme is responsive
+1. **Custom JS:** Add to `docs/javascripts/`
+1. **Template overrides:** Add to `docs/overrides/`
+1. **Test locally:** `mkdocs serve` before committing
+1. **Check mobile:** Material theme is responsive
 
 ### Adding Dependencies
 
 1. **Core deps:** Add to `requirements.txt`
-2. **Dev deps:** Add to `requirements-dev.txt`
-3. **Docs deps:** Add to `docs/requirements-docs.txt`
-4. **Pin versions** for reproducibility
-5. **Update CI cache keys** if adding new requirement files
+1. **Dev deps:** Add to `requirements-dev.txt`
+1. **Docs deps:** Add to `docs/requirements-docs.txt`
+1. **Pin versions** for reproducibility
+1. **Update CI cache keys** if adding new requirement files
 
----
+______________________________________________________________________
 
 ## Workflow Patterns
 
@@ -926,22 +952,22 @@ Coding-For-MBA/
 5. Users can download from release page
 ```
 
----
+______________________________________________________________________
 
 ## Key Invariants (Must Be Respected)
 
 1. **Lesson READMEs are source of truth** - never auto-generate from scripts
-2. **Day_XX folders must match pattern** - `Day_(\d+)_.*` for scripts to detect
-3. **mkdocs.yml nav markers must exist** - don't remove `AUTOGENERATED` comments
-4. **Phase ranges are hardcoded** - update in multiple scripts if changing
-5. **Coverage targets are pinned** - pytest.ini tracks 3 specific modules only
-6. **Relative links in READMEs** - build_docs.py rewrites to absolute GitHub URLs
-7. **Notebooks need pre-generated outputs** - mkdocs-jupyter doesn't execute
-8. **Formatting is enforced** - CI fails if `make format` changes files
-9. **MkDocs strict mode** - warnings are treated as errors in CI
-10. **Backup files (.bak) in gitignore** - scripts create them, git ignores them
+1. **Day_XX folders must match pattern** - `Day_(\d+)_.*` for scripts to detect
+1. **mkdocs.yml nav markers must exist** - don't remove `AUTOGENERATED` comments
+1. **Phase ranges are hardcoded** - update in multiple scripts if changing
+1. **Coverage targets are pinned** - pytest.ini tracks 3 specific modules only
+1. **Relative links in READMEs** - build_docs.py rewrites to absolute GitHub URLs
+1. **Notebooks need pre-generated outputs** - mkdocs-jupyter doesn't execute
+1. **Formatting is enforced** - CI fails if `make format` changes files
+1. **MkDocs strict mode** - warnings are treated as errors in CI
+1. **Backup files (.bak) in gitignore** - scripts create them, git ignores them
 
----
+______________________________________________________________________
 
 ## Quick Reference
 
@@ -983,47 +1009,48 @@ python scripts/revert_nav_changes.py --apply
 
 ### File Locations
 
-| What | Where |
-|------|-------|
-| Lesson content | `Day_XX_Topic/README.md` |
-| Generated docs | `docs/lessons/day-XX-*.md` |
-| MkDocs config | `mkdocs.yml` |
-| CI workflows | `.github/workflows/` |
-| Automation scripts | `scripts/` |
-| Build tools | `tools/` |
-| Tests | `tests/test_day_XX.py` |
-| Progress backend | `learner_backend/` |
-| Sample projects | `projects/phase_N/` |
+| What               | Where                      |
+| ------------------ | -------------------------- |
+| Lesson content     | `Day_XX_Topic/README.md`   |
+| Generated docs     | `docs/lessons/day-XX-*.md` |
+| MkDocs config      | `mkdocs.yml`               |
+| CI workflows       | `.github/workflows/`       |
+| Automation scripts | `scripts/`                 |
+| Build tools        | `tools/`                   |
+| Tests              | `tests/test_day_XX.py`     |
+| Progress backend   | `learner_backend/`         |
+| Sample projects    | `projects/phase_N/`        |
 
 ### Important Scripts
 
-| Script | Purpose | Frequency |
-|--------|---------|-----------|
-| `tools/build_docs.py` | Generate lesson pages | Every docs change |
-| `scripts/gen_nav.py` | Update mkdocs.yml nav | After adding lessons |
-| `scripts/gen_phase_overviews.py` | Create phase pages | When phase changes |
-| `scripts/add_tags.py` | Add YAML front-matter | One-time per lesson |
-| `scripts/verify_lessons.py` | Validate structure | Before release |
-| `scripts/generate_pdfs.py` | Create PDFs | On releases |
-| `make format` | Format all code | Before every commit |
-| `make lint` | Check formatting | In CI |
+| Script                           | Purpose               | Frequency            |
+| -------------------------------- | --------------------- | -------------------- |
+| `tools/build_docs.py`            | Generate lesson pages | Every docs change    |
+| `scripts/gen_nav.py`             | Update mkdocs.yml nav | After adding lessons |
+| `scripts/gen_phase_overviews.py` | Create phase pages    | When phase changes   |
+| `scripts/add_tags.py`            | Add YAML front-matter | One-time per lesson  |
+| `scripts/verify_lessons.py`      | Validate structure    | Before release       |
+| `scripts/generate_pdfs.py`       | Create PDFs           | On releases          |
+| `make format`                    | Format all code       | Before every commit  |
+| `make lint`                      | Check formatting      | In CI                |
 
----
+______________________________________________________________________
 
 ## Contact & Maintenance
 
-**Repository Owner:** saint2706  
-**Primary Maintainers:** See CODEOWNERS file  
-**Documentation Issues:** GitHub Issues with `documentation` label  
+**Repository Owner:** saint2706\
+**Primary Maintainers:** See CODEOWNERS file\
+**Documentation Issues:** GitHub Issues with `documentation` label\
 **Community:** GitHub Discussions
 
 **This document should be updated when:**
+
 - Adding new automation scripts
 - Changing phase definitions
 - Modifying CI/CD workflows
 - Restructuring documentation
 - Adding new constraints or pain points
 
----
+______________________________________________________________________
 
 **End of Developer Notes**

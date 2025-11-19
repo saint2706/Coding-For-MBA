@@ -84,12 +84,6 @@ _You are on lesson 76 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_76_BI_Platforms_and_Automation_Tools){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -129,7 +123,6 @@ notify_slack(channel="#bi-ops", message="Daily metrics refreshed with QA ✅")
 ```
 """
 
-
 def preview_groupings() -> None:
     """Print the roadmap groupings for discussion."""
 
@@ -142,13 +135,11 @@ def preview_groupings() -> None:
     print("\nDay 76 roadmap groupings\n")
     print(frame.to_markdown(index=False))
 
-
 def show_platform_matrix() -> None:
     """Display the platform comparison matrix."""
 
     print("\nPlatform comparison matrix\n")
     print(PLATFORM_MATRIX.to_markdown(index=False))
-
 
 def contrast_export_formats() -> None:
     """Highlight export format coverage across platforms."""
@@ -163,7 +154,6 @@ def contrast_export_formats() -> None:
     )
     print(coverage.to_markdown(index=False))
 
-
 def demonstrate_refresh_playbook() -> None:
     """Print an automation walkthrough that mixes Python and R."""
 
@@ -175,7 +165,6 @@ def demonstrate_refresh_playbook() -> None:
     print("\nPython ↔ R hand-off example\n")
     print(PYTHON_R_SNIPPET)
 
-
 def main() -> None:
     """Run the Day 76 classroom walkthrough."""
 
@@ -183,7 +172,6 @@ def main() -> None:
     show_platform_matrix()
     contrast_export_formats()
     demonstrate_refresh_playbook()
-
 
 if __name__ == "__main__":
     main()
@@ -224,7 +212,6 @@ TOPIC_GROUP_TITLES: Mapping[str, Sequence[str]] = {
     ),
 }
 
-
 @dataclass(frozen=True, slots=True)
 class PlatformProfile:
     """Curated details about a BI platform for classroom comparisons."""
@@ -235,7 +222,6 @@ class PlatformProfile:
     automation_connectors: tuple[str, ...]
     scripting_hooks: tuple[str, ...]
     notes: str
-
 
 PLATFORM_PROFILES: Mapping[str, PlatformProfile] = {
     profile.name: profile
@@ -306,9 +292,7 @@ PLATFORM_PROFILES: Mapping[str, PlatformProfile] = {
     )
 }
 
-
 # --- Roadmap helpers ------------------------------------------------------
-
 
 def load_topics(
     groups: Mapping[str, Sequence[str]] = TOPIC_GROUP_TITLES,
@@ -317,9 +301,7 @@ def load_topics(
 
     return group_topics_by_titles(groups)
 
-
 # --- Platform metadata helpers -------------------------------------------
-
 
 def build_platform_matrix(
     profiles: Mapping[str, PlatformProfile] = PLATFORM_PROFILES,
@@ -351,7 +333,6 @@ def build_platform_matrix(
     )
     return frame.sort_values("platform").reset_index(drop=True)
 
-
 def compare_export_formats(
     profiles: Mapping[str, PlatformProfile] = PLATFORM_PROFILES,
     *,
@@ -372,7 +353,6 @@ def compare_export_formats(
         records.append(row)
     frame = pd.DataFrame(records)
     return frame.sort_values("platform").reset_index(drop=True)
-
 
 def simulate_refresh_workflow(
     platform: str,
@@ -408,7 +388,6 @@ def simulate_refresh_workflow(
         "connectors": profile.automation_connectors,
         "steps": steps,
     }
-
 
 __all__ = [
     "PLATFORM_PROFILES",

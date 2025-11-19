@@ -72,12 +72,6 @@ _You are on lesson 81 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_81_BI_Architecture_and_Data_Modeling){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -107,7 +101,6 @@ SNOWFLAKE_SCHEMA_RESOURCE = "https://docs.snowflake.com/en/user-guide/sample-dat
 TOPIC_FRAME = build_topic_dataframe()
 STAR_SCHEMA = build_star_schema_example()
 SNOWFLAKE_SCHEMA = build_snowflake_schema_example()
-
 
 # %%
 def schema_to_dataframe(schema: SchemaExample) -> pd.DataFrame:
@@ -149,14 +142,12 @@ def schema_to_dataframe(schema: SchemaExample) -> pd.DataFrame:
         columns=["table", "kind", "grain", "keys", "business_fields", "references"],
     )
 
-
 # %%
 def summarize_topics(frame: pd.DataFrame) -> None:
     """Print the taxonomy of Day 81 topics."""
 
     print("\nDay 81 architecture and modeling roadmap\n")
     print(frame.to_markdown(index=False))
-
 
 # %%
 def review_schema(title: str, schema: SchemaExample, resource_url: str) -> None:
@@ -168,7 +159,6 @@ def review_schema(title: str, schema: SchemaExample, resource_url: str) -> None:
     print(f"Reference: {resource_url}\n")
     print(schema["commentary"])
 
-
 # %%
 def main() -> None:
     """Run the classroom demo for Day 81."""
@@ -178,7 +168,6 @@ def main() -> None:
     review_schema(
         "Retail snowflake schema", SNOWFLAKE_SCHEMA, SNOWFLAKE_SCHEMA_RESOURCE
     )
-
 
 # %%
 if __name__ == "__main__":
@@ -252,7 +241,6 @@ TOPIC_DESCRIPTIONS: Mapping[str, str] = {
     ),
 }
 
-
 class SchemaTable(TypedDict, total=False):
     """Structure describing a table in an example schema."""
 
@@ -263,14 +251,12 @@ class SchemaTable(TypedDict, total=False):
     attributes: Sequence[str]
     references: Mapping[str, str]
 
-
 class SchemaExample(TypedDict):
     """Container for schema-level metadata used in classroom demos."""
 
     fact_table: SchemaTable
     dimensions: Sequence[SchemaTable]
     commentary: str
-
 
 def load_topics(
     *, sections: Mapping[str, Iterable[str]] = SECTION_TITLES
@@ -281,7 +267,6 @@ def load_topics(
     for section, titles in sections.items():
         grouped_topics[section] = topics_by_titles(list(titles))
     return grouped_topics
-
 
 def build_topic_dataframe(
     *,
@@ -304,7 +289,6 @@ def build_topic_dataframe(
     if frame.empty:
         return frame
     return frame.drop_duplicates(subset=["title"], keep="first").reset_index(drop=True)
-
 
 def build_star_schema_example() -> SchemaExample:
     """Return metadata for a classroom retail sales star schema."""
@@ -379,7 +363,6 @@ def build_star_schema_example() -> SchemaExample:
         {"fact_table": fact_sales, "dimensions": dimensions, "commentary": commentary},
     )
 
-
 def build_snowflake_schema_example() -> SchemaExample:
     """Return metadata for a snowflake schema extending the retail example."""
 
@@ -439,7 +422,6 @@ def build_snowflake_schema_example() -> SchemaExample:
             "commentary": commentary,
         },
     )
-
 
 __all__ = [
     "build_snowflake_schema_example",

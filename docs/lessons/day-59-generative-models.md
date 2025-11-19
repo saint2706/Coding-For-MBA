@@ -30,22 +30,14 @@ _You are on lesson 59 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_59_Generative_Models/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_59_Generative_Models/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_59_Generative_Models/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_59_Generative_Models/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_59_Generative_Models/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_59_Generative_Models/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_59_Generative_Models/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -58,14 +50,12 @@ from typing import Dict, List
 
 import numpy as np
 
-
 @dataclass
 class TrainingLog:
     """Container for training statistics collected per iteration."""
 
     losses: List[float]
     reconstructions: np.ndarray
-
 
 def generate_swiss_roll(n_samples: int = 128, random_state: int = 59) -> np.ndarray:
     """Return a 2D swiss-roll style dataset for reconstruction demos."""
@@ -81,15 +71,12 @@ def generate_swiss_roll(n_samples: int = 128, random_state: int = 59) -> np.ndar
     data += 0.05 * height[:, None]
     return data.astype(np.float64)
 
-
 def _tanh(x: np.ndarray) -> np.ndarray:
     return np.tanh(x)
-
 
 def _tanh_grad(x: np.ndarray) -> np.ndarray:
     t = np.tanh(x)
     return 1.0 - t**2
-
 
 def train_autoencoder_synthetic(
     data: np.ndarray | None = None,
@@ -131,7 +118,6 @@ def train_autoencoder_synthetic(
 
     final_recon = _tanh(X @ W1 + b1) @ W2 + b2
     return TrainingLog(losses=losses, reconstructions=final_recon)
-
 
 def train_variational_autoencoder_synthetic(
     data: np.ndarray | None = None,
@@ -194,7 +180,6 @@ def train_variational_autoencoder_synthetic(
     final_recon = _tanh(final_z) @ W_dec + b_dec
     return TrainingLog(losses=losses, reconstructions=final_recon)
 
-
 def train_diffusion_denoiser(
     data: np.ndarray | None = None,
     timesteps: int = 10,
@@ -233,7 +218,6 @@ def train_diffusion_denoiser(
     final_noise = X @ W + b
     return TrainingLog(losses=losses, reconstructions=final_noise)
 
-
 def gan_training_summary(
     steps: int = 100, random_state: int = 59
 ) -> List[Dict[str, float]]:
@@ -257,7 +241,6 @@ def gan_training_summary(
         )
     return log
 
-
 def summarise_generative_objectives() -> Dict[str, str]:
     """Return cheat-sheet style descriptions of key generative objectives."""
 
@@ -267,7 +250,6 @@ def summarise_generative_objectives() -> Dict[str, str]:
         "gan": "Adversarial min-max between generator and discriminator losses.",
         "diffusion": "Score matching/denoising losses across noisy timesteps.",
     }
-
 
 def run_all_demos(random_state: int = 59) -> Dict[str, object]:
     """Convenience entrypoint mirroring the CLI behaviour."""
@@ -285,7 +267,6 @@ def run_all_demos(random_state: int = 59) -> Dict[str, object]:
         "objectives": summarise_generative_objectives(),
     }
 
-
 def _demo() -> None:
     stats = run_all_demos()
     print(
@@ -298,7 +279,6 @@ def _demo() -> None:
         f"Diffusion start/end loss: {stats['diffusion'].losses[0]:.4f} -> {stats['diffusion'].losses[-1]:.4f}"
     )
     print(f"GAN terminal generator mean: {stats['gan'][-1]['gen_mean']:.3f}")
-
 
 if __name__ == "__main__":
     _demo()

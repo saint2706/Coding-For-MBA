@@ -100,27 +100,18 @@ _You are on lesson 8 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_08_Dictionaries/dictionaries.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **dictionaries.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/dictionaries.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/dictionaries.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_08_Dictionaries/dictionaries.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_08_Dictionaries/dictionaries.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_08_Dictionaries/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_08_Dictionaries/solutions.ipynb){ .md-button }
-
-???+ example "dictionaries.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/dictionaries.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_08_Dictionaries/solutions.ipynb){ .md-button }
+    ???+ example "dictionaries.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/dictionaries.py)
 
 ````
 ```python title="dictionaries.py"
@@ -131,7 +122,6 @@ This script demonstrates how to create, access, and modify
 dictionaries that represent complex business records. This version
 is refactored into functions for better organization and testability.
 """
-
 
 def create_customer_profile(cust_id, first, last, email, company, is_premium, spent):
     """
@@ -181,7 +171,6 @@ def create_customer_profile(cust_id, first, last, email, company, is_premium, sp
         "total_spent": spent,
     }
 
-
 def get_customer_attribute(customer_profile, attribute, default_value="N/A"):
     """
     Safely gets an attribute from a customer profile with a default fallback.
@@ -212,7 +201,6 @@ def get_customer_attribute(customer_profile, attribute, default_value="N/A"):
     # .get(key, default) returns the value for key, or default if key doesn't exist
     # This is safer than profile[attribute] which would raise a KeyError
     return customer_profile.get(attribute, default_value)
-
 
 def update_customer_record(customer_profile, key, value, is_new=False):
     """
@@ -254,7 +242,6 @@ def update_customer_record(customer_profile, key, value, is_new=False):
             profile_copy[key] += value
     return profile_copy
 
-
 def remove_customer_attribute(customer_profile, attribute):
     """
     Removes an attribute from a customer profile if it exists.
@@ -287,7 +274,6 @@ def remove_customer_attribute(customer_profile, attribute):
         # 'del' removes a key-value pair from the dictionary
         del profile_copy[attribute]
     return profile_copy
-
 
 def add_project_to_employee(employee_profile, new_project):
     """
@@ -325,7 +311,6 @@ def add_project_to_employee(employee_profile, new_project):
         # Now we can safely append to the copied list
         profile_copy["projects"].append(new_project)
     return profile_copy
-
 
 if __name__ == "__main__":
     # --- Creating a Dictionary for a Customer Profile ---
@@ -412,7 +397,6 @@ print(f"Product Name: {product['product_name']}")
 print(f"Price: ${product['price']}")
 print("-" * 20)
 
-
 # --- Exercise 2: Modify Employee Information ---
 print("--- Solution to Exercise 2 ---")
 employee = {
@@ -432,7 +416,6 @@ employee["projects"].append("2025 Strategy")
 
 print(f"Updated Employee Record: {employee}")
 print("-" * 20)
-
 
 # --- Exercise 3: Access Nested Data ---
 print("--- Solution to Exercise 3 ---")

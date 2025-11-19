@@ -88,22 +88,14 @@ _You are on lesson 47 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_47_Convolutional_Neural_Networks/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_47_Convolutional_Neural_Networks/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_47_Convolutional_Neural_Networks/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_47_Convolutional_Neural_Networks/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_47_Convolutional_Neural_Networks/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_47_Convolutional_Neural_Networks/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_47_Convolutional_Neural_Networks/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -119,13 +111,11 @@ from tensorflow.keras import datasets, layers, models
 
 DEFAULT_SEED = 42
 
-
 def set_global_seed(seed: int = DEFAULT_SEED) -> None:
     """Synchronise NumPy and TensorFlow RNGs for deterministic runs."""
 
     np.random.seed(seed)
     tf.keras.utils.set_random_seed(seed)
-
 
 def prepare_mnist_data(
     normalize: bool = True,
@@ -148,7 +138,6 @@ def prepare_mnist_data(
 
     return (train_images, train_labels), (test_images, test_labels)
 
-
 def build_cnn_model(
     input_shape: Tuple[int, int, int] = (28, 28, 1),
     num_classes: int = 10,
@@ -170,7 +159,6 @@ def build_cnn_model(
 
     return model
 
-
 def compile_cnn_model(
     model: tf.keras.Model,
     optimizer: str = "adam",
@@ -181,7 +169,6 @@ def compile_cnn_model(
 
     model.compile(optimizer=optimizer, loss=loss, metrics=list(metrics))
     return model
-
 
 def train_cnn_model(
     model: tf.keras.Model,
@@ -209,7 +196,6 @@ def train_cnn_model(
     )
     return history
 
-
 def evaluate_cnn_model(
     model: tf.keras.Model,
     test_images: np.ndarray,
@@ -220,7 +206,6 @@ def evaluate_cnn_model(
     """Evaluate the trained CNN on the test split."""
 
     return model.evaluate(test_images, test_labels, verbose=verbose, return_dict=True)
-
 
 def run_full_workflow(
     *,
@@ -246,7 +231,6 @@ def run_full_workflow(
     )
     metrics = evaluate_cnn_model(model, test_images, test_labels, verbose=verbose)
     return history, metrics, model
-
 
 if __name__ == "__main__":
     import os

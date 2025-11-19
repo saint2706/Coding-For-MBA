@@ -59,22 +59,14 @@ _You are on lesson 44 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_44_Unsupervised_Learning/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_44_Unsupervised_Learning/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_44_Unsupervised_Learning/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_44_Unsupervised_Learning/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_44_Unsupervised_Learning/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_44_Unsupervised_Learning/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_44_Unsupervised_Learning/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -88,7 +80,6 @@ from sklearn.cluster import KMeans
 from sklearn.datasets import load_iris, make_blobs
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-
 
 def generate_blobs(
     n_samples: int = 300,
@@ -105,7 +96,6 @@ def generate_blobs(
         random_state=random_state,
     )
 
-
 def fit_kmeans(
     X: np.ndarray,
     n_clusters: int = 4,
@@ -118,13 +108,11 @@ def fit_kmeans(
     labels = model.fit_predict(X)
     return model, labels, model.cluster_centers_
 
-
 def load_iris_data() -> Tuple[np.ndarray, np.ndarray, list[str]]:
     """Load the Iris dataset along with target values and class labels."""
 
     iris = load_iris()
     return iris.data, iris.target, iris.target_names.tolist()
-
 
 def run_pca(
     X: np.ndarray,
@@ -137,7 +125,6 @@ def run_pca(
     pca = PCA(n_components=n_components)
     transformed = pca.fit_transform(X_scaled)
     return transformed, pca, scaler
-
 
 def _plot_kmeans_results(
     X: np.ndarray, labels: np.ndarray, centers: np.ndarray
@@ -160,7 +147,6 @@ def _plot_kmeans_results(
     plt.grid(True)
     plt.savefig("kmeans_clusters.png")
 
-
 def _plot_pca_results(
     transformed: np.ndarray, targets: np.ndarray, target_names: list[str]
 ) -> None:
@@ -179,7 +165,6 @@ def _plot_pca_results(
     plt.legend(handles=scatter.legend_elements()[0], labels=target_names)
     plt.grid(True)
     plt.savefig("pca_iris.png")
-
 
 if __name__ == "__main__":
     print("--- K-Means Clustering Example ---")

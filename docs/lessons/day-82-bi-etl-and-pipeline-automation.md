@@ -53,12 +53,6 @@ _You are on lesson 82 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_82_BI_ETL_and_Pipeline_Automation){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -85,7 +79,6 @@ PIPELINE_OUTLINE = build_pipeline_outline()
 AIRFLOW_DAG = build_airflow_dag_stub()
 DBT_PROJECT = build_dbt_project_stub()
 
-
 # %%
 def summarize_topics() -> None:
     """Print the roadmap groupings that frame the ETL automation lesson."""
@@ -94,7 +87,6 @@ def summarize_topics() -> None:
     for section, topics in TOPIC_GROUPS.items():
         titles = ", ".join(topic.title for topic in topics)
         print(f"- {section}: {titles}")
-
 
 # %%
 def outline_pipeline() -> None:
@@ -105,7 +97,6 @@ def outline_pipeline() -> None:
         upstream = ", ".join(task.upstream) if task.upstream else "start"
         print(f"{task.task_id} -> depends on [{upstream}] ({task.owner})")
         print(f"  {task.description}")
-
 
 # %%
 def review_airflow_stub() -> None:
@@ -118,7 +109,6 @@ def review_airflow_stub() -> None:
         print(
             f"- {task_id}: upstream [{upstream}], owner={config['owner']}, retries={config['retries']}"
         )
-
 
 # %%
 def review_dbt_stub() -> None:
@@ -148,7 +138,6 @@ def review_dbt_stub() -> None:
 
     print(f"\nPipeline completion task: {DBT_PROJECT['final_task']}")
 
-
 # %%
 def main() -> None:
     """Run the Day 82 classroom walkthrough."""
@@ -157,7 +146,6 @@ def main() -> None:
     outline_pipeline()
     review_airflow_stub()
     review_dbt_stub()
-
 
 # %%
 if __name__ == "__main__":
@@ -194,7 +182,6 @@ TOPIC_GROUP_TITLES: Mapping[str, Sequence[str]] = {
     "Delivery lifecycle": ("End-to-end Analytics Project",),
 }
 
-
 def load_topics(
     groups: Mapping[str, Sequence[str]] = TOPIC_GROUP_TITLES,
 ) -> dict[str, list[BiTopic]]:
@@ -202,9 +189,7 @@ def load_topics(
 
     return group_topics_by_titles(groups)
 
-
 # --- Pipeline sketch helpers -----------------------------------------------
-
 
 @dataclass(frozen=True, slots=True)
 class PipelineTask:
@@ -214,7 +199,6 @@ class PipelineTask:
     description: str
     upstream: tuple[str, ...] = ()
     owner: str = "analytics_engineering"
-
 
 PIPELINE_STEPS: tuple[PipelineTask, ...] = (
     PipelineTask(
@@ -250,14 +234,12 @@ PIPELINE_STEPS: tuple[PipelineTask, ...] = (
     ),
 )
 
-
 def build_pipeline_outline(
     steps: Sequence[PipelineTask] = PIPELINE_STEPS,
 ) -> list[PipelineTask]:
     """Return a mutable outline of the canonical ETL pipeline tasks."""
 
     return list(steps)
-
 
 def build_airflow_dag_stub(
     *,
@@ -285,7 +267,6 @@ def build_airflow_dag_stub(
         },
         "tasks": task_definitions,
     }
-
 
 def build_dbt_project_stub(
     *,
@@ -337,7 +318,6 @@ def build_dbt_project_stub(
         "exposures": exposures,
         "final_task": steps[-1].task_id if steps else "refresh_dashboards",
     }
-
 
 __all__ = [
     "PIPELINE_STEPS",

@@ -27,22 +27,14 @@ _You are on lesson 56 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_56_Time_Series_and_Forecasting/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_56_Time_Series_and_Forecasting/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -60,7 +52,6 @@ from statsmodels.tsa.arima.model import ARIMA
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 
-
 @dataclass
 class ForecastResult:
     """Container for forecast outputs and residual metrics."""
@@ -68,7 +59,6 @@ class ForecastResult:
     forecast: pd.Series
     lower: pd.Series | None
     upper: pd.Series | None
-
 
 def generate_seasonal_series(
     periods: int = 96,
@@ -88,7 +78,6 @@ def generate_seasonal_series(
     index = pd.date_range("2020-01-01", periods=periods, freq="MS")
     return pd.Series(series, index=index, name="demand")
 
-
 def train_test_split_series(
     series: pd.Series, test_size: int = 12
 ) -> Tuple[pd.Series, pd.Series]:
@@ -98,7 +87,6 @@ def train_test_split_series(
         msg = "test_size must be positive"
         raise ValueError(msg)
     return series.iloc[:-test_size], series.iloc[-test_size:]
-
 
 def fit_arima_forecast(
     train: pd.Series,
@@ -117,7 +105,6 @@ def fit_arima_forecast(
         lower=conf_int.iloc[:, 0],
         upper=conf_int.iloc[:, 1],
     )
-
 
 def fit_sarimax_forecast(
     train: pd.Series,
@@ -145,7 +132,6 @@ def fit_sarimax_forecast(
         upper=conf_int.iloc[:, 1],
     )
 
-
 def fit_exponential_smoothing(
     train: pd.Series,
     seasonal_periods: int = 12,
@@ -165,7 +151,6 @@ def fit_exponential_smoothing(
     forecast = fitted.forecast(steps)
     return ForecastResult(forecast=forecast, lower=None, upper=None)
 
-
 def forecast_metrics(y_true: ArrayLike, y_pred: ArrayLike) -> Dict[str, float]:
     """Return common time-series error metrics."""
 
@@ -184,7 +169,6 @@ def forecast_metrics(y_true: ArrayLike, y_pred: ArrayLike) -> Dict[str, float]:
         "mape": float(np.nan_to_num(mape)),
         "smape": float(np.nan_to_num(smape)),
     }
-
 
 def rolling_origin_backtest(
     series: pd.Series,
@@ -208,7 +192,6 @@ def rolling_origin_backtest(
         rows.append(metrics)
     return pd.DataFrame(rows)
 
-
 def prophet_style_forecast(train: pd.Series, steps: int = 12) -> ForecastResult:
     """Approximate a Prophet-like decomposition using statsmodels."""
 
@@ -217,7 +200,6 @@ def prophet_style_forecast(train: pd.Series, steps: int = 12) -> ForecastResult:
         train, seasonal_periods=12, trend="add", seasonal="add", steps=steps
     )
     return result
-
 
 def demo_forecasting_pipeline(random_state: int = 56) -> Dict[str, float]:
     """Generate a dataset, fit multiple models, and return evaluation metrics."""
@@ -239,7 +221,6 @@ def demo_forecasting_pipeline(random_state: int = 56) -> Dict[str, float]:
         "prophet_mae": prophet_metrics["mae"],
         "test_mean": float(test.mean()),
     }
-
 
 if __name__ == "__main__":
     summary = demo_forecasting_pipeline()

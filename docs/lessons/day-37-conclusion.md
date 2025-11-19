@@ -94,22 +94,14 @@ _You are on lesson 37 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_37_Conclusion/conclusion.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **conclusion.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_37_Conclusion/conclusion.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_37_Conclusion/conclusion.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_37_Conclusion/conclusion.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_37_Conclusion/conclusion.ipynb){ .md-button }
-
-???+ example "conclusion.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_37_Conclusion/conclusion.py)
+  ???+ example "conclusion.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_37_Conclusion/conclusion.py)
 
 ````
 ```python title="conclusion.py"
@@ -125,7 +117,6 @@ from __future__ import annotations
 from argparse import ArgumentParser, Namespace
 from typing import Iterable, List, Sequence
 
-
 def get_recap_checklist() -> List[str]:
     """Return the high-level checklist summarising the program highlights."""
 
@@ -135,7 +126,6 @@ def get_recap_checklist() -> List[str]:
         "Connect the dots between statistical thinking and business strategy.",
         "Reflect on automation opportunities identified during the lessons.",
     ]
-
 
 def get_next_steps() -> List[dict]:
     """Return recommended actions after completing the curriculum."""
@@ -164,11 +154,9 @@ def get_next_steps() -> List[dict]:
         },
     ]
 
-
 def _format_checklist(checklist: Sequence[str]) -> Iterable[str]:
     for item in checklist:
         yield f" - {item}"
-
 
 def _format_next_steps(next_steps: Sequence[dict]) -> Iterable[str]:
     for index, step in enumerate(next_steps, start=1):
@@ -178,7 +166,6 @@ def _format_next_steps(next_steps: Sequence[dict]) -> Iterable[str]:
             yield f"{index}. {title}: {description}"
         else:
             yield f"{index}. {title}"
-
 
 def build_parser() -> ArgumentParser:
     parser = ArgumentParser(
@@ -194,7 +181,6 @@ def build_parser() -> ArgumentParser:
         help="Choose which recap section to display.",
     )
     return parser
-
 
 def _render(section: str) -> str:
     if section == "checklist":
@@ -214,14 +200,12 @@ def _render(section: str) -> str:
         ]
     return "\n".join(lines)
 
-
 def main(argv: Sequence[str] | None = None) -> None:
     """Entry point for the command line interface."""
 
     parser = build_parser()
     args: Namespace = parser.parse_args(list(argv) if argv is not None else None)
     print(_render(args.section))
-
 
 if __name__ == "__main__":
     main()

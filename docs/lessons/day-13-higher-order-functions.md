@@ -107,27 +107,18 @@ _You are on lesson 13 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **HOF.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
-
-???+ example "HOF.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/HOF.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
+    ???+ example "HOF.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/HOF.py)
 
 ````
 ```python title="HOF.py"
@@ -138,7 +129,6 @@ This script demonstrates using map, filter, and sorted with lambda functions
 for concise and powerful data manipulation. This version is refactored
 into functions for better organization and testability.
 """
-
 
 def apply_bonus_to_salaries(salaries, bonus_percentage):
     """
@@ -177,7 +167,6 @@ def apply_bonus_to_salaries(salaries, bonus_percentage):
     # list() converts the map object to a list
     return list(map(lambda s: s * bonus_multiplier, salaries))
 
-
 def filter_high_yield_projects(projects, roi_threshold):
     """
     Filters a list of projects to find those with an ROI above a threshold.
@@ -208,7 +197,6 @@ def filter_high_yield_projects(projects, roi_threshold):
     #   - Returns True if p[1] (the ROI, 2nd element) > threshold
     # Only projects returning True are kept
     return list(filter(lambda p: p[1] > roi_threshold, projects))
-
 
 def get_active_customer_names(customers):
     """
@@ -247,7 +235,6 @@ def get_active_customer_names(customers):
     # lambda c: c.get("name") gets the 'name' field from each customer
     return list(map(lambda c: c.get("name"), active_customers))
 
-
 def sort_products_by_attribute(products, attribute_name):
     """
     Sorts a list of product dictionaries by a specified attribute.
@@ -278,7 +265,6 @@ def sort_products_by_attribute(products, attribute_name):
     # lambda p: p.get(attribute_name, 0) extracts the attribute value
     # Default of 0 handles missing keys gracefully
     return sorted(products, key=lambda p: p.get(attribute_name, 0))
-
 
 def main():
     """Main function to demonstrate higher-order functions."""
@@ -340,7 +326,6 @@ def main():
     print(f"Products sorted by price: {sorted_products}")
     print("-" * 20)
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -367,7 +352,6 @@ cleaned_departments = list(map(lambda x: x.strip().lower(), departments))
 print(f"Cleaned list: {cleaned_departments}")
 print("-" * 20)
 
-
 # --- Exercise 2: Filter Active Subscriptions ---
 print("--- Solution to Exercise 2 ---")
 customers = [
@@ -384,7 +368,6 @@ active_customers = list(filter(lambda c: c["status"] == "active", customers))
 
 print(f"Active customers only: {active_customers}")
 print("-" * 20)
-
 
 # --- Exercise 3: Sort Complex Data ---
 print("--- Solution to Exercise 3 ---")

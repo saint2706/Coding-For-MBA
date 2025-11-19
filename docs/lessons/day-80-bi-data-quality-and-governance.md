@@ -77,12 +77,6 @@ _You are on lesson 80 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_80_BI_Data_Quality_and_Governance){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -111,10 +105,8 @@ TARGET_THRESHOLDS = {
     "Accessibility": 0.95,
 }
 
-
 def _to_datetime(series: pd.Series) -> pd.Series:
     return pd.to_datetime(series, errors="coerce")
-
 
 def build_demo_orders() -> pd.DataFrame:
     """Return a small dataset with intentional quality quirks."""
@@ -163,7 +155,6 @@ def build_demo_orders() -> pd.DataFrame:
     orders["delivered_at"] = _to_datetime(orders["delivered_at"])
     return orders
 
-
 def build_metadata_catalogue() -> pd.DataFrame:
     """Create a metadata table to evaluate interpretability."""
 
@@ -183,7 +174,6 @@ def build_metadata_catalogue() -> pd.DataFrame:
     )
     return catalog
 
-
 def build_access_audit() -> pd.DataFrame:
     """Return mock provisioning data for accessibility analysis."""
 
@@ -196,7 +186,6 @@ def build_access_audit() -> pd.DataFrame:
     )
     return audit
 
-
 def build_adoption_snapshot() -> pd.DataFrame:
     """Simulate governance reporting on stakeholder adoption."""
 
@@ -208,7 +197,6 @@ def build_adoption_snapshot() -> pd.DataFrame:
         }
     )
     return snapshot
-
 
 def calculate_dimension_scores() -> pd.DataFrame:
     """Compute BI data quality metrics suitable for a dashboard view."""
@@ -258,7 +246,6 @@ def calculate_dimension_scores() -> pd.DataFrame:
     dashboard = pd.DataFrame(rows, columns=["dimension", "score", "target", "status"])
     return dashboard
 
-
 def summarise_governance_highlights() -> pd.DataFrame:
     """Return a lightweight status table for governance and ethics controls."""
 
@@ -276,7 +263,6 @@ def summarise_governance_highlights() -> pd.DataFrame:
     scorecard = scorecard.copy()
     scorecard["status"] = statuses
     return scorecard[["domain", "status", "control_focus", "evidence", "checklist"]]
-
 
 def main() -> None:
     grouped_topics = load_topic_groups()
@@ -302,7 +288,6 @@ def main() -> None:
 
     print("\n=== Governance Control Highlights ===")
     print(governance_status.to_string(index=False))
-
 
 if __name__ == "__main__":
     main()
@@ -477,7 +462,6 @@ GOVERNANCE_CHECKS: Mapping[str, Mapping[str, Iterable[str]]] = {
     },
 }
 
-
 def load_topic_groups(
     *, groups: Mapping[str, Iterable[str]] = TOPIC_GROUPS
 ) -> dict[str, list[BiTopic]]:
@@ -485,7 +469,6 @@ def load_topic_groups(
 
     grouped = group_topics_by_titles(groups)
     return grouped
-
 
 def _build_scorecard_frame(
     *,
@@ -507,7 +490,6 @@ def _build_scorecard_frame(
     frame = pd.DataFrame(rows, columns=[index_label, *column_order])
     return frame
 
-
 def build_data_quality_scorecard(
     *,
     checks: Mapping[str, Mapping[str, Iterable[str]]] = DATA_QUALITY_CHECKS,
@@ -520,7 +502,6 @@ def build_data_quality_scorecard(
         column_order=["metric", "threshold", "checklist"],
     )
 
-
 def build_governance_scorecard(
     *,
     checks: Mapping[str, Mapping[str, Iterable[str]]] = GOVERNANCE_CHECKS,
@@ -532,7 +513,6 @@ def build_governance_scorecard(
         index_label="domain",
         column_order=["control_focus", "evidence", "checklist"],
     )
-
 
 __all__ = [
     "TOPIC_GROUPS",

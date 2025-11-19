@@ -77,27 +77,18 @@ _You are on lesson 25 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_25_Data_Cleaning/data_cleaning.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **data_cleaning.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/data_cleaning.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/data_cleaning.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_25_Data_Cleaning/data_cleaning.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_25_Data_Cleaning/data_cleaning.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_25_Data_Cleaning/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_25_Data_Cleaning/solutions.ipynb){ .md-button }
-
-???+ example "data_cleaning.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/data_cleaning.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_25_Data_Cleaning/solutions.ipynb){ .md-button }
+    ???+ example "data_cleaning.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_25_Data_Cleaning/data_cleaning.py)
 
 ````
 ```python title="data_cleaning.py"
@@ -112,7 +103,6 @@ performance optimizations.
 from pathlib import Path
 
 import pandas as pd
-
 
 def clean_sales_data(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -139,7 +129,6 @@ def clean_sales_data(df: pd.DataFrame) -> pd.DataFrame:
     df_clean.drop_duplicates(subset=["Order ID"], keep="first", inplace=True)
 
     return df_clean
-
 
 def main():  # pragma: no cover
     """
@@ -174,7 +163,6 @@ def main():  # pragma: no cover
     print("\nCleaned data head:")
     print(df_cleaned.head())
     print("\nUnique values in 'Region' column:", df_cleaned["Region"].unique())
-
 
 if __name__ == "__main__":
     main()
@@ -228,7 +216,6 @@ except FileNotFoundError:
     df = pd.DataFrame()
 print("-" * 20)
 
-
 # --- Exercise 2: Standardize Categories ---
 print("--- Solution to Exercise 2 ---")
 if not df.empty:
@@ -244,7 +231,6 @@ if not df.empty:
 else:
     print("DataFrame not available for this exercise.")
 print("-" * 20)
-
 
 # --- Exercise 3: Handle Duplicates ---
 print("--- Solution to Exercise 3 ---")

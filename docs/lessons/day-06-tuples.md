@@ -95,27 +95,18 @@ _You are on lesson 6 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_06_Tuples/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_06_Tuples/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_06_Tuples/solutions.ipynb){ .md-button }
-- **tuples.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_06_Tuples/tuples.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_06_Tuples/tuples.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.py)
+  - **tuples.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/tuples.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_06_Tuples/tuples.ipynb){ .md-button }
+    ???+ example "solutions.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_06_Tuples/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -136,7 +127,6 @@ print(f"Latitude: {latitude}")
 print(f"Longitude: {longitude}")
 print("-" * 20)
 
-
 # --- Exercise 2: Define Product Dimensions ---
 print("--- Solution to Exercise 2 ---")
 # Dimensions are fixed, so a tuple is the right choice.
@@ -147,7 +137,6 @@ print(
     f"Package Dimensions (LxWxH): {package_dimensions[0]}cm x {package_dimensions[1]}cm x {package_dimensions[2]}cm"
 )
 print("-" * 20)
-
 
 # --- Exercise 3: List vs. Tuple - The Right Tool for the Job ---
 print("--- Solution to Exercise 3 ---")
@@ -191,7 +180,6 @@ fixed coordinates. This version is refactored into functions for
 better organization and testability.
 """
 
-
 def get_location_coordinates(location_tuple):
     """
     Returns the latitude and longitude from a location tuple.
@@ -219,7 +207,6 @@ def get_location_coordinates(location_tuple):
         # Access tuple elements by index (just like lists)
         return location_tuple[0], location_tuple[1]
     return None, None  # Return None values if invalid
-
 
 def unpack_transaction(transaction_tuple):
     """
@@ -252,7 +239,6 @@ def unpack_transaction(transaction_tuple):
         # Return as a dictionary for structured access
         return {"id": trans_id, "date": date, "amount": amount}
     return None  # Return None if format is invalid
-
 
 def demonstrate_list_vs_tuple():
     """
@@ -297,7 +283,6 @@ def demonstrate_list_vs_tuple():
         f"Scenario D (Company Profile): Use a tuple. Core info is fixed. Example: {company_profile}"
     )
     print("-" * 20)
-
 
 if __name__ == "__main__":
     # --- Using a Tuple for Fixed Data ---

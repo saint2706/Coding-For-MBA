@@ -29,22 +29,14 @@ _You are on lesson 55 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_55_Advanced_Unsupervised_Learning/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_55_Advanced_Unsupervised_Learning/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_55_Advanced_Unsupervised_Learning/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_55_Advanced_Unsupervised_Learning/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_55_Advanced_Unsupervised_Learning/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_55_Advanced_Unsupervised_Learning/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_55_Advanced_Unsupervised_Learning/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -68,14 +60,12 @@ from sklearn.preprocessing import StandardScaler
 from tensorflow import keras
 from tensorflow.keras import layers
 
-
 @dataclass
 class ClusteringResult:
     """Simple container for clustering outputs."""
 
     labels: NDArray[np.int_]
     model: object
-
 
 def generate_clustering_data(
     n_samples: int = 450,
@@ -90,7 +80,6 @@ def generate_clustering_data(
         random_state=random_state,
     )
     return X, y
-
 
 def run_dbscan(
     X: ArrayLike,
@@ -108,7 +97,6 @@ def run_dbscan(
     labels = model.fit_predict(X)
     return ClusteringResult(labels=labels, model=model)
 
-
 def run_agglomerative(
     X: ArrayLike,
     n_clusters: int = 3,
@@ -120,7 +108,6 @@ def run_agglomerative(
     model = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
     labels = model.fit_predict(X)
     return ClusteringResult(labels=labels, model=model)
-
 
 def compute_tsne_embedding(
     X: ArrayLike,
@@ -141,7 +128,6 @@ def compute_tsne_embedding(
     )
     return tsne.fit_transform(X)
 
-
 def build_autoencoder(
     input_dim: int,
     encoding_dim: int = 2,
@@ -156,7 +142,6 @@ def build_autoencoder(
     autoencoder = keras.Model(inputs=encoder_inputs, outputs=decoded)
     autoencoder.compile(optimizer=keras.optimizers.Adam(learning_rate=0.01), loss="mse")
     return autoencoder
-
 
 def train_autoencoder(
     model: keras.Model,
@@ -177,7 +162,6 @@ def train_autoencoder(
     )
     return history
 
-
 def reconstruction_errors(model: keras.Model, X: ArrayLike) -> NDArray[np.float64]:
     """Return mean squared reconstruction error per sample."""
 
@@ -185,13 +169,11 @@ def reconstruction_errors(model: keras.Model, X: ArrayLike) -> NDArray[np.float6
     reconstructions = model.predict(X, verbose=0)
     return np.mean((X - reconstructions) ** 2, axis=1)
 
-
 def autoencoder_anomaly_threshold(errors: ArrayLike, quantile: float = 0.95) -> float:
     """Return an empirical anomaly threshold from reconstruction errors."""
 
     errors = np.asarray(errors, dtype=float)
     return float(np.quantile(errors, quantile))
-
 
 def detect_anomalies_with_autoencoder(
     model: keras.Model,
@@ -202,7 +184,6 @@ def detect_anomalies_with_autoencoder(
 
     errors = reconstruction_errors(model, X)
     return (errors > threshold).astype(int)
-
 
 def isolation_forest_scores(
     X: ArrayLike,
@@ -220,7 +201,6 @@ def isolation_forest_scores(
     model.fit(X)
     return -model.decision_function(X)
 
-
 def lof_anomaly_scores(
     X: ArrayLike, n_neighbors: int = 20
 ) -> Tuple[NDArray[np.float64], NDArray[np.int_]]:
@@ -230,7 +210,6 @@ def lof_anomaly_scores(
     lof = LocalOutlierFactor(n_neighbors=n_neighbors, novelty=False)
     labels = lof.fit_predict(X)
     return -lof.negative_outlier_factor_, labels
-
 
 def tsne_distance_preservation(X: ArrayLike, embedding: ArrayLike) -> float:
     """Compute Spearman correlation between pairwise distances before and after embedding."""
@@ -242,7 +221,6 @@ def tsne_distance_preservation(X: ArrayLike, embedding: ArrayLike) -> float:
     if original_flat.size == 0:
         return 1.0
     return float(np.corrcoef(original_flat, embedded_flat)[0, 1])
-
 
 def demo_unsupervised_pipeline(random_state: int = 55) -> Dict[str, float]:
     """Run the featured unsupervised workflow and return summary statistics."""
@@ -271,7 +249,6 @@ def demo_unsupervised_pipeline(random_state: int = 55) -> Dict[str, float]:
         "autoencoder_anomaly_rate": anomaly_rate,
         "isolation_forest_score_mean": float(np.mean(if_scores)),
     }
-
 
 if __name__ == "__main__":
     summary = demo_unsupervised_pipeline()

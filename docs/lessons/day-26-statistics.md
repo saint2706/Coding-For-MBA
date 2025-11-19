@@ -72,27 +72,18 @@ _You are on lesson 26 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_26_Statistics/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_26_Statistics/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_26_Statistics/solutions.ipynb){ .md-button }
-- **stats.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/stats.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/stats.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_26_Statistics/stats.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_26_Statistics/stats.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/solutions.py)
+  - **stats.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/stats.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/stats.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_26_Statistics/stats.ipynb){ .md-button }
+    ???+ example "solutions.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_26_Statistics/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -127,7 +118,6 @@ except FileNotFoundError:
     df = pd.DataFrame()
 print("-" * 20)
 
-
 # --- Exercise 2: Correlation Analysis ---
 print("--- Solution to Exercise 2 ---")
 if not df.empty:
@@ -145,7 +135,6 @@ if not df.empty:
 else:
     print("DataFrame not available for this exercise.")
 print("-" * 20)
-
 
 # --- Exercise 3: A/B Test Analysis (T-Test) ---
 print("--- Solution to Exercise 3 ---")
@@ -197,7 +186,6 @@ import plotly.graph_objects as go
 from pandas import DataFrame, Series
 from scipy.stats import ttest_ind
 
-
 def load_sales_data(csv_path: Path | str | None = None) -> DataFrame:
     """Load and clean the sales CSV file."""
 
@@ -210,7 +198,6 @@ def load_sales_data(csv_path: Path | str | None = None) -> DataFrame:
         return pd.DataFrame()
 
     return df.dropna(axis=0, how="any")
-
 
 def summarize_revenue(df: DataFrame) -> Mapping[str, float | Series | DataFrame]:
     """Return descriptive statistics for the ``Revenue`` column."""
@@ -229,7 +216,6 @@ def summarize_revenue(df: DataFrame) -> Mapping[str, float | Series | DataFrame]
     }
     return summary
 
-
 def compute_correlations(df: DataFrame) -> DataFrame:
     """Return the correlation matrix for the key numeric columns."""
 
@@ -240,7 +226,6 @@ def compute_correlations(df: DataFrame) -> DataFrame:
         )
 
     return df[columns].corr()
-
 
 def build_revenue_distribution_chart(df: DataFrame) -> go.Figure:
     """Create a histogram visualising the distribution of the ``Revenue`` column."""
@@ -269,7 +254,6 @@ def build_revenue_distribution_chart(df: DataFrame) -> go.Figure:
     )
     return figure
 
-
 def build_correlation_heatmap(df: DataFrame) -> go.Figure:
     """Create a heatmap to visualise correlations between key numeric metrics."""
 
@@ -291,7 +275,6 @@ def build_correlation_heatmap(df: DataFrame) -> go.Figure:
     )
     return figure
 
-
 def run_ab_test(
     group_a: Iterable[float], group_b: Iterable[float], alpha: float = 0.05
 ) -> Mapping[str, float | bool]:
@@ -304,7 +287,6 @@ def run_ab_test(
         "alpha": float(alpha),
         "is_significant": bool(p_value < alpha),
     }
-
 
 def main() -> None:
     """Execute the lesson workflow with helpful console output."""
@@ -361,7 +343,6 @@ def main() -> None:
             "We cannot conclude that the new headline had a real effect on session duration."
         )
     print("-" * 20)
-
 
 if __name__ == "__main__":
     main()

@@ -90,27 +90,18 @@ _You are on lesson 18 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_18_Classes_and_Objects/CaO.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **CaO.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/CaO.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/CaO.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_18_Classes_and_Objects/CaO.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_18_Classes_and_Objects/CaO.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_18_Classes_and_Objects/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_18_Classes_and_Objects/solutions.ipynb){ .md-button }
-
-???+ example "CaO.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/CaO.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_18_Classes_and_Objects/solutions.ipynb){ .md-button }
+    ???+ example "CaO.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_18_Classes_and_Objects/CaO.py)
 
 ````
 ```python title="CaO.py"
@@ -124,7 +115,6 @@ real-world business concepts like a statistics calculator and a personal account
 import statistics as stat
 from collections import Counter
 from typing import Any, Dict, List, Sequence, Tuple, Union
-
 
 class Statistics:
     """
@@ -279,7 +269,6 @@ class Statistics:
         )
         return desc
 
-
 class PersonAccount:
     """A class to manage a person's income and expenses."""
 
@@ -312,7 +301,6 @@ class PersonAccount:
     def account_info(self) -> str:
         """Provides information about the person's account."""
         return f"{self.firstname} {self.lastname}'s account:\n  Total Income: ${self.total_income():,.2f}\n  Total Expense: ${self.total_expense():,.2f}\n  Balance: ${self.account_balance():,.2f}"
-
 
 def main():
     """Main function to demonstrate class usage."""
@@ -363,7 +351,6 @@ def main():
     print(person_account.account_info())
     print("-" * 20)
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -383,7 +370,6 @@ from CaO import PersonAccount
 
 ## Exercise 1 & 2: Create a `Car` class with a `get_age` method
 
-
 class Car:
     def __init__(self, make: str, model: str, year: int):
         self.make = make
@@ -396,7 +382,6 @@ class Car:
     def get_age(self) -> int:
         current_year = datetime.now().year
         return current_year - self.year
-
 
 # Example usage:
 my_car = Car("Toyota", "Camry", 2020)
@@ -417,17 +402,14 @@ person.add_income("Bonus", 1000)
 person.add_expense("Rent", 1500)
 person.add_expense("Food", 500)
 
-
 # Additional methods that could be added to PersonAccount class:
 def get_income_sources(account: PersonAccount) -> List[str]:
     """Get all income source names for a PersonAccount."""
     return list(account.incomes.keys())
 
-
 def get_expense_sources(account: PersonAccount) -> List[str]:
     """Get all expense source names for a PersonAccount."""
     return list(account.expenses.keys())
-
 
 print(f"Income sources: {get_income_sources(person)}")
 print(f"Expense sources: {get_expense_sources(person)}")

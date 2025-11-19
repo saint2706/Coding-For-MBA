@@ -28,22 +28,14 @@ _You are on lesson 57 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_57_Recommender_Systems/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_57_Recommender_Systems/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_57_Recommender_Systems/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_57_Recommender_Systems/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_57_Recommender_Systems/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_57_Recommender_Systems/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_57_Recommender_Systems/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -58,7 +50,6 @@ import numpy as np
 import pandas as pd
 from numpy.typing import ArrayLike
 
-
 @dataclass
 class Recommendation:
     """Container storing recommendations for a single user."""
@@ -66,7 +57,6 @@ class Recommendation:
     user: str
     ranked_items: List[str]
     scores: List[float]
-
 
 def build_demo_user_item_matrix(random_state: int = 57) -> pd.DataFrame:
     """Return a reproducible user–item ratings matrix."""
@@ -88,7 +78,6 @@ def build_demo_user_item_matrix(random_state: int = 57) -> pd.DataFrame:
     ratings[base == 0] = 0  # keep missing entries at zero
     return pd.DataFrame(ratings, index=users, columns=items)
 
-
 def cosine_similarity_matrix(matrix: ArrayLike) -> np.ndarray:
     """Compute cosine similarity between rows of the given matrix."""
 
@@ -97,7 +86,6 @@ def cosine_similarity_matrix(matrix: ArrayLike) -> np.ndarray:
     norms[norms == 0] = 1
     normalised = X / norms
     return normalised @ normalised.T
-
 
 def user_based_scores(
     ratings: pd.DataFrame,
@@ -123,7 +111,6 @@ def user_based_scores(
     already_rated = ratings.loc[target_user] > 0
     return scores_series.mask(already_rated, other=-np.inf)
 
-
 def svd_matrix_factorisation(
     ratings: pd.DataFrame,
     n_factors: int = 2,
@@ -147,7 +134,6 @@ def svd_matrix_factorisation(
     recon = approx + user_means[:, np.newaxis]
     return pd.DataFrame(recon, index=ratings.index, columns=ratings.columns)
 
-
 def implicit_confidence_matrix(
     interactions: pd.DataFrame, alpha: float = 20.0
 ) -> pd.DataFrame:
@@ -155,7 +141,6 @@ def implicit_confidence_matrix(
 
     confidence = 1 + alpha * interactions
     return confidence
-
 
 def rank_items(scores: pd.Series, top_n: int = 3) -> Recommendation:
     """Return the highest-scoring unrated items for a user."""
@@ -168,12 +153,10 @@ def rank_items(scores: pd.Series, top_n: int = 3) -> Recommendation:
         user=user, ranked_items=list(top_items.index), scores=list(top_items.values)
     )
 
-
 def mask_known_items(predictions: pd.Series, original_ratings: pd.Series) -> pd.Series:
     """Mask items that already have explicit feedback."""
 
     return predictions.mask(original_ratings > 0, other=-np.inf)
-
 
 def precision_at_k(
     recommended: Sequence[str], relevant: Iterable[str], k: int
@@ -187,7 +170,6 @@ def precision_at_k(
     hits = sum(1 for item in recommended_at_k if item in relevant_set)
     return hits / min(k, len(recommended_at_k) or k)
 
-
 def recall_at_k(recommended: Sequence[str], relevant: Iterable[str], k: int) -> float:
     """Compute recall@k."""
 
@@ -197,7 +179,6 @@ def recall_at_k(recommended: Sequence[str], relevant: Iterable[str], k: int) -> 
     recommended_at_k = recommended[:k]
     hits = sum(1 for item in recommended_at_k if item in set(relevant_list))
     return hits / len(relevant_list)
-
 
 def average_precision(
     recommended: Sequence[str], relevant: Iterable[str], k: int
@@ -215,7 +196,6 @@ def average_precision(
             score += hits / idx
     return score / len(relevant_set)
 
-
 def mean_average_precision(
     recommendations: Iterable[Sequence[str]], relevants: Iterable[Iterable[str]], k: int
 ) -> float:
@@ -227,7 +207,6 @@ def mean_average_precision(
     if not ap_scores:
         return 0.0
     return float(np.mean(ap_scores))
-
 
 def demo_recommender_workflow(random_state: int = 57) -> Dict[str, float]:
     """Run a small recommender pipeline and return evaluation metrics."""
@@ -263,7 +242,6 @@ def demo_recommender_workflow(random_state: int = 57) -> Dict[str, float]:
         "map_at_3": map_score,
         "svd_top_item": float(svd_rec.scores[0]),
     }
-
 
 if __name__ == "__main__":
     metrics = demo_recommender_workflow()

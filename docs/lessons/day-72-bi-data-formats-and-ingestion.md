@@ -85,12 +85,6 @@ _You are on lesson 72 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_72_BI_Data_Formats_and_Ingestion){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -154,7 +148,6 @@ WORKFLOW_STEPS: Dict[str, List[str]] = {
     ],
 }
 
-
 def build_normalised_catalogue() -> pd.DataFrame:
     """Return a dataframe that lists formats with normalised schema metadata."""
 
@@ -186,7 +179,6 @@ def build_normalised_catalogue() -> pd.DataFrame:
     )
 
     return pd.DataFrame(records)
-
 
 if __name__ == "__main__":
     catalogue = build_normalised_catalogue()
@@ -221,7 +213,6 @@ DATA_FORMAT_TITLES: List[str] = [
     "Other formats",
 ]
 
-
 def load_data_formats() -> pd.DataFrame:
     """Return a dataframe describing key BI data formats."""
 
@@ -239,7 +230,6 @@ def load_data_formats() -> pd.DataFrame:
         }
     )
 
-
 def detect_format(sample: str) -> str:
     """Very small heuristic for detecting a data format from text."""
 
@@ -254,7 +244,6 @@ def detect_format(sample: str) -> str:
         return "csv"
     return "unknown"
 
-
 def _infer_schema(frame: pd.DataFrame) -> Dict[str, Any]:
     """Return schema metadata from a dataframe."""
 
@@ -263,7 +252,6 @@ def _infer_schema(frame: pd.DataFrame) -> Dict[str, Any]:
         "row_count": int(frame.shape[0]),
         "dtypes": {col: str(dtype) for col, dtype in frame.dtypes.items()},
     }
-
 
 _CSV_SAMPLE = """id,name,value\n1,Alice,10\n2,Bob,20\n"""
 _JSON_SAMPLE = json.dumps(
@@ -274,14 +262,12 @@ _JSON_SAMPLE = json.dumps(
 )
 _XML_SAMPLE = """<rows>\n  <row id=\"1\" name=\"Alice\" value=\"10\" />\n  <row id=\"2\" name=\"Bob\" value=\"20\" />\n</rows>\n"""
 
-
 def parse_csv_sample(sample: str | None = None) -> Dict[str, Any]:
     """Parse a CSV snippet with pandas and return schema metadata."""
 
     sample = sample or _CSV_SAMPLE
     frame = pd.read_csv(io.StringIO(sample))
     return _infer_schema(frame)
-
 
 def parse_json_sample(sample: str | None = None) -> Dict[str, Any]:
     """Parse a JSON document and return schema metadata."""
@@ -295,7 +281,6 @@ def parse_json_sample(sample: str | None = None) -> Dict[str, Any]:
     frame = pd.json_normalize(list(records))
     return _infer_schema(frame)
 
-
 def parse_xml_sample(sample: str | None = None) -> Dict[str, Any]:
     """Parse XML into a dataframe-friendly representation."""
 
@@ -306,7 +291,6 @@ def parse_xml_sample(sample: str | None = None) -> Dict[str, Any]:
         rows.append(child.attrib)
     frame = pd.DataFrame(rows)
     return _infer_schema(frame)
-
 
 def parse_excel_sample(workbook_bytes: bytes | None = None) -> Dict[str, Any]:
     """Read an Excel workbook with pandas and return schema metadata.
@@ -343,7 +327,6 @@ def parse_excel_sample(workbook_bytes: bytes | None = None) -> Dict[str, Any]:
     metadata["sheet_names"] = ["Sheet1"]
     return metadata
 
-
 def summarize_other_formats() -> Dict[str, List[str]]:
     """Summarise additional formats and ingestion connectors."""
 
@@ -352,7 +335,6 @@ def summarize_other_formats() -> Dict[str, List[str]]:
         "streaming": ["Kafka", "Kinesis"],
         "cloud_storage": ["S3", "Azure Blob", "GCS"],
     }
-
 
 __all__ = [
     "DATA_FORMAT_TITLES",

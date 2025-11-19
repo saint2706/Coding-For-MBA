@@ -95,27 +95,18 @@ _You are on lesson 7 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_07_Sets/sets.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **sets.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/sets.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/sets.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_07_Sets/sets.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_07_Sets/sets.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_07_Sets/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_07_Sets/solutions.ipynb){ .md-button }
-
-???+ example "sets.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/sets.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_07_Sets/solutions.ipynb){ .md-button }
+    ???+ example "sets.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_07_Sets/sets.py)
 
 ````
 ```python title="sets.py"
@@ -126,7 +117,6 @@ This script demonstrates how to use sets to de-duplicate data
 and perform segmentation analysis on business data. This version
 is refactored into functions for better organization and testability.
 """
-
 
 def get_unique_items(items_list):
     """
@@ -152,7 +142,6 @@ def get_unique_items(items_list):
     """
     # Converting a list to a set automatically removes all duplicates
     return set(items_list)
-
 
 def analyze_visitor_segments(set_a, set_b):
     """
@@ -191,7 +180,6 @@ def analyze_visitor_segments(set_a, set_b):
 
     return {"intersection": intersection, "difference_a_b": difference, "union": union}
 
-
 def upgrade_plan_features(base_features, new_features_list):
     """
     Adds new features to a base set of features.
@@ -223,7 +211,6 @@ def upgrade_plan_features(base_features, new_features_list):
     # Duplicates are automatically ignored (set property)
     upgraded_plan.update(new_features_list)
     return upgraded_plan
-
 
 if __name__ == "__main__":
     # --- Using a Set to Find Unique Items ---
@@ -307,7 +294,6 @@ print(f"Set of unique cities: {unique_cities}")
 print(f"Number of unique cities where orders were placed: {len(unique_cities)}")
 print("-" * 20)
 
-
 # --- Exercise 2: Analyze Website Visitor Activity ---
 print("--- Solution to Exercise 2 ---")
 pricing_visitors = {"user1", "user3", "user5", "user7"}
@@ -328,7 +314,6 @@ print(f"Users who visited Pricing but NOT Contact: {pricing_only_visitors}")
 all_visitors = pricing_visitors.union(contact_visitors)
 print(f"All unique visitors to either page: {all_visitors}")
 print("-" * 20)
-
 
 # --- Exercise 3: Manage Product Features ---
 print("--- Solution to Exercise 3 ---")

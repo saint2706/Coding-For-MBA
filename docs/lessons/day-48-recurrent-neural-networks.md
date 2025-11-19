@@ -94,22 +94,14 @@ _You are on lesson 48 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_48_Recurrent_Neural_Networks/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_48_Recurrent_Neural_Networks/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_48_Recurrent_Neural_Networks/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_48_Recurrent_Neural_Networks/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_48_Recurrent_Neural_Networks/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_48_Recurrent_Neural_Networks/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_48_Recurrent_Neural_Networks/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -126,13 +118,11 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 DEFAULT_SEED = 42
 
-
 def set_global_seed(seed: int = DEFAULT_SEED) -> None:
     """Synchronise NumPy and TensorFlow RNGs for deterministic runs."""
 
     np.random.seed(seed)
     tf.keras.utils.set_random_seed(seed)
-
 
 def prepare_imdb_data(
     *, vocab_size: int = 10_000, max_length: int = 256
@@ -150,7 +140,6 @@ def prepare_imdb_data(
         test_data_padded,
         np.array(test_labels),
     )
-
 
 def build_rnn_model(
     *,
@@ -174,7 +163,6 @@ def build_rnn_model(
 
     model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
     return model
-
 
 def train_rnn_model(
     model: tf.keras.Model,
@@ -200,7 +188,6 @@ def train_rnn_model(
     )
     return history
 
-
 def evaluate_rnn_model(
     model: tf.keras.Model,
     test_data: np.ndarray,
@@ -211,7 +198,6 @@ def evaluate_rnn_model(
     """Evaluate the trained RNN on the held-out test data."""
 
     return model.evaluate(test_data, test_labels, verbose=verbose, return_dict=True)
-
 
 def run_full_workflow(
     *,
@@ -242,7 +228,6 @@ def run_full_workflow(
     )
     metrics = evaluate_rnn_model(model, test_data, test_labels, verbose=verbose)
     return history, metrics, model
-
 
 if __name__ == "__main__":
     import os

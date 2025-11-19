@@ -101,27 +101,18 @@ _You are on lesson 15 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_15_Exception_Handling/exception.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **exception.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/exception.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/exception.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_15_Exception_Handling/exception.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_15_Exception_Handling/exception.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_15_Exception_Handling/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_15_Exception_Handling/solutions.ipynb){ .md-button }
-
-???+ example "exception.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/exception.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_15_Exception_Handling/solutions.ipynb){ .md-button }
+    ???+ example "exception.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_15_Exception_Handling/exception.py)
 
 ````
 ```python title="exception.py"
@@ -131,7 +122,6 @@ Day 15: Handling Exceptions in Business Logic (Refactored)
 This script demonstrates exception handling and iterable unpacking
 with more practical, testable functions.
 """
-
 
 def unpack_country_list(countries):
     """
@@ -150,7 +140,6 @@ def unpack_country_list(countries):
         # but the initial check makes it mostly for demonstration.
         return None, None, None
 
-
 def calculate_profit_margin(revenue, profit):
     """
     Calculates the profit margin and handles the case of zero revenue
@@ -165,7 +154,6 @@ def calculate_profit_margin(revenue, profit):
     except TypeError:
         print("Error: Invalid input, revenue and profit must be numbers.")
         return None
-
 
 def main():
     """Main function to demonstrate exception handling and unpacking."""
@@ -205,7 +193,6 @@ def main():
     print(f"Revenue: ${revenue2}, Profit: ${profit2} -> Margin: {margin2:.2f}%")
     print("-" * 20)
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -230,7 +217,6 @@ try:
 except ValueError:
     print("Invalid input. Please enter a numeric value for your age.")
 
-
 ## Exercise 2: Handling a `ZeroDivisionError`
 
 # Using example values for non-interactive execution
@@ -248,9 +234,7 @@ except ZeroDivisionError:
 except ValueError:
     print("Invalid input. Please enter numeric values.")
 
-
 ## Exercise 3: Refactor `exception.py`
-
 
 country_names = ["Finland"]
 

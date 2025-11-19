@@ -27,22 +27,14 @@ _You are on lesson 53 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_53_Model_Tuning_and_Feature_Selection/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_53_Model_Tuning_and_Feature_Selection/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_53_Model_Tuning_and_Feature_Selection/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -65,7 +57,6 @@ from sklearn.preprocessing import StandardScaler
 from skopt import BayesSearchCV
 from skopt.space import Categorical, Real
 
-
 @dataclass
 class TuningResult:
     """Lightweight container for fitted search objects."""
@@ -74,7 +65,6 @@ class TuningResult:
     search: object
     best_params: Dict[str, object]
     best_score: float
-
 
 def generate_tuning_dataset(
     n_samples: int = 300,
@@ -97,7 +87,6 @@ def generate_tuning_dataset(
     )
     return X, y
 
-
 def build_logistic_pipeline(random_state: int = 53) -> Pipeline:
     """Return a scaled logistic regression pipeline."""
 
@@ -105,7 +94,6 @@ def build_logistic_pipeline(random_state: int = 53) -> Pipeline:
         StandardScaler(),
         LogisticRegression(max_iter=2000, solver="lbfgs", random_state=random_state),
     )
-
 
 def run_grid_search(
     X: np.ndarray,
@@ -138,7 +126,6 @@ def run_grid_search(
         best_params=grid.best_params_,
         best_score=float(grid.best_score_),
     )
-
 
 def run_bayesian_optimisation(
     X: np.ndarray,
@@ -176,7 +163,6 @@ def run_bayesian_optimisation(
         best_score=float(bayes.best_score_),
     )
 
-
 def compute_permutation_importance(
     model,
     X: np.ndarray,
@@ -203,7 +189,6 @@ def compute_permutation_importance(
     ).sort_values("importance_mean", ascending=False)
     return df.reset_index(drop=True)
 
-
 def run_recursive_feature_elimination(
     X: np.ndarray,
     y: np.ndarray,
@@ -220,7 +205,6 @@ def run_recursive_feature_elimination(
     support = selector.support_
     return selector, support
 
-
 def evaluate_selected_features(
     selector: RFE,
     X: np.ndarray,
@@ -233,7 +217,6 @@ def evaluate_selected_features(
     model = LogisticRegression(max_iter=2000)
     scores = cross_val_score(model, X_selected, y, cv=cv, scoring="accuracy")
     return float(np.mean(scores))
-
 
 def run_day53_demo() -> Dict[str, TuningResult]:
     """Execute grid search and Bayesian optimisation workflows."""
@@ -255,7 +238,6 @@ def run_day53_demo() -> Dict[str, TuningResult]:
         "grid": grid,
         "bayes": bayes,
     }
-
 
 if __name__ == "__main__":
     results = run_day53_demo()

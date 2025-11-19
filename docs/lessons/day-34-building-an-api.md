@@ -159,32 +159,22 @@ _You are on lesson 34 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_34_Building_an_API/api_server.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **api_server.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/api_server.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/api_server.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_34_Building_an_API/api_server.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_34_Building_an_API/api_server.ipynb){ .md-button }
-- **data.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/data.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/data.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_34_Building_an_API/data.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_34_Building_an_API/data.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_34_Building_an_API/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_34_Building_an_API/solutions.ipynb){ .md-button }
-
-???+ example "api_server.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/api_server.py)
+  - **data.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/data.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/data.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_34_Building_an_API/data.ipynb){ .md-button }
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_34_Building_an_API/solutions.ipynb){ .md-button }
+    ???+ example "api_server.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_34_Building_an_API/api_server.py)
 
 ````
 ```python title="api_server.py"
@@ -200,7 +190,6 @@ try:
     from Day_34_Building_an_API.data import EMPLOYEES, PRODUCTS
 except ImportError:
     from data import EMPLOYEES, PRODUCTS
-
 
 def create_app() -> Flask:
     """Create and configure the Flask application for the sample API."""
@@ -238,9 +227,7 @@ def create_app() -> Flask:
 
     return app
 
-
 app = create_app()
-
 
 if __name__ == "__main__":
     import os
@@ -295,12 +282,10 @@ from flask import Flask, jsonify
 # --- Exercise 1: Create a Basic API Server ---
 app = Flask(__name__)
 
-
 @app.route("/")
 def home():
     """Returns a simple welcome message for the root URL."""
     return "Welcome to the Company Data API"
-
 
 # --- Exercise 2: Serve Employee Data ---
 # Sample data for the API
@@ -311,12 +296,10 @@ EMPLOYEES = [
     {"id": 4, "name": "Lisa Ray", "department": "Sales"},
 ]
 
-
 @app.route("/api/employees", methods=["GET"])
 def get_employees():
     """Returns the full list of employees as JSON."""
     return jsonify(EMPLOYEES)
-
 
 # --- Exercise 3: Serve a Single Employee's Data ---
 @app.route("/api/employees/<int:employee_id>", methods=["GET"])
@@ -334,7 +317,6 @@ def get_employee(employee_id):
         # Return a JSON error message and a 404 status code
         error_message = {"error": f"Employee with ID {employee_id} not found."}
         return jsonify(error_message), 404
-
 
 if __name__ == "__main__":
     # To run this API server:

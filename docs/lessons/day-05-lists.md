@@ -95,27 +95,18 @@ _You are on lesson 5 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_05_Lists/lists.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **lists.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/lists.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/lists.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_05_Lists/lists.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_05_Lists/lists.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_05_Lists/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_05_Lists/solutions.ipynb){ .md-button }
-
-???+ example "lists.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/lists.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_05_Lists/solutions.ipynb){ .md-button }
+    ???+ example "lists.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_05_Lists/lists.py)
 
 ````
 ```python title="lists.py"
@@ -126,7 +117,6 @@ This script demonstrates how to create, access, modify, and analyze
 lists containing business-related data. This version is refactored
 into functions for better organization and testability.
 """
-
 
 def get_list_element(data_list, index):
     """
@@ -160,7 +150,6 @@ def get_list_element(data_list, index):
         return data_list[index]
     return None  # Return None for invalid indices (safer than raising an error)
 
-
 def get_first_half_sales(sales_list):
     """
     Returns the first half of a list of sales using slicing.
@@ -188,7 +177,6 @@ def get_first_half_sales(sales_list):
 
     # [:midpoint] means "from the beginning up to (not including) midpoint"
     return sales_list[:midpoint]
-
 
 def add_product(product_list, new_product):
     """
@@ -220,7 +208,6 @@ def add_product(product_list, new_product):
     # .append() adds an item to the end of the list
     new_list.append(new_product)
     return new_list
-
 
 def remove_product(product_list, product_to_remove):
     """
@@ -254,7 +241,6 @@ def remove_product(product_list, product_to_remove):
         # .remove() deletes the first occurrence of the value
         new_list.remove(product_to_remove)
     return new_list
-
 
 def analyze_team_sales(sales_figures):
     """
@@ -301,7 +287,6 @@ def analyze_team_sales(sales_figures):
         "top_3_sales": top_3_sales,
         "total_top_sales": total_top_sales,
     }
-
 
 if __name__ == "__main__":
     # --- Initializing Lists with Business Data ---
@@ -376,7 +361,6 @@ print(f"After removing 'Mouse': {products}")
 print(f"Final available products: {products}")
 print("-" * 20)
 
-
 # --- Exercise 2: Analyze Monthly Expenses ---
 print("--- Solution to Exercise 2 ---")
 monthly_expenses = [2200, 2350, 2600, 2130, 2190]
@@ -399,7 +383,6 @@ print(
     f"After adding a new expense of ${new_expense}, the new total is: ${updated_total_expenses}"
 )
 print("-" * 20)
-
 
 # --- Exercise 3: Select Top Sales Performers ---
 print("--- Solution to Exercise 3 ---")

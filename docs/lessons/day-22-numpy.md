@@ -91,27 +91,18 @@ _You are on lesson 22 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_22_NumPy/numpy_examples.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **numpy_examples.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/numpy_examples.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/numpy_examples.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_22_NumPy/numpy_examples.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_22_NumPy/numpy_examples.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_22_NumPy/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_22_NumPy/solutions.ipynb){ .md-button }
-
-???+ example "numpy_examples.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/numpy_examples.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_22_NumPy/solutions.ipynb){ .md-button }
+    ???+ example "numpy_examples.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_22_NumPy/numpy_examples.py)
 
 ````
 ```python title="numpy_examples.py"
@@ -125,7 +116,6 @@ refactored into functions for better organization and testability.
 
 import numpy as np
 
-
 def calculate_revenue_vectorized(prices: list, units: list) -> np.ndarray:
     """
     Calculates revenue by performing a vectorized multiplication of prices and units.
@@ -133,7 +123,6 @@ def calculate_revenue_vectorized(prices: list, units: list) -> np.ndarray:
     prices_array = np.array(prices)
     units_array = np.array(units)
     return prices_array * units_array
-
 
 def analyze_sales_data(sales: list) -> dict:
     """
@@ -151,7 +140,6 @@ def analyze_sales_data(sales: list) -> dict:
         "std_dev": sales_array.std(),
     }
 
-
 def filter_above_average(data: np.ndarray) -> np.ndarray:
     """
     Filters a NumPy array to return only the elements above its average.
@@ -161,7 +149,6 @@ def filter_above_average(data: np.ndarray) -> np.ndarray:
 
     average = data.mean()
     return data[data > average]
-
 
 def main():
     """Main function to demonstrate NumPy capabilities."""
@@ -198,7 +185,6 @@ def main():
     print(f"Number of good sales days: {len(good_days)}")
     print("-" * 20)
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -225,7 +211,6 @@ import numpy as np
 
 # Suppress numpy warnings for cleaner output
 warnings.filterwarnings("ignore", category=RuntimeWarning)
-
 
 def exercise_1_array_creation_and_vectorization():
     """
@@ -286,7 +271,6 @@ def exercise_1_array_creation_and_vectorization():
     print(
         f"   Lowest performing product (revenue): Product {np.argmin(revenue_array) + 1} (${revenue_array.min():.2f})"
     )
-
 
 def exercise_2_sales_data_analysis():
     """
@@ -376,7 +360,6 @@ def exercise_2_sales_data_analysis():
     else:
         print("   ✅ Weekend sales are strong. Current strategy is working well.")
 
-
 def exercise_3_conditional_filtering():
     """
     Exercise 3: Conditional Filtering with Arrays
@@ -462,7 +445,6 @@ def exercise_3_conditional_filtering():
     print(
         f"   • Performance consistency: {np.sum(within_one_std)} days within normal range"
     )
-
 
 def bonus_exercise_advanced_numpy():
     """
@@ -558,7 +540,6 @@ def bonus_exercise_advanced_numpy():
     print(f"   Outlier threshold (mean + 2*std): ${outlier_threshold:.2f}")
     print(f"   Number of outlier days: {np.sum(outliers)}")
 
-
 def performance_comparison_demo():
     """
     Demonstration of NumPy performance advantages over pure Python
@@ -609,7 +590,6 @@ def performance_comparison_demo():
         print(f"   Annual time savings: {time_saved * 1000 * 365 / 3600:.2f} hours")
 
     print("   💼 For large-scale business analytics, NumPy is essential!")
-
 
 def practical_business_scenarios():
     """
@@ -688,7 +668,6 @@ def practical_business_scenarios():
     if np.sum(low_value) > 0:
         print(f"      Low-value: ${customer_spending[low_value].mean():.2f}")
 
-
 def main():
     """
     Main function to run all Day 22 solutions and demonstrations.
@@ -730,7 +709,6 @@ def main():
         import traceback
 
         traceback.print_exc()
-
 
 if __name__ == "__main__":
     main()

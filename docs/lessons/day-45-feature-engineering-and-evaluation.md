@@ -66,22 +66,14 @@ _You are on lesson 45 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_45_Feature_Engineering_and_Evaluation/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_45_Feature_Engineering_and_Evaluation/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_45_Feature_Engineering_and_Evaluation/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_45_Feature_Engineering_and_Evaluation/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_45_Feature_Engineering_and_Evaluation/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_45_Feature_Engineering_and_Evaluation/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_45_Feature_Engineering_and_Evaluation/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -101,7 +93,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-
 def create_sample_dataframe() -> pd.DataFrame:
     """Return the toy purchase dataset used in the lesson."""
 
@@ -120,7 +111,6 @@ def create_sample_dataframe() -> pd.DataFrame:
         "purchased": [0, 1, 0, 1, 1, 0, 1],
     }
     return pd.DataFrame(data)
-
 
 def build_preprocessing_pipeline(
     numeric_features: Iterable[str] = ("age", "salary"),
@@ -147,7 +137,6 @@ def build_preprocessing_pipeline(
         ]
     )
 
-
 def preprocess_dataframe(
     df: pd.DataFrame,
     preprocessor: ColumnTransformer | None = None,
@@ -163,7 +152,6 @@ def preprocess_dataframe(
     X_processed = preprocessor.fit_transform(X)
     return X_processed, y, preprocessor
 
-
 def build_model_pipeline(preprocessor: ColumnTransformer) -> Pipeline:
     """Combine preprocessing with a logistic regression classifier."""
 
@@ -173,7 +161,6 @@ def build_model_pipeline(preprocessor: ColumnTransformer) -> Pipeline:
             ("classifier", LogisticRegression()),
         ]
     )
-
 
 def evaluate_model(
     df: pd.DataFrame,
@@ -200,7 +187,6 @@ def evaluate_model(
         "classification_report": classification_report(y_test, y_pred, zero_division=0),
     }
     return pipeline, metrics
-
 
 if __name__ == "__main__":
     print("--- Feature Engineering Example ---")

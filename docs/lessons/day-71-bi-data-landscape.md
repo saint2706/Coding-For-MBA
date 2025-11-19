@@ -92,12 +92,6 @@ _You are on lesson 71 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_71_BI_Data_Landscape){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -162,7 +156,6 @@ SOURCE_DATASETS: Mapping[str, tuple[str, str]] = {
 TOPIC_GROUPS = load_topic_groups(SECTION_TOPICS)
 TOPIC_FRAME = build_topic_dataframe(sections=SECTION_TOPICS)
 
-
 # %%
 def build_source_asset_table(mapping: Mapping[str, tuple[str, str]]) -> pd.DataFrame:
     """Return metadata about the sample datasets that anchor each source type."""
@@ -184,7 +177,6 @@ def build_source_asset_table(mapping: Mapping[str, tuple[str, str]]) -> pd.DataF
     )
     return frame.sort_values(by="source", kind="stable").reset_index(drop=True)
 
-
 # %%
 def preview_topic_groups(groups: Mapping[str, list]) -> None:
     """Display the roadmap alignment for each section."""
@@ -193,14 +185,12 @@ def preview_topic_groups(groups: Mapping[str, list]) -> None:
         titles = ", ".join(topic.title for topic in topics)
         print(f"- {section}: {titles}")
 
-
 # %%
 def preview_source_table(frame: pd.DataFrame) -> None:
     """Print the dataset table that pairs each source channel with repository assets."""
 
     print("\nSample datasets by source channel:\n")
     print(frame.to_markdown(index=False))
-
 
 # %%
 def main() -> None:
@@ -214,7 +204,6 @@ def main() -> None:
             index=False
         )
     )
-
 
 # %%
 if __name__ == "__main__":
@@ -277,14 +266,12 @@ TOPIC_DESCRIPTIONS: Mapping[str, str] = {
     "IoT": "Sensor and device networks streaming telemetry from the physical world.",
 }
 
-
 def load_topic_groups(
     sections: Mapping[str, Sequence[str]] = SECTION_TOPICS,
 ) -> dict[str, list[BiTopic]]:
     """Return BI roadmap topics grouped by the requested section titles."""
 
     return group_topics_by_titles(sections)
-
 
 def build_topic_dataframe(
     *,
@@ -310,7 +297,6 @@ def build_topic_dataframe(
             drop=True
         )
     return frame
-
 
 __all__ = [
     "DATA_CLASSIFICATIONS_SECTION",

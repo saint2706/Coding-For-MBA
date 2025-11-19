@@ -82,12 +82,6 @@ _You are on lesson 79 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_79_BI_Storytelling_and_Stakeholder_Influence){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
@@ -113,7 +107,6 @@ GROUPED_TOPICS = load_topics()
 NARRATIVE_TEMPLATE = narrative_asset_template()
 INFLUENCE_TEMPLATE = influence_lever_template()
 
-
 def preview_topic_groups(groups: dict[str, list]) -> None:
     """Print the storytelling and influence groupings."""
 
@@ -122,7 +115,6 @@ def preview_topic_groups(groups: dict[str, list]) -> None:
         titles = ", ".join(topic.title for topic in topics)
         print(f"- {section}: {titles}")
 
-
 def show_narrative_prompts(template: list[dict[str, str]]) -> None:
     """Display coaching prompts for the narrative assets."""
 
@@ -130,14 +122,12 @@ def show_narrative_prompts(template: list[dict[str, str]]) -> None:
     print("\nNarrative asset prompts\n")
     print(frame.to_markdown(index=False))
 
-
 def show_influence_prompts(template: list[dict[str, str]]) -> None:
     """Display facilitation prompts for the influence levers."""
 
     frame = pd.DataFrame(template)
     print("\nInfluence lever prompts\n")
     print(frame.to_markdown(index=False))
-
 
 def walkthrough_storytelling(
     metric: str, insight: str, audience: str, action: str
@@ -154,7 +144,6 @@ def walkthrough_storytelling(
         f"so they will {arc['call_to_action']}."
     )
 
-
 def walkthrough_influence_plan(stakeholder: str, objective: str, risk: str) -> None:
     """Demonstrate how to facilitate an influence brief."""
 
@@ -166,7 +155,6 @@ def walkthrough_influence_plan(stakeholder: str, objective: str, risk: str) -> N
         "\nFacilitation reminder:\n"
         f"When working with {brief['stakeholder']}, focus on {brief['objective']} while mitigating {brief['change_risk']}."
     )
-
 
 def main() -> None:
     """Run the Day 79 classroom walkthrough."""
@@ -185,7 +173,6 @@ def main() -> None:
         objective="restore retention within two quarters",
         risk="change fatigue across frontline managers",
     )
-
 
 if __name__ == "__main__":
     main()
@@ -282,14 +269,12 @@ INFLUENCE_SEQUENCE: Sequence[str] = (
     "Soft Skills",
 )
 
-
 def load_topics(
     *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
 ) -> Dict[str, List[BiTopic]]:
     """Return roadmap topics grouped into narrative and influence collections."""
 
     return {group: topics for group, topics in group_topics_by_titles(groups).items()}
-
 
 def narrative_asset_template(
     *,
@@ -309,7 +294,6 @@ def narrative_asset_template(
         )
     return template
 
-
 def influence_lever_template(
     *,
     groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS,
@@ -327,7 +311,6 @@ def influence_lever_template(
             }
         )
     return template
-
 
 def generate_story_arc(
     metric_name: str,
@@ -365,7 +348,6 @@ def generate_story_arc(
         "arc": arc,
     }
 
-
 def build_influence_brief(
     stakeholder: str,
     objective: str,
@@ -395,7 +377,6 @@ def build_influence_brief(
         "change_risk": change_risk,
         "plan": plan,
     }
-
 
 __all__ = [
     "build_influence_brief",

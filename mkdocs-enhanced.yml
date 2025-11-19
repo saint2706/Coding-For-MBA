@@ -257,7 +257,6 @@ nav:
       - ML Theory & Mathematics: theory.md
       - Featured Lessons: featured-lessons.md
   - Interactive Lab:
-      - JupyterLite Lab: jupyterlite/index.html
       - Code Playground: playground.md
   - Resources:
       - Dependency Review: dependency-review.md

@@ -59,22 +59,14 @@ _You are on lesson 67 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_67_Model_Monitoring_and_Reliability/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_67_Model_Monitoring_and_Reliability/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_67_Model_Monitoring_and_Reliability/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_67_Model_Monitoring_and_Reliability/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_67_Model_Monitoring_and_Reliability/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_67_Model_Monitoring_and_Reliability/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_67_Model_Monitoring_and_Reliability/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -86,7 +78,6 @@ from dataclasses import dataclass, field
 from statistics import mean, pstdev
 from typing import Any, Dict, Iterable, List, Mapping
 
-
 @dataclass
 class DriftReport:
     feature: str
@@ -94,7 +85,6 @@ class DriftReport:
     current_mean: float
     drift_score: float
     triggered: bool
-
 
 def compute_mean_drift(
     baseline: Iterable[float],
@@ -121,7 +111,6 @@ def compute_mean_drift(
         triggered=triggered,
     )
 
-
 def should_trigger_retraining(
     report: DriftReport, *, accuracy: float, latency: float
 ) -> bool:
@@ -135,13 +124,11 @@ def should_trigger_retraining(
         return True
     return False
 
-
 @dataclass
 class CanaryVerdict:
     promote: bool
     reason: str
     metrics: Dict[str, float] = field(default_factory=dict)
-
 
 def evaluate_canary(
     baseline_metrics: Mapping[str, float],
@@ -171,7 +158,6 @@ def evaluate_canary(
         {"accuracy": accuracy, "latency_delta": round(latency_delta, 4)},
     )
 
-
 def build_observability_snapshot(
     report: DriftReport,
     verdict: CanaryVerdict,
@@ -196,7 +182,6 @@ def build_observability_snapshot(
         },
     }
 
-
 def detect_drift_across_features(
     baseline_frame: Mapping[str, Iterable[float]],
     current_frame: Mapping[str, Iterable[float]],
@@ -215,7 +200,6 @@ def detect_drift_across_features(
         )
     return reports
 
-
 def enqueue_retraining_tasks(
     reports: Mapping[str, DriftReport],
     *,
@@ -229,7 +213,6 @@ def enqueue_retraining_tasks(
         if should_trigger_retraining(report, accuracy=accuracy, latency=latency):
             queue.append(feature)
     return queue
-
 
 if __name__ == "__main__":
     baseline = [0.1, 0.2, 0.15, 0.18]

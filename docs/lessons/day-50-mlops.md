@@ -83,27 +83,18 @@ _You are on lesson 50 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_50_MLOps/bonus_flask_api.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **bonus_flask_api.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/bonus_flask_api.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/bonus_flask_api.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_50_MLOps/bonus_flask_api.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_50_MLOps/bonus_flask_api.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_50_MLOps/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_50_MLOps/solutions.ipynb){ .md-button }
-
-???+ example "bonus_flask_api.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/bonus_flask_api.py)
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_50_MLOps/solutions.ipynb){ .md-button }
+    ???+ example "bonus_flask_api.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_50_MLOps/bonus_flask_api.py)
 
 ````
 ```python title="bonus_flask_api.py"
@@ -127,7 +118,6 @@ except FileNotFoundError:
         f"Error: Model file '{model_filename}' not found. Please run solutions.py first."
     )
     model = None
-
 
 # 3. Define the prediction endpoint
 @app.route("/predict", methods=["POST"])
@@ -170,7 +160,6 @@ def predict():
 
     except Exception as e:
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-
 
 # --- How to Run This API ---
 # 1. Make sure 'iris_model.joblib' exists by running solutions.py.
@@ -231,7 +220,6 @@ from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-
 
 def train_iris_model(
     *,
@@ -343,7 +331,6 @@ def train_iris_model(
     accuracy = accuracy_score(y_test, model.predict(X_test))
     return model, accuracy, X_test, y_test, iris.target_names
 
-
 def save_model(model: LogisticRegression, path: Path | str) -> Path:
     """Persist the trained model to disk and return the resolved path."""
 
@@ -352,13 +339,11 @@ def save_model(model: LogisticRegression, path: Path | str) -> Path:
     joblib.dump(model, path)
     return path
 
-
 def load_model(path: Path | str) -> LogisticRegression:
     """Load a persisted model from disk."""
 
     path = Path(path)
     return joblib.load(path)
-
 
 def predict_sample(
     model: LogisticRegression,
@@ -387,7 +372,6 @@ def predict_sample(
     if target_names is not None:
         name = target_names[prediction]
     return prediction, name
-
 
 def _demo() -> None:
     """Replicate the original script as a simple CLI demonstration."""
@@ -420,7 +404,6 @@ def _demo() -> None:
     print(
         "\nCheck out 'bonus_flask_api.py' for an example of how to serve this model in a web API."
     )
-
 
 if __name__ == "__main__":
     _demo()

@@ -147,32 +147,22 @@ _You are on lesson 24 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_24_Pandas_Advanced/pandas_adv.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **pandas_adv.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/pandas_adv.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/pandas_adv.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_24_Pandas_Advanced/pandas_adv.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_24_Pandas_Advanced/pandas_adv.ipynb){ .md-button }
-- **profile_pandas_adv.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/profile_pandas_adv.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/profile_pandas_adv.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_24_Pandas_Advanced/profile_pandas_adv.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_24_Pandas_Advanced/profile_pandas_adv.ipynb){ .md-button }
-- **solutions.ipynb**
-  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/solutions.ipynb){ .md-button }
-  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/solutions.ipynb){ .md-button .md-button--primary }
-  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_24_Pandas_Advanced/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_24_Pandas_Advanced/solutions.ipynb){ .md-button }
-
-???+ example "pandas_adv.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/pandas_adv.py)
+  - **profile_pandas_adv.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/profile_pandas_adv.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/profile_pandas_adv.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_24_Pandas_Advanced/profile_pandas_adv.ipynb){ .md-button }
+  - **solutions.ipynb**
+    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/solutions.ipynb){ .md-button }
+    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/solutions.ipynb){ .md-button .md-button--primary }
+    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_24_Pandas_Advanced/solutions.ipynb){ .md-button }
+    ???+ example "pandas_adv.py"
+    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_24_Pandas_Advanced/pandas_adv.py)
 
 ````
 ```python title="pandas_adv.py"
@@ -190,7 +180,6 @@ from typing import Any, List, Optional
 import pandas as pd
 import plotly.graph_objects as go
 
-
 def load_sales_data(file_path: str) -> Optional[pd.DataFrame]:
     """Loads sales data from a CSV file into a Pandas DataFrame."""
     try:
@@ -198,7 +187,6 @@ def load_sales_data(file_path: str) -> Optional[pd.DataFrame]:
     except FileNotFoundError:
         print(f"❌ Error: The file was not found at {file_path}")
         return None
-
 
 def select_by_label(
     df: pd.DataFrame, index_label: Any, columns: List[str]
@@ -211,7 +199,6 @@ def select_by_label(
     except KeyError:
         return None
 
-
 def select_by_position(
     df: pd.DataFrame, row_pos: int, col_slice: slice
 ) -> Optional[pd.Series]:
@@ -223,13 +210,11 @@ def select_by_position(
     except IndexError:
         return None
 
-
 def filter_by_high_revenue(df: pd.DataFrame, threshold: float) -> pd.DataFrame:
     """Filters the DataFrame for rows where Revenue exceeds a threshold."""
     if df is None or "Revenue" not in df.columns:
         return pd.DataFrame()
     return df[df["Revenue"] > threshold]
-
 
 def filter_by_product_and_region(
     df: pd.DataFrame, product: str, region: str
@@ -249,7 +234,6 @@ def filter_by_product_and_region(
         normalized_region_series == region_normalized
     )
     return df[mask]
-
 
 def handle_missing_data(
     df: Optional[pd.DataFrame], strategy: str = "drop", fill_value=None
@@ -273,7 +257,6 @@ def handle_missing_data(
         else:
             df_copy = df_copy.fillna(fill_value)
     return df_copy
-
 
 def build_revenue_by_region_bar_chart(df: pd.DataFrame) -> go.Figure:
     """Build an interactive bar chart comparing revenue across regions."""
@@ -305,7 +288,6 @@ def build_revenue_by_region_bar_chart(df: pd.DataFrame) -> go.Figure:
         template="plotly_white",
     )
     return figure
-
 
 def build_units_vs_price_scatter(df: pd.DataFrame) -> go.Figure:
     """Return a scatter plot showing how pricing relates to units sold."""
@@ -343,7 +325,6 @@ def build_units_vs_price_scatter(df: pd.DataFrame) -> go.Figure:
         template="plotly_white",
     )
     return figure
-
 
 def main():
     """Main function to demonstrate advanced Pandas operations."""
@@ -384,7 +365,6 @@ def main():
             f"Missing values after filling with mean:\n{df_filled.isnull().sum().sum()}"
         )
         print("-" * 20)
-
 
 if __name__ == "__main__":
     main()
@@ -431,7 +411,6 @@ except ImportError:  # pragma: no cover - allows ``python profile_pandas_adv.py`
         load_sales_data,
     )
 
-
 def build_pipeline(
     data_path: Path, threshold: float, product: str, region: str, missing_strategy: str
 ) -> Callable[[], None]:
@@ -450,7 +429,6 @@ def build_pipeline(
         handle_missing_data(df, strategy=missing_strategy)
 
     return pipeline
-
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -513,7 +491,6 @@ def main() -> None:
     )
     print_report(profile_report=profile_report, timing_report=timing_report)
 
-
 if __name__ == "__main__":
     main()
 ```
@@ -561,7 +538,6 @@ except FileNotFoundError:
     )
 print("-" * 20)
 
-
 # --- Exercise 2: Select and Filter ---
 print("--- Solution to Exercise 2 ---")
 if "df" in locals():  # Check if the DataFrame was loaded successfully
@@ -592,7 +568,6 @@ if "df" in locals():  # Check if the DataFrame was loaded successfully
 else:
     print("DataFrame 'df' not available for this exercise.")
 print("-" * 20)
-
 
 # --- Exercise 3: Basic Data Cleaning ---
 print("--- Solution to Exercise 3 ---")

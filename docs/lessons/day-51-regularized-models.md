@@ -28,22 +28,14 @@ _You are on lesson 51 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_51_Regularized_Models/solutions.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_51_Regularized_Models/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_51_Regularized_Models/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_51_Regularized_Models/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_51_Regularized_Models/solutions.ipynb){ .md-button }
-
-???+ example "solutions.py"
-[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_51_Regularized_Models/solutions.py)
+  ???+ example "solutions.py"
+  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_51_Regularized_Models/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -68,7 +60,6 @@ from sklearn.model_selection import KFold, cross_val_score
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.preprocessing import StandardScaler
 
-
 @dataclass(frozen=True)
 class RegularisedModelResult:
     """Container for a fitted regularised model and its metrics."""
@@ -76,7 +67,6 @@ class RegularisedModelResult:
     name: str
     pipeline: Pipeline
     cv_score: float
-
 
 def load_synthetic_regression(
     n_samples: int = 200,
@@ -96,7 +86,6 @@ def load_synthetic_regression(
         random_state=random_state,
     )
     return X, y, true_coef
-
 
 def build_regularised_pipeline(
     model: str,
@@ -120,7 +109,6 @@ def build_regularised_pipeline(
         raise ValueError(f"Unsupported model '{model}'.")
     return make_pipeline(StandardScaler(), estimator)
 
-
 def evaluate_models_with_cv(
     pipelines: Dict[str, Pipeline],
     X: np.ndarray,
@@ -140,7 +128,6 @@ def evaluate_models_with_cv(
         )
     return results
 
-
 def summarise_coefficients(
     results: Dict[str, RegularisedModelResult],
 ) -> Dict[str, Dict[str, float]]:
@@ -158,7 +145,6 @@ def summarise_coefficients(
             "non_zero": int(np.count_nonzero(np.abs(coef) > 1e-8)),
         }
     return summary
-
 
 def fit_poisson_glm(
     X: np.ndarray,
@@ -178,7 +164,6 @@ def fit_poisson_glm(
     deviance = mean_poisson_deviance(y, preds)
     return pipeline, float(deviance)
 
-
 def run_day51_demo() -> Dict[str, RegularisedModelResult]:
     """Train ridge, lasso, and elastic net pipelines on the synthetic dataset."""
 
@@ -193,7 +178,6 @@ def run_day51_demo() -> Dict[str, RegularisedModelResult]:
     }
     results = evaluate_models_with_cv(models, X, y)
     return results
-
 
 if __name__ == "__main__":
     fitted = run_day51_demo()
