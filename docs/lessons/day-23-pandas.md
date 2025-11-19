@@ -98,16 +98,17 @@ _You are on lesson 23 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_from_csv.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_from_csv.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_23_Pandas/pandas_from_csv.ipynb){ .md-button }
-  - **pandas_intro.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_intro.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_intro.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_23_Pandas/pandas_intro.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_23_Pandas/solutions.ipynb){ .md-button }
-    ???+ example "pandas_from_csv.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_from_csv.py)
+- **pandas_intro.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_intro.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_intro.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_23_Pandas/pandas_intro.ipynb){ .md-button }
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_23_Pandas/solutions.ipynb){ .md-button }
+
+???+ example "pandas_from_csv.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_23_Pandas/pandas_from_csv.py)
 
 ````
 ```python title="pandas_from_csv.py"
@@ -124,6 +125,7 @@ from typing import Optional
 
 import pandas as pd
 
+
 def load_data_from_csv(file_path: str) -> Optional[pd.DataFrame]:
     """
     Loads data from a CSV file into a Pandas DataFrame.
@@ -134,6 +136,7 @@ def load_data_from_csv(file_path: str) -> Optional[pd.DataFrame]:
     except FileNotFoundError:
         print(f"❌ Error: The file was not found at {file_path}")
         return None
+
 
 def filter_by_title(df: pd.DataFrame, keyword: str) -> pd.DataFrame:
     """
@@ -148,6 +151,7 @@ def filter_by_title(df: pd.DataFrame, keyword: str) -> pd.DataFrame:
     mask = title_series.str.contains(keyword, case=False, na=False)
 
     return df.loc[mask]
+
 
 def main():
     """Main function to demonstrate loading and filtering a CSV."""
@@ -179,6 +183,7 @@ def main():
         js_titles_df = filter_by_title(df, "JavaScript")
         print(f"Found {len(js_titles_df)} titles containing 'JavaScript':")
         print(js_titles_df["title"].to_string(index=False))
+
 
 if __name__ == "__main__":
     main()
@@ -221,6 +226,7 @@ data = {
 # Create the DataFrame
 df = pd.DataFrame(data)
 
+
 # --- Inspecting the DataFrame ---
 # These are the first commands you should run after creating or loading a DataFrame.
 print("--- Inspecting the DataFrame ---")
@@ -240,6 +246,7 @@ print("Descriptive statistics (df.describe()):")
 print(df.describe())
 print("-" * 20)
 
+
 # --- Selecting Columns ---
 print("--- Selecting Columns ---")
 
@@ -256,6 +263,7 @@ product_and_sales = df[["Product Name", "Units Sold"]]
 print("The 'Product Name' and 'Units Sold' columns (a new DataFrame):")
 print(product_and_sales)
 print("-" * 20)
+
 
 # --- Creating a New Column (Vectorized Operation) ---
 print("--- Creating a New 'Revenue' Column ---")
@@ -297,6 +305,7 @@ print("Employee DataFrame Info (employee_df.info()):")
 employee_df.info()
 print("-" * 20)
 
+
 # --- Exercise 2: Analyze Sales Data ---
 print("--- Solution to Exercise 2 ---")
 # First, let's create the DataFrame from the lesson to work with
@@ -322,6 +331,7 @@ print()
 print("Statistical summary of numerical columns:")
 print(df.describe())
 print("-" * 20)
+
 
 # --- Exercise 3: Calculate a New Column ---
 print("--- Solution to Exercise 3 ---")

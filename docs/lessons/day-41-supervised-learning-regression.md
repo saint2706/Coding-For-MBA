@@ -53,8 +53,9 @@ _You are on lesson 41 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_41_Supervised_Learning_Regression/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_41_Supervised_Learning_Regression/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_41_Supervised_Learning_Regression/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_41_Supervised_Learning_Regression/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_41_Supervised_Learning_Regression/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -77,6 +78,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 
+
 def generate_regression_data(
     n_samples: int = 100,
     slope: float = 2.5,
@@ -91,6 +93,7 @@ def generate_regression_data(
     y = intercept + slope * X.flatten() + noise
     return X, y
 
+
 def split_regression_data(
     X: np.ndarray,
     y: np.ndarray,
@@ -100,6 +103,7 @@ def split_regression_data(
     """Split features and labels into train/test sets."""
     return train_test_split(X, y, test_size=test_size, random_state=random_state)
 
+
 def train_regression_model(
     X_train: np.ndarray, y_train: np.ndarray
 ) -> LinearRegression:
@@ -108,9 +112,11 @@ def train_regression_model(
     model.fit(X_train, y_train)
     return model
 
+
 def make_regression_predictions(model: LinearRegression, X: np.ndarray) -> np.ndarray:
     """Return predictions for the provided features."""
     return model.predict(X)
+
 
 def evaluate_regression_model(
     y_true: np.ndarray, y_pred: np.ndarray
@@ -120,6 +126,7 @@ def evaluate_regression_model(
         "mse": mean_squared_error(y_true, y_pred),
         "r2": r2_score(y_true, y_pred),
     }
+
 
 def plot_regression_results(
     X: np.ndarray,
@@ -149,6 +156,7 @@ def plot_regression_results(
     fig.savefig(output_path)
     return fig, output_path
 
+
 def run_linear_regression_demo(
     save_path: str | Path = "regression_fit.png",
 ) -> Dict[str, float]:
@@ -160,6 +168,7 @@ def run_linear_regression_demo(
     metrics = evaluate_regression_model(y_test, y_pred)
     plot_regression_results(X_test, y_test, y_pred, filepath=save_path)
     return metrics
+
 
 if __name__ == "__main__":
     metrics = run_linear_regression_demo()

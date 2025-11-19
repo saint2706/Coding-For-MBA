@@ -89,16 +89,17 @@ _You are on lesson 16 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/fh.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/fh.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_16_File_Handling/fh.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_16_File_Handling/solutions.ipynb){ .md-button }
-  - **stop_words.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/stop_words.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/stop_words.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_16_File_Handling/stop_words.ipynb){ .md-button }
-    ???+ example "fh.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/fh.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_16_File_Handling/solutions.ipynb){ .md-button }
+- **stop_words.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/stop_words.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/stop_words.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_16_File_Handling/stop_words.ipynb){ .md-button }
+
+???+ example "fh.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_16_File_Handling/fh.py)
 
 ````
 ```python title="fh.py"
@@ -120,6 +121,7 @@ try:
 except ImportError:
     from stop_words import stop_words as sw
 
+
 def count_words_and_lines(fname: str) -> Tuple[int, int]:
     """Count words and lines in a text file."""
     num_words, num_lines = 0, 0
@@ -137,6 +139,7 @@ def count_words_and_lines(fname: str) -> Tuple[int, int]:
     except IOError as e:
         print(f"❌ Error reading file '{fname}': {e}")
         return 0, 0
+
 
 def find_most_common_words(fname: str, top_n: int) -> List[Tuple[str, int]]:
     """Find the most frequently used words in a text file, ignoring stop words."""
@@ -162,6 +165,7 @@ def find_most_common_words(fname: str, top_n: int) -> List[Tuple[str, int]]:
         print(f"❌ An unexpected error occurred: {e}")
         return []
 
+
 def extract_emails_from_file(fname: str) -> List[str]:
     """Extract all unique email addresses from a text file."""
     email_pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
@@ -179,14 +183,17 @@ def extract_emails_from_file(fname: str) -> List[str]:
         print(f"❌ An unexpected error occurred: {e}")
         return []
 
+
 def check_email(email: str) -> bool:
     """Validate an email address format."""
     email_pattern = r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b"
     return re.match(email_pattern, email) is not None
 
+
 # Aliases for backward compatibility
 counter = count_words_and_lines
 extract_emails = extract_emails_from_file
+
 
 def analyze_sales_csv(fname: str) -> Optional[Dict[str, float]]:
     """
@@ -226,6 +233,7 @@ def analyze_sales_csv(fname: str) -> Optional[Dict[str, float]]:
     except Exception as e:
         print(f"❌ An unexpected error occurred: {e}")
         return None
+
 
 def main():
     """Main function to demonstrate file handling capabilities."""
@@ -273,6 +281,7 @@ def main():
 
     print("\n✨ Demonstration complete!")
 
+
 if __name__ == "__main__":
     main()
 ```
@@ -304,6 +313,7 @@ from fh import (
     extract_emails,
     find_most_common_words,
 )
+
 
 def exercise_1_document_analyzer():
     """
@@ -371,6 +381,7 @@ def exercise_1_document_analyzer():
         os.remove(story_file)
         print(f"🧹 Cleaned up: {story_file}")
 
+
 def batch_analyze_business_documents():
     """
     Advanced function for analyzing multiple business documents
@@ -425,6 +436,7 @@ def batch_analyze_business_documents():
             print("      🎯 Common themes across documents:")
             for i, (word, freq) in enumerate(top_themes, 1):
                 print(f"         {i}. '{word}': {freq} mentions")
+
 
 def exercise_2_contact_management():
     """
@@ -496,6 +508,7 @@ def exercise_2_contact_management():
     else:
         print("   ℹ️  No email addresses found in available files")
 
+
 def export_contacts_to_csv(contact_database: Dict[str, List[str]]):
     """
     Export contact database to CSV format for business use.
@@ -522,6 +535,7 @@ def export_contacts_to_csv(contact_database: Dict[str, List[str]]):
 
     except Exception as e:
         print(f"   ❌ Error exporting contacts: {e}")
+
 
 def main():
     """
@@ -550,6 +564,7 @@ def main():
     except Exception as e:
         print(f"❌ Error in main execution: {e}")
         print("💡 This may be due to missing sample files in the data directory")
+
 
 if __name__ == "__main__":
     main()

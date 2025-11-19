@@ -101,12 +101,13 @@ _You are on lesson 1 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/helloworld.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/helloworld.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_01_Introduction/helloworld.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_01_Introduction/solutions.ipynb){ .md-button }
-    ???+ example "helloworld.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/helloworld.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_01_Introduction/solutions.ipynb){ .md-button }
+
+???+ example "helloworld.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_01_Introduction/helloworld.py)
 
 ````
 ```python title="helloworld.py"
@@ -117,6 +118,7 @@ This script demonstrates basic Python concepts using business-relevant examples.
 We will perform a simple profit calculation and check the types of various
 business-related data points. This version is refactored to use functions.
 """
+
 
 def calculate_gross_profit(revenue, cogs):
     """
@@ -145,6 +147,7 @@ def calculate_gross_profit(revenue, cogs):
     """
     # Simple subtraction: Revenue - Costs = Profit
     return revenue - cogs
+
 
 def calculate_gross_profit_margin(gross_profit, revenue):
     """
@@ -175,6 +178,7 @@ def calculate_gross_profit_margin(gross_profit, revenue):
         return 0
     # Formula: (Gross Profit / Revenue) × 100
     return (gross_profit / revenue) * 100
+
 
 def display_business_analytics(revenue, cogs):
     """
@@ -210,6 +214,7 @@ def display_business_analytics(revenue, cogs):
     print(f"Gross Profit Margin: {gross_profit_margin:.2f}%")
     print("-" * 20)  # Visual separator
 
+
 def display_data_types():
     """
     Displays the types of various business-related data points.
@@ -240,6 +245,7 @@ def display_data_types():
     print(f"Data: '{company_name}', Type: {type(company_name)}")
     print(f"Data: {is_in_stock}, Type: {type(is_in_stock)}")
     print(f"Data: {quarterly_sales}, Type: {type(quarterly_sales)}")
+
 
 if __name__ == "__main__":
     # This special condition checks if this file is being run directly
@@ -273,12 +279,14 @@ print("--- Solution to Exercise 1 ---")
 print("Welcome to InnovateCorp Analytics")
 print("-" * 20)
 
+
 # --- Exercise 2: Quarterly Sales Calculation ---
 print("--- Solution to Exercise 2 ---")
 # The calculation is done directly inside the print function.
 print("Total Annual Sales:")
 print(110000 + 120000 + 135000 + 140000)
 print("-" * 20)
+
 
 # --- Exercise 3: Checking Data Types in Business ---
 print("--- Solution to Exercise 3 ---")

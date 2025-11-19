@@ -34,8 +34,9 @@ _You are on lesson 60 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_60_Graph_and_Geometric_Learning/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_60_Graph_and_Geometric_Learning/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_60_Graph_and_Geometric_Learning/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_60_Graph_and_Geometric_Learning/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_60_Graph_and_Geometric_Learning/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -48,6 +49,7 @@ from typing import Dict, List
 
 import numpy as np
 
+
 @dataclass
 class GraphData:
     """Simple container for toy graph node classification tasks."""
@@ -55,6 +57,7 @@ class GraphData:
     features: np.ndarray
     adjacency: np.ndarray
     labels: np.ndarray
+
 
 def build_toy_graph() -> GraphData:
     """Create a reproducible toy graph with two communities."""
@@ -85,11 +88,13 @@ def build_toy_graph() -> GraphData:
     adjacency = adjacency + np.eye(adjacency.shape[0]) * 0.0  # ensure float copy
     return GraphData(features=features, adjacency=adjacency, labels=labels)
 
+
 def _softmax(logits: np.ndarray) -> np.ndarray:
     logits = logits - logits.max(axis=1, keepdims=True)
     exp = np.exp(logits)
     exp /= exp.sum(axis=1, keepdims=True)
     return exp
+
 
 class GraphSAGEClassifier:
     """Mean-aggregator GraphSAGE classifier with manual gradients."""
@@ -182,6 +187,7 @@ class GraphSAGEClassifier:
         preds = self.predict(data)
         return float((preds == data.labels).mean())
 
+
 class GraphAttentionClassifier:
     """Attention-based aggregator with trainable linear head."""
 
@@ -258,6 +264,7 @@ class GraphAttentionClassifier:
         preds = self.predict(data)
         return float((preds == data.labels).mean())
 
+
 def train_node_classifiers(random_state: int = 60) -> Dict[str, object]:
     """Train both GraphSAGE and graph attention classifiers on the toy graph."""
 
@@ -275,12 +282,14 @@ def train_node_classifiers(random_state: int = 60) -> Dict[str, object]:
     }
     return results
 
+
 def _demo() -> None:
     results = train_node_classifiers()
     print(
         f"GraphSAGE accuracy: {results['graphsage_accuracy']:.3f} | GAT accuracy: {results['gat_accuracy']:.3f}"
     )
     print(f"Attention matrix row sums: {results['attention_matrix'].sum(axis=1)}")
+
 
 if __name__ == "__main__":
     _demo()

@@ -120,6 +120,7 @@ from Day_74_BI_Data_Preparation_and_Tools.solutions import (
     remove_duplicates,
 )
 
+
 def standardise_types(df: pd.DataFrame) -> pd.DataFrame:
     """Cast date columns and normalise casing for categorical columns."""
 
@@ -130,6 +131,7 @@ def standardise_types(df: pd.DataFrame) -> pd.DataFrame:
         result["Segment"] = result["Segment"].str.title()
     return result
 
+
 def enrich_metrics(df: pd.DataFrame) -> pd.DataFrame:
     """Create helper metrics that highlight data quality fixes."""
 
@@ -137,6 +139,7 @@ def enrich_metrics(df: pd.DataFrame) -> pd.DataFrame:
     if {"Revenue", "Cost"}.issubset(result.columns):
         result["Gross Margin"] = result["Revenue"] - result["Cost"]
     return result
+
 
 def demonstrate_python_pipeline() -> pd.DataFrame:
     """Show a pandas-based cleaning pipeline using the helper utilities."""
@@ -175,6 +178,7 @@ def demonstrate_python_pipeline() -> pd.DataFrame:
 
     return pipeline(sales)
 
+
 def demonstrate_r_pipeline() -> str:
     """Return a tidyverse-style pipeline highlighting equivalent steps."""
 
@@ -192,6 +196,7 @@ def demonstrate_r_pipeline() -> str:
       )
     """.strip()
 
+
 def demonstrate_excel_pipeline() -> str:
     """Return a textual description of the Excel workflow."""
 
@@ -203,6 +208,7 @@ def demonstrate_excel_pipeline() -> str:
         "Insert a helper column Gross Margin with =[@Revenue]-[@Cost] and format as currency.",
     ]
     return "\n".join(f"{idx + 1}. {step}" for idx, step in enumerate(steps))
+
 
 def main() -> None:
     sections = assemble_curriculum_sections()
@@ -226,6 +232,7 @@ def main() -> None:
 
     print("\n=== Excel Workflow ===")
     print(demonstrate_excel_pipeline())
+
 
 if __name__ == "__main__":
     main()
@@ -254,6 +261,7 @@ DATA_QUALITY_TOPICS: Sequence[str] = (
 )
 
 TOOLING_TOPICS: Sequence[str] = ("Pandas", "dplyr", "Excel")
+
 
 def assemble_curriculum_sections() -> pd.DataFrame:
     """Return a dataframe describing the curriculum sections for the day.
@@ -329,6 +337,7 @@ def assemble_curriculum_sections() -> pd.DataFrame:
         entries, columns=["category", "title", "objective", "workflow_highlights"]
     )
 
+
 def build_transformation_helpers() -> Dict[str, List[str]]:
     """Return per-tool helper guidance for chaining transformations."""
 
@@ -350,6 +359,7 @@ def build_transformation_helpers() -> Dict[str, List[str]]:
         ],
     }
 
+
 def remove_duplicates(
     df: pd.DataFrame, subset: Iterable[str] | None = None
 ) -> pd.DataFrame:
@@ -365,6 +375,7 @@ def remove_duplicates(
 
     cleaned = df.drop_duplicates(subset=subset, keep="first").reset_index(drop=True)
     return cleaned
+
 
 def handle_missing_values(
     df: pd.DataFrame,
@@ -393,6 +404,7 @@ def handle_missing_values(
         return df.fillna(value=fill_value).reset_index(drop=True)
     return df.fillna(value=fill_value).reset_index(drop=True)
 
+
 def build_pipeline(
     transformations: Sequence[Tuple[Callable[[pd.DataFrame], pd.DataFrame], Dict]],
 ) -> Callable[[pd.DataFrame], pd.DataFrame]:
@@ -410,10 +422,12 @@ def build_pipeline(
 
     return _pipeline
 
+
 def get_expected_titles() -> List[str]:
     """Return the canonical list of topic titles for testing purposes."""
 
     return list(DATA_QUALITY_TOPICS) + list(TOOLING_TOPICS)
+
 
 __all__ = [
     "assemble_curriculum_sections",

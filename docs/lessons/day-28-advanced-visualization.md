@@ -119,12 +119,13 @@ _You are on lesson 28 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/advanced_visualization.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/advanced_visualization.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_28_Advanced_Visualization/advanced_visualization.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_28_Advanced_Visualization/solutions.ipynb){ .md-button }
-    ???+ example "advanced_visualization.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/advanced_visualization.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_28_Advanced_Visualization/solutions.ipynb){ .md-button }
+
+???+ example "advanced_visualization.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_28_Advanced_Visualization/advanced_visualization.py)
 
 ````
 ```python title="advanced_visualization.py"
@@ -139,12 +140,14 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+
 def _require_columns(df: pd.DataFrame, required: Iterable[str]) -> None:
     """Raise a ``ValueError`` if any of the ``required`` columns are missing."""
 
     missing = set(required) - set(df.columns)
     if missing:
         raise ValueError(f"DataFrame is missing required columns: {sorted(missing)}")
+
 
 def build_product_revenue_bar(df: pd.DataFrame) -> plt.Figure:
     """Return a bar chart showing total revenue per product."""
@@ -186,6 +189,7 @@ def build_product_revenue_bar(df: pd.DataFrame) -> plt.Figure:
     fig.tight_layout()
     return fig
 
+
 def build_sales_dashboard(df: pd.DataFrame) -> plt.Figure:
     """Return a dashboard with a daily revenue line chart and revenue distribution histogram."""
 
@@ -212,6 +216,7 @@ def build_sales_dashboard(df: pd.DataFrame) -> plt.Figure:
     fig.tight_layout(rect=(0, 0.03, 1, 0.95))
     return fig
 
+
 def load_sales_data(data_path: Path | None = None) -> pd.DataFrame:
     """Load the ``sales_data.csv`` file bundled with the lesson."""
 
@@ -222,6 +227,7 @@ def load_sales_data(data_path: Path | None = None) -> pd.DataFrame:
     df = pd.read_csv(data_path, parse_dates=["Date"])
     df.dropna(inplace=True)
     return df
+
 
 def main() -> None:
     """Run the example workflow and display the generated figures."""
@@ -241,6 +247,7 @@ def main() -> None:
     print("\n--- 2. Creating a 2x1 Dashboard ---")
     fig_dashboard = build_sales_dashboard(df)
     fig_dashboard.show()
+
 
 if __name__ == "__main__":
     main()
@@ -274,6 +281,7 @@ try:
 except FileNotFoundError:
     print("Error: sales_data.csv not found. Keep the CSV beside this script.")
     df = pd.DataFrame()
+
 
 if not df.empty:
     # --- Exercise 1: Create a Customized Sales Chart ---

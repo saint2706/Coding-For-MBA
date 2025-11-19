@@ -91,12 +91,13 @@ _You are on lesson 3 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/operators.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/operators.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_03_Operators/operators.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_03_Operators/solutions.ipynb){ .md-button }
-    ???+ example "operators.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/operators.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_03_Operators/solutions.ipynb){ .md-button }
+
+???+ example "operators.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_03_Operators/operators.py)
 
 ````
 ```python title="operators.py"
@@ -107,6 +108,7 @@ This script demonstrates how different Python operators can be used
 to perform business calculations and logical checks. This version is
 refactored into functions for better organization and testability.
 """
+
 
 def calculate_compound_interest(principal, rate, time, n=1):
     """
@@ -150,6 +152,7 @@ def calculate_compound_interest(principal, rate, time, n=1):
     final_amount = principal * (1 + rate / n) ** (n * time)
     return final_amount
 
+
 def accumulate_sales(initial_sales, daily_sales):
     """
     Accumulates daily sales into a total using the += operator.
@@ -177,6 +180,7 @@ def accumulate_sales(initial_sales, daily_sales):
         total += sale
     return total
 
+
 def check_inventory_status(inventory_count, low_stock_threshold):
     """
     Checks if the inventory count is below the low stock threshold.
@@ -200,6 +204,7 @@ def check_inventory_status(inventory_count, low_stock_threshold):
     # Returns True if inventory_count is less than low_stock_threshold
     return inventory_count < low_stock_threshold
 
+
 def check_sales_target(current_sales, sales_target):
     """
     Checks if the current sales have met or exceeded the sales target.
@@ -219,6 +224,7 @@ def check_sales_target(current_sales, sales_target):
     # The >= operator checks for "greater than or equal to"
     # Returns True if current_sales is at least as much as sales_target
     return current_sales >= sales_target
+
 
 def check_bonus_eligibility(sales, years_of_service, top_performer_last_quarter):
     """
@@ -251,6 +257,7 @@ def check_bonus_eligibility(sales, years_of_service, top_performer_last_quarter)
     # Parentheses () group conditions and control order of evaluation
     is_eligible = (sales > 10000 and years_of_service > 2) or top_performer_last_quarter
     return is_eligible
+
 
 if __name__ == "__main__":
     # --- Arithmetic Operators for Financial Calculations ---
@@ -340,6 +347,7 @@ else:
     print("Cannot calculate margin as revenue is zero.")
 print("-" * 20)
 
+
 # --- Exercise 2: Inventory Check ---
 print("--- Solution to Exercise 2 ---")
 inventory_count = 45
@@ -354,8 +362,10 @@ print(f"Is inventory considered low stock? {is_low_stock}")
 print(f"Is a reorder required? {reorder_required}")
 print("-" * 20)
 
+
 # --- Exercise 3: Sales Bonus Eligibility ---
 print("--- Solution to Exercise 3 ---")
+
 
 def check_bonus_eligibility(sales, years_of_service, top_performer_last_quarter):
     """A helper function to test different scenarios easily."""
@@ -363,6 +373,7 @@ def check_bonus_eligibility(sales, years_of_service, top_performer_last_quarter)
     print(
         f"Scenario: Sales=${sales}, Service={years_of_service}yrs, Top Performer={top_performer_last_quarter} -> Eligible? {is_eligible}"
     )
+
 
 # Scenario 1: High sales but new employee
 check_bonus_eligibility(12000, 1, False)

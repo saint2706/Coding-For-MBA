@@ -86,12 +86,13 @@ _You are on lesson 11 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/functions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/functions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_11_Functions/functions.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_11_Functions/solutions.ipynb){ .md-button }
-    ???+ example "functions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/functions.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_11_Functions/solutions.ipynb){ .md-button }
+
+???+ example "functions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_11_Functions/functions.py)
 
 ````
 ```python title="functions.py"
@@ -101,6 +102,7 @@ Day 11: Building Reusable Business Tools with Functions (Refactored)
 This script demonstrates how to define and call functions
 to perform repeatable business calculations.
 """
+
 
 # Type hints make the function's expected inputs and outputs clear
 # revenue: float means "revenue parameter should be a float"
@@ -132,6 +134,7 @@ def get_net_profit(revenue: float, expenses: float) -> float:
     net_profit = revenue - expenses
     return net_profit  # 'return' sends the result back to the caller
 
+
 def calculate_commission(sales_amount: float) -> float:
     """
     Calculates a 15% commission on a given sales amount.
@@ -158,6 +161,7 @@ def calculate_commission(sales_amount: float) -> float:
     commission_rate = 0.15  # 15% commission rate
     commission = sales_amount * commission_rate
     return commission
+
 
 def is_eligible_for_bonus(performance_rating: int, years_of_service: int) -> bool:
     """
@@ -190,6 +194,7 @@ def is_eligible_for_bonus(performance_rating: int, years_of_service: int) -> boo
     # Returns True if rating is 4 or 5 AND service is more than 2 years
     return performance_rating >= 4 and years_of_service > 2
 
+
 def format_currency(amount: float) -> str:
     """
     Formats a number into a currency string (e.g., $1,234.56).
@@ -214,6 +219,7 @@ def format_currency(amount: float) -> str:
     """
     # f-string formatting: {:,.2f} means "format as float with commas and 2 decimals"
     return f"${amount:,.2f}"
+
 
 def main():
     """Main function to demonstrate the use of the business functions."""
@@ -258,6 +264,7 @@ def main():
     )
     print("-" * 20)
 
+
 if __name__ == "__main__":
     main()
 ```
@@ -275,6 +282,7 @@ Day 11: Solutions to Exercises
 # --- Exercise 1: Commission Calculator Function ---
 print("--- Solution to Exercise 1 ---")
 
+
 def calculate_commission(sales_amount: float) -> float:
     """
     Calculates a commission of 15% of the sales amount.
@@ -283,20 +291,24 @@ def calculate_commission(sales_amount: float) -> float:
     commission_rate = 0.15
     return sales_amount * commission_rate
 
+
 # Example usage:
 sample_sale = 5000.00
 commission_earned = calculate_commission(sample_sale)
 print(f"A sale of ${sample_sale:,.2f} earns a commission of ${commission_earned:,.2f}.")
 print("-" * 20)
 
+
 # --- Exercise 2: Employee Bonus Eligibility Function ---
 print("--- Solution to Exercise 2 ---")
+
 
 def is_eligible_for_bonus(performance_rating: int, years_of_service: int) -> bool:
     """
     Returns True if rating is 4 or 5 AND service is more than 2 years.
     """
     return performance_rating >= 4 and years_of_service > 2
+
 
 # Test cases:
 print(
@@ -313,8 +325,10 @@ print(
 )  # Expected: False
 print("-" * 20)
 
+
 # --- Exercise 3: Format Currency Function ---
 print("--- Solution to Exercise 3 ---")
+
 
 def format_currency(number: float) -> str:
     """
@@ -322,6 +336,7 @@ def format_currency(number: float) -> str:
     Example: 1250.5 -> "$1,250.50"
     """
     return f"${number:,.2f}"
+
 
 # Example usage:
 amount1 = 1250.5

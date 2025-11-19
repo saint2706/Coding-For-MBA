@@ -51,12 +51,14 @@ _You are on lesson 38 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_38_Linear_Algebra/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_38_Linear_Algebra/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_38_Linear_Algebra/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_38_Linear_Algebra/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_38_Linear_Algebra/solutions.py)
 
 ````
 ```python title="solutions.py"
 import numpy as np
+
 
 def vector_operations(v1=None, v2=None):
     """Return the sum, difference, and dot product of two vectors."""
@@ -70,6 +72,7 @@ def vector_operations(v1=None, v2=None):
 
     return vector_sum, vector_difference, dot_product
 
+
 def matrix_operations(m1=None, m2=None):
     """Return the sum and product of two matrices."""
 
@@ -81,12 +84,14 @@ def matrix_operations(m1=None, m2=None):
 
     return matrix_sum, matrix_product
 
+
 def eigen_analysis(matrix=None):
     """Return the eigenvalues and eigenvectors for the provided matrix."""
 
     matrix_array = np.array([[4, 1], [2, 3]]) if matrix is None else np.asarray(matrix)
     eigenvalues, eigenvectors = np.linalg.eig(matrix_array)
     return eigenvalues, eigenvectors
+
 
 def main():
     print("--- Vector Operations ---")
@@ -108,6 +113,7 @@ def main():
     print(f"Eigenvalues: {eigenvalues}")
     print(f"Eigenvectors:\n{eigenvectors}")
     print("-" * 25)
+
 
 if __name__ == "__main__":
     main()

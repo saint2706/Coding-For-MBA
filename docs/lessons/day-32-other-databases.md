@@ -123,8 +123,9 @@ _You are on lesson 32 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_32_Other_Databases/other_databases.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_32_Other_Databases/other_databases.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_32_Other_Databases/other_databases.ipynb){ .md-button }
-  ???+ example "other_databases.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_32_Other_Databases/other_databases.py)
+
+???+ example "other_databases.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_32_Other_Databases/other_databases.py)
 
 ````
 ```python title="other_databases.py"
@@ -143,6 +144,7 @@ from typing import Any, Callable, Iterable, Mapping, MutableMapping, Optional, S
 
 Credentials = Mapping[str, Any]
 ClientFactory = Callable[[Credentials], Any]
+
 
 def execute_sql_query(
     client_factory: ClientFactory,
@@ -202,6 +204,7 @@ def execute_sql_query(
         if hasattr(connection, "close"):
             connection.close()
 
+
 def upsert_sales_forecast(
     client_factory: ClientFactory,
     *,
@@ -236,6 +239,7 @@ def upsert_sales_forecast(
         if hasattr(connection, "close"):
             connection.close()
 
+
 def find_documents(
     mongo_client: MutableMapping[str, Any],
     *,
@@ -257,6 +261,7 @@ def find_documents(
         cursor = collection_handle.find(filter_query, projection)
 
     return list(cursor)
+
 
 def insert_documents(
     mongo_client: MutableMapping[str, Any],

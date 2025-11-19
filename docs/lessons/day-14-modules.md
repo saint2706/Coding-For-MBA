@@ -115,16 +115,17 @@ _You are on lesson 14 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/business_logic.ipynb){ .md-button }
-  - **modules.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/modules.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/solutions.ipynb){ .md-button }
-    ???+ example "business_logic.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.py)
+- **modules.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/modules.ipynb){ .md-button }
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/solutions.ipynb){ .md-button }
+
+???+ example "business_logic.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.py)
 
 ````
 ```python title="business_logic.py"
@@ -135,20 +136,24 @@ This file acts as a module containing various reusable functions
 for common business calculations and validations.
 """
 
+
 def calculate_roi(investment: float, profit: float) -> float:
     """Calculates the Return on Investment (ROI)."""
     if investment == 0:
         return 0
     return (profit / investment) * 100
 
+
 def calculate_future_value(principal: float, rate: float, years: int) -> float:
     """Calculates the future value of an investment with annual compounding."""
     return principal * ((1 + rate) ** years)
+
 
 def is_eligible_for_promotion(years_of_service: int, performance_rating: int) -> bool:
     """Checks if an employee is eligible for promotion."""
     # Rule: Must have > 3 years of service and a performance rating of 4 or 5.
     return years_of_service > 3 and performance_rating >= 4
+
 
 def format_as_currency(amount: float) -> str:
     """Formats a number into a standard currency string."""
@@ -203,6 +208,7 @@ import math
 
 import business_logic as bl
 
+
 def demonstrate_custom_module():
     """Demonstrates using functions from the custom business_logic module."""
     print("--- Using Custom Business Logic Module ---")
@@ -221,6 +227,7 @@ def demonstrate_custom_module():
     )
     print("-" * 20)
 
+
 def demonstrate_builtin_modules():
     """Demonstrates using Python's built-in datetime and math modules."""
     print("--- Using Built-in 'datetime' and 'math' Modules ---")
@@ -236,10 +243,12 @@ def demonstrate_builtin_modules():
     )
     print("-" * 20)
 
+
 def main():
     """Main function to demonstrate module usage."""
     demonstrate_custom_module()
     demonstrate_builtin_modules()
+
 
 if __name__ == "__main__":
     main()
@@ -278,6 +287,7 @@ print(
 )
 print("-" * 20)
 
+
 # --- Exercise 2: Use the `datetime` Module ---
 print("--- Solution to Exercise 2 ---")
 # import the module
@@ -291,6 +301,7 @@ print(f"Current year: {now.year}")
 print(f"Current month: {now.month}")
 print(f"Current day: {now.day}")
 print("-" * 20)
+
 
 # --- Exercise 3: Use the `math` Module ---
 print("--- Solution to Exercise 3 ---")

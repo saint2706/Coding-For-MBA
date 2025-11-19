@@ -32,8 +32,9 @@ _You are on lesson 52 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_52_Ensemble_Methods/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_52_Ensemble_Methods/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_52_Ensemble_Methods/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_52_Ensemble_Methods/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_52_Ensemble_Methods/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -60,6 +61,7 @@ from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.pipeline import Pipeline, make_pipeline
 from sklearn.preprocessing import StandardScaler
 
+
 @dataclass
 class EnsembleResult:
     """Summary of an ensemble model and its validation score."""
@@ -67,6 +69,7 @@ class EnsembleResult:
     name: str
     model: object
     score: float
+
 
 def generate_classification_data(
     n_samples: int = 400,
@@ -86,6 +89,7 @@ def generate_classification_data(
         random_state=random_state,
     )
     return X, y
+
 
 def train_random_forest(
     X: np.ndarray,
@@ -107,6 +111,7 @@ def train_random_forest(
     model.fit(X, y)
     return model
 
+
 def train_gradient_boosting(
     X: np.ndarray,
     y: np.ndarray,
@@ -125,6 +130,7 @@ def train_gradient_boosting(
     )
     model.fit(X, y)
     return model
+
 
 def build_stacking_classifier(
     estimators: List[Tuple[str, Pipeline]] | None = None,
@@ -169,6 +175,7 @@ def build_stacking_classifier(
     )
     return stacking
 
+
 def calibrate_classifier(
     model,
     X_train: np.ndarray,
@@ -182,6 +189,7 @@ def calibrate_classifier(
     calibrated.fit(X_train, y_train)
     return calibrated
 
+
 def evaluate_classifier(
     model, X_test: np.ndarray, y_test: np.ndarray
 ) -> Dict[str, float]:
@@ -193,6 +201,7 @@ def evaluate_classifier(
         "accuracy": float(accuracy_score(y_test, preds)),
         "brier": float(brier_score_loss(y_test, probs)),
     }
+
 
 def export_feature_importance(
     model: RandomForestClassifier,
@@ -212,6 +221,7 @@ def export_feature_importance(
         importances.to_csv(output_path, index=False)
     return importances.reset_index(drop=True)
 
+
 def evaluate_with_cross_validation(
     model,
     X: np.ndarray,
@@ -223,6 +233,7 @@ def evaluate_with_cross_validation(
 
     scores = cross_val_score(model, X, y, cv=cv, scoring=scoring)
     return float(np.mean(scores))
+
 
 def run_day52_demo() -> Dict[str, EnsembleResult]:
     """Train and evaluate the featured ensemble models."""
@@ -257,6 +268,7 @@ def run_day52_demo() -> Dict[str, EnsembleResult]:
         ),
     }
     return results
+
 
 if __name__ == "__main__":
     results = run_day52_demo()

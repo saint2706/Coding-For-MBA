@@ -90,12 +90,13 @@ _You are on lesson 20 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_20_Python_Package_Manager/solutions.ipynb){ .md-button }
-  - **url.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/url.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/url.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_20_Python_Package_Manager/url.ipynb){ .md-button }
-    ???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/solutions.py)
+- **url.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/url.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/url.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_20_Python_Package_Manager/url.ipynb){ .md-button }
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_20_Python_Package_Manager/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -142,6 +143,7 @@ print("✅ To install pandas, run: pip install pandas")
 print("✅ To verify installation, run: pip show pandas")
 print("=" * 50)
 
+
 ## Exercise 2: Explore a package
 
 """
@@ -174,11 +176,13 @@ print("🎯 Purpose: HTTP requests made simple for Python")
 print("💼 Business use: API integrations, data collection, web services")
 print("=" * 50)
 
+
 ## Exercise 3: Analyze country data
 
 print("\\n🌍 Exercise 3: Analyzing World Countries Data")
 print("🎯 Objective: Find the top 5 largest countries by area")
 print("📊 Data Source: REST Countries API v3.1")
+
 
 def top_5_largest_countries_by_area():
     """
@@ -261,6 +265,7 @@ def top_5_largest_countries_by_area():
     except Exception as e:
         print(f"❌ Unexpected error occurred: {e}")
 
+
 def demonstrate_additional_package_features():
     """
     Bonus demonstration: Additional features you can explore with pip and packages.
@@ -290,6 +295,7 @@ def demonstrate_additional_package_features():
     for package, description in packages:
         print(f"   • {package:12s} - {description}")
 
+
 def main():
     """Main function to run all exercise solutions."""
     print("🚀 Day 20: Python Package Manager Solutions")
@@ -308,6 +314,7 @@ def main():
     print("   ✅ Use APIs for real-world data analysis")
     print("   ✅ Handle errors in data fetching operations")
     print("\\n🌟 Next steps: Explore more packages at https://pypi.org/")
+
 
 if __name__ == "__main__":
     main()
@@ -339,6 +346,7 @@ except ImportError:
 
 # --- Data Fetching Functions ---
 
+
 def fetch_api_data(url: str) -> Optional[List[Dict[str, Any]]]:
     """Fetches and parses JSON data from a given API endpoint."""
     try:
@@ -354,12 +362,15 @@ def fetch_api_data(url: str) -> Optional[List[Dict[str, Any]]]:
         print("❌ Error: Failed to decode JSON response.")
         return None
 
+
 # --- Data Analysis Functions ---
+
 
 def analyze_text_frequency(text: str, top_n: int = 5) -> List[Tuple[str, int]]:
     """Analyzes text to find the most common words."""
     words = re.findall(r"\b[a-z]+\b", text.lower())
     return Counter(words).most_common(top_n)
+
 
 def parse_metric_range(metric_str: str) -> float:
     """Parses a string like '3 - 7' and returns the average."""
@@ -368,6 +379,7 @@ def parse_metric_range(metric_str: str) -> float:
         return sum(parts) / len(parts)
     except (ValueError, IndexError):
         return 0.0
+
 
 def analyze_breed_metrics(
     breeds_data: List[Dict[str, Any]], metric: str, unit: str
@@ -395,6 +407,7 @@ def analyze_breed_metrics(
         "std_dev": np.std(values),
     }
 
+
 def analyze_breed_origins(
     breeds_data: List[Dict[str, Any]], top_n: int = 5
 ) -> List[Tuple[str, int]]:
@@ -405,6 +418,7 @@ def analyze_breed_origins(
         if "origin" in breed and breed["origin"]
     ]
     return Counter(origins).most_common(top_n)
+
 
 def main():
     """Main function to demonstrate package manager capabilities."""
@@ -447,6 +461,7 @@ def main():
         print("BeautifulSoup4 not installed. Skipping.")
 
     print("\n✅ Demo complete!")
+
 
 if __name__ == "__main__":
     main()

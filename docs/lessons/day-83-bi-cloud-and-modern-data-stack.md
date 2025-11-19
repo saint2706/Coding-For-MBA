@@ -141,6 +141,7 @@ COST_OPTIMIZATION_PROMPTS: Mapping[str, str] = {
     "Data movement": "Which provider-native services offset egress fees through in-platform processing?",
 }
 
+
 # %%
 def display_topic_groups(groups: Mapping[str, list]) -> None:
     """Print the grouped roadmap topics for facilitation."""
@@ -150,12 +151,14 @@ def display_topic_groups(groups: Mapping[str, list]) -> None:
         titles = ", ".join(topic.title for topic in topics)
         print(f"- {section}: {titles}")
 
+
 # %%
 def show_cloud_topic_frame(frame: pd.DataFrame) -> None:
     """Display the topic dataframe with descriptions and trade-offs."""
 
     print("\nLesson overview matrix:\n")
     print(frame.to_markdown(index=False))
+
 
 # %%
 def explain_architecture_patterns(patterns: Mapping[str, Mapping[str, str]]) -> None:
@@ -171,12 +174,14 @@ def explain_architecture_patterns(patterns: Mapping[str, Mapping[str, str]]) -> 
         print(f"  - Strength: {strength}")
         print(f"  - Cost trade-off: {cost_trade_off}\n")
 
+
 # %%
 def preview_provider_matrix(frame: pd.DataFrame) -> None:
     """Show the provider comparison matrix across AWS, GCP, and Azure."""
 
     print("\nProvider capability comparison:\n")
     print(frame.to_markdown(index=False))
+
 
 # %%
 def prompt_cost_reviews(prompts: Mapping[str, str]) -> None:
@@ -185,6 +190,7 @@ def prompt_cost_reviews(prompts: Mapping[str, str]) -> None:
     print("\nCost optimization prompts:\n")
     for theme, question in prompts.items():
         print(f"- {theme}: {question}")
+
 
 # %%
 def main() -> None:
@@ -195,6 +201,7 @@ def main() -> None:
     explain_architecture_patterns(CLOUD_ARCHITECTURE_PATTERNS)
     preview_provider_matrix(PROVIDER_FRAME)
     prompt_cost_reviews(COST_OPTIMIZATION_PROMPTS)
+
 
 # %%
 if __name__ == "__main__":
@@ -292,10 +299,12 @@ PROVIDER_COMPARISON: Mapping[str, Mapping[str, str]] = {
     },
 }
 
+
 def load_cloud_topics(titles: Sequence[str] = CLOUD_TITLES) -> List[BiTopic]:
     """Return the BI roadmap topics for the cloud and modern data stack lesson."""
 
     return list(topics_by_titles(titles))
+
 
 def group_cloud_topics(
     groups: Mapping[str, Sequence[str]] = CLOUD_TOPIC_GROUPS,
@@ -305,6 +314,7 @@ def group_cloud_topics(
     return {
         section: topics for section, topics in group_topics_by_titles(groups).items()
     }
+
 
 def build_cloud_topic_dataframe(
     *,
@@ -331,6 +341,7 @@ def build_cloud_topic_dataframe(
         columns=["section", "title", "description", "cost_trade_off"],
     )
 
+
 def build_provider_comparison_frame(
     comparisons: Mapping[str, Mapping[str, str]] = PROVIDER_COMPARISON,
 ) -> pd.DataFrame:
@@ -351,6 +362,7 @@ def build_provider_comparison_frame(
         rows.append(row)
     frame = pd.DataFrame(rows, columns=columns)
     return frame.sort_values("provider").reset_index(drop=True)
+
 
 __all__ = [
     "CLOUD_TITLES",

@@ -36,8 +36,9 @@ _You are on lesson 54 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_54_Probabilistic_Modeling/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_54_Probabilistic_Modeling/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_54_Probabilistic_Modeling/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_54_Probabilistic_Modeling/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_54_Probabilistic_Modeling/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -52,6 +53,7 @@ import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from sklearn.mixture import GaussianMixture
 from sklearn.naive_bayes import GaussianNB
+
 
 @dataclass
 class HiddenMarkovModel:
@@ -78,6 +80,7 @@ class HiddenMarkovModel:
         if self.covariances.shape[0] != self.transition.shape[0]:
             msg = "Covariances must match number of hidden states."
             raise ValueError(msg)
+
 
 def generate_probabilistic_dataset(
     n_samples: int = 400,
@@ -112,6 +115,7 @@ def generate_probabilistic_dataset(
     ordering = rng.permutation(n_samples)
     return observations[ordering], labels[ordering]
 
+
 def fit_gaussian_mixture(
     X: ArrayLike,
     n_components: int = 2,
@@ -132,11 +136,13 @@ def fit_gaussian_mixture(
     model.fit(np.asarray(X))
     return model
 
+
 def mixture_log_likelihood(model: GaussianMixture, X: ArrayLike) -> float:
     """Return the total data log-likelihood under the fitted mixture."""
 
     X = np.asarray(X)
     return float(np.sum(model.score_samples(X)))
+
 
 def run_expectation_maximisation(
     X: ArrayLike,
@@ -154,6 +160,7 @@ def run_expectation_maximisation(
     )
     return model, float(model.lower_bound_)
 
+
 def train_bayesian_classifier(X: ArrayLike, y: ArrayLike) -> GaussianNB:
     """Train a Gaussian Naive Bayes classifier."""
 
@@ -161,10 +168,12 @@ def train_bayesian_classifier(X: ArrayLike, y: ArrayLike) -> GaussianNB:
     model.fit(np.asarray(X), np.asarray(y))
     return model
 
+
 def bayesian_log_posterior(model: GaussianNB, X: ArrayLike) -> NDArray[np.float64]:
     """Return class log-posterior probabilities for the given observations."""
 
     return np.asarray(model.predict_log_proba(np.asarray(X)))
+
 
 def _gaussian_log_pdf(
     x: NDArray[np.float64], mean: NDArray[np.float64], cov: NDArray[np.float64]
@@ -184,6 +193,7 @@ def _gaussian_log_pdf(
     exponent = float(diff.T @ inv_cov @ diff)
     return -0.5 * (dim * np.log(2.0 * np.pi) + logdet + exponent)
 
+
 def _logsumexp(
     arr: NDArray[np.float64], axis: int | None = None
 ) -> NDArray[np.float64]:
@@ -197,6 +207,7 @@ def _logsumexp(
     if axis is None:
         return np.squeeze(result)
     return np.squeeze(result, axis=axis)
+
 
 def hmm_log_likelihood(model: HiddenMarkovModel, observations: ArrayLike) -> float:
     """Compute the log-likelihood of observations under a Gaussian HMM."""
@@ -219,6 +230,7 @@ def hmm_log_likelihood(model: HiddenMarkovModel, observations: ArrayLike) -> flo
         )
     return float(_logsumexp(log_alpha))
 
+
 def build_demo_hmm(random_state: int = 54) -> HiddenMarkovModel:
     """Return a small two-state Gaussian HMM for demonstrations."""
 
@@ -231,6 +243,7 @@ def build_demo_hmm(random_state: int = 54) -> HiddenMarkovModel:
     return HiddenMarkovModel(
         transition=transition, startprob=startprob, means=means, covariances=covariances
     )
+
 
 def demo_log_likelihoods() -> dict[str, float]:
     """Train baseline models and return key log-likelihood metrics."""
@@ -253,6 +266,7 @@ def demo_log_likelihoods() -> dict[str, float]:
         "bayes_average_log_posterior": avg_bayes_log_like,
         "hmm_log_likelihood": hmm_log_like,
     }
+
 
 if __name__ == "__main__":
     metrics = demo_log_likelihoods()

@@ -88,12 +88,14 @@ from Day_68_BI_Analyst_Foundations import build_topic_dataframe, load_topics
 FOUNDATION_GROUPS = load_topics()
 FOUNDATION_DF = build_topic_dataframe()
 
+
 # %%
 def preview_foundation_topics(frame: pd.DataFrame) -> None:
     """Print a markdown table of the foundational topics for discussion."""
 
     print("\nBI Analyst Foundations overview:\n")
     print(frame.to_markdown(index=False))
+
 
 # %%
 def outline_facilitation_plan(groups: dict[str, list]) -> None:
@@ -103,12 +105,14 @@ def outline_facilitation_plan(groups: dict[str, list]) -> None:
         formatted = ", ".join(topic.title for topic in topics)
         print(f"- {section}: {formatted}")
 
+
 # %%
 def main() -> None:
     """Run the classroom demo for Day 68."""
 
     outline_facilitation_plan(FOUNDATION_GROUPS)
     preview_foundation_topics(FOUNDATION_DF)
+
 
 # %%
 if __name__ == "__main__":
@@ -168,11 +172,13 @@ TOPIC_DESCRIPTIONS: Mapping[str, str] = {
     ),
 }
 
+
 def load_topics(*, section: str = FOUNDATION_SECTION) -> Dict[str, List[BiTopic]]:
     """Return BI roadmap topics grouped under the requested section name."""
 
     topics = topics_by_titles(FOUNDATION_TITLES)
     return {section: topics}
+
 
 def build_topic_dataframe(
     *,
@@ -193,6 +199,7 @@ def build_topic_dataframe(
                 }
             )
     return pd.DataFrame(records, columns=["section", "title", "description"])
+
 
 __all__ = ["build_topic_dataframe", "load_topics"]
 ```

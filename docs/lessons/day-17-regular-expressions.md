@@ -94,12 +94,13 @@ _You are on lesson 17 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/regex.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/regex.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_17_Regular_Expressions/regex.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_17_Regular_Expressions/solutions.ipynb){ .md-button }
-    ???+ example "regex.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/regex.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_17_Regular_Expressions/solutions.ipynb){ .md-button }
+
+???+ example "regex.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_17_Regular_Expressions/regex.py)
 
 ````
 ```python title="regex.py"
@@ -115,6 +116,7 @@ import re
 from collections import Counter
 from typing import List, Tuple
 
+
 def find_most_common_words(text: str, top_n: int) -> List[Tuple[str, int]]:
     """
     Finds the most common words in a given text string.
@@ -123,6 +125,7 @@ def find_most_common_words(text: str, top_n: int) -> List[Tuple[str, int]]:
     # Use regex to find all words (sequences of alphabetic characters)
     words = re.findall(r"\b[a-z]+\b", text.lower())
     return Counter(words).most_common(top_n)
+
 
 def extract_and_analyze_numbers(text: str) -> dict:
     """
@@ -138,6 +141,7 @@ def extract_and_analyze_numbers(text: str) -> dict:
     distance = numbers[-1] - numbers[0]
     return {"sorted_numbers": numbers, "distance": distance}
 
+
 def is_valid_python_variable(name: str) -> bool:
     """
     Checks if a string is a valid Python variable name using regex.
@@ -148,6 +152,7 @@ def is_valid_python_variable(name: str) -> bool:
     # $ matches the end of the string.
     return bool(re.fullmatch(r"[a-zA-Z_]\w*", name))
 
+
 def clean_text_advanced(text: str) -> str:
     """
     Cleans a text string by removing all non-alphanumeric characters
@@ -156,6 +161,7 @@ def clean_text_advanced(text: str) -> str:
     # [^a-z0-9\s] is a character set that matches anything that is NOT
     # a lowercase letter, a digit, or a whitespace character.
     return re.sub(r"[^a-z0-9\s]", "", text.lower())
+
 
 def main():
     """Main function to demonstrate regex capabilities."""
@@ -198,6 +204,7 @@ def main():
     print(f"Cleaned: '{cleaned}'")
     print("-" * 20)
 
+
 if __name__ == "__main__":
     main()
 ```
@@ -222,13 +229,16 @@ para = """The position of some particles on the horizontal x-axis are -12, -4, -
 num_list = list(map(int, re.findall(r"[-+]?[.]?[\d]+", para)))
 print("Numbers found in the string:", num_list)
 
+
 ## Exercise 2: Validate a variable name
+
 
 def is_valid_variable(potential_variable):
     if re.search(r"^[a-zA-Z_]\w*$", potential_variable):
         return True
     else:
         return False
+
 
 print("Is '_name' a valid variable?", is_valid_variable("_name"))  # Expected: True
 print(
@@ -237,11 +247,13 @@ print(
 print("Is '1name' a valid variable?", is_valid_variable("1name"))  # Expected: False
 print("Is 'name-1' a valid variable?", is_valid_variable("name-1"))  # Expected: False
 
+
 ## Exercise 3: Clean up a messy sentence
 
 sentence = """%I $am@% a %tea@cher%, &and& I lo%#ve %tea@ching%;. There $is nothing; &as& mo@re rewarding as
 educa@ting &and& @emp%o@wering peo@ple. ;I found tea@ching m%o@re interesting tha@n any other %jo@bs. %Do@es thi%s
 mo@tivate yo@u to be a tea@cher!? """
+
 
 def clean_text(text):
     text = text.lower()
@@ -253,9 +265,11 @@ def clean_text(text):
     text = re.sub(r"\w*\d\w*", "", text)
     return text
 
+
 def most_common_words(text, n):
     split_it = text.split()
     return Counter(split_it).most_common(n)
+
 
 cleaned_sentence = clean_text(sentence)
 print("Cleaned sentence:", cleaned_sentence)

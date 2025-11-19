@@ -35,8 +35,9 @@ _You are on lesson 62 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_62_Model_Interpretability_and_Fairness/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_62_Model_Interpretability_and_Fairness/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -50,6 +51,7 @@ from typing import Dict, List, Mapping, Sequence, Tuple
 import numpy as np
 import pandas as pd
 
+
 @dataclass
 class LinearModel:
     """Simple linear model container."""
@@ -62,6 +64,7 @@ class LinearModel:
         vector = np.asarray(features, dtype=float)
         return float(self.intercept + np.dot(self.coefficients, vector))
 
+
 @dataclass
 class ShapExplanation:
     """Container for SHAP-style additive explanations."""
@@ -71,6 +74,7 @@ class ShapExplanation:
 
     def reconstructed_prediction(self) -> float:
         return float(self.base_value + self.contributions.sum())
+
 
 @dataclass
 class LimeExplanation:
@@ -84,6 +88,7 @@ class LimeExplanation:
         vector = np.asarray(instance, dtype=float)
         return float(self.intercept + np.dot(self.weights, vector))
 
+
 @dataclass
 class CounterfactualResult:
     """Result of a counterfactual search."""
@@ -94,6 +99,7 @@ class CounterfactualResult:
     counterfactual_prediction: float
     delta: np.ndarray
 
+
 @dataclass
 class FairnessReport:
     """Bias metrics calculated on binary outcomes."""
@@ -101,6 +107,7 @@ class FairnessReport:
     statistical_parity: float
     disparate_impact: float
     equal_opportunity: float
+
 
 def load_credit_dataset() -> pd.DataFrame:
     """Return a deterministic lending dataset for fairness experiments."""
@@ -129,6 +136,7 @@ def load_credit_dataset() -> pd.DataFrame:
                 )
     return pd.DataFrame.from_records(records)
 
+
 def train_default_risk_model() -> LinearModel:
     """Fit a closed-form linear regression on the credit dataset."""
 
@@ -150,6 +158,7 @@ def train_default_risk_model() -> LinearModel:
         coefficients=weights, intercept=intercept, feature_names=feature_names
     )
 
+
 def _baseline_from_dataset(
     model: LinearModel, dataset: pd.DataFrame | None = None
 ) -> Tuple[float, np.ndarray]:
@@ -165,6 +174,7 @@ def _baseline_from_dataset(
     base_value = model.predict(baseline_features)
     return base_value, baseline_features
 
+
 def compute_shap_values(
     model: LinearModel,
     instance: Sequence[float],
@@ -177,9 +187,11 @@ def compute_shap_values(
     contributions = model.coefficients * (instance_arr - baseline_features)
     return ShapExplanation(base_value=base_value, contributions=contributions)
 
+
 def _kernel_weights(distances: np.ndarray, kernel_width: float) -> np.ndarray:
     weights = np.exp(-(distances**2) / (kernel_width**2))
     return weights / (weights.sum() + 1e-12)
+
 
 def lime_explanation(
     model: LinearModel,
@@ -207,6 +219,7 @@ def lime_explanation(
     intercept = float(prediction - np.dot(coefs, instance_arr))
     return LimeExplanation(intercept=intercept, weights=coefs, prediction=prediction)
 
+
 def generate_counterfactual(
     model: LinearModel,
     instance: Sequence[float],
@@ -233,6 +246,7 @@ def generate_counterfactual(
         delta=clipped_cf - features,
     )
 
+
 def fairness_metrics(dataset: pd.DataFrame) -> FairnessReport:
     """Compute key bias metrics for the approval outcome."""
 
@@ -256,6 +270,7 @@ def fairness_metrics(dataset: pd.DataFrame) -> FairnessReport:
         equal_opportunity=equal_opportunity,
     )
 
+
 def apply_reweighing(dataset: pd.DataFrame) -> pd.DataFrame:
     """Return a dataframe with sample weights that mitigate statistical parity gaps."""
 
@@ -269,6 +284,7 @@ def apply_reweighing(dataset: pd.DataFrame) -> pd.DataFrame:
         weights.append(target_rate / (group_rate + 1e-12))
     df["sample_weight"] = weights
     return df
+
 
 def mitigation_effect(dataset: pd.DataFrame) -> FairnessReport:
     """Recompute fairness metrics after reweighing."""
@@ -300,6 +316,7 @@ def mitigation_effect(dataset: pd.DataFrame) -> FairnessReport:
         equal_opportunity=equal_opportunity,
     )
 
+
 def run_interpretability_suite() -> Dict[str, object]:
     """Execute interpretability and fairness utilities for documentation demos."""
 
@@ -329,6 +346,7 @@ def run_interpretability_suite() -> Dict[str, object]:
         "fairness": fairness,
         "mitigated": mitigated,
     }
+
 
 if __name__ == "__main__":
     report = run_interpretability_suite()

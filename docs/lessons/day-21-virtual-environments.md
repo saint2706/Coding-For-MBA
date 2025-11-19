@@ -94,12 +94,13 @@ _You are on lesson 21 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_21_Virtual_Environments/solutions.ipynb){ .md-button }
-  - **virtual_environments.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/virtual_environments.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/virtual_environments.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_21_Virtual_Environments/virtual_environments.ipynb){ .md-button }
-    ???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/solutions.py)
+- **virtual_environments.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/virtual_environments.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/virtual_environments.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_21_Virtual_Environments/virtual_environments.ipynb){ .md-button }
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_21_Virtual_Environments/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -128,6 +129,7 @@ solution_1 = """
 """
 print(solution_1)
 
+
 # --- Exercise 2: Activate and Install ---
 solution_2 = """
 --- Solution to Exercise 2 ---
@@ -148,6 +150,7 @@ solution_2 = """
 """
 print(solution_2)
 
+
 # --- Exercise 3: Create a Requirements File ---
 solution_3 = """
 --- Solution to Exercise 3 ---
@@ -163,6 +166,7 @@ solution_3 = """
    ...and other dependencies with their exact versions.
 """
 print(solution_3)
+
 
 # --- Exercise 4: Deactivate ---
 solution_4 = """

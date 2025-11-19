@@ -34,8 +34,9 @@ _You are on lesson 61 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_61_Reinforcement_and_Offline_Learning/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_61_Reinforcement_and_Offline_Learning/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_61_Reinforcement_and_Offline_Learning/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_61_Reinforcement_and_Offline_Learning/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_61_Reinforcement_and_Offline_Learning/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -48,6 +49,7 @@ from typing import Dict, List
 
 import numpy as np
 
+
 @dataclass
 class EpisodeLog:
     """Track rewards and moving averages for RL experiments."""
@@ -56,8 +58,10 @@ class EpisodeLog:
     moving_average: List[float]
     policy_parameter: float
 
+
 def _sigmoid(x: float) -> float:
     return 1.0 / (1.0 + np.exp(-x))
+
 
 def run_policy_gradient_bandit(
     episodes: int = 200,
@@ -84,12 +88,14 @@ def run_policy_gradient_bandit(
         rewards=rewards, moving_average=moving_avg, policy_parameter=float(theta)
     )
 
+
 @dataclass
 class QLearningResult:
     """Container for Q-learning progress on a deterministic MDP."""
 
     q_values: np.ndarray
     rewards: List[float]
+
 
 def run_q_learning(
     episodes: int = 200,
@@ -124,6 +130,7 @@ def run_q_learning(
         state = next_state
     return QLearningResult(q_values=q_values, rewards=rewards)
 
+
 @dataclass
 class BanditSummary:
     """Summary statistics for epsilon-greedy contextual bandit."""
@@ -131,6 +138,7 @@ class BanditSummary:
     action_counts: np.ndarray
     cumulative_reward: float
     average_reward: float
+
 
 def run_contextual_bandit(
     steps: int = 300,
@@ -160,6 +168,7 @@ def run_contextual_bandit(
         average_reward=total_reward / steps,
     )
 
+
 def offline_evaluation(
     num_samples: int = 500,
     random_state: int = 61,
@@ -184,6 +193,7 @@ def offline_evaluation(
     ess = float((weights_arr.sum() ** 2) / (np.sum(weights_arr**2) + 1e-9))
     return {"estimate": estimate, "effective_sample_size": ess}
 
+
 def run_rl_suite(random_state: int = 61) -> Dict[str, object]:
     """Run policy/value/bandit/offline learning experiments and aggregate metrics."""
 
@@ -198,6 +208,7 @@ def run_rl_suite(random_state: int = 61) -> Dict[str, object]:
         "offline": offline,
     }
 
+
 def _demo() -> None:
     results = run_rl_suite()
     print(
@@ -208,6 +219,7 @@ def _demo() -> None:
     print(
         f"Offline estimate: {results['offline']['estimate']:.3f} (ESS={results['offline']['effective_sample_size']:.1f})"
     )
+
 
 if __name__ == "__main__":
     _demo()

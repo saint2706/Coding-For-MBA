@@ -118,12 +118,13 @@ _You are on lesson 29 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_29_Interactive_Visualization/interactive_visualization.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_29_Interactive_Visualization/solutions.ipynb){ .md-button }
-    ???+ example "interactive_visualization.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_29_Interactive_Visualization/solutions.ipynb){ .md-button }
+
+???+ example "interactive_visualization.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_29_Interactive_Visualization/interactive_visualization.py)
 
 ````
 ```python title="interactive_visualization.py"
@@ -146,6 +147,7 @@ __all__ = [
     "main",
 ]
 
+
 def _require_columns(df: pd.DataFrame, required: Iterable[str]) -> None:
     """Raise ``ValueError`` if ``df`` is missing any of ``required`` columns."""
 
@@ -156,6 +158,7 @@ def _require_columns(df: pd.DataFrame, required: Iterable[str]) -> None:
     if df.empty:
         raise ValueError("DataFrame must contain at least one row to build the figure.")
 
+
 def load_sales_data(data_path: Path | str | None = None) -> pd.DataFrame:
     """Return the ``sales_data.csv`` dataset bundled with the lesson."""
 
@@ -165,6 +168,7 @@ def load_sales_data(data_path: Path | str | None = None) -> pd.DataFrame:
 
     df = pd.read_csv(data_path, parse_dates=["Date"])
     return df.dropna().reset_index(drop=True)
+
 
 def build_region_revenue_bar(df: pd.DataFrame) -> go.Figure:
     """Return a bar chart showing total revenue by region."""
@@ -185,6 +189,7 @@ def build_region_revenue_bar(df: pd.DataFrame) -> go.Figure:
     )
     fig.update_layout(showlegend=False)
     return fig
+
 
 def build_daily_revenue_line(df: pd.DataFrame) -> go.Figure:
     """Return a daily revenue line chart with markers."""
@@ -216,6 +221,7 @@ def build_daily_revenue_line(df: pd.DataFrame) -> go.Figure:
         trace.update(x=python_datetimes)
     return fig
 
+
 def build_price_units_scatter(df: pd.DataFrame) -> go.Figure:
     """Return a scatter plot comparing price and units sold with revenue sizing."""
 
@@ -236,6 +242,7 @@ def build_price_units_scatter(df: pd.DataFrame) -> go.Figure:
         yaxis_title="Units Sold",
     )
     return fig
+
 
 def main() -> None:
     """Load the lesson dataset and display the interactive figures."""
@@ -262,6 +269,7 @@ def main() -> None:
     print(
         f"\nScatter plot saved to '{output_filename}'. You can open this file in a web browser."
     )
+
 
 if __name__ == "__main__":
     main()
@@ -293,6 +301,7 @@ try:
 except FileNotFoundError:
     print("Error: sales_data.csv not found. Keep the CSV beside this script.")
     df = pd.DataFrame()
+
 
 if not df.empty:
     # --- Exercise 1: Interactive Sales by Product ---

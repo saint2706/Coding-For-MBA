@@ -23,7 +23,6 @@ ______________________________________________________________________
 
 Run this lesson's code interactively in your browser:
 
-[🚀 Launch in JupyterLite](../jupyterlite/lab?path=Day_23_Pandas/pandas.ipynb){ .md-button
 .md-button--primary }
 
 !!! tip "About JupyterLite" JupyterLite runs entirely in your browser using WebAssembly. No
@@ -226,7 +225,6 @@ ______________________________________________________________________
   <h3 style="color: white; margin-top: 0;">🎓 Ready to Practice?</h3>
   <p>Try the complete lesson in an interactive environment!</p>
   <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
-    <a href="../jupyterlite/lab?path=Day_23_Pandas/pandas.ipynb" style="display: inline-block; padding: 0.75rem 1.5rem; background: white; color: #667eea; text-decoration: none; border-radius: 8px; font-weight: 600;">Launch JupyterLite</a>
     <a href="https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_23_Pandas/pandas.ipynb" style="display: inline-block; padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.2); color: white; text-decoration: none; border: 2px solid white; border-radius: 8px; font-weight: 600;">Launch Binder</a>
   </div>
 </div>

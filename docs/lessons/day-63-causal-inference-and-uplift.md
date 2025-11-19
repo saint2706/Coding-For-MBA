@@ -32,8 +32,9 @@ _You are on lesson 63 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_63_Causal_Inference_and_Uplift/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_63_Causal_Inference_and_Uplift/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_63_Causal_Inference_and_Uplift/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_63_Causal_Inference_and_Uplift/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_63_Causal_Inference_and_Uplift/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -47,6 +48,7 @@ from typing import Dict, List, Tuple
 import numpy as np
 import pandas as pd
 
+
 @dataclass
 class ABTestResult:
     """Summary statistics for a difference-in-means test."""
@@ -55,6 +57,7 @@ class ABTestResult:
     stderr: float
     ci_low: float
     ci_high: float
+
 
 @dataclass
 class PropensityModel:
@@ -75,12 +78,14 @@ class PropensityModel:
         logits = self._scale(features) @ self.weights
         return 1.0 / (1.0 + np.exp(-logits))
 
+
 @dataclass
 class DoubleMLResult:
     """Double machine learning effect estimate."""
 
     ate: float
     nuisance_r2: Tuple[float, float]
+
 
 @dataclass
 class UpliftResult:
@@ -89,6 +94,7 @@ class UpliftResult:
     treatment_response: float
     control_response: float
     uplift: float
+
 
 def generate_synthetic_treatment_data(
     n: int = 600, random_state: int = 63
@@ -119,6 +125,7 @@ def generate_synthetic_treatment_data(
         }
     )
 
+
 def difference_in_means(data: pd.DataFrame) -> ABTestResult:
     """Compute lift and confidence interval for a randomized test."""
 
@@ -137,6 +144,7 @@ def difference_in_means(data: pd.DataFrame) -> ABTestResult:
         ci_high=float(ci_high),
     )
 
+
 def _prepare_design_matrix(
     data: pd.DataFrame, include_intercept: bool = True
 ) -> np.ndarray:
@@ -144,6 +152,7 @@ def _prepare_design_matrix(
     if include_intercept:
         return np.column_stack([np.ones(len(data)), features])
     return features
+
 
 def fit_propensity_model(
     data: pd.DataFrame, lr: float = 0.05, epochs: int = 800
@@ -166,6 +175,7 @@ def fit_propensity_model(
         weights=weights, feature_mean=feature_mean, feature_scale=feature_scale
     )
 
+
 def estimate_ipw_ate(data: pd.DataFrame, propensity_model: PropensityModel) -> float:
     """Inverse propensity weighting estimate of the treatment effect."""
 
@@ -180,9 +190,11 @@ def estimate_ipw_ate(data: pd.DataFrame, propensity_model: PropensityModel) -> f
     ) / weights_control.sum()
     return float(ate)
 
+
 def _linear_regression(X: np.ndarray, y: np.ndarray) -> np.ndarray:
     beta, *_ = np.linalg.lstsq(X, y, rcond=None)
     return beta
+
 
 def double_machine_learning(data: pd.DataFrame) -> DoubleMLResult:
     """Compute double ML ATE with two-fold cross fitting."""
@@ -226,6 +238,7 @@ def double_machine_learning(data: pd.DataFrame) -> DoubleMLResult:
         ate=ate, nuisance_r2=(float(np.mean(r2_y)), float(np.mean(r2_t)))
     )
 
+
 def two_model_uplift(data: pd.DataFrame) -> UpliftResult:
     """Estimate uplift using separate treatment and control response models."""
 
@@ -260,6 +273,7 @@ def two_model_uplift(data: pd.DataFrame) -> UpliftResult:
         uplift=uplift,
     )
 
+
 def run_causal_suite(random_state: int = 63) -> Dict[str, object]:
     """Execute all causal estimators for documentation demos."""
 
@@ -276,6 +290,7 @@ def run_causal_suite(random_state: int = 63) -> Dict[str, object]:
         "double_ml": dml_result,
         "uplift": uplift_result,
     }
+
 
 if __name__ == "__main__":
     results = run_causal_suite()

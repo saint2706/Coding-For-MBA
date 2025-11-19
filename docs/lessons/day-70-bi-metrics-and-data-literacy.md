@@ -76,12 +76,14 @@ from Day_70_BI_Metrics_and_Data_Literacy import build_topic_dataframe, load_topi
 TOPIC_GROUPS = load_topics()
 TOPIC_FRAME = build_topic_dataframe()
 
+
 # %%
 def safe_divide(numerator: pd.Series, denominator: pd.Series) -> pd.Series:
     """Return a ratio with zero-protection for classroom demos."""
 
     safe_denominator = denominator.where(denominator != 0, pd.NA)
     return numerator.divide(safe_denominator).fillna(0)
+
 
 # %%
 def build_campaign_metrics() -> pd.DataFrame:
@@ -107,12 +109,14 @@ def build_campaign_metrics() -> pd.DataFrame:
     )
     return metrics
 
+
 # %%
 def summarize_taxonomy(frame: pd.DataFrame) -> None:
     """Print the roadmap taxonomy for facilitation."""
 
     print("\nDay 70 taxonomy overview\n")
     print(frame.to_markdown(index=False))
+
 
 # %%
 def review_kpi_metrics(frame: pd.DataFrame) -> None:
@@ -134,6 +138,7 @@ def review_kpi_metrics(frame: pd.DataFrame) -> None:
     print("\nSample campaign KPI review\n")
     print(formatted.to_markdown(index=False))
 
+
 # %%
 def main() -> None:
     """Run the classroom demo for Day 70."""
@@ -141,6 +146,7 @@ def main() -> None:
     summarize_taxonomy(TOPIC_FRAME)
     kpi_frame = build_campaign_metrics()
     review_kpi_metrics(kpi_frame)
+
 
 # %%
 if __name__ == "__main__":
@@ -236,6 +242,7 @@ TOPIC_DESCRIPTIONS: Mapping[str, str] = {
     ),
 }
 
+
 def load_topics(
     *, sections: Mapping[str, Iterable[str]] = SECTION_TITLES
 ) -> Dict[str, list[BiTopic]]:
@@ -245,6 +252,7 @@ def load_topics(
     for section, titles in sections.items():
         grouped_topics[section] = topics_by_titles(list(titles))
     return grouped_topics
+
 
 def build_topic_dataframe(
     *,
@@ -270,6 +278,7 @@ def build_topic_dataframe(
         drop=True
     )
     return deduped
+
 
 __all__ = ["build_topic_dataframe", "load_topics"]
 ```

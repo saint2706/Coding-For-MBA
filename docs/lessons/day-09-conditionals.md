@@ -95,12 +95,13 @@ _You are on lesson 9 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/conditionals.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/conditionals.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_09_Conditionals/conditionals.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_09_Conditionals/solutions.ipynb){ .md-button }
-    ???+ example "conditionals.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/conditionals.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_09_Conditionals/solutions.ipynb){ .md-button }
+
+???+ example "conditionals.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_09_Conditionals/conditionals.py)
 
 ````
 ```python title="conditionals.py"
@@ -111,6 +112,7 @@ This script demonstrates how to use if, elif, and else statements
 to create business rules and make decisions in code. This version is
 refactored into functions for better organization and testability.
 """
+
 
 def calculate_discount_percent(purchase_amount):
     """
@@ -155,6 +157,7 @@ def calculate_discount_percent(purchase_amount):
     else:
         return 0.00  # No discount for small purchases
 
+
 def calculate_shipping_cost(country, order_weight_kg):
     """
     Calculates shipping cost based on destination and weight.
@@ -196,6 +199,7 @@ def calculate_shipping_cost(country, order_weight_kg):
         # Country not supported
         return -1  # Using -1 to indicate "not available"
 
+
 def calculate_employee_bonus(performance_rating, department, salary):
     """
     Calculates an employee's bonus based on performance and department.
@@ -235,6 +239,7 @@ def calculate_employee_bonus(performance_rating, department, salary):
     # Below-average performers get no bonus
     else:
         return 0.0  # No bonus
+
 
 if __name__ == "__main__":
     # --- Example 1: Customer Discount Policy ---
@@ -302,8 +307,10 @@ print(f"Discount Rate: {discount * 100}%")
 print(f"Final Price: ${final_price:.2f}")
 print("-" * 20)
 
+
 # --- Exercise 2: Shipping Cost Calculator ---
 print("--- Solution to Exercise 2 ---")
+
 
 # We can wrap this in a function to easily test different scenarios
 def get_shipping_cost(country, order_weight_kg):
@@ -323,14 +330,17 @@ def get_shipping_cost(country, order_weight_kg):
 
     return f"Shipping cost: ${cost}"
 
+
 # Test cases
 print(f"USA, 60kg -> {get_shipping_cost('USA', 60)}")
 print(f"Canada, 40kg -> {get_shipping_cost('Canada', 40)}")
 print(f"Mexico, 30kg -> {get_shipping_cost('Mexico', 30)}")
 print("-" * 20)
 
+
 # --- Exercise 3: Employee Bonus Calculation ---
 print("--- Solution to Exercise 3 ---")
+
 
 def calculate_bonus(rating, department, salary):
     bonus_rate = 0
@@ -345,6 +355,7 @@ def calculate_bonus(rating, department, salary):
 
     bonus_amount = salary * bonus_rate
     return bonus_amount
+
 
 # Test cases
 salary = 90000

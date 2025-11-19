@@ -98,12 +98,13 @@ _You are on lesson 2 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_02_Variables_Builtin_Functions/solutions.ipynb){ .md-button }
-  - **variables.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/variables.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/variables.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_02_Variables_Builtin_Functions/variables.ipynb){ .md-button }
-    ???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/solutions.py)
+- **variables.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/variables.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/variables.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_02_Variables_Builtin_Functions/variables.ipynb){ .md-button }
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_02_Variables_Builtin_Functions/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -123,6 +124,7 @@ print(f"Year Founded: {year_founded}")
 print(f"Current Revenue: ${current_revenue}")
 print(f"Is Publicly Traded: {is_publicly_traded}")
 print("-" * 20)
+
 
 # --- Exercise 2: Sales Analysis ---
 print("--- Solution to Exercise 2 ---")
@@ -149,6 +151,7 @@ print(f"Largest sale: ${max_sale:.2f}")
 average_sale = total_revenue / num_transactions
 print(f"Average sale amount: ${average_sale:.2f}")
 print("-" * 20)
+
 
 # --- Exercise 3: User Input for a Profit Calculator ---
 print("--- Solution to Exercise 3 ---")
@@ -194,6 +197,7 @@ and built-in functions to perform basic analysis. This version is
 refactored into functions for better organization and testability.
 """
 
+
 def display_company_profile(name, founded, revenue, is_public):
     """
     Displays the company's profile information in a formatted way.
@@ -219,6 +223,7 @@ def display_company_profile(name, founded, revenue, is_public):
     print(f"Current Revenue: ${revenue}")
     print(f"Is Publicly Traded: {is_public}")
     print("-" * 20)  # Print a separator line
+
 
 def analyze_weekly_sales(sales_data):
     """
@@ -283,6 +288,7 @@ def analyze_weekly_sales(sales_data):
         "average_sale": average_sale,
     }
 
+
 def interactive_profit_calculator():
     """
     Handles user input to calculate and display profit.
@@ -313,6 +319,7 @@ def interactive_profit_calculator():
         # Python raises a ValueError. We catch it and handle it gracefully.
         print("Invalid input. Please enter numbers only.")
         return None
+
 
 if __name__ == "__main__":
     # This block only runs when the file is executed directly

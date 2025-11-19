@@ -144,6 +144,7 @@ CAPSTONE_PHASES: list[tuple[str, str]] = [
 # %%
 CHECKLISTS = generate_checklists()
 
+
 # %%
 def outline_capstone(phases: list[tuple[str, str]] = CAPSTONE_PHASES) -> None:
     """Print the recommended capstone phases and guidance."""
@@ -151,6 +152,7 @@ def outline_capstone(phases: list[tuple[str, str]] = CAPSTONE_PHASES) -> None:
     print("\nDay 84 capstone planning guide\n")
     for phase, description in phases:
         print(f"{phase}\n{indent(description, '  ')}\n")
+
 
 # %%
 def display_checklists(checklists=CHECKLISTS) -> None:
@@ -163,6 +165,7 @@ def display_checklists(checklists=CHECKLISTS) -> None:
             print(f"- [ ] {item.title}")
         print()
 
+
 # %%
 def main() -> None:
     """Guide the learner through the Day 84 facilitation."""
@@ -171,6 +174,7 @@ def main() -> None:
     display_checklists()
     print("Serialized checklist template (copy into your notes tool):\n")
     print(serialize_checklists(CHECKLISTS))
+
 
 # %%
 if __name__ == "__main__":
@@ -218,6 +222,7 @@ ROADMAP_GROUPS: Mapping[str, list[str]] = {
     "Job readiness": JOB_READINESS_TITLES,
 }
 
+
 @dataclass(slots=True)
 class ChecklistItem:
     """A simple representation of a learner checklist item."""
@@ -231,6 +236,7 @@ class ChecklistItem:
 
         return {"title": self.title, "status": self.status, "notes": self.notes}
 
+
 def load_career_topics(
     *, groups: Mapping[str, Iterable[str]] = ROADMAP_GROUPS
 ) -> dict[str, list[BiTopic]]:
@@ -238,10 +244,12 @@ def load_career_topics(
 
     return group_topics_by_titles(groups)
 
+
 def _build_checklist(topics: Iterable[BiTopic]) -> list[ChecklistItem]:
     """Create checklist items from BI topics."""
 
     return [ChecklistItem(title=topic.title) for topic in topics]
+
 
 def generate_checklists(
     *, groups: Mapping[str, Iterable[str]] = ROADMAP_GROUPS
@@ -250,6 +258,7 @@ def generate_checklists(
 
     grouped_topics = load_career_topics(groups=groups)
     return {group: _build_checklist(topics) for group, topics in grouped_topics.items()}
+
 
 def _checklists_to_serializable(
     checklists: Mapping[str, Iterable[ChecklistItem]],
@@ -260,6 +269,7 @@ def _checklists_to_serializable(
     for group, items in checklists.items():
         payload[group] = [item.to_dict() for item in items]
     return dict(payload)
+
 
 def serialize_checklists(
     checklists: Mapping[str, Iterable[ChecklistItem]] | None = None,
@@ -279,6 +289,7 @@ def serialize_checklists(
         destination = Path(path)
         destination.write_text(json_text, encoding="utf-8")
     return json_text
+
 
 __all__ = [
     "CAREER_ASSET_TITLES",

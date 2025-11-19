@@ -57,8 +57,9 @@ _You are on lesson 49 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_49_NLP/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_49_NLP/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_49_NLP/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_49_NLP/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_49_NLP/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -67,6 +68,7 @@ _You are on lesson 49 of 108._
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
+
 def build_count_matrix(corpus):
     """Return a document-term matrix of raw counts for the given corpus."""
 
@@ -74,12 +76,14 @@ def build_count_matrix(corpus):
     matrix = vectorizer.fit_transform(corpus)
     return pd.DataFrame(matrix.toarray(), columns=vectorizer.get_feature_names_out())
 
+
 def build_tfidf_matrix(corpus):
     """Return a document-term matrix of TF-IDF scores for the given corpus."""
 
     vectorizer = TfidfVectorizer()
     matrix = vectorizer.fit_transform(corpus)
     return pd.DataFrame(matrix.toarray(), columns=vectorizer.get_feature_names_out())
+
 
 def demo():
     """Print a walkthrough of bag-of-words and TF-IDF representations."""
@@ -115,6 +119,7 @@ def demo():
         "This matrix shows the TF-IDF score for each word, highlighting important words."
     )
     print("-" * 30)
+
 
 if __name__ == "__main__":
     demo()

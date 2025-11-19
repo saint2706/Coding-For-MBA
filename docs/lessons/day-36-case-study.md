@@ -56,12 +56,13 @@ _You are on lesson 36 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/case_study.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/case_study.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_36_Case_Study/case_study.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_36_Case_Study/solutions.ipynb){ .md-button }
-    ???+ example "case_study.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/case_study.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_36_Case_Study/solutions.ipynb){ .md-button }
+
+???+ example "case_study.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_36_Case_Study/case_study.py)
 
 ````
 ```python title="case_study.py"
@@ -76,6 +77,7 @@ import pandas as pd
 
 DATA_PATH = Path(__file__).with_name("case_study_sales.csv")
 
+
 def load_case_study_data(path: str | Path = DATA_PATH) -> pd.DataFrame:
     """Return the raw sales data as a :class:`~pandas.DataFrame`.
 
@@ -87,6 +89,7 @@ def load_case_study_data(path: str | Path = DATA_PATH) -> pd.DataFrame:
     """
 
     return pd.read_csv(path, parse_dates=["Date"])
+
 
 def clean_case_study_data(data: pd.DataFrame) -> pd.DataFrame:
     """Clean the raw case-study data for downstream analysis.
@@ -129,6 +132,7 @@ def clean_case_study_data(data: pd.DataFrame) -> pd.DataFrame:
 
     return cleaned.reset_index(drop=True)
 
+
 def summarize_case_study(data: pd.DataFrame, *, top_n: int = 5) -> Dict[str, Any]:
     """Generate headline metrics for the capstone analysis."""
 
@@ -157,6 +161,7 @@ def summarize_case_study(data: pd.DataFrame, *, top_n: int = 5) -> Dict[str, Any
 
     return summary
 
+
 def main() -> None:
     """Run a minimal command-line summary for the case study."""
 
@@ -168,6 +173,7 @@ def main() -> None:
     print(summary["top_products"])
     print("\nRevenue by region:")
     print(summary["region_revenue"])
+
 
 if __name__ == "__main__":
     main()

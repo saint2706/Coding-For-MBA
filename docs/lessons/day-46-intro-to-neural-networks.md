@@ -110,8 +110,9 @@ _You are on lesson 46 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_46_Intro_to_Neural_Networks/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_46_Intro_to_Neural_Networks/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_46_Intro_to_Neural_Networks/solutions.ipynb){ .md-button }
-  ???+ example "solutions.py"
-  [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_46_Intro_to_Neural_Networks/solutions.py)
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_46_Intro_to_Neural_Networks/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -142,6 +143,7 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 DEFAULT_SEED = 42
 
+
 @dataclass
 class IrisData:
     """Container for the Iris dataset splits and fitted preprocessors."""
@@ -154,11 +156,13 @@ class IrisData:
     encoder: OneHotEncoder
     target_names: Iterable[str]
 
+
 def set_global_seed(seed: int = DEFAULT_SEED) -> None:
     """Ensure reproducible results across NumPy and TensorFlow."""
 
     np.random.seed(seed)
     tf.keras.utils.set_random_seed(seed)
+
 
 def prepare_iris_data(
     test_size: float = 0.2, random_state: int = DEFAULT_SEED
@@ -202,6 +206,7 @@ def prepare_iris_data(
         target_names=iris.target_names,
     )
 
+
 def build_iris_model(
     input_shape: int, num_classes: int, hidden_units: Tuple[int, ...] = (10, 10)
 ) -> tf.keras.Model:
@@ -221,6 +226,7 @@ def build_iris_model(
     )
 
     return model
+
 
 def train_iris_model(
     model: tf.keras.Model,
@@ -246,12 +252,14 @@ def train_iris_model(
     )
     return history
 
+
 def evaluate_iris_model(
     model: tf.keras.Model, X_test: np.ndarray, y_test: np.ndarray, *, verbose: int = 0
 ) -> Dict[str, float]:
     """Evaluate the trained model and return the metrics as a dictionary."""
 
     return model.evaluate(X_test, y_test, verbose=verbose, return_dict=True)
+
 
 def run_full_workflow(
     *,
@@ -282,6 +290,7 @@ def run_full_workflow(
     )
     metrics = evaluate_iris_model(model, data.X_test, data.y_test, verbose=verbose)
     return history, metrics, model, data
+
 
 if __name__ == "__main__":
     history, metrics, model, data = run_full_workflow(verbose=1)

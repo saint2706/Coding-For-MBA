@@ -98,12 +98,13 @@ _You are on lesson 4 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_04_Strings/solutions.ipynb){ .md-button }
-  - **strings.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/strings.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/strings.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_04_Strings/strings.ipynb){ .md-button }
-    ???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/solutions.py)
+- **strings.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/strings.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/strings.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_04_Strings/strings.ipynb){ .md-button }
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_04_Strings/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -122,6 +123,7 @@ header = f"*** {report_title.upper()} - FY{fiscal_year} ***"
 print(header)
 print("-" * 20)
 
+
 # --- Exercise 2: Clean Up Customer Data ---
 print("--- Solution to Exercise 2 ---")
 customer_name = "  john doe  "
@@ -133,6 +135,7 @@ cleaned_name = customer_name.strip().title()
 print(f"Original name: '{customer_name}'")
 print(f"Cleaned name: '{cleaned_name}'")
 print("-" * 20)
+
 
 # --- Exercise 3: Parse Product SKU ---
 print("--- Solution to Exercise 3 ---")
@@ -168,6 +171,7 @@ applied to business-related text data. This version is refactored
 into functions for better organization and testability.
 """
 
+
 def generate_report_header(title, year):
     """
     Creates a formatted report header with uppercase text and asterisks.
@@ -196,6 +200,7 @@ def generate_report_header(title, year):
     # f-strings allow us to embed variables and expressions in strings
     return f"*** {title.upper()} - FY{year} ***"
 
+
 def clean_and_format_name(raw_name):
     """
     Cleans and capitalizes a raw name string.
@@ -221,6 +226,7 @@ def clean_and_format_name(raw_name):
     # .strip() removes whitespace from the beginning and end
     # .title() capitalizes the first letter of each word
     return raw_name.strip().title()
+
 
 def format_date_string(date_str, old_separator="-", new_separator="/"):
     """
@@ -250,6 +256,7 @@ def format_date_string(date_str, old_separator="-", new_separator="/"):
     """
     # .replace(old, new) finds all occurrences of 'old' and replaces with 'new'
     return date_str.replace(old_separator, new_separator)
+
 
 def parse_sku(sku):
     """
@@ -283,6 +290,7 @@ def parse_sku(sku):
         return {"type": parts[0], "name": parts[1], "id": parts[2]}
     return None  # Return None if the format doesn't match
 
+
 def is_transaction_type(transaction_id, prefix):
     """
     Checks if a transaction ID starts with a given prefix.
@@ -310,6 +318,7 @@ def is_transaction_type(transaction_id, prefix):
     # .startswith() returns True if the string begins with the specified text
     return transaction_id.startswith(prefix)
 
+
 def has_file_extension(filename, extension):
     """
     Checks if a filename ends with a given extension.
@@ -335,6 +344,7 @@ def has_file_extension(filename, extension):
     """
     # .endswith() returns True if the string ends with the specified text
     return filename.endswith(extension)
+
 
 def feedback_contains_keyword(feedback, keyword):
     """
@@ -363,6 +373,7 @@ def feedback_contains_keyword(feedback, keyword):
     # .find() returns -1 if the keyword is not found, otherwise returns position
     # We check if the result is NOT -1 (i.e., keyword was found)
     return feedback.find(keyword) != -1
+
 
 if __name__ == "__main__":
     # --- Formatting Strings for Reports ---

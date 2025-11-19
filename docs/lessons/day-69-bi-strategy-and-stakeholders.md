@@ -99,6 +99,7 @@ from Day_69_BI_Strategy_and_Stakeholders import build_topic_dataframe, load_topi
 STRATEGY_GROUPS = load_topics()
 STRATEGY_FRAME = build_topic_dataframe()
 
+
 # %%
 def display_strategy_clusters(groups: dict[str, list]) -> None:
     """Print the topic groupings used to facilitate the session."""
@@ -108,12 +109,14 @@ def display_strategy_clusters(groups: dict[str, list]) -> None:
         titles = ", ".join(topic.title for topic in topics)
         print(f"- {section}: {titles}")
 
+
 # %%
 def preview_topic_matrix(frame: pd.DataFrame) -> None:
     """Show the strategy dataframe as a markdown table for planning."""
 
     print("\nRoadmap alignment matrix:\n")
     print(frame.to_markdown(index=False))
+
 
 # %%
 def stakeholder_prompt() -> None:
@@ -129,6 +132,7 @@ def stakeholder_prompt() -> None:
     for persona, guidance in personas.items():
         print(f"- {persona}: {guidance}")
 
+
 # %%
 def main() -> None:
     """Run the classroom demo for Day 69."""
@@ -136,6 +140,7 @@ def main() -> None:
     display_strategy_clusters(STRATEGY_GROUPS)
     preview_topic_matrix(STRATEGY_FRAME)
     stakeholder_prompt()
+
 
 # %%
 if __name__ == "__main__":
@@ -201,12 +206,14 @@ TOPIC_DESCRIPTIONS: Mapping[str, str] = {
     ),
 }
 
+
 def load_topics(
     *, groups: Mapping[str, Sequence[str]] = TOPIC_GROUPS
 ) -> Dict[str, List[BiTopic]]:
     """Return roadmap topics grouped into BI operating and strategy tiers."""
 
     return {group: topics for group, topics in group_topics_by_titles(groups).items()}
+
 
 def build_topic_dataframe(
     *,
@@ -227,6 +234,7 @@ def build_topic_dataframe(
                 }
             )
     return pd.DataFrame(records, columns=["section", "title", "description"])
+
 
 __all__ = ["build_topic_dataframe", "load_topics"]
 ```

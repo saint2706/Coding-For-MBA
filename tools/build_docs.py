@@ -167,13 +167,11 @@ def _notebook_links(
     """Generate interactive notebook links with multiple viewing/running options."""
     colab_url = f"https://colab.research.google.com/github/{repo_slug}/blob/main/{quote(relative_path, safe='/')}"
     binder_url = f"https://mybinder.org/v2/gh/{repo_slug}/main?filepath={quote(relative_path, safe='/')}"
-    jupyterlite_url = f"/jupyterlite/lab?path={quote(relative_path, safe='/')}"
 
     return f"""- **{name}**
   [📁 View on GitHub]({github_url}){{ .md-button }}
   [🚀 Run in Google Colab]({colab_url}){{ .md-button .md-button--primary }}
-  [☁️ Run in Binder]({binder_url}){{ .md-button }}
-  [🪐 Launch in JupyterLite]({jupyterlite_url}){{ .md-button }}"""
+  [☁️ Run in Binder]({binder_url}){{ .md-button }}"""
 
 
 def _material_links(
@@ -268,23 +266,8 @@ def build() -> None:
             material_sections.append("\n\n".join(python_embeds))
 
         if material_sections:
-            if notebook_paths:
-                launch_target = notebook_paths[0]
-            else:
-                launch_target = day_dir.relative_to(ROOT).as_posix()
-
-            jupyterlite_url = f"/jupyterlite/lab?path={quote(launch_target, safe='/')}"
-
-            interactive_section = (
-                "## Interactive Notebooks\n\n"
-                "Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.\n\n"
-                f"[🪐 Launch in JupyterLite]({jupyterlite_url}){{ .md-button .md-button--primary }}"
-            )
-
             materials_section = (
-                "\n\n"
-                + interactive_section
-                + "\n\n## Additional Materials\n\n"
+                "\n\n## Additional Materials\n\n"
                 + "\n\n".join(material_sections)
                 + "\n"
             )

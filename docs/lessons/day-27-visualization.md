@@ -71,12 +71,13 @@ _You are on lesson 27 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_27_Visualization/solutions.ipynb){ .md-button }
-  - **visualization.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/visualization.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/visualization.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_27_Visualization/visualization.ipynb){ .md-button }
-    ???+ example "solutions.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/solutions.py)
+- **visualization.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/visualization.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/visualization.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_27_Visualization/visualization.ipynb){ .md-button }
+
+???+ example "solutions.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_27_Visualization/solutions.py)
 
 ````
 ```python title="solutions.py"
@@ -104,6 +105,7 @@ try:
 except FileNotFoundError:
     print("Error: sales_data.csv not found. Keep the CSV beside this script.")
     df = pd.DataFrame()
+
 
 if not df.empty:
     # --- Exercise 1: Sales by Product ---
@@ -177,6 +179,7 @@ DEFAULT_DATA_PATHS: Iterable[Path] = (
     RESOURCE_DIR.parent / "Day_24_Pandas_Advanced" / "sales_data.csv",
 )
 
+
 def load_sales_data(paths: Iterable[Path] = DEFAULT_DATA_PATHS) -> pd.DataFrame:
     """Load the sales dataset used throughout the visualisation lesson.
 
@@ -202,12 +205,14 @@ def load_sales_data(paths: Iterable[Path] = DEFAULT_DATA_PATHS) -> pd.DataFrame:
     print("Error: sales_data.csv not found. Keep the CSV beside this script.")
     return pd.DataFrame()
 
+
 def _validate_dataframe(df: pd.DataFrame, required_columns: Iterable[str]) -> None:
     missing = [col for col in required_columns if col not in df.columns]
     if missing:
         raise ValueError(f"DataFrame is missing required columns: {missing}")
     if df.empty:
         raise ValueError("DataFrame is empty; cannot build visualization.")
+
 
 def build_revenue_by_region_plot(df: pd.DataFrame) -> plt.Figure:
     """Create a bar chart showing total revenue by region."""
@@ -221,6 +226,7 @@ def build_revenue_by_region_plot(df: pd.DataFrame) -> plt.Figure:
     ax.set_xlabel("Region")
     fig.tight_layout()
     return fig
+
 
 def build_daily_revenue_plot(df: pd.DataFrame) -> plt.Figure:
     """Create a line chart showing daily total revenue."""
@@ -238,6 +244,7 @@ def build_daily_revenue_plot(df: pd.DataFrame) -> plt.Figure:
     fig.tight_layout()
     return fig
 
+
 def build_units_sold_distribution_plot(df: pd.DataFrame) -> plt.Figure:
     """Create a histogram showing the distribution of units sold."""
 
@@ -250,6 +257,7 @@ def build_units_sold_distribution_plot(df: pd.DataFrame) -> plt.Figure:
     ax.set_ylabel("Frequency")
     fig.tight_layout()
     return fig
+
 
 def build_price_vs_units_sold_plot(df: pd.DataFrame) -> plt.Figure:
     """Create a scatter plot comparing price to units sold."""
@@ -264,6 +272,7 @@ def build_price_vs_units_sold_plot(df: pd.DataFrame) -> plt.Figure:
     ax.legend(title="Product")
     fig.tight_layout()
     return fig
+
 
 def main() -> None:
     """Load the data and display the standard lesson charts."""
@@ -289,6 +298,7 @@ def main() -> None:
         "Displaying Scatter Plot: Price vs. Units Sold. Close the window to continue."
     )
     build_price_vs_units_sold_plot(df).show()
+
 
 if __name__ == "__main__":
     main()

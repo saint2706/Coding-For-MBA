@@ -99,12 +99,13 @@ _You are on lesson 33 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_33_API/api.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_33_API/api.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_33_API/api.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_33_API/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_33_API/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_33_API/solutions.ipynb){ .md-button }
-    ???+ example "api.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_33_API/api.py)
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_33_API/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_33_API/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_33_API/solutions.ipynb){ .md-button }
+
+???+ example "api.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_33_API/api.py)
 
 ````
 ```python title="api.py"
@@ -120,6 +121,7 @@ import requests
 JSONPLACEHOLDER_BASE_URL = "https://jsonplaceholder.typicode.com"
 USERS_ENDPOINT = f"{JSONPLACEHOLDER_BASE_URL}/users"
 POSTS_ENDPOINT = f"{JSONPLACEHOLDER_BASE_URL}/posts"
+
 
 def _make_request(
     url: str,
@@ -145,6 +147,7 @@ def _make_request(
     response.raise_for_status()
     return response
 
+
 def fetch_users(
     client: Optional[Any] = None,
 ) -> pd.DataFrame:
@@ -152,6 +155,7 @@ def fetch_users(
 
     response = _make_request(USERS_ENDPOINT, client=client)
     return pd.DataFrame(response.json())
+
 
 def fetch_post(
     post_id: int,
@@ -163,6 +167,7 @@ def fetch_post(
     response = _make_request(url, client=client)
     return response.json()
 
+
 def fetch_posts_by_user(
     user_id: int,
     client: Optional[Any] = None,
@@ -171,6 +176,7 @@ def fetch_posts_by_user(
 
     response = _make_request(POSTS_ENDPOINT, client=client, params={"userId": user_id})
     return pd.DataFrame(response.json())
+
 
 def _print_preview(df: pd.DataFrame, label: str) -> None:
     """Utility helper to display a DataFrame preview in the CLI demo."""
@@ -181,6 +187,7 @@ def _print_preview(df: pd.DataFrame, label: str) -> None:
     else:
         print(df.head())
     print("-" * 20)
+
 
 def main() -> None:
     """Simple CLI demonstration that exercises the helper functions."""
@@ -207,6 +214,7 @@ def main() -> None:
         _print_preview(posts_df, "Posts for userId=2")
     except requests.RequestException as exc:
         print(f"Failed to fetch posts: {exc}")
+
 
 if __name__ == "__main__":
     main()
@@ -239,6 +247,7 @@ except requests.exceptions.RequestException as e:
     print(f"Error fetching posts: {e}")
 print("-" * 20)
 
+
 # --- Exercise 2: Fetch a Specific User's Data ---
 print("--- Solution to Exercise 2 ---")
 user_id = 5
@@ -255,6 +264,7 @@ try:
 except requests.exceptions.RequestException as e:
     print(f"Error fetching user {user_id}: {e}")
 print("-" * 20)
+
 
 # --- Exercise 3: Fetch Comments for a Specific Post ---
 print("--- Solution to Exercise 3 ---")

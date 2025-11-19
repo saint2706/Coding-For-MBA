@@ -128,16 +128,17 @@ _You are on lesson 31 of 108._
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/databases.ipynb){ .md-button }
-  - **databases_smoke_test.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases_smoke_test.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases_smoke_test.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/databases_smoke_test.ipynb){ .md-button }
-  - **solutions.ipynb**
-    [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/solutions.ipynb){ .md-button }
-    [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/solutions.ipynb){ .md-button .md-button--primary }
-    [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/solutions.ipynb){ .md-button }
-    ???+ example "databases.py"
-    [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases.py)
+- **databases_smoke_test.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases_smoke_test.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases_smoke_test.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/databases_smoke_test.ipynb){ .md-button }
+- **solutions.ipynb**
+  [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/solutions.ipynb){ .md-button }
+  [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/solutions.ipynb){ .md-button .md-button--primary }
+  [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/solutions.ipynb){ .md-button }
+
+???+ example "databases.py"
+[View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases.py)
 
 ````
 ```python title="databases.py"
@@ -166,6 +167,7 @@ EMPLOYEE_ROWS: Sequence[EmployeeRecord] = (
     (105, "Eve", "Engineering", 130_000),
 )
 
+
 @contextmanager
 def _get_connection(database: DatabaseLike) -> Iterator[sqlite3.Connection]:
     """Yield a SQLite connection for a file path or existing connection."""
@@ -179,6 +181,7 @@ def _get_connection(database: DatabaseLike) -> Iterator[sqlite3.Connection]:
         yield connection
     finally:
         connection.close()
+
 
 def initialize_employee_db(database: DatabaseLike) -> None:
     """Create the employees table and populate it with sample rows."""
@@ -202,6 +205,7 @@ def initialize_employee_db(database: DatabaseLike) -> None:
         )
         connection.commit()
 
+
 def fetch_department_salaries(database: DatabaseLike, department: str) -> SalaryResult:
     """Return ``(name, salary)`` pairs for the requested department."""
 
@@ -215,12 +219,14 @@ def fetch_department_salaries(database: DatabaseLike, department: str) -> Salary
         cursor = connection.execute(query, (department,))
         return [(row[0], float(row[1])) for row in cursor.fetchall()]
 
+
 def fetch_department_dataframe(database: DatabaseLike, department: str) -> pd.DataFrame:
     """Return a ``pandas.DataFrame`` of the department's employees."""
 
     query = "SELECT * FROM employees WHERE department = ? ORDER BY salary"
     with _get_connection(database) as connection:
         return pd.read_sql_query(query, connection, params=(department,))
+
 
 def cleanup_employee_db(database: DatabaseLike) -> None:
     """Remove the SQLite file for the employee database if it exists."""
@@ -232,6 +238,7 @@ def cleanup_employee_db(database: DatabaseLike) -> None:
     db_path = os.fspath(database)
     if os.path.exists(db_path):
         os.remove(db_path)
+
 
 def main(database: DatabaseLike = DB_FILE) -> None:
     """Demonstrate basic interactions with the employee database."""
@@ -258,6 +265,7 @@ def main(database: DatabaseLike = DB_FILE) -> None:
     cleanup_employee_db(database)
     print(f"\nCleaned up and removed {database}.")
     print("-" * 20)
+
 
 if __name__ == "__main__":
     main()
@@ -324,6 +332,7 @@ finally:
         conn.close()
 print("-" * 20)
 
+
 # --- Exercise 2: Query with `sqlite3` ---
 print("--- Solution to Exercise 2 ---")
 try:
@@ -347,6 +356,7 @@ finally:
     if conn:  # pyright: ignore[reportPossiblyUnboundVariable]
         conn.close()
 print("-" * 20)
+
 
 # --- Exercise 3: Query with Pandas ---
 print("--- Solution to Exercise 3 ---")

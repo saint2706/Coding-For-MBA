@@ -11,8 +11,6 @@ steps:
 
 ```bash
 # Add to docs/requirements.txt
-pip install jupyterlite-core>=0.3.0
-pip install jupyterlite-pyodide-kernel>=0.3.0
 pip install mkdocs-git-revision-date-localized-plugin
 pip install mkdocs-minify-plugin
 ```
@@ -24,8 +22,6 @@ Copy these new files to your repository:
 - `docs/javascripts/pyodide-console.js` → Interactive Python console
 - `docs/javascripts/progress-tracker.js` → Progress tracking
 - `docs/stylesheets/interactive-widgets.css` → Styling for widgets
-- `jupyter_lite_config.json` → JupyterLite configuration
-- `tools/integrate_jupyterlite.py` → Build integration tool
 
 ### 3. Update MkDocs Configuration
 
@@ -47,12 +43,7 @@ extra_javascript:
 Modify `.github/workflows/docs.yml`:
 
 ```yaml
-- name: Install JupyterLite
   run: |
-    pip install jupyterlite-core jupyterlite-pyodide-kernel
-
-- name: Build JupyterLite
-  run: python tools/integrate_jupyterlite.py
 
 - name: Build MkDocs site
   run: mkdocs build --strict
@@ -61,8 +52,6 @@ Modify `.github/workflows/docs.yml`:
 ### 5. Test Locally
 
 ```bash
-# Build JupyterLite
-python tools/integrate_jupyterlite.py
 
 # Serve documentation
 mkdocs serve
@@ -74,46 +63,9 @@ ______________________________________________________________________
 
 ## Phase 1: Interactive Notebooks (Week 1)
 
-### JupyterLite Setup
-
-#### Step 1: Install Dependencies
-
-```bash
-pip install jupyterlite-core jupyterlite-pyodide-kernel
-```
-
-#### Step 2: Configure JupyterLite
-
-The `jupyter_lite_config.json` file is already created. Review and adjust:
-
-```json
-{
-  "LiteBuildConfig": {
-    "contents": ["Day_01_Introduction/", "Day_02_Variables_Builtin_Functions/", ...],
-    "output_dir": "site/jupyterlite"
-  }
-}
-```
-
-#### Step 3: Build JupyterLite
-
-```bash
-# Manual build
-jupyter lite build --output-dir site/jupyterlite
-
-# Or use the integration script
-python tools/integrate_jupyterlite.py
-```
-
-#### Step 4: Add Launch Buttons
-
-The integration script automatically adds buttons, or manually add to lesson pages:
-
-```markdown
 ## Interactive Notebooks
 
-[🚀 Launch in JupyterLite](../../jupyterlite/lab?path=Day_01_Introduction/introduction.ipynb){ .md-button .md-button--primary }
-```
+````
 
 #### Step 5: Test
 
@@ -141,7 +93,7 @@ dependencies:
   - matplotlib
   - scikit-learn
   - jupyter
-```
+````
 
 Or just ensure `requirements.txt` is at the repository root.
 
@@ -370,9 +322,6 @@ ______________________________________________________________________
 
 ### Functional Testing
 
-- [ ] JupyterLite launches successfully
-- [ ] Notebooks load in JupyterLite
-- [ ] Code executes in JupyterLite
 - [ ] Binder badges work
 - [ ] Pyodide console runs code
 - [ ] Progress tracking saves/loads
@@ -392,7 +341,6 @@ ______________________________________________________________________
 ### Performance Testing
 
 - [ ] Page load time \< 3 seconds
-- [ ] JupyterLite loads \< 30 seconds (first time)
 - [ ] Search responds \< 1 second
 - [ ] No console errors
 - [ ] Mobile responsive
@@ -411,27 +359,12 @@ ______________________________________________________________________
 
 ## Troubleshooting
 
-### JupyterLite Won't Load
-
-**Problem**: JupyterLite shows blank page or errors
-
-**Solutions**:
-
-1. Check browser console for errors
-1. Verify browser supports WebAssembly
-1. Clear browser cache
-1. Try different browser
-1. Check that `pyodide.js` CDN is accessible
-
-### Notebooks Not Found in JupyterLite
-
 **Problem**: Notebooks don't appear in JupyterLite file browser
 
 **Solutions**:
 
 1. Verify notebooks are in `Day_*` directories
 1. Check `jupyter_lite_config.json` includes correct paths
-1. Rebuild JupyterLite: `python tools/integrate_jupyterlite.py`
 1. Verify notebooks are committed to git
 
 ### Progress Not Saving
@@ -479,7 +412,6 @@ ______________________________________________________________________
 1. **Update dependencies**:
 
    ```bash
-   pip install --upgrade jupyterlite-core jupyterlite-pyodide-kernel mkdocs-material
    ```
 
 1. **Test JupyterLite**:
@@ -519,7 +451,6 @@ ______________________________________________________________________
 1. **Major version updates**:
 
    - Update MkDocs Material
-   - Update JupyterLite
    - Review breaking changes
 
 1. **Comprehensive testing**:
@@ -534,7 +465,6 @@ ______________________________________________________________________
 
 ### Resources
 
-- **JupyterLite Docs**: https://jupyterlite.readthedocs.io/
 - **MkDocs Material**: https://squidfunk.github.io/mkdocs-material/
 - **Pyodide Docs**: https://pyodide.org/
 - **Repository Issues**: https://github.com/saint2706/Coding-For-MBA/issues
@@ -550,7 +480,6 @@ ______________________________________________________________________
 For complex implementations, consider:
 
 - Hiring a web developer familiar with MkDocs
-- Consulting with JupyterLite community
 - Using professional services for accessibility audits
 
 ______________________________________________________________________
