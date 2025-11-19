@@ -4,7 +4,6 @@ This guide provides step-by-step instructions for implementing the recommended w
 
 ## Quick Start (Essential Features Only)
 
-If you want to implement just the core features (JupyterLite + Progress Tracking), follow these
 steps:
 
 ### 1. Install Required Dependencies
@@ -71,7 +70,6 @@ ______________________________________________________________________
 
 1. Build the site: `mkdocs build`
 1. Serve locally: `mkdocs serve`
-1. Navigate to a lesson and click the JupyterLite button
 1. Verify the notebook loads and runs Python code
 
 ### Binder Integration
@@ -359,8 +357,6 @@ ______________________________________________________________________
 
 ## Troubleshooting
 
-**Problem**: Notebooks don't appear in JupyterLite file browser
-
 **Solutions**:
 
 1. Verify notebooks are in `Day_*` directories
@@ -393,12 +389,9 @@ ______________________________________________________________________
 
 ### Build Fails
 
-**Problem**: `mkdocs build` or JupyterLite build fails
-
 **Solutions**:
 
 1. Check all dependencies are installed
-1. Verify Python version (3.11+ for JupyterLite)
 1. Check for syntax errors in config files
 1. Run with `--verbose` flag for detailed errors
 1. Clear build cache: `rm -rf site/`
@@ -413,8 +406,6 @@ ______________________________________________________________________
 
    ```bash
    ```
-
-1. **Test JupyterLite**:
 
    - Launch a few notebooks
    - Verify common packages work

@@ -25,7 +25,6 @@ Run this lesson's code interactively in your browser:
 
 .md-button--primary }
 
-!!! tip "About JupyterLite" JupyterLite runs entirely in your browser using WebAssembly. No
 installation or server required! Note: First launch may take a moment to load.
 
 ### Or Launch in Cloud
