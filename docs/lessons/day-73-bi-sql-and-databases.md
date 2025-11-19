@@ -62,12 +62,6 @@ _You are on lesson 73 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_73_BI_SQL_and_Databases){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"

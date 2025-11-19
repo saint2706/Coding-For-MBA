@@ -107,24 +107,16 @@ _You are on lesson 13 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **HOF.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_13_Higher_Order_Functions/HOF.ipynb){ .md-button }
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_13_Higher_Order_Functions/solutions.ipynb){ .md-button }
 
 ???+ example "HOF.py"
 [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_13_Higher_Order_Functions/HOF.py)

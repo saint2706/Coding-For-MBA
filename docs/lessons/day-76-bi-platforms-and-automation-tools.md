@@ -84,12 +84,6 @@ _You are on lesson 76 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_76_BI_Platforms_and_Automation_Tools){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"

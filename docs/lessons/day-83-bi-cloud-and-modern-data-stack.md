@@ -81,12 +81,6 @@ _You are on lesson 83 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_83_BI_Cloud_and_Modern_Data_Stack){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"

@@ -64,12 +64,6 @@ _You are on lesson 78 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_78_BI_Experimentation_and_Predictive_Insights){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"

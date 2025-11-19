@@ -122,29 +122,20 @@ _You are on lesson 31 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_31_Databases/databases.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **databases.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/databases.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_31_Databases/databases.ipynb){ .md-button }
 - **databases_smoke_test.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases_smoke_test.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases_smoke_test.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/databases_smoke_test.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_31_Databases/databases_smoke_test.ipynb){ .md-button }
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_31_Databases/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_31_Databases/solutions.ipynb){ .md-button }
 
 ???+ example "databases.py"
 [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_31_Databases/databases.py)

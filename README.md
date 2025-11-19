@@ -120,7 +120,6 @@ python scripts/generate_certificate.py --name "Your Name" --phase 1
 ### 🚀 Interactive Notebooks
 
 - **Binder integration** for zero-install Jupyter notebooks
-- **JupyterLite** support for browser-based notebooks
 - **"Open in Binder" buttons** on lesson pages
 
 ### 🌍 Internationalization (i18n)
@@ -202,7 +201,7 @@ Coding-For-MBA/
 - **Documentation**: MkDocs with Material theme
 - **Progress Tracking**: FastAPI + SQLite
 - **PDF Generation**: WeasyPrint + markdown2
-- **Notebooks**: Binder + JupyterLite
+- **Notebooks**: Binder
 - **CI/CD**: GitHub Actions
 - **Analytics**: Privacy-first JavaScript logger
 

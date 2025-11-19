@@ -100,24 +100,16 @@ _You are on lesson 8 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_08_Dictionaries/dictionaries.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **dictionaries.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/dictionaries.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/dictionaries.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_08_Dictionaries/dictionaries.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_08_Dictionaries/dictionaries.ipynb){ .md-button }
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_08_Dictionaries/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_08_Dictionaries/solutions.ipynb){ .md-button }
 
 ???+ example "dictionaries.py"
 [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_08_Dictionaries/dictionaries.py)

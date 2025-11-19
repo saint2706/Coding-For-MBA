@@ -135,39 +135,28 @@ _You are on lesson 30 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/presidents.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **presidents.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/presidents.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/presidents.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/presidents.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/presidents.ipynb){ .md-button }
 - **profile_web_scraping.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/profile_web_scraping.ipynb){ .md-button }
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/solutions.ipynb){ .md-button }
 - **web_scraping.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/web_scraping.ipynb){ .md-button }
 - **web_scraping_bu.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_30_Web_Scraping/web_scraping_bu.ipynb){ .md-button }
 
 ???+ example "presidents.py"
 [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_30_Web_Scraping/presidents.py)

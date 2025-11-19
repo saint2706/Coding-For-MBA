@@ -109,29 +109,20 @@ _You are on lesson 14 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_14_Modules/business_logic.ipynb){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 - **business_logic.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/business_logic.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_14_Modules/business_logic.ipynb){ .md-button }
 - **modules.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/modules.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/modules.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_14_Modules/modules.ipynb){ .md-button }
 - **solutions.ipynb**
   [📁 View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.ipynb){ .md-button }
   [🚀 Run in Google Colab](https://colab.research.google.com/github/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/solutions.ipynb){ .md-button .md-button--primary }
   [☁️ Run in Binder](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_14_Modules/solutions.ipynb){ .md-button }
-  [🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_14_Modules/solutions.ipynb){ .md-button }
 
 ???+ example "business_logic.py"
 [View on GitHub](https://github.com/saint2706/Coding-For-MBA/blob/main/Day_14_Modules/business_logic.py)

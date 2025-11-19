@@ -19,7 +19,6 @@ learning experience.
 
 ### Limitations
 
-- ✅ Interactive runtime available via JupyterLite (delivered)
 - ❌ Users cannot execute code directly on the website
 - ❌ Limited dynamic features
 - ❌ No progress tracking or personalization
@@ -27,7 +26,6 @@ learning experience.
 
 ## Status Snapshot (April 2024)
 
-- ✅ **JupyterLite build is live** – `tools/integrate_jupyterlite.py` keeps the Lite manifest current and the docs workflows rebuild the assets on every deploy.
 - ✅ **Binder badges are automated** – `tools/build_docs.py` injects Binder links for every notebook so lessons link directly to cloud runtimes.
 - 🚧 **Pyodide widgets are prototyped** – `docs/javascripts/pyodide-console.js` ships an interactive widget, but no production lessons embed it yet.
 - ✅ **Lesson progress tracking shipped** – `docs/javascripts/progress-tracker.js` and the MkDocs override add completion buttons and sidebar stats.
@@ -41,161 +39,7 @@ ______________________________________________________________________
 
 ### 1. Interactive Notebook Runtime (HIGH PRIORITY)
 
-#### 1.1 JupyterLite Integration _(Status: ✅ Delivered)_
-
-**What**: JupyterLite is a lightweight JupyterLab distribution that runs entirely in the browser
-using WebAssembly.
-
-**Benefits**:
-
-- ✅ No server infrastructure required
-- ✅ Works perfectly with GitHub Pages
-- ✅ Full Jupyter experience in the browser
-- ✅ Pre-installed packages available via Pyodide
-- ✅ Can load notebooks from the repository
-
-**Implementation Steps**:
-
-1. **Install JupyterLite**:
-
-   ```bash
-   pip install jupyterlite-core jupyterlite-pyodide-kernel
-   ```
-
-1. **Create JupyterLite configuration** (`jupyter_lite_config.json`):
-
-   ```json
-   {
-     "LiteBuildConfig": {
-       "contents": ["Day_*/"],
-       "ignore_sys_prefix": ["share"]
-     },
-     "PipliteAddon": {
-       "piplite_urls": [
-         "https://pypi.org/simple"
-       ]
-     }
-   }
-   ```
-
-   > ✅ Update: `tools/integrate_jupyterlite.py` now regenerates the
-   > `LiteBuildConfig.contents` manifest from the repository's `Day_*`
-   > folders and sanity-checks that the latest lesson is included, so every
-   > published lesson automatically appears in the JupyterLite runtime.
-
-1. **Add build step to documentation workflow**:
-
-   ```yaml
-   - name: Build JupyterLite
-     run: |
-       jupyter lite build --contents . --output-dir site/jupyterlite
-   ```
-
-   > ℹ️ Automated: The `docs.yml` and `docs-ci.yml` workflows now call
-   > `python tools/integrate_jupyterlite.py --build-only` immediately after
-   > `mkdocs build --strict`, ensuring the Lite assets persist in the published
-   > site.
-
-1. **Add launch buttons to lesson pages**:
-
-   ```markdown
-   [🚀 Launch Interactive Notebook](../jupyterlite/lab?path=Day_01_Introduction/introduction.ipynb){ .md-button .md-button--primary }
-   ```
-
-**Estimated Effort**: 4-6 hours **Impact**: HIGH - Enables full interactive coding experience
-
-#### 1.2 Thebe Integration _(Status: ✅ Delivered)_
-
-> **Current state**: The MkDocs configuration now loads the Thebe CDN bundle alongside `docs/javascripts/thebe-config.js`, which boots Binder-backed kernels for any code block wrapped in an element marked `data-executable="true"`.
-
-**What**: Thebe makes static HTML pages interactive by connecting code cells to a Jupyter kernel
-(via Binder).
-
-**Benefits**:
-
-- ✅ Makes existing code blocks executable
-- ✅ Less intrusive than full JupyterLite
-- ✅ Good for simple examples
-
-**Implementation**:
-
-1. **Add Thebe JavaScript** to MkDocs extra_javascript:
-
-   ```yaml
-   extra_javascript:
-     - https://unpkg.com/thebe@latest/lib/index.js
-     - javascripts/thebe-config.js
-   ```
-
-1. **Create Thebe configuration** (`docs/javascripts/thebe-config.js`):
-
-   ```javascript
-   thebelab.on("ready", function() {
-     thebelab.bootstrap({
-       requestKernel: true,
-       binderOptions: {
-         repo: "saint2706/Coding-For-MBA",
-         ref: "main",
-       },
-       kernelOptions: {
-         name: "python3",
-         kernelName: "python3",
-       },
-       selector: "div.executable",
-     });
-   });
-   ```
-
-1. **Mark code blocks as executable** in markdown:
-
-   ````markdown
-   <div class="executable" data-executable="true">
-   ```python
-   print("Hello, World!")
-   ````
-
-   </div>
-   ```
-
-**Estimated Effort**: 2-3 hours **Impact**: MEDIUM - Good for inline examples
-
-#### 1.3 Binder Integration _(Status: ✅ Delivered)_
-
-> **Current state**: `tools/build_docs.py` now injects Binder, Colab, and JupyterLite links for each notebook, and the generated lesson markdown already includes `[☁️ Run in Binder](https://mybinder.org/...)` buttons.
-
-**What**: Add "Launch Binder" badges to open notebooks in a cloud environment.
-
-**Benefits**:
-
-- ✅ Full computing environment
-- ✅ No browser limitations
-- ✅ Can handle heavy computations
-
-**Implementation**:
-
-1. **Create Binder configuration files**:
-
-   - `environment.yml` or `requirements.txt` at root
-   - `.binder/` directory with configuration
-
-1. **Add Binder badges to lesson pages**:
-
-   ```markdown
-   [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/saint2706/Coding-For-MBA/main?filepath=Day_01_Introduction/introduction.ipynb)
-   ```
-
-1. **Update build_docs.py** to automatically add badges:
-
-   ```python
-   def _add_binder_badge(day_dir: Path, notebook: Path) -> str:
-       filepath = notebook.relative_to(ROOT)
-       url = f"https://mybinder.org/v2/gh/{repo_slug}/main?filepath={filepath}"
-       return f"[![Launch Binder](https://mybinder.org/badge_logo.svg)]({url})"
-   ```
-
-**Estimated Effort**: 1-2 hours **Impact**: MEDIUM - Good fallback option
-
-______________________________________________________________________
+#
 
 ### 2. Enhanced Interactivity
 
@@ -695,7 +539,6 @@ ______________________________________________________________________
 
 ### Phase 1: Essential (Week 1-2)
 
-- ✅ **JupyterLite integration** – automated via `tools/integrate_jupyterlite.py` and the `docs.yml` workflow.
 - ✅ **Binder badges** – generated by `tools/build_docs.py` across all lessons.
 - 🚧 **Accessibility improvements** – base focus/contrast styles exist, but skip links and semantic wrappers are pending.
 - ✅ **Progress tracking** – live through `docs/javascripts/progress-tracker.js` and the MkDocs override hook.
@@ -730,8 +573,6 @@ ______________________________________________________________________
 
 ```txt
 mkdocs-material>=9.5.16
-jupyterlite-core>=0.3.0
-jupyterlite-pyodide-kernel>=0.3.0
 mkdocs-jupyter>=0.24.0
 ```
 
@@ -762,12 +603,6 @@ ______________________________________________________________________
 
 ## Maintenance Considerations
 
-### 1. JupyterLite Updates
-
-- **Frequency**: Quarterly
-- **Effort**: 1-2 hours
-- **Tasks**: Update Pyodide packages, rebuild lite distribution
-
 ### 2. Content Updates
 
 - **Frequency**: As lessons are added/modified
@@ -793,7 +628,6 @@ ______________________________________________________________________
 ### Infrastructure Costs
 
 - **GitHub Pages**: FREE ✅
-- **JupyterLite**: FREE ✅ (runs client-side)
 - **Binder**: FREE ✅ (open service)
 - **CDN for JavaScript**: FREE ✅
 - **Total**: $0/month
@@ -855,7 +689,6 @@ ______________________________________________________________________
 
 ### Supported Browsers
 
-- ✅ Chrome/Edge 90+ (JupyterLite requires modern browsers)
 - ✅ Firefox 88+
 - ✅ Safari 14+
 - ❌ Internet Explorer (not supported)
@@ -872,7 +705,6 @@ ______________________________________________________________________
 
 ### Immediate Actions
 
-- Validate the existing JupyterLite build, Binder badges, and progress tracker UX on production.
 - Document outstanding accessibility gaps (skip links, semantic regions) and prioritise fixes.
 - Review the Pyodide widget prototype and decide on the first lessons that should embed it.
 - Confirm ownership and timeline for the remaining roadmap items (Thebe, search, analytics).
@@ -901,12 +733,6 @@ ______________________________________________________________________
 ______________________________________________________________________
 
 ## Resources and References
-
-### JupyterLite
-
-- Documentation: https://jupyterlite.readthedocs.io/
-- Examples: https://jupyterlite.github.io/demo/
-- GitHub: https://github.com/jupyterlite/jupyterlite
 
 ### Thebe
 

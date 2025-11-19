@@ -96,12 +96,6 @@ _You are on lesson 84 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_84_BI_Career_Development_and_Capstone){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"

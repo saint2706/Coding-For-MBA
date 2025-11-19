@@ -67,12 +67,6 @@ _You are on lesson 68 of 108._
 
 <!-- LESSON_FOOTER_END -->
 
-## Interactive Notebooks
-
-Run this lesson's notebooks directly in your browser with the built-in JupyterLite runtime.
-
-[🪐 Launch in JupyterLite](/jupyterlite/lab?path=Day_68_BI_Analyst_Foundations){ .md-button .md-button--primary }
-
 ## Additional Materials
 
 ???+ example "lesson.py"
