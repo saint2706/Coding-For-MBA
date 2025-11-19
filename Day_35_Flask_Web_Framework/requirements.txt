@@ -1,4 +1,4 @@
-Click==8.3.0
+Click==8.3.1
 Flask==3.1.2
 itsdangerous==2.2.0
 
