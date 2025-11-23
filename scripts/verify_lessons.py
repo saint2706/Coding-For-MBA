@@ -133,7 +133,7 @@ def generate_lesson_list_markdown(lessons: List[LessonInfo]) -> str:
     lines.append("")
     lines.append("<!-- AUTO_ALL_LESSONS_END -->")
 
-    return "\n".join(lines)
+    return "\n".join(lines) + "\n"
 
 
 def generate_lesson_table_markdown(lessons: List[LessonInfo]) -> str:
@@ -153,7 +153,7 @@ def generate_lesson_table_markdown(lessons: List[LessonInfo]) -> str:
     lines.append("")
     lines.append("<!-- AUTO_ALL_LESSONS_END -->")
 
-    return "\n".join(lines)
+    return "\n".join(lines) + "\n"
 
 
 def parse_interactive_lessons(index_path: Path) -> List[Dict[str, str]]:
