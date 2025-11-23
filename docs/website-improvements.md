@@ -39,8 +39,6 @@ ______________________________________________________________________
 
 ### 1. Interactive Notebook Runtime (HIGH PRIORITY)
 
-#
-
 ### 2. Enhanced Interactivity
 
 #### 2.1 Pyodide-based Interactive Code Widgets _(Status: 🚧 Prototype ready)_
