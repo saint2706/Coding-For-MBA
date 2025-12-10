@@ -1,4 +1,4 @@
-beautifulsoup4==4.14.2
+beautifulsoup4==4.14.3
 Flask==3.1.2
 joblib==1.5.2
 matplotlib==3.10.7
@@ -10,15 +10,15 @@ pandas==2.3.3
 plotly==6.5.0
 psycopg2-binary==2.9.11
 requests==2.32.5
-scikit-learn==1.7.2
+scikit-learn==1.8.0
 scikit-optimize==0.10.2
 seaborn==0.13.2
 sympy==1.14.0
 tensorflow==2.20.0
-statsmodels==0.14.5
+statsmodels==0.14.6
 responses==0.25.8
 ipykernel==7.1.0
 lexical-diversity
 mysql-connector-python==9.5.0
-pymongo==4.15.4
+pymongo==4.15.5
 pytest-cov==7.0.0
