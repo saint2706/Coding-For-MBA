@@ -43,6 +43,8 @@ plugins:
 extra_css:
 - stylesheets/extra.css
 - stylesheets/interactive-widgets.css
+- stylesheets/exercise-widgets.css
+- https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css
 extra_javascript:
 - https://unpkg.com/thebe@latest/lib/index.js
 - javascripts/thebe-config.js
@@ -50,6 +52,10 @@ extra_javascript:
 - javascripts/pyodide-console.js
 - javascripts/progress-tracker.js
 - assets/js/progress.js
+# CodeMirror 5 bundle for syntax highlighting
+- https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js
+- https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js
+- javascripts/exercise-editor.js
 markdown_extensions:
 - admonition
 - footnotes
@@ -63,6 +69,7 @@ markdown_extensions:
 nav:
 - Home: index.md
 - Get Started: get-started.md
+- "🚀 Interactive Exercises": interactive-exercises.md
 - Phases:
   - Overview: phases/overview.md
   - "Phase 1 \u2022 Python Foundations": phases/phase_1_overview.md
