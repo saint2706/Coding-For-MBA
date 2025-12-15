@@ -40,7 +40,7 @@ jobs:
           python tools/benchmark_lessons.py --repeats 5 --output benchmark-results.json
 
       - name: Upload benchmark report
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: lesson-benchmarks
           path: benchmark-results.json
