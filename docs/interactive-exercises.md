@@ -32,7 +32,7 @@ Welcome to the **Interactive Learning Platform** - a LeetCode/HackerRank-style e
   </div>
 </div>
 
----
+______________________________________________________________________
 
 ## Try It Out
 
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
----
+______________________________________________________________________
 
 ### Exercise 2: Calculate Gross Profit
 
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
----
+______________________________________________________________________
 
 ### Exercise 3: Calculate Profit Margin
 
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
----
+______________________________________________________________________
 
 ## How It Works
 
@@ -183,22 +183,22 @@ flowchart LR
 ```
 
 1. **Write your solution** in the code editor
-2. **Click "Run Tests"** or press `Ctrl+Enter`
-3. **See instant feedback** with test results
-4. **Use hints** if you get stuck
+1. **Click "Run Tests"** or press `Ctrl+Enter`
+1. **See instant feedback** with test results
+1. **Use hints** if you get stuck
 
----
+______________________________________________________________________
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+Enter` | Run tests |
-| `Ctrl+Z` | Undo |
-| `Ctrl+Shift+Z` | Redo |
-| `Tab` | Indent |
+| Shortcut       | Action    |
+| -------------- | --------- |
+| `Ctrl+Enter`   | Run tests |
+| `Ctrl+Z`       | Undo      |
+| `Ctrl+Shift+Z` | Redo      |
+| `Tab`          | Indent    |
 
----
+______________________________________________________________________
 
 <div class="next-steps">
   <h3>🎯 Ready for More?</h3>

@@ -43,7 +43,7 @@ class ExerciseEditor {
             </button>
           </div>
         </div>
-        
+
         <div class="exercise-body">
           <div class="editor-pane">
             <div class="editor-header">
@@ -54,7 +54,7 @@ class ExerciseEditor {
             </div>
             <div class="code-editor-container" id="${widgetId}-editor"></div>
           </div>
-          
+
           <div class="results-pane">
             <div class="results-header">
               <span>Test Results</span>
@@ -67,7 +67,7 @@ class ExerciseEditor {
             </div>
           </div>
         </div>
-        
+
         <div class="exercise-footer">
           <div class="hint-display" id="${widgetId}-hint" style="display: none;">
             <span class="hint-icon">💡</span>
@@ -81,7 +81,7 @@ class ExerciseEditor {
             </button>
           </div>
         </div>
-        
+
         <div class="loading-overlay" id="${widgetId}-loading" style="display: none;">
           <div class="loading-spinner"></div>
           <div class="loading-text">Running tests...</div>
