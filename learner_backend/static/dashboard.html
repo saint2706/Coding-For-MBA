@@ -191,6 +191,7 @@
             border-radius: 9999px;
             font-size: 0.875rem;
             font-weight: 600;
+            text-transform: capitalize;
         }
 
         .status-completed {
@@ -243,7 +244,7 @@
             <div class="progress-section">
                 <h2>Overall Progress</h2>
                 <div class="progress-bar-container">
-                    <div class="progress-bar" id="progress-bar" style="width: 0%">
+                    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Course completion" style="width: 0%">
                         <span id="progress-text">0%</span>
                     </div>
                 </div>
@@ -344,6 +345,7 @@
             const progressBar = document.getElementById('progress-bar');
             const progressText = document.getElementById('progress-text');
             progressBar.style.width = `${completionPct}%`;
+            progressBar.setAttribute('aria-valuenow', completionPct);
             progressText.textContent = `${completionPct}%`;
 
             // Update badges
@@ -362,9 +364,14 @@
                 const badgeEl = document.createElement('div');
                 badgeEl.className = earnedPhases.has(phase) ? 'badge' : 'badge badge-locked';
                 badgeEl.textContent = `Phase ${phase}`;
+
                 if (earnedPhases.has(phase)) {
                     badgeEl.innerHTML += '<br>✅';
+                    badgeEl.setAttribute('aria-label', `Phase ${phase}: Completed`);
+                } else {
+                    badgeEl.setAttribute('aria-label', `Phase ${phase}: Locked`);
                 }
+
                 container.appendChild(badgeEl);
             }
         }
