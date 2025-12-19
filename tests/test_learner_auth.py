@@ -64,7 +64,9 @@ def test_github_callback_flow(mock_client_cls):
     client.cookies.set("oauth_state", "valid_state")
 
     # Call the callback endpoint with matching state
-    response = client.get("/api/v1/auth/github?code=valid_code&state=valid_state", follow_redirects=False)
+    response = client.get(
+        "/api/v1/auth/github?code=valid_code&state=valid_state", follow_redirects=False
+    )
 
     # Verify redirect to dashboard
     assert response.status_code in (302, 307)
@@ -86,7 +88,9 @@ def test_github_callback_flow(mock_client_cls):
 def test_github_callback_invalid_state():
     """Test that callback fails with invalid state."""
     client.cookies.set("oauth_state", "valid_state")
-    response = client.get("/api/v1/auth/github?code=valid_code&state=wrong_state", follow_redirects=False)
+    response = client.get(
+        "/api/v1/auth/github?code=valid_code&state=wrong_state", follow_redirects=False
+    )
     assert response.status_code == 400
     assert "Invalid state" in response.json()["detail"]
 
@@ -94,6 +98,8 @@ def test_github_callback_invalid_state():
 def test_github_callback_missing_state_cookie():
     """Test that callback fails when state cookie is missing."""
     client.cookies.clear()
-    response = client.get("/api/v1/auth/github?code=valid_code&state=some_state", follow_redirects=False)
+    response = client.get(
+        "/api/v1/auth/github?code=valid_code&state=some_state", follow_redirects=False
+    )
     assert response.status_code == 400
     assert "Invalid state" in response.json()["detail"]
