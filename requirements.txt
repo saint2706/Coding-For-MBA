@@ -22,3 +22,6 @@ lexical-diversity
 mysql-connector-python==9.5.0
 pymongo==4.15.5
 pytest-cov==7.0.0
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+httpx>=0.25.0

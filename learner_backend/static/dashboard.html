@@ -400,8 +400,53 @@
             `).join('');
         }
 
+        // Check authentication status and update UI
+        async function checkAuth() {
+            try {
+                // Fetch configuration
+                const rootRes = await fetch('/');
+                const rootData = await rootRes.json();
+
+                const userId = getUserId();
+                const isGitHubUser = userId && userId.startsWith('github_');
+
+                // Get header element
+                const header = document.querySelector('.header');
+
+                // Create auth container if it doesn't exist
+                let authContainer = document.getElementById('auth-container');
+                if (!authContainer) {
+                    authContainer = document.createElement('div');
+                    authContainer.id = 'auth-container';
+                    authContainer.style.marginTop = '1rem';
+                    authContainer.style.display = 'flex';
+                    authContainer.style.justifyContent = 'flex-end';
+                    header.appendChild(authContainer);
+                }
+
+                if (rootData.endpoints && rootData.endpoints.auth && !isGitHubUser) {
+                    // Show Login Button
+                    authContainer.innerHTML = `
+                        <a href="${rootData.endpoints.auth}" class="btn" style="text-decoration: none; background: #24292e;">
+                            Login with GitHub
+                        </a>
+                    `;
+                } else if (isGitHubUser) {
+                    // Show User Info
+                    authContainer.innerHTML = `
+                        <div style="background: #f0fff4; padding: 0.5rem 1rem; border-radius: 8px; color: #22543d; font-weight: 600; border: 1px solid #c6f6d5;">
+                            ✓ Logged in via GitHub
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error checking auth:', error);
+            }
+        }
+
         // Load progress on page load
         loadProgress();
+        checkAuth();
     </script>
 </body>
 </html>

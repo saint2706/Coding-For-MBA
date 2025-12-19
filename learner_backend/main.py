@@ -23,6 +23,7 @@ import uuid
 from datetime import datetime
 from typing import Optional
 
+import httpx
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -117,7 +118,7 @@ async def root():
         "version": "1.0.0",
         "auth_mode": mode,
         "endpoints": {
-            "auth": "/api/v1/auth/github" if OAUTH_ENABLED else None,
+            "auth": "/api/v1/auth/login" if OAUTH_ENABLED else None,
             "progress": "/api/v1/progress",
             "badges": "/api/v1/badges/{user_id}",
             "certificates": "/api/v1/certificates",
@@ -132,24 +133,130 @@ async def health_check():
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
 
-@app.post("/api/v1/auth/github")
-async def github_oauth_callback(code: str):
+@app.get("/api/v1/auth/login")
+async def github_oauth_login(request: Request):
+    """Redirect to GitHub for OAuth."""
+    if not OAUTH_ENABLED:
+        raise HTTPException(
+            status_code=status.HTTP_501_NOT_IMPLEMENTED,
+            detail="OAuth not configured.",
+        )
+
+    redirect_uri = str(request.url_for("github_oauth_callback"))
+    state_token = secrets.token_urlsafe(16)
+
+    params = {
+        "client_id": GITHUB_CLIENT_ID,
+        "redirect_uri": redirect_uri,
+        "scope": "read:user",
+        "state": state_token,
+    }
+
+    from urllib.parse import urlencode
+
+    query = urlencode(params)
+
+    res = Response(
+        status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        headers={"Location": f"https://github.com/login/oauth/authorize?{query}"},
+    )
+
+    res.set_cookie(
+        key="oauth_state",
+        value=state_token,
+        max_age=600,  # 10 minutes
+        httponly=True,
+        samesite="lax",
+        secure=True,
+    )
+    return res
+
+
+@app.get("/api/v1/auth/github")
+async def github_oauth_callback(
+    code: str, state: str, request: Request, response: Response
+):
     """
     GitHub OAuth callback handler.
-    Only available if GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET are set.
+    Exchanges code for token, gets user info, creates user, sets cookie.
     """
     if not OAUTH_ENABLED:
         raise HTTPException(
             status_code=status.HTTP_501_NOT_IMPLEMENTED,
-            detail="OAuth not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET.",
+            detail="OAuth not configured.",
         )
 
-    # TODO: Implement full OAuth flow with GitHub API
-    # This is a placeholder for the OAuth implementation
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="OAuth implementation pending. Use cookie-only mode for now.",
+    # Verify state parameter
+    cookie_state = request.cookies.get("oauth_state")
+    if not cookie_state or cookie_state != state:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid state parameter"
+        )
+
+    # Exchange code for token
+    async with httpx.AsyncClient() as client:
+        token_res = await client.post(
+            "https://github.com/login/oauth/access_token",
+            headers={"Accept": "application/json"},
+            data={
+                "client_id": GITHUB_CLIENT_ID,
+                "client_secret": GITHUB_CLIENT_SECRET,
+                "code": code,
+            },
+        )
+        token_data = token_res.json()
+
+    access_token = token_data.get("access_token")
+    if not access_token:
+        # Check for error from GitHub
+        error = token_data.get("error_description", "Unknown error")
+        raise HTTPException(
+            status_code=400, detail=f"Failed to retrieve access token: {error}"
+        )
+
+    # Get user info
+    async with httpx.AsyncClient() as client:
+        user_res = await client.get(
+            "https://api.github.com/user",
+            headers={
+                "Authorization": f"Bearer {access_token}",
+                "Accept": "application/json",
+            },
+        )
+        user_data = user_res.json()
+
+    github_id = user_data.get("id")
+    username = user_data.get("login")
+
+    if not github_id:
+        raise HTTPException(status_code=400, detail="Failed to retrieve user info")
+
+    user_id = f"github_{github_id}"
+
+    # Create/Update user in DB
+    db.create_user(user_id, username)
+
+    # Redirect to dashboard
+    redirect_url = "/static/dashboard.html"
+
+    res = Response(
+        status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        headers={"Location": redirect_url},
     )
+
+    res.set_cookie(
+        key="learner_user_id",
+        value=user_id,
+        max_age=60 * 60 * 24 * 365,
+        httponly=True,
+        samesite="lax",
+        secure=True,
+    )
+
+    # Clear state cookie
+    res.delete_cookie("oauth_state")
+
+    return res
 
 
 @app.post("/api/v1/progress")
