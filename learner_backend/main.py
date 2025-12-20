@@ -217,17 +217,33 @@ async def github_oauth_callback(
         )
 
     # Exchange code for token
-    async with httpx.AsyncClient() as client:
-        token_res = await client.post(
-            "https://github.com/login/oauth/access_token",
-            headers={"Accept": "application/json"},
-            data={
-                "client_id": GITHUB_CLIENT_ID,
-                "client_secret": GITHUB_CLIENT_SECRET,
-                "code": code,
-            },
+    # Ensure redirect_uri matches the one used in the authorization request
+    redirect_uri = str(request.url_for("github_oauth_callback"))
+
+    try:
+        async with httpx.AsyncClient() as client:
+            token_res = await client.post(
+                "https://github.com/login/oauth/access_token",
+                headers={"Accept": "application/json"},
+                data={
+                    "client_id": GITHUB_CLIENT_ID,
+                    "client_secret": GITHUB_CLIENT_SECRET,
+                    "code": code,
+                    "redirect_uri": redirect_uri,
+                },
+            )
+            token_res.raise_for_status()
+            token_data = token_res.json()
+    except httpx.HTTPError as e:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"GitHub token exchange failed: {str(e)}",
         )
-        token_data = token_res.json()
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Invalid JSON response from GitHub token exchange",
+        )
 
     access_token = token_data.get("access_token")
     if not access_token:
@@ -238,15 +254,27 @@ async def github_oauth_callback(
         )
 
     # Get user info
-    async with httpx.AsyncClient() as client:
-        user_res = await client.get(
-            "https://api.github.com/user",
-            headers={
-                "Authorization": f"Bearer {access_token}",
-                "Accept": "application/json",
-            },
+    try:
+        async with httpx.AsyncClient() as client:
+            user_res = await client.get(
+                "https://api.github.com/user",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/json",
+                },
+            )
+            user_res.raise_for_status()
+            user_data = user_res.json()
+    except httpx.HTTPError as e:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail=f"GitHub user info fetch failed: {str(e)}",
         )
-        user_data = user_res.json()
+    except ValueError:
+        raise HTTPException(
+            status_code=status.HTTP_502_BAD_GATEWAY,
+            detail="Invalid JSON response from GitHub user info",
+        )
 
     github_id = user_data.get("id")
     username = user_data.get("login")
