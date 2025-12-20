@@ -89,6 +89,29 @@ class CertificateRequest(BaseModel):
 
 
 # Helper functions
+def verify_user_access(request: Request, target_user_id: str):
+    """Verify that the requester is authorized to access the target user's data."""
+    current_user_id = request.cookies.get("learner_user_id")
+
+    if OAUTH_ENABLED:
+        if not current_user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Authentication required",
+            )
+        if current_user_id != target_user_id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Access denied: You can only access your own data",
+            )
+    # In anonymous mode, if cookie exists, enforce it matches
+    elif current_user_id and current_user_id != target_user_id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied",
+        )
+
+
 def get_or_create_anonymous_user(request: Request, response: Response) -> str:
     """Get or create an anonymous user ID from cookies."""
     user_id = request.cookies.get("learner_user_id")
@@ -264,10 +287,16 @@ async def record_progress(
     progress: ProgressUpdate, request: Request, response: Response
 ):
     """Record progress for a lesson."""
-    # In cookie-only mode, use anonymous user
+    # Verify authorization
     if not OAUTH_ENABLED:
-        user_id = get_or_create_anonymous_user(request, response)
+        # In cookie-only mode, ensure we use/create the anonymous user
+        user_id = request.cookies.get("learner_user_id")
+        if not user_id:
+            user_id = get_or_create_anonymous_user(request, response)
         progress.user_id = user_id
+    else:
+        # Check against cookie
+        verify_user_access(request, progress.user_id)
 
     # Validate day number
     if not (1 <= progress.day <= 108):
@@ -297,8 +326,10 @@ async def record_progress(
 
 
 @app.get("/api/v1/progress/{user_id}")
-async def get_progress(user_id: str):
+async def get_progress(user_id: str, request: Request):
     """Get progress summary for a user."""
+    verify_user_access(request, user_id)
+
     progress = db.get_user_progress(user_id)
 
     if not progress:
@@ -325,19 +356,23 @@ async def get_progress(user_id: str):
 
 
 @app.get("/api/v1/badges/{user_id}")
-async def get_badges(user_id: str):
+async def get_badges(user_id: str, request: Request):
     """Get badges earned by a user."""
+    verify_user_access(request, user_id)
+
     badges = db.get_user_badges(user_id)
 
     return {"user_id": user_id, "badge_count": len(badges), "badges": badges}
 
 
 @app.post("/api/v1/certificates")
-async def request_certificate(cert_request: CertificateRequest):
+async def request_certificate(cert_request: CertificateRequest, request: Request):
     """
     Generate and return a certificate for a completed phase.
     Requires the user to have completed all lessons in the phase.
     """
+    verify_user_access(request, cert_request.user_id)
+
     # Check if user has completed the phase
     progress = db.get_user_progress(cert_request.user_id)
     phase_lessons = get_lessons_for_phase(cert_request.phase)
@@ -362,11 +397,13 @@ async def request_certificate(cert_request: CertificateRequest):
 
 
 @app.get("/api/v1/adaptive/suggest")
-async def suggest_next_lesson(user_id: str):
+async def suggest_next_lesson(user_id: str, request: Request):
     """
     Suggest next lesson based on progress and quiz scores.
     Simple rule-based engine.
     """
+    verify_user_access(request, user_id)
+
     progress = db.get_user_progress(user_id)
 
     if not progress:
