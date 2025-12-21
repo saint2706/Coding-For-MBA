@@ -142,6 +142,21 @@
             pointer-events: none;
         }
 
+        /* Tooltip arrow/caret */
+        .badge[data-tooltip]:hover::before,
+        .badge[data-tooltip]:focus::before {
+            content: "";
+            position: absolute;
+            bottom: calc(100% - 0.1rem);
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0.35rem 0.4rem 0.35rem 0.4rem;
+            border-style: solid;
+            border-color: #2d3748 transparent transparent transparent;
+            z-index: 9;
+            pointer-events: none;
+        }
+
         .badge-locked {
             background: #cbd5e0;
             color: #4a5568; /* WCAG AA Compliant */
@@ -157,6 +172,16 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .guest-mode-warning-icon {
+            font-size: 1.25rem;
+        }
+
+        .guest-mode-warning-subtext {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            opacity: 0.9;
         }
 
         .loading {
@@ -371,14 +396,22 @@
 
             } catch (error) {
                 console.error('Error loading progress:', error);
+                
+                // Log error details for debugging
+                if (error.message) {
+                    console.error('Error message:', error.message);
+                }
+                if (error.name) {
+                    console.error('Error type:', error.name);
+                }
 
                 // Graceful Degradation (Offline/Guest Mode)
                 const warningHtml = `
                     <div class="guest-mode-warning">
-                        <span style="font-size: 1.25rem;">⚠️</span>
+                        <span class="guest-mode-warning-icon">⚠️</span>
                         <div>
                             <strong>Guest Mode Enabled:</strong> Could not load personalized progress.
-                            <div style="font-size: 0.875rem; margin-top: 0.25rem; opacity: 0.9;">
+                            <div class="guest-mode-warning-subtext">
                                 This may happen if cookies are blocked or the backend is in a restricted mode.
                             </div>
                         </div>
@@ -386,6 +419,12 @@
                 `;
 
                 const dashboard = document.getElementById('dashboard');
+                if (!dashboard) {
+                    console.error('Dashboard element not found in DOM');
+                    document.getElementById('loading').style.display = 'none';
+                    return;
+                }
+                
                 // Insert warning before content if not already present
                 if (!document.querySelector('.guest-mode-warning')) {
                     dashboard.insertAdjacentHTML('afterbegin', warningHtml);
@@ -436,13 +475,13 @@
             const earnedPhases = new Set(badges.map(b => b.phase));
 
             const phaseTitles = {
-                1: "Python Fundamentals (Days 1-20)",
+                1: "Python foundations (syntax, data structures, file handling) (Days 1-20)",
                 2: "Data Science & Analytics (Days 21-39)",
                 3: "Machine Learning (Days 40-54)",
                 4: "Advanced ML & MLOps (Days 55-67)",
                 5: "Business Intelligence (Days 68-84)",
                 6: "Advanced BI topics (cloud platforms, governance) and capstone project (Days 85-90)",
-                7: "Database Mastery (Days 91-108)"
+                7: "SQL & database mastery (design, optimization, advanced features) (Days 91-108)"
             };
 
             container.innerHTML = '';
@@ -455,10 +494,9 @@
                 const title = phaseTitles[phase] || `Phase ${phase}`;
                 const status = earnedPhases.has(phase) ? "Completed" : "Locked";
 
-                badgeEl.setAttribute('role', 'img');
                 badgeEl.setAttribute('tabindex', '0'); // Keyboard accessible
                 badgeEl.setAttribute('aria-label', `${title}: ${status}`);
-                badgeEl.setAttribute('data-tooltip', title);
+                badgeEl.setAttribute('data-tooltip', `${title}: ${status}`);
 
                 if (earnedPhases.has(phase)) {
                     const br = document.createElement('br');
