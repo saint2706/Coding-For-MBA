@@ -118,11 +118,70 @@
             color: white;
             font-weight: 600;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+            cursor: help;
+        }
+
+        /* Tooltip styles */
+        .badge[data-tooltip]:hover::after,
+        .badge[data-tooltip]:focus::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            margin-bottom: 0.5rem;
+            z-index: 10;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+
+        /* Tooltip arrow/caret */
+        .badge[data-tooltip]:hover::before,
+        .badge[data-tooltip]:focus::before {
+            content: "";
+            position: absolute;
+            bottom: calc(100% - 0.1rem); /* Slight overlap with tooltip for seamless connection */
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0.35rem 0.4rem 0.35rem 0.4rem; /* Creates triangle pointing down */
+            border-style: solid;
+            border-color: #2d3748 transparent transparent transparent;
+            z-index: 9;
+            pointer-events: none;
         }
 
         .badge-locked {
             background: #cbd5e0;
             color: #4a5568; /* WCAG AA Compliant */
+        }
+
+        .guest-mode-warning {
+            background: #fffaf0;
+            color: #9c4221;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 1px solid #fbd38d;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .guest-mode-warning-icon {
+            font-size: 1.25rem;
+        }
+
+        .guest-mode-warning-subtext {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            opacity: 0.9;
         }
 
         .loading {
@@ -275,13 +334,7 @@
             <div class="badges-section">
                 <h2>Phase Badges</h2>
                 <div class="badges-grid" id="badges-container">
-                    <div class="badge badge-locked">Phase 1</div>
-                    <div class="badge badge-locked">Phase 2</div>
-                    <div class="badge badge-locked">Phase 3</div>
-                    <div class="badge badge-locked">Phase 4</div>
-                    <div class="badge badge-locked">Phase 5</div>
-                    <div class="badge badge-locked">Phase 6</div>
-                    <div class="badge badge-locked">Phase 7</div>
+                    <!-- Badges injected by JS -->
                 </div>
             </div>
 
@@ -324,7 +377,7 @@
 
                 const userId = getUserId();
                 if (!userId) {
-                    throw new Error('Failed to get user ID');
+                    throw new Error('Failed to get user ID (Cookie unavailable/HttpOnly)');
                 }
 
                 // Fetch actual progress
@@ -343,13 +396,53 @@
 
             } catch (error) {
                 console.error('Error loading progress:', error);
-                document.getElementById('loading').innerHTML = `
-                    <div class="error">
-                        Failed to load progress. Make sure the backend is running.
-                        <br><br>
-                        Error: ${error.message}
+                
+                // Log error details for debugging
+                if (error.message) {
+                    console.error('Error message:', error.message);
+                }
+                if (error.name) {
+                    console.error('Error type:', error.name);
+                }
+
+                // Graceful Degradation (Offline/Guest Mode)
+                const warningHtml = `
+                    <div class="guest-mode-warning">
+                        <span class="guest-mode-warning-icon">⚠️</span>
+                        <div>
+                            <strong>Guest Mode Enabled:</strong> Could not load personalized progress.
+                            <div class="guest-mode-warning-subtext">
+                                This may happen if cookies are blocked or the backend is in a restricted mode.
+                            </div>
+                        </div>
                     </div>
                 `;
+
+                const dashboard = document.getElementById('dashboard');
+                if (!dashboard) {
+                    console.error('Dashboard element not found in DOM');
+                    document.getElementById('loading').style.display = 'none';
+                    return;
+                }
+                
+                // Insert warning before content if not already present
+                if (!document.querySelector('.guest-mode-warning')) {
+                    dashboard.insertAdjacentHTML('afterbegin', warningHtml);
+                }
+
+                // Render default locked state
+                updateDashboard({
+                    completion_percentage: 0,
+                    completed: 0,
+                    total_lessons: 108,
+                    lessons: []
+                }, {
+                    badge_count: 0,
+                    badges: []
+                });
+
+                document.getElementById('loading').style.display = 'none';
+                dashboard.style.display = 'block';
             }
         }
 
@@ -381,17 +474,34 @@
             const container = document.getElementById('badges-container');
             const earnedPhases = new Set(badges.map(b => b.phase));
 
+            const phaseTitles = {
+                1: "Python foundations (syntax, data structures, file handling) (Days 1-20)",
+                2: "Data Science & Analytics (Days 21-39)",
+                3: "Machine Learning (Days 40-54)",
+                4: "Advanced ML & MLOps (Days 55-67)",
+                5: "Business Intelligence (Days 68-84)",
+                6: "Advanced BI topics (cloud platforms, governance) and capstone project (Days 85-90)",
+                7: "SQL & database mastery (design, optimization, advanced features) (Days 91-108)"
+            };
+
             container.innerHTML = '';
             for (let phase = 1; phase <= 7; phase++) {
                 const badgeEl = document.createElement('div');
                 badgeEl.className = earnedPhases.has(phase) ? 'badge' : 'badge badge-locked';
                 badgeEl.textContent = `Phase ${phase}`;
 
+                // UX & Accessibility Improvements
+                const title = phaseTitles[phase] || `Phase ${phase}`;
+                const status = earnedPhases.has(phase) ? "Completed" : "Locked";
+
+                badgeEl.setAttribute('tabindex', '0'); // Keyboard accessible
+                badgeEl.setAttribute('aria-label', `${title}: ${status}`);
+                badgeEl.setAttribute('data-tooltip', `${title}: ${status}`);
+
                 if (earnedPhases.has(phase)) {
-                    badgeEl.innerHTML += '<br>✅';
-                    badgeEl.setAttribute('aria-label', `Phase ${phase}: Completed`);
-                } else {
-                    badgeEl.setAttribute('aria-label', `Phase ${phase}: Locked`);
+                    const br = document.createElement('br');
+                    badgeEl.appendChild(br);
+                    badgeEl.appendChild(document.createTextNode('✅'));
                 }
 
                 container.appendChild(badgeEl);
