@@ -21,6 +21,7 @@ import os
 import secrets
 import uuid
 from datetime import datetime
+from enum import Enum
 from typing import Optional
 
 import httpx
@@ -62,10 +63,16 @@ db.init_db(DATABASE_URL)
 
 
 # Pydantic models
+class LessonStatus(str, Enum):
+    STARTED = "started"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+
+
 class ProgressUpdate(BaseModel):
     user_id: str
     day: int
-    status: str  # 'started', 'in_progress', 'completed'
+    status: LessonStatus
     quiz_score: Optional[int] = None
 
 
