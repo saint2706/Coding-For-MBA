@@ -147,10 +147,10 @@
         .badge[data-tooltip]:focus::before {
             content: "";
             position: absolute;
-            bottom: calc(100% - 0.1rem);
+            bottom: calc(100% - 0.1rem); /* Slight overlap with tooltip for seamless connection */
             left: 50%;
             transform: translateX(-50%);
-            border-width: 0.35rem 0.4rem 0.35rem 0.4rem;
+            border-width: 0.35rem 0.4rem 0.35rem 0.4rem; /* Creates triangle pointing down */
             border-style: solid;
             border-color: #2d3748 transparent transparent transparent;
             z-index: 9;
