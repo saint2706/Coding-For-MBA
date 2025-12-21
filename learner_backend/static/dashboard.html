@@ -461,7 +461,9 @@
                 badgeEl.setAttribute('data-tooltip', title);
 
                 if (earnedPhases.has(phase)) {
-                    badgeEl.innerHTML += '<br>✅';
+                    const br = document.createElement('br');
+                    badgeEl.appendChild(br);
+                    badgeEl.appendChild(document.createTextNode('✅'));
                 }
 
                 container.appendChild(badgeEl);
