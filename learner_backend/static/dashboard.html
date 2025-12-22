@@ -288,16 +288,35 @@
             outline: 3px solid #f6ad55;
             outline-offset: 2px;
         }
+
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #2d3748;
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            transition: top 0.3s;
+            text-decoration: none;
+            border-bottom-right-radius: 8px;
+            font-weight: bold;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
     </style>
 </head>
 <body>
+    <a href="#dashboard" class="skip-link">Skip to main content</a>
     <div class="container">
-        <div class="header">
+        <header class="header">
             <h1>📚 Learning Dashboard</h1>
             <p class="subtitle">Track your progress through the Coding for MBA curriculum</p>
-        </div>
+        </header>
 
-        <div id="loading" class="loading">
+        <div id="loading" class="loading" role="status" aria-live="polite">
             <div class="spinner"></div>
             Loading your progress...
         </div>
@@ -340,11 +359,11 @@
 
             <div class="recent-activity">
                 <h2>Recent Activity</h2>
-                <div id="activity-container">
-                    <p style="text-align: center; color: #718096; padding: 2rem;">
+                <ul id="activity-container" style="list-style: none; padding: 0;">
+                    <li style="text-align: center; color: #718096; padding: 2rem;">
                         No activity yet. Start learning to see your progress here!
-                    </p>
-                </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -404,7 +423,7 @@
 
                 // Graceful Degradation (Offline/Guest Mode)
                 const warningHtml = `
-                    <div class="guest-mode-warning">
+                    <div class="guest-mode-warning" role="alert">
                         <span class="guest-mode-warning-icon">⚠️</span>
                         <div>
                             <strong>Guest Mode Enabled:</strong> Could not load personalized progress.
@@ -510,9 +529,9 @@
 
             if (!lessons || lessons.length === 0) {
                 container.innerHTML = `
-                    <p style="text-align: center; color: #718096; padding: 2rem;">
+                    <li style="text-align: center; color: #718096; padding: 2rem;">
                         No activity yet. Start learning to see your progress here!
-                    </p>
+                    </li>
                 `;
                 return;
             }
@@ -520,12 +539,12 @@
             // Show last 10 lessons
             const recent = lessons.slice(-10).reverse();
             container.innerHTML = recent.map(lesson => `
-                <div class="activity-item">
+                <li class="activity-item">
                     <div class="activity-day">Day ${lesson.day}</div>
                     <div class="activity-status status-${lesson.status}">
                         ${lesson.status}
                     </div>
-                </div>
+                </li>
             `).join('');
         }
 
