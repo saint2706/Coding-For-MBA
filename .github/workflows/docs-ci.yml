@@ -65,6 +65,7 @@ jobs:
 
     - name: Upload documentation artifacts
       uses: actions/upload-artifact@v6
+      continue-on-error: true
       with:
         name: documentation-site
         path: site/
