@@ -353,12 +353,6 @@
         // API base URL
         const API_BASE = '/api/v1';
 
-        // Get user ID from cookie or generate one
-        function getUserId() {
-            const match = document.cookie.match(/learner_user_id=([^;]+)/);
-            return match ? match[1] : null;
-        }
-
         // Fetch progress data
         async function loadProgress() {
             try {
@@ -375,9 +369,11 @@
                     })
                 });
 
-                const userId = getUserId();
+                const data = await response.json();
+                const userId = data.user_id;
+
                 if (!userId) {
-                    throw new Error('Failed to get user ID (Cookie unavailable/HttpOnly)');
+                    throw new Error('Failed to get user ID from backend');
                 }
 
                 // Fetch actual progress
@@ -390,6 +386,7 @@
 
                 // Update UI
                 updateDashboard(progressData, badgesData);
+                checkAuth(userId);
 
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
@@ -533,13 +530,12 @@
         }
 
         // Check authentication status and update UI
-        async function checkAuth() {
+        async function checkAuth(userId) {
             try {
                 // Fetch configuration
                 const rootRes = await fetch('/');
                 const rootData = await rootRes.json();
 
-                const userId = getUserId();
                 const isGitHubUser = userId && userId.startsWith('github_');
 
                 // Get header element
@@ -578,7 +574,6 @@
 
         // Load progress on page load
         loadProgress();
-        checkAuth();
     </script>
 </body>
 </html>

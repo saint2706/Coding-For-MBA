@@ -74,7 +74,10 @@ def test_github_callback_flow(mock_client_cls):
 
     # Verify cookie was set
     assert "learner_user_id" in response.cookies
-    assert response.cookies["learner_user_id"] == "github_98765"
+    # Unsign the cookie to verify content
+    signed_cookie = response.cookies["learner_user_id"]
+    user_id = learner_backend.main.serializer.loads(signed_cookie)
+    assert user_id == "github_98765"
 
     # Verify user was created in DB
     conn = db.get_connection()

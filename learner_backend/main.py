@@ -25,6 +25,7 @@ from enum import Enum
 from typing import Optional
 
 import httpx
+from itsdangerous import BadSignature, URLSafeTimedSerializer
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -35,6 +36,7 @@ from . import db
 
 # Configuration
 SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_urlsafe(32))
+serializer = URLSafeTimedSerializer(SECRET_KEY)
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
 DATABASE_URL = os.getenv("DATABASE_URL", "learner.db")
@@ -96,9 +98,25 @@ class CertificateRequest(BaseModel):
 
 
 # Helper functions
+def get_current_user_id(request: Request) -> Optional[str]:
+    """
+    Retrieve and verify the user ID from the signed cookie.
+    Returns None if cookie is missing or invalid.
+    """
+    cookie = request.cookies.get("learner_user_id")
+    if not cookie:
+        return None
+    try:
+        # Verify signature and expiration (max_age matching cookie lifetime)
+        user_id = serializer.loads(cookie, max_age=60 * 60 * 24 * 365)
+        return user_id
+    except BadSignature:
+        return None
+
+
 def verify_user_access(request: Request, target_user_id: str):
     """Verify that the requester is authorized to access the target user's data."""
-    current_user_id = request.cookies.get("learner_user_id")
+    current_user_id = get_current_user_id(request)
 
     if OAUTH_ENABLED:
         if not current_user_id:
@@ -111,8 +129,8 @@ def verify_user_access(request: Request, target_user_id: str):
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Access denied: You can only access your own data",
             )
-    # In anonymous mode, if cookie exists, enforce it matches
-    elif current_user_id and current_user_id != target_user_id:
+    # In anonymous mode, enforce ID matches. If no cookie (None), access is denied.
+    elif current_user_id != target_user_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Access denied",
@@ -121,16 +139,18 @@ def verify_user_access(request: Request, target_user_id: str):
 
 def get_or_create_anonymous_user(request: Request, response: Response) -> str:
     """Get or create an anonymous user ID from cookies."""
-    user_id = request.cookies.get("learner_user_id")
+    user_id = get_current_user_id(request)
 
     if not user_id:
         user_id = f"anon_{uuid.uuid4().hex[:12]}"
+        signed_token = serializer.dumps(user_id)
         response.set_cookie(
             key="learner_user_id",
-            value=user_id,
+            value=signed_token,
             max_age=60 * 60 * 24 * 365,  # 1 year
             httponly=True,
             samesite="lax",
+            secure=True,
         )
         # Create user in database
         db.create_user(user_id, None)
@@ -302,9 +322,10 @@ async def github_oauth_callback(
         headers={"Location": redirect_url},
     )
 
+    signed_token = serializer.dumps(user_id)
     res.set_cookie(
         key="learner_user_id",
-        value=user_id,
+        value=signed_token,
         max_age=60 * 60 * 24 * 365,
         httponly=True,
         samesite="lax",
@@ -325,7 +346,7 @@ async def record_progress(
     # Verify authorization
     if not OAUTH_ENABLED:
         # In cookie-only mode, ensure we use/create the anonymous user
-        user_id = request.cookies.get("learner_user_id")
+        user_id = get_current_user_id(request)
         if not user_id:
             user_id = get_or_create_anonymous_user(request, response)
         progress.user_id = user_id
@@ -355,9 +376,10 @@ async def record_progress(
             "badge_awarded": True,
             "badge_id": badge_id,
             "phase": phase,
+            "user_id": progress.user_id,
         }
 
-    return {"success": True, "progress_recorded": True}
+    return {"success": True, "progress_recorded": True, "user_id": progress.user_id}
 
 
 @app.get("/api/v1/progress/{user_id}")

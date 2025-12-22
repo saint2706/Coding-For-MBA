@@ -42,8 +42,9 @@ def test_record_progress_idor_prevention():
     db.create_user(victim_id, "victim_user")
     db.create_user(attacker_id, "attacker_user")
 
-    # Set the cookie to authenticate as attacker
-    client.cookies.set("learner_user_id", attacker_id)
+    # Set the cookie to authenticate as attacker (signed)
+    signed_attacker_id = learner_backend.main.serializer.dumps(attacker_id)
+    client.cookies.set("learner_user_id", signed_attacker_id)
 
     # 2. Attempt to update progress for the victim
     payload = {"user_id": victim_id, "day": 1, "status": "completed", "quiz_score": 100}
@@ -74,7 +75,8 @@ def test_get_progress_idor_prevention():
 
     # 2. Authenticate as attacker
     attacker_id = "github_attacker"
-    client.cookies.set("learner_user_id", attacker_id)
+    signed_attacker_id = learner_backend.main.serializer.dumps(attacker_id)
+    client.cookies.set("learner_user_id", signed_attacker_id)
 
     # 3. Attempt to view victim's progress
     response = client.get(f"/api/v1/progress/{victim_id}")
