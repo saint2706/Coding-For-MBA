@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Coding for MBA curriculum - educational content, not a package"
 
 [tool.setuptools]
-packages = []
+packages = ["learner_backend"]
 
 [tool.black]
 line-length = 88

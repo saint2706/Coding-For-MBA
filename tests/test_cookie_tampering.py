@@ -1,8 +1,11 @@
-import pytest
 import os
 from importlib import reload
+
+import pytest
 from fastapi.testclient import TestClient
+
 import learner_backend.main
+
 
 @pytest.fixture(autouse=True)
 def setup_env():
@@ -18,12 +21,14 @@ def setup_env():
     # Reload main to pick up env vars and re-init app/serializer
     reload(learner_backend.main)
 
+
 def test_cookie_tampering_prevention():
     """
     Verify that an attacker cannot impersonate a user by tampering with cookies.
     """
     # Import from reloaded module
     from learner_backend.main import app
+
     client = TestClient(app)
 
     target_user = "github_999"
@@ -35,12 +40,17 @@ def test_cookie_tampering_prevention():
     # Since OAuth is enabled, no user_id -> 401 Unauthorized
     response = client.get(f"/api/v1/progress/{target_user}")
 
-    assert response.status_code in [401, 403], f"Tampered cookie allowed access! Status: {response.status_code}"
+    assert response.status_code in [
+        401,
+        403,
+    ], f"Tampered cookie allowed access! Status: {response.status_code}"
+
 
 def test_signed_cookie_access():
     """Verify that a valid signed cookie works."""
     # Import from reloaded module
     from learner_backend.main import app, serializer
+
     client = TestClient(app)
 
     user_id = "github_valid"

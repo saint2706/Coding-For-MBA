@@ -412,7 +412,7 @@
 
             } catch (error) {
                 console.error('Error loading progress:', error);
-                
+
                 // Log error details for debugging
                 if (error.message) {
                     console.error('Error message:', error.message);
@@ -440,7 +440,7 @@
                     document.getElementById('loading').style.display = 'none';
                     return;
                 }
-                
+
                 // Insert warning before content if not already present
                 if (!document.querySelector('.guest-mode-warning')) {
                     dashboard.insertAdjacentHTML('afterbegin', warningHtml);
