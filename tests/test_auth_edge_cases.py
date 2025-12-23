@@ -21,12 +21,14 @@ from learner_backend.main import app  # noqa: E402
 
 client = TestClient(app)
 
+
 @pytest.fixture(autouse=True)
 def setup_database():
     db._conn = None
     db.init_db(":memory:")
     yield
     db._conn = None
+
 
 @patch("httpx.AsyncClient")
 def test_github_token_exchange_invalid_json(mock_client_cls):
@@ -37,7 +39,9 @@ def test_github_token_exchange_invalid_json(mock_client_cls):
     # Mock token response to return non-JSON
     mock_token_response = MagicMock()
     mock_token_response.status_code = 200
-    mock_token_response.json.side_effect = json.JSONDecodeError("Expecting value", "", 0)
+    mock_token_response.json.side_effect = json.JSONDecodeError(
+        "Expecting value", "", 0
+    )
     mock_client.post.return_value = mock_token_response
 
     client.cookies.set("oauth_state", "valid_state")
@@ -48,6 +52,7 @@ def test_github_token_exchange_invalid_json(mock_client_cls):
     )
     assert response.status_code == 502
     assert "Invalid JSON response" in response.json()["detail"]
+
 
 @patch("httpx.AsyncClient")
 def test_github_user_info_invalid_json(mock_client_cls):
@@ -73,10 +78,12 @@ def test_github_user_info_invalid_json(mock_client_cls):
     assert response.status_code == 502
     assert "Invalid JSON response" in response.json()["detail"]
 
+
 @patch("httpx.AsyncClient")
 def test_github_token_exchange_network_error(mock_client_cls):
     """Test handling of network error during token exchange."""
     import httpx
+
     mock_client = AsyncMock()
     mock_client_cls.return_value.__aenter__.return_value = mock_client
 

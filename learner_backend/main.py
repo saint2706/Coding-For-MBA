@@ -25,11 +25,11 @@ from enum import Enum
 from typing import Optional
 
 import httpx
-from itsdangerous import BadSignature, URLSafeTimedSerializer
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from itsdangerous import BadSignature, URLSafeTimedSerializer
 from pydantic import BaseModel
 
 from . import db
