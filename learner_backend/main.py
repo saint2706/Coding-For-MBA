@@ -54,11 +54,26 @@ app = FastAPI(
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, restrict to your domain
+    allow_origins=[],  # Restrictive by default
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """Add security headers to all responses."""
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    # Allow 'unsafe-inline' for styles/scripts as dashboard.html uses them
+    # Allow https://github.com for potential OAuth redirects/assets
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self' 'unsafe-inline' https://github.com https://api.github.com;"
+    )
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
 
 # Initialize database
 db.init_db(DATABASE_URL)
