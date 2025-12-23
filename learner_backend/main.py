@@ -52,13 +52,40 @@ app = FastAPI(
 )
 
 # CORS middleware
+# Note: allow_origins=[] restricts cross-origin requests since dashboard.html is served
+# from the same origin. If deploying a separate frontend on a different domain,
+# explicitly configure allowed origins here (e.g., ["https://yourdomain.com"]).
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, restrict to your domain
+    allow_origins=[],  # Restrictive by default
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    """Add security headers to all responses."""
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    # Use granular CSP directives following principle of least privilege.
+    # Note: OAuth redirects are HTTP-level (server-side) and do not require CSP entries.
+    # - default-src 'self': All resources from same origin by default
+    # - style-src 'self' 'unsafe-inline': Allow inline styles (required for dashboard.html)
+    # - script-src 'self' 'unsafe-inline': Allow inline scripts (required for dashboard.html inline <script> tags)
+    # - connect-src 'self': API calls to same origin only
+    # - img-src 'self': Images from same origin only
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "style-src 'self' 'unsafe-inline'; "
+        "script-src 'self' 'unsafe-inline'; "
+        "connect-src 'self'; "
+        "img-src 'self';"
+    )
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    return response
 
 # Initialize database
 db.init_db(DATABASE_URL)
