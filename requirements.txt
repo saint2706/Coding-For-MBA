@@ -2,7 +2,7 @@ beautifulsoup4==4.14.3
 Flask==3.1.2
 joblib==1.5.3
 matplotlib==3.10.8
-nbclient==0.10.3
+nbclient==0.10.4
 nbformat==5.10.4
 notebook==7.5.1
 numpy==2.4.0
