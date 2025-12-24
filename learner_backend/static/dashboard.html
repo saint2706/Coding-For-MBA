@@ -657,7 +657,6 @@
             
             // Store timeout ID to handle rapid clicks
             let revertTimeoutId = null;
-            const originalIcon = copyBtn.textContent;
 
             // Add event listener instead of inline onclick
             if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -675,7 +674,7 @@
 
                             // Revert after 2 seconds
                             revertTimeoutId = setTimeout(() => {
-                                copyBtn.textContent = originalIcon;
+                                copyBtn.textContent = '📋';
                                 copyBtn.setAttribute('aria-label', 'Copy command');
                                 revertTimeoutId = null;
                             }, 2000);
