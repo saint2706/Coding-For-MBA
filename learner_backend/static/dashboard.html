@@ -655,12 +655,33 @@
             copyBtn.setAttribute('aria-label', 'Copy command');
             copyBtn.textContent = '📋';
             
+            // Store timeout ID to handle rapid clicks
+            let revertTimeoutId = null;
+
             // Add event listener instead of inline onclick
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 copyBtn.addEventListener('click', () => {
-                    navigator.clipboard.writeText(cmd).catch((err) => {
-                        console.error('Failed to copy command:', err);
-                    });
+                    navigator.clipboard.writeText(cmd)
+                        .then(() => {
+                            // Clear any pending revert
+                            if (revertTimeoutId) {
+                                clearTimeout(revertTimeoutId);
+                            }
+
+                            // Visual feedback
+                            copyBtn.textContent = '✅';
+                            copyBtn.setAttribute('aria-label', 'Copied!');
+
+                            // Revert after 2 seconds
+                            revertTimeoutId = setTimeout(() => {
+                                copyBtn.textContent = '📋';
+                                copyBtn.setAttribute('aria-label', 'Copy command');
+                                revertTimeoutId = null;
+                            }, 2000);
+                        })
+                        .catch((err) => {
+                            console.error('Failed to copy command:', err);
+                        });
                 });
             }
             

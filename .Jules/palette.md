@@ -19,3 +19,8 @@
 
 **Learning:** Adding a "Skip to content" link is a high-value, low-effort a11y win, but requires careful CSS (`position: absolute`) to remain hidden yet focusable.
 **Action:** Always include a skip link for pages with header navigation. When converting visual lists (`divs`) to semantic lists (`ul/li`), explicitly set `list-style: none` and `padding: 0` to maintain visual consistency.
+
+## 2025-12-24 - Transient State Feedback
+
+**Learning:** When using transient states (like "Copied!" for 2 seconds), relying on capturing `originalText` can be buggy if the user triggers the action rapidly (capturing the transient state as the new original).
+**Action:** Explicitly define the revert state values (e.g., hardcode '📋' and "Copy command") in the timeout callback to ensure consistent restoration.
