@@ -23,4 +23,4 @@
 ## 2025-12-24 - Transient State Feedback
 
 **Learning:** When using transient states (like "Copied!" for 2 seconds), relying on capturing `originalText` can be buggy if the user triggers the action rapidly (capturing the transient state as the new original).
-**Action:** Explicitly define the revert state values (e.g., hardcode '📋' and "Copy command") in the timeout callback to ensuring consistent restoration.
+**Action:** Explicitly define the revert state values (e.g., hardcode '📋' and "Copy command") in the timeout callback to ensure consistent restoration.
