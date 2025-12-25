@@ -87,6 +87,7 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     return response
 
+
 # Initialize database
 db.init_db(DATABASE_URL)
 

@@ -2,17 +2,43 @@
 Tests for input validation security controls.
 Ensures that the API rejects invalid or potentially malicious input.
 """
-from fastapi.testclient import TestClient
-import learner_backend.main as learner_main
-import pytest
+
 import os
 from importlib import reload
+
+import pytest
+from fastapi.testclient import TestClient
+
+import learner_backend.main as learner_main
+
+# Ensure tests use an in-memory database, consistent with other security tests
+os.environ["DATABASE_URL"] = ":memory:"
 
 # Reload to ensure clean state
 reload(learner_main)
 app = learner_main.app
 serializer = learner_main.serializer
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def reset_database():
+    """
+    Reset the database configuration and FastAPI app between tests.
+
+    This mirrors the setup used in other security tests (e.g., test_security_idor.py),
+    ensuring a clean in-memory database and fresh application state for each test.
+    """
+    os.environ["DATABASE_URL"] = ":memory:"
+    reload(learner_main)
+
+    global app, serializer, client
+    app = learner_main.app
+    serializer = learner_main.serializer
+    client = TestClient(app)
+
+    yield
+
 
 def test_progress_validation_invalid_day():
     """Test that day must be between 1 and 108."""
@@ -22,31 +48,31 @@ def test_progress_validation_invalid_day():
     client.cookies.set("learner_user_id", cookie)
 
     response = client.post(
-        "/api/v1/progress",
-        json={"user_id": user_id, "day": 999, "status": "completed"}
+        "/api/v1/progress", json={"user_id": user_id, "day": 999, "status": "completed"}
     )
     # Pydantic validation returns 422
     assert response.status_code == 422
+
 
 def test_progress_validation_huge_user_id():
     """Test that extremely long user_ids are rejected."""
     huge_id = "a" * 1000
 
     response = client.post(
-        "/api/v1/progress",
-        json={"user_id": huge_id, "day": 1, "status": "completed"}
+        "/api/v1/progress", json={"user_id": huge_id, "day": 1, "status": "completed"}
     )
     assert response.status_code == 422
+
 
 def test_progress_validation_invalid_chars_user_id():
     """Test that user_ids with invalid characters are rejected."""
     bad_id = "user/../traversal"
 
     response = client.post(
-        "/api/v1/progress",
-        json={"user_id": bad_id, "day": 1, "status": "completed"}
+        "/api/v1/progress", json={"user_id": bad_id, "day": 1, "status": "completed"}
     )
     assert response.status_code == 422
+
 
 def test_progress_validation_invalid_score():
     """Test that quiz score must be 0-100."""
@@ -56,9 +82,10 @@ def test_progress_validation_invalid_score():
 
     response = client.post(
         "/api/v1/progress",
-        json={"user_id": user_id, "day": 1, "status": "completed", "quiz_score": 150}
+        json={"user_id": user_id, "day": 1, "status": "completed", "quiz_score": 150},
     )
     assert response.status_code == 422
+
 
 def test_certificate_validation_long_name():
     """Test that certificate name has length limit."""
@@ -68,7 +95,69 @@ def test_certificate_validation_long_name():
 
     long_name = "a" * 200
     response = client.post(
+        "/api/v1/certificates", json={"user_id": user_id, "name": long_name, "phase": 1}
+    )
+    assert response.status_code == 422
+
+
+def test_progress_validation_negative_score():
+    """Test that quiz score cannot be negative."""
+    user_id = "test_user_negative_score"
+    cookie = serializer.dumps(user_id)
+    client.cookies.set("learner_user_id", cookie)
+
+    response = client.post(
+        "/api/v1/progress",
+        json={"user_id": user_id, "day": 1, "status": "completed", "quiz_score": -1},
+    )
+    assert response.status_code == 422
+
+
+def test_progress_validation_day_zero():
+    """Test that day cannot be zero."""
+    user_id = "test_user_day_zero"
+    cookie = serializer.dumps(user_id)
+    client.cookies.set("learner_user_id", cookie)
+
+    response = client.post(
+        "/api/v1/progress", json={"user_id": user_id, "day": 0, "status": "completed"}
+    )
+    assert response.status_code == 422
+
+
+def test_progress_validation_negative_day():
+    """Test that day cannot be negative."""
+    user_id = "test_user_negative_day"
+    cookie = serializer.dumps(user_id)
+    client.cookies.set("learner_user_id", cookie)
+
+    response = client.post(
+        "/api/v1/progress", json={"user_id": user_id, "day": -5, "status": "completed"}
+    )
+    assert response.status_code == 422
+
+
+def test_certificate_validation_phase_zero():
+    """Test that phase cannot be zero."""
+    user_id = "test_user_phase_zero"
+    cookie = serializer.dumps(user_id)
+    client.cookies.set("learner_user_id", cookie)
+
+    response = client.post(
         "/api/v1/certificates",
-        json={"user_id": user_id, "name": long_name, "phase": 1}
+        json={"user_id": user_id, "name": "Test Certificate", "phase": 0},
+    )
+    assert response.status_code == 422
+
+
+def test_certificate_validation_phase_too_high():
+    """Test that phase cannot exceed 7."""
+    user_id = "test_user_phase_high"
+    cookie = serializer.dumps(user_id)
+    client.cookies.set("learner_user_id", cookie)
+
+    response = client.post(
+        "/api/v1/certificates",
+        json={"user_id": user_id, "name": "Test Certificate", "phase": 8},
     )
     assert response.status_code == 422
