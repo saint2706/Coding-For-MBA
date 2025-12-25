@@ -123,8 +123,8 @@
         }
 
         /* Tooltip styles */
-        .badge[data-tooltip]:hover::after,
-        .badge[data-tooltip]:focus::after {
+        [data-tooltip]:hover::after,
+        [data-tooltip]:focus::after {
             content: attr(data-tooltip);
             position: absolute;
             bottom: 100%;
@@ -143,8 +143,8 @@
         }
 
         /* Tooltip arrow/caret */
-        .badge[data-tooltip]:hover::before,
-        .badge[data-tooltip]:focus::before {
+        [data-tooltip]:hover::before,
+        [data-tooltip]:focus::before {
             content: "";
             position: absolute;
             bottom: calc(100% - 0.1rem); /* Slight overlap with tooltip for seamless connection */
@@ -318,6 +318,7 @@
             border-radius: 4px;
             cursor: pointer;
             font-size: 1.2rem;
+            position: relative; /* For tooltip positioning */
         }
         
         .copy-btn:hover,
@@ -653,6 +654,7 @@
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-btn';
             copyBtn.setAttribute('aria-label', 'Copy command');
+            copyBtn.setAttribute('data-tooltip', 'Copy command');
             copyBtn.textContent = '📋';
             
             // Store timeout ID to handle rapid clicks
@@ -671,11 +673,13 @@
                             // Visual feedback
                             copyBtn.textContent = '✅';
                             copyBtn.setAttribute('aria-label', 'Copied!');
+                            copyBtn.setAttribute('data-tooltip', 'Copied!');
 
                             // Revert after 2 seconds
                             revertTimeoutId = setTimeout(() => {
                                 copyBtn.textContent = '📋';
                                 copyBtn.setAttribute('aria-label', 'Copy command');
+                                copyBtn.setAttribute('data-tooltip', 'Copy command');
                                 revertTimeoutId = null;
                             }, 2000);
                         })
