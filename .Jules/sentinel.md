@@ -15,3 +15,9 @@
 **Vulnerability:** The `learner_user_id` cookie was stored as plaintext, allowing users to impersonate others by modifying the cookie value. Additionally, `verify_user_access` flawed logic permitted access to any user's data if no cookie was provided in Anonymous mode.
 **Learning:** `HttpOnly` and `SameSite` flags are insufficient for session integrity; cookies acting as session tokens must be cryptographically signed. Access control checks must explicitly handle "no session" states as "deny" unless public access is intended.
 **Prevention:** Use `itsdangerous` or similar libraries to sign session cookies. Ensure authorization logic defaults to "deny" (fail closed) when authentication credentials are missing or invalid.
+
+## 2025-12-25 - Unbounded Input in API Models
+
+**Vulnerability:** The API accepted unbounded strings (for `user_id`) and out-of-range numbers (for `day` and `quiz_score`) in the request body. While not immediately exploitable for RCE, this created a Denial of Service (DoS) vector (sending massive strings) and potential data integrity issues.
+**Learning:** Pydantic models by default accept any valid type (e.g., any `str`). Explicit constraints (`min_length`, `max_length`, `ge`, `le`) are necessary to enforce business rules and security limits at the interface layer. Validation should happen *before* business logic.
+**Prevention:** Always annotate Pydantic models with `Field(...)` constraints. Define reasonable upper bounds for all string and numeric inputs to prevent resource exhaustion and logic errors.

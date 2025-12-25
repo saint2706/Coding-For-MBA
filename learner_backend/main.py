@@ -30,7 +30,7 @@ from fastapi import FastAPI, HTTPException, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from itsdangerous import BadSignature, URLSafeTimedSerializer
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from . import db
 
@@ -99,10 +99,10 @@ class LessonStatus(str, Enum):
 
 
 class ProgressUpdate(BaseModel):
-    user_id: str
-    day: int
+    user_id: str = Field(..., min_length=1, max_length=50, pattern=r"^[a-zA-Z0-9_-]+$")
+    day: int = Field(..., ge=1, le=108)
     status: LessonStatus
-    quiz_score: Optional[int] = None
+    quiz_score: Optional[int] = Field(None, ge=0, le=100)
 
 
 class User(BaseModel):
@@ -119,9 +119,9 @@ class Badge(BaseModel):
 
 
 class CertificateRequest(BaseModel):
-    user_id: str
-    name: str
-    phase: int
+    user_id: str = Field(..., min_length=1, max_length=50, pattern=r"^[a-zA-Z0-9_-]+$")
+    name: str = Field(..., min_length=1, max_length=100)
+    phase: int = Field(..., ge=1, le=7)
 
 
 # Helper functions
@@ -380,13 +380,6 @@ async def record_progress(
     else:
         # Check against cookie
         verify_user_access(request, progress.user_id)
-
-    # Validate day number
-    if not (1 <= progress.day <= 108):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Day must be between 1 and 108",
-        )
 
     # Record progress
     db.record_progress(
