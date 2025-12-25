@@ -3,14 +3,15 @@ Tests for input validation security controls.
 Ensures that the API rejects invalid or potentially malicious input.
 """
 from fastapi.testclient import TestClient
-from learner_backend.main import app, serializer
+import learner_backend.main as learner_main
 import pytest
 import os
 from importlib import reload
-import learner_backend.main
 
 # Reload to ensure clean state
-reload(learner_backend.main)
+reload(learner_main)
+app = learner_main.app
+serializer = learner_main.serializer
 client = TestClient(app)
 
 def test_progress_validation_invalid_day():
