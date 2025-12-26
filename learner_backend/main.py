@@ -55,6 +55,7 @@ app = FastAPI(
 # Rate Limiter (60 requests/minute per IP)
 rate_limiter = RateLimiter(requests_per_minute=60)
 
+
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
     """Rate limit requests based on client IP."""
@@ -62,14 +63,38 @@ async def rate_limit_middleware(request: Request, call_next):
     if request.url.path.startswith("/static"):
         return await call_next(request)
 
+    # Get client IP, checking for proxy headers first
     client_ip = request.client.host if request.client else "unknown"
+
+    # Check for X-Forwarded-For or X-Real-IP headers to get actual client IP
+    # when behind a proxy or load balancer
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    if forwarded_for:
+        # X-Forwarded-For can contain multiple IPs, the first is the original client
+        client_ip = forwarded_for.split(",")[0].strip()
+    else:
+        real_ip = request.headers.get("X-Real-IP")
+        if real_ip:
+            client_ip = real_ip.strip()
+
     if not rate_limiter.is_allowed(client_ip):
+        # Calculate reset timestamp (60 seconds from now)
+        reset_timestamp = int(datetime.now().timestamp()) + 60
+        headers = {
+            "Retry-After": "60",
+            "X-RateLimit-Limit": "60",
+            "X-RateLimit-Remaining": "0",
+            "X-RateLimit-Reset": str(reset_timestamp),
+        }
         return Response(
             content="Too Many Requests",
-            status_code=status.HTTP_429_TOO_MANY_REQUESTS
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            media_type="text/plain",
+            headers=headers,
         )
 
     return await call_next(request)
+
 
 # CORS middleware
 # Note: allow_origins=[] restricts cross-origin requests since dashboard.html is served
@@ -106,6 +131,7 @@ async def add_security_headers(request: Request, call_next):
     )
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     return response
+
 
 # Initialize database
 db.init_db(DATABASE_URL)

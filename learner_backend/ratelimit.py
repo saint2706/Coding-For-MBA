@@ -1,47 +1,53 @@
-
 import time
-from collections import deque, defaultdict
+from collections import defaultdict, deque
 from typing import Dict
+
 
 class RateLimiter:
     """
-    A simple in-memory rate limiter using the sliding window log algorithm
-    (approximated with fixed window or cleanup for simplicity).
+    A simple in-memory rate limiter using the sliding window log algorithm.
 
-    Actually, let's use a Token Bucket or Fixed Window Counter.
-    Fixed Window is easiest: Reset count every minute.
-    But Sliding Window Log is more accurate.
+    Tracks request timestamps per IP address and allows up to a specified
+    number of requests per minute. This implementation is designed for
+    single-process deployments only and is not thread-safe.
 
-    Given the single-process nature, let's use a simple algorithm:
-    Keep a list of timestamps for each IP. Clean up old timestamps on access.
-    Check if count > limit.
+    For multi-process or multi-threaded environments, consider using a
+    distributed rate limiter (Redis, Memcached) or protecting data
+    structures with locks.
     """
 
     def __init__(self, requests_per_minute: int = 60):
         self.requests_per_minute = requests_per_minute
         # Dictionary mapping IP to a deque of timestamps
         self.requests: Dict[str, deque] = defaultdict(deque)
+        # Track when we last performed a global cleanup, and how often to do it
+        self._last_cleanup = time.time()
+        self._cleanup_interval_seconds = 60.0
 
     def _cleanup(self):
         """Prune IP addresses that haven't made requests recently."""
-        # Simple probabilistic cleanup or threshold-based
-        if len(self.requests) > 1000:
-            now = time.time()
-            window_start = now - 60
-            # Create a list of keys to remove to avoid runtime error during iteration
-            keys_to_remove = []
-            for ip, timestamps in self.requests.items():
-                if not timestamps or timestamps[-1] < window_start:
-                    keys_to_remove.append(ip)
+        # Perform cleanup at most once per configured interval to avoid
+        # scanning all IPs on every request while still removing stale entries.
+        now = time.time()
+        if now - self._last_cleanup < self._cleanup_interval_seconds:
+            return
 
-            for ip in keys_to_remove:
-                del self.requests[ip]
+        self._last_cleanup = now
+        window_start = now - 60
+        # Create a list of keys to remove to avoid runtime error during iteration
+        keys_to_remove = []
+        for ip, timestamps in self.requests.items():
+            if not timestamps or timestamps[-1] < window_start:
+                keys_to_remove.append(ip)
+
+        for ip in keys_to_remove:
+            del self.requests[ip]
 
     def is_allowed(self, client_ip: str) -> bool:
-        self._cleanup()
         """
         Check if the request from client_ip is allowed.
         """
+        self._cleanup()
         now = time.time()
         window_start = now - 60
 
