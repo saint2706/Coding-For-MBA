@@ -16,13 +16,15 @@ class RateLimiter:
     structures with locks.
     """
 
-    def __init__(self, requests_per_minute: int = 60):
+    def __init__(
+        self, requests_per_minute: int = 60, cleanup_interval_seconds: float = 60.0
+    ):
         self.requests_per_minute = requests_per_minute
         # Dictionary mapping IP to a deque of timestamps
         self.requests: Dict[str, deque] = defaultdict(deque)
         # Track when we last performed a global cleanup, and how often to do it
         self._last_cleanup = time.time()
-        self._cleanup_interval_seconds = 60.0
+        self._cleanup_interval_seconds = cleanup_interval_seconds
 
     def _cleanup(self):
         """Prune IP addresses that haven't made requests recently."""

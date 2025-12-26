@@ -116,8 +116,7 @@ class TestRateLimiterCleanup:
 
     def test_cleanup_respects_interval(self):
         """Test that cleanup only runs at configured intervals."""
-        limiter = RateLimiter(requests_per_minute=5)
-        limiter._cleanup_interval_seconds = 30.0
+        limiter = RateLimiter(requests_per_minute=5, cleanup_interval_seconds=30.0)
         base_time = time.time()
 
         # Add requests for multiple IPs
@@ -162,13 +161,10 @@ class TestRateLimiterCleanup:
             # IP 3 makes a request in the "future"
             limiter.is_allowed("192.168.1.3")
 
-            # IP 3 should remain, IPs 1 and 2 should be cleaned
+            # IP 3 should remain as it's recent
             assert "192.168.1.3" in limiter.requests
-            # Old IPs should be removed since they're past the window
-            assert (
-                "192.168.1.1" not in limiter.requests
-                or len(limiter.requests["192.168.1.1"]) == 0
-            )
+            # Old IPs (1 and 2) should be cleaned since they're past the 60s window
+            assert "192.168.1.1" not in limiter.requests
 
 
 class TestRateLimitMiddleware:

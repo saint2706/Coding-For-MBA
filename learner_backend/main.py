@@ -78,11 +78,12 @@ async def rate_limit_middleware(request: Request, call_next):
             client_ip = real_ip.strip()
 
     if not rate_limiter.is_allowed(client_ip):
-        # Calculate reset timestamp (60 seconds from now)
-        reset_timestamp = int(datetime.now().timestamp()) + 60
+        # Calculate reset timestamp (window is 60 seconds)
+        window_seconds = 60
+        reset_timestamp = int(datetime.now().timestamp()) + window_seconds
         headers = {
-            "Retry-After": "60",
-            "X-RateLimit-Limit": "60",
+            "Retry-After": str(window_seconds),
+            "X-RateLimit-Limit": str(rate_limiter.requests_per_minute),
             "X-RateLimit-Remaining": "0",
             "X-RateLimit-Reset": str(reset_timestamp),
         }
