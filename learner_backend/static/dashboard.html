@@ -249,6 +249,12 @@
             color: #2d3748;
         }
 
+        .activity-topic {
+            font-weight: normal;
+            color: #718096;
+            margin-left: 0.5rem;
+        }
+
         .activity-status {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -733,7 +739,7 @@
                 <li class="activity-item">
                     <div class="activity-day">
                         Day ${lesson.day}
-                        ${topic ? `<span style="font-weight: normal; color: #718096; margin-left: 0.5rem;">${topic}</span>` : ''}
+                        ${topic ? `<span class="activity-topic">${topic}</span>` : ''}
                     </div>
                     <div class="activity-status status-${lesson.status}">
                         ${lesson.status}
