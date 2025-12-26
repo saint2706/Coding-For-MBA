@@ -1,7 +1,7 @@
 
 import time
 from collections import deque, defaultdict
-from typing import Dict, Tuple
+from typing import Dict
 
 class RateLimiter:
     """
