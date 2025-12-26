@@ -1,26 +1,7 @@
-# Palette's Journal
+## 2024-03-24 - Accessibility and Feedback
+**Learning:** Transient UI states (like "Copied!" feedback) can create race conditions if users interact rapidly.
+**Action:** When implementing temporary success states with `setTimeout`, always clear any existing timeout (`clearTimeout`) before setting a new one to prevent the revert action from triggering prematurely.
 
-## 2025-02-20 - Accessible State Indicators
-
-**Learning:** Visual-only state indicators (like grayed-out badges) are invisible to screen readers. Color alone should not convey meaning.
-**Action:** Always add `aria-label` or hidden text to explicitly state the status (e.g., "Locked", "Completed") when using visual styles to denote state.
-
-## 2025-02-20 - Broken Dependency on HttpOnly Cookies
-
-**Learning:** The dashboard frontend attempts to read the `learner_user_id` cookie to fetch progress, but the backend sets this cookie as `HttpOnly`. This causes the dashboard to fail loading (`getUserId()` returns null).
-**Action:** Future fix required: Backend should return the `user_id` in the `POST /progress` response body, or provide a `/me` endpoint. As a UX agent, I cannot modify the backend, so the dashboard remains currently non-functional without this fix.
-
-## 2025-12-20 - Low Contrast in Locked States
-
-**Learning:** "Locked" or disabled states often use light gray text on light gray backgrounds, failing WCAG contrast requirements (e.g., #718096 on #cbd5e0 is ~2.7:1).
-**Action:** Use darker grays (e.g., #4a5568) for disabled text to ensure at least 4.5:1 contrast, even for non-active elements.
-
-## 2025-12-22 - Semantic Lists & Skip Links
-
-**Learning:** Adding a "Skip to content" link is a high-value, low-effort a11y win, but requires careful CSS (`position: absolute`) to remain hidden yet focusable.
-**Action:** Always include a skip link for pages with header navigation. When converting visual lists (`divs`) to semantic lists (`ul/li`), explicitly set `list-style: none` and `padding: 0` to maintain visual consistency.
-
-## 2025-12-24 - Transient State Feedback
-
-**Learning:** When using transient states (like "Copied!" for 2 seconds), relying on capturing `originalText` can be buggy if the user triggers the action rapidly (capturing the transient state as the new original).
-**Action:** Explicitly define the revert state values (e.g., hardcode '📋' and "Copy command") in the timeout callback to ensure consistent restoration.
+## 2024-03-24 - Semantic HTML and ARIA
+**Learning:** Using semantic HTML elements like `<header>`, `<main>`, `<footer>`, `<nav>` and appropriate ARIA roles significantly improves accessibility.
+**Action:** Ensure all major page sections are wrapped in semantic tags. Add `role="status"` or `aria-live="polite"` to dynamic content areas.

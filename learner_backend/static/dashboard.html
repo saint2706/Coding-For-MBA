@@ -120,6 +120,11 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
             cursor: help;
+            transition: transform 0.2s ease;
+        }
+
+        .badge:hover, .badge:focus {
+            transform: translateY(-2px);
         }
 
         /* Tooltip styles */
@@ -442,17 +447,20 @@
                 const badgesRes = await fetch(`${API_BASE}/badges/${userId}`);
                 const badgesData = await badgesRes.json();
 
-                // Fetch suggestions
+                // Fetch structure and suggestions
+                let structure = {};
                 try {
-                    const [structRes, suggestRes] = await Promise.all([
-                        fetch('/static/course_structure.json'),
-                        fetch(`${API_BASE}/adaptive/suggest?user_id=${userId}`)
-                    ]);
-                    renderNextMission(await suggestRes.json(), await structRes.json());
+                    const structRes = await fetch('/static/course_structure.json');
+                    structure = await structRes.json();
+                } catch (e) { console.warn('Structure load failed', e); }
+
+                try {
+                    const suggestRes = await fetch(`${API_BASE}/adaptive/suggest?user_id=${userId}`);
+                    renderNextMission(await suggestRes.json(), structure);
                 } catch (e) { console.warn('Mission load failed', e); }
 
                 // Update UI
-                updateDashboard(progressData, badgesData);
+                updateDashboard(progressData, badgesData, structure);
                 checkAuth(userId);
 
                 document.getElementById('loading').style.display = 'none';
@@ -510,7 +518,7 @@
             }
         }
 
-        function updateDashboard(progressData, badgesData) {
+        function updateDashboard(progressData, badgesData, structure) {
             // Update completion stats
             const completionPct = progressData.completion_percentage || 0;
             document.getElementById('completion-percentage').textContent = `${completionPct}%`;
@@ -531,7 +539,7 @@
             updateBadges(badgesData.badges || []);
 
             // Update recent activity
-            updateActivity(progressData.lessons || []);
+            updateActivity(progressData.lessons || [], structure);
         }
 
         function updateBadges(badges) {
@@ -558,6 +566,7 @@
                 const title = phaseTitles[phase] || `Phase ${phase}`;
                 const status = earnedPhases.has(phase) ? "Completed" : "Locked";
 
+                badgeEl.setAttribute('role', 'img'); // Semantic role for accessibility
                 badgeEl.setAttribute('tabindex', '0'); // Keyboard accessible
                 badgeEl.setAttribute('aria-label', `${title}: ${status}`);
                 badgeEl.setAttribute('data-tooltip', `${title}: ${status}`);
@@ -697,7 +706,7 @@
             container.appendChild(card);
         }
 
-        function updateActivity(lessons) {
+        function updateActivity(lessons, structure) {
             const container = document.getElementById('activity-container');
 
             if (!lessons || lessons.length === 0) {
@@ -711,14 +720,27 @@
 
             // Show last 10 lessons
             const recent = lessons.slice(-10).reverse();
-            container.innerHTML = recent.map(lesson => `
+            container.innerHTML = recent.map(lesson => {
+                let topic = '';
+                if (structure && structure[lesson.day]) {
+                    const folder = structure[lesson.day];
+                    const parts = folder.split('_');
+                    if (parts.length >= 3) {
+                        topic = parts.slice(2).join(' ');
+                    }
+                }
+
+                return `
                 <li class="activity-item">
-                    <div class="activity-day">Day ${lesson.day}</div>
+                    <div class="activity-day">
+                        Day ${lesson.day}
+                        ${topic ? `<span style="font-weight: normal; color: #718096; margin-left: 0.5rem;">${topic}</span>` : ''}
+                    </div>
                     <div class="activity-status status-${lesson.status}">
                         ${lesson.status}
                     </div>
                 </li>
-            `).join('');
+            `}).join('');
         }
 
         // Check authentication status and update UI
