@@ -33,6 +33,7 @@ from itsdangerous import BadSignature, URLSafeTimedSerializer
 from pydantic import BaseModel
 
 from . import db
+from .ratelimit import RateLimiter
 
 # Configuration
 SECRET_KEY = os.getenv("SECRET_KEY", secrets.token_urlsafe(32))
@@ -50,6 +51,25 @@ app = FastAPI(
     description="Track your learning progress, earn badges, and get certificates",
     version="1.0.0",
 )
+
+# Rate Limiter (60 requests/minute per IP)
+rate_limiter = RateLimiter(requests_per_minute=60)
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    """Rate limit requests based on client IP."""
+    # Skip rate limiting for static files
+    if request.url.path.startswith("/static"):
+        return await call_next(request)
+
+    client_ip = request.client.host if request.client else "unknown"
+    if not rate_limiter.is_allowed(client_ip):
+        return Response(
+            content="Too Many Requests",
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS
+        )
+
+    return await call_next(request)
 
 # CORS middleware
 # Note: allow_origins=[] restricts cross-origin requests since dashboard.html is served
