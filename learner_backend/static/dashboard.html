@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Dashboard - Coding for MBA</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
     <style>
         * {
             margin: 0;
@@ -716,8 +717,12 @@
 
             if (!lessons || lessons.length === 0) {
                 container.innerHTML = `
-                    <li style="text-align: center; color: #718096; padding: 2rem;">
-                        No activity yet. Start learning to see your progress here!
+                    <li style="text-align: center; color: #718096; padding: 3rem 1rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;" role="img" aria-label="Seedling">🌱</div>
+                        <p style="margin-bottom: 1.5rem; font-size: 1.1rem;">No activity yet. Your journey begins with a single step!</p>
+                        <button class="btn" onclick="document.getElementById('next-mission-container').scrollIntoView({behavior: 'smooth', block: 'center'})">
+                            Start Mission
+                        </button>
                     </li>
                 `;
                 return;
