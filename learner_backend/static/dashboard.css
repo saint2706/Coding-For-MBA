@@ -365,7 +365,8 @@ h1 {
     justify-content: flex-end;
 }
 
-.github-login-btn {
+/* GitHub login button modifier - overrides .btn background */
+.btn.github-login-btn {
     text-decoration: none;
     background: #24292e;
 }
