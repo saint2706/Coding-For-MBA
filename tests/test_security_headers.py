@@ -74,8 +74,9 @@ def test_csp_header_granular_directives():
 
     # Check for granular directives
     assert "default-src 'self'" in csp
-    assert "style-src 'self' 'unsafe-inline'" in csp
-    assert "script-src 'self' 'unsafe-inline'" in csp
+    assert "style-src 'self'" in csp
+    assert "script-src 'self'" in csp
+    assert "unsafe-inline" not in csp
     assert "connect-src 'self'" in csp
     assert "img-src 'self'" in csp
 
