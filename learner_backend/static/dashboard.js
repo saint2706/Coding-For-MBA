@@ -193,8 +193,7 @@ function renderNextMission(suggestion, structure) {
 
         // Create message paragraph
         const messagePara = document.createElement('p');
-        messagePara.className = 'subtitle';
-        messagePara.style.marginBottom = '1rem';
+        messagePara.className = 'subtitle subtitle-spaced';
         messagePara.textContent = message;
         card.appendChild(messagePara);
 
@@ -229,8 +228,7 @@ function renderNextMission(suggestion, structure) {
 
     // Create reason paragraph
     const reasonPara = document.createElement('p');
-    reasonPara.className = 'subtitle';
-    reasonPara.style.marginBottom = '1rem';
+    reasonPara.className = 'subtitle subtitle-spaced';
     reasonPara.textContent = suggestion.reason || '';
     card.appendChild(reasonPara);
 
@@ -295,7 +293,7 @@ function updateActivity(lessons, structure) {
 
     if (!lessons || lessons.length === 0) {
         container.innerHTML = `
-            <li style="text-align: center; color: #718096; padding: 2rem;">
+            <li class="empty-activity-message">
                 No activity yet. Start learning to see your progress here!
             </li>
         `;
@@ -344,23 +342,21 @@ async function checkAuth(userId) {
         if (!authContainer) {
             authContainer = document.createElement('div');
             authContainer.id = 'auth-container';
-            authContainer.style.marginTop = '1rem';
-            authContainer.style.display = 'flex';
-            authContainer.style.justifyContent = 'flex-end';
+            authContainer.className = 'auth-container';
             header.appendChild(authContainer);
         }
 
         if (rootData.endpoints && rootData.endpoints.auth && !isGitHubUser) {
             // Show Login Button
             authContainer.innerHTML = `
-                <a href="${rootData.endpoints.auth}" class="btn" style="text-decoration: none; background: #24292e;">
+                <a href="${rootData.endpoints.auth}" class="btn github-login-btn">
                     Login with GitHub
                 </a>
             `;
         } else if (isGitHubUser) {
             // Show User Info
             authContainer.innerHTML = `
-                <div style="background: #f0fff4; padding: 0.5rem 1rem; border-radius: 8px; color: #22543d; font-weight: 600; border: 1px solid #c6f6d5;">
+                <div class="user-logged-in-badge">
                     ✓ Logged in via GitHub
                 </div>
             `;
