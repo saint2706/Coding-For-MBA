@@ -33,6 +33,10 @@ h1 {
     color: #718096;
 }
 
+.subtitle-spaced {
+    margin-bottom: 1rem;
+}
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -347,4 +351,31 @@ h1 {
 
 .skip-link:focus {
     top: 0;
+}
+
+.empty-activity-message {
+    text-align: center;
+    color: #718096;
+    padding: 2rem;
+}
+
+.auth-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* GitHub login button modifier - overrides .btn background */
+.btn.github-login-btn {
+    text-decoration: none;
+    background: #24292e;
+}
+
+.user-logged-in-badge {
+    background: #f0fff4;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: #22543d;
+    font-weight: 600;
+    border: 1px solid #c6f6d5;
 }
