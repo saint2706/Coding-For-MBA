@@ -119,14 +119,14 @@ async def add_security_headers(request: Request, call_next):
     # Use granular CSP directives following principle of least privilege.
     # Note: OAuth redirects are HTTP-level (server-side) and do not require CSP entries.
     # - default-src 'self': All resources from same origin by default
-    # - style-src 'self' 'unsafe-inline': Allow inline styles (required for dashboard.html)
-    # - script-src 'self' 'unsafe-inline': Allow inline scripts (required for dashboard.html inline <script> tags)
+    # - style-src 'self': Allow styles from same origin (dashboard.css)
+    # - script-src 'self': Allow scripts from same origin (dashboard.js)
     # - connect-src 'self': API calls to same origin only
     # - img-src 'self': Images from same origin only
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
-        "style-src 'self' 'unsafe-inline'; "
-        "script-src 'self' 'unsafe-inline'; "
+        "style-src 'self'; "
+        "script-src 'self'; "
         "connect-src 'self'; "
         "img-src 'self';"
     )
