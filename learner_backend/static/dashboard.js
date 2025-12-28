@@ -300,6 +300,13 @@ function updateActivity(lessons, structure) {
         return;
     }
 
+    // Palette: Status icons for visual feedback
+    const statusIcons = {
+        'completed': '✅',
+        'in_progress': '🚧',
+        'started': '▶️'
+    };
+
     // Show last 10 lessons
     const recent = lessons.slice(-10).reverse();
     container.innerHTML = recent.map(lesson => {
@@ -312,14 +319,19 @@ function updateActivity(lessons, structure) {
             }
         }
 
+        // Get icon and handle formatting
+        const icon = statusIcons[lesson.status] || '';
+        const statusClass = lesson.status.replace('_', '-');
+        const displayStatus = lesson.status.replace('_', ' ');
+
         return `
         <li class="activity-item">
             <div class="activity-day">
                 Day ${lesson.day}
                 ${topic ? `<span class="activity-topic">${topic}</span>` : ''}
             </div>
-            <div class="activity-status status-${lesson.status}">
-                ${lesson.status}
+            <div class="activity-status status-${statusClass}">
+                <span aria-hidden="true">${icon}</span> ${displayStatus}
             </div>
         </li>
     `}).join('');
