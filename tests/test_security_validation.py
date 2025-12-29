@@ -1,9 +1,28 @@
+import os
+import importlib
+
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
-from learner_backend.main import app, serializer
+from unittest.mock import patch
+
+os.environ.setdefault("GITHUB_CLIENT_ID", "test_client_id")
+os.environ.setdefault("GITHUB_CLIENT_SECRET", "test_client_secret")
+os.environ.setdefault("DATABASE_URL", ":memory:")
+
+import learner_backend.db as db
+import learner_backend.main as main
+
+main = importlib.reload(main)
+app = main.app
+serializer = main.serializer
 
 client = TestClient(app)
+
+@pytest.fixture(autouse=True)
+def reset_db_connection():
+    db._conn = None
+    yield
+    db._conn = None
 
 @pytest.fixture
 def auth_headers():
@@ -116,3 +135,64 @@ def test_certificate_request_with_apostrophe(auth_headers):
         )
 
         assert response.status_code == 200, f"Expected 200, got {response.status_code}"
+
+def test_progress_update_quiz_score_boundary_valid(auth_headers):
+    """Test that quiz scores at boundary values (0 and 100) are accepted."""
+    with patch("learner_backend.main.verify_user_access"):
+        client.cookies.set("learner_user_id", auth_headers["learner_user_id"])
+
+        # Test quiz_score = 0
+        response = client.post(
+            "/api/v1/progress",
+            json={
+                "user_id": "github_12345",
+                "day": 1,
+                "status": "completed",
+                "quiz_score": 0
+            }
+        )
+        assert response.status_code == 200, f"Expected 200 for quiz_score=0, got {response.status_code}"
+
+        # Test quiz_score = 100
+        response = client.post(
+            "/api/v1/progress",
+            json={
+                "user_id": "github_12345",
+                "day": 1,
+                "status": "completed",
+                "quiz_score": 100
+            }
+        )
+        assert response.status_code == 200, f"Expected 200 for quiz_score=100, got {response.status_code}"
+
+def test_progress_update_quiz_score_invalid(auth_headers):
+    """Test that invalid quiz scores (-1 and 101) are rejected with 422."""
+    client.cookies.set("learner_user_id", auth_headers["learner_user_id"])
+
+    # Test quiz_score = -1
+    response = client.post(
+        "/api/v1/progress",
+        json={
+            "user_id": "github_12345",
+            "day": 1,
+            "status": "completed",
+            "quiz_score": -1
+        }
+    )
+    assert response.status_code == 422, f"Expected 422 for quiz_score=-1, got {response.status_code}"
+    errors = response.json().get("detail", [])
+    assert any(e["loc"] == ["body", "quiz_score"] for e in errors)
+
+    # Test quiz_score = 101
+    response = client.post(
+        "/api/v1/progress",
+        json={
+            "user_id": "github_12345",
+            "day": 1,
+            "status": "completed",
+            "quiz_score": 101
+        }
+    )
+    assert response.status_code == 422, f"Expected 422 for quiz_score=101, got {response.status_code}"
+    errors = response.json().get("detail", [])
+    assert any(e["loc"] == ["body", "quiz_score"] for e in errors)

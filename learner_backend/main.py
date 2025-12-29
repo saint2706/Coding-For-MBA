@@ -167,7 +167,7 @@ class Badge(BaseModel):
 
 class CertificateRequest(BaseModel):
     user_id: str = Field(..., pattern=r"^[a-zA-Z0-9_-]+$")
-    name: str = Field(..., min_length=1, max_length=100, pattern=r"^[a-zA-Z\s\-\.\']+$")
+    name: str = Field(..., min_length=1, max_length=100, pattern=r"^[^\x00-\x1F<>]+$")
     phase: int = Field(..., ge=1, le=7)
 
 
