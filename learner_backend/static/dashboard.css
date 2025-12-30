@@ -407,7 +407,6 @@ html {
     *::before,
     *::after {
         animation: none !important;
-        animation-iteration-count: 1 !important;
         transition: none !important;
     }
 }
