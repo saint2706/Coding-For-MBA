@@ -41,6 +41,7 @@ serializer = URLSafeTimedSerializer(SECRET_KEY)
 GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
 GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
 DATABASE_URL = os.getenv("DATABASE_URL", "learner.db")
+TRUSTED_PROXIES = os.getenv("TRUSTED_PROXIES", "")
 
 # OAuth mode detection
 OAUTH_ENABLED = bool(GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET)
@@ -66,16 +67,20 @@ async def rate_limit_middleware(request: Request, call_next):
     # Get client IP, checking for proxy headers first
     client_ip = request.client.host if request.client else "unknown"
 
-    # Check for X-Forwarded-For or X-Real-IP headers to get actual client IP
-    # when behind a proxy or load balancer
-    forwarded_for = request.headers.get("X-Forwarded-For")
-    if forwarded_for:
-        # X-Forwarded-For can contain multiple IPs, the first is the original client
-        client_ip = forwarded_for.split(",")[0].strip()
-    else:
-        real_ip = request.headers.get("X-Real-IP")
-        if real_ip:
-            client_ip = real_ip.strip()
+    # Check for X-Forwarded-For or X-Real-IP headers ONLY if configured to trust proxies
+    # This prevents IP spoofing attacks where attackers inject fake headers
+    # Use positive allowlist: only specific values enable the feature (fail-secure)
+    if TRUSTED_PROXIES and TRUSTED_PROXIES.lower() in ("true", "1", "yes", "*"):
+        forwarded_for = request.headers.get("X-Forwarded-For")
+        if forwarded_for:
+            # TRUSTED_PROXIES has already been validated above; since it is enabled,
+            # we treat X-Forwarded-For as the authoritative source for the client IP.
+            # In a real production setup, we should verify the request comes from a trusted proxy IP.
+            client_ip = forwarded_for.split(",")[0].strip()
+        else:
+            real_ip = request.headers.get("X-Real-IP")
+            if real_ip:
+                client_ip = real_ip.strip()
 
     if not rate_limiter.is_allowed(client_ip):
         # Calculate reset timestamp (window is 60 seconds)
