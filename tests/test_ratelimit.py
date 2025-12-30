@@ -323,6 +323,36 @@ class TestRateLimitMiddleware:
             response = client.get("/health", headers={"X-Real-IP": "203.0.113.20"})
             assert response.status_code == 200
 
+    def test_middleware_ignores_proxy_headers_by_default(self):
+        """Test that X-Forwarded-For and X-Real-IP headers are ignored by default.
+        
+        This is the core security fix: without TRUSTED_PROXIES configured,
+        all requests should be rate-limited together using the actual client IP,
+        preventing IP spoofing attacks.
+        """
+        from learner_backend import main
+
+        # Ensure TRUSTED_PROXIES is not set (default behavior)
+        with patch.object(main, 'TRUSTED_PROXIES', ''):
+            client = TestClient(app)
+
+            # Make requests with spoofed X-Forwarded-For headers
+            # All should be rate-limited together since headers are ignored
+            for i in range(60):
+                # Use different "spoofed" IPs in each request
+                headers = {"X-Forwarded-For": f"203.0.113.{i}"}
+                response = client.get("/health", headers=headers)
+                assert response.status_code == 200, f"Request {i+1} should succeed"
+
+            # Next request with another "spoofed" IP should still be blocked
+            # because all requests are from the same actual client IP
+            response = client.get("/health", headers={"X-Forwarded-For": "203.0.113.99"})
+            assert response.status_code == 429, "Should be rate-limited despite different X-Forwarded-For"
+
+            # Same test with X-Real-IP header
+            response = client.get("/health", headers={"X-Real-IP": "203.0.113.100"})
+            assert response.status_code == 429, "Should be rate-limited despite X-Real-IP header"
+
 
 class TestRateLimiterEdgeCases:
     """Test edge cases and boundary conditions."""
