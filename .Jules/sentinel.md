@@ -16,7 +16,7 @@
 **Learning:** `HttpOnly` and `SameSite` flags are insufficient for session integrity; cookies acting as session tokens must be cryptographically signed. Access control checks must explicitly handle "no session" states as "deny" unless public access is intended.
 **Prevention:** Use `itsdangerous` or similar libraries to sign session cookies. Ensure authorization logic defaults to "deny" (fail closed) when authentication credentials are missing or invalid.
 
-## 2024-04-20 - [CRITICAL] IP Spoofing via X-Forwarded-For
+## 2024-04-20 - [HIGH] IP Spoofing via X-Forwarded-For
 
 **Vulnerability:** The rate limiter blindly trusted the `X-Forwarded-For` header without verification, allowing attackers to bypass rate limits by spoofing the header with random IPs.
 **Learning:** Naively parsing `X-Forwarded-For` in application code is a common vulnerability. Middleware or load balancers should handle IP resolution securely. If done in app code, it must be gated behind a `TRUSTED_PROXIES` configuration.
