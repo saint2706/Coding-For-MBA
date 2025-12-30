@@ -254,62 +254,74 @@ class TestRateLimitMiddleware:
 
     def test_middleware_handles_x_forwarded_for(self):
         """Test that middleware respects X-Forwarded-For header."""
-        client = TestClient(app)
+        # Enable trusted proxies for this test
+        from learner_backend import main
 
-        # Make requests with X-Forwarded-For header
-        headers = {"X-Forwarded-For": "203.0.113.1, 198.51.100.1"}
+        with patch.object(main, 'TRUSTED_PROXIES', '*'):
+            client = TestClient(app)
 
-        # Make requests up to limit
-        for i in range(60):
+            # Make requests with X-Forwarded-For header
+            headers = {"X-Forwarded-For": "203.0.113.1, 198.51.100.1"}
+
+            # Make requests up to limit
+            for i in range(60):
+                response = client.get("/health", headers=headers)
+                assert response.status_code == 200, f"Request {i+1} should succeed"
+
+            # Next request from same forwarded IP should be blocked
             response = client.get("/health", headers=headers)
-            assert response.status_code == 200, f"Request {i+1} should succeed"
+            assert response.status_code == 429
 
-        # Next request from same forwarded IP should be blocked
-        response = client.get("/health", headers=headers)
-        assert response.status_code == 429
-
-        # But request from different forwarded IP should work
-        response = client.get("/health", headers={"X-Forwarded-For": "203.0.113.99"})
-        assert response.status_code == 200
+            # But request from different forwarded IP should work
+            response = client.get("/health", headers={"X-Forwarded-For": "203.0.113.99"})
+            assert response.status_code == 200
 
     def test_middleware_handles_x_real_ip(self):
         """Test that middleware respects X-Real-IP header."""
-        client = TestClient(app)
+        # Enable trusted proxies for this test
+        from learner_backend import main
 
-        # Make requests with X-Real-IP header
-        headers = {"X-Real-IP": "203.0.113.5"}
+        with patch.object(main, 'TRUSTED_PROXIES', '*'):
+            client = TestClient(app)
 
-        # Make requests up to limit
-        for _ in range(60):
+            # Make requests with X-Real-IP header
+            headers = {"X-Real-IP": "203.0.113.5"}
+
+            # Make requests up to limit
+            for _ in range(60):
+                response = client.get("/health", headers=headers)
+                assert response.status_code == 200
+
+            # Next request from same real IP should be blocked
             response = client.get("/health", headers=headers)
-            assert response.status_code == 200
-
-        # Next request from same real IP should be blocked
-        response = client.get("/health", headers=headers)
-        assert response.status_code == 429
+            assert response.status_code == 429
 
     def test_middleware_prefers_x_forwarded_for_over_x_real_ip(self):
         """Test that X-Forwarded-For takes precedence over X-Real-IP."""
-        client = TestClient(app)
+        # Enable trusted proxies for this test
+        from learner_backend import main
 
-        # Use both headers
-        headers = {
-            "X-Forwarded-For": "203.0.113.10",
-            "X-Real-IP": "203.0.113.20",
-        }
+        with patch.object(main, 'TRUSTED_PROXIES', '*'):
+            client = TestClient(app)
 
-        # Make requests up to limit
-        for _ in range(60):
+            # Use both headers
+            headers = {
+                "X-Forwarded-For": "203.0.113.10",
+                "X-Real-IP": "203.0.113.20",
+            }
+
+            # Make requests up to limit
+            for _ in range(60):
+                response = client.get("/health", headers=headers)
+                assert response.status_code == 200
+
+            # Rate limit should apply to X-Forwarded-For IP
             response = client.get("/health", headers=headers)
+            assert response.status_code == 429
+
+            # Request with only X-Real-IP (different IP) should still work
+            response = client.get("/health", headers={"X-Real-IP": "203.0.113.20"})
             assert response.status_code == 200
-
-        # Rate limit should apply to X-Forwarded-For IP
-        response = client.get("/health", headers=headers)
-        assert response.status_code == 429
-
-        # Request with only X-Real-IP (different IP) should still work
-        response = client.get("/health", headers={"X-Real-IP": "203.0.113.20"})
-        assert response.status_code == 200
 
 
 class TestRateLimiterEdgeCases:
