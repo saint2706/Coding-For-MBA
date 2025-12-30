@@ -69,12 +69,13 @@ async def rate_limit_middleware(request: Request, call_next):
 
     # Check for X-Forwarded-For or X-Real-IP headers ONLY if configured to trust proxies
     # This prevents IP spoofing attacks where attackers inject fake headers
-    if TRUSTED_PROXIES and TRUSTED_PROXIES.lower() not in ("false", "0", "no", "off"):
+    # Use positive allowlist: only specific values enable the feature (fail-secure)
+    if TRUSTED_PROXIES and TRUSTED_PROXIES.lower() in ("true", "1", "yes", "*"):
         forwarded_for = request.headers.get("X-Forwarded-For")
         if forwarded_for:
-            # Check if we should trust this header (naive check: is TRUSTED_PROXIES set?)
+            # TRUSTED_PROXIES has already been validated above; since it is enabled,
+            # we treat X-Forwarded-For as the authoritative source for the client IP.
             # In a real production setup, we should verify the request comes from a trusted proxy IP.
-            # Here we assume if TRUSTED_PROXIES is set, the admin knows what they are doing.
             client_ip = forwarded_for.split(",")[0].strip()
         else:
             real_ip = request.headers.get("X-Real-IP")
