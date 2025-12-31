@@ -44,7 +44,7 @@
             <div class="progress-section">
                 <h2>Overall Progress</h2>
                 <div class="progress-bar-container">
-                    <!-- Note: The style attribute here is managed by dashboard.js via DOM property access, which is allowed by CSP -->
+                    <!-- Note: The progress bar width is updated by dashboard.js (via progressBar.style.width). This is CSP-compliant because the script runs from 'self'; inline style attributes in the HTML would still be blocked without 'unsafe-inline'. -->
                     <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Course completion" aria-describedby="progress-text"></div>
                     <span id="progress-text">0%</span>
                 </div>
