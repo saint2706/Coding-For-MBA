@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Learning Dashboard - Coding for MBA</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📚</text></svg>">
+    <link rel="icon" href="/static/favicon.svg">
     <link rel="stylesheet" href="/static/dashboard.css">
 </head>
 <body>
@@ -20,7 +20,7 @@
             Loading your progress...
         </div>
 
-        <div id="dashboard" style="display: none;">
+        <div id="dashboard" class="hidden">
             <div id="next-mission-container"></div>
             <div class="stats-grid">
                 <div class="stat-card">
@@ -44,7 +44,8 @@
             <div class="progress-section">
                 <h2>Overall Progress</h2>
                 <div class="progress-bar-container">
-                    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Course completion" aria-describedby="progress-text" style="width: 0%"></div>
+                    <!-- Note: The style attribute here is managed by dashboard.js via DOM property access, which is allowed by CSP -->
+                    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Course completion" aria-describedby="progress-text"></div>
                     <span id="progress-text">0%</span>
                 </div>
             </div>
@@ -58,8 +59,8 @@
 
             <div class="recent-activity">
                 <h2>Recent Activity</h2>
-                <ul id="activity-container" role="list" style="list-style: none; padding: 0;">
-                    <li style="text-align: center; color: #718096; padding: 2rem;">
+                <ul id="activity-container" class="activity-list" role="list">
+                    <li class="empty-activity-message">
                         No activity yet. Start learning to see your progress here!
                     </li>
                 </ul>
