@@ -128,12 +128,20 @@ async def add_security_headers(request: Request, call_next):
     # - script-src 'self': Allow scripts from same origin (dashboard.js)
     # - connect-src 'self': API calls to same origin only
     # - img-src 'self': Images from same origin only
+    # - object-src 'none': Block plugins like Flash/Java
+    # - base-uri 'self': Prevent base tag hijacking
+    # - form-action 'self': Restrict form submissions to same origin
+    # - frame-ancestors 'none': Prevent embedding in iframes (Clickjacking protection)
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
         "style-src 'self'; "
         "script-src 'self'; "
         "connect-src 'self'; "
-        "img-src 'self';"
+        "img-src 'self'; "
+        "object-src 'none'; "
+        "base-uri 'self'; "
+        "form-action 'self'; "
+        "frame-ancestors 'none';"
     )
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     return response

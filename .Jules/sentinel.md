@@ -21,3 +21,9 @@
 **Vulnerability:** The rate limiter blindly trusted the `X-Forwarded-For` header without verification, allowing attackers to bypass rate limits by spoofing the header with random IPs.
 **Learning:** Naively parsing `X-Forwarded-For` in application code is a common vulnerability. Middleware or load balancers should handle IP resolution securely. If done in app code, it must be gated behind a `TRUSTED_PROXIES` configuration.
 **Prevention:** Always default to ignoring `X-Forwarded-For`. Only enable it if the deployment environment guarantees the header is authentic (e.g., from a trusted load balancer).
+
+## 2026-01-01 - Content Security Policy (CSP) Bypass Risks
+
+**Vulnerability:** The application's CSP was overly permissive, missing critical directives like `object-src 'none'`, `base-uri 'self'`, and `form-action 'self'`. This left the application potentially vulnerable to object injection attacks (e.g., Flash/Java applets), base tag hijacking, and unauthorized form submissions.
+**Learning:** Default "secure" headers often miss defense-in-depth directives. Modern CSP requires explicit restrictions on all resource types, not just scripts and styles.
+**Prevention:** Implement a strict, granular CSP that explicitly denies unused features (`object-src 'none'`, `frame-ancestors 'none'`) and restricts necessary ones to 'self' or specific trusted domains.
