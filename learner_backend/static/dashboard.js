@@ -151,7 +151,6 @@ function updateBadges(badges) {
         const title = phaseTitles[phase] || `Phase ${phase}`;
         const status = earnedPhases.has(phase) ? "Completed" : "Locked";
 
-        badgeEl.setAttribute('role', 'img'); // Palette: Semantic role for accessibility
         badgeEl.setAttribute('tabindex', '0'); // Keyboard accessible
         badgeEl.setAttribute('aria-label', `${title}: ${status}`);
         badgeEl.setAttribute('data-tooltip', `${title}: ${status}`);
