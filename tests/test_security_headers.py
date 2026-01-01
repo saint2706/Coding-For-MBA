@@ -79,6 +79,10 @@ def test_csp_header_granular_directives():
     assert "unsafe-inline" not in csp
     assert "connect-src 'self'" in csp
     assert "img-src 'self'" in csp
+    assert "object-src 'none'" in csp
+    assert "base-uri 'self'" in csp
+    assert "form-action 'self'" in csp
+    assert "frame-ancestors 'none'" in csp
 
 
 def test_csp_header_no_github_domains():
