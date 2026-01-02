@@ -111,9 +111,11 @@ function updateDashboard(progressData, badgesData, structure) {
     animateCounter('completion-percentage', 0, completionPct, 1000, '%');
 
     const totalLessons = progressData.total_lessons || 108;
-    animateCounter('completed-count', 0, progressData.completed, 1500, `/${totalLessons}`);
+    const completedCount = Number(progressData.completed) || 0;
+    animateCounter('completed-count', 0, completedCount, 1500, `/${totalLessons}`);
 
-    animateCounter('badge-count', 0, badgesData.badge_count, 1000, '/7');
+    const badgeCount = Number(badgesData.badge_count) || 0;
+    animateCounter('badge-count', 0, badgeCount, 1000, '/7');
 
     document.getElementById('streak').textContent = '0 days'; // Placeholder
 
@@ -345,6 +347,11 @@ function updateActivity(lessons, structure) {
 function animateCounter(id, start, end, duration, suffix = '') {
     const obj = document.getElementById(id);
     if (!obj) return;
+
+    // Validate that end is a valid number
+    if (typeof end !== 'number' || isNaN(end)) {
+        end = 0;
+    }
 
     // Respect user preference for reduced motion
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
