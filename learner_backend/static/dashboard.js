@@ -349,7 +349,7 @@ function animateCounter(id, start, end, duration, suffix = '') {
     if (!obj) return;
 
     // Validate that end is a valid number
-    if (typeof end !== 'number' || isNaN(end)) {
+    if (!Number.isFinite(end)) {
         end = 0;
     }
 
