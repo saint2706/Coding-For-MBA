@@ -106,11 +106,17 @@ async function loadProgress() {
 function updateDashboard(progressData, badgesData, structure) {
     // Update completion stats
     const completionPct = progressData.completion_percentage || 0;
-    document.getElementById('completion-percentage').textContent = `${completionPct}%`;
-    document.getElementById('completed-count').textContent =
-        `${progressData.completed}/${progressData.total_lessons || 108}`;
-    document.getElementById('badge-count').textContent =
-        `${badgesData.badge_count}/7`;
+
+    // Animate stats
+    animateCounter('completion-percentage', 0, completionPct, 1000, '%');
+
+    const totalLessons = progressData.total_lessons || 108;
+    const completedCount = Number(progressData.completed) || 0;
+    animateCounter('completed-count', 0, completedCount, 1500, `/${totalLessons}`);
+
+    const badgeCount = Number(badgesData.badge_count) || 0;
+    animateCounter('badge-count', 0, badgeCount, 1000, '/7');
+
     document.getElementById('streak').textContent = '0 days'; // Placeholder
 
     // Update progress bar
@@ -335,6 +341,49 @@ function updateActivity(lessons, structure) {
             </div>
         </li>
     `}).join('');
+}
+
+// Palette: Animate numbers for better UX
+function animateCounter(id, start, end, duration, suffix = '') {
+    const obj = document.getElementById(id);
+    if (!obj) return;
+
+    // Validate that end is a valid number
+    if (!Number.isFinite(end)) {
+        end = 0;
+    }
+
+    // Respect user preference for reduced motion
+    const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (isReducedMotion) {
+        obj.textContent = end + suffix;
+        return;
+    }
+
+    // If end is 0 or same as start, just set it
+    if (end === start) {
+        obj.textContent = end + suffix;
+        return;
+    }
+
+    let startTimestamp = null;
+    const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+
+        // Easing function (easeOutQuad) for smoother animation
+        const easeProgress = 1 - (1 - progress) * (1 - progress);
+
+        const value = Math.floor(easeProgress * (end - start) + start);
+        obj.textContent = value + suffix;
+
+        if (progress < 1) {
+            window.requestAnimationFrame(step);
+        } else {
+            obj.textContent = end + suffix;
+        }
+    };
+    window.requestAnimationFrame(step);
 }
 
 // Check authentication status and update UI
