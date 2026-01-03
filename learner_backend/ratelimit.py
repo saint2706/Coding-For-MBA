@@ -1,6 +1,6 @@
 import time
 from collections import deque, OrderedDict
-from typing import Dict, Deque
+from typing import Deque
 
 
 class RateLimiter:
@@ -34,42 +34,26 @@ class RateLimiter:
         # We only check the oldest items until we find one that is still active.
         now = time.time()
 
-        # Only run if enough time has passed, or if we are over the limit
+        # Run cleanup if EITHER the interval has passed OR we're at/over the limit
         if (now - self._last_cleanup < self._cleanup_interval_seconds) and (len(self.requests) < self.max_clients):
             return
 
         self._last_cleanup = now
         window_start = now - 60
 
-        # In an OrderedDict, the items at the beginning are the least recently inserted/updated
-        # (if we move_to_end on access).
-        # We iterate a copy of keys because we might modify the dict, but actually
-        # we can just peek and pop.
-
-        # Limit the number of items we check to avoid blocking for too long,
-        # but always enforce the hard limit.
-
-        # 1. Enforce Hard Limit (LRU eviction)
-        while len(self.requests) > self.max_clients:
-            self.requests.popitem(last=False) # Remove first (oldest) item
-
-        # 2. Cleanup stale entries (Oldest first)
-        # We peek at the start. If it's stale (no requests in window), remove it.
-        # Stop as soon as we see an active one.
+        # 1. Cleanup stale entries first (those with no requests in the current window)
+        # We iterate over all clients and remove those with no requests in the current window.
         keys_to_remove = []
         for ip, timestamps in self.requests.items():
             if not timestamps or timestamps[-1] < window_start:
                 keys_to_remove.append(ip)
-            else:
-                # Since it's ordered by access time, if this one is active, subsequent ones likely are too.
-                # However, timestamps[-1] is the *latest* request from that IP.
-                # If we update order on access, then yes.
-                break
 
         for ip in keys_to_remove:
-            # Check existence because it might have been removed if we were multithreaded (though we aren't)
-            if ip in self.requests:
-                del self.requests[ip]
+            del self.requests[ip]
+
+        # 2. Enforce Hard Limit (LRU eviction) only if still needed after stale cleanup
+        while len(self.requests) > self.max_clients:
+            self.requests.popitem(last=False)  # Remove first (oldest) item
 
     def is_allowed(self, client_ip: str) -> bool:
         """
@@ -85,7 +69,14 @@ class RateLimiter:
         else:
             user_requests = deque()
             self.requests[client_ip] = user_requests
-            # We don't move_to_end because it's already at end (newly inserted)
+            # Newly inserted items go to the end of OrderedDict
+            
+            # After adding new IP, enforce max_clients limit immediately if needed.
+            # This complements the cleanup logic: cleanup runs periodically or when at limit,
+            # but this ensures we never exceed max_clients even between cleanup cycles.
+            if len(self.requests) > self.max_clients:
+                # Remove oldest (first) entry. The newly added IP is at the end, so it won't be removed.
+                self.requests.popitem(last=False)
 
         # Remove requests older than the window
         while user_requests and user_requests[0] < window_start:
