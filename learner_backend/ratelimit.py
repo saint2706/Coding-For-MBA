@@ -71,7 +71,9 @@ class RateLimiter:
             self.requests[client_ip] = user_requests
             # Newly inserted items go to the end of OrderedDict
             
-            # After adding new IP, enforce max_clients limit immediately if needed
+            # After adding new IP, enforce max_clients limit immediately if needed.
+            # This complements the cleanup logic: cleanup runs periodically or when at limit,
+            # but this ensures we never exceed max_clients even between cleanup cycles.
             if len(self.requests) > self.max_clients:
                 # Remove oldest (first) entry. The newly added IP is at the end, so it won't be removed.
                 self.requests.popitem(last=False)
