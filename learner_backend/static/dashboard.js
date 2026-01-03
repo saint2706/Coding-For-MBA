@@ -298,8 +298,19 @@ function renderNextMission(suggestion, structure) {
 function timeAgo(dateString) {
     if (!dateString) return '';
     const date = new Date(dateString);
+
+    // If the parsed date is invalid, return empty string to avoid "NaN seconds ago"
+    if (Number.isNaN(date.getTime())) {
+        return '';
+    }
+
     const now = new Date();
     const seconds = Math.floor((now - date) / 1000);
+
+    // Handle future dates - treat as "just now"
+    if (seconds < 0) {
+        return 'just now';
+    }
 
     // Use Intl.RelativeTimeFormat if available
     if (typeof Intl !== 'undefined' && Intl.RelativeTimeFormat) {
@@ -369,7 +380,7 @@ function updateActivity(lessons, structure) {
                     Day ${lesson.day}
                     ${topic ? `<span class="activity-topic">${topic}</span>` : ''}
                 </div>
-                ${relativeTime ? `<div class="activity-topic" style="margin-left: 0; font-size: 0.85em; margin-top: 0.25rem;" title="${exactTime}">${relativeTime}</div>` : ''}
+                ${relativeTime ? `<div class="activity-time" title="${exactTime}">${relativeTime}</div>` : ''}
             </div>
             <div class="activity-status status-${statusClass}">
                 <span aria-hidden="true">${icon}</span> ${displayStatus}
