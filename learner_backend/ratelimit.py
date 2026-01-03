@@ -69,11 +69,11 @@ class RateLimiter:
         else:
             user_requests = deque()
             self.requests[client_ip] = user_requests
-            # We don't move_to_end because it's already at end (newly inserted)
+            # Newly inserted items go to the end of OrderedDict
             
             # After adding new IP, enforce max_clients limit immediately if needed
             if len(self.requests) > self.max_clients:
-                # Remove oldest (first) entry to make room
+                # Remove oldest (first) entry. The newly added IP is at the end, so it won't be removed.
                 self.requests.popitem(last=False)
 
         # Remove requests older than the window

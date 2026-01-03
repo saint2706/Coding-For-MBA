@@ -448,7 +448,7 @@ class TestRateLimiterMaxClients:
     def test_max_clients_active_ips_retained_over_inactive(self):
         """Test that active IPs that are accessed are retained over inactive ones during eviction."""
         limiter = RateLimiter(requests_per_minute=10, max_clients=3)
-        base_time = time.time()
+        base_time = 1700000000.0  # Fixed timestamp for reproducibility
 
         # Add 3 IPs at base time
         with patch("time.time", return_value=base_time):
