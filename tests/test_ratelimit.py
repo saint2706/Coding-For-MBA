@@ -399,3 +399,99 @@ class TestRateLimiterEdgeCases:
         assert limiter.is_allowed(ipv6) is True
         assert limiter.is_allowed(ipv6) is True
         assert limiter.is_allowed(ipv6) is False
+
+
+class TestRateLimiterMaxClients:
+    """Test max_clients LRU eviction behavior."""
+
+    def test_max_clients_evicts_oldest_ips(self):
+        """Test that when max_clients is exceeded, oldest IPs are evicted."""
+        limiter = RateLimiter(requests_per_minute=10, max_clients=5)
+
+        # Add 5 IPs (at the limit)
+        for i in range(5):
+            assert limiter.is_allowed(f"192.168.1.{i}") is True
+
+        # All 5 should be tracked
+        assert len(limiter.requests) == 5
+
+        # Add a 6th IP, which should trigger LRU eviction of the oldest IP
+        assert limiter.is_allowed("192.168.1.99") is True
+
+        # Should still have only 5 IPs tracked
+        assert len(limiter.requests) == 5
+
+        # The oldest IP (192.168.1.0) should have been evicted
+        assert "192.168.1.0" not in limiter.requests
+
+        # The newest IP should be present
+        assert "192.168.1.99" in limiter.requests
+
+    def test_max_clients_eviction_immediate_regardless_of_cleanup_interval(self):
+        """Test that eviction happens immediately when max_clients is exceeded, regardless of cleanup_interval."""
+        limiter = RateLimiter(
+            requests_per_minute=10, max_clients=3, cleanup_interval_seconds=1000
+        )
+
+        # Add 3 IPs (at the limit)
+        for i in range(3):
+            assert limiter.is_allowed(f"192.168.1.{i}") is True
+
+        assert len(limiter.requests) == 3
+
+        # Add a 4th IP - should trigger immediate cleanup despite long cleanup_interval
+        assert limiter.is_allowed("192.168.1.99") is True
+
+        # Should enforce the limit
+        assert len(limiter.requests) <= 3
+
+    def test_max_clients_active_ips_retained_over_inactive(self):
+        """Test that active IPs that are accessed are retained over inactive ones during eviction."""
+        limiter = RateLimiter(requests_per_minute=10, max_clients=3)
+        base_time = time.time()
+
+        # Add 3 IPs at base time
+        with patch("time.time", return_value=base_time):
+            for i in range(3):
+                assert limiter.is_allowed(f"192.168.1.{i}") is True
+
+        # Advance time by 61 seconds and access IP 1 and IP 2 to mark them as recently used
+        future_time = base_time + 61
+        with patch("time.time", return_value=future_time):
+            # IP 0 becomes stale (no requests in last 60 seconds)
+            # Access IP 1 and IP 2 to keep them active
+            assert limiter.is_allowed("192.168.1.1") is True
+            assert limiter.is_allowed("192.168.1.2") is True
+
+            # Now add a 4th IP - stale IP 0 should be removed first
+            assert limiter.is_allowed("192.168.1.99") is True
+
+            # IP 0 should have been removed (stale)
+            assert "192.168.1.0" not in limiter.requests
+
+            # Active IPs should be retained
+            assert "192.168.1.1" in limiter.requests
+            assert "192.168.1.2" in limiter.requests
+            assert "192.168.1.99" in limiter.requests
+
+    def test_max_clients_with_all_active_clients(self):
+        """Test behavior when all clients are active and max_clients is exceeded."""
+        limiter = RateLimiter(requests_per_minute=10, max_clients=3)
+
+        # Add 3 IPs, all active (all have recent requests)
+        for i in range(3):
+            assert limiter.is_allowed(f"192.168.1.{i}") is True
+
+        assert len(limiter.requests) == 3
+
+        # Add a 4th IP - should evict the oldest active IP
+        assert limiter.is_allowed("192.168.1.99") is True
+
+        # Should still be at or under the limit
+        assert len(limiter.requests) <= 3
+
+        # The oldest IP (192.168.1.0) should have been evicted
+        assert "192.168.1.0" not in limiter.requests
+
+        # The newest IP should be present
+        assert "192.168.1.99" in limiter.requests
