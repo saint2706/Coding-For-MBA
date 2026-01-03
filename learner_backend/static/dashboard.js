@@ -294,6 +294,29 @@ function renderNextMission(suggestion, structure) {
     container.appendChild(card);
 }
 
+// Helper to format relative time (e.g., "2 hours ago")
+function timeAgo(dateString) {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    // Use Intl.RelativeTimeFormat if available
+    if (typeof Intl !== 'undefined' && Intl.RelativeTimeFormat) {
+        const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+        if (seconds < 60) return rtf.format(-seconds, 'second');
+        if (seconds < 3600) return rtf.format(-Math.floor(seconds / 60), 'minute');
+        if (seconds < 86400) return rtf.format(-Math.floor(seconds / 3600), 'hour');
+        if (seconds < 604800) return rtf.format(-Math.floor(seconds / 86400), 'day');
+        // Fallback to date for older items
+        return date.toLocaleDateString();
+    }
+
+    // Fallback if Intl is not supported
+    return date.toLocaleDateString();
+}
+
 function updateActivity(lessons, structure) {
     const container = document.getElementById('activity-container');
 
@@ -313,8 +336,15 @@ function updateActivity(lessons, structure) {
         'started': '▶️'
     };
 
-    // Show last 10 lessons
-    const recent = lessons.slice(-10).reverse();
+    // Show last 10 lessons, sorted by updated_at (most recent first)
+    const sortedLessons = [...lessons].sort((a, b) => {
+        const dateA = a.updated_at ? new Date(a.updated_at) : new Date(0);
+        const dateB = b.updated_at ? new Date(b.updated_at) : new Date(0);
+        return dateB - dateA;
+    });
+
+    const recent = sortedLessons.slice(0, 10);
+
     container.innerHTML = recent.map(lesson => {
         let topic = '';
         if (structure && structure[lesson.day]) {
@@ -329,12 +359,17 @@ function updateActivity(lessons, structure) {
         const icon = statusIcons[lesson.status] || '';
         const statusClass = lesson.status.replace('_', '-');
         const displayStatus = lesson.status.replace('_', ' ');
+        const relativeTime = timeAgo(lesson.updated_at);
+        const exactTime = lesson.updated_at ? new Date(lesson.updated_at).toLocaleString() : '';
 
         return `
         <li class="activity-item">
             <div class="activity-day">
-                Day ${lesson.day}
-                ${topic ? `<span class="activity-topic">${topic}</span>` : ''}
+                <div>
+                    Day ${lesson.day}
+                    ${topic ? `<span class="activity-topic">${topic}</span>` : ''}
+                </div>
+                ${relativeTime ? `<div class="activity-topic" style="margin-left: 0; font-size: 0.85em; margin-top: 0.25rem;" title="${exactTime}">${relativeTime}</div>` : ''}
             </div>
             <div class="activity-status status-${statusClass}">
                 <span aria-hidden="true">${icon}</span> ${displayStatus}
