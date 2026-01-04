@@ -21,6 +21,7 @@ client = TestClient(app)
 @pytest.fixture(autouse=True)
 def reset_db_connection():
     db._conn = None
+    db.init_db(":memory:")
     yield
     db._conn = None
 
@@ -196,3 +197,50 @@ def test_progress_update_quiz_score_invalid(auth_headers):
     assert response.status_code == 422, f"Expected 422 for quiz_score=101, got {response.status_code}"
     errors = response.json().get("detail", [])
     assert any(e["loc"] == ["body", "quiz_score"] for e in errors)
+
+def test_certificate_request_unsafe_chars(auth_headers):
+    """Test that requesting a certificate with unsafe characters returns 422."""
+    # Characters that are currently allowed by the blacklist but should be blocked by whitelist
+    unsafe_names = [
+        'Test "User"',
+        'Test & User',
+        'Test; User',
+        'Test/User',
+        'Test\\User'
+    ]
+
+    client.cookies.set("learner_user_id", auth_headers["learner_user_id"])
+
+    for name in unsafe_names:
+        response = client.post(
+            "/api/v1/certificates",
+            json={
+                "user_id": "github_12345",
+                "name": name,
+                "phase": 1
+            }
+        )
+        assert response.status_code == 422, f"Should reject name: {name}, got {response.status_code}"
+
+def test_certificate_request_international_names(auth_headers):
+    """Test that international names are accepted."""
+    with patch("learner_backend.main.verify_user_access"), \
+         patch("learner_backend.db.get_user_progress") as mock_progress, \
+         patch("learner_backend.main.get_lessons_for_phase") as mock_lessons:
+
+        mock_progress.return_value = [{"day": 1, "status": "completed"}]
+        mock_lessons.return_value = [1]
+
+        client.cookies.set("learner_user_id", auth_headers["learner_user_id"])
+
+        names = ["Zoë", "José", "Müller", "O'Connor", "Jean-Pierre", "A.B.C."]
+        for name in names:
+            response = client.post(
+                "/api/v1/certificates",
+                json={
+                    "user_id": "github_12345",
+                    "name": name,
+                    "phase": 1
+                }
+            )
+            assert response.status_code == 200, f"Should accept name: {name}, got {response.status_code}"
