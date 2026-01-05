@@ -36,6 +36,16 @@ def setup_database():
     db._conn = None
 
 
+@pytest.fixture(autouse=True)
+def reset_rate_limiter():
+    """Reset the rate limiter before each test."""
+    from learner_backend.main import rate_limiter
+
+    # Clear all tracked IPs
+    rate_limiter.requests.clear()
+    yield
+
+
 def test_security_headers_on_root():
     """Test that security headers are present on the root endpoint."""
     response = client.get("/")

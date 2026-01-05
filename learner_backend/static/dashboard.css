@@ -473,7 +473,7 @@ html {
         width: calc(100% - 2rem);
         max-width: 400px;
     }
-    
+
     .toast {
         margin-left: auto;
         margin-right: auto;

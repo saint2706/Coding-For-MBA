@@ -22,7 +22,7 @@ repos:
         additional_dependencies:
           - mdformat-gfm
           - mdformat-frontmatter
-        exclude: ^(AGENTS\.md|docs/agents\.md|generated/.*)$
+        exclude: ^(AGENTS\.md|docs/agents\.md|generated/.*|docs/lessons/(day-.*|_index\.md))$
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:

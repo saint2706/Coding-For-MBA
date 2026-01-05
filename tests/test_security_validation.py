@@ -1,9 +1,9 @@
-import os
 import importlib
+import os
+from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch
 
 os.environ.setdefault("GITHUB_CLIENT_ID", "test_client_id")
 os.environ.setdefault("GITHUB_CLIENT_SECRET", "test_client_secret")
@@ -18,11 +18,23 @@ serializer = main.serializer
 
 client = TestClient(app)
 
+
 @pytest.fixture(autouse=True)
 def reset_db_connection():
     db._conn = None
     yield
     db._conn = None
+
+
+@pytest.fixture(autouse=True)
+def reset_rate_limiter():
+    """Reset the rate limiter before each test."""
+    from learner_backend.main import rate_limiter
+
+    # Clear all tracked IPs
+    rate_limiter.requests.clear()
+    yield
+
 
 @pytest.fixture
 def auth_headers():
@@ -30,6 +42,7 @@ def auth_headers():
     user_id = "github_12345"
     signed_token = serializer.dumps(user_id)
     return {"learner_user_id": signed_token}
+
 
 def test_certificate_request_huge_name(auth_headers):
     """Test that requesting a certificate with a huge name returns 422."""
@@ -39,17 +52,14 @@ def test_certificate_request_huge_name(auth_headers):
 
     response = client.post(
         "/api/v1/certificates",
-        json={
-            "user_id": "github_12345",
-            "name": huge_name,
-            "phase": 1
-        }
+        json={"user_id": "github_12345", "name": huge_name, "phase": 1},
     )
 
     assert response.status_code == 422, f"Expected 422, got {response.status_code}"
     # Verify the error detail mentions 'name'
     errors = response.json().get("detail", [])
     assert any(e["loc"] == ["body", "name"] for e in errors)
+
 
 def test_certificate_request_xss_name(auth_headers):
     """Test that requesting a certificate with invalid characters returns 422."""
@@ -59,16 +69,13 @@ def test_certificate_request_xss_name(auth_headers):
 
     response = client.post(
         "/api/v1/certificates",
-        json={
-            "user_id": "github_12345",
-            "name": xss_name,
-            "phase": 1
-        }
+        json={"user_id": "github_12345", "name": xss_name, "phase": 1},
     )
 
     assert response.status_code == 422, f"Expected 422, got {response.status_code}"
     errors = response.json().get("detail", [])
     assert any(e["loc"] == ["body", "name"] for e in errors)
+
 
 def test_progress_update_invalid_day(auth_headers):
     """Test that progress update with invalid day returns 422."""
@@ -77,26 +84,24 @@ def test_progress_update_invalid_day(auth_headers):
 
     response = client.post(
         "/api/v1/progress",
-        json={
-            "user_id": "github_12345",
-            "day": 999,
-            "status": "completed"
-        }
+        json={"user_id": "github_12345", "day": 999, "status": "completed"},
     )
 
     assert response.status_code == 422, f"Expected 422, got {response.status_code}"
     errors = response.json().get("detail", [])
     assert any(e["loc"] == ["body", "day"] for e in errors)
 
+
 def test_valid_certificate_request(auth_headers):
     """Test that valid inputs are accepted (mocking internals)."""
     # We mock verify_user_access and db.get_user_progress to pass logical checks
     # This ensures that valid inputs pass the Pydantic validation layer
 
-    with patch("learner_backend.main.verify_user_access"), \
-         patch("learner_backend.db.get_user_progress") as mock_progress, \
-         patch("learner_backend.main.get_lessons_for_phase") as mock_lessons:
-
+    with (
+        patch("learner_backend.main.verify_user_access"),
+        patch("learner_backend.db.get_user_progress") as mock_progress,
+        patch("learner_backend.main.get_lessons_for_phase") as mock_lessons,
+    ):
         mock_progress.return_value = [{"day": 1, "status": "completed"}]
         mock_lessons.return_value = [1]
 
@@ -104,22 +109,20 @@ def test_valid_certificate_request(auth_headers):
 
         response = client.post(
             "/api/v1/certificates",
-            json={
-                "user_id": "github_12345",
-                "name": "Jane Doe",
-                "phase": 1
-            }
+            json={"user_id": "github_12345", "name": "Jane Doe", "phase": 1},
         )
 
         assert response.status_code == 200
         assert response.json()["success"] is True
 
+
 def test_certificate_request_with_apostrophe(auth_headers):
     """Test that names with apostrophes are accepted."""
-    with patch("learner_backend.main.verify_user_access"), \
-         patch("learner_backend.db.get_user_progress") as mock_progress, \
-         patch("learner_backend.main.get_lessons_for_phase") as mock_lessons:
-
+    with (
+        patch("learner_backend.main.verify_user_access"),
+        patch("learner_backend.db.get_user_progress") as mock_progress,
+        patch("learner_backend.main.get_lessons_for_phase") as mock_lessons,
+    ):
         mock_progress.return_value = [{"day": 1, "status": "completed"}]
         mock_lessons.return_value = [1]
 
@@ -127,14 +130,11 @@ def test_certificate_request_with_apostrophe(auth_headers):
 
         response = client.post(
             "/api/v1/certificates",
-            json={
-                "user_id": "github_12345",
-                "name": "O'Connor",
-                "phase": 1
-            }
+            json={"user_id": "github_12345", "name": "O'Connor", "phase": 1},
         )
 
         assert response.status_code == 200, f"Expected 200, got {response.status_code}"
+
 
 def test_progress_update_quiz_score_boundary_valid(auth_headers):
     """Test that quiz scores at boundary values (0 and 100) are accepted."""
@@ -148,10 +148,12 @@ def test_progress_update_quiz_score_boundary_valid(auth_headers):
                 "user_id": "github_12345",
                 "day": 1,
                 "status": "completed",
-                "quiz_score": 0
-            }
+                "quiz_score": 0,
+            },
         )
-        assert response.status_code == 200, f"Expected 200 for quiz_score=0, got {response.status_code}"
+        assert (
+            response.status_code == 200
+        ), f"Expected 200 for quiz_score=0, got {response.status_code}"
 
         # Test quiz_score = 100
         response = client.post(
@@ -160,10 +162,13 @@ def test_progress_update_quiz_score_boundary_valid(auth_headers):
                 "user_id": "github_12345",
                 "day": 1,
                 "status": "completed",
-                "quiz_score": 100
-            }
+                "quiz_score": 100,
+            },
         )
-        assert response.status_code == 200, f"Expected 200 for quiz_score=100, got {response.status_code}"
+        assert (
+            response.status_code == 200
+        ), f"Expected 200 for quiz_score=100, got {response.status_code}"
+
 
 def test_progress_update_quiz_score_invalid(auth_headers):
     """Test that invalid quiz scores (-1 and 101) are rejected with 422."""
@@ -176,10 +181,12 @@ def test_progress_update_quiz_score_invalid(auth_headers):
             "user_id": "github_12345",
             "day": 1,
             "status": "completed",
-            "quiz_score": -1
-        }
+            "quiz_score": -1,
+        },
     )
-    assert response.status_code == 422, f"Expected 422 for quiz_score=-1, got {response.status_code}"
+    assert (
+        response.status_code == 422
+    ), f"Expected 422 for quiz_score=-1, got {response.status_code}"
     errors = response.json().get("detail", [])
     assert any(e["loc"] == ["body", "quiz_score"] for e in errors)
 
@@ -190,9 +197,11 @@ def test_progress_update_quiz_score_invalid(auth_headers):
             "user_id": "github_12345",
             "day": 1,
             "status": "completed",
-            "quiz_score": 101
-        }
+            "quiz_score": 101,
+        },
     )
-    assert response.status_code == 422, f"Expected 422 for quiz_score=101, got {response.status_code}"
+    assert (
+        response.status_code == 422
+    ), f"Expected 422 for quiz_score=101, got {response.status_code}"
     errors = response.json().get("detail", [])
     assert any(e["loc"] == ["body", "quiz_score"] for e in errors)

@@ -1,5 +1,5 @@
 import time
-from collections import deque, OrderedDict
+from collections import OrderedDict, deque
 from typing import Deque
 
 
@@ -18,7 +18,7 @@ class RateLimiter:
         self,
         requests_per_minute: int = 60,
         cleanup_interval_seconds: float = 60.0,
-        max_clients: int = 10000  # Prevent memory exhaustion (DoS)
+        max_clients: int = 10000,  # Prevent memory exhaustion (DoS)
     ):
         self.requests_per_minute = requests_per_minute
         # Dictionary mapping IP to a deque of timestamps.
@@ -35,7 +35,9 @@ class RateLimiter:
         now = time.time()
 
         # Run cleanup if EITHER the interval has passed OR we're at/over the limit
-        if (now - self._last_cleanup < self._cleanup_interval_seconds) and (len(self.requests) < self.max_clients):
+        if (now - self._last_cleanup < self._cleanup_interval_seconds) and (
+            len(self.requests) < self.max_clients
+        ):
             return
 
         self._last_cleanup = now
@@ -65,12 +67,12 @@ class RateLimiter:
 
         if client_ip in self.requests:
             user_requests = self.requests[client_ip]
-            self.requests.move_to_end(client_ip) # Mark as recently used
+            self.requests.move_to_end(client_ip)  # Mark as recently used
         else:
             user_requests = deque()
             self.requests[client_ip] = user_requests
             # Newly inserted items go to the end of OrderedDict
-            
+
             # After adding new IP, enforce max_clients limit immediately if needed.
             # This complements the cleanup logic: cleanup runs periodically or when at limit,
             # but this ensures we never exceed max_clients even between cleanup cycles.
