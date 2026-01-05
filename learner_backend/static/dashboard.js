@@ -446,10 +446,27 @@ function showToast(message, type = 'success') {
         document.body.appendChild(container);
     }
 
+    // Limit simultaneous toasts to prevent DOM accumulation
+    const existingToasts = container.querySelectorAll('.toast');
+    const MAX_TOASTS = 3;
+    if (existingToasts.length >= MAX_TOASTS) {
+        const oldestToast = existingToasts[0];
+        if (oldestToast.timeoutId) {
+            clearTimeout(oldestToast.timeoutId);
+        }
+        if (oldestToast.removeTimeoutId) {
+            clearTimeout(oldestToast.removeTimeoutId);
+        }
+        oldestToast.remove();
+    }
+
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
     // Use 'status' for success messages (polite), 'alert' for errors (assertive)
     toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+    // Explicitly set live region properties for better screen reader support
+    toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+    toast.setAttribute('aria-atomic', 'true');
 
     // Icon based on type
     const icon = type === 'success' ? '✅' : '⚠️';
@@ -474,9 +491,10 @@ function showToast(message, type = 'success') {
         toast.classList.add('visible');
     });
 
-    setTimeout(() => {
+    // Store timeout IDs for cleanup
+    toast.timeoutId = setTimeout(() => {
         toast.classList.remove('visible');
-        setTimeout(() => toast.remove(), 300);
+        toast.removeTimeoutId = setTimeout(() => toast.remove(), 300);
     }, 3000);
 }
 
