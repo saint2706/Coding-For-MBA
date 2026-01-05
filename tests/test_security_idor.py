@@ -29,6 +29,16 @@ def setup_database():
     db._conn = None
 
 
+@pytest.fixture(autouse=True)
+def reset_rate_limiter():
+    """Reset the rate limiter before each test."""
+    from learner_backend.main import rate_limiter
+
+    # Clear all tracked IPs
+    rate_limiter.requests.clear()
+    yield
+
+
 def test_record_progress_idor_prevention():
     """
     Test that a user cannot record progress for another user (IDOR).
