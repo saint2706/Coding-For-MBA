@@ -244,3 +244,28 @@ def test_certificate_request_international_names(auth_headers):
                 }
             )
             assert response.status_code == 200, f"Should accept name: {name}, got {response.status_code}"
+
+def test_certificate_request_edge_cases(auth_headers):
+    """Test that edge cases like underscores, digits, and mixed patterns are rejected."""
+    # Names that should be rejected by the new whitelist pattern
+    edge_case_names = [
+        "___",  # Only underscores
+        "User123",  # Name with digits
+        "Test_User",  # Mixed underscores and letters
+        "John_Doe_123",  # Mixed underscores, letters, and digits
+        "_John",  # Starting with underscore
+        "Jane_",  # Ending with underscore
+    ]
+
+    client.cookies.set("learner_user_id", auth_headers["learner_user_id"])
+
+    for name in edge_case_names:
+        response = client.post(
+            "/api/v1/certificates",
+            json={
+                "user_id": "github_12345",
+                "name": name,
+                "phase": 1
+            }
+        )
+        assert response.status_code == 422, f"Should reject name: {name}, got {response.status_code}"
