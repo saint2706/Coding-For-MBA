@@ -21,7 +21,7 @@ report narratives. In Python, we handle text using **strings**.
   essential for data cleaning and preparation.
 
 | Method | Description | Business Use Case | | :------------- |
-:\------------------------------------------------- | :------------------------------------ | |
+:------------------------------------------------- | :------------------------------------ | |
 `.lower()`/`.upper()` | Converts case. | Standardizing categories. | | `.strip()` | Removes
 whitespace from the beginning and end. | Cleaning user-entered data. | | `.replace()` | Replaces a
 substring with another. | Correcting or reformatting data. | | `.split()` | Splits the string into a

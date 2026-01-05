@@ -156,7 +156,7 @@ def summarize_case_study(data: pd.DataFrame, *, top_n: int = 5) -> Dict[str, Any
         "price_units_correlation": data[["Price", "Units Sold"]]
         .corr()
         .loc["Price", "Units Sold"],
-        "monthly_revenue": data.set_index("Date")["Revenue"].resample("M").sum(),
+        "monthly_revenue": data.set_index("Date")["Revenue"].resample("ME").sum(),
     }
 
     return summary
