@@ -123,3 +123,18 @@ def test_referrer_policy_limits_information_leakage():
     """Test that Referrer-Policy header limits information leakage."""
     response = client.get("/")
     assert response.headers["Referrer-Policy"] == "strict-origin-when-cross-origin"
+
+
+def test_permissions_policy_header_present():
+    """Test that Permissions-Policy header is set to disable powerful features."""
+    response = client.get("/")
+    assert "Permissions-Policy" in response.headers
+    policy = response.headers["Permissions-Policy"]
+    assert "accelerometer=()" in policy
+    assert "camera=()" in policy
+    assert "geolocation=()" in policy
+    assert "gyroscope=()" in policy
+    assert "magnetometer=()" in policy
+    assert "microphone=()" in policy
+    assert "payment=()" in policy
+    assert "usb=()" in policy

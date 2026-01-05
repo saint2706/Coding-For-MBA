@@ -144,6 +144,17 @@ async def add_security_headers(request: Request, call_next):
         "frame-ancestors 'none';"
     )
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    # Permissions-Policy to disable powerful features not used by the app
+    response.headers["Permissions-Policy"] = (
+        "accelerometer=(), "
+        "camera=(), "
+        "geolocation=(), "
+        "gyroscope=(), "
+        "magnetometer=(), "
+        "microphone=(), "
+        "payment=(), "
+        "usb=()"
+    )
     return response
 
 
