@@ -272,6 +272,9 @@ function renderNextMission(suggestion, structure) {
                     copyBtn.setAttribute('aria-label', 'Copied!');
                     copyBtn.setAttribute('data-tooltip', 'Copied!');
 
+                    // Palette: Add Toast Notification
+                    showToast('Command copied to clipboard!');
+
                     // Revert after 2 seconds
                     revertTimeoutId = setTimeout(() => {
                         copyBtn.textContent = '📋';
@@ -282,6 +285,7 @@ function renderNextMission(suggestion, structure) {
                 })
                 .catch((err) => {
                     console.error('Failed to copy command:', err);
+                    showToast('Failed to copy command', 'error');
                 });
         });
     }
@@ -430,6 +434,68 @@ function animateCounter(id, start, end, duration, suffix = '') {
         }
     };
     window.requestAnimationFrame(step);
+}
+
+// Palette: Toast Notification System
+function showToast(message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+    }
+
+    // Limit simultaneous toasts to prevent DOM accumulation
+    const existingToasts = container.querySelectorAll('.toast');
+    const MAX_TOASTS = 3;
+    if (existingToasts.length >= MAX_TOASTS) {
+        const oldestToast = existingToasts[0];
+        if (oldestToast.timeoutId) {
+            clearTimeout(oldestToast.timeoutId);
+        }
+        if (oldestToast.removeTimeoutId) {
+            clearTimeout(oldestToast.removeTimeoutId);
+        }
+        oldestToast.remove();
+    }
+
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    // Use 'status' for success messages (polite), 'alert' for errors (assertive)
+    toast.setAttribute('role', type === 'error' ? 'alert' : 'status');
+    // Explicitly set live region properties for better screen reader support
+    toast.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+    toast.setAttribute('aria-atomic', 'true');
+
+    // Icon based on type
+    const icon = type === 'success' ? '✅' : '⚠️';
+
+    // Create structure safely to prevent XSS
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'toast-icon';
+    iconSpan.setAttribute('aria-hidden', 'true');
+    iconSpan.textContent = icon;
+
+    const messageSpan = document.createElement('span');
+    messageSpan.className = 'toast-message';
+    messageSpan.textContent = message;
+
+    toast.appendChild(iconSpan);
+    toast.appendChild(messageSpan);
+
+    container.appendChild(toast);
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+        toast.classList.add('visible');
+    });
+
+    // Store timeout IDs for cleanup
+    toast.timeoutId = setTimeout(() => {
+        toast.classList.remove('visible');
+        toast.removeTimeoutId = setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 // Check authentication status and update UI
