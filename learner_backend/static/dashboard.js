@@ -335,12 +335,14 @@ function timeAgo(dateString) {
 function updateActivity(lessons, structure) {
     const container = document.getElementById('activity-container');
 
+    // Clear container safely
+    container.textContent = '';
+
     if (!lessons || lessons.length === 0) {
-        container.innerHTML = `
-            <li class="empty-activity-message">
-                No activity yet. Start learning to see your progress here!
-            </li>
-        `;
+        const emptyItem = document.createElement('li');
+        emptyItem.className = 'empty-activity-message';
+        emptyItem.textContent = 'No activity yet. Start learning to see your progress here!';
+        container.appendChild(emptyItem);
         return;
     }
 
@@ -359,8 +361,9 @@ function updateActivity(lessons, structure) {
     });
 
     const recent = sortedLessons.slice(0, 10);
+    const fragment = document.createDocumentFragment();
 
-    container.innerHTML = recent.map(lesson => {
+    recent.forEach(lesson => {
         let topic = '';
         if (structure && structure[lesson.day]) {
             const folder = structure[lesson.day];
@@ -377,20 +380,49 @@ function updateActivity(lessons, structure) {
         const relativeTime = timeAgo(lesson.updated_at);
         const exactTime = lesson.updated_at ? new Date(lesson.updated_at).toLocaleString() : '';
 
-        return `
-        <li class="activity-item">
-            <div class="activity-day">
-                <div>
-                    Day ${lesson.day}
-                    ${topic ? `<span class="activity-topic">${topic}</span>` : ''}
-                </div>
-                ${relativeTime ? `<div class="activity-time" title="${exactTime}">${relativeTime}</div>` : ''}
-            </div>
-            <div class="activity-status status-${statusClass}">
-                <span aria-hidden="true">${icon}</span> ${displayStatus}
-            </div>
-        </li>
-    `}).join('');
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+
+        // Day Section
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'activity-day';
+
+        const dayInfoDiv = document.createElement('div');
+        dayInfoDiv.appendChild(document.createTextNode(`Day ${lesson.day} `));
+
+        if (topic) {
+            const topicSpan = document.createElement('span');
+            topicSpan.className = 'activity-topic';
+            topicSpan.textContent = topic; // Safe!
+            dayInfoDiv.appendChild(topicSpan);
+        }
+        dayDiv.appendChild(dayInfoDiv);
+
+        if (relativeTime) {
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'activity-time';
+            timeDiv.title = exactTime;
+            timeDiv.textContent = relativeTime;
+            dayDiv.appendChild(timeDiv);
+        }
+        li.appendChild(dayDiv);
+
+        // Status Section
+        const statusDiv = document.createElement('div');
+        statusDiv.className = `activity-status status-${statusClass}`;
+
+        const iconSpan = document.createElement('span');
+        iconSpan.setAttribute('aria-hidden', 'true');
+        iconSpan.textContent = icon;
+        statusDiv.appendChild(iconSpan);
+
+        statusDiv.appendChild(document.createTextNode(` ${displayStatus}`));
+        li.appendChild(statusDiv);
+
+        fragment.appendChild(li);
+    });
+
+    container.appendChild(fragment);
 }
 
 // Palette: Animate numbers for better UX
@@ -521,18 +553,19 @@ async function checkAuth(userId) {
 
         if (rootData.endpoints && rootData.endpoints.auth && !isGitHubUser) {
             // Show Login Button
-            authContainer.innerHTML = `
-                <a href="${rootData.endpoints.auth}" class="btn github-login-btn">
-                    Login with GitHub
-                </a>
-            `;
+            authContainer.textContent = '';
+            const link = document.createElement('a');
+            link.href = rootData.endpoints.auth;
+            link.className = 'btn github-login-btn';
+            link.textContent = 'Login with GitHub';
+            authContainer.appendChild(link);
         } else if (isGitHubUser) {
             // Show User Info
-            authContainer.innerHTML = `
-                <div class="user-logged-in-badge">
-                    ✓ Logged in via GitHub
-                </div>
-            `;
+            authContainer.textContent = '';
+            const badge = document.createElement('div');
+            badge.className = 'user-logged-in-badge';
+            badge.textContent = '✓ Logged in via GitHub';
+            authContainer.appendChild(badge);
         }
     } catch (error) {
         console.error('Error checking auth:', error);
