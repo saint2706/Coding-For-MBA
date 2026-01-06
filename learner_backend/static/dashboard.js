@@ -223,16 +223,22 @@ function renderNextMission(suggestion, structure) {
     // Palette: Determine correct command based on file type
     let cmd;
 
+    // Determine appropriate file-viewing command based on OS
+    const isWindows = typeof navigator !== "undefined"
+        && navigator.userAgent
+        && navigator.userAgent.toLowerCase().includes("windows");
+    const fileViewerCmd = isWindows ? "type" : "cat";
+
     // Day ranges based on file structure
     if (day >= 91 && day <= 108) {
         // SQL Days (91-108)
         // Day 91 only has exercises.sql
-        const filename = (day === 91) ? 'exercises.sql' : 'solutions.sql';
-        // Use 'cat' to display content as these are not directly executable like Python
-        cmd = `cat ${folder}/${filename}`;
+        const filename = (day === 91) ? "exercises.sql" : "solutions.sql";
+        // Use a platform-appropriate command to display content as these are not directly executable like Python
+        cmd = `${fileViewerCmd} ${folder}/${filename}`;
     } else if (day >= 85 && day <= 90) {
         // BI / Capstone days (85-90) - mostly READMEs
-        cmd = `cat ${folder}/README.md`;
+        cmd = `${fileViewerCmd} ${folder}/README.md`;
     } else {
         // Python Days (1-84) - default to running solutions
         cmd = `python ${folder}/solutions.py`;
