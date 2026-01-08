@@ -537,6 +537,14 @@ function showToast(message, type = 'success') {
     toast.appendChild(iconSpan);
     toast.appendChild(messageSpan);
 
+    // Add close button for accessibility (dismiss control)
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close-btn';
+    closeBtn.setAttribute('aria-label', 'Close notification');
+    closeBtn.innerHTML = '&times;'; // × character
+
+    toast.appendChild(closeBtn);
+
     container.appendChild(toast);
 
     // Trigger animation
@@ -544,11 +552,38 @@ function showToast(message, type = 'success') {
         toast.classList.add('visible');
     });
 
-    // Store timeout IDs for cleanup
-    toast.timeoutId = setTimeout(() => {
+    // Removal logic
+    const removeToast = () => {
         toast.classList.remove('visible');
         toast.removeTimeoutId = setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    };
+
+    // Store timeout IDs for cleanup
+    const startTimer = () => {
+        toast.timeoutId = setTimeout(removeToast, 3000);
+    };
+
+    startTimer();
+
+    // Interactions
+    // 1. Click on close button to dismiss
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent triggering toast click
+        clearTimeout(toast.timeoutId);
+        removeToast();
+    });
+
+    // 2. Click on toast to dismiss
+    toast.addEventListener('click', () => {
+        clearTimeout(toast.timeoutId);
+        removeToast();
+    });
+
+    // 3. Hover/Focus to pause timer
+    toast.addEventListener('mouseenter', () => clearTimeout(toast.timeoutId));
+    toast.addEventListener('mouseleave', startTimer);
+    toast.addEventListener('focusin', () => clearTimeout(toast.timeoutId));
+    toast.addEventListener('focusout', startTimer);
 }
 
 // Check authentication status and update UI

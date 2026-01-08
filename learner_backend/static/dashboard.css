@@ -498,6 +498,30 @@ html {
     font-size: 1.2rem;
 }
 
+.toast-close-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-left: auto;
+    padding: 0 0.5rem;
+    transition: opacity 0.2s;
+}
+
+.toast-close-btn:hover,
+.toast-close-btn:focus {
+    opacity: 1;
+    outline: none;
+}
+
+.toast-close-btn:focus-visible {
+    opacity: 1;
+    outline: 2px solid white;
+    border-radius: 4px;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .toast {
         transition: opacity 0.3s ease;
