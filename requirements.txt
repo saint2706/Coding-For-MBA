@@ -7,7 +7,7 @@ nbformat==5.10.4
 notebook==7.5.1
 numpy==2.4.0
 pandas==2.3.3
-plotly==6.5.0
+plotly==6.5.1
 psycopg2-binary==2.9.11
 requests==2.32.5
 scikit-learn==1.8.0
@@ -20,7 +20,7 @@ responses==0.25.8
 ipykernel==7.1.0
 lexical-diversity
 mysql-connector-python==9.5.0
-pymongo==4.15.5
+pymongo==4.16.0
 pytest-cov==7.0.0
 fastapi>=0.104.0
 uvicorn[standard]>=0.24.0
