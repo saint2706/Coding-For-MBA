@@ -22,3 +22,8 @@
 
 **Learning:** Showing "Day X" without temporal context makes an activity stream feel static and disconnected from user behavior. Relative time ("2 hours ago") adds immediate value and "liveness".
 **Action:** When displaying activity logs or history, always prefer relative time for recent events, backed by a tooltip with the exact absolute timestamp for precision and accessibility.
+
+## 2025-02-14 - Iconography Consistency
+
+**Learning:** If completed states have an icon (✅), locked or pending states should also have an equivalent icon (🔒) to reduce cognitive load and not rely solely on color.
+**Action:** Ensure status indicators use consistent iconography patterns across all possible states, not just the "success" state.

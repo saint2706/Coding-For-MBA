@@ -161,11 +161,14 @@ function updateBadges(badges) {
         badgeEl.setAttribute('aria-label', `${title}: ${status}`);
         badgeEl.setAttribute('data-tooltip', `${title}: ${status}`);
 
-        if (earnedPhases.has(phase)) {
-            const br = document.createElement('br');
-            badgeEl.appendChild(br);
-            badgeEl.appendChild(document.createTextNode('✅'));
-        }
+        const br = document.createElement('br');
+        badgeEl.appendChild(br);
+
+        // Palette: Add status icon (Checkmark for completed, Lock for locked)
+        const iconSpan = document.createElement('span');
+        iconSpan.setAttribute('aria-hidden', 'true'); // Decorative only
+        iconSpan.textContent = earnedPhases.has(phase) ? '✅' : '🔒';
+        badgeEl.appendChild(iconSpan);
 
         container.appendChild(badgeEl);
     }
