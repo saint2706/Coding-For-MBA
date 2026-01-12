@@ -17,7 +17,7 @@ sympy==1.14.0
 tensorflow==2.20.0
 statsmodels==0.14.6
 responses==0.25.8
-ipykernel==7.1.0
+ipykernel>=6.29,<7.0
 lexical-diversity
 mysql-connector-python==9.5.0
 pymongo==4.16.0

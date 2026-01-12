@@ -28,6 +28,7 @@ sqlalchemy>=2.0.0
 weasyprint>=60.0
 markdown2>=2.4.10
 reportlab>=4.0.0
+tinycss2>=1.5.1
 
 # CI and quality tools
 codespell>=2.2.0
