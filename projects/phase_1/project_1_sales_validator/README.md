@@ -30,7 +30,7 @@ Sample data includes:
 
 ## Requirements
 
-### Must Validate:
+### Must Validate
 
 1. **Date format**: Must be valid YYYY-MM-DD
 1. **Product codes**: Must match pattern (e.g., PRD-XXXX where X is digit)
@@ -39,7 +39,7 @@ Sample data includes:
 1. **Customer IDs**: Must be 6-digit numbers
 1. **Regions**: Must be one of: North, South, East, West
 
-### Output:
+### Output
 
 - Summary of validation results
 - List of errors with row numbers and descriptions
