@@ -2,7 +2,7 @@
 title: 'Phase 3: Machine Learning Foundations'
 ---
 
-# Phase 3: Machine Learning Foundations
+## Phase 3: Machine Learning Foundations
 
 **Days 40–54** | **15 Lessons**
 

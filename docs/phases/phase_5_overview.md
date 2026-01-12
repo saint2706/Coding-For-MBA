@@ -2,7 +2,7 @@
 title: 'Phase 5: Business Intelligence'
 ---
 
-# Phase 5: Business Intelligence
+## Phase 5: Business Intelligence
 
 **Days 68–84** | **17 Lessons**
 

@@ -2,7 +2,7 @@
 title: 'Phase 6: BI Advanced & Capstone'
 ---
 
-# Phase 6: BI Advanced & Capstone
+## Phase 6: BI Advanced & Capstone
 
 **Days 85–90** | **6 Lessons**
 

@@ -2,7 +2,7 @@
 title: 'Phase 7: SQL & Database Mastery'
 ---
 
-# Phase 7: SQL & Database Mastery
+## Phase 7: SQL & Database Mastery
 
 **Days 91–108** | **18 Lessons**
 

@@ -2,7 +2,7 @@
 title: 'Phase 4: Advanced ML & MLOps'
 ---
 
-# Phase 4: Advanced ML & MLOps
+## Phase 4: Advanced ML & MLOps
 
 **Days 55–67** | **13 Lessons**
 
