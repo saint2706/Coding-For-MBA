@@ -49,7 +49,14 @@ async function loadProgress() {
         checkAuth(userId);
 
         document.getElementById('loading').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
+
+        const dashboard = document.getElementById('dashboard');
+        dashboard.classList.remove('hidden');
+        dashboard.classList.add('animate-enter');
+
+        // Palette: Set focus to main container for accessibility
+        dashboard.setAttribute('tabindex', '-1');
+        dashboard.focus({ preventScroll: true });
 
     } catch (error) {
         console.error('Error loading progress:', error);
@@ -99,7 +106,19 @@ async function loadProgress() {
         });
 
         document.getElementById('loading').style.display = 'none';
-        dashboard.style.display = 'block';
+
+        // Ensure dashboard is defined in this scope if it wasn't already
+        // (Note: In the block above, we used 'const dashboard', which is block-scoped.
+        // Here we need to get it again or rely on var hoisting if it was var, but let's be safe)
+        const dashboardEl = document.getElementById('dashboard');
+        if (dashboardEl) {
+            dashboardEl.classList.remove('hidden');
+            dashboardEl.classList.add('animate-enter');
+
+            // Palette: Set focus to main container for accessibility (consistent with success path)
+            dashboardEl.setAttribute('tabindex', '-1');
+            dashboardEl.focus({ preventScroll: true });
+        }
     }
 }
 
