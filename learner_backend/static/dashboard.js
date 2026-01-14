@@ -49,7 +49,10 @@ async function loadProgress() {
         checkAuth(userId);
 
         document.getElementById('loading').style.display = 'none';
-        document.getElementById('dashboard').style.display = 'block';
+        const dashboard = document.getElementById('dashboard');
+        dashboard.style.display = 'block';
+        // Palette: Move focus to dashboard for accessibility
+        dashboard.focus();
 
     } catch (error) {
         console.error('Error loading progress:', error);

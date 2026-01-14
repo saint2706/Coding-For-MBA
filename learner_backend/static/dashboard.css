@@ -317,6 +317,10 @@ h1 {
     outline-offset: 2px;
 }
 
+#dashboard:focus {
+    outline: none;
+}
+
 .next-mission-card {
     background: white;
     border-radius: 12px;
