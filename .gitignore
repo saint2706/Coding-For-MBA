@@ -148,3 +148,4 @@ learner_backend/learner.db
 learner_backend/__pycache__/
 reports/
 locales/*.pot
+learner.db

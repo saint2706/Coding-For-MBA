@@ -423,11 +423,20 @@ function updateActivity(lessons, structure) {
         dayDiv.appendChild(dayInfoDiv);
 
         if (relativeTime) {
-            const timeDiv = document.createElement('div');
-            timeDiv.className = 'activity-time';
-            timeDiv.title = exactTime;
-            timeDiv.textContent = relativeTime;
-            dayDiv.appendChild(timeDiv);
+            // Palette: Use semantic <time> element for better accessibility
+            const timeEl = document.createElement('time');
+            timeEl.className = 'activity-time';
+            timeEl.setAttribute('datetime', lesson.updated_at); // ISO string
+
+            // Accessible tooltip pattern (keyboard focusable)
+            timeEl.setAttribute('tabindex', '0');
+            timeEl.setAttribute('data-tooltip', exactTime);
+
+            // Screen reader text (overrides visible text)
+            timeEl.setAttribute('aria-label', `${relativeTime} (${exactTime})`);
+
+            timeEl.textContent = relativeTime;
+            dayDiv.appendChild(timeEl);
         }
         li.appendChild(dayDiv);
 
