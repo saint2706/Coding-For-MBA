@@ -270,6 +270,10 @@ h1 {
     margin-left: 0;
     font-size: 0.85em;
     margin-top: 0.25rem;
+    /* Palette: UX improvements for accessible tooltip */
+    display: inline-block;
+    position: relative;
+    cursor: help;
 }
 
 .activity-status {
