@@ -284,6 +284,8 @@ function renderNextMission(suggestion, structure) {
     // Create command box
     const commandBox = document.createElement('div');
     commandBox.className = 'command-box';
+    // Palette: Interactive command box
+    commandBox.setAttribute('title', 'Click to copy command');
 
     // Create code element
     const codeEl = document.createElement('code');
@@ -300,9 +302,9 @@ function renderNextMission(suggestion, structure) {
     // Store timeout ID to handle rapid clicks
     let revertTimeoutId = null;
 
-    // Add event listener instead of inline onclick
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        copyBtn.addEventListener('click', () => {
+    // Define copy action
+    const handleCopy = () => {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(cmd)
                 .then(() => {
                     // Clear any pending revert
@@ -330,8 +332,24 @@ function renderNextMission(suggestion, structure) {
                     console.error('Failed to copy command:', err);
                     showToast('Failed to copy command', 'error');
                 });
-        });
-    }
+        }
+    };
+
+    // Add event listener to button
+    copyBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent command box click
+        handleCopy();
+    });
+
+    // Add event listener to command box (click-to-copy)
+    commandBox.addEventListener('click', () => {
+        // Allow text selection without triggering copy
+        const selection = window.getSelection();
+        if (selection.toString().length > 0) {
+            return;
+        }
+        handleCopy();
+    });
 
     commandBox.appendChild(copyBtn);
     card.appendChild(commandBox);

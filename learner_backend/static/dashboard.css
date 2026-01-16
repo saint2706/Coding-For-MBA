@@ -340,6 +340,17 @@ h1 {
     justify-content: space-between;
     align-items: center;
     font-family: monospace;
+    /* Palette: Interactive command box styling */
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.command-box:hover {
+    background: #3e4c63;
+}
+
+.command-box:active {
+    transform: scale(0.995);
 }
 
 .copy-btn {
