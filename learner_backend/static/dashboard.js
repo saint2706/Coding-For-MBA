@@ -654,8 +654,33 @@ async function checkAuth(userId) {
             badge.textContent = '✓ Logged in via GitHub';
             authContainer.appendChild(badge);
         }
+
+        // Palette: Update greeting
+        updateGreeting(userId);
     } catch (error) {
         console.error('Error checking auth:', error);
+    }
+}
+
+// Palette: Personalized Greeting
+function updateGreeting(userId) {
+    const hours = new Date().getHours();
+    let greeting = 'Good morning';
+    if (hours >= 12 && hours < 17) greeting = 'Good afternoon';
+    else if (hours >= 17) greeting = 'Good evening';
+
+    let name = '';
+    if (userId && userId.startsWith('github_')) {
+        name = userId.replace('github_', '');
+    }
+
+    const subtitle = document.querySelector('.header .subtitle');
+    if (subtitle) {
+        // Create a safe text content
+        const greetingText = name
+            ? `${greeting}, ${name}! Track your progress through the Coding for MBA curriculum`
+            : `${greeting}! Track your progress through the Coding for MBA curriculum`;
+        subtitle.textContent = greetingText;
     }
 }
 
