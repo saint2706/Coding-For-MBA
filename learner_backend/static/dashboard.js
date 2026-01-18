@@ -651,7 +651,18 @@ async function checkAuth(userId) {
             authContainer.textContent = '';
             const badge = document.createElement('div');
             badge.className = 'user-logged-in-badge';
-            badge.textContent = '✓ Logged in via GitHub';
+
+            // Palette: Personalized Time-based Greeting
+            const hour = new Date().getHours();
+            let greeting = 'Hello';
+            if (hour < 12) greeting = 'Good morning';
+            else if (hour < 18) greeting = 'Good afternoon';
+            else greeting = 'Good evening';
+
+            badge.textContent = `👋 ${greeting}! • Connected`;
+            badge.setAttribute('aria-label', `${greeting}! You are logged in via GitHub.`);
+            badge.setAttribute('title', 'Logged in via GitHub');
+
             authContainer.appendChild(badge);
         }
     } catch (error) {
