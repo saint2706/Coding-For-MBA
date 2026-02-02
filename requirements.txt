@@ -4,8 +4,8 @@ joblib==1.5.3
 matplotlib==3.10.8
 nbclient==0.10.4
 nbformat==5.10.4
-notebook==7.5.2
-numpy==2.4.1
+notebook==7.5.3
+numpy==2.4.2
 pandas==2.3.3
 plotly==6.5.2
 psycopg2-binary==2.9.11
@@ -19,7 +19,7 @@ statsmodels==0.14.6
 responses==0.25.8
 ipykernel>=6.29,<8.0
 lexical-diversity
-mysql-connector-python==9.5.0
+mysql-connector-python==9.6.0
 pymongo==4.16.0
 pytest-cov==7.0.0
 fastapi>=0.104.0
