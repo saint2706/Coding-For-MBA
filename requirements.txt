@@ -19,7 +19,7 @@ statsmodels==0.14.6
 responses==0.25.8
 ipykernel>=6.29,<8.0
 lexical-diversity
-mysql-connector-python==9.6.0
+mysql-connector-python==9.5.0
 pymongo==4.16.0
 pytest-cov==7.0.0
 fastapi>=0.104.0
