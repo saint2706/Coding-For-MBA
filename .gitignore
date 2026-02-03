@@ -149,3 +149,6 @@ learner_backend/__pycache__/
 reports/
 locales/*.pot
 learner.db
+
+# Testing tools
+actionlint
