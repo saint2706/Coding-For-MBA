@@ -1,84 +1,75 @@
 ---
-title: "Day 3: Operators - The Tools for Business Calculation and Logic"
+title: "Day 3: Financial Calculations (Operators)"
 tags:
-  - BI
   - Basics
   - Python
+  - Math
 ---
 
-# 📘 Day 3: Operators - The Tools for Business Calculation and Logic
+# 📘 Day 3: Financial Calculations (Operators)
 
-An **operator** is a symbol that tells the computer to perform a specific mathematical or logical
-manipulation. For a business analyst, operators are the tools you'll use to calculate financial
-metrics, compare results, and create business rules.
+## Managerial Relevance
 
-## Key Operator Types
+Business is math. Profit margins, year-over-year growth, compound interest—these are all arithmetic operations.
 
-- **Arithmetic Operators (`+`, `-`, `*`, `/`, `**`):\*\* The foundation of any quantitative analysis,
-  used for calculations like profit margin and compound interest.
-- **Assignment Operators (`=`, `+=`, `-=`):** Used to assign and update values in variables, such as
-  accumulating total sales.
-- **Comparison Operators (`==`, `!=`, `>`, `<`):** Used to compare two values, resulting in `True`
-  or `False`. This is the basis for filtering data and making decisions.
-- **Logical Operators (`and`, `or`, `not`):** Used to combine conditional statements to create
-  complex business rules, like determining bonus eligibility.
+Python's operators are more powerful than a standard calculator because they handle precedence (PEMDAS) unambiguously and can be part of automated pipelines. You're building the logic engine for your financial models today.
 
-## Environment Setup
+## Key Concepts
 
-Before you begin, ensure you have followed the setup instructions in the main
-[README.md](../../README.md) to set up your virtual environment and install the required libraries.
+- **Arithmetic Operators:** `+` (Add), `-` (Subtract), `*` (Multiply), `/` (Divide).
+- **Power Operator (`**`):** Exponents. `x \*\* 2` is $x^2$. Critical for compound interest formulas.
+- **Modulus (`%`):** Returns the remainder. (e.g., `10 % 3` is `1`).
+  - _Business Use Case:_ Batch sizing. If you have 100 items and boxes fit 12, `100 % 12` tells you how many loose items are left over.
+- **Floor Division (`//`):** Divides and rounds down to the nearest whole number.
+  - _Business Use Case:_ determining how many _full_ teams you can form from a pool of people.
 
-## Exploring the Refactored Code
+## Code Walkthrough
 
-The script for this lesson, `operators.py`, has been refactored into functions to make the logic
-clear, reusable, and testable.
+Open `operators.py`. We perform a few standard financial ops.
 
-1. **Review the Code:** Open `Day_03_Operators/operators.py`. Each business calculation or rule
-   (e.g., `calculate_compound_interest()`, `check_bonus_eligibility()`) is now its own function.
-1. **Run the Script:** From the root directory of the project (`Coding-For-MBA`), run the script to
-   see the functions in action:
-   ```bash
-   python Day_03_Operators/operators.py
-   ```
-1. **Run the Tests:** You can run the tests for this lesson to verify the correctness of each
-   function:
-   ```bash
-   pytest tests/test_day_03.py
-   ```
+1.  **`calculate_profit_margin()`**:
+    - `(Revenue - Cost) / Revenue`.
+    - Parentheses are vital here! Without them, Python would divide Cost/Revenue first.
 
-## 💻 Exercises: Day 3
+2.  **`compound_interest()`**:
+    - Formula: $A = P(1 + r)^t$
+    - In Python: `Principal * (1 + rate) ** time`
+    - This one line replaces complex Excel logic.
 
-1. **Calculate Net Profit Margin:**
-   - In a new script (`my_solutions_03.py`), create a function
-     `calculate_net_profit_margin(revenue, expenses)`.
-   - The function should return the net profit margin (`(revenue - expenses) / revenue`).
-   - Call the function with a `revenue` of 1,200,000 and `total_expenses` of 850,000.
-   - Print the result formatted as a percentage with two decimal places.
+3.  **`logistics_planning()`**:
+    - Uses `//` to find full shipments.
+    - Uses `%` to find leftover stock.
 
-1. **Inventory Check Function:**
-   - Create a function
-     `check_reorder_status(inventory_count, low_stock_threshold, reorder_threshold)`.
-   - The function should return a dictionary with two keys: `is_low_stock` (boolean) and
-     `needs_reorder` (boolean).
-   - Call the function with an `inventory_count` of 45, a `low_stock_threshold` of 50, and a
-     `reorder_threshold` of 25. Print the results.
+### Running the Code
 
-1. **Sales Bonus Eligibility Function:**
-   - The logic for bonus eligibility is already in the `check_bonus_eligibility` function in
-     `operators.py`.
-   - In your own script, import this function:
-     `from Day_03_Operators.operators import check_bonus_eligibility`.
-   - Call the function with a few different scenarios for `sales`, `years_of_service`, and
-     `top_performer_last_quarter` to see the results.
+```bash
+python Day_03_Operators/operators.py
+```
 
-🎉 **Excellent work!** You're now equipped with the operators needed to perform the vast majority of
-business calculations and logical checks you'll encounter.
+## 💻 Practice Exercises
+
+Open `solutions.py`.
+
+1.  **VAT Calculation**:
+    - Price = 100.
+    - Tax Rate = 0.20 (20%).
+    - Calculate `total_price`.
+
+2.  **Even Split**:
+    - You have a `$5000` bonus pool and `7` employees.
+    - How much does each get (whole dollars)? Use `//`.
+    - How much is left in the pool? Use `%`.
+
+3.  **Growth Projection**:
+    - Current Users: 1000.
+    - Monthly Growth: 10% (1.10 multiplier).
+    - Users in 6 months? `1000 * (1.10 ** 6)`.
 
 <!-- LESSON_FOOTER_START -->
 
 ---
 
-**Previous:** [Day 02 – Day 2: Storing and Analyzing Business Data](../Day_02_Variables_Builtin_Functions/README.md) • **Next:** [Day 04 – Day 4: Working with Text Data - Strings](../Day_04_Strings/README.md)
+**Previous:** [Day 02 – Variables](../Day_02_Variables_Builtin_Functions/README.md) • **Next:** [Day 04 – Strings](../Day_04_Strings/README.md)
 
 _You are on lesson 3 of 108._
 

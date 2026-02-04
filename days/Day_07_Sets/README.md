@@ -1,94 +1,74 @@
 ---
-title: "Day 7: Sets - Managing Unique Business Data"
+title: "Day 7: Customer Segmentation (Sets)"
 tags:
-  - BI
   - Basics
-  - Data
   - Python
+  - Data Structures
 ---
 
-# 📘 Day 7: Sets - Managing Unique Business Data
+# 📘 Day 7: Customer Segmentation (Sets)
 
-We've seen lists for ordered data and tuples for immutable data. Now we'll learn about **sets**,
-which are powerful for two main business reasons: ensuring uniqueness and performing membership
-analysis.
+## Managerial Relevance
 
-## What is a Set?
+Marketing and Strategy often ask questions like:
 
-A set is an **unordered** collection of **unique** items.
+- "How many _unique_ visitors came to our site?" (De-duplication)
+- "Which customers bought Product A _and_ Product B?" (Intersection)
+- "Who started the signup process but _didn't_ finish?" (Difference)
 
-- **Unordered:** Items have no defined order.
-- **Unique:** A set cannot contain duplicate items.
+**Sets** are the mathematical engine for this. They are faster than lists for checking "is this item present?" and strictly enforce uniqueness.
 
-This de-duplication feature is one of the most common uses for sets in data analysis.
+## Key Concepts
 
-## Set Operations: The Foundation of Segmentation
+- **Uniqueness**: `{"A", "B", "A"}` automatically becomes `{"A", "B"}`.
+- **Intersection (`&`)**: Find overlapping items (Common ground).
+- **Difference (`-`)**: Find items in one group but not the other (Gap analysis).
+- **Union (`|`)**: Combine groups (Total reach).
 
-The true power of sets comes from their mathematical operations, which are invaluable for customer
-segmentation and cohort analysis.
+## Code Walkthrough
 
-| Operation | Python Operator | Business Question Answered | | :------------- | :-------------- |
-:------------------------------------------------------- | | **Union** | `A | B` | What is the total
-unique audience for two groups? | | **Intersection** | `A & B` | Which customers are in _both_ Group
-A _and_ Group B? | | **Difference** | `A - B` | Which customers are in Group A _but not_ in Group B?
-|
+Open `sets.py`. We analyze website traffic and product features.
 
-## Environment Setup
+1.  **`get_unique_items()`**:
+    - Takes a raw list (e.g., repeating city names from orders).
+    - Converts it to a set to instantly count _distinct_ markets.
 
-Before you begin, ensure you have followed the setup instructions in the main
-[README.md](../../README.md) to set up your virtual environment and install the required libraries.
+2.  **`analyze_visitor_segments()`**:
+    - Takes two sets of users (Pricing Page visitors vs. Contact Page visitors).
+    - **Intersection**: Users who visited _both_ are high-intent leads.
+    - **Difference**: Users who saw Pricing but _didn't_ Contact are "drop-offs" (retargeting candidates).
 
-## Exploring the Refactored Code
+3.  **`upgrade_plan_features()`**:
+    - Uses `.update()` to add new perks to a subscription plan.
+    - Sets ensure we don't accidentally list "Priority Support" twice.
 
-The script for this lesson, `sets.py`, has been refactored into functions to make the logic for
-de-duplication and segmentation reusable and testable.
+### Running the Code
 
-1. **Review the Code:** Open `Day_07_Sets/sets.py`. Notice the functions `get_unique_items()`,
-   `analyze_visitor_segments()`, and `upgrade_plan_features()`.
-1. **Run the Script:** From the root directory of the project (`Coding-For-MBA`), run the script to
-   see the functions in action:
-   ```bash
-   python Day_07_Sets/sets.py
-   ```
-1. **Run the Tests:** You can run the tests for this lesson to verify the correctness of each
-   function:
-   ```bash
-   pytest tests/test_day_07.py
-   ```
+```bash
+python Day_07_Sets/sets.py
+```
 
-## 💻 Exercises: Day 7
+## 💻 Practice Exercises
 
-1. **Find Unique Customer Cities:**
-   - In a new script (`my_solutions_07.py`), you have a list of cities:
-     `order_cities = ["New York", "Los Angeles", "Chicago", "New York", "Boston", "Los Angeles"]`.
-   - Import the `get_unique_items` function from the lesson script.
-   - Call the function with your list to get a set of unique cities and print the result.
+Open `solutions.py`.
 
-1. **Analyze Website Visitor Activity:**
-   - You have two sets of user IDs:
-     - `pricing_visitors = {"user1", "user3", "user5", "user7"}`
-     - `contact_visitors = {"user2", "user3", "user4", "user5"}`
-   - Import the `analyze_visitor_segments` function.
-   - Call the function with these two sets.
-   - Print the `intersection` and `difference_a_b` from the returned dictionary to find highly
-     engaged users and users who only viewed pricing.
+1.  **De-duplication**:
+    - List: `emails = ["ceo@test.com", "admin@test.com", "ceo@test.com"]`.
+    - Create a set from this list to remove the duplicate. Print the count.
 
-1. **Manage Product Features:**
-   - Your "Standard Plan" has a set of features:
-     `standard_features = {"reporting", "data_export", "basic_support"}`.
-   - You want to add `["api_access", "priority_support"]` for the "Pro Plan".
-   - Import and use the `upgrade_plan_features` function to create the new feature set for the Pro
-     Plan.
-   - Print the resulting Pro Plan feature set.
+2.  **Churn Analysis**:
+    - `active_users_jan = {"User1", "User2", "User3"}`
+    - `active_users_feb = {"User2", "User4"}`
+    - Find the "churned" users: those in Jan but NOT in Feb. (Hint: Jan - Feb).
 
-🎉 **Well done!** Sets are a specialized but incredibly efficient tool. When you need to de-duplicate
-a list or analyze the overlap between two groups, sets are the best tool for the job.
+3.  **Total Reach**:
+    - Find the Union of Jan and Feb users to see everyone who interacted with the platform this quarter.
 
 <!-- LESSON_FOOTER_START -->
 
 ---
 
-**Previous:** [Day 06 – Day 6: Tuples - Storing Immutable Business Data](../Day_06_Tuples/README.md) • **Next:** [Day 08 – Day 8: Dictionaries - Structuring Complex Business Data](../Day_08_Dictionaries/README.md)
+**Previous:** [Day 06 – Tuples](../Day_06_Tuples/README.md) • **Next:** [Day 08 – Dictionaries](../Day_08_Dictionaries/README.md)
 
 _You are on lesson 7 of 108._
 

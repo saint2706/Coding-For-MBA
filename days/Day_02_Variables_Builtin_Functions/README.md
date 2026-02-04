@@ -1,91 +1,74 @@
 ---
-title: "Day 2: Storing and Analyzing Business Data"
+title: "Day 2: Storing and Analyzing Business Data (Variables)"
 tags:
-  - BI
   - Basics
-  - Data
   - Python
+  - Data Types
 ---
 
 # 📘 Day 2: Storing and Analyzing Business Data
 
-In Day 1, we performed basic calculations. Now, we'll learn how to store data in **variables** and
-use Python's **built-in functions** to analyze it.
+## Managerial Relevance
 
-## What is a Variable?
+In Excel, you put data in cells (A1, B2). In Python, you put data in **variables**.
 
-A variable is a labeled container for information. Instead of using a raw number like `500000`, we
-can store it in a variable called `revenue`, making our code more readable and manageable.
+Naming these variables nicely (`quarterly_revenue` vs `x`) is what makes Python code readable by humans. If you inherit a spreadsheet with a formula like `=SUM(A1:A50)*Sheet2!C3`, you're lost. If you read `profit = revenue - cost`, you understand the business logic immediately.
 
-**`revenue = 500000`**
+## Key Concepts
 
-### Naming Conventions
+- **Variables:** Containers for storing data values.
+  - `revenue = 100000`
+- **Data Types:**
+  - `int` (Integers): Whole numbers (Units sold: `50`)
+  - `float` (Integers): Decimals (Price: `19.99`)
+  - `str` (String): Text (Product Name: `"Widget A"`)
+  - `bool` (Boolean): True/False (Is In Stock: `True`)
+- **f-strings**: A professional way to inject variables into text.
+  - `print(f"Revenue is ${revenue}")`
 
-- **Be Descriptive:** `quarterly_sales` is better than `qs`.
-- **Use Snake Case:** Separate words with underscores, like `cost_of_goods_sold`.
+## Code Walkthrough
 
-## Built-in Functions: Your Basic Toolkit
+Open `variables.py`. We model a simple inventory scenario.
 
-Python includes pre-built functions for common tasks:
+1.  **Variable Assignment**:
+    - We create variables like `item_name`, `price`, `quantity`.
+    - Notice we use `_` (snake_case) for multi-word names. This is the Python standard.
 
-- `len()`: Finds the length (e.g., number of items in a list).
-- `sum()`: Calculates the sum of numbers in a list.
-- `min()` and `max()`: Find the minimum and maximum values.
-- `round()`: Rounds a number to a specified number of decimal places.
+2.  **`calculate_inventory_value()`**:
+    - We multiply `price * quantity`.
+    - Because `price` is a float, the result is a float.
 
-## Environment Setup
+3.  **Built-in Functions**:
+    - `len(item_name)`: Counts characters. Useful for data validation (e.g., SKU length).
+    - `type(price)`: Confirms what kind of data we are holding.
 
-Before you begin, ensure you have followed the setup instructions in the main
-[README.md](../../README.md) to set up your virtual environment and install the required libraries.
+### Running the Code
 
-## Exploring the Refactored Code
+```bash
+python Day_02_Variables_Builtin_Functions/variables.py
+```
 
-The script for this lesson, `variables.py`, has been refactored into functions to promote code reuse
-and testability.
+## 💻 Practice Exercises
 
-1. **Review the Code:** Open `Day_02_Variables_Builtin_Functions/variables.py`. Notice how the logic
-   is now organized into functions like `display_company_profile()` and `analyze_weekly_sales()`.
-1. **Run the Script:** From the root directory of the project (`Coding-For-MBA`), run the script:
-   ```bash
-   python Day_02_Variables_Builtin_Functions/variables.py
-   ```
-   You will see the output from the example scenarios defined at the bottom of the script.
-1. **Run the Tests:** You can also run the tests for this lesson to see how we verify the functions'
-   correctness:
-   ```bash
-   pytest tests/test_day_02.py
-   ```
+Open `solutions.py` to write your answers.
 
-## 💻 Exercises: Day 2
+1.  **Employee Data**:
+    - Create variables for an employee: `first_name`, `last_name`, `salary` (monthly).
+    - Create a variable `annual_salary` by multiplying by 12.
 
-1. **Company Profile Variables:**
-   - In a new Python script (`my_solutions_02.py`), declare variables for a fictional company:
-     `company_name`, `year_founded`, `current_revenue`, and `is_publicly_traded`.
-   - Print each of these variables with a descriptive label.
+2.  **Formatted Report**:
+    - Use an f-string to print: `"John Doe earns $60000 per year."`
+    - _Tip:_ F-strings are the bread and butter of automated reporting.
 
-1. **Sales Analysis:**
-   - A list of sales transactions is: `[150.50, 200.00, 75.25, 300.75, 120.00]`.
-   - Store these in a variable called `weekly_sales`.
-   - Use built-in functions to calculate and print:
-     - The total number of sales (`len()`).
-     - The total revenue (`sum()`).
-     - The smallest and largest sales (`min()`, `max()`).
-     - The average sale amount.
-
-1. **Profit Calculator Function:**
-   - Create a function `calculate_profit(revenue, expenses)` that takes two numbers and returns the
-     difference.
-   - Call this function with some example numbers (e.g., `calculate_profit(50000, 35000)`) and print
-     the result.
-
-🎉 **Well done!** You've learned how to store data in variables and use Python's built-in functions
-for analysis—foundational skills for everything that comes next.
+3.  **Type Check**:
+    - Create a variable `is_manager = True`.
+    - Print its type. What do you get?
 
 <!-- LESSON_FOOTER_START -->
 
 ---
 
-**Previous:** [Day 01 – Day 1: Python for Business Analytics - First Steps](../Day_01_Introduction/README.md) • **Next:** [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](../Day_03_Operators/README.md)
+**Previous:** [Day 01 – Introduction](../Day_01_Introduction/README.md) • **Next:** [Day 03 – Operators](../Day_03_Operators/README.md)
 
 _You are on lesson 2 of 108._
 

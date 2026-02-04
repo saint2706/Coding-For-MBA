@@ -1,99 +1,75 @@
 ---
-title: "Day 10: Loops - Automating Repetitive Business Tasks"
+title: "Day 10: Automation (Loops)"
 tags:
-  - BI
   - Basics
   - Python
+  - Automation
 ---
 
-# 📘 Day 10: Loops - Automating Repetitive Business Tasks
+# 📘 Day 10: Automation (Loops)
 
-What if you have a list of 10,000 sales transactions? You won't write code for each one. This is
-where **loops** come in. Loops allow you to perform the same action on every item in a collection,
-automating what would otherwise be an impossibly tedious task.
+## Managerial Relevance
 
-## Key Loop Types
+The defining difference between a manual worker and an automated system is **Loops**.
+Instead of calculating payroll for one employee, you write a loop to calculate it for _all_ employees.
+Instead of checking one stock price, you loop through the S&P 500.
 
-- **`for` loop:** The most common loop. It iterates over a sequence (like a list or dictionary) and
-  executes a block of code for each item.
-  ```python
-  # Calculate total revenue from a list of sales
-  total_revenue = 0
-  for sale in monthly_sales:
-      total_revenue += sale
-  ```
-- **`while` loop:** Runs as long as a certain condition is `True`. It's used when you don't know
-  beforehand how many times you need to loop, such as in a simulation.
+- **`for` loops**: "Do this for every item in this list." (Defined end point).
+- **`while` loops**: "Do this as long as this condition is true." (Undefined end point, like simulations).
 
-## Combining Loops and Conditionals
+## Key Concepts
 
-The real power comes from combining loops with `if` statements. This allows you to perform an action
-on only the items that meet a certain criteria, which is the foundation of filtering and
-transforming data.
+- **Iteration**: The process of going through a collection one by one.
+- **Accumulator Pattern**: Starting with `total = 0`, looping, and adding to it (`total += price`).
+- **Filtering**: Looping through data and only keeping items that meet an `if` condition.
 
-```python
-# Find all transactions over a certain amount
-large_transactions = []
-for amount in transactions:
-    if amount > 500:
-        large_transactions.append(amount)
+## Code Walkthrough
+
+Open `loops.py`.
+
+1.  **`calculate_total_from_list()`**:
+    - The classic "Sum" algorithm.
+    - We initialize a total, visit every number, and add it up.
+
+2.  **`filter_high_value_customers()`**:
+    - Loops through a list of dictionaries (customer records).
+    - Checks `if spent > 2000`.
+    - Appends the name to a new list.
+    - _Result:_ An extracted segment of VIPs.
+
+3.  **`simulate_investment_growth()`**:
+    - A **While Loop**.
+    - "Keep adding interest _until_ my money doubles."
+    - We don't know if it will take 5 years or 15 years, so a `while` loop is perfect.
+
+### Running the Code
+
+```bash
+python Day_10_Loops/loops.py
 ```
 
-## Environment Setup
+## 💻 Practice Exercises
 
-Before you begin, ensure you have followed the setup instructions in the main
-[README.md](../../README.md) to set up your virtual environment and install the required libraries.
+Open `solutions.py`.
 
-## Exploring the Refactored Code
+1.  **Daily Revenue**:
+    - `sales = [500, 600, 200]`.
+    - Loop through and print each sale with a "$" sign.
 
-The script for this lesson, `loops.py`, has been refactored to place each looping task into its own
-testable function.
+2.  **Find the Error**:
+    - `transactions = [100, -50, 200, -20]`.
+    - Loop through and print "Refund Alert" if the number is negative.
 
-1. **Review the Code:** Open `Day_10_Loops/loops.py`. Notice the functions
-   `calculate_total_from_list()`, `filter_high_value_customers()`, and
-   `simulate_investment_growth()`.
-1. **Run the Script:** From the root directory of the project (`Coding-For-MBA`), run the script to
-   see the functions in action:
-   ```bash
-   python Day_10_Loops/loops.py
-   ```
-1. **Run the Tests:** You can run the tests for this lesson to verify the correctness of each
-   function:
-   ```bash
-   pytest tests/test_day_10.py
-   ```
-
-## 💻 Exercises: Day 10
-
-1. **Calculate Average Employee Age:**
-   - In a new script (`my_solutions_10.py`), create a list of employee dictionaries:
-     `employees = [{"name": "Alice", "age": 30}, {"name": "Bob", "age": 45}, {"name": "Charlie", "age": 35}]`.
-   - Create a function `calculate_average_age(employee_list)` that takes a list of employee
-     dictionaries.
-   - Inside the function, use a `for` loop to get the sum of all ages.
-   - Return the average age (`total_age / number_of_employees`).
-   - Call your function and print the result.
-
-1. **Filter High-Priority Customers:**
-   - You have a list of customer dictionaries (see `loops.py` for an example).
-   - Import the `filter_high_value_customers` function from the lesson script.
-   - Call the function with your list of customers and print the result.
-
-1. **Inventory Stock Alert:**
-   - You have a dictionary of product inventory:
-     `inventory = {"Laptops": 15, "Mice": 150, "Keyboards": 45}`.
-   - Import the `check_inventory_levels` function.
-   - Call the function to get a list of low-stock items.
-   - Loop through the returned list and print an alert for each item.
-
-🎉 **Incredible!** The combination of loops and conditionals is the foundation of almost all data
-processing and analysis tasks. You've completed the core structures of Python!
+3.  **Countdown**:
+    - Start `n = 5`.
+    - While `n > 0`, print `n` and subtract 1.
+    - Print "Launch!" at the end.
 
 <!-- LESSON_FOOTER_START -->
 
 ---
 
-**Previous:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](../Day_09_Conditionals/README.md) • **Next:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](../Day_11_Functions/README.md)
+**Previous:** [Day 09 – Conditionals](../Day_09_Conditionals/README.md) • **Next:** [Day 11 – Functions](../Day_11_Functions/README.md)
 
 _You are on lesson 10 of 108._
 
