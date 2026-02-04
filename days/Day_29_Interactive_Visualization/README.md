@@ -1,5 +1,5 @@
 ---
-title: 'Day 29: Interactive Visualization with Plotly'
+title: "Day 29: Interactive Visualization with Plotly"
 tags:
   - Data
   - Visualization
@@ -8,7 +8,7 @@ tags:
 # 📘 Day 29: Interactive Visualization with Plotly
 
 Static charts are good for reports, but in the modern era of business intelligence, users expect to
-be able to *interact* with their data. They want to hover over data points to get more details, zoom
+be able to _interact_ with their data. They want to hover over data points to get more details, zoom
 into specific time ranges, and filter data on the fly.
 
 For this, we use **Plotly**. Plotly is a powerful Python library for creating interactive,
@@ -83,7 +83,6 @@ fig.write_html("interactive_revenue_chart.html")
 For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 
 1. **Interactive Sales by Product:**
-
    - Load the cleaned sales data.
    - Group the data by `Product` to get the sum of `Revenue` for each product.
    - Create an interactive bar chart using `plotly.express` that shows the total `Revenue` for each
@@ -92,7 +91,6 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
    - When you hover over a bar, it should show the Product and its total Revenue.
 
 1. **Interactive Revenue vs. Units Sold:**
-
    - Load the cleaned sales data.
    - Create an interactive scatter plot showing `Revenue` on the y-axis and `Units Sold` on the
      x-axis.
@@ -106,7 +104,7 @@ valuable skill for any modern analyst.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 28 – Day 28: Advanced Visualization & Customization](../Day_28_Advanced_Visualization/README.md) • **Next:** [Day 30 – Day 30: Web Scraping - Extracting Data from the Web](../Day_30_Web_Scraping/README.md)
 

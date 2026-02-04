@@ -40,7 +40,7 @@ pytest tests/test_day_43.py
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 42 – Day 42 · Supervised Learning – Classification (Part 1)](../Day_42_Supervised_Learning_Classification_Part_1/README.md) • **Next:** [Day 44 – Day 44: Unsupervised Learning](../Day_44_Unsupervised_Learning/README.md)
 

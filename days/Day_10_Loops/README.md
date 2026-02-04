@@ -1,5 +1,5 @@
 ---
-title: 'Day 10: Loops - Automating Repetitive Business Tasks'
+title: "Day 10: Loops - Automating Repetitive Business Tasks"
 tags:
   - BI
   - Basics
@@ -66,7 +66,6 @@ testable function.
 ## 💻 Exercises: Day 10
 
 1. **Calculate Average Employee Age:**
-
    - In a new script (`my_solutions_10.py`), create a list of employee dictionaries:
      `employees = [{"name": "Alice", "age": 30}, {"name": "Bob", "age": 45}, {"name": "Charlie", "age": 35}]`.
    - Create a function `calculate_average_age(employee_list)` that takes a list of employee
@@ -76,13 +75,11 @@ testable function.
    - Call your function and print the result.
 
 1. **Filter High-Priority Customers:**
-
    - You have a list of customer dictionaries (see `loops.py` for an example).
    - Import the `filter_high_value_customers` function from the lesson script.
    - Call the function with your list of customers and print the result.
 
 1. **Inventory Stock Alert:**
-
    - You have a dictionary of product inventory:
      `inventory = {"Laptops": 15, "Mice": 150, "Keyboards": 45}`.
    - Import the `check_inventory_levels` function.
@@ -94,7 +91,7 @@ processing and analysis tasks. You've completed the core structures of Python!
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](../Day_09_Conditionals/README.md) • **Next:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](../Day_11_Functions/README.md)
 

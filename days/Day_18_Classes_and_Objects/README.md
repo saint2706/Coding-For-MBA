@@ -1,5 +1,5 @@
 ---
-title: 'Day 18: Classes and Objects - Modeling Business Concepts'
+title: "Day 18: Classes and Objects - Modeling Business Concepts"
 tags:
   - BI
   - Basics
@@ -61,7 +61,6 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
 ## 💻 Exercises: Day 18
 
 1. **Create a `Product` Class:**
-
    - In a new script (`my_solutions_18.py`), create a class named `Product`.
    - The `__init__` method should take `name`, `price`, and `initial_quantity` as arguments and
      store them as attributes.
@@ -72,7 +71,6 @@ The script for this lesson, `CaO.py`, has been refactored for clarity and robust
      then check the new value.
 
 1. **Extend the `PersonAccount` Class:**
-
    - Import the `PersonAccount` class from the lesson script.
    - Create an instance of the class for a new person.
    - Add several income and expense items using the `.add_income()` and `.add_expense()` methods.
@@ -84,7 +82,7 @@ business concepts.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](../Day_17_Regular_Expressions/README.md) • **Next:** [Day 19 – Day 19: Working with Dates and Times](../Day_19_Python_Date_Time/README.md)
 

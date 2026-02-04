@@ -1,5 +1,5 @@
 ---
-title: 'Day 16: File Handling for Business Analytics'
+title: "Day 16: File Handling for Business Analytics"
 tags:
   - BI
   - Basics
@@ -55,7 +55,6 @@ functions for common business file-handling tasks.
 ## 💻 Exercises: Day 16
 
 1. **Analyze a Text File:**
-
    - In a new script (`my_solutions_16.py`), create a simple text file named `my_memo.txt` and write
      a few sentences into it.
    - Import the `count_words_and_lines` and `find_most_common_words` functions from the lesson
@@ -63,7 +62,6 @@ functions for common business file-handling tasks.
    - Call these functions with your new file's path and print the results.
 
 1. **Process a Simple CSV:**
-
    - Create a function `create_sales_data(filepath, sales_data)` that takes a list of lists and
      writes it to a CSV file.
    - Your `sales_data` could be
@@ -77,7 +75,7 @@ analysis.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 15 – Day 15: Exception Handling - Building Robust Business Logic](../Day_15_Exception_Handling/README.md) • **Next:** [Day 17 – Day 17: Regular Expressions for Text Pattern Matching](../Day_17_Regular_Expressions/README.md)
 

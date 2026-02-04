@@ -1,5 +1,5 @@
 ---
-title: 'Day 46: Introduction to Neural Networks & Frameworks'
+title: "Day 46: Introduction to Neural Networks & Frameworks"
 tags:
   - ML
   - Python
@@ -31,13 +31,11 @@ human brain. It consists of interconnected nodes, called **neurons**, organized 
 1. **Hidden Layers:** These are the intermediate layers between the input and output layers. A
    neural network can have zero or more hidden layers. A "deep" neural network has multiple hidden
    layers.
-
    - Each neuron in a hidden layer receives inputs from the previous layer, applies a mathematical
      operation (a weighted sum followed by an **activation function**), and passes the result to the
      next layer.
 
 1. **Output Layer:** Produces the final result.
-
    - For a **regression** task, it might have a single neuron with a linear activation.
    - For a **classification** task, it might have multiple neurons (one for each class) with a
      softmax activation function to output probabilities.
@@ -72,7 +70,7 @@ lifting.
 - **PyTorch:** Developed by Facebook's AI Research lab, it's known for its simplicity, ease of use,
   and Pythonic nature, making it a favorite in the research community.
 
-______________________________________________________________________
+---
 
 ## Practice Exercise
 
@@ -98,7 +96,7 @@ ______________________________________________________________________
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 45 – Day 45: Feature Engineering & Model Evaluation](../Day_45_Feature_Engineering_and_Evaluation/README.md) • **Next:** [Day 47 – Day 47: Convolutional Neural Networks (CNNs) for Computer Vision](../Day_47_Convolutional_Neural_Networks/README.md)
 

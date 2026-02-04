@@ -1,5 +1,5 @@
 ---
-title: 'Day 9: Conditionals - Implementing Business Logic'
+title: "Day 9: Conditionals - Implementing Business Logic"
 tags:
   - BI
   - Basics
@@ -17,7 +17,7 @@ process using **conditional statements**.
 - **`if`:** Executes a block of code **only if** a certain condition is `True`.
 - **`else`:** Provides an alternative block of code to execute if the `if` condition is `False`.
 - **`elif` ("else if"):** Lets you check for multiple, sequential conditions. Python executes the
-  *first* block where the condition is `True` and then skips the rest.
+  _first_ block where the condition is `True` and then skips the rest.
 
 ```python
 # Classifying a customer based on their total spending
@@ -55,7 +55,6 @@ into a separate, testable function.
 ## 💻 Exercises: Day 9
 
 1. **Discount Policy Automation:**
-
    - In a new script (`my_solutions_09.py`), import the `calculate_discount_percent` function.
    - Define a `purchase_amount` variable.
    - Call the function to get the discount rate, then calculate the final price
@@ -64,13 +63,11 @@ into a separate, testable function.
      `120`, `75`, and `40`.
 
 1. **Shipping Cost Calculator:**
-
    - Import the `calculate_shipping_cost` function.
    - Call the function with different combinations of countries (`"USA"`, `"Canada"`, `"Mexico"`)
      and weights (`40`, `60`) to see the results. Print a user-friendly message for each case.
 
 1. **Employee Bonus Calculation:**
-
    - Import the `calculate_employee_bonus` function.
    - Test the function by calling it with different scenarios and printing the result:
      - A "Sales" employee with a `performance_rating` of 5.
@@ -83,7 +80,7 @@ models.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 08 – Day 8: Dictionaries - Structuring Complex Business Data](../Day_08_Dictionaries/README.md) • **Next:** [Day 10 – Day 10: Loops - Automating Repetitive Business Tasks](../Day_10_Loops/README.md)
 

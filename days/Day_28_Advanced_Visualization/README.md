@@ -1,5 +1,5 @@
 ---
-title: 'Day 28: Advanced Visualization & Customization'
+title: "Day 28: Advanced Visualization & Customization"
 tags:
   - Advanced
   - Data
@@ -83,7 +83,6 @@ plt.show()
 For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
 
 1. **Create a Customized Sales Chart:**
-
    - Load the cleaned sales data.
    - Create a bar chart showing the total `Revenue` for each `Product`.
    - **Customize it:**
@@ -93,7 +92,6 @@ For these exercises, you will use the cleaned `sales_data.csv` from Day 24.
      - Save the figure to a file named `product_revenue.png`.
 
 1. **Build a 2x1 Dashboard:**
-
    - Create a figure with two rows and one column of subplots.
    - **Top Plot:** A line chart showing the trend of `Units Sold` over `Date`. Make sure the date is
      on the x-axis.
@@ -107,7 +105,7 @@ professional format is a key skill that separates great analysts from good ones.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 27 – Day 27: Data Visualization - Communicating Insights](../Day_27_Visualization/README.md) • **Next:** [Day 29 – Day 29: Interactive Visualization with Plotly](../Day_29_Interactive_Visualization/README.md)
 

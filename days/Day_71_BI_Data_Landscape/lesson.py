@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Mapping
 
 import pandas as pd
-
 from Day_71_BI_Data_Landscape import (
     SECTION_TOPICS,
     SOURCE_CHANNELS_SECTION,

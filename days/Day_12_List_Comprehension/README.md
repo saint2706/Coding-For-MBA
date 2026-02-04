@@ -1,5 +1,5 @@
 ---
-title: 'Day 12: List Comprehension - Elegant Data Manipulation'
+title: "Day 12: List Comprehension - Elegant Data Manipulation"
 tags:
   - Basics
   - Data
@@ -60,7 +60,6 @@ comprehension task into its own testable function.
 ## 💻 Exercises: Day 12
 
 1. **Calculate Sales Commissions:**
-
    - In a new script (`my_solutions_12.py`), create a list of sales figures:
      `sales = [2500, 8000, 12000, 5500]`.
    - Write a function `calculate_commissions(sales_list, commission_rate)` that takes a list of
@@ -69,11 +68,10 @@ comprehension task into its own testable function.
    - Call your function with a 15% commission rate (`0.15`) and print the result.
 
 1. **Filter Products by Category:**
-
    - You have a list of product dictionaries (see below).
    - Create a function `filter_by_category(product_list, category)` that takes a list of products
      and a category name.
-   - The function should use a list comprehension to return a new list containing only the *names*
+   - The function should use a list comprehension to return a new list containing only the _names_
      of products in the specified category.
    - Call your function with the category `"electronics"` and print the result.
      ```python
@@ -85,7 +83,6 @@ comprehension task into its own testable function.
      ```
 
 1. **Format Prices for Display:**
-
    - You have a list of prices as floats: `prices = [49.99, 199.99, 19.95]`.
    - Use a list comprehension to create a new list called `display_prices`.
    - Each item in the new list should be a string, formatted as currency (e.g., `"$49.99"`).
@@ -97,7 +94,7 @@ transformations.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 11 – Day 11: Functions - Creating Reusable Business Tools](../Day_11_Functions/README.md) • **Next:** [Day 13 – Day 13: Higher-Order Functions & Lambda](../Day_13_Higher_Order_Functions/README.md)
 

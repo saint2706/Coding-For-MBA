@@ -1,5 +1,5 @@
 ---
-title: 'Day 8: Dictionaries - Structuring Complex Business Data'
+title: "Day 8: Dictionaries - Structuring Complex Business Data"
 tags:
   - BI
   - Basics
@@ -64,7 +64,6 @@ operations into testable functions.
 ## 💻 Exercises: Day 8
 
 1. **Create a Product Dictionary:**
-
    - In a new script (`my_solutions_08.py`), create a function
      `create_product(product_id, name, price, in_stock, tags)`.
    - The function should accept these arguments and return a dictionary representing a product.
@@ -72,7 +71,6 @@ operations into testable functions.
      `["electronics", "gadget"]`) and print the resulting dictionary.
 
 1. **Modify Employee Information:**
-
    - Start with the `employee_record` dictionary from the lesson's main block.
    - Import the `add_project_to_employee` function.
    - Call the function to add a new project, "2025 Strategy," to the employee's project list.
@@ -80,7 +78,6 @@ operations into testable functions.
    - Print the final, updated employee dictionary.
 
 1. **Access Nested Data:**
-
    - Create a dictionary for a `company` with keys `company_name` and `headquarters`.
    - The value for `headquarters` should be another dictionary with keys for `city`, `state`, and
      `country`.
@@ -94,7 +91,7 @@ them is a huge step forward.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 07 – Day 7: Sets - Managing Unique Business Data](../Day_07_Sets/README.md) • **Next:** [Day 09 – Day 9: Conditionals - Implementing Business Logic](../Day_09_Conditionals/README.md)
 

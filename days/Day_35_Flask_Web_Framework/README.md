@@ -1,5 +1,5 @@
 ---
-title: 'Day 35: Flask Web Framework'
+title: "Day 35: Flask Web Framework"
 tags:
   - Data
   - Web
@@ -52,18 +52,15 @@ pytest -k day_35
 ## 💻 Exercises: Day 35
 
 1. **Create a new route**:
-
    - Add a new route to the `create_app` factory at the URL `/about`.
    - Create a view function that returns a simple string, like "This is the about page."
 
 1. **Create a new template**:
-
    - Create a new HTML file named `contact.html` in the `templates` directory.
    - Add a new route to the Flask app at the URL `/contact` that renders the `contact.html`
      template.
 
 1. **Pass data to a template**:
-
    - Modify the `/about` route to pass your name to a new `about.html` template.
    - In the `about.html` template, display the name that was passed from the view function.
 
@@ -76,7 +73,7 @@ applications and dashboards with Python.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 34 – Day 34: Building a Simple API with Flask](../Day_34_Building_an_API/README.md) • **Next:** [Day 36 – Day 36 – Capstone Case Study](../Day_36_Case_Study/README.md)
 

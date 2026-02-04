@@ -1,5 +1,5 @@
 ---
-title: 'Day 31: Working with Databases in Python'
+title: "Day 31: Working with Databases in Python"
 tags:
   - Data
   - Database
@@ -91,20 +91,17 @@ conn.close()
 ## 💻 Exercises: Day 31
 
 1. **Create and Populate a Database:**
-
    - Write a script that creates a new SQLite database called `company.db`.
    - Create a table named `products` with three columns: `product_id` (INTEGER), `name` (TEXT), and
      `price` (REAL).
    - Insert 3-4 sample products into the table.
 
 1. **Query with `sqlite3`:**
-
    - Write a script that connects to the `company.db` you created.
    - Execute a SQL query to select all products with a price greater than $100.
    - Fetch all the results and loop through them, printing each one.
 
 1. **Query with Pandas:**
-
    - Write a script that connects to the `company.db`.
    - Use `pd.read_sql_query()` to select all records from the `products` table and load them into a
      DataFrame.
@@ -116,7 +113,7 @@ you will use constantly as a data analyst.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 30 – Day 30: Web Scraping - Extracting Data from the Web](../Day_30_Web_Scraping/README.md) • **Next:** [Day 32 – Day 32: Connecting to Other Databases (MySQL & MongoDB)](../Day_32_Other_Databases/README.md)
 

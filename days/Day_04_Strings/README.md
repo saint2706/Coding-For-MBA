@@ -1,5 +1,5 @@
 ---
-title: 'Day 4: Working with Text Data - Strings'
+title: "Day 4: Working with Text Data - Strings"
 tags:
   - Basics
   - Data
@@ -57,14 +57,12 @@ manipulation a reusable and testable unit of logic.
 ## 💻 Exercises: Day 4
 
 1. **Generate a Report Header:**
-
    - In a new script (`my_solutions_04.py`), create a function `format_report_title(title, date)`.
    - The function should take a title string and a date string and return a formatted header like:
      `--- MONTHLY MARKETING REPORT: 2024-07 ---`.
    - Call the function and print the result.
 
 1. **Clean Up Product Codes:**
-
    - You have a list of raw product codes: `[" prod-001 ", "prod-002", " Prod-003 "]`.
    - Create a function `clean_product_codes(codes)` that takes a list of codes.
    - Inside the function, loop through the list, and for each code, remove whitespace and convert it
@@ -73,7 +71,6 @@ manipulation a reusable and testable unit of logic.
    - Call the function and print the cleaned list.
 
 1. **Validate Email Addresses:**
-
    - Create a function `is_valid_email(email)` that performs two simple checks:
      - Does the email contain an `@` symbol?
      - Does the email end with `.com`?
@@ -86,7 +83,7 @@ analysis task. Cleaning, formatting, and parsing strings are skills you'll use e
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](../Day_03_Operators/README.md) • **Next:** [Day 05 – Day 5: Managing Collections of Business Data with Lists](../Day_05_Lists/README.md)
 

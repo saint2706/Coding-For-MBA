@@ -1,5 +1,5 @@
 ---
-title: 'Day 103: Pivoting Data'
+title: "Day 103: Pivoting Data"
 tags:
   - Data
   - SQL
@@ -66,7 +66,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 102 – Day 102: Common Table Expressions (CTEs)](../Day_102_Common_Table_Expressions/README.md) • **Next:** [Day 104 – Day 104: Database Design and Normalization](../Day_104_Database_Design_and_Normalization/README.md)
 

@@ -30,21 +30,21 @@ ensures that the assets you build speak the language of BI hiring managers and s
 Use these roadmap-aligned prompts to plan the artifacts that demonstrate your value.
 
 - [ ] Building Your Portfolio – curate 2–3 projects that reflect the BI stack you want to be hired
-  for and verify the links work end to end.
+      for and verify the links work end to end.
 - [ ] Portfolio presentation – craft a live walkthrough or video demo that emphasizes the business
-  outcomes, not just the dashboards.
+      outcomes, not just the dashboards.
 - [ ] Open-Source Projects – contribute a small feature or documentation update to a BI tool and
-  capture screenshots or pull requests.
+      capture screenshots or pull requests.
 - [ ] BI Competitions – summarize results, lessons learned, and ranking; link to notebooks or
-  dashboards.
+      dashboards.
 - [ ] BI Communities – list the meetups, Slack groups, or forums where you discuss trends and what
-  you have learned.
+      you have learned.
 - [ ] Conferences & Webinars – log the events you attend, the insights gained, and how they
-  influence your projects.
+      influence your projects.
 - [ ] Networking – schedule outreach conversations with analysts or hiring managers and document the
-  advice you receive.
+      advice you receive.
 - [ ] Professional Development – document the courses, workshops, or mentoring sessions that
-  sharpened your BI skills.
+      sharpened your BI skills.
 - [ ] Certifications – track progress toward credentials, exam dates, and renewal plans.
 
 ## Job readiness checklist
@@ -53,11 +53,11 @@ Focus your interview preparation with these roadmap tasks.
 
 - [ ] Resume optimization – align bullets with BI metrics, tools, and quantified outcomes.
 - [ ] Interview preparation – rehearse portfolio walkthroughs, stakeholder stories, and challenge
-  questions that link to the capstone.
+      questions that link to the capstone.
 - [ ] Salary negotiation strategies – research compensation benchmarks, benefits, and cost-of-living
-  adjustments.
+      adjustments.
 - [ ] Job Preparation – outline your 30/60/90-day plan, onboarding priorities, and key relationships
-  to build once you land the role.
+      to build once you land the role.
 
 ## Next steps
 
@@ -90,7 +90,7 @@ Synthesize the specialization into ongoing strategic roadmaps.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 83 – Day 83 – BI Cloud and Modern Data Stack](../Day_83_BI_Cloud_and_Modern_Data_Stack/README.md) • **Next:** [Day 85 – Day 85 – Advanced SQL and Performance Tuning](../Day_85_Advanced_SQL/README.md)
 

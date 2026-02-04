@@ -86,7 +86,7 @@ Audit how raw data flows into governed analytics environments.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 70 – Day 70 – BI Metrics and Data Literacy](../Day_70_BI_Metrics_and_Data_Literacy/README.md) • **Next:** [Day 72 – Day 72 – BI Data Formats and Ingestion](../Day_72_BI_Data_Formats_and_Ingestion/README.md)
 

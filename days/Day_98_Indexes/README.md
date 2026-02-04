@@ -1,5 +1,5 @@
 ---
-title: 'Day 98: Indexes'
+title: "Day 98: Indexes"
 tags:
   - SQL
 ---
@@ -59,7 +59,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 97 – Day 97: Views](../Day_97_Views/README.md) • **Next:** [Day 99 – Day 99: Transactions](../Day_99_Transactions/README.md)
 

@@ -51,7 +51,7 @@ in topological order, promoting a versioned model artefact only after automated 
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 64 – Day 64 – Modern NLP Pipelines](../Day_64_Modern_NLP_Pipelines/README.md) • **Next:** [Day 66 – Day 66 – Model Deployment and Serving Patterns](../Day_66_Model_Deployment_and_Serving/README.md)
 

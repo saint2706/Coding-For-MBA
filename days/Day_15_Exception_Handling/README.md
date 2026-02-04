@@ -1,5 +1,5 @@
 ---
-title: 'Day 15: Exception Handling - Building Robust Business Logic'
+title: "Day 15: Exception Handling - Building Robust Business Logic"
 tags:
   - BI
   - Basics
@@ -64,7 +64,6 @@ functions that include exception handling.
 ## 💻 Exercises: Day 15
 
 1. **Safe Division Function:**
-
    - In a new script (`my_solutions_15.py`), create a function
      `safe_divide(numerator, denominator)`.
    - Inside the function, use a `try...except` block to handle a potential `ZeroDivisionError`.
@@ -74,7 +73,6 @@ functions that include exception handling.
      (e.g., `10, 0`).
 
 1. **User Input with Validation:**
-
    - Create a function `get_user_age()` that prompts the user to enter their age.
    - Use a `try...except` block to handle the `ValueError` that occurs if the user enters text
      instead of a number.
@@ -82,7 +80,6 @@ functions that include exception handling.
    - If the input is valid, convert it to an integer and return it.
 
 1. **File Reading with Error Handling:**
-
    - Create a function `read_file_contents(filepath)`.
    - Use a `try...except` block to handle a `FileNotFoundError`.
    - If the file is found, the function should read its contents and return them.
@@ -95,7 +92,7 @@ data.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](../Day_14_Modules/README.md) • **Next:** [Day 16 – Day 16: File Handling for Business Analytics](../Day_16_File_Handling/README.md)
 

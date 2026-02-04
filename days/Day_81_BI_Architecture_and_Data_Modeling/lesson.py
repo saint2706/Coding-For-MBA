@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from Day_81_BI_Architecture_and_Data_Modeling import (
     SchemaExample,
     build_snowflake_schema_example,

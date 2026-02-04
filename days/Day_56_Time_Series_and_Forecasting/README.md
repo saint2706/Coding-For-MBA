@@ -21,7 +21,7 @@ print metric summaries for the synthetic workloads.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 55 – Day 55 – Advanced Unsupervised Learning](../Day_55_Advanced_Unsupervised_Learning/README.md) • **Next:** [Day 57 – Day 57 – Recommender Systems](../Day_57_Recommender_Systems/README.md)
 

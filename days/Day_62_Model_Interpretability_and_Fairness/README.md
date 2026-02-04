@@ -23,7 +23,7 @@ datasets.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 61 – Day 61 – Reinforcement and Offline Learning](../Day_61_Reinforcement_and_Offline_Learning/README.md) • **Next:** [Day 63 – Day 63 – Causal Inference and Uplift Modeling](../Day_63_Causal_Inference_and_Uplift/README.md)
 

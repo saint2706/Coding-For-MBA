@@ -23,7 +23,7 @@ assignments, embeddings, and anomaly scores featured in the lesson.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 54 – Day 54 – Probabilistic Modeling](../Day_54_Probabilistic_Modeling/README.md) • **Next:** [Day 56 – Day 56 – Time Series and Forecasting](../Day_56_Time_Series_and_Forecasting/README.md)
 

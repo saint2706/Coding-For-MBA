@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Dict, List, Mapping
 
 import pandas as pd
-
 from mypackage.bi_curriculum import BiTopic, topics_by_titles
 
 FOUNDATION_SECTION = "Foundations"

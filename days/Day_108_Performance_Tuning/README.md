@@ -1,5 +1,5 @@
 ---
-title: 'Day 108: SQL Performance Tuning'
+title: "Day 108: SQL Performance Tuning"
 tags:
   - Advanced
   - SQL
@@ -55,7 +55,7 @@ understand the following concepts:
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 107 – Day 107: SQL Security](../Day_107_Security/README.md) • **Next:** _None (Last Lesson)_
 

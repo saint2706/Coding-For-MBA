@@ -22,7 +22,7 @@ layers, monitor training metrics on a toy citation-style graph, and export featu
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 59 – Day 59 – Generative Models](../Day_59_Generative_Models/README.md) • **Next:** [Day 61 – Day 61 – Reinforcement and Offline Learning](../Day_61_Reinforcement_and_Offline_Learning/README.md)
 

@@ -1,5 +1,5 @@
 ---
-title: 'Day 14: Modules - Organizing Your Business Logic'
+title: "Day 14: Modules - Organizing Your Business Logic"
 tags:
   - BI
   - Basics
@@ -76,7 +76,6 @@ module file.
 ## 💻 Exercises: Day 14
 
 1. **Create Your Own Module:**
-
    - Create a new file named `text_tools.py`.
    - Inside this file, define a function `count_characters(text)` that returns the length of a
      string.
@@ -85,14 +84,12 @@ module file.
      characters in a sample sentence.
 
 1. **Use the `datetime` Module:**
-
    - In a new script, `import` the `datetime` module.
    - Get the current date and time using `datetime.datetime.now()`.
    - Print the current date.
    - Print just the current year from the date object (e.g., `my_date.year`).
 
 1. **Use the `math` Module:**
-
    - A company's sales are growing by the square root of its marketing budget.
    - `import` the `math` module.
    - Create a variable `marketing_budget = 100000`.
@@ -103,7 +100,7 @@ building any project that's more than a few dozen lines long.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 13 – Day 13: Higher-Order Functions & Lambda](../Day_13_Higher_Order_Functions/README.md) • **Next:** [Day 15 – Day 15: Exception Handling - Building Robust Business Logic](../Day_15_Exception_Handling/README.md)
 

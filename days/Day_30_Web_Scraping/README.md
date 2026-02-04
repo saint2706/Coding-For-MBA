@@ -1,5 +1,5 @@
 ---
-title: 'Day 30: Web Scraping - Extracting Data from the Web'
+title: "Day 30: Web Scraping - Extracting Data from the Web"
 tags:
   - Data
   - Web
@@ -101,7 +101,6 @@ For these exercises, we will scrape the website `http://books.toscrape.com/`, a 
 designed for scraping practice.
 
 1. **Scrape Book Titles:**
-
    - Visit `http://books.toscrape.com/`.
    - Write a script that downloads the page content.
    - Create a BeautifulSoup object from the content.
@@ -110,14 +109,12 @@ designed for scraping practice.
    - Create a list of all the book titles and print it.
 
 1. **Scrape Book Prices:**
-
    - On the same page, find all the book prices. (Hint: They are in `p` tags with the class
      `price_color`).
    - Extract the text of the prices (e.g., "£51.77").
    - Create a list of all the prices and print it.
 
 1. **Create a DataFrame:**
-
    - Combine your work from the previous two exercises.
    - Create a script that scrapes both the titles and the prices.
    - Store the results in a Pandas DataFrame with two columns: "Title" and "Price".
@@ -129,7 +126,7 @@ step forward.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 29 – Day 29: Interactive Visualization with Plotly](../Day_29_Interactive_Visualization/README.md) • **Next:** [Day 31 – Day 31: Working with Databases in Python](../Day_31_Databases/README.md)
 

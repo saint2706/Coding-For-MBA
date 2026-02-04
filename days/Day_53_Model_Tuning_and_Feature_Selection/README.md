@@ -21,7 +21,7 @@ strategies in action alongside feature importance diagnostics.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 52 – Day 52 – Ensemble Methods](../Day_52_Ensemble_Methods/README.md) • **Next:** [Day 54 – Day 54 – Probabilistic Modeling](../Day_54_Probabilistic_Modeling/README.md)
 

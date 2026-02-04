@@ -40,7 +40,7 @@ pytest tests/test_day_42.py
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 41 – Day 41 · Supervised Learning – Regression](../Day_41_Supervised_Learning_Regression/README.md) • **Next:** [Day 43 – Day 43 · Supervised Learning – Classification (Part 2)](../Day_43_Supervised_Learning_Classification_Part_2/README.md)
 

@@ -1,5 +1,5 @@
 ---
-title: 'Day 7: Sets - Managing Unique Business Data'
+title: "Day 7: Sets - Managing Unique Business Data"
 tags:
   - BI
   - Basics
@@ -29,8 +29,8 @@ segmentation and cohort analysis.
 
 | Operation | Python Operator | Business Question Answered | | :------------- | :-------------- |
 :------------------------------------------------------- | | **Union** | `A | B` | What is the total
-unique audience for two groups? | | **Intersection** | `A & B` | Which customers are in *both* Group
-A *and* Group B? | | **Difference** | `A - B` | Which customers are in Group A *but not* in Group B?
+unique audience for two groups? | | **Intersection** | `A & B` | Which customers are in _both_ Group
+A _and_ Group B? | | **Difference** | `A - B` | Which customers are in Group A _but not_ in Group B?
 |
 
 ## Environment Setup
@@ -59,14 +59,12 @@ de-duplication and segmentation reusable and testable.
 ## 💻 Exercises: Day 7
 
 1. **Find Unique Customer Cities:**
-
    - In a new script (`my_solutions_07.py`), you have a list of cities:
      `order_cities = ["New York", "Los Angeles", "Chicago", "New York", "Boston", "Los Angeles"]`.
    - Import the `get_unique_items` function from the lesson script.
    - Call the function with your list to get a set of unique cities and print the result.
 
 1. **Analyze Website Visitor Activity:**
-
    - You have two sets of user IDs:
      - `pricing_visitors = {"user1", "user3", "user5", "user7"}`
      - `contact_visitors = {"user2", "user3", "user4", "user5"}`
@@ -76,7 +74,6 @@ de-duplication and segmentation reusable and testable.
      engaged users and users who only viewed pricing.
 
 1. **Manage Product Features:**
-
    - Your "Standard Plan" has a set of features:
      `standard_features = {"reporting", "data_export", "basic_support"}`.
    - You want to add `["api_access", "priority_support"]` for the "Pro Plan".
@@ -89,7 +86,7 @@ a list or analyze the overlap between two groups, sets are the best tool for the
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 06 – Day 6: Tuples - Storing Immutable Business Data](../Day_06_Tuples/README.md) • **Next:** [Day 08 – Day 8: Dictionaries - Structuring Complex Business Data](../Day_08_Dictionaries/README.md)
 

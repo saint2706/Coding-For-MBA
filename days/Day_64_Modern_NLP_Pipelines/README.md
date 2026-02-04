@@ -21,7 +21,7 @@ seeded toy corpora.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 63 – Day 63 – Causal Inference and Uplift Modeling](../Day_63_Causal_Inference_and_Uplift/README.md) • **Next:** [Day 65 – Day 65 – MLOps Pipelines and CI/CD Automation](../Day_65_MLOps_Pipelines_and_CI/README.md)
 

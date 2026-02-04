@@ -22,7 +22,7 @@ reconstructions, and evaluation metrics on compact demo datasets.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 56 – Day 56 – Time Series and Forecasting](../Day_56_Time_Series_and_Forecasting/README.md) • **Next:** [Day 58 – Day 58 – Transformers and Attention](../Day_58_Transformers_and_Attention/README.md)
 

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from Day_79_BI_Storytelling_and_Stakeholder_Influence import (
     build_influence_brief,
     generate_story_arc,

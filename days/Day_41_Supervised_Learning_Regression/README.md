@@ -41,7 +41,7 @@ pytest tests/test_day_41.py
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 40 – Day 40: Introduction to Machine Learning & Core Concepts](../Day_40_Intro_to_ML/README.md) • **Next:** [Day 42 – Day 42 · Supervised Learning – Classification (Part 1)](../Day_42_Supervised_Learning_Classification_Part_1/README.md)
 

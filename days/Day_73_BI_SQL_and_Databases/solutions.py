@@ -7,7 +7,6 @@ from dataclasses import asdict, dataclass
 from typing import Iterable, Mapping, Sequence
 
 import pandas as pd
-
 from mypackage.bi_curriculum import BiTopic, group_topics_by_titles
 
 # --- Roadmap groupings ----------------------------------------------------

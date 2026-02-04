@@ -58,7 +58,7 @@ Map the technical stack that underpins BI delivery.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 77 – Day 77 – BI Domain Analytics and Value Drivers](../Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md) • **Next:** [Day 79 – Day 79 – BI Storytelling and Stakeholder Influence](../Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md)
 

@@ -1,5 +1,5 @@
 ---
-title: 'Day 34: Building a Simple API with Flask'
+title: "Day 34: Building a Simple API with Flask"
 tags:
   - Data
   - Web
@@ -89,14 +89,12 @@ Now you can go to `/api/products/1` to get the laptop, or `/api/products/2` to g
 ## 💻 Exercises: Day 34
 
 1. **Create a Basic API Server:**
-
    - Create a file named `my_api.py`.
    - Set up a basic Flask application.
    - Create a root endpoint `/` that returns a simple welcome message like "Welcome to the Company
      Data API".
 
 1. **Serve Employee Data:**
-
    - Inside your `my_api.py` script, create a list of employee dictionaries. Each employee should
      have an `id`, `name`, and `department`.
    - Create a new endpoint at `/api/employees`.
@@ -104,7 +102,6 @@ Now you can go to `/api/products/1` to get the laptop, or `/api/products/2` to g
      JSON response.
 
 1. **Serve a Single Employee's Data:**
-
    - Create a dynamic route `/api/employees/<int:employee_id>`.
    - This endpoint should find the employee with the matching ID from your list.
    - If the employee is found, return their data as a JSON object.
@@ -153,7 +150,7 @@ testing, or even deployment without duplicating setup code.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 33 – Day 33: Accessing Web APIs with `requests`](../Day_33_API/README.md) • **Next:** [Day 35 – Day 35: Flask Web Framework](../Day_35_Flask_Web_Framework/README.md)
 

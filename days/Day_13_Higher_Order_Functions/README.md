@@ -1,5 +1,5 @@
 ---
-title: 'Day 13: Higher-Order Functions & Lambda'
+title: "Day 13: Higher-Order Functions & Lambda"
 tags:
   - Basics
   - Python
@@ -62,7 +62,6 @@ into its own testable function.
 ## 💻 Exercises: Day 13
 
 1. **Standardize Department Names:**
-
    - In a new script (`my_solutions_13.py`), create a list of department names:
      `departments = ["Sales", " marketing ", "  Engineering", "HR  "]`.
    - Write a function that takes this list and uses `map` with a `lambda` function to return a new
@@ -70,7 +69,6 @@ into its own testable function.
    - Call your function and print the result.
 
 1. **Filter Active Subscriptions:**
-
    - You have a list of customer dictionaries (see below).
    - Import the `get_active_customer_names` function from the lesson script.
    - Call the function with the customer list and print the names of the active customers.
@@ -83,7 +81,6 @@ into its own testable function.
      ```
 
 1. **Sort Complex Data:**
-
    - You have a list of product dictionaries.
    - Import the `sort_products_by_attribute` function.
    - Call the function twice: once to sort the products by `"price"` and once to sort them by
@@ -101,7 +98,7 @@ programming that you will see everywhere in the world of data science.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 12 – Day 12: List Comprehension - Elegant Data Manipulation](../Day_12_List_Comprehension/README.md) • **Next:** [Day 14 – Day 14: Modules - Organizing Your Business Logic](../Day_14_Modules/README.md)
 

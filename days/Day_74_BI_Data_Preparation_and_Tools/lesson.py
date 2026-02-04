@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from Day_74_BI_Data_Preparation_and_Tools.solutions import (
     assemble_curriculum_sections,
     build_pipeline,

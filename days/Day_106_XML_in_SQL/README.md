@@ -1,5 +1,5 @@
 ---
-title: 'Day 106: XML in SQL'
+title: "Day 106: XML in SQL"
 tags:
   - SQL
 ---
@@ -54,7 +54,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 105 – Day 105: JSON in SQL](../Day_105_JSON_in_SQL/README.md) • **Next:** [Day 107 – Day 107: SQL Security](../Day_107_Security/README.md)
 

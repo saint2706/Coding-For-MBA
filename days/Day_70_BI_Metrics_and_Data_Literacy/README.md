@@ -49,7 +49,7 @@ Clarify the data taxonomy BI teams depend on.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 69 – Day 69 – BI Strategy and Stakeholders](../Day_69_BI_Strategy_and_Stakeholders/README.md) • **Next:** [Day 71 – Day 71 – BI Data Landscape Fundamentals](../Day_71_BI_Data_Landscape/README.md)
 

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from Day_73_BI_SQL_and_Databases import (
     build_topic_dataframe,
     compute_region_window_metrics,

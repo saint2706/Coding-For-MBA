@@ -1,5 +1,5 @@
 ---
-title: 'Day 22: NumPy - The Foundation of Numerical Computing'
+title: "Day 22: NumPy - The Foundation of Numerical Computing"
 tags:
   - Data
 ---
@@ -59,20 +59,17 @@ its own testable function.
 ## 💻 Exercises: Day 22
 
 1. **Vectorized Revenue Calculation:**
-
    - In a new script (`my_solutions_22.py`), create two Python lists:
      `prices = [12.50, 15.00, 22.50]` and `units = [100, 85, 120]`.
    - Import the `calculate_revenue_vectorized` function from the lesson script.
    - Call the function with your lists and print the resulting NumPy array.
 
 1. **Sales Data Analysis:**
-
    - You have a list of sales figures: `sales_data = [250, 300, 280, 450, 500, 220, 180]`.
    - Import and use the `analyze_sales_data` function to get a dictionary of statistics.
    - Print the total sales and the mean sales from the returned dictionary.
 
 1. **Conditional Filtering with Arrays:**
-
    - Import the `filter_above_average` function and the `numpy` library (`import numpy as np`).
    - Create a NumPy array from your `sales_data` list from the previous exercise.
    - Pass this array to the `filter_above_average` function to get a new array containing only the
@@ -85,7 +82,7 @@ much easier to grasp.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 21 – Day 21: Virtual Environments - Professional Project Management](../Day_21_Virtual_Environments/README.md) • **Next:** [Day 23 – Day 23: Pandas - Your Data Analysis Superpower](../Day_23_Pandas/README.md)
 

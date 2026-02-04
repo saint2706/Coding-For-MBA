@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Iterable, Mapping
 
 import pandas as pd
-
 from Day_77_BI_Domain_Analytics_and_Value_Drivers import (
     DOMAIN_GROUPS,
     calculate_operations_kpis,

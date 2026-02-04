@@ -1,5 +1,5 @@
 ---
-title: 'Day 6: Tuples - Storing Immutable Business Data'
+title: "Day 6: Tuples - Storing Immutable Business Data"
 tags:
   - BI
   - Basics
@@ -9,7 +9,7 @@ tags:
 
 # 📘 Day 6: Tuples - Storing Immutable Business Data
 
-While lists are great for data that changes, sometimes you need to store data that *shouldn't*
+While lists are great for data that changes, sometimes you need to store data that _shouldn't_
 change. For this, Python provides the **tuple**.
 
 ## What is a Tuple?
@@ -63,21 +63,18 @@ tuples into testable functions.
 ## 💻 Exercises: Day 6
 
 1. **Store Geographic Coordinates:**
-
    - In a new script (`my_solutions_06.py`), a company's headquarters is located at latitude
      `40.7128` and longitude `-74.0060`.
    - Store these in a tuple called `hq_location`.
    - "Unpack" the tuple into `latitude` and `longitude` variables and print them.
 
 1. **Define Product Dimensions:**
-
    - Create a function `format_dimensions(dims_tuple)` that takes a tuple of three numbers (length,
      width, height).
    - The function should return a formatted string like `"Dimensions (LxWxH): 25cm x 15cm x 10cm"`.
    - Call the function with a tuple like `(25, 15, 10)` and print the result.
 
 1. **List vs. Tuple - The Right Tool for the Job:**
-
    - For each scenario below, decide if a **list** or a **tuple** is more appropriate and write a
      comment in your script explaining why.
      - Scenario A: Storing the monthly sales figures for the past year.
@@ -89,7 +86,7 @@ constant. Knowing when to use a tuple versus a list is a sign of a thoughtful an
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 05 – Day 5: Managing Collections of Business Data with Lists](../Day_05_Lists/README.md) • **Next:** [Day 07 – Day 7: Sets - Managing Unique Business Data](../Day_07_Sets/README.md)
 

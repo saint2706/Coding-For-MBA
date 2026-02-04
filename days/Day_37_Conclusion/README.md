@@ -1,5 +1,5 @@
 ---
-title: 'Day 37: Conclusion & Your Journey Forward'
+title: "Day 37: Conclusion & Your Journey Forward"
 tags:
   - Data
 ---
@@ -40,12 +40,10 @@ project will combine everything you've learned.
 ### Project Idea: The Interactive Sales Dashboard API
 
 1. **Data Backend:**
-
    - Use the `case_study_sales.csv` data from Day 36.
    - Create a simple SQLite database and load the sales data into it.
 
 1. **Flask API Server:**
-
    - Build a Flask API with the following endpoints:
      - `/api/summary`: Returns key metrics as JSON (e.g., total revenue, total units sold, number of
        transactions).
@@ -53,7 +51,6 @@ project will combine everything you've learned.
      - `/api/sales/by_region`: Returns the total revenue for each region as JSON.
 
 1. **Interactive Visualization Endpoint (Challenge):**
-
    - Create an endpoint like `/api/charts/revenue_by_region`.
    - This endpoint should generate an interactive bar chart with Plotly showing revenue by region.
    - Instead of `fig.show()`, use `fig.to_html(full_html=False, include_plotlyjs='cdn')`. This
@@ -88,7 +85,7 @@ that will provide immense value throughout your business career.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 36 – Day 36 – Capstone Case Study](../Day_36_Case_Study/README.md) • **Next:** [Day 38 – Day 38: Math Foundations - Linear Algebra](../Day_38_Linear_Algebra/README.md)
 

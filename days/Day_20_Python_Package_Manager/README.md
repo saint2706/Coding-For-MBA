@@ -1,5 +1,5 @@
 ---
-title: 'Day 20: Python Package Manager (pip) & Third-Party Libraries'
+title: "Day 20: Python Package Manager (pip) & Third-Party Libraries"
 tags:
   - Basics
   - Python
@@ -54,21 +54,18 @@ logic from the data analysis logic, which is a crucial best practice.
 ## 💻 Exercises: Day 20
 
 1. **Explore the `requests` Response:**
-
    - In a new script (`my_solutions_20.py`), import the `requests` library.
    - Make a `get` request to `"https://api.thecatapi.com/v1/breeds"`.
    - The object returned by `requests.get()` is a `Response` object. Print its `status_code`
      attribute (e.g., `response.status_code`) and its `headers` attribute.
 
 1. **Analyze Different Metrics:**
-
    - Import the `fetch_api_data` and `analyze_breed_metrics` functions from the lesson script.
    - Fetch the cat breed data.
    - The `analyze_breed_metrics` function can analyze both `'weight'` and `'life_span'`. Call it for
      `'life_span'` and print the result.
 
 1. **Find the Top 3 Origins:**
-
    - Import and use the `analyze_breed_origins` function, but modify the call so it returns the top
      3 most common origins instead of the default 5.
 
@@ -78,7 +75,7 @@ and more.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 19 – Day 19: Working with Dates and Times](../Day_19_Python_Date_Time/README.md) • **Next:** [Day 21 – Day 21: Virtual Environments - Professional Project Management](../Day_21_Virtual_Environments/README.md)
 

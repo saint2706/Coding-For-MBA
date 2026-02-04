@@ -1,5 +1,5 @@
 ---
-title: 'Day 3: Operators - The Tools for Business Calculation and Logic'
+title: "Day 3: Operators - The Tools for Business Calculation and Logic"
 tags:
   - BI
   - Basics
@@ -14,7 +14,7 @@ metrics, compare results, and create business rules.
 
 ## Key Operator Types
 
-- **Arithmetic Operators (`+`, `-`, `*`, `/`, `**`):** The foundation of any quantitative analysis,
+- **Arithmetic Operators (`+`, `-`, `*`, `/`, `**`):\*\* The foundation of any quantitative analysis,
   used for calculations like profit margin and compound interest.
 - **Assignment Operators (`=`, `+=`, `-=`):** Used to assign and update values in variables, such as
   accumulating total sales.
@@ -49,7 +49,6 @@ clear, reusable, and testable.
 ## 💻 Exercises: Day 3
 
 1. **Calculate Net Profit Margin:**
-
    - In a new script (`my_solutions_03.py`), create a function
      `calculate_net_profit_margin(revenue, expenses)`.
    - The function should return the net profit margin (`(revenue - expenses) / revenue`).
@@ -57,7 +56,6 @@ clear, reusable, and testable.
    - Print the result formatted as a percentage with two decimal places.
 
 1. **Inventory Check Function:**
-
    - Create a function
      `check_reorder_status(inventory_count, low_stock_threshold, reorder_threshold)`.
    - The function should return a dictionary with two keys: `is_low_stock` (boolean) and
@@ -66,7 +64,6 @@ clear, reusable, and testable.
      `reorder_threshold` of 25. Print the results.
 
 1. **Sales Bonus Eligibility Function:**
-
    - The logic for bonus eligibility is already in the `check_bonus_eligibility` function in
      `operators.py`.
    - In your own script, import this function:
@@ -79,7 +76,7 @@ business calculations and logical checks you'll encounter.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 02 – Day 2: Storing and Analyzing Business Data](../Day_02_Variables_Builtin_Functions/README.md) • **Next:** [Day 04 – Day 4: Working with Text Data - Strings](../Day_04_Strings/README.md)
 

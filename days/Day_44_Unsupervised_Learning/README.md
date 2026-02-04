@@ -1,5 +1,5 @@
 ---
-title: 'Day 44: Unsupervised Learning'
+title: "Day 44: Unsupervised Learning"
 tags:
   - ML
 ---
@@ -53,7 +53,7 @@ To execute the entire suite, simply call `pytest` from the repository root.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 43 – Day 43 · Supervised Learning – Classification (Part 2)](../Day_43_Supervised_Learning_Classification_Part_2/README.md) • **Next:** [Day 45 – Day 45: Feature Engineering & Model Evaluation](../Day_45_Feature_Engineering_and_Evaluation/README.md)
 

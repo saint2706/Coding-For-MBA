@@ -13,12 +13,7 @@ import glob
 import os
 from typing import Dict, List
 
-from fh import (
-    check_email,
-    counter,
-    extract_emails,
-    find_most_common_words,
-)
+from fh import check_email, counter, extract_emails, find_most_common_words
 
 
 def exercise_1_document_analyzer():

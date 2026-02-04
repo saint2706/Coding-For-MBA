@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Dict, Iterable, Mapping, Sequence, TypedDict, cast
 
 import pandas as pd
-
 from mypackage.bi_curriculum import BiTopic, topics_by_titles
 
 SECTION_TITLES: Mapping[str, list[str]] = {

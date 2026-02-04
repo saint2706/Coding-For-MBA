@@ -1,5 +1,5 @@
 ---
-title: 'Day 50: MLOps - Model Deployment'
+title: "Day 50: MLOps - Model Deployment"
 tags:
   - ML
   - MLOps
@@ -57,7 +57,7 @@ A common way to deploy a model is to wrap it in a web API.
 1. The server loads the saved model and uses it to make a prediction on the data.
 1. The prediction is sent back to the client in the API response (usually in JSON format).
 
-______________________________________________________________________
+---
 
 ## Practice Exercise
 
@@ -77,7 +77,7 @@ behaviour, continue into Days 65–67 for the dedicated deep dives.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 49 – Day 49: Natural Language Processing (NLP)](../Day_49_NLP/README.md) • **Next:** [Day 51 – Day 51 – Regularised Models](../Day_51_Regularized_Models/README.md)
 

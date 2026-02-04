@@ -81,7 +81,7 @@ regulatory requirements for data handling.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 86 – Day 86 – BI in the Cloud](../Day_86_BI_Cloud/README.md) • **Next:** [Day 88 – Day 88 – Capstone Project - Part 1](../Day_88_Capstone_Part_1/README.md)
 

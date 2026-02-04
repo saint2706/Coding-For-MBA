@@ -50,7 +50,7 @@ Prototype predictive loops that inform operational decisions.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 76 – Day 76 – BI Platforms and Automation Tools](../Day_76_BI_Platforms_and_Automation_Tools/README.md) • **Next:** [Day 78 – Day 78 – BI Experimentation and Predictive Insights](../Day_78_BI_Experimentation_and_Predictive_Insights/README.md)
 

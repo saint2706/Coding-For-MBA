@@ -5,7 +5,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from Day_69_BI_Strategy_and_Stakeholders import build_topic_dataframe, load_topics
 
 # %%

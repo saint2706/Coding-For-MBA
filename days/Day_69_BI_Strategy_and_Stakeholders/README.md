@@ -33,10 +33,10 @@ plans, stakeholder engagement tactics, and action-oriented guidance.
 
 Use the following prompts during the exercise:
 
-- *Marketing director*: Which BI operation clarifies campaign performance? Why?
-- *Finance controller*: Which BI function keeps recurring reporting accurate and compliant?
-- *Operations manager*: How does BI support day-to-day execution and exception handling?
-- *Executive sponsor*: What strategic BI questions keep them focused on long-term growth?
+- _Marketing director_: Which BI operation clarifies campaign performance? Why?
+- _Finance controller_: Which BI function keeps recurring reporting accurate and compliant?
+- _Operations manager_: How does BI support day-to-day execution and exception handling?
+- _Executive sponsor_: What strategic BI questions keep them focused on long-term growth?
 
 Encourage learners to map each persona to the operating model and strategy tier that best serves
 their needs, then capture one actionable insight per persona.
@@ -72,7 +72,7 @@ Define the personal capabilities you will cultivate throughout Phase 5.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 68 – Day 68 – BI Analyst Foundations](../Day_68_BI_Analyst_Foundations/README.md) • **Next:** [Day 70 – Day 70 – BI Metrics and Data Literacy](../Day_70_BI_Metrics_and_Data_Literacy/README.md)
 

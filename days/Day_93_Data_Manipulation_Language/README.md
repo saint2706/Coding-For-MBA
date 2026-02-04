@@ -1,5 +1,5 @@
 ---
-title: 'Day 93: Data Manipulation Language (DML)'
+title: "Day 93: Data Manipulation Language (DML)"
 tags:
   - Data
   - NLP
@@ -53,7 +53,7 @@ Please see the `exercises.sql` file for today's exercises.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 92 – Day 92: Data Definition Language (DDL)](../Day_92_Data_Definition_Language/README.md) • **Next:** [Day 94 – Day 94: Data Query Language (DQL)](../Day_94_Data_Query_Language/README.md)
 

@@ -25,7 +25,7 @@ solve? What are the key questions you need to answer?
 - **Key Questions:** A list of the specific questions your analysis will answer.
 - **Deliverables:** What will you produce at the end of the project? (e.g., a report, a dashboard, a
   presentation)
-- **Out of Scope:** What will you *not* be doing in this project? This is just as important as
+- **Out of Scope:** What will you _not_ be doing in this project? This is just as important as
   defining what is in scope.
 
 ### 2. Identify Data Sources and Key Metrics
@@ -56,7 +56,7 @@ Create a detailed plan for how you will analyze the data and derive insights.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 87 – Day 87 – Data Governance and Security](../Day_87_Data_Governance/README.md) • **Next:** [Day 89 – Day 89 – Capstone Project - Part 2](../Day_89_Capstone_Part_2/README.md)
 

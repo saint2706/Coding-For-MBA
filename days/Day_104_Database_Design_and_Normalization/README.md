@@ -1,5 +1,5 @@
 ---
-title: 'Day 104: Database Design and Normalization'
+title: "Day 104: Database Design and Normalization"
 tags:
   - Data
   - Database
@@ -52,7 +52,7 @@ understand the following concepts:
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 103 – Day 103: Pivoting Data](../Day_103_Pivoting_Data/README.md) • **Next:** [Day 105 – Day 105: JSON in SQL](../Day_105_JSON_in_SQL/README.md)
 

@@ -22,7 +22,7 @@ comparison table.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 50 – Day 50: MLOps - Model Deployment](../Day_50_MLOps/README.md) • **Next:** [Day 52 – Day 52 – Ensemble Methods](../Day_52_Ensemble_Methods/README.md)
 

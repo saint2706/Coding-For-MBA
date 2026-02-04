@@ -24,7 +24,7 @@ decreasing reconstruction losses and summarise practical tuning tips.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 58 – Day 58 – Transformers and Attention](../Day_58_Transformers_and_Attention/README.md) • **Next:** [Day 60 – Day 60 – Graph and Geometric Learning](../Day_60_Graph_and_Geometric_Learning/README.md)
 

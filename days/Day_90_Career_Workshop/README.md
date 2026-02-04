@@ -26,8 +26,8 @@ tell a story of your skills and accomplishments.
 - **Quantify Your Achievements:** Instead of saying "Analyzed sales data," say "Analyzed sales data
   to identify key customer segments, leading to a 15% increase in targeted marketing ROI." Use
   metrics to demonstrate impact.
-- **Use Action Verbs:** Start bullet points with strong action verbs like *developed*, *engineered*,
-  *analyzed*, *visualized*, *optimized*, and *automated*.
+- **Use Action Verbs:** Start bullet points with strong action verbs like _developed_, _engineered_,
+  _analyzed_, _visualized_, _optimized_, and _automated_.
 - **Tailor for the Role:** Customize your resume for each job application. Mirror the language used
   in the job description and highlight the skills and experiences that are most relevant to that
   specific role.
@@ -45,7 +45,7 @@ tell a story of your skills and accomplishments.
 > - Presented actionable insights to stakeholders, highlighting underperforming regions and
 >   identifying opportunities for a new product launch, potentially increasing revenue by 10%.
 
-______________________________________________________________________
+---
 
 ## Technical Interviewing
 
@@ -73,7 +73,7 @@ Preparation is critical.
   usage data. How would you investigate this, and what would you build to help us monitor this
   metric?"
 
-______________________________________________________________________
+---
 
 ## Networking and Personal Branding
 
@@ -103,7 +103,7 @@ In a competitive market, your personal brand and network can be a significant ad
   Ask them for a 15-minute chat about their role and career path. Most people are happy to share
   their experiences.
 
-______________________________________________________________________
+---
 
 ## Continuing Education
 
@@ -131,7 +131,7 @@ non-negotiable.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 89 – Day 89 – Capstone Project - Part 2](../Day_89_Capstone_Part_2/README.md) • **Next:** [Day 91 – Day 91: Relational Databases](../Day_91_Relational_Databases/README.md)
 

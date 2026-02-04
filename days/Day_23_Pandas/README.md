@@ -1,5 +1,5 @@
 ---
-title: 'Day 23: Pandas - Your Data Analysis Superpower'
+title: "Day 23: Pandas - Your Data Analysis Superpower"
 tags:
   - Data
 ---
@@ -61,13 +61,11 @@ The content for this lesson is split into two main files:
 ## 💻 Exercises: Day 23
 
 1. **Create an Employee DataFrame:**
-
    - In a new script (`my_solutions_23.py`), create a Python dictionary to store data for 3-4
      employees (e.g., `Name`, `Department`, `Salary`).
    - Convert this dictionary into a Pandas DataFrame and print it.
 
 1. **Analyze Sales Data from a File:**
-
    - Import the `load_data_from_csv` and `filter_by_title` functions from the `pandas_from_csv`
      script.
    - The path to the data file is `data/hacker_news.csv`. Load it using the function.
@@ -75,7 +73,6 @@ The content for this lesson is split into two main files:
      their titles.
 
 1. **Calculate a New Column:**
-
    - Create a DataFrame with `'Price'` and `'Units Sold'` columns.
    - Create a new column called `'Revenue'` by multiplying the 'Price' and 'Units Sold' columns.
    - Display the DataFrame with the new `'Revenue'` column.
@@ -86,7 +83,7 @@ data.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 22 – Day 22: NumPy - The Foundation of Numerical Computing](../Day_22_NumPy/README.md) • **Next:** [Day 24 – Day 24: Advanced Pandas - Working with Real Data](../Day_24_Pandas_Advanced/README.md)
 

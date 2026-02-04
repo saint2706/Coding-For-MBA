@@ -1,5 +1,5 @@
 ---
-title: 'Day 24: Advanced Pandas - Working with Real Data'
+title: "Day 24: Advanced Pandas - Working with Real Data"
 tags:
   - Advanced
   - Data
@@ -113,14 +113,12 @@ dataset across multiple analyses, load the CSV once and reuse the DataFrame rath
 ## 💻 Exercises: Day 24
 
 1. **Load and Inspect:**
-
    - In a new script (`my_solutions_24.py`), import `pandas as pd` and `pathlib`.
    - Load the `sales_data.csv` file (located in the `Day_24_Pandas_Advanced` directory) into a
      DataFrame.
    - Use `.head()` and `.info()` to inspect the loaded data.
 
 1. **Select and Filter:**
-
    - Using the DataFrame from the previous exercise, import and use the
      `filter_by_product_and_region` function to find all sales of `"Mouse"` in the `"South"` region.
      Print the result.
@@ -128,7 +126,6 @@ dataset across multiple analyses, load the CSV once and reuse the DataFrame rath
      $70,000.
 
 1. **Basic Data Cleaning:**
-
    - Import the `handle_missing_data` function.
    - Call the function twice on your DataFrame:
      - Once with `strategy='drop'` to remove rows with missing data.
@@ -141,7 +138,7 @@ every data analysis project.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 23 – Day 23: Pandas - Your Data Analysis Superpower](../Day_23_Pandas/README.md) • **Next:** [Day 25 – Day 25: Data Cleaning - The Most Important Skill in Analytics](../Day_25_Data_Cleaning/README.md)
 

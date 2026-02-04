@@ -1,5 +1,5 @@
 ---
-title: 'Day 25: Data Cleaning - The Most Important Skill in Analytics'
+title: "Day 25: Data Cleaning - The Most Important Skill in Analytics"
 tags:
   - BI
   - Data
@@ -51,14 +51,12 @@ cleaning process into a single, reusable function.
 For these exercises, you will use the provided `messy_sales_data.csv` file.
 
 1. **Load and Clean:**
-
    - In a new script (`my_solutions_25.py`), import `pandas` and the `clean_sales_data` function
      from the lesson script.
    - Load the `messy_sales_data.csv` file into a DataFrame.
    - Pass your DataFrame to the `clean_sales_data` function to get a cleaned version.
 
 1. **Verify the Cleaning:**
-
    - On your new `cleaned_df`, perform the following checks and print the results:
      - Use `.info()` to confirm that 'Order Date' is a datetime and 'Price' is a float.
      - Print the unique values of the 'Product' column (`cleaned_df['Product'].unique()`) to confirm
@@ -71,7 +69,7 @@ analysis-ready format is arguably the most valuable skill a data analyst can pos
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 24 – Day 24: Advanced Pandas - Working with Real Data](../Day_24_Pandas_Advanced/README.md) • **Next:** [Day 26 – Day 26: Practical Statistics for Business Analysis](../Day_26_Statistics/README.md)
 

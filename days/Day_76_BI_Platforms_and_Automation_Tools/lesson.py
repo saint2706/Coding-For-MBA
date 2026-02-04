@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from Day_76_BI_Platforms_and_Automation_Tools import (
     build_platform_matrix,
     compare_export_formats,

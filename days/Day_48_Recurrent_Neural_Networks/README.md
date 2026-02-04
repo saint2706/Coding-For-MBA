@@ -1,5 +1,5 @@
 ---
-title: 'Day 48: Recurrent Neural Networks (RNNs) for Sequence Data'
+title: "Day 48: Recurrent Neural Networks (RNNs) for Sequence Data"
 tags:
   - Data
   - ML
@@ -38,7 +38,6 @@ very small during backpropagation, effectively stopping the learning process for
 To solve this problem, more sophisticated RNN variants were developed:
 
 1. **Long Short-Term Memory (LSTM)**
-
    - LSTMs are a special kind of RNN that are explicitly designed to avoid the long-term dependency
      problem.
    - They have a more complex internal structure called a **cell**, which includes three **gates**
@@ -46,7 +45,6 @@ To solve this problem, more sophisticated RNN variants were developed:
      network to remember or forget information over long periods.
 
 1. **Gated Recurrent Unit (GRU)**
-
    - GRUs are a simplified version of LSTMs. They combine the forget and input gates into a single
      "update gate" and have fewer parameters.
    - They often perform similarly to LSTMs but are computationally more efficient.
@@ -59,7 +57,7 @@ To solve this problem, more sophisticated RNN variants were developed:
 1. **Dense Layer:** A standard fully connected layer for classification.
 1. **Output Layer:** Produces the final prediction.
 
-______________________________________________________________________
+---
 
 ## Practice Exercise
 
@@ -88,7 +86,7 @@ ______________________________________________________________________
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 47 – Day 47: Convolutional Neural Networks (CNNs) for Computer Vision](../Day_47_Convolutional_Neural_Networks/README.md) • **Next:** [Day 49 – Day 49: Natural Language Processing (NLP)](../Day_49_NLP/README.md)
 

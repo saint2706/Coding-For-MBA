@@ -66,7 +66,7 @@ Codify the controls that keep BI programs trustworthy.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 80 – Day 80 – BI Data Quality and Governance](../Day_80_BI_Data_Quality_and_Governance/README.md) • **Next:** [Day 82 – Day 82 – BI ETL and Pipeline Automation](../Day_82_BI_ETL_and_Pipeline_Automation/README.md)
 

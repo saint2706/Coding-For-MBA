@@ -1,5 +1,5 @@
 ---
-title: 'Day 17: Regular Expressions for Text Pattern Matching'
+title: "Day 17: Regular Expressions for Text Pattern Matching"
 tags:
   - Basics
   - NLP
@@ -23,7 +23,7 @@ patterns can solve most common business problems.
 - `\s`: Matches a whitespace character.
 - `\b`: Matches a word boundary.
 - `[]`: Defines a character set (e.g., `[abc]` matches 'a', 'b', or 'c').
-- `[^...]`: Matches anything *not* in the character set.
+- `[^...]`: Matches anything _not_ in the character set.
 
 ## Environment Setup
 
@@ -52,7 +52,6 @@ testable function.
 ## 💻 Exercises: Day 17
 
 1. **Extract All Numbers from a String:**
-
    - In a new script (`my_solutions_17.py`), you have a string:
      `text = "Order #123 was placed for $49.99. The order contains 3 items."`
    - Import the `extract_and_analyze_numbers` function from the lesson script. Note that it only
@@ -61,7 +60,6 @@ testable function.
    - Call the function and print the extracted numbers.
 
 1. **Validate a Product Code:**
-
    - A valid product code must follow the format `PROD-XXXX`, where `X` is a digit.
    - Create a function `is_valid_product_code(code)` that returns `True` if the code is valid and
      `False` otherwise.
@@ -70,7 +68,6 @@ testable function.
    - Test your function with `"PROD-1234"` (valid) and `"PROD-123"` (invalid).
 
 1. **Clean Up a Messy Sentence:**
-
    - You have a sentence with extra symbols: `sentence = "Contact us... at (support@example.com)!"`
    - Import and use the `clean_text_advanced` function from the lesson to remove the punctuation and
      symbols.
@@ -82,7 +79,7 @@ unstructured data.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 16 – Day 16: File Handling for Business Analytics](../Day_16_File_Handling/README.md) • **Next:** [Day 18 – Day 18: Classes and Objects - Modeling Business Concepts](../Day_18_Classes_and_Objects/README.md)
 

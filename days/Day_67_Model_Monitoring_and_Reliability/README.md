@@ -53,7 +53,7 @@ alerts fire, retraining queues populate, and canary verdicts respect latency/acc
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 66 – Day 66 – Model Deployment and Serving Patterns](../Day_66_Model_Deployment_and_Serving/README.md) • **Next:** [Day 68 – Day 68 – BI Analyst Foundations](../Day_68_BI_Analyst_Foundations/README.md)
 

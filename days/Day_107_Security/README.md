@@ -1,5 +1,5 @@
 ---
-title: 'Day 107: SQL Security'
+title: "Day 107: SQL Security"
 tags:
   - SQL
 ---
@@ -51,7 +51,7 @@ understand the following concepts:
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 106 – Day 106: XML in SQL](../Day_106_XML_in_SQL/README.md) • **Next:** [Day 108 – Day 108: SQL Performance Tuning](../Day_108_Performance_Tuning/README.md)
 

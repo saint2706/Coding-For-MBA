@@ -1,5 +1,5 @@
 ---
-title: 'Day 19: Working with Dates and Times'
+title: "Day 19: Working with Dates and Times"
 tags:
   - Basics
   - Python
@@ -48,7 +48,6 @@ into its own testable function.
 ## 💻 Exercises: Day 19
 
 1. **Format the Current Date:**
-
    - In a new script (`my_solutions_19.py`), import the `datetime` object from the `datetime`
      module.
    - Get the current date and time.
@@ -56,7 +55,6 @@ into its own testable function.
    - Print the result.
 
 1. **Calculate Days Until a Deadline:**
-
    - Create a function `days_until(deadline_str)` that takes a date string in `"YYYY-MM-DD"` format.
    - Inside the function, get today's date (`date.today()`) and parse the deadline string into a
      `date` object.
@@ -64,7 +62,6 @@ into its own testable function.
    - Call your function with a future date and print the result.
 
 1. **Parse a Log File Timestamp:**
-
    - You have a timestamp from a log file as a string: `"Log entry: 2023-03-15 10:30:00"`.
    - Import the `parse_string_to_datetime` function from the lesson.
    - The timestamp part starts at index 13. Use string slicing to extract just the date/time part
@@ -77,7 +74,7 @@ to tackle time-series analysis and other time-based calculations.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 18 – Day 18: Classes and Objects - Modeling Business Concepts](../Day_18_Classes_and_Objects/README.md) • **Next:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](../Day_20_Python_Package_Manager/README.md)
 

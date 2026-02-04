@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import pandas as pd
-
 from Day_80_BI_Data_Quality_and_Governance.solutions import (
     build_data_quality_scorecard,
     build_governance_scorecard,

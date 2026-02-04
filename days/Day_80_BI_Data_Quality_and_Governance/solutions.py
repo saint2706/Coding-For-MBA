@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import Iterable, Mapping
 
 import pandas as pd
-
 from mypackage.bi_curriculum import BiTopic, group_topics_by_titles
 
 TOPIC_GROUPS: Mapping[str, list[str]] = {

@@ -1,5 +1,5 @@
 ---
-title: 'Day 1: Python for Business Analytics - First Steps'
+title: "Day 1: Python for Business Analytics - First Steps"
 tags:
   - BI
   - Basics
@@ -53,6 +53,7 @@ Let's explore the code for today's lesson. The script for this lesson is `hellow
 1. **Run the Script:** To run the script, make sure your terminal is in the root directory of this
    project (the `Coding-For-MBA` folder) and your virtual environment is active. Then, execute the
    script by running:
+
    ```bash
    python Day_01_Introduction/helloworld.py
    ```
@@ -64,19 +65,16 @@ You will see the output of the business calculations printed to your console.
 The exercises are designed to help you practice the fundamental concepts introduced in the script.
 
 1. **Company Introduction:**
-
    - Create a new Python file named `my_solutions.py` in the `Day_01_Introduction` folder.
    - In your new script, use the `print()` function to introduce a fictional company.
    - Example: `print("Welcome to InnovateCorp Analytics")`
 
 1. **Quarterly Sales Calculation:**
-
    - A company had quarterly sales of $110,000, $120,000, $135,000, and $140,000.
    - In your script, use the `print()` function to calculate and display the total annual sales.
      (Hint: you can do math right inside the print statement: `print(110000 + 120000 + ...)`).
 
 1. **Checking Data Types in Business:**
-
    - Use the `type()` function to check the data types of the following business-related data
      points.
      - `1500` (e.g., number of units sold)
@@ -89,7 +87,7 @@ becoming a data-savvy leader.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** _None (First Lesson)_ • **Next:** [Day 02 – Day 2: Storing and Analyzing Business Data](../Day_02_Variables_Builtin_Functions/README.md)
 

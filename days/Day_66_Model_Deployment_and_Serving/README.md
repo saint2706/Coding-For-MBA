@@ -53,7 +53,7 @@ share a consistent response schema and survive a stress scenario with concurrent
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 65 – Day 65 – MLOps Pipelines and CI/CD Automation](../Day_65_MLOps_Pipelines_and_CI/README.md) • **Next:** [Day 67 – Day 67 – Model Monitoring and Reliability Engineering](../Day_67_Model_Monitoring_and_Reliability/README.md)
 

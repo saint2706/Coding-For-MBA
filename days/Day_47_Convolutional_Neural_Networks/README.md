@@ -1,5 +1,5 @@
 ---
-title: 'Day 47: Convolutional Neural Networks (CNNs) for Computer Vision'
+title: "Day 47: Convolutional Neural Networks (CNNs) for Computer Vision"
 tags:
   - ML
 ---
@@ -24,14 +24,12 @@ relationship between pixels.
 ### Core Components of a CNN
 
 1. **Convolutional Layer (`Conv2D`)**
-
    - This is the main building block of a CNN. It uses **filters** (or kernels) to slide over the
      input image and perform a convolution operation.
    - This process creates **feature maps** that highlight specific patterns like edges, corners, or
      textures in the image. The network learns the optimal values for these filters during training.
 
 1. **Pooling Layer (`MaxPooling2D`)**
-
    - The pooling layer is used to downsample the feature maps, reducing their spatial dimensions.
    - This reduces the number of parameters and computation in the network, helping to control
      overfitting.
@@ -39,7 +37,6 @@ relationship between pixels.
      the maximum value from each region.
 
 1. **Flatten Layer**
-
    - After the convolutional and pooling layers have extracted features, the resulting
      multi-dimensional feature maps are flattened into a single one-dimensional vector.
    - This vector is then fed into a standard fully connected neural network (like the one from Day
@@ -56,7 +53,7 @@ or more `Dense` layers for classification.
 1. **Dense Layer (with ReLU)**
 1. **Output Dense Layer (with Softmax for classification)**
 
-______________________________________________________________________
+---
 
 ## Practice Exercise
 
@@ -82,7 +79,7 @@ ______________________________________________________________________
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 46 – Day 46: Introduction to Neural Networks & Frameworks](../Day_46_Intro_to_Neural_Networks/README.md) • **Next:** [Day 48 – Day 48: Recurrent Neural Networks (RNNs) for Sequence Data](../Day_48_Recurrent_Neural_Networks/README.md)
 

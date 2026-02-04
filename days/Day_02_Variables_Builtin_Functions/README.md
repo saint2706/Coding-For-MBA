@@ -1,5 +1,5 @@
 ---
-title: 'Day 2: Storing and Analyzing Business Data'
+title: "Day 2: Storing and Analyzing Business Data"
 tags:
   - BI
   - Basics
@@ -59,13 +59,11 @@ and testability.
 ## 💻 Exercises: Day 2
 
 1. **Company Profile Variables:**
-
    - In a new Python script (`my_solutions_02.py`), declare variables for a fictional company:
      `company_name`, `year_founded`, `current_revenue`, and `is_publicly_traded`.
    - Print each of these variables with a descriptive label.
 
 1. **Sales Analysis:**
-
    - A list of sales transactions is: `[150.50, 200.00, 75.25, 300.75, 120.00]`.
    - Store these in a variable called `weekly_sales`.
    - Use built-in functions to calculate and print:
@@ -75,7 +73,6 @@ and testability.
      - The average sale amount.
 
 1. **Profit Calculator Function:**
-
    - Create a function `calculate_profit(revenue, expenses)` that takes two numbers and returns the
      difference.
    - Call this function with some example numbers (e.g., `calculate_profit(50000, 35000)`) and print
@@ -86,7 +83,7 @@ for analysis—foundational skills for everything that comes next.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 01 – Day 1: Python for Business Analytics - First Steps](../Day_01_Introduction/README.md) • **Next:** [Day 03 – Day 3: Operators - The Tools for Business Calculation and Logic](../Day_03_Operators/README.md)
 

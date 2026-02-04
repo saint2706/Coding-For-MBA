@@ -1,5 +1,5 @@
 ---
-title: 'Day 38: Math Foundations - Linear Algebra'
+title: "Day 38: Math Foundations - Linear Algebra"
 tags:
   - Data
 ---
@@ -39,7 +39,7 @@ with confidence.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 37 – Day 37: Conclusion & Your Journey Forward](../Day_37_Conclusion/README.md) • **Next:** [Day 39 – Day 39: Math Foundations - Calculus](../Day_39_Calculus/README.md)
 

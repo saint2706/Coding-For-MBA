@@ -47,7 +47,7 @@ Translate BI playbooks into high-impact industry verticals.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 81 – Day 81 – BI Architecture and Data Modeling](../Day_81_BI_Architecture_and_Data_Modeling/README.md) • **Next:** [Day 83 – Day 83 – BI Cloud and Modern Data Stack](../Day_83_BI_Cloud_and_Modern_Data_Stack/README.md)
 

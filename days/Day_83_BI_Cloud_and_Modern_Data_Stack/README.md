@@ -75,7 +75,7 @@ Design a career evidence plan that highlights BI outcomes.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 82 – Day 82 – BI ETL and Pipeline Automation](../Day_82_BI_ETL_and_Pipeline_Automation/README.md) • **Next:** [Day 84 – Day 84 – BI Career Development and Capstone](../Day_84_BI_Career_Development_and_Capstone/README.md)
 

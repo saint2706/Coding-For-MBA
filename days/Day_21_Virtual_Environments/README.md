@@ -1,5 +1,5 @@
 ---
-title: 'Day 21: Virtual Environments - Professional Project Management'
+title: "Day 21: Virtual Environments - Professional Project Management"
 tags:
   - Data
 ---
@@ -34,22 +34,18 @@ dependencies.
 The key commands, which you should run from your terminal, are:
 
 1. **Create Environment:** `python3 -m venv venv`
-
    - This creates a `venv` folder in your project directory.
 
 1. **Activate Environment:**
-
    - **macOS/Linux:** `source venv/bin/activate`
    - **Windows:** `venv\\Scripts\\activate`
    - Your terminal prompt will change to show `(venv)`, indicating it's active.
 
 1. **Install Packages:** `pip install -r requirements.txt`
-
    - This command reads the `requirements.txt` file and installs the exact versions of all necessary
      packages into your active `venv`.
 
 1. **Deactivate Environment:** `deactivate`
-
    - When you're done, this command returns you to your normal shell.
 
 ## 💻 Exercises: Day 21
@@ -57,23 +53,19 @@ The key commands, which you should run from your terminal, are:
 This lesson is about terminal commands, not Python scripts. The best way to learn is by doing.
 
 1. **Create a New Project:**
-
    - On your computer, create a new folder called `my_test_project`.
    - Navigate into it using `cd my_test_project`.
 
 1. **Initialize and Activate:**
-
    - Create a new virtual environment inside it: `python3 -m venv my_env`.
    - Activate the new environment.
 
 1. **Install and Freeze:**
-
    - Install a package that is not in our main project, for example: `pip install "cowsay==5.0"`.
    - Generate a `requirements.txt` file for this new project using the `pip freeze` command. Open
      the file and see that `cowsay` is listed.
 
 1. **Deactivate and Clean Up:**
-
    - Deactivate the environment. You can now delete the `my_test_project` folder.
 
 🎉 **Congratulations!** You've practiced one of the most important skills for professional Python
@@ -82,7 +74,7 @@ projects more robust and shareable.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 20 – Day 20: Python Package Manager (pip) & Third-Party Libraries](../Day_20_Python_Package_Manager/README.md) • **Next:** [Day 22 – Day 22: NumPy - The Foundation of Numerical Computing](../Day_22_NumPy/README.md)
 

@@ -7,7 +7,6 @@ from __future__ import annotations
 from typing import Mapping
 
 import pandas as pd
-
 from Day_83_BI_Cloud_and_Modern_Data_Stack import (
     build_cloud_topic_dataframe,
     build_provider_comparison_frame,

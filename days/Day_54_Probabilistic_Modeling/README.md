@@ -24,7 +24,7 @@ outputs for the reproducible toy datasets.
 
 <!-- LESSON_FOOTER_START -->
 
-______________________________________________________________________
+---
 
 **Previous:** [Day 53 – Day 53 – Model Tuning and Feature Selection](../Day_53_Model_Tuning_and_Feature_Selection/README.md) • **Next:** [Day 55 – Day 55 – Advanced Unsupervised Learning](../Day_55_Advanced_Unsupervised_Learning/README.md)
 
