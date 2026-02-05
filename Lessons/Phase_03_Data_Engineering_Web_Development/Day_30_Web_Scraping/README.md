@@ -4,156 +4,382 @@ title: "Web Scraping"
 phase: 3
 phaseTitle: "Data Engineering & Web Development"
 slug: "web-scraping"
-duration: 60
+duration: 55
 difficulty: "intermediate"
 tags: [python, beautifulsoup, requests, scraping]
-concepts: [HTTP requests, HTML parsing, data extraction, ethical scraping]
-prerequisites: [16, 17]
+concepts: [HTTP requests, HTML parsing, CSS selectors, ethical scraping]
+prerequisites: [15]
 outcomes: [Fetch web pages with requests, Parse HTML with BeautifulSoup, Extract structured data]
 ---
 
 # 🎯 Day 30: Web Scraping
 
-> *"The internet is the world's largest database. Learn to read it."*
+> *"When there's no API, there's scraping."*
 
 ---
 
 ## The "Never-Coded" Bridge
 
-Data doesn't always come in CSVs. Sometimes it's on a website—product prices, stock quotes, news articles. Web scraping lets you collect this data automatically.
+**Imagine you need competitor pricing data.** They have a website with prices, but no API. Or you want to track job postings, news articles, or real estate listings—all displayed on websites, none available as downloads.
+
+**Web scraping fills the gap.** It programmatically extracts data from websites, turning unstructured HTML into structured datasets.
+
+**Real-world applications:**
+- **Price monitoring**: Track competitor prices daily
+- **Job boards**: Aggregate listings from multiple sites
+- **Research**: Collect publicly available data at scale
+- **News**: Monitor mentions and sentiment
+
+**Ethical considerations:**
+- Respect `robots.txt` files
+- Add delays between requests
+- Don't overload servers
+- Check terms of service
 
 ---
 
 ## The Technical Deep Dive
 
-### Fetching Web Pages
+### Fetching Pages with Requests
 
 ```python
 import requests
 
-url = "https://example.com"
+url = "http://quotes.toscrape.com"
 response = requests.get(url)
 
-print(response.status_code)  # 200 = success
-print(response.text[:500])   # HTML content
+print(f"Status: {response.status_code}")  # 200 = success
+print(f"Content length: {len(response.text)} characters")
+print(response.text[:500])
 ```
 
-### Parsing with BeautifulSoup
+### Parsing HTML with BeautifulSoup
 
 ```python
 from bs4 import BeautifulSoup
+import requests
 
-html = """
-<html>
-  <body>
-    <h1 class="title">Welcome</h1>
-    <div class="products">
-      <div class="product">
-        <span class="name">Laptop</span>
-        <span class="price">$999</span>
-      </div>
-      <div class="product">
-        <span class="name">Mouse</span>
-        <span class="price">$29</span>
-      </div>
-    </div>
-  </body>
-</html>
-"""
+response = requests.get("http://quotes.toscrape.com")
+soup = BeautifulSoup(response.text, "html.parser")
 
-soup = BeautifulSoup(html, "html.parser")
+# Find elements by tag
+title = soup.find("title")
+print(f"Title: {title.text}")
 
-# Find single element
-title = soup.find("h1", class_="title").text
-
-# Find all elements
-products = soup.find_all("div", class_="product")
-for p in products:
-    name = p.find("span", class_="name").text
-    price = p.find("span", class_="price").text
-    print(f"{name}: {price}")
+# Find all elements of a type
+quotes = soup.find_all("span", class_="text")
+for quote in quotes[:3]:
+    print(quote.text)
 ```
 
 ### CSS Selectors
 
 ```python
-# Alternative to find methods
-soup.select("h1.title")[0].text
-soup.select("div.product span.name")
-soup.select("a[href]")  # All links
+from bs4 import BeautifulSoup
+import requests
+
+response = requests.get("http://quotes.toscrape.com")
+soup = BeautifulSoup(response.text, "html.parser")
+
+# CSS selector syntax
+quotes = soup.select("span.text")
+authors = soup.select("small.author")
+tags = soup.select("div.tags a.tag")
+
+for quote, author in zip(quotes[:3], authors[:3]):
+    print(f'"{quote.text}" — {author.text}')
 ```
 
-### Handling Pagination
+### Extracting Structured Data
 
 ```python
-import requests
 from bs4 import BeautifulSoup
+import requests
+import pandas as pd
 
-base_url = "https://example.com/products?page="
-all_products = []
-
-for page in range(1, 6):
-    response = requests.get(f"{base_url}{page}")
+def scrape_quotes(url):
+    response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
     
-    products = soup.find_all("div", class_="product")
-    for p in products:
-        all_products.append({
-            "name": p.find("span", class_="name").text,
-            "price": p.find("span", class_="price").text
-        })
+    data = []
+    for div in soup.select("div.quote"):
+        quote = div.select_one("span.text").text
+        author = div.select_one("small.author").text
+        tags = [tag.text for tag in div.select("a.tag")]
+        data.append({"quote": quote, "author": author, "tags": tags})
+    
+    return data
 
-print(f"Collected {len(all_products)} products")
+quotes = scrape_quotes("http://quotes.toscrape.com")
+df = pd.DataFrame(quotes)
+print(df.head())
 ```
 
-### Ethical Scraping
+### Pagination
 
 ```python
 import time
+import requests
+from bs4 import BeautifulSoup
 
-# Check robots.txt
-# Respect rate limits
-# Identify yourself
+def scrape_all_pages(base_url, max_pages=5):
+    all_quotes = []
+    
+    for page in range(1, max_pages + 1):
+        url = f"{base_url}/page/{page}/"
+        response = requests.get(url)
+        
+        if response.status_code != 200:
+            break
+            
+        soup = BeautifulSoup(response.text, "html.parser")
+        quotes = soup.select("div.quote")
+        
+        if not quotes:
+            break
+            
+        for div in quotes:
+            quote = div.select_one("span.text").text
+            author = div.select_one("small.author").text
+            all_quotes.append({"quote": quote, "author": author})
+        
+        print(f"Scraped page {page}: {len(quotes)} quotes")
+        time.sleep(1)  # Be polite!
+    
+    return all_quotes
 
-headers = {"User-Agent": "MyBot/1.0 (contact@example.com)"}
-
-for url in urls:
-    response = requests.get(url, headers=headers)
-    time.sleep(1)  # Be polite - don't overload servers
+quotes = scrape_all_pages("http://quotes.toscrape.com", max_pages=3)
+print(f"Total: {len(quotes)} quotes")
 ```
+
+---
+
+## Senior-Level Insights
+
+### Robust Scraping Practices
+
+```python
+import requests
+from requests.exceptions import RequestException
+
+def safe_request(url, retries=3):
+    headers = {"User-Agent": "Mozilla/5.0 (Educational scraper)"}
+    
+    for attempt in range(retries):
+        try:
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            return response
+        except RequestException as e:
+            print(f"Attempt {attempt + 1} failed: {e}")
+            time.sleep(2 ** attempt)  # Exponential backoff
+    
+    return None
+```
+
+### Common Challenges
+
+| Issue              | Solution                       |
+| ------------------ | ------------------------------ |
+| 403 Forbidden      | Add User-Agent header          |
+| Pages load slow    | Add timeout, implement retries |
+| JavaScript content | Use Selenium or Playwright     |
+| Data in tables     | Use `pd.read_html()`           |
+| Rate limiting      | Add delays, respect robots.txt |
+
+### When NOT to Scrape
+
+- When an API exists (use the API!)
+- When data is behind login/paywall
+- When robots.txt disallows it
+- When terms of service prohibit it
+- When data is personal/private
 
 ---
 
 ## Hands-on Lab
 
+### Exercise 1: Basic Quote Scraper
+
 ```python
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+
+def scrape_quotes_page(url):
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, "html.parser")
+    
+    data = []
+    for div in soup.select("div.quote"):
+        data.append({
+            "text": div.select_one("span.text").text.strip('"" '),
+            "author": div.select_one("small.author").text,
+            "tags": ", ".join([t.text for t in div.select("a.tag")])
+        })
+    return data
+
+quotes = scrape_quotes_page("http://quotes.toscrape.com")
+df = pd.DataFrame(quotes)
+df.to_csv("quotes.csv", index=False)
+print(df)
+```
+
+### Exercise 2: Multi-Page Scraper
+
+```python
+import time
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# Scrape a quotes website
-url = "http://quotes.toscrape.com"
-response = requests.get(url)
-soup = BeautifulSoup(response.text, "html.parser")
+def scrape_all_quotes(max_pages=5):
+    all_data = []
+    base_url = "http://quotes.toscrape.com"
+    
+    for page in range(1, max_pages + 1):
+        url = f"{base_url}/page/{page}/"
+        response = requests.get(url, timeout=10)
+        
+        if response.status_code != 200:
+            break
+        
+        soup = BeautifulSoup(response.text, "html.parser")
+        quotes = soup.select("div.quote")
+        
+        if not quotes:
+            break
+        
+        for div in quotes:
+            all_data.append({
+                "text": div.select_one("span.text").text,
+                "author": div.select_one("small.author").text
+            })
+        
+        print(f"Page {page}: {len(quotes)} quotes")
+        time.sleep(1)
+    
+    return pd.DataFrame(all_data)
 
-quotes = []
-for q in soup.find_all("div", class_="quote"):
-    text = q.find("span", class_="text").text
-    author = q.find("small", class_="author").text
-    tags = [t.text for t in q.find_all("a", class_="tag")]
-    quotes.append({"text": text, "author": author, "tags": tags})
-
-df = pd.DataFrame(quotes)
+df = scrape_all_quotes(3)
+print(f"Total scraped: {len(df)}")
 print(df.head())
 ```
+
+### Exercise 3: Table Extraction
+
+```python
+import pandas as pd
+
+# pandas can scrape HTML tables directly!
+url = "https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"
+tables = pd.read_html(url)
+
+# Usually multiple tables on page
+print(f"Found {len(tables)} tables")
+
+# First table is usually what we want
+gdp_table = tables[0]
+print(gdp_table.head())
+```
+
+---
+
+## Mastery Check
+
+### Question 1: User-Agent
+Why add a User-Agent header to requests?
+
+<details>
+<summary>Click for Answer</summary>
+
+Some sites block requests without User-Agent (looks like bots). Adding one identifies your scraper and improves success rate.
+
+```python
+headers = {"User-Agent": "Mozilla/5.0 (Educational scraper)"}
+requests.get(url, headers=headers)
+```
+
+</details>
+
+### Question 2: Rate Limiting
+Your scraper gets blocked after 50 requests. What's likely happening and how do you fix it?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Problem**: Requesting too fast, triggering rate limits
+
+**Fix**: Add delays between requests
+```python
+time.sleep(1)  # Wait 1 second between requests
+```
+
+Also: Use exponential backoff, respect robots.txt, limit concurrent connections
+
+</details>
+
+### Question 3: JavaScript Content
+Page loads but content is missing. Browser shows it, but requests.get() doesn't. Why?
+
+<details>
+<summary>Click for Answer</summary>
+
+Content is loaded by JavaScript after page load. `requests` only gets initial HTML.
+
+**Solutions**:
+- Use Selenium or Playwright (browser automation)
+- Check for API calls in Network tab
+- Look for data in page's `<script>` tags
+
+</details>
+
+### Question 4: Error Handling Bug
+This code crashes randomly. What's missing?
+
+```python
+response = requests.get(url)
+data = response.json()
+```
+
+<details>
+<summary>Click for Answer</summary>
+
+No error handling. Add:
+```python
+try:
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    data = response.json()
+except requests.RequestException as e:
+    print(f"Request failed: {e}")
+    data = None
+```
+
+</details>
+
+### Question 5: Ethics Question
+You want to scrape a competitor's product catalog updated hourly. What should you check first?
+
+<details>
+<summary>Click for Answer</summary>
+
+1. **robots.txt**: Check `competitor.com/robots.txt` for disallowed paths
+2. **Terms of Service**: Many prohibit automated access
+3. **Rate limits**: Don't overload their servers
+4. **Public vs. Private data**: Only scrape publicly accessible pages
+5. **Legal**: Some jurisdictions have laws against certain scraping
+
+</details>
 
 ---
 
 ## Summary
 
-- ✅ `requests` fetches web pages
-- ✅ BeautifulSoup parses HTML
-- ✅ `find()` and `find_all()` extract data
-- ✅ Always scrape ethically
+- ✅ Use `requests` to fetch pages, `BeautifulSoup` to parse
+- ✅ CSS selectors (`soup.select()`) for precise element targeting
+- ✅ Handle pagination with loops and delays
+- ✅ Add error handling and retries
+- ✅ Respect robots.txt and rate limits
 
-**Tomorrow**: Working with databases.
+**Tomorrow**: Databases with SQL for persistent data storage.

@@ -1,151 +1,446 @@
 ---
 day: 31
-title: "SQL Databases"
+title: "Databases with SQL"
 phase: 3
 phaseTitle: "Data Engineering & Web Development"
-slug: "sql-databases"
+slug: "databases-sql"
 duration: 55
 difficulty: "intermediate"
 tags: [python, sqlite, sql, databases]
-concepts: [database connections, SQL queries from Python, CRUD operations]
-prerequisites: [16, 23]
-outcomes: [Connect to SQLite from Python, Execute SQL queries, Convert results to DataFrames]
+concepts: [relational databases, SQL queries, CRUD operations, joins]
+prerequisites: [25]
+outcomes: [Connect to SQLite databases, Execute SQL queries, Perform CRUD operations]
 ---
 
-# 🎯 Day 31: SQL Databases with Python
+# 🎯 Day 31: Databases with SQL
 
-> *"SQL is the language of data. Python is its interpreter."*
+> *"CSVs are fine. Databases are professional."*
 
 ---
 
 ## The "Never-Coded" Bridge
 
-DataFrames are great for analysis. But when data grows to millions of rows, you need databases. Python's `sqlite3` lets you query databases directly.
+**Imagine your sales data grows from 1,000 to 10 million rows.** Excel crashes. CSVs take forever to load. Your analysis grinds to a halt.
+
+**Databases solve this.** They're designed to handle millions of rows efficiently, with built-in indexing, relationships, and concurrent access.
+
+**Why databases matter:**
+- **Speed**: Queries run in milliseconds, not minutes
+- **Integrity**: Enforce data types, prevent duplicates
+- **Concurrency**: Multiple users access simultaneously
+- **Persistence**: Data survives program crashes
+
+**Real-world uses:**
+- Every website you use stores data in databases
+- Every business application relies on them
+- Every analytics platform queries them
 
 ---
 
 ## The Technical Deep Dive
 
-### SQLite Basics
+### Connecting to SQLite
 
 ```python
 import sqlite3
+import pandas as pd
 
-# Connect (creates file if doesn't exist)
-conn = sqlite3.connect("mydata.db")
+# Create or connect to database
+conn = sqlite3.connect("business.db")
 cursor = conn.cursor()
 
-# Create table
+# Create a table
 cursor.execute("""
-    CREATE TABLE IF NOT EXISTS employees (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        department TEXT,
-        salary REAL
-    )
-""")
-
-# Insert data
-cursor.execute(
-    "INSERT INTO employees (name, department, salary) VALUES (?, ?, ?)",
-    ("Alice", "Engineering", 85000)
+CREATE TABLE IF NOT EXISTS employees (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    department TEXT,
+    salary REAL,
+    hire_date TEXT
 )
-
+""")
 conn.commit()
 ```
 
-### Querying Data
+### CRUD Operations
 
 ```python
-# Select all
+# CREATE - Insert data
+cursor.execute("""
+INSERT INTO employees (name, department, salary, hire_date)
+VALUES (?, ?, ?, ?)
+""", ("Alice", "Engineering", 85000, "2023-01-15"))
+
+# Insert multiple rows
+employees_data = [
+    ("Bob", "Sales", 75000, "2023-02-01"),
+    ("Charlie", "Engineering", 90000, "2023-03-10"),
+    ("Diana", "Marketing", 70000, "2023-04-20")
+]
+cursor.executemany("""
+INSERT INTO employees (name, department, salary, hire_date)
+VALUES (?, ?, ?, ?)
+""", employees_data)
+conn.commit()
+
+# READ - Query data
 cursor.execute("SELECT * FROM employees")
 rows = cursor.fetchall()
 for row in rows:
     print(row)
 
-# With conditions
-cursor.execute("SELECT name, salary FROM employees WHERE salary > ?", (70000,))
+# UPDATE - Modify data
+cursor.execute("""
+UPDATE employees SET salary = ? WHERE name = ?
+""", (95000, "Charlie"))
+conn.commit()
 
-# Aggregate
-cursor.execute("SELECT department, AVG(salary) FROM employees GROUP BY department")
+# DELETE - Remove data
+cursor.execute("DELETE FROM employees WHERE name = ?", ("Bob",))
+conn.commit()
 ```
 
-### Pandas Integration
+### Querying with Pandas
 
 ```python
 import pandas as pd
-import sqlite3
 
-conn = sqlite3.connect("mydata.db")
-
-# Read SQL to DataFrame
+# Read SQL into DataFrame
 df = pd.read_sql_query("SELECT * FROM employees", conn)
+print(df)
+
+# Query with conditions
+df = pd.read_sql_query("""
+SELECT name, salary FROM employees
+WHERE department = 'Engineering' AND salary > 80000
+ORDER BY salary DESC
+""", conn)
+print(df)
 
 # Write DataFrame to SQL
-df.to_sql("employees_backup", conn, if_exists="replace", index=False)
-
-conn.close()
+new_data = pd.DataFrame({
+    "name": ["Eve", "Frank"],
+    "department": ["HR", "Engineering"],
+    "salary": [65000, 88000],
+    "hire_date": ["2024-01-01", "2024-02-15"]
+})
+new_data.to_sql("employees", conn, if_exists="append", index=False)
 ```
 
-### Context Manager Pattern
+### SQL Fundamentals
+
+```sql
+-- SELECT with conditions
+SELECT name, salary FROM employees WHERE salary > 80000;
+
+-- Aggregations
+SELECT department, AVG(salary) as avg_salary
+FROM employees
+GROUP BY department;
+
+-- Sorting
+SELECT * FROM employees ORDER BY salary DESC LIMIT 5;
+
+-- Counting
+SELECT department, COUNT(*) as count
+FROM employees
+GROUP BY department;
+
+-- JOINs
+SELECT e.name, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.id;
+```
+
+---
+
+## Senior-Level Insights
+
+### SQL Injection Prevention
 
 ```python
-import sqlite3
+# NEVER do this (SQL injection vulnerability):
+name = "'; DROP TABLE employees; --"
+cursor.execute(f"SELECT * FROM employees WHERE name = '{name}'")  # DANGEROUS!
 
-with sqlite3.connect("mydata.db") as conn:
-    df = pd.read_sql_query("SELECT * FROM employees WHERE department = 'Engineering'", conn)
-# Connection automatically closed
+# ALWAYS use parameterized queries:
+cursor.execute("SELECT * FROM employees WHERE name = ?", (name,))  # SAFE
 ```
+
+### Performance Tips
+
+| Scenario                | Solution                                  |
+| ----------------------- | ----------------------------------------- |
+| Slow queries            | Add indexes on frequently queried columns |
+| Large inserts           | Use transactions, batch operations        |
+| Complex aggregations    | Create summary tables                     |
+| Frequent simple lookups | Use in-memory SQLite or caching           |
+
+### When to Use What
+
+| Data Size     | Tool                       |
+| ------------- | -------------------------- |
+| < 10K rows    | CSV or SQLite              |
+| 10K - 1M rows | SQLite                     |
+| > 1M rows     | PostgreSQL, MySQL          |
+| Distributed   | Cloud databases (BigQuery) |
 
 ---
 
 ## Hands-on Lab
 
+### Exercise 1: Employee Database
+
 ```python
 import sqlite3
 import pandas as pd
 
-# Create sample database
-conn = sqlite3.connect(":memory:")  # In-memory for demo
-
-# Create and populate
-conn.execute("""
-    CREATE TABLE sales (
-        id INTEGER PRIMARY KEY,
-        product TEXT,
-        region TEXT,
-        amount REAL
+def create_employee_db():
+    conn = sqlite3.connect(":memory:")  # In-memory database
+    
+    # Create table
+    conn.execute("""
+    CREATE TABLE employees (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        department TEXT,
+        salary REAL
     )
-""")
+    """)
+    
+    # Insert sample data
+    data = [
+        ("Alice", "Engineering", 85000),
+        ("Bob", "Sales", 75000),
+        ("Charlie", "Engineering", 90000),
+        ("Diana", "Marketing", 70000),
+        ("Eve", "Sales", 78000)
+    ]
+    conn.executemany("INSERT INTO employees (name, department, salary) VALUES (?, ?, ?)", data)
+    
+    # Query: Average salary by department
+    df = pd.read_sql_query("""
+    SELECT department, AVG(salary) as avg_salary, COUNT(*) as count
+    FROM employees
+    GROUP BY department
+    ORDER BY avg_salary DESC
+    """, conn)
+    print("Salary by Department:")
+    print(df)
+    
+    return conn
 
-data = [
-    ("Laptop", "North", 999),
-    ("Mouse", "South", 29),
-    ("Laptop", "North", 999),
-    ("Keyboard", "East", 79),
-]
+conn = create_employee_db()
+```
 
-conn.executemany("INSERT INTO sales (product, region, amount) VALUES (?, ?, ?)", data)
+### Exercise 2: Sales Analytics
 
-# Query with Pandas
-df = pd.read_sql_query("""
-    SELECT region, SUM(amount) as total
-    FROM sales
-    GROUP BY region
-    ORDER BY total DESC
+```python
+import sqlite3
+import pandas as pd
+import numpy as np
+
+def create_sales_db():
+    conn = sqlite3.connect(":memory:")
+    
+    # Create tables
+    conn.execute("""
+    CREATE TABLE products (
+        id INTEGER PRIMARY KEY,
+        name TEXT,
+        price REAL
+    )
+    """)
+    
+    conn.execute("""
+    CREATE TABLE sales (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        product_id INTEGER,
+        quantity INTEGER,
+        sale_date TEXT,
+        FOREIGN KEY (product_id) REFERENCES products(id)
+    )
+    """)
+    
+    # Insert products
+    products = [(1, "Laptop", 999), (2, "Mouse", 29), (3, "Keyboard", 79)]
+    conn.executemany("INSERT INTO products VALUES (?, ?, ?)", products)
+    
+    # Insert sales
+    sales = [
+        (1, 5, "2024-01-15"), (2, 20, "2024-01-15"),
+        (1, 3, "2024-01-16"), (3, 10, "2024-01-16"),
+        (2, 15, "2024-01-17"), (1, 2, "2024-01-17")
+    ]
+    conn.executemany("INSERT INTO sales (product_id, quantity, sale_date) VALUES (?, ?, ?)", sales)
+    
+    # Revenue analysis with JOIN
+    df = pd.read_sql_query("""
+    SELECT p.name, SUM(s.quantity) as units_sold, 
+           SUM(s.quantity * p.price) as revenue
+    FROM sales s
+    JOIN products p ON s.product_id = p.id
+    GROUP BY p.name
+    ORDER BY revenue DESC
+    """, conn)
+    print("Revenue by Product:")
+    print(df)
+    
+    return conn
+
+create_sales_db()
+```
+
+### Exercise 3: DataFrame to Database
+
+```python
+import sqlite3
+import pandas as pd
+import numpy as np
+
+# Create sample DataFrame
+np.random.seed(42)
+df = pd.DataFrame({
+    "customer_id": range(1, 101),
+    "name": [f"Customer_{i}" for i in range(1, 101)],
+    "total_purchases": np.random.uniform(100, 5000, 100),
+    "signup_date": pd.date_range("2023-01-01", periods=100, freq="D")
+})
+
+# Save to database
+conn = sqlite3.connect("customers.db")
+df.to_sql("customers", conn, if_exists="replace", index=False)
+
+# Query back with filtering
+top_customers = pd.read_sql_query("""
+SELECT * FROM customers
+WHERE total_purchases > 3000
+ORDER BY total_purchases DESC
+LIMIT 10
 """, conn)
+print("Top 10 Customers:")
+print(top_customers)
 
-print(df)
 conn.close()
 ```
 
 ---
 
+## Mastery Check
+
+### Question 1: SQL vs CSV
+When should you use a database instead of CSV files?
+
+<details>
+<summary>Click for Answer</summary>
+
+Use databases when:
+- Data exceeds ~100K rows
+- Multiple users need concurrent access
+- You need to enforce relationships between tables
+- Data integrity matters (unique constraints, types)
+- You need fast filtered queries
+
+Use CSVs when:
+- Quick one-time analysis
+- Sharing simple data with non-programmers
+- Data is read-only and small
+
+</details>
+
+### Question 2: SQL Injection
+Why is this code dangerous?
+
+```python
+name = input("Enter name: ")
+cursor.execute(f"SELECT * FROM users WHERE name = '{name}'")
+```
+
+<details>
+<summary>Click for Answer</summary>
+
+SQL injection vulnerability. If user enters: `'; DROP TABLE users; --`
+
+The query becomes:
+```sql
+SELECT * FROM users WHERE name = ''; DROP TABLE users; --'
+```
+
+**Fix**: Use parameterized queries:
+```python
+cursor.execute("SELECT * FROM users WHERE name = ?", (name,))
+```
+
+</details>
+
+### Question 3: JOINs
+What does this query return?
+
+```sql
+SELECT e.name, d.name FROM employees e
+LEFT JOIN departments d ON e.dept_id = d.id
+```
+
+<details>
+<summary>Click for Answer</summary>
+
+Returns all employees with their department names. If an employee has no matching department (NULL dept_id), they still appear with NULL for department name.
+
+- INNER JOIN: Only matching rows
+- LEFT JOIN: All from left table, matched from right
+- RIGHT JOIN: All from right table, matched from left
+
+</details>
+
+### Question 4: Performance Issue
+Your query takes 30 seconds on a million-row table:
+```sql
+SELECT * FROM orders WHERE customer_email = 'user@example.com'
+```
+
+<details>
+<summary>Click for Answer</summary>
+
+**Problem**: No index on `customer_email` column → full table scan
+
+**Fix**: Create an index:
+```sql
+CREATE INDEX idx_customer_email ON orders(customer_email);
+```
+
+Now the query uses the index for fast lookups.
+
+</details>
+
+### Question 5: Transaction
+What happens if your program crashes mid-insert with 500 of 1000 rows inserted?
+
+<details>
+<summary>Click for Answer</summary>
+
+Without explicit transaction: 500 rows saved (partial state, data corruption)
+
+With transaction:
+```python
+try:
+    cursor.executemany("INSERT ...", data)
+    conn.commit()  # All or nothing
+except:
+    conn.rollback()  # Undo everything
+```
+
+Transactions ensure atomicity—all succeed or all fail.
+
+</details>
+
+---
+
 ## Summary
 
-- ✅ `sqlite3` connects Python to databases
-- ✅ Execute SQL with `cursor.execute()`
-- ✅ `pd.read_sql_query()` returns DataFrames
-- ✅ Use context managers for safe connections
+- ✅ Connect to SQLite with `sqlite3`
+- ✅ Execute CRUD operations (Create, Read, Update, Delete)
+- ✅ Use parameterized queries to prevent SQL injection
+- ✅ Query databases with pandas `read_sql_query()`
+- ✅ Understand JOINs for related tables
 
-**Tomorrow**: Other database types (PostgreSQL, MongoDB).
+**Tomorrow**: NoSQL databases for when relational doesn't fit.

@@ -1,29 +1,34 @@
 ---
 day: 36
-title: "Case Study: End-to-End Data Pipeline"
+title: "Case Study: ETL Pipeline"
 phase: 3
 phaseTitle: "Data Engineering & Web Development"
-slug: "case-study-pipeline"
+slug: "case-study-etl"
 duration: 60
 difficulty: "intermediate"
 tags: [python, etl, pipeline, integration]
-concepts: [data pipeline design, ETL workflow, project integration]
-prerequisites: [25, 30, 31, 35]
-outcomes: [Design end-to-end data pipelines, Integrate multiple skills, Build complete data applications]
+concepts: [ETL pipelines, data integration, automation, end-to-end projects]
+prerequisites: [25, 27, 31, 33]
+outcomes: [Build complete ETL pipelines, Integrate APIs with databases, Create data dashboards]
 ---
 
-# 🎯 Day 36: Case Study - End-to-End Data Pipeline
+# 🎯 Day 36: Case Study - Complete ETL Pipeline
 
-> *"Tie it all together. Real projects combine every skill."*
+> *"The capstone: Extract, Transform, Load—then visualize."*
 
 ---
 
 ## The "Never-Coded" Bridge
 
-This phase taught many skills in isolation. Real projects combine them:
-1. **Extract**: APIs, web scraping, databases
-2. **Transform**: Pandas, cleaning, statistics
-3. **Load**: Databases, visualizations, dashboards
+**All month you've learned individual skills.** Cleaning data. Visualizations. APIs. Databases. Flask.
+
+**Now you combine them all.** A real data pipeline:
+1. **Extract**: Fetch data from an API
+2. **Transform**: Clean and reshape it
+3. **Load**: Store in a database
+4. **Serve**: Display via web dashboard
+
+**This is what data engineers actually do.** Every company needs pipelines that automatically gather, process, and present data.
 
 ---
 
@@ -32,21 +37,117 @@ This phase taught many skills in isolation. Real projects combine them:
 ### Pipeline Architecture
 
 ```
-Data Sources          Processing           Output
-┌──────────┐         ┌──────────┐        ┌──────────┐
-│   API    │───┐     │  Clean   │        │    DB    │
-└──────────┘   │     │   Data   │        └──────────┘
-               ├────►│          │───────►           
-┌──────────┐   │     │ Transform│        ┌──────────┐
-│   CSV    │───┤     │          │        │Dashboard │
-└──────────┘   │     │ Aggregate│        └──────────┘
-               │     └──────────┘
-┌──────────┐   │
-│ Scraping │───┘
-└──────────┘
+API Source → Extract → Transform → Load → Database → Dashboard
+               ↓           ↓          ↓
+            requests    pandas    sqlite3
+               ↓           ↓          ↓
+            raw JSON   cleaned DF  stored data
 ```
 
-### Sample Pipeline
+### Step 1: Extract
+
+```python
+import requests
+import pandas as pd
+
+def extract_data(url):
+    """Extract data from API."""
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    data = response.json()
+    print(f"Extracted {len(data)} records")
+    return data
+
+# Example: Using JSONPlaceholder (fake API)
+url = "https://jsonplaceholder.typicode.com/users"
+raw_data = extract_data(url)
+```
+
+### Step 2: Transform
+
+```python
+import pandas as pd
+
+def transform_data(raw_data):
+    """Clean and transform raw data."""
+    df = pd.DataFrame(raw_data)
+    
+    # Select relevant columns
+    df = df[["id", "name", "email", "company"]]
+    
+    # Flatten nested structure
+    df["company_name"] = df["company"].apply(lambda x: x["name"])
+    df = df.drop("company", axis=1)
+    
+    # Clean text
+    df["email"] = df["email"].str.lower()
+    df["name"] = df["name"].str.strip()
+    
+    # Validate
+    df = df.dropna()
+    df = df.drop_duplicates(subset=["email"])
+    
+    print(f"Transformed to {len(df)} clean records")
+    return df
+
+clean_df = transform_data(raw_data)
+print(clean_df.head())
+```
+
+### Step 3: Load
+
+```python
+import sqlite3
+
+def load_data(df, db_path, table_name):
+    """Load data into SQLite database."""
+    conn = sqlite3.connect(db_path)
+    
+    # Replace existing data
+    df.to_sql(table_name, conn, if_exists="replace", index=False)
+    
+    # Verify
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
+    count = cursor.fetchone()[0]
+    print(f"Loaded {count} records to {table_name}")
+    
+    conn.close()
+    return count
+
+load_data(clean_df, "pipeline.db", "users")
+```
+
+### Step 4: Serve (Dashboard)
+
+```python
+from flask import Flask, render_template
+import sqlite3
+import pandas as pd
+
+app = Flask(__name__)
+
+def get_data():
+    conn = sqlite3.connect("pipeline.db")
+    df = pd.read_sql("SELECT * FROM users", conn)
+    conn.close()
+    return df
+
+@app.route("/")
+def dashboard():
+    df = get_data()
+    stats = {
+        "total_users": len(df),
+        "companies": df["company_name"].nunique(),
+        "users": df.to_dict("records")
+    }
+    return render_template("dashboard.html", **stats)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+### Complete Pipeline
 
 ```python
 import requests
@@ -54,146 +155,332 @@ import pandas as pd
 import sqlite3
 from datetime import datetime
 
-def extract_data():
-    """Fetch data from API"""
-    response = requests.get("https://api.example.com/sales")
-    return pd.DataFrame(response.json())
-
-def transform_data(df):
-    """Clean and transform"""
-    df = df.dropna()
-    df["date"] = pd.to_datetime(df["date"])
-    df["revenue"] = df["quantity"] * df["price"]
-    return df
-
-def load_data(df, db_path):
-    """Save to database"""
-    with sqlite3.connect(db_path) as conn:
-        df.to_sql("sales", conn, if_exists="append", index=False)
-    print(f"Loaded {len(df)} records")
-
-def run_pipeline():
-    """Execute full ETL"""
-    print(f"Pipeline started: {datetime.now()}")
+class ETLPipeline:
+    def __init__(self, source_url, db_path, table_name):
+        self.source_url = source_url
+        self.db_path = db_path
+        self.table_name = table_name
     
-    raw_data = extract_data()
-    clean_data = transform_data(raw_data)
-    load_data(clean_data, "sales.db")
+    def extract(self):
+        """Fetch data from source."""
+        print(f"[{datetime.now()}] Extracting from {self.source_url}")
+        response = requests.get(self.source_url, timeout=30)
+        response.raise_for_status()
+        return response.json()
     
-    print(f"Pipeline completed: {datetime.now()}")
+    def transform(self, data):
+        """Clean and transform data."""
+        print(f"[{datetime.now()}] Transforming {len(data)} records")
+        df = pd.DataFrame(data)
+        
+        # Your transformation logic here
+        df = df.dropna()
+        df = df.drop_duplicates()
+        
+        return df
+    
+    def load(self, df):
+        """Load to database."""
+        print(f"[{datetime.now()}] Loading to {self.db_path}")
+        conn = sqlite3.connect(self.db_path)
+        df.to_sql(self.table_name, conn, if_exists="replace", index=False)
+        conn.close()
+        return len(df)
+    
+    def run(self):
+        """Execute full pipeline."""
+        try:
+            raw = self.extract()
+            cleaned = self.transform(raw)
+            count = self.load(cleaned)
+            print(f"Pipeline complete: {count} records processed")
+            return True
+        except Exception as e:
+            print(f"Pipeline failed: {e}")
+            return False
 
-if __name__ == "__main__":
-    run_pipeline()
-```
-
-### Adding Logging
-
-```python
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(levelname)s - %(message)s"
+# Run pipeline
+pipeline = ETLPipeline(
+    source_url="https://jsonplaceholder.typicode.com/posts",
+    db_path="blog.db",
+    table_name="posts"
 )
-logger = logging.getLogger(__name__)
-
-def run_pipeline():
-    logger.info("Pipeline started")
-    try:
-        raw_data = extract_data()
-        logger.info(f"Extracted {len(raw_data)} records")
-        
-        clean_data = transform_data(raw_data)
-        logger.info(f"Transformed data: {len(clean_data)} records")
-        
-        load_data(clean_data, "sales.db")
-        logger.info("Pipeline completed successfully")
-    except Exception as e:
-        logger.error(f"Pipeline failed: {e}")
-        raise
-```
-
-### Scheduling with cron
-
-```bash
-# crontab -e
-# Run daily at 6 AM
-0 6 * * * /usr/bin/python3 /path/to/pipeline.py
+pipeline.run()
 ```
 
 ---
 
-## Hands-on Lab: Complete Project
+## Senior-Level Insights
+
+### Pipeline Design Principles
+
+| Principle   | Implementation                  |
+| ----------- | ------------------------------- |
+| Idempotent  | Running twice gives same result |
+| Observable  | Logging at each step            |
+| Recoverable | Save intermediate state         |
+| Testable    | Each step can run independently |
+
+### Error Handling
 
 ```python
-"""
-Mini Project: News Aggregator Pipeline
-- Scrape headlines
-- Clean and categorize
-- Store in database
-- Generate summary report
-"""
+def robust_extract(url, retries=3):
+    for attempt in range(retries):
+        try:
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+            return response.json()
+        except requests.RequestException as e:
+            print(f"Attempt {attempt+1} failed: {e}")
+            if attempt == retries - 1:
+                raise
+            time.sleep(2 ** attempt)  # Exponential backoff
+```
 
+### Scheduling Options
+
+| Tool                   | Use Case               |
+| ---------------------- | ---------------------- |
+| cron                   | Simple Unix scheduling |
+| Airflow                | Complex DAG workflows  |
+| Prefect                | Modern Python-native   |
+| Windows Task Scheduler | Windows environments   |
+
+---
+
+## Hands-on Lab
+
+### Exercise 1: Weather Pipeline
+
+```python
 import requests
-from bs4 import BeautifulSoup
 import pandas as pd
 import sqlite3
-from datetime import datetime
 
-def scrape_news():
-    """Extract news from quotes site (demo)"""
-    url = "http://quotes.toscrape.com"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.text, "html.parser")
+def weather_pipeline():
+    # Note: Use your own API key from openweathermap.org
+    cities = ["London", "Paris", "Berlin", "Tokyo", "New York"]
+    api_key = "YOUR_API_KEY"
     
-    quotes = []
-    for q in soup.find_all("div", class_="quote"):
-        quotes.append({
-            "text": q.find("span", class_="text").text,
-            "author": q.find("small", class_="author").text,
-            "scraped_at": datetime.now()
-        })
-    return pd.DataFrame(quotes)
-
-def transform_news(df):
-    """Clean and enrich"""
-    df["text_length"] = df["text"].str.len()
-    df["author"] = df["author"].str.strip()
+    all_weather = []
+    for city in cities:
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            all_weather.append({
+                "city": city,
+                "temp_kelvin": data["main"]["temp"],
+                "humidity": data["main"]["humidity"],
+                "description": data["weather"][0]["description"]
+            })
+    
+    df = pd.DataFrame(all_weather)
+    df["temp_celsius"] = df["temp_kelvin"] - 273.15
+    
+    conn = sqlite3.connect("weather.db")
+    df.to_sql("current_weather", conn, if_exists="replace", index=False)
+    conn.close()
+    
     return df
 
-def save_to_db(df):
-    """Store in SQLite"""
-    with sqlite3.connect("news.db") as conn:
-        df.to_sql("quotes", conn, if_exists="replace", index=False)
+# Run and inspect
+df = weather_pipeline()
+print(df)
+```
 
-def generate_report(df):
-    """Create summary statistics"""
-    print("\n=== News Pipeline Report ===")
-    print(f"Total quotes: {len(df)}")
-    print(f"Unique authors: {df['author'].nunique()}")
-    print(f"Avg quote length: {df['text_length'].mean():.1f} chars")
-    print(f"\nTop 3 Authors:")
-    print(df["author"].value_counts().head(3))
+### Exercise 2: GitHub Stats Pipeline
 
-def main():
-    print("Starting pipeline...")
-    raw = scrape_news()
-    cleaned = transform_news(raw)
-    save_to_db(cleaned)
-    generate_report(cleaned)
-    print("\nPipeline complete!")
+```python
+import requests
+import pandas as pd
+import sqlite3
+
+def github_pipeline(username):
+    # Extract
+    url = f"https://api.github.com/users/{username}/repos"
+    response = requests.get(url, params={"per_page": 100})
+    repos = response.json()
+    
+    # Transform
+    df = pd.DataFrame([{
+        "name": r["name"],
+        "stars": r["stargazers_count"],
+        "forks": r["forks_count"],
+        "language": r["language"],
+        "updated": r["updated_at"][:10]
+    } for r in repos])
+    
+    df = df.dropna(subset=["language"])
+    df = df.sort_values("stars", ascending=False)
+    
+    # Load
+    conn = sqlite3.connect("github.db")
+    df.to_sql("repositories", conn, if_exists="replace", index=False)
+    conn.close()
+    
+    # Stats
+    print(f"Total repos: {len(df)}")
+    print(f"Total stars: {df['stars'].sum()}")
+    print(f"Top language: {df['language'].value_counts().idxmax()}")
+    
+    return df
+
+df = github_pipeline("python")
+```
+
+### Exercise 3: Full Dashboard
+
+```python
+# app.py
+from flask import Flask, render_template
+import sqlite3
+import pandas as pd
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    conn = sqlite3.connect("github.db")
+    df = pd.read_sql("SELECT * FROM repositories ORDER BY stars DESC LIMIT 10", conn)
+    
+    by_language = pd.read_sql("""
+        SELECT language, COUNT(*) as count, SUM(stars) as stars
+        FROM repositories
+        GROUP BY language
+        ORDER BY stars DESC
+        LIMIT 5
+    """, conn)
+    
+    conn.close()
+    
+    return render_template("index.html",
+        repos=df.to_dict("records"),
+        languages=by_language.to_dict("records"),
+        total_repos=len(df)
+    )
 
 if __name__ == "__main__":
-    main()
+    app.run(debug=True)
 ```
+
+---
+
+## Mastery Check
+
+### Question 1: ETL Order
+Why is it Extract → Transform → Load, not Transform → Extract → Load?
+
+<details>
+<summary>Click for Answer</summary>
+
+You can't transform what you don't have!
+
+1. **Extract**: Get raw data from source
+2. **Transform**: Clean and reshape (requires data)
+3. **Load**: Store final result
+
+Logic requires this order.
+
+</details>
+
+### Question 2: Idempotent Pipelines
+What makes a pipeline "idempotent"?
+
+<details>
+<summary>Click for Answer</summary>
+
+Running it multiple times produces the same result as running once.
+
+**Idempotent**: `if_exists="replace"` in `to_sql()`
+**Not idempotent**: `if_exists="append"` (duplicates data)
+
+Idempotent pipelines are safer for reruns and recovery.
+
+</details>
+
+### Question 3: Error Recovery
+Pipeline fails during Transform. What should happen?
+
+<details>
+<summary>Click for Answer</summary>
+
+Good pipeline design:
+1. **Log the error** with context
+2. **Don't corrupt existing data** (Load didn't run)
+3. **Save extracted data** so re-run doesn't re-fetch
+4. **Alert operators** if scheduled
+
+```python
+try:
+    raw = extract()
+    save_checkpoint(raw, "raw_data.json")  # Recovery point
+    cleaned = transform(raw)
+    load(cleaned)
+except TransformError as e:
+    log_error(e)
+    alert_team()
+    # Raw data saved, can retry transform only
+```
+
+</details>
+
+### Question 4: Scheduling
+Your pipeline must run daily at 2 AM. How?
+
+<details>
+<summary>Click for Answer</summary>
+
+Options:
+
+**Linux/Mac (cron):**
+```bash
+0 2 * * * /usr/bin/python3 /path/to/pipeline.py
+```
+
+**Windows (Task Scheduler):**
+- Create task with trigger at 2:00 AM daily
+- Action: Run python pipeline.py
+
+**Python scheduler:**
+```python
+import schedule
+schedule.every().day.at("02:00").do(pipeline.run)
+```
+
+**Production**: Use Airflow, Prefect, or cloud schedulers.
+
+</details>
+
+### Question 5: Scale
+Your pipeline processes 100 records now. How do you handle 1 million?
+
+<details>
+<summary>Click for Answer</summary>
+
+1. **Batch processing**: Process in chunks, not all at once
+2. **Streaming**: Process as data arrives
+3. **Parallel**: Multiple workers
+4. **Pagination**: API requests in pages
+5. **Database optimization**: Indexes, bulk inserts
+
+```python
+# Chunked loading
+for chunk in pd.read_json(file, chunksize=10000):
+    cleaned = transform(chunk)
+    conn.execute("INSERT INTO ...", cleaned)
+```
+
+</details>
 
 ---
 
 ## Summary
 
-- ✅ ETL: Extract, Transform, Load
-- ✅ Combine APIs, scraping, databases
-- ✅ Add logging for production
-- ✅ Schedule for automation
+- ✅ ETL = Extract, Transform, Load
+- ✅ APIs → Pandas → SQLite → Flask
+- ✅ Error handling at each step
+- ✅ Idempotent design for reruns
+- ✅ Complete data pipeline architecture
 
-**🎉 Congratulations!** You've completed **Phase 3: Data Engineering & Web Development**!
+**Phase 3 Complete!** You've mastered data engineering and web development fundamentals.
