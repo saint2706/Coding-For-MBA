@@ -35,6 +35,7 @@ outcomes:
 That's Python.
 
 Think of writing code like writing a recipe for a robot chef. You give it precise instructions:
+
 - "Take 2 eggs" → In Python: `eggs = 2`
 - "Add 3 cups of flour" → In Python: `flour = 3`
 - "Tell me the total ingredients" → In Python: `print(eggs + flour)`
@@ -42,6 +43,7 @@ Think of writing code like writing a recipe for a robot chef. You give it precis
 The robot follows your recipe exactly, every single time. No guessing, no improvisation—just reliable, repeatable results.
 
 **Why does this matter for business?**
+
 - That monthly report you spend 4 hours creating in Excel? Python can do it in 4 seconds.
 - Those 500 customer emails you need to personalize? Python handles them before your coffee gets cold.
 - That pricing analysis across 10,000 products? Python doesn't need lunch breaks.
@@ -59,6 +61,7 @@ print("Hello, World!")
 ```
 
 **Breaking it down:**
+
 - `print` → The instruction (called a "function")
 - `()` → Parentheses hold what you want to print
 - `"Hello, World!"` → The message (text in quotes is called a "string")
@@ -138,6 +141,7 @@ python my_script.py
 **Goal**: Print a professional introduction for a fictional company.
 
 **Step-by-step**:
+
 1. Open your Python environment (REPL or create `lab1.py`)
 2. Think of a company name and tagline
 3. Use `print()` to display them
@@ -149,6 +153,7 @@ print("Innovating Tomorrow, Today")
 ```
 
 **Expected Output:**
+
 ```
 TechVentures Inc.
 Innovating Tomorrow, Today
@@ -161,10 +166,12 @@ Innovating Tomorrow, Today
 **Goal**: Calculate the break-even point for a product launch.
 
 **The Business Scenario:**
+
 - Fixed Costs (rent, salaries, equipment): $75,000
 - Contribution Margin per Unit: $25
 
 **Step-by-step**:
+
 1. The break-even formula: `Fixed Costs ÷ Contribution Margin = Units Needed`
 2. Write this in Python
 3. Print the result with context
@@ -178,6 +185,7 @@ print("Break-even point:", break_even_units, "units")
 ```
 
 **Expected Output:**
+
 ```
 Break-even point: 3000.0 units
 ```
@@ -189,11 +197,13 @@ Break-even point: 3000.0 units
 **Goal**: Calculate total Q1 revenue from monthly figures.
 
 **The Data:**
+
 - January: $125,000
 - February: $142,500
 - March: $138,750
 
 **Step-by-step**:
+
 1. Store each month's revenue
 2. Calculate the total
 3. Calculate the monthly average
@@ -213,6 +223,7 @@ print("Monthly Average: $", monthly_avg)
 ```
 
 **Expected Output:**
+
 ```
 Q1 Total Revenue: $ 406250
 Monthly Average: $ 135416.66666666666
@@ -223,7 +234,9 @@ Monthly Average: $ 135416.66666666666
 ## Mastery Check
 
 ### Question 1: Basic Syntax
+
 What will the following code display?
+
 ```python
 print(10 + 5 * 2)
 ```
@@ -240,7 +253,9 @@ Python follows mathematical order of operations (PEMDAS). Multiplication happens
 ---
 
 ### Question 2: String vs. Number
+
 What's wrong with this code?
+
 ```python
 print("Revenue: " + 50000)
 ```
@@ -251,6 +266,7 @@ print("Revenue: " + 50000)
 **Answer: TypeError**
 
 You cannot concatenate a string (`"Revenue: "`) with a number (`50000`) directly. Fix it with:
+
 ```python
 print("Revenue: " + str(50000))
 # OR
@@ -262,6 +278,7 @@ print("Revenue:", 50000)
 ---
 
 ### Question 3: Real-World Application
+
 You need to calculate the ROI for a marketing campaign that cost $15,000 and generated $45,000 in revenue. Write the Python code.
 
 <details>
@@ -280,7 +297,9 @@ print("ROI:", roi, "%")
 ---
 
 ### Question 4: Debugging Challenge
+
 This code should print the average of three test scores, but it's wrong. Find and fix the bug:
+
 ```python
 score1 = 85
 score2 = 92
@@ -295,6 +314,7 @@ print("Average:", average)
 **Bug**: Order of operations! Division happens before addition.
 
 **Fix**:
+
 ```python
 average = (score1 + score2 + score3) / 3
 ```
@@ -308,11 +328,13 @@ With parentheses: `(85 + 92 + 78) / 3` = `255 / 3` = `85`
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Your CFO asks you to build a tool that calculates compound interest for investment projections. The formula is:
 
 `A = P × (1 + r)^n`
 
 Where:
+
 - P = Principal ($10,000)
 - r = Annual rate (5% = 0.05)
 - n = Years (10)
@@ -333,6 +355,7 @@ print("Final amount: $", round(final_amount, 2))
 ```
 
 **Design Considerations for Production:**
+
 1. **Input validation**: What if someone enters a negative rate?
 2. **User interface**: Should users input their own values?
 3. **Formatting**: Currency should display with 2 decimal places and commas
@@ -346,6 +369,7 @@ print("Final amount: $", round(final_amount, 2))
 ## Summary
 
 Today you learned:
+
 - ✅ Python is a precise, repeatable tool for business automation
 - ✅ `print()` displays information to users
 - ✅ Python handles arithmetic naturally with proper order of operations

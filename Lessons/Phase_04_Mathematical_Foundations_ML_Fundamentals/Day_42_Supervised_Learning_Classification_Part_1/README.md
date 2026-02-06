@@ -1,134 +1,703 @@
 ---
 day: 42
-title: "Classification Part 1"
+title: "Supervised Learning: Classification Part 1"
 phase: 4
 phaseTitle: "Mathematical Foundations & ML Fundamentals"
-slug: "classification-1"
+slug: "classification-part1"
 duration: 55
 difficulty: "intermediate"
-tags: [machine-learning, classification, sklearn]
-concepts: [logistic regression, decision boundaries, accuracy metrics]
+tags:
+  - machine-learning
+  - classification
+  - sklearn
+  - logistic-regression
+concepts:
+  - "binary classification"
+  - "logistic regression"
+  - "confusion matrix"
+  - "precision, recall, F1"
+  - "ROC curves and AUC"
 prerequisites: [40, 41]
-outcomes: [Build classification models, Understand probability outputs, Evaluate with accuracy]
+outcomes:
+  - "Build and interpret logistic regression models"
+  - "Understand the confusion matrix"
+  - "Choose appropriate classification metrics"
+  - "Evaluate models with ROC curves"
 ---
 
-# 🎯 Day 42: Supervised Learning - Classification Part 1
+# 🎯 Day 42: Supervised Learning—Classification Part 1
 
-> *"Classification predicts categories. Will the customer churn? Is this email spam?"*
+> *"Classification answers yes-or-no questions. Spam or not? Fraud or legitimate? Churn or stay?"*
 
 ---
 
 ## The "Never-Coded" Bridge
 
-Classification answers: **"Which category?"**
-- Spam or not spam
-- Customer will churn or stay
-- Loan approved or denied
+**You're building a spam filter.** Every email needs a decision: Inbox or Spam? This isn't a number—it's a category. And mistakes have different costs: missing spam is annoying, but blocking an important email could cost a deal.
+
+That's classification: predicting **discrete categories** from input features.
+
+**Classification everywhere:**
+- **Gmail**: Spam detection
+- **Banks**: Fraud detection
+- **Hospitals**: Disease diagnosis (cancer/not cancer)
+- **HR**: Resume screening
+- **Security**: Malware detection
+- **Marketing**: Customer churn prediction
 
 ---
 
 ## The Technical Deep Dive
 
-### Logistic Regression
+### Logistic Regression: The Fundamental Classifier
+
+Despite its name, logistic regression is for classification, not regression. It predicts probabilities.
 
 ```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.datasets import load_iris
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-# Binary classification
-iris = load_iris()
-X = iris.data[:100]  # Only 2 classes
-y = iris.target[:100]
+# Generate sample data: customer churn
+np.random.seed(42)
+n = 500
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+tenure = np.random.uniform(1, 72, n)  # Months with company
+monthly_charges = np.random.uniform(20, 100, n)
+usage_hours = np.random.uniform(0, 50, n)
 
+# Churn probability increases with high charges and low tenure/usage
+churn_prob = 1 / (1 + np.exp(-(
+    -3 + 
+    0.05 * monthly_charges - 
+    0.05 * tenure - 
+    0.1 * usage_hours +
+    np.random.randn(n) * 0.5
+)))
+churn = (np.random.random(n) < churn_prob).astype(int)
+
+df = pd.DataFrame({
+    'tenure': tenure,
+    'monthly_charges': monthly_charges,
+    'usage_hours': usage_hours,
+    'churn': churn
+})
+
+print(f"Churn rate: {churn.mean():.1%}")
+
+# Prepare data
+X = df[['tenure', 'monthly_charges', 'usage_hours']]
+y = df['churn']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+# Train logistic regression
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-# Predict classes
-predictions = model.predict(X_test)
+# Predictions
+y_pred = model.predict(X_test)
+y_prob = model.predict_proba(X_test)[:, 1]  # Probability of churn
 
-# Predict probabilities
-probabilities = model.predict_proba(X_test)
-print(probabilities[:5])  # [P(class 0), P(class 1)]
+# Evaluate
+print("\n=== Model Performance ===")
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
+print("\nClassification Report:")
+print(classification_report(y_test, y_pred, target_names=['Stay', 'Churn']))
 ```
 
-### Evaluation Metrics
+### Understanding the Confusion Matrix
+
+The confusion matrix shows where your model gets it right and wrong.
 
 ```python
-from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+import seaborn as sns
 
-accuracy = accuracy_score(y_test, predictions)
-print(f"Accuracy: {accuracy:.2%}")
-
-# Confusion matrix
-cm = confusion_matrix(y_test, predictions)
+# Create confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:")
 print(cm)
-# [[TN, FP],
-#  [FN, TP]]
 
-# Full report
-print(classification_report(y_test, predictions))
+# Visualize
+plt.figure(figsize=(8, 6))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=['Predicted: Stay', 'Predicted: Churn'],
+            yticklabels=['Actual: Stay', 'Actual: Churn'])
+plt.title('Confusion Matrix')
+plt.ylabel('Actual')
+plt.xlabel('Predicted')
+plt.show()
+
+# Interpretation:
+# Top-left (TN): Correctly predicted Stay
+# Top-right (FP): Wrongly predicted Churn (false alarm)
+# Bottom-left (FN): Wrongly predicted Stay (missed churn!)
+# Bottom-right (TP): Correctly predicted Churn
+
+TN, FP, FN, TP = cm.ravel()
+print(f"\nTrue Negatives (correct Stay): {TN}")
+print(f"False Positives (false alarms): {FP}")
+print(f"False Negatives (missed churns): {FN}")
+print(f"True Positives (caught churns): {TP}")
 ```
 
-### K-Nearest Neighbors
+### Precision, Recall, and F1 Score
+
+Different metrics matter for different problems.
 
 ```python
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import precision_score, recall_score, f1_score
 
-model = KNeighborsClassifier(n_neighbors=5)
-model.fit(X_train, y_train)
-predictions = model.predict(X_test)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+
+print("=== Classification Metrics ===")
+print(f"Precision: {precision:.3f}")
+print(f"  → Of all predicted churns, {precision:.1%} actually churned")
+print(f"  → Low precision = too many false alarms")
+print()
+print(f"Recall: {recall:.3f}")
+print(f"  → Of all actual churns, we caught {recall:.1%}")
+print(f"  → Low recall = missing too many churns")
+print()
+print(f"F1 Score: {f1:.3f}")
+print(f"  → Harmonic mean of precision and recall")
+print(f"  → Use when you need to balance both")
+
+# Visual representation
+print("\n=== The Trade-off ===")
+print("""
+                    Actual Positive    Actual Negative
+                    ---------------    ---------------
+Predicted Positive       TP                 FP
+                     (caught!)         (false alarm)
+                    
+Predicted Negative       FN                 TN
+                     (missed!)         (correct reject)
+
+Precision = TP / (TP + FP)  →  "How accurate are positive predictions?"
+Recall    = TP / (TP + FN)  →  "How many positives did we catch?"
+""")
 ```
 
-### Decision Trees
+### ROC Curve and AUC
+
+The ROC curve shows performance across all possible thresholds.
 
 ```python
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import roc_curve, roc_auc_score
 
-model = DecisionTreeClassifier(max_depth=3)
-model.fit(X_train, y_train)
-predictions = model.predict(X_test)
+# Get ROC curve data
+fpr, tpr, thresholds = roc_curve(y_test, y_prob)
+auc = roc_auc_score(y_test, y_prob)
+
+# Plot
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, 'b-', linewidth=2, label=f'Model (AUC = {auc:.3f})')
+plt.plot([0, 1], [0, 1], 'k--', linewidth=1, label='Random (AUC = 0.5)')
+plt.xlabel('False Positive Rate (1 - Specificity)')
+plt.ylabel('True Positive Rate (Recall)')
+plt.title('ROC Curve')
+plt.legend(loc='lower right')
+plt.grid(True, alpha=0.3)
+plt.show()
+
+print(f"AUC: {auc:.3f}")
+print("Interpretation:")
+print("  AUC = 0.5: Random guessing")
+print("  AUC = 0.7-0.8: Acceptable")
+print("  AUC = 0.8-0.9: Good")
+print("  AUC > 0.9: Excellent")
+```
+
+### Threshold Tuning
+
+The default threshold is 0.5, but you can adjust it.
+
+```python
+from sklearn.metrics import precision_recall_curve
+
+# Get precision-recall curve
+precisions, recalls, thresholds_pr = precision_recall_curve(y_test, y_prob)
+
+# Find threshold for different targets
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# Precision-Recall curve
+axes[0].plot(recalls, precisions, 'b-', linewidth=2)
+axes[0].set_xlabel('Recall')
+axes[0].set_ylabel('Precision')
+axes[0].set_title('Precision-Recall Curve')
+axes[0].grid(True, alpha=0.3)
+
+# Threshold impact
+axes[1].plot(thresholds_pr, precisions[:-1], 'b-', label='Precision')
+axes[1].plot(thresholds_pr, recalls[:-1], 'r-', label='Recall')
+axes[1].axvline(x=0.5, color='k', linestyle='--', alpha=0.5, label='Default threshold')
+axes[1].set_xlabel('Threshold')
+axes[1].set_ylabel('Score')
+axes[1].set_title('Precision & Recall vs Threshold')
+axes[1].legend()
+axes[1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+# Custom threshold example
+def predict_with_threshold(probs, threshold):
+    return (probs >= threshold).astype(int)
+
+for thresh in [0.3, 0.5, 0.7]:
+    y_pred_custom = predict_with_threshold(y_prob, thresh)
+    prec = precision_score(y_test, y_pred_custom)
+    rec = recall_score(y_test, y_pred_custom)
+    print(f"Threshold {thresh}: Precision={prec:.3f}, Recall={rec:.3f}")
+```
+
+---
+
+## Senior-Level Insights
+
+### Choosing the Right Metric
+
+| Scenario             | Priority                                | Metric         | Why                        |
+| -------------------- | --------------------------------------- | -------------- | -------------------------- |
+| **Spam filter**      | Don't lose important emails             | High Precision | FP = losing business email |
+| **Cancer screening** | Catch all cases                         | High Recall    | FN = missed cancer         |
+| **Fraud detection**  | Balance cost of fraud vs. investigation | F1 or custom   | Both FP and FN have costs  |
+| **Credit approval**  | Compare models                          | AUC            | Threshold-independent      |
+
+### Handling Class Imbalance
+
+Real-world classification often has imbalanced classes (1% fraud, 99% legitimate).
+
+```python
+# Check class balance
+print(f"Class distribution:\n{y_train.value_counts(normalize=True)}")
+
+# Solutions:
+
+# 1. Class weights (built-in)
+model_balanced = LogisticRegression(class_weight='balanced')
+model_balanced.fit(X_train, y_train)
+
+# 2. Adjust threshold
+# Instead of 0.5, use lower threshold to catch more positives
+
+# 3. Resampling (SMOTE)
+# from imblearn.over_sampling import SMOTE
+# smote = SMOTE()
+# X_resampled, y_resampled = smote.fit_resample(X_train, y_train)
+
+# 4. Use appropriate metrics (not accuracy!)
+# With 99% negative, predicting all negative gives 99% accuracy!
+```
+
+### Model Coefficients Interpretation
+
+```python
+# Interpreting logistic regression coefficients
+print("=== Coefficient Interpretation ===")
+print(f"Intercept: {model.intercept_[0]:.3f}")
+for name, coef in zip(X.columns, model.coef_[0]):
+    odds_ratio = np.exp(coef)
+    print(f"{name}: coef={coef:.3f}, odds_ratio={odds_ratio:.3f}")
+    if odds_ratio > 1:
+        print(f"  → Each unit increase multiplies churn odds by {odds_ratio:.2f}")
+    else:
+        print(f"  → Each unit increase multiplies churn odds by {odds_ratio:.2f} (reduces)")
 ```
 
 ---
 
 ## Hands-on Lab
 
+### Exercise 1: Building a Complete Churn Classifier
+
 ```python
-from sklearn.datasets import make_classification
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, confusion_matrix
-import seaborn as sns
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import (
+    classification_report, confusion_matrix, 
+    roc_auc_score, precision_recall_curve
+)
 import matplotlib.pyplot as plt
 
-# Generate data
-X, y = make_classification(n_samples=200, n_features=2, n_redundant=0, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+# Create realistic churn data
+np.random.seed(42)
+n = 1000
 
-# Train
-model = LogisticRegression()
-model.fit(X_train, y_train)
-predictions = model.predict(X_test)
+data = pd.DataFrame({
+    'tenure_months': np.random.exponential(24, n).clip(1, 72),
+    'monthly_spend': np.random.uniform(30, 150, n),
+    'support_calls': np.random.poisson(2, n),
+    'contract_type': np.random.choice(['month-to-month', 'one-year', 'two-year'], n, p=[0.5, 0.3, 0.2]),
+    'has_partner': np.random.choice([0, 1], n, p=[0.4, 0.6]),
+})
 
-# Confusion matrix heatmap
-cm = confusion_matrix(y_test, predictions)
-sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
-plt.xlabel("Predicted")
-plt.ylabel("Actual")
-plt.title(f"Accuracy: {accuracy_score(y_test, predictions):.2%}")
+# Encode categorical
+data['contract_monthly'] = (data['contract_type'] == 'month-to-month').astype(int)
+
+# Generate churn (higher for: low tenure, high support calls, monthly contracts)
+churn_score = (
+    -0.05 * data['tenure_months'] +
+    0.3 * data['support_calls'] +
+    1.5 * data['contract_monthly'] -
+    0.5 * data['has_partner'] -
+    1
+)
+data['churn'] = (np.random.random(n) < 1/(1 + np.exp(-churn_score))).astype(int)
+
+print(f"Churn rate: {data['churn'].mean():.1%}")
+
+# Prepare features
+features = ['tenure_months', 'monthly_spend', 'support_calls', 'contract_monthly', 'has_partner']
+X = data[features]
+y = data['churn']
+
+# Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+
+# Build pipeline
+pipeline = Pipeline([
+    ('scaler', StandardScaler()),
+    ('classifier', LogisticRegression(class_weight='balanced', random_state=42))
+])
+
+# Cross-validate
+cv_scores = cross_val_score(pipeline, X_train, y_train, cv=5, scoring='roc_auc')
+print(f"CV AUC: {cv_scores.mean():.3f} (+/- {cv_scores.std():.3f})")
+
+# Train and evaluate
+pipeline.fit(X_train, y_train)
+y_pred = pipeline.predict(X_test)
+y_prob = pipeline.predict_proba(X_test)[:, 1]
+
+print("\n=== Test Set Performance ===")
+print(classification_report(y_test, y_pred, target_names=['Stay', 'Churn']))
+print(f"AUC: {roc_auc_score(y_test, y_prob):.3f}")
+
+# Feature importance
+model = pipeline.named_steps['classifier']
+importance = pd.DataFrame({
+    'Feature': features,
+    'Coefficient': model.coef_[0],
+    'Odds_Ratio': np.exp(model.coef_[0])
+}).sort_values('Coefficient', key=abs, ascending=False)
+
+print("\n=== Feature Importance ===")
+print(importance.to_string(index=False))
+```
+
+---
+
+### Exercise 2: Threshold Optimization for Business Metrics
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.metrics import precision_score, recall_score, f1_score
+
+# Using data from Exercise 1
+# Assume: Cost of FN (missed churn) = $500, Cost of FP (unnecessary retention offer) = $50
+
+cost_fn = 500  # Lost customer
+cost_fp = 50   # Wasted retention effort
+
+def calculate_cost(y_true, y_pred, cost_fn, cost_fp):
+    """Calculate total cost of predictions."""
+    fn = ((y_true == 1) & (y_pred == 0)).sum()
+    fp = ((y_true == 0) & (y_pred == 1)).sum()
+    return fn * cost_fn + fp * cost_fp
+
+# Test different thresholds
+thresholds = np.linspace(0.1, 0.9, 50)
+costs = []
+precisions = []
+recalls = []
+f1s = []
+
+for thresh in thresholds:
+    y_pred_thresh = (y_prob >= thresh).astype(int)
+    costs.append(calculate_cost(y_test.values, y_pred_thresh, cost_fn, cost_fp))
+    precisions.append(precision_score(y_test, y_pred_thresh, zero_division=0))
+    recalls.append(recall_score(y_test, y_pred_thresh, zero_division=0))
+    f1s.append(f1_score(y_test, y_pred_thresh, zero_division=0))
+
+# Plot
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# Cost curve
+axes[0].plot(thresholds, costs, 'b-', linewidth=2)
+optimal_idx = np.argmin(costs)
+axes[0].axvline(x=thresholds[optimal_idx], color='r', linestyle='--', 
+                label=f'Optimal: {thresholds[optimal_idx]:.2f}')
+axes[0].set_xlabel('Threshold')
+axes[0].set_ylabel('Total Cost ($)')
+axes[0].set_title(f'Business Cost vs Threshold\n(FN=${cost_fn}, FP=${cost_fp})')
+axes[0].legend()
+axes[0].grid(True, alpha=0.3)
+
+# Metrics curves
+axes[1].plot(thresholds, precisions, 'b-', label='Precision')
+axes[1].plot(thresholds, recalls, 'r-', label='Recall')
+axes[1].plot(thresholds, f1s, 'g-', label='F1')
+axes[1].axvline(x=0.5, color='k', linestyle='--', alpha=0.5, label='Default (0.5)')
+axes[1].axvline(x=thresholds[optimal_idx], color='orange', linestyle='--', 
+                label=f'Cost-optimal ({thresholds[optimal_idx]:.2f})')
+axes[1].set_xlabel('Threshold')
+axes[1].set_ylabel('Score')
+axes[1].set_title('Classification Metrics vs Threshold')
+axes[1].legend()
+axes[1].grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+print(f"Default threshold (0.5): Cost = ${costs[24]:,.0f}")
+print(f"Optimal threshold ({thresholds[optimal_idx]:.2f}): Cost = ${min(costs):,.0f}")
+print(f"Savings: ${costs[24] - min(costs):,.0f}")
+```
+
+---
+
+### Exercise 3: Comparing Multiple Classifiers
+
+```python
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+
+# Using same data
+# Scale for KNN
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Define classifiers
+classifiers = {
+    'Logistic Regression': LogisticRegression(class_weight='balanced', random_state=42),
+    'Logistic Reg (L1)': LogisticRegression(penalty='l1', solver='liblinear', 
+                                             class_weight='balanced', random_state=42),
+    'K-Nearest Neighbors': KNeighborsClassifier(n_neighbors=5),
+    'Naive Bayes': GaussianNB()
+}
+
+# Evaluate with cross-validation
+cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+results = []
+
+for name, clf in classifiers.items():
+    # Use scaled data for KNN
+    X_for_cv = X_train_scaled if 'Neighbors' in name else X_train
+    
+    # Cross-validate
+    auc_scores = cross_val_score(clf, X_for_cv, y_train, cv=cv, scoring='roc_auc')
+    f1_scores = cross_val_score(clf, X_for_cv, y_train, cv=cv, scoring='f1')
+    
+    results.append({
+        'Classifier': name,
+        'AUC Mean': auc_scores.mean(),
+        'AUC Std': auc_scores.std(),
+        'F1 Mean': f1_scores.mean(),
+        'F1 Std': f1_scores.std()
+    })
+
+results_df = pd.DataFrame(results)
+print("=== Classifier Comparison (Cross-Validation) ===")
+print(results_df.to_string(index=False))
+
+# Visualize
+fig, ax = plt.subplots(figsize=(10, 6))
+x = np.arange(len(classifiers))
+width = 0.35
+
+bars1 = ax.bar(x - width/2, results_df['AUC Mean'], width, 
+               yerr=results_df['AUC Std'], label='AUC', capsize=5)
+bars2 = ax.bar(x + width/2, results_df['F1 Mean'], width, 
+               yerr=results_df['F1 Std'], label='F1', capsize=5)
+
+ax.set_ylabel('Score')
+ax.set_title('Classifier Comparison')
+ax.set_xticks(x)
+ax.set_xticklabels(results_df['Classifier'], rotation=15, ha='right')
+ax.legend()
+ax.set_ylim(0, 1)
+ax.grid(True, alpha=0.3, axis='y')
+
+plt.tight_layout()
 plt.show()
 ```
 
 ---
 
+## Mastery Check
+
+### Question 1: Accuracy Trap
+A model predicts 95% of credit card transactions as "not fraud." Your dataset has 1% fraud. What's the accuracy, and why is this problematic?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:** If the model predicts everything as "not fraud," accuracy is 99% (catching 99% of legitimate transactions). But it catches 0% of fraud!
+
+**The problem:**
+```
+Dataset: 10,000 transactions
+- 100 fraud (1%)
+- 9,900 legitimate (99%)
+
+Model predicts: All "not fraud"
+- Correct: 9,900 (all legitimate)
+- Wrong: 100 (all fraud missed)
+- Accuracy: 99%
+- Recall for fraud: 0%
+```
+
+**Better metrics for imbalanced data:**
+- Recall (catches fraud)
+- Precision (avoids false alarms)
+- F1 Score (balances both)
+- AUC (threshold-independent)
+
+</details>
+
+---
+
+### Question 2: Precision vs Recall Trade-off
+Your fraud detection system has precision=0.9 and recall=0.5. What does this mean in business terms?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:**
+- **Precision = 0.9**: Of transactions flagged as fraud, 90% are actually fraudulent. Only 10% are false alarms.
+- **Recall = 0.5**: Of all actual fraud, we catch only 50%. Half the fraudsters get away!
+
+**Business interpretation:**
+- Good at not bothering legitimate customers (few false alarms)
+- Bad at catching fraud (half of fraudulent transactions slip through)
+
+**Should you adjust?**
+If fraud is costly, lower the threshold to catch more (increase recall), accepting more false alarms (lower precision).
+
+</details>
+
+---
+
+### Question 3: Confusion Matrix
+From this confusion matrix, calculate precision and recall:
+
+```
+              Predicted Positive  Predicted Negative
+Actual Positive         40              10
+Actual Negative         20              130
+```
+
+<details>
+<summary>Click for Answer</summary>
+
+**Extract values:**
+- TP = 40 (correctly predicted positive)
+- FN = 10 (missed positives)
+- FP = 20 (false alarms)
+- TN = 130 (correctly rejected)
+
+**Precision** = TP / (TP + FP) = 40 / (40 + 20) = 40/60 = **0.667**
+- "Of 60 predicted positives, 40 were correct"
+
+**Recall** = TP / (TP + FN) = 40 / (40 + 10) = 40/50 = **0.800**
+- "Of 50 actual positives, we caught 40"
+
+**Accuracy** = (TP + TN) / Total = (40 + 130) / 200 = **0.850**
+
+</details>
+
+---
+
+### Question 4: When to Use AUC
+When is AUC more useful than accuracy or F1?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Use AUC when:**
+1. **Comparing models** regardless of threshold choice
+2. **Threshold not decided yet** — AUC measures discrimination ability
+3. **Ranking matters more than classification** (e.g., prioritizing high-risk customers)
+4. **Class distribution might change** between train and production
+
+**AUC measures:**
+- How well the model separates classes
+- Probability that a random positive ranks higher than a random negative
+- Invariant to class imbalance
+
+**Don't use AUC when:**
+- You need a specific threshold for decisions
+- The business cost structure is asymmetric
+- You need calibrated probabilities (AUC doesn't require calibration)
+
+</details>
+
+---
+
+### Question 5: Threshold Selection
+A medical test has these results at threshold=0.5:
+- Precision: 0.95 (few false positives)
+- Recall: 0.70 (misses 30% of cases)
+
+The disease is deadly if untreated. Should you adjust the threshold?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:** Yes, **lower the threshold** to catch more cases (increase recall).
+
+**Reasoning:**
+- Deadly disease → missing a case (FN) is catastrophic
+- False positive (FP) means unnecessary testing, but patient survives
+- Current recall of 70% means 30% of sick patients are sent home!
+
+**Action:**
+```python
+# Lower threshold from 0.5 to, say, 0.3
+y_pred = (y_prob >= 0.3).astype(int)
+```
+
+**Result:**
+- Recall increases (catch more sick patients)
+- Precision decreases (more healthy people flagged)
+- This trade-off is acceptable for deadly diseases
+
+**General principle:** Match threshold to cost structure. When FN is catastrophic, prioritize recall.
+
+</details>
+
+---
+
 ## Summary
 
-- ✅ Classification predicts categories
-- ✅ Logistic regression outputs probabilities
-- ✅ Confusion matrix shows errors
-- ✅ Accuracy = correct / total
+Today you learned:
+- ✅ Classification predicts categories, not numbers
+- ✅ Logistic regression outputs probabilities via sigmoid
+- ✅ Confusion matrix shows TP, TN, FP, FN
+- ✅ Precision: how accurate are positive predictions?
+- ✅ Recall: how many positives did we catch?
+- ✅ F1 Score: harmonic mean of precision and recall
+- ✅ ROC-AUC: classifier performance across all thresholds
+- ✅ Threshold tuning matches business costs
 
-**Tomorrow**: More classification algorithms.
+**Tomorrow**: Classification Part 2—Decision Trees and Random Forests.

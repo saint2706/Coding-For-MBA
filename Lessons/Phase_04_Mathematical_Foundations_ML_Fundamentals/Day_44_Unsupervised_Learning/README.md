@@ -6,24 +6,44 @@ phaseTitle: "Mathematical Foundations & ML Fundamentals"
 slug: "unsupervised-learning"
 duration: 55
 difficulty: "intermediate"
-tags: [machine-learning, clustering, dimensionality-reduction]
-concepts: [K-means clustering, hierarchical clustering, PCA]
-prerequisites: [40]
-outcomes: [Cluster data with K-means, Reduce dimensions with PCA, Discover patterns without labels]
+tags:
+  - machine-learning
+  - clustering
+  - dimensionality-reduction
+  - pca
+  - kmeans
+concepts:
+  - "K-Means clustering"
+  - "elbow method"
+  - "PCA dimensionality reduction"
+  - "silhouette score"
+  - "anomaly detection"
+prerequisites: [40, 41, 42]
+outcomes:
+  - "Cluster data with K-Means"
+  - "Determine optimal cluster count"
+  - "Reduce dimensions with PCA"
+  - "Interpret unsupervised learning results"
 ---
 
 # 🎯 Day 44: Unsupervised Learning
 
-> *"No labels. Just patterns. Let the data speak for itself."*
+> *"No labels? No problem. Find patterns hiding in your data."*
 
 ---
 
 ## The "Never-Coded" Bridge
 
-No target variable. We find structure:
-- **Clustering**: Group similar customers
-- **Dimensionality Reduction**: Simplify complex data
-- **Anomaly Detection**: Find unusual patterns
+**You're a marketing analyst with millions of customers.** You don't have predefined segments—no one told you what "types" of customers exist. But intuitively, you know they're not all the same. Some are high-spenders, some are bargain-hunters, some are loyal, some are about to churn.
+
+**Unsupervised learning** discovers these hidden structures without being told what to look for.
+
+**Unsupervised learning in action:**
+- **Retail**: Customer segmentation for targeted marketing
+- **Finance**: Fraud detection (anomalies from normal patterns)
+- **Biology**: Gene expression clustering
+- **Security**: Network intrusion detection
+- **Compression**: Image and video compression via PCA
 
 ---
 
@@ -31,99 +51,564 @@ No target variable. We find structure:
 
 ### K-Means Clustering
 
+K-Means groups data points into K clusters by minimizing distance to cluster centers.
+
 ```python
-from sklearn.cluster import KMeans
 import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
-# Generate data
-X = np.random.randn(300, 2)
+# Create customer data
+np.random.seed(42)
+n = 300
 
-# Cluster into 3 groups
-kmeans = KMeans(n_clusters=3, random_state=42)
-labels = kmeans.fit_predict(X)
+# Three natural clusters
+cluster1 = np.random.randn(100, 2) * 0.5 + [2, 2]   # High value
+cluster2 = np.random.randn(100, 2) * 0.8 + [6, 6]   # Premium  
+cluster3 = np.random.randn(100, 2) * 0.6 + [2, 6]   # Engaged
 
-# Cluster centers
-centers = kmeans.cluster_centers_
-print(f"Cluster centers:\n{centers}")
-```
+X = np.vstack([cluster1, cluster2, cluster3])
+df = pd.DataFrame(X, columns=['recency_score', 'monetary_score'])
 
-### Choosing K (Elbow Method)
+# Scale features (important for distance-based algorithms)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
 
-```python
-inertias = []
-for k in range(1, 10):
-    kmeans = KMeans(n_clusters=k, random_state=42)
-    kmeans.fit(X)
-    inertias.append(kmeans.inertia_)
+# Fit K-Means
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+clusters = kmeans.fit_predict(X_scaled)
 
-plt.plot(range(1, 10), inertias, marker="o")
-plt.xlabel("Number of clusters")
-plt.ylabel("Inertia")
-plt.title("Elbow Method")
+# Visualize
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.scatter(X[:, 0], X[:, 1], alpha=0.6)
+plt.title('Before Clustering')
+plt.xlabel('Recency Score')
+plt.ylabel('Monetary Score')
+
+plt.subplot(1, 2, 2)
+plt.scatter(X[:, 0], X[:, 1], c=clusters, cmap='viridis', alpha=0.6)
+centers = scaler.inverse_transform(kmeans.cluster_centers_)
+plt.scatter(centers[:, 0], centers[:, 1], c='red', marker='X', s=200, label='Centers')
+plt.title('After K-Means Clustering (K=3)')
+plt.xlabel('Recency Score')
+plt.ylabel('Monetary Score')
+plt.legend()
+
+plt.tight_layout()
 plt.show()
 ```
 
-### PCA (Dimensionality Reduction)
+### Finding Optimal K: The Elbow Method
+
+```python
+# Elbow method: find the "elbow" where adding clusters has diminishing returns
+inertias = []
+K_range = range(1, 11)
+
+for k in K_range:
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    kmeans.fit(X_scaled)
+    inertias.append(kmeans.inertia_)  # Sum of squared distances to centers
+
+plt.figure(figsize=(10, 5))
+
+plt.subplot(1, 2, 1)
+plt.plot(K_range, inertias, 'bo-', linewidth=2)
+plt.xlabel('Number of Clusters (K)')
+plt.ylabel('Inertia (Sum of Squared Distances)')
+plt.title('Elbow Method')
+plt.axvline(x=3, color='r', linestyle='--', label='Elbow at K=3')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+# Silhouette score: measures cluster quality
+from sklearn.metrics import silhouette_score
+
+silhouettes = []
+for k in range(2, 11):  # Silhouette needs at least 2 clusters
+    kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+    labels = kmeans.fit_predict(X_scaled)
+    silhouettes.append(silhouette_score(X_scaled, labels))
+
+plt.subplot(1, 2, 2)
+plt.plot(range(2, 11), silhouettes, 'go-', linewidth=2)
+plt.xlabel('Number of Clusters (K)')
+plt.ylabel('Silhouette Score')
+plt.title('Silhouette Method')
+plt.axvline(x=3, color='r', linestyle='--', label='Best at K=3')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+
+print(f"Best K by silhouette: {range(2, 11)[np.argmax(silhouettes)]}")
+print(f"Best silhouette score: {max(silhouettes):.3f}")
+```
+
+### Analyzing Clusters
+
+```python
+# Add cluster labels to data
+df['cluster'] = clusters
+
+# Cluster profiles
+cluster_profiles = df.groupby('cluster').agg(['mean', 'std', 'count'])
+print("=== Cluster Profiles ===")
+print(cluster_profiles.round(2))
+
+# Naming clusters based on characteristics
+cluster_names = {
+    0: 'Budget-Conscious',
+    1: 'Premium Customers',
+    2: 'Engaged Shoppers'
+}
+df['segment'] = df['cluster'].map(cluster_names)
+
+# Visualize cluster distributions
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+for i, col in enumerate(['recency_score', 'monetary_score']):
+    df.boxplot(column=col, by='segment', ax=axes[i])
+    axes[i].set_title(f'{col} by Segment')
+    axes[i].set_xlabel('Segment')
+
+plt.suptitle('')
+plt.tight_layout()
+plt.show()
+```
+
+### PCA: Dimensionality Reduction
+
+Principal Component Analysis finds directions of maximum variance.
 
 ```python
 from sklearn.decomposition import PCA
 
-# Reduce to 2 dimensions
-pca = PCA(n_components=2)
-X_reduced = pca.fit_transform(X)
+# Create high-dimensional data (6 features)
+np.random.seed(42)
+n = 200
+
+# Features with correlations
+feature1 = np.random.randn(n)
+feature2 = 0.8 * feature1 + 0.2 * np.random.randn(n)  # Correlated
+feature3 = np.random.randn(n)
+feature4 = 0.9 * feature3 + 0.1 * np.random.randn(n)  # Correlated
+feature5 = np.random.randn(n)
+feature6 = np.random.randn(n)
+
+X_high = np.column_stack([feature1, feature2, feature3, feature4, feature5, feature6])
+X_high_scaled = StandardScaler().fit_transform(X_high)
+
+# Apply PCA
+pca = PCA()
+X_pca = pca.fit_transform(X_high_scaled)
 
 # Explained variance
-print(f"Explained variance: {pca.explained_variance_ratio_}")
-print(f"Total: {sum(pca.explained_variance_ratio_):.2%}")
+print("=== PCA Variance Explained ===")
+for i, var in enumerate(pca.explained_variance_ratio_):
+    print(f"PC{i+1}: {var:.1%}")
+print(f"Cumulative: {pca.explained_variance_ratio_.cumsum()}")
+
+# Visualize
+plt.figure(figsize=(12, 4))
+
+plt.subplot(1, 3, 1)
+plt.bar(range(1, 7), pca.explained_variance_ratio_)
+plt.xlabel('Principal Component')
+plt.ylabel('Variance Explained')
+plt.title('Variance by Component')
+
+plt.subplot(1, 3, 2)
+plt.plot(range(1, 7), pca.explained_variance_ratio_.cumsum(), 'bo-')
+plt.axhline(y=0.95, color='r', linestyle='--', label='95% threshold')
+plt.xlabel('Number of Components')
+plt.ylabel('Cumulative Variance')
+plt.title('Cumulative Variance Explained')
+plt.legend()
+plt.grid(True, alpha=0.3)
+
+plt.subplot(1, 3, 3)
+plt.scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.5)
+plt.xlabel('PC1')
+plt.ylabel('PC2')
+plt.title('Data Projected onto First 2 PCs')
+
+plt.tight_layout()
+plt.show()
+
+# Reduce to 2 components (capturing 60%+ variance)
+pca_2d = PCA(n_components=2)
+X_reduced = pca_2d.fit_transform(X_high_scaled)
+print(f"\nReduced from {X_high.shape[1]} to {X_reduced.shape[1]} dimensions")
+print(f"Variance retained: {pca_2d.explained_variance_ratio_.sum():.1%}")
 ```
 
-### Hierarchical Clustering
+### Combining PCA and Clustering
 
 ```python
-from sklearn.cluster import AgglomerativeClustering
-from scipy.cluster.hierarchy import dendrogram, linkage
+# Real-world pattern: PCA for visualization, then cluster
+from sklearn.datasets import load_iris
 
-# Cluster
-model = AgglomerativeClustering(n_clusters=3)
-labels = model.fit_predict(X)
+# Load iris dataset (4 features)
+iris = load_iris()
+X_iris = iris.data
+y_iris = iris.target  # We'll hide this for unsupervised
 
-# Dendrogram
-linkage_matrix = linkage(X, method="ward")
-dendrogram(linkage_matrix)
+# Scale
+X_iris_scaled = StandardScaler().fit_transform(X_iris)
+
+# Reduce to 2D for visualization
+pca_iris = PCA(n_components=2)
+X_iris_2d = pca_iris.fit_transform(X_iris_scaled)
+
+# Cluster in original space
+kmeans_iris = KMeans(n_clusters=3, random_state=42, n_init=10)
+clusters_iris = kmeans_iris.fit_predict(X_iris_scaled)
+
+# Visualize
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.scatter(X_iris_2d[:, 0], X_iris_2d[:, 1], c=y_iris, cmap='Set1', alpha=0.7)
+plt.xlabel('PC1')
+plt.ylabel('PC2')
+plt.title('True Labels (Iris)')
+plt.colorbar(label='Species')
+
+plt.subplot(1, 2, 2)
+plt.scatter(X_iris_2d[:, 0], X_iris_2d[:, 1], c=clusters_iris, cmap='viridis', alpha=0.7)
+plt.xlabel('PC1')
+plt.ylabel('PC2')
+plt.title('K-Means Clusters (K=3)')
+plt.colorbar(label='Cluster')
+
+plt.tight_layout()
 plt.show()
+
+# Compare to true labels
+from sklearn.metrics import adjusted_rand_score
+ari = adjusted_rand_score(y_iris, clusters_iris)
+print(f"Adjusted Rand Index: {ari:.3f} (1.0 = perfect match)")
+```
+
+---
+
+## Senior-Level Insights
+
+### Clustering Evaluation Without Labels
+
+| Metric                | What It Measures                    | Interpretation           |
+| --------------------- | ----------------------------------- | ------------------------ |
+| **Inertia**           | Sum of squared distances to centers | Lower = tighter clusters |
+| **Silhouette**        | Cohesion vs separation              | -1 to 1, higher = better |
+| **Calinski-Harabasz** | Between vs within cluster variance  | Higher = better          |
+| **Davies-Bouldin**    | Average similarity between clusters | Lower = better           |
+
+### PCA vs Other Reduction Techniques
+
+| Method           | Preserves        | Best For                 |
+| ---------------- | ---------------- | ------------------------ |
+| **PCA**          | Global variance  | Linear relationships     |
+| **t-SNE**        | Local structure  | Visualization (2D/3D)    |
+| **UMAP**         | Local + global   | Large datasets           |
+| **Autoencoders** | Learned features | Non-linear deep learning |
+
+### Production Clustering Considerations
+
+```python
+# 1. Feature scaling is critical
+scaler = StandardScaler()  # Mean=0, Std=1
+X_scaled = scaler.fit_transform(X)
+# K-Means uses Euclidean distance; unscaled features dominate
+
+# 2. K-Means assumptions
+# - Clusters are spherical and equally sized
+# - If violated, consider: DBSCAN, Gaussian Mixture, Hierarchical
+
+# 3. Stability check: run multiple times
+from sklearn.cluster import KMeans
+results = []
+for seed in range(10):
+    km = KMeans(n_clusters=3, random_state=seed, n_init=10)
+    labels = km.fit_predict(X_scaled)
+    results.append(silhouette_score(X_scaled, labels))
+print(f"Silhouette: {np.mean(results):.3f} ± {np.std(results):.3f}")
+
+# 4. Assigning new data to existing clusters
+# Save the trained model and use predict()
+new_data = scaler.transform(new_raw_data)
+new_clusters = kmeans.predict(new_data)
 ```
 
 ---
 
 ## Hands-on Lab
 
+### Exercise 1: Customer Segmentation
+
 ```python
-from sklearn.datasets import make_blobs
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
-from sklearn.decomposition import PCA
+from sklearn.metrics import silhouette_score
 import matplotlib.pyplot as plt
 
-# Generate clustered data
-X, _ = make_blobs(n_samples=300, centers=4, random_state=42)
+# Create RFM (Recency, Frequency, Monetary) customer data
+np.random.seed(42)
+n = 500
 
-# Cluster
-kmeans = KMeans(n_clusters=4, random_state=42)
-labels = kmeans.fit_predict(X)
+# Different customer types
+# Type 1: New customers (low all)
+# Type 2: Loyal customers (high frequency, moderate monetary)
+# Type 3: VIP customers (high all)
+# Type 4: At-risk customers (high recency, low recent frequency)
+
+data = pd.DataFrame({
+    'recency_days': np.concatenate([
+        np.random.exponential(10, 125),   # New
+        np.random.exponential(30, 125),   # Loyal
+        np.random.exponential(15, 125),   # VIP
+        np.random.exponential(90, 125)    # At-risk
+    ]),
+    'frequency': np.concatenate([
+        np.random.poisson(2, 125),        # New
+        np.random.poisson(15, 125),       # Loyal
+        np.random.poisson(20, 125),       # VIP
+        np.random.poisson(5, 125)         # At-risk
+    ]),
+    'monetary': np.concatenate([
+        np.random.exponential(50, 125),   # New
+        np.random.exponential(150, 125),  # Loyal
+        np.random.exponential(500, 125),  # VIP
+        np.random.exponential(80, 125)    # At-risk
+    ])
+})
+
+# Scale features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(data)
+
+# Find optimal K
+K_range = range(2, 10)
+silhouettes = []
+inertias = []
+
+for k in K_range:
+    km = KMeans(n_clusters=k, random_state=42, n_init=10)
+    labels = km.fit_predict(X_scaled)
+    silhouettes.append(silhouette_score(X_scaled, labels))
+    inertias.append(km.inertia_)
+
+# Plot
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+axes[0].plot(K_range, inertias, 'bo-')
+axes[0].set_xlabel('K')
+axes[0].set_ylabel('Inertia')
+axes[0].set_title('Elbow Method')
+axes[0].grid(True, alpha=0.3)
+
+axes[1].plot(K_range, silhouettes, 'go-')
+axes[1].set_xlabel('K')
+axes[1].set_ylabel('Silhouette Score')
+axes[1].set_title('Silhouette Method')
+axes[1].grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+# Cluster with optimal K
+optimal_k = K_range[np.argmax(silhouettes)]
+print(f"Optimal K: {optimal_k}")
+
+kmeans = KMeans(n_clusters=optimal_k, random_state=42, n_init=10)
+data['cluster'] = kmeans.fit_predict(X_scaled)
+
+# Analyze clusters
+print("\n=== Cluster Profiles ===")
+profiles = data.groupby('cluster').mean().round(1)
+print(profiles)
+
+# Name segments
+segment_names = {
+    0: 'New Customers',
+    1: 'VIP Customers', 
+    2: 'Loyal Regulars',
+    3: 'At-Risk'
+}
+# Assign based on profile characteristics
+```
+
+---
+
+### Exercise 2: Anomaly Detection with Clustering
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Generate transaction data with anomalies
+np.random.seed(42)
+n_normal = 450
+n_anomaly = 50
+
+# Normal transactions
+normal = np.column_stack([
+    np.random.normal(100, 30, n_normal),    # Amount
+    np.random.normal(12, 3, n_normal),      # Hour (around noon)
+])
+
+# Anomalous transactions (high amounts at unusual hours)
+anomalies = np.column_stack([
+    np.random.normal(500, 100, n_anomaly),  # Higher amounts
+    np.random.choice([2, 3, 23], n_anomaly) + np.random.randn(n_anomaly)*0.5,  # Night hours
+])
+
+X = np.vstack([normal, anomalies])
+y_true = np.array([0]*n_normal + [1]*n_anomaly)  # 0=normal, 1=anomaly
+
+# Scale
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Cluster into 2 groups
+kmeans = KMeans(n_clusters=2, random_state=42, n_init=10)
+clusters = kmeans.fit_predict(X_scaled)
+
+# Distance to nearest cluster center (anomalies are far from centers)
+distances = np.min(kmeans.transform(X_scaled), axis=1)
+
+# Flag top 10% by distance as potential anomalies
+threshold = np.percentile(distances, 90)
+anomaly_pred = (distances > threshold).astype(int)
 
 # Visualize
-plt.figure(figsize=(10, 5))
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
+axes[0].scatter(X[:, 0], X[:, 1], c=y_true, cmap='coolwarm', alpha=0.6)
+axes[0].set_xlabel('Transaction Amount')
+axes[0].set_ylabel('Hour')
+axes[0].set_title('True Labels (Red=Anomaly)')
+
+axes[1].scatter(X[:, 0], X[:, 1], c=distances, cmap='viridis', alpha=0.6)
+axes[1].colorbar = plt.colorbar(axes[1].collections[0], ax=axes[1])
+axes[1].set_xlabel('Transaction Amount')
+axes[1].set_ylabel('Hour')
+axes[1].set_title('Distance to Cluster Center')
+
+axes[2].scatter(X[:, 0], X[:, 1], c=anomaly_pred, cmap='coolwarm', alpha=0.6)
+axes[2].axhline(y=threshold, color='k', linestyle='--', alpha=0.5)
+axes[2].set_xlabel('Transaction Amount')
+axes[2].set_ylabel('Hour')
+axes[2].set_title('Predicted Anomalies (Distance-based)')
+
+plt.tight_layout()
+plt.show()
+
+# Evaluate
+from sklearn.metrics import precision_score, recall_score
+print(f"Precision: {precision_score(y_true, anomaly_pred):.2f}")
+print(f"Recall: {recall_score(y_true, anomaly_pred):.2f}")
+```
+
+---
+
+### Exercise 3: PCA for Feature Engineering
+
+```python
+import numpy as np
+import pandas as pd
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
+
+# Create high-dimensional dataset
+np.random.seed(42)
+n = 500
+p = 20  # 20 features
+
+# Generate features with some correlation
+X = np.random.randn(n, p)
+# Add correlations
+for i in range(5, 10):
+    X[:, i] = 0.7 * X[:, i-5] + 0.3 * np.random.randn(n)
+for i in range(10, 15):
+    X[:, i] = 0.5 * X[:, i-10] + 0.5 * np.random.randn(n)
+
+# Generate target (only depends on first 3 features)
+y = (X[:, 0] + 0.5*X[:, 1] - 0.8*X[:, 2] + np.random.randn(n)*0.5 > 0).astype(int)
+
+# Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Scale
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Compare: full features vs PCA reduced
+results = []
+
+# Full features
+clf_full = LogisticRegression(random_state=42, max_iter=1000)
+clf_full.fit(X_train_scaled, y_train)
+results.append({
+    'Method': 'Full Features (20)',
+    'Accuracy': clf_full.score(X_test_scaled, y_test)
+})
+
+# PCA with different n_components
+for n_comp in [2, 5, 10, 15]:
+    pca = PCA(n_components=n_comp)
+    X_train_pca = pca.fit_transform(X_train_scaled)
+    X_test_pca = pca.transform(X_test_scaled)
+    
+    clf_pca = LogisticRegression(random_state=42, max_iter=1000)
+    clf_pca.fit(X_train_pca, y_train)
+    
+    var_explained = pca.explained_variance_ratio_.sum()
+    results.append({
+        'Method': f'PCA ({n_comp} components)',
+        'Accuracy': clf_pca.score(X_test_pca, y_test),
+        'Variance': var_explained
+    })
+
+results_df = pd.DataFrame(results)
+print("=== Comparison: Full vs PCA ===")
+print(results_df.to_string(index=False))
+
+# Visualization (cumulative variance)
+pca_full = PCA()
+pca_full.fit(X_train_scaled)
+
+plt.figure(figsize=(10, 4))
 plt.subplot(1, 2, 1)
-plt.scatter(X[:, 0], X[:, 1], c=labels, cmap="viridis")
-plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], 
-            c="red", marker="X", s=200)
-plt.title("K-Means Clustering")
+plt.plot(range(1, 21), pca_full.explained_variance_ratio_.cumsum(), 'bo-')
+plt.axhline(y=0.95, color='r', linestyle='--', label='95% variance')
+plt.xlabel('Number of Components')
+plt.ylabel('Cumulative Variance Explained')
+plt.title('PCA: Variance by Components')
+plt.legend()
+plt.grid(True, alpha=0.3)
 
 plt.subplot(1, 2, 2)
-pca = PCA(n_components=1)
-X_1d = pca.fit_transform(X)
-plt.hist(X_1d, bins=30)
-plt.title("PCA Reduction to 1D")
+accuracies = [r['Accuracy'] for r in results[1:]]
+n_comps = [2, 5, 10, 15]
+plt.bar(n_comps, accuracies)
+plt.axhline(y=results[0]['Accuracy'], color='r', linestyle='--', label='Full features')
+plt.xlabel('PCA Components')
+plt.ylabel('Test Accuracy')
+plt.title('Accuracy vs Dimensionality')
+plt.legend()
 
 plt.tight_layout()
 plt.show()
@@ -131,11 +616,188 @@ plt.show()
 
 ---
 
+## Mastery Check
+
+### Question 1: Why Scale Before K-Means?
+What happens if you run K-Means without scaling features?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:** Features with larger scales dominate the distance calculations.
+
+**Example:**
+- Feature A: income (range 30,000 - 150,000)
+- Feature B: age (range 18 - 80)
+
+Without scaling, income dominates because:
+- Distance contribution from income: (150000-30000)² = 14.4 billion
+- Distance contribution from age: (80-18)² = 3,844
+
+K-Means will cluster almost entirely based on income, ignoring age.
+
+**Solution:**
+```python
+scaler = StandardScaler()  # Mean=0, Std=1
+X_scaled = scaler.fit_transform(X)
+```
+
+Now both features contribute equally to distance.
+
+</details>
+
+---
+
+### Question 2: Interpreting Silhouette Score
+A silhouette score of 0.7 vs 0.2—what's the difference?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:**
+
+**Silhouette score** ranges from -1 to 1:
+- **0.7-1.0**: Strong cluster structure. Points are well-matched to own cluster, far from others.
+- **0.5-0.7**: Reasonable structure. Clusters are distinct but some overlap.
+- **0.2-0.5**: Weak structure. Clusters overlap significantly.
+- **< 0.2**: Poor structure. May not be meaningful clusters.
+- **Negative**: Points are likely in wrong cluster.
+
+**Score of 0.7:** Good clustering—distinct, compact groups.
+**Score of 0.2:** Clusters barely separated—consider different K or algorithm.
+
+</details>
+
+---
+
+### Question 3: PCA Components
+Your PCA shows PC1 explains 60% variance and PC2 explains 25%. Should you keep only 2 components?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:** It depends on your goal!
+
+**85% variance (PC1 + PC2) is often acceptable for:**
+- Visualization (2D plots)
+- Noise reduction
+- Quick exploration
+
+**You might need more components for:**
+- Model training (goal: maximize accuracy)
+- Retaining specific information
+- When remaining 15% contains the signal you need
+
+**Guidelines:**
+- 90-95% variance: Common threshold
+- Compare model performance with and without PCA
+- For visualization: 2-3 components are enough
+
+```python
+# Keep enough for 95% variance
+pca = PCA(n_components=0.95)  # Automatically selects components
+X_reduced = pca.fit_transform(X)
+print(f"Components needed: {pca.n_components_}")
+```
+
+</details>
+
+---
+
+### Question 4: Cluster Stability
+You run K-Means twice with different random seeds and get different clusters. Is this a problem?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:** Yes, it suggests **unstable clustering**.
+
+**Causes:**
+1. K-Means depends on random initialization
+2. Data may not have clear cluster structure
+3. Wrong K value
+
+**Solutions:**
+1. **Multiple runs**: Use `n_init=10` (sklearn default) to run with different initializations
+2. **K-means++**: Better initialization (sklearn default: `init='k-means++'`)
+3. **Stability check**: Run many times, measure consistency
+4. **Different K**: Try other values; maybe data has different structure
+5. **Different algorithm**: DBSCAN, hierarchical clustering don't depend on initialization
+
+```python
+# Check stability
+from sklearn.metrics import adjusted_rand_score
+
+results = []
+for seed in range(20):
+    km = KMeans(n_clusters=3, random_state=seed, n_init=1)
+    labels = km.fit_predict(X_scaled)
+    results.append(labels)
+
+# Compare all pairs
+scores = []
+for i in range(len(results)):
+    for j in range(i+1, len(results)):
+        scores.append(adjusted_rand_score(results[i], results[j]))
+        
+print(f"Stability (ARI): {np.mean(scores):.3f}")
+# ARI near 1.0 = stable, near 0 = unstable
+```
+
+</details>
+
+---
+
+### Question 5: Business Application
+You've clustered customers into 4 segments. Marketing asks "What makes these segments different?" How do you explain?
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer:** Create **cluster profiles** by computing statistics per cluster.
+
+**Steps:**
+1. Calculate mean/median of each feature per cluster
+2. Compare to overall population average
+3. Name clusters based on distinguishing characteristics
+4. Visualize with bar charts or radar plots
+
+```python
+# Create cluster profiles
+profiles = df.groupby('cluster').agg({
+    'recency': 'mean',
+    'frequency': 'mean',
+    'monetary': 'mean'
+})
+
+# Compare to overall
+overall = df[['recency', 'frequency', 'monetary']].mean()
+profiles_normalized = profiles / overall  # Ratio to average
+
+# Naming based on profiles:
+# High monetary, high frequency → "VIP Customers"
+# Low recency, medium monetary → "At-Risk Churners"
+# etc.
+```
+
+**Presentation tips:**
+- Use business language, not technical jargon
+- Show % of customers in each segment
+- Recommend specific actions per segment
+
+</details>
+
+---
+
 ## Summary
 
-- ✅ K-means groups similar data points
-- ✅ Elbow method finds optimal K
-- ✅ PCA reduces dimensions while preserving variance
-- ✅ Unsupervised = discovery without labels
+Today you learned:
+- ✅ Unsupervised learning finds patterns without labels
+- ✅ K-Means clusters data by minimizing distance to centers
+- ✅ Elbow and Silhouette methods find optimal K
+- ✅ PCA reduces dimensions by finding principal components
+- ✅ Scale features before distance-based algorithms
+- ✅ Cluster profiles translate results into business insights
+- ✅ Combine PCA (reduce) + K-Means (cluster) for high-dimensional data
 
-**Tomorrow**: Feature Engineering & Model Evaluation.
+**Tomorrow**: Feature Engineering and Model Evaluation—preparing data for maximum model performance.
