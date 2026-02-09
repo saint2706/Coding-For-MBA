@@ -48,6 +48,7 @@ print(len(signups_set))   # 2 (correct!)
 ```
 
 Sets also answer questions like:
+
 - "Which customers bought BOTH products?"
 - "Who's in List A but NOT in List B?"
 - "What are all the UNIQUE categories?"
@@ -321,7 +322,9 @@ print(f"Personal emails: {personal_emails}")
 ## Mastery Check
 
 ### Question 1: Set Creation
+
 What's in this set?
+
 ```python
 my_set = {3, 1, 4, 1, 5, 9, 2, 6, 5, 3}
 print(len(my_set))
@@ -339,11 +342,14 @@ Duplicates are removed: `{1, 2, 3, 4, 5, 6, 9}` has 7 unique elements.
 ---
 
 ### Question 2: Set Operations
+
 Given:
+
 ```python
 a = {1, 2, 3, 4}
 b = {3, 4, 5, 6}
 ```
+
 What is `a ^ b`?
 
 <details>
@@ -358,7 +364,9 @@ The symmetric difference (`^`) contains elements in either set, but not in both.
 ---
 
 ### Question 3: Empty Set Trap
+
 What does this create?
+
 ```python
 x = {}
 y = set()
@@ -380,6 +388,7 @@ This is a common Python gotcha. Always use `set()` for empty sets.
 ---
 
 ### Question 4: Practical Application
+
 You have visitor logs from Monday and Tuesday. Find visitors who came both days:
 
 ```python
@@ -401,6 +410,7 @@ print(both_days)  # {'user_042', 'user_567'}
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a tag-based content recommendation system. Users "follow" tags, articles have tags. Recommend articles where at least 2 tags match user interests.
 
 <details>
@@ -428,7 +438,8 @@ for article in articles:
 ```
 
 Output:
-```
+
+```text
 === RECOMMENDED FOR YOU ===
 📰 ML for Beginners
    Matching: {'machine-learning', 'data-science'}
@@ -441,6 +452,7 @@ Output:
 ## Summary
 
 Today you learned:
+
 - ✅ Sets store unique, unordered collections
 - ✅ Use `set()` for empty sets (not `{}`)
 - ✅ Set operations: union (`|`), intersection (`&`), difference (`-`)

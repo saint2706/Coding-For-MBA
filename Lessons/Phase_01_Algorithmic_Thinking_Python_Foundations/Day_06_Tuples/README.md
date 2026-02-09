@@ -42,6 +42,7 @@ These facts don't change. The founding year won't suddenly become 2016. You want
 A **tuple** is like a sealed envelope. Once you put data inside, you can look at it but never modify it. This intentional "read-only" nature is a feature, not a limitation.
 
 **Real business uses:**
+
 - Coordinates: (latitude, longitude)
 - Database rows: (id, name, price)
 - RGB colors: (255, 128, 0)
@@ -308,7 +309,9 @@ print(f"\nTotal Revenue: ${total_revenue:,.2f}")
 ## Mastery Check
 
 ### Question 1: Tuple Creation
+
 Which of these creates a single-element tuple?
+
 ```python
 a = (42)
 b = (42,)
@@ -329,7 +332,9 @@ c = 42,
 ---
 
 ### Question 2: Immutability
+
 What happens with this code?
+
 ```python
 data = (1, [2, 3], 4)
 data[1].append(5)
@@ -350,7 +355,9 @@ This is an important gotcha: immutable containers can hold mutable objects.
 ---
 
 ### Question 3: Unpacking
+
 What values do a, b, c have?
+
 ```python
 a, *b, c = (1, 2, 3, 4, 5)
 ```
@@ -369,6 +376,7 @@ The `*` collects all remaining elements into a list.
 ---
 
 ### Question 4: Dictionary Keys
+
 Why can tuples be dictionary keys but lists cannot?
 
 <details>
@@ -392,6 +400,7 @@ locations = {(40.7, -74.0): "NYC"}
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: You're building a configuration system where database settings should never be changed at runtime. Design the data structure.
 
 <details>
@@ -434,6 +443,7 @@ print(connection_string)
 ## Summary
 
 Today you learned:
+
 - ✅ Tuples are immutable ordered collections
 - ✅ Single-element tuples need a trailing comma: `(42,)`
 - ✅ Tuple unpacking enables clean, readable code

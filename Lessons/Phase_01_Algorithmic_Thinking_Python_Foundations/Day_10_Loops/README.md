@@ -369,7 +369,9 @@ for attempt, pwd in enumerate(passwords_to_try, 1):
 ## Mastery Check
 
 ### Question 1: Range Output
+
 What does this print?
+
 ```python
 for i in range(3, 8, 2):
     print(i)
@@ -378,7 +380,7 @@ for i in range(3, 8, 2):
 <details>
 <summary>Click for Answer</summary>
 
-```
+```text
 3
 5
 7
@@ -391,7 +393,9 @@ for i in range(3, 8, 2):
 ---
 
 ### Question 2: Loop Control
+
 What's the output?
+
 ```python
 for i in range(5):
     if i == 2:
@@ -404,7 +408,7 @@ for i in range(5):
 <details>
 <summary>Click for Answer</summary>
 
-```
+```text
 0
 1
 3
@@ -420,17 +424,20 @@ for i in range(5):
 ---
 
 ### Question 3: While vs For
+
 When should you use `while` instead of `for`?
 
 <details>
 <summary>Click for Answer</summary>
 
 Use `while` when:
+
 - You don't know how many iterations in advance
 - Waiting for a condition (user input, sensor reading)
 - The exit condition isn't based on sequence length
 
 Use `for` when:
+
 - Iterating over a known sequence
 - You know the number of iterations
 - Processing collections
@@ -450,7 +457,9 @@ while not user_quit:
 ---
 
 ### Question 4: Enumerate
+
 Rewrite using enumerate:
+
 ```python
 words = ["Python", "is", "fun"]
 for i in range(len(words)):
@@ -471,7 +480,9 @@ for i, word in enumerate(words):
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a batch processor that:
+
 1. Processes items from a queue
 2. Logs each item processed
 3. Stops if it encounters an "ERROR" item
@@ -503,7 +514,8 @@ print(f"\nTotal processed: {count}")
 ```
 
 **Output:**
-```
+
+```text
 Processing: item1
 Processing: item2
 Processing: item3
@@ -519,6 +531,7 @@ Total processed: 3
 ## Summary
 
 Today you learned:
+
 - ✅ `for` loops iterate over sequences
 - ✅ `while` loops continue until a condition is False
 - ✅ `range()` generates number sequences

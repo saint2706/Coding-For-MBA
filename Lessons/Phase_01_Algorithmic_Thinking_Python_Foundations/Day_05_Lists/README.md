@@ -36,6 +36,7 @@ outcomes:
 With variables, you've been using sticky notes—one piece of information per note. But what if you need to track all your customers? All products? All transactions?
 
 A **list** is like a filing cabinet with numbered folders. Each folder (index) holds one item, and you can:
+
 - Add new folders at the end
 - Remove folders you don't need
 - Reorganize the entire cabinet
@@ -328,7 +329,9 @@ print(f"Needs Improvement: {sorted_data[-1][0]}")
 ## Mastery Check
 
 ### Question 1: List Indexing
+
 What does this print?
+
 ```python
 items = [10, 20, 30, 40, 50]
 print(items[1:4])
@@ -346,7 +349,9 @@ Slicing is [start:end) — end is exclusive, so indices 1, 2, 3.
 ---
 
 ### Question 2: List Modification
+
 What's the output?
+
 ```python
 a = [1, 2, 3]
 b = a
@@ -366,6 +371,7 @@ print(a)
 ---
 
 ### Question 3: Method Behavior
+
 What's the difference between `sort()` and `sorted()`?
 
 <details>
@@ -387,6 +393,7 @@ new = sorted(nums)  # new is [1, 2, 3], nums still [3, 1, 2]
 ---
 
 ### Question 4: Practical Application
+
 Given a list of prices, calculate the total, average, and identify any items over $100:
 
 ```python
@@ -413,6 +420,7 @@ print(f"Items over $100: {expensive}")
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Design a system to track the last 10 customer interactions for a support chatbot. New interactions are added frequently, and you need to maintain only the most recent 10.
 
 <details>
@@ -438,6 +446,7 @@ print(interactions)
 ```
 
 **Production Alternative**: Use `collections.deque(maxlen=10)` for O(1) operations:
+
 ```python
 from collections import deque
 interactions = deque(maxlen=10)
@@ -451,6 +460,7 @@ interactions.append("message")  # Auto-removes oldest
 ## Summary
 
 Today you learned:
+
 - ✅ Lists store ordered collections of values
 - ✅ Indexing starts at 0; negative indices count from end
 - ✅ Lists are mutable—contents can be changed

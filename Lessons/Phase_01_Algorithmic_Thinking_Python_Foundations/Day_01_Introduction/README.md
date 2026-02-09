@@ -94,7 +94,7 @@ print(2 ** 10)         # Output: 1024
 **Option 1: The REPL (Interactive Mode)**
 Type `python` in your terminal. You get a `>>>` prompt where you can type code line-by-line and see results immediately.
 
-```
+```text
 >>> 50 * 12
 600
 >>> print("Revenue calculated!")
@@ -154,7 +154,7 @@ print("Innovating Tomorrow, Today")
 
 **Expected Output:**
 
-```
+```text
 TechVentures Inc.
 Innovating Tomorrow, Today
 ```
@@ -186,7 +186,7 @@ print("Break-even point:", break_even_units, "units")
 
 **Expected Output:**
 
-```
+```text
 Break-even point: 3000.0 units
 ```
 
@@ -224,7 +224,7 @@ print("Monthly Average: $", monthly_avg)
 
 **Expected Output:**
 
-```
+```text
 Q1 Total Revenue: $ 406250
 Monthly Average: $ 135416.66666666666
 ```

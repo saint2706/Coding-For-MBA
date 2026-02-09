@@ -69,6 +69,7 @@ print(company, "made a profit of $", profit)
 ```
 
 **Naming Rules:**
+
 - ✅ Start with a letter or underscore: `sales`, `_private`
 - ✅ Use letters, numbers, underscores: `quarter_1_sales`, `revenue2024`
 - ❌ No spaces: `my variable` → Use `my_variable`
@@ -156,6 +157,7 @@ MAX_RETRY_ATTEMPTS = 3
 
 **How Python stores variables:**
 Variables are *references* (pointers) to objects in memory. When you write `x = 100`, Python:
+
 1. Creates an integer object `100` in memory
 2. Labels it with the name `x`
 
@@ -212,6 +214,7 @@ print("Premium Status:", is_premium)
 **Goal**: Build a pricing calculator that handles user input.
 
 **Step-by-step**:
+
 1. Store base price and discount rate
 2. Calculate discounted price
 3. Format output with proper rounding
@@ -259,7 +262,9 @@ print("Average:", "$" + str(average))
 ## Mastery Check
 
 ### Question 1: Type Identification
+
 What data types are these values?
+
 ```python
 a = 42
 b = 42.0
@@ -282,7 +287,9 @@ Even though `42` and `42.0` represent the same mathematical value, Python treats
 ---
 
 ### Question 2: Variable Reassignment
+
 What does this print?
+
 ```python
 x = 10
 y = x
@@ -302,7 +309,9 @@ When `y = x` was executed, `y` got the *value* `10`, not a permanent link to `x`
 ---
 
 ### Question 3: Type Conversion
+
 Fix this error:
+
 ```python
 quantity = input("Enter quantity: ")  # User types: 5
 total = quantity * 10
@@ -315,6 +324,7 @@ print("Total:", total)
 `input()` always returns a string. "5" * 10 = "5555555555" (string repetition!).
 
 **Fix**:
+
 ```python
 quantity = int(input("Enter quantity: "))
 total = quantity * 10
@@ -326,7 +336,9 @@ print("Total:", total)  # Now: 50
 ---
 
 ### Question 4: Built-in Functions
+
 Write code to find which department had the highest Q1 expenses:
+
 - Marketing: $45,000
 - Engineering: $78,000
 - Sales: $52,000
@@ -351,11 +363,13 @@ print("Highest expense: $", highest)
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Your marketing team needs a tool that calculates Cost Per Acquisition (CPA) from their campaign data. The formula is:
 
 `CPA = Total Spend ÷ Number of Acquisitions`
 
 Design a solution that:
+
 1. Stores campaign name, spend, and acquisitions
 2. Calculates CPA
 3. Handles the edge case where acquisitions = 0
@@ -378,6 +392,7 @@ else:
 ```
 
 **Production Considerations**:
+
 - Add input validation (negative values?)
 - Consider storing multiple campaigns in a list/dictionary
 - Format currency properly ($12,500.00 format)
@@ -390,6 +405,7 @@ else:
 ## Summary
 
 Today you learned:
+
 - ✅ Variables store data with meaningful labels
 - ✅ Python has four basic types: `int`, `float`, `str`, `bool`
 - ✅ Type conversion transforms data between types

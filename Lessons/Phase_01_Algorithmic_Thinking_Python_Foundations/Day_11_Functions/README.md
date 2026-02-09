@@ -40,6 +40,7 @@ outcomes:
 Each of these is a **procedure**: a named sequence of steps you can use whenever needed.
 
 Functions in programming are the same concept. Instead of copying the same calculation code everywhere, you:
+
 1. Define it once with a name
 2. Call it by name whenever needed
 3. Change it in one place, updates everywhere
@@ -77,6 +78,7 @@ greet()  # Output: Hello, World!
 ```
 
 **Anatomy:**
+
 - `def` - keyword to define a function
 - `greet` - function name (use descriptive names)
 - `()` - parentheses (parameters go here)
@@ -429,7 +431,9 @@ generate_report(sales, title="2024 Sales Report", show_total=True, show_average=
 ## Mastery Check
 
 ### Question 1: Default Parameters
+
 What's wrong with this function?
+
 ```python
 def add_item(item, items=[]):
     items.append(item)
@@ -447,6 +451,7 @@ add_item("b")  # ["a", "b"] - same list!
 ```
 
 **Fix:**
+
 ```python
 def add_item(item, items=None):
     if items is None:
@@ -460,7 +465,9 @@ def add_item(item, items=None):
 ---
 
 ### Question 2: Return vs Print
+
 What's the difference?
+
 ```python
 def func_a(x):
     print(x * 2)
@@ -489,7 +496,9 @@ total = func_a(5) + func_a(10)  # Error: None + None
 ---
 
 ### Question 3: Scope
+
 What prints?
+
 ```python
 x = 10
 def modify():
@@ -503,7 +512,7 @@ print(x)
 <details>
 <summary>Click for Answer</summary>
 
-```
+```text
 20
 10
 ```
@@ -515,6 +524,7 @@ The `x = 20` inside the function creates a local variable, it doesn't modify the
 ---
 
 ### Question 4: *args Usage
+
 Write a function that takes any number of prices and applies a discount:
 
 <details>
@@ -534,7 +544,9 @@ print(discounted)  # [85.0, 212.5, 63.75]
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Design a function for a payment processor that:
+
 1. Validates the payment amount
 2. Applies fees based on payment type
 3. Returns the total and a breakdown
@@ -591,6 +603,7 @@ print(result)
 ## Summary
 
 Today you learned:
+
 - ✅ Functions encapsulate reusable code blocks
 - ✅ Parameters accept input; return values provide output
 - ✅ Default parameters make functions flexible

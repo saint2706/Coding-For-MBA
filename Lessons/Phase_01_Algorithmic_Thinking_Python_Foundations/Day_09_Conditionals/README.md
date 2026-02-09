@@ -70,6 +70,7 @@ if temperature > 30:
 ```
 
 **Key Points:**
+
 - The condition must evaluate to `True` or `False`
 - Colon (`:`) after the condition
 - Indented block runs only if condition is `True`
@@ -169,6 +170,7 @@ final = price * 0.9 if price > 50 else price
 ### Truthy and Falsy Values
 
 Python evaluates these as `False`:
+
 - `False`, `None`
 - Zero: `0`, `0.0`
 - Empty: `""`, `[]`, `{}`, `set()`
@@ -406,7 +408,9 @@ for name, spend, years in customers:
 ## Mastery Check
 
 ### Question 1: Boolean Evaluation
+
 What does this print?
+
 ```python
 x = 5
 if x > 3 and x < 10:
@@ -427,7 +431,9 @@ Both conditions are true: 5 > 3 is True, and 5 < 10 is True. True and True = Tru
 ---
 
 ### Question 2: elif Behavior
+
 What does this print?
+
 ```python
 score = 95
 if score >= 80:
@@ -446,6 +452,7 @@ else:
 Even though score is 95 (>= 90), the first condition `score >= 80` is checked first and is True, so Python stops there. Order matters in elif chains!
 
 **Fix**: Check the more specific condition first:
+
 ```python
 if score >= 90:
     print("Excellent")
@@ -458,7 +465,9 @@ elif score >= 80:
 ---
 
 ### Question 3: Truthy Values
+
 What does this print?
+
 ```python
 data = []
 if data:
@@ -479,7 +488,9 @@ Empty lists are falsy in Python. `if data:` is equivalent to `if len(data) > 0:`
 ---
 
 ### Question 4: Ternary Expression
+
 Convert to a ternary expression:
+
 ```python
 if temperature > 25:
     feeling = "hot"
@@ -499,7 +510,9 @@ feeling = "hot" if temperature > 25 else "cold"
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Design a function that determines shipping speed based on:
+
 - Customer tier (regular, premium, vip)
 - Order total
 - Product availability (in-stock, backorder)
@@ -541,6 +554,7 @@ print(calculate_shipping_days("regular", 30, "backorder"))  # 10
 ## Summary
 
 Today you learned:
+
 - ✅ `if` statements control program flow based on conditions
 - ✅ `elif` chains handle multiple mutually exclusive cases
 - ✅ `and`, `or`, `not` combine or modify conditions

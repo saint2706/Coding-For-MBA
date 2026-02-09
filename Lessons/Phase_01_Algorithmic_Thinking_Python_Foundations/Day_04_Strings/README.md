@@ -41,6 +41,7 @@ outcomes:
 All of this is **text data**, and in Python, we call text a **string**—think of it as a "string of characters" linked together like beads on a necklace.
 
 Strings are everywhere in business:
+
 - **Reports**: Generating text summaries
 - **Emails**: Personalizing bulk communications
 - **Data Cleaning**: Fixing inconsistent formats ("NEW YORK" vs "new york")
@@ -282,7 +283,8 @@ print(f"{'GRAND TOTAL':>37} ${grand_total:>9.2f}")
 ```
 
 **Output:**
-```
+
+```text
 ==================================================
 Product                Qty      Price      Total
 ==================================================
@@ -325,7 +327,9 @@ print(f"Valid phone: {phone.isdigit() and len(phone) == 10}")
 ## Mastery Check
 
 ### Question 1: String Indexing
+
 What does this print?
+
 ```python
 text = "Business"
 print(text[2:5])
@@ -346,7 +350,9 @@ print(text[2:5])
 ---
 
 ### Question 2: Method Chaining
+
 What's the output?
+
 ```python
 data = "  HELLO, World!  "
 result = data.strip().lower().replace("!", "?")
@@ -367,6 +373,7 @@ print(result)
 ---
 
 ### Question 3: F-String Formatting
+
 Format a price of 1234567.891 to show as "$1,234,567.89"
 
 <details>
@@ -385,6 +392,7 @@ print(f"${price:,.2f}")  # $1,234,567.89
 ---
 
 ### Question 4: String Validation
+
 Write code to check if a username is valid (only letters and numbers, 3-15 characters):
 
 <details>
@@ -406,7 +414,9 @@ print(f"Username '{username}' is valid: {is_valid}")
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a function that generates a URL-friendly "slug" from article titles. Rules:
+
 - Lowercase
 - Replace spaces with hyphens
 - Remove special characters
@@ -445,6 +455,7 @@ print(create_slug(title))
 ```
 
 **Production Considerations**:
+
 - Handle Unicode characters (é → e)
 - Check for duplicate slugs in database
 - Consider URL-encoding requirements
@@ -456,6 +467,7 @@ print(create_slug(title))
 ## Summary
 
 Today you learned:
+
 - ✅ Strings hold text data using quotes
 - ✅ F-strings provide powerful, readable formatting
 - ✅ Indexing and slicing extract parts of strings

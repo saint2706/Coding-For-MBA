@@ -52,6 +52,7 @@ print(contacts["Bob"])  # 555-0102 (instant lookup!)
 ```
 
 **Business applications:**
+
 - Product catalog: `{"SKU001": {"name": "Widget", "price": 29.99}}`
 - Configuration: `{"api_key": "abc123", "timeout": 30}`
 - JSON data from APIs: Already in dictionary format!
@@ -346,6 +347,7 @@ for category, total in by_category.items():
 ## Mastery Check
 
 ### Question 1: Accessing Values
+
 What's the safest way to get a value that might not exist?
 
 <details>
@@ -363,7 +365,9 @@ This returns the default instead of raising KeyError.
 ---
 
 ### Question 2: Dictionary Comprehension
+
 Convert this loop to a comprehension:
+
 ```python
 result = {}
 for x in range(5):
@@ -383,7 +387,9 @@ result = {x: x * 10 for x in range(5)}
 ---
 
 ### Question 3: Iteration
+
 What does this print?
+
 ```python
 d = {"a": 1, "b": 2, "c": 3}
 for item in d:
@@ -393,7 +399,7 @@ for item in d:
 <details>
 <summary>Click for Answer</summary>
 
-```
+```text
 a
 b
 c
@@ -406,10 +412,13 @@ Iterating over a dict directly gives you the **keys**, not the values or key-val
 ---
 
 ### Question 4: Nested Access
+
 Given:
+
 ```python
 data = {"users": {"admin": {"permissions": ["read", "write"]}}}
 ```
+
 How do you safely check if the admin has "delete" permission?
 
 <details>
@@ -423,6 +432,7 @@ print(has_delete)  # False
 ```
 
 Or use a try/except:
+
 ```python
 try:
     has_delete = "delete" in data["users"]["admin"]["permissions"]
@@ -435,6 +445,7 @@ except KeyError:
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a caching system for expensive API calls. If data was fetched in the last 5 minutes, return cached result. Otherwise, fetch fresh data.
 
 <details>
@@ -478,6 +489,7 @@ data2 = cached_api_call("user_123")  # "Cache hit"
 ## Summary
 
 Today you learned:
+
 - ✅ Dictionaries map keys to values (`{key: value}`)
 - ✅ Access values with `d[key]` or safely with `d.get(key)`
 - ✅ Iterate with `.keys()`, `.values()`, or `.items()`

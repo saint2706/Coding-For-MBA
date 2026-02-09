@@ -367,7 +367,9 @@ for row in doubled_matrix:
 ## Mastery Check
 
 ### Question 1: Basic Comprehension
+
 Convert to list comprehension:
+
 ```python
 result = []
 for x in range(10):
@@ -386,6 +388,7 @@ result = [x ** 2 for x in range(10)]
 ---
 
 ### Question 2: With Filter
+
 Create a list of even numbers from 1-20, squared:
 
 <details>
@@ -401,7 +404,9 @@ result = [x ** 2 for x in range(1, 21) if x % 2 == 0]
 ---
 
 ### Question 3: Conditional Expression
+
 Create a list that replaces negative numbers with 0:
+
 ```python
 numbers = [3, -1, 4, -1, 5, -9, 2, -6]
 ```
@@ -419,7 +424,9 @@ result = [n if n >= 0 else 0 for n in numbers]
 ---
 
 ### Question 4: Dictionary Comprehension
+
 Create a dictionary mapping words to their lengths:
+
 ```python
 words = ["Python", "is", "awesome"]
 ```
@@ -437,7 +444,9 @@ lengths = {word: len(word) for word in words}
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Process a list of transactions, extracting:
+
 1. Only transactions > $100
 2. Calculate tax (8%) on each
 3. Return list of tuples (original, tax, total)
@@ -482,6 +491,7 @@ for r in result:
 ## Summary
 
 Today you learned:
+
 - ✅ List comprehensions create lists in one line
 - ✅ Filter with `if` at the end: `[x for x in list if condition]`
 - ✅ Transform with `if-else`: `[a if cond else b for x in list]`
@@ -491,6 +501,7 @@ Today you learned:
 **🎉 Congratulations!** You've completed **Phase 1: Algorithmic Thinking & Python Foundations**!
 
 You now understand:
+
 - Variables, data types, and operators
 - Collections: lists, tuples, sets, dictionaries
 - Control flow: conditionals and loops

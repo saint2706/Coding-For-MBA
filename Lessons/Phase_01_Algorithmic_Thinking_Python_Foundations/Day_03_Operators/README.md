@@ -197,6 +197,7 @@ result = True or expensive_function()    # expensive_function never runs!
 ```
 
 **Production Use**: Guard clauses to prevent errors:
+
 ```python
 # Safely check nested data
 if user and user.account and user.account.balance > 0:
@@ -206,6 +207,7 @@ if user and user.account and user.account.balance > 0:
 ### Truthy and Falsy Values
 
 Python treats certain values as `False`:
+
 - `False`, `None`, `0`, `0.0`
 - Empty: `""`, `[]`, `{}`, `()`
 
@@ -248,6 +250,7 @@ if 90 <= score <= 100:
 **Goal**: Determine if a customer qualifies for a business loan.
 
 **Eligibility Criteria**:
+
 - Annual revenue ≥ $100,000
 - Years in business ≥ 2
 - Credit score ≥ 680
@@ -280,6 +283,7 @@ print("LOAN ELIGIBLE:", is_eligible)
 **Goal**: Calculate sales commission based on performance tiers.
 
 **Commission Structure**:
+
 - Sales < $50,000: 5%
 - Sales $50,000-$100,000: 7%
 - Sales > $100,000: 10%
@@ -335,7 +339,9 @@ print("NEEDS ATTENTION:", needs_attention)
 ## Mastery Check
 
 ### Question 1: Order of Operations
+
 What does this expression evaluate to?
+
 ```python
 result = 2 + 3 * 4 ** 2
 ```
@@ -346,6 +352,7 @@ result = 2 + 3 * 4 ** 2
 **Answer: `50`**
 
 Order of operations:
+
 1. `4 ** 2` = 16
 2. `3 * 16` = 48
 3. `2 + 48` = 50
@@ -355,7 +362,9 @@ Order of operations:
 ---
 
 ### Question 2: Comparison Trap
+
 What's wrong with this code?
+
 ```python
 password = "secret123"
 if password = "secret123":
@@ -370,6 +379,7 @@ if password = "secret123":
 `=` is assignment, `==` is comparison. This code would cause a `SyntaxError`.
 
 **Fix**:
+
 ```python
 if password == "secret123":
 ```
@@ -379,7 +389,9 @@ if password == "secret123":
 ---
 
 ### Question 3: Logical Operators
+
 Evaluate this expression:
+
 ```python
 x = 5
 result = x > 3 and x < 10 or x == 0
@@ -391,6 +403,7 @@ result = x > 3 and x < 10 or x == 0
 **Answer: `True`**
 
 Step by step:
+
 1. `x > 3` → `5 > 3` → `True`
 2. `x < 10` → `5 < 10` → `True`
 3. `True and True` → `True`
@@ -402,6 +415,7 @@ Step by step:
 ---
 
 ### Question 4: Modulus Application
+
 A warehouse ships products in boxes of 12. If you have 50 items, how many boxes do you need and how many items are left over?
 
 <details>
@@ -424,7 +438,9 @@ print("Total boxes needed:", full_boxes + (1 if leftover > 0 else 0))  # 5
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a risk scoring system for insurance. A customer is "high risk" if ANY of these apply:
+
 - Age < 25 OR age > 70
 - Has more than 2 claims in the past year
 - Lives in a high-risk zip code (starting with "9")
@@ -454,6 +470,7 @@ print("HIGH RISK:", is_high_risk)       # True
 ```
 
 **Production Considerations**:
+
 - Weight different factors differently?
 - Create a numerical risk score instead of boolean?
 - Log which factors triggered for audit purposes
@@ -465,6 +482,7 @@ print("HIGH RISK:", is_high_risk)       # True
 ## Summary
 
 Today you learned:
+
 - ✅ Arithmetic operators (`+`, `-`, `*`, `/`, `//`, `%`, `**`)
 - ✅ Comparison operators return `True` or `False`
 - ✅ Logical operators (`and`, `or`, `not`) combine conditions

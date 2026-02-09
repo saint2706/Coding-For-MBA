@@ -45,20 +45,24 @@ You learned the art of functions—encapsulating logic into reusable blocks. Com
 ## The Expert's Toolkit
 
 ### Official Documentation
+
 - [Python Official Tutorial](https://docs.python.org/3/tutorial/) — The authoritative beginner guide
 - [Python Standard Library](https://docs.python.org/3/library/) — Reference for built-in functions and types
 
 ### Interactive Playgrounds
+
 - [Python Tutor](https://pythontutor.com/) — Visualize code execution step-by-step
 - [Replit](https://replit.com/) — Browser-based Python environment
 - [Google Colab](https://colab.research.google.com/) — Free Jupyter notebooks in the cloud
 
 ### Practice Platforms
+
 - [LeetCode Easy Problems](https://leetcode.com/problemset/?difficulty=EASY) — Algorithm practice
 - [HackerRank Python Track](https://www.hackerrank.com/domains/python) — Skill certification path
 - [Exercism Python](https://exercism.org/tracks/python) — Mentored code exercises
 
 ### Industry Resources
+
 - [Real Python](https://realpython.com/) — High-quality tutorials and articles
 - [PEP 8 Style Guide](https://peps.python.org/pep-0008/) — Python code formatting standards
 - [Python Patterns](https://python-patterns.guide/) — Common design patterns
@@ -86,6 +90,7 @@ You learned the art of functions—encapsulating logic into reusable blocks. Com
    - `apply_discount(total, membership_tier)` — tiers: bronze (5%), silver (10%), gold (15%)
 
 **Sample Data**:
+
 ```python
 products = {
     "laptop": {"name": "Laptop Pro", "price": 999.99, "stock": 10},
@@ -95,6 +100,7 @@ products = {
 ```
 
 **Expected Behavior**:
+
 ```python
 cart = []
 add_to_cart(cart, "laptop", 2)
@@ -123,6 +129,7 @@ final = apply_discount(total, "silver")
 **Scenario**: You receive messy customer data that needs cleaning.
 
 **Input Data**:
+
 ```python
 raw_customers = [
     "  JOHN DOE, john.doe@email.com, 555-123-4567  ",
@@ -134,6 +141,7 @@ raw_customers = [
 ```
 
 **Requirements**:
+
 1. `parse_customer(raw_string)` → Returns dict with `name`, `email`, `phone`
 2. `clean_name(name)` → Title case, trimmed
 3. `clean_email(email)` → Lowercase, trimmed
@@ -141,6 +149,7 @@ raw_customers = [
 5. `find_duplicates(customers)` → Returns set of duplicate names
 
 **Expected Output**:
+
 ```python
 customers = [parse_customer(r) for r in raw_customers]
 valid_customers = [c for c in customers if c["phone"]]
@@ -166,6 +175,7 @@ unique_names = {c["name"] for c in valid_customers}
 **Scenario**: Build analytics functions for monthly sales data.
 
 **Input Data**:
+
 ```python
 sales_log = [
     ("2024-01-15", "North", "Electronics", 1200),
@@ -179,12 +189,14 @@ sales_log = [
 ```
 
 **Requirements**:
+
 1. `total_by_region(sales)` → Dict mapping region to total sales
 2. `top_category(sales)` → Returns (category_name, total_amount)
 3. `monthly_growth(sales)` → Dict of month to growth percentage from previous
 4. `filter_sales(sales, min_amount=None, region=None, category=None)` → Filtered list
 
 **Expected Usage**:
+
 ```python
 by_region = total_by_region(sales_log)
 # {"North": 2870, "South": 1800, "West": 2100}
@@ -215,6 +227,7 @@ big_north = filter_sales(sales_log, min_amount=1000, region="North")
 **Scenario**: Implement a configurable password validation system.
 
 **Requirements**:
+
 ```python
 class PasswordPolicy:
     def __init__(self, min_length=8, require_upper=True, 
@@ -241,11 +254,13 @@ class PasswordPolicy:
 ```
 
 **Common Patterns to Detect**:
+
 - Sequential numbers: "123", "456"
 - Repeated characters: "aaa", "111"
 - Keyboard patterns: "qwerty", "asdf"
 
 **Expected Behavior**:
+
 ```python
 policy = PasswordPolicy(min_length=10, require_special=True)
 
