@@ -127,7 +127,8 @@ img {
 }
 
 .main-content:focus {
-  outline: none;
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 4px;
 }
 
 .page-container {
