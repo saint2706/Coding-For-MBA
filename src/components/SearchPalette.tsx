@@ -83,8 +83,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     const contentMatch = result.matches?.find((m) => m.key === 'plainContent')
     if (!contentMatch) {
       // Fall back to first 120 chars of content
-      const plain =
-        (result.item as unknown as { plainContent?: string }).plainContent || result.item.content
+      const plain = result.item.plainContent || result.item.content
       return plain.slice(0, 120).trim() + '…'
     }
 

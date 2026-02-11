@@ -23,8 +23,7 @@ function highlightText(text: string, query: string): React.ReactNode[] {
 
 // Extract snippet around matching area in body content
 function getContentSnippet(result: SearchResult, query: string): string {
-  const content =
-    (result.item as unknown as { plainContent?: string }).plainContent || result.item.content
+  const content = result.item.plainContent || result.item.content
   const lowerContent = content.toLowerCase()
   const lowerQuery = query.toLowerCase()
   const matchIndex = lowerContent.indexOf(lowerQuery)

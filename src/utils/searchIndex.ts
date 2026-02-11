@@ -1,11 +1,5 @@
 import Fuse, { type FuseResultMatch } from 'fuse.js'
-import { getAllLessons, type Lesson } from './contentLoader'
-
-export interface SearchResult {
-  item: Lesson
-  matches?: ReadonlyArray<FuseResultMatch>
-  score?: number
-}
+import { getAllLessons } from './contentLoader'
 
 // Strip markdown syntax to get plain text for better search and snippet display
 function stripMarkdown(md: string): string {
@@ -30,11 +24,16 @@ function buildSearchDocuments() {
   return getAllLessons().map((lesson) => ({
     ...lesson,
     plainContent: stripMarkdown(lesson.content),
-    concepts: (lesson as unknown as { concepts?: string[] }).concepts ?? [],
   }))
 }
 
 export type SearchDocument = ReturnType<typeof buildSearchDocuments>[number]
+
+export interface SearchResult {
+  item: SearchDocument
+  matches?: ReadonlyArray<FuseResultMatch>
+  score?: number
+}
 
 // Fuse instance (created lazily on first search)
 let fuseInstance: Fuse<SearchDocument> | null = null
