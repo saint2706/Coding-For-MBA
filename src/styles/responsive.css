@@ -1,5 +1,10 @@
 /* ===== RESPONSIVE ===== */
 
+/* Prevent background scrolling when mobile sidebar is open */
+body.sidebar-open {
+  overflow: hidden;
+}
+
 @media (max-width: 1024px) {
   .sidebar {
     transform: translateX(-100%);
@@ -29,8 +34,26 @@
     display: flex;
   }
 
+  /* Hide navbar links on mobile — sidebar provides the same navigation */
+  .navbar-links {
+    display: none;
+  }
+
   .phases-grid {
     grid-template-columns: 1fr;
+  }
+
+  /* Increase touch targets for sidebar links (min 44px height) */
+  .day-link {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .phase-toggle {
+    min-height: 44px;
   }
 }
 
@@ -62,5 +85,30 @@
 
   .curriculum-days {
     grid-template-columns: 1fr;
+  }
+
+  /* Single-column phase lessons grid on small screens */
+  .phase-lessons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce curriculum timeline indent on small screens */
+  .curriculum-timeline {
+    padding-left: 1.25rem;
+  }
+
+  .curriculum-phase::before {
+    left: -1.25rem;
+  }
+
+  /* Ensure day cards have adequate touch targets */
+  .day-card {
+    min-height: 44px;
+  }
+
+  .curriculum-day-link {
+    min-height: 44px;
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
   }
 }
