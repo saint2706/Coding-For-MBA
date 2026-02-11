@@ -1,0 +1,12 @@
+/* Barrel import — load CSS modules in cascade order */
+@import './variables.css';
+@import './base.css';
+@import './navbar.css';
+@import './sidebar.css';
+@import './home.css';
+@import './lesson.css';
+@import './phase-overview.css';
+@import './curriculum.css';
+@import './markdown.css';
+@import './responsive.css';
+@import './animations.css';

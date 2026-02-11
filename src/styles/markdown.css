@@ -1,0 +1,268 @@
+/* ===== MARKDOWN RENDERER ===== */
+
+.markdown-body {
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.markdown-body h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  margin: 2.5rem 0 1rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.markdown-body h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  margin: 2.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.markdown-body h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin: 2rem 0 0.75rem;
+}
+
+.markdown-body h4 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--text-heading);
+  margin: 1.5rem 0 0.5rem;
+}
+
+.markdown-body p {
+  margin-bottom: 1rem;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-body li {
+  margin-bottom: 0.375rem;
+}
+
+.markdown-body li > ul,
+.markdown-body li > ol {
+  margin-top: 0.375rem;
+  margin-bottom: 0;
+}
+
+.markdown-body strong {
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.markdown-body em {
+  color: var(--text-secondary);
+}
+
+.markdown-body blockquote {
+  border-left: 3px solid var(--accent-primary);
+  padding: 0.75rem 1.25rem;
+  margin: 1.25rem 0;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-secondary);
+}
+
+.markdown-body blockquote em {
+  color: var(--text-secondary);
+}
+
+.markdown-body hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 2rem 0;
+}
+
+/* Inline code */
+.markdown-body code:not(pre code) {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  padding: 0.15em 0.4em;
+  background: var(--bg-code);
+  border: 1px solid var(--border-card);
+  border-radius: 4px;
+  color: var(--accent-tertiary);
+}
+
+/* Code blocks */
+.markdown-body .code-block-wrapper {
+  margin: 1.25rem 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-card);
+  background: var(--bg-code);
+}
+
+.code-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.code-block-lang {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.code-block-copy {
+  background: none;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.6875rem;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-body);
+  transition: all var(--transition-fast);
+}
+
+.code-block-copy:hover {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--text-primary);
+  border-color: var(--border-active);
+}
+
+.markdown-body pre {
+  margin: 0 !important;
+  padding: 1rem !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  overflow-x: auto;
+}
+
+.markdown-body pre code {
+  font-family: var(--font-mono) !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.65 !important;
+}
+
+/* Tables */
+.markdown-body .table-wrapper {
+  overflow-x: auto;
+  margin: 1.25rem 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-card);
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.markdown-body thead th {
+  background: rgba(99, 102, 241, 0.08);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-heading);
+  border-bottom: 1px solid var(--border-card);
+  white-space: nowrap;
+}
+
+.markdown-body tbody td {
+  padding: 0.625rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.markdown-body tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-body tbody tr:hover {
+  background: rgba(99, 102, 241, 0.03);
+}
+
+/* Details/Summary (collapsible) */
+.markdown-body details {
+  margin: 1rem 0;
+  padding: 0;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.markdown-body details summary {
+  padding: 0.75rem 1.25rem;
+  background: rgba(99, 102, 241, 0.06);
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent-tertiary);
+  transition: background var(--transition-fast);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.markdown-body details summary::-webkit-details-marker {
+  display: none;
+}
+
+.markdown-body details summary::before {
+  content: '▶';
+  font-size: 0.625rem;
+  transition: transform var(--transition-fast);
+}
+
+.markdown-body details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.markdown-body details summary:hover {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.markdown-body details > *:not(summary) {
+  padding: 0 1.25rem;
+}
+
+.markdown-body details > p:last-child {
+  padding-bottom: 1rem;
+}
+
+/* Checkbox lists */
+.markdown-body input[type='checkbox'] {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--border-card);
+  border-radius: 3px;
+  margin-right: 0.375rem;
+  vertical-align: middle;
+  position: relative;
+}
+
+.markdown-body input[type='checkbox']:checked {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.markdown-body input[type='checkbox']:checked::after {
+  content: '✓';
+  position: absolute;
+  top: -2px;
+  left: 1px;
+  font-size: 0.75rem;
+  color: white;
+}

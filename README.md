@@ -1,16 +1,91 @@
-# React + Vite
+# Coding for MBA
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> A structured 108-day interactive learning platform covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for business professionals.
 
-Currently, two official plugins are available:
+[![Deploy](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite)](https://vite.dev/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌐 Live Demo
 
-## React Compiler
+**[saint2706.github.io/Coding-For-MBA](https://saint2706.github.io/Coding-For-MBA)**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📚 What's Inside
 
-## Expanding the ESLint configuration
+| Phase | Topic                       | Days   |
+| ----- | --------------------------- | ------ |
+| 1     | Python Foundations          | 1–12   |
+| 2     | Functions & Modularity      | 13–24  |
+| 3     | Data Engineering & Web Dev  | 25–36  |
+| 4     | Math & ML Foundations       | 37–48  |
+| 5     | Advanced ML & Deep Learning | 49–60  |
+| 6     | Cutting-Edge ML             | 61–72  |
+| 7     | BI & Analytics              | 73–84  |
+| 8     | SQL Mastery                 | 85–96  |
+| 9     | Enterprise SQL              | 97–108 |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+- **Framework**: React 19 + TypeScript
+- **Build Tool**: Vite 7
+- **Routing**: React Router (HashRouter for GH Pages)
+- **Markdown**: react-markdown + remark-gfm + rehype-raw
+- **Syntax Highlighting**: react-syntax-highlighter (Prism)
+- **Styling**: Vanilla CSS with custom design system
+- **Deployment**: GitHub Pages via GitHub Actions
+
+## 🚀 Getting Started
+
+```bash
+# Clone the repo
+git clone https://github.com/saint2706/Coding-For-MBA.git
+cd Coding-For-MBA
+
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── components/        # Reusable UI components
+│   ├── MarkdownRenderer.tsx
+│   ├── Navbar.tsx
+│   └── Sidebar.tsx
+├── pages/             # Route-level page components
+│   ├── Home.tsx
+│   ├── Curriculum.tsx
+│   ├── Lesson.tsx
+│   └── PhaseOverview.tsx
+├── styles/            # Modular CSS files
+│   ├── index.css      # Barrel import
+│   ├── variables.css  # Design tokens
+│   ├── base.css       # Reset & layout
+│   └── ...            # Per-component styles
+├── utils/
+│   └── contentLoader.ts  # Markdown parser & data layer
+├── App.tsx
+└── main.tsx
+Lessons/               # 108 lesson markdown files
+```
+
+## 📜 Available Scripts
+
+| Script                 | Description                   |
+| ---------------------- | ----------------------------- |
+| `npm run dev`          | Start Vite dev server         |
+| `npm run build`        | Type-check + production build |
+| `npm run lint`         | Run ESLint                    |
+| `npm run typecheck`    | Run TypeScript compiler check |
+| `npm run format`       | Format code with Prettier     |
+| `npm run format:check` | Verify formatting             |
+| `npm run deploy`       | Deploy to GitHub Pages        |
+
+## 📄 License
+
+This project is open source for educational purposes.

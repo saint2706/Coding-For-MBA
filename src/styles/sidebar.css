@@ -1,0 +1,170 @@
+/* ===== SIDEBAR ===== */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+  z-index: 210;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform var(--transition-base);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+}
+
+.sidebar-logo {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gradient-hero);
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: 1rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.sidebar-title {
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--text-heading);
+  line-height: 1.3;
+}
+
+.sidebar-title small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  margin-top: 0.125rem;
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 0 1rem;
+}
+
+.sidebar-close {
+  display: none;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+/* Phase accordion */
+.phase-group {
+  margin-bottom: 2px;
+}
+
+.phase-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+
+.phase-toggle:hover {
+  color: var(--text-primary);
+  background: rgba(99, 102, 241, 0.04);
+}
+
+.phase-toggle.active {
+  color: var(--text-heading);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.phase-toggle-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.phase-toggle-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phase-toggle-arrow {
+  font-size: 0.5rem;
+  transition: transform var(--transition-fast);
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.phase-toggle.open .phase-toggle-arrow {
+  transform: rotate(90deg);
+}
+
+/* Day links inside sidebar */
+.phase-days {
+  display: none;
+  padding: 0.25rem 0;
+}
+
+.phase-days.open {
+  display: block;
+}
+
+.day-link {
+  display: block;
+  padding: 0.375rem 1.25rem 0.375rem 3.25rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 2px solid transparent;
+}
+
+.day-link:hover {
+  color: var(--text-primary);
+  background: rgba(99, 102, 241, 0.04);
+}
+
+.day-link.active {
+  color: var(--accent-tertiary);
+  background: rgba(99, 102, 241, 0.08);
+  border-left-color: var(--accent-primary);
+}
+
+/* Sidebar overlay for mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 190;
+}

@@ -1,0 +1,57 @@
+/* ===== ANIMATIONS ===== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.phase-card {
+  animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.phase-card:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.phase-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.phase-card:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.phase-card:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.phase-card:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.phase-card:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.phase-card:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.phase-card:nth-child(8) {
+  animation-delay: 0.4s;
+}
+
+.phase-card:nth-child(9) {
+  animation-delay: 0.45s;
+}

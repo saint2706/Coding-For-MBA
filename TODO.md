@@ -9,13 +9,13 @@
 
 ### Week 1-2: Code Quality & DevOps
 
-- [ ] **Migrate to TypeScript** — rename `.jsx` → `.tsx`, add `tsconfig.json`
-- [ ] **Remove unused `gray-matter`** dep from `package.json`
-- [ ] **Replace root `README.md`** boilerplate with real project documentation
-- [ ] **Add CI/CD pipeline** — GitHub Actions workflow for lint → build → deploy on push to `main`
-- [ ] **Add `base` to `vite.config.js`** (`/Coding-For-MBA/`) for correct GH Pages asset paths
-- [ ] **Split `index.css`** (1200 lines) into modular CSS files per component/page
-- [ ] **Set up Prettier** — consistent formatting across project
+- [x] **Migrate to TypeScript** — rename `.jsx` → `.tsx`, add `tsconfig.json`
+- [x] **Remove unused `gray-matter`** dep from `package.json`
+- [x] **Replace root `README.md`** boilerplate with real project documentation
+- [x] **Add CI/CD pipeline** — GitHub Actions workflow for lint → build → deploy on push to `main`
+- [x] **Add `base` to `vite.config.js`** (`/Coding-For-MBA/`) for correct GH Pages asset paths
+- [x] **Split `index.css`** (1200 lines) into modular CSS files per component/page
+- [x] **Set up Prettier** — consistent formatting across project
 
 ### Week 3-4: SEO, Accessibility & Performance
 

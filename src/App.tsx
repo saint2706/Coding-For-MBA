@@ -11,8 +11,9 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
 
-  // Close sidebar on navigation
+  // Close sidebar + scroll to top on navigation
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setSidebarOpen(false)
     window.scrollTo(0, 0)
   }, [location.pathname])
@@ -20,7 +21,7 @@ export default function App() {
   return (
     <div className="app-layout">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Navbar onToggleSidebar={() => setSidebarOpen(prev => !prev)} />
+      <Navbar onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
