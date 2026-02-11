@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import {
   getAllPhases,
   getLessonsByPhase,
@@ -11,6 +12,13 @@ export default function Curriculum() {
 
   return (
     <div className="page-container">
+      <Helmet>
+        <title>Full Curriculum Roadmap — Coding for MBA</title>
+        <meta
+          name="description"
+          content="Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL."
+        />
+      </Helmet>
       <div className="section-header" style={{ marginBottom: '2.5rem' }}>
         <h2>Full Curriculum Roadmap</h2>
         <p>

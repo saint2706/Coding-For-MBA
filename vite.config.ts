@@ -5,4 +5,15 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/Coding-For-MBA/',
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'syntax-highlighter': ['react-syntax-highlighter'],
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'markdown': ['react-markdown', 'remark-gfm', 'rehype-raw'],
+        },
+      },
+    },
+  },
 })

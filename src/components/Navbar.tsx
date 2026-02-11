@@ -8,15 +8,20 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
   const location = useLocation()
 
   return (
-    <nav className="navbar">
+    <nav className="navbar" role="navigation" aria-label="Main navigation">
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <button className="navbar-hamburger" onClick={onToggleSidebar} aria-label="Toggle menu">
+        <button
+          className="navbar-hamburger"
+          onClick={onToggleSidebar}
+          aria-label="Toggle sidebar menu"
+        >
           <svg
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
+            aria-hidden="true"
           >
             <path d="M3 12h18M3 6h18M3 18h18" />
           </svg>

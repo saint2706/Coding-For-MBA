@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { getLesson, getAdjacentLessons, difficultyConfig } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 
@@ -10,6 +11,9 @@ export default function Lesson() {
   if (!lesson) {
     return (
       <div className="page-container">
+        <Helmet>
+          <title>Lesson Not Found — Coding for MBA</title>
+        </Helmet>
         <h1>Lesson not found</h1>
         <p>Day {dayNum} doesn&apos;t exist in the curriculum.</p>
         <Link to="/">← Back to Home</Link>
@@ -21,6 +25,15 @@ export default function Lesson() {
 
   return (
     <div className="page-container">
+      <Helmet>
+        <title>
+          Day {lesson.day}: {lesson.title} — Coding for MBA
+        </title>
+        <meta
+          name="description"
+          content={`Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 108-day Coding for MBA curriculum.`}
+        />
+      </Helmet>
       {/* Breadcrumb */}
       <div className="lesson-header">
         <div className="lesson-breadcrumb">

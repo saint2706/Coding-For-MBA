@@ -19,15 +19,15 @@
 
 ### Week 3-4: SEO, Accessibility & Performance
 
-- [ ] **Add `<title>` and `<meta>` tags** per route using `react-helmet-async`
-- [ ] **Add `sitemap.xml` generator** for lesson/phase URLs
-- [ ] **Add `robots.txt`** and Open Graph meta tags for social sharing
-- [ ] **Add OG image generator** (dynamic preview images per lesson)
-- [ ] **Accessibility audit** — ARIA labels, keyboard nav, focus management, skip-to-content link
-- [ ] **Add `prefers-reduced-motion`** media query to disable animations
-- [ ] **Generate a custom favicon** (replace Vite default SVG)
-- [ ] **Lazy-load lesson content** — code-split heavy pages with `React.lazy` + `Suspense`
-- [ ] **Optimize bundle size** — chunk vendor libs (`react-syntax-highlighter` is 800KB+)
+- [x] **Add `<title>` and `<meta>` tags** per route using `react-helmet-async`
+- [x] **Add `sitemap.xml` generator** for lesson/phase URLs
+- [x] **Add `robots.txt`** and Open Graph meta tags for social sharing
+- [x] **Add OG image generator** (dynamic preview images per lesson)
+- [x] **Accessibility audit** — ARIA labels, keyboard nav, focus management, skip-to-content link
+- [x] **Add `prefers-reduced-motion`** media query to disable animations
+- [x] **Generate a custom favicon** (replace Vite default SVG)
+- [x] **Lazy-load lesson content** — code-split heavy pages with `React.lazy` + `Suspense`
+- [x] **Optimize bundle size** — chunk vendor libs (`react-syntax-highlighter` is 800KB+)
 
 ---
 
