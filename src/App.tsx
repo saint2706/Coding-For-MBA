@@ -30,6 +30,14 @@ export default function App() {
     window.scrollTo(0, 0)
   }, [location.pathname])
 
+  // Prevent background scrolling when mobile sidebar is open
+  useEffect(() => {
+    document.body.classList.toggle('sidebar-open', sidebarOpen)
+    return () => {
+      document.body.classList.remove('sidebar-open')
+    }
+  }, [sidebarOpen])
+
   return (
     <div className="app-layout">
       <SkipToContent />
