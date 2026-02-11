@@ -35,15 +35,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   return (
     <>
-      <div className={`sidebar-overlay ${isOpen ? 'visible' : ''}`} onClick={onClose} />
-      <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+      <div
+        className={`sidebar-overlay ${isOpen ? 'visible' : ''}`}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+      <aside
+        className={`sidebar ${isOpen ? 'open' : ''}`}
+        role="navigation"
+        aria-label="Lesson navigation"
+      >
         <div className="sidebar-header">
-          <div className="sidebar-logo">M</div>
+          <div className="sidebar-logo" aria-hidden="true">
+            M
+          </div>
           <div className="sidebar-title">
             Coding for MBA
             <small>108-Day Curriculum</small>
           </div>
-          <button className="sidebar-close" onClick={onClose}>
+          <button className="sidebar-close" onClick={onClose} aria-label="Close sidebar">
             <svg
               width="20"
               height="20"
@@ -51,6 +61,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               fill="none"
               stroke="currentColor"
               strokeWidth="2"
+              aria-hidden="true"
             >
               <path d="M18 6L6 18M6 6l12 12" />
             </svg>
@@ -85,15 +96,24 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <button
                   className={`phase-toggle ${isActive ? 'open active' : ''}`}
                   onClick={() => togglePhase(phase.phase)}
+                  aria-expanded={isActive}
+                  aria-controls={`phase-${phase.phase}-days`}
                 >
-                  <span className="phase-toggle-icon">{icon}</span>
+                  <span className="phase-toggle-icon" aria-hidden="true">
+                    {icon}
+                  </span>
                   <span className="phase-toggle-label">
                     Phase {phase.phase}: {phase.title}
                   </span>
                   <span className="phase-toggle-arrow">▶</span>
                 </button>
 
-                <div className={`phase-days ${isActive ? 'open' : ''}`}>
+                <div
+                  className={`phase-days ${isActive ? 'open' : ''}`}
+                  id={`phase-${phase.phase}-days`}
+                  role="region"
+                  aria-label={`Phase ${phase.phase} lessons`}
+                >
                   <Link
                     to={`/phase/${phase.phase}`}
                     className={`day-link ${location.pathname === `/phase/${phase.phase}` ? 'active' : ''}`}

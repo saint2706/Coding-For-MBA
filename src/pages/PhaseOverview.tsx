@@ -1,4 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import { getPhase, getLessonsByPhase, difficultyConfig, phaseIcons } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 
@@ -10,6 +11,9 @@ export default function PhaseOverview() {
   if (!phase) {
     return (
       <div className="page-container">
+        <Helmet>
+          <title>Phase Not Found — Coding for MBA</title>
+        </Helmet>
         <h1>Phase not found</h1>
         <p>Phase {phaseNum} doesn&apos;t exist.</p>
         <Link to="/">← Back to Home</Link>
@@ -23,6 +27,15 @@ export default function PhaseOverview() {
 
   return (
     <div className="page-container">
+      <Helmet>
+        <title>
+          Phase {phase.phase}: {phase.title} — Coding for MBA
+        </title>
+        <meta
+          name="description"
+          content={`Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 108-day Coding for MBA curriculum.`}
+        />
+      </Helmet>
       {/* Phase Header */}
       <div className="phase-header">
         <div className="lesson-breadcrumb" style={{ marginBottom: '1rem' }}>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Helmet } from 'react-helmet-async'
 import {
   getAllPhases,
   getLessonsByPhase,
@@ -11,6 +12,13 @@ export default function Home() {
 
   return (
     <div className="page-container">
+      <Helmet>
+        <title>Coding for MBA — 108-Day Technical Curriculum</title>
+        <meta
+          name="description"
+          content="A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals."
+        />
+      </Helmet>
       {/* Hero */}
       <section className="hero">
         <div className="hero-badge">📚 Self-Study Curriculum</div>

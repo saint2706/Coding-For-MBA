@@ -1,11 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
-import Home from './pages/Home'
-import Lesson from './pages/Lesson'
-import PhaseOverview from './pages/PhaseOverview'
-import Curriculum from './pages/Curriculum'
+import SkipToContent from './components/SkipToContent'
+
+const Home = lazy(() => import('./pages/Home'))
+const Lesson = lazy(() => import('./pages/Lesson'))
+const PhaseOverview = lazy(() => import('./pages/PhaseOverview'))
+const Curriculum = lazy(() => import('./pages/Curriculum'))
+const NotFound = lazy(() => import('./pages/NotFound'))
+
+function PageLoader() {
+  return (
+    <div className="page-loader" role="status" aria-label="Loading page">
+      <div className="page-loader-spinner" />
+      <span className="sr-only">Loading…</span>
+    </div>
+  )
+}
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -20,15 +32,19 @@ export default function App() {
 
   return (
     <div className="app-layout">
+      <SkipToContent />
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <Navbar onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
-      <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/curriculum" element={<Curriculum />} />
-          <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
-          <Route path="/lesson/:dayNum" element={<Lesson />} />
-        </Routes>
+      <main className="main-content" id="main-content" tabIndex={-1}>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/curriculum" element={<Curriculum />} />
+            <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
+            <Route path="/lesson/:dayNum" element={<Lesson />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
     </div>
   )

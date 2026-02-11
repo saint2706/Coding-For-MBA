@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0b0f1a"/>
+      <stop offset="100%" style="stop-color:#1a1f35"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="60" y="60" width="80" height="80" rx="16" fill="url(#accent)"/>
+  <text x="100" y="118" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="40" fill="white">M</text>
+  <text x="160" y="115" font-family="sans-serif" font-weight="600" font-size="28" fill="#f1f5f9">Coding for MBA</text>
+  <text x="60" y="260" font-family="sans-serif" font-weight="bold" font-size="56" fill="#ffffff">Master Technical Skills</text>
+  <text x="60" y="330" font-family="sans-serif" font-weight="bold" font-size="56" fill="#a78bfa">for Your MBA Career</text>
+  <text x="60" y="400" font-family="sans-serif" font-size="24" fill="#94a3b8">A structured 108-day curriculum covering Python, Data Science,</text>
+  <text x="60" y="435" font-family="sans-serif" font-size="24" fill="#94a3b8">Machine Learning, Business Intelligence, and Enterprise SQL.</text>
+  <text x="60" y="540" font-family="sans-serif" font-weight="600" font-size="20" fill="#6366f1">108 Days</text>
+  <text x="230" y="540" font-family="sans-serif" font-weight="600" font-size="20" fill="#6366f1">9 Phases</text>
+  <text x="390" y="540" font-family="sans-serif" font-weight="600" font-size="20" fill="#6366f1">100+ Hours</text>
+  <circle cx="200" cy="536" r="3" fill="#64748b"/>
+  <circle cx="360" cy="536" r="3" fill="#64748b"/>
+</svg>
