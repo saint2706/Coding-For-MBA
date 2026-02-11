@@ -66,7 +66,7 @@ export function getLastVisited(): number | null {
   const raw = localStorage.getItem(LAST_VISITED_KEY)
   if (!raw) return null
   const num = Number(raw)
-  return isNaN(num) ? null : num
+  return isNaN(num) || num < 1 ? null : num
 }
 
 export function clearAllProgress(): void {

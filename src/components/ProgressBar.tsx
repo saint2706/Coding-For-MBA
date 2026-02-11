@@ -21,7 +21,7 @@ export default function ProgressBar({ completed, total, showLabel = true }: Prog
       </div>
       {showLabel && (
         <span className="progress-bar-label">
-          {completed}/{total} lessons
+          {completed}/{total} lesson{total !== 1 ? 's' : ''}
         </span>
       )}
     </div>

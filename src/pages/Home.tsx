@@ -13,7 +13,7 @@ import ProgressBar from '../components/ProgressBar'
 export default function Home() {
   const phases = getAllPhases()
   const lastVisitedDay = getLastVisited()
-  const lastVisitedLesson = lastVisitedDay ? getLesson(lastVisitedDay) : null
+  const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
   const completedCount = getCompletedCount()
   const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
 
