@@ -1,13 +1,15 @@
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import SkipToContent from './components/SkipToContent'
+import SearchPalette from './components/SearchPalette'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
 const PhaseOverview = lazy(() => import('./pages/PhaseOverview'))
 const Curriculum = lazy(() => import('./pages/Curriculum'))
+const SearchResults = lazy(() => import('./pages/SearchResults'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 function PageLoader() {
@@ -21,6 +23,7 @@ function PageLoader() {
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
   const location = useLocation()
 
   // Close sidebar + scroll to top on navigation
@@ -38,11 +41,30 @@ export default function App() {
     }
   }, [sidebarOpen])
 
+  // Global ⌘K / Ctrl+K shortcut to open search
+  const handleOpenSearch = useCallback(() => setSearchOpen(true), [])
+  const handleCloseSearch = useCallback(() => setSearchOpen(false), [])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen((prev) => !prev)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   return (
     <div className="app-layout">
       <SkipToContent />
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Navbar onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
+      <Navbar
+        onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
+        onOpenSearch={handleOpenSearch}
+      />
+      <SearchPalette isOpen={searchOpen} onClose={handleCloseSearch} />
       <main className="main-content" id="main-content" tabIndex={-1}>
         <Suspense fallback={<PageLoader />}>
           <Routes>
@@ -50,6 +72,7 @@ export default function App() {
             <Route path="/curriculum" element={<Curriculum />} />
             <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
             <Route path="/lesson/:dayNum" element={<Lesson />} />
+            <Route path="/search" element={<SearchResults />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
