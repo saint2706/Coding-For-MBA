@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom'
-import { Helmet } from 'react-helmet-async'
+import { Helmet } from '@dr.pogodin/react-helmet'
 import { getLesson, getAdjacentLessons, difficultyConfig } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 
