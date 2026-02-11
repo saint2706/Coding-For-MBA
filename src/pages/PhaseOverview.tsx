@@ -1,8 +1,10 @@
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { getPhase, getLessonsByPhase, difficultyConfig, phaseIcons } from '../utils/contentLoader'
+import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
+import ProgressBar from '../components/ProgressBar'
 
 export default function PhaseOverview() {
   const { phaseNum } = useParams<{ phaseNum: string }>()
@@ -25,6 +27,8 @@ export default function PhaseOverview() {
   const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
   const icon = phaseIcons[phase.phase - 1] || '📖'
   const hours = Math.round((phase.totalDuration || 0) / 60)
+  const lessonDays = lessons.map((l) => l.day)
+  const completedInPhase = getCompletedForPhase(lessonDays)
 
   return (
     <div className="page-container">
@@ -39,9 +43,7 @@ export default function PhaseOverview() {
       </Helmet>
       {/* Phase Header */}
       <div className="phase-header">
-        <Breadcrumb
-          items={[{ label: 'Home', to: '/' }, { label: `Phase ${phase.phase}` }]}
-        />
+        <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: `Phase ${phase.phase}` }]} />
         <div className="phase-header-top">
           <div className="phase-header-icon">{icon}</div>
           <div>
@@ -57,6 +59,9 @@ export default function PhaseOverview() {
             </div>
           </div>
         </div>
+        <div style={{ marginTop: '1rem' }}>
+          <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+        </div>
       </div>
 
       {/* Day Lessons Grid */}
@@ -71,6 +76,11 @@ export default function PhaseOverview() {
               <h4>{lesson.title}</h4>
               {lesson.duration && <span>⏱ {lesson.duration} min</span>}
             </div>
+            {isLessonComplete(lesson.day) && (
+              <span className="day-link-check" aria-label="Completed">
+                ✓
+              </span>
+            )}
           </Link>
         ))}
       </div>

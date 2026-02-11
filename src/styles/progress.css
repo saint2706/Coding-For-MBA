@@ -1,0 +1,290 @@
+/* ===== PROGRESS SYSTEM ===== */
+
+/* Progress Bar */
+.progress-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.progress-bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: var(--gradient-hero);
+  border-radius: 100px;
+  transition: width var(--transition-slow);
+  min-width: 0;
+}
+
+.progress-bar-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* Mark Complete Button */
+.lesson-complete-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.lesson-complete-btn:hover {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+}
+
+.lesson-complete-btn.completed {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.lesson-complete-btn.completed:hover {
+  background: rgba(34, 197, 94, 0.15);
+}
+
+/* Progress Stats Card (Dashboard) */
+.progress-stats-card {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+  background: var(--gradient-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-xl);
+  margin-bottom: 1.5rem;
+}
+
+.progress-stat-big {
+  text-align: center;
+}
+
+.progress-stat-value {
+  display: block;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  line-height: 1.2;
+}
+
+.progress-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Heatmap */
+.progress-heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.heatmap-phase {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.heatmap-phase-label {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 3.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.heatmap-cells {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+}
+
+.heatmap-cell {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  display: block;
+}
+
+.heatmap-cell:hover {
+  border-color: var(--border-active);
+  transform: scale(1.2);
+}
+
+.heatmap-cell.done {
+  background: rgba(99, 102, 241, 0.6);
+  border-color: rgba(99, 102, 241, 0.8);
+}
+
+.heatmap-cell.done:hover {
+  background: rgba(99, 102, 241, 0.8);
+}
+
+/* Per-Phase Progress List (Dashboard) */
+.progress-phases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.progress-phase-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: all var(--transition-fast);
+}
+
+.progress-phase-row:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+}
+
+.progress-phase-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 260px;
+}
+
+.progress-phase-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.progress-phase-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Continue Button on Home */
+.hero-continue {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.hero-continue a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-active);
+  color: var(--accent-tertiary);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-radius: 100px;
+  transition: all var(--transition-base);
+}
+
+.hero-continue a:hover {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--accent-primary);
+}
+
+/* Clear Progress Button */
+.progress-clear-btn {
+  padding: 0.5rem 1.5rem;
+  background: none;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 100px;
+  color: #ef4444;
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.progress-clear-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* Sidebar completion indicator */
+.day-link-check {
+  margin-left: auto;
+  color: #22c55e;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Phase progress in sidebar */
+.phase-toggle-progress {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  margin-left: auto;
+  margin-right: 0.25rem;
+  white-space: nowrap;
+}
+
+/* Phase card progress (Home page) */
+.phase-card-progress {
+  margin-top: 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .progress-stats-card {
+    gap: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  .progress-stat-value {
+    font-size: 1.75rem;
+  }
+
+  .progress-phase-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .progress-phase-info {
+    min-width: auto;
+  }
+
+  .heatmap-cell {
+    width: 16px;
+    height: 16px;
+  }
+}

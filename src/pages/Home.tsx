@@ -3,12 +3,19 @@ import { Helmet } from '@dr.pogodin/react-helmet'
 import {
   getAllPhases,
   getLessonsByPhase,
+  getLesson,
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
+import { getLastVisited, getCompletedForPhase, getCompletedCount } from '../utils/progressTracker'
+import ProgressBar from '../components/ProgressBar'
 
 export default function Home() {
   const phases = getAllPhases()
+  const lastVisitedDay = getLastVisited()
+  const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
+  const completedCount = getCompletedCount()
+  const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
 
   return (
     <div className="page-container">
@@ -52,6 +59,20 @@ export default function Home() {
         <div className="hero-cta">
           <Link to="/lesson/1">Start Learning →</Link>
         </div>
+        {(lastVisitedLesson || completedCount > 0) && (
+          <div className="hero-continue">
+            {lastVisitedLesson && (
+              <Link to={`/lesson/${lastVisitedLesson.day}`}>
+                ▶ Continue: Day {lastVisitedLesson.day}
+              </Link>
+            )}
+            {completedCount > 0 && (
+              <Link to="/progress">
+                📊 {completedCount}/{totalLessons} Complete
+              </Link>
+            )}
+          </div>
+        )}
       </section>
 
       {/* Phases Grid */}
@@ -71,6 +92,8 @@ export default function Home() {
               difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
             const icon = phaseIcons[phase.phase - 1] || '📖'
             const hours = Math.round((phase.totalDuration || 0) / 60)
+            const lessonDays = lessons.map((l) => l.day)
+            const completedInPhase = getCompletedForPhase(lessonDays)
 
             return (
               <Link to={`/phase/${phase.phase}`} className="phase-card" key={phase.phase}>
@@ -91,6 +114,11 @@ export default function Home() {
                   <span className="meta-pill">📅 {lessons.length} Days</span>
                   {hours > 0 && <span className="meta-pill">⏱ {hours}h</span>}
                 </div>
+                {completedInPhase.length > 0 && (
+                  <div className="phase-card-progress">
+                    <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+                  </div>
+                )}
               </Link>
             )
           })}

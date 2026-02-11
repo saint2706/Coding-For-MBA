@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase, phaseIcons } from '../utils/contentLoader'
+import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 
 interface SidebarProps {
   isOpen: boolean
@@ -100,11 +101,21 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           >
             📋 Full Curriculum
           </Link>
+          <Link
+            to="/progress"
+            className={`day-link ${location.pathname === '/progress' ? 'active' : ''}`}
+            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
+            onClick={onClose}
+          >
+            📊 Progress
+          </Link>
 
           {phases.map((phase) => {
             const lessons = getLessonsByPhase(phase.phase)
             const isActive = openPhase === phase.phase
             const icon = phaseIcons[phase.phase - 1] || '📖'
+            const lessonDays = lessons.map((l) => l.day)
+            const completedInPhase = getCompletedForPhase(lessonDays)
 
             return (
               <div className="phase-group" key={phase.phase}>
@@ -120,6 +131,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <span className="phase-toggle-label">
                     Phase {phase.phase}: {phase.title}
                   </span>
+                  {completedInPhase.length > 0 && (
+                    <span className="phase-toggle-progress">
+                      {completedInPhase.length}/{lessons.length}
+                    </span>
+                  )}
                   <span className="phase-toggle-arrow">▶</span>
                 </button>
 
@@ -143,6 +159,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                       className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
                       onClick={onClose}
                     >
+                      {isLessonComplete(lesson.day) && (
+                        <span className="day-link-check" aria-label="Completed">
+                          ✓
+                        </span>
+                      )}
                       Day {lesson.day}: {lesson.title}
                     </Link>
                   ))}

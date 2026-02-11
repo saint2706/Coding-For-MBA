@@ -6,7 +6,9 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
+import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import Breadcrumb from '../components/Breadcrumb'
+import ProgressBar from '../components/ProgressBar'
 
 export default function Curriculum() {
   const phases = getAllPhases()
@@ -51,6 +53,13 @@ export default function Curriculum() {
                 </span>
               </Link>
 
+              <div style={{ marginBottom: '0.75rem', paddingRight: '1rem' }}>
+                <ProgressBar
+                  completed={getCompletedForPhase(lessons.map((l) => l.day)).length}
+                  total={lessons.length}
+                />
+              </div>
+
               <div className="curriculum-days">
                 {lessons.map((lesson) => (
                   <Link
@@ -60,6 +69,11 @@ export default function Curriculum() {
                   >
                     <span className="day-num">Day {lesson.day}</span>
                     <span>{lesson.title}</span>
+                    {isLessonComplete(lesson.day) && (
+                      <span className="day-link-check" aria-label="Completed">
+                        ✓
+                      </span>
+                    )}
                   </Link>
                 ))}
               </div>
