@@ -55,10 +55,10 @@
 
 ### Progress System
 
-- [ ] **Add `localStorage` progress tracker** — mark lessons as complete
-- [ ] **Progress bar per phase** (e.g., "4/12 lessons done")
-- [ ] **Overall progress dashboard** — visual heatmap or streak calendar
-- [ ] **Resume where you left off** — "Continue" button on homepage
+- [x] **Add `localStorage` progress tracker** — mark lessons as complete
+- [x] **Progress bar per phase** (e.g., "4/12 lessons done")
+- [x] **Overall progress dashboard** — visual heatmap or streak calendar
+- [x] **Resume where you left off** — "Continue" button on homepage
 - [ ] **Optional: add user auth** (GitHub OAuth) for cross-device sync
 
 ### Interactive Code

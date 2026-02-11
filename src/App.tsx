@@ -10,6 +10,7 @@ const Lesson = lazy(() => import('./pages/Lesson'))
 const PhaseOverview = lazy(() => import('./pages/PhaseOverview'))
 const Curriculum = lazy(() => import('./pages/Curriculum'))
 const SearchResults = lazy(() => import('./pages/SearchResults'))
+const ProgressDashboard = lazy(() => import('./pages/ProgressDashboard'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 function PageLoader() {
@@ -54,11 +55,7 @@ export default function App() {
       // "/" shortcut to open search (when not in an input)
       if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
         const target = e.target as HTMLElement
-        if (
-          target.tagName === 'INPUT' ||
-          target.tagName === 'TEXTAREA' ||
-          target.isContentEditable
-        )
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
           return
         e.preventDefault()
         setSearchOpen(true)
@@ -84,6 +81,7 @@ export default function App() {
             <Route path="/curriculum" element={<Curriculum />} />
             <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
             <Route path="/lesson/:dayNum" element={<Lesson />} />
+            <Route path="/progress" element={<ProgressDashboard />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

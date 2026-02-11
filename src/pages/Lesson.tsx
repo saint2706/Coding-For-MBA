@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { getLesson, getAdjacentLessons, difficultyConfig } from '../utils/contentLoader'
+import { isLessonComplete, toggleLessonComplete, setLastVisited } from '../utils/progressTracker'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
@@ -12,6 +13,24 @@ export default function Lesson() {
   const navigate = useNavigate()
   const lesson = getLesson(dayNum!)
   const { prev, next } = getAdjacentLessons(dayNum!)
+  const [completed, setCompleted] = useState(() => isLessonComplete(Number(dayNum)))
+
+  // Track last visited lesson
+  useEffect(() => {
+    if (lesson) {
+      setLastVisited(lesson.day)
+    }
+  }, [lesson])
+
+  // Sync completed state when navigating between lessons
+  useEffect(() => {
+    setCompleted(isLessonComplete(Number(dayNum)))
+  }, [dayNum])
+
+  const handleToggleComplete = useCallback(() => {
+    const nowComplete = toggleLessonComplete(Number(dayNum))
+    setCompleted(nowComplete)
+  }, [dayNum])
 
   // Keyboard shortcuts: ← prev, → next
   useEffect(() => {
@@ -78,6 +97,14 @@ export default function Lesson() {
               </span>
             ))}
         </div>
+
+        <button
+          className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
+          onClick={handleToggleComplete}
+          aria-pressed={completed}
+        >
+          {completed ? '✓ Completed' : '○ Mark as Complete'}
+        </button>
       </div>
 
       {/* Table of Contents sidebar */}
