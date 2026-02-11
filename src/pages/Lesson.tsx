@@ -1,12 +1,33 @@
-import { useParams, Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { getLesson, getAdjacentLessons, difficultyConfig } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
+import Breadcrumb from '../components/Breadcrumb'
+import BackToTop from '../components/BackToTop'
+import TableOfContents from '../components/TableOfContents'
 
 export default function Lesson() {
   const { dayNum } = useParams<{ dayNum: string }>()
+  const navigate = useNavigate()
   const lesson = getLesson(dayNum!)
   const { prev, next } = getAdjacentLessons(dayNum!)
+
+  // Keyboard shortcuts: ← prev, → next
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
+        return
+      if (e.key === 'ArrowLeft' && prev) {
+        navigate(`/lesson/${prev.day}`)
+      } else if (e.key === 'ArrowRight' && next) {
+        navigate(`/lesson/${next.day}`)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [prev, next, navigate])
 
   if (!lesson) {
     return (
@@ -24,7 +45,7 @@ export default function Lesson() {
   const diff = difficultyConfig[lesson.difficulty || 'beginner'] || difficultyConfig.beginner!
 
   return (
-    <div className="page-container">
+    <div className="page-container lesson-with-toc">
       <Helmet>
         <title>
           Day {lesson.day}: {lesson.title} — Coding for MBA
@@ -36,13 +57,13 @@ export default function Lesson() {
       </Helmet>
       {/* Breadcrumb */}
       <div className="lesson-header">
-        <div className="lesson-breadcrumb">
-          <Link to="/">Home</Link>
-          <span className="sep">/</span>
-          <Link to={`/phase/${lesson.phase}`}>Phase {lesson.phase}</Link>
-          <span className="sep">/</span>
-          <span>Day {lesson.day}</span>
-        </div>
+        <Breadcrumb
+          items={[
+            { label: 'Home', to: '/' },
+            { label: `Phase ${lesson.phase}`, to: `/phase/${lesson.phase}` },
+            { label: `Day ${lesson.day}` },
+          ]}
+        />
 
         {/* Meta bar */}
         <div className="lesson-meta-bar">
@@ -59,11 +80,14 @@ export default function Lesson() {
         </div>
       </div>
 
+      {/* Table of Contents sidebar */}
+      <TableOfContents content={lesson.content} />
+
       {/* Markdown content */}
       <MarkdownRenderer content={lesson.content} />
 
       {/* Prev/Next navigation */}
-      <nav className="lesson-nav">
+      <nav className="lesson-nav" aria-label="Lesson navigation">
         {prev && (
           <Link to={`/lesson/${prev.day}`} className="lesson-nav-btn prev">
             <span className="lesson-nav-label">← Previous</span>
@@ -81,6 +105,8 @@ export default function Lesson() {
           </Link>
         )}
       </nav>
+
+      <BackToTop />
     </div>
   )
 }

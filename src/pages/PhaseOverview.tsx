@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { getPhase, getLessonsByPhase, difficultyConfig, phaseIcons } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
+import Breadcrumb from '../components/Breadcrumb'
 
 export default function PhaseOverview() {
   const { phaseNum } = useParams<{ phaseNum: string }>()
@@ -38,11 +39,9 @@ export default function PhaseOverview() {
       </Helmet>
       {/* Phase Header */}
       <div className="phase-header">
-        <div className="lesson-breadcrumb" style={{ marginBottom: '1rem' }}>
-          <Link to="/">Home</Link>
-          <span className="sep">/</span>
-          <span>Phase {phase.phase}</span>
-        </div>
+        <Breadcrumb
+          items={[{ label: 'Home', to: '/' }, { label: `Phase ${phase.phase}` }]}
+        />
         <div className="phase-header-top">
           <div className="phase-header-icon">{icon}</div>
           <div>

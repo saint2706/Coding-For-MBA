@@ -6,6 +6,7 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
+import Breadcrumb from '../components/Breadcrumb'
 
 export default function Curriculum() {
   const phases = getAllPhases()
@@ -19,6 +20,7 @@ export default function Curriculum() {
           content="Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL."
         />
       </Helmet>
+      <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Curriculum' }]} />
       <div className="section-header" style={{ marginBottom: '2.5rem' }}>
         <h2>Full Curriculum Roadmap</h2>
         <p>
