@@ -42,12 +42,12 @@
 
 ### Navigation Improvements
 
-- [ ] **Add breadcrumb component** to all pages (not just lesson)
-- [ ] **Add "Back to Top" floating button** on long lessons
-- [ ] **Add Table of Contents** sidebar for each lesson (parse `h2`/`h3` headings)
-- [ ] **Add keyboard shortcuts** — `←`/`→` for prev/next lesson, `/` for search
-- [ ] **Active sidebar scroll-into-view** — auto-scroll sidebar to current lesson
-- [ ] **Add 404 catch-all route** with helpful navigation links
+- [x] **Add breadcrumb component** to all pages (not just lesson)
+- [x] **Add "Back to Top" floating button** on long lessons
+- [x] **Add Table of Contents** sidebar for each lesson (parse `h2`/`h3` headings)
+- [x] **Add keyboard shortcuts** — `←`/`→` for prev/next lesson, `/` for search
+- [x] **Active sidebar scroll-into-view** — auto-scroll sidebar to current lesson
+- [x] **Add 404 catch-all route** with helpful navigation links
 
 ---
 

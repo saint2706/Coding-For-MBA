@@ -51,6 +51,18 @@ export default function App() {
         e.preventDefault()
         setSearchOpen((prev) => !prev)
       }
+      // "/" shortcut to open search (when not in an input)
+      if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const target = e.target as HTMLElement
+        if (
+          target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.isContentEditable
+        )
+          return
+        e.preventDefault()
+        setSearchOpen(true)
+      }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)

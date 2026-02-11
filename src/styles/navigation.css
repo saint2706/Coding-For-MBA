@@ -1,0 +1,211 @@
+/* ===== NAVIGATION COMPONENTS ===== */
+
+/* --- Back to Top Button --- */
+.back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity var(--transition-base),
+    visibility var(--transition-base),
+    transform var(--transition-base),
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+  box-shadow: var(--shadow-card);
+  z-index: 100;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.back-to-top:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-active);
+  color: var(--accent-tertiary);
+}
+
+/* --- Table of Contents --- */
+.toc {
+  position: sticky;
+  top: calc(var(--navbar-height) + 1.5rem);
+  float: right;
+  width: 220px;
+  max-height: calc(100vh - var(--navbar-height) - 3rem);
+  overflow-y: auto;
+  margin-left: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+}
+
+.toc-title {
+  font-weight: 600;
+  font-size: 0.6875rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-list li {
+  margin-bottom: 0.25rem;
+}
+
+.toc-list li.toc-sub {
+  padding-left: 0.75rem;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.25rem 0.5rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  border-radius: 2px;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.toc-link:hover {
+  color: var(--text-primary);
+}
+
+.toc-link.active {
+  color: var(--accent-tertiary);
+  border-left-color: var(--accent-primary);
+}
+
+/* --- Enhanced 404 Page --- */
+.not-found {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.not-found-code {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.not-found-message {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 3rem;
+}
+
+.not-found-suggestions {
+  text-align: left;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.not-found-suggestions h2 {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  color: var(--text-heading);
+}
+
+.not-found-phases {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.not-found-phase-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  text-decoration: none;
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.not-found-phase-link:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+}
+
+.not-found-tip {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+.not-found-tip kbd {
+  padding: 0.125rem 0.375rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+/* Hide ToC on small screens */
+@media (max-width: 1200px) {
+  .toc {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .not-found-phases {
+    grid-template-columns: 1fr;
+  }
+
+  .back-to-top {
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+}

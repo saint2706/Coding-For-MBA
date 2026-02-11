@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { search, type SearchResult } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
+import Breadcrumb from '../components/Breadcrumb'
 
 // Highlight matching text segments in a string
 function highlightText(text: string, query: string): React.ReactNode[] {
@@ -58,6 +59,8 @@ export default function SearchResults() {
       <Helmet>
         <title>{query ? `Search: ${query}` : 'Search'} — Coding for MBA</title>
       </Helmet>
+
+      <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Search Results' }]} />
 
       <div className="search-page-header">
         <h1>Search Results</h1>

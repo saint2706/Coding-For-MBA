@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase, phaseIcons } from '../utils/contentLoader'
 
@@ -10,6 +10,7 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
   const phases = getAllPhases()
+  const navRef = useRef<HTMLDivElement>(null)
 
   // Derive which phase should be open from the URL (no useEffect + setState needed)
   const derivedOpenPhase = useMemo(() => {
@@ -28,6 +29,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   // Manual toggle overrides auto-derivation; resets on navigation
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
+
+  // Auto-scroll sidebar to the active lesson link
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+    // Wait for phase accordion to expand
+    const timer = setTimeout(() => {
+      const activeLink = nav.querySelector('.day-link.active') as HTMLElement | null
+      if (activeLink) {
+        activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+      }
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [location.pathname])
 
   const togglePhase = (phaseNum: number) => {
     setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
@@ -68,7 +83,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </button>
         </div>
 
-        <nav className="sidebar-nav">
+        <nav className="sidebar-nav" ref={navRef}>
           <Link
             to="/"
             className={`day-link ${location.pathname === '/' ? 'active' : ''}`}
