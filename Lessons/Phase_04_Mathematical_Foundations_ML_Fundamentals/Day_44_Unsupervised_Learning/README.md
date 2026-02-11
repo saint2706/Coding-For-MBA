@@ -39,6 +39,7 @@ outcomes:
 **Unsupervised learning** discovers these hidden structures without being told what to look for.
 
 **Unsupervised learning in action:**
+
 - **Retail**: Customer segmentation for targeted marketing
 - **Finance**: Fraud detection (anomalies from normal patterns)
 - **Biology**: Gene expression clustering
@@ -619,6 +620,7 @@ plt.show()
 ## Mastery Check
 
 ### Question 1: Why Scale Before K-Means?
+
 What happens if you run K-Means without scaling features?
 
 <details>
@@ -627,16 +629,19 @@ What happens if you run K-Means without scaling features?
 **Answer:** Features with larger scales dominate the distance calculations.
 
 **Example:**
+
 - Feature A: income (range 30,000 - 150,000)
 - Feature B: age (range 18 - 80)
 
 Without scaling, income dominates because:
+
 - Distance contribution from income: (150000-30000)² = 14.4 billion
 - Distance contribution from age: (80-18)² = 3,844
 
 K-Means will cluster almost entirely based on income, ignoring age.
 
 **Solution:**
+
 ```python
 scaler = StandardScaler()  # Mean=0, Std=1
 X_scaled = scaler.fit_transform(X)
@@ -649,6 +654,7 @@ Now both features contribute equally to distance.
 ---
 
 ### Question 2: Interpreting Silhouette Score
+
 A silhouette score of 0.7 vs 0.2—what's the difference?
 
 <details>
@@ -657,6 +663,7 @@ A silhouette score of 0.7 vs 0.2—what's the difference?
 **Answer:**
 
 **Silhouette score** ranges from -1 to 1:
+
 - **0.7-1.0**: Strong cluster structure. Points are well-matched to own cluster, far from others.
 - **0.5-0.7**: Reasonable structure. Clusters are distinct but some overlap.
 - **0.2-0.5**: Weak structure. Clusters overlap significantly.
@@ -671,6 +678,7 @@ A silhouette score of 0.7 vs 0.2—what's the difference?
 ---
 
 ### Question 3: PCA Components
+
 Your PCA shows PC1 explains 60% variance and PC2 explains 25%. Should you keep only 2 components?
 
 <details>
@@ -679,16 +687,19 @@ Your PCA shows PC1 explains 60% variance and PC2 explains 25%. Should you keep o
 **Answer:** It depends on your goal!
 
 **85% variance (PC1 + PC2) is often acceptable for:**
+
 - Visualization (2D plots)
 - Noise reduction
 - Quick exploration
 
 **You might need more components for:**
+
 - Model training (goal: maximize accuracy)
 - Retaining specific information
 - When remaining 15% contains the signal you need
 
 **Guidelines:**
+
 - 90-95% variance: Common threshold
 - Compare model performance with and without PCA
 - For visualization: 2-3 components are enough
@@ -705,6 +716,7 @@ print(f"Components needed: {pca.n_components_}")
 ---
 
 ### Question 4: Cluster Stability
+
 You run K-Means twice with different random seeds and get different clusters. Is this a problem?
 
 <details>
@@ -713,11 +725,13 @@ You run K-Means twice with different random seeds and get different clusters. Is
 **Answer:** Yes, it suggests **unstable clustering**.
 
 **Causes:**
+
 1. K-Means depends on random initialization
 2. Data may not have clear cluster structure
 3. Wrong K value
 
 **Solutions:**
+
 1. **Multiple runs**: Use `n_init=10` (sklearn default) to run with different initializations
 2. **K-means++**: Better initialization (sklearn default: `init='k-means++'`)
 3. **Stability check**: Run many times, measure consistency
@@ -749,6 +763,7 @@ print(f"Stability (ARI): {np.mean(scores):.3f}")
 ---
 
 ### Question 5: Business Application
+
 You've clustered customers into 4 segments. Marketing asks "What makes these segments different?" How do you explain?
 
 <details>
@@ -757,6 +772,7 @@ You've clustered customers into 4 segments. Marketing asks "What makes these seg
 **Answer:** Create **cluster profiles** by computing statistics per cluster.
 
 **Steps:**
+
 1. Calculate mean/median of each feature per cluster
 2. Compare to overall population average
 3. Name clusters based on distinguishing characteristics
@@ -781,6 +797,7 @@ profiles_normalized = profiles / overall  # Ratio to average
 ```
 
 **Presentation tips:**
+
 - Use business language, not technical jargon
 - Show % of customers in each segment
 - Recommend specific actions per segment
@@ -792,6 +809,7 @@ profiles_normalized = profiles / overall  # Ratio to average
 ## Summary
 
 Today you learned:
+
 - ✅ Unsupervised learning finds patterns without labels
 - ✅ K-Means clusters data by minimizing distance to centers
 - ✅ Elbow and Silhouette methods find optimal K

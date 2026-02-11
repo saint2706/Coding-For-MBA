@@ -25,6 +25,7 @@ outcomes: [Build web applications with Flask, Render HTML templates, Handle form
 **Flask gives you the full web experience.** It serves HTML pages with Jinja templates, handles form submissions, manages user sessions—everything needed for real web applications.
 
 **When to use Flask vs FastAPI:**
+
 | Need                    | Tool    |
 | ----------------------- | ------- |
 | JSON API for apps       | FastAPI |
@@ -290,18 +291,21 @@ if __name__ == "__main__":
 ## Mastery Check
 
 ### Question 1: Flask vs FastAPI
+
 When would you choose Flask over FastAPI?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Choose Flask when:**
+
 - Building web pages with HTML/CSS
 - Need template rendering (Jinja2)
 - Building admin interfaces
 - Traditional web applications
 
 **Choose FastAPI when:**
+
 - Building JSON APIs
 - Mobile app backends
 - Need async performance
@@ -310,6 +314,7 @@ When would you choose Flask over FastAPI?
 </details>
 
 ### Question 2: Templates
+
 What does `{{ variable }}` vs `{% statement %}` mean in Jinja2?
 
 <details>
@@ -333,6 +338,7 @@ What does `{{ variable }}` vs `{% statement %}` mean in Jinja2?
 </details>
 
 ### Question 3: Form Security
+
 What is CSRF and why does Flask-WTF help?
 
 <details>
@@ -341,6 +347,7 @@ What is CSRF and why does Flask-WTF help?
 **CSRF (Cross-Site Request Forgery):** Attacker tricks user's browser into submitting a form to your site.
 
 **Flask-WTF protection:**
+
 - Generates hidden token in each form
 - Validates token on submission
 - Blocks requests from other sites
@@ -355,6 +362,7 @@ What is CSRF and why does Flask-WTF help?
 </details>
 
 ### Question 4: Static Files
+
 How do you link to CSS in Flask templates?
 
 <details>
@@ -371,17 +379,20 @@ Never hardcode paths—`url_for` handles URL generation correctly.
 </details>
 
 ### Question 5: Debug Mode
+
 Why should you never use `debug=True` in production?
 
 <details>
 <summary>Click for Answer</summary>
 
 Debug mode:
+
 - Shows detailed error traces (security risk)
 - Allows code execution via debugger console
 - Exposes internal application details
 
 **Production:**
+
 ```python
 # Development
 app.run(debug=True)

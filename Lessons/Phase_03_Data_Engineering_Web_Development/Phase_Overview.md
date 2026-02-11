@@ -47,6 +47,7 @@ You evolved from consuming APIs to building them. You created REST endpoints wit
 ## The Expert's Toolkit
 
 ### Official Documentation
+
 - [Pandas User Guide](https://pandas.pydata.org/docs/user_guide/) — Complete data manipulation reference
 - [Matplotlib Tutorials](https://matplotlib.org/stable/tutorials/) — Visualization fundamentals
 - [Seaborn Tutorial](https://seaborn.pydata.org/tutorial.html) — Statistical graphics
@@ -55,16 +56,19 @@ You evolved from consuming APIs to building them. You created REST endpoints wit
 - [Flask Documentation](https://flask.palletsprojects.com/) — Web application framework
 
 ### Cheat Sheets
+
 - [Pandas Cheat Sheet](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf) — Quick reference
 - [Matplotlib Cheat Sheet](https://matplotlib.org/cheatsheets/) — Common plot patterns
 - [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status) — API response codes
 
 ### Practice Platforms
+
 - [Kaggle Datasets](https://www.kaggle.com/datasets) — Real-world data for cleaning practice
 - [Quotes to Scrape](http://quotes.toscrape.com/) — Safe scraping sandbox
 - [JSONPlaceholder](https://jsonplaceholder.typicode.com/) — Fake API for testing
 
 ### Industry Resources
+
 - [Data Engineering Weekly](https://www.dataengineeringweekly.com/) — Industry trends
 - [Real Python Flask Tutorials](https://realpython.com/tutorials/flask/) — Production patterns
 - [REST API Design Best Practices](https://restfulapi.net/) — API standards
@@ -90,6 +94,7 @@ You evolved from consuming APIs to building them. You created REST endpoints wit
 4. Generate a visualization showing price trends
 
 **Sample Data Structure**:
+
 ```python
 # API returns data like:
 {
@@ -103,6 +108,7 @@ You evolved from consuming APIs to building them. You created REST endpoints wit
 ```
 
 **Requirements**:
+
 ```python
 def fetch_stock_data(symbol: str) -> pd.DataFrame:
     """Fetch and parse stock data from API."""
@@ -150,6 +156,7 @@ def run_pipeline(symbol: str):
 4. Store results and generate a summary report
 
 **Requirements**:
+
 ```python
 def scrape_all_pages(base_url: str, max_pages: int = 5) -> list:
     """
@@ -202,6 +209,7 @@ def generate_report(df: pd.DataFrame, stats: dict) -> str:
 **Scenario**: Create a product inventory API with full CRUD operations.
 
 **Requirements**:
+
 ```python
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, validator
@@ -233,6 +241,7 @@ class Product(BaseModel):
 ```
 
 **Expected Behavior**:
+
 ```python
 # POST /products with {"name": "  laptop  ", "price": 999.999, "category": "electronics"}
 # Should return: {"id": 1, "name": "Laptop", "price": 999.99, "category": "electronics", "stock": 0}
@@ -264,6 +273,7 @@ class Product(BaseModel):
 **Scenario**: Build a web dashboard that displays sales analytics.
 
 **Requirements**:
+
 ```python
 # Flask app structure:
 # /                  - Homepage with summary cards
@@ -280,6 +290,7 @@ class Product(BaseModel):
 ```
 
 **Template Structure**:
+
 ```html
 <!-- templates/dashboard.html -->
 <!DOCTYPE html>

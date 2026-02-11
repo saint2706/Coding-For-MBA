@@ -41,21 +41,25 @@ Probabilistic models output: **"Class A with 75% confidence"**
 **Why it matters in business:**
 
 **Medical diagnosis:**
+
 - Model: "90% chance of cancer" → Biopsy recommended
 - Model: "55% chance of cancer" → Monitor and retest
 - **Lives saved** by knowing confidence
 
 **Credit scoring:**
+
 - Applicant score: 0.51 → Approve (barely over 0.5 threshold)
 - But wait: Model is only 52% confident → **Risky approval**
 - Probabilistic model: 0.51 ± 0.15 → **Manual review needed**
 
 **Fraud detection:**
+
 - Alert fatigue: 1000 daily alerts, 990 false positives
 - Probabilistic approach: Only alert on >90% confidence → 50 alerts, 45 true fraud
 - **10x reduction** in analyst workload
 
 **Autonomous vehicles:**
+
 - "Is that a pedestrian?" needs uncertainty
 - 99.9% confident → Proceed
 - 60% confident → Emergency brake
@@ -67,6 +71,7 @@ Probabilistic models output: **"Class A with 75% confidence"**
 ### Naive Bayes: The Probabilistic Baseline
 
 **Bayes' Theorem:**
+
 ```
 P(Y|X) = P(X|Y) × P(Y) / P(X)
 
@@ -140,6 +145,7 @@ for i, category in enumerate(categories):
 Many models (especially SVM, Random Forest) output poorly calibrated probabilities.
 
 **Problem:**
+
 - Model says "90% confidence" but is only correct 60% of the time
 - **Calibration** aligns predicted probabilities with actual frequencies
 
@@ -560,6 +566,7 @@ print("(This is where you should collect next data point)")
 ## Mastery Check
 
 ### Question 1: Naive Bayes Independence
+
 Naive Bayes assumes features are conditionally independent. Yet it works well in practice. Why?
 
 <details>
@@ -568,6 +575,7 @@ Naive Bayes assumes features are conditionally independent. Yet it works well in
 **Answer:** Naive Bayes only needs to **rank** classes correctly, not estimate exact probabilities. Even with violated independence, it often gets the ranking right.
 
 **Why independence assumption is violated:**
+
 ```python
 # Email spam detection
 Feature 1: Contains "viagra"
@@ -580,6 +588,7 @@ Feature 2: Contains "buy now"
 **Why it still works:**
 
 1. **Ranking matters, not exact probabilities**
+
    ```
    True: P(spam|email) = 0.73
    Naive Bayes: P(spam|email) = 0.85  # Overconfident!
@@ -595,11 +604,13 @@ Feature 2: Contains "buy now"
    - Errors often cancel out
 
 3. **Smoothing** (Laplace) prevents zero probabilities
+
    ```python
    MultinomialNB(alpha=1.0)  # Adds pseudo-counts
    ```
 
 **When Naive Bayes fails:**
+
 - Features are **strongly** correlated and point in opposite directions
 - Example: "good" and "not bad" in sentiment analysis
 
@@ -610,6 +621,7 @@ Feature 2: Contains "buy now"
 ---
 
 ### Question 2: Calibration Importance
+
 Your Random Forest achieves 92% accuracy. Why should you care about calibrating probabilities?
 
 <details>
@@ -620,6 +632,7 @@ Your Random Forest achieves 92% accuracy. Why should you care about calibrating 
 **Scenarios where calibration matters:**
 
 **1. Cost-sensitive decisions**
+
 ```python
 # Medical diagnosis
 if probability_disease > 0.7:
@@ -634,6 +647,7 @@ else:
 ```
 
 **2. Ranking/prioritization**
+
 ```python
 # Customer support tickets
 # Want to prioritize by urgency
@@ -644,12 +658,14 @@ else:
 ```
 
 **3. Ensembling/stacking**
+
 ```python
 # Meta-model uses base model probabilities as features
 # Uncalibrated probabilities → poor meta-model
 ```
 
 **4. Confidence-based sampling**
+
 ```python
 # Active learning: select most uncertain samples
 # Need: True uncertainty, not model's confidence
@@ -658,6 +674,7 @@ else:
 ```
 
 **Calibration metrics:**
+
 ```python
 # Brier score (lower = better)
 # = Mean squared error of probabilities
@@ -669,6 +686,7 @@ log_loss(y_true, y_proba)
 ```
 
 **Example:**
+
 ```
 Model A: 92% accuracy, Brier=0.15 (well-calibrated)
 Model B: 92% accuracy, Brier=0.35 (poorly calibrated)
@@ -681,6 +699,7 @@ Same accuracy, but A's probabilities are trustworthy for decisions
 ---
 
 ### Question 3: Bayesian vs MLE
+
 Bayesian inference gives a **distribution** over parameters, while Maximum Likelihood Estimation (MLE) gives a **point estimate**. When does this matter?
 
 <details>
@@ -691,6 +710,7 @@ Bayesian inference gives a **distribution** over parameters, while Maximum Likel
 **Key differences:**
 
 **MLE (Frequentist):**
+
 ```python
 # Linear regression
 β_MLE = argmax P(data | β)
@@ -698,6 +718,7 @@ Bayesian inference gives a **distribution** over parameters, while Maximum Likel
 ```
 
 **Bayesian:**
+
 ```python
 # Linear regression
 P(β | data) ∝ P(data | β) × P(β)
@@ -707,6 +728,7 @@ P(β | data) ∝ P(data | β) × P(β)
 **When Bayesian distribution matters:**
 
 **1. Small datasets**
+
 ```python
 # n = 5 data points
 # MLE: β = 2.5 (seems precise, but is it?)
@@ -719,6 +741,7 @@ P(β | data) ∝ P(data | β) × P(β)
 ```
 
 **2. Prior knowledge**
+
 ```python
 # Medical trial for new drug
 # Prior: Similar drugs showed effect size ~ Normal(0.3, 0.1)
@@ -730,6 +753,7 @@ P(β | data) ∝ P(data | β) × P(β)
 ```
 
 **3. Decision-making under uncertainty**
+
 ```python
 # Investment decision
 # Expected return: 10% ± 5% (Bayesian posterior)
@@ -743,6 +767,7 @@ P(β | data) ∝ P(data | β) × P(β)
 ```
 
 **4. Sequential updating**
+
 ```python
 # Day 1: β ~ Normal(2.0, 1.0)  # Prior
 # Collect data → Update
@@ -754,6 +779,7 @@ P(β | data) ∝ P(data | β) × P(β)
 ```
 
 **Computational cost:**
+
 - MLE: Often closed-form or simple optimization
 - Bayesian: Requires MCMC sampling (slower)
 
@@ -764,6 +790,7 @@ P(β | data) ∝ P(data | β) × P(β)
 ---
 
 ### Question 4: Gaussian Process Scalability
+
 GPs provide great uncertainty estimates but don't scale well. Why, and what are the workarounds?
 
 <details>
@@ -784,6 +811,7 @@ K = k(X, X)  # n × n matrix
 ```
 
 **Scalability limits:**
+
 - **Exact GP**: n < 10,000
 - **Sparse GP**: n < 1,000,000
 - **Deep GP / Neural networks**: n > 1,000,000
@@ -791,6 +819,7 @@ K = k(X, X)  # n × n matrix
 **Workarounds:**
 
 **1. Sparse / Inducing Points (FITC, SVGP)**
+
 ```python
 # Use m << n "inducing points" to summarize data
 # Approximate full GP with m × m matrix
@@ -803,6 +832,7 @@ from sklearn.gaussian_process.kernels import RBF
 ```
 
 **2. Local GPs**
+
 ```python
 # Partition data into clusters
 # Train separate GP for each cluster
@@ -812,6 +842,7 @@ from sklearn.gaussian_process.kernels import RBF
 ```
 
 **3. Structured kernels**
+
 ```python
 # For grid data (images, time series)
 # Use Kronecker/Toeplitz structure
@@ -823,6 +854,7 @@ from sklearn.gaussian_process.kernels import RBF
 ```
 
 **4. Variational approximations**
+
 ```python
 import gpytorch
 
@@ -832,6 +864,7 @@ import gpytorch
 ```
 
 **5. Use GPs only for small/expensive data**
+
 ```python
 scenarios = {
     "n < 1000": "Exact GP",
@@ -841,11 +874,13 @@ scenarios = {
 ```
 
 **When to use GPs despite scalability:**
+
 - **Small datasets** (< 1000)
 - **Expensive  experiments** (physics simulations, drug trials)
 - **Need calibrated uncertainty** (robotics, active learning)
 
 **Alternatives:**
+
 - **Bayesian Neural Networks**: Scale better, similar uncertainty
 - **Quantile Regression**: Direct uncertainty without full Bayesian
 - **Ensemble methods**: Bootstrap aggregating for uncertainty
@@ -855,6 +890,7 @@ scenarios = {
 ---
 
 ### Question 5: Production Probability Thresholds
+
 Your fraud detection model outputs probabilities. How do you choose the decision threshold in production?
 
 <details>
@@ -863,6 +899,7 @@ Your fraud detection model outputs probabilities. How do you choose the decision
 **Answer:** Choose the threshold that **minimizes expected cost**, accounting for false positive and false negative costs, not just the default 0.5.
 
 **The problem with 0.5:**
+
 ```python
 # Default: if prob > 0.5 → flag as fraud
 # Assumes: FP cost = FN cost (rarely true!)
@@ -871,12 +908,14 @@ Your fraud detection model outputs probabilities. How do you choose the decision
 **Cost-sensitive threshold:**
 
 **Step 1: Define costs**
+
 ```python
 cost_FP = $10   # Manual review of legitimate transaction
 cost_FN = $500  # Missed fraud (chargeback + damage)
 ```
 
 **Step 2: Calculate expected cost per threshold**
+
 ```python
 def expected_cost(threshold, y_true, y_proba, cost_fp, cost_fn):
     y_pred = (y_proba >= threshold).astype(int)
@@ -892,6 +931,7 @@ optimal_threshold = thresholds[np.argmin(costs)]
 ```
 
 **Step 3: Multi-tier thresholds**
+
 ```python
 # Production logic
 if prob > 0.9:
@@ -903,6 +943,7 @@ else:
 ```
 
 **Step 4: A/B test thresholds**
+
 ```python
 # Baseline: threshold = 0.5
 # Variant: threshold = 0.15 (optimized)
@@ -915,6 +956,7 @@ else:
 ```
 
 **Dynamic thresholds:**
+
 ```python
 # Adjust based on:
 # - Time of day (more fraud at night → lower threshold)
@@ -929,6 +971,7 @@ if user_has_fraud_history:
 ```
 
 **Monitoring in production:**
+
 ```python
 # Track actual FP/FN rates
 # Retrain and re-optimize threshold monthly
@@ -949,6 +992,7 @@ if actual_FN_rate > target_FN_rate:
 ## Summary
 
 Today you learned:
+
 - ✅ Naive Bayes provides fast probabilistic baseline for classification
 - ✅ Probability calibration makes model confidence reliable for decisions
 - ✅ Bayesian inference quantifies uncertainty through parameter distributions

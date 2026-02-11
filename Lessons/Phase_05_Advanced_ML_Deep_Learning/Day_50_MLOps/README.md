@@ -47,6 +47,7 @@ This is why 87% of ML models never make it to production (VentureBeat, 2019).
 **MLOps solves this.** It's DevOps for machine learning—bringing software engineering discipline to ML:
 
 **Real-world MLOps impact:**
+
 - **Spotify**: Deploys 10+ ML models daily using automated pipelines
 - **Uber**: Monitors 1000+ models in production, auto-rolls back failing models
 - **Netflix**: A/B tests model changes on millions of users safely
@@ -132,6 +133,7 @@ print("Run: mlflow ui")
 ```
 
 **Benefits of tracking:**
+
 - Compare 100+ experiments at a glance
 - Reproduce any result months later
 - Share findings with team (no more "it worked on my machine")
@@ -749,6 +751,7 @@ monitor.plot_dashboard()
 ## Mastery Check
 
 ### Question 1: Experiment Tracking Value
+
 Your team runs 100+ experiments per month. Why is MLflow better than spreadsheets for tracking?
 
 <details>
@@ -757,6 +760,7 @@ Your team runs 100+ experiments per month. Why is MLflow better than spreadsheet
 **Answer:** MLflow automates logging, ensures reproducibility, and enables collaboration—spreadsheets don't scale.
 
 **Why spreadsheets fail:**
+
 1. **Manual entry** → errors and missing data
 2. **No artifact storage** → can't retrieve models or plots
 3. **No code versioning** → can't reproduce results
@@ -764,6 +768,7 @@ Your team runs 100+ experiments per month. Why is MLflow better than spreadsheet
 5. **No search/filter** → finding best model takes hours
 
 **MLflow advantages:**
+
 ```python
 # Automatic logging
 with mlflow.start_run():
@@ -777,6 +782,7 @@ best_run = runs.sort_values("metrics.accuracy", ascending=False).iloc[0]
 ```
 
 **Reproducibility:** Any team member can load exact model from 6 months ago:
+
 ```python
 model = mlflow.sklearn.load_model(f"runs:/{run_id}/model")
 ```
@@ -786,6 +792,7 @@ model = mlflow.sklearn.load_model(f"runs:/{run_id}/model")
 ---
 
 ### Question 2: API Deployment Challenge
+
 Your FastAPI model endpoint takes 500ms to respond. Users expect <100ms. What's the bottleneck and how do you fix it?
 
 <details>
@@ -794,6 +801,7 @@ Your FastAPI model endpoint takes 500ms to respond. Users expect <100ms. What's 
 **Answer:** Likely causes are model loading on each request or inefficient preprocessing. Solutions include model caching, batch prediction, or model optimization.
 
 **Diagnosis steps:**
+
 ```python
 import time
 
@@ -818,6 +826,7 @@ def predict(input_data: PredictionInput):
 **Solutions:**
 
 1. **Load model once at startup** (not per request):
+
    ```python
    # Global variable, loaded once
    model = joblib.load('model.pkl')
@@ -832,6 +841,7 @@ def predict(input_data: PredictionInput):
    - Quantize deep learning models
 
 3. **Batch predictions** (if real-time not required):
+
    ```python
    # Collect requests for 100ms, predict batch
    ```
@@ -845,6 +855,7 @@ def predict(input_data: PredictionInput):
    - Use Kubernetes autoscaling
 
 **Target latencies:**
+
 - User-facing: <100ms
 - Internal batch: <1s
 - Offline scoring: minutes/hours OK
@@ -854,6 +865,7 @@ def predict(input_data: PredictionInput):
 ---
 
 ### Question 3: Data Drift Detection
+
 Your churn model's accuracy dropped from 90% to 75% over 3 months. Drift detection shows feature 0 has p-value = 0.001. What does this mean and what do you do?
 
 <details>
@@ -861,11 +873,13 @@ Your churn model's accuracy dropped from 90% to 75% over 3 months. Drift detecti
 **Answer:** p-value < 0.05 indicates significant drift—feature 0's distribution changed substantially since training. This likely caused the performance drop. You should retrain the model with recent data.
 
 **What p-value = 0.001 means:**
+
 - Kolmogorov-Smirnov test null hypothesis: "distributions are the same"
 - p = 0.001 < 0.05 → reject null → distributions are **significantly different**
 - Probability this difference is random: 0.1%
 
 **Diagnosis:**
+
 ```python
 # Visualize the drift
 monitor.compare_distributions(X_production, feature_idx=0)
@@ -873,12 +887,14 @@ monitor.compare_distributions(X_production, feature_idx=0)
 ```
 
 **Root causes:**
+
 1. **Seasonal change**: Customer behavior shifts (e.g., holiday spending)
 2. **Business change**: New product launched, customer base changed
 3. **Data pipeline bug**: Incorrect feature engineering in production
 4. **Concept drift**: Meaning of churn changed (e.g., pandemic effect)
 
 **Action plan:**
+
 1. **Immediate**: Roll back to previous model? Or accept lower accuracy temporarily?
 2. **Investigate**: Is drift expected (seasonal) or a bug?
 3. **Retrain**: Use last 6 months of data to capture new patterns
@@ -886,6 +902,7 @@ monitor.compare_distributions(X_production, feature_idx=0)
 5. **Automate**: Schedule monthly retraining
 
 **Prevent future issues:**
+
 - **Continuous monitoring**: Check drift weekly
 - **A/B testing**: Deploy new model to 10% traffic first
 - **Gradual rollout**: Champion-challenger pattern
@@ -895,6 +912,7 @@ monitor.compare_distributions(X_production, feature_idx=0)
 ---
 
 ### Question 4: CI/CD for ML
+
 How is CI/CD for ML different from traditional software CI/CD?
 
 <details>
@@ -902,11 +920,13 @@ How is CI/CD for ML different from traditional software CI/CD?
 **Answer:** ML CI/CD adds data validation, model evaluation, and performance regression tests—traditional CI/CD only tests code, not data or model quality.
 
 **Traditional CI/CD:**
+
 ```
 Code → Build → Unit Tests → Deploy
 ```
 
 **ML CI/CD:**
+
 ```
 Code + Data → Build → Unit Tests → Data Tests → Train → Model Tests → Deploy → Monitor
 ```
@@ -924,6 +944,7 @@ Code + Data → Build → Unit Tests → Data Tests → Train → Model Tests �
 **ML-specific pipeline stages:**
 
 1. **Data Validation**:
+
    ```python
    # Check schema
    assert df.columns.tolist() == expected_columns
@@ -932,6 +953,7 @@ Code + Data → Build → Unit Tests → Data Tests → Train → Model Tests �
    ```
 
 2. **Model Evaluation**:
+
    ```python
    # Performance threshold
    assert accuracy > 0.85, "Model below prod accuracy!"
@@ -940,6 +962,7 @@ Code + Data → Build → Unit Tests → Data Tests → Train → Model Tests �
    ```
 
 3. **Canary Deployment**:
+
    ```python
    # Deploy to 10% traffic
    # Monitor for 24 hours
@@ -947,6 +970,7 @@ Code + Data → Build → Unit Tests → Data Tests → Train → Model Tests �
    ```
 
 4. **Continuous Monitoring**:
+
    ```python
    # Alert if accuracy drops
    if daily_accuracy < 0.80:
@@ -958,6 +982,7 @@ Code + Data → Build → Unit Tests → Data Tests → Train → Model Tests �
 ---
 
 ### Question 5: MLOps Architecture
+
 Design an end-to-end MLOps system for a fraud detection model that processes 1M transactions/day. What components do you need?
 
 <details>
@@ -1040,6 +1065,7 @@ Design an end-to-end MLOps system for a fraud detection model that processes 1M 
    - Serverless for low-traffic endpoints
 
 **Estimated costs** (AWS):
+
 - Training: $500/month (daily retraining)
 - Serving: $2000/month (1M predictions/day)
 - Storage: $200/month (data lake)
@@ -1053,6 +1079,7 @@ Design an end-to-end MLOps system for a fraud detection model that processes 1M 
 ## Summary
 
 Today you learned:
+
 - ✅ Experiment tracking with MLflow ensures reproducibility and comparison
 - ✅ Model versioning and registry manage production models
 - ✅ FastAPI + Docker enables scalable model deployment

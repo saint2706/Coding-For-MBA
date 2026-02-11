@@ -25,12 +25,14 @@ outcomes: [Connect to SQLite databases, Execute SQL queries, Perform CRUD operat
 **Databases solve this.** They're designed to handle millions of rows efficiently, with built-in indexing, relationships, and concurrent access.
 
 **Why databases matter:**
+
 - **Speed**: Queries run in milliseconds, not minutes
 - **Integrity**: Enforce data types, prevent duplicates
 - **Concurrency**: Multiple users access simultaneously
 - **Persistence**: Data survives program crashes
 
 **Real-world uses:**
+
 - Every website you use stores data in databases
 - Every business application relies on them
 - Every analytics platform queries them
@@ -329,12 +331,14 @@ conn.close()
 ## Mastery Check
 
 ### Question 1: SQL vs CSV
+
 When should you use a database instead of CSV files?
 
 <details>
 <summary>Click for Answer</summary>
 
 Use databases when:
+
 - Data exceeds ~100K rows
 - Multiple users need concurrent access
 - You need to enforce relationships between tables
@@ -342,6 +346,7 @@ Use databases when:
 - You need fast filtered queries
 
 Use CSVs when:
+
 - Quick one-time analysis
 - Sharing simple data with non-programmers
 - Data is read-only and small
@@ -349,6 +354,7 @@ Use CSVs when:
 </details>
 
 ### Question 2: SQL Injection
+
 Why is this code dangerous?
 
 ```python
@@ -362,11 +368,13 @@ cursor.execute(f"SELECT * FROM users WHERE name = '{name}'")
 SQL injection vulnerability. If user enters: `'; DROP TABLE users; --`
 
 The query becomes:
+
 ```sql
 SELECT * FROM users WHERE name = ''; DROP TABLE users; --'
 ```
 
 **Fix**: Use parameterized queries:
+
 ```python
 cursor.execute("SELECT * FROM users WHERE name = ?", (name,))
 ```
@@ -374,6 +382,7 @@ cursor.execute("SELECT * FROM users WHERE name = ?", (name,))
 </details>
 
 ### Question 3: JOINs
+
 What does this query return?
 
 ```sql
@@ -393,7 +402,9 @@ Returns all employees with their department names. If an employee has no matchin
 </details>
 
 ### Question 4: Performance Issue
+
 Your query takes 30 seconds on a million-row table:
+
 ```sql
 SELECT * FROM orders WHERE customer_email = 'user@example.com'
 ```
@@ -404,6 +415,7 @@ SELECT * FROM orders WHERE customer_email = 'user@example.com'
 **Problem**: No index on `customer_email` column → full table scan
 
 **Fix**: Create an index:
+
 ```sql
 CREATE INDEX idx_customer_email ON orders(customer_email);
 ```
@@ -413,6 +425,7 @@ Now the query uses the index for fast lookups.
 </details>
 
 ### Question 5: Transaction
+
 What happens if your program crashes mid-insert with 500 of 1000 rows inserted?
 
 <details>
@@ -421,6 +434,7 @@ What happens if your program crashes mid-insert with 500 of 1000 rows inserted?
 Without explicit transaction: 500 rows saved (partial state, data corruption)
 
 With transaction:
+
 ```python
 try:
     cursor.executemany("INSERT ...", data)

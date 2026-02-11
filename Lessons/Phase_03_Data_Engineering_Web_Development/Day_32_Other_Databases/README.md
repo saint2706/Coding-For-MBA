@@ -25,6 +25,7 @@ outcomes: [Understand NoSQL vs SQL tradeoffs, Work with MongoDB, Choose appropri
 **NoSQL offers flexibility.** Document databases store JSON-like structures—each document can have different fields.
 
 **When to use what:**
+
 | Need                           | Use              |
 | ------------------------------ | ---------------- |
 | Structured data, relationships | SQL (PostgreSQL) |
@@ -122,12 +123,14 @@ with engine.connect() as conn:
 ### When to Choose NoSQL
 
 ✅ **Good for:**
+
 - User profiles with varying fields
 - Content management (articles, posts)
 - Real-time analytics / logging
 - Rapid prototyping
 
 ❌ **Bad for:**
+
 - Financial transactions (need ACID)
 - Complex reporting with many JOINs
 - Strict data integrity requirements
@@ -207,6 +210,7 @@ Match each scenario to the best database:
 ## Mastery Check
 
 ### Question 1: Schema Flexibility
+
 What's the main advantage of MongoDB over PostgreSQL?
 
 <details>
@@ -222,12 +226,14 @@ Tradeoff: Less data integrity guarantees.
 </details>
 
 ### Question 2: ACID Compliance
+
 Why might you choose PostgreSQL for a payment system?
 
 <details>
 <summary>Click for Answer</summary>
 
 **ACID compliance:**
+
 - **Atomicity**: Transactions complete fully or not at all
 - **Consistency**: Data stays valid
 - **Isolation**: Transactions don't interfere
@@ -238,6 +244,7 @@ For payments, partial transactions are unacceptable. Can't debit without crediti
 </details>
 
 ### Question 3: Horizontal Scaling
+
 What does "horizontal scaling" mean for NoSQL?
 
 <details>
@@ -253,17 +260,20 @@ NoSQL databases like MongoDB are designed to spread data across many machines, h
 </details>
 
 ### Question 4: Embedded vs References
+
 When would you embed a document vs reference it in MongoDB?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Embed when:**
+
 - Data is always accessed together
 - Relationship is one-to-few
 - Example: User with addresses
 
 **Reference when:**
+
 - Data is accessed independently
 - Relationship is one-to-many or many-to-many
 - Example: User's orders (orders queried separately)
@@ -279,18 +289,21 @@ When would you embed a document vs reference it in MongoDB?
 </details>
 
 ### Question 5: Migration Scenario
+
 You have a PostgreSQL database. When might you migrate to MongoDB?
 
 <details>
 <summary>Click for Answer</summary>
 
 Consider migration when:
+
 - Schema changes become frequent and painful
 - You need to store semi-structured data (JSON blobs)
 - Read performance at scale matters more than complex queries
 - Your team is comfortable with eventual consistency
 
 **Don't migrate if:**
+
 - You need complex JOINs
 - Transactions are critical
 - Data integrity is paramount

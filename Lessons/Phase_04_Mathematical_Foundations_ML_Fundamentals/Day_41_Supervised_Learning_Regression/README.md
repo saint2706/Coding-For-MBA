@@ -38,6 +38,7 @@ outcomes:
 That's regression: predicting a **continuous numerical value** based on input features.
 
 **Regression everywhere:**
+
 - **Zillow/Redfin**: Housing price estimates
 - **Insurance**: Claim amount prediction
 - **Finance**: Stock price forecasting
@@ -598,6 +599,7 @@ plt.show()
 ## Mastery Check
 
 ### Question 1: Coefficient Interpretation
+
 In a house price model, the coefficient for 'bedrooms' is 25000. What does this mean?
 
 <details>
@@ -606,12 +608,14 @@ In a house price model, the coefficient for 'bedrooms' is 25000. What does this 
 **Answer:** All else being equal, each additional bedroom increases the predicted house price by $25,000.
 
 **Important caveats:**
+
 1. This assumes other features (sqft, age, etc.) are held constant
 2. This is a linear approximation—real relationships may be non-linear
 3. The interpretation assumes the model is correctly specified
 4. Causation is not implied—more bedrooms might correlate with other factors
 
 **Example:**
+
 ```
 House A: 3 bedrooms, 2000 sqft → Predicted: $300,000
 House B: 4 bedrooms, 2000 sqft → Predicted: $325,000
@@ -623,6 +627,7 @@ Difference: $25,000 (the coefficient)
 ---
 
 ### Question 2: Ridge vs Lasso
+
 When would you prefer Lasso over Ridge regression?
 
 <details>
@@ -638,11 +643,13 @@ When would you prefer Lasso over Ridge regression?
 | Best for            | Many relevant features | Few relevant features       |
 
 **Use Lasso when:**
+
 - You have many features and suspect most are irrelevant
 - You want interpretable results with fewer features
 - You need to identify the most important predictors
 
 **Use Ridge when:**
+
 - Most features are relevant
 - Features are correlated (multicollinearity)
 - You want to keep all features but reduce variance
@@ -652,6 +659,7 @@ When would you prefer Lasso over Ridge regression?
 ---
 
 ### Question 3: Scaling Importance
+
 Why is feature scaling important for Ridge regression but not for ordinary linear regression?
 
 <details>
@@ -660,12 +668,14 @@ Why is feature scaling important for Ridge regression but not for ordinary linea
 **Answer:** Ridge penalizes large coefficients. Without scaling, features with larger values will have smaller coefficients (to compensate), making the penalty unfair.
 
 **Example without scaling:**
+
 - `sqft` ranges 800-3000 → coefficient ~100
 - `bedrooms` ranges 1-5 → coefficient ~25000
 
 Ridge penalty treats the coefficient 100 and 25000 equally, but sqft's 100 actually has more impact (100 × 2000 vs 25000 × 3).
 
 **With scaling:**
+
 - Both features have similar ranges (mean=0, std=1)
 - Coefficients are comparable
 - Penalty is applied fairly
@@ -677,6 +687,7 @@ Ridge penalty treats the coefficient 100 and 25000 equally, but sqft's 100 actua
 ---
 
 ### Question 4: R² Interpretation
+
 Your model has R² = 0.85. Is this good?
 
 <details>
@@ -685,15 +696,18 @@ Your model has R² = 0.85. Is this good?
 **Answer:** It depends on the domain and baseline!
 
 **R² = 0.85 means:**
+
 - Your model explains 85% of the variance in the target
 - 15% remains unexplained (noise or missing features)
 
 **Is it good?**
+
 - **Physical sciences**: Often expect R² > 0.95 (controllable systems)
 - **Social sciences/economics**: R² = 0.50 can be excellent
 - **Stock prediction**: R² > 0.05 can be profitable!
 
 **Better questions:**
+
 1. What's the baseline? (Does a simpler model achieve R² = 0.80?)
 2. What's the RMSE in practical terms? (Is $10K error acceptable?)
 3. Is the model useful for decisions? (Lower variance in predictions?)
@@ -705,6 +719,7 @@ Your model has R² = 0.85. Is this good?
 ---
 
 ### Question 5: Diagnosing Problems
+
 Your regression model has RMSE of $50,000 on training data but $150,000 on test data. What's wrong and how do you fix it?
 
 <details>
@@ -715,6 +730,7 @@ Your regression model has RMSE of $50,000 on training data but $150,000 on test 
 **Diagnosis:** Large gap between train and test performance.
 
 **Solutions:**
+
 1. **Regularization**: Add Ridge (L2) or Lasso (L1) penalty
 2. **Simplify model**: Reduce polynomial degree, fewer features
 3. **More data**: Harder to memorize with more samples
@@ -722,6 +738,7 @@ Your regression model has RMSE of $50,000 on training data but $150,000 on test 
 5. **Cross-validation**: Use CV during model selection
 
 **Example fix:**
+
 ```python
 # Before (overfitting)
 model = LinearRegression()
@@ -740,6 +757,7 @@ Monitor the train-test gap as you tune!
 ## Summary
 
 Today you learned:
+
 - ✅ Linear regression fits a line (or hyperplane) to predict continuous values
 - ✅ Feature scaling ensures fair treatment across features
 - ✅ Polynomial features capture non-linear relationships

@@ -35,15 +35,17 @@ outcomes:
 **The Teacher's Grading**
 
 **Uncorrelated Subquery**:
-*   Teacher: "Everyone who scored higher than the *Class Average* gets a sticker."
-*   Process: Calculate Average **once** (e.g., 85). Walk through students. "Is 90 > 85? Yes."
-*   *Speed*: Fast.
+
+* Teacher: "Everyone who scored higher than the *Class Average* gets a sticker."
+* Process: Calculate Average **once** (e.g., 85). Walk through students. "Is 90 > 85? Yes."
+* *Speed*: Fast.
 
 **Correlated Subquery**:
-*   Teacher: "Everyone who scored higher than the *Average of their own Table Group* gets a sticker."
-*   Process: Go to Student A. Calculate Table 1 Average. Compare.
-*   Go to Student B. Calculate Table 2 Average. Compare.
-*   *Speed*: Slow. You recalculate the average for every student. (O(N^2)).
+
+* Teacher: "Everyone who scored higher than the *Average of their own Table Group* gets a sticker."
+* Process: Go to Student A. Calculate Table 1 Average. Compare.
+* Go to Student B. Calculate Table 2 Average. Compare.
+* *Speed*: Slow. You recalculate the average for every student. (O(N^2)).
 
 ---
 
@@ -52,24 +54,25 @@ outcomes:
 ### 1. Correlated Subqueries
 
 A subquery that references a column from the outer query.
-*   **Code**: `SELECT * FROM employees e WHERE salary > (SELECT AVG(salary) FROM employees WHERE department_id = e.department_id)`.
-*   **Execution**: For every row in `e`, run the subquery.
-*   **Optimization**: Rewriting as a `JOIN` with a pre-aggregated CTE.
+
+* **Code**: `SELECT * FROM employees e WHERE salary > (SELECT AVG(salary) FROM employees WHERE department_id = e.department_id)`.
+* **Execution**: For every row in `e`, run the subquery.
+* **Optimization**: Rewriting as a `JOIN` with a pre-aggregated CTE.
 
 ### 2. EXISTS vs IN (The NULL Trap)
 
-*   **IN**: Checks values against a list.
-    *   `WHERE id NOT IN (1, 2, NULL)`.
-    *   **Result**: Empty Set. (Because `id != NULL` is `UNKNOWN`). **Dangerous Bug**.
-*   **EXISTS**: Checks if *at least one row* is returned.
-    *   `WHERE NOT EXISTS (SELECT 1 FROM table WHERE id = ...)`.
-    *   **Result**: Works correctly even with NULLs. **Always prefer EXISTS**.
+* **IN**: Checks values against a list.
+  * `WHERE id NOT IN (1, 2, NULL)`.
+  * **Result**: Empty Set. (Because `id != NULL` is `UNKNOWN`). **Dangerous Bug**.
+* **EXISTS**: Checks if *at least one row* is returned.
+  * `WHERE NOT EXISTS (SELECT 1 FROM table WHERE id = ...)`.
+  * **Result**: Works correctly even with NULLs. **Always prefer EXISTS**.
 
 ### 3. Scalar Subqueries in SELECT
 
-*   **Scenario**: `SELECT name, (SELECT count(*) FROM orders WHERE user_id = u.id) FROM users u`.
-*   **Problem**: Forces N executions (Correlated).
-*   **Fix**: `LEFT JOIN` with `GROUP BY`.
+* **Scenario**: `SELECT name, (SELECT count(*) FROM orders WHERE user_id = u.id) FROM users u`.
+* **Problem**: Forces N executions (Correlated).
+* **Fix**: `LEFT JOIN` with `GROUP BY`.
 
 ---
 
@@ -77,23 +80,25 @@ A subquery that references a column from the outer query.
 
 ### "Unnesting"
 
-*   **The Optimizer's Job**: Modern Postgres/Oracle tries to turn your Correlated Subquery into a Join automatically ("Unnesting").
-*   **The Risk**: Sometimes it fails (e.g., if you use `LIMIT` or `RANDOM()` inside the subquery).
-*   **Advice**: Don't rely on magic. Write the Join yourself.
+* **The Optimizer's Job**: Modern Postgres/Oracle tries to turn your Correlated Subquery into a Join automatically ("Unnesting").
+* **The Risk**: Sometimes it fails (e.g., if you use `LIMIT` or `RANDOM()` inside the subquery).
+* **Advice**: Don't rely on magic. Write the Join yourself.
 
 ### Is `IN` ever okay?
 
-*   **Yes**: For small, static lists. `WHERE status IN ('active', 'pending')`.
-*   **No**: For large subqueries. `WHERE id IN (SELECT id FROM billion_row_table)`. (Slow Hash Build).
+* **Yes**: For small, static lists. `WHERE status IN ('active', 'pending')`.
+* **No**: For large subqueries. `WHERE id IN (SELECT id FROM billion_row_table)`. (Slow Hash Build).
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: The Correlated Killer
+
 **Goal**: Identify the bottleneck.
 
 **Query**: Find products cheaper than the average of their category.
+
 ```sql
 SELECT product_name, price 
 FROM products p
@@ -105,6 +110,7 @@ WHERE price < (
 ```
 
 ### Exercise 2: The Optimization (Rewrite to Join)
+
 **Goal**: Make it fast.
 
 ```sql
@@ -118,22 +124,25 @@ FROM products p
 JOIN category_avgs c ON p.category_id = c.category_id
 WHERE p.price < c.avg_price;
 ```
-*   *Result*: Calculates averages only once (Join).
+
+* *Result*: Calculates averages only once (Join).
 
 ### Exercise 3: The NULL Trap
+
 **Goal**: Observe the bug.
 
-1.  Create table A: `1, 2`.
-2.  Create table B: `1, NULL`.
-3.  Query: `SELECT * FROM A WHERE id NOT IN (SELECT id FROM B)`.
-4.  **Result**: 0 rows. (Should be '2').
-5.  **Fix**: Use `NOT EXISTS`.
+1. Create table A: `1, 2`.
+2. Create table B: `1, NULL`.
+3. Query: `SELECT * FROM A WHERE id NOT IN (SELECT id FROM B)`.
+4. **Result**: 0 rows. (Should be '2').
+5. **Fix**: Use `NOT EXISTS`.
 
 ---
 
 ## Mastery Check
 
 ### Question 1: NOT IN
+
 Why does `NOT IN` fail with NULLs?
 A) Because `5 != NULL` is `TRUE`.
 B) Because `5 != NULL` is `UNKNOWN`. In SQL, `UNKNOWN` means "Don't return the row".
@@ -148,6 +157,7 @@ Three-valued logic (True, False, Unknown) is the hardest part of SQL.
 </details>
 
 ### Question 2: Correlated Subquery
+
 How many times does a Correlated Subquery run?
 A) Once.
 B) Once per row of the Outer Query.
@@ -162,6 +172,7 @@ Linear performance degradation.
 </details>
 
 ### Question 3: EXISTS
+
 Does `EXISTS (SELECT * ...)` need to read the whole subquery table?
 A) Yes.
 B) No, it stops as soon as it finds **one** matching row ("Short Circuit").
@@ -176,6 +187,7 @@ Short-circuiting makes EXISTS faster than COUNT(*) > 0.
 </details>
 
 ### Question 4: Scalar Subquery
+
 Where can you use a Scalar Subquery (returns 1 row, 1 column)?
 A) In the `SELECT` list.
 B) In the `WHERE` clause.
@@ -190,6 +202,7 @@ It behaves like a variable.
 </details>
 
 ### Question 5: Unnesting
+
 What is "Subquery Unnesting"?
 A) Removing the subquery manually.
 B) The Database Optimizer automatically converting a subquery into a Join or Semi-Join for performance.
@@ -208,10 +221,11 @@ Advanced optimization feature.
 ## Summary
 
 Today you learned:
-*   ✅ **Correlation**: The enemy of scale.
-*   ✅ **Joins**: The solution to correlation.
-*   ✅ **NULLs**: The logic bomb in `NOT IN`.
-*   ✅ **EXISTS**: The safer, faster alternative.
+
+* ✅ **Correlation**: The enemy of scale.
+* ✅ **Joins**: The solution to correlation.
+* ✅ **NULLs**: The logic bomb in `NOT IN`.
+* ✅ **EXISTS**: The safer, faster alternative.
 
 **Congratulations! You have understood the Internals.**
 **Tomorrow**: We begin the End... **Phase 8 Overview**.

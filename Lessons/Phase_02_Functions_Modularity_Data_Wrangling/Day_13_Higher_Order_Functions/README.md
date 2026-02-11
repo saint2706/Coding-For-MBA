@@ -53,6 +53,7 @@ discounted = list(map(lambda p: p * 0.9, prices))
 ### Functions as First-Class Objects
 
 In Python, functions are objects. You can:
+
 - Assign them to variables
 - Pass them as arguments
 - Return them from other functions
@@ -313,7 +314,9 @@ for p in by_value:
 ## Mastery Check
 
 ### Question 1: Map Output
+
 What does this return?
+
 ```python
 list(map(lambda x: x.upper(), ["a", "b", "c"]))
 ```
@@ -328,7 +331,9 @@ list(map(lambda x: x.upper(), ["a", "b", "c"]))
 ---
 
 ### Question 2: Filter Logic
+
 What's the result?
+
 ```python
 list(filter(lambda x: x, [0, 1, "", "hello", None, True]))
 ```
@@ -345,7 +350,9 @@ Filter keeps truthy values. 0, "", and None are falsy.
 ---
 
 ### Question 3: Reduce Understanding
+
 Trace through this:
+
 ```python
 from functools import reduce
 reduce(lambda a, b: a * b, [1, 2, 3, 4])
@@ -357,6 +364,7 @@ reduce(lambda a, b: a * b, [1, 2, 3, 4])
 24
 
 Step by step:
+
 - 1 * 2 = 2
 - 2 * 3 = 6
 - 6 * 4 = 24
@@ -366,6 +374,7 @@ Step by step:
 ---
 
 ### Question 4: Closure Application
+
 ```python
 def make_counter():
     count = 0
@@ -391,7 +400,9 @@ Each call increments the captured `count` variable.
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Create a data processing pipeline that:
+
 1. Takes a list of transactions
 2. Filters out refunds (negative amounts)
 3. Applies tax (8%)
@@ -426,6 +437,7 @@ print(f"Total with tax: ${result:.2f}")
 ## Summary
 
 Today you learned:
+
 - ✅ Functions are first-class objects in Python
 - ✅ `map()` transforms every element
 - ✅ `filter()` keeps matching elements  

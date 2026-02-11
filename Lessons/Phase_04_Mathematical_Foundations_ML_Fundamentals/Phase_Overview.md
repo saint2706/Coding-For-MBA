@@ -47,22 +47,26 @@ You discovered that raw data is rarely model-ready. Feature engineering transfor
 ## The Expert's Toolkit
 
 ### Official Documentation
+
 - [NumPy User Guide](https://numpy.org/doc/stable/user/) — Array operations and linear algebra
 - [Scikit-learn Documentation](https://scikit-learn.org/stable/user_guide.html) — Complete ML reference
 - [TensorFlow/Keras Guides](https://www.tensorflow.org/guide) — Deep learning framework
 - [Matplotlib Tutorials](https://matplotlib.org/stable/tutorials/) — Visualization fundamentals
 
 ### Cheat Sheets
+
 - [Scikit-learn Algorithm Cheat Sheet](https://scikit-learn.org/stable/tutorial/machine_learning_map/) — Which model to use
 - [Keras Layers Reference](https://keras.io/api/layers/) — Neural network building blocks
 - [NumPy Cheat Sheet](https://numpy.org/doc/stable/user/quickstart.html) — Array operations quick reference
 
 ### Practice Platforms
+
 - [Kaggle Learn](https://www.kaggle.com/learn) — Hands-on ML tutorials
 - [Google ML Crash Course](https://developers.google.com/machine-learning/crash-course) — Industry fundamentals
 - [fast.ai](https://www.fast.ai/) — Practical deep learning
 
 ### Industry Resources
+
 - [Towards Data Science](https://towardsdatascience.com/) — ML articles and tutorials
 - [Papers With Code](https://paperswithcode.com/) — Latest ML research with implementations
 - [ML Mastery](https://machinelearningmastery.com/) — Applied ML tutorials
@@ -89,6 +93,7 @@ You discovered that raw data is rarely model-ready. Feature engineering transfor
 5. Select and interpret the best model
 
 **Sample Data Structure**:
+
 ```python
 # Dataset contains:
 {
@@ -102,6 +107,7 @@ You discovered that raw data is rarely model-ready. Feature engineering transfor
 ```
 
 **Requirements**:
+
 ```python
 def load_and_clean(filepath: str) -> pd.DataFrame:
     """Load data, handle missing values, convert types."""
@@ -149,6 +155,7 @@ def interpret_best_model(model, feature_names: list):
 4. Interpret the model's decisions
 
 **Requirements**:
+
 ```python
 def prepare_imbalanced_data(df: pd.DataFrame) -> tuple:
     """Split data, apply SMOTE or class weights."""
@@ -187,6 +194,7 @@ def evaluate_classifier(model, X_test, y_test, threshold: float):
 **Scenario**: Build a CNN that classifies images from the MNIST or Fashion-MNIST dataset with >95% accuracy.
 
 **Requirements**:
+
 ```python
 def build_cnn(input_shape: tuple, num_classes: int) -> keras.Model:
     """
@@ -230,6 +238,7 @@ def evaluate_and_visualize(model, X_test, y_test):
 **Scenario**: Build an LSTM that forecasts the next 10 values of a stock price or sales time series.
 
 **Requirements**:
+
 ```python
 def create_sequences(data: np.array, window_size: int) -> tuple:
     """Create sliding window sequences for LSTM input."""

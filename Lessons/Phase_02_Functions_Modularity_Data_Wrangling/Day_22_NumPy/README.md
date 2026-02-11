@@ -49,6 +49,7 @@ bonuses = salaries * 0.10
 ```
 
 NumPy is the backbone of data science in Python. It provides:
+
 - **Speed**: Operations happen in optimized C code
 - **Simplicity**: Write math as you would on paper
 - **Foundation**: Pandas, scikit-learn, TensorFlow all use NumPy
@@ -319,6 +320,7 @@ print(f"Filled data: {filled}")
 ## Mastery Check
 
 ### Question 1: Array Creation
+
 Create a 4x4 identity matrix:
 
 <details>
@@ -335,7 +337,9 @@ identity = np.identity(4)
 ---
 
 ### Question 2: Broadcasting
+
 What does this produce?
+
 ```python
 a = np.array([[1], [2], [3]])  # 3x1
 b = np.array([10, 20, 30])     # 1x3 (broadcast to 3x3)
@@ -358,6 +362,7 @@ The 3x1 column broadcasts across columns, and 1x3 row broadcasts down rows.
 ---
 
 ### Question 3: Filtering
+
 Get all values > 50 from a 2D array:
 
 <details>
@@ -373,6 +378,7 @@ filtered = arr[arr > 50]  # [60, 70, 80]
 ---
 
 ### Question 4: Axis Understanding
+
 Given shape (3, 4), what does `axis=0` operate on?
 
 <details>
@@ -388,7 +394,9 @@ Given shape (3, 4), what does `axis=0` operate on?
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Calculate the Sharpe ratio for a stock given daily returns:
+
 - Sharpe = (mean return - risk-free rate) / std deviation
 - Risk-free rate: 0.02% daily
 
@@ -419,6 +427,7 @@ print(f"Sharpe ratio: {sharpe_ratio:.3f}")
 ## Summary
 
 Today you learned:
+
 - ✅ NumPy arrays are faster than Python lists
 - ✅ Vectorized operations apply to all elements
 - ✅ Axis parameter controls aggregation direction

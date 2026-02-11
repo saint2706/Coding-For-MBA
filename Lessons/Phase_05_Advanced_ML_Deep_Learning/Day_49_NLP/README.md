@@ -36,12 +36,14 @@ outcomes:
 **Imagine sorting 10,000 customer emails by urgency.** A human reads context, tone, urgency—"URGENT: Payment failed" vs "Quick question about billing." This takes hours and is prone to burnout.
 
 NLP automates this. It teaches machines to:
+
 - **Understand** meaning ("bank" the institution vs "bank" the river edge)
 - **Classify** sentiment (angry customer vs satisfied customer)
 - **Extract** key information (names, dates, amounts)
 - **Generate** responses (chatbots, auto-replies)
 
 **NLP in business today:**
+
 - **Customer Support**: Chatbots handle 70% of queries (reduce support costs by 30%)
 - **Email Triage**: Automatically route urgent emails to priority queues
 - **Sentiment Analysis**: Monitor brand reputation across social media in real-time
@@ -522,6 +524,7 @@ plt.show()
 ## Mastery Check
 
 ### Question 1: Preprocessing Choice
+
 Why would you use lemmatization instead of stemming for a customer service chatbot?
 
 <details>
@@ -530,12 +533,14 @@ Why would you use lemmatization instead of stemming for a customer service chatb
 **Answer:** Lemmatization is better for chatbots because it preserves actual words that can be displayed to users.
 
 **Comparison:**
+
 - **Stemming**: "running" → "run", "meeting" → "meet", "better" → "better"
   - Fast but produces non-words: "studies" → "studi"
 - **Lemmatization**: "running" → "run", "meeting" → "meeting", "better" → "good"
   - Slower but produces real words
 
 **For chatbots**, responses need to be readable:
+
 ```python
 # Stemmed: "Your meet has been confirm"
 # Lemmatized: "Your meeting has been confirmed"
@@ -549,6 +554,7 @@ Why would you use lemmatization instead of stemming for a customer service chatb
 ---
 
 ### Question 2: BoW vs TF-IDF
+
 You're building a news article classifier. 100 articles mention "the" and "a" frequently, but only 3 mention "blockchain". Which vectorization gives better features?
 
 <details>
@@ -557,6 +563,7 @@ You're building a news article classifier. 100 articles mention "the" and "a" fr
 **Answer:** TF-IDF is better because it reduces the weight of common words and highlights distinctive words like "blockchain".
 
 **Why:**
+
 - **Bag of Words**: Counts raw frequency
   - "the" appears 1000 times → high weight
   - "blockchain" appears 10 times → low weight
@@ -568,6 +575,7 @@ You're building a news article classifier. 100 articles mention "the" and "a" fr
   - Distinctive words are highlighted
 
 **Formula:**
+
 ```
 TF-IDF(word, doc) = TF(word, doc) × log(total_docs / docs_containing_word)
 ```
@@ -579,6 +587,7 @@ TF-IDF(word, doc) = TF(word, doc) × log(total_docs / docs_containing_word)
 ---
 
 ### Question 3: Word Embeddings Analogy
+
 If `king - man + woman ≈ queen`, what mathematical operation allows this? Why doesn't BoW support analogies?
 
 <details>
@@ -587,6 +596,7 @@ If `king - man + woman ≈ queen`, what mathematical operation allows this? Why 
 **Answer:** Word embeddings represent words as dense vectors in a semantic space where relationships are captured by vector arithmetic. BoW represents words as independent dimensions with no relationships.
 
 **Why embeddings work:**
+
 ```python
 king = [0.2, 0.5, 0.8, ...]  # 300D vector
 man = [0.1, 0.4, 0.6, ...]
@@ -597,11 +607,13 @@ king - man + woman ≈ [0.1, 0.4, 0.7, ...] ≈ queen
 ```
 
 **Geometric interpretation:**
+
 - "king" and "man" differ by a "royalty" vector
 - "queen" and "woman" differ by the same "royalty" vector
 - Embeddings place semantically similar words close together in space
 
 **Why BoW fails:**
+
 ```python
 # BoW: Each word is a separate dimension
 king = [0, 1, 0, 0, ...]  # Position 1 in vocabulary
@@ -616,6 +628,7 @@ man = [0, 0, 1, 0, ...]   # Position 2 in vocabulary
 ---
 
 ### Question 4: Sentiment False Positives
+
 Your sentiment model classifies "This movie is not bad" as negative (wrong—it's positive). What's the issue and how do you fix it?
 
 <details>
@@ -624,6 +637,7 @@ Your sentiment model classifies "This movie is not bad" as negative (wrong—it'
 **Answer:** The model doesn't understand negation. "not bad" should flip sentiment, but simple bag-of-words sees "bad" and predicts negative.
 
 **The problem:**
+
 ```python
 # BoW/TF-IDF representation
 "This movie is not bad" → ['movie', 'not', 'bad']
@@ -633,12 +647,14 @@ Your sentiment model classifies "This movie is not bad" as negative (wrong—it'
 **Solutions:**
 
 1. **Use n-grams** (capture word pairs):
+
    ```python
    TfidfVectorizer(ngram_range=(1, 2))  # Include bigrams
    # Now captures "not bad" as a single feature
    ```
 
 2. **Negation handling**:
+
    ```python
    # Attach "NOT_" to words following negation
    "not bad" → "not NOT_bad"
@@ -655,6 +671,7 @@ Your sentiment model classifies "This movie is not bad" as negative (wrong—it'
 ---
 
 ### Question 5: Production NLP Pipeline
+
 Design an end-to-end system for automatically categorizing incoming support tickets (billing, technical, account) and routing them. What components do you need?
 
 <details>
@@ -696,6 +713,7 @@ Design an end-to-end system for automatically categorizing incoming support tick
 ```
 
 **Code sketch:**
+
 ```python
 from fastapi import FastAPI
 from transformers import pipeline
@@ -723,6 +741,7 @@ def classify_ticket(text: str):
 ```
 
 **Production considerations:**
+
 - **Scalability**: Deploy on Kubernetes, autoscale based on traffic
 - **Latency**: Cache common queries, use smaller/faster models if needed
 - **Security**: Sanitize inputs (prevent injection attacks)
@@ -736,6 +755,7 @@ def classify_ticket(text: str):
 ## Summary
 
 Today you learned:
+
 - ✅ Text preprocessing: cleaning, tokenization, stemming vs lemmatization
 - ✅ Classical methods: BoW and TF-IDF for vectorization
 - ✅ Word embeddings: Word2Vec captures semantic relationships

@@ -1,0 +1,49 @@
+{
+  // Default state for all rules
+  "default": true,
+  
+  // MD013/line-length - Line length
+  // Allow longer lines since many educational examples benefit from readability
+  // Disabled for flexibility in educational content
+  "MD013": false,
+  
+  // MD025/single-title/single-h1 - Multiple top-level headings
+  // Allow multiple H1 headings since we use YAML frontmatter
+  "MD025": {
+    "front_matter_title": ""
+  },
+  
+  // MD033/no-inline-html - Inline HTML
+  // Allow certain HTML elements that enhance markdown (details, summary, etc.)
+  "MD033": {
+    "allowed_elements": ["details", "summary", "br", "sub", "sup", "parameter"]
+  },
+  
+  // MD036/no-emphasis-as-heading - Emphasis used instead of a heading
+  // Sometimes emphasis is needed for styled text that isn't a heading
+  "MD036": false,
+  
+  // MD041/first-line-heading/first-line-h1 - First line in a file should be a top-level heading
+  // Disabled because we use YAML frontmatter
+  "MD041": false,
+  
+  // MD046/code-block-style - Code block style
+  // Prefer fenced code blocks for consistency
+  "MD046": {
+    "style": "fenced"
+  },
+  
+  // MD060/table-column-style - Table column style
+  // Don't require aligned table pipes for easier maintenance
+  "MD060": {
+    "style": "consistent"
+  },
+  
+  // MD040/fenced-code-language - Fenced code language
+  // Disabled because many code examples are generic or pseudo-code
+  "MD040": false,
+  
+  // MD001/heading-increment - Heading levels should only increment by one level at a time
+  // Allow flexibility for document structure
+  "MD001": false
+}

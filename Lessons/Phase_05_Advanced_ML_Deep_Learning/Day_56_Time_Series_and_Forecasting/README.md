@@ -41,21 +41,25 @@ outcomes:
 Time series forecasting powers billion-dollar decisions:
 
 **Retail & E-commerce:**
+
 - **Amazon**: Forecasts product demand across millions of SKUs
 - **Walmart**: Predicts sales 6 weeks ahead for supply chain optimization
 - Impact: 5-10% reduction in inventory costs
 
 **Finance:**
+
 - **Stock trading**: Predict prices (even small edge = huge profits)
 - **Risk management**: Forecast volatility for portfolio hedging
 - **Fraud**: Detect unusual transaction patterns over time
 
 **Operations:**
+
 - **Energy**: Forecast electricity demand (prevent blackouts)
 - **Staffing**: Predict call center volume (right-size teams)
 - **Manufacturing**: Anticipate equipment failures (preventive maintenance)
 
 **Healthcare:**
+
 - **Hospital admissions**: Staff ICUs appropriately
 - **Disease outbreaks**: Predict flu/COVID waves
 - **Drug demand**: Ensure pharmacy stock levels
@@ -67,6 +71,7 @@ Time series forecasting powers billion-dollar decisions:
 ### Time Series Components
 
 Every time series has 4 components:
+
 1. **Trend**: Long-term increase/decrease
 2. **Seasonality**: Regular patterns (daily, weekly, yearly)
 3. **Cyclical**: Irregular ups/downs (business cycles)
@@ -155,6 +160,7 @@ test_stationarity(df['sales_diff'], 'Differenced Sales')
 ### ARIMA: AutoRegressive Integrated Moving Average
 
 **ARIMA(p, d, q)**:
+
 - **p**: Autoregressive order (past values)
 - **d**: Differencing order (make stationary)
 - **q**: Moving average order (past errors)
@@ -599,6 +605,7 @@ plt.show()
 ## Mastery Check
 
 ### Question 1: Stationarity Requirement
+
 Why do classical models like ARIMA require stationary data?
 
 <details>
@@ -609,6 +616,7 @@ Why do classical models like ARIMA require stationary data?
 **Non-stationary problems:**
 
 **1. Changing mean (trend)**
+
 ```python
 # Sales growing 10% per year
 # Today: mean = 1000
@@ -619,6 +627,7 @@ Why do classical models like ARIMA require stationary data?
 ```
 
 **2. Changing variance (heteroscedasticity)**
+
 ```
 Small company: sales variance = ±50
 Large company: sales variance = ±500
@@ -627,6 +636,7 @@ Model trained on small variance will be overconfident for large variance
 ```
 
 **3. Spurious correlations**
+
 ```python
 # Two non-stationary series (both trending up)
 # May appear correlated even if unrelated
@@ -636,6 +646,7 @@ Model trained on small variance will be overconfident for large variance
 **Making data stationary:**
 
 **Differencing:**
+
 ```python
 # removes trend
 diff = series - series.shift(1)
@@ -645,24 +656,28 @@ diff2 = diff - diff.shift(1)
 ```
 
 **Log transformation:**
+
 ```python
 # Stabilizes variance (multiplicative seasonality → additive)
 log_series = np.log(series)
 ```
 
 **Detrending:**
+
 ```python
 from scipy import signal
 detrended = signal.detrend(series)
 ```
 
 **Why it matters for ARIMA:**
+
 - **AR** (autoregressive): Assumes past values predict future with constant coefficients
   - Non-stationary → coefficients change over time → unreliable
 - **MA** (moving average): Assumes errors have constant variance
   - Heteroscedasticity → violates assumption
 
 **Testing stationarity:**
+
 ```python
 # ADF test: H0 = non-stationary
 # If p < 0.05 → reject H0 → stationary
@@ -678,6 +693,7 @@ detrended = signal.detrend(series)
 ---
 
 ### Question 2: Prophet vs ARIMA
+
 Your retail company wants to forecast sales for next quarter. When should you use Prophet instead of ARIMA?
 
 <details>
@@ -688,6 +704,7 @@ Your retail company wants to forecast sales for next quarter. When should you us
 **Prophet advantages:**
 
 **1. Handles holidays/events automatically**
+
 ```python
 # Black Friday, Christmas, Prime Day
 # Prophet models these as special regressors
@@ -697,6 +714,7 @@ prophet_model = Prophet(holidays=us_holidays)
 ```
 
 **2. Robust to missing data**
+
 ```python
 # Sales data with gaps (system downtime)
 # Prophet: Interpolates automatically
@@ -704,6 +722,7 @@ prophet_model = Prophet(holidays=us_holidays)
 ```
 
 **3. Multiple seasonality**
+
 ```python
 # Daily + weekly + yearly patterns
 prophet_model.add_seasonality(name='daily', period=1, fourier_order=5)
@@ -712,6 +731,7 @@ prophet_model.add_seasonality(name='weekly', period=7, fourier_order=3)
 ```
 
 **4. Business-friendly uncertainty intervals**
+
 ```python
 # Prophet gives 80% and 95% confidence intervals
 forecast = prophet_model.predict(future)
@@ -721,6 +741,7 @@ forecast = prophet_model.predict(future)
 ```
 
 **5. Trend changepoints**
+
 ```python
 # Prophet detects trend changes automatically
 # E.g., COVID-19 impact, new product launch
@@ -731,6 +752,7 @@ forecast = prophet_model.predict(future)
 **ARIMA advantages:**
 
 **1. Statistical rigor**
+
 ```python
 # Prophet is a "black box" GLM
 # ARIMA: Clear p, d, q interpretation
@@ -739,12 +761,14 @@ forecast = prophet_model.predict(future)
 ```
 
 **2. Short-term accuracy**
+
 ```python
 # For next 1-7 days, ARIMA often beats Prophet
 # Prophet better for longer horizons (weeks/months)
 ```
 
 **3. Stationary series**
+
 ```python
 # If data is already clean and stationary
 # ARIMA is simpler and faster
@@ -764,6 +788,7 @@ forecast = prophet_model.predict(future)
 | Quick deployment      | ✅       | ❌ (tuning needed) |
 
 **Best practice:** Try both! Ensemble them:
+
 ```python
 forecast_final = 0.6 * forecast_prophet + 0.4 * forecast_arima
 ```
@@ -773,6 +798,7 @@ forecast_final = 0.6 * forecast_prophet + 0.4 * forecast_arima
 ---
 
 ### Question 3: LSTM Sequence Length
+
 For time series forecasting with LSTM, how do you choose the sequence length (lookback window)?
 
 <details>
@@ -783,6 +809,7 @@ For time series forecasting with LSTM, how do you choose the sequence length (lo
 **Guiding principles:**
 
 **1. Domain knowledge**
+
 ```python
 # Stock prices: 5-20 days (traders look at 1-4 week windows)
 seq_length = 10
@@ -795,6 +822,7 @@ seq_length = 24 * 7  # 1 week
 ```
 
 **2. Autocorrelation analysis**
+
 ```python
 from statsmodels.graphics.tsaplots import plot_acf
 
@@ -804,6 +832,7 @@ plot_acf(sales, lags=60)
 ```
 
 **3. Experimentation**
+
 ```python
 seq_lengths = [7, 14, 30, 60, 90]
 results = {}
@@ -821,6 +850,7 @@ print(f"Optimal sequence length: {best_seq_length}")
 **Trade-offs:**
 
 **Too short (e.g., seq_length=3)**
+
 ```
 - Misses long-term patterns
 - Example: Can't capture weekly seasonality with only 3 days
@@ -828,6 +858,7 @@ print(f"Optimal sequence length: {best_seq_length}")
 ```
 
 **Too long (e.g., seq_length=365 for daily data)**
+
 ```
 - Fewer training samples (n - seq_length samples)
 - More parameters → overfitting
@@ -838,18 +869,22 @@ print(f"Optimal sequence length: {best_seq_length}")
 **Practical guidelines:**
 
 **Daily data:**
+
 - Short-term forecast (1-7 days): seq_length = 14-30
 - Medium-term (1-4 weeks): seq_length = 30-60
 - Long-term (1-3 months): seq_length = 60-90
 
 **Hourly data:**
+
 - Next hour: seq_length = 24 (1 day)
 - Next day: seq_length = 168 (1 week)
 
 **Minute data (high-frequency trading):**
+
 - Next minute: seq_length = 60-300 (1-5 hours)
 
 **Advanced technique: Multi-scale inputs**
+
 ```python
 # Use multiple sequence lengths
 input_short = X[:, -7:, :]   # Last week
@@ -867,6 +902,7 @@ input_long = X[:, -90:, :]    # Last quarter
 ---
 
 ### Question 4: Forecast Horizon Degradation
+
 You build a model with MAE=10 for 1-day-ahead forecasts. For 7-days-ahead, MAE=50. Why does performance degrade, and how can you improve it?
 
 <details>
@@ -877,6 +913,7 @@ You build a model with MAE=10 for 1-day-ahead forecasts. For 7-days-ahead, MAE=5
 **Why degradation occurs:**
 
 **1. Recursive forecasting compounds errors**
+
 ```python
 # Day 1: Forecast tomorrow using today's actual → MAE=10
 # Day 2: Forecast using Day 1's forecast (not actual) → Error grows
@@ -890,6 +927,7 @@ You build a model with MAE=10 for 1-day-ahead forecasts. For 7-days-ahead, MAE=5
 ```
 
 **2. Increasing uncertainty**
+
 ```
 - Near-term: High confidence (tomorrow's weather)
 - Long-term: Low confidence (weather 30 days out)
@@ -897,6 +935,7 @@ You build a model with MAE=10 for 1-day-ahead forecasts. For 7-days-ahead, MAE=5
 ```
 
 **3. Unforeseen events**
+
 ```python
 # Days 1-3: Normal patterns hold
 # Day 5: Competitor launches sale (not in training data)
@@ -906,6 +945,7 @@ You build a model with MAE=10 for 1-day-ahead forecasts. For 7-days-ahead, MAE=5
 **Solutions:**
 
 **1. Direct multi-horizon forecasting**
+
 ```python
 # Instead of: forecast→forecast→forecast (recursive)
 # Train separate model for each horizon (direct)
@@ -918,6 +958,7 @@ model_day7 = train_model(X, y_day7)  # Target: t+7
 ```
 
 **2. Multi-output models**
+
 ```python
 # Single model outputs all 7 days at once
 model = Sequential([
@@ -929,6 +970,7 @@ model = Sequential([
 ```
 
 **3. Ensemble across horizons**
+
 ```python
 # Short horizon: Use ARIMA (accurate for 1-3 days)
 # Long horizon: Use Prophet (better at capturing trends)
@@ -940,6 +982,7 @@ else:
 ```
 
 **4. External regressors**
+
 ```python
 # Add features to reduce uncertainty
 # - Promotions schedule (known ahead)
@@ -951,6 +994,7 @@ sarimax_model = SARIMAX(sales, exog=external_features, ...)
 ```
 
 **5. Update forecasts daily (rolling)**
+
 ```python
 # Don't forecast 7 days ahead once
 # Forecast 1 day ahead, then update with new data tomorrow
@@ -962,6 +1006,7 @@ sarimax_model = SARIMAX(sales, exog=external_features, ...)
 ```
 
 **6. Probabilistic forecasts**
+
 ```python
 # Accept that long-horizon forecasts are uncertain
 # Provide prediction intervals
@@ -989,6 +1034,7 @@ prophet_forecast['yhat_upper']  # 80% upper bound
 ---
 
 ### Question 5: Production Monitoring
+
 Your time series model has been in production for 3 months. How do you monitor it to detect when retrain is needed?
 
 <details>
@@ -999,6 +1045,7 @@ Your time series model has been in production for 3 months. How do you monitor i
 **Monitoring metrics:**
 
 **1. Rolling forecast accuracy**
+
 ```python
 # Daily tracking
 window = 30  # Last 30 days
@@ -1018,6 +1065,7 @@ if current_mae > baseline_mae * 1.5:
 ```
 
 **2. Forecast bias**
+
 ```python
 # Systematic over/under-forecasting
 bias = np.mean(forecast - actual)
@@ -1031,6 +1079,7 @@ if abs(bias) > 10:
 ```
 
 **3. Residual patterns**
+
 ```python
 # Residuals should be random (white noise)
 #  If patterns emerge → model missing something
@@ -1046,6 +1095,7 @@ if p_value < 0.05:
 ```
 
 **4. Distribution shift detection**
+
 ```python
 # Compare recent data to training data distribution
 
@@ -1062,6 +1112,7 @@ if p_value < 0.05:
 ```
 
 **5. Business metric impact**
+
 ```python
 # Forecast error → business cost
 
@@ -1079,6 +1130,7 @@ if total_cost > monthly_budget:
 **Retraining triggers:**
 
 **Time-based:**
+
 ```python
 # Retrain every N months (simple, works for stable environments)
 if datetime.now() - last_retrain_date > timedelta(days=90):
@@ -1086,6 +1138,7 @@ if datetime.now() - last_retrain_date > timedelta(days=90):
 ```
 
 **Performance-based:**
+
 ```python
 # Retrain when error degrades
 if rolling_mae > baseline_mae * 1.3:  # 30% worse
@@ -1093,6 +1146,7 @@ if rolling_mae > baseline_mae * 1.3:  # 30% worse
 ```
 
 **Event-based:**
+
 ```python
 # Retrain after known changepoints
 events = [
@@ -1106,6 +1160,7 @@ if today in events:
 ```
 
 **Drift detection algorithms:**
+
 ```python
 from alibi_detect import AdversarialDrift, KSDrift
 
@@ -1122,6 +1177,7 @@ if drift_detected['data']['is_drift']:
 ```
 
 **Dashboard for monitoring:**
+
 ```
 Time Series Model Health Dashboard
 -----------------------------------
@@ -1144,6 +1200,7 @@ Recommendation: Monitor closely. Retrain if MAE reaches +30%.
 ```
 
 **Best practices:**
+
 - **Automate retraining**: Trigger automatically when drift detected
 - **A/B test new models**: Champion vs challenger in production
 - **Log everything**: Forecasts, actuals, features, model versions
@@ -1156,6 +1213,7 @@ Recommendation: Monitor closely. Retrain if MAE reaches +30%.
 ## Summary
 
 Today you learned:
+
 - ✅ Time series components: trend, seasonality, cyclical, noise
 - ✅ Stationarity testing and differencing for ARIMA requirements
 - ✅ ARIMA and SARIMAX for classical forecasting

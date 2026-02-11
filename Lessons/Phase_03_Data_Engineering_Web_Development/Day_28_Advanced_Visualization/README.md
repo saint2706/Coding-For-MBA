@@ -38,10 +38,12 @@ outcomes:
 **Seaborn gives you intelligence.** It understands your data. Tell it "show me how tips vary by day and time," and it creates a publication-ready visualization with proper statistical annotations, beautiful colors, and appropriate chart choices.
 
 **The difference:**
+
 - **Matplotlib**: "Draw a bar at x=0, height=10, color blue, then at x=1, height=15..."
 - **Seaborn**: "Show me total_bill by day, colored by time"
 
 **Real-world applications:**
+
 - **Research papers**: Professional statistical graphics
 - **Exploratory analysis**: Pair plots to scan all relationships at once
 - **Presentations**: Clean, consistent styling that impresses executives
@@ -453,12 +455,14 @@ multi_dimensional_analysis(tips)
 ## Mastery Check
 
 ### Question 1: Distribution Visualization
+
 You need to compare salary distributions across three departments. Which Seaborn plot allows best comparison of both spread AND distribution shape?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Violin plot** is the best choice because it shows:
+
 - The full distribution shape (like KDE)
 - Quartiles and median (like box plot)
 - Easy comparison across categories
@@ -475,6 +479,7 @@ sns.violinplot(x="department", y="salary", data=df, inner="quartile")
 ---
 
 ### Question 2: Heatmap Interpretation
+
 Your correlation heatmap shows a value of 0.95 between two variables. What should you do before concluding they're strongly related?
 
 <details>
@@ -483,11 +488,13 @@ Your correlation heatmap shows a value of 0.95 between two variables. What shoul
 **Verification steps:**
 
 1. **Create a scatter plot** to visually confirm the relationship
+
    ```python
    sns.regplot(x="var1", y="var2", data=df)
    ```
 
 2. **Check for outliers** driving the correlation
+
    ```python
    sns.residplot(x="var1", y="var2", data=df)
    ```
@@ -503,17 +510,20 @@ Your correlation heatmap shows a value of 0.95 between two variables. What shoul
 ---
 
 ### Question 3: FacetGrid Usage
+
 When would you use FacetGrid over regular subplots?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Use FacetGrid when:**
+
 - You want the same plot type repeated across categories
 - The number of categories is dynamic (determined by data)
 - You want automatic handling of legends and axis labels
 
 **Use regular subplots when:**
+
 - Each subplot shows a different type of chart
 - You need fine-grained control over each panel
 - The layout is predetermined, not data-driven
@@ -535,6 +545,7 @@ axes[2].hist(...)   # Histogram
 ---
 
 ### Question 4: Debugging Challenge
+
 This code produces an empty heatmap. Find the bug:
 
 ```python
@@ -549,22 +560,26 @@ plt.show()
 **Possible issues:**
 
 1. **No numeric columns**: `df.corr()` only works on numeric columns
+
    ```python
    # Check what columns are numeric
    print(df.select_dtypes(include=[np.number]).columns)
    ```
 
 2. **All NaN values**: If data has missing values, correlations may be NaN
+
    ```python
    print(corr.isnull().sum())  # Check for NaN correlations
    ```
 
 3. **Missing figure size**: Heatmap may be too small to see
+
    ```python
    plt.figure(figsize=(10, 8))  # Add before heatmap
    ```
 
 4. **Need `annot=True`** to see values if colors are subtle
+
    ```python
    sns.heatmap(corr, annot=True, fmt=".2f")
    ```
@@ -574,6 +589,7 @@ plt.show()
 ---
 
 ### Question 5: Design Scenario
+
 You're preparing a figure for a research paper. What considerations should guide your Seaborn configuration?
 
 <details>
@@ -603,6 +619,7 @@ plt.savefig("figure.png", dpi=600, bbox_inches="tight")  # 300-600 DPI for print
 ```
 
 **Other considerations:**
+
 - Check journal's figure guidelines
 - Ensure text is readable at printed size
 - Use patterns in addition to colors for accessibility
@@ -615,6 +632,7 @@ plt.savefig("figure.png", dpi=600, bbox_inches="tight")  # 300-600 DPI for print
 ## Summary
 
 Today you learned:
+
 - ✅ Distribution plots: histplot, kdeplot, boxplot, violinplot
 - ✅ Categorical plots: barplot, countplot, stripplot, swarmplot
 - ✅ Relationship plots: regplot, scatterplot, residplot

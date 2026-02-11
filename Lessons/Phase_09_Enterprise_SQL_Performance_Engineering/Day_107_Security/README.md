@@ -34,10 +34,10 @@ outcomes:
 
 **The Apartment Complex Keys**
 
-*   **Application Security**: The Front Desk Guard. checks your ID and lets you into the lobby.
-*   **RBAC (Table Level)**: The Elevator. Your key card only lets you go to Floor 5. You can see *all* doors on Floor 5.
-*   **RLS (Row Level)**: The Apartment Key. You can only open Door 502. Even if you are on the right floor (Table), you can't open Door 503.
-*   **Encryption**: The Safe inside the apartment. Even if someone breaks down the door, they can't read the papers inside the safe without the combination.
+* **Application Security**: The Front Desk Guard. checks your ID and lets you into the lobby.
+* **RBAC (Table Level)**: The Elevator. Your key card only lets you go to Floor 5. You can see *all* doors on Floor 5.
+* **RLS (Row Level)**: The Apartment Key. You can only open Door 502. Even if you are on the right floor (Table), you can't open Door 503.
+* **Encryption**: The Safe inside the apartment. Even if someone breaks down the door, they can't read the papers inside the safe without the combination.
 
 ---
 
@@ -46,27 +46,31 @@ outcomes:
 ### 1. Row Level Security (RLS)
 
 Native Policy Engine in Postgres.
-*   **Enable**: `ALTER TABLE orders ENABLE ROW LEVEL SECURITY`.
-*   **Policy**:
+
+* **Enable**: `ALTER TABLE orders ENABLE ROW LEVEL SECURITY`.
+* **Policy**:
+
     ```sql
     CREATE POLICY user_policy ON orders
     FOR SELECT
     USING (user_id = current_user_id()); -- Custom function
     ```
-*   **Effect**: `SELECT * FROM orders` returns *only* your rows. It silently hides the rest.
+
+* **Effect**: `SELECT * FROM orders` returns *only* your rows. It silently hides the rest.
 
 ### 2. Encryption (`pgcrypto`)
 
 Storing secrets.
-*   **Hashing (Passwords)**: One-way. `crypt('password', gen_salt('bf'))`.
-*   **Encryption (Credit Cards)**: Two-way. `pgp_sym_encrypt('1234', 'AES_KEY')`.
-*   **Key Management**: The hardest part. The key should *not* be in the DB. Pass it from the App Env Vars.
+
+* **Hashing (Passwords)**: One-way. `crypt('password', gen_salt('bf'))`.
+* **Encryption (Credit Cards)**: Two-way. `pgp_sym_encrypt('1234', 'AES_KEY')`.
+* **Key Management**: The hardest part. The key should *not* be in the DB. Pass it from the App Env Vars.
 
 ### 3. RBAC (Roles)
 
-*   `GRANT SELECT ON ALL TABLES IN SCHEMA public TO data_analyst;`
-*   `ALTER DEFAULT PRIVILEGES ... GRANT SELECT ...` (Future tables).
-*   **Best Practice**: Never log in as `postgres` (Superuser). Create a `deployer` role.
+* `GRANT SELECT ON ALL TABLES IN SCHEMA public TO data_analyst;`
+* `ALTER DEFAULT PRIVILEGES ... GRANT SELECT ...` (Future tables).
+* **Best Practice**: Never log in as `postgres` (Superuser). Create a `deployer` role.
 
 ---
 
@@ -74,51 +78,55 @@ Storing secrets.
 
 ### Multi-Tenancy: "Pool" vs "Silo"
 
-*   **Silo (Separate DBs)**:
-    *   *Pros*: Infinite security. (Target can't see Walmart's data).
-    *   *Cons*: Migrating schema on 10,000 DBs is a nightmare.
-*   **Pool (Shared DB with RLS)**:
-    *   *Pros*: Easy management.
-    *   *Cons*: One bug in the RLS policy exposes everyone's data. (High Risk).
+* **Silo (Separate DBs)**:
+  * *Pros*: Infinite security. (Target can't see Walmart's data).
+  * *Cons*: Migrating schema on 10,000 DBs is a nightmare.
+* **Pool (Shared DB with RLS)**:
+  * *Pros*: Easy management.
+  * *Cons*: One bug in the RLS policy exposes everyone's data. (High Risk).
 
 ### The Performance Hit of RLS
 
-*   **Fact**: RLS adds a `WHERE` clause to *every* query.
-*   **Impact**: It forces a Join or lookup on every row. Ensure your `user_id` columns are indexed!
+* **Fact**: RLS adds a `WHERE` clause to *every* query.
+* **Impact**: It forces a Join or lookup on every row. Ensure your `user_id` columns are indexed!
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Basic RBAC
+
 **Goal**: Create a Read-Only user.
 
-1.  `CREATE ROLE intern WITH LOGIN PASSWORD '123';`.
-2.  `GRANT CONNECT ON DATABASE mydb TO intern;`.
-3.  `GRANT SELECT ON ALL TABLES IN SCHEMA public TO intern;`.
-4.  **Test**: Login as intern. Try `DELETE FROM users`. (Access Denied).
+1. `CREATE ROLE intern WITH LOGIN PASSWORD '123';`.
+2. `GRANT CONNECT ON DATABASE mydb TO intern;`.
+3. `GRANT SELECT ON ALL TABLES IN SCHEMA public TO intern;`.
+4. **Test**: Login as intern. Try `DELETE FROM users`. (Access Denied).
 
 ### Exercise 2: Implementing RLS
+
 **Goal**: Isolation.
 
-1.  `CREATE TABLE chat (id serial, user_name text, msg text)`.
-2.  `ALTER TABLE chat ENABLE ROW LEVEL SECURITY`.
-3.  `CREATE POLICY my_chat ON chat USING (user_name = current_user)`.
-4.  `SET ROLE alice;`
-5.  `SELECT * FROM chat;` (See only Alice's messages).
+1. `CREATE TABLE chat (id serial, user_name text, msg text)`.
+2. `ALTER TABLE chat ENABLE ROW LEVEL SECURITY`.
+3. `CREATE POLICY my_chat ON chat USING (user_name = current_user)`.
+4. `SET ROLE alice;`
+5. `SELECT * FROM chat;` (See only Alice's messages).
 
 ### Exercise 3: Encryption
+
 **Goal**: Protect PII.
 
-1.  `CREATE EXTENSION pgcrypto`.
-2.  `INSERT INTO secrets (cc) VALUES (pgp_sym_encrypt('4111-2222', 'my_secret_key'))`.
-3.  `SELECT pgp_sym_decrypt(cc::bytea, 'my_secret_key') FROM secrets`.
+1. `CREATE EXTENSION pgcrypto`.
+2. `INSERT INTO secrets (cc) VALUES (pgp_sym_encrypt('4111-2222', 'my_secret_key'))`.
+3. `SELECT pgp_sym_decrypt(cc::bytea, 'my_secret_key') FROM secrets`.
 
 ---
 
 ## Mastery Check
 
 ### Question 1: RLS Visibility
+
 If RLS is enabled but no policy is created, what happens?
 A) Everyone sees everything.
 B) No one sees anything (Default Deny).
@@ -133,6 +141,7 @@ Implicit deny-all is the fail-safe.
 </details>
 
 ### Question 2: Superuser
+
 Does RLS apply to the `postgres` superuser?
 A) Yes.
 B) No (Bypasses RLS).
@@ -147,6 +156,7 @@ This is why your App should not run as Superuser.
 </details>
 
 ### Question 3: Encryption Type
+
 Which function should you use for storing user passwords?
 A) `md5`. (Too weak).
 B) `pgp_sym_encrypt`. (Reversible - Bad for passwords).
@@ -161,6 +171,7 @@ Store the hash, verify the hash. Never store the password.
 </details>
 
 ### Question 4: Policy Scope
+
 Can you create different policies for `SELECT` vs `UPDATE`?
 A) Yes.
 B) No.
@@ -175,6 +186,7 @@ You might allow everyone to Read, but only owners to Update.
 </details>
 
 ### Question 5: Injection
+
 How does `pgcrypto` protect against SQL Injection?
 A) It doesn't.
 B) It encrypts the injection code.
@@ -193,9 +205,10 @@ Encryption protects data *at rest*. Parameterized queries protect against Inject
 ## Summary
 
 Today you learned:
-*   ✅ **RBAC**: Broad door-level access control.
-*   ✅ **RLS**: Exact row-level visibility rules.
-*   ✅ **Encryption**: Protecting data even from the DBA.
-*   ✅ **Principle of Least Privilege**: Never run as root.
+
+* ✅ **RBAC**: Broad door-level access control.
+* ✅ **RLS**: Exact row-level visibility rules.
+* ✅ **Encryption**: Protecting data even from the DBA.
+* ✅ **Principle of Least Privilege**: Never run as root.
 
 **Tomorrow**: We reach the zenith with **Performance Tuning & Optimization**.

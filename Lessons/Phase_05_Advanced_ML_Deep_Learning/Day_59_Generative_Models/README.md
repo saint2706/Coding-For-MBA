@@ -41,31 +41,37 @@ Generative models don't just recognize cats—they **create** realistic cat imag
 **The revolution:**
 
 **Art & Design:**
+
 - **Midjourney, DALL-E 3**: Text → professional artwork
 - "A cyberpunk city at sunset" → stunning image
 - Impact: Graphic designers using AI for ideation
 
 **Content Creation:**
+
 - **ChatGPT, Claude**: Generate articles, code, emails
 - **GitHub Copilot**: Autocomplete entire functions
 - Productivity: 40-55% faster development
 
 **Entertainment:**
+
 - **RunwayML**: AI video generation
 - **AIVA**: AI-composed music
 - **Character.AI**: Interactive fictional characters
 
 **Science:**
+
 - **AlphaFold**: Generate protein structures
 - **Drug discovery**: Generate novel molecules
 - Accelerated research: Years → months
 
 **Business value:**
+
 - **Synthetic data**: Train models when real data is scarce/sensitive
 - **Data augmentation**: 10x training data for free
 - **Personalization**: Generate custom content per user
 
 **The models:**
+
 - **GANs (2014)**: Revolutionary but unstable
 - **VAEs (2013)**: Probabilistic, stable
 - **Diffusion (2020+)**: SOTA for images (Stable Diffusion, DALL-E 2/3)
@@ -683,6 +689,7 @@ for digit in range(10):
 ## Mastery Check
 
 ### Question 1: GAN Training Dynamics
+
 Your GAN's discriminator reaches 100% accuracy after 5 epochs. Generator loss keeps increasing. What's wrong?
 
 <details>
@@ -691,6 +698,7 @@ Your GAN's discriminator reaches 100% accuracy after 5 epochs. Generator loss ke
 **Answer:** **Discriminator is too strong.** It perfectly separates real from fake, providing no useful gradient to the generator. The generator can't learn.
 
 **Why this happens:**
+
 ```python
 # Discriminator: 100% accuracy
 # → Outputs 1.0 for real, 0.0 for fake (confident)
@@ -704,6 +712,7 @@ Your GAN's discriminator reaches 100% accuracy after 5 epochs. Generator loss ke
 **Solutions:**
 
 **1. Slow down discriminator**
+
 ```python
 # Train discriminator less frequently
 for epoch in range(num_epochs):
@@ -717,6 +726,7 @@ for epoch in range(num_epochs):
 ```
 
 **2. Use label smoothing**
+
 ```python
 # Instead of perfect labels (0 and 1)
 # Use smoothed labels (0.1 and 0.9)
@@ -729,6 +739,7 @@ fake_labels = torch.zeros(batch_size, 1) + 0.1  # Not 0.0!
 ```
 
 **3. Add noise to discriminator inputs**
+
 ```python
 # Add small noise to real/fake images
 noise = torch.randn_like(images) * 0.1
@@ -739,6 +750,7 @@ noisy_images = images + noise
 ```
 
 **4. Use Wasserstein GAN (WGAN)**
+
 ```python
 # Replace BCE loss with Wasserstein distance
 # WGAN-GP (with gradient penalty)
@@ -750,6 +762,7 @@ noisy_images = images + noise
 ```
 
 **5. Balance learning rates**
+
 ```python
 # Discriminator learns faster → slow it down
 
@@ -758,13 +771,19 @@ optimizer_D = Adam(discriminator.parameters(), lr=0.0001)  # Half of G's LR
 ```
 
 **Monitoring:**
-``python
-# Healthy GAN training:
+
+```python
+
+# Healthy GAN training
+
 # - D accuracy: 60-80% (not 100%!)
+
 # - G loss: Decreasing or stable
+
 # - D loss: Stable (not → 0)
 
 # If D accuracy > 95% for multiple epochs → discriminator too strong
+
 ```
 
 </details>
@@ -772,6 +791,7 @@ optimizer_D = Adam(discriminator.parameters(), lr=0.0001)  # Half of G's LR
 ---
 
 ### Question 2: VAE Blurry Images
+
 Your VAE generates blurry images compared to GAN. Why, and can you fix it?
 
 <details>
@@ -797,6 +817,7 @@ average = [0.5, 0.5, 0.5, 0.5]  # Blurry!
 **Solutions:**
 
 **1. Use perceptual loss (not pixel loss)**
+
 ```python
 # Instead of comparing pixels directly
 # Compare high-level features from pretrained network
@@ -818,6 +839,7 @@ def perceptual_loss(x, x_recon):
 ```
 
 **2. Add adversarial loss (VAE-GAN hybrid)**
+
 ```python
 class VAEGAN(nn.Module):
     def __init__(self):
@@ -840,6 +862,7 @@ class VAEGAN(nn.Module):
 ```
 
 **3. Increase latent dimension**
+
 ```python
 # Small latent space → information bottleneck → blur
 
@@ -853,6 +876,7 @@ vae = VAE(latent_dim=128)  # Sharper
 ```
 
 **4. Reduce KL weight (β-VAE)**
+
 ```python
 # Standard VAE
 loss = reconstruction_loss + KL_loss
@@ -866,6 +890,7 @@ loss = reconstruction_loss + beta * KL_loss
 ```
 
 **5. Use better decoder architecture**
+
 ```python
 # Add skip connections (U-Net style)
 # Use transposed convolutions instead of upsampling
@@ -879,6 +904,7 @@ class BetterDecoder(nn.Module):
 ```
 
 **When VAE is still preferred:**
+
 - Need smooth latent space (interpolation)
 - Want probabilistic reasoning
 - Stable training more important than sharpness
@@ -888,6 +914,7 @@ class BetterDecoder(nn.Module):
 ---
 
 ### Question 3: Diffusion Model Intuition
+
 Diffusion models gradually add noise, then reverse the process. Why does this work better than GANs for some tasks?
 
 <details>
@@ -898,6 +925,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 **The process:**
 
 **Forward (diffusion): Gradually destroy data**
+
 ```python
 # Start: Real image
 # Step 1: Add small noise → slightly noisy
@@ -909,6 +937,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 ```
 
 **Reverse (denoising): Learn to recover data**
+
 ```python
 # Start: Pure noise  
 # Step 999: Predict and remove noise → less noisy
@@ -923,6 +952,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 **Why it works better:**
 
 **1. Stable training (no adversarial game)**
+
 ```python
 # GAN: Generator vs Discriminator
 # - Must balance both
@@ -934,6 +964,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 ```
 
 **2. Better mode coverage**
+
 ```python
 # GAN problem: Mode collapse
 # Generator learns to produce only a few types of images
@@ -945,6 +976,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 ```
 
 **3. Controllable generation**
+
 ```python
 # Classifier guidance
 # During denoising: nudge towards specific class
@@ -957,6 +989,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 ```
 
 **4. Scalability**
+
 ```python
 # Diffusion models scale well
 # Stable Diffusion, DALL-E 2: Billions of parameters
@@ -969,10 +1002,12 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 **Trade-offs:**
 
 **Diffusion disadvantages:**
+
 - **Slow sampling**: Need 1000 denoising steps (vs GAN's single forward pass)
 - **Computational cost**: More expensive inference
 
 **Solutions:**
+
 ```python
 # DDIM (Denoising Diffusion Implicit Models)
 # Reduces steps: 1000 → 50
@@ -986,12 +1021,14 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 **When to use each:**
 
 **Diffusion:**
+
 - Need high quality + diversity
 - Training stability important
 - Can afford slower sampling
 - Examples: DALL-E, Stable Diffusion, Midjourney
 
 **GANs:**
+
 - Need fast sampling (real-time)
 - Have good training setup
 - Examples: StyleGAN (faces), video generation
@@ -1001,6 +1038,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 ---
 
 ### Question 4: Conditional Generation
+
 How do you control what a generative model creates (e.g., "generate a red car")?
 
 <details>
@@ -1011,6 +1049,7 @@ How do you control what a generative model creates (e.g., "generate a red car")?
 **Methods by model type:**
 
 **1. Conditional GAN (cGAN)**
+
 ```python
 # Feed class label as additional input
 
@@ -1032,6 +1071,7 @@ generated_car = generator(z, label)
 ```
 
 **2. Text-to-Image (CLIP + Diffusion)**
+
 ```python
 # Encode text prompt
 text = "A red sports car at sunset"
@@ -1049,6 +1089,7 @@ for t in reversed(range(num_steps)):
 ```
 
 **3. Attribute Control (StyleGAN)**
+
 ```python
 # Manipulate latent code
 
@@ -1065,6 +1106,7 @@ red_car_image = stylegan(z_red)
 ```
 
 **4. Inpainting / Editing**
+
 ```python
 # Mask regions to regenerate
 
@@ -1084,6 +1126,7 @@ for t in reversed(range(num_steps)):
 ```
 
 **5. Prompt Engineering (Text-to-Image)**
+
 ```python
 prompts = {
     "Basic": "A car",
@@ -1095,6 +1138,7 @@ prompts = {
 ```
 
 **6. Negative Prompts**
+
 ```python
 # Tell model what NOT to generate
 
@@ -1110,6 +1154,7 @@ image = generate(
 ```
 
 **7. ControlNet (Precise Spatial Control)**
+
 ```python
 # Provide structure (edges, pose, depth map)
 
@@ -1122,6 +1167,7 @@ image = controlnet(prompt="red Ferrari", image=sketch)
 ```
 
 **Precision vs Ease:**
+
 ```
 Low precision, easy: Prompt engineering
 Medium: Conditional GAN (predefined classes)
@@ -1133,6 +1179,7 @@ High precision: ControlNet, inpainting, latent editing
 ---
 
 ### Question 5: Production Deployment
+
 Your image generation model takes 30 seconds per image (1000 diffusion steps). How do you serve it in production?
 
 <details>
@@ -1143,6 +1190,7 @@ Your image generation model takes 30 seconds per image (1000 diffusion steps). H
 **Optimization strategies:**
 
 **1. Faster Sampling Algorithms**
+
 ```python
 # DDPM: 1000 steps, 30 seconds
 from diffusers import DDPMScheduler
@@ -1161,6 +1209,7 @@ scheduler = DPMSolverMultistepScheduler(num_inference_timesteps=20)
 ```
 
 **2. Latent Diffusion (Stable Diffusion)**
+
 ```python
 # Pixel diffusion: Denoise 512×512×3 image
 # Memory: High, Speed: Slow
@@ -1177,6 +1226,7 @@ image = pipe(prompt, num_inference_steps=20).images[0]
 ```
 
 **3. Model Distillation**
+
 ```python
 # Train smaller "student" model to mimic large "teacher" in fewer steps
 
@@ -1189,6 +1239,7 @@ image = pipe(prompt, num_inference_steps=20).images[0]
 ```
 
 **4. Batching**
+
 ```python
 # Process multiple requests together
 
@@ -1203,6 +1254,7 @@ images = pipe(prompts, num_inference_steps=20).images  # Batch!
 ```
 
 **5. Mixed Precision (FP16)**
+
 ```python
 # Use half-precision floats
 
@@ -1216,6 +1268,7 @@ pipe = StableDiffusionPipeline.from_pretrained(
 ```
 
 **6. Compilation (TorchScript, ONNX)**
+
 ```python
 # Compile model for optimized inference
 
@@ -1226,6 +1279,7 @@ pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead")
 ```
 
 **7. Multi-GPU / Distributed**
+
 ```python
 # Model parallelism: Split model across GPUs
 # Data parallelism: Different prompts on different GPUs
@@ -1240,6 +1294,7 @@ pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead")
 ```
 
 **8. Caching**
+
 ```python
 # Cache common prompts
 
@@ -1310,6 +1365,7 @@ metrics = {
 ## Summary
 
 Today you learned:
+
 - ✅ GANs train generator and discriminator in adversarial game
 - ✅ VAEs learn smooth latent spaces for probabilistic generation
 - ✅ Diffusion models achieve SOTA quality through gradual denoising

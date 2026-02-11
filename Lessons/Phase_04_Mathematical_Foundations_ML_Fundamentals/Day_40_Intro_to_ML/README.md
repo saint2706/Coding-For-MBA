@@ -38,16 +38,19 @@ outcomes:
 That's machine learning. Instead of writing explicit rules, you provide examples. The algorithm figures out the patterns.
 
 **Traditional programming:**
+
 ```
 Data + Rules → Answers
 ```
 
 **Machine learning:**
+
 ```
 Data + Answers → Rules (Model)
 ```
 
 **Real-world ML in action:**
+
 - **Gmail**: Learns which emails you mark as spam to filter future spam
 - **Netflix**: Learns your viewing patterns to suggest what to watch next
 - **Banks**: Learn transaction patterns to detect fraudulent activity
@@ -215,6 +218,7 @@ Final score: Average across all 5 folds
 ### Evaluation Metrics
 
 **For Regression:**
+
 ```python
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
@@ -239,6 +243,7 @@ print(f"R²: {r2:.3f}")
 ```
 
 **For Classification:**
+
 ```python
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
@@ -549,6 +554,7 @@ print(importance.to_string(index=False))
 ## Mastery Check
 
 ### Question 1: Why Split Data?
+
 Why can't we evaluate a model on the same data it was trained on?
 
 <details>
@@ -559,6 +565,7 @@ Why can't we evaluate a model on the same data it was trained on?
 **Analogy:** It's like giving a student the exam answers to study, then testing them with the same questions. They'll ace it, but have they really learned?
 
 **The problem:**
+
 - A model can memorize training data without learning generalizable patterns
 - Training accuracy can be 100% even for a useless model
 - Only truly unseen data reveals if the model generalizes
@@ -570,6 +577,7 @@ Why can't we evaluate a model on the same data it was trained on?
 ---
 
 ### Question 2: Identifying Overfitting
+
 Your model has 98% training accuracy but 75% test accuracy. What's happening and how do you fix it?
 
 <details>
@@ -578,10 +586,12 @@ Your model has 98% training accuracy but 75% test accuracy. What's happening and
 **Answer:** The model is **overfitting**—it memorized training data but doesn't generalize.
 
 **Signs:**
+
 - High training score, low test score
 - Gap between train and test performance
 
 **Fixes:**
+
 1. **Simplify the model**: Fewer features, lower polynomial degree, shallower tree
 2. **Regularization**: Add L1/L2 penalty (Ridge, Lasso)
 3. **More data**: Harder to memorize larger datasets
@@ -594,6 +604,7 @@ Your model has 98% training accuracy but 75% test accuracy. What's happening and
 ---
 
 ### Question 3: Accuracy Pitfall
+
 A fraud detection model has 99% accuracy. Why might this be misleading?
 
 <details>
@@ -604,12 +615,14 @@ A fraud detection model has 99% accuracy. Why might this be misleading?
 **The problem:** Accuracy ignores class imbalance.
 
 **Better metrics for imbalanced data:**
+
 - **Precision**: Of predicted frauds, how many are real?
 - **Recall**: Of real frauds, how many did we catch?
 - **F1 Score**: Balances precision and recall
 - **ROC-AUC**: Measures discrimination ability
 
 **Example:**
+
 ```
 1000 transactions: 990 legitimate, 10 fraudulent
 Model predicts: "Not fraud" for all
@@ -622,6 +635,7 @@ Recall: 0/10 = 0% (caught no fraud!)
 ---
 
 ### Question 4: Cross-Validation Benefits
+
 Why use 5-fold cross-validation instead of a single train-test split?
 
 <details>
@@ -630,12 +644,14 @@ Why use 5-fold cross-validation instead of a single train-test split?
 **Answer:** Cross-validation gives a more reliable estimate by averaging across multiple splits.
 
 **Benefits:**
+
 1. **Every sample gets tested**: Each data point appears in test set exactly once
 2. **Reduces variance**: Single split might be lucky/unlucky; averaging is more stable
 3. **Confidence intervals**: Standard deviation across folds shows reliability
 4. **Better use of data**: All data contributes to both training and evaluation
 
 **When to use:**
+
 - Small datasets (every sample counts)
 - Model selection (comparing algorithms)
 - Hyperparameter tuning
@@ -647,6 +663,7 @@ Why use 5-fold cross-validation instead of a single train-test split?
 ---
 
 ### Question 5: Choosing K-Folds
+
 You have 10,000 samples. Should you use 5-fold, 10-fold, or leave-one-out cross-validation?
 
 <details>
@@ -655,6 +672,7 @@ You have 10,000 samples. Should you use 5-fold, 10-fold, or leave-one-out cross-
 **Answer:** 5-fold or 10-fold. Leave-one-out is computationally expensive for large datasets.
 
 **Trade-offs:**
+
 | Folds   | Train Size | Computation                | Variance |
 | ------- | ---------- | -------------------------- | -------- |
 | 5-fold  | 80%        | Fast (5 models)            | Higher   |
@@ -662,6 +680,7 @@ You have 10,000 samples. Should you use 5-fold, 10-fold, or leave-one-out cross-
 | LOOCV   | 99.99%     | Very slow (10,000 models!) | Lowest   |
 
 **Guidelines:**
+
 - **Small data (<1000)**: 10-fold or LOOCV
 - **Medium data (1000-10000)**: 5-fold or 10-fold
 - **Large data (>10000)**: 5-fold (or even 3-fold)
@@ -675,6 +694,7 @@ For 10,000 samples, 5-fold gives reliable estimates while training only 5 models
 ## Summary
 
 Today you learned:
+
 - ✅ ML learns patterns from data instead of explicit rules
 - ✅ Supervised learning: features + labels → predictions
 - ✅ Train-test split prevents evaluating on memorized data

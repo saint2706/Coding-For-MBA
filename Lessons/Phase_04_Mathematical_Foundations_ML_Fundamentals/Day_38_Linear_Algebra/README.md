@@ -38,6 +38,7 @@ outcomes:
 Every user is a vector of preferences. Every movie is a vector of characteristics. Finding a good recommendation? That's finding movies whose vectors are "close" to yours. The dot product measures this closeness. Matrix multiplication transforms the data. Eigenvectors reveal hidden patterns.
 
 **Real-world applications:**
+
 - **Google**: PageRank uses matrix operations to rank web pages
 - **Spotify**: User and song embeddings (vectors) power recommendations
 - **Tesla**: Self-driving cars use linear algebra to process sensor data
@@ -400,6 +401,7 @@ print(f"Variance retained: {eigenvalues.max()/eigenvalues.sum()*100:.1f}%")
 ## Mastery Check
 
 ### Question 1: Dot Product Interpretation
+
 If the dot product of two vectors is 0, what does this tell you?
 
 <details>
@@ -411,6 +413,7 @@ Geometrically: a · b = |a| |b| cos(θ)
 When a · b = 0 and neither vector is zero, cos(θ) = 0, meaning θ = 90°.
 
 **In ML context:**
+
 - Orthogonal feature vectors are uncorrelated
 - Orthogonal word embeddings represent unrelated concepts
 - PCA produces orthogonal principal components
@@ -420,6 +423,7 @@ When a · b = 0 and neither vector is zero, cos(θ) = 0, meaning θ = 90°.
 ---
 
 ### Question 2: Matrix Multiplication Shape
+
 Given A with shape (100, 50) and B with shape (50, 10), what is the shape of A @ B?
 
 <details>
@@ -428,10 +432,12 @@ Given A with shape (100, 50) and B with shape (50, 10), what is the shape of A @
 **Answer:** (100, 10)
 
 **Rule:** (m × n) @ (n × p) = (m × p)
+
 - Inner dimensions must match (50 = 50 ✓)
 - Outer dimensions become the result (100 × 10)
 
 **ML interpretation:**
+
 - A could be 100 samples with 50 features
 - B could be weights from 50 inputs to 10 outputs
 - Result: 100 samples with 10 outputs (like a neural network layer)
@@ -441,6 +447,7 @@ Given A with shape (100, 50) and B with shape (50, 10), what is the shape of A @
 ---
 
 ### Question 3: Why Transpose?
+
 In the normal equation w = (X^T X)^(-1) X^T y, why do we compute X^T X?
 
 <details>
@@ -462,6 +469,7 @@ X^T X represents the covariance structure of features. The inverse "normalizes" 
 ---
 
 ### Question 4: Eigenvalue Meaning
+
 In PCA, what do the eigenvalues represent?
 
 <details>
@@ -487,6 +495,7 @@ Keeping 2 of 4 dimensions retains 94% of the information!
 ---
 
 ### Question 5: Practical Application
+
 Your recommendation system has 1 million users and 100,000 products. If you represent each user and product as a 100-dimensional vector, how would you efficiently find similar products?
 
 <details>
@@ -495,10 +504,12 @@ Your recommendation system has 1 million users and 100,000 products. If you repr
 **Answer:** Use **approximate nearest neighbor** search, not brute-force dot products.
 
 **The problem:**
+
 - Brute force: 100K × 100K × 100 = 1 trillion operations for all similarities
 - Even for one query: 100K × 100 = 10M operations
 
 **Solutions:**
+
 1. **Locality Sensitive Hashing (LSH)**: Hash similar vectors to same buckets
 2. **Annoy** (Spotify's library): Tree-based approximate search
 3. **FAISS** (Facebook): GPU-accelerated similarity search
@@ -523,6 +534,7 @@ D, I = index.search(query_vector.reshape(1, -1), 10)
 ## Summary
 
 Today you learned:
+
 - ✅ Vectors represent data points; matrices represent datasets
 - ✅ Dot product measures vector similarity
 - ✅ Matrix multiplication transforms and combines data

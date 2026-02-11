@@ -38,32 +38,38 @@ outcomes:
 Recommendation engines drive modern digital business:
 
 **E-commerce:**
+
 - **Amazon**: 35% of Amazon's revenue comes from recommendations
 - Product suggestions → impulse purchases → higher cart value
 - "Customers who bought X also bought Y"
 
 **Streaming:**
+
 - **Netflix**: 80% of watched content comes from recommendations
 - Personalized homepage → increased engagement → reduced churn
 - Saves $1B/year in customer retention
 
 **Social Media:**
+
 - **TikTok**: For You Page algorithm drives addiction
 - **Instagram**: Recommended posts keep users scrolling
 - **Twitter**: Algorithmic timeline prioritizes engaging content
 
 **Music:**
+
 - **Spotify**: Discover Weekly, Release Radar
 - 40% of new artist discoveries through recommendations
 - Personalized playlists → premium subscriptions
 
 **The business problem:**
+
 - **Paradox of choice**: 100M songs on Spotify → users overwhelmed
 - **Discovery**: How do users find relevant content?
 - **Engagement**: Keep users on platform longer
 - **Revenue**: Recommendations drive purchases and ad views
 
 **Key challenges:**
+
 1. **Sparsity**: Most users rate <0.1% of items
 2. **Cold start**: No data for new users/items
 3. **Scalability**: Billions of users × millions of items
@@ -580,6 +586,7 @@ recommend_for_user(user_id=0, n=5)
 ## Mastery Check
 
 ### Question 1: Content-Based vs Collaborative Filtering
+
 When should you use content-based filtering instead of collaborative filtering?
 
 <details>
@@ -590,6 +597,7 @@ When should you use content-based filtering instead of collaborative filtering?
 **Content-Based advantages:**
 
 **1. No cold start for new users**
+
 ```python
 # New user signs up
 # Can immediately recommend based on:
@@ -601,6 +609,7 @@ When should you use content-based filtering instead of collaborative filtering?
 ```
 
 **2. Explainability**
+
 ```
 "We recommend this movie because you liked similar sci-fi movies"
 # Clear, transparent reasoning
@@ -609,6 +618,7 @@ When should you use content-based filtering instead of collaborative filtering?
 ```
 
 **3. Works with limited user data**
+
 ```python
 # News articles: Users rarely rate/like
 # Job postings: One-time interaction
@@ -619,6 +629,7 @@ When should you use content-based filtering instead of collaborative filtering?
 ```
 
 **4. Rich item metadata**
+
 ```
 - Articles: Keywords, topics, entities
 - Products: Specifications, categories, descriptions
@@ -631,6 +642,7 @@ When should you use content-based filtering instead of collaborative filtering?
 **Collaborative Filtering advantages:**
 
 **1. Serendipity (discovery)**
+
 ```python
 # User watches action movies
 # CF discovers: "Action fans also love sci-fi thrillers"
@@ -640,18 +652,21 @@ When should you use content-based filtering instead of collaborative filtering?
 ```
 
 **2. No item features needed**
+
 ```
 # What makes a good TikTok video? Hard to define features
 # CF: Just learn from user engagement patterns
 ```
 
 **3. Quality signal from the crowd**
-``` 
+
+```
 # Millions of users voting → wisdom of the crowd
 # Content-based: Relies on metadata quality
 ```
 
 **When to combine (Hybrid):**
+
 ```python
 # Netflix approach:
 # - Content-based for new users (cold start)
@@ -662,6 +677,7 @@ hybrid_score = 0.3 * content_score + 0.7 * cf_score
 ```
 
 **Decision tree:**
+
 ```
 if new_user or sparse_ratings:
     use content_based
@@ -676,6 +692,7 @@ elif abundant_interaction_data:
 ---
 
 ### Question 2: Matrix Factorization Intuition
+
 Explain how SVD decomposes a user-item matrix and what the latent factors represent.
 
 <details>
@@ -684,6 +701,7 @@ Explain how SVD decomposes a user-item matrix and what the latent factors repres
 **Answer:** SVD factorizes the user-item matrix R into U × Σ × V^T, where U represents user preferences for latent factors (genres, moods), V represents item characteristics on those factors, and Σ scales their importance.
 
 **Mathematical decomposition:**
+
 ```
 R (users × items) ≈ U (users × factors) × Σ (factors) × V^T (factors × items)
 
@@ -697,6 +715,7 @@ R (1000 users × 5000 movies) ≈ U (1000 × 20) × Σ (20) × V^T (20 × 5000)
 **Latent factors intuition:**
 
 **Example with k=3 factors:**
+
 ```python
 # Factor 1: "Action vs Drama"
 # Factor 2: "Old vs New"
@@ -717,6 +736,7 @@ rating ≈ dot_product(User1, Matrix)
 ```
 
 **Visual analogy:**
+
 ```
 High-dimensional space → Compressed low-dimensional space
 
@@ -732,6 +752,7 @@ Like compressing images:
 **Why it works:**
 
 **1. Captures correlations**
+
 ```
 Users who like Inception also like Interstellar
 Both movies have high values for "Sci-Fi" and "Mind-Bending" factors
@@ -739,6 +760,7 @@ SVD discovers these patterns automatically
 ```
 
 **2. Handles sparsity**
+
 ```
 User rated 50 of 5000 movies (99% missing)
 SVD fills in based on latent factor matching
@@ -749,6 +771,7 @@ Predicted rating = 0.8×0.7 + 0.3×0.4 = 0.68
 ```
 
 **3. Dimensional reduction**
+
 ```
 # Noise reduction
 # Not all 5000 dimensions are meaningful
@@ -757,6 +780,7 @@ Predicted rating = 0.8×0.7 + 0.3×0.4 = 0.68
 ```
 
 **Training SVD:**
+
 ```python
 # Minimize reconstruction error
 loss = sum((R_ij - U_i · V_j)^2 for all observed ratings)
@@ -776,6 +800,7 @@ for each rating (user, item, value):
 ---
 
 ### Question 3: Evaluation Offline vs Online
+
 Your offline RMSE is 0.8 (excellent), but online click-through rate doesn't improve. Why?
 
 <details>
@@ -786,6 +811,7 @@ Your offline RMSE is 0.8 (excellent), but online click-through rate doesn't impr
 **The mismatch:**
 
 **What offline RMSE measures:**
+
 ```python
 # How well you predict exact ratings
 User rated Matrix: 4.5
@@ -799,6 +825,7 @@ Error = 0.1 → Good!
 ```
 
 **What matters online:**
+
 ```
 # Did user CLICK on recommendations?
 # Did user ENGAGE (watch, purchase)?
@@ -808,6 +835,7 @@ Error = 0.1 → Good!
 **Why low RMSE ≠ high CTR:**
 
 **1. Popularity bias**
+
 ```python
 # Model learns: "Everyone likes The Matrix"
 # Predicts 4.5 for everyone → Low RMSE
@@ -817,6 +845,7 @@ Error = 0.1 → Good!
 ```
 
 **2. Filter bubble (no diversity)**
+
 ```
 User likes action movies
 Model recommends: Action, Action, Action, Action, more Action
@@ -827,6 +856,7 @@ User gets bored, leaves platform → Low engagement
 ```
 
 **3. Missing the "long tail"**
+
 ```
 # Optimizing RMSE → Recommends safe, popular items
 # Indie/niche content gets ignored
@@ -834,6 +864,7 @@ User gets bored, leaves platform → Low engagement
 ```
 
 **4. Positional bias in production**
+
 ```
 # Offline: All recommendations treated equally
 # Online: Position matters
@@ -845,6 +876,7 @@ User gets bored, leaves platform → Low engagement
 ```
 
 **5. Temporal dynamics**
+
 ```python
 # Offline: Historical data (last year)
 # Online: User preferences change
@@ -858,6 +890,7 @@ User gets bored, leaves platform → Low engagement
 **Better offline metrics:**
 
 **Ranking metrics:**
+
 ```python
 # Precision@K: Of top K, how many are relevant?
 precision_at_10 = relevant_in_top_10 / 10
@@ -869,6 +902,7 @@ precision_at_10 = relevant_in_top_10 / 10
 ```
 
 **Diversity metrics:**
+
 ```python
 # Intra-list diversity
 diversity = 1 - avg_pairwise_similarity(recommended_items)
@@ -878,6 +912,7 @@ coverage = unique_items_recommended / total_items
 ```
 
 **Novelty:**
+
 ```python
 # Recommend items user hasn't seen
 # Bonus for less-popular items (surprise factor)
@@ -885,6 +920,7 @@ novelty = -log(popularity(item))
 ```
 
 **A/B testing (online evaluation):**
+
 ```
 # Deploy model to 5% of users
 # Compare vs baseline:
@@ -900,6 +936,7 @@ Metrics:
 ```
 
 **Production optimization:**
+
 ```python
 # Multi-objective optimization
 # Not just accuracy, but:
@@ -917,6 +954,7 @@ score = 0.4 * accuracy_score      # Relevance
 ---
 
 ### Question 4: Implicit vs Explicit Feedback
+
 You're building a YouTube recommender. Users don't rate videos (1-5 stars). How do you model preferences from implicit feedback (views, clicks)?
 
 <details>
@@ -937,6 +975,7 @@ You're building a YouTube recommender. Users don't rate videos (1-5 stars). How 
 **Challenges with implicit feedback:**
 
 **1. No negative signal**
+
 ```python
 # Explicit: User rated 1 star → Clearly disliked
 # Implicit: User didn't click → Dislike or didn't see?
@@ -948,6 +987,7 @@ You're building a YouTube recommender. Users don't rate videos (1-5 stars). How 
 ```
 
 **2. Ambiguous meaning**
+
 ```
 # User watched 10 seconds of video
 # Did they like it? Or click by mistake and left?
@@ -959,6 +999,7 @@ You're building a YouTube recommender. Users don't rate videos (1-5 stars). How 
 ```
 
 **3. Bias in collection**
+
 ```
 # Only observe what system recommended
 # Missing data: What if user would've loved video X but never saw it?
@@ -967,6 +1008,7 @@ You're building a YouTube recommender. Users don't rate videos (1-5 stars). How 
 **Modeling approaches:**
 
 **1. Confidence weighting (ALS)**
+
 ```python
 # Treat all interactions as "positive" but with varying confidence
 
@@ -989,6 +1031,7 @@ model.fit(sparse_user_item)
 ```
 
 **Confidence formula:**
+
 ```python
 confidence = 1 + alpha * log(1 + interaction_count / epsilon)
 
@@ -1003,6 +1046,7 @@ confidence = 1 + alpha * log(1 + interaction_count / epsilon)
 ```
 
 **2. Bayesian Personalized Ranking (BPR)**
+
 ```python
 # Learn from relative preferences
 # "User prefers item i over item j"
@@ -1018,6 +1062,7 @@ loss = -sum(log(sigmoid(score(user, pos_item) - score(user, neg_item))))
 ```
 
 **3. Watch time as target**
+
 ```python
 # Regression: Predict watch time directly
 
@@ -1028,6 +1073,7 @@ model.fit(user_video_features, watch_time_seconds)
 ```
 
 **4. Multi-signal aggregation**
+
 ```python
 # Combine multiple implicit signals
 
@@ -1111,6 +1157,7 @@ recall = relevant_in_top_k / len(user_interacted)
 ---
 
 ### Question 5: Production Scalability
+
 Your matrix factorization model works great on 10K users × 1K items. How do you scale to 100M users × 10M items (Netflix/Amazon scale)?
 
 <details>
@@ -1121,6 +1168,7 @@ Your matrix factorization model works great on 10K users × 1K items. How do you
 **Computational challenges:**
 
 **Naive SVD:**
+
 ```
 Training: O(n_users × n_items × n_factors × n_iterations)
 100M × 10M × 100 × 20 = 2 × 10^17 operations → Years!
@@ -1132,6 +1180,7 @@ Memory: User matrix (100M × 100) + Item matrix (10M × 100)
 **Scalability solutions:**
 
 **1. Alternating Least Squares (ALS)**
+
 ```python
 # Instead of optimizing U and V together (expensive)
 # Alternate: Fix U, optimize V; Fix V, optimize U
@@ -1157,6 +1206,7 @@ model = als.fit(ratings_spark_df)
 ```
 
 **2. Candidate generation + Re-ranking**
+
 ```python
 # Two-stage funnel
 
@@ -1178,6 +1228,7 @@ top_recommendations = candidates[np.argsort(scores)[::-1][:10]]
 ```
 
 **3. Approximate Nearest Neighbors (ANN)**
+
 ```python
 # Instead of computing similarity to all items
 # Use ANN index (FAISS, Annoy, HNSW)
@@ -1199,6 +1250,7 @@ distances, item_ids = index.search(user_vector, k=100)  # Top 100
 ```
 
 **4. Sub-sampling negatives**
+
 ```python
 # Don't train on all unobserved items (billions!)
 # Sample small subset of negatives
@@ -1215,6 +1267,7 @@ for user, positive_item in user_interactions:
 ```
 
 **5. Precompute & cache**
+
 ```python
 # Precompute item-item similarities (offline batch job)
 item_similarities = compute_all_pairs_similarity(item_vectors)
@@ -1237,6 +1290,7 @@ top_recommendations = rank_and_deduplicate(recommendations)
 ```
 
 **6. Model compression**
+
 ```python
 # Reduce embedding dimensions
 # 100 factors → 20 factors (5x smaller, faster)
@@ -1250,6 +1304,7 @@ top_recommendations = rank_and_deduplicate(recommendations)
 ```
 
 **7. Distributed serving**
+
 ```python
 # Shard by user ID
 # User 0-10M → Server 1
@@ -1266,6 +1321,7 @@ top_recommendations = rank_and_deduplicate(recommendations)
 ```
 
 **8. Batch prediction**
+
 ```python
 # Don't predict per request
 # Pre-generate recommendations daily (offline)
@@ -1283,6 +1339,7 @@ GET redis:user:{user_id}:recommendations
 ```
 
 **Netflix architecture (simplified):**
+
 ```
 1. Offline training (Spark cluster)
    - ALS on full data
@@ -1303,6 +1360,7 @@ GET redis:user:{user_id}:recommendations
 ```
 
 **Key metrics to track:**
+
 - Training time (should be <24h for daily refresh)
 - Serving latency (<100ms p99)
 - Memory footprint (fit in RAM?)
@@ -1317,6 +1375,7 @@ GET redis:user:{user_id}:recommendations
 ## Summary
 
 Today you learned:
+
 - ✅ Content-based filtering recommends items similar to past preferences
 - ✅ Collaborative filtering leverages wisdom of the crowd (user-based, item-based)
 - ✅ Matrix factorization (SVD, ALS) discovers latent factors for scalable recommendations

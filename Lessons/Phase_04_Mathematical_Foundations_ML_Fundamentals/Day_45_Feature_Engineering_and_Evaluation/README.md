@@ -35,6 +35,7 @@ outcomes:
 **You're building a house price predictor.** The raw data has `year_built=1995`. But what the model really needs to know is: "How old is this house?" Converting `year_built` to `house_age` is feature engineering.
 
 **Feature engineering in industry:**
+
 - **Finance**: Calculating rolling averages, volatility ratios
 - **E-commerce**: Extracting month/day from timestamps
 - **Healthcare**: Deriving BMI from height/weight
@@ -254,6 +255,7 @@ X_test_s = scaler.transform(X_test)
 ## Mastery Check
 
 ### Question 1: Choosing Encoding
+
 Feature 'education': High School, Bachelor, Master, PhD. Which encoding?
 
 <details>
@@ -264,6 +266,7 @@ Feature 'education': High School, Bachelor, Master, PhD. Which encoding?
 </details>
 
 ### Question 2: Stratified K-Fold
+
 When is Stratified K-Fold essential?
 
 <details>
@@ -274,6 +277,7 @@ When is Stratified K-Fold essential?
 </details>
 
 ### Question 3: Spotting Leakage
+
 99.5% CV accuracy but 70% on production. What happened?
 
 <details>
@@ -284,6 +288,7 @@ When is Stratified K-Fold essential?
 </details>
 
 ### Question 4: Log Transform
+
 Why log transform income data?
 
 <details>
@@ -294,6 +299,7 @@ Income is **right-skewed**. Log transform makes it more normal, reduces outlier 
 </details>
 
 ### Question 5: Pipeline Benefits
+
 Why use sklearn Pipeline over manual preprocessing?
 
 <details>

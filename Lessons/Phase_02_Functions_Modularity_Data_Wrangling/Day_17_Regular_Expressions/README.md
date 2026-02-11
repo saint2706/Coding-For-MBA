@@ -32,6 +32,7 @@ outcomes:
 ## The "Never-Coded" Bridge
 
 **Imagine you're reviewing 10,000 customer records looking for:**
+
 - Invalid email addresses
 - Phone numbers in any format
 - Dates written inconsistently
@@ -347,12 +348,14 @@ print("Masked:", mask_sensitive(sample))
 ## Mastery Check
 
 ### Question 1: Pattern Meaning
+
 What does `\d{2,4}` match?
 
 <details>
 <summary>Click for Answer</summary>
 
 2 to 4 consecutive digits.
+
 - `12` ✓
 - `123` ✓
 - `1234` ✓
@@ -364,6 +367,7 @@ What does `\d{2,4}` match?
 ---
 
 ### Question 2: Greedy vs Non-Greedy
+
 What's the difference between `.*` and `.*?`?
 
 <details>
@@ -383,6 +387,7 @@ re.findall(r"'.*?'", text)  # ["'a'", "'b'"]
 ---
 
 ### Question 3: Group Access
+
 How do you access the first captured group?
 
 <details>
@@ -400,6 +405,7 @@ match.group(2)  # Second group: "456"
 ---
 
 ### Question 4: Email Extraction
+
 Write a pattern to extract domain from an email:
 
 <details>
@@ -416,7 +422,9 @@ domain = match.group(1)  # "example.com"
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Parse log files to extract:
+
 - IP addresses
 - HTTP status codes
 - Request URLs
@@ -449,6 +457,7 @@ if match:
 ## Summary
 
 Today you learned:
+
 - ✅ Basic pattern syntax (`\d`, `\w`, `\s`, quantifiers)
 - ✅ `match`, `search`, `findall` for different use cases
 - ✅ Capturing groups for extracting data

@@ -34,13 +34,13 @@ outcomes:
 
 **The Vending Machine Repair**
 
-*   **SQL (User)**: "Select Snickers." (Input -> Output).
-*   **Stored Procedure (Technician)**:
-    1.  Open door.
-    2.  **IF** coil is jammed **THEN** unjam it.
-    3.  **ELSE** refill row E5.
-    4.  **LOOP** through all rows and check prices.
-    5.  Close door.
+* **SQL (User)**: "Select Snickers." (Input -> Output).
+* **Stored Procedure (Technician)**:
+    1. Open door.
+    2. **IF** coil is jammed **THEN** unjam it.
+    3. **ELSE** refill row E5.
+    4. **LOOP** through all rows and check prices.
+    5. Close door.
 
 **Key Difference**: Procedures have **Control Flow** (If/Else, Loops) and can manage **Transactions** (Commit/Rollback halfway through).
 
@@ -50,19 +50,23 @@ outcomes:
 
 ### 1. PL/pgSQL Control Structures
 
-*   **Variables**: `DECLARE total integer := 0;`
-*   **Loops**:
+* **Variables**: `DECLARE total integer := 0;`
+* **Loops**:
+
     ```sql
     FOR row IN SELECT * FROM users LOOP
         -- Do something
     END LOOP;
     ```
-*   **Conditionals**: `IF x > 10 THEN ... END IF;`
+
+* **Conditionals**: `IF x > 10 THEN ... END IF;`
 
 ### 2. Exception Handling
 
 How to catch errors without crashing the whole script.
-*   **Block**:
+
+* **Block**:
+
     ```sql
     BEGIN
         INSERT INTO users VALUES (1);
@@ -75,21 +79,24 @@ How to catch errors without crashing the whole script.
 ### 3. Dynamic SQL (`EXECUTE`)
 
 Writing SQL that writes SQL.
-*   **Scenario**: "Truncate all tables that start with `test_`."
-*   **Problem**: You can't write `TRUNCATE variable_name`.
-*   **Solution**:
+
+* **Scenario**: "Truncate all tables that start with `test_`."
+* **Problem**: You can't write `TRUNCATE variable_name`.
+* **Solution**:
+
     ```sql
     EXECUTE 'TRUNCATE TABLE ' || quote_ident(table_name);
     ```
-*   **Risk**: SQL Injection if you don't use `quote_*` functions.
+
+* **Risk**: SQL Injection if you don't use `quote_*` functions.
 
 ### 4. Security: Definer vs Invoker
 
-*   **SECURITY INVOKER (Default)**: The function runs with the permissions of the user *calling* it.
-    *   Bob calls `delete_user()`. check if Bob has DELETE rights on `users` table.
-*   **SECURITY DEFINER**: The function runs with the permissions of the *creator* (usually Admin).
-    *   Bob calls `sudo_delete_user()`. Logic runs as Admin. Bob deletes the user *even if he has no access to the table*.
-    *   **Use Case**: Encapsulated Logic. (Bob can delete users ONLY via this function, which logs the action).
+* **SECURITY INVOKER (Default)**: The function runs with the permissions of the user *calling* it.
+  * Bob calls `delete_user()`. check if Bob has DELETE rights on `users` table.
+* **SECURITY DEFINER**: The function runs with the permissions of the *creator* (usually Admin).
+  * Bob calls `sudo_delete_user()`. Logic runs as Admin. Bob deletes the user *even if he has no access to the table*.
+  * **Use Case**: Encapsulated Logic. (Bob can delete users ONLY via this function, which logs the action).
 
 ---
 
@@ -97,23 +104,25 @@ Writing SQL that writes SQL.
 
 ### The "Logic in DB" Debate: The Final Word
 
-*   **Pro-Procedure**:
-    *   **Performance**: Saves network round-trips. (1 Call vs 1000 Calls in a loop).
-    *   **Consistency**: The logic is identical whether called from Python, Java, or CLI.
-*   **Anti-Procedure**:
-    *   **Debugging**: Harder to step-through debug than Python.
-    *   **Scaling**: DB CPU is expensive/hard to scale. App Server CPU is cheap.
-    *   **Version Control**: Harder to manage migrations.
-*   **Verdict**: Use Procedures for **Data Maintenance** (Archiving, Partitioning). Use App Code for **Business Logic** (Pricing, Rules).
+* **Pro-Procedure**:
+  * **Performance**: Saves network round-trips. (1 Call vs 1000 Calls in a loop).
+  * **Consistency**: The logic is identical whether called from Python, Java, or CLI.
+* **Anti-Procedure**:
+  * **Debugging**: Harder to step-through debug than Python.
+  * **Scaling**: DB CPU is expensive/hard to scale. App Server CPU is cheap.
+  * **Version Control**: Harder to manage migrations.
+* **Verdict**: Use Procedures for **Data Maintenance** (Archiving, Partitioning). Use App Code for **Business Logic** (Pricing, Rules).
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: The Loop
+
 **Goal**: Iterate over rows.
 
 **Task**: Write a function that calculates the "Running Total" of salaries and prints it.
+
 ```sql
 CREATE OR REPLACE FUNCTION running_total() RETURNS VOID AS $$
 DECLARE
@@ -129,6 +138,7 @@ $$ LANGUAGE plpgsql;
 ```
 
 ### Exercise 2: Safe Insert (Try/Catch)
+
 **Goal**: Handle duplicates silently.
 
 ```sql
@@ -143,6 +153,7 @@ $$ LANGUAGE plpgsql;
 ```
 
 ### Exercise 3: The Danger Zone (Dynamic SQL)
+
 **Goal**: Drop multiple tables safely.
 
 ```sql
@@ -165,6 +176,7 @@ $$ LANGUAGE plpgsql;
 ## Mastery Check
 
 ### Question 1: Security
+
 If I want a Junior Analyst to be able to "Reset Passwords" (UPDATE users table) without giving them `UPDATE` permission on the table, what do I do?
 A) Give them the root password.
 B) Create a `SECURITY DEFINER` function `reset_password()` owned by Admin, and grant EXECUTE to the Analyst.
@@ -179,6 +191,7 @@ This is the "Sudo" pattern in SQL.
 </details>
 
 ### Question 2: Dynamic SQL
+
 Why must you use `quote_ident()` in `EXECUTE` strings?
 A) To make it look pretty.
 B) To prevent SQL Injection (e.g., if a table is named `users; DROP TABLE orders;`).
@@ -193,6 +206,7 @@ Essential for security.
 </details>
 
 ### Question 3: Exception
+
 What happens if an error occurs inside a block **without** an Exception clause?
 A) It is ignored.
 B) The function aborts and the *entire transaction* rolls back.
@@ -207,6 +221,7 @@ Unhandled exceptions are fatal to the transaction.
 </details>
 
 ### Question 4: Logic Placement
+
 Why might a Senior Engineer reject a PR that puts generic JSON parsing logic in a Stored Procedure?
 A) SQL is better at JSON than Python.
 B) Database CPU is a precious bottleneck resource; JSON parsing is CPU heavy and better done in the App Layer.
@@ -221,6 +236,7 @@ Scale-out Application Servers vs Scale-up Database.
 </details>
 
 ### Question 5: Loop
+
 Can you use `COMMIT` inside a `FOR` loop in a **Function**?
 A) Yes.
 B) No, functions run inside a single transaction. You must use a **Procedure** (`CALL`) to manage transactions.
@@ -239,9 +255,10 @@ Key difference introduced in Postgres 11.
 ## Summary
 
 Today you learned:
-*   ✅ **PL/pgSQL**: The imperative programming language inside Postgres.
-*   ✅ **Exceptions**: Graceful error recovery in SQL.
-*   ✅ **Dynamic SQL**: Writing meta-code with `EXECUTE`.
-*   ✅ **Security Definer**: Creating privileged wrappers for sensitive actions.
+
+* ✅ **PL/pgSQL**: The imperative programming language inside Postgres.
+* ✅ **Exceptions**: Graceful error recovery in SQL.
+* ✅ **Dynamic SQL**: Writing meta-code with `EXECUTE`.
+* ✅ **Security Definer**: Creating privileged wrappers for sensitive actions.
 
 **Tomorrow**: We automate the database with **Triggers & Events**.

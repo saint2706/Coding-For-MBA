@@ -38,15 +38,16 @@ outcomes:
 **Standard SQL**: "Find me Bob's father." (Easy - `SELECT father FROM table WHERE child = 'Bob'`).
 **Advanced SQL**: "Find me Bob's Great-Great-Great Grandfather."
 
-*   **Problem**: You don't know how many "Greats" are in the chain. Is it 3 joins? 10 joins?
-*   **Recursive SQL**: A loop. "Find Father. Then Find *his* Father. Repeat until no Father is found."
+* **Problem**: You don't know how many "Greats" are in the chain. Is it 3 joins? 10 joins?
+* **Recursive SQL**: A loop. "Find Father. Then Find *his* Father. Repeat until no Father is found."
 
 **The Russian Doll (JSON)**
 
 **Standard SQL**: "Give me the address." (Column: `address`).
 **Advanced SQL**: "Give me the Zip Code."
-*   **But**: The address is inside a sealed box (JSON Blob): `{"city": "NY", "zip": "10001"}`.
-*   **JSON SQL**: Open the box, grab the zip, close the box. All in one query.
+
+* **But**: The address is inside a sealed box (JSON Blob): `{"city": "NY", "zip": "10001"}`.
+* **JSON SQL**: Open the box, grab the zip, close the box. All in one query.
 
 ---
 
@@ -57,6 +58,7 @@ outcomes:
 Used for Hierarchies (Org Charts, Category Trees, Graph Paths).
 
 **Syntax**:
+
 ```sql
 WITH RECURSIVE org_chart AS (
     -- Anchor Member (Base Case)
@@ -73,15 +75,17 @@ WITH RECURSIVE org_chart AS (
 )
 SELECT * FROM org_chart;
 ```
-*   It runs the second part repeatedly, feeding the results back into `o`, until no rows are returned.
+
+* It runs the second part repeatedly, feeding the results back into `o`, until no rows are returned.
 
 ### 2. Working with JSON (Postgres/Snowflake)
 
 Don't use Mongo just because you have JSON. SQL can do it.
 
 **Postgres**:
-*   `data ->> 'key'`: Extract value as Text.
-*   `data -> 'key'`: Extract value as JSON.
+
+* `data ->> 'key'`: Extract value as Text.
+* `data -> 'key'`: Extract value as JSON.
 
 ```sql
 SELECT
@@ -95,8 +99,9 @@ WHERE info ->> 'status' = 'active';
 ### 3. Lateral Joins (LATERAL / CROSS APPLY)
 
 Standard Joins can't refer to the table on the left inside the right subquery. **Lateral** can.
-*   It's like a "For Each Loop" in SQL.
-*   **Scenario**: "For each User, find their Top 3 most recent Orders."
+
+* It's like a "For Each Loop" in SQL.
+* **Scenario**: "For each User, find their Top 3 most recent Orders."
 
 ```sql
 SELECT u.name, o.order_date, o.amount
@@ -115,23 +120,25 @@ CROSS JOIN LATERAL (
 
 ### "Schemaless" is a Lie
 
-*   **Junior**: "I'll store everything in a JSON column so I don't have to migrate the schema!"
-*   **Senior**: "You just moved the schema (structure) from *Write Time* (Table Definition) to *Read Time* (Query Complexity)."
-*   **Logic**: Querying JSON is slower and harder to index. Use it for *rarely queried attributes* (e.g., "Custom User Config"), not core data (e.g., "Email").
+* **Junior**: "I'll store everything in a JSON column so I don't have to migrate the schema!"
+* **Senior**: "You just moved the schema (structure) from *Write Time* (Table Definition) to *Read Time* (Query Complexity)."
+* **Logic**: Querying JSON is slower and harder to index. Use it for *rarely queried attributes* (e.g., "Custom User Config"), not core data (e.g., "Email").
 
 ### Recursion Safety
 
-*   **Infinite Loops**: If Employee A reports to B, and B reports to A, your Recursive CTE will run forever.
-*   **fix**: Standard databases stop after 100 iterations. Or add a `WHERE level < 20` guard.
+* **Infinite Loops**: If Employee A reports to B, and B reports to A, your Recursive CTE will run forever.
+* **fix**: Standard databases stop after 100 iterations. Or add a `WHERE level < 20` guard.
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: The Boss Finder (Recursion)
+
 **Goal**: Find the full management chain for "Intern Alice".
 
 **Data**:
+
 | ID  | Name  | Manager_ID |
 | --- | ----- | ---------- |
 | 1   | CEO   | NULL       |
@@ -141,14 +148,16 @@ CROSS JOIN LATERAL (
 **Task**: Write a CTE that outputs: `Alice -> VP -> CEO`.
 
 ### Exercise 2: The Log Parser (JSON)
+
 **Goal**: Extract data from a log table.
 
 **Data**: `description` column contains `{"event": "login", "browser": "Chrome", "lat": 40.7}`.
 
 **Task**:
-1.  Extract `browser`.
-2.  Filter for `event` = 'login'.
-3.  Count logins by Browser.
+
+1. Extract `browser`.
+2. Filter for `event` = 'login'.
+3. Count logins by Browser.
 
 ```sql
 SELECT 
@@ -160,10 +169,12 @@ GROUP BY 1;
 ```
 
 ### Exercise 3: The Top X per Group (Lateral)
+
 **Goal**: Find the last 2 comments for every blog post.
 
 **Without Lateral**: You'd use `ROW_NUMBER() OVER (PARTITION BY post_id ...)` and filter `rn <= 2`.
 **With Lateral**:
+
 ```sql
 SELECT p.title, c.body
 FROM posts p,
@@ -174,13 +185,15 @@ LATERAL (
     LIMIT 2
 ) c;
 ```
-*   *Compare*: Lateral is often faster if you have an Index on `comments(post_id, created_at)`.
+
+* *Compare*: Lateral is often faster if you have an Index on `comments(post_id, created_at)`.
 
 ---
 
 ## Mastery Check
 
 ### Question 1: Recursive CTE
+
 What are the two parts of a Recursive CTE?
 A) The Head and the Tail.
 B) The Anchor Member (Base) and the Recursive Member (Loop).
@@ -195,6 +208,7 @@ Anchor gives the starting set. Recursive loops on it.
 </details>
 
 ### Question 2: JSON in SQL
+
 True or False: Storing data in JSON columns prevents you from indexing it.
 A) True.
 B) False. Modern databases allow "Functional Indexes" on JSON keys.
@@ -207,6 +221,7 @@ FALSE. You can index `(data ->> 'email')` to make searches instant.
 </details>
 
 ### Question 3: Lateral Join
+
 What does `LATERAL` allow a subquery to do?
 A) Run faster.
 B) Reference columns from the preceding tables in the `FROM` clause.
@@ -221,6 +236,7 @@ It enables correlated subqueries in the FROM clause.
 </details>
 
 ### Question 4: Use Case for Recursion
+
 Which dataset is best suited for Recursive CTEs?
 A) Sales Transactions.
 B) A Product Category Tree (Electronics -> Laptops -> Gaming Laptops).
@@ -235,6 +251,7 @@ Any "Parent-Child" relationship with unknown depth.
 </details>
 
 ### Question 5: JSON vs Table
+
 When should you use a JSON column?
 A) For the User's Primary Key.
 B) For sparse, dynamic attributes (e.g., metadata for 50 different 3rd party integrations).
@@ -253,9 +270,10 @@ Flexibility comes at the cost of strictness/performance. Use strictly for dynami
 ## Summary
 
 Today you learned:
-*   ✅ **Recursive CTEs**: Loop through unlimited hierarchy levels.
-*   ✅ **JSON SQL**: Treat Postgres/Snowflake like a NoSQL store.
-*   ✅ **Lateral Joins**: The "Loop" of SQL joins.
-*   ✅ **Array Aggregates**: Pack rows into lists (not covered in detail, but related to JSON).
+
+* ✅ **Recursive CTEs**: Loop through unlimited hierarchy levels.
+* ✅ **JSON SQL**: Treat Postgres/Snowflake like a NoSQL store.
+* ✅ **Lateral Joins**: The "Loop" of SQL joins.
+* ✅ **Array Aggregates**: Pack rows into lists (not covered in detail, but related to JSON).
 
 **Tomorrow**: We explore **BI Cloud**—Moving from SQL syntax to Cloud Architecture.

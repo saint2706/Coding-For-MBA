@@ -38,6 +38,7 @@ outcomes:
 Good visualizations don't just display data—they tell stories. They answer questions before they're asked.
 
 **Match the chart to the question:**
+
 - "How have sales changed over time?" → **Line chart**
 - "Which regions perform best?" → **Bar chart**
 - "What's the distribution of customer ages?" → **Histogram**
@@ -45,6 +46,7 @@ Good visualizations don't just display data—they tell stories. They answer que
 - "What percent of revenue comes from each product?" → **Pie chart** (use sparingly!)
 
 **Real-world visualization decisions:**
+
 - **Financial reports**: Line charts for trends, bar charts for comparisons
 - **Marketing dashboards**: Funnel charts, conversion metrics
 - **Operations**: Heatmaps for patterns, box plots for distributions
@@ -287,6 +289,7 @@ plt.show()
 ### Design Best Practices
 
 **Do:**
+
 - Start y-axis at zero for bar charts (to avoid misleading)
 - Use consistent colors across related charts
 - Add clear titles that state the takeaway
@@ -294,6 +297,7 @@ plt.show()
 - Use gridlines sparingly (low alpha)
 
 **Don't:**
+
 - Use pie charts with >5 categories
 - Use 3D effects (they distort perception)
 - Truncate axes to exaggerate differences
@@ -503,12 +507,14 @@ compare_distributions(website_orders, enterprise_orders, "Website", "Enterprise"
 ## Mastery Check
 
 ### Question 1: Chart Selection
+
 You need to show how five product categories contribute to total revenue. What chart should you use?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Pie chart** is appropriate here because:
+
 - You have 5 categories (≤5 is the rule)
 - You're showing part-to-whole relationship
 - Readers want to see percentages
@@ -524,6 +530,7 @@ plt.barh(categories, values)
 ```
 
 **Don't use pie charts** when:
+
 - More than 5-6 categories
 - Values are very similar (hard to compare slice sizes)
 - Showing changes over time
@@ -533,6 +540,7 @@ plt.barh(categories, values)
 ---
 
 ### Question 2: Axis Manipulation
+
 A bar chart shows sales from 50 to 60 units, but the y-axis starts at 48. Why is this problematic?
 
 <details>
@@ -541,10 +549,12 @@ A bar chart shows sales from 50 to 60 units, but the y-axis starts at 48. Why is
 **This is misleading visualization.** By not starting at zero, the visual differences are exaggerated.
 
 **The problem:**
+
 - A bar at 60 looks ~6x taller than a bar at 50 (12 units vs 2 units on truncated axis)
 - In reality, 60 is only 20% more than 50
 
 **Best practice:**
+
 ```python
 # BAD: Truncated axis
 plt.ylim(48, 62)  # Exaggerates differences
@@ -560,17 +570,20 @@ plt.ylim(0, 65)   # Accurate representation
 ---
 
 ### Question 3: Figure Saving
+
 What's wrong with `plt.savefig("chart.png")` for a presentation?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Issues:**
+
 1. **Low resolution** - Default DPI is 100, which looks pixelated on projectors
 2. **May crop content** - Tight layout not guaranteed
 3. **May have wrong background** - Could be transparent or wrong color
 
 **Better approach:**
+
 ```python
 plt.savefig("chart.png", 
             dpi=300,                    # High resolution
@@ -580,6 +593,7 @@ plt.savefig("chart.png",
 ```
 
 For different uses:
+
 - Presentations: 300 DPI
 - Web: 150 DPI
 - Print: 300-600 DPI
@@ -589,6 +603,7 @@ For different uses:
 ---
 
 ### Question 4: Debugging Challenge
+
 This code should create a bar chart, but nothing appears. Find the bug:
 
 ```python
@@ -614,6 +629,7 @@ plt.show()  # Required to display the plot
 ```
 
 **Other common issues:**
+
 - In Jupyter: Use `%matplotlib inline` at the start
 - Backend not set: `matplotlib.use('TkAgg')` before importing pyplot
 - Running in script without display: Save to file instead with `plt.savefig()`
@@ -623,6 +639,7 @@ plt.show()  # Required to display the plot
 ---
 
 ### Question 5: Design Scenario
+
 You need to create a monthly report showing: (1) revenue trend, (2) revenue by category, (3) top 10 customers. How would you structure this as a single figure?
 
 <details>
@@ -656,6 +673,7 @@ plt.tight_layout()
 ```
 
 **Design tips:**
+
 - Keep related metrics adjacent
 - Use consistent color scheme
 - Add a main title to tie it together
@@ -668,6 +686,7 @@ plt.tight_layout()
 ## Summary
 
 Today you learned:
+
 - ✅ Create line charts for trends, bar charts for comparisons
 - ✅ Build histograms to show distributions
 - ✅ Use scatter plots to reveal relationships

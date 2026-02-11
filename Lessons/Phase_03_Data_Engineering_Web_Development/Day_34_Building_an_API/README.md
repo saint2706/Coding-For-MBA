@@ -25,11 +25,13 @@ outcomes: [Build REST APIs with FastAPI, Validate requests with Pydantic, Handle
 **APIs expose your work to the world.** Your model becomes a service anyone can call—from mobile apps, websites, other services, or automated pipelines.
 
 **What you're building:**
+
 - Endpoints other programs can call
 - Input validation to catch bad requests
 - Structured responses everyone can understand
 
 **Real-world examples:**
+
 - Stripe's payment API
 - Twilio's messaging API
 - Your internal ML model serving predictions
@@ -320,12 +322,14 @@ def get_user(username: str):
 ## Mastery Check
 
 ### Question 1: GET vs POST
+
 When do you use GET vs POST?
 
 <details>
 <summary>Click for Answer</summary>
 
 **GET:**
+
 - Retrieving data
 - No side effects
 - Parameters in URL
@@ -333,6 +337,7 @@ When do you use GET vs POST?
 - Example: `/users/123`
 
 **POST:**
+
 - Creating new resources
 - Sending data in body
 - Not cacheable
@@ -341,12 +346,14 @@ When do you use GET vs POST?
 </details>
 
 ### Question 2: Validation
+
 Why use Pydantic instead of checking manually?
 
 <details>
 <summary>Click for Answer</summary>
 
 Pydantic provides:
+
 - Automatic type conversion (`"123"` → `123`)
 - Clear error messages
 - Documentation generation
@@ -367,6 +374,7 @@ class Item(BaseModel):
 </details>
 
 ### Question 3: Idempotency
+
 Why does PUT return 200 but POST returns 201?
 
 <details>
@@ -381,6 +389,7 @@ POST is not—each call might create a new resource.
 </details>
 
 ### Question 4: Error Handling
+
 This endpoint crashes on missing ID. Fix it:
 
 ```python
@@ -403,6 +412,7 @@ def get_item(item_id: int):
 </details>
 
 ### Question 5: Design
+
 You're building an API for a bookstore. What endpoints would you create?
 
 <details>

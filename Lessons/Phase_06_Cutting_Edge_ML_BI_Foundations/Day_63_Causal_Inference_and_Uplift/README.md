@@ -40,8 +40,9 @@ Does eating ice cream attract sharks? **No.**
 Does getting bitten by a shark make you hungry for ice cream? **No.**
 
 There is a **Confounder**: **Summer**.
-*   Hot weather causes ice cream sales.
-*   Hot weather causes people to swim in the ocean (where sharks live).
+
+* Hot weather causes ice cream sales.
+* Hot weather causes people to swim in the ocean (where sharks live).
 
 **Business Impact**:
 If you ban ice cream to stop shark attacks, **you will fail**.
@@ -56,9 +57,9 @@ If you run a marketing campaign based on correlation ("People who buy diapers al
 
 ### 1. The Ladder of Causation (Judea Pearl)
 
-1.  **Association (Seeing)**: "What if I see X?" (Correlation). ML usually stops here.
-2.  **Intervention (Doing)**: "What if I *do* X?" (A/B Testing).
-3.  **Counterfactuals (Imagining)**: "What if I *had done* X instead of Y?" (Causal Inference).
+1. **Association (Seeing)**: "What if I see X?" (Correlation). ML usually stops here.
+2. **Intervention (Doing)**: "What if I *do* X?" (A/B Testing).
+3. **Counterfactuals (Imagining)**: "What if I *had done* X instead of Y?" (Causal Inference).
 
 ### 2. Simpson's Paradox
 
@@ -69,9 +70,9 @@ A famous statistical trap where a trend appears in different groups of data but 
 | **Treatment A** | 93% Success (81/87)       | 73% Success (192/263)   | **78% (273/350)** |
 | **Treatment B** | **87% Success** (234/270) | **69% Success** (55/80) | **83% (289/350)** |
 
-*   Treatment A is better for Small Stones.
-*   Treatment A is better for Large Stones.
-*   **But Treatment B looks better overall.** Why? Because B was used mostly on easy cases (Small Stones), while A was used on hard cases.
+* Treatment A is better for Small Stones.
+* Treatment A is better for Large Stones.
+* **But Treatment B looks better overall.** Why? Because B was used mostly on easy cases (Small Stones), while A was used on hard cases.
 
 ### 3. Uplift Modeling (The "Persuadables")
 
@@ -79,10 +80,11 @@ Traditional ML predicts: $P(\text{Buy} | \text{User})$.
 Uplift ML predicts: $P(\text{Buy} | \text{Treat}) - P(\text{Buy} | \text{Control})$.
 
 We categorize users into 4 quadrants:
-1.  **Persuadables**: Buy ONLY if treated. (**Target These!**)
-2.  **Sure Things**: Buy regardless of treatment. (Don't waste money.)
-3.  **Lost Causes**: Won't buy regardless. (Don't waste money.)
-4.  **Sleeping Dogs**: Buy if left alone, but LEAVE if treated. (**Avoid at all costs!**)
+
+1. **Persuadables**: Buy ONLY if treated. (**Target These!**)
+2. **Sure Things**: Buy regardless of treatment. (Don't waste money.)
+3. **Lost Causes**: Won't buy regardless. (Don't waste money.)
+4. **Sleeping Dogs**: Buy if left alone, but LEAVE if treated. (**Avoid at all costs!**)
 
 ---
 
@@ -91,30 +93,34 @@ We categorize users into 4 quadrants:
 ### When A/B Testing Fails
 
 A/B testing is the gold standard, but sometimes it's impossible:
-*   **Unethical**: "Does smoking cause cancer?" (You can't force 500 people to smoke).
-*   **Too Costly**: "Does this Super Bowl ad work?" (You can't show it to only half the world).
-*   **Historical Data**: You want to learn from *past* pricing changes, not run a new experiment.
+
+* **Unethical**: "Does smoking cause cancer?" (You can't force 500 people to smoke).
+* **Too Costly**: "Does this Super Bowl ad work?" (You can't show it to only half the world).
+* **Historical Data**: You want to learn from *past* pricing changes, not run a new experiment.
 
 This is where **Causal ML** (Econometrics, Instrumental Variables) shines.
 
 ### The "Sleeping Dog" Danger
 
 One of the biggest ROI killers in marketing is sending emails to "Sleeping Dogs."
-*   **Scenario**: A customer is happily subscribed. You send a "rate us" email. They remember they're subscribed and realize they don't use the service. **They cancel.**
-*   Standard ML (Churn Prediction) would say: "This person is at high risk of churn, send them an email!"
-*   Uplift Modeling says: "Don't poke the bear."
+
+* **Scenario**: A customer is happily subscribed. You send a "rate us" email. They remember they're subscribed and realize they don't use the service. **They cancel.**
+* Standard ML (Churn Prediction) would say: "This person is at high risk of churn, send them an email!"
+* Uplift Modeling says: "Don't poke the bear."
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Identifying Confounders
+
 **Goal**: Draw a Causal Graph for a scenario.
 
 **Scenario**: A study shows that "Sleeping with shoes on" is strongly correlated with "Waking up with a headache."
 
 **Question**: Does one cause the other? Or is there a Confounder?
-*   *Hint*: What happens the night before?
+
+* *Hint*: What happens the night before?
 
 ```text
 # Your Graph:
@@ -145,16 +151,19 @@ print(causal_mechanism(6))
 ---
 
 ### Exercise 2: Simpson's Paradox Challenge
+
 **Goal**: Calculate the "Paradox" manually to prove aggregation can lie.
 
 **Data**:
-*   **Hospital A**: Treated 100 mild cases (99 survived), 10 severe cases (5 survived).
-*   **Hospital B**: Treated 10 mild cases (9 survived), 100 severe cases (40 survived).
+
+* **Hospital A**: Treated 100 mild cases (99 survived), 10 severe cases (5 survived).
+* **Hospital B**: Treated 10 mild cases (9 survived), 100 severe cases (40 survived).
 
 **Task**:
-1.  Calculate Survival Rate for Mild (A vs B).
-2.  Calculate Survival Rate for Severe (A vs B).
-3.  Calculate **Total** Survival Rate.
+
+1. Calculate Survival Rate for Mild (A vs B).
+2. Calculate Survival Rate for Severe (A vs B).
+3. Calculate **Total** Survival Rate.
 
 ```python
 # Hospital A
@@ -173,31 +182,36 @@ print(f"Total: A={round(A_total_surv, 2)}, B={round(B_total_surv, 2)}")
 ```
 
 **Expected Output**:
+
 ```text
 Mild: A=0.99, B=0.9
 Severe: A=0.5, B=0.4
 Total: A=0.95, B=0.45
 ```
+
 *Wait... A is better at Mild. A is better at Severe. But A's total is HIGHER? (0.95 vs 0.45).*
 *Wait, logic check on Simpson's: Simpon's usually shows one looks better in subgroups but WORSE in total. Here A looks better in ALL.*
 *Let's flip it to make it a paradox:*
-*   **Hospital A** (Specialist): 10 mild (10 survived), 100 severe (80 survived). Total: 90/110 = 81%.
-*   **Hospital B** (Local Clinic): 100 mild (95 survived), 10 severe (6 survived). Total: 101/110 = 91%.
-*   Comparison:
-    *   Mild: A=100%, B=95% (A wins).
-    *   Severe: A=80%, B=60% (A wins).
-    *   Total: A=81%, B=91% (B wins!).
-*   *Conclusion*: You would choose Hospital B based on total data, but you'd die if you had a severe case.
+
+* **Hospital A** (Specialist): 10 mild (10 survived), 100 severe (80 survived). Total: 90/110 = 81%.
+* **Hospital B** (Local Clinic): 100 mild (95 survived), 10 severe (6 survived). Total: 101/110 = 91%.
+* Comparison:
+  * Mild: A=100%, B=95% (A wins).
+  * Severe: A=80%, B=60% (A wins).
+  * Total: A=81%, B=91% (B wins!).
+* *Conclusion*: You would choose Hospital B based on total data, but you'd die if you had a severe case.
 
 ---
 
 ### Exercise 3: Calculating Uplift Score
+
 **Goal**: Identify which customer to email.
 
 **Data**:
-*   **Customer X**: 80% chance to buy if Emailed. 70% chance to buy if NOT Emailed.
-*   **Customer Y**: 20% chance to buy if Emailed. 5% chance to buy if NOT Emailed.
-*   **Customer Z**: 90% chance to buy if Emailed. 95% chance to buy if NOT Emailed (Sleeping Dog!).
+
+* **Customer X**: 80% chance to buy if Emailed. 70% chance to buy if NOT Emailed.
+* **Customer Y**: 20% chance to buy if Emailed. 5% chance to buy if NOT Emailed.
+* **Customer Z**: 90% chance to buy if Emailed. 95% chance to buy if NOT Emailed (Sleeping Dog!).
 
 **Task**: Calculate Uplift = $P(\text{Buy}|\text{Treat}) - P(\text{Buy}|\text{Control})$.
 
@@ -220,11 +234,13 @@ print(f"Customer Z Uplift: {round(uplift_Z, 2)}")
 ```
 
 **Expected Output**:
+
 ```text
 Customer X Uplift: 0.1
 Customer Y Uplift: 0.15 (HIGHEST PRIORITY)
 Customer Z Uplift: -0.05 (Do Not Contact)
 ```
+
 *Notice: X has a higher probability of buying (80%), but Y has higher UPLIFT (15%). Marketing to Y generates more incremental value.*
 
 ---
@@ -232,6 +248,7 @@ Customer Z Uplift: -0.05 (Do Not Contact)
 ## Mastery Check
 
 ### Question 1: Confounders
+
 What is a Confounding Variable?
 A) A variable that confuses the model.
 B) A variable that causally influences both the Independent Variable (X) and Dependent Variable (Y).
@@ -246,6 +263,7 @@ It creates a "backdoor path" of correlation that is not causal (e.g., Summer -> 
 </details>
 
 ### Question 2: Uplift Quadrants
+
 Which group should you **AVOID** targeting in a marketing campaign?
 A) Persuadables
 B) Lost Causes
@@ -260,6 +278,7 @@ Sleeping Dogs. Because the treatment (e.g., email) causes a NEGATIVE effect (chu
 </details>
 
 ### Question 3: Simpson's Paradox
+
 What causes Simpson's Paradox?
 A) Bad math.
 B) Unequal distribution of a confounding variable across groups (e.g., Severity of disease).
@@ -274,6 +293,7 @@ When the groups have different compositions (e.g., Hospital A takes all the hard
 </details>
 
 ### Question 4: Counterfactuals
+
 A Counterfactual question asks:
 A) What will happen next?
 B) What is happening now?
@@ -288,6 +308,7 @@ D) Why did this happen?
 </details>
 
 ### Question 5: ROI
+
 Why is Uplift Modeling often better for ROI than Churn Prediction?
 A) It is more accurate.
 B) It focuses on *incremental* gain rather than just risk.
@@ -306,9 +327,10 @@ Churn models target high-risk users (who might be Lost Causes). Uplift models ta
 ## Summary
 
 Today you learned:
-*   ✅ **Correlation $\ne$ Causation**: Ice cream doesn't summon sharks.
-*   ✅ **Simpson's Paradox**: Aggregated data can reverse the truth.
-*   ✅ **Uplift Modeling**: Optimize for **incremental impact**, not just outcome probability.
-*   ✅ **The 4 Quadrants**: Focus on **Persuadables**, avoid **Sleeping Dogs**.
+
+* ✅ **Correlation $\ne$ Causation**: Ice cream doesn't summon sharks.
+* ✅ **Simpson's Paradox**: Aggregated data can reverse the truth.
+* ✅ **Uplift Modeling**: Optimize for **incremental impact**, not just outcome probability.
+* ✅ **The 4 Quadrants**: Focus on **Persuadables**, avoid **Sleeping Dogs**.
 
 **Tomorrow**: We shift gears to **Modern NLP Pipelines** and how to process text at scale.

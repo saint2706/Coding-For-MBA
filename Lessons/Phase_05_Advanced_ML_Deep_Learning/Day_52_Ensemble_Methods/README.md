@@ -35,17 +35,20 @@ outcomes:
 ## The "Never-Coded" Bridge
 
 **Imagine making a critical business decision.** Do you:
+
 - **A)** Ask one expert and trust their opinion 100%?
 - **B)** Poll 100 experts and take the majority vote?
 
 **Option B** is almost always better. Even if each expert is only 60% accurate, combining their opinions yields 85%+ accuracy. This is the **wisdom of the crowd**.
 
 **Ensemble methods** apply this principle to machine learning:
+
 - Train many models (the "experts")
 - Combine their predictions
 - Get better accuracy than any single model
 
 **Real-world ensembles:**
+
 - **Netflix Prize Winner (2009)**: Team blended 107 algorithms → 10% better than Netflix's system
 - **Kaggle Competitions**: Top solutions are almost always ensembles of 5-20 models
 - **Random Forest**: Used by Uber for rider demand prediction (handles 100M+ predictions/day)
@@ -123,6 +126,7 @@ plt.show()
 **Random Forest = Bagging + Random Feature Selection**
 
 Each tree sees:
+
 - Random **sample** of data (bootstrap)
 - Random **subset** of features at each split
 
@@ -202,6 +206,7 @@ print(f"Gradient Boosting: {gb_accuracy:.3f}")
 ### XGBoost: Extreme Gradient Boosting
 
 **XGBoost** is an optimized implementation of gradient boosting with:
+
 - Regularization (L1/L2) to prevent overfitting
 - Parallel processing for speed
 - Handling of missing values
@@ -319,6 +324,7 @@ print(f"Stacking Ensemble Accuracy: {stacking_accuracy:.3f}")
 ### Hyperparameter Tuning Guide
 
 **Random Forest:**
+
 ```python
 # Most important
 n_estimators = 100-500    # More trees = better (diminishing returns)
@@ -330,6 +336,7 @@ max_features = 'sqrt'      # √n features per split
 ```
 
 **XGBoost:**
+
 ```python
 # Learning
 learning_rate = 0.01-0.3   # Lower = more robust, needs more trees
@@ -435,7 +442,7 @@ print(f"   Test Accuracy: {best_model['Test Accuracy']:.4f}")
 
 ---
 
-###Exercise 2: Hyperparameter Tuning with GridSearchCV
+### Exercise 2: Hyperparameter Tuning with GridSearchCV
 
 ```python
 from sklearn.model_selection import GridSearchCV
@@ -531,6 +538,7 @@ print(f"Improvement over best single model: {stacking_score - max([s['Accuracy']
 ## Mastery Check
 
 ### Question 1: Bagging vs Boosting
+
 When would you choose Random Forest over XGBoost, despite XGBoost often having higher accuracy?
 
 <details>
@@ -561,6 +569,7 @@ When would you choose Random Forest over XGBoost, despite XGBoost often having h
    - XGBoost requires more careful deployment
 
 **Example:**
+
 ```python
 # Quick model for exploratory analysis
 rf = RandomForestClassifier()  # Works out of the box
@@ -580,6 +589,7 @@ xgb_tuned = XGBClassifier(
 ---
 
 ### Question 2: Feature Importance Reliability
+
 Your Random Forest ranks Feature A as most important. Can you trust this for feature selection?
 
 <details>
@@ -590,6 +600,7 @@ Your Random Forest ranks Feature A as most important. Can you trust this for fea
 **The problem:**
 
 **Bias 1: High cardinality**
+
 ```python
 # Feature A: 1000 unique values (customer ID)
 # Feature B: 2 values (gender: M/F)
@@ -598,6 +609,7 @@ Your Random Forest ranks Feature A as most important. Can you trust this for fea
 ```
 
 **Bias 2: Correlated features**
+
 ```python
 # Feature 1: Revenue Q1
 # Feature 2: Revenue Q2
@@ -608,6 +620,7 @@ Your Random Forest ranks Feature A as most important. Can you trust this for fea
 **Better approaches:**
 
 1. **Permutation importance** (model-agnostic)
+
    ```python
    from sklearn.inspection import permutation_importance
    
@@ -616,6 +629,7 @@ Your Random Forest ranks Feature A as most important. Can you trust this for fea
    ```
 
 2. **SHAP values** (SHapley Additive exPlanations)
+
    ```python
    import shap
    
@@ -626,6 +640,7 @@ Your Random Forest ranks Feature A as most important. Can you trust this for fea
    ```
 
 3. **Recursive Feature Elimination**
+
    ```python
    from sklearn.feature_selection import RFE
    
@@ -641,6 +656,7 @@ Your Random Forest ranks Feature A as most important. Can you trust this for fea
 ---
 
 ### Question 3: XGBoost Overfitting
+
 Your XGBoost has 98% training accuracy but 75% test accuracy. Which hyperparameters should you adjust?
 
 <details>
@@ -651,6 +667,7 @@ Your XGBoost has 98% training accuracy but 75% test accuracy. Which hyperparamet
 **Priority adjustments:**
 
 **1. Lower learning rate + increase trees**
+
 ```python
 # Before (overfitting)
 XGBClassifier(n_estimators=100, learning_rate=0.3)
@@ -661,6 +678,7 @@ XGBClassifier(n_estimators=500, learning_rate=0.01)
 ```
 
 **2. Reduce max_depth**
+
 ```python
 # Before
 max_depth=10  # Deep trees memorize
@@ -670,12 +688,14 @@ max_depth=3  # Shallow trees generalize
 ```
 
 **3. Add regularization**
+
 ```python
 reg_alpha=1.0,    # L1 (Lasso) – feature selection
 reg_lambda=10.0   # L2 (Ridge) – coefficient shrinkage
 ```
 
 **4. Increase sampling randomness**
+
 ```python
 subsample=0.7,         # Use 70% of rows per tree
 colsample_bytree=0.7   # Use 70% of features per tree
@@ -683,12 +703,14 @@ colsample_bytree=0.7   # Use 70% of features per tree
 ```
 
 **5. Increase min_child_weight**
+
 ```python
 min_child_weight=5  # Need ≥5 samples to create leaf
 # Prevents tiny, overfit leaves
 ```
 
 **Debugging workflow:**
+
 ```python
 # Plot learning curves
 from xgboost import cv
@@ -713,6 +735,7 @@ plt.title('Learning Curve')
 ---
 
 ### Question 4: Ensemble Size
+
 Does adding more trees to Random Forest always improve performance?
 
 <details>
@@ -742,6 +765,7 @@ for n in n_estimators_range:
 ```
 
 **Diminishing returns curve:**
+
 - **10-50 trees**: Large accuracy improvement
 - **50-200 trees**: Moderate improvement
 - **200+ trees**: Minimal improvement (~0.001 per doubling)
@@ -755,6 +779,7 @@ for n in n_estimators_range:
 | 1000         | ✅ Marginal | 🐌 Slow        | 🐌 Slow          | 📦 Large    |
 
 **Production guideline:**
+
 ```python
 # Start with 100 trees
 rf = RandomForestClassifier(n_estimators=100)
@@ -770,6 +795,7 @@ rf = RandomForestClassifier(n_estimators=100)
 ---
 
 ### Question 5: Stacking Strategy
+
 You're stacking 5 models together. Should the base models be similar (e.g., 5 Random Forests) or diverse (RF, XGBoost, SVM, KNN, Logistic Regression)?
 
 <details>
@@ -780,6 +806,7 @@ You're stacking 5 models together. Should the base models be similar (e.g., 5 Ra
 **Why diversity matters:**
 
 **Bad stacking (similar models):**
+
 ```python
 # All Random Forests with different seeds
 base_models = [
@@ -792,6 +819,7 @@ base_models = [
 ```
 
 **Good stacking (diverse models):**
+
 ```python
 base_models = [
     ('rf', RandomForestClassifier()),       # Tree-based, non-linear
@@ -805,6 +833,7 @@ base_models = [
 ```
 
 **Correlation analysis:**
+
 ```python
 import numpy as np
 
@@ -822,12 +851,14 @@ print(correlation)
 ```
 
 **Optimal stacking recipe:**
+
 1. **Different algorithms**: Trees, linear, SVM, neural nets
 2. **Different representations**:  Some with engineered features, some with raw data
 3. **Different hyperparameters**: Shallow vs deep trees
 4. **Complementary strengths**: One handles outliers well, another handles interactions
 
 **Real-world example (Netflix Prize):**
+
 ```
 Base Layer (107 models):
 - Matrix factorization (20 variants)
@@ -850,6 +881,7 @@ Meta Layer:
 ## Summary
 
 Today you learned:
+
 - ✅ Bagging (Random Forest) reduces variance by training parallel trees on bootstrap samples
 - ✅ Boosting (XGBoost) reduces bias by training sequential trees that correct errors
 - ✅ Random Forest excels with default settings, robust to overfitting

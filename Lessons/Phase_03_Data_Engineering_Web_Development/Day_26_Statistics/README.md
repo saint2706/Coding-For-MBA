@@ -33,11 +33,12 @@ outcomes:
 
 ## The "Never-Coded" Bridge
 
-**Imagine you're presenting to the CEO.** She asks: "What's the average order value?" You say $150. She follows up: "But what does a *typical* customer actually spend?" 
+**Imagine you're presenting to the CEO.** She asks: "What's the average order value?" You say $150. She follows up: "But what does a *typical* customer actually spend?"
 
 Suddenly you realize—a few whale customers spending $10,000+ are pulling that average up. The *typical* customer spends only $75. You just learned the difference between mean and median the hard way.
 
 **Statistics answers business questions:**
+
 - "What's our average order value?" → **Mean**
 - "What does a typical customer spend?" → **Median** (robust to outliers)
 - "How spread out are sales figures?" → **Standard deviation**
@@ -46,6 +47,7 @@ Suddenly you realize—a few whale customers spending $10,000+ are pulling that 
 - "Is this month's performance unusual?" → **Z-scores**
 
 **Real-world applications:**
+
 - **Amazon**: Uses percentile-based ranking for product recommendations
 - **Netflix**: Correlation analysis to understand viewing patterns
 - **Insurance**: Standard deviation to price risk
@@ -231,6 +233,7 @@ print(f"Skewed data skew: {skew(skewed_data):.3f}")  # Positive = right skew
 Example: You run an A/B test and find that Version B increases conversion by 0.1% with p < 0.05. Statistically significant—but is a 0.1% improvement worth the engineering effort to implement?
 
 Always ask:
+
 1. Is the effect size meaningful for the business?
 2. What's the cost to implement vs. expected revenue gain?
 3. Is the sample representative of your actual user base?
@@ -248,12 +251,14 @@ Always ask:
 ### When to Escalate to a Data Scientist
 
 Handle these yourself:
+
 - Descriptive statistics (mean, median, std)
 - Simple correlations
 - Percentile-based segmentation
 - Basic A/B test interpretation
 
 Escalate when:
+
 - Hypothesis testing with multiple comparisons
 - Causal inference is needed
 - Predictive modeling requirements
@@ -448,6 +453,7 @@ correlation_analysis(df)
 ## Mastery Check
 
 ### Question 1: Mean vs Median
+
 A startup reports "average salary is $150,000." You suspect this is misleading. What additional statistic would you request, and why?
 
 <details>
@@ -456,11 +462,13 @@ A startup reports "average salary is $150,000." You suspect this is misleading. 
 **Request the median salary.**
 
 The mean can be inflated by a few high-earners (founders, executives). If the median is significantly lower (e.g., $80,000), it indicates:
+
 - Most employees earn far less than the "average"
 - The distribution is right-skewed
 - The mean misrepresents typical employee compensation
 
 **Also useful:**
+
 - Salary percentiles (P25, P50, P75)
 - Breakdown by role/level
 
@@ -469,6 +477,7 @@ The mean can be inflated by a few high-earners (founders, executives). If the me
 ---
 
 ### Question 2: Correlation Interpretation
+
 Marketing shows you a correlation of 0.95 between social media posts and sales. Should you 10x your social media budget?
 
 <details>
@@ -494,6 +503,7 @@ The 0.95 correlation is a signal to investigate further, not a mandate to scale.
 ---
 
 ### Question 3: Percentile Application
+
 HR asks you to determine "competitive salary" for a role. How would you use percentiles?
 
 <details>
@@ -506,6 +516,7 @@ HR asks you to determine "competitive salary" for a role. How would you use perc
 - **P75-P90**: Premium positioning to attract top talent
 
 **Practical approach:**
+
 ```python
 market_salaries = [..."industry data"]
 print(f"Entry-level target: P25 = ${np.percentile(market_salaries, 25):,.0f}")
@@ -514,6 +525,7 @@ print(f"Premium target: P75 = ${np.percentile(market_salaries, 75):,.0f}")
 ```
 
 **Recommendation formula:**
+
 - "Meet market": Pay at P50
 - "Lead market": Pay at P60-P75
 - "Lag market" (cost-cutting): Pay at P25-P40
@@ -523,6 +535,7 @@ print(f"Premium target: P75 = ${np.percentile(market_salaries, 75):,.0f}")
 ---
 
 ### Question 4: Debugging Challenge
+
 Your colleague calculates that the average of [20%, 50%, 80%] is 50%. But when you check the underlying data, the weighted average is 35%. What went wrong?
 
 <details>
@@ -531,6 +544,7 @@ Your colleague calculates that the average of [20%, 50%, 80%] is 50%. But when y
 **You can't simply average percentages without weighting by sample size.**
 
 **Example:**
+
 ```python
 # Three groups with different sizes
 group_a = {"success_rate": 0.20, "sample_size": 1000}
@@ -553,6 +567,7 @@ The simple average over-weights small groups. Always weight by sample size.
 ---
 
 ### Question 5: Design Scenario
+
 You need to set up automated alerts for "unusual" daily sales. How would you define "unusual" statistically?
 
 <details>
@@ -561,6 +576,7 @@ You need to set up automated alerts for "unusual" daily sales. How would you def
 **Use Z-scores or percentile-based thresholds:**
 
 **Method 1: Z-score approach**
+
 ```python
 mean = df["daily_sales"].mean()
 std = df["daily_sales"].std()
@@ -575,6 +591,7 @@ def is_unusual(value, threshold=2):
 ```
 
 **Method 2: Percentile approach (robust to outliers)**
+
 ```python
 p5 = df["daily_sales"].quantile(0.05)   # Lower bound
 p95 = df["daily_sales"].quantile(0.95)  # Upper bound
@@ -584,6 +601,7 @@ def is_unusual(value):
 ```
 
 **Best practice:**
+
 - Start with 2 standard deviations (catches ~5% of days)
 - Adjust threshold based on false alert rate
 - Consider day-of-week patterns (Monday vs. Saturday may differ)
@@ -596,6 +614,7 @@ def is_unusual(value):
 ## Summary
 
 Today you learned:
+
 - ✅ Mean vs. median: choose based on distribution shape
 - ✅ Standard deviation: quantify data spread
 - ✅ Correlation: measure relationship strength (but not causation!)

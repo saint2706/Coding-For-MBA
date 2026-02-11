@@ -36,13 +36,15 @@ outcomes:
 ## The "Never-Coded" Bridge
 
 **Ideally, you drive a car with a dashboard.**
-*   The "Check Engine" light warns you *before* the engine explodes.
-*   The gas gauge warns you *before* you run out of fuel.
+
+* The "Check Engine" light warns you *before* the engine explodes.
+* The gas gauge warns you *before* you run out of fuel.
 
 **Most ML models run with the hood welded shut and no dashboard.**
-*   The data changes (Drift), but the model keeps predicting.
-*   The world changes (Concept Drift), but the model uses old rules.
-*   Result: You lose millions of dollars silently, until someone notices sales are down 50%.
+
+* The data changes (Drift), but the model keeps predicting.
+* The world changes (Concept Drift), but the model uses old rules.
+* Result: You lose millions of dollars silently, until someone notices sales are down 50%.
 
 **Model Monitoring** is building that dashboard. It tells you: "Hey, the data coming in today looks very different from the data I was trained on. I might be unreliable."
 
@@ -52,26 +54,27 @@ outcomes:
 
 ### 1. The Two Types of Drift
 
-1.  **Data Drift (Covariate Shift)**: The *input* distribution changes.
-    *   *Example*: You trained on pictures of summer clothes. Now it's winter, and people are uploading pictures of coats. The model is confused.
-    *   *Detection*: Compare Training Data histograms vs. Production Data histograms.
+1. **Data Drift (Covariate Shift)**: The *input* distribution changes.
+    * *Example*: You trained on pictures of summer clothes. Now it's winter, and people are uploading pictures of coats. The model is confused.
+    * *Detection*: Compare Training Data histograms vs. Production Data histograms.
 
-2.  **Concept Drift**: The *relationship* between input/output changes.
-    *   *Example*: Before COVID, "buying masks" = Construction Worker. After COVID, "buying masks" = Everyone. The data looks the same (people buying masks), but the *meaning* has shifted.
-    *   *Detection*: Monitor Model Accuracy (requires "Ground Truth" labels, which are often delayed).
+2. **Concept Drift**: The *relationship* between input/output changes.
+    * *Example*: Before COVID, "buying masks" = Construction Worker. After COVID, "buying masks" = Everyone. The data looks the same (people buying masks), but the *meaning* has shifted.
+    * *Detection*: Monitor Model Accuracy (requires "Ground Truth" labels, which are often delayed).
 
 ### 2. Statistical Tests for Drift
 
-*   **KS Test (Kolmogorov-Smirnov)**: Are these two distributions different?
-*   **PSI (Population Stability Index)**: An industry-standard metric for drift.
-    *   PSI < 0.1: No change.
-    *   PSI > 0.2: Significant shift (Retrain!).
+* **KS Test (Kolmogorov-Smirnov)**: Are these two distributions different?
+* **PSI (Population Stability Index)**: An industry-standard metric for drift.
+  * PSI < 0.1: No change.
+  * PSI > 0.2: Significant shift (Retrain!).
 
 ### 3. Reliability Engineering Patterns
 
 When the model fails or is uncertain, have a backup plan.
-*   **Circuit Breaker**: If the API error rate > 5%, stop calling the model and return a default value.
-*   **Fallback**: Standard Model -> If low confidence -> Simple Heuristic (Rule-based) -> If fails -> Human Review.
+
+* **Circuit Breaker**: If the API error rate > 5%, stop calling the model and return a default value.
+* **Fallback**: Standard Model -> If low confidence -> Simple Heuristic (Rule-based) -> If fails -> Human Review.
 
 ---
 
@@ -80,27 +83,31 @@ When the model fails or is uncertain, have a backup plan.
 ### Feedback Loops
 
 The most dangerous bug in ML.
-1.  Model recommends "Cat Videos" to user.
-2.  User clicks "Cat Videos" (because that's all you showed them).
-3.  Model sees high interaction, thinks "I am a genius," and recommends *more* Cat Videos.
-4.  User gets bored and leaves. **The model killed the user's interest by narrowing their world.**
+
+1. Model recommends "Cat Videos" to user.
+2. User clicks "Cat Videos" (because that's all you showed them).
+3. Model sees high interaction, thinks "I am a genius," and recommends *more* Cat Videos.
+4. User gets bored and leaves. **The model killed the user's interest by narrowing their world.**
 
 ### Alert Fatigue
 
 If you alert on everything, you alert on nothing.
-*   **Bad Alert**: "CPU usage is 80%." (So what? Maybe it's busy.)
-*   **Good Alert**: "Prediction Latency > 500ms for 99% of users." (Business impact).
+
+* **Bad Alert**: "CPU usage is 80%." (So what? Maybe it's busy.)
+* **Good Alert**: "Prediction Latency > 500ms for 99% of users." (Business impact).
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Detecting Data Drift (PSI)
+
 **Goal**: Calculate the Population Stability Index (PSI) to detect drift.
 
 **Scenario**:
-*   Baseline (Training): 80% Young, 20% Old.
-*   Current (Production): 50% Young, 50% Old.
+
+* Baseline (Training): 80% Young, 20% Old.
+* Current (Production): 50% Young, 50% Old.
 
 ```python
 import numpy as np
@@ -129,6 +136,7 @@ if psi_2 > 0.2:
 ```
 
 **Expected Output**:
+
 ```text
 PSI (No Drift): 0.0
 PSI (Drift): 0.2749
@@ -138,6 +146,7 @@ PSI (Drift): 0.2749
 ---
 
 ### Exercise 2: Implementing a Fallback Mechanism
+
 **Goal**: Wrap a model call with a safety net.
 
 **Scenario**: You have a generic `predict()` function. If it raises an error or returns low confidence, return a safe default.
@@ -177,6 +186,7 @@ for i in range(5):
 ```
 
 **Expected Output**:
+
 ```text
 --- Reliability Test ---
 🔥 Model Failed: Model Timeout. Using Default.
@@ -190,6 +200,7 @@ Final Decision: Not Spam
 ---
 
 ### Exercise 3: Simple Monitor Script
+
 **Goal**: Check the mean of predictions and alert if it shifts wildly.
 
 **Scenario**: A fraud model usually predicts 1% fraud. If it suddenly predicts 20% fraud, either there's a massive attack, or the model is broken.
@@ -213,6 +224,7 @@ else:
 ```
 
 **Expected Output**:
+
 ```text
 Current Fraud Rate: 40.0%
 🚨 PAGERDUTY: Fraud Rate Spike! Investigate immediately.
@@ -223,6 +235,7 @@ Current Fraud Rate: 40.0%
 ## Mastery Check
 
 ### Question 1: Drift Types
+
 If your user base shifts from mostly US-based to mostly India-based, but your model was trained only on US data, what is this called?
 A) Model Drift
 B) Data Drift (Covariate Shift)
@@ -237,6 +250,7 @@ The input distribution (Geography/User behavior) has shifted.
 </details>
 
 ### Question 2: Metrics
+
 What does PSI stand for in drift detection?
 A) Pounds per Square Inch
 B) Population Stability Index
@@ -251,6 +265,7 @@ A metric to quantify how much a distribution has shifted.
 </details>
 
 ### Question 3: Silent Failure
+
 Why is ML reliability harder than software reliability?
 A) ML models perform complex math.
 B) ML models rarely throw "Exceptions" when they are wrong; they just return a wrong prediction.
@@ -265,6 +280,7 @@ Traditional monitoring (Error Rate 500s) won't catch a model that predicts "Dog"
 </details>
 
 ### Question 4: Fallback
+
 What is a common "Fallback" strategy for a recommendation engine if the AI is slow?
 A) Show a blank screen.
 B) Show "Most Popular Items" (Cached).
@@ -279,6 +295,7 @@ D) Error 404.
 </details>
 
 ### Question 5: Feedback Loops
+
 How do you prevent a feedback loop in a recommender system?
 A) Train less often.
 B) Allocate a small percentage of traffic to "Exploration" (Show random items to gather unbiased data).
@@ -297,9 +314,10 @@ Exploration allows you to gather data on items the model *wouldn't* normally sug
 ## Summary
 
 Today you learned:
-*   ✅ **Silent Failures** are the hallmark of ML production issues.
-*   ✅ **Drift (Data & Concept)** must be monitored using statistical tests like PSI.
-*   ✅ **Fallbacks** (like Rules or Heuristics) are essential for 99.9% reliability.
-*   ✅ **Feedback Loops** can poison your training data if you aren't careful.
+
+* ✅ **Silent Failures** are the hallmark of ML production issues.
+* ✅ **Drift (Data & Concept)** must be monitored using statistical tests like PSI.
+* ✅ **Fallbacks** (like Rules or Heuristics) are essential for 99.9% reliability.
+* ✅ **Feedback Loops** can poison your training data if you aren't careful.
 
 **Tomorrow**: We shift focus to the broader data world with **BI Analyst Foundations**.

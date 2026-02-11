@@ -38,6 +38,7 @@ outcomes:
 This is the reality of business data. It's messy, inconsistent, and riddled with gaps.
 
 **Real-world data problems:**
+
 - Customer names with inconsistent capitalization and extra spaces
 - Prices stored as "$1,234.56" (strings) instead of numbers
 - Dates in five different formats: "Jan 15, 2024", "2024-01-15", "15/01/24"
@@ -45,6 +46,7 @@ This is the reality of business data. It's messy, inconsistent, and riddled with
 - Missing values that break your calculations
 
 **Your job:** Transform this chaos into analysis-ready datasets. The techniques you learn today are used daily at companies like:
+
 - **Netflix**: Cleaning viewing data from 200+ million accounts
 - **Uber**: Normalizing location data from different map providers
 - **Banks**: Standardizing transaction records from legacy systems
@@ -239,12 +241,14 @@ df["revenue_capped"] = df["revenue"].clip(lower=lower_bound, upper=upper_bound)
 2. **Preserve Raw Data**: Never overwrite source files. Create cleaned copies with clear naming: `customers_raw.csv` → `customers_cleaned.csv`.
 
 3. **Validation Gates**: Add assertions after critical steps:
+
    ```python
    assert df["price"].isnull().sum() == 0, "Found null prices after cleaning"
    assert (df["price"] > 0).all(), "Found negative prices"
    ```
 
 4. **Logging Changes**: Track what your pipeline modifies:
+
    ```python
    rows_before = len(df)
    df = df.dropna(subset=["email"])
@@ -403,17 +407,20 @@ print(cleaned)
 ## Mastery Check
 
 ### Question 1: Missing Value Strategy
+
 When would you use median instead of mean to fill missing values?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Use median when:**
+
 - Data is skewed (has outliers)
 - Distribution is not normal
 - You want a value that represents the "typical" case
 
 **Example:**
+
 ```python
 salaries = [50000, 55000, 52000, 1000000]  # CEO outlier
 mean_salary = np.mean(salaries)     # 289,250 (misleading)
@@ -427,6 +434,7 @@ Median is robust to outliers while mean gets pulled toward extreme values.
 ---
 
 ### Question 2: Duplicate Detection
+
 What's the difference between `df.duplicated()` and `df.duplicated(keep=False)`?
 
 <details>
@@ -436,6 +444,7 @@ What's the difference between `df.duplicated()` and `df.duplicated(keep=False)`?
 - `df.duplicated(keep=False)` - Marks **ALL** duplicate rows as `True`, including the first occurrence
 
 **Example:**
+
 ```python
 df = pd.DataFrame({"id": [1, 2, 1, 3]})
 
@@ -450,6 +459,7 @@ Use `keep=False` when you want to inspect all duplicate records before deciding 
 ---
 
 ### Question 3: Outlier Handling
+
 Why might you cap outliers (winsorize) instead of removing them?
 
 <details>
@@ -463,6 +473,7 @@ Why might you cap outliers (winsorize) instead of removing them?
 4. **Partial information**: You keep the knowledge that "this was a high value" even if capped
 
 **Example:**
+
 ```python
 # Instead of dropping the $50,000 outlier, cap it
 df["revenue"] = df["revenue"].clip(upper=upper_bound)
@@ -474,6 +485,7 @@ df["revenue"] = df["revenue"].clip(upper=upper_bound)
 ---
 
 ### Question 4: Debugging Challenge
+
 This cleaning code has a bug. Find and fix it:
 
 ```python
@@ -490,6 +502,7 @@ When applied to prices like "$1,234.56", what goes wrong?
 **Error**: `ValueError: could not convert string to float: '1,234.56'`
 
 **Fix**:
+
 ```python
 df["price"] = (
     df["price"]
@@ -506,6 +519,7 @@ df["price"] = df["price"].str.replace(r"[^\d.]", "", regex=True).astype(float)
 ---
 
 ### Question 5: Design Scenario
+
 You're cleaning customer data and find 15% of records have missing phone numbers. How do you decide whether to drop, fill, or flag these records?
 
 <details>
@@ -526,10 +540,12 @@ You're cleaning customer data and find 15% of records have missing phone numbers
    - Check if missing phones correlate with other variables (e.g., older customers)
 
 4. **Best practice**: Create a flag column and keep the records:
+
    ```python
    df["phone_missing"] = df["phone"].isnull()
    df["phone"] = df["phone"].fillna("Unknown")
    ```
+
    This preserves the information that phone was missing (useful for analysis) while keeping all records.
 
 </details>
@@ -539,6 +555,7 @@ You're cleaning customer data and find 15% of records have missing phone numbers
 ## Summary
 
 Today you learned:
+
 - ✅ Handle missing data: drop, fill with statistics, or forward-fill
 - ✅ Convert types: strings to numbers, dates, categories
 - ✅ Standardize text: case normalization, whitespace removal

@@ -36,6 +36,7 @@ outcomes:
 **Imagine sorting 10,000 customer profiles without labels.** No "loyal" vs "at-risk" tags. Just raw data: purchase history, browsing patterns, demographics.
 
 **K-Means (Day 44)** would force you to choose K clusters arbitrarily. But what if:
+
 - Clusters have **different densities**? (Urban vs rural customers)
 - Clusters have **irregular shapes**? (Not circular blobs)
 - You need to **detect outliers**? (Fraudulent accounts)
@@ -45,15 +46,18 @@ outcomes:
 **Real-world applications:**
 
 **Anomaly detection:**
+
 - **Cybersecurity**: Detect unusual network traffic (DDoS attacks)
 - **Manufacturing**: Flag defective products from sensor data
 - **Healthcare**: Identify rare diseases from patient biomarkers
 
 **Customer segmentation:**
+
 - **E-commerce**: Find natural customer groups for personalized marketing
 - **Finance**: Segment investors by behavior (not predefined categories)
 
 **Dimensionality reduction:**
+
 - **Genomics**: Reduce 20,000 genes to 2D visualization
 - **NLP**: Compress 300D word embeddings to 2D for plotting
 - **Recommendation systems**: Latent factor models for collaborative filtering
@@ -67,6 +71,7 @@ outcomes:
 **Idea**: Clusters are dense regions separated by sparse regions. No need to specify K!
 
 **Parameters:**
+
 - `eps`: Maximum distance between two points to be neighbors
 - `min_samples`: Minimum points needed to form a dense region
 
@@ -596,6 +601,7 @@ plt.show()
 ## Mastery Check
 
 ### Question 1: DBSCAN vs K-Means
+
 When would you choose DBSCAN over K-Means for customer segmentation?
 
 <details>
@@ -604,6 +610,7 @@ When would you choose DBSCAN over K-Means for customer segmentation?
 **Answer:** Choose DBSCAN when clusters have irregular shapes, varying densities, or you need to identify outliers—scenarios where K-Means' assumptions fail.
 
 **K-Means assumptions:**
+
 - Spherical clusters of similar size
 - All points belong to a cluster
 - K is known in advance
@@ -611,6 +618,7 @@ When would you choose DBSCAN over K-Means for customer segmentation?
 **DBSCAN advantages:**
 
 **1. Arbitrary cluster shapes**
+
 ```python
 # Urban vs suburban vs rural customers
 # Urban: dense, compact (high purchase frequency, specific locations)
@@ -622,6 +630,7 @@ When would you choose DBSCAN over K-Means for customer segmentation?
 ```
 
 **2. Varying densities**
+
 ```
 High-value segment: 50 VIP customers (dense in feature space)
 Mid-tier: 5000 customers (moderate density)
@@ -632,6 +641,7 @@ DBSCAN: Correctly identifies VIPs as separate dense region
 ```
 
 **3. Outlier detection**
+
 ```python
 # Identify:
 # - Fraud suspects (unusual behavior)
@@ -643,6 +653,7 @@ DBSCAN: Correctly identifies VIPs as separate dense region
 ```
 
 **4. Unknown K**
+
 ```
 How many customer segments exist? 3? 5? 10?
 DBSCAN: Discovers this automatically
@@ -650,6 +661,7 @@ K-Means: Requires elbow method, silhouette analysis (time-consuming)
 ```
 
 **When K-Means is still better:**
+
 - Large datasets (n > 1M): DBSCAN is O(n log n), K-Means is O(n)
 - Convex clusters: K-Means works fine, faster
 - Need exactly K clusters: Business requirement (e.g., 3-tier loyalty program)
@@ -659,6 +671,7 @@ K-Means: Requires elbow method, silhouette analysis (time-consuming)
 ---
 
 ### Question 2: Isolation Forest Contamination
+
 Your Isolation Forest has `contamination=0.05` but only 2% of data is truly anomalous. What happens and how do you fix it?
 
 <details>
@@ -667,6 +680,7 @@ Your Isolation Forest has `contamination=0.05` but only 2% of data is truly anom
 **Answer:** The model will flag 5% of data as anomalies (including false positives) because `contamination` is the expected proportion of outliers. Set it to match your true anomaly rate (0.02) or use anomaly scores flexibly.
 
 **How contamination works:**
+
 ```python
 IsolationForest(contamination=0.05)
 # → Model flags top 5% most anomalous points as outliers
@@ -674,6 +688,7 @@ IsolationForest(contamination=0.05)
 ```
 
 **Problem:**
+
 ```
 True anomalies: 2% (20 out of 1000)
 contamination=0.05 → flags 50 points
@@ -684,12 +699,14 @@ contamination=0.05 → flags 50 points
 **Solutions:**
 
 **1. Adjust contamination**
+
 ```python
 IsolationForest(contamination=0.02)
 # Flags closer to true rate
 ```
 
 **2. Use anomaly scores instead of labels**
+
 ```python
 iso_forest = IsolationForest(contamination='auto')  # No hard threshold
 scores = iso_forest.score_samples(X)
@@ -700,6 +717,7 @@ y_pred = (scores < threshold).astype(int)
 ```
 
 **3. Calibrate threshold with labeled data**
+
 ```python
 # If you have some labeled anomalies (semi-supervised)
 from sklearn.metrics import precision_recall_curve
@@ -721,6 +739,7 @@ anomalies = scores_prod < best_threshold
 ```
 
 **4. Ensemble approach**
+
 ```python
 # Combine multiple contamination values
 contaminations = [0.01, 0.02, 0.05]
@@ -741,6 +760,7 @@ final_pred = np.sign(np.sum(predictions, axis=0))  # -1 if majority says anomaly
 ---
 
 ### Question 3: Autoencoder Reconstruction Error
+
 You train an autoencoder for anomaly detection. Normal samples have mean reconstruction error = 0.05, anomalies = 0.15. A new sample has error = 0.08. Is it anomalous?
 
 <details>
@@ -751,6 +771,7 @@ You train an autoencoder for anomaly detection. Normal samples have mean reconst
 **Statistical approach:**
 
 **Assume Gaussian errors:**
+
 ```python
 # Normal samples: error ~ N(0.05, σ)
 # Anomalies: error ~ N(0.15, σ)
@@ -767,6 +788,7 @@ z_score = (0.08 - 0.05) / 0.015 = 2.0
 ```
 
 **ROC-based threshold:**
+
 ```python
 # Plot ROC curve on validation set
 from sklearn.metrics import roc_curve, auc
@@ -792,6 +814,7 @@ print(f"Threshold: {threshold:.3f}")
 ```
 
 **Cost-sensitive threshold:**
+
 ```python
 # False Positive cost: $10 (unnecessary investigation)
 # False Negative cost: $1000 (missed fraud)
@@ -811,6 +834,7 @@ optimal_threshold = thresholds_test[np.argmin(costs)]
 ```
 
 **Practical answer for error = 0.08:**
+
 ```
 If cost of missing anomaly is high (fraud, safety):
 → Threshold = 0.07 → Flag as 0.08 anomaly
@@ -820,6 +844,7 @@ If cost of false alarm is high (alert fatigue):
 ```
 
 **Best practice:** Don't hardcode a single threshold. Use a scoring system:
+
 ```python
 def risk_score(error):
     if error < 0.06:
@@ -835,6 +860,7 @@ def risk_score(error):
 ---
 
 ### Question 4: t-SNE Interpretation
+
 You visualize data with t-SNE and see 5 clear clusters. Can you use this to claim the data has 5 true clusters?
 
 <details>
@@ -845,12 +871,14 @@ You visualize data with t-SNE and see 5 clear clusters. Can you use this to clai
 **Why t-SNE is misleading:**
 
 **1. Non-convexity:** t-SNE can "break apart" true clusters
+
 ```python
 # True data: 1 cluster (elongated)
 # t-SNE with low perplexity: Breaks into 3-4 clusters visually
 ```
 
 **2. Hyperparameter sensitivity:**
+
 ```python
 # Same data, different perplexity
 tsne_5 = TSNE(perplexity=5)   → Shows many small clusters
@@ -858,6 +886,7 @@ tsne_50 = TSNE(perplexity=50) → Shows few large clusters
 ```
 
 **3. Artificial structure:**
+
 ```
 t-SNE exaggerates distances → Creates visual separation even for noise
 Random data can look "clustered" in t-SNE!
@@ -866,6 +895,7 @@ Random data can look "clustered" in t-SNE!
 **Correct workflow:**
 
 **Step 1: Visualize with t-SNE (exploration)**
+
 ```python
 tsne = TSNE(n_components=2, perplexity=30, random_state=42)
 X_tsne = tsne.fit_transform(X)
@@ -876,6 +906,7 @@ plt.title("t-SNE Visualization (Exploration Only!)")
 ```
 
 **Step 2: Validate in original space**
+
 ```python
 from sklearn.cluster import KMeans
 from sk learn.metrics import silhouette_score
@@ -894,6 +925,7 @@ print(f"Optimal clusters in original space: {optimal_k}")
 ```
 
 **Step 3: Compare visualizations**
+
 ```python
 # Overlay optimal clustering on t-SNE
 labels_optimal = KMeans(n_clusters=optimal_k).fit_predict(X)
@@ -904,18 +936,21 @@ plt.title(f"t-SNE with {optimal_k} True Clusters")
 ```
 
 **t-SNE best practices:**
+
 - **Don't cluster on t-SNE output** → Cluster on original data
 - **Use t-SNE for exploration** → Follow up with quantitative validation
 - **Try multiple perplexities** (5-50) → Check consistency
 - **Compare with UMAP** → UMAP preserves global structure better
 
 **What t-SNE IS good for:**
+
 - Visualizing high-dimensional data
 - Checking if classes separate
 - Exploratory data analysis
 - Presentations and reports
 
 **What t-SNE is NOT good for:**
+
 - Determining number of clusters
 - Measuring exact distances
 - Downstream ML tasks (use embeddings from autoencoder instead)
@@ -925,6 +960,7 @@ plt.title(f"t-SNE with {optimal_k} True Clusters")
 ---
 
 ### Question 5: Production Anomaly Detection
+
 Your anomaly detection model flags 500 alerts/day but analysts can only review 50. How do you prioritize?
 
 <details>
@@ -935,6 +971,7 @@ Your anomaly detection model flags 500 alerts/day but analysts can only review 5
 **Multi-factor scoring system:**
 
 **1. Anomaly confidence**
+
 ```python
 # Isolation Forest anomaly score
 iso_scores = iso_forest.score_samples(X)
@@ -942,6 +979,7 @@ confidence = -iso_scores  # Higher = more anomalous
 ```
 
 **2. Business impact**
+
 ```python
 def business_impact(transaction):
     impact = 0
@@ -964,6 +1002,7 @@ def business_impact(transaction):
 ```
 
 **3. Historical pattern**
+
 ```python
 def historical_risk(user_id):
     user_history = get_history(user_id)
@@ -981,6 +1020,7 @@ def historical_risk(user_id):
 ```
 
 **Combined severity score:**
+
 ```python
 def severity_score(anomaly):
     conf = anomaly_confidence(anomaly)
@@ -997,6 +1037,7 @@ high_priority = anomalies_ranked[:50]
 ```
 
 **Tiered response:**
+
 ```python
 # Tier 1: Top 50 (manual review)
 send_to_analysts(high_priority)
@@ -1017,6 +1058,7 @@ for anomaly in low_priority:
 ```
 
 **Similar anomaly clustering:**
+
 ```python
 # Group similar anomalies
 from sklearn.cluster import DBSCAN
@@ -1035,6 +1077,7 @@ for cluster_id in set(clusters):
 ```
 
 **Feedback loop:**
+
 ```python
 # Learn from analyst decisions
 analyst_labels = get_analyst_feedback()  # True fraud vs false alarm
@@ -1052,6 +1095,7 @@ predicted_fraud_prob = severity_model.predict_proba(new_anomalies)[:, 1]
 ```
 
 **Dashboard for analysts:**
+
 ```
 Priority Queue (50 items):
 1. [CRITICAL] $50,000 transaction, new merchant, user flagged 3x this month
@@ -1068,6 +1112,7 @@ Auto-resolved (300 items): Available for audit
 ```
 
 **Key metrics to track:**
+
 - **Precision@K**: Of top K alerts, how many are true fraud?
 - **Coverage**: % of true fraud caught in top K
 - **Analyst efficiency**: Time to review vs alert volume
@@ -1080,6 +1125,7 @@ Auto-resolved (300 items): Available for audit
 ## Summary
 
 Today you learned:
+
 - ✅ DBSCAN finds arbitrary-shaped clusters without specifying K
 - ✅ Isolation Forest detects anomalies by isolating outliers in random trees
 - ✅ Autoencoders compress data through bottleneck layers, useful for dimensionality reduction

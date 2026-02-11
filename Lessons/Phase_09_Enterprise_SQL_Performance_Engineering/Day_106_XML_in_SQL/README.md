@@ -34,11 +34,11 @@ outcomes:
 
 **The Toolbox**
 
-*   **Standard SQL (Hammer)**: Integers, Text, Dates. (Simple, effective).
-*   **The Weird Stuff (Specialty Tools)**:
-    *   **XML**: The rusty wrench. Old, verbose, but sometimes you find a pipe that only it can turn.
-    *   **Arrays**: The socket set. Holds multiple items of the same size in one box.
-    *   **ENUMs**: The shape sorter. Only "Square", "Circle", or "Triangle" fit. Try to put a "Star" in? Rejected.
+* **Standard SQL (Hammer)**: Integers, Text, Dates. (Simple, effective).
+* **The Weird Stuff (Specialty Tools)**:
+  * **XML**: The rusty wrench. Old, verbose, but sometimes you find a pipe that only it can turn.
+  * **Arrays**: The socket set. Holds multiple items of the same size in one box.
+  * **ENUMs**: The shape sorter. Only "Square", "Circle", or "Triangle" fit. Try to put a "Star" in? Rejected.
 
 ---
 
@@ -47,24 +47,27 @@ outcomes:
 ### 1. XML in SQL
 
 Legacy systems (SOAP, Enterprise Java) love XML.
-*   **Type**: `XML`. Validates the syntax.
-*   **Query**: `xpath('/book/title/text()', data)`.
-*   **Performance**: Slower than JSONB. No binary storage format in standard Postgres.
+
+* **Type**: `XML`. Validates the syntax.
+* **Query**: `xpath('/book/title/text()', data)`.
+* **Performance**: Slower than JSONB. No binary storage format in standard Postgres.
 
 ### 2. Arrays
 
 Postgres allows columns to be arrays.
-*   **Def**: `tags text[]`.
-*   **Insert**: `VALUES (ARRAY['sql', 'db'])`.
-*   **Query**: `WHERE 'sql' = ANY(tags)`.
-*   **Unnest**: `SELECT unnest(tags) FROM table`. Expands 1 row into N rows.
+
+* **Def**: `tags text[]`.
+* **Insert**: `VALUES (ARRAY['sql', 'db'])`.
+* **Query**: `WHERE 'sql' = ANY(tags)`.
+* **Unnest**: `SELECT unnest(tags) FROM table`. Expands 1 row into N rows.
 
 ### 3. ENUMs (Enumerated Types)
 
 Restricts a column to a fixed list.
-*   **Create**: `CREATE TYPE status AS ENUM ('open', 'closed', 'pending');`
-*   **Benefit**: Data Integrity. Uses 4 bytes (int) internally, saves space vs Text.
-*   **Downside**: Adding a new value requires `ALTER TYPE`.
+
+* **Create**: `CREATE TYPE status AS ENUM ('open', 'closed', 'pending');`
+* **Benefit**: Data Integrity. Uses 4 bytes (int) internally, saves space vs Text.
+* **Downside**: Adding a new value requires `ALTER TYPE`.
 
 ---
 
@@ -72,49 +75,53 @@ Restricts a column to a fixed list.
 
 ### The "Array vs Join" Debate
 
-*   **Junior**: "I'll store `order_ids` as an array `[1, 2, 5]` in the User table to avoid a Join!"
-*   **Senior**: "Don't."
-    *   *Why*: You lose Foreign Key constraints. You can't ensure Order 5 actually exists.
-    *   *Exception*: Tags. It's okay if a tag doesn't exist in a master list.
+* **Junior**: "I'll store `order_ids` as an array `[1, 2, 5]` in the User table to avoid a Join!"
+* **Senior**: "Don't."
+  * *Why*: You lose Foreign Key constraints. You can't ensure Order 5 actually exists.
+  * *Exception*: Tags. It's okay if a tag doesn't exist in a master list.
 
 ### XML: The Legacy Burden
 
-*   **Reality**: You will eventually inherit a DB with a `config_xml` column.
-*   **Strategy**: Don't convert it to JSON unless you have to. Postgres treats XML as a first-class citizen. Index it with Functional Indexes if needed.
+* **Reality**: You will eventually inherit a DB with a `config_xml` column.
+* **Strategy**: Don't convert it to JSON unless you have to. Postgres treats XML as a first-class citizen. Index it with Functional Indexes if needed.
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: The XML Extraction
+
 **Goal**: Parse legacy data.
 
-1.  `CREATE TABLE library (id serial, doc xml)`.
-2.  `INSERT INTO library(doc) VALUES ('<book><title>SQL 101</title></book>')`.
-3.  Query: `SELECT xpath('//title/text()', doc) FROM library`.
+1. `CREATE TABLE library (id serial, doc xml)`.
+2. `INSERT INTO library(doc) VALUES ('<book><title>SQL 101</title></book>')`.
+3. Query: `SELECT xpath('//title/text()', doc) FROM library`.
 
 ### Exercise 2: Array Math
+
 **Goal**: Manage vectors.
 
-1.  `CREATE TABLE vectors (id serial, coords int[])`.
-2.  `INSERT INTO vectors(coords) VALUES (ARRAY[1, 2, 3]), (ARRAY[4, 5, 6])`.
-3.  **Task**: Find vectors where the 2nd coordinate is 5.
-    *   `SELECT * FROM vectors WHERE coords[2] = 5`.
+1. `CREATE TABLE vectors (id serial, coords int[])`.
+2. `INSERT INTO vectors(coords) VALUES (ARRAY[1, 2, 3]), (ARRAY[4, 5, 6])`.
+3. **Task**: Find vectors where the 2nd coordinate is 5.
+    * `SELECT * FROM vectors WHERE coords[2] = 5`.
 
 ### Exercise 3: The ENUM Trap
+
 **Goal**: Understand rigidity.
 
-1.  `CREATE TYPE mood AS ENUM ('happy', 'sad')`.
-2.  `CREATE TABLE person (current_mood mood)`.
-3.  `INSERT INTO person VALUES ('happy')`.
-4.  **Fail**: `INSERT INTO person VALUES ('angry')`. (Error: invalid input value for enum mood: "angry").
-5.  **Fix**: `ALTER TYPE mood ADD VALUE 'angry'`.
+1. `CREATE TYPE mood AS ENUM ('happy', 'sad')`.
+2. `CREATE TABLE person (current_mood mood)`.
+3. `INSERT INTO person VALUES ('happy')`.
+4. **Fail**: `INSERT INTO person VALUES ('angry')`. (Error: invalid input value for enum mood: "angry").
+5. **Fix**: `ALTER TYPE mood ADD VALUE 'angry'`.
 
 ---
 
 ## Mastery Check
 
 ### Question 1: Arrays
+
 How do you turn an Array `['a', 'b']` into two rows?
 A) `unnest()`.
 B) `expand()`.
@@ -129,6 +136,7 @@ D) `explode()`.
 </details>
 
 ### Question 2: ENUMs
+
 Why use an ENUM instead of a Foreign Key to a 'Statuses' table?
 A) Performance (No Join needed) and Space (4 bytes vs Text).
 B) It is more flexible.
@@ -143,6 +151,7 @@ It's a micro-optimization for static lists (e.g., Days of Week).
 </details>
 
 ### Question 3: XML
+
 Can you index XML content?
 A) Yes, using Functional Indexes (e.g., index the result of `xpath`).
 B) No.
@@ -157,6 +166,7 @@ D) Only in Oracle.
 </details>
 
 ### Question 4: Array Constraints
+
 Can I enforce a Foreign Key on individual elements of an array column?
 A) Yes.
 B) No.
@@ -171,6 +181,7 @@ This is the main argument against using Arrays for relationships.
 </details>
 
 ### Question 5: Composite Types
+
 What is a Composite Type?
 A) A column that holds a Struct (e.g., `(x, y)` coordinates).
 B) A Primary Key.
@@ -189,9 +200,10 @@ D) A JSON.
 ## Summary
 
 Today you learned:
-*   ✅ **XML**: Not dead yet. Handled via `xpath`.
-*   ✅ **Arrays**: Lists in a cell. Good for Tags, bad for Relationships.
-*   ✅ **ENUMs**: Strict, static, efficient categorization.
-*   ✅ **Unnest**: Exploding arrays into rows.
+
+* ✅ **XML**: Not dead yet. Handled via `xpath`.
+* ✅ **Arrays**: Lists in a cell. Good for Tags, bad for Relationships.
+* ✅ **ENUMs**: Strict, static, efficient categorization.
+* ✅ **Unnest**: Exploding arrays into rows.
 
 **Tomorrow**: We lock down the fortress with **Enterprise Security**.

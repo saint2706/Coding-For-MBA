@@ -32,12 +32,14 @@ outcomes:
 ## The "Never-Coded" Bridge
 
 **Dates and times are everywhere in business:**
+
 - Invoice due dates
 - Subscription renewals
 - Report timestamps
 - Scheduling meetings
 
 Without proper handling:
+
 - "Is 01/02/2024 January 2nd or February 1st?"
 - "What time is our meeting in Tokyo?"
 - "How many business days until the deadline?"
@@ -367,6 +369,7 @@ for event in events:
 ## Mastery Check
 
 ### Question 1: Format String
+
 Write format string for "Monday, January 15, 2024 at 2:30 PM":
 
 <details>
@@ -381,6 +384,7 @@ dt.strftime("%A, %B %d, %Y at %I:%M %p")
 ---
 
 ### Question 2: Date Difference
+
 How do you get days between two dates?
 
 <details>
@@ -401,6 +405,7 @@ print(diff.days)  # 365
 ---
 
 ### Question 3: Parse Date
+
 Parse "March 15, 2024":
 
 <details>
@@ -417,6 +422,7 @@ dt = datetime.strptime("March 15, 2024", "%B %d, %Y")
 ---
 
 ### Question 4: Week Number
+
 How do you get the week number of the year?
 
 <details>
@@ -436,6 +442,7 @@ week_number = int(dt.strftime("%W"))
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a subscription tracker that calculates renewal dates and identifies expiring subscriptions.
 
 <details>
@@ -488,6 +495,7 @@ def check_subscriptions(subscriptions):
 ## Summary
 
 Today you learned:
+
 - ✅ `date`, `time`, `datetime` objects for temporal data
 - ✅ `strftime` formats dates to strings
 - ✅ `strptime` parses strings to dates

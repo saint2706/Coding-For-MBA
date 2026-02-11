@@ -38,6 +38,7 @@ outcomes:
 This is the moment where everything you've learned comes together. NumPy for fast numerical operations. Pandas for data wrangling. Matplotlib for visualization. These aren't separate tools—they're your integrated data science toolkit.
 
 **Real-world context:**
+
 - **Netflix** uses NumPy to process billions of viewing events at scale
 - **Uber** relies on Pandas for exploratory data analysis of trip data
 - **Airbnb** visualizes pricing trends to inform pricing algorithms
@@ -402,6 +403,7 @@ print(f"Target range: {y.min():.2f} to {y.max():.2f}")
 ## Mastery Check
 
 ### Question 1: NumPy Broadcasting
+
 What is the output of this code?
 
 ```python
@@ -414,6 +416,7 @@ print(a + b)
 <summary>Click for Answer</summary>
 
 **Output:**
+
 ```
 [[11 21 31]
  [12 22 32]
@@ -427,6 +430,7 @@ print(a + b)
 ---
 
 ### Question 2: Pandas GroupBy
+
 What does this code compute?
 
 ```python
@@ -439,6 +443,7 @@ df.groupby("department")["salary"].transform("mean")
 **Answer:** It returns a Series with the same length as the original DataFrame, where each employee's value is replaced by their department's mean salary.
 
 This is useful for creating features like "salary relative to department average":
+
 ```python
 df["salary_vs_dept_avg"] = df["salary"] / df.groupby("department")["salary"].transform("mean")
 ```
@@ -450,6 +455,7 @@ Unlike `groupby().mean()` which returns one value per group, `transform()` retur
 ---
 
 ### Question 3: Memory Efficiency
+
 Why might you convert a column to `category` dtype?
 
 <details>
@@ -464,6 +470,7 @@ Why might you convert a column to `category` dtype?
 3. **Ordering**: Categories can have an order (e.g., "low" < "medium" < "high")
 
 **Example:**
+
 ```python
 df["status"] = df["status"].astype("category")
 # Memory reduction: often 10-50x for low-cardinality columns
@@ -476,6 +483,7 @@ Use for: status codes, categories, ratings, any column with few unique values re
 ---
 
 ### Question 4: Visualization Choice
+
 When exploring data for ML, which plot best shows the relationship between a categorical feature and a continuous target?
 
 <details>
@@ -490,6 +498,7 @@ sns.violinplot(x="category", y="price", data=df)
 ```
 
 **Why:**
+
 - Shows distribution of target for each category
 - Reveals median, quartiles, and outliers
 - Easy to compare across categories
@@ -502,6 +511,7 @@ Alternatives: Strip plot (shows all points), bar plot with error bars (shows mea
 ---
 
 ### Question 5: ML Problem Framing
+
 A company asks you to "predict which customers will churn next month." Frame this as an ML problem: What's X? What's y? What type of ML is this?
 
 <details>
@@ -521,6 +531,7 @@ A company asks you to "predict which customers will churn next month." Frame thi
 - **ML Type:** Supervised learning, specifically **binary classification**
 
 **Key considerations:**
+
 1. Need historical data with known outcomes
 2. Define "churn" precisely (cancelled? reduced usage?)
 3. Set prediction window (30 days before churn)
@@ -533,6 +544,7 @@ A company asks you to "predict which customers will churn next month." Frame thi
 ## Summary
 
 Today you reviewed:
+
 - ✅ NumPy for vectorized numerical operations
 - ✅ Pandas for loading, cleaning, and exploring data
 - ✅ Matplotlib/Seaborn for visualization

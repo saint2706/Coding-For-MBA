@@ -98,6 +98,7 @@ python-dateutil
 ```
 
 **Version specifiers:**
+
 - `==2.28.0` — Exactly this version
 - `>=2.28.0` — This version or newer
 - `>=2.28,<3.0` — Range of versions
@@ -107,6 +108,7 @@ python-dateutil
 ### Semantic Versioning
 
 Packages use `MAJOR.MINOR.PATCH`:
+
 - **MAJOR**: Breaking changes (incompatible API)
 - **MINOR**: New features (backward compatible)
 - **PATCH**: Bug fixes only
@@ -260,12 +262,14 @@ tqdm>=4.64.0
 ## Mastery Check
 
 ### Question 1: Version Specifier
+
 What does `pandas>=1.5,<2.0` mean?
 
 <details>
 <summary>Click for Answer</summary>
 
 Install any version of pandas that is:
+
 - At least 1.5 (1.5.0 or higher)
 - Less than 2.0 (not 2.0.0 or higher)
 
@@ -276,12 +280,14 @@ This allows 1.5.0, 1.5.3, 1.9.9, but not 2.0.0.
 ---
 
 ### Question 2: Freeze Purpose
+
 Why use `pip freeze > requirements.txt`?
 
 <details>
 <summary>Click for Answer</summary>
 
 To capture exact versions of all installed packages for reproducibility. This ensures:
+
 - Same environment on other machines
 - Consistent deployments
 - Debugging with known versions
@@ -291,6 +297,7 @@ To capture exact versions of all installed packages for reproducibility. This en
 ---
 
 ### Question 3: Upgrade Package
+
 How do you upgrade a package to the latest version?
 
 <details>
@@ -307,6 +314,7 @@ pip install -U package_name
 ---
 
 ### Question 4: Show Details
+
 How do you see where a package is installed and its dependencies?
 
 <details>
@@ -323,7 +331,9 @@ This shows location, version, dependencies, and more.
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: You're setting up a new project that needs:
+
 - Web scraping
 - Data processing
 - Report generation as PDF
@@ -355,6 +365,7 @@ pip install -r requirements.txt
 ## Summary
 
 Today you learned:
+
 - ✅ `pip install` adds packages from PyPI
 - ✅ `requirements.txt` tracks dependencies
 - ✅ Version specifiers control compatibility

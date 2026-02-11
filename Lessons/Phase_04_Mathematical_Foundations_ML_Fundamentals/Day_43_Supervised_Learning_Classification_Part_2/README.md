@@ -39,6 +39,7 @@ outcomes:
 **But what if one tree is biased or makes mistakes?** You'd want multiple opinions. That's a Random Forest: many trees voting together, each with a slightly different perspective.
 
 **Tree-based models in industry:**
+
 - **Banks**: Credit scoring and loan approval
 - **Insurance**: Risk assessment
 - **Healthcare**: Diagnosis decision support
@@ -509,6 +510,7 @@ for _, row in rules_df.iterrows():
 ## Mastery Check
 
 ### Question 1: Single Tree vs Forest
+
 Why does a Random Forest typically outperform a single Decision Tree?
 
 <details>
@@ -517,11 +519,13 @@ Why does a Random Forest typically outperform a single Decision Tree?
 **Answer:** Random Forests reduce **variance** through averaging many diverse trees.
 
 **How it works:**
+
 1. **Bagging**: Each tree is trained on a random sample (with replacement)
 2. **Feature randomization**: Each split considers only a random subset of features
 3. **Averaging**: Final prediction averages across all trees
 
 **Result:**
+
 - Individual trees may overfit, but their errors are uncorrelated
 - Averaging cancels out random errors
 - The forest is more stable and generalizes better
@@ -533,6 +537,7 @@ Why does a Random Forest typically outperform a single Decision Tree?
 ---
 
 ### Question 2: Feature Importance Interpretation
+
 In your Random Forest, `credit_score` has importance 0.35 and `income` has importance 0.25. What does this mean?
 
 <details>
@@ -541,11 +546,13 @@ In your Random Forest, `credit_score` has importance 0.35 and `income` has impor
 **Answer:** These importances measure how much each feature contributes to **reducing impurity** (Gini or entropy) across all trees.
 
 **Interpretation:**
+
 - `credit_score` accounts for 35% of the total impurity reduction
 - `income` accounts for 25%
 - Together, they explain 60% of the model's predictive power
 
 **Caveats:**
+
 1. Importance is relative (sums to 1)
 2. Correlated features share importance (may underestimate each)
 3. Doesn't indicate direction (positive or negative effect)
@@ -558,6 +565,7 @@ In your Random Forest, `credit_score` has importance 0.35 and `income` has impor
 ---
 
 ### Question 3: Overfitting Diagnosis
+
 Your decision tree has 100% training accuracy but 70% test accuracy. How do you fix this?
 
 <details>
@@ -592,6 +600,7 @@ Use cross-validation to find optimal values.
 ---
 
 ### Question 4: Grid vs Random Search
+
 When would you prefer RandomizedSearchCV over GridSearchCV?
 
 <details>
@@ -605,6 +614,7 @@ When would you prefer RandomizedSearchCV over GridSearchCV?
 4. **Continuous parameters**: Can sample from distributions
 
 **Comparison:**
+
 | Aspect          | GridSearch            | RandomSearch          |
 | --------------- | --------------------- | --------------------- |
 | Coverage        | All combinations      | Random sample         |
@@ -619,6 +629,7 @@ When would you prefer RandomizedSearchCV over GridSearchCV?
 ---
 
 ### Question 5: Interpreting Tree Rules
+
 A decision tree for loan approval says: "IF credit_score > 700 AND income > 50000 THEN Approve." How confident should you be in this rule?
 
 <details>
@@ -629,7 +640,7 @@ A decision tree for loan approval says: "IF credit_score > 700 AND income > 5000
 1. **Sample size**: How many training examples fell into this leaf?
    - 1000 samples → very confident
    - 10 samples → not reliable
-   
+
 2. **Purity**: What percentage of samples were actually approved?
    - 95% approved → high confidence
    - 55% approved → essentially a coin flip
@@ -651,6 +662,7 @@ A decision tree for loan approval says: "IF credit_score > 700 AND income > 5000
 ## Summary
 
 Today you learned:
+
 - ✅ Decision trees split data using if-then rules
 - ✅ Trees are interpretable but prone to overfitting
 - ✅ Random Forests combine many trees for better accuracy
