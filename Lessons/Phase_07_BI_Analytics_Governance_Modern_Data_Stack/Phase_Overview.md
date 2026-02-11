@@ -17,12 +17,14 @@ difficulty: "advanced"
 Welcome to the command center of the modern enterprise.
 
 **This phase transforms you from a Data Worker into a Data Leader** capable of:
+
 - Architecting scalable data platforms (Snowflake, dbt).
 - Designing governance frameworks that ensure trust.
 - Telling compelling stories that drive executive action.
 - Leading the entire lifecycle from raw log to boardroom strategy.
 
 **What sets this phase apart:**
+
 - **Architecture**: Moving beyond "scripts" to "systems" (ETL, DAGs, Warehouses).
 - **Influence**: Focusing on *persuasion* and *storytelling*, not just charts.
 - **Reliability**: Treating data pipelines with the same rigor as production code.
@@ -35,56 +37,68 @@ Welcome to the command center of the modern enterprise.
 ### Week 1: The Foundation (Days 73-76)
 
 **Day 73: BI SQL & Advanced Databases**
+
 - Window Functions (`RANK`, `LEAD`) and CTEs.
 - *Why it matters*: You can't analyze what you can't query efficiently.
 
 **Day 74: BI Data Preparation & Tools**
+
 - Unpivoting, Merging, and cleaning mess.
 - *Why it matters*: 80% of the job is prep. Master "Mise en place."
 
 **Day 75: BI Visualization & Dashboard Principles**
+
 - Tufte's Data-Ink Ratio and Pre-Attentive Attributes.
 - *Why it matters*: A confusing dashboard is a failed dashboard.
 
 **Day 76: BI Platforms & Automation**
+
 - Power BI vs Tableau vs Looker architectures.
 - *Why it matters*: Choosing the right tool saves millions in TCO.
 
 ### Week 2: The Analysis (Days 77-79)
 
 **Day 77: BI Domain Analytics & Value**
+
 - Funnels (Marketing), Churn (Product), MRR (Finance).
 - *Why it matters*: You must speak the language of your stakeholders.
 
 **Day 78: BI Experimentation & Predictive**
+
 - A/B Testing, P-Values, and Forecasting.
 - *Why it matters*: Distinguishing "Signal" from "Noise" prevents bad decisions.
 
 **Day 79: BI Storytelling & Influence**
+
 - The Narrative Arc and the Minto Pyramid.
 - *Why it matters*: Data without a story is just a spreadsheet.
 
 ### Week 3: The System (Days 80-83)
 
 **Day 80: BI Data Quality & Governance**
+
 - The 6 Dimensions of Quality and Data Lineage.
 - *Why it matters*: If the data is wrong, the insights are dangerous.
 
 **Day 81: BI Architecture & Data Modeling**
+
 - Star Schema vs Snowflake vs One Big Table.
 - *Why it matters*: Good modeling makes dashboards 100x faster.
 
 **Day 82: BI ETL & Pipeline Automation**
+
 - Idempotency, DAGs, and Airflow.
 - *Why it matters*: Pipelines should self-heal at 3 AM.
 
 **Day 83: BI Cloud & Modern Data Stack**
+
 - Separation of Compute/Storage and FinOps.
 - *Why it matters*: The Cloud is infinite, but your budget is not.
 
 ### Week 4: The Career (Day 84)
 
 **Day 84: BI Career & Capstone**
+
 - Building a full-stack portfolio.
 - *Why it matters*: Proving you can do the job before you get the job.
 
@@ -106,14 +120,16 @@ Welcome to the command center of the modern enterprise.
 ### When to Use Each Technique
 
 **Strategic Decision Making:**
-1.  **Storytelling**: When you need to convince the Board to pivot strategy.
-2.  **Domain KPIs**: When measuring the health of a specific department.
-3.  **Governance**: When data trust is eroding ("The numbers don't match!").
+
+1. **Storytelling**: When you need to convince the Board to pivot strategy.
+2. **Domain KPIs**: When measuring the health of a specific department.
+3. **Governance**: When data trust is eroding ("The numbers don't match!").
 
 **Operational Efficiency:**
-1.  **ETL Automation**: When manual copy-pasting takes > 1 hour/week.
-2.  **Star Schema**: When the dashboard takes > 10 seconds to load.
-3.  **Data Quality Tests**: When bad data keeps breaking downstream reports.
+
+1. **ETL Automation**: When manual copy-pasting takes > 1 hour/week.
+2. **Star Schema**: When the dashboard takes > 10 seconds to load.
+3. **Data Quality Tests**: When bad data keeps breaking downstream reports.
 
 ---
 
@@ -122,6 +138,7 @@ Welcome to the command center of the modern enterprise.
 By the end of Phase 7, you should be able to:
 
 ### Technical Skills
+
 - ✅ Write Window Functions (`RANK`, `LEAD`) to analyze trends
 - ✅ Design robust ETL pipelines using Python/Airflow concepts
 - ✅ model data into Star Schemas for performance
@@ -131,6 +148,7 @@ By the end of Phase 7, you should be able to:
 - ✅ Implement automated tests for data quality (Great Expectations logic)
 
 ### Strategic Skills
+
 - ✅ Translate "Business Questions" into "SQL Queries"
 - ✅ Manage Stakeholders using the "Yes, And..." technique
 - ✅ Design A/B Tests with correct Sample Sizes
@@ -144,6 +162,7 @@ By the end of Phase 7, you should be able to:
 ### Core Tools You've Mastered
 
 **Data Engineering & Storage:**
+
 ```sql
 -- Snowflake / BigQuery / SQL
 WITH clean_data AS (
@@ -153,6 +172,7 @@ SELECT * FROM clean_data;
 ```
 
 **Transformation & Orchestration:**
+
 ```python
 # Python / Airflow Logic
 def etl_job():
@@ -162,33 +182,40 @@ def etl_job():
 ```
 
 **Analysis & Visualization:**
-*   **Tableau / Power BI / Looker**: Creating measures, calculated fields, and interactive dashboards.
-*   **Excel**: For last-mile analysis (Pivot Tables).
+
+- **Tableau / Power BI / Looker**: Creating measures, calculated fields, and interactive dashboards.
+- **Excel**: For last-mile analysis (Pivot Tables).
 
 ---
 
 ## Real-World Application Scenarios
 
 ### Scenario 1: The Cloud Migration
+
 **Challenge**: Move on-prem SQL Server to Snowflake.
-*   **Solution**:
-    *   **Day 83 (Cloud)**: Setup Snowflake with separate warehouses for Loading vs Reporting.
-    *   **Day 81 (Modeling)**: Redesign 3NF schema into Star Schema for analytics.
-    *   **Day 82 (ETL)**: Build pipelines to move data nightly.
+
+- **Solution**:
+  - **Day 83 (Cloud)**: Setup Snowflake with separate warehouses for Loading vs Reporting.
+  - **Day 81 (Modeling)**: Redesign 3NF schema into Star Schema for analytics.
+  - **Day 82 (ETL)**: Build pipelines to move data nightly.
 
 ### Scenario 2: The "Why is Revenue Down?" Crisis
+
 **Challenge**: CEO demands valid explanation.
-*   **Solution**:
-    *   **Day 73 (SQL)**: Dig into transaction logs using Window Functions.
-    *   **Day 77 (Domain)**: Analyze Funnel metrics vs Churn metrics.
-    *   **Day 79 (Storytelling)**: Present "Revenue is down because New User signup failed, not because Churn increased."
+
+- **Solution**:
+  - **Day 73 (SQL)**: Dig into transaction logs using Window Functions.
+  - **Day 77 (Domain)**: Analyze Funnel metrics vs Churn metrics.
+  - **Day 79 (Storytelling)**: Present "Revenue is down because New User signup failed, not because Churn increased."
 
 ### Scenario 3: The Board Meeting
+
 **Challenge**: Present Q4 results.
-*   **Solution**:
-    *   **Day 75 (Viz)**: Create clean, high-contrast slides.
-    *   **Day 70 (Metrics)**: Focus on Leading Indicators (Pipeline) vs Lagging (Revenue).
-    *   **Day 79 (Influence)**: Start with the Headline ("We beat targets by 10%").
+
+- **Solution**:
+  - **Day 75 (Viz)**: Create clean, high-contrast slides.
+  - **Day 70 (Metrics)**: Focus on Leading Indicators (Pipeline) vs Lagging (Revenue).
+  - **Day 79 (Influence)**: Start with the Headline ("We beat targets by 10%").
 
 ---
 
@@ -200,82 +227,90 @@ def etl_job():
 ---
 
 ### Question 1: The Broken Dashboard
+
 **Combines**: Data Quality (Day 80), SQL (Day 73), Platforms (Day 76)
 
 **Scenario**: The Executive Dashboard usually shows $1M daily revenue. Today it shows $2M.
-1.  **Diagnosis**: You suspect high-value duplicates.
-2.  **Task**:
-    *   Write a SQL query to find duplicate Order IDs in `fact_sales`.
-    *   Explain how **Idempotency** in the ETL pipeline (Day 82) could prevent this.
-    *   Propose an automated **Data Quality Test** (Day 80) to block the pipeline next time.
+
+1. **Diagnosis**: You suspect high-value duplicates.
+2. **Task**:
+    - Write a SQL query to find duplicate Order IDs in `fact_sales`.
+    - Explain how **Idempotency** in the ETL pipeline (Day 82) could prevent this.
+    - Propose an automated **Data Quality Test** (Day 80) to block the pipeline next time.
 
 <details>
 <summary>💡 Hints</summary>
 
-1.  SQL: `HAVING COUNT(*) > 1`.
-2.  Idempotency: `DELETE existing WHERE date=today` before INSERT.
-3.  Test: `expect_column_values_to_be_unique(order_id)`.
+1. SQL: `HAVING COUNT(*) > 1`.
+2. Idempotency: `DELETE existing WHERE date=today` before INSERT.
+3. Test: `expect_column_values_to_be_unique(order_id)`.
 
 </details>
 
 ---
 
 ### Question 2: The Slow Report
+
 **Combines**: Modeling (Day 81), Cloud (Day 83), Architecture (Day 81)
 
 **Scenario**: The "Customer Detail" report takes 5 minutes to load.
-*   **Current State**: It joins 15 Normalized tables (Snowflake Schema) in Real-time (Direct Query).
-*   **Task**: Re-architect this.
-    *   Propose a **Star Schema** or **OBT** design.
-    *   Switch to **Import Mode**?
-    *   Use **Cluster Keys** (Pruning) on the Date column.
+
+- **Current State**: It joins 15 Normalized tables (Snowflake Schema) in Real-time (Direct Query).
+- **Task**: Re-architect this.
+  - Propose a **Star Schema** or **OBT** design.
+  - Switch to **Import Mode**?
+  - Use **Cluster Keys** (Pruning) on the Date column.
 
 <details>
 <summary>💡 Hints</summary>
 
-1.  Denormalize 15 tables into 1 Fact + 1 Dimension (Star).
-2.  Import Mode puts data in RAM (Sub-second).
-3.  Pruning avoids scanning history.
+1. Denormalize 15 tables into 1 Fact + 1 Dimension (Star).
+2. Import Mode puts data in RAM (Sub-second).
+3. Pruning avoids scanning history.
 
 </details>
 
 ---
 
 ### Question 3: The Unconvincing Feature
+
 **Combines**: Experimentation (Day 78), Domain (Day 77), Storytelling (Day 79)
 
 **Scenario**: A PM wants to launch "Dark Mode" because "Everyone loves it."
-*   **Data**: You ran an A/B test. Retention increased by 0.1% (P-Value = 0.40).
-*   **Task**:
-    *   Interpret the P-Value (Is it significant?).
-    *   Calculate the ROI if engineering cost is $50k.
-    *   Write the email to the PM recommending Go/No-Go.
+
+- **Data**: You ran an A/B test. Retention increased by 0.1% (P-Value = 0.40).
+- **Task**:
+  - Interpret the P-Value (Is it significant?).
+  - Calculate the ROI if engineering cost is $50k.
+  - Write the email to the PM recommending Go/No-Go.
 
 <details>
 <summary>💡 Hints</summary>
 
-1.  P=0.40 means "40% chance of random luck." Not significant.
-2.  No-Go. The data does not support the investment.
+1. P=0.40 means "40% chance of random luck." Not significant.
+2. No-Go. The data does not support the investment.
 
 </details>
 
 ---
 
 ### Question 4: The Governance Crisis
+
 **Combines**: Governance (Day 80), Strategy (Day 69), Modeling (Day 81)
 
 **Scenario**: Sales reports $10M revenue. Finance reports $9.5M. The CEO is angry.
-*   **Root Cause**: Sales counts "Bookings" (Contracts signed). Finance counts "Recognized Revenue" (Service delivered).
-*   **Task**:
-    *   Create a **Data Dictionary** definition for both.
-    *   Propose a **Stewardship** model (Who owns which definition?).
-    *   Design a "Gold" dataset in the Warehouse that contains *both* columns clearly labeled.
+
+- **Root Cause**: Sales counts "Bookings" (Contracts signed). Finance counts "Recognized Revenue" (Service delivered).
+- **Task**:
+  - Create a **Data Dictionary** definition for both.
+  - Propose a **Stewardship** model (Who owns which definition?).
+  - Design a "Gold" dataset in the Warehouse that contains *both* columns clearly labeled.
 
 <details>
 <summary>💡 Hints</summary>
 
-1.  Ambiguity is the enemy. Rename to `bookings_amt` and `GAAP_revenue`.
-2.  Sales VP owns Bookings. CFO owns Revenue.
+1. Ambiguity is the enemy. Rename to `bookings_amt` and `GAAP_revenue`.
+2. Sales VP owns Bookings. CFO owns Revenue.
 
 </details>
 
@@ -284,14 +319,17 @@ def etl_job():
 ## Common Pitfalls & Solutions
 
 ### Pitfall 1: "Analysis Paralysis"
+
 **Why it's wrong**: You spend 3 weeks digging for the "Perfect" answer.
 **Better Approach**: Time-box your analysis. "What is the 80% answer I can get in 4 hours?" Decisions need speed.
 
 ### Pitfall 2: "The Data Dump"
+
 **Why it's wrong**: Showing raw data tables to an Executive.
 **Better Approach**: Summarize. Use Charts. Use Bullet points. They pay you for *Synthesis*, not *Raw Data*.
 
 ### Pitfall 3: "Re-inventing the Wheel"
+
 **Why it's wrong**: Writing custom SQL for "Date Dimensions" or "Time Zones".
 **Better Approach**: Use standard packages (dbt packages, Python libraries).
 
@@ -302,6 +340,7 @@ def etl_job():
 ### Immediate Next Steps
 
 **Consolidation (Weeks 1-2)**:
+
 - ✅ **Capstone Project**: Build your end-to-end portfolio piece.
 - ✅ **Resume Polish**: Update your LinkedIn with "Data Architecture" and "Governance" keywords.
 - ✅ **Mock Interviews**: Practice the STAR method.
@@ -309,14 +348,17 @@ def etl_job():
 **Specialization Tracks**:
 
 **Track A: Analytics Engineer**
+
 - Focus on dbt, Airflow, and Data Modeling (Day 81-82).
 - **Goal**: Build the platforms analysts use.
 
 **Track B: Data Product Manager**
+
 - Focus on Storytelling, Experimentation, and Strategy (Day 77-79).
 - **Goal**: Lead product direction using data.
 
 **Track C: Chief Data Officer (Future)**
+
 - Focus on Governance, FinOps, and Value Drivers (Day 80, 83).
 - **Goal**: Manage data as a strategic asset.
 
@@ -325,11 +367,13 @@ def etl_job():
 ## Continuous Learning Resources
 
 **Books**:
+
 - *"The Data Warehouse Toolkit"* (Kimball) - The Bible of Modeling.
 - *"Fundamentals of Data Engineering"* (Reis & Housley).
 - *"Effective Data Storytelling"* (Dykes).
 
 **Communities**:
+
 - **dbt Slack Community**: 20k+ Analytics Engineers.
 - **Measure Slack**: Digital Analytics.
 
@@ -340,6 +384,7 @@ def etl_job():
 You have completed **Phase 7: BI Analytics, Governance & Modern Data Stack**!
 
 ### What You've Achieved
+
 - ✅ Mastered the **Modern Data Stack** (MDS).
 - ✅ Learned to govern, clean, and architect data at scale.
 - ✅ Developed the soft skills to influence executives.

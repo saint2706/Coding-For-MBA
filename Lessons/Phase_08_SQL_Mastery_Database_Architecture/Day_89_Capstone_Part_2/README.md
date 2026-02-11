@@ -34,11 +34,11 @@ outcomes:
 
 **The Construction Site**
 
-*   **Day 88 (Architect)**: Drew the plans. "Kitchen goes here."
-*   **Day 89 (Builder)**: Pours the concrete. Installs the pipes.
-    *   **DDL**: Framing the house (`CREATE TABLE`).
-    *   **ETL**: Moving the furniture in (`INSERT`).
-    *   **Optimization**: Sanding the floors (`CREATE INDEX`).
+* **Day 88 (Architect)**: Drew the plans. "Kitchen goes here."
+* **Day 89 (Builder)**: Pours the concrete. Installs the pipes.
+  * **DDL**: Framing the house (`CREATE TABLE`).
+  * **ETL**: Moving the furniture in (`INSERT`).
+  * **Optimization**: Sanding the floors (`CREATE INDEX`).
 
 **Today**, we turn the paper design into a running database.
 
@@ -49,24 +49,26 @@ outcomes:
 ### 1. DDL: Constraints are Key
 
 Don't just `CREATE TABLE`. Use **Constraints** to protect data quality.
-*   `PRIMARY KEY`: Enforces uniqueness.
-*   `FOREIGN KEY`: Enforces relationships. (Prevents "Orphaned" orders).
-*   `CHECK (age > 0)`: Enforces business logic.
-*   `NOT NULL`: Prevents missing data.
+
+* `PRIMARY KEY`: Enforces uniqueness.
+* `FOREIGN KEY`: Enforces relationships. (Prevents "Orphaned" orders).
+* `CHECK (age > 0)`: Enforces business logic.
+* `NOT NULL`: Prevents missing data.
 
 ### 2. Seeding Data (Python Faker)
 
 You need data to test performance.
-*   **Library**: `faker`.
-*   **Script**: Generate 1 Million users.
-*   **Why?**: Identifying "Slow Queries" on 10 rows is impossible. You need volume.
+
+* **Library**: `faker`.
+* **Script**: Generate 1 Million users.
+* **Why?**: Identifying "Slow Queries" on 10 rows is impossible. You need volume.
 
 ### 3. Optimization Strategy
 
-*   **Step 1**: Run `EXPLAIN ANALYZE SELECT ...`.
-*   **Step 2**: Look for `Seq Scan` (Sequential Scan = Reading the whole book).
-*   **Step 3**: `CREATE INDEX idx_name ON table(column)`.
-*   **Step 4**: Run `EXPLAIN ANALYZE` again. Look for `Index Scan` (Jump to page).
+* **Step 1**: Run `EXPLAIN ANALYZE SELECT ...`.
+* **Step 2**: Look for `Seq Scan` (Sequential Scan = Reading the whole book).
+* **Step 3**: `CREATE INDEX idx_name ON table(column)`.
+* **Step 4**: Run `EXPLAIN ANALYZE` again. Look for `Index Scan` (Jump to page).
 
 ---
 
@@ -74,22 +76,23 @@ You need data to test performance.
 
 ### "Indexes are not Free"
 
-*   **Junior**: "I'll index every column so reads are fast!"
-*   **Senior**: "Each index slows down `INSERT` / `UPDATE`."
-*   **Why?**: When you write a new row, the DB has to update the Table AND the 10 Indexes.
-*   **Balance**: Only index columns used in `WHERE`, `JOIN`, or `ORDER BY`.
+* **Junior**: "I'll index every column so reads are fast!"
+* **Senior**: "Each index slows down `INSERT` / `UPDATE`."
+* **Why?**: When you write a new row, the DB has to update the Table AND the 10 Indexes.
+* **Balance**: Only index columns used in `WHERE`, `JOIN`, or `ORDER BY`.
 
 ### The "Migration" Headache
 
-*   **Dev**: "I changed the schema locally. It works."
-*   **Prod**: "The deployment failed because the table has 1 Billion rows and the `ALTER TABLE` locked it for 4 hours."
-*   **Solution**: "Online DDL" tools or "Expand/Contract" pattern (Add new column, dual write, backfill, switch read, drop old column).
+* **Dev**: "I changed the schema locally. It works."
+* **Prod**: "The deployment failed because the table has 1 Billion rows and the `ALTER TABLE` locked it for 4 hours."
+* **Solution**: "Online DDL" tools or "Expand/Contract" pattern (Add new column, dual write, backfill, switch read, drop old column).
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: The Build (DDL)
+
 **Goal**: Create the schema from Day 88.
 
 ```sql
@@ -109,6 +112,7 @@ CREATE TABLE trips (
 ```
 
 ### Exercise 2: The Load (Python)
+
 **Goal**: Generate 100k rows.
 
 ```python
@@ -126,18 +130,21 @@ with open('seed.sql', 'w') as f:
 ```
 
 ### Exercise 3: The Optimize
+
 **Goal**: Fix the slow query.
 
 **Query**: `SELECT * FROM drivers WHERE current_city = 'London'`.
-*   **Without Index**: Scans 100k rows. Cost: 500. Time: 200ms.
-*   **Action**: `CREATE INDEX idx_city ON drivers(current_city)`.
-*   **With Index**: Scans 30k rows (Index Bitmap Scan). Cost: 50. Time: 10ms.
+
+* **Without Index**: Scans 100k rows. Cost: 500. Time: 200ms.
+* **Action**: `CREATE INDEX idx_city ON drivers(current_city)`.
+* **With Index**: Scans 30k rows (Index Bitmap Scan). Cost: 50. Time: 10ms.
 
 ---
 
 ## Mastery Check
 
 ### Question 1: Foreign Keys
+
 What happens if you try to `INSERT` a trip with `driver_id = 999` but Driver 999 does not exist?
 A) It works fine.
 B) The Database throws an Error (Foreign Key Constraint Violation).
@@ -152,6 +159,7 @@ Constraints protect integrity.
 </details>
 
 ### Question 2: Explain Analyze
+
 What does `EXPLAIN ANALYZE` do?
 A) Runs the query and tells you how it executed (Plan + Actual Time).
 B) Only predicts the plan.
@@ -166,6 +174,7 @@ Crucial for debugging performance.
 </details>
 
 ### Question 3: Indexing
+
 Which column is a good candidate for an Index?
 A) `gender` (Only 'M' or 'F'). (Low Cardinality).
 B) `email` (Unique per user). (High Cardinality + Frequent Search).
@@ -180,6 +189,7 @@ High Cardinality columns used in WHERE are best for B-Tree indexes.
 </details>
 
 ### Question 4: Default Values
+
 What does `DEFAULT CURRENT_DATE` do?
 A) Automatically fills the date if you don't provide one.
 B) Forces you to provide a date.
@@ -194,6 +204,7 @@ Useful for `created_at` timestamps.
 </details>
 
 ### Question 5: Migration Safety
+
 Is `DROP COLUMM` safe in production?
 A) Yes, always.
 B) No, it might break applications that rely on `SELECT *` or that column.
@@ -212,9 +223,10 @@ Always deprecate first (ignore in code), then drop later.
 ## Summary
 
 Today you learned:
-*   ✅ **DDL Constraints**: Build quality into the schema.
-*   ✅ **Seeding**: Validate performance with volume (Faker).
-*   ✅ **Indexing**: The first line of defense against slow queries.
-*   ✅ **Migration Safety**: Be careful with production schemas.
+
+* ✅ **DDL Constraints**: Build quality into the schema.
+* ✅ **Seeding**: Validate performance with volume (Faker).
+* ✅ **Indexing**: The first line of defense against slow queries.
+* ✅ **Migration Safety**: Be careful with production schemas.
 
 **Tomorrow**: We review your career strategy in **Career Workshop**.

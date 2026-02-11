@@ -39,16 +39,18 @@ outcomes:
 **Imagine you run a burger joint.**
 
 **Scenario A: The Food Truck (Real-Time API)**
-*   A customer walks up and orders "One Cheeseburger."
-*   You make *that specific burger* right then and there.
-*   **Pros**: Fresh (latest data), Custom (personalized).
-*   **Cons**: Customer has to wait (Latency). If 1,000 people show up at once, you crash (Concuprency limits).
+
+* A customer walks up and orders "One Cheeseburger."
+* You make *that specific burger* right then and there.
+* **Pros**: Fresh (latest data), Custom (personalized).
+* **Cons**: Customer has to wait (Latency). If 1,000 people show up at once, you crash (Concuprency limits).
 
 **Scenario B: The Catering Service (Batch Processing)**
-*   You get an order: "500 burgers for lunch at 12:00."
-*   You make all 500 in advance.
-*   **Pros**: Efficient (High Throughput). No waiting at lunch time (Low Latency for serving).
-*   **Cons**: Stale (Old data). If someone changes their mind at 11:55, it's too late.
+
+* You get an order: "500 burgers for lunch at 12:00."
+* You make all 500 in advance.
+* **Pros**: Efficient (High Throughput). No waiting at lunch time (Low Latency for serving).
+* **Cons**: Stale (Old data). If someone changes their mind at 11:55, it's too late.
 
 **Model Deployment** is deciding whether your AI should be a Food Truck (API) or a Catering Service (Batch).
 
@@ -59,31 +61,35 @@ outcomes:
 ### 1. Real-Time Serving (REST APIs)
 
 The standard way to serve a model is wrapping it in a web server (like **FastAPI** or **Flask**).
-*   **Request**: `POST /predict {"age": 30, "income": 50k}`
-*   **Response**: `{"approved": true, "confidence": 0.95}`
-*   **Use Case**: Credit card fraud detection (User is swiping card NOW), Chatbot.
+
+* **Request**: `POST /predict {"age": 30, "income": 50k}`
+* **Response**: `{"approved": true, "confidence": 0.95}`
+* **Use Case**: Credit card fraud detection (User is swiping card NOW), Chatbot.
 
 ### 2. Batch Serving (Offline Inference)
 
 Run a script every night.
-*   **Input**: `users_db_dump.csv`
-*   **Process**: Iterate through 1M rows, predict churn risk.
-*   **Output**: `churn_risk_YYYY_MM_DD.csv`
-*   **Use Case**: Email marketing recommendations (Send tomorrow morning), Credit Limit updates.
+
+* **Input**: `users_db_dump.csv`
+* **Process**: Iterate through 1M rows, predict churn risk.
+* **Output**: `churn_risk_YYYY_MM_DD.csv`
+* **Use Case**: Email marketing recommendations (Send tomorrow morning), Credit Limit updates.
 
 ### 3. Containerization (Docker)
 
 **"It works on my machine!"** -> **"Then we'll ship your machine."**
 Docker packages your code + libraries + OS settings into a "Container."
-*   **Dockerfile**: The recipe (Install Python, Install Pandas, Copy Code, Run App).
-*   **Image**: The cooked meal (frozen snapshot).
-*   **Container**: The meal being eaten (running instance).
+
+* **Dockerfile**: The recipe (Install Python, Install Pandas, Copy Code, Run App).
+* **Image**: The cooked meal (frozen snapshot).
+* **Container**: The meal being eaten (running instance).
 
 ### 4. Serverless (Function-as-a-Service)
 
 Upload your code to AWS Lambda / Google Cloud Functions.
-*   **Benefits**: Zero servers to manage. Auto-scales from 0 to 10,000 requests.
-*   **Drawbacks**: "Cold Starts" (Wait 5s for the first request to wake up).
+
+* **Benefits**: Zero servers to manage. Auto-scales from 0 to 10,000 requests.
+* **Drawbacks**: "Cold Starts" (Wait 5s for the first request to wake up).
 
 ---
 
@@ -92,9 +98,10 @@ Upload your code to AWS Lambda / Google Cloud Functions.
 ### The "Shadow Mode" Pattern
 
 **Never deploy a new model directly to users.**
-1.  **Old Model (Control)**: Making live decisions.
-2.  **New Model (Shadow)**: Receiving the same data, making predictions, but **WE THROW THEM AWAY**.
-3.  **Log Results**: Compare Shadow predictions to reality. Only promote when it beats the Old Model consistently for 2 weeks.
+
+1. **Old Model (Control)**: Making live decisions.
+2. **New Model (Shadow)**: Receiving the same data, making predictions, but **WE THROW THEM AWAY**.
+3. **Log Results**: Compare Shadow predictions to reality. Only promote when it beats the Old Model consistently for 2 weeks.
 
 ### Cost vs. Latency Trade-off
 
@@ -109,6 +116,7 @@ Upload your code to AWS Lambda / Google Cloud Functions.
 ## Hands-on Lab
 
 ### Exercise 1: Building a Prediction API
+
 **Goal**: Create a standard FastAPI endpoint.
 
 **Scenario**: A simple endpoint that adds two numbers (simulating a model).
@@ -140,6 +148,7 @@ def predict(data: InputData):
 ```
 
 **Expected Client Output**:
+
 ```json
 {"result": 25.0, "status": "success"}
 ```
@@ -147,6 +156,7 @@ def predict(data: InputData):
 ---
 
 ### Exercise 2: Writing a Dockerfile
+
 **Goal**: Containerize the API above.
 
 **Scenario**: You need to hand this off to the Ops team. They don't know Python.
@@ -170,11 +180,13 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
 ```
 
 **Task**: Explain line 3. Why copy `requirements.txt` separate from code?
-*   *Answer*: Docker caches layers. If you change your code (`main.py`) but not your libraries, Docker skips the slow `pip install` step. This makes builds fast.
+
+* *Answer*: Docker caches layers. If you change your code (`main.py`) but not your libraries, Docker skips the slow `pip install` step. This makes builds fast.
 
 ---
 
 ### Exercise 3: Simulating Batch Processing
+
 **Goal**: Process a list of "users" and save results.
 
 ```python
@@ -207,6 +219,7 @@ print(users.head())
 ```
 
 **Expected Output**:
+
 ```text
 Starting Batch Job...
 Processed 100 records in 1.05 seconds.
@@ -224,6 +237,7 @@ Processed 100 records in 1.05 seconds.
 ## Mastery Check
 
 ### Question 1: Latency
+
 You are building an AI for a self-driving car. Which serving pattern do you use?
 A) Batch Processing (Nightly)
 B) Cloud API (REST)
@@ -238,6 +252,7 @@ Edge. You cannot wait 500ms for a round-trip to the cloud to decide if you shoul
 </details>
 
 ### Question 2: Docker
+
 What is the main advantage of Docker in MLOps?
 A) It makes the model more accurate.
 B) It guarantees the environment (libraries, OS) is identical in Dev and Prod.
@@ -252,6 +267,7 @@ Reproducibility of the environment.
 </details>
 
 ### Question 3: Batch vs API
+
 You need to recommend movies to user based on their history. The recommendations only update once a day. Which pattern is best?
 A) Real-Time API
 B) Batch Pre-computation
@@ -266,6 +282,7 @@ Batch. It's cheaper and faster to retrieve pre-calculated results from a databas
 </details>
 
 ### Question 4: Shadow Mode
+
 What is the purpose of "Shadow Mode" deployment?
 A) To hide the model from hackers.
 B) To test the model on live data without showing predictions to users (Risk-free evaluation).
@@ -280,6 +297,7 @@ It allows safe testing of a new model version against production traffic.
 </details>
 
 ### Question 5: Serialization
+
 What file format is commonly used to "freeze" a Python model for deployment?
 A) .txt
 B) .pkl (Pickle) or .joblib or .onnx
@@ -298,9 +316,10 @@ Serialization saves the model object's state (weights/parameters) to a file.
 ## Summary
 
 Today you learned:
-*   ✅ **Real-Time (API)** vs **Batch** is the fundamental architectural choice.
-*   ✅ **Docker** solves the "It works on my machine" problem.
-*   ✅ **FastAPI** is the modern standard for Python model serving.
-*   ✅ **Shadow Mode** is how pros deploy without breaking things.
+
+* ✅ **Real-Time (API)** vs **Batch** is the fundamental architectural choice.
+* ✅ **Docker** solves the "It works on my machine" problem.
+* ✅ **FastAPI** is the modern standard for Python model serving.
+* ✅ **Shadow Mode** is how pros deploy without breaking things.
 
 **Tomorrow**: We look at what happens *after* deployment with **Model Monitoring & Reliability**.

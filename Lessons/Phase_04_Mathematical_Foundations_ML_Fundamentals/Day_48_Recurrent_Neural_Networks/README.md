@@ -36,6 +36,7 @@ outcomes:
 **You're reading a sentence.** Understanding "bank" requires context—is it a river bank or a money bank? You carry meaning from previous words. RNNs work the same way: they process sequences one step at a time, maintaining a "memory" of past inputs.
 
 **RNNs in action:**
+
 - **Google Translate**: Sequence-to-sequence translation
 - **Autocomplete**: Predicting next word
 - **Stock prediction**: Time series forecasting
@@ -380,6 +381,7 @@ print(f"Multi-step MSE: {model_multi.evaluate(X_test_m, Y_test_m, verbose=0):.4f
 ## Mastery Check
 
 ### Question 1: Why LSTM over SimpleRNN?
+
 What problem does LSTM solve that SimpleRNN cannot?
 
 <details>
@@ -390,6 +392,7 @@ What problem does LSTM solve that SimpleRNN cannot?
 </details>
 
 ### Question 2: return_sequences
+
 What does `return_sequences=True` do in LSTM?
 
 <details>
@@ -400,6 +403,7 @@ Returns output at **every timestep** instead of just the final output. Use when 
 </details>
 
 ### Question 3: Input Shape
+
 LSTM expects input shape (samples, timesteps, features). What do these mean?
 
 <details>
@@ -412,6 +416,7 @@ LSTM expects input shape (samples, timesteps, features). What do these mean?
 </details>
 
 ### Question 4: Bidirectional
+
 When would you use a Bidirectional LSTM?
 
 <details>
@@ -422,6 +427,7 @@ When **future context matters** for understanding present. Examples: text classi
 </details>
 
 ### Question 5: LSTM vs GRU
+
 When choose GRU over LSTM?
 
 <details>

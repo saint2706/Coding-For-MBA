@@ -25,6 +25,7 @@ outcomes: [Create interactive web-ready charts, Build zoomable visualizations, E
 **With Plotly:** The CFO hovers to see exact values. The VP zooms into their region. One visualization answers multiple questions.
 
 **Real-world applications:**
+
 - **Dashboards**: Zoom into date ranges, filter by category
 - **Presentations**: Hover for details without slide changes
 - **Analysis**: Explore outliers by clicking points
@@ -196,6 +197,7 @@ fig.show()
 ## Mastery Check
 
 ### Question 1: Interactivity Benefits
+
 When is an interactive chart clearly better than static?
 
 <details>
@@ -209,6 +211,7 @@ When is an interactive chart clearly better than static?
 </details>
 
 ### Question 2: Performance
+
 Your 100K point scatter is slow. What helps?
 
 <details>
@@ -223,6 +226,7 @@ df_sample = df.sample(10000)
 </details>
 
 ### Question 3: Animation vs Facets
+
 When use animation_frame vs faceted charts?
 
 <details>
@@ -234,6 +238,7 @@ When use animation_frame vs faceted charts?
 </details>
 
 ### Question 4: HTML Export Bug
+
 Chart shows in Jupyter but HTML is blank after `fig.write_html("chart.html", include_plotlyjs=False)`. Why?
 
 <details>
@@ -244,6 +249,7 @@ No JavaScript included. Fix: `include_plotlyjs=True` or `include_plotlyjs="cdn"`
 </details>
 
 ### Question 5: Design Scenario
+
 Building 5-chart dashboard. How organize?
 
 <details>

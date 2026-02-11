@@ -176,6 +176,7 @@ python -m venv venv
 ### VS Code Integration
 
 VS Code automatically detects venvs. To select:
+
 1. Open Command Palette (Ctrl+Shift+P)
 2. "Python: Select Interpreter"
 3. Choose your venv's Python
@@ -183,6 +184,7 @@ VS Code automatically detects venvs. To select:
 ### Common Issues
 
 **Issue**: `pip install` not working in venv
+
 ```bash
 # Ensure venv is activated
 # Check prompt for (venv)
@@ -192,6 +194,7 @@ python -m pip install --upgrade pip
 ```
 
 **Issue**: Wrong Python version
+
 ```bash
 # Check which Python
 python --version
@@ -283,12 +286,14 @@ if __name__ == "__main__":
 ## Mastery Check
 
 ### Question 1: Why Virtual Environments?
+
 What problem do virtual environments solve?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Dependency isolation.** Each project can have:
+
 - Different versions of the same package
 - Different Python versions (with tools like pyenv)
 - No conflicts between projects
@@ -300,6 +305,7 @@ Without venvs, upgrading a package for one project could break another.
 ---
 
 ### Question 2: Activation Check
+
 How do you verify your venv is activated?
 
 <details>
@@ -308,6 +314,7 @@ How do you verify your venv is activated?
 1. Look for `(venv)` in your command prompt
 2. Run `which python` (macOS/Linux) or `where python` (Windows)
 3. Check `sys.executable` in Python:
+
 ```python
 import sys
 print(sys.executable)  # Should show path inside venv/
@@ -318,6 +325,7 @@ print(sys.executable)  # Should show path inside venv/
 ---
 
 ### Question 3: Requirements
+
 What's the workflow for a new team member?
 
 <details>
@@ -345,17 +353,20 @@ pip install -r requirements.txt
 ---
 
 ### Question 4: Git Integration
+
 Should you commit the venv folder?
 
 <details>
 <summary>Click for Answer</summary>
 
 **No!** The venv folder:
+
 - Is large (hundreds of MB)
 - Is platform-specific
 - Is reproducible from requirements.txt
 
 Add to `.gitignore`:
+
 ```
 venv/
 .venv/
@@ -366,6 +377,7 @@ venv/
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: You have two projects—one needs Django 3.2 for a legacy app, another needs Django 4.2 for a new app. How do you manage this?
 
 <details>
@@ -399,6 +411,7 @@ deactivate
 ## Summary
 
 Today you learned:
+
 - ✅ `python -m venv venv` creates isolated environments
 - ✅ Activate with `venv\Scripts\activate` (Windows)
 - ✅ Each project gets its own dependencies

@@ -25,12 +25,14 @@ outcomes: [Fetch web pages with requests, Parse HTML with BeautifulSoup, Extract
 **Web scraping fills the gap.** It programmatically extracts data from websites, turning unstructured HTML into structured datasets.
 
 **Real-world applications:**
+
 - **Price monitoring**: Track competitor prices daily
 - **Job boards**: Aggregate listings from multiple sites
 - **Research**: Collect publicly available data at scale
 - **News**: Monitor mentions and sentiment
 
 **Ethical considerations:**
+
 - Respect `robots.txt` files
 - Add delays between requests
 - Don't overload servers
@@ -288,6 +290,7 @@ print(gdp_table.head())
 ## Mastery Check
 
 ### Question 1: User-Agent
+
 Why add a User-Agent header to requests?
 
 <details>
@@ -303,6 +306,7 @@ requests.get(url, headers=headers)
 </details>
 
 ### Question 2: Rate Limiting
+
 Your scraper gets blocked after 50 requests. What's likely happening and how do you fix it?
 
 <details>
@@ -311,6 +315,7 @@ Your scraper gets blocked after 50 requests. What's likely happening and how do 
 **Problem**: Requesting too fast, triggering rate limits
 
 **Fix**: Add delays between requests
+
 ```python
 time.sleep(1)  # Wait 1 second between requests
 ```
@@ -320,6 +325,7 @@ Also: Use exponential backoff, respect robots.txt, limit concurrent connections
 </details>
 
 ### Question 3: JavaScript Content
+
 Page loads but content is missing. Browser shows it, but requests.get() doesn't. Why?
 
 <details>
@@ -328,6 +334,7 @@ Page loads but content is missing. Browser shows it, but requests.get() doesn't.
 Content is loaded by JavaScript after page load. `requests` only gets initial HTML.
 
 **Solutions**:
+
 - Use Selenium or Playwright (browser automation)
 - Check for API calls in Network tab
 - Look for data in page's `<script>` tags
@@ -335,6 +342,7 @@ Content is loaded by JavaScript after page load. `requests` only gets initial HT
 </details>
 
 ### Question 4: Error Handling Bug
+
 This code crashes randomly. What's missing?
 
 ```python
@@ -346,6 +354,7 @@ data = response.json()
 <summary>Click for Answer</summary>
 
 No error handling. Add:
+
 ```python
 try:
     response = requests.get(url, timeout=10)
@@ -359,6 +368,7 @@ except requests.RequestException as e:
 </details>
 
 ### Question 5: Ethics Question
+
 You want to scrape a competitor's product catalog updated hourly. What should you check first?
 
 <details>

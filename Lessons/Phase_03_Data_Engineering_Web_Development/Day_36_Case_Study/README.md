@@ -23,6 +23,7 @@ outcomes: [Build complete ETL pipelines, Integrate APIs with databases, Create d
 **All month you've learned individual skills.** Cleaning data. Visualizations. APIs. Databases. Flask.
 
 **Now you combine them all.** A real data pipeline:
+
 1. **Extract**: Fetch data from an API
 2. **Transform**: Clean and reshape it
 3. **Load**: Store in a database
@@ -369,6 +370,7 @@ if __name__ == "__main__":
 ## Mastery Check
 
 ### Question 1: ETL Order
+
 Why is it Extract → Transform → Load, not Transform → Extract → Load?
 
 <details>
@@ -385,6 +387,7 @@ Logic requires this order.
 </details>
 
 ### Question 2: Idempotent Pipelines
+
 What makes a pipeline "idempotent"?
 
 <details>
@@ -400,12 +403,14 @@ Idempotent pipelines are safer for reruns and recovery.
 </details>
 
 ### Question 3: Error Recovery
+
 Pipeline fails during Transform. What should happen?
 
 <details>
 <summary>Click for Answer</summary>
 
 Good pipeline design:
+
 1. **Log the error** with context
 2. **Don't corrupt existing data** (Load didn't run)
 3. **Save extracted data** so re-run doesn't re-fetch
@@ -426,6 +431,7 @@ except TransformError as e:
 </details>
 
 ### Question 4: Scheduling
+
 Your pipeline must run daily at 2 AM. How?
 
 <details>
@@ -434,15 +440,18 @@ Your pipeline must run daily at 2 AM. How?
 Options:
 
 **Linux/Mac (cron):**
+
 ```bash
 0 2 * * * /usr/bin/python3 /path/to/pipeline.py
 ```
 
 **Windows (Task Scheduler):**
+
 - Create task with trigger at 2:00 AM daily
 - Action: Run python pipeline.py
 
 **Python scheduler:**
+
 ```python
 import schedule
 schedule.every().day.at("02:00").do(pipeline.run)
@@ -453,6 +462,7 @@ schedule.every().day.at("02:00").do(pipeline.run)
 </details>
 
 ### Question 5: Scale
+
 Your pipeline processes 100 records now. How do you handle 1 million?
 
 <details>

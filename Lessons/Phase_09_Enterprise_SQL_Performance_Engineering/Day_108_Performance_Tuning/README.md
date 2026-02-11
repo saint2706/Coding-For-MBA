@@ -34,15 +34,15 @@ outcomes:
 
 **The Traffic Jam**
 
-*   **Seq Scan (The Local Road)**:
-    *   You drive past every house on the street checking mailbox numbers until you find #742.
-    *   *Speed*: Slow (O(N)).
-*   **Index Scan (The Highway Exit)**:
-    *   You look at the sign: "Houses 700-800, Exit 5". You skip directly to that neighborhood.
-    *   *Speed*: Fast (O(log N)).
-*   **Bitmap Heap Scan (The Tour Bus)**:
-    *   You have a list of 50 addresses. Instead of driving to House 1, then House 50, then House 2 (random order), you sort them geographically and visit them in disk order.
-    *   *Speed*: Medium (Reduces Random I/O).
+* **Seq Scan (The Local Road)**:
+  * You drive past every house on the street checking mailbox numbers until you find #742.
+  * *Speed*: Slow (O(N)).
+* **Index Scan (The Highway Exit)**:
+  * You look at the sign: "Houses 700-800, Exit 5". You skip directly to that neighborhood.
+  * *Speed*: Fast (O(log N)).
+* **Bitmap Heap Scan (The Tour Bus)**:
+  * You have a list of 50 addresses. Instead of driving to House 1, then House 50, then House 2 (random order), you sort them geographically and visit them in disk order.
+  * *Speed*: Medium (Reduces Random I/O).
 
 ---
 
@@ -51,27 +51,29 @@ outcomes:
 ### 1. EXPLAIN ANALYZE
 
 The X-Ray of queries.
-*   **Syntax**: `EXPLAIN ANALYZE SELECT ...`
-*   **Key Metrics**:
-    *   `cost=0.00..483.00`: Estimated cost (Planning).
-    *   `actual time=0.015..10.234`: Real execution time (ms).
-    *   `rows=1000`: How many rows returned.
-    *   `Buffers: shared hit=42`: Did we use RAM cache or disk?
+
+* **Syntax**: `EXPLAIN ANALYZE SELECT ...`
+* **Key Metrics**:
+  * `cost=0.00..483.00`: Estimated cost (Planning).
+  * `actual time=0.015..10.234`: Real execution time (ms).
+  * `rows=1000`: How many rows returned.
+  * `Buffers: shared hit=42`: Did we use RAM cache or disk?
 
 ### 2. Configuration Tuning
 
 `postgresql.conf` parameters.
-*   **`shared_buffers`**: RAM allocated to cache table data. (Rule: 25% of system RAM).
-*   **`work_mem`**: RAM per sort/hash operation. (Too high = OOM. Too low = Disk spills).
-*   **`effective_cache_size`**: Tells the planner how much OS cache is available. (Doesn't allocate RAM, just a hint).
-*   **`max_connections`**: Each connection uses ~10MB. 1000 connections = 10GB overhead. Use connection pooling (PgBouncer).
+
+* **`shared_buffers`**: RAM allocated to cache table data. (Rule: 25% of system RAM).
+* **`work_mem`**: RAM per sort/hash operation. (Too high = OOM. Too low = Disk spills).
+* **`effective_cache_size`**: Tells the planner how much OS cache is available. (Doesn't allocate RAM, just a hint).
+* **`max_connections`**: Each connection uses ~10MB. 1000 connections = 10GB overhead. Use connection pooling (PgBouncer).
 
 ### 3. VACUUM (The Garbage Collector)
 
-*   **The Problem**: UPDATEs don't modify rows in place. They mark old rows dead and write new ones. (MVCC). Dead rows accumulate ("Bloat").
-*   **`VACUUM`**: Marks dead space as reusable. (Doesn't shrink the file).
-*   **`VACUUM FULL`**: Rewrites the table. (Locks table. Use only in maintenance windows).
-*   **Autovacuum**: Runs automatically. Tune `autovacuum_vacuum_scale_factor` (default 20%).
+* **The Problem**: UPDATEs don't modify rows in place. They mark old rows dead and write new ones. (MVCC). Dead rows accumulate ("Bloat").
+* **`VACUUM`**: Marks dead space as reusable. (Doesn't shrink the file).
+* **`VACUUM FULL`**: Rewrites the table. (Locks table. Use only in maintenance windows).
+* **Autovacuum**: Runs automatically. Tune `autovacuum_vacuum_scale_factor` (default 20%).
 
 ---
 
@@ -79,50 +81,54 @@ The X-Ray of queries.
 
 ### The "Missing Index" Myth
 
-*   **Junior**: "This query is slow. I'll add an index!"
-*   **Senior**: "But... this query returns 80% of the table rows. A Seq Scan *is* faster than an Index Scan for bulk reads."
-*   **Reality**: Indexes help when you're filtering to <10% of rows. For analytics (large scans), Seq Scan is optimal.
+* **Junior**: "This query is slow. I'll add an index!"
+* **Senior**: "But... this query returns 80% of the table rows. A Seq Scan *is* faster than an Index Scan for bulk reads."
+* **Reality**: Indexes help when you're filtering to <10% of rows. For analytics (large scans), Seq Scan is optimal.
 
 ### The Connection Pool Lie
 
-*   **Startup**: App opens 1000 connections. "We scale!"
-*   **Reality**: Postgres uses one thread per connection. 1000 threads thrash the CPU. pgBouncer pools 1000 app connections into 20 DB connections.
-*   **Impact**: Latency drops 90%.
+* **Startup**: App opens 1000 connections. "We scale!"
+* **Reality**: Postgres uses one thread per connection. 1000 threads thrash the CPU. pgBouncer pools 1000 app connections into 20 DB connections.
+* **Impact**: Latency drops 90%.
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Reading EXPLAIN
+
 **Goal**: Identify the slow operation.
 
-1.  `EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'bob@x.com'`.
-2.  **Output**: `Seq Scan on users (cost=0.00..500.00 rows=1) (actual time=50.123..50.125 rows=1)`.
-3.  **Analysis**: Scanning 1M rows to find 1. Need an index.
-4.  `CREATE INDEX idx_email ON users(email)`.
-5.  **Re-run**: `Index Scan using idx_email (actual time=0.015..0.017 rows=1)`. (3000x faster).
+1. `EXPLAIN ANALYZE SELECT * FROM users WHERE email = 'bob@x.com'`.
+2. **Output**: `Seq Scan on users (cost=0.00..500.00 rows=1) (actual time=50.123..50.125 rows=1)`.
+3. **Analysis**: Scanning 1M rows to find 1. Need an index.
+4. `CREATE INDEX idx_email ON users(email)`.
+5. **Re-run**: `Index Scan using idx_email (actual time=0.015..0.017 rows=1)`. (3000x faster).
 
 ### Exercise 2: Configuration
+
 **Goal**: Tune for a 64GB server.
 
-1.  `shared_buffers = 16GB` (25% of 64GB).
-2.  `work_mem = 64MB` (Per operation. Be conservative).
-3.  `effective_cache_size = 48GB` (75% of 64GB).
-4.  `max_connections = 200` (Use PgBouncer for more).
+1. `shared_buffers = 16GB` (25% of 64GB).
+2. `work_mem = 64MB` (Per operation. Be conservative).
+3. `effective_cache_size = 48GB` (75% of 64GB).
+4. `max_connections = 200` (Use PgBouncer for more).
 
 ### Exercise 3: VACUUM
+
 **Goal**: Fix bloat.
 
-1.  `SELECT pg_size_pretty(pg_total_relation_size('users'))`. (500MB).
-2.  Delete 90% of rows. (Size still 500MB. Dead tuples).
-3.  `VACUUM users`. (Size still 500MB. Space is marked reusable but not reclaimed).
-4.  `VACUUM FULL users`. (Size now 50MB. Table rewritten).
+1. `SELECT pg_size_pretty(pg_total_relation_size('users'))`. (500MB).
+2. Delete 90% of rows. (Size still 500MB. Dead tuples).
+3. `VACUUM users`. (Size still 500MB. Space is marked reusable but not reclaimed).
+4. `VACUUM FULL users`. (Size now 50MB. Table rewritten).
 
 ---
 
 ## Mastery Check
 
 ### Question 1: Explain
+
 What does `Buffers: shared hit=100` mean?
 A) 100 rows were returned.
 B) 100 disk blocks were read from RAM cache (not disk).
@@ -137,6 +143,7 @@ D) 100 errors occurred.
 </details>
 
 ### Question 2: Seq Scan
+
 When is a Seq Scan faster than an Index Scan?
 A) Never.
 B) When returning >10-20% of table rows (large result set).
@@ -151,6 +158,7 @@ Random I/O (Index) is slower than sequential read (Seq Scan) for bulk data.
 </details>
 
 ### Question 3: work_mem
+
 What happens if `work_mem` is too low?
 A) Queries fail.
 B) Sort/Hash operations spill to disk (temp files), slowing down queries.
@@ -165,6 +173,7 @@ You'll see `Sort Method: external merge Disk` in EXPLAIN.
 </details>
 
 ### Question 4: Autovacuum
+
 Can you disable autovacuum?
 A) No.
 B) Yes, but you'll suffer from bloat and eventually index corruption.
@@ -179,6 +188,7 @@ Disabling autovacuum is like disabling garbage collection. Short-term gain, long
 </details>
 
 ### Question 5: Connections
+
 Why use PgBouncer?
 A) To cache query results.
 B) To pool 1000s of app connections into a small number of DB connections, reducing overhead.
@@ -197,10 +207,11 @@ Thread-per-connection model doesn't scale to 10k concurrent users.
 ## Summary
 
 Today you learned:
-*   ✅ **EXPLAIN**: The diagnostic tool for query performance.
-*   ✅ **Configuration**: Tuning Postgres for your hardware.
-*   ✅ **VACUUM**: Managing MVCC bloat.
-*   ✅ **Indexes**: When to use them (and when not to).
+
+* ✅ **EXPLAIN**: The diagnostic tool for query performance.
+* ✅ **Configuration**: Tuning Postgres for your hardware.
+* ✅ **VACUUM**: Managing MVCC bloat.
+* ✅ **Indexes**: When to use them (and when not to).
 
 **Congratulations! You have completed Phase 9: Enterprise SQL Performance Engineering.**
 **Next**: Review the Phase Overview for the complete picture.

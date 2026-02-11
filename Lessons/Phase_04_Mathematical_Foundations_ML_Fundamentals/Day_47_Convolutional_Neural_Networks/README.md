@@ -35,6 +35,7 @@ outcomes:
 **Imagine identifying a cat in a photo.** You don't look at individual pixels—you notice edges, then shapes (ears, whiskers), then the whole cat. CNNs work the same way: early layers detect edges, middle layers detect parts, final layers detect objects.
 
 **CNNs in action:**
+
 - **iPhone/Android**: Face unlock
 - **Instagram**: Filter effects
 - **Tesla**: Object detection
@@ -350,12 +351,13 @@ for conv_layers, dense_layers in architectures:
 ## Mastery Check
 
 ### Question 1: Why Convolutions?
+
 Why use convolution instead of fully connected layers for images?
 
 <details>
 <summary>Answer</summary>
 
-**Parameter sharing and spatial invariance.** 
+**Parameter sharing and spatial invariance.**
 
 - Fully connected: 28×28 image = 784 inputs × 1000 neurons = 784,000 weights
 - Conv layer: 32 filters × 3×3 = 288 weights
@@ -365,12 +367,14 @@ Convolutions detect patterns regardless of location (a cat in any corner).
 </details>
 
 ### Question 2: Pooling Purpose
+
 What does MaxPooling2D(2,2) do and why use it?
 
 <details>
 <summary>Answer</summary>
 
 Takes maximum value in each 2×2 region, reducing dimensions by half. Benefits:
+
 - Reduces computation
 - Provides translation invariance
 - Increases receptive field
@@ -378,6 +382,7 @@ Takes maximum value in each 2×2 region, reducing dimensions by half. Benefits:
 </details>
 
 ### Question 3: Input Shape
+
 Why reshape MNIST to (28, 28, 1) instead of (28, 28)?
 
 <details>
@@ -388,6 +393,7 @@ CNNs expect (height, width, channels). The **1** indicates grayscale (1 channel)
 </details>
 
 ### Question 4: Transfer Learning
+
 When would you freeze the base model vs fine-tune it?
 
 <details>
@@ -401,6 +407,7 @@ Start frozen, then unfreeze if accuracy plateaus.
 </details>
 
 ### Question 5: Data Augmentation
+
 Why does augmentation help CNN performance?
 
 <details>

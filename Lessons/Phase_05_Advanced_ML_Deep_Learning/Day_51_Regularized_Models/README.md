@@ -39,6 +39,7 @@ outcomes:
 **Candidate B**—because they generalize, not memorize.
 
 Machine learning has the same problem:
+
 - **Overfitting** (Candidate A): Model memorizes training data → 100% training accuracy, 60% test accuracy
 - **Generalizing** (Candidate B): Model learns patterns → 85% training, 85% test
 
@@ -47,6 +48,7 @@ Machine learning has the same problem:
 > "You can fit the training data, but I'll punish you for using too many features or making coefficients too large."
 
 **Real-world impact:**
+
 - **Google Ads**: Regularized models prevent overfitting to individual users → better ad targeting
 - **Credit Scoring**: Lasso selects 15 most important features from 200 → more interpretable, stable models
 - **Medical Diagnosis**: Ridge regression with 1000 genes → avoids spurious correlations, better generalization
@@ -113,6 +115,7 @@ plt.show()
 Ridge adds a penalty proportional to the **square** of coefficients.
 
 **Cost function:**
+
 ```
 Cost = MSE + α × Σ(coefficient²)
 ```
@@ -193,6 +196,7 @@ plt.show()
 Lasso adds a penalty proportional to the **absolute value** of coefficients. **Key difference**: It can zero out coefficients → automatic feature selection!
 
 **Cost function:**
+
 ```
 Cost = MSE + α × Σ|coefficient|
 ```
@@ -566,6 +570,7 @@ plt.show()
 ## Mastery Check
 
 ### Question 1: L1 vs L2 Penalty
+
 Why does Lasso (L1) produce sparse solutions (zeros) while Ridge (L2) only shrinks coefficients?
 
 <details>
@@ -576,24 +581,30 @@ Why does Lasso (L1) produce sparse solutions (zeros) while Ridge (L2) only shrin
 **Geometric intuition:**
 
 **Lasso (L1):**
+
 ```
 Constraint: |β₁| + |β₂| ≤ t
 Shape: Diamond with corners on axes
 ```
+
 When the cost function ellipse expands, it first touches the diamond at a corner → one coefficient = 0.
 
 **Ridge (L2):**
+
 ```
 Constraint: β₁² + β₂² ≤ t
 Shape: Circle
 ```
+
 The ellipse touches the circle at a smooth point (rarely on an axis) → coefficients shrink but stay non-zero.
 
 **Mathematical reason:**
+
 - L1 derivative at zero is discontinuous → optimizer "jumps" to zero
 - L2 derivative at zero is zero → optimizer approaches zero asymptotically
 
 **Practical impact:**
+
 ```python
 # Lasso with α=0.1
 coef = [0.5, 0, 0.3, 0, 0, 0.2]  # Sparse!
@@ -607,6 +618,7 @@ coef = [0.45, 0.02, 0.28, 0.01, 0.03, 0.19]  # All non-zero
 ---
 
 ### Question 2: When Ridge Over Lasso
+
 You have 100 features, many correlated (e.g., multiple measures of "company size"). Should you use Ridge or Lasso?
 
 <details>
@@ -617,22 +629,26 @@ You have 100 features, many correlated (e.g., multiple measures of "company size
 **The problem with Lasso and correlated features:**
 
 Suppose features 1, 2, 3 are highly correlated (all measure company revenue).
+
 - Run 1: Lasso picks feature 1, zeros out 2 and 3
 - Run 2 (different data split): Lasso picks feature 2, zeros out 1 and 3
 - **Result**: Unstable feature selection → different runs give different "important" features
 
 **Why Ridge handles this better:**
+
 - Ridge shrinks all correlated features together
 - Stable across different data splits
 - Interpretable: "All revenue-related features matter"
 
 **Best solution: ElasticNet**
+
 ```python
 ElasticNet(alpha=0.1, l1_ratio=0.5)
 # Combines L1 (feature selection) + L2 (stability with correlation)
 ```
 
 **Rule of thumb:**
+
 - **Independent features** → Lasso (clean feature selection)
 - **Correlated features** → Ridge or ElasticNet (stability)
 - **Unsure** → ElasticNet with cross-validation
@@ -642,6 +658,7 @@ ElasticNet(alpha=0.1, l1_ratio=0.5)
 ---
 
 ### Question 3: Alpha Tuning
+
 Your Ridge model has train R² = 0.95 and test R² = 0.60. Should you increase or decrease alpha?
 
 <details>
@@ -650,15 +667,18 @@ Your Ridge model has train R² = 0.95 and test R² = 0.60. Should you increase o
 **Answer:** **Increase** alpha. The large gap (0.95 - 0.60 = 0.35) indicates overfitting. Stronger regularization (higher alpha) will reduce this gap.
 
 **Interpretation:**
+
 - Train R² = 0.95 → model fits training data very well
 - Test R² = 0.60 → model generalizes poorly
 - **Diagnosis**: Overfitting!
 
 **Effect of alpha:**
+
 - **Low alpha** (close to 0) → weak regularization → model can overfit
 - **High alpha** → strong regularization → shrinks coefficients → reduces overfitting
 
 **Tuning strategy:**
+
 ```python
 from sklearn.linear_model import RidgeCV
 
@@ -672,11 +692,13 @@ print(f"Best alpha: {ridge_cv.alpha_}")
 ```
 
 **Expected outcome with higher alpha:**
+
 - Train R² decreases (e.g., 0.95 → 0.85)
 - Test R² increases (e.g., 0.60 → 0.80)
 - **Smaller gap = better generalization**
 
 **Visual check:**
+
 - Plot train/test R² vs alpha
 - Sweet spot: where lines converge
 
@@ -685,6 +707,7 @@ print(f"Best alpha: {ridge_cv.alpha_}")
 ---
 
 ### Question 4: Feature Scaling
+
 Why must you standardize features before applying Ridge or Lasso?
 
 <details>
@@ -693,6 +716,7 @@ Why must you standardize features before applying Ridge or Lasso?
 **Answer:** Regularization penalizes large coefficients. Without standardization, features with different scales get unfairly penalized.
 
 **The problem:**
+
 ```python
 # Feature 1: Age (range 20-80)
 # Feature 2: Income (range 20,000-200,000)
@@ -709,6 +733,7 @@ Penalty_β₂ = 0.0001² = 0.00000001
 ```
 
 **After standardization:**
+
 ```python
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
@@ -725,10 +750,12 @@ X_scaled = scaler.fit_transform(X)
 > Regularization should penalize **importance**, not **scale**.
 
 **Exception:**
+
 - If features are already on the same scale (e.g., all percentages 0-100), scaling isn't strictly necessary
 - But it's best practice to always standardize
 
 **Code template:**
+
 ```python
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
@@ -746,6 +773,7 @@ pipeline.fit(X_train, y_train)
 ---
 
 ### Question 5: Production Regularization
+
 Your Lasso model selected 10 features out of 100. In production, one of the selected features becomes unavailable (API change). What do you do?
 
 <details>
@@ -754,6 +782,7 @@ Your Lasso model selected 10 features out of 100. In production, one of the sele
 **Answer:** You have three options: (1) retrain without that feature, (2) impute the missing feature, or (3) fall back to a Ridge model that uses all features.
 
 **Option 1: Retrain (Best)**
+
 ```python
 # Remove unavailable feature
 X_train_reduced = X_train.drop(columns=['unavailable_feature'])
@@ -764,12 +793,14 @@ lasso.fit(X_train_reduced, y_train)
 
 # Deploy new model
 ```
+
 **Pros**: Most accurate  
 **Cons**: Requires retraining pipeline, testing, deployment
 
 ---
 
 **Option 2: Feature Imputation (Quick Fix)**
+
 ```python
 # Impute missing feature with mean/median/model prediction
 from sklearn.impute import SimpleImputer
@@ -780,12 +811,14 @@ X_production = imputer.fit_transform(X_production)
 # Use existing model
 predictions = lasso.predict(X_production)
 ```
+
 **Pros**: No retraining needed  
 **Cons**: Imputed values may degrade accuracy
 
 ---
 
 **Option 3: Fallback to Ridge (Robust)**
+
 ```python
 # Train a Ridge model alongside Lasso
 ridge_backup = Ridge(alpha=1.0)
@@ -797,18 +830,21 @@ if feature_available:
 else:
     predictions = ridge_backup.predict(X_with_imputation)
 ```
+
 **Pros**: Handles missing features gracefully  
 **Cons**: Maintains two models
 
 ---
 
 **Best Practice:**
+
 1. **Monitor features**: Track feature availability in production
 2. **Graceful degradation**: Have a fallback model (Ridge uses all features)
 3. **Alert and retrain**: Trigger retraining when features disappear
 4. **Feature contracts**: Negotiate SLAs with data providers
 
 **Prevention:**
+
 ```python
 # Prefer Ridge/ElasticNet over pure Lasso for production
 # They use all features (more robust to missing data)
@@ -822,6 +858,7 @@ elastic = ElasticNetCV(l1_ratio=0.5, cv=5)
 ## Summary
 
 Today you learned:
+
 - ✅ Regularization prevents overfitting by penalizing model complexity
 - ✅ Ridge (L2) shrinks coefficients, handles correlated features well
 - ✅ Lasso (L1) performs feature selection by zeroing coefficients

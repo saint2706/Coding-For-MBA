@@ -38,7 +38,7 @@ NumPy for fast numerical computing. Pandas for data wrangling, analysis, and tra
 | Skill                      | Tools                             |
 | -------------------------- | --------------------------------- |
 | **Functional Programming** | map, filter, reduce, lambda       |
-| **Code Organization**      | Modules, packages, __init__.py    |
+| **Code Organization**      | Modules, packages, **init**.py    |
 | **Error Handling**         | try/except, custom exceptions     |
 | **Data I/O**               | csv, json, pathlib                |
 | **Pattern Matching**       | re (regular expressions)          |
@@ -52,16 +52,19 @@ NumPy for fast numerical computing. Pandas for data wrangling, analysis, and tra
 ## The Expert's Toolkit
 
 ### Documentation
+
 - [NumPy Documentation](https://numpy.org/doc/)
 - [Pandas Documentation](https://pandas.pydata.org/docs/)
 - [Python re Module](https://docs.python.org/3/library/re.html)
 
 ### Cheat Sheets
+
 - [Pandas Cheat Sheet](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf)
 - [NumPy Cheat Sheet](https://www.datacamp.com/cheat-sheet/numpy-cheat-sheet-data-analysis-in-python)
 - [Regex Cheat Sheet](https://www.rexegg.com/regex-quickstart.html)
 
 ### Practice Platforms
+
 - [Kaggle Learn](https://www.kaggle.com/learn) — Free data science courses
 - [DataCamp](https://www.datacamp.com/) — Interactive tutorials
 - [LeetCode Database](https://leetcode.com/problemset/database/) — SQL practice
@@ -75,6 +78,7 @@ NumPy for fast numerical computing. Pandas for data wrangling, analysis, and tra
 **Combines**: File Handling, Regex, Pandas, Exception Handling
 
 Build a data pipeline that:
+
 1. Reads multiple CSV files from a directory
 2. Validates email format using regex
 3. Cleans and standardizes names
@@ -98,6 +102,7 @@ def process_data_files(directory):
 - Wrap file reads in try/except
 - Use regex for email validation
 - Concatenate DataFrames with `pd.concat()`
+
 </details>
 
 ---
@@ -107,6 +112,7 @@ def process_data_files(directory):
 **Combines**: OOP, Pandas, DateTime, GroupBy
 
 Create a `SalesAnalyzer` class that:
+
 1. Loads sales data from CSV
 2. Calculates YoY growth
 3. Identifies top N products by revenue
@@ -133,6 +139,7 @@ class SalesAnalyzer:
 - Parse dates on load with `parse_dates`
 - Use `resample()` for time-based grouping
 - Calculate growth: (current - previous) / previous * 100
+
 </details>
 
 ---
@@ -142,6 +149,7 @@ class SalesAnalyzer:
 **Combines**: Regex, File Handling, Higher-Order Functions
 
 Parse log files to extract:
+
 1. Timestamps and log levels
 2. Error messages and stack traces
 3. Aggregate errors by type
@@ -161,6 +169,7 @@ def analyze_logs(log_path):
 - Regex pattern: `r"\[(.+?)\] (\w+): (.+)"`
 - Use `collections.Counter` for aggregation
 - Parse time with `datetime.strptime()`
+
 </details>
 
 ---
@@ -170,6 +179,7 @@ def analyze_logs(log_path):
 **Combines**: Modules, File Handling, Exception Handling
 
 Create a project scaffolding tool that:
+
 1. Creates project directory structure
 2. Initializes virtual environment
 3. Creates requirements.txt template
@@ -195,6 +205,7 @@ def create_project(name, packages=None):
 - Use `pathlib.Path.mkdir(parents=True)`
 - Use `subprocess.run()` for venv creation
 - Write templates with `Path.write_text()`
+
 </details>
 
 ---

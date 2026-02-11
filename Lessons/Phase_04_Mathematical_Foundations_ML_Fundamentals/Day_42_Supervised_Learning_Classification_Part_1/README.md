@@ -38,6 +38,7 @@ outcomes:
 That's classification: predicting **discrete categories** from input features.
 
 **Classification everywhere:**
+
 - **Gmail**: Spam detection
 - **Banks**: Fraud detection
 - **Hospitals**: Disease diagnosis (cancer/not cancer)
@@ -547,6 +548,7 @@ plt.show()
 ## Mastery Check
 
 ### Question 1: Accuracy Trap
+
 A model predicts 95% of credit card transactions as "not fraud." Your dataset has 1% fraud. What's the accuracy, and why is this problematic?
 
 <details>
@@ -555,6 +557,7 @@ A model predicts 95% of credit card transactions as "not fraud." Your dataset ha
 **Answer:** If the model predicts everything as "not fraud," accuracy is 99% (catching 99% of legitimate transactions). But it catches 0% of fraud!
 
 **The problem:**
+
 ```
 Dataset: 10,000 transactions
 - 100 fraud (1%)
@@ -568,6 +571,7 @@ Model predicts: All "not fraud"
 ```
 
 **Better metrics for imbalanced data:**
+
 - Recall (catches fraud)
 - Precision (avoids false alarms)
 - F1 Score (balances both)
@@ -578,16 +582,19 @@ Model predicts: All "not fraud"
 ---
 
 ### Question 2: Precision vs Recall Trade-off
+
 Your fraud detection system has precision=0.9 and recall=0.5. What does this mean in business terms?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Answer:**
+
 - **Precision = 0.9**: Of transactions flagged as fraud, 90% are actually fraudulent. Only 10% are false alarms.
 - **Recall = 0.5**: Of all actual fraud, we catch only 50%. Half the fraudsters get away!
 
 **Business interpretation:**
+
 - Good at not bothering legitimate customers (few false alarms)
 - Bad at catching fraud (half of fraudulent transactions slip through)
 
@@ -599,6 +606,7 @@ If fraud is costly, lower the threshold to catch more (increase recall), accepti
 ---
 
 ### Question 3: Confusion Matrix
+
 From this confusion matrix, calculate precision and recall:
 
 ```
@@ -611,15 +619,18 @@ Actual Negative         20              130
 <summary>Click for Answer</summary>
 
 **Extract values:**
+
 - TP = 40 (correctly predicted positive)
 - FN = 10 (missed positives)
 - FP = 20 (false alarms)
 - TN = 130 (correctly rejected)
 
 **Precision** = TP / (TP + FP) = 40 / (40 + 20) = 40/60 = **0.667**
+
 - "Of 60 predicted positives, 40 were correct"
 
 **Recall** = TP / (TP + FN) = 40 / (40 + 10) = 40/50 = **0.800**
+
 - "Of 50 actual positives, we caught 40"
 
 **Accuracy** = (TP + TN) / Total = (40 + 130) / 200 = **0.850**
@@ -629,23 +640,27 @@ Actual Negative         20              130
 ---
 
 ### Question 4: When to Use AUC
+
 When is AUC more useful than accuracy or F1?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Use AUC when:**
+
 1. **Comparing models** regardless of threshold choice
 2. **Threshold not decided yet** — AUC measures discrimination ability
 3. **Ranking matters more than classification** (e.g., prioritizing high-risk customers)
 4. **Class distribution might change** between train and production
 
 **AUC measures:**
+
 - How well the model separates classes
 - Probability that a random positive ranks higher than a random negative
 - Invariant to class imbalance
 
 **Don't use AUC when:**
+
 - You need a specific threshold for decisions
 - The business cost structure is asymmetric
 - You need calibrated probabilities (AUC doesn't require calibration)
@@ -655,7 +670,9 @@ When is AUC more useful than accuracy or F1?
 ---
 
 ### Question 5: Threshold Selection
+
 A medical test has these results at threshold=0.5:
+
 - Precision: 0.95 (few false positives)
 - Recall: 0.70 (misses 30% of cases)
 
@@ -667,17 +684,20 @@ The disease is deadly if untreated. Should you adjust the threshold?
 **Answer:** Yes, **lower the threshold** to catch more cases (increase recall).
 
 **Reasoning:**
+
 - Deadly disease → missing a case (FN) is catastrophic
 - False positive (FP) means unnecessary testing, but patient survives
 - Current recall of 70% means 30% of sick patients are sent home!
 
 **Action:**
+
 ```python
 # Lower threshold from 0.5 to, say, 0.3
 y_pred = (y_prob >= 0.3).astype(int)
 ```
 
 **Result:**
+
 - Recall increases (catch more sick patients)
 - Precision decreases (more healthy people flagged)
 - This trade-off is acceptable for deadly diseases
@@ -691,6 +711,7 @@ y_pred = (y_prob >= 0.3).astype(int)
 ## Summary
 
 Today you learned:
+
 - ✅ Classification predicts categories, not numbers
 - ✅ Logistic regression outputs probabilities via sigmoid
 - ✅ Confusion matrix shows TP, TN, FP, FN

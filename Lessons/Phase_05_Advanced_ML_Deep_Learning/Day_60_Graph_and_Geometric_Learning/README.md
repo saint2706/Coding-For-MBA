@@ -42,6 +42,7 @@ outcomes:
 - **Knowledge**: Entities linked by relationships (Google Knowledge Graph)
 
 **Traditional ML fails here:**
+
 - CNNs: Assume grid structure (images)
 - RNNs: Assume sequence (text, time series)
 - Neither captures arbitrary relationships!
@@ -51,26 +52,31 @@ outcomes:
 **Real-world impact:**
 
 **Drug Discovery:**
+
 - **DeepMind AlphaFold**: Protein structure prediction
 - Molecules as graphs: Atoms = nodes, bonds = edges
 - Impact: Accelerated COVID-19 research
 
 **Recommender Systems:**
+
 - **Pinterest**: User-pin-board graph
 - **Amazon**: Product co-purchase network
 - GNNs: 20% improvement over matrix factorization
 
 **Fraud Detection:**
+
 - **PayPal, Uber**: Transaction networks
 - GNNs detect fraud rings (groups of coordinated fake accounts)
 - Caught 40% more fraud than traditional ML
 
 **Traffic Prediction:**
+
 - **Google Maps**: Road network graph
 - GNNs predict congestion propagation
 - 15-20% more accurate than time-series models
 
 **Social Networks:**
+
 - **Facebook, LinkedIn**: Friend/connection graphs
 - Community detection, influence propagation
 - Targeted advertising, content recommendations
@@ -686,6 +692,7 @@ class TrafficGNN(nn.Module):
 ## Mastery Check
 
 ### Question 1: When to Use GNNs
+
 You have user behavior data. When should you model it as a graph vs a table?
 
 <details>
@@ -696,6 +703,7 @@ You have user behavior data. When should you model it as a graph vs a table?
 **Use GRAPH when:**
 
 **1. Relationships encode signal**
+
 ```python
 # Social network: Friend recommendations
 # The fact that Alice and Bob are friends matters
@@ -706,6 +714,7 @@ You have user behavior data. When should you model it as a graph vs a table?
 ```
 
 **2. Network effects**
+
 ```python
 # Fraud detection
 # Fraudsters often work in rings (coordinated accounts)
@@ -716,6 +725,7 @@ You have user behavior data. When should you model it as a graph vs a table?
 ```
 
 **3. Hierarchical/Relational structure**
+
 ```python
 # Knowledge graphs
 # "Paris" → "capital_of" → "France"
@@ -728,6 +738,7 @@ You have user behavior data. When should you model it as a graph vs a table?
 **Use TABLE when:**
 
 **1. Features are independent**
+
 ```python
 # Housing prices
 # Features: sqft, bedrooms, location
@@ -738,6 +749,7 @@ You have user behavior data. When should you model it as a graph vs a table?
 ```
 
 **2. Relationships are implicit in features**
+
 ```python
 # Time series forecasting
 # Past → Future relationship already captured by sequence
@@ -745,6 +757,7 @@ You have user behavior data. When should you model it as a graph vs a table?
 ```
 
 **3. Graph is too dense/sparse**
+
 ```python
 # Too dense (every node connected): No structure to exploit
 # Too sparse (most nodes isolated): Graph doesn't help
@@ -791,6 +804,7 @@ Does task involve relationships between entities?
 ---
 
 ### Question 2: GNN vs Node2Vec
+
 Both create node embeddings. When should you use each?
 
 <details>
@@ -801,6 +815,7 @@ Both create node embeddings. When should you use each?
 **Node2Vec:**
 
 **Advantages:**
+
 ```python
 # 1. No labels needed (unsupervised)
 # Learn from graph structure alone
@@ -816,6 +831,7 @@ Both create node embeddings. When should you use each?
 ```
 
 **Use cases:**
+
 ```python
 # - Exploratory analysis (visualize network)
 # - Feature extraction (use embeddings as input to ML)
@@ -826,6 +842,7 @@ Both create node embeddings. When should you use each?
 **GNNs:**
 
 **Advantages:**
+
 ```python
 # 1. Leverages node features
 # "This user is 25 years old" + "Friends with active users"
@@ -845,6 +862,7 @@ predictions = Classifier(node_embeddings)
 ```
 
 **Use cases:**
+
 ```python
 # - Node classification with features
 # - Need to add new nodes after training
@@ -887,6 +905,7 @@ gnn_output = GNN(X_initial, edge_index)
 ---
 
 ### Question 3: Over-Smoothing
+
 Your 10-layer GCN performs worse than a 2-layer GCN. Why?
 
 <details>
@@ -925,6 +944,7 @@ Your 10-layer GCN performs worse than a 2-layer GCN. Why?
 **Solutions:**
 
 **1. Use fewer layers (most common)**
+
 ```python
 # For most graphs: 2-3 layers sufficient
 
@@ -936,6 +956,7 @@ Your 10-layer GCN performs worse than a 2-layer GCN. Why?
 ```
 
 **2. Skip connections (residual)**
+
 ```python
 class ResGCN(nn.Module):
     def forward(self, x, edge_index):
@@ -955,6 +976,7 @@ class ResGCN(nn.Module):
 ```
 
 **3. Jumping Knowledge Networks**
+
 ```python
 class JKNet(nn.Module):
     def forward(self, x, edge_index):
@@ -976,6 +998,7 @@ class JKNet(nn.Module):
 ```
 
 **4. Layer normalization**
+
 ```python
 class NormGCN(nn.Module):
     def __init__(self):
@@ -999,6 +1022,7 @@ class NormGCN(nn.Module):
 ```
 
 **5. PairNorm (pair normalization)**
+
 ```python
 def pairnorm(x):
     """Normalize pairwise distances"""
@@ -1035,6 +1059,7 @@ def pairnorm(x):
 ---
 
 ### Question 4: Scalability
+
 Your GCN works on 1000-node graph but crashes on 1M-node graph (out of memory). How do you scale?
 
 <details>
@@ -1197,6 +1222,7 @@ import dgl
 ---
 
 ### Question 5: Production Deployment
+
 Your GNN model works great offline. How do you deploy it to serve real-time predictions (e.g., recommend friends)?
 
 <details>
@@ -1425,6 +1451,7 @@ metrics = {
 ## Summary
 
 Today you learned:
+
 - ✅ Graphs model relational data (social networks, molecules, knowledge)
 - ✅ Node embeddings (Node2Vec) learn structure-based representations
 - ✅ GCNs aggregate neighbor features via message passing
@@ -1436,6 +1463,7 @@ Today you learned:
 **🎉 Congratulations!** You've completed **Phase 5: Advanced ML & Deep Learning**!
 
 You've mastered:
+
 - NLP and transformers
 - MLOps and production ML
 - Regularization and ensembles

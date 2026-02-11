@@ -25,6 +25,7 @@ outcomes: [Consume REST APIs, Parse JSON responses, Handle authentication]
 **APIs (Application Programming Interfaces)** are structured ways to request data from services. Instead of parsing HTML, you get clean JSON.
 
 **Real-world APIs:**
+
 - **Weather**: OpenWeatherMap, WeatherAPI
 - **Finance**: Yahoo Finance, Alpha Vantage
 - **Social**: Twitter, GitHub, Reddit
@@ -32,6 +33,7 @@ outcomes: [Consume REST APIs, Parse JSON responses, Handle authentication]
 - **AI**: OpenAI, Anthropic
 
 **Why APIs beat scraping:**
+
 - Structured data (JSON vs HTML)
 - Stable (documented contracts)
 - Faster (no HTML overhead)
@@ -250,6 +252,7 @@ repos = get_all_repos("torvalds", max_pages=2)
 ## Mastery Check
 
 ### Question 1: JSON vs HTML
+
 Why is API JSON easier than scraping HTML?
 
 <details>
@@ -274,6 +277,7 @@ user_name = soup.select_one(".user-name").text  # Fragile!
 </details>
 
 ### Question 2: 429 Error
+
 Your API calls suddenly return 429 status. What happened and how do you fix it?
 
 <details>
@@ -282,6 +286,7 @@ Your API calls suddenly return 429 status. What happened and how do you fix it?
 **429 = Rate Limited.** You sent too many requests.
 
 **Fixes:**
+
 1. Add delays: `time.sleep(1)`
 2. Check `Retry-After` header for wait time
 3. Implement exponential backoff
@@ -297,17 +302,20 @@ if response.status_code == 429:
 </details>
 
 ### Question 3: Authentication
+
 What's the difference between API key and Bearer token?
 
 <details>
 <summary>Click for Answer</summary>
 
 **API Key:**
+
 - Simple string identifying your app
 - Often passed in header or URL
 - Usually for read-only or limited access
 
 **Bearer Token (OAuth):**
+
 - Temporary token after user authorization
 - Grants access on behalf of user
 - Has scopes/permissions
@@ -324,6 +332,7 @@ headers = {"Authorization": "Bearer eyJhbGc..."}
 </details>
 
 ### Question 4: Debugging
+
 API returns `{"error": "Invalid JSON"}`. Your code:
 
 ```python
@@ -339,6 +348,7 @@ What's wrong?
 **`data=` sends form data, not JSON.**
 
 Fix:
+
 ```python
 response = requests.post(url, json=data)  # Sends as JSON
 # OR
@@ -349,6 +359,7 @@ response = requests.post(url, data=json.dumps(data),
 </details>
 
 ### Question 5: Design
+
 You need to fetch data from an API for 10,000 items. How do you approach this?
 
 <details>

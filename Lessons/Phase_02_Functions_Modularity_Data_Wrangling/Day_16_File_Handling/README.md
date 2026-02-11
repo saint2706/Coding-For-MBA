@@ -32,6 +32,7 @@ outcomes:
 ## The "Never-Coded" Bridge
 
 **Every business works with files:**
+
 - Sales reports in CSV format
 - Configuration in JSON
 - Logs in text files
@@ -345,12 +346,14 @@ print(f"Processed {count} rows")
 ## Mastery Check
 
 ### Question 1: Context Manager
+
 Why use `with` for file operations?
 
 <details>
 <summary>Click for Answer</summary>
 
 The `with` statement ensures the file is properly closed even if an exception occurs. Without it, you risk:
+
 - File handles leaking
 - Data not being flushed to disk
 - Resource exhaustion
@@ -360,6 +363,7 @@ The `with` statement ensures the file is properly closed even if an exception oc
 ---
 
 ### Question 2: File Modes
+
 What's the difference between `w` and `a`?
 
 <details>
@@ -375,6 +379,7 @@ Use `a` for logs; use `w` for reports you regenerate.
 ---
 
 ### Question 3: JSON vs CSV
+
 When would you choose JSON over CSV?
 
 <details>
@@ -396,6 +401,7 @@ config = {"database": {"host": "...", "port": 5432}}
 ---
 
 ### Question 4: Path Handling
+
 Build a path for `data/2024/january/sales.csv`:
 
 <details>
@@ -414,7 +420,9 @@ path = Path("data/2024/january/sales.csv")
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a backup system that:
+
 1. Reads all `.json` files in a directory
 2. Combines them into one backup file
 3. Adds a timestamp to the backup filename
@@ -457,6 +465,7 @@ print(f"Created: {backup_path}")
 ## Summary
 
 Today you learned:
+
 - ✅ Use `with` for safe file operations
 - ✅ Read and write text files
 - ✅ Handle CSV with the `csv` module

@@ -34,7 +34,7 @@ outcomes:
 **Think about the data you handle every day:**
 
 - Customer names: "Sarah Chen"
-- Email addresses: "sarah@company.com"
+- Email addresses: "<sarah@company.com>"
 - Product descriptions: "Premium wireless headphones with 24-hour battery"
 - Status updates: "Order shipped - ETA 3 days"
 

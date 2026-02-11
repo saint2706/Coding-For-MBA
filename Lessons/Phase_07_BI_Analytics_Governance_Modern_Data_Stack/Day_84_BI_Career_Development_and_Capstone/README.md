@@ -34,8 +34,8 @@ outcomes:
 
 **The Artist vs. The Analyst**
 
-*   **Artist**: Applying for a job? They don't just say "I went to Art School." They show a **Portfolio**.
-*   **Analyst**: Applying for a job? Saying "I know SQL" is weak. Showing a **GitHub Repo with a dbt project and a Tableau Public link** is strong.
+* **Artist**: Applying for a job? They don't just say "I went to Art School." They show a **Portfolio**.
+* **Analyst**: Applying for a job? Saying "I know SQL" is weak. Showing a **GitHub Repo with a dbt project and a Tableau Public link** is strong.
 
 **The Capstone**: Your Masterpiece. Proof that you can solve a problem end-to-end.
 
@@ -46,15 +46,16 @@ outcomes:
 ### 1. The Full-Stack BI Portfolio
 
 Don't just upload a CSV. Show the **System**:
-1.  **Architecture Diagram**: Draw the flow (Source -> dbt -> Dashboard).
-2.  **Code**: SQL Transformation scripts (with comments explaining *why*).
-3.  **Visualization**: A live link (Tableau Public / Power BI Web).
-4.  **Influence**: A "Read Me" file explaining the *Business Impact*. usage?
+
+1. **Architecture Diagram**: Draw the flow (Source -> dbt -> Dashboard).
+2. **Code**: SQL Transformation scripts (with comments explaining *why*).
+3. **Visualization**: A live link (Tableau Public / Power BI Web).
+4. **Influence**: A "Read Me" file explaining the *Business Impact*. usage?
 
 ### 2. The Impact Resume Formula
 
-*   **Weak**: "Responsible for creating dashboards in Tableau." (Job Description).
-*   **Strong**: "Automated weekly reporting using Tableau, saving 5 hours/week and identifying a \$50k revenue leak." (Action -> Result).
+* **Weak**: "Responsible for creating dashboards in Tableau." (Job Description).
+* **Strong**: "Automated weekly reporting using Tableau, saving 5 hours/week and identifying a \$50k revenue leak." (Action -> Result).
 
 **Formula**: `[Action Verb] + [Task] + [Result/Metric]`.
 
@@ -62,13 +63,14 @@ Don't just upload a CSV. Show the **System**:
 
 **Goal**: Build an end-to-end BI solution.
 **Scenario**: "The E-Commerce Exec Dashboard."
-*   **Data**: Public E-Commerce Dataset (e.g., Olist or Superstore).
-*   **Tech Stack**: SQL (Prep), dbt (Model), Tool of Choice (Viz).
-*   **Deliverables**:
-    1.  **Star Schema**: `fact_orders`, `dim_products`.
-    2.  **Metrics**: `AOV` (Average Order Value), `LTV` (Lifetime Value).
-    3.  **Dashboard**: 3 Views (Executive, Marketing, Operations).
-    4.  **Presentation**: A 5-slide deck summarizing the findings.
+
+* **Data**: Public E-Commerce Dataset (e.g., Olist or Superstore).
+* **Tech Stack**: SQL (Prep), dbt (Model), Tool of Choice (Viz).
+* **Deliverables**:
+    1. **Star Schema**: `fact_orders`, `dim_products`.
+    2. **Metrics**: `AOV` (Average Order Value), `LTV` (Lifetime Value).
+    3. **Dashboard**: 3 Views (Executive, Marketing, Operations).
+    4. **Presentation**: A 5-slide deck summarizing the findings.
 
 ---
 
@@ -76,39 +78,43 @@ Don't just upload a CSV. Show the **System**:
 
 ### "Soft Skills" are Hard Skills
 
-*   **Curiosity**: Do you ask "Why?" when the number looks weird?
-*   **Skepticism**: Do you trust the data blindly? (Don't).
-*   **Empathy**: Do you design for the user, or for yourself?
+* **Curiosity**: Do you ask "Why?" when the number looks weird?
+* **Skepticism**: Do you trust the data blindly? (Don't).
+* **Empathy**: Do you design for the user, or for yourself?
 
 ### The Interview: "Tell me about a time..."
 
-*   **Question**: "Tell me about a time you found an insight."
-*   **Answer (STAR Method)**:
-    *   **Situation**: Marketing spend was high, ROI low.
-    *   **Task**: Investigate why.
-    *   **Action**: Analyzed attribution data, found mobile ads were clicking but not converting due to slow load times.
-    *   **Result**: Recommended fix, saved \$20k/month.
+* **Question**: "Tell me about a time you found an insight."
+* **Answer (STAR Method)**:
+  * **Situation**: Marketing spend was high, ROI low.
+  * **Task**: Investigate why.
+  * **Action**: Analyzed attribution data, found mobile ads were clicking but not converting due to slow load times.
+  * **Result**: Recommended fix, saved \$20k/month.
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Project Plan
+
 **Goal**: Design your Capstone.
 
-*   **Problem Statement**: "Global Co. has high churn but doesn't know why."
-*   **Data Source**: `customer_churn.csv`.
-*   **Hypothesis**: "Churn is driven by Support Ticket Response Time."
-*   **Tools**: Python (Clean) -> SQL (Analyze) -> Power BI (Viz).
+* **Problem Statement**: "Global Co. has high churn but doesn't know why."
+* **Data Source**: `customer_churn.csv`.
+* **Hypothesis**: "Churn is driven by Support Ticket Response Time."
+* **Tools**: Python (Clean) -> SQL (Analyze) -> Power BI (Viz).
 
 ### Exercise 2: Resume Rewrite
+
 **Goal**: Fix this bullet point.
 "analyzed customer data using SQL."
 
 **Your rewrite**:
-*   "Queried 1M+ rows of customer data using Advanced SQL (Window Functions) to identify segments with high churn risk."
+
+* "Queried 1M+ rows of customer data using Advanced SQL (Window Functions) to identify segments with high churn risk."
 
 ### Exercise 3: Mock Interview
+
 **Goal**: Answer "What is Inner Join vs Left Join?"
 
 **Junior Answer**: "Inner is match, Left is everything."
@@ -119,6 +125,7 @@ Don't just upload a CSV. Show the **System**:
 ## Mastery Check
 
 ### Question 1: Portfolio
+
 What is the most important part of a Portfolio Project?
 A) The complexity of the code.
 B) The business story and problem solved.
@@ -133,6 +140,7 @@ Hiring managers hire problem solvers, not code writers.
 </details>
 
 ### Question 2: STAR Method
+
 What does STAR stand for?
 A) Situation, Task, Action, Result.
 B) Stop, Think, Act, Review.
@@ -147,6 +155,7 @@ The standard framework for behavioral interviews.
 </details>
 
 ### Question 3: Resume
+
 Why are metrics important on a resume?
 A) They look cool.
 B) They prove Impact and Scope.
@@ -161,6 +170,7 @@ D) ATS requires them.
 </details>
 
 ### Question 4: Capstone Scope
+
 Is it better to build one deep project or 10 shallow ones?
 A) 10 shallow ones.
 B) One deep, end-to-end project.
@@ -175,6 +185,7 @@ Quality > Quantity. Show depth of thought.
 </details>
 
 ### Question 5: Networking
+
 What is the best way to apply for a job?
 A) "Easy Apply" on LinkedIn.
 B) Networking / Referral from an employee.
@@ -193,10 +204,11 @@ Referrals are 10x more likely to be interviewed.
 ## Summary
 
 Today you learned:
-*   ✅ **The Capstone**: Your proof of work.
-*   ✅ **Impact Resume**: Focus on Results, not Responsibilities.
-*   ✅ **STAR Method**: How to ace the behavioral interview.
-*   ✅ **Career Path**: Continuous learning is the only constant.
+
+* ✅ **The Capstone**: Your proof of work.
+* ✅ **Impact Resume**: Focus on Results, not Responsibilities.
+* ✅ **STAR Method**: How to ace the behavioral interview.
+* ✅ **Career Path**: Continuous learning is the only constant.
 
 **Congratulations! You have completed the Phase 7 Daily Content.**
 **Next Step**: The **Phase 7 Overview** & The **Final Capstone Exam**.

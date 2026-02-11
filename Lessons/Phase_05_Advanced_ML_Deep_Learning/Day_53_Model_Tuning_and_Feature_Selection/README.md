@@ -38,11 +38,13 @@ outcomes:
 **Default hyperparameters** work, but they're rarely optimal for your specific data.
 
 **Real-world impact of tuning:**
+
 - **Airbnb**: 5% better pricing predictions after hyperparameter tuning → millions in revenue
 - **Spotify**: Tuned recommendation models → 15% increase in listening time
 - **Credit card fraud**: Tuned threshold from 0.5 to 0.7 → 30% fewer false positives
 
 **Feature selection** is equally critical:
+
 - **Medical diagnosis**: 500 genes → select 20 most predictive → faster, more interpretable models
 - **Text classification**: 10,000 words → select 500 → 10x faster training, same accuracy
 - **Production APIs**: Fewer features → lower latency, reduced data collection costs
@@ -107,6 +109,7 @@ print(top_10.to_string(index=False))
 ```
 
 **Problem with Grid Search:**
+
 - 3 × 4 × 3 × 3 = 108 combinations
 - Each with 5-fold CV = 540 model fits
 - For large datasets or complex models, this can take hours/days!
@@ -585,6 +588,7 @@ print("Best pipeline exported to best_pipeline.py")
 ## Mastery Check
 
 ### Question 1: Grid vs Random Search
+
 For XGBoost with 8 hyperparameters, each with 5 values, how many combinations does Grid Search test? Why might Random Search with 100 iterations be better?
 
 <details>
@@ -593,12 +597,14 @@ For XGBoost with 8 hyperparameters, each with 5 values, how many combinations do
 **Answer:** Grid Search tests **5^8 = 390,625 combinations**. Random Search is better because it explores the space more efficiently without testing redundant combinations.
 
 **Math:**
+
 - 8 parameters × 5 values each = 5^8 = 390,625 combinations
 - With 5-fold CV: 390,625 × 5 = **1,953,125 model fits**!
 
 **Why Random Search wins:**
 
 1. **Curse of dimensionality**: Grid Search wastes effort on unimportant parameters
+
    ```
    If only 2 of 8 params matter:
    - Grid: Tests everything → 390K combos
@@ -610,6 +616,7 @@ For XGBoost with 8 hyperparameters, each with 5 values, how many combinations do
    - Grid Search exhaustively tests tiny differences
 
 3. **Practical example:**
+
    ```python
    # Grid: n_estimators=[100, 200, 300], learning_rate=[0.1, 0.2, 0.3]
    # Tests: (100, 0.1), (100, 0.2), (100, 0.3), (200, 0.1), ...
@@ -625,6 +632,7 @@ For XGBoost with 8 hyperparameters, each with 5 values, how many combinations do
 ---
 
 ### Question 2: Feature Selection Timing
+
 Should you perform feature selection before or after splitting into train/test sets?
 
 <details>
@@ -633,6 +641,7 @@ Should you perform feature selection before or after splitting into train/test s
 **Answer:** **After splitting**, and only on the training set. Otherwise you leak information from the test set → overly optimistic evaluation.
 
 **WRONG (data leakage):**
+
 ```python
 # Select features on full dataset
 selector = SelectKBest(k=10)
@@ -645,6 +654,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_selected, y)
 ```
 
 **RIGHT:**
+
 ```python
 # Split first
 X_train, X_test, y_train, y_test = train_test_split(X, y)
@@ -658,6 +668,7 @@ X_test_selected = selector.transform(X_test)  # Apply same selection
 ```
 
 **Why it matters:**
+
 - If test set influences feature selection, you've "peeked" at the answer
 - Example: You select features correlated with test labels → artificially high accuracy
 
@@ -668,6 +679,7 @@ X_test_selected = selector.transform(X_test)  # Apply same selection
 ---
 
 ### Question 3: Overfitting to Validation
+
 You tune hyperparameters on a validation set and achieve 95% accuracy. Test set gives 80%. What happened?
 
 <details>
@@ -676,6 +688,7 @@ You tune hyperparameters on a validation set and achieve 95% accuracy. Test set 
 **Answer:** You **overfit to the validation set** by using it repeatedly to choose hyperparameters. The validation set is no longer independent.
 
 **The problem:**
+
 ```python
 # Try 100 different hyperparameter configs
 for config in configs:
@@ -690,6 +703,7 @@ for config in configs:
 ```
 
 **Why:**
+
 - Each time you evaluate on validation set, you gain information about it
 - After 100 tries, you've implicitly memorized validation set quirks
 - Best config is "overfit" to validation data distribution
@@ -697,6 +711,7 @@ for config in configs:
 **Solutions:**
 
 **1. Nested Cross-Validation** (gold standard)
+
 ```python
 from sklearn.model_selection import cross_val_score
 
@@ -718,6 +733,7 @@ print(f"True performance: {np.mean(outer_scores):.2%}")
 ```
 
 **2. Holdout Test Set** (never touch until final evaluation)
+
 ```python
 # Split once
 X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.2)
@@ -737,6 +753,7 @@ final_score = best_model.score(X_test, y_test)
 ---
 
 ### Question 4: Feature Importance Reliability
+
 Random Forest ranks "customer_id" as the most important feature. Should you trust this?
 
 <details>
@@ -747,6 +764,7 @@ Random Forest ranks "customer_id" as the most important feature. Should you trus
 **Red flags:**
 
 1. **Data leakage**: Did customer_id accidentally encode the target?
+
    ```python
    # Bad: Customer IDs assigned sequentially by outcome
    # customer_id 1-1000: churned
@@ -755,6 +773,7 @@ Random Forest ranks "customer_id" as the most important feature. Should you trus
    ```
 
 2. **High cardinality**: Lots of unique values create overfitting
+
    ```python
    # 10,000 unique customer IDs
    # Random Forest memorizes: "customer 5432 → churn"
@@ -762,6 +781,7 @@ Random Forest ranks "customer_id" as the most important feature. Should you trus
    ```
 
 3. **Spurious correlation**: Random noise in small datasets
+
    ```python
    # Small dataset (n=100), many features (p=50)
    # Some random patterns emerge → high importance for irrelevant features
@@ -770,6 +790,7 @@ Random Forest ranks "customer_id" as the most important feature. Should you trus
 **How to verify:**
 
 **Test 1: Permutation importance**
+
 ```python
 from sklearn.inspection import permutation_importance
 
@@ -779,6 +800,7 @@ perm_imp = permutation_importance(rf, X_test, y_test, n_repeats=10)
 ```
 
 **Test 2: Retrain without the feature**
+
 ```python
 X_no_id = X.drop(columns=['customer_id'])
 rf_no_id = RandomForestClassifier().fit(X_no_id_train, y_train)
@@ -791,6 +813,7 @@ print(f"Without customer_id: {rf_no_id.score(X_no_id_test, y_test):.2%}")
 ```
 
 **Test 3: Check for leakage**
+
 ```python
 # Are customer IDs unique to train/test?
 train_ids = set(X_train['customer_id'])
@@ -807,6 +830,7 @@ if len(train_ids & test_ids) > 0:
 ---
 
 ### Question 5: Production Feature Selection
+
 You selected 20 features out of 200 using RFE. In production, 5 of those features become unavailable (API changed). What do you do?
 
 <details>
@@ -817,6 +841,7 @@ You selected 20 features out of 200 using RFE. In production, 5 of those feature
 **Options:**
 
 **Option 1: Quick fix - Use 15 remaining features**
+
 ```python
 # Remove unavailable features
 available_features = [f for f in selected_features if f not in unavailable]
@@ -838,6 +863,7 @@ print(f"15 features: {model.score(X_test_reduced, y_test):.2%}")
 ---
 
 **Option 2: Rerun RFE with 195 features**
+
 ```python
 # Exclude unavailable features
 X_available = X.drop(columns=unavailable_features)
@@ -855,6 +881,7 @@ rfe.fit(X_available_train, y_train)
 ---
 
 **Option 3: Feature importance fallback**
+
 ```python
 # Rank remaining 195 features by importance
 remaining_importance = importance_df[~importance_df['Feature'].isin(unavailable)]
@@ -871,6 +898,7 @@ new_top_20 = remaining_importance.head(20)['Feature'].values
 **Best Practice (Prevention):**
 
 1. **Monitor feature availability** in production
+
    ```python
    # Alert if features missing
    if set(required_features) != set(production_features):
@@ -886,6 +914,7 @@ new_top_20 = remaining_importance.head(20)['Feature'].values
    - Less sensitive to small changes
 
 4. **Fallback features**: Maintain alternate feature sets
+
    ```python
    # Primary: 20 premium features (high accuracy, may be unstable)
    # Fallback: 30 basic features (lower accuracy, always available)
@@ -900,6 +929,7 @@ new_top_20 = remaining_importance.head(20)['Feature'].values
 ## Summary
 
 Today you learned:
+
 - ✅ Grid Search exhaustively tests all combinations (slow but thorough)
 - ✅ Random Search samples efficiently (often finds optimum faster)
 - ✅ Bayesian Optimization intelligently explores parameter space

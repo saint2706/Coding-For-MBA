@@ -37,11 +37,13 @@ outcomes:
 **Imagine adjusting a thermostat.** If the room is too cold, you turn it up. Too hot, you turn it down. You're doing optimization intuitively—adjusting a parameter (temperature setting) to minimize discomfort (error).
 
 Machine learning works the same way, but with thousands of parameters adjusted simultaneously. **Calculus** tells us:
+
 - **How much** does the error change when we adjust each parameter? (Derivatives)
 - **Which direction** should we move each parameter to reduce error fastest? (Gradients)
 - **How do we systematically find the best parameters?** (Gradient descent)
 
 **Real-world applications:**
+
 - **Tesla**: Training neural networks to recognize road signs uses gradient descent
 - **DeepMind**: AlphaGo learned through billions of gradient updates
 - **OpenAI**: GPT models optimize billions of parameters with calculus-based methods
@@ -555,6 +557,7 @@ print(f"Lowest loss: {min(losses_after_10_epochs):.4f}")
 ## Mastery Check
 
 ### Question 1: Gradient Direction
+
 If the gradient at a point is positive, which direction should you move the parameter to decrease the loss?
 
 <details>
@@ -563,6 +566,7 @@ If the gradient at a point is positive, which direction should you move the para
 **Answer:** Move in the **negative** direction (decrease the parameter).
 
 **Why:**
+
 - Positive gradient means the function is increasing as the parameter increases
 - To reduce the function value, we go the opposite way
 - That's why the update rule is: `w = w - learning_rate * gradient`
@@ -574,6 +578,7 @@ If the gradient at a point is positive, which direction should you move the para
 ---
 
 ### Question 2: Learning Rate Too High
+
 What happens if the learning rate is too high?
 
 <details>
@@ -582,6 +587,7 @@ What happens if the learning rate is too high?
 **Answer:** The parameters **oscillate** wildly or **diverge** to infinity.
 
 **What happens:**
+
 1. Large learning rate = big steps
 2. Big steps overshoot the minimum
 3. Land on the opposite slope, still far from minimum
@@ -589,6 +595,7 @@ What happens if the learning rate is too high?
 5. Either oscillate back and forth, or spiral outward to infinity (loss → NaN)
 
 **How to detect:**
+
 - Loss increases instead of decreasing
 - Loss becomes NaN or inf
 - Parameters grow to extreme values
@@ -600,6 +607,7 @@ What happens if the learning rate is too high?
 ---
 
 ### Question 3: Chain Rule Purpose
+
 Why is the chain rule essential for training neural networks?
 
 <details>
@@ -608,6 +616,7 @@ Why is the chain rule essential for training neural networks?
 **Answer:** Neural networks are compositions of functions (layers stacked on layers). The chain rule lets us compute how the final loss changes with respect to parameters in any layer, even early ones.
 
 **Concretely:**
+
 ```
 input → Layer1 → Layer2 → Layer3 → output → Loss
 ```
@@ -615,6 +624,7 @@ input → Layer1 → Layer2 → Layer3 → output → Loss
 To update weights in Layer1, we need ∂Loss/∂W1.
 
 Using chain rule:
+
 ```
 ∂Loss/∂W1 = ∂Loss/∂output × ∂output/∂Layer3 × ∂Layer3/∂Layer2 × ∂Layer2/∂W1
 ```
@@ -626,6 +636,7 @@ This is called **backpropagation**: propagating gradients backward through the n
 ---
 
 ### Question 4: Local vs Global Minimum
+
 A function might have multiple minimums. How do gradient descent practitioners handle this?
 
 <details>
@@ -650,18 +661,21 @@ A function might have multiple minimums. How do gradient descent practitioners h
 ---
 
 ### Question 5: Practical Debugging
+
 Your model's loss is NaN after a few epochs. What are the most likely causes and fixes?
 
 <details>
 <summary>Click for Answer</summary>
 
 **Likely causes:**
+
 1. **Learning rate too high** → exponential explosion of weights
 2. **Numerical overflow** → values exceed float32 range
 3. **Divide by zero** → in loss function or normalization
 4. **Log of zero or negative** → if using log-loss with predictions exactly 0 or 1
 
 **Fixes:**
+
 1. **Reduce learning rate** by 10x or 100x
 2. **Gradient clipping**: `grad = np.clip(grad, -1.0, 1.0)`
 3. **Check for divide by zero**: add small epsilon `(x + 1e-8)`
@@ -669,6 +683,7 @@ Your model's loss is NaN after a few epochs. What are the most likely causes and
 5. **Use numerically stable implementations**: CrossEntropyLoss instead of manual log
 
 **Debugging approach:**
+
 ```python
 # Add print statements
 print(f"Loss: {loss}, Max weight: {np.max(np.abs(weights))}")
@@ -683,6 +698,7 @@ print(f"Max gradient: {np.max(np.abs(gradient))}")
 ## Summary
 
 Today you learned:
+
 - ✅ Derivatives measure how a function changes (slope/rate of change)
 - ✅ Gradients extend derivatives to multiple variables (vector of partial derivatives)
 - ✅ Gradient descent iteratively finds minimums by walking downhill

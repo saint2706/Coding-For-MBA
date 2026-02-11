@@ -358,7 +358,9 @@ except InvalidAmountError:
 ## Mastery Check
 
 ### Question 1: Exception Order
+
 What's wrong here?
+
 ```python
 try:
     value = int("abc")
@@ -374,6 +376,7 @@ except ValueError:
 `Exception` catches everything, so `ValueError` is never reached.
 
 **Fix**: Put specific exceptions BEFORE general ones:
+
 ```python
 except ValueError:
     print("Bad value")
@@ -386,7 +389,9 @@ except Exception:
 ---
 
 ### Question 2: Finally Behavior
+
 What prints?
+
 ```python
 def test():
     try:
@@ -413,6 +418,7 @@ try
 ---
 
 ### Question 3: Exception Handling
+
 How do you get the error message from an exception?
 
 <details>
@@ -430,6 +436,7 @@ except ValueError as e:
 ---
 
 ### Question 4: Re-raising
+
 How do you handle an error, log it, then let it propagate?
 
 <details>
@@ -448,7 +455,9 @@ except SomeError as e:
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Build a configuration loader that:
+
 1. Tries to load from JSON file
 2. Falls back to environment variables
 3. Falls back to defaults
@@ -499,6 +508,7 @@ def load_config(config_path, defaults=None):
 ## Summary
 
 Today you learned:
+
 - ✅ `try-except` catches and handles errors
 - ✅ Be specific with exception types
 - ✅ `finally` always runs for cleanup

@@ -38,11 +38,13 @@ outcomes:
 **In 2017, a single paper changed everything:** "Attention Is All You Need"
 
 Before transformers:
+
 - NLP models processed text sequentially (slow)
 - Long-range dependencies were lost
 - Training took weeks on huge clusters
 
 After transformers:
+
 - **Parallel processing** → 100x faster training
 - **Attention** → understands context across entire documents
 - **Transfer learning** → pretrained models work out-of-the-box
@@ -50,26 +52,31 @@ After transformers:
 **Real-world impact:**
 
 **Search engines:**
+
 - **Google BERT (2019)**: Understands search intent better
 - "how to catch a cow" → farming advice (not baseball)
 - Impact: 10% improvement in search quality
 
 **Customer service:**
+
 - **Chatbots**: Understand complex queries
 - Before: "Sorry, I don't understand"
 - After: Context-aware, helpful responses
 
 **Content creation:**
+
 - **GPT-3/4**: Write articles, code, emails
 - **GitHub Copilot**: Autocomplete entire functions
 - Productivity boost: 40-55% faster coding
 
 **Translation:**
+
 - **DeepL, Google Translate**: Near-human quality
 - Transformers understand idioms, context
 - Error rate: 60% reduction vs older models
 
 **The business transformation:**
+
 - OpenAI: $29B valuation (ChatGPT)
 - Hugging Face: $4.5B valuation (model hub)
 - Every major tech company building transformer models
@@ -700,6 +707,7 @@ for question in questions:
 ## Mastery Check
 
 ### Question 1: Why Attention Over RNNs?
+
 Transformers replaced RNNs for most NLP tasks. Why is attention better?
 
 <details>
@@ -710,6 +718,7 @@ Transformers replaced RNNs for most NLP tasks. Why is attention better?
 **Key advantages:**
 
 **1. Parallelization**
+
 ```python
 # RNN: Must process sequentially
 h1 = RNN(word1)
@@ -723,6 +732,7 @@ all_outputs = Attention(all_words)  # Parallel!
 ```
 
 **2. Long-range dependencies**
+
 ```
 RNN problem: "Vanishing gradient"
 Sentence: "The keys, which were left on the kitchen table yesterday, are missing."
@@ -735,6 +745,7 @@ Transformer: "are" directly attends to "keys"
 ```
 
 **3. No bottleneck**
+
 ```
 RNN: Entire sentence → single hidden state (1024D vector)
 → Information compressed/lost
@@ -744,6 +755,7 @@ Transformer: Each word has full representation
 ```
 
 **4. Interpretability**
+
 ```python
 # Visualize attention weights
 # Can see which words the model focuses on
@@ -758,6 +770,7 @@ Transformer: Each word has full representation
 ```
 
 **When RNNs are still better:**
+
 - **Online/streaming**: Process one token at a time
 - **Very long sequences**: Attention is O(n²), RNN is O(n)
 - **Small data**: Transformers need lots of data to train
@@ -767,6 +780,7 @@ Transformer: Each word has full representation
 ---
 
 ### Question 2: BERT vs GPT
+
 Both use transformers but are trained differently. When should you use BERT vs GPT?
 
 <details>
@@ -774,9 +788,10 @@ Both use transformers but are trained differently. When should you use BERT vs G
 
 **Answer:** Use **BERT** for understanding tasks (classification, Q&A, NER) where bidirectional context helps. Use **GPT** for generation tasks (writing, completion, chatbots) where left-to-right decoding is natural.
 
-** Architecture differences:**
+**Architecture differences:**
 
 **BERT (Encoder-only):**
+
 ```
 Training: Masked Language Modeling
 Sentence: "The [MASK] sat on the mat"
@@ -790,6 +805,7 @@ Learns bidirectional representations
 ```
 
 **GPT (Decoder-only):**
+
 ```
 Training: Next-token prediction
 Sentence: "The cat sat"
@@ -805,6 +821,7 @@ Learns causal (left-to-right) generation
 **Use cases:**
 
 **BERT → Understanding:**
+
 ```python
 # 1. Classification
 "This movie is terrible" → Negative sentiment
@@ -827,6 +844,7 @@ Document: "Guide to Python for beginners"
 ```
 
 **GPT → Generation:**
+
 ```python
 # 1. Text completion
 Input: "Once upon a time"
@@ -846,6 +864,7 @@ Output: [generates poem]
 ```
 
 **Can't use GPT for classification?**
+
 ```
 Actually, you can! But it's inefficient:
 
@@ -860,6 +879,7 @@ Direct prediction: input → [0.1, 0.9] → Negative
 ```
 
 **Modern trend: Instruction-tuned models**
+
 ```
 ChatGPT, Claude, GPT-4:
 - Based on GPT (generation architecture)
@@ -877,6 +897,7 @@ Best of both worlds!
 ---
 
 ### Question 3: Fine-Tuning Data Requirements
+
 You have a pretrained BERT model. How much labeled data do you need to fine-tune it for your custom task?
 
 <details>
@@ -887,6 +908,7 @@ You have a pretrained BERT model. How much labeled data do you need to fine-tune
 **Data requirements by approach:**
 
 **1. Feature extraction (50-500 examples)**
+
 ```python
 # Freeze BERT, train only final classifier
 for param in bert_model.parameters():
@@ -902,6 +924,7 @@ classifier = nn.Linear(768, num_classes)
 ```
 
 **2. Partial fine-tuning (500-5000 examples)**
+
 ```python
 # Freeze early layers, train top layers
 for param in bert_model.bert.encoder.layer[:8].parameters():
@@ -915,6 +938,7 @@ for param in bert_model.bert.encoder.layer[:8].parameters():
 ```
 
 **3. Full fine-tuning (5000-50000+ examples)**
+
 ```python
 # Train all layers (with low learning rate)
 optimizer = AdamW(bert_model.parameters(), lr=2e-5)
@@ -928,16 +952,19 @@ optimizer = AdamW(bert_model.parameters(), lr=2e-5)
 **Examples by task:**
 
 **Sentiment analysis (binary):**
+
 - 100 examples: 75-80% accuracy (feature extraction)
 - 1000 examples: 85-90% accuracy (light fine-tuning)
 - 10000 examples: 92-95% accuracy (full fine-tuning)
 
 **Named Entity Recognition:**
+
 - 500 examples: 60-70% F1
 - 5000 examples: 80-85% F1
 - 50000 examples: 90-93% F1 (near SOTA)
 
 **Domain-specific Q&A:**
+
 - 1000 Q&A pairs: Basic performance
 - 10000 pairs: Good performance
 - 100000 pairs: SOTA
@@ -945,6 +972,7 @@ optimizer = AdamW(bert_model.parameters(), lr=2e-5)
 **Data efficiency tricks:**
 
 **1. Data augmentation**
+
 ```python
 # Back-translation
 "Great product!" 
@@ -958,6 +986,7 @@ optimizer = AdamW(bert_model.parameters(), lr=2e-5)
 ```
 
 **2. Semi-supervised learning**
+
 ```python
 # Use unlabeled data for pretraining on domain
 # medical_texts (1M unlabeled) → pretrain BERT
@@ -966,6 +995,7 @@ optimizer = AdamW(bert_model.parameters(), lr=2e-5)
 ```
 
 **3. Few-shot prompting (GPT-3+)**
+
 ```
 # Doesn't require fine-tuning!
 Prompt: """
@@ -981,6 +1011,7 @@ Classify sentiment:
 ```
 
 **Rule of thumb:**
+
 ```
 Examples needed ≈ num_classes × 50-500
 
@@ -994,6 +1025,7 @@ Binary classification: 100-1000
 ---
 
 ### Question 4: Positional Encodings
+
 Transformers have no inherent notion of word order. How do they know "dog bit man" ≠ "man bit dog"?
 
 <details>
@@ -1051,6 +1083,7 @@ plt.show()
 ```
 
 **Why sinusoids?**
+
 ```
 1. Deterministic (no learning needed)
 2. Generalizes to longer sequences than training
@@ -1091,10 +1124,12 @@ class TransformerEmbedding(nn.Module):
 ```
 
 **Advantages of learned embeddings:**
+
 - Can adapt to data patterns
 - Often slightly better accuracy
 
 **Disadvantages:**
+
 - Can't generalize beyond max_len seen in training
 - Requires learning (more parameters)
 
@@ -1131,6 +1166,7 @@ final_dog_v2 = dog_emb + pos_2  # Position 2
 **Modern alternatives:**
 
 **Relative positional encoding (Transformer-XL, T5):**
+
 ```python
 # Instead of absolute positions (0, 1, 2, ...)
 # Encode relative distances (-2, -1, 0, +1, +2)
@@ -1140,6 +1176,7 @@ final_dog_v2 = dog_emb + pos_2  # Position 2
 ```
 
 **Rotary Position Embeddings (RoPE)** (used in GPT-4, LLaMA):
+
 ```python
 # Rotate query and key vectors based on position
 # More efficient, better extrapolation to longer sequences
@@ -1150,6 +1187,7 @@ final_dog_v2 = dog_emb + pos_2  # Position 2
 ---
 
 ### Question 5: Production Serving
+
 Your BERT model takes 500ms per inference (too slow for production). How do you speed it up?
 
 <details>
@@ -1160,6 +1198,7 @@ Your BERT model takes 500ms per inference (too slow for production). How do you 
 **Optimization strategies:**
 
 **1. Model distillation (2-3x faster)**
+
 ```python
 # DistilBERT: 97% of BERT's performance, 40% smaller, 60% faster
 from transformers import DistilBertForSequenceClassification
@@ -1173,6 +1212,7 @@ model = DistilBertForSequenceClassification.from_pretrained("distilbert-base-unc
 ```
 
 **How distillation works:**
+
 ```python
 # Train small "student" model to mimic large "teacher"
 teacher_output = bert_large.predict(x)  # Soft labels
@@ -1182,6 +1222,7 @@ student_loss = KL_divergence(student_output, teacher_output)
 ```
 
 **2. Quantization (2-4x faster)**
+
 ```python
 # Convert FP32 → INT8 (4x smaller, faster)
 from transformers import AutoModelForSequenceClassification
@@ -1201,6 +1242,7 @@ quantized_model = torch.quantization.quantize_dynamic(
 ```
 
 **3. ONNX Runtime (1.5-2x faster)**
+
 ```python
 # Convert to ONNX format for optimized inference
 from transformers import AutoTokenizer
@@ -1217,6 +1259,7 @@ model = ORTModelForSequenceClassification.from_pretrained(
 ```
 
 **4. Reduce sequence length**
+
 ```python
 # Longer sequences = more computation (quadratic in attention)
 
@@ -1231,6 +1274,7 @@ tokenizer(text, max_length=128)  # 125ms (4x faster)
 ```
 
 **5. Batch processing**
+
 ```python
 # Process multiple requests together
 
@@ -1246,6 +1290,7 @@ model.predict(batch)
 ```
 
 **6. Caching**
+
 ```python
 # Cache frequent queries
 from functools import lru_cache
@@ -1258,6 +1303,7 @@ def predict_sentiment(text):
 ```
 
 **7. Model pruning**
+
 ```python
 # Remove unimportant weights
 from transformers import BertForSequenceClassification
@@ -1273,6 +1319,7 @@ for module in model.modules():
 ```
 
 **8. Specialized hardware**
+
 ```python
 # CPU → GPU: 500ms → 50ms (10x)
 model.to('cuda')
@@ -1319,6 +1366,7 @@ Combined: ~9x speedup (500ms → 55ms)
 ```
 
 **Monitor in production:**
+
 ```python
 metrics = {
     "p50_latency": "45ms",
@@ -1338,6 +1386,7 @@ metrics = {
 ## Summary
 
 Today you learned:
+
 - ✅ Self-attention computes relationships between all words in parallel
 - ✅ Transformers replaced RNNs with faster, more effective architecture
 - ✅ BERT (bidirectional) excels at understanding tasks

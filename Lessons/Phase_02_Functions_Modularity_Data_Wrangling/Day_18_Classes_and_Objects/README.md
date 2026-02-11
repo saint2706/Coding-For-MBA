@@ -34,10 +34,12 @@ outcomes:
 **Think about how businesses organize information:**
 
 A "Customer" has:
+
 - Name, email, phone (data)
 - Can place orders, update profile, check balance (behaviors)
 
 An "Order" has:
+
 - Items, total, status (data)
 - Can add items, calculate total, process payment (behaviors)
 
@@ -428,6 +430,7 @@ print(f"Items: {len(order.items)}, Total: ${order.total:.2f}")
 ## Mastery Check
 
 ### Question 1: Class vs Instance
+
 What's the difference between class and instance attributes?
 
 <details>
@@ -454,12 +457,14 @@ d2 = Dog("Max")
 ---
 
 ### Question 2: Self Purpose
+
 Why is `self` required in method definitions?
 
 <details>
 <summary>Click for Answer</summary>
 
 `self` refers to the specific instance calling the method. It allows:
+
 - Access to instance attributes
 - Calling other instance methods
 - Distinguishing between different instances
@@ -469,12 +474,14 @@ Why is `self` required in method definitions?
 ---
 
 ### Question 3: Property Usage
+
 When would you use `@property` instead of a regular attribute?
 
 <details>
 <summary>Click for Answer</summary>
 
 Use `@property` when you need:
+
 - **Validation** on setting values
 - **Computed values** derived from other attributes
 - **Read-only** access
@@ -485,6 +492,7 @@ Use `@property` when you need:
 ---
 
 ### Question 4: Inheritance
+
 Create a class hierarchy for shapes with area calculation:
 
 <details>
@@ -520,6 +528,7 @@ class Circle(Shape):
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Design a library system with Books, Members, and Loans.
 
 <details>
@@ -571,6 +580,7 @@ class Loan:
 ## Summary
 
 Today you learned:
+
 - ✅ Classes bundle data and behavior
 - ✅ `__init__` initializes instances
 - ✅ Properties provide controlled attribute access

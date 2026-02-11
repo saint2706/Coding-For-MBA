@@ -40,6 +40,7 @@ outcomes:
 Each department has specialized knowledge. When Finance needs engineering input, they don't learn engineering—they consult the Engineering department.
 
 **Modules work the same way.** Instead of writing everything from scratch:
+
 - Need math? Import the `math` module
 - Need dates? Import the `datetime` module
 - Need to read files? Import appropriate modules
@@ -212,6 +213,7 @@ from a import function_a  # Imports a → CIRCULAR!
 ```
 
 **Solutions:**
+
 1. Import inside functions (delay import)
 2. Restructure to break the cycle
 3. Use a third module both can import
@@ -344,7 +346,9 @@ print(f"Word frequency: {freq.most_common()}")
 ## Mastery Check
 
 ### Question 1: Import Syntax
+
 What's the difference?
+
 ```python
 import math
 from math import sqrt
@@ -361,7 +365,9 @@ from math import sqrt
 ---
 
 ### Question 2: Module Execution
+
 When does this print?
+
 ```python
 # myfile.py
 print("Loading module")
@@ -383,7 +389,9 @@ When imported, only "Loading module" appears.
 ---
 
 ### Question 3: Package Structure
+
 Given this structure, how do you import `helper`?
+
 ```
 project/
 ├── utils/
@@ -407,7 +415,9 @@ from utils.helper import specific_function
 ---
 
 ### Question 4: Standard Library
+
 Which module would you use for:
+
 1. Generating random passwords
 2. Parsing JSON from an API
 3. Finding today's date
@@ -424,7 +434,9 @@ Which module would you use for:
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: Organize an analytics project with:
+
 - Data loading utilities
 - Statistical calculations
 - Visualization helpers
@@ -455,6 +467,7 @@ analytics/
 ```
 
 Usage:
+
 ```python
 from analytics.data import loaders
 from analytics.stats import descriptive
@@ -468,6 +481,7 @@ from analytics.viz import charts
 ## Summary
 
 Today you learned:
+
 - ✅ Import modules with `import` and `from`
 - ✅ Python's standard library provides powerful tools
 - ✅ Any `.py` file can be a module

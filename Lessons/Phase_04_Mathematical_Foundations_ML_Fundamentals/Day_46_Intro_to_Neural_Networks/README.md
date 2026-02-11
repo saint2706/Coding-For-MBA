@@ -36,6 +36,7 @@ outcomes:
 **You're trying to recognize handwritten digits.** A simple rule like "if there's a curve at the top, it's a 9" doesn't work—handwriting varies too much. But a neural network can learn: examine 60,000 examples, adjust internal weights, and eventually recognize patterns humans can't even describe.
 
 **Neural networks in the real world:**
+
 - **Google Photos**: Face recognition
 - **Tesla**: Self-driving perception
 - **Spotify**: Music recommendations
@@ -375,6 +376,7 @@ print(f"Test MAE: {model.evaluate(X_test, y_test, verbose=0)[1]:.3f}")
 ## Mastery Check
 
 ### Question 1: Activation Choice
+
 Why use ReLU in hidden layers instead of sigmoid?
 
 <details>
@@ -385,6 +387,7 @@ ReLU avoids **vanishing gradient problem**. Sigmoid squashes values to 0-1, maki
 </details>
 
 ### Question 2: Output Layer Design
+
 Binary classification with outputs "spam" or "not spam". What's the output layer?
 
 <details>
@@ -395,6 +398,7 @@ Binary classification with outputs "spam" or "not spam". What's the output layer
 </details>
 
 ### Question 3: Overfitting Signs
+
 Training accuracy is 98% but validation is 75%. What's happening?
 
 <details>
@@ -405,6 +409,7 @@ Training accuracy is 98% but validation is 75%. What's happening?
 </details>
 
 ### Question 4: Learning Rate
+
 Learning rate 0.1 causes loss to jump around; 0.0001 is too slow. What to do?
 
 <details>
@@ -415,6 +420,7 @@ Use **adaptive optimizers** like Adam (auto-adjusts learning rate), or try 0.001
 </details>
 
 ### Question 5: Batch Size
+
 What's the difference between batch_size=32 and batch_size=512?
 
 <details>
