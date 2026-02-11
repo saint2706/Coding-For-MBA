@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 const LESSONS_DIR = join(ROOT, 'Lessons')
-const BASE_URL = 'https://saint2706.github.io/Coding-For-MBA'
+const BASE_URL = process.env.SITE_URL || 'https://saint2706.github.io/Coding-For-MBA'
 
 /** Extract frontmatter `day` or `phase` value from a markdown file. */
 function extractNumber(filePath, key) {
