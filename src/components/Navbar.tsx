@@ -2,9 +2,10 @@ import { Link, useLocation } from 'react-router-dom'
 
 interface NavbarProps {
   onToggleSidebar: () => void
+  onOpenSearch: () => void
 }
 
-export default function Navbar({ onToggleSidebar }: NavbarProps) {
+export default function Navbar({ onToggleSidebar, onOpenSearch }: NavbarProps) {
   const location = useLocation()
 
   return (
@@ -33,6 +34,20 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
       </div>
 
       <div className="navbar-links">
+        <button className="search-trigger" onClick={onOpenSearch} aria-label="Search lessons">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <span className="search-trigger-label">Search…</span>
+          <span className="search-trigger-shortcut">⌘K</span>
+        </button>
         <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
           Home
         </Link>

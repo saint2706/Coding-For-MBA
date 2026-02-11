@@ -35,10 +35,10 @@
 
 ### Full-Text Search
 
-- [ ] **Build client-side search index** at build time (Fuse.js or Lunr.js)
-- [ ] **Index lesson titles, tags, concepts, and body text**
-- [ ] **Add search UI** — command palette (⌘K) with keyboard-navigable results
-- [ ] **Add search results page** with highlighted matches
+- [x] **Build client-side search index** at build time (Fuse.js or Lunr.js)
+- [x] **Index lesson titles, tags, concepts, and body text**
+- [x] **Add search UI** — command palette (⌘K) with keyboard-navigable results
+- [x] **Add search results page** with highlighted matches
 
 ### Navigation Improvements
 
@@ -179,6 +179,6 @@
 | HashRouter over BrowserRouter           | ✅ Decided  | Feb 2026 — required for GH Pages      |
 | Custom YAML parser over gray-matter     | ✅ Decided  | Feb 2026 — browser compat             |
 | Vanilla CSS over Tailwind               | ✅ Decided  | Feb 2026 — full control, no build dep |
-| Client-side search over Algolia         | 📋 Proposed | — free, no external dep               |
+| Client-side search over Algolia         | ✅ Decided  | Feb 2026 — Fuse.js, free, no external dep |
 | Pyodide over server-side code execution | 📋 Proposed | — runs entirely in browser            |
 | TypeScript migration                    | 📋 Proposed | — type safety for growing codebase    |

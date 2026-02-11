@@ -85,6 +85,7 @@ export interface Lesson {
   difficulty?: string
   duration?: number
   tags?: string[]
+  concepts?: string[]
   content: string
   path: string
   [key: string]: unknown

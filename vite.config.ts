@@ -12,6 +12,7 @@ export default defineConfig({
           'syntax-highlighter': ['react-syntax-highlighter'],
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'markdown': ['react-markdown', 'remark-gfm', 'rehype-raw'],
+          'search': ['fuse.js'],
         },
       },
     },
