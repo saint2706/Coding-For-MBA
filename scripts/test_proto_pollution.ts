@@ -104,7 +104,9 @@ Content here`
 
 const result1 = parseMarkdown(malicious1)
 console.log('  Parsed frontmatter:', result1.frontmatter)
-console.log('  Object.prototype polluted?', Object.hasOwn(Object.prototype, 'malicious') ? '❌ YES (FAIL)' : '✅ NO (PASS)')
+// Check if Object.prototype was polluted by creating a plain object
+const testObj = {}
+console.log('  Object.prototype polluted?', 'malicious' in testObj ? '❌ YES (FAIL)' : '✅ NO (PASS)')
 console.log('  Has __proto__ key?', '__proto__' in result1.frontmatter ? '❌ YES (FAIL)' : '✅ NO (PASS)')
 console.log('  Null prototype?', Object.getPrototypeOf(result1.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)')
 console.log()
