@@ -11,11 +11,11 @@ interface SearchPaletteProps {
 
 export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
   const [query, setQuery] = useState('')
-  const debouncedQuery = useDebounce(
-    query,
-    300,
-    (q) => q.trim().length < 2 // Reset immediately when query is empty or too short
-  )
+  
+  // Memoize the reset condition to avoid unnecessary re-runs of useDebounce
+  const shouldResetImmediately = useCallback((q: string) => q.trim().length < 2, [])
+  
+  const debouncedQuery = useDebounce(query, 300, shouldResetImmediately)
   const [activeIndex, setActiveIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
