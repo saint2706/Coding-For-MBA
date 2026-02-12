@@ -1,7 +1,23 @@
+/**
+ * Search Index Module
+ * 
+ * Provides full-text search functionality for lessons using Fuse.js.
+ * Implements fuzzy search across lesson titles, tags, concepts, and content
+ * with markdown syntax stripping for better search results.
+ */
+
 import Fuse, { type FuseResultMatch } from 'fuse.js'
 import { getAllLessons } from './contentLoader'
 
-// Strip markdown syntax to get plain text for better search and snippet display
+/**
+ * Strips markdown syntax to get plain text for better search and snippet display.
+ * 
+ * Removes code blocks, inline code, headings, formatting, links, images,
+ * list markers, blockquotes, tables, and horizontal rules.
+ * 
+ * @param md - Raw markdown string
+ * @returns Plain text with markdown syntax removed
+ */
 function stripMarkdown(md: string): string {
   return md
     .replace(/```[\s\S]*?```/g, '') // code blocks
@@ -19,7 +35,11 @@ function stripMarkdown(md: string): string {
     .trim()
 }
 
-// Build search documents from lessons
+/**
+ * Builds search documents from all lessons with plain text content.
+ * 
+ * @returns Array of lesson objects with added plainContent field
+ */
 function buildSearchDocuments() {
   return getAllLessons().map((lesson) => ({
     ...lesson,
@@ -27,18 +47,42 @@ function buildSearchDocuments() {
   }))
 }
 
+/**
+ * Type representing a lesson document prepared for search indexing.
+ * Extends the base Lesson type with a plainContent field.
+ */
 export type SearchDocument = ReturnType<typeof buildSearchDocuments>[number]
 
+/**
+ * Represents a search result with the matched document and relevance information.
+ */
 export interface SearchResult {
   item: SearchDocument
   matches?: ReadonlyArray<FuseResultMatch>
   score?: number
 }
 
-// Fuse instance (created lazily on first search)
+/**
+ * Fuse.js instance for fuzzy search (created lazily on first search).
+ */
 let fuseInstance: Fuse<SearchDocument> | null = null
+
+/**
+ * Cached search documents array.
+ */
 let searchDocs: SearchDocument[] = []
 
+/**
+ * Gets or creates the Fuse.js search instance.
+ * 
+ * Lazily initializes the search index with weighted keys:
+ * - title: 3x weight
+ * - tags: 2x weight
+ * - concepts: 2x weight
+ * - plainContent: 1x weight
+ * 
+ * @returns Configured Fuse.js instance
+ */
 function getFuse(): Fuse<SearchDocument> {
   if (!fuseInstance) {
     searchDocs = buildSearchDocuments()
@@ -59,6 +103,16 @@ function getFuse(): Fuse<SearchDocument> {
   return fuseInstance
 }
 
+/**
+ * Performs a fuzzy search across all lessons.
+ * 
+ * Searches lesson titles, tags, concepts, and content for matches.
+ * Returns results sorted by relevance score with highlighted match information.
+ * 
+ * @param query - Search query string
+ * @param limit - Maximum number of results to return (default: 20)
+ * @returns Array of search results with match information
+ */
 export function search(query: string, limit = 20): SearchResult[] {
   if (!query.trim()) return []
   const fuse = getFuse()

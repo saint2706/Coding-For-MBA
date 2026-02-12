@@ -1,3 +1,15 @@
+/**
+ * Main Application Component
+ * 
+ * Root component that sets up the application structure with:
+ * - Theme provider for dark/light mode
+ * - Router configuration with lazy-loaded pages
+ * - Global navigation (navbar, sidebar, mobile nav)
+ * - Search palette with keyboard shortcuts (Cmd/Ctrl+K, /)
+ * - Accessibility features (skip links, scroll progress)
+ * - Suspense boundaries with loading skeletons
+ */
+
 import { useState, useEffect, useCallback, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
@@ -9,6 +21,7 @@ import MobileNav from './components/MobileNav'
 import { PageSkeleton } from './components/Skeleton'
 import { ThemeProvider } from './context/ThemeProvider'
 
+// Lazy-loaded page components for code splitting
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
 const PhaseOverview = lazy(() => import('./pages/PhaseOverview'))
@@ -21,6 +34,18 @@ const ConceptGraphPage = lazy(() => import('./pages/ConceptGraphPage'))
 const ContentStats = lazy(() => import('./pages/ContentStats'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
+/**
+ * Main App component that orchestrates the entire application.
+ * 
+ * Features:
+ * - Manages sidebar and search palette state
+ * - Implements global keyboard shortcuts (Cmd/Ctrl+K for search, / for search)
+ * - Handles route-based state resets (closes sidebar, scrolls to top)
+ * - Prevents background scrolling when mobile sidebar is open
+ * - Lazy loads all pages for optimal performance
+ * 
+ * @returns The complete application UI
+ */
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)

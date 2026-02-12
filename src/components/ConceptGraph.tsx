@@ -1,9 +1,19 @@
+/**
+ * ConceptGraph Component
+ * 
+ * An interactive force-directed graph visualization of lesson relationships and concepts.
+ * Uses D3.js to create a navigable, zoomable, and filterable network diagram showing
+ * how lessons connect through prerequisites and shared concepts.
+ */
+
 import { useRef, useEffect, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as d3 from 'd3'
 import { getAllLessons, phaseIcons } from '../utils/contentLoader'
 
-/* ---------- phase colours ---------- */
+/**
+ * Color palette for phase differentiation in the graph.
+ */
 const PHASE_COLORS = [
   '#818cf8', // Phase 1 – soft indigo
   '#a78bfa', // Phase 2 – soft violet
@@ -16,7 +26,16 @@ const PHASE_COLORS = [
   '#fb923c', // Phase 9 – orange
 ]
 
-/* ---------- types ---------- */
+/**
+ * Represents a node in the concept graph.
+ * Extends D3's SimulationNodeDatum to support force simulation.
+ * 
+ * @property id - Unique lesson day number
+ * @property label - Short display label (e.g., "D1")
+ * @property title - Full lesson title
+ * @property phase - Phase number the lesson belongs to
+ * @property concepts - Array of concept tags associated with the lesson
+ */
 interface GraphNode extends d3.SimulationNodeDatum {
   id: number
   label: string
@@ -25,17 +44,45 @@ interface GraphNode extends d3.SimulationNodeDatum {
   concepts: string[]
 }
 
+/**
+ * Represents an edge (link) between two nodes in the graph.
+ * 
+ * @property source - Source node or node ID
+ * @property target - Target node or node ID
+ */
 interface GraphEdge extends d3.SimulationLinkDatum<GraphNode> {
   source: GraphNode | number
   target: GraphNode | number
 }
 
-/* ---------- component ---------- */
+/**
+ * Props for the ConceptGraph component.
+ * 
+ * @property search - Optional search query to filter nodes
+ * @property highlightPhase - Optional phase number to highlight specific phase nodes
+ */
 interface ConceptGraphProps {
   search?: string
   highlightPhase?: number | null
 }
 
+/**
+ * Interactive force-directed graph visualization of lesson concepts.
+ * 
+ * Features:
+ * - Force-directed layout with physics simulation
+ * - Drag-to-reposition nodes
+ * - Zoom and pan controls
+ * - Phase-based color coding and clustering
+ * - Search and filter by concepts/titles
+ * - Phase highlighting
+ * - Interactive tooltips on hover
+ * - Click to navigate to lessons
+ * 
+ * @param search - Search query to filter displayed nodes
+ * @param highlightPhase - Phase number to highlight
+ * @returns An interactive SVG-based graph visualization
+ */
 export default function ConceptGraph({ search = '', highlightPhase = null }: ConceptGraphProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -47,7 +94,10 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     node: GraphNode
   } | null>(null)
 
-  // Build graph once on mount
+  /**
+   * Builds and initializes the D3 force-directed graph on component mount.
+   * Sets up nodes, edges, forces, and interaction handlers.
+   */
   useEffect(() => {
     const container = containerRef.current
     const svg = svgRef.current
@@ -234,7 +284,10 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     }
   }, [])
 
-  // Handle search/phase filtering via D3 selection opacity
+  /**
+   * Updates node and edge opacity based on search query and phase filter.
+   * Highlights matching nodes while dimming non-matching ones.
+   */
   useEffect(() => {
     const svg = svgRef.current
     if (!svg) return
@@ -274,6 +327,12 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
       line.attr('stroke', sMatch && tMatch ? 'rgba(148,163,184,0.3)' : 'rgba(148,163,184,0.03)')
     })
 
+    /**
+     * Checks if a node matches current search and phase filters.
+     * 
+     * @param nodeId - The node ID to check
+     * @returns True if node matches filters, false otherwise
+     */
     function checkNodeMatch(nodeId: number): boolean {
       const svg = svgRef.current
       if (!svg) return false
@@ -295,7 +354,11 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     }
   }, [search, highlightPhase])
 
-  // Mouse events for tooltip (delegated via SVG)
+  /**
+   * Handles mouse movement over the graph to show/update tooltips.
+   * 
+   * @param e - React mouse event
+   */
   const handleMouseMove = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
     const target = e.target as SVGElement
     const nodeGroup = target.closest('.graph-node') as SVGGElement | null
@@ -313,8 +376,16 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     })
   }, [])
 
+  /**
+   * Hides the tooltip when mouse leaves the graph area.
+   */
   const handleMouseLeave = useCallback(() => setTooltip(null), [])
 
+  /**
+   * Handles click events on graph nodes to navigate to the lesson page.
+   * 
+   * @param e - React mouse event
+   */
   const handleClick = useCallback(
     (e: React.MouseEvent<SVGSVGElement>) => {
       const target = e.target as SVGElement

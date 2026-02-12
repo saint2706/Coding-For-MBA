@@ -1,3 +1,13 @@
+/**
+ * Individual lesson page component.
+ * 
+ * This page displays a single lesson's content with full navigation, progress tracking,
+ * table of contents, and related lesson recommendations. Supports keyboard shortcuts
+ * and swipe gestures for navigation between lessons.
+ * 
+ * @module pages/Lesson
+ */
+
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
@@ -12,6 +22,21 @@ import PrerequisitePills from '../components/PrerequisitePills'
 import RelatedLessons from '../components/RelatedLessons'
 import { useSwipe } from '../hooks/useSwipe'
 
+/**
+ * Lesson page component displaying a single day's lesson.
+ * 
+ * Features include:
+ * - Full markdown content rendering with syntax highlighting
+ * - Breadcrumb navigation and lesson metadata (difficulty, duration, tags)
+ * - Completion tracking toggle
+ * - Keyboard navigation (← previous, → next)
+ * - Swipe gestures for mobile navigation
+ * - Table of contents sidebar
+ * - Prerequisite and related lesson recommendations
+ * - Previous/next lesson navigation buttons
+ * 
+ * @returns The rendered lesson page or 404 if lesson not found
+ */
 export default function Lesson() {
   const { dayNum } = useParams<{ dayNum: string }>()
   const navigate = useNavigate()

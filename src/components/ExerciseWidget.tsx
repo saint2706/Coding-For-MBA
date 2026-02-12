@@ -1,8 +1,19 @@
+/**
+ * ExerciseWidget Component
+ * 
+ * An interactive exercise widget for practicing Python code.
+ * Displays exercise instructions, starter code, an integrated code playground,
+ * and an optional solution that can be revealed on demand.
+ */
+
 import { useState, useId } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
 
+/**
+ * Custom syntax highlighting theme for solution code display.
+ */
 const solutionTheme = {
   ...oneDark,
   'pre[class*="language-"]': {
@@ -17,6 +28,16 @@ const solutionTheme = {
   },
 }
 
+/**
+ * Props for the ExerciseWidget component.
+ * 
+ * @property title - Exercise title
+ * @property goal - Optional goal or objective of the exercise
+ * @property instructions - Optional step-by-step instructions
+ * @property starterCode - Initial Python code provided to the user
+ * @property expectedOutput - Optional expected output to show users what result to aim for
+ * @property solution - Optional solution code that can be revealed
+ */
 interface ExerciseWidgetProps {
   title: string
   goal?: string
@@ -26,6 +47,24 @@ interface ExerciseWidgetProps {
   solution?: string
 }
 
+/**
+ * Interactive exercise widget with code playground and solution reveal.
+ * 
+ * Provides a complete learning exercise experience with:
+ * - Clear exercise title and goals
+ * - Step-by-step instructions
+ * - Interactive code playground for practice
+ * - Expected output display
+ * - Collapsible solution viewer with syntax highlighting
+ * 
+ * @param title - Exercise title to display
+ * @param goal - Learning goal for the exercise
+ * @param instructions - Detailed instructions for the learner
+ * @param starterCode - Starting code template
+ * @param expectedOutput - Expected output to guide learners
+ * @param solution - Complete solution code
+ * @returns An interactive exercise widget component
+ */
 export default function ExerciseWidget({
   title,
   goal,

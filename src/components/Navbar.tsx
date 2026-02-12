@@ -1,11 +1,39 @@
+/**
+ * Navbar Component
+ * 
+ * Main navigation bar with branding, search trigger, theme toggle,
+ * and primary navigation links.
+ */
+
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/useTheme'
 
+/**
+ * Props for the Navbar component.
+ * 
+ * @property onToggleSidebar - Callback to toggle the sidebar visibility
+ * @property onOpenSearch - Callback to open the search palette
+ */
 interface NavbarProps {
   onToggleSidebar: () => void
   onOpenSearch: () => void
 }
 
+/**
+ * Main navigation bar component.
+ * 
+ * Features:
+ * - Hamburger menu for sidebar toggle
+ * - Brand logo and name
+ * - Search trigger button
+ * - Theme toggle (dark/light mode)
+ * - Navigation links (Home, Curriculum, GitHub)
+ * - Responsive layout
+ * 
+ * @param onToggleSidebar - Function to show/hide sidebar
+ * @param onOpenSearch - Function to open search palette
+ * @returns The main navigation bar
+ */
 export default function Navbar({ onToggleSidebar, onOpenSearch }: NavbarProps) {
   const location = useLocation()
   const { theme, toggleTheme } = useTheme()

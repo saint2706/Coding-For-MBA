@@ -1,11 +1,32 @@
+/**
+ * TableOfContents Component
+ * 
+ * An automatically generated table of contents from markdown headings
+ * with active section highlighting and smooth scrolling.
+ */
+
 import { useMemo, useState, useEffect } from 'react'
 
+/**
+ * Represents a heading entry in the table of contents.
+ * 
+ * @property id - Generated ID for the heading (used for anchor links)
+ * @property text - Display text of the heading
+ * @property level - Heading level (2 or 3 for h2/h3)
+ */
 interface TocEntry {
   id: string
   text: string
   level: number
 }
 
+/**
+ * Parses markdown content to extract h2 and h3 headings.
+ * Skips headings inside code blocks.
+ * 
+ * @param content - Markdown content to parse
+ * @returns Array of table of contents entries
+ */
 function parseHeadings(content: string): TocEntry[] {
   const entries: TocEntry[] = []
   const lines = content.split('\n')
@@ -31,14 +52,36 @@ function parseHeadings(content: string): TocEntry[] {
   return entries
 }
 
+/**
+ * Props for the TableOfContents component.
+ * 
+ * @property content - Markdown content to generate TOC from
+ */
 interface TableOfContentsProps {
   content: string
 }
 
+/**
+ * Automatically generated table of contents component.
+ * 
+ * Features:
+ * - Parses h2 and h3 headings from markdown
+ * - Highlights currently visible section
+ * - Smooth scroll to section on click
+ * - Hierarchical indentation for h3 headings
+ * - Returns null if fewer than 2 headings
+ * 
+ * @param content - Markdown content to extract headings from
+ * @returns A fixed-position table of contents or null
+ */
 export default function TableOfContents({ content }: TableOfContentsProps) {
   const headings = useMemo(() => parseHeadings(content), [content])
   const [activeId, setActiveId] = useState<string>('')
 
+  /**
+   * Sets up IntersectionObserver to track which heading is currently visible.
+   * Updates active ID based on which heading enters the viewport.
+   */
   useEffect(() => {
     if (headings.length === 0) return
 

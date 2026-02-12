@@ -1,3 +1,13 @@
+/**
+ * Jupyter notebook viewer page for displaying solution notebooks.
+ * 
+ * This page renders Jupyter notebook (.ipynb) files with interactive Python
+ * code execution capabilities. Code cells are merged for better readability
+ * and can be executed directly in the browser using Pyodide.
+ * 
+ * @module pages/NotebookViewer
+ */
+
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { getNotebook, getPhase, phaseIcons, type NotebookCell } from '../utils/contentLoader'
@@ -11,7 +21,14 @@ import CodePlayground from '../components/CodePlayground'
 // all code for one solution/question is shown together and can run
 // as a single unit in the CodePlayground.
 
+/**
+ * Represents a merged block of notebook content.
+ * 
+ * Consecutive code cells are merged into a single executable block,
+ * while markdown cells remain separate.
+ */
 interface MergedBlock {
+  /** Type of the block - either markdown content or merged code */
   type: 'markdown' | 'code'
   /** For markdown: the raw source. For code: the merged source of all cells. */
   source: string
@@ -19,6 +36,15 @@ interface MergedBlock {
   cells?: NotebookCell[]
 }
 
+/**
+ * Merges consecutive code cells into single executable blocks.
+ * 
+ * This function groups adjacent code cells together so they can be executed
+ * as a single unit, while keeping markdown cells separate for rendering.
+ * 
+ * @param cells - Array of notebook cells to merge
+ * @returns Array of merged blocks ready for rendering
+ */
 function mergeCells(cells: NotebookCell[]): MergedBlock[] {
   const blocks: MergedBlock[] = []
   let currentCodeSources: string[] = []
@@ -54,11 +80,40 @@ function mergeCells(cells: NotebookCell[]): MergedBlock[] {
 
 // eslint-disable-next-line no-control-regex
 const ANSI_REGEX = /\u001b\[[0-9;]*m/g
+
+/**
+ * Strips ANSI color codes from a string.
+ * 
+ * Removes terminal color and formatting codes that may be present
+ * in notebook output, particularly in error tracebacks.
+ * 
+ * @param str - String potentially containing ANSI codes
+ * @returns String with ANSI codes removed
+ */
 function stripAnsi(str: string): string {
   return str.replace(ANSI_REGEX, '')
 }
 
-function CellOutputs({ cells }: { cells: NotebookCell[] }) {
+/**
+ * Props for the CellOutputs component.
+ */
+interface CellOutputsProps {
+  /** Array of notebook cells to render outputs from */
+  cells: NotebookCell[]
+}
+
+/**
+ * Renders the output from notebook code cells.
+ * 
+ * Displays various types of output including:
+ * - Stream output (stdout/stderr)
+ * - Error tracebacks
+ * - Result values (text/plain)
+ * 
+ * @param props - Component props
+ * @returns Rendered cell outputs or null if no outputs
+ */
+function CellOutputs({ cells }: CellOutputsProps) {
   const allOutputs = cells.flatMap((cell) => cell.outputs || [])
   if (allOutputs.length === 0) return null
 
@@ -99,7 +154,27 @@ function CellOutputs({ cells }: { cells: NotebookCell[] }) {
 
 // --- Block renderers ---
 
-function MergedBlockRenderer({ block, index }: { block: MergedBlock; index: number }) {
+/**
+ * Props for the MergedBlockRenderer component.
+ */
+interface MergedBlockRendererProps {
+  /** The merged block to render */
+  block: MergedBlock
+  /** Index of the block in the notebook */
+  index: number
+}
+
+/**
+ * Renders a single merged block (markdown or code).
+ * 
+ * Markdown blocks are rendered using the MarkdownRenderer component,
+ * while code blocks use the CodePlayground for interactive execution
+ * with original outputs displayed below.
+ * 
+ * @param props - Component props
+ * @returns Rendered block component
+ */
+function MergedBlockRenderer({ block, index }: MergedBlockRendererProps) {
   if (block.type === 'markdown') {
     return (
       <div className="nb-cell nb-cell--markdown" key={index}>
@@ -129,6 +204,19 @@ function MergedBlockRenderer({ block, index }: { block: MergedBlock; index: numb
 
 // --- Main component ---
 
+/**
+ * Notebook viewer page component.
+ * 
+ * Displays Jupyter notebooks (.ipynb files) with:
+ * - Merged code cells for better readability
+ * - Interactive code execution using CodePlayground
+ * - Markdown content rendering
+ * - Original cell outputs preserved
+ * - Navigation breadcrumbs
+ * - Back to exercises link
+ * 
+ * @returns The rendered notebook viewer page or 404 if notebook not found
+ */
 export default function NotebookViewer() {
   const { phaseNum } = useParams<{ phaseNum: string }>()
   const notebook = getNotebook(phaseNum!)

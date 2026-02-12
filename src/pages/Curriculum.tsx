@@ -1,3 +1,13 @@
+/**
+ * Curriculum roadmap page showing the complete 108-day learning path.
+ * 
+ * This page displays all lessons organized by phase in a timeline format,
+ * showing progress, difficulty levels, and completion status for each lesson.
+ * Provides a bird's-eye view of the entire curriculum structure.
+ * 
+ * @module pages/Curriculum
+ */
+
 import { Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import {
@@ -10,6 +20,15 @@ import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker
 import Breadcrumb from '../components/Breadcrumb'
 import ProgressBar from '../components/ProgressBar'
 
+/**
+ * Curriculum roadmap page component.
+ * 
+ * Displays the complete curriculum as a timeline organized by phases, with
+ * each phase showing its lessons in chronological order. Each lesson shows
+ * completion status, and phases display overall progress bars.
+ * 
+ * @returns The rendered curriculum roadmap page
+ */
 export default function Curriculum() {
   const phases = getAllPhases()
 

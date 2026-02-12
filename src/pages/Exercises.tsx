@@ -1,3 +1,13 @@
+/**
+ * Exercise browser and filter page.
+ * 
+ * This page provides a comprehensive view of all exercises across the curriculum
+ * with advanced filtering capabilities by phase, difficulty, and keyword search.
+ * Also displays links to solution notebooks for each phase.
+ * 
+ * @module pages/Exercises
+ */
+
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
@@ -9,6 +19,20 @@ import {
 } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 
+/**
+ * Exercise browser page component.
+ * 
+ * Features include:
+ * - Filterable grid of all curriculum exercises
+ * - Phase filter dropdown (all phases or specific phase)
+ * - Difficulty filter dropdown (all levels or specific level)
+ * - Keyword search across title, goal, lesson title, and tags
+ * - Links to phase solution notebooks
+ * - Exercise count display
+ * - Empty state when no exercises match filters
+ * 
+ * @returns The rendered exercises page
+ */
 export default function Exercises() {
   const exercises = getAllExercises()
   const notebooks = getAllNotebooks()
