@@ -1,6 +1,12 @@
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
-import { getPhase, getLessonsByPhase, getNotebook, difficultyConfig, phaseIcons } from '../utils/contentLoader'
+import {
+  getPhase,
+  getLessonsByPhase,
+  getNotebook,
+  difficultyConfig,
+  phaseIcons,
+} from '../utils/contentLoader'
 import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
@@ -94,7 +100,12 @@ export default function PhaseOverview() {
           <Link
             to={`/solutions/${phase.phase}`}
             className="exercises-notebook-link"
-            style={{ marginTop: '0.75rem', display: 'inline-flex', fontSize: '0.875rem', padding: '0.5rem 1rem' }}
+            style={{
+              marginTop: '0.75rem',
+              display: 'inline-flex',
+              fontSize: '0.875rem',
+              padding: '0.5rem 1rem',
+            }}
           >
             {icon} View Phase {phase.phase} Solutions →
           </Link>

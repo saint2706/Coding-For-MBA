@@ -227,8 +227,7 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
     const starterCode = codeBlocks[0] || ''
     const goalEnd = goalMatch ? body.indexOf(goalMatch[0]) + goalMatch[0].length : 0
     const firstCodeStart = body.indexOf('```')
-    const instructions =
-      firstCodeStart > goalEnd ? body.slice(goalEnd, firstCodeStart).trim() : ''
+    const instructions = firstCodeStart > goalEnd ? body.slice(goalEnd, firstCodeStart).trim() : ''
 
     blocks.push({
       type: 'exercise',

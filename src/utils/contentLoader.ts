@@ -14,7 +14,8 @@ function parseMarkdown(raw: string): ParsedMarkdown {
   const normalized = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
 
   // Split on frontmatter delimiters
-  if (!normalized.startsWith('---\n')) return { frontmatter: Object.create(null), content: normalized }
+  if (!normalized.startsWith('---\n'))
+    return { frontmatter: Object.create(null), content: normalized }
 
   const endIndex = normalized.indexOf('\n---\n', 4)
   if (endIndex === -1) return { frontmatter: Object.create(null), content: normalized }
