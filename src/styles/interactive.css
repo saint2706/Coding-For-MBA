@@ -14,7 +14,7 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.35rem 0.9rem;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 600;
   font-family: var(--font-body);
   color: #fff;
@@ -74,7 +74,7 @@
   margin: 0;
   padding: 0.5rem 0.6rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   line-height: 1.5;
   white-space: pre-wrap;
   word-break: break-word;
@@ -127,7 +127,7 @@
 
 .code-playground__btn {
   padding: 0.2rem 0.5rem;
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   font-family: var(--font-body);
   font-weight: 600;
   color: var(--text-muted);
@@ -153,7 +153,7 @@
   min-height: 60px;
   padding: 0.6rem 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   line-height: 1.6;
   color: var(--text-primary);
   background: var(--bg-code);

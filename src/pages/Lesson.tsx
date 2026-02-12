@@ -76,66 +76,69 @@ export default function Lesson() {
           content={`Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 108-day Coding for MBA curriculum.`}
         />
       </Helmet>
-      {/* Breadcrumb */}
-      <div className="lesson-header">
-        <Breadcrumb
-          items={[
-            { label: 'Home', to: '/' },
-            { label: `Phase ${lesson.phase}`, to: `/phase/${lesson.phase}` },
-            { label: `Day ${lesson.day}` },
-          ]}
-        />
+      {/* Main content column */}
+      <div className="lesson-main-content">
+        {/* Breadcrumb */}
+        <div className="lesson-header">
+          <Breadcrumb
+            items={[
+              { label: 'Home', to: '/' },
+              { label: `Phase ${lesson.phase}`, to: `/phase/${lesson.phase}` },
+              { label: `Day ${lesson.day}` },
+            ]}
+          />
 
-        {/* Meta bar */}
-        <div className="lesson-meta-bar">
-          <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
-            {diff.label}
-          </span>
-          {lesson.duration && <span className="meta-pill">⏱ {lesson.duration} min</span>}
-          {lesson.tags &&
-            lesson.tags.map((tag) => (
-              <span className="lesson-tag" key={tag}>
-                {tag}
-              </span>
-            ))}
+          {/* Meta bar */}
+          <div className="lesson-meta-bar">
+            <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
+              {diff.label}
+            </span>
+            {lesson.duration && <span className="meta-pill">⏱ {lesson.duration} min</span>}
+            {lesson.tags &&
+              lesson.tags.map((tag) => (
+                <span className="lesson-tag" key={tag}>
+                  {tag}
+                </span>
+              ))}
+          </div>
+
+          <button
+            className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
+            onClick={handleToggleComplete}
+            aria-pressed={completed}
+          >
+            {completed ? '✓ Completed' : '○ Mark as Complete'}
+          </button>
         </div>
 
-        <button
-          className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
-          onClick={handleToggleComplete}
-          aria-pressed={completed}
-        >
-          {completed ? '✓ Completed' : '○ Mark as Complete'}
-        </button>
+        {/* Markdown content */}
+        <MarkdownRenderer content={lesson.content} />
+
+        {/* Prev/Next navigation */}
+        <nav className="lesson-nav" aria-label="Lesson navigation">
+          {prev && (
+            <Link to={`/lesson/${prev.day}`} className="lesson-nav-btn prev">
+              <span className="lesson-nav-label">← Previous</span>
+              <span className="lesson-nav-title">
+                Day {prev.day}: {prev.title}
+              </span>
+            </Link>
+          )}
+          {next && (
+            <Link to={`/lesson/${next.day}`} className="lesson-nav-btn next">
+              <span className="lesson-nav-label">Next →</span>
+              <span className="lesson-nav-title">
+                Day {next.day}: {next.title}
+              </span>
+            </Link>
+          )}
+        </nav>
+
+        <BackToTop />
       </div>
 
       {/* Table of Contents sidebar */}
       <TableOfContents content={lesson.content} />
-
-      {/* Markdown content */}
-      <MarkdownRenderer content={lesson.content} />
-
-      {/* Prev/Next navigation */}
-      <nav className="lesson-nav" aria-label="Lesson navigation">
-        {prev && (
-          <Link to={`/lesson/${prev.day}`} className="lesson-nav-btn prev">
-            <span className="lesson-nav-label">← Previous</span>
-            <span className="lesson-nav-title">
-              Day {prev.day}: {prev.title}
-            </span>
-          </Link>
-        )}
-        {next && (
-          <Link to={`/lesson/${next.day}`} className="lesson-nav-btn next">
-            <span className="lesson-nav-label">Next →</span>
-            <span className="lesson-nav-title">
-              Day {next.day}: {next.title}
-            </span>
-          </Link>
-        )}
-      </nav>
-
-      <BackToTop />
     </div>
   )
 }

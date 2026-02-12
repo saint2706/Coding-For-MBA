@@ -5,11 +5,15 @@
   color: var(--text-primary);
 }
 
+.markdown-body>*:first-child {
+  margin-top: 0;
+}
+
 .markdown-body h1 {
   font-size: 2rem;
   font-weight: 800;
   color: var(--text-heading);
-  margin: 2.5rem 0 1rem;
+  margin: 1rem 0 1rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
@@ -51,8 +55,8 @@
   margin-bottom: 0.375rem;
 }
 
-.markdown-body li > ul,
-.markdown-body li > ol {
+.markdown-body li>ul,
+.markdown-body li>ol {
   margin-top: 0.375rem;
   margin-bottom: 0;
 }
@@ -233,11 +237,11 @@
   background: rgba(99, 102, 241, 0.1);
 }
 
-.markdown-body details > *:not(summary) {
+.markdown-body details>*:not(summary) {
   padding: 0 1.25rem;
 }
 
-.markdown-body details > p:last-child {
+.markdown-body details>p:last-child {
   padding-bottom: 1rem;
 }
 
