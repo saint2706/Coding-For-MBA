@@ -1,6 +1,14 @@
 from playwright.sync_api import sync_playwright
+import sys
+import os
 
 def run():
+    # Create artifacts directory
+    artifacts_dir = ".playwright-artifacts"
+    os.makedirs(artifacts_dir, exist_ok=True)
+    
+    exit_code = 0  # Track exit status
+    
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
@@ -15,8 +23,8 @@ def run():
             # Wait a bit
             page.wait_for_timeout(2000)
 
-            page.screenshot(path="debug_page.png", full_page=True)
-            print("Screenshot saved to debug_page.png")
+            page.screenshot(path=f"{artifacts_dir}/debug_page.png", full_page=True)
+            print(f"Screenshot saved to {artifacts_dir}/debug_page.png")
 
             print("Waiting for .markdown-body selector")
             # reduce timeout to 5s
@@ -33,22 +41,30 @@ def run():
             count = code_blocks.count()
             print(f"Found {count} code blocks")
 
-            if count > 0:
-                print("Code blocks rendered successfully")
+            # Assert that code blocks are present
+            if count == 0:
+                print("ERROR: No code blocks found")
+                page.screenshot(path=f"{artifacts_dir}/error_no_code_blocks.png", full_page=True)
+                exit_code = 1
             else:
-                print("No code blocks found")
+                print("Code blocks rendered successfully")
 
-            # Final verification screenshot
-            page.screenshot(path="verification_markdown.png", full_page=True)
-            print("Screenshot saved to verification_markdown.png")
+                # Final verification screenshot
+                page.screenshot(path=f"{artifacts_dir}/verification_markdown.png", full_page=True)
+                print(f"Screenshot saved to {artifacts_dir}/verification_markdown.png")
 
         except Exception as e:
             print(f"Error: {e}")
-            page.screenshot(path="error_page.png", full_page=True)
-            print("Screenshot saved to error_page.png")
+            page.screenshot(path=f"{artifacts_dir}/error_page.png", full_page=True)
+            print(f"Screenshot saved to {artifacts_dir}/error_page.png")
+            exit_code = 1
 
         finally:
             browser.close()
+    
+    # Exit with appropriate status code
+    if exit_code != 0:
+        sys.exit(exit_code)
 
 if __name__ == "__main__":
     run()

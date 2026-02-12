@@ -1,5 +1,5 @@
-import { useState, useCallback, memo } from 'react'
-import ReactMarkdown from 'react-markdown'
+import { useState, useCallback, memo, JSX } from 'react'
+import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
@@ -74,8 +74,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CodeComponent = (props: any) => {
+const CodeComponent = (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
   const { children, className, ...rest } = props
   const match = /language-(\w+)/.exec(className || '')
   if (match) {
@@ -96,8 +95,7 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const LinkComponent = ({ href, children, ...props }: any) => {
+const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] & ExtraProps) => {
   const isExternal = href && (href.startsWith('http') || href.startsWith('//'))
   return (
     <a
@@ -110,8 +108,7 @@ const LinkComponent = ({ href, children, ...props }: any) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Heading1 = ({ children, ...props }: any) => {
+const Heading1 = ({ children, ...props }: JSX.IntrinsicElements['h1'] & ExtraProps) => {
   const id = String(children)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -123,8 +120,7 @@ const Heading1 = ({ children, ...props }: any) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Heading2 = ({ children, ...props }: any) => {
+const Heading2 = ({ children, ...props }: JSX.IntrinsicElements['h2'] & ExtraProps) => {
   const id = String(children)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -136,8 +132,7 @@ const Heading2 = ({ children, ...props }: any) => {
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const Heading3 = ({ children, ...props }: any) => {
+const Heading3 = ({ children, ...props }: JSX.IntrinsicElements['h3'] & ExtraProps) => {
   const id = String(children)
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -149,7 +144,7 @@ const Heading3 = ({ children, ...props }: any) => {
   )
 }
 
-const markdownComponents = {
+const markdownComponents: Components = {
   code: CodeComponent,
   table: TableComponent,
   a: LinkComponent,
