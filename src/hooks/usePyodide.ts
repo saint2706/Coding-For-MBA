@@ -44,6 +44,11 @@ declare global {
 const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js'
 
 /**
+ * SRI Hash for the Pyodide CDN script to ensure integrity.
+ */
+const PYODIDE_SRI = 'sha384-rm4QcPMX69sqmX2kWiJa3BF02sgdJkVyATWkw5NHAxBUAvmLXhToWZYaP2wCcyEe'
+
+/**
  * Dynamically loads a script from the specified URL.
  * 
  * @param src - Script source URL
@@ -58,6 +63,10 @@ function loadScript(src: string): Promise<void> {
     const script = document.createElement('script')
     script.src = src
     script.async = true
+    if (src === PYODIDE_CDN) {
+      script.integrity = PYODIDE_SRI
+      script.crossOrigin = 'anonymous'
+    }
     script.onload = () => resolve()
     script.onerror = () => reject(new Error(`Failed to load Pyodide from CDN`))
     document.head.appendChild(script)
