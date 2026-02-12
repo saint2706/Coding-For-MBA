@@ -1,0 +1,90 @@
+name: Nightly Smoke
+
+on:
+  schedule:
+    # 03:00 UTC every weekday
+    - cron: '0 3 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      run_playwright_smoke:
+        description: 'Run optional Playwright Chromium smoke subset (@smoke)'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate content
+        run: npm run validate-content
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Install Playwright Chromium
+        if: ${{ github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true' }}
+        run: npx playwright install --with-deps chromium
+
+      - name: Playwright smoke subset (Chromium)
+        if: ${{ github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true' }}
+        run: npm run test:e2e -- --project=chromium --grep '@smoke' --pass-with-no-tests
+
+      - name: Create or update failure issue
+        if: ${{ failure() && github.event_name != 'pull_request' }}
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = '🚨 Nightly smoke workflow failed';
+            const marker = '<!-- nightly-smoke-failure -->';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = `${marker}\nThe nightly smoke workflow failed.\n\n- Workflow: ${context.workflow}\n- Run: ${runUrl}\n- Commit: ${context.sha}\n- Trigger: ${context.eventName}\n\nPlease investigate and close this issue when fixed.`;
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'ci,nightly-smoke',
+              per_page: 100,
+            });
+
+            const existing = issues.find((issue) =>
+              issue.title === title || (issue.body && issue.body.includes(marker))
+            );
+
+            if (existing) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.number,
+                body: `Another failure detected: ${runUrl}`,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['ci', 'nightly-smoke'],
+              });
+            }
