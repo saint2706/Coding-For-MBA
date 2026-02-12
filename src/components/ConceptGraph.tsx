@@ -295,6 +295,7 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
 
     const searchLower = search.toLowerCase()
     const hasFilter = search.length > 0 || highlightPhase !== null
+    const matchedNodeIds = new Set<number>()
 
     d3Svg.selectAll<SVGGElement, GraphNode>('.graph-node').each(function (d) {
       const g = d3.select(this)
@@ -308,8 +309,13 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
         d.title.toLowerCase().includes(searchLower) ||
         d.concepts.some((c) => c.toLowerCase().includes(searchLower))
       const matchPhase = highlightPhase === null || d.phase === highlightPhase
+      const isMatch = matchSearch && matchPhase
 
-      g.attr('opacity', matchSearch && matchPhase ? 1 : 0.08)
+      if (isMatch) {
+        matchedNodeIds.add(d.id)
+      }
+
+      g.attr('opacity', isMatch ? 1 : 0.08)
     })
 
     d3Svg.selectAll<SVGLineElement, GraphEdge>('.graph-edge').each(function (d) {
@@ -321,37 +327,11 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
       const sId = typeof d.source === 'number' ? d.source : (d.source as GraphNode).id
       const tId = typeof d.target === 'number' ? d.target : (d.target as GraphNode).id
 
-      const sMatch = checkNodeMatch(sId)
-      const tMatch = checkNodeMatch(tId)
+      const sMatch = matchedNodeIds.has(sId)
+      const tMatch = matchedNodeIds.has(tId)
 
       line.attr('stroke', sMatch && tMatch ? 'rgba(148,163,184,0.3)' : 'rgba(148,163,184,0.03)')
     })
-
-    /**
-     * Checks if a node matches current search and phase filters.
-     *
-     * @param nodeId - The node ID to check
-     * @returns True if node matches filters, false otherwise
-     */
-    function checkNodeMatch(nodeId: number): boolean {
-      const svg = svgRef.current
-      if (!svg) return false
-      let match = false
-      d3.select(svg)
-        .selectAll<SVGGElement, GraphNode>('.graph-node')
-        .each(function (d) {
-          if (d.id === nodeId) {
-            const matchSearch =
-              !search ||
-              d.label.toLowerCase().includes(searchLower) ||
-              d.title.toLowerCase().includes(searchLower) ||
-              d.concepts.some((c) => c.toLowerCase().includes(searchLower))
-            const matchPhase = highlightPhase === null || d.phase === highlightPhase
-            if (matchSearch && matchPhase) match = true
-          }
-        })
-      return match
-    }
   }, [search, highlightPhase])
 
   /**
