@@ -14,32 +14,7 @@ import { Helmet } from '@dr.pogodin/react-helmet'
 import { search, type SearchResult } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
-
-/**
- * Highlights matching text segments within a string.
- *
- * Wraps matching portions of text in <mark> elements for visual highlighting.
- * Uses case-insensitive matching and escapes special regex characters.
- *
- * @param text - The text to highlight matches in
- * @param query - The search query to match
- * @returns Array of text nodes and mark elements
- */
-function highlightText(text: string, query: string): React.ReactNode[] {
-  if (!query.trim()) return [text]
-  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  const regex = new RegExp(`(${escaped})`, 'gi')
-  const parts = text.split(regex)
-  return parts.map((part, i) =>
-    regex.test(part) ? (
-      <mark key={i} className="search-highlight">
-        {part}
-      </mark>
-    ) : (
-      part
-    ),
-  )
-}
+import { highlightText } from '../utils/searchHighlight'
 
 /**
  * Extracts a relevant snippet of content around the search match.
