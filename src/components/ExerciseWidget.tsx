@@ -79,7 +79,7 @@ export default function ExerciseWidget({
             className={`exercise-widget__solution-panel ${showSolution ? 'exercise-widget__solution-panel--open' : ''}`}
             hidden={!showSolution}
             aria-hidden={!showSolution}
-            inert={!showSolution ? true : undefined}
+            inert={!showSolution}
           >
             <SyntaxHighlighter
               style={solutionTheme}

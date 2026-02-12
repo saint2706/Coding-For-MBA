@@ -2,7 +2,8 @@ from playwright.sync_api import sync_playwright, expect
 import os
 
 def verify_accessibility(page):
-    # Use configurable base URL (default to vite preview port)
+    # Use configurable base URL (default to vite preview port 4173)
+    # Note: Changed from dev server port (5173) to align with existing verification scripts
     base_url = os.environ.get("BASE_URL", "http://localhost:4173")
     print(f"Navigating to lesson 1 at {base_url}...")
     page.goto(f"{base_url}/Coding-For-MBA/#/lesson/1")
