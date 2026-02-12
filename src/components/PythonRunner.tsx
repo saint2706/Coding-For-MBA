@@ -58,9 +58,13 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
       setRunning(false)
     }, [code, runPython, running, pyodideLoading])
 
-    useImperativeHandle(ref, () => ({
-      run: handleRun,
-    }), [handleRun])
+    useImperativeHandle(
+      ref,
+      () => ({
+        run: handleRun,
+      }),
+      [handleRun],
+    )
 
     const isLoading = pyodideLoading || running
 
@@ -96,9 +100,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
               <pre className="python-runner__stdout">{output}</pre>
             )}
             {output === '' && !error && (
-              <pre className="python-runner__stdout python-runner__stdout--empty">
-                (no output)
-              </pre>
+              <pre className="python-runner__stdout python-runner__stdout--empty">(no output)</pre>
             )}
           </div>
         )}
