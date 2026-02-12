@@ -334,9 +334,13 @@ export function getRelatedLessons(lesson: Lesson, count = 4): Lesson[] {
       const lConcepts = (l.concepts as string[]) || []
 
       // Shared tags (2 pts each)
-      lTags.forEach((t) => { if (myTags.has(t)) score += 2 })
+      lTags.forEach((t) => {
+        if (myTags.has(t)) score += 2
+      })
       // Shared concepts (3 pts each)
-      lConcepts.forEach((c) => { if (myConcepts.has(c)) score += 3 })
+      lConcepts.forEach((c) => {
+        if (myConcepts.has(c)) score += 3
+      })
       // Same phase bonus (1 pt)
       if (l.phase === lesson.phase) score += 1
       // Phase proximity bonus (0.5 pts for adjacent phases)
@@ -348,7 +352,7 @@ export function getRelatedLessons(lesson: Lesson, count = 4): Lesson[] {
     .sort((a, b) => b.score - a.score)
     .slice(0, count)
 
-  return scored.map((s) => ({ ...s.lesson, _sharedTags: s.sharedTags } as Lesson))
+  return scored.map((s) => ({ ...s.lesson, _sharedTags: s.sharedTags }) as Lesson)
 }
 
 // Difficulty config

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 export function useDebounce<T>(
   value: T,
   delay: number,
-  shouldResetImmediately?: (value: T) => boolean
+  shouldResetImmediately?: (value: T) => boolean,
 ): T {
   const [debouncedValue, setDebouncedValue] = useState(value)
 

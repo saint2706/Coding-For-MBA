@@ -4,83 +4,83 @@ import ConceptGraph from '../components/ConceptGraph'
 import Breadcrumb from '../components/Breadcrumb'
 
 const PHASE_COLORS = [
-    '#6366f1', '#8b5cf6', '#06b6d4', '#f59e0b', '#ef4444',
-    '#10b981', '#3b82f6', '#ec4899', '#f97316',
+  '#6366f1',
+  '#8b5cf6',
+  '#06b6d4',
+  '#f59e0b',
+  '#ef4444',
+  '#10b981',
+  '#3b82f6',
+  '#ec4899',
+  '#f97316',
 ]
 
 const PHASE_NAMES = [
-    'Python Foundations',
-    'Functions & Modularity',
-    'Data Engineering',
-    'Math & ML',
-    'Advanced ML',
-    'Cutting Edge ML',
-    'BI Analytics',
-    'SQL Mastery',
-    'Enterprise SQL',
+  'Python Foundations',
+  'Functions & Modularity',
+  'Data Engineering',
+  'Math & ML',
+  'Advanced ML',
+  'Cutting Edge ML',
+  'BI Analytics',
+  'SQL Mastery',
+  'Enterprise SQL',
 ]
 
 export default function ConceptGraphPage() {
-    const [search, setSearch] = useState('')
-    const [activePhase, setActivePhase] = useState<number | null>(null)
+  const [search, setSearch] = useState('')
+  const [activePhase, setActivePhase] = useState<number | null>(null)
 
-    const handlePhaseClick = useCallback((phase: number) => {
-        setActivePhase((prev) => (prev === phase ? null : phase))
-    }, [])
+  const handlePhaseClick = useCallback((phase: number) => {
+    setActivePhase((prev) => (prev === phase ? null : phase))
+  }, [])
 
-    return (
-        <div className="concept-graph-page">
-            <Helmet>
-                <title>Concept Dependency Graph — Coding for MBA</title>
-                <meta
-                    name="description"
-                    content="Interactive visualization of lesson dependencies and concept relationships across the 108-day curriculum."
-                />
-            </Helmet>
+  return (
+    <div className="concept-graph-page">
+      <Helmet>
+        <title>Concept Dependency Graph — Coding for MBA</title>
+        <meta
+          name="description"
+          content="Interactive visualization of lesson dependencies and concept relationships across the 108-day curriculum."
+        />
+      </Helmet>
 
-            <Breadcrumb
-                items={[
-                    { label: 'Home', to: '/' },
-                    { label: 'Concept Graph' },
-                ]}
-            />
+      <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Concept Graph' }]} />
 
-            <div className="concept-graph-header">
-                <h1>🔗 Concept Dependency Graph</h1>
-                <p>
-                    Explore how lessons connect through prerequisites. Each node is a
-                    lesson, colored by phase. Edges show prerequisite relationships. Click
-                    any node to navigate to that lesson.
-                </p>
-            </div>
+      <div className="concept-graph-header">
+        <h1>🔗 Concept Dependency Graph</h1>
+        <p>
+          Explore how lessons connect through prerequisites. Each node is a lesson, colored by
+          phase. Edges show prerequisite relationships. Click any node to navigate to that lesson.
+        </p>
+      </div>
 
-            <div className="concept-graph-controls">
-                <input
-                    type="text"
-                    className="concept-graph-search"
-                    placeholder="Search lessons or concepts…"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    aria-label="Search concept graph"
-                />
-                <div className="concept-graph-legend">
-                    {PHASE_NAMES.map((name, i) => (
-                        <button
-                            key={i}
-                            className="legend-item"
-                            onClick={() => handlePhaseClick(i + 1)}
-                            style={activePhase === i + 1 ? { background: 'rgba(255,255,255,0.1)' } : undefined}
-                            aria-pressed={activePhase === i + 1}
-                            title={`Phase ${i + 1}: ${name}`}
-                        >
-                            <span className="legend-dot" style={{ background: PHASE_COLORS[i] }} />
-                            P{i + 1}
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            <ConceptGraph search={search} highlightPhase={activePhase} />
+      <div className="concept-graph-controls">
+        <input
+          type="text"
+          className="concept-graph-search"
+          placeholder="Search lessons or concepts…"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          aria-label="Search concept graph"
+        />
+        <div className="concept-graph-legend">
+          {PHASE_NAMES.map((name, i) => (
+            <button
+              key={i}
+              className="legend-item"
+              onClick={() => handlePhaseClick(i + 1)}
+              style={activePhase === i + 1 ? { background: 'rgba(255,255,255,0.1)' } : undefined}
+              aria-pressed={activePhase === i + 1}
+              title={`Phase ${i + 1}: ${name}`}
+            >
+              <span className="legend-dot" style={{ background: PHASE_COLORS[i] }} />P{i + 1}
+            </button>
+          ))}
         </div>
-    )
+      </div>
+
+      <ConceptGraph search={search} highlightPhase={activePhase} />
+    </div>
+  )
 }

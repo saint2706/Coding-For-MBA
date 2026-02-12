@@ -233,7 +233,11 @@ function processGlossaryChildren(children: React.ReactNode): React.ReactNode {
     return children.map((child, i) => {
       if (typeof child === 'string') {
         const parts = addGlossaryTooltips(child)
-        return parts.length === 1 && typeof parts[0] === 'string' ? parts[0] : <span key={i}>{parts}</span>
+        return parts.length === 1 && typeof parts[0] === 'string' ? (
+          parts[0]
+        ) : (
+          <span key={i}>{parts}</span>
+        )
       }
       return child
     })

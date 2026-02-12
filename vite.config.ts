@@ -13,16 +13,33 @@ export default defineConfig({
           // Normalize path separators for Windows
           const normalId = id.replace(/\\/g, '/')
 
-          if (normalId.includes('node_modules/react-syntax-highlighter') || normalId.includes('node_modules/refractor') || normalId.includes('node_modules/prismjs')) {
+          if (
+            normalId.includes('node_modules/react-syntax-highlighter') ||
+            normalId.includes('node_modules/refractor') ||
+            normalId.includes('node_modules/prismjs')
+          ) {
             return 'syntax-highlighter'
           }
           if (normalId.includes('node_modules/react-dom/')) {
             return 'react-dom'
           }
-          if (normalId.includes('node_modules/react/') || normalId.includes('node_modules/react-router') || normalId.includes('node_modules/scheduler/')) {
+          if (
+            normalId.includes('node_modules/react/') ||
+            normalId.includes('node_modules/react-router') ||
+            normalId.includes('node_modules/scheduler/')
+          ) {
             return 'react-vendor'
           }
-          if (normalId.includes('node_modules/react-markdown') || normalId.includes('node_modules/remark') || normalId.includes('node_modules/rehype') || normalId.includes('node_modules/unified') || normalId.includes('node_modules/mdast') || normalId.includes('node_modules/hast') || normalId.includes('node_modules/micromark') || normalId.includes('node_modules/vfile')) {
+          if (
+            normalId.includes('node_modules/react-markdown') ||
+            normalId.includes('node_modules/remark') ||
+            normalId.includes('node_modules/rehype') ||
+            normalId.includes('node_modules/unified') ||
+            normalId.includes('node_modules/mdast') ||
+            normalId.includes('node_modules/hast') ||
+            normalId.includes('node_modules/micromark') ||
+            normalId.includes('node_modules/vfile')
+          ) {
             return 'markdown'
           }
           if (normalId.includes('node_modules/d3')) {

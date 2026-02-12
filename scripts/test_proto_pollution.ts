@@ -1,6 +1,6 @@
 /**
  * Test script to verify prototype pollution fix in contentLoader.ts
- * 
+ *
  * This script tests that the YAML frontmatter parser correctly handles
  * dangerous keys like __proto__, constructor, and prototype without
  * polluting the Object prototype.
@@ -21,7 +21,8 @@ function parseMarkdown(raw: string): ParsedMarkdown {
   const normalized = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
 
   // Split on frontmatter delimiters
-  if (!normalized.startsWith('---\n')) return { frontmatter: Object.create(null), content: normalized }
+  if (!normalized.startsWith('---\n'))
+    return { frontmatter: Object.create(null), content: normalized }
 
   const endIndex = normalized.indexOf('\n---\n', 4)
   if (endIndex === -1) return { frontmatter: Object.create(null), content: normalized }
@@ -106,9 +107,18 @@ const result1 = parseMarkdown(malicious1)
 console.log('  Parsed frontmatter:', result1.frontmatter)
 // Check if Object.prototype was polluted by creating a plain object
 const testObj = {}
-console.log('  Object.prototype polluted?', 'malicious' in testObj ? '❌ YES (FAIL)' : '✅ NO (PASS)')
-console.log('  Has __proto__ key?', '__proto__' in result1.frontmatter ? '❌ YES (FAIL)' : '✅ NO (PASS)')
-console.log('  Null prototype?', Object.getPrototypeOf(result1.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)')
+console.log(
+  '  Object.prototype polluted?',
+  'malicious' in testObj ? '❌ YES (FAIL)' : '✅ NO (PASS)',
+)
+console.log(
+  '  Has __proto__ key?',
+  '__proto__' in result1.frontmatter ? '❌ YES (FAIL)' : '✅ NO (PASS)',
+)
+console.log(
+  '  Null prototype?',
+  Object.getPrototypeOf(result1.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)',
+)
 console.log()
 
 // Test 2: Attempt to pollute via constructor
@@ -122,8 +132,14 @@ Content here`
 
 const result2 = parseMarkdown(malicious2)
 console.log('  Parsed frontmatter:', result2.frontmatter)
-console.log('  Has constructor key?', 'constructor' in result2.frontmatter ? '❌ YES (FAIL)' : '✅ NO (PASS)')
-console.log('  Null prototype?', Object.getPrototypeOf(result2.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)')
+console.log(
+  '  Has constructor key?',
+  'constructor' in result2.frontmatter ? '❌ YES (FAIL)' : '✅ NO (PASS)',
+)
+console.log(
+  '  Null prototype?',
+  Object.getPrototypeOf(result2.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)',
+)
 console.log()
 
 // Test 3: Attempt to pollute via prototype
@@ -137,8 +153,14 @@ Content here`
 
 const result3 = parseMarkdown(malicious3)
 console.log('  Parsed frontmatter:', result3.frontmatter)
-console.log('  Has prototype key?', 'prototype' in result3.frontmatter ? '❌ YES (FAIL)' : '✅ NO (PASS)')
-console.log('  Null prototype?', Object.getPrototypeOf(result3.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)')
+console.log(
+  '  Has prototype key?',
+  'prototype' in result3.frontmatter ? '❌ YES (FAIL)' : '✅ NO (PASS)',
+)
+console.log(
+  '  Null prototype?',
+  Object.getPrototypeOf(result3.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)',
+)
 console.log()
 
 // Test 4: Normal keys should work
@@ -154,17 +176,29 @@ This is the content`
 
 const result4 = parseMarkdown(normal)
 console.log('  Parsed frontmatter:', result4.frontmatter)
-console.log('  Has title?', result4.frontmatter.title === 'My Lesson' ? '✅ YES (PASS)' : '❌ NO (FAIL)')
+console.log(
+  '  Has title?',
+  result4.frontmatter.title === 'My Lesson' ? '✅ YES (PASS)' : '❌ NO (FAIL)',
+)
 console.log('  Has day?', result4.frontmatter.day === 10 ? '✅ YES (PASS)' : '❌ NO (FAIL)')
-console.log('  Has tags array?', Array.isArray(result4.frontmatter.tags) ? '✅ YES (PASS)' : '❌ NO (FAIL)')
-console.log('  Null prototype?', Object.getPrototypeOf(result4.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)')
+console.log(
+  '  Has tags array?',
+  Array.isArray(result4.frontmatter.tags) ? '✅ YES (PASS)' : '❌ NO (FAIL)',
+)
+console.log(
+  '  Null prototype?',
+  Object.getPrototypeOf(result4.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)',
+)
 console.log()
 
 // Test 5: Empty frontmatter should have null prototype
 console.log('Test 5: Empty/invalid frontmatter should have null prototype')
 const empty = 'Just content without frontmatter'
 const result5 = parseMarkdown(empty)
-console.log('  Null prototype?', Object.getPrototypeOf(result5.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)')
+console.log(
+  '  Null prototype?',
+  Object.getPrototypeOf(result5.frontmatter) === null ? '✅ YES (PASS)' : '❌ NO (FAIL)',
+)
 console.log()
 
 console.log('✨ All tests completed!')
