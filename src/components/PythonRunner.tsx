@@ -5,8 +5,15 @@
  * Displays run button with loading states and shows execution output or errors.
  */
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, forwardRef, useImperativeHandle } from 'react'
 import { usePyodide } from '../hooks/usePyodide'
+
+/**
+ * Handle interface for accessing PythonRunner methods imperatively.
+ */
+export interface PythonRunnerHandle {
+  run: () => Promise<void>
+}
 
 /**
  * Props for the PythonRunner component.
@@ -30,62 +37,76 @@ interface PythonRunnerProps {
  * @param compact - Use compact visual layout
  * @returns A Python code runner component
  */
-export default function PythonRunner({ code, compact = false }: PythonRunnerProps) {
-  const { loading: pyodideLoading, runPython } = usePyodide()
-  const [output, setOutput] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [running, setRunning] = useState(false)
+const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
+  ({ code, compact = false }, ref) => {
+    const { loading: pyodideLoading, runPython } = usePyodide()
+    const [output, setOutput] = useState<string | null>(null)
+    const [error, setError] = useState<string | null>(null)
+    const [running, setRunning] = useState(false)
 
-  /**
-   * Executes the Python code and updates output/error state.
-   */
-  const handleRun = useCallback(async () => {
-    setRunning(true)
-    setOutput(null)
-    setError(null)
-    const result = await runPython(code)
-    setOutput(result.output)
-    setError(result.error)
-    setRunning(false)
-  }, [code, runPython])
+    /**
+     * Executes the Python code and updates output/error state.
+     */
+    const handleRun = useCallback(async () => {
+      if (running || pyodideLoading) return
+      setRunning(true)
+      setOutput(null)
+      setError(null)
+      const result = await runPython(code)
+      setOutput(result.output)
+      setError(result.error)
+      setRunning(false)
+    }, [code, runPython, running, pyodideLoading])
 
-  const isLoading = pyodideLoading || running
+    useImperativeHandle(ref, () => ({
+      run: handleRun,
+    }), [handleRun])
 
-  return (
-    <div className={`python-runner ${compact ? 'python-runner--compact' : ''}`}>
-      <button
-        className="python-runner__btn"
-        onClick={handleRun}
-        disabled={isLoading}
-        aria-label="Run Python code"
-      >
-        {pyodideLoading ? (
-          <>
-            <span className="python-runner__spinner" aria-hidden="true" />
-            Loading Python…
-          </>
-        ) : running ? (
-          <>
-            <span className="python-runner__spinner" aria-hidden="true" />
-            Running…
-          </>
-        ) : (
-          <>▶ Run</>
+    const isLoading = pyodideLoading || running
+
+    return (
+      <div className={`python-runner ${compact ? 'python-runner--compact' : ''}`}>
+        <button
+          className="python-runner__btn"
+          onClick={handleRun}
+          disabled={isLoading}
+          aria-label="Run Python code (Shift+Enter)"
+          title="Run (Shift+Enter)"
+        >
+          {pyodideLoading ? (
+            <>
+              <span className="python-runner__spinner" aria-hidden="true" />
+              Loading Python…
+            </>
+          ) : running ? (
+            <>
+              <span className="python-runner__spinner" aria-hidden="true" />
+              Running…
+            </>
+          ) : (
+            <>▶ Run</>
+          )}
+        </button>
+
+        {(output !== null || error) && (
+          <div className="python-runner__output" aria-live="polite">
+            <div className="python-runner__output-header">Output</div>
+            {error && <pre className="python-runner__error">{error}</pre>}
+            {output !== null && output !== '' && (
+              <pre className="python-runner__stdout">{output}</pre>
+            )}
+            {output === '' && !error && (
+              <pre className="python-runner__stdout python-runner__stdout--empty">
+                (no output)
+              </pre>
+            )}
+          </div>
         )}
-      </button>
+      </div>
+    )
+  },
+)
 
-      {(output !== null || error) && (
-        <div className="python-runner__output">
-          <div className="python-runner__output-header">Output</div>
-          {error && <pre className="python-runner__error">{error}</pre>}
-          {output !== null && output !== '' && (
-            <pre className="python-runner__stdout">{output}</pre>
-          )}
-          {output === '' && !error && (
-            <pre className="python-runner__stdout python-runner__stdout--empty">(no output)</pre>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
+PythonRunner.displayName = 'PythonRunner'
+
+export default PythonRunner

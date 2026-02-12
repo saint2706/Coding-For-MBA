@@ -9,7 +9,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import PythonRunner from './PythonRunner'
+import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
 
 /**
  * Custom syntax highlighting theme with transparent background.
@@ -58,6 +58,7 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
   const [code, setCode] = useState(initialCode)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const preRef = useRef<HTMLDivElement>(null)
+  const runnerRef = useRef<PythonRunnerHandle>(null)
 
   /**
    * Resets the code editor to its initial state.
@@ -86,6 +87,17 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
     if (ta && pre) {
       pre.scrollTop = ta.scrollTop
       pre.scrollLeft = ta.scrollLeft
+    }
+  }, [])
+
+  /**
+   * Handles keyboard shortcuts for running code.
+   */
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    // Run code on Shift+Enter, Ctrl+Enter, or Meta+Enter
+    if ((e.shiftKey || e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault()
+      runnerRef.current?.run()
     }
   }, [])
 
@@ -131,12 +143,13 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
           value={code}
           onChange={(e) => setCode(e.target.value)}
           onScroll={handleScroll}
+          onKeyDown={handleKeyDown}
           spellCheck={false}
-          aria-label="Python code editor"
+          aria-label="Python code editor. Press Shift+Enter to run."
         />
       </div>
 
-      <PythonRunner code={code} />
+      <PythonRunner ref={runnerRef} code={code} />
 
       {expectedOutput && (
         <div className="code-playground__expected">
