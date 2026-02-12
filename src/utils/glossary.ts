@@ -1,6 +1,6 @@
 /**
  * Glossary Module
- * 
+ *
  * Provides a comprehensive glossary of technical terms with short definitions
  * for hover tooltips throughout the application. Terms cover Python, data science,
  * machine learning, SQL, web development, and statistics concepts.
@@ -8,7 +8,7 @@
 
 /**
  * Glossary of technical terms with short definitions for hover tooltips.
- * 
+ *
  * Maps technical terms (as keys) to their concise definitions (as values).
  * Used for providing contextual help throughout the learning platform.
  */
@@ -82,10 +82,10 @@ export const glossaryTerms: Record<string, string> = {
 
 /**
  * Builds a case-insensitive regex that matches any glossary term at word boundaries.
- * 
+ *
  * Terms are sorted longest-first to ensure multi-word terms match before
  * single-word sub-terms (e.g., "machine learning" before "machine").
- * 
+ *
  * @returns Regular expression for matching glossary terms in text
  */
 export function getGlossaryRegex(): RegExp {

@@ -1,10 +1,10 @@
 /**
  * Progress tracking dashboard page.
- * 
+ *
  * This page provides comprehensive progress tracking across the entire curriculum,
  * displaying completion statistics, heatmap visualizations, and per-phase breakdowns.
  * Users can view their learning journey and clear their progress if needed.
- * 
+ *
  * @module pages/ProgressDashboard
  */
 
@@ -28,14 +28,14 @@ import Breadcrumb from '../components/Breadcrumb'
 
 /**
  * Progress dashboard page component.
- * 
+ *
  * Displays comprehensive progress tracking including:
  * - Overall completion statistics (percentage, completed count, remaining)
  * - Visual progress bar for entire curriculum
  * - Lesson heatmap showing all 108 days with completion status
  * - Per-phase progress breakdown with links to each phase
  * - Option to clear all progress (with confirmation)
- * 
+ *
  * @returns The rendered progress dashboard page
  */
 export default function ProgressDashboard() {

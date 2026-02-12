@@ -1,10 +1,10 @@
 /**
  * Phase overview page displaying detailed information about a specific phase.
- * 
+ *
  * This page shows comprehensive information for a single phase including
  * its lessons, difficulty level, estimated time, progress tracking, and
  * access to solution notebooks. The phase content is rendered from markdown.
- * 
+ *
  * @module pages/PhaseOverview
  */
 
@@ -24,14 +24,14 @@ import ProgressBar from '../components/ProgressBar'
 
 /**
  * Phase overview page component.
- * 
+ *
  * Displays detailed information about a specific phase including:
  * - Phase metadata (title, difficulty, duration, icon)
  * - Progress tracking across all lessons in the phase
  * - Grid of all lessons with completion indicators
  * - Link to solution notebooks if available
  * - Rendered markdown content describing the phase
- * 
+ *
  * @returns The rendered phase overview page or 404 if phase not found
  */
 export default function PhaseOverview() {

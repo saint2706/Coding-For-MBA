@@ -1,6 +1,6 @@
 /**
  * Sidebar Component
- * 
+ *
  * A collapsible sidebar navigation showing all phases and lessons
  * with progress tracking and hierarchical organization.
  */
@@ -12,7 +12,7 @@ import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker
 
 /**
  * Props for the Sidebar component.
- * 
+ *
  * @property isOpen - Whether the sidebar is visible (for mobile)
  * @property onClose - Callback to close the sidebar
  */
@@ -23,7 +23,7 @@ interface SidebarProps {
 
 /**
  * Collapsible sidebar with curriculum navigation.
- * 
+ *
  * Features:
  * - Hierarchical phase and lesson organization
  * - Automatic expansion of current phase
@@ -31,7 +31,7 @@ interface SidebarProps {
  * - Auto-scroll to active lesson
  * - Mobile overlay with click-outside to close
  * - Phase-level progress counters
- * 
+ *
  * @param isOpen - Controls sidebar visibility on mobile
  * @param onClose - Function to close the sidebar
  * @returns A navigation sidebar with phase accordion
@@ -82,7 +82,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   /**
    * Toggles a phase accordion open or closed.
-   * 
+   *
    * @param phaseNum - Phase number to toggle
    */
   const togglePhase = (phaseNum: number) => {

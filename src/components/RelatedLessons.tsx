@@ -1,6 +1,6 @@
 /**
  * RelatedLessons Component
- * 
+ *
  * Displays a grid of related lessons based on shared tags and concepts.
  * Helps users discover connected content.
  */
@@ -10,11 +10,11 @@ import { Lesson, getRelatedLessons, difficultyConfig } from '../utils/contentLoa
 
 /**
  * Related lessons recommendation component.
- * 
+ *
  * Shows up to 4 related lessons based on shared tags with the current lesson.
  * Each card displays day number, title, difficulty badge, and tags.
  * Shared tags are visually highlighted.
- * 
+ *
  * @param lesson - The current lesson to find related lessons for
  * @returns Related lessons grid or null if no related lessons exist
  */

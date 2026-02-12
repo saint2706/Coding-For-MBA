@@ -1,6 +1,6 @@
 /**
  * ExerciseWidget Component
- * 
+ *
  * An interactive exercise widget for practicing Python code.
  * Displays exercise instructions, starter code, an integrated code playground,
  * and an optional solution that can be revealed on demand.
@@ -30,7 +30,7 @@ const solutionTheme = {
 
 /**
  * Props for the ExerciseWidget component.
- * 
+ *
  * @property title - Exercise title
  * @property goal - Optional goal or objective of the exercise
  * @property instructions - Optional step-by-step instructions
@@ -49,14 +49,14 @@ interface ExerciseWidgetProps {
 
 /**
  * Interactive exercise widget with code playground and solution reveal.
- * 
+ *
  * Provides a complete learning exercise experience with:
  * - Clear exercise title and goals
  * - Step-by-step instructions
  * - Interactive code playground for practice
  * - Expected output display
  * - Collapsible solution viewer with syntax highlighting
- * 
+ *
  * @param title - Exercise title to display
  * @param goal - Learning goal for the exercise
  * @param instructions - Detailed instructions for the learner

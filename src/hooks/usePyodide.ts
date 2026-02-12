@@ -1,6 +1,6 @@
 /**
  * Pyodide (Python Runtime) Hook
- * 
+ *
  * Manages the Pyodide WebAssembly Python runtime for executing Python code
  * in the browser. Handles lazy loading, singleton instance management, and
  * code execution with output capture.
@@ -45,7 +45,7 @@ const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js'
 
 /**
  * Dynamically loads a script from the specified URL.
- * 
+ *
  * @param src - Script source URL
  * @returns Promise that resolves when script is loaded
  */
@@ -66,11 +66,11 @@ function loadScript(src: string): Promise<void> {
 
 /**
  * Initializes the Pyodide runtime as a singleton instance.
- * 
+ *
  * Ensures only one instance of Pyodide is loaded globally, even if
  * multiple components try to initialize it simultaneously. Uses
  * promise deduplication to prevent redundant loading.
- * 
+ *
  * @returns Promise resolving to the Pyodide instance
  */
 async function initPyodide(): Promise<PyodideInterface> {
@@ -98,18 +98,18 @@ async function initPyodide(): Promise<PyodideInterface> {
 
 /**
  * Custom hook for managing Pyodide Python runtime.
- * 
+ *
  * Provides a managed interface to the Pyodide WebAssembly Python runtime,
  * handling lazy initialization, loading state, and code execution with
  * output/error capture. The runtime is shared as a singleton across all
  * hook instances.
- * 
+ *
  * @returns Object containing loading state, error state, and execution functions
- * 
+ *
  * @example
  * ```tsx
  * const { loading, error, runPython } = usePyodide()
- * 
+ *
  * const handleRun = async () => {
  *   const result = await runPython('print("Hello, World!")')
  *   console.log(result.output) // "Hello, World!"

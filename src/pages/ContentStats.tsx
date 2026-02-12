@@ -1,11 +1,11 @@
 /**
  * Content statistics and analytics page.
- * 
+ *
  * This page provides comprehensive statistics about the curriculum content,
  * including word counts, reading times, difficulty distributions, tag clouds,
  * and per-phase breakdowns. Useful for understanding curriculum structure
  * and scope at a glance.
- * 
+ *
  * @module pages/ContentStats
  */
 
@@ -17,16 +17,16 @@ import { Helmet } from '@dr.pogodin/react-helmet'
 
 /**
  * Content statistics page component.
- * 
+ *
  * Displays analytical insights about the curriculum including:
  * - Hero statistics (total lessons, phases, words, reading time)
  * - Difficulty distribution bar chart
  * - Phase breakdown with word counts and reading times
  * - Tag cloud visualization of most common tags
  * - Top concepts list showing frequently covered topics
- * 
+ *
  * All statistics are computed dynamically from lesson content.
- * 
+ *
  * @returns The rendered content statistics page
  */
 export default function ContentStats() {

@@ -1,6 +1,6 @@
 /**
  * ScrollProgress Component
- * 
+ *
  * A fixed progress bar at the top of the page showing reading progress
  * as the user scrolls through content.
  */
@@ -9,11 +9,11 @@ import { useEffect, useState } from 'react'
 
 /**
  * Scroll progress indicator component.
- * 
+ *
  * Displays a thin horizontal bar at the top of the viewport that fills
  * from left to right as the user scrolls down the page.
  * Includes proper ARIA attributes for accessibility.
- * 
+ *
  * @returns A scroll progress bar element
  */
 export default function ScrollProgress() {

@@ -1,13 +1,13 @@
 /**
  * Skeleton Component
- * 
+ *
  * Loading placeholder components that show animated skeletons
  * while content is being fetched.
  */
 
 /**
  * Props for the Skeleton component.
- * 
+ *
  * @property variant - Visual style variant (text, heading, card, block)
  * @property width - Optional custom width
  * @property height - Optional custom height
@@ -22,10 +22,10 @@ interface SkeletonProps {
 
 /**
  * Skeleton loading placeholder component.
- * 
+ *
  * Displays animated skeleton placeholders in various styles while
  * content is loading. Supports multiple variants and custom dimensions.
- * 
+ *
  * @param variant - Style of skeleton (text, heading, card, or block)
  * @param width - Custom width value
  * @param height - Custom height value
@@ -48,10 +48,10 @@ export default function Skeleton({ variant = 'text', width, height, count = 1 }:
 
 /**
  * Full-page skeleton shown during lazy-load Suspense.
- * 
+ *
  * Displays a comprehensive page skeleton with heading, metadata pills,
  * content blocks, and text lines to match typical page layout.
- * 
+ *
  * @returns A full-page loading skeleton
  */
 export function PageSkeleton() {

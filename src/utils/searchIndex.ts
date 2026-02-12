@@ -1,6 +1,6 @@
 /**
  * Search Index Module
- * 
+ *
  * Provides full-text search functionality for lessons using Fuse.js.
  * Implements fuzzy search across lesson titles, tags, concepts, and content
  * with markdown syntax stripping for better search results.
@@ -11,10 +11,10 @@ import { getAllLessons } from './contentLoader'
 
 /**
  * Strips markdown syntax to get plain text for better search and snippet display.
- * 
+ *
  * Removes code blocks, inline code, headings, formatting, links, images,
  * list markers, blockquotes, tables, and horizontal rules.
- * 
+ *
  * @param md - Raw markdown string
  * @returns Plain text with markdown syntax removed
  */
@@ -37,7 +37,7 @@ function stripMarkdown(md: string): string {
 
 /**
  * Builds search documents from all lessons with plain text content.
- * 
+ *
  * @returns Array of lesson objects with added plainContent field
  */
 function buildSearchDocuments() {
@@ -74,13 +74,13 @@ let searchDocs: SearchDocument[] = []
 
 /**
  * Gets or creates the Fuse.js search instance.
- * 
+ *
  * Lazily initializes the search index with weighted keys:
  * - title: 3x weight
  * - tags: 2x weight
  * - concepts: 2x weight
  * - plainContent: 1x weight
- * 
+ *
  * @returns Configured Fuse.js instance
  */
 function getFuse(): Fuse<SearchDocument> {
@@ -105,10 +105,10 @@ function getFuse(): Fuse<SearchDocument> {
 
 /**
  * Performs a fuzzy search across all lessons.
- * 
+ *
  * Searches lesson titles, tags, concepts, and content for matches.
  * Returns results sorted by relevance score with highlighted match information.
- * 
+ *
  * @param query - Search query string
  * @param limit - Maximum number of results to return (default: 20)
  * @returns Array of search results with match information

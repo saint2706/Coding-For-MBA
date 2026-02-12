@@ -1,6 +1,6 @@
 /**
  * Theme Context
- * 
+ *
  * Defines the React context for theme management (dark/light mode).
  * Provides shared theme state and toggle functionality across the application.
  */
