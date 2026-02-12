@@ -44,6 +44,16 @@ declare global {
 const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js'
 
 /**
+ * SRI Hash for the Pyodide CDN script to ensure integrity.
+ *
+ * This hash was generated using:
+ * curl -s https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js | openssl dgst -sha384 -binary | openssl base64 -A
+ *
+ * When updating PYODIDE_CDN version, regenerate this hash to match the new file.
+ */
+const PYODIDE_SRI = 'sha384-rm4QcPMX69sqmX2kWiJa3BF02sgdJkVyATWkw5NHAxBUAvmLXhToWZYaP2wCcyEe'
+
+/**
  * Dynamically loads a script from the specified URL.
  *
  * @param src - Script source URL
@@ -51,13 +61,34 @@ const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js'
  */
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) {
+    const existingScript = document.querySelector(`script[src="${src}"]`)
+
+    // For Pyodide CDN, validate or enforce SRI on existing scripts
+    if (src === PYODIDE_CDN && existingScript) {
+      const integrity = existingScript.getAttribute('integrity')
+      const crossOrigin = existingScript.getAttribute('crossorigin')
+
+      // If existing script lacks proper SRI attributes, remove and recreate it
+      if (integrity !== PYODIDE_SRI || crossOrigin !== 'anonymous') {
+        existingScript.remove()
+      } else {
+        // Existing script has correct SRI attributes
+        resolve()
+        return
+      }
+    } else if (existingScript) {
+      // For non-Pyodide scripts, accept existing script
       resolve()
       return
     }
+
     const script = document.createElement('script')
     script.src = src
     script.async = true
+    if (src === PYODIDE_CDN) {
+      script.integrity = PYODIDE_SRI
+      script.crossOrigin = 'anonymous'
+    }
     script.onload = () => resolve()
     script.onerror = () => reject(new Error(`Failed to load Pyodide from CDN`))
     document.head.appendChild(script)
