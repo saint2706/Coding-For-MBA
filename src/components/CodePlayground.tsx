@@ -1,5 +1,21 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import PythonRunner from './PythonRunner'
+
+const highlightTheme = {
+    ...oneDark,
+    'pre[class*="language-"]': {
+        ...(oneDark['pre[class*="language-"]'] as object),
+        background: 'transparent',
+        margin: 0,
+        padding: 0,
+    },
+    'code[class*="language-"]': {
+        ...(oneDark['code[class*="language-"]'] as object),
+        background: 'transparent',
+    },
+}
 
 interface CodePlaygroundProps {
     initialCode: string
@@ -9,12 +25,13 @@ interface CodePlaygroundProps {
 export default function CodePlayground({ initialCode, expectedOutput }: CodePlaygroundProps) {
     const [code, setCode] = useState(initialCode)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
+    const preRef = useRef<HTMLDivElement>(null)
 
     const handleReset = useCallback(() => {
         setCode(initialCode)
     }, [initialCode])
 
-    // Auto-resize textarea
+    // Auto-resize textarea + sync scroll
     useEffect(() => {
         const ta = textareaRef.current
         if (ta) {
@@ -22,6 +39,15 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
             ta.style.height = ta.scrollHeight + 'px'
         }
     }, [code])
+
+    const handleScroll = useCallback(() => {
+        const ta = textareaRef.current
+        const pre = preRef.current
+        if (ta && pre) {
+            pre.scrollTop = ta.scrollTop
+            pre.scrollLeft = ta.scrollLeft
+        }
+    }, [])
 
     return (
         <div className="code-playground">
@@ -39,11 +65,32 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
             </div>
 
             <div className="code-playground__editor-area">
+                <div className="code-playground__highlight" ref={preRef} aria-hidden="true">
+                    <SyntaxHighlighter
+                        style={highlightTheme}
+                        language="python"
+                        PreTag="div"
+                        customStyle={{
+                            margin: 0,
+                            padding: '0.6rem 0.75rem',
+                            background: 'transparent',
+                            fontSize: '0.875rem',
+                            lineHeight: '1.6',
+                            fontFamily: 'var(--font-mono)',
+                        }}
+                        codeTagProps={{
+                            style: { fontFamily: 'var(--font-mono)' },
+                        }}
+                    >
+                        {code + '\n'}
+                    </SyntaxHighlighter>
+                </div>
                 <textarea
                     ref={textareaRef}
                     className="code-playground__textarea"
                     value={code}
                     onChange={(e) => setCode(e.target.value)}
+                    onScroll={handleScroll}
                     spellCheck={false}
                     aria-label="Python code editor"
                 />

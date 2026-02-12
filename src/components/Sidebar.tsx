@@ -109,6 +109,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           >
             📊 Progress
           </Link>
+          <Link
+            to="/exercises"
+            className={`day-link ${location.pathname === '/exercises' ? 'active' : ''}`}
+            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
+            onClick={onClose}
+          >
+            🧪 Exercises
+          </Link>
 
           {phases.map((phase) => {
             const lessons = getLessonsByPhase(phase.phase)

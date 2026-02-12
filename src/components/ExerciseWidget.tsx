@@ -1,5 +1,21 @@
 import { useState } from 'react'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
+
+const solutionTheme = {
+    ...oneDark,
+    'pre[class*="language-"]': {
+        ...(oneDark['pre[class*="language-"]'] as object),
+        background: 'transparent',
+        margin: 0,
+        padding: 0,
+    },
+    'code[class*="language-"]': {
+        ...(oneDark['code[class*="language-"]'] as object),
+        background: 'transparent',
+    },
+}
 
 interface ExerciseWidgetProps {
     title: string
@@ -54,9 +70,30 @@ export default function ExerciseWidget({
                     >
                         {showSolution ? '🔽 Hide Solution' : '💡 Show Solution'}
                     </button>
-                    {showSolution && (
-                        <pre className="exercise-widget__solution-code">{solution}</pre>
-                    )}
+                    <div
+                        className={`exercise-widget__solution-panel ${showSolution ? 'exercise-widget__solution-panel--open' : ''}`}
+                    >
+                        <SyntaxHighlighter
+                            style={solutionTheme}
+                            language="python"
+                            PreTag="div"
+                            customStyle={{
+                                margin: 0,
+                                padding: '0.75rem',
+                                background: 'var(--bg-code)',
+                                fontSize: '0.8125rem',
+                                lineHeight: '1.65',
+                                borderRadius: 'var(--radius-sm)',
+                            }}
+                            codeTagProps={{
+                                style: {
+                                    fontFamily: 'var(--font-mono)',
+                                },
+                            }}
+                        >
+                            {solution}
+                        </SyntaxHighlighter>
+                    </div>
                 </div>
             )}
         </div>

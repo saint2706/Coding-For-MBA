@@ -1,6 +1,6 @@
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
-import { getPhase, getLessonsByPhase, difficultyConfig, phaseIcons } from '../utils/contentLoader'
+import { getPhase, getLessonsByPhase, getNotebook, difficultyConfig, phaseIcons } from '../utils/contentLoader'
 import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
@@ -29,6 +29,7 @@ export default function PhaseOverview() {
   const hours = Math.round((phase.totalDuration || 0) / 60)
   const lessonDays = lessons.map((l) => l.day)
   const completedInPhase = getCompletedForPhase(lessonDays)
+  const notebook = getNotebook(phaseNum!)
 
   return (
     <div className="page-container">
@@ -84,6 +85,21 @@ export default function PhaseOverview() {
           </Link>
         ))}
       </div>
+
+      {/* Solution Notebook Link */}
+      {notebook && notebook.cells.length > 0 && (
+        <div className="section-header" style={{ marginTop: '2rem' }}>
+          <h2>📓 Solutions Notebook</h2>
+          <p>Complete solutions with explanations — run them in your browser.</p>
+          <Link
+            to={`/solutions/${phase.phase}`}
+            className="exercises-notebook-link"
+            style={{ marginTop: '0.75rem', display: 'inline-flex', fontSize: '0.875rem', padding: '0.5rem 1rem' }}
+          >
+            {icon} View Phase {phase.phase} Solutions →
+          </Link>
+        </div>
+      )}
 
       {/* Phase Overview markdown content */}
       <div style={{ marginTop: '2rem' }}>

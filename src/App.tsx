@@ -11,6 +11,8 @@ const PhaseOverview = lazy(() => import('./pages/PhaseOverview'))
 const Curriculum = lazy(() => import('./pages/Curriculum'))
 const SearchResults = lazy(() => import('./pages/SearchResults'))
 const ProgressDashboard = lazy(() => import('./pages/ProgressDashboard'))
+const Exercises = lazy(() => import('./pages/Exercises'))
+const NotebookViewer = lazy(() => import('./pages/NotebookViewer'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 function PageLoader() {
@@ -82,6 +84,8 @@ export default function App() {
             <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
             <Route path="/lesson/:dayNum" element={<Lesson />} />
             <Route path="/progress" element={<ProgressDashboard />} />
+            <Route path="/exercises" element={<Exercises />} />
+            <Route path="/solutions/:phaseNum" element={<NotebookViewer />} />
             <Route path="/search" element={<SearchResults />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

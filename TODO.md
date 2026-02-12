@@ -70,9 +70,9 @@
 
 ### Exercise & Solution System
 
-- [ ] **Create `/exercises` route** — filterable exercise browser (by phase, difficulty, topic)
-- [ ] **Render `Phase_XX_Solutions.ipynb`** — Jupyter notebook viewer (nbconvert or custom)
-- [ ] **Add collapsible solution reveals** for in-lesson exercises
+- [x] **Create `/exercises` route** — filterable exercise browser (by phase, difficulty, topic)
+- [x] **Render `Phase_XX_Solutions.ipynb`** — Jupyter notebook viewer (nbconvert or custom)
+- [x] **Add collapsible solution reveals** for in-lesson exercises
 
 ---
 

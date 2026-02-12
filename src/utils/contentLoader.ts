@@ -184,6 +184,107 @@ export function getAdjacentLessons(dayNum: string | number): {
   }
 }
 
+// --- Exercise extraction ---
+
+export interface Exercise {
+  day: number
+  lessonTitle: string
+  phase: number
+  difficulty: string
+  title: string
+  goal: string
+  starterCode: string
+  tags: string[]
+}
+
+function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
+  const exercises: Exercise[] = []
+  const regex =
+    /### Exercise \d+:\s*(.+?)\n([\s\S]*?)(?=\n### Exercise \d+:|\n## |\n---\s*\n## |$)/g
+  let match
+  while ((match = regex.exec(lesson.content)) !== null) {
+    const title = match[1]!.trim()
+    const body = match[2]!
+    const goalMatch = body.match(/\*\*Goal\*\*:\s*(.+)/)
+    const goal = goalMatch ? goalMatch[1]!.trim() : ''
+    const codeRegex = /```(?:python|py)\s*\n([\s\S]*?)```/g
+    let codeMatch
+    const codeBlocks: string[] = []
+    while ((codeMatch = codeRegex.exec(body)) !== null) {
+      codeBlocks.push(codeMatch[1]!.trim())
+    }
+    exercises.push({
+      day: lesson.day,
+      lessonTitle: lesson.title,
+      phase: lesson.phase,
+      difficulty: lesson.difficulty || 'beginner',
+      title,
+      goal,
+      starterCode: codeBlocks[0] || '',
+      tags: (lesson.tags as string[]) || [],
+    })
+  }
+  return exercises
+}
+
+const allExercises: Exercise[] = lessons.flatMap(extractExercisesFromLesson)
+
+export function getAllExercises(): Exercise[] {
+  return allExercises
+}
+
+// --- Notebook loading ---
+
+export interface NotebookCell {
+  cell_type: 'code' | 'markdown' | 'raw'
+  source: string[]
+  outputs?: Array<{
+    output_type: string
+    text?: string[]
+    data?: Record<string, string[]>
+    ename?: string
+    evalue?: string
+    traceback?: string[]
+  }>
+  execution_count?: number | null
+}
+
+export interface Notebook {
+  phase: number
+  cells: NotebookCell[]
+}
+
+const notebookFiles = import.meta.glob('/Lessons/**/Phase_*_Solutions.ipynb', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>
+
+function parseNotebooks(): Notebook[] {
+  return Object.entries(notebookFiles)
+    .map(([path, raw]) => {
+      const phaseMatch = path.match(/Phase_(\d+)/)
+      const phase = phaseMatch ? parseInt(phaseMatch[1]!, 10) : 0
+      try {
+        const nb = JSON.parse(raw) as { cells: NotebookCell[] }
+        return { phase, cells: nb.cells || [] }
+      } catch {
+        return { phase, cells: [] }
+      }
+    })
+    .sort((a, b) => a.phase - b.phase)
+}
+
+const notebooks = parseNotebooks()
+
+export function getAllNotebooks(): Notebook[] {
+  return notebooks
+}
+
+export function getNotebook(phaseNum: string | number): Notebook | undefined {
+  return notebooks.find((n) => n.phase === Number(phaseNum))
+}
+
 // Difficulty config
 export const difficultyConfig: Record<string, DifficultyInfo> = {
   beginner: { label: 'Beginner', color: '#22c55e', bg: 'rgba(34,197,94,0.12)' },
