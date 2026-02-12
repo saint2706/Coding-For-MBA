@@ -7,6 +7,8 @@ def run():
     artifacts_dir = ".playwright-artifacts"
     os.makedirs(artifacts_dir, exist_ok=True)
     
+    exit_code = 0  # Track exit status
+    
     with sync_playwright() as p:
         browser = p.chromium.launch()
         page = browser.new_page()
@@ -43,24 +45,26 @@ def run():
             if count == 0:
                 print("ERROR: No code blocks found")
                 page.screenshot(path=f"{artifacts_dir}/error_no_code_blocks.png", full_page=True)
-                browser.close()
-                sys.exit(1)
-            
-            print("Code blocks rendered successfully")
+                exit_code = 1
+            else:
+                print("Code blocks rendered successfully")
 
-            # Final verification screenshot
-            page.screenshot(path=f"{artifacts_dir}/verification_markdown.png", full_page=True)
-            print(f"Screenshot saved to {artifacts_dir}/verification_markdown.png")
+                # Final verification screenshot
+                page.screenshot(path=f"{artifacts_dir}/verification_markdown.png", full_page=True)
+                print(f"Screenshot saved to {artifacts_dir}/verification_markdown.png")
 
         except Exception as e:
             print(f"Error: {e}")
             page.screenshot(path=f"{artifacts_dir}/error_page.png", full_page=True)
             print(f"Screenshot saved to {artifacts_dir}/error_page.png")
-            browser.close()
-            raise
+            exit_code = 1
 
         finally:
             browser.close()
+    
+    # Exit with appropriate status code
+    if exit_code != 0:
+        sys.exit(exit_code)
 
 if __name__ == "__main__":
     run()
