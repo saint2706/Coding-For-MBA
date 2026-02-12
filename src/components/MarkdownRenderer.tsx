@@ -6,10 +6,12 @@
  * of exercises and mastery check questions.
  */
 
-import { useState, useCallback, memo, JSX, useMemo } from 'react'
+import { useState, useCallback, memo, JSX, useMemo, type ComponentProps } from 'react'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import rehypeSanitize from 'rehype-sanitize'
+import type { Schema } from 'hast-util-sanitize'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
@@ -587,7 +589,61 @@ const remarkPlugins = [remarkGfm]
 /**
  * Rehype plugins for HTML processing.
  */
-const rehypePlugins = [rehypeRaw]
+const lessonSanitizerSchema: Schema = {
+  tagNames: [
+    'a',
+    'blockquote',
+    'br',
+    'code',
+    'del',
+    'details',
+    'div',
+    'em',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'hr',
+    'img',
+    'input',
+    'li',
+    'ol',
+    'p',
+    'pre',
+    'span',
+    'strong',
+    'summary',
+    'table',
+    'tbody',
+    'td',
+    'th',
+    'thead',
+    'tr',
+    'ul',
+  ],
+  attributes: {
+    a: ['href', 'title', 'target', 'rel'],
+    code: ['className'],
+    div: ['className'],
+    img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+    input: [['type', 'checkbox'], ['disabled', true], ['checked', true]],
+    span: ['className', 'dataDefinition'],
+    td: ['align'],
+    th: ['align'],
+    '*': ['id'],
+  },
+  protocols: {
+    href: ['http', 'https', 'mailto', 'tel'],
+    src: ['http', 'https'],
+  },
+}
+
+const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlugins']> = [
+  rehypeRaw,
+  [rehypeSanitize, lessonSanitizerSchema],
+]
 
 /**
  * Props for the MarkdownRenderer component.
