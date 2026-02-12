@@ -1,3 +1,13 @@
+/**
+ * Search results page for curriculum content search.
+ * 
+ * This page displays search results from the curriculum's search index,
+ * showing matching lessons with highlighted text, snippets, and metadata.
+ * Results are ranked by relevance using Fuse.js fuzzy search.
+ * 
+ * @module pages/SearchResults
+ */
+
 import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams, Link } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
@@ -5,7 +15,16 @@ import { search, type SearchResult } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 
-// Highlight matching text segments in a string
+/**
+ * Highlights matching text segments within a string.
+ * 
+ * Wraps matching portions of text in <mark> elements for visual highlighting.
+ * Uses case-insensitive matching and escapes special regex characters.
+ * 
+ * @param text - The text to highlight matches in
+ * @param query - The search query to match
+ * @returns Array of text nodes and mark elements
+ */
 function highlightText(text: string, query: string): React.ReactNode[] {
   if (!query.trim()) return [text]
   const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -22,7 +41,17 @@ function highlightText(text: string, query: string): React.ReactNode[] {
   )
 }
 
-// Extract snippet around matching area in body content
+/**
+ * Extracts a relevant snippet of content around the search match.
+ * 
+ * Finds the first occurrence of the query in the content and returns
+ * a snippet centered around it with ellipsis for truncated text.
+ * Falls back to the beginning of content if no match is found.
+ * 
+ * @param result - The search result containing content
+ * @param query - The search query
+ * @returns A snippet string with ellipsis if truncated
+ */
 function getContentSnippet(result: SearchResult, query: string): string {
   const content = result.item.plainContent || result.item.content
   const lowerContent = content.toLowerCase()
@@ -39,6 +68,19 @@ function getContentSnippet(result: SearchResult, query: string): string {
   return snippet
 }
 
+/**
+ * Search results page component.
+ * 
+ * Displays search results for curriculum lessons with:
+ * - Highlighted matching text in titles and snippets
+ * - Lesson metadata (day, difficulty, phase, tags)
+ * - Result count and search query display
+ * - Links to matching lessons
+ * - Empty state for no results
+ * - Minimum 2-character query requirement
+ * 
+ * @returns The rendered search results page
+ */
 export default function SearchResults() {
   const [searchParams] = useSearchParams()
   const queryParam = searchParams.get('q') || ''

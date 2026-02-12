@@ -1,8 +1,23 @@
+/**
+ * Interactive concept dependency graph visualization page.
+ * 
+ * This page displays a visual network graph showing relationships between
+ * lessons through their prerequisites. Users can explore how concepts build
+ * upon each other throughout the curriculum, with interactive filtering by
+ * phase and search capabilities.
+ * 
+ * @module pages/ConceptGraphPage
+ */
+
 import { useState, useCallback } from 'react'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import ConceptGraph from '../components/ConceptGraph'
 import Breadcrumb from '../components/Breadcrumb'
 
+/**
+ * Phase colors used in the concept graph visualization.
+ * Each phase is assigned a distinct color for easy visual identification.
+ */
 const PHASE_COLORS = [
   '#6366f1',
   '#8b5cf6',
@@ -15,6 +30,10 @@ const PHASE_COLORS = [
   '#f97316',
 ]
 
+/**
+ * Phase names for the legend.
+ * Short names used in the phase filter legend.
+ */
 const PHASE_NAMES = [
   'Python Foundations',
   'Functions & Modularity',
@@ -27,10 +46,30 @@ const PHASE_NAMES = [
   'Enterprise SQL',
 ]
 
+/**
+ * Concept graph page component.
+ * 
+ * Displays an interactive force-directed graph where:
+ * - Each node represents a lesson (colored by phase)
+ * - Edges show prerequisite dependencies
+ * - Users can click nodes to navigate to lessons
+ * - Search filters lessons by title or concepts
+ * - Phase buttons highlight specific phases
+ * 
+ * @returns The rendered concept graph page
+ */
 export default function ConceptGraphPage() {
   const [search, setSearch] = useState('')
   const [activePhase, setActivePhase] = useState<number | null>(null)
 
+  /**
+   * Toggles the active phase filter.
+   * 
+   * Clicking an active phase deselects it, clicking an inactive phase
+   * selects it and highlights related nodes in the graph.
+   * 
+   * @param phase - Phase number to toggle (1-9)
+   */
   const handlePhaseClick = useCallback((phase: number) => {
     setActivePhase((prev) => (prev === phase ? null : phase))
   }, [])
