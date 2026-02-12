@@ -18,6 +18,7 @@ import CodePlayground from './CodePlayground'
 import ExerciseWidget from './ExerciseWidget'
 import MasteryCheck from './MasteryCheck'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
+import { normalizeAndValidateHref } from '../utils/linkSafety'
 
 /**
  * Custom Prism theme with transparent background for code blocks.
@@ -168,10 +169,15 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
  * @returns A properly configured link element
  */
 const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] & ExtraProps) => {
-  const isExternal = href && (href.startsWith('http') || href.startsWith('//'))
+  const { normalizedHref, isExternal, isSafe } = normalizeAndValidateHref(href)
+
+  if (!isSafe || !normalizedHref) {
+    return <span>{children}</span>
+  }
+
   return (
     <a
-      href={href}
+      href={normalizedHref}
       {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       {...props}
     >
@@ -628,7 +634,11 @@ const lessonSanitizerSchema: Schema = {
     code: ['className'],
     div: ['className'],
     img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
-    input: [['type', 'checkbox'], ['disabled', true], ['checked', true]],
+    input: [
+      ['type', 'checkbox'],
+      ['disabled', true],
+      ['checked', true],
+    ],
     span: ['className', 'dataDefinition'],
     td: ['align'],
     th: ['align'],
