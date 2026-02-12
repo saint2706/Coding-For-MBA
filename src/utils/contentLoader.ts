@@ -1,6 +1,6 @@
 /**
  * Content Loader Module
- * 
+ *
  * Provides utilities for loading, parsing, and enriching lesson content from markdown files.
  * This module handles frontmatter extraction, lesson/phase data management, exercise parsing,
  * and content enrichment features like reading time estimation and related content discovery.
@@ -28,11 +28,11 @@ interface ParsedMarkdown {
 
 /**
  * Parses markdown content with YAML frontmatter.
- * 
+ *
  * Extracts frontmatter metadata and content body from a markdown string.
  * Handles various YAML constructs including simple key-value pairs, arrays,
  * and inline arrays. Provides basic type coercion for booleans and numbers.
- * 
+ *
  * @param raw - Raw markdown string with optional frontmatter
  * @returns Parsed frontmatter object and content string
  */
@@ -62,7 +62,9 @@ function parseMarkdown(raw: string): ParsedMarkdown {
         currentArray = []
         frontmatter[currentKey] = currentArray
       }
-      let val = arrayMatch[1]!.trim()
+      const arrayValue = arrayMatch[1]
+      if (!arrayValue) continue
+      let val = arrayValue.trim()
       val = val.replace(/^["']|["']$/g, '')
       currentArray.push(isNaN(Number(val)) ? val : Number(val))
       continue
@@ -71,7 +73,8 @@ function parseMarkdown(raw: string): ParsedMarkdown {
     // Key-value: "key: value"
     const kvMatch = line.match(/^(\w+):\s*(.*)$/)
     if (kvMatch) {
-      const key = kvMatch[1]!
+      const key = kvMatch[1]
+      if (!key) continue
       if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
         currentKey = null
         currentArray = null
@@ -80,7 +83,9 @@ function parseMarkdown(raw: string): ParsedMarkdown {
 
       currentKey = key
       currentArray = null
-      let val = kvMatch[2]!.trim()
+      const kvValue = kvMatch[2]
+      if (kvValue === undefined) continue
+      let val = kvValue.trim()
 
       if (val === '') {
         // Next lines might be array items
@@ -90,7 +95,9 @@ function parseMarkdown(raw: string): ParsedMarkdown {
       // Inline array: [1, 2, 3]
       const inlineArray = val.match(/^\[(.*)\]$/)
       if (inlineArray) {
-        frontmatter[currentKey] = inlineArray[1]!
+        const inlineArrayValues = inlineArray[1]
+        if (inlineArrayValues === undefined) continue
+        frontmatter[currentKey] = inlineArrayValues
           .split(',')
           .map((s) => s.trim().replace(/^["']|["']$/g, ''))
           .map((s) => (isNaN(Number(s)) ? s : Number(s)))
@@ -193,7 +200,7 @@ const phases: Phase[] = Object.entries(phaseFiles)
 
 /**
  * Retrieves all phases in the curriculum.
- * 
+ *
  * @returns Array of all phase objects, sorted by phase number
  */
 export function getAllPhases(): Phase[] {
@@ -202,7 +209,7 @@ export function getAllPhases(): Phase[] {
 
 /**
  * Retrieves a specific phase by its number.
- * 
+ *
  * @param phaseNum - Phase number (1-9)
  * @returns The phase object if found, otherwise undefined
  */
@@ -212,7 +219,7 @@ export function getPhase(phaseNum: string | number): Phase | undefined {
 
 /**
  * Retrieves all lessons in the curriculum.
- * 
+ *
  * @returns Array of all lesson objects, sorted by day number
  */
 export function getAllLessons(): Lesson[] {
@@ -221,7 +228,7 @@ export function getAllLessons(): Lesson[] {
 
 /**
  * Retrieves a specific lesson by its day number.
- * 
+ *
  * @param dayNum - Day number (1-108)
  * @returns The lesson object if found, otherwise undefined
  */
@@ -231,7 +238,7 @@ export function getLesson(dayNum: string | number): Lesson | undefined {
 
 /**
  * Retrieves all lessons belonging to a specific phase.
- * 
+ *
  * @param phaseNum - Phase number (1-9)
  * @returns Array of lessons in the specified phase
  */
@@ -241,7 +248,7 @@ export function getLessonsByPhase(phaseNum: string | number): Lesson[] {
 
 /**
  * Finds the previous and next lessons relative to a given day.
- * 
+ *
  * @param dayNum - Current lesson day number
  * @returns Object containing prev and next lesson references (or null if at boundaries)
  */
@@ -252,8 +259,8 @@ export function getAdjacentLessons(dayNum: string | number): {
   const day = Number(dayNum)
   const currentIndex = lessons.findIndex((l) => l.day === day)
   return {
-    prev: currentIndex > 0 ? lessons[currentIndex - 1]! : null,
-    next: currentIndex < lessons.length - 1 ? lessons[currentIndex + 1]! : null,
+    prev: currentIndex > 0 ? (lessons[currentIndex - 1] ?? null) : null,
+    next: currentIndex < lessons.length - 1 ? (lessons[currentIndex + 1] ?? null) : null,
   }
 }
 
@@ -275,10 +282,10 @@ export interface Exercise {
 
 /**
  * Extracts all exercises from a lesson's markdown content.
- * 
+ *
  * Parses sections matching "### Exercise N: Title" pattern and extracts
  * the goal description and starter code blocks.
- * 
+ *
  * @param lesson - The lesson object to extract exercises from
  * @returns Array of exercise objects found in the lesson
  */
@@ -288,15 +295,19 @@ function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
     /### Exercise \d+:\s*(.+?)\n([\s\S]*?)(?=\n### Exercise \d+:|\n## |\n---\s*\n## |$)/g
   let match
   while ((match = regex.exec(lesson.content)) !== null) {
-    const title = match[1]!.trim()
-    const body = match[2]!
+    const titleText = match[1]
+    if (!titleText) continue
+    const title = titleText.trim()
+    const body = match[2] || ''
     const goalMatch = body.match(/\*\*Goal\*\*:\s*(.+)/)
-    const goal = goalMatch ? goalMatch[1]!.trim() : ''
+    const goalText = goalMatch?.[1]
+    const goal = goalText ? goalText.trim() : ''
     const codeRegex = /```(?:python|py)\s*\n([\s\S]*?)```/g
     let codeMatch
     const codeBlocks: string[] = []
     while ((codeMatch = codeRegex.exec(body)) !== null) {
-      codeBlocks.push(codeMatch[1]!.trim())
+      const code = codeMatch[1]
+      if (code) codeBlocks.push(code.trim())
     }
     exercises.push({
       day: lesson.day,
@@ -316,7 +327,7 @@ const allExercises: Exercise[] = lessons.flatMap(extractExercisesFromLesson)
 
 /**
  * Retrieves all exercises from all lessons.
- * 
+ *
  * @returns Array of all exercises across the entire curriculum
  */
 export function getAllExercises(): Exercise[] {
@@ -358,14 +369,15 @@ const notebookFiles = import.meta.glob('/Lessons/**/Phase_*_Solutions.ipynb', {
 
 /**
  * Parses all Jupyter notebook files from the Lessons directory.
- * 
+ *
  * @returns Array of notebook objects with phase numbers and parsed cells
  */
 function parseNotebooks(): Notebook[] {
   return Object.entries(notebookFiles)
     .map(([path, raw]) => {
       const phaseMatch = path.match(/Phase_(\d+)/)
-      const phase = phaseMatch ? parseInt(phaseMatch[1]!, 10) : 0
+      const phaseValue = phaseMatch?.[1]
+      const phase = phaseValue ? parseInt(phaseValue, 10) : 0
       try {
         const nb = JSON.parse(raw) as { cells: NotebookCell[] }
         return { phase, cells: nb.cells || [] }
@@ -380,7 +392,7 @@ const notebooks = parseNotebooks()
 
 /**
  * Retrieves all Jupyter notebooks.
- * 
+ *
  * @returns Array of all notebook objects, sorted by phase number
  */
 export function getAllNotebooks(): Notebook[] {
@@ -389,7 +401,7 @@ export function getAllNotebooks(): Notebook[] {
 
 /**
  * Retrieves a specific notebook by phase number.
- * 
+ *
  * @param phaseNum - Phase number (1-9)
  * @returns The notebook object if found, otherwise undefined
  */
@@ -401,10 +413,10 @@ export function getNotebook(phaseNum: string | number): Notebook | undefined {
 
 /**
  * Estimates reading time in minutes (word count ÷ 200 wpm).
- * 
+ *
  * Strips code blocks, frontmatter, and markdown syntax before counting words.
  * Uses an average reading speed of 200 words per minute.
- * 
+ *
  * @param content - Raw markdown content to analyze
  * @returns Estimated reading time in minutes (minimum 1 minute)
  */
@@ -424,7 +436,7 @@ export function getReadingTime(content: string): number {
 
 /**
  * Looks up prerequisite Lesson objects from the lesson's prerequisites array.
- * 
+ *
  * @param lesson - The lesson to get prerequisites for
  * @returns Array of prerequisite lesson objects
  */
@@ -438,13 +450,13 @@ export function getPrerequisiteLessons(lesson: Lesson): Lesson[] {
 
 /**
  * Finds related lessons by scoring shared tags, concepts, and phase proximity.
- * 
+ *
  * Uses a scoring algorithm that awards points for:
  * - Shared tags (2 points each)
  * - Shared concepts (3 points each)
  * - Same phase (1 point)
  * - Adjacent phase (0.5 points)
- * 
+ *
  * @param lesson - The lesson to find related lessons for
  * @param count - Maximum number of related lessons to return (default: 4)
  * @returns Array of the top related lesson objects, excluding self and prerequisites

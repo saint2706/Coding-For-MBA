@@ -38,7 +38,12 @@ function getCompleted(): Set<number> {
  * @param completed - Set of completed lesson day numbers to persist
  */
 function saveCompleted(completed: Set<number>): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]))
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]))
+  } catch {
+    // Storage may be unavailable in private browsing mode or when quota is exceeded.
+    // Silently ignore persistence failures to keep UI interactions functional.
+  }
 }
 
 /**
@@ -126,7 +131,11 @@ export function getCompletedForPhase(phaseLessonDays: number[]): number[] {
  * @param day - Day number of the lesson that was visited
  */
 export function setLastVisited(day: number): void {
-  localStorage.setItem(LAST_VISITED_KEY, String(day))
+  try {
+    localStorage.setItem(LAST_VISITED_KEY, String(day))
+  } catch {
+    // Storage may be blocked; keep runtime behavior non-fatal.
+  }
 }
 
 /**
@@ -146,6 +155,10 @@ export function getLastVisited(): number | null {
  * Removes both completed lessons and last visited lesson records.
  */
 export function clearAllProgress(): void {
-  localStorage.removeItem(STORAGE_KEY)
-  localStorage.removeItem(LAST_VISITED_KEY)
+  try {
+    localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem(LAST_VISITED_KEY)
+  } catch {
+    // Ignore failures for consistency with other storage operations.
+  }
 }

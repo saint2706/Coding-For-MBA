@@ -39,6 +39,12 @@ jobs:
       - name: Validate content
         run: node scripts/validate-content.js
 
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: End-to-end tests
+        run: npm run test:e2e -- --project=chromium
+
       - name: Build
         run: npm run build
 

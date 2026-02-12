@@ -1,6 +1,6 @@
 /**
  * ConceptGraph Component
- * 
+ *
  * An interactive force-directed graph visualization of lesson relationships and concepts.
  * Uses D3.js to create a navigable, zoomable, and filterable network diagram showing
  * how lessons connect through prerequisites and shared concepts.
@@ -29,7 +29,7 @@ const PHASE_COLORS = [
 /**
  * Represents a node in the concept graph.
  * Extends D3's SimulationNodeDatum to support force simulation.
- * 
+ *
  * @property id - Unique lesson day number
  * @property label - Short display label (e.g., "D1")
  * @property title - Full lesson title
@@ -46,7 +46,7 @@ interface GraphNode extends d3.SimulationNodeDatum {
 
 /**
  * Represents an edge (link) between two nodes in the graph.
- * 
+ *
  * @property source - Source node or node ID
  * @property target - Target node or node ID
  */
@@ -57,7 +57,7 @@ interface GraphEdge extends d3.SimulationLinkDatum<GraphNode> {
 
 /**
  * Props for the ConceptGraph component.
- * 
+ *
  * @property search - Optional search query to filter nodes
  * @property highlightPhase - Optional phase number to highlight specific phase nodes
  */
@@ -68,7 +68,7 @@ interface ConceptGraphProps {
 
 /**
  * Interactive force-directed graph visualization of lesson concepts.
- * 
+ *
  * Features:
  * - Force-directed layout with physics simulation
  * - Drag-to-reposition nodes
@@ -78,7 +78,7 @@ interface ConceptGraphProps {
  * - Phase highlighting
  * - Interactive tooltips on hover
  * - Click to navigate to lessons
- * 
+ *
  * @param search - Search query to filter displayed nodes
  * @param highlightPhase - Phase number to highlight
  * @returns An interactive SVG-based graph visualization
@@ -205,7 +205,7 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     nodeElements
       .append('circle')
       .attr('r', 12)
-      .attr('fill', (d) => PHASE_COLORS[(d.phase - 1) % PHASE_COLORS.length]!)
+      .attr('fill', (d) => PHASE_COLORS[(d.phase - 1) % PHASE_COLORS.length] ?? '#818cf8')
       .attr('stroke', 'rgba(0,0,0,0.3)')
       .attr('stroke-width', 1)
       .attr('opacity', 0.9)
@@ -329,7 +329,7 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
 
     /**
      * Checks if a node matches current search and phase filters.
-     * 
+     *
      * @param nodeId - The node ID to check
      * @returns True if node matches filters, false otherwise
      */
@@ -356,7 +356,7 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
 
   /**
    * Handles mouse movement over the graph to show/update tooltips.
-   * 
+   *
    * @param e - React mouse event
    */
   const handleMouseMove = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
@@ -383,7 +383,7 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
 
   /**
    * Handles click events on graph nodes to navigate to the lesson page.
-   * 
+   *
    * @param e - React mouse event
    */
   const handleClick = useCallback(
