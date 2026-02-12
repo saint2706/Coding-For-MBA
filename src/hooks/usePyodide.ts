@@ -1,6 +1,6 @@
 /**
  * Pyodide (Python Runtime) Hook
- * 
+ *
  * Manages the Pyodide WebAssembly Python runtime for executing Python code
  * in the browser. Handles lazy loading, singleton instance management, and
  * code execution with output capture.
@@ -45,21 +45,43 @@ const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js'
 
 /**
  * SRI Hash for the Pyodide CDN script to ensure integrity.
+ *
+ * This hash was generated using:
+ * curl -s https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js | openssl dgst -sha384 -binary | openssl base64 -A
+ *
+ * When updating PYODIDE_CDN version, regenerate this hash to match the new file.
  */
 const PYODIDE_SRI = 'sha384-rm4QcPMX69sqmX2kWiJa3BF02sgdJkVyATWkw5NHAxBUAvmLXhToWZYaP2wCcyEe'
 
 /**
  * Dynamically loads a script from the specified URL.
- * 
+ *
  * @param src - Script source URL
  * @returns Promise that resolves when script is loaded
  */
 function loadScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) {
+    const existingScript = document.querySelector(`script[src="${src}"]`)
+
+    // For Pyodide CDN, validate or enforce SRI on existing scripts
+    if (src === PYODIDE_CDN && existingScript) {
+      const integrity = existingScript.getAttribute('integrity')
+      const crossOrigin = existingScript.getAttribute('crossorigin')
+
+      // If existing script lacks proper SRI attributes, remove and recreate it
+      if (integrity !== PYODIDE_SRI || crossOrigin !== 'anonymous') {
+        existingScript.remove()
+      } else {
+        // Existing script has correct SRI attributes
+        resolve()
+        return
+      }
+    } else if (existingScript) {
+      // For non-Pyodide scripts, accept existing script
       resolve()
       return
     }
+
     const script = document.createElement('script')
     script.src = src
     script.async = true
@@ -75,11 +97,11 @@ function loadScript(src: string): Promise<void> {
 
 /**
  * Initializes the Pyodide runtime as a singleton instance.
- * 
+ *
  * Ensures only one instance of Pyodide is loaded globally, even if
  * multiple components try to initialize it simultaneously. Uses
  * promise deduplication to prevent redundant loading.
- * 
+ *
  * @returns Promise resolving to the Pyodide instance
  */
 async function initPyodide(): Promise<PyodideInterface> {
@@ -107,18 +129,18 @@ async function initPyodide(): Promise<PyodideInterface> {
 
 /**
  * Custom hook for managing Pyodide Python runtime.
- * 
+ *
  * Provides a managed interface to the Pyodide WebAssembly Python runtime,
  * handling lazy initialization, loading state, and code execution with
  * output/error capture. The runtime is shared as a singleton across all
  * hook instances.
- * 
+ *
  * @returns Object containing loading state, error state, and execution functions
- * 
+ *
  * @example
  * ```tsx
  * const { loading, error, runPython } = usePyodide()
- * 
+ *
  * const handleRun = async () => {
  *   const result = await runPython('print("Hello, World!")')
  *   console.log(result.output) // "Hello, World!"
