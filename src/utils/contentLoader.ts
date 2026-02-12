@@ -43,7 +43,14 @@ function parseMarkdown(raw: string): ParsedMarkdown {
     // Key-value: "key: value"
     const kvMatch = line.match(/^(\w+):\s*(.*)$/)
     if (kvMatch) {
-      currentKey = kvMatch[1]!
+      const key = kvMatch[1]!
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+        currentKey = null
+        currentArray = null
+        continue
+      }
+
+      currentKey = key
       currentArray = null
       let val = kvMatch[2]!.trim()
 
