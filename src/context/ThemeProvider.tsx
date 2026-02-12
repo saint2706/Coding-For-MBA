@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback, ReactNode } from 'react'
 import { Theme, ThemeContext } from './ThemeContext'
+import { getStoredString, setStoredString } from '../utils/safeStorage'
 
 /**
  * Determines the initial theme based on localStorage and system preferences.
@@ -20,7 +21,7 @@ import { Theme, ThemeContext } from './ThemeContext'
  */
 function getInitialTheme(): Theme {
   // Check localStorage first
-  const stored = localStorage.getItem('theme') as Theme | null
+  const stored = getStoredString('theme')
   if (stored === 'light' || stored === 'dark') return stored
 
   // Respect prefers-color-scheme
@@ -46,7 +47,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Apply theme to document
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('theme', theme)
+    setStoredString('theme', theme)
   }, [theme])
 
   // Listen for system preference changes
@@ -54,7 +55,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const mq = window.matchMedia('(prefers-color-scheme: light)')
     const handler = (e: MediaQueryListEvent) => {
       // Only auto-switch if no explicit preference stored
-      if (!localStorage.getItem('theme')) {
+      if (!getStoredString('theme')) {
         setTheme(e.matches ? 'light' : 'dark')
       }
     }
