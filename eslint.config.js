@@ -1,7 +1,9 @@
 import js from '@eslint/js'
+import eslintComments from 'eslint-plugin-eslint-comments'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import sonarjs from 'eslint-plugin-sonarjs'
 import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
@@ -15,6 +17,10 @@ export default defineConfig([
       reactHooks.configs.flat.recommended,
       reactRefresh.configs.vite,
     ],
+    plugins: {
+      sonarjs,
+      'eslint-comments': eslintComments,
+    },
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
@@ -28,6 +34,11 @@ export default defineConfig([
     rules: {
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'eslint-comments/no-unused-disable': 'error',
+      'eslint-comments/no-unlimited-disable': 'error',
+      'sonarjs/no-identical-functions': 'error',
+      'sonarjs/no-duplicated-branches': 'error',
+      'sonarjs/no-all-duplicated-branches': 'error',
     },
   },
 ])

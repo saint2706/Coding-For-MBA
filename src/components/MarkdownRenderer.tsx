@@ -1,11 +1,3 @@
-/**
- * MarkdownRenderer Component
- *
- * A comprehensive Markdown rendering system with custom components,
- * interactive code blocks, glossary tooltips, and automatic parsing
- * of exercises and mastery check questions.
- */
-
 import { useState, useCallback, memo, JSX, useMemo, type ComponentProps } from 'react'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -21,9 +13,6 @@ import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 import { normalizeAndValidateHref } from '../utils/linkSafety'
 import { createSlugger, extractTextFromReactNode } from '../utils/slug'
 
-/**
- * Custom Prism theme with transparent background for code blocks.
- */
 const customTheme = {
   ...oneDark,
   'pre[class*="language-"]': {
@@ -38,18 +27,9 @@ const customTheme = {
   },
 }
 
-/**
- * Copy button component for code blocks.
- *
- * @param text - The code text to copy to clipboard
- * @returns A copy button that shows feedback on click
- */
 function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false)
 
-  /**
-   * Copies code text to clipboard and shows confirmation.
-   */
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(text).then(() => {
       setCopied(true)
@@ -64,13 +44,6 @@ function CopyButton({ text }: { text: string }) {
   )
 }
 
-/**
- * Enhanced code block with syntax highlighting and optional Python playground.
- *
- * @param className - Language class name (e.g., "language-python")
- * @param children - Code content
- * @returns A styled code block with copy and "Try It" features
- */
 function CodeBlock({ className, children }: { className?: string; children: React.ReactNode }) {
   const match = /language-(\w+)/.exec(className || '')
   const lang = match ? match[1]! : ''
@@ -127,13 +100,6 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
   )
 }
 
-/**
- * Custom code component for ReactMarkdown.
- * Delegates to CodeBlock for language-specific code, renders inline code otherwise.
- *
- * @param props - Code element props from ReactMarkdown
- * @returns Either a CodeBlock or inline code element
- */
 const CodeComponent = (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
   const { children, className, ...rest } = props
   const match = /language-(\w+)/.exec(className || '')
@@ -147,12 +113,6 @@ const CodeComponent = (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
   )
 }
 
-/**
- * Custom table wrapper component that makes tables horizontally scrollable.
- *
- * @param children - Table content
- * @returns A wrapped table with overflow handling
- */
 const TableComponent = ({ children }: { children?: React.ReactNode }) => {
   return (
     <div className="table-wrapper">
@@ -161,14 +121,6 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
   )
 }
 
-/**
- * Custom link component that opens external links in new tabs.
- *
- * @param href - Link URL
- * @param children - Link content
- * @param props - Additional link attributes
- * @returns A properly configured link element
- */
 const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] & ExtraProps) => {
   const { normalizedHref, isExternal, isSafe } = normalizeAndValidateHref(href)
 
@@ -187,13 +139,6 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
   )
 }
 
-/**
- * Custom H1 heading component with auto-generated ID for linking.
- *
- * @param children - Heading content
- * @param props - Additional heading attributes
- * @returns H1 element with ID generated from content
- */
 function createHeadingComponent(
   Tag: 'h1' | 'h2' | 'h3',
   slugger: ReturnType<typeof createSlugger>,
@@ -209,18 +154,9 @@ function createHeadingComponent(
   }
 }
 
-/**
- * Global regex for matching glossary terms in content.
- */
 const glossaryRegex = getGlossaryRegex()
 
-/**
- * Processes text and wraps glossary terms with tooltip spans.
- * Only wraps the first occurrence of each term to avoid overwhelming the reader.
- *
- * @param text - The text content to process
- * @returns Array of text and JSX elements with wrapped glossary terms
- */
+/** Wrap only the first occurrence of each glossary term in a text node. */
 function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
   const parts: (string | JSX.Element)[] = []
   const matched = new Set<string>()
@@ -235,7 +171,6 @@ function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
     }
 
     const termLower = match[1]!.toLowerCase()
-    // Only wrap first occurrence of each term
     if (matched.has(termLower)) {
       parts.push(remaining.slice(0, match.index + match[0].length))
       remaining = remaining.slice(match.index + match[0].length)
@@ -244,7 +179,6 @@ function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
     }
 
     matched.add(termLower)
-    // Find the definition (case-insensitive key lookup)
     const defKey = Object.keys(glossaryTerms).find((k) => k.toLowerCase() === termLower)
     const definition = defKey ? glossaryTerms[defKey] : undefined
 
@@ -269,12 +203,6 @@ function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
   return parts
 }
 
-/**
- * Recursively processes React children to add glossary tooltips to text nodes.
- *
- * @param children - React children to process
- * @returns Processed children with glossary tooltips applied
- */
 function processGlossaryChildren(children: React.ReactNode): React.ReactNode {
   if (typeof children === 'string') {
     const parts = addGlossaryTooltips(children)
@@ -296,27 +224,10 @@ function processGlossaryChildren(children: React.ReactNode): React.ReactNode {
   return children
 }
 
-/**
- * Custom paragraph component that automatically adds glossary tooltips.
- *
- * @param children - Paragraph content
- * @param props - Additional paragraph attributes
- * @returns Paragraph with glossary terms wrapped in tooltips
- */
 const ParagraphWithGlossary = ({ children, ...props }: JSX.IntrinsicElements['p'] & ExtraProps) => (
   <p {...props}>{processGlossaryChildren(children)}</p>
 )
 
-/**
- * Represents a parsed exercise from markdown content.
- *
- * @property title - Exercise title
- * @property goal - Learning goal
- * @property instructions - Step-by-step instructions
- * @property starterCode - Initial code template
- * @property expectedOutput - Expected output text
- * @property solution - Complete solution code
- */
 interface ParsedExercise {
   title: string
   goal: string
@@ -326,15 +237,6 @@ interface ParsedExercise {
   solution: string
 }
 
-/**
- * Represents a parsed mastery check question from markdown content.
- *
- * @property questionNumber - Question number
- * @property title - Question title
- * @property questionText - Question description
- * @property codeSnippet - Optional code snippet for the question
- * @property answer - Correct answer explanation
- */
 interface ParsedMasteryQuestion {
   questionNumber: number
   title: string
@@ -343,14 +245,6 @@ interface ParsedMasteryQuestion {
   answer: string
 }
 
-/**
- * Represents an interactive block (exercise or mastery question) in the markdown.
- *
- * @property type - Block type (exercise or mastery)
- * @property startIndex - Start position in the markdown content
- * @property endIndex - End position in the markdown content
- * @property data - Parsed block data
- */
 interface InteractiveBlock {
   type: 'exercise' | 'mastery'
   startIndex: number
@@ -358,12 +252,6 @@ interface InteractiveBlock {
   data: ParsedExercise | ParsedMasteryQuestion
 }
 
-/**
- * Extracts the first code block from text and returns it with remaining text.
- *
- * @param text - Text containing code blocks
- * @returns Object with extracted code and remaining text
- */
 function extractCodeBlock(text: string): { code: string; remaining: string } {
   const codeMatch = text.match(/```(?:python|py)?\s*\n([\s\S]*?)```/)
   if (codeMatch) {
@@ -375,16 +263,10 @@ function extractCodeBlock(text: string): { code: string; remaining: string } {
   return { code: '', remaining: text }
 }
 
-/**
- * Finds and parses all interactive blocks (exercises and mastery checks) in markdown content.
- *
- * @param content - Raw markdown content to parse
- * @returns Array of parsed interactive blocks with their positions
- */
+/** Parse exercise and mastery sections so they can render as interactive widgets. */
 function findInteractiveBlocks(content: string): InteractiveBlock[] {
   const blocks: InteractiveBlock[] = []
 
-  // Find exercise blocks
   const exerciseRegex =
     /### Exercise \d+:\s*(.+?)\n([\s\S]*?)(?=\n### Exercise \d+:|\n## |\n---\s*\n## |$)/g
   let match
@@ -416,7 +298,6 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
     })
   }
 
-  // Find mastery check questions
   const questionRegex =
     /### Question (\d+):\s*(.+?)\n([\s\S]*?)<details>\s*\n<summary>.*?<\/summary>\s*\n([\s\S]*?)<\/details>/g
   while ((match = questionRegex.exec(content)) !== null) {
@@ -440,17 +321,10 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
     })
   }
 
-  // Sort by startIndex
   blocks.sort((a, b) => a.startIndex - b.startIndex)
   return blocks
 }
 
-/**
- * Renders markdown content with interactive blocks replaced by custom components.
- *
- * @param content - Markdown content to render
- * @returns Rendered content with interactive components
- */
 function createMarkdownComponents(slugger: ReturnType<typeof createSlugger>): Components {
   return {
     code: CodeComponent,
@@ -483,14 +357,12 @@ function InteractiveContent({ content }: { content: string }) {
     )
   }
 
-  // Split content into segments: plain markdown and interactive blocks
   const segments: JSX.Element[] = []
   let lastEnd = 0
 
   for (let i = 0; i < blocks.length; i++) {
     const block = blocks[i]!
 
-    // Add the markdown before this block
     if (block.startIndex > lastEnd) {
       const markdownChunk = content.slice(lastEnd, block.startIndex)
       if (markdownChunk.trim()) {
@@ -537,7 +409,6 @@ function InteractiveContent({ content }: { content: string }) {
     lastEnd = block.endIndex
   }
 
-  // Add remaining markdown
   if (lastEnd < content.length) {
     const remaining = content.slice(lastEnd)
     if (remaining.trim()) {
@@ -557,14 +428,8 @@ function InteractiveContent({ content }: { content: string }) {
   return <>{segments}</>
 }
 
-/**
- * Remark plugins for markdown processing.
- */
 const remarkPlugins = [remarkGfm]
 
-/**
- * Rehype plugins for HTML processing.
- */
 const lessonSanitizerSchema: Schema = {
   tagNames: [
     'a',
@@ -625,29 +490,13 @@ const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlu
   [rehypeSanitize, lessonSanitizerSchema],
 ]
 
-/**
- * Props for the MarkdownRenderer component.
- *
- * @property content - Markdown content to render
- */
 interface MarkdownRendererProps {
   content: string
 }
 
 /**
- * Main markdown renderer component.
- *
- * Renders markdown content with:
- * - Syntax-highlighted code blocks
- * - Interactive Python playgrounds
- * - Glossary term tooltips
- * - Custom-styled headings with IDs
- * - Responsive tables
- * - Auto-parsed exercises and mastery checks
- * - External link handling
- *
- * @param content - Markdown content to render
- * @returns Rendered markdown with all enhancements
+ * Render lesson markdown with safe HTML, custom code blocks, glossary tooltips,
+ * and interactive exercise/mastery widgets.
  */
 function MarkdownRenderer({ content }: MarkdownRendererProps) {
   if (!content) {

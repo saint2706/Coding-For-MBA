@@ -1,19 +1,6 @@
-/**
- * Content Loader Module
- *
- * Provides utilities for loading, parsing, and enriching lesson content from markdown files.
- * This module handles frontmatter extraction, lesson/phase data management, exercise parsing,
- * and content enrichment features like reading time estimation and related content discovery.
- */
-
 import { parseMarkdown } from './frontmatter'
 
-// --- Public types ---
-
-/**
- * Represents a single lesson in the curriculum.
- * Contains lesson metadata from frontmatter and the rendered content.
- */
+/** Lesson metadata and markdown body loaded from a lesson README. */
 export interface Lesson {
   day: number
   title: string
@@ -27,10 +14,7 @@ export interface Lesson {
   [key: string]: unknown
 }
 
-/**
- * Represents a phase (group of lessons) in the curriculum.
- * Contains phase metadata and overview content.
- */
+/** Phase metadata and overview markdown content. */
 export interface Phase {
   phase: number
   title: string
@@ -42,16 +26,13 @@ export interface Phase {
   [key: string]: unknown
 }
 
-/**
- * Styling information for difficulty badges.
- */
+/** UI token set for rendering difficulty badges. */
 export interface DifficultyInfo {
   label: string
   color: string
   bg: string
 }
 
-// Import all markdown files at build time
 const lessonFiles = import.meta.glob('/Lessons/**/README.md', {
   query: '?raw',
   import: 'default',
@@ -64,7 +45,6 @@ const phaseFiles = import.meta.glob('/Lessons/**/Phase_Overview.md', {
   eager: true,
 }) as Record<string, string>
 
-// Parse all lessons
 const lessons: Lesson[] = Object.entries(lessonFiles)
   .map(([path, raw]) => {
     const { frontmatter, content } = parseMarkdown(raw)
@@ -76,7 +56,6 @@ const lessons: Lesson[] = Object.entries(lessonFiles)
   })
   .sort((a, b) => (a.day || 0) - (b.day || 0))
 
-// Parse all phase overviews
 const phases: Phase[] = Object.entries(phaseFiles)
   .map(([path, raw]) => {
     const { frontmatter, content } = parseMarkdown(raw)
@@ -88,60 +67,32 @@ const phases: Phase[] = Object.entries(phaseFiles)
   })
   .sort((a, b) => (a.phase || 0) - (b.phase || 0))
 
-/**
- * Retrieves all phases in the curriculum.
- *
- * @returns Array of all phase objects, sorted by phase number
- */
+/** Return all phases sorted by phase number. */
 export function getAllPhases(): readonly ImmutablePhase[] {
   return immutablePhases
 }
 
-/**
- * Retrieves a specific phase by its number.
- *
- * @param phaseNum - Phase number (1-9)
- * @returns The phase object if found, otherwise undefined
- */
+/** Return a phase by number. */
 export function getPhase(phaseNum: string | number): ImmutablePhase | undefined {
   return immutablePhases.find((p) => p.phase === Number(phaseNum))
 }
 
-/**
- * Retrieves all lessons in the curriculum.
- *
- * @returns Array of all lesson objects, sorted by day number
- */
+/** Return all lessons sorted by day number. */
 export function getAllLessons(): readonly ImmutableLesson[] {
   return immutableLessons
 }
 
-/**
- * Retrieves a specific lesson by its day number.
- *
- * @param dayNum - Day number (1-108)
- * @returns The lesson object if found, otherwise undefined
- */
+/** Return a lesson by day number. */
 export function getLesson(dayNum: string | number): ImmutableLesson | undefined {
   return immutableLessons.find((l) => l.day === Number(dayNum))
 }
 
-/**
- * Retrieves all lessons belonging to a specific phase.
- *
- * @param phaseNum - Phase number (1-9)
- * @returns Array of lessons in the specified phase
- */
+/** Return all lessons in a phase. */
 export function getLessonsByPhase(phaseNum: string | number): readonly ImmutableLesson[] {
   return immutableLessons.filter((l) => l.phase === Number(phaseNum))
 }
 
-/**
- * Finds the previous and next lessons relative to a given day.
- *
- * @param dayNum - Current lesson day number
- * @returns Object containing prev and next lesson references (or null if at boundaries)
- */
+/** Return previous and next lessons around the given day. */
 export function getAdjacentLessons(dayNum: string | number): {
   prev: ImmutableLesson | null
   next: ImmutableLesson | null
@@ -157,11 +108,7 @@ export function getAdjacentLessons(dayNum: string | number): {
   }
 }
 
-// --- Exercise extraction ---
-
-/**
- * Represents a coding exercise extracted from lesson content.
- */
+/** Exercise parsed from lesson markdown. */
 export interface Exercise {
   day: number
   lessonTitle: string
@@ -173,15 +120,7 @@ export interface Exercise {
   tags: readonly string[]
 }
 
-/**
- * Extracts all exercises from a lesson's markdown content.
- *
- * Parses sections matching "### Exercise N: Title" pattern and extracts
- * the goal description and starter code blocks.
- *
- * @param lesson - The lesson object to extract exercises from
- * @returns Array of exercise objects found in the lesson
- */
+/** Parse exercise sections from a lesson markdown body. */
 function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
   const exercises: Exercise[] = []
   const regex =
@@ -221,20 +160,12 @@ const immutableLessons = Object.freeze(lessons.map(freezeLesson))
 const immutablePhases = Object.freeze(phases.map(freezePhase))
 const immutableExercises = Object.freeze(allExercises.map(freezeExercise))
 
-/**
- * Retrieves all exercises from all lessons.
- *
- * @returns Array of all exercises across the entire curriculum
- */
+/** Return all parsed exercises across lessons. */
 export function getAllExercises(): readonly ImmutableExercise[] {
   return immutableExercises
 }
 
-// --- Notebook loading ---
-
-/**
- * Represents a single cell in a Jupyter notebook.
- */
+/** Jupyter notebook cell shape used by imported phase notebooks. */
 export interface NotebookCell {
   cell_type: 'code' | 'markdown' | 'raw'
   source: readonly string[]
@@ -249,9 +180,7 @@ export interface NotebookCell {
   execution_count?: number | null
 }
 
-/**
- * Represents a Jupyter notebook containing solution code for a phase.
- */
+/** Parsed notebook metadata for a phase solution file. */
 export interface Notebook {
   phase: number
   cells: readonly NotebookCell[]
@@ -335,11 +264,7 @@ const notebookFiles = import.meta.glob('/Lessons/**/Phase_*_Solutions.ipynb', {
   eager: true,
 }) as Record<string, string>
 
-/**
- * Parses all Jupyter notebook files from the Lessons directory.
- *
- * @returns Array of notebook objects with phase numbers and parsed cells
- */
+/** Parse notebook files and map each one to a phase number. */
 function parseNotebooks(): Notebook[] {
   return Object.entries(notebookFiles)
     .map(([path, raw]) => {
@@ -359,56 +284,32 @@ function parseNotebooks(): Notebook[] {
 const notebooks = parseNotebooks()
 const immutableNotebooks = Object.freeze(notebooks.map(freezeNotebook))
 
-/**
- * Retrieves all Jupyter notebooks.
- *
- * @returns Array of all notebook objects, sorted by phase number
- */
+/** Return all parsed notebooks sorted by phase number. */
 export function getAllNotebooks(): readonly ImmutableNotebook[] {
   return immutableNotebooks
 }
 
-/**
- * Retrieves a specific notebook by phase number.
- *
- * @param phaseNum - Phase number (1-9)
- * @returns The notebook object if found, otherwise undefined
- */
+/** Return a notebook by phase number. */
 export function getNotebook(phaseNum: string | number): ImmutableNotebook | undefined {
   return immutableNotebooks.find((n) => n.phase === Number(phaseNum))
 }
 
-// --- Content enrichment helpers ---
-
-/**
- * Estimates reading time in minutes (word count ÷ 200 wpm).
- *
- * Strips code blocks, frontmatter, and markdown syntax before counting words.
- * Uses an average reading speed of 200 words per minute.
- *
- * @param content - Raw markdown content to analyze
- * @returns Estimated reading time in minutes (minimum 1 minute)
- */
+/** Estimate reading time in minutes after removing markdown syntax noise. */
 export function getReadingTime(content: string): number {
   const stripped = content
-    .replace(/```[\s\S]*?```/g, '') // remove code blocks
-    .replace(/`[^`]+`/g, '') // remove inline code
-    .replace(/!\[.*?\]\(.*?\)/g, '') // remove images
-    .replace(/\[([^\]]+)\]\(.*?\)/g, '$1') // links → text
-    .replace(/#{1,6}\s/g, '') // remove heading markers
-    .replace(/[*_~>|`-]/g, '') // remove markdown formatting
-    .replace(/<[^>]+>/g, '') // remove HTML tags
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`[^`]+`/g, '')
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[([^\]]+)\]\(.*?\)/g, '$1')
+    .replace(/#{1,6}\s/g, '')
+    .replace(/[*_~>|`-]/g, '')
+    .replace(/<[^>]+>/g, '')
     .trim()
   const words = stripped.split(/\s+/).filter((w) => w.length > 0).length
   return Math.max(1, Math.round(words / 200))
 }
 
-/**
- * Looks up prerequisite Lesson objects from the lesson's prerequisites array.
- *
- * @param lesson - The lesson to get prerequisites for
- * @returns Array of prerequisite lesson objects
- */
+/** Resolve prerequisite day references into lesson objects. */
 export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly ImmutableLesson[] {
   const prereqs = lesson.prerequisites as readonly number[] | undefined
   if (!prereqs || !Array.isArray(prereqs) || prereqs.length === 0) return []
@@ -417,19 +318,7 @@ export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly Immut
     .filter((l): l is ImmutableLesson => l !== undefined)
 }
 
-/**
- * Finds related lessons by scoring shared tags, concepts, and phase proximity.
- *
- * Uses a scoring algorithm that awards points for:
- * - Shared tags (2 points each)
- * - Shared concepts (3 points each)
- * - Same phase (1 point)
- * - Adjacent phase (0.5 points)
- *
- * @param lesson - The lesson to find related lessons for
- * @param count - Maximum number of related lessons to return (default: 4)
- * @returns Array of the top related lesson objects, excluding self and prerequisites
- */
+/** Return top related lessons ranked by shared tags/concepts and phase proximity. */
 export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly ImmutableLesson[] {
   const prereqs = new Set((lesson.prerequisites as readonly number[]) || [])
   const myTags = new Set((lesson.tags as readonly string[]) || [])
@@ -442,17 +331,13 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
       const lTags = (l.tags as readonly string[]) || []
       const lConcepts = (l.concepts as readonly string[]) || []
 
-      // Shared tags (2 pts each)
       lTags.forEach((t) => {
         if (myTags.has(t)) score += 2
       })
-      // Shared concepts (3 pts each)
       lConcepts.forEach((c) => {
         if (myConcepts.has(c)) score += 3
       })
-      // Same phase bonus (1 pt)
       if (l.phase === lesson.phase) score += 1
-      // Phase proximity bonus (0.5 pts for adjacent phases)
       if (Math.abs(l.phase - lesson.phase) === 1) score += 0.5
 
       return { lesson: l, score, sharedTags: lTags.filter((t) => myTags.has(t)) }
@@ -473,10 +358,7 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
   )
 }
 
-/**
- * Configuration mapping difficulty levels to display information.
- * Includes label, color, and background color for UI rendering.
- */
+/** Difficulty-level display metadata used by the lesson UI. */
 export const difficultyConfig: Record<string, DifficultyInfo> = {
   beginner: { label: 'Beginner', color: '#22c55e', bg: 'rgba(34,197,94,0.12)' },
   intermediate: { label: 'Intermediate', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' },
@@ -484,18 +366,5 @@ export const difficultyConfig: Record<string, DifficultyInfo> = {
   expert: { label: 'Expert', color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
 }
 
-/**
- * Emoji icons representing each phase of the curriculum.
- * Array indices correspond to phase numbers (0-8 for phases 1-9).
- */
-export const phaseIcons: string[] = [
-  '🐍', // Phase 1: Python Foundations
-  '🔧', // Phase 2: Functions & Modularity
-  '🌐', // Phase 3: Data Eng & Web Dev
-  '📐', // Phase 4: Math & ML
-  '🧠', // Phase 5: Advanced ML
-  '🚀', // Phase 6: Cutting Edge ML
-  '📊', // Phase 7: BI Analytics
-  '🗄️', // Phase 8: SQL Mastery
-  '⚡', // Phase 9: Enterprise SQL
-]
+/** Phase icon lookup (index 0 => phase 1). */
+export const phaseIcons: string[] = ['🐍', '🔧', '🌐', '📐', '🧠', '🚀', '📊', '🗄️', '⚡']
