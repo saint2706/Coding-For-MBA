@@ -30,5 +30,15 @@ test.describe('Security: Pyodide Integrity', () => {
 
     // Optional: check that the button is not in "Loading..." state anymore
     await expect(runButton).not.toHaveText(/Loading|Running/i)
+
+    // Verify that the Pyodide script was loaded with SRI integrity and crossorigin attributes
+    const pyodideScript = page.locator(
+      'script[src="https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js"]',
+    )
+    await expect(pyodideScript).toHaveAttribute(
+      'integrity',
+      'sha384-rm4QcPMX69sqmX2kWiJa3BF02sgdJkVyATWkw5NHAxBUAvmLXhToWZYaP2wCcyEe',
+    )
+    await expect(pyodideScript).toHaveAttribute('crossorigin', 'anonymous')
   })
 })

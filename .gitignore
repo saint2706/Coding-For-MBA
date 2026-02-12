@@ -30,3 +30,5 @@ public/sitemap.xml
 # Playwright artifacts
 .playwright-artifacts/
 *.png
+playwright-report/
+test-results/
