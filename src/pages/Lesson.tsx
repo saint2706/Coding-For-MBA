@@ -55,8 +55,14 @@ export default function Lesson() {
   }, [prev, next, navigate])
 
   // Swipe gestures for mobile prev/next
-  const handleSwipeLeft = useMemo(() => (next ? () => navigate(`/lesson/${next.day}`) : undefined), [next, navigate])
-  const handleSwipeRight = useMemo(() => (prev ? () => navigate(`/lesson/${prev.day}`) : undefined), [prev, navigate])
+  const handleSwipeLeft = useMemo(
+    () => (next ? () => navigate(`/lesson/${next.day}`) : undefined),
+    [next, navigate],
+  )
+  const handleSwipeRight = useMemo(
+    () => (prev ? () => navigate(`/lesson/${prev.day}`) : undefined),
+    [prev, navigate],
+  )
   const swipeRef = useSwipe({ onSwipeLeft: handleSwipeLeft, onSwipeRight: handleSwipeRight })
 
   if (!lesson) {
