@@ -33,7 +33,7 @@ interface MergedBlock {
   /** For markdown: the raw source. For code: the merged source of all cells. */
   source: string
   /** Original cells (for code blocks — used for output rendering) */
-  cells?: NotebookCell[]
+  cells?: readonly NotebookCell[]
 }
 
 /**
@@ -45,7 +45,7 @@ interface MergedBlock {
  * @param cells - Array of notebook cells to merge
  * @returns Array of merged blocks ready for rendering
  */
-function mergeCells(cells: NotebookCell[]): MergedBlock[] {
+function mergeCells(cells: readonly NotebookCell[]): MergedBlock[] {
   const blocks: MergedBlock[] = []
   let currentCodeSources: string[] = []
   let currentCodeCells: NotebookCell[] = []
@@ -99,7 +99,7 @@ function stripAnsi(str: string): string {
  */
 interface CellOutputsProps {
   /** Array of notebook cells to render outputs from */
-  cells: NotebookCell[]
+  cells: readonly NotebookCell[]
 }
 
 /**

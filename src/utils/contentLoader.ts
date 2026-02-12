@@ -20,8 +20,8 @@ export interface Lesson {
   phase: number
   difficulty?: string
   duration?: number
-  tags?: string[]
-  concepts?: string[]
+  tags?: readonly string[]
+  concepts?: readonly string[]
   content: string
   path: string
   [key: string]: unknown
@@ -36,7 +36,7 @@ export interface Phase {
   title: string
   difficulty?: string
   totalDuration?: number
-  days?: number[]
+  days?: readonly number[]
   content: string
   path: string
   [key: string]: unknown
@@ -93,8 +93,8 @@ const phases: Phase[] = Object.entries(phaseFiles)
  *
  * @returns Array of all phase objects, sorted by phase number
  */
-export function getAllPhases(): Phase[] {
-  return phases
+export function getAllPhases(): readonly ImmutablePhase[] {
+  return immutablePhases
 }
 
 /**
@@ -103,8 +103,8 @@ export function getAllPhases(): Phase[] {
  * @param phaseNum - Phase number (1-9)
  * @returns The phase object if found, otherwise undefined
  */
-export function getPhase(phaseNum: string | number): Phase | undefined {
-  return phases.find((p) => p.phase === Number(phaseNum))
+export function getPhase(phaseNum: string | number): ImmutablePhase | undefined {
+  return immutablePhases.find((p) => p.phase === Number(phaseNum))
 }
 
 /**
@@ -112,8 +112,8 @@ export function getPhase(phaseNum: string | number): Phase | undefined {
  *
  * @returns Array of all lesson objects, sorted by day number
  */
-export function getAllLessons(): Lesson[] {
-  return lessons
+export function getAllLessons(): readonly ImmutableLesson[] {
+  return immutableLessons
 }
 
 /**
@@ -122,8 +122,8 @@ export function getAllLessons(): Lesson[] {
  * @param dayNum - Day number (1-108)
  * @returns The lesson object if found, otherwise undefined
  */
-export function getLesson(dayNum: string | number): Lesson | undefined {
-  return lessons.find((l) => l.day === Number(dayNum))
+export function getLesson(dayNum: string | number): ImmutableLesson | undefined {
+  return immutableLessons.find((l) => l.day === Number(dayNum))
 }
 
 /**
@@ -132,8 +132,8 @@ export function getLesson(dayNum: string | number): Lesson | undefined {
  * @param phaseNum - Phase number (1-9)
  * @returns Array of lessons in the specified phase
  */
-export function getLessonsByPhase(phaseNum: string | number): Lesson[] {
-  return lessons.filter((l) => l.phase === Number(phaseNum))
+export function getLessonsByPhase(phaseNum: string | number): readonly ImmutableLesson[] {
+  return immutableLessons.filter((l) => l.phase === Number(phaseNum))
 }
 
 /**
@@ -143,14 +143,17 @@ export function getLessonsByPhase(phaseNum: string | number): Lesson[] {
  * @returns Object containing prev and next lesson references (or null if at boundaries)
  */
 export function getAdjacentLessons(dayNum: string | number): {
-  prev: Lesson | null
-  next: Lesson | null
+  prev: ImmutableLesson | null
+  next: ImmutableLesson | null
 } {
   const day = Number(dayNum)
-  const currentIndex = lessons.findIndex((l) => l.day === day)
+  const currentIndex = immutableLessons.findIndex((l) => l.day === day)
   return {
-    prev: currentIndex > 0 ? (lessons[currentIndex - 1] ?? null) : null,
-    next: currentIndex < lessons.length - 1 ? (lessons[currentIndex + 1] ?? null) : null,
+    prev: currentIndex > 0 ? (immutableLessons[currentIndex - 1] ?? null) : null,
+    next:
+      currentIndex < immutableLessons.length - 1
+        ? (immutableLessons[currentIndex + 1] ?? null)
+        : null,
   }
 }
 
@@ -167,7 +170,7 @@ export interface Exercise {
   title: string
   goal: string
   starterCode: string
-  tags: string[]
+  tags: readonly string[]
 }
 
 /**
@@ -207,21 +210,24 @@ function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
       title,
       goal,
       starterCode: codeBlocks[0] || '',
-      tags: (lesson.tags as string[]) || [],
+      tags: lesson.tags || [],
     })
   }
   return exercises
 }
 
 const allExercises: Exercise[] = lessons.flatMap(extractExercisesFromLesson)
+const immutableLessons = Object.freeze(lessons.map(freezeLesson))
+const immutablePhases = Object.freeze(phases.map(freezePhase))
+const immutableExercises = Object.freeze(allExercises.map(freezeExercise))
 
 /**
  * Retrieves all exercises from all lessons.
  *
  * @returns Array of all exercises across the entire curriculum
  */
-export function getAllExercises(): Exercise[] {
-  return allExercises
+export function getAllExercises(): readonly ImmutableExercise[] {
+  return immutableExercises
 }
 
 // --- Notebook loading ---
@@ -231,14 +237,14 @@ export function getAllExercises(): Exercise[] {
  */
 export interface NotebookCell {
   cell_type: 'code' | 'markdown' | 'raw'
-  source: string[]
-  outputs?: Array<{
+  source: readonly string[]
+  outputs?: ReadonlyArray<{
     output_type: string
-    text?: string[]
-    data?: Record<string, string[]>
+    text?: readonly string[]
+    data?: Record<string, readonly string[]>
     ename?: string
     evalue?: string
-    traceback?: string[]
+    traceback?: readonly string[]
   }>
   execution_count?: number | null
 }
@@ -248,7 +254,79 @@ export interface NotebookCell {
  */
 export interface Notebook {
   phase: number
-  cells: NotebookCell[]
+  cells: readonly NotebookCell[]
+}
+
+type ImmutableLesson = Readonly<Lesson>
+type ImmutablePhase = Readonly<Phase>
+type ImmutableExercise = Readonly<Exercise>
+type ImmutableNotebookCell = Readonly<NotebookCell>
+type ImmutableNotebook = Readonly<Notebook>
+
+function freezeStringArray(values?: readonly string[]): readonly string[] | undefined {
+  return values ? Object.freeze([...values]) : undefined
+}
+
+function freezeNumberArray(values?: readonly number[]): readonly number[] | undefined {
+  return values ? Object.freeze([...values]) : undefined
+}
+
+function freezeLesson(lesson: Lesson): ImmutableLesson {
+  return Object.freeze({
+    ...lesson,
+    tags: freezeStringArray(lesson.tags),
+    concepts: freezeStringArray(lesson.concepts),
+    prerequisites: freezeNumberArray(lesson.prerequisites as readonly number[] | undefined),
+  })
+}
+
+function freezePhase(phase: Phase): ImmutablePhase {
+  return Object.freeze({
+    ...phase,
+    days: freezeNumberArray(phase.days),
+  })
+}
+
+function freezeExercise(exercise: Exercise): ImmutableExercise {
+  return Object.freeze({
+    ...exercise,
+    tags: Object.freeze([...exercise.tags]),
+  })
+}
+
+function freezeNotebookCell(cell: NotebookCell): ImmutableNotebookCell {
+  return Object.freeze({
+    ...cell,
+    source: Object.freeze([...cell.source]),
+    outputs: cell.outputs
+      ? Object.freeze(
+          cell.outputs.map((output) =>
+            Object.freeze({
+              ...output,
+              text: output.text ? Object.freeze([...output.text]) : undefined,
+              data: output.data
+                ? Object.freeze(
+                    Object.fromEntries(
+                      Object.entries(output.data).map(([key, values]) => [
+                        key,
+                        Object.freeze([...values]),
+                      ]),
+                    ),
+                  )
+                : undefined,
+              traceback: output.traceback ? Object.freeze([...output.traceback]) : undefined,
+            }),
+          ),
+        )
+      : undefined,
+  })
+}
+
+function freezeNotebook(notebook: Notebook): ImmutableNotebook {
+  return Object.freeze({
+    ...notebook,
+    cells: Object.freeze(notebook.cells.map(freezeNotebookCell)),
+  })
 }
 
 const notebookFiles = import.meta.glob('/Lessons/**/Phase_*_Solutions.ipynb', {
@@ -279,14 +357,15 @@ function parseNotebooks(): Notebook[] {
 }
 
 const notebooks = parseNotebooks()
+const immutableNotebooks = Object.freeze(notebooks.map(freezeNotebook))
 
 /**
  * Retrieves all Jupyter notebooks.
  *
  * @returns Array of all notebook objects, sorted by phase number
  */
-export function getAllNotebooks(): Notebook[] {
-  return notebooks
+export function getAllNotebooks(): readonly ImmutableNotebook[] {
+  return immutableNotebooks
 }
 
 /**
@@ -295,8 +374,8 @@ export function getAllNotebooks(): Notebook[] {
  * @param phaseNum - Phase number (1-9)
  * @returns The notebook object if found, otherwise undefined
  */
-export function getNotebook(phaseNum: string | number): Notebook | undefined {
-  return notebooks.find((n) => n.phase === Number(phaseNum))
+export function getNotebook(phaseNum: string | number): ImmutableNotebook | undefined {
+  return immutableNotebooks.find((n) => n.phase === Number(phaseNum))
 }
 
 // --- Content enrichment helpers ---
@@ -330,12 +409,12 @@ export function getReadingTime(content: string): number {
  * @param lesson - The lesson to get prerequisites for
  * @returns Array of prerequisite lesson objects
  */
-export function getPrerequisiteLessons(lesson: Lesson): Lesson[] {
-  const prereqs = lesson.prerequisites as number[] | undefined
+export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly ImmutableLesson[] {
+  const prereqs = lesson.prerequisites as readonly number[] | undefined
   if (!prereqs || !Array.isArray(prereqs) || prereqs.length === 0) return []
   return prereqs
-    .map((day) => lessons.find((l) => l.day === Number(day)))
-    .filter((l): l is Lesson => l !== undefined)
+    .map((day) => immutableLessons.find((l) => l.day === Number(day)))
+    .filter((l): l is ImmutableLesson => l !== undefined)
 }
 
 /**
@@ -351,17 +430,17 @@ export function getPrerequisiteLessons(lesson: Lesson): Lesson[] {
  * @param count - Maximum number of related lessons to return (default: 4)
  * @returns Array of the top related lesson objects, excluding self and prerequisites
  */
-export function getRelatedLessons(lesson: Lesson, count = 4): Lesson[] {
-  const prereqs = new Set((lesson.prerequisites as number[]) || [])
-  const myTags = new Set((lesson.tags as string[]) || [])
-  const myConcepts = new Set((lesson.concepts as string[]) || [])
+export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly ImmutableLesson[] {
+  const prereqs = new Set((lesson.prerequisites as readonly number[]) || [])
+  const myTags = new Set((lesson.tags as readonly string[]) || [])
+  const myConcepts = new Set((lesson.concepts as readonly string[]) || [])
 
   const scored = lessons
     .filter((l) => l.day !== lesson.day && !prereqs.has(l.day))
     .map((l) => {
       let score = 0
-      const lTags = (l.tags as string[]) || []
-      const lConcepts = (l.concepts as string[]) || []
+      const lTags = (l.tags as readonly string[]) || []
+      const lConcepts = (l.concepts as readonly string[]) || []
 
       // Shared tags (2 pts each)
       lTags.forEach((t) => {
@@ -382,7 +461,16 @@ export function getRelatedLessons(lesson: Lesson, count = 4): Lesson[] {
     .sort((a, b) => b.score - a.score)
     .slice(0, count)
 
-  return scored.map((s) => ({ ...s.lesson, _sharedTags: s.sharedTags }) as Lesson)
+  return Object.freeze(
+    scored.map((s) =>
+      Object.freeze({
+        ...s.lesson,
+        _sharedTags: Object.freeze([...s.sharedTags]),
+        tags: freezeStringArray(s.lesson.tags),
+        concepts: freezeStringArray(s.lesson.concepts),
+      }),
+    ),
+  )
 }
 
 /**

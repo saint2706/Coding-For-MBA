@@ -1,5 +1,6 @@
 import {
   getAdjacentLessons,
+  getAllExercises,
   getAllLessons,
   getAllNotebooks,
   getAllPhases,
@@ -87,5 +88,38 @@ test words repeated `.repeat(120)
     const related = getRelatedLessons(lessonWithPrereqs!, 4)
     expect(related.length).toBeLessThanOrEqual(4)
     expect(related.every((lesson) => lesson.day !== lessonWithPrereqs!.day)).toBe(true)
+  })
+
+  it('prevents collection mutation from changing source lesson data', () => {
+    const baselineLessons = getAllLessons()
+    const baselineFirst = baselineLessons[0]
+
+    expect(baselineFirst).toBeDefined()
+
+    expect(() => {
+      ;(baselineLessons as Array<(typeof baselineLessons)[number]>).push(baselineFirst!)
+    }).toThrow(TypeError)
+
+    expect(() => {
+      ;(baselineFirst as { title: string }).title = 'Mutated Lesson Title'
+    }).toThrow(TypeError)
+
+    const freshLessons = getAllLessons()
+    expect(freshLessons.length).toBe(baselineLessons.length)
+    expect(freshLessons[0]?.title).toBe(baselineFirst?.title)
+  })
+
+  it('prevents nested collection mutation from changing source exercise data', () => {
+    const exercises = getAllExercises()
+    const exerciseWithTags = exercises.find((exercise) => exercise.tags.length > 0)
+
+    expect(exerciseWithTags).toBeDefined()
+
+    expect(() => {
+      ;(exerciseWithTags!.tags as string[]).push('mutated-tag')
+    }).toThrow(TypeError)
+
+    const freshExerciseWithTags = getAllExercises().find((exercise) => exercise.tags.length > 0)
+    expect(freshExerciseWithTags?.tags).toEqual(exerciseWithTags?.tags)
   })
 })
