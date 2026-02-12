@@ -17,19 +17,63 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'Lessons')
 const REQUIRED_FIELDS = ['day', 'title', 'phase', 'difficulty', 'duration']
+const DEFAULT_IGNORED_DIRECTORIES = new Set([
+  '.git',
+  'node_modules',
+  '.next',
+  'dist',
+  'build',
+  'coverage',
+])
 
-export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
+export function findReadmes(
+  dir,
+  lessonsDir = LESSONS_DIR,
+  {
+    maxDepth = Infinity,
+    ignoredDirectories = DEFAULT_IGNORED_DIRECTORIES,
+    depth = 0,
+    visitedRealPaths = new Set(),
+  } = {},
+) {
   const results = []
-  if (!fs.existsSync(dir)) return results
+  if (!fs.existsSync(dir) || depth > maxDepth) return results
 
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+  let currentRealPath
+  try {
+    currentRealPath = fs.realpathSync(dir)
+  } catch {
+    return results
+  }
+
+  if (visitedRealPaths.has(currentRealPath)) return results
+  visitedRealPaths.add(currentRealPath)
+
+  const entries = fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )
+
+  for (const entry of entries) {
     const fullPath = path.join(dir, entry.name)
-    if (entry.isDirectory()) {
-      results.push(...findReadmes(fullPath, lessonsDir))
+    if (entry.isSymbolicLink()) {
+      continue
+    }
+
+    if (entry.isDirectory() && !ignoredDirectories.has(entry.name)) {
+      results.push(
+        ...findReadmes(fullPath, lessonsDir, {
+          maxDepth,
+          ignoredDirectories,
+          depth: depth + 1,
+          visitedRealPaths,
+        }),
+      )
     } else if (entry.name === 'README.md' && dir !== lessonsDir) {
       results.push(fullPath)
     }
   }
+
+  visitedRealPaths.delete(currentRealPath)
 
   return results
 }

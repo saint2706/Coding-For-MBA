@@ -7,7 +7,7 @@
  * Usage: node scripts/generate-sitemap.js
  */
 
-import { readdirSync, readFileSync, writeFileSync } from 'fs'
+import { readdirSync, readFileSync, realpathSync, writeFileSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -24,16 +24,56 @@ function extractNumber(filePath, key) {
 }
 
 /** Recursively find files matching a name. */
-function findFiles(dir, filename) {
+function findFiles(
+  dir,
+  filename,
+  {
+    maxDepth = Infinity,
+    ignoredDirectories = new Set(['.git', 'node_modules', '.next', 'dist', 'build', 'coverage']),
+    depth = 0,
+    visitedRealPaths = new Set(),
+  } = {},
+) {
   const results = []
-  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+  if (depth > maxDepth) return results
+
+  let currentRealPath
+  try {
+    currentRealPath = realpathSync(dir)
+  } catch {
+    return results
+  }
+
+  if (visitedRealPaths.has(currentRealPath)) {
+    return results
+  }
+  visitedRealPaths.add(currentRealPath)
+
+  const entries = readdirSync(dir, { withFileTypes: true }).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  )
+
+  for (const entry of entries) {
     const fullPath = join(dir, entry.name)
-    if (entry.isDirectory()) {
-      results.push(...findFiles(fullPath, filename))
+    if (entry.isSymbolicLink()) {
+      continue
+    }
+
+    if (entry.isDirectory() && !ignoredDirectories.has(entry.name)) {
+      results.push(
+        ...findFiles(fullPath, filename, {
+          maxDepth,
+          ignoredDirectories,
+          depth: depth + 1,
+          visitedRealPaths,
+        }),
+      )
     } else if (entry.name === filename) {
       results.push(fullPath)
     }
   }
+
+  visitedRealPaths.delete(currentRealPath)
   return results
 }
 
