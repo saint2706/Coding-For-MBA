@@ -7,6 +7,9 @@ import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import TableOfContents from '../components/TableOfContents'
+import ReadingTime from '../components/ReadingTime'
+import PrerequisitePills from '../components/PrerequisitePills'
+import RelatedLessons from '../components/RelatedLessons'
 
 export default function Lesson() {
   const { dayNum } = useParams<{ dayNum: string }>()
@@ -94,6 +97,7 @@ export default function Lesson() {
               {diff.label}
             </span>
             {lesson.duration && <span className="meta-pill">⏱ {lesson.duration} min</span>}
+            <ReadingTime content={lesson.content} />
             {lesson.tags &&
               lesson.tags.map((tag) => (
                 <span className="lesson-tag" key={tag}>
@@ -109,6 +113,8 @@ export default function Lesson() {
           >
             {completed ? '✓ Completed' : '○ Mark as Complete'}
           </button>
+
+          <PrerequisitePills lesson={lesson} />
         </div>
 
         {/* Markdown content */}
@@ -133,6 +139,8 @@ export default function Lesson() {
             </Link>
           )}
         </nav>
+
+        <RelatedLessons lesson={lesson} />
 
         <BackToTop />
       </div>

@@ -286,6 +286,71 @@ export function getNotebook(phaseNum: string | number): Notebook | undefined {
   return notebooks.find((n) => n.phase === Number(phaseNum))
 }
 
+// --- Content enrichment helpers ---
+
+/**
+ * Estimate reading time in minutes (word count ÷ 200 wpm).
+ * Strips code blocks, frontmatter, and markdown syntax before counting.
+ */
+export function getReadingTime(content: string): number {
+  const stripped = content
+    .replace(/```[\s\S]*?```/g, '') // remove code blocks
+    .replace(/`[^`]+`/g, '') // remove inline code
+    .replace(/!\[.*?\]\(.*?\)/g, '') // remove images
+    .replace(/\[([^\]]+)\]\(.*?\)/g, '$1') // links → text
+    .replace(/#{1,6}\s/g, '') // remove heading markers
+    .replace(/[*_~>|`-]/g, '') // remove markdown formatting
+    .replace(/<[^>]+>/g, '') // remove HTML tags
+    .trim()
+  const words = stripped.split(/\s+/).filter((w) => w.length > 0).length
+  return Math.max(1, Math.round(words / 200))
+}
+
+/**
+ * Look up prerequisite Lesson objects from the lesson's prerequisites array.
+ */
+export function getPrerequisiteLessons(lesson: Lesson): Lesson[] {
+  const prereqs = lesson.prerequisites as number[] | undefined
+  if (!prereqs || !Array.isArray(prereqs) || prereqs.length === 0) return []
+  return prereqs
+    .map((day) => lessons.find((l) => l.day === Number(day)))
+    .filter((l): l is Lesson => l !== undefined)
+}
+
+/**
+ * Find related lessons by scoring shared tags, concepts, and phase proximity.
+ * Returns the top `count` matches, excluding self and prerequisites.
+ */
+export function getRelatedLessons(lesson: Lesson, count = 4): Lesson[] {
+  const prereqs = new Set((lesson.prerequisites as number[]) || [])
+  const myTags = new Set((lesson.tags as string[]) || [])
+  const myConcepts = new Set((lesson.concepts as string[]) || [])
+
+  const scored = lessons
+    .filter((l) => l.day !== lesson.day && !prereqs.has(l.day))
+    .map((l) => {
+      let score = 0
+      const lTags = (l.tags as string[]) || []
+      const lConcepts = (l.concepts as string[]) || []
+
+      // Shared tags (2 pts each)
+      lTags.forEach((t) => { if (myTags.has(t)) score += 2 })
+      // Shared concepts (3 pts each)
+      lConcepts.forEach((c) => { if (myConcepts.has(c)) score += 3 })
+      // Same phase bonus (1 pt)
+      if (l.phase === lesson.phase) score += 1
+      // Phase proximity bonus (0.5 pts for adjacent phases)
+      if (Math.abs(l.phase - lesson.phase) === 1) score += 0.5
+
+      return { lesson: l, score, sharedTags: lTags.filter((t) => myTags.has(t)) }
+    })
+    .filter((s) => s.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, count)
+
+  return scored.map((s) => ({ ...s.lesson, _sharedTags: s.sharedTags } as Lesson))
+}
+
 // Difficulty config
 export const difficultyConfig: Record<string, DifficultyInfo> = {
   beginner: { label: 'Beginner', color: '#22c55e', bg: 'rgba(34,197,94,0.12)' },

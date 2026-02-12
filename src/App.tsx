@@ -13,6 +13,7 @@ const SearchResults = lazy(() => import('./pages/SearchResults'))
 const ProgressDashboard = lazy(() => import('./pages/ProgressDashboard'))
 const Exercises = lazy(() => import('./pages/Exercises'))
 const NotebookViewer = lazy(() => import('./pages/NotebookViewer'))
+const ConceptGraphPage = lazy(() => import('./pages/ConceptGraphPage'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 function PageLoader() {
@@ -87,6 +88,7 @@ export default function App() {
             <Route path="/exercises" element={<Exercises />} />
             <Route path="/solutions/:phaseNum" element={<NotebookViewer />} />
             <Route path="/search" element={<SearchResults />} />
+            <Route path="/concepts" element={<ConceptGraphPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

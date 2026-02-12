@@ -80,11 +80,11 @@
 
 ### Content Features
 
-- [ ] **Add estimated reading time** per lesson (word count ÷ 200 wpm)
-- [ ] **Add "Prerequisites" pills** linking to required prior lessons
-- [ ] **Add concept dependency graph** (Mermaid or D3.js visualization)
-- [ ] **Add "Related Lessons"** section at bottom of each lesson
-- [ ] **Add glossary/term definitions** — hover tooltips for technical terms
+- [x] **Add estimated reading time** per lesson (word count ÷ 200 wpm)
+- [x] **Add "Prerequisites" pills** linking to required prior lessons
+- [x] **Add concept dependency graph** (Mermaid or D3.js visualization)
+- [x] **Add "Related Lessons"** section at bottom of each lesson
+- [x] **Add glossary/term definitions** — hover tooltips for technical terms
 
 ### UX & Design
 

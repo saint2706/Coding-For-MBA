@@ -7,6 +7,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
 import ExerciseWidget from './ExerciseWidget'
 import MasteryCheck from './MasteryCheck'
+import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 
 const customTheme = {
   ...oneDark,
@@ -164,6 +165,85 @@ const Heading3 = ({ children, ...props }: JSX.IntrinsicElements['h3'] & ExtraPro
     </h3>
   )
 }
+
+// --- Glossary tooltip helper ---
+const glossaryRegex = getGlossaryRegex()
+
+/**
+ * Process a text string and wrap the first occurrence of each glossary term
+ * with a tooltip span.
+ */
+function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
+  const parts: (string | JSX.Element)[] = []
+  const matched = new Set<string>()
+  let remaining = text
+  let keyIdx = 0
+
+  while (remaining.length > 0) {
+    const match = glossaryRegex.exec(remaining)
+    if (!match) {
+      parts.push(remaining)
+      break
+    }
+
+    const termLower = match[1]!.toLowerCase()
+    // Only wrap first occurrence of each term
+    if (matched.has(termLower)) {
+      parts.push(remaining.slice(0, match.index + match[0].length))
+      remaining = remaining.slice(match.index + match[0].length)
+      glossaryRegex.lastIndex = 0
+      continue
+    }
+
+    matched.add(termLower)
+    // Find the definition (case-insensitive key lookup)
+    const defKey = Object.keys(glossaryTerms).find((k) => k.toLowerCase() === termLower)
+    const definition = defKey ? glossaryTerms[defKey] : undefined
+
+    if (match.index > 0) {
+      parts.push(remaining.slice(0, match.index))
+    }
+
+    if (definition) {
+      parts.push(
+        <span key={`gl-${keyIdx++}`} className="glossary-term" data-definition={definition}>
+          {match[0]}
+        </span>,
+      )
+    } else {
+      parts.push(match[0])
+    }
+
+    remaining = remaining.slice(match.index + match[0].length)
+    glossaryRegex.lastIndex = 0
+  }
+
+  return parts
+}
+
+/**
+ * Recursively process React children, adding glossary tooltips to string nodes.
+ */
+function processGlossaryChildren(children: React.ReactNode): React.ReactNode {
+  if (typeof children === 'string') {
+    const parts = addGlossaryTooltips(children)
+    return parts.length === 1 && typeof parts[0] === 'string' ? parts[0] : <>{parts}</>
+  }
+  if (Array.isArray(children)) {
+    return children.map((child, i) => {
+      if (typeof child === 'string') {
+        const parts = addGlossaryTooltips(child)
+        return parts.length === 1 && typeof parts[0] === 'string' ? parts[0] : <span key={i}>{parts}</span>
+      }
+      return child
+    })
+  }
+  return children
+}
+
+const ParagraphWithGlossary = ({ children, ...props }: JSX.IntrinsicElements['p'] & ExtraProps) => (
+  <p {...props}>{processGlossaryChildren(children)}</p>
+)
 
 // --- Exercise & Mastery Check Parsing ---
 
@@ -363,6 +443,7 @@ const markdownComponents: Components = {
   h1: Heading1,
   h2: Heading2,
   h3: Heading3,
+  p: ParagraphWithGlossary,
 }
 
 const remarkPlugins = [remarkGfm]
