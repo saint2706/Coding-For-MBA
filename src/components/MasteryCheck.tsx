@@ -43,7 +43,7 @@ export default function MasteryCheck({
         className={`mastery-check__check-btn ${revealed ? 'mastery-check__check-btn--revealed' : ''}`}
         onClick={() => setRevealed((r) => !r)}
         aria-expanded={revealed}
-        aria-controls={answerId}
+        {...(revealed && { 'aria-controls': answerId })}
       >
         {revealed ? '🔽 Hide Answer' : '✅ Check Answer'}
       </button>

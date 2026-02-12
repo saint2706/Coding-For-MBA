@@ -77,6 +77,9 @@ export default function ExerciseWidget({
             role="region"
             aria-label="Solution"
             className={`exercise-widget__solution-panel ${showSolution ? 'exercise-widget__solution-panel--open' : ''}`}
+            hidden={!showSolution}
+            aria-hidden={!showSolution}
+            inert={!showSolution ? true : undefined}
           >
             <SyntaxHighlighter
               style={solutionTheme}
