@@ -82,6 +82,18 @@ describe('progressTracker', () => {
     removeSpy.mockRestore()
   })
 
+  it('returns typed fallbacks when storage reads throw', () => {
+    const getItemSpy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+      throw new DOMException('Blocked', 'SecurityError')
+    })
+
+    expect(() => getCompletedLessons()).not.toThrow()
+    expect(getCompletedLessons()).toEqual([])
+    expect(getLastVisited()).toBeNull()
+
+    getItemSpy.mockRestore()
+  })
+
   it('uses memory cache to avoid redundant storage access', () => {
     const getItemSpy = vi.spyOn(Storage.prototype, 'getItem')
 

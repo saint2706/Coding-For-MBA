@@ -5,6 +5,8 @@
  * Tracks completed lessons and last visited lesson for persistent learning progress.
  */
 
+import { getStoredJson, getStoredString, removeStoredValue, setStoredString } from './safeStorage'
+
 /**
  * localStorage key for storing completed lesson day numbers.
  */
@@ -38,23 +40,9 @@ if (typeof window !== 'undefined') {
 function getCompleted(): Set<number> {
   if (completedCache) return completedCache
 
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY)
-    if (!raw) {
-      completedCache = new Set()
-      return completedCache
-    }
-    const parsed: unknown = JSON.parse(raw)
-    if (!Array.isArray(parsed)) {
-      completedCache = new Set()
-      return completedCache
-    }
-    completedCache = new Set(parsed.filter((n): n is number => typeof n === 'number'))
-    return completedCache
-  } catch {
-    completedCache = new Set()
-    return completedCache
-  }
+  const parsed = getStoredJson<unknown[]>(STORAGE_KEY, [], Array.isArray)
+  completedCache = new Set(parsed.filter((n): n is number => typeof n === 'number'))
+  return completedCache
 }
 
 /**
@@ -64,12 +52,7 @@ function getCompleted(): Set<number> {
  */
 function saveCompleted(completed: Set<number>): void {
   completedCache = completed
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...completed]))
-  } catch {
-    // Storage may be unavailable in private browsing mode or when quota is exceeded.
-    // Silently ignore persistence failures to keep UI interactions functional.
-  }
+  setStoredString(STORAGE_KEY, JSON.stringify([...completed]))
 }
 
 /**
@@ -157,11 +140,7 @@ export function getCompletedForPhase(phaseLessonDays: number[]): number[] {
  * @param day - Day number of the lesson that was visited
  */
 export function setLastVisited(day: number): void {
-  try {
-    localStorage.setItem(LAST_VISITED_KEY, String(day))
-  } catch {
-    // Storage may be blocked; keep runtime behavior non-fatal.
-  }
+  setStoredString(LAST_VISITED_KEY, String(day))
 }
 
 /**
@@ -170,7 +149,7 @@ export function setLastVisited(day: number): void {
  * @returns Last visited lesson day number, or null if none recorded
  */
 export function getLastVisited(): number | null {
-  const raw = localStorage.getItem(LAST_VISITED_KEY)
+  const raw = getStoredString(LAST_VISITED_KEY)
   if (!raw) return null
   const num = Number(raw)
   return isNaN(num) || num < 1 ? null : num
@@ -182,10 +161,6 @@ export function getLastVisited(): number | null {
  */
 export function clearAllProgress(): void {
   completedCache = null
-  try {
-    localStorage.removeItem(STORAGE_KEY)
-    localStorage.removeItem(LAST_VISITED_KEY)
-  } catch {
-    // Ignore failures for consistency with other storage operations.
-  }
+  removeStoredValue(STORAGE_KEY)
+  removeStoredValue(LAST_VISITED_KEY)
 }
