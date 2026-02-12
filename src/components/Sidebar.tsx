@@ -1,19 +1,50 @@
+/**
+ * Sidebar Component
+ * 
+ * A collapsible sidebar navigation showing all phases and lessons
+ * with progress tracking and hierarchical organization.
+ */
+
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase, phaseIcons } from '../utils/contentLoader'
 import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 
+/**
+ * Props for the Sidebar component.
+ * 
+ * @property isOpen - Whether the sidebar is visible (for mobile)
+ * @property onClose - Callback to close the sidebar
+ */
 interface SidebarProps {
   isOpen: boolean
   onClose: () => void
 }
 
+/**
+ * Collapsible sidebar with curriculum navigation.
+ * 
+ * Features:
+ * - Hierarchical phase and lesson organization
+ * - Automatic expansion of current phase
+ * - Progress indicators for completed lessons
+ * - Auto-scroll to active lesson
+ * - Mobile overlay with click-outside to close
+ * - Phase-level progress counters
+ * 
+ * @param isOpen - Controls sidebar visibility on mobile
+ * @param onClose - Function to close the sidebar
+ * @returns A navigation sidebar with phase accordion
+ */
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
   const phases = getAllPhases()
   const navRef = useRef<HTMLDivElement>(null)
 
-  // Derive which phase should be open from the URL (no useEffect + setState needed)
+  /**
+   * Derives which phase should be open based on current URL.
+   * Automatically expands the phase containing the current lesson.
+   */
   const derivedOpenPhase = useMemo(() => {
     const lessonMatch = location.pathname.match(/\/lesson\/(\d+)/)
     if (lessonMatch) {
@@ -28,10 +59,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   const [manualOpen, setManualOpen] = useState<number | null>(null)
 
-  // Manual toggle overrides auto-derivation; resets on navigation
+  /**
+   * Determines currently open phase: manual toggle takes precedence over auto-derived.
+   */
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
 
-  // Auto-scroll sidebar to the active lesson link
+  /**
+   * Auto-scrolls sidebar to show the active lesson link.
+   */
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
@@ -45,6 +80,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return () => clearTimeout(timer)
   }, [location.pathname])
 
+  /**
+   * Toggles a phase accordion open or closed.
+   * 
+   * @param phaseNum - Phase number to toggle
+   */
   const togglePhase = (phaseNum: number) => {
     setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
   }

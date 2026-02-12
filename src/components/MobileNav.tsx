@@ -1,5 +1,23 @@
+/**
+ * MobileNav Component
+ * 
+ * Bottom navigation bar for mobile devices with icon-based navigation
+ * to main sections of the application.
+ */
+
 import { NavLink, useLocation } from 'react-router-dom'
 
+/**
+ * Mobile navigation bar component.
+ * 
+ * Provides fixed bottom navigation with icons and labels for:
+ * - Home
+ * - Curriculum (Learn)
+ * - Progress
+ * - Concepts (Explore)
+ * 
+ * @returns A mobile-optimized bottom navigation bar
+ */
 export default function MobileNav() {
   const location = useLocation()
   const isLesson = location.pathname.startsWith('/lesson/')

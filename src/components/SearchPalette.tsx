@@ -1,14 +1,42 @@
+/**
+ * SearchPalette Component
+ * 
+ * A command palette-style search interface for quickly finding lessons
+ * by title, content, tags, or concepts.
+ */
+
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { search, type SearchResult } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
 import { useDebounce } from '../hooks/useDebounce'
 
+/**
+ * Props for the SearchPalette component.
+ * 
+ * @property isOpen - Whether the search palette is visible
+ * @property onClose - Callback to close the search palette
+ */
 interface SearchPaletteProps {
   isOpen: boolean
   onClose: () => void
 }
 
+/**
+ * Command palette search interface.
+ * 
+ * Features:
+ * - Fuzzy search across lesson titles, content, and tags
+ * - Keyboard navigation (arrow keys, enter, escape)
+ * - Debounced search input
+ * - Result highlighting and snippets
+ * - Click or keyboard selection to navigate
+ * - Modal overlay with click-outside to close
+ * 
+ * @param isOpen - Controls visibility of the search palette
+ * @param onClose - Function to close the palette
+ * @returns A modal search interface
+ */
 export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
   const [query, setQuery] = useState('')
 
@@ -21,7 +49,9 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
   const listRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
-  // Reset state and focus input when palette opens
+  /**
+   * Resets search state and focuses input when palette opens.
+   */
   useEffect(() => {
     if (isOpen) {
       // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: reset on open
@@ -33,14 +63,18 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     }
   }, [isOpen])
 
-  // Compute search results from query (derived state via useMemo)
+  /**
+   * Computes search results from debounced query.
+   */
   const results: SearchResult[] = useMemo(() => {
     const trimmed = debouncedQuery.trim()
     if (trimmed.length < 2) return []
     return search(trimmed, 10)
   }, [debouncedQuery])
 
-  // Scroll active item into view
+  /**
+   * Scrolls active result item into view when selection changes.
+   */
   useEffect(() => {
     const list = listRef.current
     if (!list) return
@@ -48,11 +82,19 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     active?.scrollIntoView({ block: 'nearest' })
   }, [activeIndex])
 
+  /**
+   * Updates query and resets active index.
+   */
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
     setActiveIndex(0)
   }
 
+  /**
+   * Navigates to a search result and closes the palette.
+   * 
+   * @param result - The search result to navigate to
+   */
   const navigateToResult = useCallback(
     (result: SearchResult) => {
       onClose()
@@ -61,6 +103,11 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     [navigate, onClose],
   )
 
+  /**
+   * Handles keyboard navigation within the search palette.
+   * 
+   * @param e - Keyboard event
+   */
   const handleKeyDown = (e: React.KeyboardEvent) => {
     switch (e.key) {
       case 'ArrowDown':
@@ -84,7 +131,12 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     }
   }
 
-  // Get a text snippet around the first match in body content
+  /**
+   * Extracts and formats a snippet from the search result around the first match.
+   * 
+   * @param result - Search result to extract snippet from
+   * @returns Formatted text snippet with ellipses
+   */
   function getSnippet(result: SearchResult): string {
     const contentMatch = result.matches?.find((m) => m.key === 'plainContent')
     if (!contentMatch) {

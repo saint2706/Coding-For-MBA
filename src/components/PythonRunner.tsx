@@ -1,17 +1,44 @@
+/**
+ * PythonRunner Component
+ * 
+ * A Python code execution component using Pyodide for in-browser Python execution.
+ * Displays run button with loading states and shows execution output or errors.
+ */
+
 import { useState, useCallback } from 'react'
 import { usePyodide } from '../hooks/usePyodide'
 
+/**
+ * Props for the PythonRunner component.
+ * 
+ * @property code - Python code to execute
+ * @property compact - Whether to use compact layout (default: false)
+ */
 interface PythonRunnerProps {
   code: string
   compact?: boolean
 }
 
+/**
+ * Python code runner with Pyodide execution.
+ * 
+ * Provides a run button that executes Python code in the browser
+ * and displays the output or errors. Handles Pyodide loading state
+ * and execution state with appropriate UI feedback.
+ * 
+ * @param code - Python code to run
+ * @param compact - Use compact visual layout
+ * @returns A Python code runner component
+ */
 export default function PythonRunner({ code, compact = false }: PythonRunnerProps) {
   const { loading: pyodideLoading, runPython } = usePyodide()
   const [output, setOutput] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [running, setRunning] = useState(false)
 
+  /**
+   * Executes the Python code and updates output/error state.
+   */
   const handleRun = useCallback(async () => {
     setRunning(true)
     setOutput(null)

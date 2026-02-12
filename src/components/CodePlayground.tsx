@@ -1,8 +1,19 @@
+/**
+ * CodePlayground Component
+ * 
+ * An interactive Python code editor with syntax highlighting and live execution.
+ * Features include editable code, syntax highlighting, reset functionality,
+ * and optional expected output display.
+ */
+
 import { useState, useCallback, useRef, useEffect } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import PythonRunner from './PythonRunner'
 
+/**
+ * Custom syntax highlighting theme with transparent background.
+ */
 const highlightTheme = {
   ...oneDark,
   'pre[class*="language-"]': {
@@ -17,21 +28,47 @@ const highlightTheme = {
   },
 }
 
+/**
+ * Props for the CodePlayground component.
+ * 
+ * @property initialCode - The starting Python code to display in the editor
+ * @property expectedOutput - Optional expected output text to display below the editor
+ */
 interface CodePlaygroundProps {
   initialCode: string
   expectedOutput?: string
 }
 
+/**
+ * Interactive Python code editor and playground.
+ * 
+ * Provides a rich code editing experience with:
+ * - Syntax highlighting powered by Prism
+ * - Auto-resizing textarea
+ * - Synchronized scroll between editor and highlight layer
+ * - Reset functionality to restore initial code
+ * - Integrated Python execution
+ * - Optional expected output display
+ * 
+ * @param initialCode - Initial Python code to populate the editor
+ * @param expectedOutput - Optional expected output to show users
+ * @returns An interactive code playground component
+ */
 export default function CodePlayground({ initialCode, expectedOutput }: CodePlaygroundProps) {
   const [code, setCode] = useState(initialCode)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const preRef = useRef<HTMLDivElement>(null)
 
+  /**
+   * Resets the code editor to its initial state.
+   */
   const handleReset = useCallback(() => {
     setCode(initialCode)
   }, [initialCode])
 
-  // Auto-resize textarea + sync scroll
+  /**
+   * Synchronizes scroll position between textarea and syntax highlighter.
+   */
   useEffect(() => {
     const ta = textareaRef.current
     if (ta) {
@@ -40,6 +77,9 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
     }
   }, [code])
 
+  /**
+   * Handles scroll synchronization between textarea and highlight layer.
+   */
   const handleScroll = useCallback(() => {
     const ta = textareaRef.current
     const pre = preRef.current
