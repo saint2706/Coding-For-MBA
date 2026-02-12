@@ -13,7 +13,9 @@ export default function Lesson() {
   const navigate = useNavigate()
   const lesson = getLesson(dayNum!)
   const { prev, next } = getAdjacentLessons(dayNum!)
-  const [completed, setCompleted] = useState(() => dayNum ? isLessonComplete(Number(dayNum)) : false)
+  const [completed, setCompleted] = useState(() =>
+    dayNum ? isLessonComplete(Number(dayNum)) : false,
+  )
 
   // Track last visited lesson
   useEffect(() => {

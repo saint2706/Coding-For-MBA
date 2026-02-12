@@ -26,3 +26,7 @@ dist-ssr
 # Build artifacts
 *.tsbuildinfo
 public/sitemap.xml
+
+# Playwright artifacts
+.playwright-artifacts/
+*.png
