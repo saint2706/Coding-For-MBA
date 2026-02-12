@@ -61,6 +61,9 @@ def verify_accessibility(page):
     check_btn.click()
     page.wait_for_timeout(500)
 
+    # Re-query the button to get updated attributes after React re-renders
+    check_btn = page.get_by_role("button", name="Hide Answer").first
+    
     # After click, aria-controls should be present
     aria_controls_mc = check_btn.get_attribute("aria-controls")
     assert aria_controls_mc, "❌ 'Check Answer' button missing aria-controls after reveal"
