@@ -18,6 +18,17 @@ interface PyodideRunResult {
   error: string | null
 }
 
+interface RunPythonOptions {
+  /**
+   * Maximum time to wait for Pyodide execution before returning a timeout error.
+   */
+  timeoutMs?: number
+  /**
+   * Optional abort signal controlled by the caller.
+   */
+  signal?: AbortSignal
+}
+
 /**
  * Interface for the Pyodide runtime instance.
  */
@@ -185,15 +196,55 @@ export function usePyodide() {
   }, [])
 
   const runPython = useCallback(
-    async (code: string): Promise<PyodideRunResult> => {
+    async (code: string, options: RunPythonOptions = {}): Promise<PyodideRunResult> => {
+      const { timeoutMs, signal } = options
+
       try {
+        if (signal?.aborted) {
+          return { output: '', error: 'Execution cancelled by user.' }
+        }
+
         const pyodide = await ensureLoaded()
         let stdout = ''
         let stderr = ''
         pyodide.setStdout({ batched: (text: string) => (stdout += text + '\n') })
         pyodide.setStderr({ batched: (text: string) => (stderr += text + '\n') })
 
-        const result = await pyodide.runPythonAsync(code)
+        const pythonExecutionPromise = pyodide.runPythonAsync(code)
+
+        // NOTE: Timeout/abort cannot preempt Python code already running in Pyodide.
+        // We resolve early so UI can recover, but the underlying execution may continue
+        // until Pyodide yields/completes.
+        const timeoutPromise =
+          typeof timeoutMs === 'number'
+            ? new Promise<never>((_, reject) => {
+                const timeoutId = window.setTimeout(() => {
+                  reject(new Error(`Python execution timed out after ${timeoutMs}ms.`))
+                }, timeoutMs)
+                pythonExecutionPromise
+                  .finally(() => window.clearTimeout(timeoutId))
+                  .catch(() => undefined)
+              })
+            : null
+
+        const abortPromise = signal
+          ? new Promise<never>((_, reject) => {
+              const onAbort = () => {
+                signal.removeEventListener('abort', onAbort)
+                reject(new Error('Execution cancelled by user.'))
+              }
+              signal.addEventListener('abort', onAbort)
+              pythonExecutionPromise
+                .finally(() => signal.removeEventListener('abort', onAbort))
+                .catch(() => undefined)
+            })
+          : null
+
+        const result = await Promise.race([
+          pythonExecutionPromise,
+          ...(timeoutPromise ? [timeoutPromise] : []),
+          ...(abortPromise ? [abortPromise] : []),
+        ])
 
         // If there's a return value and no stdout, show the return value
         let output = stdout.trimEnd()

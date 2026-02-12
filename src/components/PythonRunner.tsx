@@ -5,14 +5,17 @@
  * Displays run button with loading states and shows execution output or errors.
  */
 
-import { useState, useCallback, forwardRef, useImperativeHandle } from 'react'
+import { useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
 import { usePyodide } from '../hooks/usePyodide'
+
+const DEFAULT_RUN_TIMEOUT_MS = 10_000
 
 /**
  * Handle interface for accessing PythonRunner methods imperatively.
  */
 export interface PythonRunnerHandle {
   run: () => Promise<void>
+  cancel: () => void
 }
 
 /**
@@ -33,6 +36,12 @@ interface PythonRunnerProps {
  * and displays the output or errors. Handles Pyodide loading state
  * and execution state with appropriate UI feedback.
  *
+ * Maintainer note: cancellation/timeout are UI-level controls that race the
+ * Promise returned by `runPythonAsync`. Pyodide does not get forcefully
+ * interrupted here, so long-running code may continue in the background until
+ * execution yields. We guard state updates to prevent stale results from
+ * clobbering newer runs.
+ *
  * @param code - Python code to run
  * @param compact - Use compact visual layout
  * @returns A Python code runner component
@@ -43,54 +52,93 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
     const [output, setOutput] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [running, setRunning] = useState(false)
+    const runIdRef = useRef(0)
+    const abortControllerRef = useRef<AbortController | null>(null)
+
+    const cancelRun = useCallback(() => {
+      abortControllerRef.current?.abort()
+      abortControllerRef.current = null
+      setRunning(false)
+    }, [])
 
     /**
      * Executes the Python code and updates output/error state.
      */
     const handleRun = useCallback(async () => {
       if (running || pyodideLoading) return
+      const currentRunId = runIdRef.current + 1
+      runIdRef.current = currentRunId
+      const abortController = new AbortController()
+      abortControllerRef.current = abortController
       setRunning(true)
       setOutput(null)
       setError(null)
-      const result = await runPython(code)
-      setOutput(result.output)
-      setError(result.error)
-      setRunning(false)
+
+      try {
+        const result = await runPython(code, {
+          timeoutMs: DEFAULT_RUN_TIMEOUT_MS,
+          signal: abortController.signal,
+        })
+
+        // Ignore stale resolution from runs that were superseded/cancelled.
+        if (runIdRef.current !== currentRunId) return
+        setOutput(result.output)
+        setError(result.error)
+      } finally {
+        if (runIdRef.current === currentRunId) {
+          abortControllerRef.current = null
+          setRunning(false)
+        }
+      }
     }, [code, runPython, running, pyodideLoading])
 
     useImperativeHandle(
       ref,
       () => ({
         run: handleRun,
+        cancel: cancelRun,
       }),
-      [handleRun],
+      [cancelRun, handleRun],
     )
 
     const isLoading = pyodideLoading || running
 
     return (
       <div className={`python-runner ${compact ? 'python-runner--compact' : ''}`}>
-        <button
-          className="python-runner__btn"
-          onClick={handleRun}
-          disabled={isLoading}
-          aria-label="Run Python code (Shift+Enter)"
-          title="Run (Shift+Enter)"
-        >
-          {pyodideLoading ? (
-            <>
-              <span className="python-runner__spinner" aria-hidden="true" />
-              Loading Python…
-            </>
-          ) : running ? (
-            <>
-              <span className="python-runner__spinner" aria-hidden="true" />
-              Running…
-            </>
-          ) : (
-            <>▶ Run</>
+        <div className="python-runner__controls">
+          <button
+            className="python-runner__btn"
+            onClick={handleRun}
+            disabled={isLoading}
+            aria-label="Run Python code (Shift+Enter)"
+            title="Run (Shift+Enter)"
+          >
+            {pyodideLoading ? (
+              <>
+                <span className="python-runner__spinner" aria-hidden="true" />
+                Loading Python…
+              </>
+            ) : running ? (
+              <>
+                <span className="python-runner__spinner" aria-hidden="true" />
+                Running…
+              </>
+            ) : (
+              <>▶ Run</>
+            )}
+          </button>
+
+          {running && (
+            <button
+              className="python-runner__btn python-runner__btn--cancel"
+              onClick={cancelRun}
+              aria-label="Cancel current Python execution"
+              title="Cancel execution"
+            >
+              ✕ Cancel
+            </button>
           )}
-        </button>
+        </div>
 
         {(output !== null || error) && (
           <div className="python-runner__output" aria-live="polite">
