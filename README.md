@@ -11,6 +11,12 @@
 
 **[saint2706.github.io/Coding-For-MBA](https://saint2706.github.io/Coding-For-MBA)**
 
+## 🚢 Deployment Environments
+
+- **Primary production environment:** GitHub Pages via `.github/workflows/deploy.yml`.
+- **Surge (`coding-for-mba.surge.sh`) usage:** optional preview/release deployment, triggered manually (`workflow_dispatch`) or on published GitHub releases.
+- **Default behavior:** pushes to `main` continue to rely on the GitHub Pages deployment workflow.
+
 ## 📚 What's Inside
 
 | Phase | Topic                       | Days   |
