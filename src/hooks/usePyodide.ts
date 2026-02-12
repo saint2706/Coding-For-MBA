@@ -19,14 +19,29 @@ declare global {
     }
 }
 
-const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js'
+const PYODIDE_VERSION = '0.27.5'
+const PYODIDE_CDN = `https://cdn.jsdelivr.net/pyodide/v${PYODIDE_VERSION}/full/pyodide.js`
 // SHA-384 hash for Pyodide v0.27.5
 const PYODIDE_INTEGRITY =
     'sha384-rm4QcPMX69sqmX2kWiJa3BF02sgdJkVyATWkw5NHAxBUAvmLXhToWZYaP2wCcyEe'
 
 function loadScript(src: string, integrity?: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        if (document.querySelector(`script[src="${src}"]`)) {
+        const existingScript = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement | null
+        if (existingScript) {
+            // If integrity is expected, verify the existing script has it
+            if (integrity) {
+                const hasIntegrity = existingScript.integrity === integrity
+                const hasCrossOrigin = existingScript.crossOrigin === 'anonymous'
+                if (!hasIntegrity || !hasCrossOrigin) {
+                    reject(
+                        new Error(
+                            `Script already exists but lacks proper integrity check. Remove and reload.`,
+                        ),
+                    )
+                    return
+                }
+            }
             resolve()
             return
         }
