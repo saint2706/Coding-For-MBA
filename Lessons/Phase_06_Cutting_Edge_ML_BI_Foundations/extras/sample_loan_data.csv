@@ -1,0 +1,21 @@
+name,age,income,credit_score,loan_amount,employment_years,home_owner,debt_to_income,gender,ethnicity,approved
+Alice Chen,34,75000,720,25000,8,1,0.28,F,Asian,1
+Bob Smith,45,55000,650,15000,12,1,0.35,M,White,1
+Carol Jones,28,42000,680,10000,3,0,0.22,F,Black,0
+David Kim,52,95000,780,35000,20,1,0.18,M,Asian,1
+Elena Garcia,31,38000,610,8000,2,0,0.42,F,Hispanic,0
+Frank Wilson,40,62000,700,20000,10,1,0.30,M,White,1
+Grace Lee,36,58000,690,18000,6,0,0.33,F,Asian,1
+Henry Brown,29,45000,640,12000,4,0,0.38,M,Black,0
+Irene Davis,48,88000,750,30000,18,1,0.20,F,White,1
+James Martinez,33,41000,620,9000,5,0,0.40,M,Hispanic,0
+Karen White,55,110000,800,40000,25,1,0.15,F,White,1
+Liam Johnson,27,35000,590,7000,1,0,0.45,M,Black,0
+Maya Patel,39,72000,710,22000,9,1,0.25,F,Asian,1
+Nathan Lee,44,60000,670,16000,11,1,0.32,M,Asian,1
+Olivia Clark,30,48000,660,13000,4,0,0.36,F,White,0
+Peter Nguyen,50,85000,740,28000,16,1,0.21,M,Asian,1
+Quinn Adams,35,52000,680,14000,7,0,0.30,F,Black,1
+Robert Taylor,42,68000,700,20000,13,1,0.27,M,White,1
+Sara Wilson,26,36000,600,6000,2,0,0.41,F,Hispanic,0
+Thomas Moore,47,78000,730,24000,15,1,0.23,M,White,1

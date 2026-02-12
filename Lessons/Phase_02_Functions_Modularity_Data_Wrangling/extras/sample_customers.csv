@@ -1,0 +1,11 @@
+name,email,phone,city
+  JOHN DOE,john.doe@email.com,555-123-4567,New York
+jane smith,JANE@COMPANY.ORG,555.987.6543,Chicago
+Bob Wilson,bob@test.com,555-123-4567,Los Angeles
+  alice jones,alice@email.com,invalid-phone,Seattle
+john doe,johndoe@email.com,555-111-2222,New York
+MARY JOHNSON,mary.j@test,555-333-4444,Miami
+carlos garcia,carlos@corp.com,555-555-6666,Houston
+  Emily Zhang,emily@valid.org,555-777-8888,Denver
+FRANK MILLER,frank@bad email.com,555-999-0000,Portland
+grace lee,,555-222-3333,Phoenix

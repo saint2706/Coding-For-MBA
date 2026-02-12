@@ -1,0 +1,25 @@
+date,product,category,quantity,price,region
+2023-01-15,Widget A,Electronics,10,29.99,North
+2023-01-22,Widget B,Electronics,5,49.99,South
+2023-02-10,Gadget X,Home,20,14.99,North
+2023-02-18,Widget A,Electronics,8,29.99,West
+2023-03-05,Tool Z,Hardware,15,9.99,East
+2023-03-12,Widget B,Electronics,12,49.99,North
+2023-04-01,Gadget X,Home,25,14.99,South
+2023-04-20,Widget A,Electronics,6,29.99,East
+2023-05-15,Tool Z,Hardware,30,9.99,North
+2023-06-10,Widget B,Electronics,18,49.99,West
+2023-07-22,Gadget X,Home,22,14.99,North
+2023-08-01,Widget A,Electronics,14,29.99,South
+2023-09-15,Tool Z,Hardware,10,9.99,East
+2023-10-05,Widget B,Electronics,20,49.99,North
+2023-11-18,Gadget X,Home,35,14.99,West
+2023-12-01,Widget A,Electronics,25,29.99,North
+2024-01-10,Widget A,Electronics,15,31.99,North
+2024-01-25,Widget B,Electronics,8,52.99,South
+2024-02-14,Gadget X,Home,28,15.99,North
+2024-02-28,Tool Z,Hardware,18,10.99,West
+2024-03-10,Widget B,Electronics,22,52.99,East
+2024-04-05,Gadget X,Home,30,15.99,North
+2024-05-20,Widget A,Electronics,12,31.99,South
+2024-06-15,Tool Z,Hardware,25,10.99,North

@@ -1,0 +1,11 @@
+product_id,name,category,price,in_stock,rating,num_reviews
+1,Wireless Mouse,Electronics,29.99,true,4.5,230
+2,Standing Desk,Furniture,$499.99,true,4.8,89
+3,USB-C Hub,Electronics,39.95,false,4.2,156
+4,Ergonomic Chair,Furniture,"$899.00",true,4.7,324
+5,Webcam HD,Electronics,59.99,true,3.9,67
+6,Monitor Arm,Furniture,$149.99,true,4.4,112
+7,Mechanical Keyboard,Electronics,N/A,true,4.6,445
+8,Desk Lamp,Furniture,$34.50,false,4.1,78
+9,Noise Cancelling Headphones,Electronics,249.99,true,4.8,890
+10,Cable Management Kit,Accessories,$19.99,true,4.3,201

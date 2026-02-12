@@ -1,0 +1,25 @@
+[2024-01-15 08:30:45] INFO: Application started successfully
+[2024-01-15 08:31:02] INFO: Database connection established
+[2024-01-15 09:15:33] WARNING: Slow query detected (2.3s)
+[2024-01-15 09:45:12] ERROR: Database connection failed - timeout after 30s
+[2024-01-15 10:00:01] INFO: Scheduled backup initiated
+[2024-01-15 10:15:45] ERROR: File not found: /data/reports/q4.csv
+[2024-01-15 11:30:22] INFO: User login: admin@company.com
+[2024-01-15 12:00:00] WARNING: Memory usage at 85%
+[2024-01-15 13:45:18] ERROR: Database connection failed - connection refused
+[2024-01-15 14:00:33] INFO: Cache cleared successfully
+[2024-01-15 14:30:45] ERROR: Authentication failed for user: guest
+[2024-01-15 15:15:00] WARNING: Disk space below 10%
+[2024-01-15 16:00:12] ERROR: Database connection failed - SSL handshake error
+[2024-01-15 16:45:30] INFO: Daily report generated
+[2024-01-15 17:00:00] INFO: Application shutdown gracefully
+[2024-01-16 08:30:00] INFO: Application started successfully
+[2024-01-16 08:31:15] ERROR: Configuration file missing: config.yaml
+[2024-01-16 09:00:22] WARNING: API rate limit approaching (90%)
+[2024-01-16 10:30:45] ERROR: File not found: /data/exports/users.json
+[2024-01-16 11:15:33] INFO: Batch processing completed: 1500 records
+[2024-01-16 12:00:00] ERROR: Database connection failed - too many connections
+[2024-01-16 13:30:18] WARNING: Slow query detected (5.1s)
+[2024-01-16 14:45:00] ERROR: Authentication failed for user: readonly
+[2024-01-16 15:00:30] INFO: System health check passed
+[2024-01-16 16:30:12] ERROR: Database connection failed - timeout after 30s
