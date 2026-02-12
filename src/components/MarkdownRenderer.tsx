@@ -19,6 +19,7 @@ import ExerciseWidget from './ExerciseWidget'
 import MasteryCheck from './MasteryCheck'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 import { normalizeAndValidateHref } from '../utils/linkSafety'
+import { createSlugger, extractTextFromReactNode } from '../utils/slug'
 
 /**
  * Custom Prism theme with transparent background for code blocks.
@@ -193,54 +194,19 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
  * @param props - Additional heading attributes
  * @returns H1 element with ID generated from content
  */
-const Heading1 = ({ children, ...props }: JSX.IntrinsicElements['h1'] & ExtraProps) => {
-  const id = String(children)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-  return (
-    <h1 id={id} {...props}>
-      {children}
-    </h1>
-  )
-}
+function createHeadingComponent(
+  Tag: 'h1' | 'h2' | 'h3',
+  slugger: ReturnType<typeof createSlugger>,
+) {
+  return ({ children, ...props }: JSX.IntrinsicElements['h1'] & ExtraProps) => {
+    const id = slugger.slug(extractTextFromReactNode(children))
 
-/**
- * Custom H2 heading component with auto-generated ID for linking.
- *
- * @param children - Heading content
- * @param props - Additional heading attributes
- * @returns H2 element with ID generated from content
- */
-const Heading2 = ({ children, ...props }: JSX.IntrinsicElements['h2'] & ExtraProps) => {
-  const id = String(children)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-  return (
-    <h2 id={id} {...props}>
-      {children}
-    </h2>
-  )
-}
-
-/**
- * Custom H3 heading component with auto-generated ID for linking.
- *
- * @param children - Heading content
- * @param props - Additional heading attributes
- * @returns H3 element with ID generated from content
- */
-const Heading3 = ({ children, ...props }: JSX.IntrinsicElements['h3'] & ExtraProps) => {
-  const id = String(children)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')
-  return (
-    <h3 id={id} {...props}>
-      {children}
-    </h3>
-  )
+    return (
+      <Tag id={id} {...props}>
+        {children}
+      </Tag>
+    )
+  }
 }
 
 /**
@@ -485,8 +451,25 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
  * @param content - Markdown content to render
  * @returns Rendered content with interactive components
  */
+function createMarkdownComponents(slugger: ReturnType<typeof createSlugger>): Components {
+  return {
+    code: CodeComponent,
+    table: TableComponent,
+    a: LinkComponent,
+    h1: createHeadingComponent('h1', slugger),
+    h2: createHeadingComponent('h2', slugger),
+    h3: createHeadingComponent('h3', slugger),
+    p: ParagraphWithGlossary,
+  }
+}
+
 function InteractiveContent({ content }: { content: string }) {
   const blocks = useMemo(() => findInteractiveBlocks(content), [content])
+  const slugger = useMemo(() => {
+    void content
+    return createSlugger()
+  }, [content])
+  const markdownComponents = useMemo(() => createMarkdownComponents(slugger), [slugger])
 
   if (blocks.length === 0) {
     return (
@@ -572,19 +555,6 @@ function InteractiveContent({ content }: { content: string }) {
   }
 
   return <>{segments}</>
-}
-
-/**
- * Custom component overrides for ReactMarkdown.
- */
-const markdownComponents: Components = {
-  code: CodeComponent,
-  table: TableComponent,
-  a: LinkComponent,
-  h1: Heading1,
-  h2: Heading2,
-  h3: Heading3,
-  p: ParagraphWithGlossary,
 }
 
 /**

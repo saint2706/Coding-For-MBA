@@ -6,6 +6,7 @@
  */
 
 import { useMemo, useState, useEffect } from 'react'
+import { parseHeadings } from '../utils/toc'
 
 /**
  * Represents a heading entry in the table of contents.
@@ -14,44 +15,6 @@ import { useMemo, useState, useEffect } from 'react'
  * @property text - Display text of the heading
  * @property level - Heading level (2 or 3 for h2/h3)
  */
-interface TocEntry {
-  id: string
-  text: string
-  level: number
-}
-
-/**
- * Parses markdown content to extract h2 and h3 headings.
- * Skips headings inside code blocks.
- *
- * @param content - Markdown content to parse
- * @returns Array of table of contents entries
- */
-function parseHeadings(content: string): TocEntry[] {
-  const entries: TocEntry[] = []
-  const lines = content.split('\n')
-  let inCodeBlock = false
-
-  for (const line of lines) {
-    if (line.trimStart().startsWith('```')) {
-      inCodeBlock = !inCodeBlock
-      continue
-    }
-    if (inCodeBlock) continue
-
-    const match = line.match(/^(#{2,3})\s+(.+)$/)
-    if (match) {
-      const text = match[2]!.replace(/[*_`~]/g, '').trim()
-      const id = text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '')
-      entries.push({ id, text, level: match[1]!.length })
-    }
-  }
-  return entries
-}
-
 /**
  * Props for the TableOfContents component.
  *
