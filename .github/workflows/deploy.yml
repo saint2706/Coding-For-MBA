@@ -36,6 +36,9 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
+      - name: Validate content
+        run: node scripts/validate-content.js
+
       - name: Build
         run: npm run build
 

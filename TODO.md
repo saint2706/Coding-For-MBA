@@ -88,18 +88,18 @@
 
 ### UX & Design
 
-- [ ] **Light mode toggle** — full theme switcher with `prefers-color-scheme` respect
-- [ ] **Add loading skeletons** — placeholder shimmer for content areas
-- [ ] **Print-friendly stylesheet** — clean PDF export for offline study
-- [ ] **Improve mobile experience** — swipe gestures for prev/next, bottom nav bar
-- [ ] **Add scroll progress indicator** — thin bar at top showing read percentage
-- [ ] **Add smooth page transitions** using `framer-motion` or `View Transitions API`
+- [x] **Light mode toggle** — full theme switcher with `prefers-color-scheme` respect
+- [x] **Add loading skeletons** — placeholder shimmer for content areas
+- [x] **Print-friendly stylesheet** — clean PDF export for offline study
+- [x] **Improve mobile experience** — swipe gestures for prev/next, bottom nav bar
+- [x] **Add scroll progress indicator** — thin bar at top showing read percentage
+- [x] **Add smooth page transitions** using `framer-motion` or `View Transitions API`
 
 ### Content Management
 
-- [ ] **Build content validation script** — check all 108 READMEs have required frontmatter fields
-- [ ] **Add markdown lint to CI** — enforce consistent formatting
-- [ ] **Generate content stats page** — total word count, lessons per difficulty, tag cloud
+- [x] **Build content validation script** — check all 108 READMEs have required frontmatter fields
+- [x] **Add markdown lint to CI** — enforce consistent formatting
+- [x] **Generate content stats page** — total word count, lessons per difficulty, tag cloud
 
 ---
 

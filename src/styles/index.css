@@ -15,4 +15,6 @@
 @import './navigation.css';
 @import './responsive.css';
 @import './content-features.css';
+@import './ux-features.css';
+@import './print.css';
 @import './animations.css';

@@ -12,6 +12,7 @@
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
+    "validate-content": "node scripts/validate-content.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },

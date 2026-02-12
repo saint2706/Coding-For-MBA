@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useTheme } from '../context/useTheme'
 
 interface NavbarProps {
   onToggleSidebar: () => void
@@ -7,6 +8,7 @@ interface NavbarProps {
 
 export default function Navbar({ onToggleSidebar, onOpenSearch }: NavbarProps) {
   const location = useLocation()
+  const { theme, toggleTheme } = useTheme()
 
   return (
     <nav className="navbar" role="navigation" aria-label="Main navigation">
@@ -47,6 +49,14 @@ export default function Navbar({ onToggleSidebar, onOpenSearch }: NavbarProps) {
           </svg>
           <span className="search-trigger-label">Search…</span>
           <span className="search-trigger-shortcut">⌘K</span>
+        </button>
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+        >
+          {theme === 'dark' ? '☀️' : '🌙'}
         </button>
         <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
           Home

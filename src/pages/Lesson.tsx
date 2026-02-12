@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { getLesson, getAdjacentLessons, difficultyConfig } from '../utils/contentLoader'
@@ -10,6 +10,7 @@ import TableOfContents from '../components/TableOfContents'
 import ReadingTime from '../components/ReadingTime'
 import PrerequisitePills from '../components/PrerequisitePills'
 import RelatedLessons from '../components/RelatedLessons'
+import { useSwipe } from '../hooks/useSwipe'
 
 export default function Lesson() {
   const { dayNum } = useParams<{ dayNum: string }>()
@@ -53,6 +54,11 @@ export default function Lesson() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [prev, next, navigate])
 
+  // Swipe gestures for mobile prev/next
+  const handleSwipeLeft = useMemo(() => (next ? () => navigate(`/lesson/${next.day}`) : undefined), [next, navigate])
+  const handleSwipeRight = useMemo(() => (prev ? () => navigate(`/lesson/${prev.day}`) : undefined), [prev, navigate])
+  const swipeRef = useSwipe({ onSwipeLeft: handleSwipeLeft, onSwipeRight: handleSwipeRight })
+
   if (!lesson) {
     return (
       <div className="page-container">
@@ -69,7 +75,7 @@ export default function Lesson() {
   const diff = difficultyConfig[lesson.difficulty || 'beginner'] || difficultyConfig.beginner!
 
   return (
-    <div className="page-container lesson-with-toc">
+    <div className="page-container lesson-with-toc" ref={swipeRef}>
       <Helmet>
         <title>
           Day {lesson.day}: {lesson.title} — Coding for MBA

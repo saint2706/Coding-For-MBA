@@ -4,6 +4,10 @@ import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import SkipToContent from './components/SkipToContent'
 import SearchPalette from './components/SearchPalette'
+import ScrollProgress from './components/ScrollProgress'
+import MobileNav from './components/MobileNav'
+import { PageSkeleton } from './components/Skeleton'
+import { ThemeProvider } from './context/ThemeProvider'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
@@ -14,23 +18,15 @@ const ProgressDashboard = lazy(() => import('./pages/ProgressDashboard'))
 const Exercises = lazy(() => import('./pages/Exercises'))
 const NotebookViewer = lazy(() => import('./pages/NotebookViewer'))
 const ConceptGraphPage = lazy(() => import('./pages/ConceptGraphPage'))
+const ContentStats = lazy(() => import('./pages/ContentStats'))
 const NotFound = lazy(() => import('./pages/NotFound'))
-
-function PageLoader() {
-  return (
-    <div className="page-loader" role="status" aria-label="Loading page">
-      <div className="page-loader-spinner" />
-      <span className="sr-only">Loading…</span>
-    </div>
-  )
-}
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const location = useLocation()
 
-  // Close sidebar + scroll to top on navigation
+  // Close sidebar + scroll to top on navigation (with View Transition if supported)
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSidebarOpen(false)
@@ -69,30 +65,35 @@ export default function App() {
   }, [])
 
   return (
-    <div className="app-layout">
-      <SkipToContent />
-      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <Navbar
-        onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
-        onOpenSearch={handleOpenSearch}
-      />
-      <SearchPalette isOpen={searchOpen} onClose={handleCloseSearch} />
-      <main className="main-content" id="main-content" tabIndex={-1}>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/curriculum" element={<Curriculum />} />
-            <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
-            <Route path="/lesson/:dayNum" element={<Lesson />} />
-            <Route path="/progress" element={<ProgressDashboard />} />
-            <Route path="/exercises" element={<Exercises />} />
-            <Route path="/solutions/:phaseNum" element={<NotebookViewer />} />
-            <Route path="/search" element={<SearchResults />} />
-            <Route path="/concepts" element={<ConceptGraphPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </main>
-    </div>
+    <ThemeProvider>
+      <div className="app-layout">
+        <SkipToContent />
+        <ScrollProgress />
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <Navbar
+          onToggleSidebar={() => setSidebarOpen((prev) => !prev)}
+          onOpenSearch={handleOpenSearch}
+        />
+        <SearchPalette isOpen={searchOpen} onClose={handleCloseSearch} />
+        <main className="main-content" id="main-content" tabIndex={-1}>
+          <Suspense fallback={<PageSkeleton />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/curriculum" element={<Curriculum />} />
+              <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
+              <Route path="/lesson/:dayNum" element={<Lesson />} />
+              <Route path="/progress" element={<ProgressDashboard />} />
+              <Route path="/exercises" element={<Exercises />} />
+              <Route path="/solutions/:phaseNum" element={<NotebookViewer />} />
+              <Route path="/search" element={<SearchResults />} />
+              <Route path="/concepts" element={<ConceptGraphPage />} />
+              <Route path="/stats" element={<ContentStats />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <MobileNav />
+      </div>
+    </ThemeProvider>
   )
 }
