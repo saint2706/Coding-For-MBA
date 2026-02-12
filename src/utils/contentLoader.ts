@@ -14,14 +14,14 @@ function parseMarkdown(raw: string): ParsedMarkdown {
   const normalized = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
 
   // Split on frontmatter delimiters
-  if (!normalized.startsWith('---\n')) return { frontmatter: {}, content: normalized }
+  if (!normalized.startsWith('---\n')) return { frontmatter: Object.create(null), content: normalized }
 
   const endIndex = normalized.indexOf('\n---\n', 4)
-  if (endIndex === -1) return { frontmatter: {}, content: normalized }
+  if (endIndex === -1) return { frontmatter: Object.create(null), content: normalized }
 
   const yamlStr = normalized.slice(4, endIndex)
   const content = normalized.slice(endIndex + 5)
-  const frontmatter: Frontmatter = {}
+  const frontmatter: Frontmatter = Object.create(null)
 
   let currentKey: string | null = null
   let currentArray: (string | number)[] | null = null
@@ -43,7 +43,14 @@ function parseMarkdown(raw: string): ParsedMarkdown {
     // Key-value: "key: value"
     const kvMatch = line.match(/^(\w+):\s*(.*)$/)
     if (kvMatch) {
-      currentKey = kvMatch[1]!
+      const key = kvMatch[1]!
+      if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+        currentKey = null
+        currentArray = null
+        continue
+      }
+
+      currentKey = key
       currentArray = null
       let val = kvMatch[2]!.trim()
 
