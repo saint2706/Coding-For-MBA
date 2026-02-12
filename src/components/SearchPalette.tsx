@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { search, type SearchResult } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
+import { useDebounce } from '../hooks/useDebounce'
 
 interface SearchPaletteProps {
   isOpen: boolean
@@ -10,6 +11,11 @@ interface SearchPaletteProps {
 
 export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
   const [query, setQuery] = useState('')
+  
+  // Memoize the reset condition to avoid unnecessary re-runs of useDebounce
+  const shouldResetImmediately = useCallback((q: string) => q.trim().length < 2, [])
+  
+  const debouncedQuery = useDebounce(query, 300, shouldResetImmediately)
   const [activeIndex, setActiveIndex] = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
@@ -29,10 +35,10 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
   // Compute search results from query (derived state via useMemo)
   const results: SearchResult[] = useMemo(() => {
-    const trimmed = query.trim()
+    const trimmed = debouncedQuery.trim()
     if (trimmed.length < 2) return []
     return search(trimmed, 10)
-  }, [query])
+  }, [debouncedQuery])
 
   // Scroll active item into view
   useEffect(() => {
@@ -178,9 +184,9 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
           </div>
         )}
 
-        {query.trim().length >= 2 && results.length === 0 && (
+        {debouncedQuery.trim().length >= 2 && results.length === 0 && (
           <div className="search-empty">
-            <p>No results found for &ldquo;{query}&rdquo;</p>
+            <p>No results found for &ldquo;{debouncedQuery}&rdquo;</p>
           </div>
         )}
 
