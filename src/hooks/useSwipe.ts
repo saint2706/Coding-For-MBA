@@ -1,14 +1,43 @@
+/**
+ * Swipe Gesture Hook
+ * 
+ * Detects horizontal swipe gestures for touch-enabled devices.
+ * Useful for implementing mobile navigation patterns.
+ */
+
 import { useEffect, useRef, useCallback } from 'react'
 
+/**
+ * Configuration options for swipe gesture detection.
+ */
 interface SwipeConfig {
+  /** Callback fired when user swipes left */
   onSwipeLeft?: () => void
+  /** Callback fired when user swipes right */
   onSwipeRight?: () => void
+  /** Minimum horizontal distance in pixels to trigger a swipe (default: 60) */
   threshold?: number
 }
 
 /**
- * Hook to detect horizontal swipe gestures.
- * Returns a ref to attach to the swipeable element.
+ * Custom hook to detect horizontal swipe gestures on touch devices.
+ * 
+ * Attaches touch event listeners to detect left/right swipes with a
+ * configurable threshold. Only triggers when horizontal movement is
+ * dominant over vertical movement.
+ * 
+ * @param config - Configuration object with swipe callbacks and threshold
+ * @returns Ref to attach to the swipeable element
+ * 
+ * @example
+ * ```tsx
+ * const swipeRef = useSwipe({
+ *   onSwipeLeft: () => navigate('/next'),
+ *   onSwipeRight: () => navigate('/prev'),
+ *   threshold: 80
+ * })
+ * return <div ref={swipeRef}>Swipeable content</div>
+ * ```
  */
 export function useSwipe({ onSwipeLeft, onSwipeRight, threshold = 60 }: SwipeConfig) {
   const startX = useRef(0)
