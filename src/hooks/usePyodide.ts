@@ -20,8 +20,11 @@ declare global {
 }
 
 const PYODIDE_CDN = 'https://cdn.jsdelivr.net/pyodide/v0.27.5/full/pyodide.js'
+// SHA-384 hash for Pyodide v0.27.5
+const PYODIDE_INTEGRITY =
+    'sha384-rm4QcPMX69sqmX2kWiJa3BF02sgdJkVyATWkw5NHAxBUAvmLXhToWZYaP2wCcyEe'
 
-function loadScript(src: string): Promise<void> {
+function loadScript(src: string, integrity?: string): Promise<void> {
     return new Promise((resolve, reject) => {
         if (document.querySelector(`script[src="${src}"]`)) {
             resolve()
@@ -29,6 +32,10 @@ function loadScript(src: string): Promise<void> {
         }
         const script = document.createElement('script')
         script.src = src
+        if (integrity) {
+            script.integrity = integrity
+            script.crossOrigin = 'anonymous'
+        }
         script.async = true
         script.onload = () => resolve()
         script.onerror = () => reject(new Error(`Failed to load Pyodide from CDN`))
@@ -44,7 +51,7 @@ async function initPyodide(): Promise<PyodideInterface> {
     if (window._pyodideLoading) return window._pyodideLoading
 
     window._pyodideLoading = (async () => {
-        await loadScript(PYODIDE_CDN)
+        await loadScript(PYODIDE_CDN, PYODIDE_INTEGRITY)
         if (!window.loadPyodide) throw new Error('Pyodide script loaded but loadPyodide not found')
         const pyodide = await window.loadPyodide()
         window._pyodideInstance = pyodide
