@@ -63,10 +63,10 @@
 
 ### Interactive Code
 
-- [ ] **Embed Pyodide** (Python-in-browser) for "Try it yourself" blocks
-- [ ] **Add interactive code playground** — editable + runnable Python snippets
-- [ ] **Parse exercise blocks from markdown** and render as interactive widgets
-- [ ] **Add "Check Answer" functionality** for mastery check questions
+- [x] **Embed Pyodide** (Python-in-browser) for "Try it yourself" blocks
+- [x] **Add interactive code playground** — editable + runnable Python snippets
+- [x] **Parse exercise blocks from markdown** and render as interactive widgets
+- [x] **Add "Check Answer" functionality** for mastery check questions
 
 ### Exercise & Solution System
 
@@ -174,11 +174,11 @@
 
 > Track key decisions as the project evolves.
 
-| Decision                                | Status     | Date                                  |
-| --------------------------------------- | ---------- | ------------------------------------- |
-| HashRouter over BrowserRouter           | ✅ Decided  | Feb 2026 — required for GH Pages      |
-| Custom YAML parser over gray-matter     | ✅ Decided  | Feb 2026 — browser compat             |
-| Vanilla CSS over Tailwind               | ✅ Decided  | Feb 2026 — full control, no build dep |
+| Decision                                | Status     | Date                                      |
+| --------------------------------------- | ---------- | ----------------------------------------- |
+| HashRouter over BrowserRouter           | ✅ Decided  | Feb 2026 — required for GH Pages          |
+| Custom YAML parser over gray-matter     | ✅ Decided  | Feb 2026 — browser compat                 |
+| Vanilla CSS over Tailwind               | ✅ Decided  | Feb 2026 — full control, no build dep     |
 | Client-side search over Algolia         | ✅ Decided  | Feb 2026 — Fuse.js, free, no external dep |
-| Pyodide over server-side code execution | 📋 Proposed | — runs entirely in browser            |
-| TypeScript migration                    | 📋 Proposed | — type safety for growing codebase    |
+| Pyodide over server-side code execution | 📋 Proposed | — runs entirely in browser                |
+| TypeScript migration                    | 📋 Proposed | — type safety for growing codebase        |

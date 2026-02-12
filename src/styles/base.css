@@ -136,3 +136,7 @@ img {
   margin: 0 auto;
   padding: 2.5rem var(--page-padding) 4rem;
 }
+
+.page-container.lesson-with-toc {
+  max-width: calc(var(--content-max-width) + 220px + 2rem);
+}
