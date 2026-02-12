@@ -12,7 +12,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 import {
   normalizeLineEndingsForScripts,
   parseNormalizedMarkdownForScripts,
-} from './frontmatter-parser.ts'
+} from './frontmatter-parser.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'Lessons')

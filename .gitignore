@@ -32,3 +32,4 @@ public/sitemap.xml
 *.png
 playwright-report/
 test-results/
+actionlint
