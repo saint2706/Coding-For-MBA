@@ -11,13 +11,38 @@ interface BreadcrumbProps {
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
-    <nav className="lesson-breadcrumb" aria-label="Breadcrumb">
-      {items.map((item, i) => (
-        <span key={i}>
-          {i > 0 && <span className="sep">/</span>}
-          {item.to ? <Link to={item.to}>{item.label}</Link> : <span>{item.label}</span>}
-        </span>
-      ))}
+    <nav aria-label="Breadcrumb">
+      <ol
+        className="lesson-breadcrumb"
+        style={{
+          listStyle: 'none',
+          padding: 0,
+          margin: 0,
+        }}
+      >
+        {items.map((item, i) => (
+          <li
+            key={i}
+            className="breadcrumb-item"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            {i > 0 && (
+              <span className="sep" aria-hidden="true">
+                /
+              </span>
+            )}
+            {item.to ? (
+              <Link to={item.to}>{item.label}</Link>
+            ) : (
+              <span aria-current="page">{item.label}</span>
+            )}
+          </li>
+        ))}
+      </ol>
     </nav>
   )
 }
