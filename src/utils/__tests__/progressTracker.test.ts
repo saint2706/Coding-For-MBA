@@ -87,15 +87,14 @@ describe('progressTracker', () => {
 
     // First operation - should access storage to prime cache
     markLessonComplete(1)
-    expect(getItemSpy).toHaveBeenCalled()
-    const callCountAfterFirst = getItemSpy.mock.calls.length
+    expect(getItemSpy).toHaveBeenCalledTimes(1)
 
     // Second operation - should use cache and NOT access storage
     const isComplete = isLessonComplete(1)
     expect(isComplete).toBe(true)
 
-    // Verify call count hasn't increased
-    expect(getItemSpy).toHaveBeenCalledTimes(callCountAfterFirst)
+    // Verify call count hasn't increased - still 1
+    expect(getItemSpy).toHaveBeenCalledTimes(1)
 
     getItemSpy.mockRestore()
   })
@@ -110,12 +109,7 @@ describe('progressTracker', () => {
     localStorage.setItem('coding-for-mba-progress', JSON.stringify([1, 2]))
 
     // Dispatch storage event (simulating cross-tab sync)
-    window.dispatchEvent(
-      new StorageEvent('storage', {
-        key: 'coding-for-mba-progress',
-        newValue: JSON.stringify([1, 2]),
-      }),
-    )
+    window.dispatchEvent(new StorageEvent('storage', { key: 'coding-for-mba-progress' }))
 
     // Verify cache was invalidated and new data loaded
     expect(isLessonComplete(2)).toBe(true)
