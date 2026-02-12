@@ -1,11 +1,11 @@
 /**
  * Interactive concept dependency graph visualization page.
- * 
+ *
  * This page displays a visual network graph showing relationships between
  * lessons through their prerequisites. Users can explore how concepts build
  * upon each other throughout the curriculum, with interactive filtering by
  * phase and search capabilities.
- * 
+ *
  * @module pages/ConceptGraphPage
  */
 
@@ -48,14 +48,14 @@ const PHASE_NAMES = [
 
 /**
  * Concept graph page component.
- * 
+ *
  * Displays an interactive force-directed graph where:
  * - Each node represents a lesson (colored by phase)
  * - Edges show prerequisite dependencies
  * - Users can click nodes to navigate to lessons
  * - Search filters lessons by title or concepts
  * - Phase buttons highlight specific phases
- * 
+ *
  * @returns The rendered concept graph page
  */
 export default function ConceptGraphPage() {
@@ -64,10 +64,10 @@ export default function ConceptGraphPage() {
 
   /**
    * Toggles the active phase filter.
-   * 
+   *
    * Clicking an active phase deselects it, clicking an inactive phase
    * selects it and highlights related nodes in the graph.
-   * 
+   *
    * @param phase - Phase number to toggle (1-9)
    */
   const handlePhaseClick = useCallback((phase: number) => {

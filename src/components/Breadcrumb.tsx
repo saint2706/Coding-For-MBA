@@ -1,6 +1,6 @@
 /**
  * Breadcrumb Component
- * 
+ *
  * Displays a hierarchical breadcrumb navigation trail showing the user's
  * current location within the site structure.
  */
@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 
 /**
  * Represents a single breadcrumb item in the navigation trail.
- * 
+ *
  * @property label - Display text for the breadcrumb item
  * @property to - Optional URL path for navigation. If omitted, renders as plain text
  */
@@ -20,7 +20,7 @@ export interface BreadcrumbItem {
 
 /**
  * Props for the Breadcrumb component.
- * 
+ *
  * @property items - Array of breadcrumb items to display in order
  */
 interface BreadcrumbProps {
@@ -29,10 +29,10 @@ interface BreadcrumbProps {
 
 /**
  * Breadcrumb navigation component.
- * 
+ *
  * Renders a horizontal list of navigation items separated by forward slashes.
  * The last item (current page) is rendered as plain text without a link.
- * 
+ *
  * @param items - Array of breadcrumb items to render
  * @returns A breadcrumb navigation element
  */

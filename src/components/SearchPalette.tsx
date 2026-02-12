@@ -1,6 +1,6 @@
 /**
  * SearchPalette Component
- * 
+ *
  * A command palette-style search interface for quickly finding lessons
  * by title, content, tags, or concepts.
  */
@@ -13,7 +13,7 @@ import { useDebounce } from '../hooks/useDebounce'
 
 /**
  * Props for the SearchPalette component.
- * 
+ *
  * @property isOpen - Whether the search palette is visible
  * @property onClose - Callback to close the search palette
  */
@@ -24,7 +24,7 @@ interface SearchPaletteProps {
 
 /**
  * Command palette search interface.
- * 
+ *
  * Features:
  * - Fuzzy search across lesson titles, content, and tags
  * - Keyboard navigation (arrow keys, enter, escape)
@@ -32,7 +32,7 @@ interface SearchPaletteProps {
  * - Result highlighting and snippets
  * - Click or keyboard selection to navigate
  * - Modal overlay with click-outside to close
- * 
+ *
  * @param isOpen - Controls visibility of the search palette
  * @param onClose - Function to close the palette
  * @returns A modal search interface
@@ -92,7 +92,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
   /**
    * Navigates to a search result and closes the palette.
-   * 
+   *
    * @param result - The search result to navigate to
    */
   const navigateToResult = useCallback(
@@ -105,7 +105,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
   /**
    * Handles keyboard navigation within the search palette.
-   * 
+   *
    * @param e - Keyboard event
    */
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -133,7 +133,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
   /**
    * Extracts and formats a snippet from the search result around the first match.
-   * 
+   *
    * @param result - Search result to extract snippet from
    * @returns Formatted text snippet with ellipses
    */

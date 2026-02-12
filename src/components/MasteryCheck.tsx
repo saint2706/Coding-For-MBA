@@ -1,6 +1,6 @@
 /**
  * MasteryCheck Component
- * 
+ *
  * An interactive quiz component for testing comprehension.
  * Displays a question with optional code snippet and a revealable answer.
  */
@@ -10,7 +10,7 @@ import CodePlayground from './CodePlayground'
 
 /**
  * Props for the MasteryCheck component.
- * 
+ *
  * @property questionNumber - The question number for display
  * @property title - Question title
  * @property questionText - The question description
@@ -27,10 +27,10 @@ interface MasteryCheckProps {
 
 /**
  * Mastery check question component with answer reveal.
- * 
+ *
  * Displays a question with optional interactive code playground
  * and a collapsible answer section for self-assessment.
- * 
+ *
  * @param questionNumber - Question number badge
  * @param title - Question title
  * @param questionText - Question description

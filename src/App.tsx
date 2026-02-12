@@ -1,6 +1,6 @@
 /**
  * Main Application Component
- * 
+ *
  * Root component that sets up the application structure with:
  * - Theme provider for dark/light mode
  * - Router configuration with lazy-loaded pages
@@ -36,14 +36,14 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 /**
  * Main App component that orchestrates the entire application.
- * 
+ *
  * Features:
  * - Manages sidebar and search palette state
  * - Implements global keyboard shortcuts (Cmd/Ctrl+K for search, / for search)
  * - Handles route-based state resets (closes sidebar, scrolls to top)
  * - Prevents background scrolling when mobile sidebar is open
  * - Lazy loads all pages for optimal performance
- * 
+ *
  * @returns The complete application UI
  */
 export default function App() {

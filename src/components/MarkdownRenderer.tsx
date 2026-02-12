@@ -1,6 +1,6 @@
 /**
  * MarkdownRenderer Component
- * 
+ *
  * A comprehensive Markdown rendering system with custom components,
  * interactive code blocks, glossary tooltips, and automatic parsing
  * of exercises and mastery check questions.
@@ -36,7 +36,7 @@ const customTheme = {
 
 /**
  * Copy button component for code blocks.
- * 
+ *
  * @param text - The code text to copy to clipboard
  * @returns A copy button that shows feedback on click
  */
@@ -62,7 +62,7 @@ function CopyButton({ text }: { text: string }) {
 
 /**
  * Enhanced code block with syntax highlighting and optional Python playground.
- * 
+ *
  * @param className - Language class name (e.g., "language-python")
  * @param children - Code content
  * @returns A styled code block with copy and "Try It" features
@@ -126,7 +126,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
 /**
  * Custom code component for ReactMarkdown.
  * Delegates to CodeBlock for language-specific code, renders inline code otherwise.
- * 
+ *
  * @param props - Code element props from ReactMarkdown
  * @returns Either a CodeBlock or inline code element
  */
@@ -145,7 +145,7 @@ const CodeComponent = (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
 
 /**
  * Custom table wrapper component that makes tables horizontally scrollable.
- * 
+ *
  * @param children - Table content
  * @returns A wrapped table with overflow handling
  */
@@ -159,7 +159,7 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
 
 /**
  * Custom link component that opens external links in new tabs.
- * 
+ *
  * @param href - Link URL
  * @param children - Link content
  * @param props - Additional link attributes
@@ -180,7 +180,7 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
 
 /**
  * Custom H1 heading component with auto-generated ID for linking.
- * 
+ *
  * @param children - Heading content
  * @param props - Additional heading attributes
  * @returns H1 element with ID generated from content
@@ -199,7 +199,7 @@ const Heading1 = ({ children, ...props }: JSX.IntrinsicElements['h1'] & ExtraPro
 
 /**
  * Custom H2 heading component with auto-generated ID for linking.
- * 
+ *
  * @param children - Heading content
  * @param props - Additional heading attributes
  * @returns H2 element with ID generated from content
@@ -218,7 +218,7 @@ const Heading2 = ({ children, ...props }: JSX.IntrinsicElements['h2'] & ExtraPro
 
 /**
  * Custom H3 heading component with auto-generated ID for linking.
- * 
+ *
  * @param children - Heading content
  * @param props - Additional heading attributes
  * @returns H3 element with ID generated from content
@@ -243,7 +243,7 @@ const glossaryRegex = getGlossaryRegex()
 /**
  * Processes text and wraps glossary terms with tooltip spans.
  * Only wraps the first occurrence of each term to avoid overwhelming the reader.
- * 
+ *
  * @param text - The text content to process
  * @returns Array of text and JSX elements with wrapped glossary terms
  */
@@ -297,7 +297,7 @@ function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
 
 /**
  * Recursively processes React children to add glossary tooltips to text nodes.
- * 
+ *
  * @param children - React children to process
  * @returns Processed children with glossary tooltips applied
  */
@@ -324,7 +324,7 @@ function processGlossaryChildren(children: React.ReactNode): React.ReactNode {
 
 /**
  * Custom paragraph component that automatically adds glossary tooltips.
- * 
+ *
  * @param children - Paragraph content
  * @param props - Additional paragraph attributes
  * @returns Paragraph with glossary terms wrapped in tooltips
@@ -335,7 +335,7 @@ const ParagraphWithGlossary = ({ children, ...props }: JSX.IntrinsicElements['p'
 
 /**
  * Represents a parsed exercise from markdown content.
- * 
+ *
  * @property title - Exercise title
  * @property goal - Learning goal
  * @property instructions - Step-by-step instructions
@@ -354,7 +354,7 @@ interface ParsedExercise {
 
 /**
  * Represents a parsed mastery check question from markdown content.
- * 
+ *
  * @property questionNumber - Question number
  * @property title - Question title
  * @property questionText - Question description
@@ -371,7 +371,7 @@ interface ParsedMasteryQuestion {
 
 /**
  * Represents an interactive block (exercise or mastery question) in the markdown.
- * 
+ *
  * @property type - Block type (exercise or mastery)
  * @property startIndex - Start position in the markdown content
  * @property endIndex - End position in the markdown content
@@ -386,7 +386,7 @@ interface InteractiveBlock {
 
 /**
  * Extracts the first code block from text and returns it with remaining text.
- * 
+ *
  * @param text - Text containing code blocks
  * @returns Object with extracted code and remaining text
  */
@@ -403,7 +403,7 @@ function extractCodeBlock(text: string): { code: string; remaining: string } {
 
 /**
  * Finds and parses all interactive blocks (exercises and mastery checks) in markdown content.
- * 
+ *
  * @param content - Raw markdown content to parse
  * @returns Array of parsed interactive blocks with their positions
  */
@@ -473,7 +473,7 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
 
 /**
  * Renders markdown content with interactive blocks replaced by custom components.
- * 
+ *
  * @param content - Markdown content to render
  * @returns Rendered content with interactive components
  */
@@ -591,7 +591,7 @@ const rehypePlugins = [rehypeRaw]
 
 /**
  * Props for the MarkdownRenderer component.
- * 
+ *
  * @property content - Markdown content to render
  */
 interface MarkdownRendererProps {
@@ -600,7 +600,7 @@ interface MarkdownRendererProps {
 
 /**
  * Main markdown renderer component.
- * 
+ *
  * Renders markdown content with:
  * - Syntax-highlighted code blocks
  * - Interactive Python playgrounds
@@ -609,7 +609,7 @@ interface MarkdownRendererProps {
  * - Responsive tables
  * - Auto-parsed exercises and mastery checks
  * - External link handling
- * 
+ *
  * @param content - Markdown content to render
  * @returns Rendered markdown with all enhancements
  */

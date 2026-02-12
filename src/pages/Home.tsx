@@ -1,11 +1,11 @@
 /**
  * Home page component for the Coding for MBA curriculum.
- * 
+ *
  * This page serves as the main landing page, displaying the hero section with
  * curriculum overview, statistics, and a grid of all 9 learning phases. It shows
  * progress indicators and provides quick navigation to continue learning or start
  * from day 1.
- * 
+ *
  * @module pages/Home
  */
 
@@ -23,13 +23,13 @@ import ProgressBar from '../components/ProgressBar'
 
 /**
  * Home page component displaying the curriculum landing page.
- * 
+ *
  * Features include:
  * - Hero section with curriculum statistics (108 days, 9 phases, etc.)
  * - Continue learning card showing last visited lesson
  * - Interactive grid of all learning phases with progress tracking
  * - Quick navigation to start learning or continue progress
- * 
+ *
  * @returns The rendered home page
  */
 export default function Home() {

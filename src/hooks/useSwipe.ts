@@ -1,6 +1,6 @@
 /**
  * Swipe Gesture Hook
- * 
+ *
  * Detects horizontal swipe gestures for touch-enabled devices.
  * Useful for implementing mobile navigation patterns.
  */
@@ -21,14 +21,14 @@ interface SwipeConfig {
 
 /**
  * Custom hook to detect horizontal swipe gestures on touch devices.
- * 
+ *
  * Attaches touch event listeners to detect left/right swipes with a
  * configurable threshold. Only triggers when horizontal movement is
  * dominant over vertical movement.
- * 
+ *
  * @param config - Configuration object with swipe callbacks and threshold
  * @returns Ref to attach to the swipeable element
- * 
+ *
  * @example
  * ```tsx
  * const swipeRef = useSwipe({

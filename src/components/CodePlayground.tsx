@@ -1,6 +1,6 @@
 /**
  * CodePlayground Component
- * 
+ *
  * An interactive Python code editor with syntax highlighting and live execution.
  * Features include editable code, syntax highlighting, reset functionality,
  * and optional expected output display.
@@ -30,7 +30,7 @@ const highlightTheme = {
 
 /**
  * Props for the CodePlayground component.
- * 
+ *
  * @property initialCode - The starting Python code to display in the editor
  * @property expectedOutput - Optional expected output text to display below the editor
  */
@@ -41,7 +41,7 @@ interface CodePlaygroundProps {
 
 /**
  * Interactive Python code editor and playground.
- * 
+ *
  * Provides a rich code editing experience with:
  * - Syntax highlighting powered by Prism
  * - Auto-resizing textarea
@@ -49,7 +49,7 @@ interface CodePlaygroundProps {
  * - Reset functionality to restore initial code
  * - Integrated Python execution
  * - Optional expected output display
- * 
+ *
  * @param initialCode - Initial Python code to populate the editor
  * @param expectedOutput - Optional expected output to show users
  * @returns An interactive code playground component

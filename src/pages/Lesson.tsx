@@ -1,10 +1,10 @@
 /**
  * Individual lesson page component.
- * 
+ *
  * This page displays a single lesson's content with full navigation, progress tracking,
  * table of contents, and related lesson recommendations. Supports keyboard shortcuts
  * and swipe gestures for navigation between lessons.
- * 
+ *
  * @module pages/Lesson
  */
 
@@ -24,7 +24,7 @@ import { useSwipe } from '../hooks/useSwipe'
 
 /**
  * Lesson page component displaying a single day's lesson.
- * 
+ *
  * Features include:
  * - Full markdown content rendering with syntax highlighting
  * - Breadcrumb navigation and lesson metadata (difficulty, duration, tags)
@@ -34,7 +34,7 @@ import { useSwipe } from '../hooks/useSwipe'
  * - Table of contents sidebar
  * - Prerequisite and related lesson recommendations
  * - Previous/next lesson navigation buttons
- * 
+ *
  * @returns The rendered lesson page or 404 if lesson not found
  */
 export default function Lesson() {

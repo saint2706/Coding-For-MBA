@@ -1,10 +1,10 @@
 /**
  * 404 Not Found error page.
- * 
+ *
  * This page is displayed when users navigate to a non-existent route.
  * Provides helpful navigation options including links to home, curriculum,
  * and all phases, plus keyboard shortcut hints.
- * 
+ *
  * @module pages/NotFound
  */
 
@@ -15,14 +15,14 @@ import Breadcrumb from '../components/Breadcrumb'
 
 /**
  * 404 Not Found page component.
- * 
+ *
  * Displays a user-friendly error page when a route doesn't exist, with:
  * - Clear 404 error code and message
  * - Quick action buttons to home and curriculum
  * - List of all phases as suggested alternatives
  * - Keyboard shortcut hints for search and command palette
  * - No-index meta tag to prevent search engine indexing
- * 
+ *
  * @returns The rendered 404 error page
  */
 export default function NotFound() {
