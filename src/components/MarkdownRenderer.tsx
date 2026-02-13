@@ -11,7 +11,7 @@ import ExerciseWidget from './ExerciseWidget'
 import MasteryCheck from './MasteryCheck'
 import CopyButton from './CopyButton'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
-import { normalizeAndValidateHref } from '../utils/linkSafety'
+import { getSecureLinkAttributes } from '../utils/linkSafety'
 import { createSlugger, extractTextFromReactNode } from '../utils/slug'
 
 const customTheme = {
@@ -106,17 +106,21 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
 }
 
 const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] & ExtraProps) => {
-  const { normalizedHref, isExternal, isSafe } = normalizeAndValidateHref(href)
+  const attributes = getSecureLinkAttributes(href, props)
 
-  if (!isSafe || !normalizedHref) {
+  if (!attributes) {
     return <span>{children}</span>
   }
 
+  // Remove target and rel from props so they don't override secure attributes
+  const { target: _target, rel: _rel, ...rest } = props
+
   return (
     <a
-      href={normalizedHref}
-      {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      {...props}
+      href={attributes.href}
+      target={attributes.target}
+      rel={attributes.rel}
+      {...rest}
     >
       {children}
     </a>
