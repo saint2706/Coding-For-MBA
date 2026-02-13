@@ -10,27 +10,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
-
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }, [text])
-
-  return (
-    <button
-      className="code-playground__btn"
-      onClick={handleCopy}
-      aria-label="Copy code to clipboard"
-    >
-      {copied ? '✓ Copied' : '📋 Copy'}
-    </button>
-  )
-}
+import CopyButton from './CopyButton'
 
 /**
  * Custom syntax highlighting theme with transparent background.
@@ -127,7 +107,7 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
       <div className="code-playground__toolbar">
         <span className="code-playground__label">🐍 Python Playground</span>
         <div className="code-playground__actions">
-          <CopyButton text={code} />
+          <CopyButton text={code} className="code-playground__btn" showEmoji={true} />
           <button
             className="code-playground__btn code-playground__btn--reset"
             onClick={handleReset}
