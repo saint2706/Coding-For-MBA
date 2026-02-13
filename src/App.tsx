@@ -20,6 +20,7 @@ import ScrollProgress from './components/ScrollProgress'
 import MobileNav from './components/MobileNav'
 import { PageSkeleton } from './components/Skeleton'
 import { ThemeProvider } from './context/ThemeProvider'
+import { preloadSearchIndex } from './utils/searchIndex'
 
 // Lazy-loaded page components for code splitting
 const Home = lazy(() => import('./pages/Home'))
@@ -50,6 +51,17 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const location = useLocation()
+
+  // Preload search index when browser is idle to prevent lag on first search
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const requestIdleCallback = (window as any).requestIdleCallback
+    if (requestIdleCallback) {
+      requestIdleCallback(() => preloadSearchIndex())
+    } else {
+      setTimeout(() => preloadSearchIndex(), 2000)
+    }
+  }, [])
 
   // Close sidebar + scroll to top on navigation (with View Transition if supported)
   useEffect(() => {

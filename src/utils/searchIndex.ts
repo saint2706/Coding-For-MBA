@@ -104,6 +104,14 @@ function getFuse(): Fuse<SearchDocument> {
 }
 
 /**
+ * Preloads the search index to ensure fast first-time searches.
+ * Should be called during browser idle time.
+ */
+export function preloadSearchIndex(): void {
+  getFuse()
+}
+
+/**
  * Performs a fuzzy search across all lessons.
  *
  * Searches lesson titles, tags, concepts, and content for matches.

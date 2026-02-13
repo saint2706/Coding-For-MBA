@@ -3,7 +3,6 @@ import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
-import type { Schema } from 'hast-util-sanitize'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
@@ -430,7 +429,7 @@ function InteractiveContent({ content }: { content: string }) {
 
 const remarkPlugins = [remarkGfm]
 
-const lessonSanitizerSchema: Schema = {
+const lessonSanitizerSchema = {
   tagNames: [
     'a',
     'blockquote',
