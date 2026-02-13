@@ -20,6 +20,23 @@ describe('getSecureLinkAttributes', () => {
     })
   })
 
+  it('should enforce secure target for external links even if _self is requested', () => {
+    const result = getSecureLinkAttributes('https://example.com', { target: '_self' })
+    expect(result).toEqual({
+      href: 'https://example.com',
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    })
+  })
+
+  it('should strip opener from rel for external links', () => {
+    const result = getSecureLinkAttributes('https://example.com', { rel: 'opener' })
+    expect(result).toEqual({
+      href: 'https://example.com',
+      target: '_blank',
+      rel: 'noopener noreferrer',
+    })
+  })
   it('should handle safe internal links', () => {
     const result = getSecureLinkAttributes('/lesson/1')
     expect(result).toEqual({
