@@ -37,3 +37,31 @@ export const normalizeAndValidateHref = (href?: string | null) => {
     return { normalizedHref: null, isExternal: false, isSafe: false }
   }
 }
+
+export interface LinkProps {
+  target?: string
+  rel?: string
+}
+
+export const getSecureLinkAttributes = (
+  href?: string | null,
+  props: LinkProps = {},
+) => {
+  const { normalizedHref, isExternal, isSafe } = normalizeAndValidateHref(href)
+
+  if (!isSafe || !normalizedHref) {
+    return null
+  }
+
+  let { target, rel } = props
+
+  if (isExternal) {
+    target = '_blank'
+    const parts = (rel || '').split(/\s+/).filter(Boolean)
+    if (!parts.includes('noopener')) parts.push('noopener')
+    if (!parts.includes('noreferrer')) parts.push('noreferrer')
+    rel = parts.join(' ')
+  }
+
+  return { href: normalizedHref, target, rel }
+}
