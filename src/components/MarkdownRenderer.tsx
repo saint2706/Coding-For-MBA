@@ -1,4 +1,4 @@
-import { useState, useCallback, memo, JSX, useMemo, type ComponentProps } from 'react'
+import { useState, memo, JSX, useMemo, type ComponentProps } from 'react'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
@@ -9,6 +9,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
 import ExerciseWidget from './ExerciseWidget'
 import MasteryCheck from './MasteryCheck'
+import CopyButton from './CopyButton'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 import { normalizeAndValidateHref } from '../utils/linkSafety'
 import { createSlugger, extractTextFromReactNode } from '../utils/slug'
@@ -25,23 +26,6 @@ const customTheme = {
     ...(oneDark['code[class*="language-"]'] as object),
     background: 'transparent',
   },
-}
-
-function CopyButton({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(text).then(() => {
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    })
-  }, [text])
-
-  return (
-    <button className="code-block-copy" onClick={handleCopy}>
-      {copied ? '✓ Copied' : 'Copy'}
-    </button>
-  )
 }
 
 function CodeBlock({ className, children }: { className?: string; children: React.ReactNode }) {
