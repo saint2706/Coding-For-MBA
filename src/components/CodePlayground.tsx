@@ -10,6 +10,7 @@ import { useState, useCallback, useRef, useEffect } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
+import CopyButton from './CopyButton'
 
 /**
  * Custom syntax highlighting theme with transparent background.
@@ -106,6 +107,7 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
       <div className="code-playground__toolbar">
         <span className="code-playground__label">🐍 Python Playground</span>
         <div className="code-playground__actions">
+          <CopyButton text={code} className="code-playground__btn" showEmoji={true} />
           <button
             className="code-playground__btn code-playground__btn--reset"
             onClick={handleReset}
