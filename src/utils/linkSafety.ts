@@ -57,9 +57,19 @@ export const getSecureLinkAttributes = (
 
   if (isExternal) {
     target = '_blank'
-    const parts = (rel || '').split(/\s+/).filter(Boolean)
-    if (!parts.includes('noopener')) parts.push('noopener')
-    if (!parts.includes('noreferrer')) parts.push('noreferrer')
+    const parts = (rel || '')
+      .split(/\s+/)
+      .filter(Boolean)
+      .filter(token => token.toLowerCase() !== 'opener')
+    const lowerParts = new Set(parts.map(token => token.toLowerCase()))
+    if (!lowerParts.has('noopener')) {
+      parts.push('noopener')
+      lowerParts.add('noopener')
+    }
+    if (!lowerParts.has('noreferrer')) {
+      parts.push('noreferrer')
+      lowerParts.add('noreferrer')
+    }
     rel = parts.join(' ')
   }
 
