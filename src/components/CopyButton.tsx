@@ -12,7 +12,6 @@ interface CopyButtonProps {
   text: string
   className?: string
   showEmoji?: boolean
-  ariaLabel?: string
 }
 
 /**
@@ -21,13 +20,11 @@ interface CopyButtonProps {
  * @param text - The text to copy to the clipboard
  * @param className - Optional CSS class name for styling
  * @param showEmoji - Whether to show the emoji (📋) in the button text
- * @param ariaLabel - Optional custom aria-label for accessibility
  */
 export default function CopyButton({
   text,
   className = 'code-block-copy',
   showEmoji = false,
-  ariaLabel = 'Copy code to clipboard',
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
   const timeoutRef = useRef<number | null>(null)
@@ -61,9 +58,10 @@ export default function CopyButton({
   }, [])
 
   return (
-    <button className={className} onClick={handleCopy} aria-label={ariaLabel}>
-      <span aria-live="polite" aria-atomic="true">
-        {copied ? '✓ Copied' : showEmoji ? '📋 Copy' : 'Copy'}
+    <button className={className} onClick={handleCopy}>
+      {copied ? '✓ Copied' : showEmoji ? '📋 Copy' : 'Copy'}
+      <span className="sr-only" aria-live="polite" aria-atomic="true">
+        {copied ? 'Code copied to clipboard' : ''}
       </span>
     </button>
   )
