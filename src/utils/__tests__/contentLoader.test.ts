@@ -45,7 +45,22 @@ test words repeated `.repeat(120)
     expect(getReadingTime('short text')).toBe(1)
   })
 
-  it('handles adjacency and notebook lookups safely', () => {
+  it('returns previous and next lessons for a valid middle lesson', () => {
+    const lessons = getAllLessons()
+    const first = lessons[0]
+    const last = lessons[lessons.length - 1]
+    const middle = lessons[Math.floor(lessons.length / 2)]
+
+    expect(first).toBeDefined()
+    expect(last).toBeDefined()
+    expect(middle).toBeDefined()
+
+    const aroundMiddle = getAdjacentLessons(middle!.day)
+    expect(aroundMiddle.prev).toBeDefined()
+    expect(aroundMiddle.next).toBeDefined()
+  })
+
+  it('returns null on first/last lesson boundaries', () => {
     const lessons = getAllLessons()
     const first = lessons[0]
     const last = lessons[lessons.length - 1]
@@ -59,7 +74,14 @@ test words repeated `.repeat(120)
 
     const aroundLast = getAdjacentLessons(last!.day)
     expect(aroundLast.next).toBeNull()
+    expect(aroundLast.prev).toBeDefined()
+  })
 
+  it('returns null adjacency for an invalid day input', () => {
+    expect(getAdjacentLessons(999999)).toEqual({ prev: null, next: null })
+  })
+
+  it('handles notebook lookups safely', () => {
     const notebooks = getAllNotebooks()
     expect(notebooks.length).toBeGreaterThan(0)
 

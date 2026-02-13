@@ -99,6 +99,11 @@ export function getAdjacentLessons(dayNum: string | number): {
 } {
   const day = Number(dayNum)
   const currentIndex = immutableLessons.findIndex((l) => l.day === day)
+
+  if (currentIndex === -1) {
+    return { prev: null, next: null }
+  }
+
   return {
     prev: currentIndex > 0 ? (immutableLessons[currentIndex - 1] ?? null) : null,
     next:
