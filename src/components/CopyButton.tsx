@@ -61,14 +61,10 @@ export default function CopyButton({
   }, [])
 
   return (
-    <button
-      className={className}
-      onClick={handleCopy}
-      aria-label={ariaLabel}
-      aria-live="polite"
-      aria-atomic="true"
-    >
-      {copied ? '✓ Copied' : showEmoji ? '📋 Copy' : 'Copy'}
+    <button className={className} onClick={handleCopy} aria-label={ariaLabel}>
+      <span aria-live="polite" aria-atomic="true">
+        {copied ? '✓ Copied' : showEmoji ? '📋 Copy' : 'Copy'}
+      </span>
     </button>
   )
 }
