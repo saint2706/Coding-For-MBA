@@ -20,6 +20,7 @@ import ScrollProgress from './components/ScrollProgress'
 import MobileNav from './components/MobileNav'
 import { PageSkeleton } from './components/Skeleton'
 import { ThemeProvider } from './context/ThemeProvider'
+import { preloadSearchIndex } from './utils/searchIndex'
 
 // Lazy-loaded page components for code splitting
 const Home = lazy(() => import('./pages/Home'))
@@ -50,6 +51,15 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const location = useLocation()
+
+  // Preload search index on mount (when idle) to prevent jank on first search
+  useEffect(() => {
+    const controller = new AbortController()
+    preloadSearchIndex(controller.signal)
+    return () => {
+      controller.abort()
+    }
+  }, [])
 
   // Close sidebar + scroll to top on navigation (with View Transition if supported)
   useEffect(() => {

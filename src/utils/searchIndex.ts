@@ -118,3 +118,34 @@ export function search(query: string, limit = 20): SearchResult[] {
   const fuse = getFuse()
   return fuse.search(query, { limit }) as SearchResult[]
 }
+
+/**
+ * Preloads the search index in the background to avoid jank on first search.
+ * This should be called when the application is idle.
+ */
+export function preloadSearchIndex(): void {
+  // Use requestIdleCallback if available, otherwise fallback to setTimeout
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(window as any).requestIdleCallback(
+      () => {
+        try {
+          getFuse()
+        } catch (error) {
+          // Fail gracefully if preloading the search index throws
+          console.error('Failed to preload search index during idle callback:', error)
+        }
+      },
+      { timeout: 2000 },
+    )
+  } else {
+    setTimeout(() => {
+      try {
+        getFuse()
+      } catch (error) {
+        // Fail gracefully if preloading the search index throws
+        console.error('Failed to preload search index during timeout:', error)
+      }
+    }, 1000)
+  }
+}
