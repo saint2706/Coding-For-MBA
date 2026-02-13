@@ -54,7 +54,11 @@ export default function App() {
 
   // Preload search index on mount (when idle) to prevent jank on first search
   useEffect(() => {
-    preloadSearchIndex()
+    const controller = new AbortController()
+    preloadSearchIndex(controller.signal)
+    return () => {
+      controller.abort()
+    }
   }, [])
 
   // Close sidebar + scroll to top on navigation (with View Transition if supported)
