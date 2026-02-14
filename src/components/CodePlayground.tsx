@@ -112,6 +112,7 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
             className="code-playground__btn code-playground__btn--reset"
             onClick={handleReset}
             aria-label="Reset code to original"
+            title="Reset code to original"
           >
             ↺ Reset
           </button>

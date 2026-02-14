@@ -124,7 +124,25 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
                 Running…
               </>
             ) : (
-              <>▶ Run</>
+              <>
+                ▶ Run
+                <kbd
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.7em',
+                    padding: '0.1em 0.4em',
+                    background: 'rgba(255,255,255,0.2)',
+                    borderRadius: '3px',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    marginLeft: '0.5em',
+                    verticalAlign: 'middle',
+                    opacity: 0.9,
+                    fontWeight: 'normal',
+                  }}
+                >
+                  Shift+Enter
+                </kbd>
+              </>
             )}
           </button>
 
