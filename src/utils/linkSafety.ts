@@ -43,10 +43,7 @@ export interface LinkProps {
   rel?: string
 }
 
-export const getSecureLinkAttributes = (
-  href?: string | null,
-  props: LinkProps = {},
-) => {
+export const getSecureLinkAttributes = (href?: string | null, props: LinkProps = {}) => {
   const { normalizedHref, isExternal, isSafe } = normalizeAndValidateHref(href)
 
   if (!isSafe || !normalizedHref) {
@@ -60,8 +57,8 @@ export const getSecureLinkAttributes = (
     const parts = (rel || '')
       .split(/\s+/)
       .filter(Boolean)
-      .filter(token => token.toLowerCase() !== 'opener')
-    const lowerParts = new Set(parts.map(token => token.toLowerCase()))
+      .filter((token) => token.toLowerCase() !== 'opener')
+    const lowerParts = new Set(parts.map((token) => token.toLowerCase()))
     if (!lowerParts.has('noopener')) {
       parts.push('noopener')
       lowerParts.add('noopener')

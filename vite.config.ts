@@ -2,8 +2,39 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig({
-  plugins: [react()],
+export default defineConfig(({ mode }) => ({
+  plugins: [
+    react(),
+    {
+      name: 'dev-csp-relaxation',
+      transformIndexHtml: {
+        order: 'pre',
+        handler(html) {
+          // In dev mode, add CSP relaxations for HMR
+          if (mode === 'development') {
+            return html
+              .replace(
+                /content="([^"]*script-src[^"]*)"/,
+                (_match, cspContent) =>
+                  `content="${cspContent.replace(
+                    "script-src 'self'",
+                    "script-src 'self' 'unsafe-inline'",
+                  )}"`,
+              )
+              .replace(
+                /content="([^"]*connect-src[^"]*)"/,
+                (_match, cspContent) =>
+                  `content="${cspContent.replace(
+                    "connect-src 'self'",
+                    "connect-src 'self' ws://localhost:*",
+                  )}"`,
+              )
+          }
+          return html
+        },
+      },
+    },
+  ],
   base: process.env.VITE_BASE_PATH || '/Coding-For-MBA/',
   build: {
     chunkSizeWarningLimit: 1500,
@@ -59,4 +90,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))
