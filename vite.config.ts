@@ -11,24 +11,22 @@ export default defineConfig(({ mode }) => ({
         order: 'pre',
         handler(html) {
           // In dev mode, add CSP relaxations for HMR
+          // Specifically target the Content-Security-Policy meta tag to avoid modifying other tags
           if (mode === 'development') {
-            return html
-              .replace(
-                /content="([^"]*script-src[^"]*)"/,
-                (_match, cspContent) =>
-                  `content="${cspContent.replace(
-                    "script-src 'self'",
-                    "script-src 'self' 'unsafe-inline'",
-                  )}"`,
-              )
-              .replace(
-                /content="([^"]*connect-src[^"]*)"/,
-                (_match, cspContent) =>
-                  `content="${cspContent.replace(
-                    "connect-src 'self'",
-                    "connect-src 'self' ws://localhost:*",
-                  )}"`,
-              )
+            return html.replace(
+              /(<meta\s+http-equiv="Content-Security-Policy"\s+content="[^"]*")/,
+              (match) => {
+                let updated = match
+                // Add 'unsafe-inline' to script-src for Vite HMR inline scripts
+                updated = updated.replace(/script-src 'self'/, "script-src 'self' 'unsafe-inline'")
+                // Add ws://localhost:* to connect-src for Vite HMR WebSocket
+                updated = updated.replace(
+                  /connect-src 'self'/,
+                  "connect-src 'self' ws://localhost:*",
+                )
+                return updated
+              },
+            )
           }
           return html
         },
