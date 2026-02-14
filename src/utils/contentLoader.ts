@@ -160,13 +160,17 @@ function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
   return exercises
 }
 
-const allExercises: Exercise[] = lessons.flatMap(extractExercisesFromLesson)
 const immutableLessons = Object.freeze(lessons.map(freezeLesson))
 const immutablePhases = Object.freeze(phases.map(freezePhase))
-const immutableExercises = Object.freeze(allExercises.map(freezeExercise))
+
+let immutableExercises: readonly ImmutableExercise[] | null = null
 
 /** Return all parsed exercises across lessons. */
 export function getAllExercises(): readonly ImmutableExercise[] {
+  if (!immutableExercises) {
+    const allExercises = lessons.flatMap(extractExercisesFromLesson)
+    immutableExercises = Object.freeze(allExercises.map(freezeExercise))
+  }
   return immutableExercises
 }
 
@@ -286,17 +290,20 @@ function parseNotebooks(): Notebook[] {
     .sort((a, b) => a.phase - b.phase)
 }
 
-const notebooks = parseNotebooks()
-const immutableNotebooks = Object.freeze(notebooks.map(freezeNotebook))
+let immutableNotebooks: readonly ImmutableNotebook[] | null = null
 
 /** Return all parsed notebooks sorted by phase number. */
 export function getAllNotebooks(): readonly ImmutableNotebook[] {
+  if (!immutableNotebooks) {
+    const notebooks = parseNotebooks()
+    immutableNotebooks = Object.freeze(notebooks.map(freezeNotebook))
+  }
   return immutableNotebooks
 }
 
 /** Return a notebook by phase number. */
 export function getNotebook(phaseNum: string | number): ImmutableNotebook | undefined {
-  return immutableNotebooks.find((n) => n.phase === Number(phaseNum))
+  return getAllNotebooks().find((n) => n.phase === Number(phaseNum))
 }
 
 /** Estimate reading time in minutes after removing markdown syntax noise. */
