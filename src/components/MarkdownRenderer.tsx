@@ -2,7 +2,7 @@ import { useState, memo, JSX, useMemo, type ComponentProps } from 'react'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
-import rehypeSanitize from 'rehype-sanitize'
+import rehypeSanitize, { type Options as RehypeSanitizeOptions } from 'rehype-sanitize'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
@@ -115,12 +115,7 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
   const { target: _target, rel: _rel, ...rest } = props
 
   return (
-    <a
-      href={attributes.href}
-      target={attributes.target}
-      rel={attributes.rel}
-      {...rest}
-    >
+    <a href={attributes.href} target={attributes.target} rel={attributes.rel} {...rest}>
       {children}
     </a>
   )
@@ -417,7 +412,7 @@ function InteractiveContent({ content }: { content: string }) {
 
 const remarkPlugins = [remarkGfm]
 
-const lessonSanitizerSchema = {
+const lessonSanitizerSchema: RehypeSanitizeOptions = {
   tagNames: [
     'a',
     'blockquote',
