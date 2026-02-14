@@ -124,7 +124,11 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
                 Running…
               </>
             ) : (
-              <>▶ Run</>
+              <>
+                <kbd className="python-runner__shortcut">
+                  Shift+Enter
+                </kbd>
+              </>
             )}
           </button>
 
