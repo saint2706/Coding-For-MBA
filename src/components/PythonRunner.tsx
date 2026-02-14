@@ -134,7 +134,6 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
                     background: 'rgba(255,255,255,0.2)',
                     borderRadius: '3px',
                     border: '1px solid rgba(255,255,255,0.3)',
-                    marginLeft: '0.5em',
                     verticalAlign: 'middle',
                     opacity: 0.9,
                     fontWeight: 'normal',
