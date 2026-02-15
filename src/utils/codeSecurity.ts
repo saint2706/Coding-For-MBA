@@ -13,7 +13,7 @@ export interface ValidationResult {
  * Checks for:
  * - Direct access to the 'js' module (browser API access)
  * - Usage of __import__ for 'js'
- * - Dynamic imports via importlib
+ * - Dynamic imports via importlib.import_module
  * - String manipulation to bypass checks
  *
  * @param code - The Python code to validate
@@ -28,10 +28,10 @@ export function validatePythonCode(code: string): ValidationResult {
     /\bimport\s+js\b/, // import js
     /\bfrom\s+js\b/, // from js import ...
     /__import__\s*\(\s*['"]js['"]\s*\)/, // __import__('js')
-    /\bimportlib\b/, // Any use of importlib (dynamic imports)
-    /__import__\s*\([^)]*[+]/, // __import__ with concatenation (simple cases)
-    /__import__\s*\(\s*chr/, // __import__(chr(...) - character obfuscation
-    /__import__\s*\(\s*['"][^'"]*['"][^)]*\.[^)]*\)/, // __import__("...".method()) - string method calls
+    /import_module\s*\(/, // importlib.import_module or direct import_module calls
+    /__import__\s*\(\s*['"][^'"]*['"]\s*\+\s*['"][^'"]*['"]/, // __import__("..." + "...") - string concatenation
+    /__import__\s*\(\s*chr\s*\(/, // __import__(chr(...) - character obfuscation
+    /__import__\s*\(\s*['"][^'"]*['"]\s*\.\s*(lower|upper|strip|replace|format)\s*\(/, // __import__("...".method()) - string method obfuscation
     /__builtins__\s*\.\s*__import__/, // __builtins__.__import__
   ]
 

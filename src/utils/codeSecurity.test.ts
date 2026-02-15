@@ -44,8 +44,16 @@ print("bad")
   it('should block importlib.import_module("js")', () => {
     expect(validatePythonCode('importlib.import_module("js")').valid).toBe(false)
     expect(validatePythonCode("importlib.import_module('js')").valid).toBe(false)
-    expect(validatePythonCode('import importlib').valid).toBe(false)
-    expect(validatePythonCode('from importlib import import_module').valid).toBe(false)
+    expect(
+      validatePythonCode('from importlib import import_module; import_module("js")').valid,
+    ).toBe(false)
+  })
+
+  it('should allow importlib for legitimate uses', () => {
+    expect(validatePythonCode('import importlib').valid).toBe(true)
+    expect(validatePythonCode('import importlib.metadata').valid).toBe(true)
+    expect(validatePythonCode('import importlib.resources').valid).toBe(true)
+    // Note: import_module() itself is blocked as it's primarily used for dynamic imports
   })
 
   it('should block string concatenation in __import__', () => {
