@@ -5,3 +5,7 @@
 ## 2024-05-23 - Dynamic Output Accessibility
 **Learning:** Dynamic content updates (like code execution results) are often silent for screen reader users unless explicitly marked.
 **Action:** Use `aria-live="polite"` on the output container so screen readers announce the result automatically when it appears or changes.
+
+## 2026-02-23 - Actionable Revealed Content
+**Learning:** Revealed content, especially code solutions, often leaves the user stranded without an easy way to use that content (e.g., trying it out).
+**Action:** Always include action buttons (like "Copy" or "Try It") within the revealed content area to facilitate immediate interaction, ensuring they are accessible and positioned logically.

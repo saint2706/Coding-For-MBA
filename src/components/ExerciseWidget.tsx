@@ -10,6 +10,7 @@ import { useState, useId } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground from './CodePlayground'
+import CopyButton from './CopyButton'
 
 /**
  * Custom syntax highlighting theme for solution code display.
@@ -120,26 +121,40 @@ export default function ExerciseWidget({
             aria-hidden={!showSolution}
             inert={!showSolution}
           >
-            <SyntaxHighlighter
-              style={solutionTheme}
-              language="python"
-              PreTag="div"
-              customStyle={{
-                margin: 0,
-                padding: '0.75rem',
-                background: 'var(--bg-code)',
-                fontSize: '0.8125rem',
-                lineHeight: '1.65',
-                borderRadius: 'var(--radius-sm)',
-              }}
-              codeTagProps={{
-                style: {
-                  fontFamily: 'var(--font-mono)',
-                },
-              }}
-            >
-              {solution}
-            </SyntaxHighlighter>
+            <div style={{ position: 'relative' }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '0.5rem',
+                  right: '0.5rem',
+                  zIndex: 10,
+                  backgroundColor: 'var(--bg-card)',
+                  borderRadius: 'var(--radius-sm)',
+                }}
+              >
+                <CopyButton text={solution} className="code-block-copy" showEmoji={true} />
+              </div>
+              <SyntaxHighlighter
+                style={solutionTheme}
+                language="python"
+                PreTag="div"
+                customStyle={{
+                  margin: 0,
+                  padding: '0.75rem',
+                  background: 'var(--bg-code)',
+                  fontSize: '0.8125rem',
+                  lineHeight: '1.65',
+                  borderRadius: 'var(--radius-sm)',
+                }}
+                codeTagProps={{
+                  style: {
+                    fontFamily: 'var(--font-mono)',
+                  },
+                }}
+              >
+                {solution}
+              </SyntaxHighlighter>
+            </div>
           </div>
         </div>
       )}
