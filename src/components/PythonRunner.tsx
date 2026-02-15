@@ -7,6 +7,7 @@
 
 import { useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
 import { usePyodide } from '../hooks/usePyodide'
+import { validatePythonCode } from '../utils/codeSecurity'
 
 const DEFAULT_RUN_TIMEOUT_MS = 10_000
 
@@ -66,6 +67,15 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
      */
     const handleRun = useCallback(async () => {
       if (running || pyodideLoading) return
+
+      // Security Check
+      const { valid, error: validationError } = validatePythonCode(code)
+      if (!valid) {
+        setError(validationError || 'Code rejected by security policy.')
+        setOutput(null)
+        return
+      }
+
       const currentRunId = runIdRef.current + 1
       runIdRef.current = currentRunId
       const abortController = new AbortController()
