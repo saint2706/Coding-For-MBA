@@ -40,4 +40,44 @@ print("bad")
 `
     expect(validatePythonCode(code).valid).toBe(false)
   })
+
+  it('should block importlib.import_module("js")', () => {
+    expect(validatePythonCode('importlib.import_module("js")').valid).toBe(false)
+    expect(validatePythonCode("importlib.import_module('js')").valid).toBe(false)
+    expect(validatePythonCode('import importlib').valid).toBe(false)
+    expect(validatePythonCode('from importlib import import_module').valid).toBe(false)
+  })
+
+  it('should block string concatenation in __import__', () => {
+    expect(validatePythonCode('__import__("j" + "s")').valid).toBe(false)
+    expect(validatePythonCode("__import__('j' + 's')").valid).toBe(false)
+    expect(validatePythonCode('__import__(chr(106)+chr(115))').valid).toBe(false)
+  })
+
+  it('should block __builtins__.__import__', () => {
+    expect(validatePythonCode('__builtins__.__import__("js")').valid).toBe(false)
+    expect(validatePythonCode("__builtins__.__import__('js')").valid).toBe(false)
+  })
+
+  it('should allow imports with comments', () => {
+    expect(validatePythonCode('import json  # load data').valid).toBe(true)
+    expect(validatePythonCode('import math  # calculations').valid).toBe(true)
+  })
+
+  it('should block js imports with comments', () => {
+    expect(validatePythonCode('import js  # some comment').valid).toBe(false)
+    expect(validatePythonCode('from js import window  # access browser').valid).toBe(false)
+  })
+
+  it('should allow legitimate math operations', () => {
+    // Ensure we don't break legitimate code with + operators
+    expect(validatePythonCode('x = 1 + 2').valid).toBe(true)
+    expect(validatePythonCode('result = "hello" + "world"').valid).toBe(true)
+  })
+
+  it('should block various obfuscation attempts', () => {
+    // Block various ways to construct 'js' dynamically
+    expect(validatePythonCode('__import__("js".lower())').valid).toBe(false)
+    expect(validatePythonCode('x = __import__("j" + "s")').valid).toBe(false)
+  })
 })
