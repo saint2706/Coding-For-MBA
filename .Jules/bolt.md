@@ -1,7 +1,3 @@
-## 2026-02-13 - Search Index Initialization Jank
-**Learning:** Initializing `Fuse.js` with 100+ markdown files (6KB each) causes ~200-400ms synchronous blocking on the main thread due to heavy regex processing (`stripMarkdown`).
-**Action:** Use `requestIdleCallback` to preload expensive index creation during browser idle time, preventing jank on the first user interaction.
-
-## 2026-02-13 - Eager Content Parsing
-**Learning:** Eagerly parsing 100+ markdown files for exercises (using regex) and solution notebooks (using `JSON.parse`) at module scope blocks initial application load.
-**Action:** Refactored `src/utils/contentLoader.ts` to lazy-load `allExercises` and `notebooks` only when accessed, deferring this work until the user navigates to the Exercises or Solutions pages.
+## 2025-02-12 - ConceptGraph Filtering Optimization
+**Learning:** Nested loops involving D3 selections (`d3.selectAll`) are extremely expensive because they trigger DOM traversals for every iteration. In `ConceptGraph.tsx`, filtering was O(E * N) due to calling a helper function that re-selected all nodes for every edge.
+**Action:** Always pre-calculate node states into a `Set` or `Map` (O(N)) before iterating over edges. This allows O(1) lookups inside the edge loop, reducing overall complexity to O(N + E).
