@@ -53,7 +53,9 @@ print("bad")
     expect(validatePythonCode('import importlib').valid).toBe(true)
     expect(validatePythonCode('import importlib.metadata').valid).toBe(true)
     expect(validatePythonCode('import importlib.resources').valid).toBe(true)
-    // Note: import_module() itself is blocked as it's primarily used for dynamic imports
+    // Note: importlib.import_module() is intentionally blocked to prevent dynamic
+    // module loading, which could be used to bypass security restrictions.
+    // This is acceptable for an educational platform where dynamic imports aren't needed.
   })
 
   it('should block string concatenation in __import__', () => {
