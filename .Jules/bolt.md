@@ -5,3 +5,7 @@
 ## 2026-02-13 - Eager Content Parsing
 **Learning:** Eagerly parsing 100+ markdown files for exercises (using regex) and solution notebooks (using `JSON.parse`) at module scope blocks initial application load.
 **Action:** Refactored `src/utils/contentLoader.ts` to lazy-load `allExercises` and `notebooks` only when accessed, deferring this work until the user navigates to the Exercises or Solutions pages.
+
+## 2026-02-14 - D3 Selection in Loops
+**Learning:** In `ConceptGraph.tsx`, re-selecting nodes via `d3.selectAll('.graph-node')` inside the edge iteration loop caused O(E*N) DOM queries, leading to significant lag during filtering.
+**Action:** Pre-calculate node visibility into a `Set<number>` (O(N)) before iterating edges, allowing O(1) lookups and reducing complexity to O(N+E). Avoid DOM queries inside data-processing loops.
