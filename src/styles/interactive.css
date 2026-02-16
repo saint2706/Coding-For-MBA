@@ -34,6 +34,19 @@
   cursor: not-allowed;
 }
 
+.python-runner__shortcut {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.1rem 0.35rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  opacity: 0.9;
+}
+
+.python-runner__icon {
+  display: block;
+}
+
 .python-runner__spinner {
   display: inline-block;
   width: 12px;
