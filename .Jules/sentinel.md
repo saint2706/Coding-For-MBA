@@ -12,3 +12,8 @@
 **Vulnerability:** Lack of Content Security Policy (CSP) allowed potentially unrestricted script execution and resource loading, increasing XSS risk.
 **Learning:** Adding CSP to a Vite + Pyodide application requires careful configuration: `unsafe-eval` is mandatory for Pyodide, `unsafe-inline` for styles and Vite HMR (in dev), and `ws:` for HMR connections. Also, `hast-util-sanitize` type imports can cause build failures if the package isn't a direct dependency, but structural typing allows avoiding the dependency.
 **Prevention:** Enforce CSP in `index.html` with specific allowlists for CDNs (Pyodide, PyPI) and local resources.
+
+## 2025-05-27 - [Regex Validation Pitfalls]
+**Vulnerability:** Regex-based Python validation (`validatePythonCode`) missed built-in functions like `eval` and `exec`, allowing trivial bypass of import restrictions via string concatenation (e.g., `eval("im" + "port js")`).
+**Learning:** Pure regex validation for code is insufficient against obfuscation unless the *mechanisms* of dynamic execution (eval, exec, reflection) are also blocked.
+**Prevention:** Always block `eval`, `exec`, `globals`, `locals`, `getattr`, and `__builtins__` when using static analysis for security, but use lookbehind `(?<!\.)` to permit legitimate method calls (e.g., `model.eval()`).

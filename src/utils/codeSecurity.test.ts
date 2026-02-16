@@ -90,4 +90,59 @@ print("bad")
     expect(validatePythonCode('__import__("js".lower())').valid).toBe(false)
     expect(validatePythonCode('x = __import__("j" + "s")').valid).toBe(false)
   })
+
+  it('should block eval and exec', () => {
+    expect(validatePythonCode('eval("print(1)")').valid).toBe(false)
+    expect(validatePythonCode('exec("print(1)")').valid).toBe(false)
+    expect(validatePythonCode('x = eval("1+1")').valid).toBe(false)
+    expect(validatePythonCode('eval("im" + "port js")').valid).toBe(false)
+    expect(validatePythonCode('exec("im" + "port js")').valid).toBe(false)
+  })
+
+  it('should block globals, locals, getattr', () => {
+    expect(validatePythonCode('globals()').valid).toBe(false)
+    expect(validatePythonCode('locals()').valid).toBe(false)
+    expect(validatePythonCode('getattr(obj, "name")').valid).toBe(false)
+    expect(validatePythonCode('getattr(__builtins__, "eval")("import js")').valid).toBe(false)
+  })
+
+  it('should allow method calls named eval, exec, etc', () => {
+    expect(validatePythonCode('model.eval()').valid).toBe(true)
+    expect(validatePythonCode('obj.exec()').valid).toBe(true)
+    expect(validatePythonCode('obj.globals()').valid).toBe(true)
+    expect(validatePythonCode('obj.locals()').valid).toBe(true)
+    expect(validatePythonCode('obj.getattr("name")').valid).toBe(true)
+  })
+
+  it('should block __builtins__ access', () => {
+    expect(validatePythonCode('__builtins__').valid).toBe(false)
+    expect(validatePythonCode('print(__builtins__)').valid).toBe(false)
+    expect(validatePythonCode('x = __builtins__').valid).toBe(false)
+  })
+
+  it('should block import builtins to prevent bypass', () => {
+    expect(validatePythonCode('import builtins').valid).toBe(false)
+    expect(validatePythonCode('from builtins import eval').valid).toBe(false)
+    expect(validatePythonCode('from builtins import *').valid).toBe(false)
+  })
+
+  it('should block additional dangerous functions', () => {
+    expect(validatePythonCode('setattr(obj, "name", "value")').valid).toBe(false)
+    expect(validatePythonCode('delattr(obj, "name")').valid).toBe(false)
+    expect(validatePythonCode('hasattr(obj, "name")').valid).toBe(false)
+    expect(validatePythonCode('vars(obj)').valid).toBe(false)
+    expect(validatePythonCode('dir(obj)').valid).toBe(false)
+    expect(validatePythonCode('compile("code", "filename", "exec")').valid).toBe(false)
+    expect(validatePythonCode('open("file.txt")').valid).toBe(false)
+  })
+
+  it('should allow method calls for new dangerous functions', () => {
+    expect(validatePythonCode('obj.setattr("name")').valid).toBe(true)
+    expect(validatePythonCode('obj.delattr("name")').valid).toBe(true)
+    expect(validatePythonCode('obj.hasattr("name")').valid).toBe(true)
+    expect(validatePythonCode('obj.vars()').valid).toBe(true)
+    expect(validatePythonCode('obj.dir()').valid).toBe(true)
+    expect(validatePythonCode('obj.compile()').valid).toBe(true)
+    expect(validatePythonCode('obj.open()').valid).toBe(true)
+  })
 })
