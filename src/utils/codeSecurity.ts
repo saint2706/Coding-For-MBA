@@ -38,7 +38,9 @@ export function validatePythonCode(code: string): ValidationResult {
     /__import__\s*\(\s*chr\s*\(/, // __import__(chr(...) - character obfuscation
     /__import__\s*\(\s*['"][^'"]*['"]\s*\.\s*(lower|upper|strip|replace|format)\s*\(/, // __import__("...".method()) - string method obfuscation
     /__builtins__\s*\.\s*__import__/, // __builtins__.__import__
-    /(?<!\.)\b(eval|exec|globals|locals|getattr)\s*\(/, // built-in functions that allow bypass
+    /\bimport\s+builtins\b/, // import builtins - prevents builtins.eval() bypass
+    /\bfrom\s+builtins\s+import/, // from builtins import - prevents direct builtin imports
+    /(?<!\.)\b(eval|exec|globals|locals|getattr|setattr|delattr|hasattr|vars|dir|compile|open)\s*\(/, // built-in functions that allow bypass
     /\b__builtins__\b/, // access to __builtins__
   ]
 
