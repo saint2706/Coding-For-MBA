@@ -11,5 +11,5 @@
 **Action:** Always include action buttons (like "Copy" or "Try It") within the revealed content area to facilitate immediate interaction, ensuring they are accessible and positioned logically.
 
 ## 2026-02-24 - Explicit Action Labels
-**Learning:** relying solely on keyboard shortcuts (like "Shift+Enter") as button labels obscures the primary action ("Run") for users who scan visually or don't know the shortcut.
+**Learning:** Relying solely on keyboard shortcuts (like "Shift+Enter") as button labels obscures the primary action ("Run") for users who scan visually or don't know the shortcut.
 **Action:** Always pair keyboard shortcuts with explicit text labels and icons for primary actions to ensure discoverability and clarity.

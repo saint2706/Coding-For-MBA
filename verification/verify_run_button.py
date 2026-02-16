@@ -11,11 +11,11 @@ def verify_run_button():
         print(f"Navigating to {url}")
         page.goto(url)
 
-        # Wait for the "Run Python code" button
+        # Wait for the "Run Python code (Shift+Enter)" button
         print("Waiting for run button...")
         try:
-            # We are looking for button with "Run Python code" accessible name
-            run_button = page.get_by_role("button", name="Run Python code").first
+            # We are looking for button with full accessible name from aria-label
+            run_button = page.get_by_role("button", name="Run Python code (Shift+Enter)").first
             run_button.wait_for(state="visible", timeout=30000)
             print("Run button found.")
 
