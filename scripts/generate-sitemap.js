@@ -1,7 +1,7 @@
 /**
  * Sitemap generator for Coding for MBA.
  *
- * Scans the Lessons directory for README.md and Phase_Overview.md files,
+ * Scans the content/lessons directory for README.md and Phase_Overview.md files,
  * extracts day/phase numbers, and writes a sitemap.xml to public/.
  *
  * Usage: node scripts/generate-sitemap.js
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
-const LESSONS_DIR = join(ROOT, 'Lessons')
+const LESSONS_DIR = join(ROOT, 'content', 'lessons')
 const BASE_URL = process.env.SITE_URL || 'https://saint2706.github.io/Coding-For-MBA'
 
 /** Extract frontmatter `day` or `phase` value from a markdown file. */
@@ -50,7 +50,7 @@ for (const file of phaseFiles) {
   }
 }
 
-// Lessons
+// Lesson pages
 const lessonFiles = findFiles(LESSONS_DIR, 'README.md')
 for (const file of lessonFiles) {
   const day = extractNumber(file, 'day')

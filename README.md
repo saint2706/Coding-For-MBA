@@ -77,7 +77,7 @@ src/
 │   └── contentLoader.ts  # Markdown parser & data layer
 ├── App.tsx
 └── main.tsx
-Lessons/               # 108 lesson markdown files
+content/lessons/       # 108 lesson markdown files
 ```
 
 ## 📜 Available Scripts

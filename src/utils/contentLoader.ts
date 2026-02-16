@@ -33,13 +33,13 @@ export interface DifficultyInfo {
   bg: string
 }
 
-const lessonFiles = import.meta.glob('/Lessons/**/README.md', {
+const lessonFiles = import.meta.glob('/content/lessons/**/README.md', {
   query: '?raw',
   import: 'default',
   eager: true,
 }) as Record<string, string>
 
-const phaseFiles = import.meta.glob('/Lessons/**/Phase_Overview.md', {
+const phaseFiles = import.meta.glob('/content/lessons/**/Phase_Overview.md', {
   query: '?raw',
   import: 'default',
   eager: true,
@@ -267,7 +267,7 @@ function freezeNotebook(notebook: Notebook): ImmutableNotebook {
   })
 }
 
-const notebookFiles = import.meta.glob('/Lessons/**/Phase_*_Solutions.ipynb', {
+const notebookFiles = import.meta.glob('/content/lessons/**/Phase_*_Solutions.ipynb', {
   query: '?raw',
   import: 'default',
   eager: true,

@@ -15,7 +15,7 @@ import {
 } from './frontmatter-parser.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const LESSONS_DIR = path.join(__dirname, '..', 'Lessons')
+const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
 const REQUIRED_FIELDS = ['day', 'title', 'phase', 'difficulty', 'duration']
 
 export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
