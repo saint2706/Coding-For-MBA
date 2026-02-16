@@ -78,10 +78,10 @@ export default defineConfig(({ mode }) => ({
             return 'search'
           }
           // Split lesson content files into their own chunk
-          if (normalId.includes('/Lessons/') && normalId.includes('README.md')) {
+          if (normalId.includes('/content/lessons/') && normalId.includes('README.md')) {
             return 'lesson-content'
           }
-          if (normalId.includes('/Lessons/') && normalId.includes('Phase_Overview.md')) {
+          if (normalId.includes('/content/lessons/') && normalId.includes('Phase_Overview.md')) {
             return 'phase-content'
           }
         },

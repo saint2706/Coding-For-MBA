@@ -8,7 +8,7 @@ const lessons = [
     tags: ['python', 'basics'],
     concepts: ['variable'],
     content: '# Intro\nVariables store values.',
-    path: '/Lessons/Phase_1/README.md',
+    path: '/content/lessons/Phase_1/README.md',
   },
   {
     day: 2,
@@ -17,7 +17,7 @@ const lessons = [
     tags: ['sql'],
     concepts: ['join'],
     content: 'Learn relational joins and indexing.',
-    path: '/Lessons/Phase_2/README.md',
+    path: '/content/lessons/Phase_2/README.md',
   },
 ]
 
