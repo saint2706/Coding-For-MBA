@@ -16,4 +16,4 @@
 ## 2025-05-27 - [Regex Validation Pitfalls]
 **Vulnerability:** Regex-based Python validation (`validatePythonCode`) missed built-in functions like `eval` and `exec`, allowing trivial bypass of import restrictions via string concatenation (e.g., `eval("im" + "port js")`).
 **Learning:** Pure regex validation for code is insufficient against obfuscation unless the *mechanisms* of dynamic execution (eval, exec, reflection) are also blocked.
-**Prevention:** Always block `eval`, `exec`, `globals`, `locals`, and `getattr` when using static analysis for security, but use lookbehind `(?<!\.)` to permit legitimate method calls (e.g., `model.eval()`).
+**Prevention:** Always block `eval`, `exec`, `globals`, `locals`, `getattr`, and `__builtins__` when using static analysis for security, but use lookbehind `(?<!\.)` to permit legitimate method calls (e.g., `model.eval()`).
