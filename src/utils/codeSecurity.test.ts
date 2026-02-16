@@ -90,4 +90,28 @@ print("bad")
     expect(validatePythonCode('__import__("js".lower())').valid).toBe(false)
     expect(validatePythonCode('x = __import__("j" + "s")').valid).toBe(false)
   })
+
+  it('should block eval and exec', () => {
+    expect(validatePythonCode('eval("print(1)")').valid).toBe(false)
+    expect(validatePythonCode('exec("print(1)")').valid).toBe(false)
+    expect(validatePythonCode('x = eval("1+1")').valid).toBe(false)
+  })
+
+  it('should block globals, locals, getattr', () => {
+    expect(validatePythonCode('globals()').valid).toBe(false)
+    expect(validatePythonCode('locals()').valid).toBe(false)
+    expect(validatePythonCode('getattr(obj, "name")').valid).toBe(false)
+  })
+
+  it('should allow method calls named eval, exec, etc', () => {
+    expect(validatePythonCode('model.eval()').valid).toBe(true)
+    expect(validatePythonCode('obj.exec()').valid).toBe(true)
+    expect(validatePythonCode('obj.globals()').valid).toBe(true)
+  })
+
+  it('should block __builtins__ access', () => {
+    expect(validatePythonCode('__builtins__').valid).toBe(false)
+    expect(validatePythonCode('print(__builtins__)').valid).toBe(false)
+    expect(validatePythonCode('x = __builtins__').valid).toBe(false)
+  })
 })

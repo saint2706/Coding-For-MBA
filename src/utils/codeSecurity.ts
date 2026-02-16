@@ -38,6 +38,8 @@ export function validatePythonCode(code: string): ValidationResult {
     /__import__\s*\(\s*chr\s*\(/, // __import__(chr(...) - character obfuscation
     /__import__\s*\(\s*['"][^'"]*['"]\s*\.\s*(lower|upper|strip|replace|format)\s*\(/, // __import__("...".method()) - string method obfuscation
     /__builtins__\s*\.\s*__import__/, // __builtins__.__import__
+    /(?<!\.)\b(eval|exec|globals|locals|getattr)\s*\(/, // built-in functions that allow bypass
+    /\b__builtins__\b/, // access to __builtins__
   ]
 
   for (const pattern of patterns) {
