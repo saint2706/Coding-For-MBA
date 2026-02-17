@@ -120,7 +120,13 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
             className="python-runner__btn"
             onClick={handleRun}
             disabled={isLoading}
-            aria-label="Run Python code (Shift+Enter)"
+            aria-label={
+              pyodideLoading
+                ? 'Loading Python environment...'
+                : running
+                  ? 'Executing Python code...'
+                  : 'Run Python code (Shift+Enter)'
+            }
             title="Run (Shift+Enter)"
           >
             {pyodideLoading ? (
