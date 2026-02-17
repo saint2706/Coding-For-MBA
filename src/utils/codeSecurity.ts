@@ -62,6 +62,13 @@ export function validatePythonCode(code: string): ValidationResult {
     /\bfrom\s+builtins\s+import/, // from builtins import - prevents direct builtin imports
     /(?<!\.)\b(eval|exec|globals|locals|getattr|setattr|delattr|hasattr|vars|dir|compile|open)\s*\(/, // built-in functions that allow bypass
     /\b__builtins__\b/, // access to __builtins__
+    /\b__globals__\b/, // access to __globals__
+    /\b__subclasses__\b/, // access to __subclasses__
+    /\b__bases__\b/, // access to __bases__
+    /\b__mro__\b/, // access to __mro__
+    /\b__getattribute__\b/, // access to __getattribute__
+    /\b__code__\b/, // access to __code__
+    /\b__closure__\b/, // access to __closure__
   ]
 
   for (const pattern of patterns) {

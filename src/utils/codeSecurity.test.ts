@@ -161,4 +161,20 @@ print("bad")
     expect(validatePythonCode('obj.compile()').valid).toBe(true)
     expect(validatePythonCode('obj.open()').valid).toBe(true)
   })
+
+  it('should block introspection and escape vectors', () => {
+    expect(validatePythonCode('f.__globals__').valid).toBe(false)
+    expect(validatePythonCode('cls.__subclasses__()').valid).toBe(false)
+    expect(validatePythonCode('cls.__bases__').valid).toBe(false)
+    expect(validatePythonCode('cls.__mro__').valid).toBe(false)
+    expect(validatePythonCode('obj.__getattribute__("x")').valid).toBe(false)
+    expect(validatePythonCode('f.__code__').valid).toBe(false)
+    expect(validatePythonCode('f.__closure__').valid).toBe(false)
+  })
+
+  it('should block obfuscated introspection access', () => {
+    // These should be blocked because the regexes match the string literals 'name'
+    expect(validatePythonCode('getattr(f, "__globals__")').valid).toBe(false)
+    // And also because __globals__ pattern matches
+  })
 })
