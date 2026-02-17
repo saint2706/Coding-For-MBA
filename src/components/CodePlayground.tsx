@@ -6,7 +6,7 @@
  * and optional expected output display.
  */
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
@@ -27,6 +27,15 @@ const highlightTheme = {
     ...(oneDark['code[class*="language-"]'] as object),
     background: 'transparent',
   },
+}
+
+/**
+ * Handle interface for accessing CodePlayground methods imperatively.
+ */
+export interface CodePlaygroundHandle {
+  run: () => void
+  setCode: (code: string) => void
+  reset: () => void
 }
 
 /**
@@ -55,7 +64,7 @@ interface CodePlaygroundProps {
  * @param expectedOutput - Optional expected output to show users
  * @returns An interactive code playground component
  */
-export default function CodePlayground({ initialCode, expectedOutput }: CodePlaygroundProps) {
+const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(({ initialCode, expectedOutput }, ref) => {
   const [code, setCode] = useState(initialCode)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const preRef = useRef<HTMLDivElement>(null)
@@ -67,6 +76,16 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
   const handleReset = useCallback(() => {
     setCode(initialCode)
   }, [initialCode])
+
+  useImperativeHandle(ref, () => ({
+    run: () => {
+      if (runnerRef.current) {
+        runnerRef.current.run()
+      }
+    },
+    setCode: (newCode: string) => setCode(newCode),
+    reset: handleReset
+  }), [handleReset])
 
   /**
    * Synchronizes scroll position between textarea and syntax highlighter.
@@ -162,4 +181,8 @@ export default function CodePlayground({ initialCode, expectedOutput }: CodePlay
       )}
     </div>
   )
-}
+})
+
+CodePlayground.displayName = 'CodePlayground'
+
+export default CodePlayground
