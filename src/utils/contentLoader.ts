@@ -186,7 +186,10 @@ function extractHeadingsFromLessonContent(content: string): string[] {
     const headingText = match[1]
     if (!headingText) continue
     const cleaned = headingText.trim()
-    if (cleaned) headings.add(cleaned)
+    if (!cleaned) continue
+    // Skip exercise headings like "Exercise 1: Title" since exercises are handled separately
+    if (/^Exercise\s+\d+/i.test(cleaned)) continue
+    headings.add(cleaned)
   }
   return [...headings]
 }
@@ -196,10 +199,24 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
   const concepts = lesson.concepts || []
   const headings = extractHeadingsFromLessonContent(lesson.content)
   const exercises = extractExercisesFromLesson(lesson)
+  const seenIds = new Set<string>()
+
+  const createUniqueId = (baseId: string): string => {
+    let uniqueId = baseId
+    let counter = 1
+    while (seenIds.has(uniqueId)) {
+      // Append counter to disambiguate collisions
+      uniqueId = `${baseId}-${counter}`
+      counter += 1
+    }
+    seenIds.add(uniqueId)
+    return uniqueId
+  }
 
   concepts.forEach((concept) => {
+    const baseId = `d${lesson.day}-concept-${normalizeIdPart(concept)}`
     cards.push({
-      id: `d${lesson.day}-concept-${normalizeIdPart(concept)}`,
+      id: createUniqueId(baseId),
       day: lesson.day,
       phase: lesson.phase,
       lessonTitle: lesson.title,
@@ -210,8 +227,9 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
   })
 
   headings.forEach((heading) => {
+    const baseId = `d${lesson.day}-heading-${normalizeIdPart(heading)}`
     cards.push({
-      id: `d${lesson.day}-heading-${normalizeIdPart(heading)}`,
+      id: createUniqueId(baseId),
       day: lesson.day,
       phase: lesson.phase,
       lessonTitle: lesson.title,
@@ -222,8 +240,9 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
   })
 
   exercises.forEach((exercise, index) => {
+    const baseId = `d${lesson.day}-exercise-${index + 1}-${normalizeIdPart(exercise.title)}`
     cards.push({
-      id: `d${lesson.day}-exercise-${index + 1}-${normalizeIdPart(exercise.title)}`,
+      id: createUniqueId(baseId),
       day: lesson.day,
       phase: lesson.phase,
       lessonTitle: lesson.title,

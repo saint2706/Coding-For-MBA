@@ -59,8 +59,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   }, [location.pathname, phases])
 
   const [manualOpen, setManualOpen] = useState<number | null>(null)
-  const dueByPhase = getReviewDueCountByPhase()
-  const reviewStreak = getReviewStreak()
+  const dueByPhase = useMemo(() => getReviewDueCountByPhase(), [])
+  const reviewStreak = useMemo(() => getReviewStreak(), [])
 
   /**
    * Determines currently open phase: manual toggle takes precedence over auto-derived.
