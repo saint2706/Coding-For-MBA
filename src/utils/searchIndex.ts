@@ -1,151 +1,162 @@
-/**
- * Search Index Module
- *
- * Provides full-text search functionality for lessons using Fuse.js.
- * Implements fuzzy search across lesson titles, tags, concepts, and content
- * with markdown syntax stripping for better search results.
- */
+import Fuse from 'fuse.js'
+import { getAllLessons, type Lesson } from './contentLoader'
 
-import Fuse, { type FuseResultMatch } from 'fuse.js'
-import { getAllLessons } from './contentLoader'
-
-/**
- * Strips markdown syntax to get plain text for better search and snippet display.
- *
- * Removes code blocks, inline code, headings, formatting, links, images,
- * list markers, blockquotes, tables, and horizontal rules.
- *
- * @param md - Raw markdown string
- * @returns Plain text with markdown syntax removed
- */
-function stripMarkdown(md: string): string {
-  return md
-    .replace(/```[\s\S]*?```/g, '') // code blocks
-    .replace(/`[^`]*`/g, '') // inline code
-    .replace(/#{1,6}\s+/g, '') // headings
-    .replace(/[*_~]{1,3}([^*_~]+)[*_~]{1,3}/g, '$1') // bold/italic/strikethrough
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // links
-    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1') // images
-    .replace(/^\s*[-*+]\s+/gm, '') // list markers
-    .replace(/^\s*\d+\.\s+/gm, '') // ordered list markers
-    .replace(/^\s*>\s+/gm, '') // blockquotes
-    .replace(/\|/g, ' ') // table separators
-    .replace(/-{3,}/g, '') // horizontal rules
-    .replace(/\n{2,}/g, '\n') // collapse multiple newlines
-    .trim()
+export interface SearchDocument extends Lesson {
+  plainContent: string
+  dayText: string
+  phaseText: string
 }
 
-/**
- * Builds search documents from all lessons with plain text content.
- *
- * @returns Array of lesson objects with added plainContent field
- */
-function buildSearchDocuments() {
-  return getAllLessons().map((lesson) => ({
-    ...lesson,
-    plainContent: stripMarkdown(lesson.content),
-  }))
-}
-
-/**
- * Type representing a lesson document prepared for search indexing.
- * Extends the base Lesson type with a plainContent field.
- */
-export type SearchDocument = ReturnType<typeof buildSearchDocuments>[number]
-
-/**
- * Represents a search result with the matched document and relevance information.
- */
 export interface SearchResult {
   item: SearchDocument
-  matches?: ReadonlyArray<FuseResultMatch>
   score?: number
 }
 
-/**
- * Fuse.js instance for fuzzy search (created lazily on first search).
- */
-let fuseInstance: Fuse<SearchDocument> | null = null
+const TITLE_WEIGHT = 8
+const CONCEPT_WEIGHT = 4
+const TAG_WEIGHT = 3
+const PHASE_WEIGHT = 2
+const DAY_WEIGHT = 2
+const BODY_WEIGHT = 1
 
-/**
- * Cached search documents array.
- */
-let searchDocs: SearchDocument[] = []
-
-/**
- * Gets or creates the Fuse.js search instance.
- *
- * Lazily initializes the search index with weighted keys:
- * - title: 3x weight
- * - tags: 2x weight
- * - concepts: 2x weight
- * - plainContent: 1x weight
- *
- * @returns Configured Fuse.js instance
- */
-function getFuse(): Fuse<SearchDocument> {
-  if (!fuseInstance) {
-    searchDocs = buildSearchDocuments()
-    fuseInstance = new Fuse(searchDocs, {
-      keys: [
-        { name: 'title', weight: 3 },
-        { name: 'tags', weight: 2 },
-        { name: 'concepts', weight: 2 },
-        { name: 'plainContent', weight: 1 },
-      ],
-      includeMatches: true,
-      includeScore: true,
-      threshold: 0.4,
-      minMatchCharLength: 2,
-      ignoreLocation: true,
-    })
-  }
-  return fuseInstance
+function stripMarkdown(md: string): string {
+  return md
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/[#>*_~\-|]/g, ' ')
+    .replace(/^\s*\d+\.\s+/gm, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 }
 
-/**
- * Performs a fuzzy search across all lessons.
- *
- * Searches lesson titles, tags, concepts, and content for matches.
- * Returns results sorted by relevance score with highlighted match information.
- *
- * @param query - Search query string
- * @param limit - Maximum number of results to return (default: 20)
- * @returns Array of search results with match information
- */
+function toDocument(lesson: Lesson): SearchDocument {
+  return {
+    ...lesson,
+    plainContent: stripMarkdown(lesson.content),
+    dayText: `day ${lesson.day}`,
+    phaseText: `phase ${lesson.phase}`,
+  }
+}
+
+function normalizeQuery(query: string): string[] {
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .map((token) => token.trim())
+    .filter((token) => token.length > 1 || /^\d+$/.test(token))
+}
+
+function scoreField(
+  text: string | readonly string[] | undefined,
+  terms: readonly string[],
+  weight: number,
+) {
+  if (!text || terms.length === 0) return 0
+  const haystack = Array.isArray(text)
+    ? text.join(' ').toLowerCase()
+    : typeof text === 'string'
+      ? text.toLowerCase()
+      : ''
+  return terms.reduce((acc, term) => (haystack.includes(term) ? acc + weight : acc), 0)
+}
+
+export function computeRankingBoost(doc: SearchDocument, query: string): number {
+  const terms = normalizeQuery(query)
+  return (
+    scoreField(doc.title, terms, TITLE_WEIGHT) +
+    scoreField(doc.concepts, terms, CONCEPT_WEIGHT) +
+    scoreField(doc.tags, terms, TAG_WEIGHT) +
+    scoreField(doc.phaseText, terms, PHASE_WEIGHT) +
+    scoreField(doc.dayText, terms, DAY_WEIGHT) +
+    scoreField(doc.plainContent, terms, BODY_WEIGHT)
+  )
+}
+
+export function createSearchDocuments(lessons: readonly Lesson[]): SearchDocument[] {
+  return lessons.map(toDocument)
+}
+
+export function createSearchEngine(lessons = getAllLessons()): Fuse<SearchDocument> {
+  return new Fuse(createSearchDocuments(lessons), {
+    keys: [
+      { name: 'title', weight: TITLE_WEIGHT },
+      { name: 'concepts', weight: CONCEPT_WEIGHT },
+      { name: 'tags', weight: TAG_WEIGHT },
+      { name: 'phaseText', weight: PHASE_WEIGHT },
+      { name: 'dayText', weight: DAY_WEIGHT },
+      { name: 'plainContent', weight: BODY_WEIGHT },
+    ],
+    includeScore: true,
+    threshold: 0.38,
+    ignoreLocation: true,
+    minMatchCharLength: 2,
+  })
+}
+
+let cachedEngine: Fuse<SearchDocument> | null = null
+
+function getEngine(): Fuse<SearchDocument> {
+  if (!cachedEngine) cachedEngine = createSearchEngine()
+  return cachedEngine
+}
+
 export function search(query: string, limit = 20): SearchResult[] {
   if (!query.trim()) return []
-  const fuse = getFuse()
-  return fuse.search(query, { limit }) as SearchResult[]
+  const rawResults = getEngine().search(query, { limit: Math.max(limit * 2, 20) })
+
+  return rawResults
+    .map((result) => ({
+      item: result.item,
+      score: (result.score ?? 1) - computeRankingBoost(result.item, query) / 100,
+    }))
+    .sort((a, b) => (a.score ?? 1) - (b.score ?? 1))
+    .slice(0, limit)
 }
 
-/**
- * Preloads the search index in the background to avoid jank on first search.
- * This should be called when the application is idle.
- */
+export function extractMatchedTerms(query: string): string[] {
+  return Array.from(new Set(normalizeQuery(query)))
+}
+
+export function getSearchSnippet(content: string, query: string, maxLength = 180): string {
+  const plain = content.trim()
+  if (!plain) return ''
+
+  const terms = extractMatchedTerms(query)
+  if (terms.length === 0) return plain.slice(0, maxLength)
+
+  const lower = plain.toLowerCase()
+  const firstMatch = terms
+    .map((term) => lower.indexOf(term))
+    .filter((idx) => idx >= 0)
+    .sort((a, b) => a - b)[0]
+
+  if (firstMatch === undefined) return `${plain.slice(0, maxLength).trim()}…`
+
+  const start = Math.max(0, firstMatch - Math.floor(maxLength / 3))
+  const end = Math.min(plain.length, start + maxLength)
+  const snippet = plain.slice(start, end).trim()
+  return `${start > 0 ? '…' : ''}${snippet}${end < plain.length ? '…' : ''}`
+}
+
 export function preloadSearchIndex(): void {
-  // Use requestIdleCallback if available, otherwise fallback to setTimeout
-  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ;(window as any).requestIdleCallback(
-      () => {
-        try {
-          getFuse()
-        } catch (error) {
-          // Fail gracefully if preloading the search index throws
-          console.error('Failed to preload search index during idle callback:', error)
-        }
-      },
-      { timeout: 2000 },
-    )
-  } else {
-    setTimeout(() => {
-      try {
-        getFuse()
-      } catch (error) {
-        // Fail gracefully if preloading the search index throws
-        console.error('Failed to preload search index during timeout:', error)
-      }
-    }, 1000)
+  const preload = () => {
+    try {
+      getEngine()
+    } catch (error) {
+      console.error('Failed to preload search index:', error)
+    }
   }
+
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    ;(
+      window as Window & {
+        requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void
+      }
+    ).requestIdleCallback(preload, { timeout: 1000 })
+    return
+  }
+
+  setTimeout(preload, 400)
 }
