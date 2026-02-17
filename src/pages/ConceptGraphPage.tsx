@@ -13,6 +13,7 @@ import { useState, useCallback } from 'react'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import ConceptGraph from '../components/ConceptGraph'
 import Breadcrumb from '../components/Breadcrumb'
+import { useDebounce } from '../hooks/useDebounce'
 
 /**
  * Phase colors used in the concept graph visualization.
@@ -60,6 +61,9 @@ const PHASE_NAMES = [
  */
 export default function ConceptGraphPage() {
   const [search, setSearch] = useState('')
+  // Debounce search term to prevent excessive D3 updates on every keystroke
+  const shouldResetImmediately = useCallback((s: string) => s === '', [])
+  const debouncedSearch = useDebounce(search, 300, shouldResetImmediately)
   const [activePhase, setActivePhase] = useState<number | null>(null)
 
   /**
@@ -119,7 +123,7 @@ export default function ConceptGraphPage() {
         </div>
       </div>
 
-      <ConceptGraph search={search} highlightPhase={activePhase} />
+      <ConceptGraph search={debouncedSearch} highlightPhase={activePhase} />
     </div>
   )
 }
