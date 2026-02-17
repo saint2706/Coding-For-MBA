@@ -13,3 +13,7 @@
 ## 2026-02-24 - Explicit Action Labels
 **Learning:** Relying solely on keyboard shortcuts (like "Shift+Enter") as button labels obscures the primary action ("Run") for users who scan visually or don't know the shortcut.
 **Action:** Always pair keyboard shortcuts with explicit text labels and icons for primary actions to ensure discoverability and clarity.
+
+## 2026-02-25 - Dynamic State in Disabled Controls
+**Learning:** Disabled controls (like a "Run" button during execution) often retain their static `aria-label`, failing to communicate critical state changes (e.g., "Loading" vs "Running") to screen reader users.
+**Action:** Dynamically update the `aria-label` of disabled controls to reflect their current status, ensuring users are informed of background processes even when interaction is blocked.
