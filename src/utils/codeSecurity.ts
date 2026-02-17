@@ -14,7 +14,9 @@ export interface ValidationResult {
  * - Direct access to the 'js' module (browser API access)
  * - Usage of __import__ for 'js'
  * - All forms of importlib imports (prevents dynamic module loading)
+ * - Import of sys module (prevents sys.modules access and other internals)
  * - Access to sys.modules (prevents accessing pre-loaded modules)
+ * - Import of os module (prevents command execution)
  * - Access to os.system, os.popen (prevents command execution)
  * - Import of subprocess module (prevents command execution)
  * - String manipulation to bypass checks
