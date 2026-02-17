@@ -9,6 +9,7 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase, phaseIcons } from '../utils/contentLoader'
 import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
+import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
 
 /**
  * Props for the Sidebar component.
@@ -58,6 +59,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   }, [location.pathname, phases])
 
   const [manualOpen, setManualOpen] = useState<number | null>(null)
+  const dueByPhase = getReviewDueCountByPhase()
+  const reviewStreak = getReviewStreak()
 
   /**
    * Determines currently open phase: manual toggle takes precedence over auto-derived.
@@ -158,6 +161,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             🧪 Exercises
           </Link>
 
+          <Link
+            to="/review"
+            className={`day-link ${location.pathname === '/review' ? 'active' : ''}`}
+            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
+            onClick={onClose}
+          >
+            🧠 Review
+          </Link>
+          <div className="sidebar-review-stats">
+            <small>Review streak: {reviewStreak} day(s)</small>
+          </div>
+
           {phases.map((phase) => {
             const lessons = getLessonsByPhase(phase.phase)
             const isActive = openPhase === phase.phase
@@ -179,11 +194,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <span className="phase-toggle-label">
                     Phase {phase.phase}: {phase.title}
                   </span>
-                  {completedInPhase.length > 0 && (
-                    <span className="phase-toggle-progress">
-                      {completedInPhase.length}/{lessons.length}
-                    </span>
-                  )}
+                  <span className="phase-toggle-progress">
+                    {completedInPhase.length}/{lessons.length} · 🧠 {dueByPhase[phase.phase] || 0}
+                  </span>
                   <span className="phase-toggle-arrow">▶</span>
                 </button>
 

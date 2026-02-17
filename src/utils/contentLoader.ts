@@ -125,6 +125,16 @@ export interface Exercise {
   tags: readonly string[]
 }
 
+export interface ReviewCardSeed {
+  id: string
+  day: number
+  phase: number
+  lessonTitle: string
+  sourceType: 'concept' | 'heading' | 'exercise'
+  prompt: string
+  answer: string
+}
+
 /** Parse exercise sections from a lesson markdown body. */
 function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
   const exercises: Exercise[] = []
@@ -160,10 +170,77 @@ function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
   return exercises
 }
 
+function normalizeIdPart(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, ' ')
+    .trim()
+    .replace(/\s+/g, '-')
+}
+
+function extractHeadingsFromLessonContent(content: string): string[] {
+  const headingRegex = /^###?\s+(.+)$/gm
+  const headings = new Set<string>()
+  let match
+  while ((match = headingRegex.exec(content)) !== null) {
+    const headingText = match[1]
+    if (!headingText) continue
+    const cleaned = headingText.trim()
+    if (cleaned) headings.add(cleaned)
+  }
+  return [...headings]
+}
+
+function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
+  const cards: ReviewCardSeed[] = []
+  const concepts = lesson.concepts || []
+  const headings = extractHeadingsFromLessonContent(lesson.content)
+  const exercises = extractExercisesFromLesson(lesson)
+
+  concepts.forEach((concept) => {
+    cards.push({
+      id: `d${lesson.day}-concept-${normalizeIdPart(concept)}`,
+      day: lesson.day,
+      phase: lesson.phase,
+      lessonTitle: lesson.title,
+      sourceType: 'concept',
+      prompt: `Explain this concept from Day ${lesson.day}: ${concept}`,
+      answer: `Concept from Day ${lesson.day} (${lesson.title}): ${concept}`,
+    })
+  })
+
+  headings.forEach((heading) => {
+    cards.push({
+      id: `d${lesson.day}-heading-${normalizeIdPart(heading)}`,
+      day: lesson.day,
+      phase: lesson.phase,
+      lessonTitle: lesson.title,
+      sourceType: 'heading',
+      prompt: `What is the key idea in this section: ${heading}?`,
+      answer: `Review section “${heading}” in Day ${lesson.day} (${lesson.title}).`,
+    })
+  })
+
+  exercises.forEach((exercise, index) => {
+    cards.push({
+      id: `d${lesson.day}-exercise-${index + 1}-${normalizeIdPart(exercise.title)}`,
+      day: lesson.day,
+      phase: lesson.phase,
+      lessonTitle: lesson.title,
+      sourceType: 'exercise',
+      prompt: `How would you solve exercise: ${exercise.title}?`,
+      answer: exercise.goal || `Practice solving: ${exercise.title}`,
+    })
+  })
+
+  return cards
+}
+
 const immutableLessons = Object.freeze(lessons.map(freezeLesson))
 const immutablePhases = Object.freeze(phases.map(freezePhase))
 
 let immutableExercises: readonly ImmutableExercise[] | null = null
+let immutableReviewCards: readonly ImmutableReviewCardSeed[] | null = null
 
 /** Return all parsed exercises across lessons. */
 export function getAllExercises(): readonly ImmutableExercise[] {
@@ -172,6 +249,14 @@ export function getAllExercises(): readonly ImmutableExercise[] {
     immutableExercises = Object.freeze(allExercises.map(freezeExercise))
   }
   return immutableExercises
+}
+
+export function getAllReviewCardSeeds(): readonly ImmutableReviewCardSeed[] {
+  if (!immutableReviewCards) {
+    const cards = lessons.flatMap(buildReviewCardsFromLesson)
+    immutableReviewCards = Object.freeze(cards.map(freezeReviewCardSeed))
+  }
+  return immutableReviewCards
 }
 
 /** Jupyter notebook cell shape used by imported phase notebooks. */
@@ -198,6 +283,7 @@ export interface Notebook {
 type ImmutableLesson = Readonly<Lesson>
 type ImmutablePhase = Readonly<Phase>
 type ImmutableExercise = Readonly<Exercise>
+type ImmutableReviewCardSeed = Readonly<ReviewCardSeed>
 type ImmutableNotebookCell = Readonly<NotebookCell>
 type ImmutableNotebook = Readonly<Notebook>
 
@@ -230,6 +316,10 @@ function freezeExercise(exercise: Exercise): ImmutableExercise {
     ...exercise,
     tags: Object.freeze([...exercise.tags]),
   })
+}
+
+function freezeReviewCardSeed(card: ReviewCardSeed): ImmutableReviewCardSeed {
+  return Object.freeze({ ...card })
 }
 
 function freezeNotebookCell(cell: NotebookCell): ImmutableNotebookCell {
