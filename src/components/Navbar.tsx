@@ -15,6 +15,9 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
+      // Skip navbar shortcut when on /search page to avoid conflict
+      if (location.pathname === '/search') return
+
       if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
         const target = event.target as HTMLElement | null
         if (
@@ -37,7 +40,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
 
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [navigate])
+  }, [navigate, location.pathname])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
