@@ -12,7 +12,7 @@ interface MockPythonRunnerProps {
 }
 
 vi.mock('../PythonRunner', () => ({
-  default: forwardRef((props: MockPythonRunnerProps, ref: React.Ref<unknown>) => {
+  default: forwardRef((_props: MockPythonRunnerProps, ref: React.Ref<unknown>) => {
     useImperativeHandle(ref, () => ({
       run: mockRunFn,
       cancel: vi.fn(),
