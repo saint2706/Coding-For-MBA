@@ -216,7 +216,7 @@ export function getReviewDueCountByPhase(now = new Date()): Record<number, numbe
  */
 export function getReviewStreak(now = new Date()): number {
   // Helper to format date as YYYY-MM-DD in local timezone
-  const formatLocalDate = (date: Date): string => {
+  const toLocalDateString = (date: Date): string => {
     const year = date.getFullYear()
     const month = String(date.getMonth() + 1).padStart(2, '0')
     const day = String(date.getDate()).padStart(2, '0')
@@ -227,13 +227,13 @@ export function getReviewStreak(now = new Date()): number {
     getReviewCards(now)
       .map((card) => card.state.lastReviewedAt)
       .filter((value): value is string => Boolean(value))
-      .map((value) => formatLocalDate(new Date(value))),
+      .map((value) => toLocalDateString(new Date(value))),
   )
 
   let streak = 0
   const cursor = new Date(now)
   while (true) {
-    const dayKey = formatLocalDate(cursor)
+    const dayKey = toLocalDateString(cursor)
     if (!reviewedDates.has(dayKey)) break
     streak += 1
     cursor.setDate(cursor.getDate() - 1)
