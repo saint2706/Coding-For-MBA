@@ -62,7 +62,8 @@ const PHASE_NAMES = [
 export default function ConceptGraphPage() {
   const [search, setSearch] = useState('')
   // Debounce search term to prevent excessive D3 updates on every keystroke
-  const debouncedSearch = useDebounce(search, 300, (s) => s === '')
+  const shouldResetImmediately = useCallback((s: string) => s === '', [])
+  const debouncedSearch = useDebounce(search, 300, shouldResetImmediately)
   const [activePhase, setActivePhase] = useState<number | null>(null)
 
   /**
