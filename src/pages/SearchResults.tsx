@@ -1,75 +1,64 @@
-/**
- * Search results page for curriculum content search.
- *
- * This page displays search results from the curriculum's search index,
- * showing matching lessons with highlighted text, snippets, and metadata.
- * Results are ranked by relevance using Fuse.js fuzzy search.
- *
- * @module pages/SearchResults
- */
-
-import { useState, useEffect, useMemo } from 'react'
-import { useSearchParams, Link } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Helmet } from '@dr.pogodin/react-helmet'
-import { search, type SearchResult } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 import { highlightText } from '../utils/searchHighlight'
+import {
+  extractMatchedTerms,
+  getSearchSnippet,
+  search,
+  type SearchResult,
+} from '../utils/searchIndex'
 
-/**
- * Extracts a relevant snippet of content around the search match.
- *
- * Finds the first occurrence of the query in the content and returns
- * a snippet centered around it with ellipsis for truncated text.
- * Falls back to the beginning of content if no match is found.
- *
- * @param result - The search result containing content
- * @param query - The search query
- * @returns A snippet string with ellipsis if truncated
- */
-function getContentSnippet(result: SearchResult, query: string): string {
-  const content = result.item.plainContent || result.item.content
-  const lowerContent = content.toLowerCase()
-  const lowerQuery = query.toLowerCase()
-  const matchIndex = lowerContent.indexOf(lowerQuery)
-
-  if (matchIndex === -1) return content.slice(0, 200).trim() + '…'
-
-  const start = Math.max(0, matchIndex - 80)
-  const end = Math.min(content.length, matchIndex + query.length + 120)
-  let snippet = content.slice(start, end).trim()
-  if (start > 0) snippet = '…' + snippet
-  if (end < content.length) snippet = snippet + '…'
-  return snippet
-}
-
-/**
- * Search results page component.
- *
- * Displays search results for curriculum lessons with:
- * - Highlighted matching text in titles and snippets
- * - Lesson metadata (day, difficulty, phase, tags)
- * - Result count and search query display
- * - Links to matching lessons
- * - Empty state for no results
- * - Minimum 2-character query requirement
- *
- * @returns The rendered search results page
- */
 export default function SearchResults() {
   const [searchParams] = useSearchParams()
-  const queryParam = searchParams.get('q') || ''
-  const [query, setQuery] = useState(queryParam)
+  const navigate = useNavigate()
+  const queryFromUrl = searchParams.get('q') ?? ''
+  const [query, setQuery] = useState(queryFromUrl)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  // Sync from URL param
   useEffect(() => {
-    setQuery(queryParam)
-  }, [queryParam])
+    setQuery(queryFromUrl)
+  }, [queryFromUrl])
 
-  const results: SearchResult[] = useMemo(
-    () => (query.trim().length >= 2 ? search(query, 50) : []),
-    [query],
-  )
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        const target = event.target as HTMLElement | null
+        if (
+          target?.tagName === 'INPUT' ||
+          target?.tagName === 'TEXTAREA' ||
+          target?.isContentEditable
+        )
+          return
+        event.preventDefault()
+        inputRef.current?.focus()
+      }
+
+      if (event.key === 'Escape' && document.activeElement === inputRef.current) {
+        event.preventDefault()
+        setQuery('')
+        navigate('/search')
+      }
+    }
+
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [navigate])
+
+  const results: SearchResult[] = useMemo(() => {
+    if (query.trim().length < 2) return []
+    return search(query, 50)
+  }, [query])
+
+  const terms = useMemo(() => extractMatchedTerms(query), [query])
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const trimmed = query.trim()
+    navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search')
+  }
 
   return (
     <div className="page-container">
@@ -77,10 +66,24 @@ export default function SearchResults() {
         <title>{query ? `Search: ${query}` : 'Search'} — Coding for MBA</title>
       </Helmet>
 
-      <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Search Results' }]} />
+      <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Search' }]} />
 
       <div className="search-page-header">
-        <h1>Search Results</h1>
+        <h1>Search lessons</h1>
+        <form onSubmit={handleSubmit} className="search-page-form">
+          <input
+            ref={inputRef}
+            type="search"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            className="search-page-input"
+            placeholder="Search title, concepts, tags, phase, day, and content..."
+            aria-label="Search lessons"
+          />
+          <button type="submit" className="search-page-submit">
+            Search
+          </button>
+        </form>
         {query && (
           <p className="search-page-summary">
             {results.length} result{results.length !== 1 ? 's' : ''} for &ldquo;{query}&rdquo;
@@ -92,8 +95,7 @@ export default function SearchResults() {
         <div className="search-results-list">
           {results.map((result) => {
             const diff =
-              difficultyConfig[result.item.difficulty || 'beginner'] || difficultyConfig.beginner!
-            const snippet = getContentSnippet(result, query)
+              difficultyConfig[result.item.difficulty || 'beginner'] ?? difficultyConfig.beginner!
 
             return (
               <Link
@@ -104,7 +106,7 @@ export default function SearchResults() {
                 <div className="search-result-card-header">
                   <span className="search-result-card-day">Day {result.item.day}</span>
                   <h3 className="search-result-card-title">
-                    {highlightText(result.item.title, query)}
+                    {highlightText(result.item.title, terms)}
                   </h3>
                   <span
                     className="difficulty-badge"
@@ -113,19 +115,23 @@ export default function SearchResults() {
                     {diff.label}
                   </span>
                 </div>
-                <p className="search-result-card-snippet">{highlightText(snippet, query)}</p>
-                {result.item.tags && result.item.tags.length > 0 && (
-                  <div className="search-result-card-tags">
-                    {result.item.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className={`search-result-tag ${tag.toLowerCase().includes(query.toLowerCase()) ? 'matched' : ''}`}
-                      >
-                        {highlightText(tag, query)}
-                      </span>
-                    ))}
-                  </div>
-                )}
+
+                <p className="search-result-card-snippet">
+                  {highlightText(getSearchSnippet(result.item.plainContent, query), terms)}
+                </p>
+
+                <div className="search-result-card-tags">
+                  {(result.item.concepts ?? []).slice(0, 3).map((concept) => (
+                    <span key={concept} className="search-result-tag">
+                      {highlightText(concept, terms)}
+                    </span>
+                  ))}
+                  {(result.item.tags ?? []).slice(0, 3).map((tag) => (
+                    <span key={tag} className="search-result-tag">
+                      {highlightText(tag, terms)}
+                    </span>
+                  ))}
+                </div>
                 <span className="search-result-card-phase">Phase {result.item.phase}</span>
               </Link>
             )
@@ -134,9 +140,14 @@ export default function SearchResults() {
       ) : query.trim().length >= 2 ? (
         <div className="search-empty-page">
           <p>No lessons matched your search.</p>
-          <p>Try different keywords or broader terms.</p>
+          <p>Try broader or different keywords.</p>
         </div>
-      ) : null}
+      ) : (
+        <div className="search-empty-page">
+          <p>Type at least 2 characters to search.</p>
+          <p>Shortcut: press “/” to focus this box and Esc to clear.</p>
+        </div>
+      )}
     </div>
   )
 }

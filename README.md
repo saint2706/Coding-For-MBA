@@ -80,6 +80,18 @@ src/
 content/lessons/       # 108 lesson markdown files
 ```
 
+
+## 🔎 Lesson Search
+
+- Use the **navbar search input** from any page, or open `/search` directly.
+- Keyboard shortcuts:
+  - `/` focuses the search box.
+  - `Esc` clears the current query.
+- Search indexes lesson `title`, `tags`, `concepts`, `phase`, `day`, and markdown body text.
+- Code blocks are stripped before indexing so prose matches stay relevant.
+- Ranking prioritizes **title > concepts > tags > body** and returns highlighted snippets.
+- The index is built on the client and cached after initial load, so it works offline once assets are cached.
+
 ## 📜 Available Scripts
 
 | Script                 | Description                   |

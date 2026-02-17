@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { search, type SearchResult } from '../utils/searchIndex'
+import { getSearchSnippet, search, type SearchResult } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
 import { useDebounce } from '../hooks/useDebounce'
 
@@ -138,23 +138,8 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
    * @returns Formatted text snippet with ellipses
    */
   function getSnippet(result: SearchResult): string {
-    const contentMatch = result.matches?.find((m) => m.key === 'plainContent')
-    if (!contentMatch) {
-      // Fall back to first 120 chars of content
-      const plain = result.item.plainContent || result.item.content
-      return plain.slice(0, 120).trim() + '…'
-    }
-
-    const text = contentMatch.value || ''
-    const firstIndex = contentMatch.indices?.[0]
-    if (!firstIndex) return text.slice(0, 120).trim() + '…'
-
-    const start = Math.max(0, firstIndex[0] - 40)
-    const end = Math.min(text.length, firstIndex[1] + 80)
-    let snippet = text.slice(start, end).trim()
-    if (start > 0) snippet = '…' + snippet
-    if (end < text.length) snippet = snippet + '…'
-    return snippet
+    const plain = result.item.plainContent || result.item.content
+    return getSearchSnippet(plain, debouncedQuery, 120)
   }
 
   if (!isOpen) return null

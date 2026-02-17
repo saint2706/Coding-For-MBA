@@ -215,6 +215,34 @@
 
 /* ===== SEARCH RESULTS PAGE ===== */
 
+.search-page-form {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.search-page-input {
+  flex: 1;
+  min-width: 260px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+}
+
+.search-page-submit {
+  border: 1px solid var(--border-active);
+  background: rgba(99, 102, 241, 0.16);
+  color: var(--text-heading);
+  border-radius: var(--radius-sm);
+  padding: 0.58rem 0.8rem;
+  font: inherit;
+  cursor: pointer;
+}
+
 .search-page-header {
   margin-bottom: 2rem;
 }

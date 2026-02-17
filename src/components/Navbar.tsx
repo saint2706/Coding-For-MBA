@@ -1,42 +1,49 @@
-/**
- * Navbar Component
- *
- * Main navigation bar with branding, search trigger, theme toggle,
- * and primary navigation links.
- */
-
-import { Link, useLocation } from 'react-router-dom'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/useTheme'
 
-/**
- * Props for the Navbar component.
- *
- * @property onToggleSidebar - Callback to toggle the sidebar visibility
- * @property onOpenSearch - Callback to open the search palette
- */
 interface NavbarProps {
   onToggleSidebar: () => void
-  onOpenSearch: () => void
 }
 
-/**
- * Main navigation bar component.
- *
- * Features:
- * - Hamburger menu for sidebar toggle
- * - Brand logo and name
- * - Search trigger button
- * - Theme toggle (dark/light mode)
- * - Navigation links (Home, Curriculum, GitHub)
- * - Responsive layout
- *
- * @param onToggleSidebar - Function to show/hide sidebar
- * @param onOpenSearch - Function to open search palette
- * @returns The main navigation bar
- */
-export default function Navbar({ onToggleSidebar, onOpenSearch }: NavbarProps) {
+export default function Navbar({ onToggleSidebar }: NavbarProps) {
   const location = useLocation()
+  const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
+  const [query, setQuery] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        const target = event.target as HTMLElement | null
+        if (
+          target?.tagName === 'INPUT' ||
+          target?.tagName === 'TEXTAREA' ||
+          target?.isContentEditable
+        )
+          return
+
+        event.preventDefault()
+        inputRef.current?.focus()
+      }
+
+      if (event.key === 'Escape' && document.activeElement === inputRef.current) {
+        event.preventDefault()
+        setQuery('')
+        navigate('/search')
+      }
+    }
+
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [navigate])
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const trimmed = query.trim()
+    navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search')
+  }
 
   return (
     <nav className="navbar" role="navigation" aria-label="Main navigation">
@@ -64,20 +71,18 @@ export default function Navbar({ onToggleSidebar, onOpenSearch }: NavbarProps) {
       </div>
 
       <div className="navbar-links">
-        <button className="search-trigger" onClick={onOpenSearch} aria-label="Search lessons">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-          </svg>
-          <span className="search-trigger-label">Search…</span>
-          <span className="search-trigger-shortcut">⌘K</span>
-        </button>
+        <form onSubmit={handleSubmit} className="navbar-search-form">
+          <input
+            ref={inputRef}
+            type="search"
+            className="navbar-search-input"
+            placeholder="Search…"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            aria-label="Search lessons"
+          />
+          <span className="navbar-search-shortcut">/</span>
+        </form>
         <button
           className="theme-toggle"
           onClick={toggleTheme}
@@ -91,6 +96,9 @@ export default function Navbar({ onToggleSidebar, onOpenSearch }: NavbarProps) {
         </Link>
         <Link to="/curriculum" className={location.pathname === '/curriculum' ? 'active' : ''}>
           Curriculum
+        </Link>
+        <Link to="/search" className={location.pathname === '/search' ? 'active' : ''}>
+          Search
         </Link>
         <a
           href="https://github.com/saint2706/Coding-For-MBA"
