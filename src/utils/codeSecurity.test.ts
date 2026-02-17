@@ -41,21 +41,37 @@ print("bad")
     expect(validatePythonCode(code).valid).toBe(false)
   })
 
-  it('should block importlib.import_module("js")', () => {
+  it('should block importlib and dynamic module loading', () => {
     expect(validatePythonCode('importlib.import_module("js")').valid).toBe(false)
     expect(validatePythonCode("importlib.import_module('js')").valid).toBe(false)
     expect(
       validatePythonCode('from importlib import import_module; import_module("js")').valid,
     ).toBe(false)
+    // New checks
+    expect(validatePythonCode('import importlib').valid).toBe(false)
+    expect(validatePythonCode('import importlib.metadata').valid).toBe(false)
+    expect(validatePythonCode('from importlib import resources').valid).toBe(false)
+    expect(validatePythonCode('import importlib as i').valid).toBe(false)
+    expect(validatePythonCode('__import__("importlib")').valid).toBe(false)
   })
 
-  it('should allow importlib for legitimate uses', () => {
-    expect(validatePythonCode('import importlib').valid).toBe(true)
-    expect(validatePythonCode('import importlib.metadata').valid).toBe(true)
-    expect(validatePythonCode('import importlib.resources').valid).toBe(true)
-    // Note: importlib.import_module() is intentionally blocked to prevent dynamic
-    // module loading, which could be used to bypass security restrictions.
-    // This is acceptable for an educational platform where dynamic imports aren't needed.
+  it('should block sys.modules and other system access', () => {
+    expect(validatePythonCode('sys.modules["js"]').valid).toBe(false)
+    expect(validatePythonCode('sys.modules.get("js")').valid).toBe(false)
+    expect(validatePythonCode('import sys').valid).toBe(false)
+    expect(validatePythonCode('from sys import modules').valid).toBe(false)
+    expect(validatePythonCode('__import__("sys")').valid).toBe(false)
+    expect(validatePythonCode("__import__('sys')").valid).toBe(false)
+    expect(validatePythonCode('os.system("ls")').valid).toBe(false)
+    expect(validatePythonCode('os.popen("ls")').valid).toBe(false)
+    expect(validatePythonCode('import os').valid).toBe(false)
+    expect(validatePythonCode('from os import system').valid).toBe(false)
+    expect(validatePythonCode('__import__("os")').valid).toBe(false)
+    expect(validatePythonCode("__import__('os')").valid).toBe(false)
+    expect(validatePythonCode('import subprocess').valid).toBe(false)
+    expect(validatePythonCode('from subprocess import run').valid).toBe(false)
+    expect(validatePythonCode('__import__("subprocess")').valid).toBe(false)
+    expect(validatePythonCode("__import__('subprocess')").valid).toBe(false)
   })
 
   it('should block string concatenation in __import__', () => {
