@@ -32,8 +32,14 @@ export function validatePythonCode(code: string): ValidationResult {
     /\bimport\s+js\b/, // import js
     /\bfrom\s+js\b/, // from js import ...
     /__import__\s*\(\s*['"]js['"]\s*\)/, // __import__('js')
-    /\bimportlib\s*\.\s*import_module\s*\(/, // importlib.import_module() - dynamic imports
-    /\bfrom\s+importlib\s+import\s+import_module/, // from importlib import import_module
+    /\bimport\s+importlib\b/, // import importlib - prevents dynamic module loading
+    /\bfrom\s+importlib\b/, // from importlib - prevents accessing import_module
+    /__import__\s*\(\s*['"]importlib['"]\s*\)/, // __import__('importlib')
+    /\bimportlib\s*\.\s*import_module\s*\(/, // importlib.import_module() - catch usage if pre-imported
+    /\bsys\.modules\b/, // sys.modules - prevents accessing loaded modules like 'js'
+    /\bos\.system\b/, // os.system - prevents command execution
+    /\bos\.popen\b/, // os.popen - prevents command execution
+    /\bsubprocess\b/, // subprocess - prevents command execution
     /__import__\s*\(\s*['"][^'"]*['"]\s*\+\s*['"][^'"]*['"]/, // __import__("..." + "...") - string concatenation
     /__import__\s*\(\s*chr\s*\(/, // __import__(chr(...) - character obfuscation
     /__import__\s*\(\s*['"][^'"]*['"]\s*\.\s*(lower|upper|strip|replace|format)\s*\(/, // __import__("...".method()) - string method obfuscation
