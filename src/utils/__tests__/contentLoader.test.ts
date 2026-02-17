@@ -2,6 +2,7 @@ import {
   getAdjacentLessons,
   getAllExercises,
   getAllLessons,
+  getAllReviewCardSeeds,
   getAllNotebooks,
   getAllPhases,
   getLesson,
@@ -129,6 +130,17 @@ test words repeated `.repeat(120)
     const freshLessons = getAllLessons()
     expect(freshLessons.length).toBe(baselineLessons.length)
     expect(freshLessons[0]?.title).toBe(baselineFirst?.title)
+  })
+
+  it('generates deterministic review card seeds from concepts/headings/exercises', () => {
+    const cards = getAllReviewCardSeeds()
+    expect(cards.length).toBeGreaterThan(100)
+    expect(cards.every((card) => typeof card.id === 'string' && card.id.length > 0)).toBe(true)
+    const unique = new Set(cards.map((card) => card.id))
+    expect(unique.size).toBe(cards.length)
+    expect(cards.some((card) => card.sourceType === 'heading')).toBe(true)
+    expect(cards.some((card) => card.sourceType === 'exercise')).toBe(true)
+    expect(cards.some((card) => card.sourceType === 'concept')).toBe(true)
   })
 
   it('prevents nested collection mutation from changing source exercise data', () => {

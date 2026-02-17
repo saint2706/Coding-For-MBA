@@ -1,0 +1,54 @@
+.review-page .review-card {
+  background: var(--surface-elevated, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 12px;
+  padding: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.review-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: var(--text-secondary, #6b7280);
+}
+
+.review-answer {
+  background: var(--surface-subtle, #f9fafb);
+  border-radius: 10px;
+  padding: 0.75rem;
+}
+
+.review-answer-btn,
+.review-action-btn {
+  border: 1px solid var(--border-color, #d1d5db);
+  border-radius: 8px;
+  padding: 0.55rem 0.8rem;
+  font-weight: 600;
+  background: var(--surface-elevated, #fff);
+}
+
+.review-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.review-again {
+  border-color: #ef4444;
+}
+.review-hard {
+  border-color: #f59e0b;
+}
+.review-good {
+  border-color: #10b981;
+}
+.review-easy {
+  border-color: #3b82f6;
+}
+
+.sidebar-review-stats {
+  padding: 0 1.25rem 0.75rem;
+  color: var(--text-secondary, #6b7280);
+}
