@@ -64,124 +64,130 @@ interface CodePlaygroundProps {
  * @param expectedOutput - Optional expected output to show users
  * @returns An interactive code playground component
  */
-const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(({ initialCode, expectedOutput }, ref) => {
-  const [code, setCode] = useState(initialCode)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
-  const preRef = useRef<HTMLDivElement>(null)
-  const runnerRef = useRef<PythonRunnerHandle>(null)
+const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
+  ({ initialCode, expectedOutput }, ref) => {
+    const [code, setCode] = useState(initialCode)
+    const textareaRef = useRef<HTMLTextAreaElement>(null)
+    const preRef = useRef<HTMLDivElement>(null)
+    const runnerRef = useRef<PythonRunnerHandle>(null)
 
-  /**
-   * Resets the code editor to its initial state.
-   */
-  const handleReset = useCallback(() => {
-    setCode(initialCode)
-  }, [initialCode])
+    /**
+     * Resets the code editor to its initial state.
+     */
+    const handleReset = useCallback(() => {
+      setCode(initialCode)
+    }, [initialCode])
 
-  useImperativeHandle(ref, () => ({
-    run: () => {
-      if (runnerRef.current) {
-        runnerRef.current.run()
+    useImperativeHandle(
+      ref,
+      () => ({
+        run: () => {
+          if (runnerRef.current) {
+            runnerRef.current.run()
+          }
+        },
+        setCode: (newCode: string) => setCode(newCode),
+        reset: handleReset,
+      }),
+      [handleReset],
+    )
+
+    /**
+     * Synchronizes scroll position between textarea and syntax highlighter.
+     */
+    useEffect(() => {
+      const ta = textareaRef.current
+      if (ta) {
+        ta.style.height = 'auto'
+        ta.style.height = ta.scrollHeight + 'px'
       }
-    },
-    setCode: (newCode: string) => setCode(newCode),
-    reset: handleReset
-  }), [handleReset])
+    }, [code])
 
-  /**
-   * Synchronizes scroll position between textarea and syntax highlighter.
-   */
-  useEffect(() => {
-    const ta = textareaRef.current
-    if (ta) {
-      ta.style.height = 'auto'
-      ta.style.height = ta.scrollHeight + 'px'
-    }
-  }, [code])
+    /**
+     * Handles scroll synchronization between textarea and highlight layer.
+     */
+    const handleScroll = useCallback(() => {
+      const ta = textareaRef.current
+      const pre = preRef.current
+      if (ta && pre) {
+        pre.scrollTop = ta.scrollTop
+        pre.scrollLeft = ta.scrollLeft
+      }
+    }, [])
 
-  /**
-   * Handles scroll synchronization between textarea and highlight layer.
-   */
-  const handleScroll = useCallback(() => {
-    const ta = textareaRef.current
-    const pre = preRef.current
-    if (ta && pre) {
-      pre.scrollTop = ta.scrollTop
-      pre.scrollLeft = ta.scrollLeft
-    }
-  }, [])
+    /**
+     * Handles keyboard shortcuts for running code.
+     */
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+      // Run code on Shift+Enter, Ctrl+Enter, or Meta+Enter
+      if ((e.shiftKey || e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault()
+        runnerRef.current?.run()
+      }
+    }, [])
 
-  /**
-   * Handles keyboard shortcuts for running code.
-   */
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    // Run code on Shift+Enter, Ctrl+Enter, or Meta+Enter
-    if ((e.shiftKey || e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault()
-      runnerRef.current?.run()
-    }
-  }, [])
-
-  return (
-    <div className="code-playground">
-      <div className="code-playground__toolbar">
-        <span className="code-playground__label">🐍 Python Playground</span>
-        <div className="code-playground__actions">
-          <CopyButton text={code} className="code-playground__btn" showEmoji={true} />
-          <button
-            className="code-playground__btn code-playground__btn--reset"
-            onClick={handleReset}
-            aria-label="Reset code to original"
-            title="Reset code to original"
-          >
-            ↺ Reset
-          </button>
+    return (
+      <div className="code-playground">
+        <div className="code-playground__toolbar">
+          <span className="code-playground__label">🐍 Python Playground</span>
+          <div className="code-playground__actions">
+            <CopyButton text={code} className="code-playground__btn" showEmoji={true} />
+            <button
+              className="code-playground__btn code-playground__btn--reset"
+              onClick={handleReset}
+              aria-label="Reset code to original"
+              title="Reset code to original"
+            >
+              ↺ Reset
+            </button>
+          </div>
         </div>
+
+        <div className="code-playground__editor-area">
+          <div className="code-playground__highlight" ref={preRef} aria-hidden="true">
+            <SyntaxHighlighter
+              style={highlightTheme}
+              language="python"
+              PreTag="div"
+              customStyle={{
+                margin: 0,
+                padding: '0.6rem 0.75rem',
+                background: 'transparent',
+                fontSize: '0.875rem',
+                lineHeight: '1.6',
+                fontFamily: 'var(--font-mono)',
+              }}
+              codeTagProps={{
+                style: { fontFamily: 'var(--font-mono)' },
+              }}
+            >
+              {code + '\n'}
+            </SyntaxHighlighter>
+          </div>
+          <textarea
+            ref={textareaRef}
+            className="code-playground__textarea"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            onScroll={handleScroll}
+            onKeyDown={handleKeyDown}
+            spellCheck={false}
+            aria-label="Python code editor. Press Shift+Enter to run."
+          />
+        </div>
+
+        <PythonRunner ref={runnerRef} code={code} />
+
+        {expectedOutput && (
+          <div className="code-playground__expected">
+            <div className="code-playground__expected-header">Expected Output</div>
+            <pre className="code-playground__expected-body">{expectedOutput}</pre>
+          </div>
+        )}
       </div>
-
-      <div className="code-playground__editor-area">
-        <div className="code-playground__highlight" ref={preRef} aria-hidden="true">
-          <SyntaxHighlighter
-            style={highlightTheme}
-            language="python"
-            PreTag="div"
-            customStyle={{
-              margin: 0,
-              padding: '0.6rem 0.75rem',
-              background: 'transparent',
-              fontSize: '0.875rem',
-              lineHeight: '1.6',
-              fontFamily: 'var(--font-mono)',
-            }}
-            codeTagProps={{
-              style: { fontFamily: 'var(--font-mono)' },
-            }}
-          >
-            {code + '\n'}
-          </SyntaxHighlighter>
-        </div>
-        <textarea
-          ref={textareaRef}
-          className="code-playground__textarea"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          onScroll={handleScroll}
-          onKeyDown={handleKeyDown}
-          spellCheck={false}
-          aria-label="Python code editor. Press Shift+Enter to run."
-        />
-      </div>
-
-      <PythonRunner ref={runnerRef} code={code} />
-
-      {expectedOutput && (
-        <div className="code-playground__expected">
-          <div className="code-playground__expected-header">Expected Output</div>
-          <pre className="code-playground__expected-body">{expectedOutput}</pre>
-        </div>
-      )}
-    </div>
-  )
-})
+    )
+  },
+)
 
 CodePlayground.displayName = 'CodePlayground'
 

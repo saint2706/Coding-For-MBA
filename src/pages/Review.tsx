@@ -1,3 +1,14 @@
+/**
+ * Spaced Repetition Review Page
+ *
+ * This page provides a spaced repetition review system for reinforcing learning.
+ * It displays review cards that are due based on an SM-2-like scheduling algorithm,
+ * allows users to reveal answers, and rate their recall difficulty. The page also
+ * shows current review streak and total due cards count.
+ *
+ * @module pages/Review
+ */
+
 import { useMemo, useState } from 'react'
 import { Helmet } from '@dr.pogodin/react-helmet'
 import Breadcrumb from '../components/Breadcrumb'
@@ -13,6 +24,18 @@ function getRatingLabel(rating: ReviewRating): string {
   return rating.charAt(0).toUpperCase() + rating.slice(1)
 }
 
+/**
+ * Review page component for spaced repetition learning.
+ *
+ * Features:
+ * - Displays due review cards one at a time
+ * - Shows review streak and total due count
+ * - Allows users to reveal answers before rating
+ * - Provides four difficulty ratings: again, hard, good, easy
+ * - Automatically advances to next card after rating
+ *
+ * @returns The Review page component
+ */
 export default function Review() {
   const [now, setNow] = useState(() => new Date())
   const [showAnswer, setShowAnswer] = useState(false)
@@ -63,7 +86,7 @@ export default function Review() {
               <p>{currentCard.answer}</p>
             </div>
           ) : (
-            <button className="review-answer-btn" onClick={() => setShowAnswer(true)}>
+            <button type="button" className="review-answer-btn" onClick={() => setShowAnswer(true)}>
               Show Answer
             </button>
           )}
@@ -72,6 +95,7 @@ export default function Review() {
             {(['again', 'hard', 'good', 'easy'] as const).map((rating) => (
               <button
                 key={rating}
+                type="button"
                 className={`review-action-btn review-${rating}`}
                 onClick={() => handleRate(rating)}
               >
