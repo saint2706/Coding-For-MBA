@@ -6,10 +6,10 @@
  * and an optional solution that can be revealed on demand.
  */
 
-import { useState, useId } from 'react'
+import { useState, useId, useRef } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import CodePlayground from './CodePlayground'
+import CodePlayground, { type CodePlaygroundHandle } from './CodePlayground'
 import CopyButton from './CopyButton'
 
 /**
@@ -76,6 +76,7 @@ export default function ExerciseWidget({
 }: ExerciseWidgetProps) {
   const [showSolution, setShowSolution] = useState(false)
   const solutionId = useId()
+  const playgroundRef = useRef<CodePlaygroundHandle>(null)
 
   return (
     <div className="exercise-widget">
@@ -100,7 +101,11 @@ export default function ExerciseWidget({
         </div>
       )}
 
-      <CodePlayground initialCode={starterCode} expectedOutput={expectedOutput} />
+      <CodePlayground
+        ref={playgroundRef}
+        initialCode={starterCode}
+        expectedOutput={expectedOutput}
+      />
 
       {solution && (
         <div className="exercise-widget__solution">
@@ -130,8 +135,24 @@ export default function ExerciseWidget({
                   zIndex: 10,
                   backgroundColor: 'var(--bg-card)',
                   borderRadius: 'var(--radius-sm)',
+                  display: 'flex',
+                  gap: '0.5rem',
+                  alignItems: 'center',
                 }}
               >
+                <button
+                  className="code-block-copy"
+                  onClick={() => playgroundRef.current?.setCode(solution)}
+                  aria-label="Load solution into playground"
+                  title="Try Solution"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                  }}
+                >
+                  🚀 Try Solution
+                </button>
                 <CopyButton text={solution} className="code-block-copy" showEmoji={true} />
               </div>
               <SyntaxHighlighter
