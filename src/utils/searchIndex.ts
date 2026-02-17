@@ -26,7 +26,7 @@ function stripMarkdown(md: string): string {
     .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/[#>*_~\-|]/g, ' ')
-    .replace(/\d+\.\s+/g, ' ')
+    .replace(/^\s*\d+\.\s+/gm, ' ')
     .replace(/\s+/g, ' ')
     .trim()
 }
@@ -45,7 +45,7 @@ function normalizeQuery(query: string): string[] {
     .toLowerCase()
     .split(/\s+/)
     .map((token) => token.trim())
-    .filter((token) => token.length > 1)
+    .filter((token) => token.length > 1 || /^\d+$/.test(token))
 }
 
 function scoreField(

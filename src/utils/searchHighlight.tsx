@@ -11,7 +11,10 @@ export function highlightText(text: string, terms: string | readonly string[]): 
 
   if (!text || normalized.length === 0) return [text]
 
-  const pattern = normalized.map(escapeRegExp).join('|')
+  // Deduplicate and sort terms by descending length so longer terms match before shorter substrings.
+  const ordered = Array.from(new Set(normalized)).sort((a, b) => b.length - a.length)
+
+  const pattern = ordered.map(escapeRegExp).join('|')
   const regex = new RegExp(`(${pattern})`, 'gi')
   const parts = text.split(regex)
 
