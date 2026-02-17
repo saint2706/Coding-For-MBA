@@ -35,7 +35,7 @@ describe('PythonRunner', () => {
       root.render(<PythonRunner code="print('hello')" />)
     })
 
-    const runButton = container.querySelector('button.python-runner__btn')
+    const runButton = container.querySelector('button.python-runner__btn') as HTMLButtonElement
     expect(runButton).toBeTruthy()
     expect(runButton?.disabled).toBe(false)
     expect(runButton?.getAttribute('aria-label')).toBe('Run Python code (Shift+Enter)')
@@ -54,12 +54,10 @@ describe('PythonRunner', () => {
       root.render(<PythonRunner code="print('hello')" />)
     })
 
-    const runButton = container.querySelector('button.python-runner__btn')
+    const runButton = container.querySelector('button.python-runner__btn') as HTMLButtonElement
     expect(runButton).toBeTruthy()
     expect(runButton?.disabled).toBe(true)
 
-    // This is the expected behavior AFTER my fix.
-    // Before fix, it would be 'Run Python code (Shift+Enter)'
     expect(runButton?.getAttribute('aria-label')).toBe('Loading Python environment...')
   })
 })
