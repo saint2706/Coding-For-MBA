@@ -206,28 +206,33 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   role="region"
                   aria-label={`Phase ${phase.phase} lessons`}
                 >
-                  <Link
-                    to={`/phase/${phase.phase}`}
-                    className={`day-link ${location.pathname === `/phase/${phase.phase}` ? 'active' : ''}`}
-                    onClick={onClose}
-                  >
-                    📄 Phase Overview
-                  </Link>
-                  {lessons.map((lesson) => (
-                    <Link
-                      key={lesson.day}
-                      to={`/lesson/${lesson.day}`}
-                      className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
-                      onClick={onClose}
-                    >
-                      {isLessonComplete(lesson.day) && (
-                        <span className="day-link-check" aria-label="Completed">
-                          ✓
-                        </span>
-                      )}
-                      Day {lesson.day}: {lesson.title}
-                    </Link>
-                  ))}
+                  {/* Performance: Only render lesson links when phase is active to reduce DOM size and reconciliation overhead */}
+                  {isActive && (
+                    <>
+                      <Link
+                        to={`/phase/${phase.phase}`}
+                        className={`day-link ${location.pathname === `/phase/${phase.phase}` ? 'active' : ''}`}
+                        onClick={onClose}
+                      >
+                        📄 Phase Overview
+                      </Link>
+                      {lessons.map((lesson) => (
+                        <Link
+                          key={lesson.day}
+                          to={`/lesson/${lesson.day}`}
+                          className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
+                          onClick={onClose}
+                        >
+                          {isLessonComplete(lesson.day) && (
+                            <span className="day-link-check" aria-label="Completed">
+                              ✓
+                            </span>
+                          )}
+                          Day {lesson.day}: {lesson.title}
+                        </Link>
+                      ))}
+                    </>
+                  )}
                 </div>
               </div>
             )
