@@ -7,14 +7,22 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+
+# Build output
 dist
 dist-ssr
 *.local
+*.tsbuildinfo
+public/sitemap.xml
+
+# Lock files (project uses npm)
+pnpm-lock.yaml
+yarn.lock
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+.vscode
 .idea
 .DS_Store
 *.suo
@@ -23,14 +31,9 @@ dist-ssr
 *.sln
 *.sw?
 
-# Build artifacts
-*.tsbuildinfo
-public/sitemap.xml
-
 # Playwright artifacts
 .playwright-artifacts/
 *.png
 playwright-report/
 test-results/
 actionlint
-/node_modules
