@@ -17,3 +17,7 @@
 ## 2026-02-25 - Dynamic State in Disabled Controls
 **Learning:** Disabled controls (like a "Run" button during execution) often retain their static `aria-label`, failing to communicate critical state changes (e.g., "Loading" vs "Running") to screen reader users.
 **Action:** Dynamically update the `aria-label` of disabled controls to reflect their current status, ensuring users are informed of background processes even when interaction is blocked.
+
+## 2026-02-27 - Current Page Indication
+**Learning:** Navigation links often lack a programmatic indication of the current page (e.g., visual highlighting is present but not semantic), leaving screen reader users lost in the site structure.
+**Action:** Use `aria-current="page"` on the active navigation link to explicitly communicate the user's current location to assistive technologies.

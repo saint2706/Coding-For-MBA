@@ -94,13 +94,25 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         >
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
+        <Link
+          to="/"
+          className={location.pathname === '/' ? 'active' : ''}
+          aria-current={location.pathname === '/' ? 'page' : undefined}
+        >
           Home
         </Link>
-        <Link to="/curriculum" className={location.pathname === '/curriculum' ? 'active' : ''}>
+        <Link
+          to="/curriculum"
+          className={location.pathname === '/curriculum' ? 'active' : ''}
+          aria-current={location.pathname === '/curriculum' ? 'page' : undefined}
+        >
           Curriculum
         </Link>
-        <Link to="/search" className={location.pathname === '/search' ? 'active' : ''}>
+        <Link
+          to="/search"
+          className={location.pathname === '/search' ? 'active' : ''}
+          aria-current={location.pathname === '/search' ? 'page' : undefined}
+        >
           Search
         </Link>
         <a

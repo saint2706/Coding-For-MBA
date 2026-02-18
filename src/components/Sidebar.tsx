@@ -131,6 +131,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <Link
             to="/"
             className={`day-link ${location.pathname === '/' ? 'active' : ''}`}
+            aria-current={location.pathname === '/' ? 'page' : undefined}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
             onClick={onClose}
           >
@@ -139,6 +140,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <Link
             to="/curriculum"
             className={`day-link ${location.pathname === '/curriculum' ? 'active' : ''}`}
+            aria-current={location.pathname === '/curriculum' ? 'page' : undefined}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
             onClick={onClose}
           >
@@ -147,6 +149,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <Link
             to="/progress"
             className={`day-link ${location.pathname === '/progress' ? 'active' : ''}`}
+            aria-current={location.pathname === '/progress' ? 'page' : undefined}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
             onClick={onClose}
           >
@@ -155,6 +158,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <Link
             to="/exercises"
             className={`day-link ${location.pathname === '/exercises' ? 'active' : ''}`}
+            aria-current={location.pathname === '/exercises' ? 'page' : undefined}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
             onClick={onClose}
           >
@@ -164,6 +168,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <Link
             to="/review"
             className={`day-link ${location.pathname === '/review' ? 'active' : ''}`}
+            aria-current={location.pathname === '/review' ? 'page' : undefined}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
             onClick={onClose}
           >
@@ -209,6 +214,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   <Link
                     to={`/phase/${phase.phase}`}
                     className={`day-link ${location.pathname === `/phase/${phase.phase}` ? 'active' : ''}`}
+                    aria-current={
+                      location.pathname === `/phase/${phase.phase}` ? 'page' : undefined
+                    }
                     onClick={onClose}
                   >
                     📄 Phase Overview
@@ -218,6 +226,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                       key={lesson.day}
                       to={`/lesson/${lesson.day}`}
                       className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
+                      aria-current={
+                        location.pathname === `/lesson/${lesson.day}` ? 'page' : undefined
+                      }
                       onClick={onClose}
                     >
                       {isLessonComplete(lesson.day) && (
