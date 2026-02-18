@@ -53,10 +53,11 @@ describe('Sidebar Performance', () => {
   ]
 
   it('does not render lesson links for closed phases', async () => {
-    vi.mocked(contentLoader.getAllPhases).mockReturnValue(phases as any)
+    // Cast to unknown first to bypass lint rules about direct casting to incompatible types if any
+    vi.mocked(contentLoader.getAllPhases).mockReturnValue(phases as unknown as ReturnType<typeof contentLoader.getAllPhases>)
     vi.mocked(contentLoader.getLessonsByPhase).mockImplementation((phase) => {
-      if (phase === 1) return lessonsPhase1 as any
-      if (phase === 2) return lessonsPhase2 as any
+      if (phase === 1) return lessonsPhase1 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
+      if (phase === 2) return lessonsPhase2 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
       return []
     })
 
@@ -79,10 +80,10 @@ describe('Sidebar Performance', () => {
   })
 
   it('renders lesson links when phase is opened', async () => {
-    vi.mocked(contentLoader.getAllPhases).mockReturnValue(phases as any)
+    vi.mocked(contentLoader.getAllPhases).mockReturnValue(phases as unknown as ReturnType<typeof contentLoader.getAllPhases>)
     vi.mocked(contentLoader.getLessonsByPhase).mockImplementation((phase) => {
-      if (phase === 1) return lessonsPhase1 as any
-      if (phase === 2) return lessonsPhase2 as any
+      if (phase === 1) return lessonsPhase1 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
+      if (phase === 2) return lessonsPhase2 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
       return []
     })
 
