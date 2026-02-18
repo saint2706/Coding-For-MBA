@@ -32,6 +32,11 @@ export interface ValidationResult {
 export function validatePythonCode(code: string): ValidationResult {
   if (!code) return { valid: true }
 
+  // Normalize code to handle line continuations
+  // Replace backslash + newline with an empty string to mimic Python's line continuation behavior
+  // This prevents bypassing regex checks by splitting keywords (e.g., "import \n js")
+  const normalizedCode = code.replace(/\\(\r\n|\r|\n)/g, '')
+
   // Regex patterns to detect 'js' module imports and bypass attempts
   // We use \b to ensure we don't match 'json' or 'jsp' etc.
   const patterns = [
@@ -72,7 +77,7 @@ export function validatePythonCode(code: string): ValidationResult {
   ]
 
   for (const pattern of patterns) {
-    if (pattern.test(code)) {
+    if (pattern.test(normalizedCode)) {
       return {
         valid: false,
         error: "Security Error: Direct access to browser APIs via 'js' module is restricted.",

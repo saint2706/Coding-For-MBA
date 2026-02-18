@@ -177,4 +177,13 @@ print("bad")
     expect(validatePythonCode('getattr(f, "__globals__")').valid).toBe(false)
     // And also because __globals__ pattern matches
   })
+
+  it('should block line continuations bypassing checks', () => {
+    // These would bypass regexes if line continuations weren't handled
+    expect(validatePythonCode('import \\\njs').valid).toBe(false)
+    expect(validatePythonCode('from \\\njs import window').valid).toBe(false)
+    expect(validatePythonCode('import \\\n  js').valid).toBe(false)
+    expect(validatePythonCode('import \\\n\tjs').valid).toBe(false)
+    expect(validatePythonCode('import \\\r\njs').valid).toBe(false)
+  })
 })
