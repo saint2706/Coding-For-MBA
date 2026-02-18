@@ -33,3 +33,4 @@ public/sitemap.xml
 playwright-report/
 test-results/
 actionlint
+/node_modules
