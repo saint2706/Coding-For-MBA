@@ -43,7 +43,7 @@ Element.prototype.scrollIntoView = vi.fn()
 
 describe('Navigation Accessibility', () => {
   let container: HTMLDivElement
-  let root: any
+  let root: ReturnType<typeof createRoot>
 
   beforeEach(() => {
     container = document.createElement('div')
