@@ -1,5 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'motion/react'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import SkipToContent from './components/SkipToContent'
@@ -25,6 +26,7 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const location = useLocation()
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     preloadSearchIndex()
@@ -51,20 +53,35 @@ export default function App() {
         <Navbar onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
         <main className="main-content" id="main-content" tabIndex={-1}>
           <Suspense fallback={<PageSkeleton />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/curriculum" element={<Curriculum />} />
-              <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
-              <Route path="/lesson/:dayNum" element={<Lesson />} />
-              <Route path="/progress" element={<ProgressDashboard />} />
-              <Route path="/exercises" element={<Exercises />} />
-              <Route path="/solutions/:phaseNum" element={<NotebookViewer />} />
-              <Route path="/search" element={<SearchResults />} />
-              <Route path="/concepts" element={<ConceptGraphPage />} />
-              <Route path="/stats" element={<ContentStats />} />
-              <Route path="/review" element={<Review />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <LayoutGroup>
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={location.pathname}
+                  initial={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: -12 }}
+                  transition={{
+                    duration: prefersReducedMotion ? 0 : 0.24,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                >
+                  <Routes location={location}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/curriculum" element={<Curriculum />} />
+                    <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
+                    <Route path="/lesson/:dayNum" element={<Lesson />} />
+                    <Route path="/progress" element={<ProgressDashboard />} />
+                    <Route path="/exercises" element={<Exercises />} />
+                    <Route path="/solutions/:phaseNum" element={<NotebookViewer />} />
+                    <Route path="/search" element={<SearchResults />} />
+                    <Route path="/concepts" element={<ConceptGraphPage />} />
+                    <Route path="/stats" element={<ContentStats />} />
+                    <Route path="/review" element={<Review />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </motion.div>
+              </AnimatePresence>
+            </LayoutGroup>
           </Suspense>
         </main>
         <MobileNav />

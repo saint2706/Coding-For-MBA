@@ -10,6 +10,7 @@
 
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { motion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { buildLessonSchema } from '../utils/seoSchemas'
 import {
@@ -197,6 +198,10 @@ export default function Lesson() {
               { label: `Day ${lesson.day}` },
             ]}
           />
+
+          <motion.div className="lesson-day-badge" layoutId={`lesson-day-badge-${lesson.day}`}>
+            Day {lesson.day}
+          </motion.div>
 
           {/* Meta bar */}
           <div className="lesson-meta-bar">

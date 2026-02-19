@@ -128,12 +128,8 @@
 
 /* Day links inside sidebar */
 .phase-days {
-  display: none;
+  overflow: hidden;
   padding: 0.25rem 0;
-}
-
-.phase-days.open {
-  display: block;
 }
 
 .day-link {

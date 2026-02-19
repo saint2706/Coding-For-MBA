@@ -6,6 +6,7 @@
  */
 
 import { useState, useEffect } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 
 /**
  * BackToTop button component that shows/hides based on scroll position.
@@ -17,6 +18,7 @@ import { useState, useEffect } from 'react'
  */
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
+  const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
     /**
@@ -38,25 +40,33 @@ export default function BackToTop() {
   }
 
   return (
-    <button
-      className={`back-to-top ${visible ? 'visible' : ''}`}
-      onClick={scrollToTop}
-      aria-label="Back to top"
-      title="Back to top"
-    >
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M18 15l-6-6-6 6" />
-      </svg>
-    </button>
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          className="back-to-top visible"
+          onClick={scrollToTop}
+          aria-label="Back to top"
+          title="Back to top"
+          initial={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 22 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 22 }}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.22 }}
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M18 15l-6-6-6 6" />
+          </svg>
+        </motion.button>
+      )}
+    </AnimatePresence>
   )
 }

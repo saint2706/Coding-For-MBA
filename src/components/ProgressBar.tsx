@@ -1,3 +1,5 @@
+import { motion, useReducedMotion } from 'motion/react'
+
 /**
  * ProgressBar Component
  *
@@ -32,6 +34,7 @@ interface ProgressBarProps {
  */
 export default function ProgressBar({ completed, total, showLabel = true }: ProgressBarProps) {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0
+  const prefersReducedMotion = useReducedMotion()
 
   return (
     <div
@@ -43,7 +46,14 @@ export default function ProgressBar({ completed, total, showLabel = true }: Prog
       aria-label={`${completed} of ${total} lessons completed`}
     >
       <div className="progress-bar-track">
-        <div className="progress-bar-fill" style={{ width: `${pct}%` }} />
+        <motion.div
+          className="progress-bar-fill"
+          initial={false}
+          animate={{ width: `${pct}%` }}
+          transition={
+            prefersReducedMotion ? { duration: 0 } : { type: 'spring', stiffness: 190, damping: 24 }
+          }
+        />
       </div>
       {showLabel && (
         <span className="progress-bar-label">

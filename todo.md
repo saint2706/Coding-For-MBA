@@ -34,30 +34,30 @@
 ## ⚡ Animations & Motion — `motion`
 
 ### Page Transitions
-- [ ] Fade + slide transitions between routes (AnimatePresence)
-- [ ] Staggered card entrance on Curriculum page
-- [ ] Smooth height transitions on accordion/collapsible sections
-- [ ] Exit animations when navigating away from a page
+- [x] Fade + slide transitions between routes (AnimatePresence)
+- [x] Staggered card entrance on Curriculum page
+- [x] Smooth height transitions on accordion/collapsible sections
+- [x] Exit animations when navigating away from a page
 
 ### Micro-Interactions
-- [ ] Sidebar items animate in on open
-- [ ] Progress bar fills with spring physics
-- [ ] Hover lift on lesson cards (scale + shadow)
-- [ ] Button press scale-down feedback
-- [ ] Code playground expand/collapse animation
-- [ ] Tooltip fade-in with slight offset
+- [x] Sidebar items animate in on open
+- [x] Progress bar fills with spring physics
+- [x] Hover lift on lesson cards (scale + shadow)
+- [x] Button press scale-down feedback
+- [x] Code playground expand/collapse animation
+- [x] Tooltip fade-in with slight offset
 
 ### Scroll Animations
-- [ ] Parallax hero section on Home page
-- [ ] Lessons fade-in as they scroll into view
-- [ ] Phase timeline animates on scroll
-- [ ] Stats counters animate up when visible (intersection observer + motion)
-- [ ] "Back to top" button slides in when scrolling down
+- [x] Parallax hero section on Home page
+- [x] Lessons fade-in as they scroll into view
+- [x] Phase timeline animates on scroll
+- [x] Stats counters animate up when visible (intersection observer + motion)
+- [x] "Back to top" button slides in when scrolling down
 
 ### Layout Animations
-- [ ] `layoutId` shared transitions for lesson → phase navigation
-- [ ] Reorder animation for exercise list sorting
-- [ ] Masonry-style stagger for concept graph nodes
+- [x] `layoutId` shared transitions for lesson → phase navigation
+- [x] Reorder animation for exercise list sorting
+- [x] Masonry-style stagger for concept graph nodes
 
 ---
 

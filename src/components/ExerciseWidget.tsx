@@ -7,6 +7,7 @@
  */
 
 import { useState, useId, useRef, useMemo, useCallback } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground, { type CodePlaygroundHandle } from './CodePlayground'
@@ -83,6 +84,7 @@ export default function ExerciseWidget({
   const [hasRevealed, setHasRevealed] = useState(false)
   const solutionId = useId()
   const playgroundRef = useRef<CodePlaygroundHandle>(null)
+  const prefersReducedMotion = useReducedMotion()
 
   const location = useLocation()
   const lessonDay = useMemo(() => {
@@ -159,68 +161,75 @@ export default function ExerciseWidget({
           >
             {showSolution ? '🔽 Hide Solution' : '💡 Show Solution'}
           </button>
-          <div
-            id={solutionId}
-            role="region"
-            aria-label="Solution"
-            className={`exercise-widget__solution-panel ${showSolution ? 'exercise-widget__solution-panel--open' : ''}`}
-            hidden={!showSolution}
-            aria-hidden={!showSolution}
-            inert={!showSolution}
-          >
-            {(hasRevealed || showSolution) && (
-              <div style={{ position: 'relative' }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    top: '0.5rem',
-                    right: '0.5rem',
-                    zIndex: 10,
-                    backgroundColor: 'var(--bg-card)',
-                    borderRadius: 'var(--radius-sm)',
-                    display: 'flex',
-                    gap: '0.5rem',
-                    alignItems: 'center',
-                  }}
-                >
-                  <button
-                    className="code-block-copy"
-                    onClick={() => playgroundRef.current?.setCode(solution)}
-                    aria-label="Load solution into playground"
-                    title="Try Solution"
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.35rem',
-                    }}
-                  >
-                    🚀 Try Solution
-                  </button>
-                  <CopyButton text={solution} className="code-block-copy" showEmoji={true} />
-                </div>
-                <SyntaxHighlighter
-                  style={solutionTheme}
-                  language="python"
-                  PreTag="div"
-                  customStyle={{
-                    margin: 0,
-                    padding: '0.75rem',
-                    background: 'var(--bg-code)',
-                    fontSize: '0.8125rem',
-                    lineHeight: '1.65',
-                    borderRadius: 'var(--radius-sm)',
-                  }}
-                  codeTagProps={{
-                    style: {
-                      fontFamily: 'var(--font-mono)',
-                    },
-                  }}
-                >
-                  {solution}
-                </SyntaxHighlighter>
-              </div>
+          <AnimatePresence initial={false}>
+            {showSolution && (
+              <motion.div
+                id={solutionId}
+                role="region"
+                aria-label="Solution"
+                className="exercise-widget__solution-panel"
+                initial={
+                  prefersReducedMotion ? { opacity: 1, height: 'auto' } : { opacity: 0, height: 0 }
+                }
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={prefersReducedMotion ? { opacity: 1, height: 0 } : { opacity: 0, height: 0 }}
+                transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.22 }}
+              >
+                {(hasRevealed || showSolution) && (
+                  <div style={{ position: 'relative' }}>
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '0.5rem',
+                        right: '0.5rem',
+                        zIndex: 10,
+                        backgroundColor: 'var(--bg-card)',
+                        borderRadius: 'var(--radius-sm)',
+                        display: 'flex',
+                        gap: '0.5rem',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <button
+                        className="code-block-copy"
+                        onClick={() => playgroundRef.current?.setCode(solution)}
+                        aria-label="Load solution into playground"
+                        title="Try Solution"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.35rem',
+                        }}
+                      >
+                        🚀 Try Solution
+                      </button>
+                      <CopyButton text={solution} className="code-block-copy" showEmoji={true} />
+                    </div>
+                    <SyntaxHighlighter
+                      style={solutionTheme}
+                      language="python"
+                      PreTag="div"
+                      customStyle={{
+                        margin: 0,
+                        padding: '0.75rem',
+                        background: 'var(--bg-code)',
+                        fontSize: '0.8125rem',
+                        lineHeight: '1.65',
+                        borderRadius: 'var(--radius-sm)',
+                      }}
+                      codeTagProps={{
+                        style: {
+                          fontFamily: 'var(--font-mono)',
+                        },
+                      }}
+                    >
+                      {solution}
+                    </SyntaxHighlighter>
+                  </div>
+                )}
+              </motion.div>
             )}
-          </div>
+          </AnimatePresence>
         </div>
       )}
     </div>

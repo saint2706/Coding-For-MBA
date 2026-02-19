@@ -144,6 +144,9 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
       })
     })
 
+    const prefersReducedMotion =
+      typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
     // D3 setup
     const d3Svg = d3.select(svg).attr('width', width).attr('height', height)
 
@@ -200,6 +203,16 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
       .join('g')
       .attr('class', 'graph-node')
       .attr('cursor', 'pointer')
+      .attr('opacity', prefersReducedMotion ? 0.9 : 0)
+
+    // Masonry-style staggered reveal for graph nodes
+    if (!prefersReducedMotion) {
+      nodeElements
+        .transition()
+        .duration(260)
+        .delay((d, i) => d.phase * 22 + i * 8)
+        .attr('opacity', 0.9)
+    }
 
     // Circle for each node
     nodeElements
