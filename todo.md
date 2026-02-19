@@ -23,11 +23,11 @@
 - [x] End-of-curriculum celebration (full-screen fireworks)
 
 ### Content Validation — `zod`
-- [ ] Define Zod schemas for lesson frontmatter
-- [ ] Validate phase metadata at build time
-- [ ] Schema-validate exercise JSON data
-- [ ] Type-safe curriculum config with `z.infer<>`
-- [ ] Add schema validation to the `validate-content` script
+- [x] Define Zod schemas for lesson frontmatter
+- [x] Validate phase metadata at build time
+- [x] Schema-validate exercise JSON data
+- [x] Type-safe curriculum config with `z.infer<>`
+- [x] Add schema validation to the `validate-content` script
 
 ---
 
