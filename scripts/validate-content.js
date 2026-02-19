@@ -1,6 +1,6 @@
 /**
  * Content Validation Script
- * Checks all 108 lesson READMEs have required frontmatter fields.
+ * Checks lesson READMEs have required frontmatter fields.
  * Run: node scripts/validate-content.js
  */
 
@@ -11,10 +11,10 @@ import {
   normalizeLineEndingsForScripts,
   parseNormalizedMarkdownForScripts,
 } from './frontmatter-parser.js'
+import { lessonFrontmatterSchema, phaseOverviewFrontmatterSchema } from './content-schemas.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
-const REQUIRED_FIELDS = ['day', 'title', 'phase', 'difficulty', 'duration']
 
 export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
   const results = []
@@ -24,7 +24,10 @@ export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
     const fullPath = path.join(dir, entry.name)
     if (entry.isDirectory()) {
       results.push(...findReadmes(fullPath, lessonsDir))
-    } else if (entry.name === 'README.md' && dir !== lessonsDir) {
+    } else if (
+      (entry.name === 'README.md' || entry.name === 'Phase_Overview.md') &&
+      dir !== lessonsDir
+    ) {
       results.push(fullPath)
     }
   }
@@ -32,7 +35,14 @@ export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
   return results
 }
 
-export function validateLessonContent(rawContent) {
+function formatZodIssues(error) {
+  return error.issues.map((issue) => {
+    const pathLabel = issue.path.length > 0 ? issue.path.join('.') : 'frontmatter'
+    return `Invalid ${pathLabel}: ${issue.message}`
+  })
+}
+
+export function validateLessonContent(rawContent, fileName = 'README.md') {
   const normalizedContent = normalizeLineEndingsForScripts(rawContent)
   const { frontmatter: fields, content: body } =
     parseNormalizedMarkdownForScripts(normalizedContent)
@@ -43,20 +53,11 @@ export function validateLessonContent(rawContent) {
     return fileErrors
   }
 
-  for (const field of REQUIRED_FIELDS) {
-    if (!(field in fields)) {
-      fileErrors.push(`Missing required field: ${field}`)
-    }
-  }
-
-  if (fields.day !== undefined && isNaN(Number(fields.day))) {
-    fileErrors.push(`"day" should be a number, got: ${fields.day}`)
-  }
-  if (fields.phase !== undefined && isNaN(Number(fields.phase))) {
-    fileErrors.push(`"phase" should be a number, got: ${fields.phase}`)
-  }
-  if (fields.duration !== undefined && isNaN(Number(fields.duration))) {
-    fileErrors.push(`"duration" should be a number, got: ${fields.duration}`)
+  const schema =
+    fileName === 'Phase_Overview.md' ? phaseOverviewFrontmatterSchema : lessonFrontmatterSchema
+  const result = schema.safeParse(fields)
+  if (!result.success) {
+    fileErrors.push(...formatZodIssues(result.error))
   }
 
   if (body.trim().length < 100) {
@@ -78,7 +79,7 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
   for (const filePath of readmes) {
     const relativePath = path.relative(lessonsDir, filePath)
     const fileContent = fs.readFileSync(filePath, 'utf8')
-    const fileErrors = validateLessonContent(fileContent)
+    const fileErrors = validateLessonContent(fileContent, path.basename(filePath))
 
     if (fileErrors.length > 0) {
       failCount++

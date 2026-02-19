@@ -26,4 +26,57 @@ describe('validateLessonContent', () => {
     expect(crlfErrors).toEqual([])
     expect(crlfErrors).toEqual(lfErrors)
   })
+
+  it('reports no issues for valid lesson schema content', () => {
+    const content = `---
+day: 7
+title: Data Storytelling
+phase: 2
+difficulty: intermediate
+duration: 45
+tags: ["communication", "visualization"]
+concepts:
+  - insight
+  - narrative
+---
+This lesson body contains enough detail to satisfy the minimum body length validation check while also exercising optional array metadata fields.`
+
+    expect(validateLessonContent(content)).toEqual([])
+  })
+
+  it('reports readable per-field schema issues for invalid lesson content', () => {
+    const content = `---
+day: day-one
+title:
+phase: 0
+duration: quick
+---
+This body is intentionally short.`
+
+    const errors = validateLessonContent(content)
+
+    expect(errors).toEqual(
+      expect.arrayContaining([
+        'Invalid day: Expected number, received nan',
+        'Invalid title: Required',
+        'Invalid phase: Number must be greater than 0',
+        'Invalid difficulty: Required',
+        'Invalid duration: Expected number, received nan',
+        'Content body is suspiciously short (< 100 chars)',
+      ]),
+    )
+  })
+
+  it('validates phase overview frontmatter with the phase schema', () => {
+    const phaseOverview = `---
+phase: 3
+title: Data Engineering
+days: [25, 26, 27]
+totalDuration: 180
+difficulty: intermediate
+---
+This phase overview body is intentionally long enough to pass body checks while verifying that phase metadata validation applies for Phase_Overview markdown files.`
+
+    expect(validateLessonContent(phaseOverview, 'Phase_Overview.md')).toEqual([])
+  })
 })
