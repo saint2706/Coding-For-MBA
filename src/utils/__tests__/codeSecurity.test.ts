@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validatePythonCode } from './codeSecurity'
+import { validatePythonCode } from '../codeSecurity'
 
 describe('validatePythonCode', () => {
   it('should allow safe code', () => {
