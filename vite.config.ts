@@ -77,6 +77,15 @@ export default defineConfig(({ mode }) => ({
           if (normalId.includes('node_modules/fuse.js')) {
             return 'search'
           }
+          if (
+            normalId.includes('node_modules/motion') ||
+            normalId.includes('node_modules/framer-motion')
+          ) {
+            return 'motion'
+          }
+          if (normalId.includes('node_modules/zustand')) {
+            return 'zustand'
+          }
           // Split lesson content files into their own chunk
           if (normalId.includes('/content/lessons/') && normalId.includes('README.md')) {
             return 'lesson-content'

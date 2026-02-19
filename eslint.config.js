@@ -11,13 +11,10 @@ export default defineConfig([
   globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
-    extends: [
-      js.configs.recommended,
-      ...tseslint.configs.recommended,
-      reactHooks.configs['recommended-latest'],
-      reactRefresh.configs.vite,
-    ],
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
     plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
       sonarjs,
       'eslint-comments': eslintComments,
     },
@@ -37,6 +34,9 @@ export default defineConfig([
         'error',
         { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^_' },
       ],
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       'eslint-comments/no-unused-disable': 'error',
       'eslint-comments/no-unlimited-disable': 'error',
       'sonarjs/no-identical-functions': 'error',
