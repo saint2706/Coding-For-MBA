@@ -136,50 +136,55 @@ function createHeadingComponent(
   }
 }
 
-const glossaryRegex = getGlossaryRegex()
+// Use global flag 'g' to iterate over matches without string slicing
+const glossaryRegex = new RegExp(getGlossaryRegex().source, 'gi')
 
 /** Wrap only the first occurrence of each glossary term in a text node. */
 function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
   const parts: (string | JSX.Element)[] = []
   const matched = new Set<string>()
-  let remaining = text
+  let lastIndex = 0
+  let match
   let keyIdx = 0
 
-  while (remaining.length > 0) {
-    const match = glossaryRegex.exec(remaining)
-    if (!match) {
-      parts.push(remaining)
-      break
-    }
+  // Reset lastIndex for the shared regex instance
+  glossaryRegex.lastIndex = 0
 
+  while ((match = glossaryRegex.exec(text)) !== null) {
     const termLower = match[1]!.toLowerCase()
+    const matchStart = match.index
+    const matchEnd = match.index + match[0].length
+
+    // Append text before the match
+    if (matchStart > lastIndex) {
+      parts.push(text.slice(lastIndex, matchStart))
+    }
+
     if (matched.has(termLower)) {
-      parts.push(remaining.slice(0, match.index + match[0].length))
-      remaining = remaining.slice(match.index + match[0].length)
-      glossaryRegex.lastIndex = 0
-      continue
-    }
-
-    matched.add(termLower)
-    const defKey = Object.keys(glossaryTerms).find((k) => k.toLowerCase() === termLower)
-    const definition = defKey ? glossaryTerms[defKey] : undefined
-
-    if (match.index > 0) {
-      parts.push(remaining.slice(0, match.index))
-    }
-
-    if (definition) {
-      parts.push(
-        <span key={`gl-${keyIdx++}`} className="glossary-term" data-definition={definition}>
-          {match[0]}
-        </span>,
-      )
-    } else {
+      // Already matched in this paragraph, just append the text
       parts.push(match[0])
+    } else {
+      matched.add(termLower)
+      const defKey = Object.keys(glossaryTerms).find((k) => k.toLowerCase() === termLower)
+      const definition = defKey ? glossaryTerms[defKey] : undefined
+
+      if (definition) {
+        parts.push(
+          <span key={`gl-${keyIdx++}`} className="glossary-term" data-definition={definition}>
+            {match[0]}
+          </span>,
+        )
+      } else {
+        parts.push(match[0])
+      }
     }
 
-    remaining = remaining.slice(match.index + match[0].length)
-    glossaryRegex.lastIndex = 0
+    lastIndex = matchEnd
+  }
+
+  // Append remaining text
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex))
   }
 
   return parts
