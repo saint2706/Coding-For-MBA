@@ -9,11 +9,11 @@
 ## 🔥 Quick Wins (1-2 hours each)
 
 ### Toast Notifications — `react-hot-toast`
-- [ ] Add toast feedback on progress save ("Progress saved ✓")
-- [ ] Toast on exercise submission (correct/incorrect)
-- [ ] Toast on theme toggle ("Switched to dark mode")
-- [ ] Toast on search palette open/close (keyboard shortcut hint)
-- [ ] Error boundary toasts instead of blank error screens
+- [x] Add toast feedback on progress save ("Progress saved ✓")
+- [x] Toast on exercise submission (correct/incorrect)
+- [x] Toast on theme toggle ("Switched to dark mode")
+- [x] Toast on search palette open/close (keyboard shortcut hint)
+- [x] Error boundary toasts instead of blank error screens
 
 ### Confetti Celebrations — `canvas-confetti`
 - [ ] Confetti burst when a quiz is aced (100%)

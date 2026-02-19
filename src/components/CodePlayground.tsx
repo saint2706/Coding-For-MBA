@@ -11,6 +11,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
 import CopyButton from './CopyButton'
+import { toastError, toastSuccess } from '../utils/toast'
 
 /**
  * Custom syntax highlighting theme with transparent background.
@@ -48,6 +49,8 @@ interface CodePlaygroundProps {
   initialCode: string
   expectedOutput?: string
 }
+
+const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g, '\n')
 
 /**
  * Interactive Python code editor and playground.
@@ -126,6 +129,26 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
       }
     }, [])
 
+    const handleExecutionComplete = useCallback(
+      ({ output, error }: { output: string | null; error: string | null }) => {
+        if (!expectedOutput) return
+        if (error) {
+          toastError('Exercise submission incorrect — check your code and try again.')
+          return
+        }
+
+        const actual = normalizeOutput(output ?? '')
+        const expected = normalizeOutput(expectedOutput)
+        if (actual === expected) {
+          toastSuccess('Exercise submission correct ✓')
+          return
+        }
+
+        toastError('Exercise submission incorrect — compare your output and retry.')
+      },
+      [expectedOutput],
+    )
+
     return (
       <div className="code-playground">
         <div className="code-playground__toolbar">
@@ -176,7 +199,7 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
           />
         </div>
 
-        <PythonRunner ref={runnerRef} code={code} />
+        <PythonRunner ref={runnerRef} code={code} onExecutionComplete={handleExecutionComplete} />
 
         {expectedOutput && (
           <div className="code-playground__expected">

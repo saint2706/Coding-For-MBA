@@ -28,6 +28,7 @@ export interface PythonRunnerHandle {
 interface PythonRunnerProps {
   code: string
   compact?: boolean
+  onExecutionComplete?: (result: { output: string | null; error: string | null }) => void
 }
 
 /**
@@ -48,7 +49,7 @@ interface PythonRunnerProps {
  * @returns A Python code runner component
  */
 const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
-  ({ code, compact = false }, ref) => {
+  ({ code, compact = false, onExecutionComplete }, ref) => {
     const { loading: pyodideLoading, runPython } = usePyodide()
     const [output, setOutput] = useState<string | null>(null)
     const [error, setError] = useState<string | null>(null)
@@ -94,13 +95,14 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
         if (runIdRef.current !== currentRunId) return
         setOutput(result.output)
         setError(result.error)
+        onExecutionComplete?.({ output: result.output, error: result.error })
       } finally {
         if (runIdRef.current === currentRunId) {
           abortControllerRef.current = null
           setRunning(false)
         }
       }
-    }, [code, runPython, running, pyodideLoading])
+    }, [code, onExecutionComplete, runPython, running, pyodideLoading])
 
     useImperativeHandle(
       ref,
