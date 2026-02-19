@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { createSearchDocuments, createSearchEngine, computeRankingBoost } from './searchIndex'
-import type { Lesson } from './contentLoader'
+import { createSearchDocuments, createSearchEngine, computeRankingBoost } from '../searchIndex'
+import type { Lesson } from '../contentLoader'
 
 const lessons: Lesson[] = [
   {
