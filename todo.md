@@ -16,11 +16,11 @@
 - [x] Error boundary toasts instead of blank error screens
 
 ### Confetti Celebrations — `canvas-confetti`
-- [ ] Confetti burst when a quiz is aced (100%)
-- [ ] Confetti on completing all exercises for a day
-- [ ] Confetti on unlocking a new phase
-- [ ] Subtle sparkle effect when marking a lesson complete
-- [ ] End-of-curriculum celebration (full-screen fireworks)
+- [x] Confetti burst when a quiz is aced (100%)
+- [x] Confetti on completing all exercises for a day
+- [x] Confetti on unlocking a new phase
+- [x] Subtle sparkle effect when marking a lesson complete
+- [x] End-of-curriculum celebration (full-screen fireworks)
 
 ### Content Validation — `zod`
 - [ ] Define Zod schemas for lesson frontmatter

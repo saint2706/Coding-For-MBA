@@ -12,6 +12,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
 import CopyButton from './CopyButton'
 import { toastError, toastSuccess } from '../utils/toast'
+import { triggerQuizAcedConfetti } from '../utils/confetti'
 
 /**
  * Custom syntax highlighting theme with transparent background.
@@ -48,6 +49,7 @@ export interface CodePlaygroundHandle {
 interface CodePlaygroundProps {
   initialCode: string
   expectedOutput?: string
+  onExpectedOutputMatched?: () => void
 }
 
 const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g, '\n')
@@ -68,11 +70,12 @@ const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g,
  * @returns An interactive code playground component
  */
 const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
-  ({ initialCode, expectedOutput }, ref) => {
+  ({ initialCode, expectedOutput, onExpectedOutputMatched }, ref) => {
     const [code, setCode] = useState(initialCode)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const preRef = useRef<HTMLDivElement>(null)
     const runnerRef = useRef<PythonRunnerHandle>(null)
+    const runCountRef = useRef(0)
 
     /**
      * Resets the code editor to its initial state.
@@ -132,6 +135,8 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
     const handleExecutionComplete = useCallback(
       ({ output, error }: { output: string | null; error: string | null }) => {
         if (!expectedOutput) return
+        runCountRef.current += 1
+
         if (error) {
           toastError('Exercise submission incorrect — check your code and try again.')
           return
@@ -140,13 +145,17 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
         const actual = normalizeOutput(output ?? '')
         const expected = normalizeOutput(expectedOutput)
         if (actual === expected) {
+          if (runCountRef.current === 1) {
+            triggerQuizAcedConfetti()
+          }
+          onExpectedOutputMatched?.()
           toastSuccess('Exercise submission correct ✓')
           return
         }
 
         toastError('Exercise submission incorrect — compare your output and retry.')
       },
-      [expectedOutput],
+      [expectedOutput, onExpectedOutputMatched],
     )
 
     return (

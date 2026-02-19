@@ -8,6 +8,7 @@ const mockIsLessonComplete = vi.fn(() => false)
 const mockSetLastVisited = vi.fn()
 const mockToastSuccess = vi.fn()
 const mockToastInfo = vi.fn()
+const mockGetCompletedLessons = vi.fn(() => [])
 
 vi.mock('react-router-dom', () => ({
   useParams: () => ({ dayNum: '1' }),
@@ -29,6 +30,8 @@ vi.mock('../../utils/contentLoader', () => ({
     tags: [],
   }),
   getAdjacentLessons: () => ({ prev: null, next: null }),
+  getAllPhases: () => [{ phase: 1 }, { phase: 2 }],
+  getLessonsByPhase: (phase: number) => (phase === 1 ? [{ day: 1 }] : [{ day: 2 }]),
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
   },
@@ -38,6 +41,13 @@ vi.mock('../../utils/progressTracker', () => ({
   isLessonComplete: (...args: unknown[]) => mockIsLessonComplete(...args),
   toggleLessonComplete: (...args: unknown[]) => mockToggleLessonComplete(...args),
   setLastVisited: (...args: unknown[]) => mockSetLastVisited(...args),
+  getCompletedLessons: (...args: unknown[]) => mockGetCompletedLessons(...args),
+}))
+
+vi.mock('../../utils/confetti', () => ({
+  triggerSparkle: vi.fn(),
+  triggerPhaseUnlockConfetti: vi.fn(),
+  triggerCurriculumFireworks: vi.fn(),
 }))
 
 vi.mock('../../utils/toast', () => ({

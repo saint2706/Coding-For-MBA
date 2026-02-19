@@ -12,8 +12,19 @@ import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import { buildLessonSchema } from '../utils/seoSchemas'
-import { getLesson, getAdjacentLessons, difficultyConfig } from '../utils/contentLoader'
-import { isLessonComplete, toggleLessonComplete, setLastVisited } from '../utils/progressTracker'
+import {
+  getLesson,
+  getAdjacentLessons,
+  difficultyConfig,
+  getAllPhases,
+  getLessonsByPhase,
+} from '../utils/contentLoader'
+import {
+  isLessonComplete,
+  toggleLessonComplete,
+  setLastVisited,
+  getCompletedLessons,
+} from '../utils/progressTracker'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
@@ -23,6 +34,11 @@ import PrerequisitePills from '../components/PrerequisitePills'
 import RelatedLessons from '../components/RelatedLessons'
 import { useSwipe } from '../hooks/useSwipe'
 import { toastInfo, toastSuccess } from '../utils/toast'
+import {
+  triggerSparkle,
+  triggerPhaseUnlockConfetti,
+  triggerCurriculumFireworks,
+} from '../utils/confetti'
 
 /**
  * Lesson page component displaying a single day's lesson.
@@ -62,7 +78,9 @@ export default function Lesson() {
   }, [dayNum])
 
   const handleToggleComplete = useCallback(() => {
-    const nowComplete = toggleLessonComplete(Number(dayNum))
+    const day = Number(dayNum)
+    const beforeCompleted = new Set(getCompletedLessons())
+    const nowComplete = toggleLessonComplete(day)
     setCompleted(nowComplete)
 
     const now = Date.now()
@@ -72,12 +90,38 @@ export default function Lesson() {
 
     lastToastAtRef.current = now
     if (nowComplete) {
+      triggerSparkle()
       toastSuccess('Progress saved ✓')
+
+      const afterCompleted = getCompletedLessons()
+      const wasPhaseCompleted = lesson
+        ? getLessonsByPhase(lesson.phase).every((entry) => beforeCompleted.has(entry.day))
+        : false
+      const isPhaseCompleted = lesson
+        ? getLessonsByPhase(lesson.phase).every((entry) => afterCompleted.includes(entry.day))
+        : false
+
+      if (lesson && !wasPhaseCompleted && isPhaseCompleted) {
+        const hasNextPhase = getAllPhases().some((phase) => phase.phase === lesson.phase + 1)
+        if (hasNextPhase) {
+          triggerPhaseUnlockConfetti()
+          toastSuccess(`Phase ${lesson.phase + 1} unlocked!`)
+        }
+      }
+
+      const totalLessonCount = getAllPhases().reduce(
+        (sum, phase) => sum + getLessonsByPhase(phase.phase).length,
+        0,
+      )
+      if (afterCompleted.length === totalLessonCount) {
+        triggerCurriculumFireworks()
+        toastSuccess('🎓 Curriculum complete! Incredible work.')
+      }
       return
     }
 
     toastInfo('Marked as incomplete')
-  }, [dayNum])
+  }, [dayNum, lesson])
 
   // Keyboard shortcuts: ← prev, → next
   useEffect(() => {
