@@ -289,6 +289,16 @@
   border-radius: 0;
 }
 
+.exercise-widget__quiz-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-subtle);
+}
+
 .exercise-widget__solution {
   padding: 0.5rem 0.75rem;
   border-top: 1px solid var(--border-subtle);

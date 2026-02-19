@@ -1,166 +1,95 @@
 /**
- * Progress Tracker Module
+ * Progress tracker compatibility layer.
  *
- * Manages user progress through the curriculum using browser localStorage.
- * Tracks completed lessons and last visited lesson for persistent learning progress.
+ * Legacy callsites still import this module. Internally, all reads/writes route
+ * through the zustand progress store.
  */
 
-import { getStoredJson, getStoredString, removeStoredValue, setStoredString } from './safeStorage'
+import { useProgressStore } from '../stores/progressStore'
 
-/**
- * localStorage key for storing completed lesson day numbers.
- */
 const STORAGE_KEY = 'coding-for-mba-progress'
 
-/**
- * localStorage key for storing the last visited lesson day number.
- */
-const LAST_VISITED_KEY = 'coding-for-mba-last-visited'
+let hasAttemptedHydration = false
 
-/**
- * In-memory cache for completed lessons to avoid redundant JSON parsing
- * and localStorage reads, especially during render loops (e.g., Sidebar).
- */
-let completedCache: Set<number> | null = null
+function ensureHydrated(): void {
+  if (hasAttemptedHydration) return
+  hasAttemptedHydration = true
+  useProgressStore.getState().hydrate()
+}
 
-// Invalidate cache when storage is updated in another tab
 if (typeof window !== 'undefined') {
   window.addEventListener('storage', (event) => {
     if (event.key === STORAGE_KEY || event.key === null) {
-      completedCache = null
+      useProgressStore.persist.rehydrate()
     }
   })
 }
 
-/**
- * Retrieves the set of completed lesson day numbers from cache or localStorage.
- *
- * @returns Set of completed lesson day numbers
- */
-function getCompleted(): Set<number> {
-  if (completedCache) return completedCache
-
-  const parsed = getStoredJson<unknown[]>(STORAGE_KEY, [], Array.isArray)
-  completedCache = new Set(parsed.filter((n): n is number => typeof n === 'number'))
-  return completedCache
-}
-
-/**
- * Saves the set of completed lesson day numbers to localStorage and updates cache.
- *
- * @param completed - Set of completed lesson day numbers to persist
- */
-function saveCompleted(completed: Set<number>): void {
-  completedCache = completed
-  setStoredString(STORAGE_KEY, JSON.stringify([...completed]))
-}
-
-/**
- * Marks a lesson as completed.
- *
- * @param day - Day number of the lesson to mark as complete
- */
 export function markLessonComplete(day: number): void {
-  const completed = getCompleted()
-  completed.add(day)
-  saveCompleted(completed)
+  ensureHydrated()
+  useProgressStore.getState().markLessonComplete(day)
 }
 
-/**
- * Marks a lesson as incomplete (removes from completed set).
- *
- * @param day - Day number of the lesson to mark as incomplete
- */
 export function markLessonIncomplete(day: number): void {
-  const completed = getCompleted()
-  completed.delete(day)
-  saveCompleted(completed)
+  ensureHydrated()
+  useProgressStore.getState().markLessonIncomplete(day)
 }
 
-/**
- * Checks if a lesson is marked as completed.
- *
- * @param day - Day number of the lesson to check
- * @returns True if the lesson is completed, false otherwise
- */
 export function isLessonComplete(day: number): boolean {
-  return getCompleted().has(day)
+  ensureHydrated()
+  return useProgressStore.getState().isLessonComplete(day)
 }
 
-/**
- * Toggles a lesson's completion status.
- *
- * @param day - Day number of the lesson to toggle
- * @returns True if the lesson is now completed, false if now incomplete
- */
 export function toggleLessonComplete(day: number): boolean {
-  const completed = getCompleted()
-  if (completed.has(day)) {
-    completed.delete(day)
-    saveCompleted(completed)
-    return false
-  }
-  completed.add(day)
-  saveCompleted(completed)
-  return true
+  ensureHydrated()
+  return useProgressStore.getState().toggleLessonComplete(day)
 }
 
-/**
- * Retrieves all completed lesson day numbers.
- *
- * @returns Sorted array of completed lesson day numbers
- */
 export function getCompletedLessons(): number[] {
-  return [...getCompleted()].sort((a, b) => a - b)
+  ensureHydrated()
+  return useProgressStore.getState().completedLessons
 }
 
-/**
- * Gets the count of completed lessons.
- *
- * @returns Total number of completed lessons
- */
 export function getCompletedCount(): number {
-  return getCompleted().size
+  ensureHydrated()
+  return useProgressStore.getState().completedLessonsCount()
 }
 
-/**
- * Filters a list of phase lesson day numbers to only completed ones.
- *
- * @param phaseLessonDays - Array of lesson day numbers in a phase
- * @returns Array of completed lesson day numbers from the input
- */
 export function getCompletedForPhase(phaseLessonDays: number[]): number[] {
-  const completed = getCompleted()
-  return phaseLessonDays.filter((d) => completed.has(d))
+  ensureHydrated()
+  return useProgressStore.getState().getCompletedForPhase(phaseLessonDays)
 }
 
-/**
- * Records the last visited lesson day number.
- *
- * @param day - Day number of the lesson that was visited
- */
 export function setLastVisited(day: number): void {
-  setStoredString(LAST_VISITED_KEY, String(day))
+  ensureHydrated()
+  useProgressStore.getState().setLastVisited(day)
 }
 
-/**
- * Retrieves the last visited lesson day number.
- *
- * @returns Last visited lesson day number, or null if none recorded
- */
 export function getLastVisited(): number | null {
-  const raw = getStoredString(LAST_VISITED_KEY)
-  if (!raw) return null
-  const num = Number(raw)
-  return isNaN(num) || num < 1 ? null : num
+  ensureHydrated()
+  return useProgressStore.getState().lastVisitedLesson
 }
 
-/**
- * Clears all stored progress data from localStorage and resets cache.
- * Removes both completed lessons and last visited lesson records.
- */
 export function clearAllProgress(): void {
-  completedCache = null
-  removeStoredValue(STORAGE_KEY)
-  removeStoredValue(LAST_VISITED_KEY)
+  ensureHydrated()
+  useProgressStore.getState().clearAllProgress()
+}
+
+export function getPhaseProgress(phaseLessonDays: number[]): {
+  completed: number
+  total: number
+  percent: number
+} {
+  ensureHydrated()
+  return useProgressStore.getState().phaseProgress(phaseLessonDays)
+}
+
+export function getStreakDays(now?: Date): number {
+  ensureHydrated()
+  return useProgressStore.getState().streakDays(now)
+}
+
+export function hydrateProgressStore(): void {
+  hasAttemptedHydration = true
+  useProgressStore.getState().hydrate()
 }

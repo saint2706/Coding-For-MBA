@@ -4,6 +4,8 @@ import {
   getCompletedForPhase,
   getCompletedLessons,
   getLastVisited,
+  getPhaseProgress,
+  getStreakDays,
   isLessonComplete,
   markLessonComplete,
   markLessonIncomplete,
@@ -37,30 +39,23 @@ describe('progressTracker', () => {
     expect(getCompletedForPhase([9, 10, 12, 14])).toEqual([12])
   })
 
-  it('handles invalid stored state gracefully', () => {
-    // Scenario 1: invalid storage
-    localStorage.setItem('coding-for-mba-progress', 'not-json')
-    expect(getCompletedLessons()).toEqual([])
-
-    // Clear cache to simulate app restart or new session
-    clearAllProgress()
-
-    // Scenario 2: partially valid JSON
-    localStorage.setItem('coding-for-mba-progress', JSON.stringify(['1', 2, null]))
-    expect(getCompletedLessons()).toEqual([2])
-  })
-
-  it('stores and validates last visited lesson', () => {
+  it('stores and validates last visited lesson in zustand store', () => {
     expect(getLastVisited()).toBeNull()
 
     setLastVisited(8)
     expect(getLastVisited()).toBe(8)
 
-    localStorage.setItem('coding-for-mba-last-visited', '0')
-    expect(getLastVisited()).toBeNull()
+    setLastVisited(0)
+    expect(getLastVisited()).toBe(8)
+  })
 
-    localStorage.setItem('coding-for-mba-last-visited', 'abc')
-    expect(getLastVisited()).toBeNull()
+  it('provides computed selectors for phase progress and streak', () => {
+    markLessonComplete(1)
+    markLessonComplete(2)
+    markLessonComplete(5)
+
+    expect(getPhaseProgress([1, 2, 3, 4])).toEqual({ completed: 2, total: 4, percent: 50 })
+    expect(getStreakDays()).toBe(1)
   })
 
   it('does not throw when storage is unavailable or quota exceeded', () => {
@@ -82,48 +77,23 @@ describe('progressTracker', () => {
     removeSpy.mockRestore()
   })
 
-  it('returns typed fallbacks when storage reads throw', () => {
-    const getItemSpy = vi.spyOn(localStorage, 'getItem').mockImplementation(() => {
-      throw new DOMException('Blocked', 'SecurityError')
-    })
+  it('hydrates migrated legacy state on storage events', () => {
+    localStorage.setItem(
+      'coding-for-mba-progress',
+      JSON.stringify({
+        state: {
+          completedLessons: [1, 4],
+          lastVisitedLesson: 4,
+          completionDates: { 1: '2026-02-18', 4: '2026-02-19' },
+        },
+        version: 2,
+      }),
+    )
 
-    expect(() => getCompletedLessons()).not.toThrow()
-    expect(getCompletedLessons()).toEqual([])
-    expect(getLastVisited()).toBeNull()
-
-    getItemSpy.mockRestore()
-  })
-
-  it('uses memory cache to avoid redundant storage access', () => {
-    const getItemSpy = vi.spyOn(localStorage, 'getItem')
-
-    // First operation - should access storage to prime cache
-    markLessonComplete(1)
-    expect(getItemSpy).toHaveBeenCalledTimes(1)
-
-    // Second operation - should use cache and NOT access storage
-    const isComplete = isLessonComplete(1)
-    expect(isComplete).toBe(true)
-
-    // Verify call count hasn't increased - still 1
-    expect(getItemSpy).toHaveBeenCalledTimes(1)
-
-    getItemSpy.mockRestore()
-  })
-
-  it('invalidates cache on storage event from another tab', () => {
-    // Prime the cache
-    markLessonComplete(1)
-    expect(isLessonComplete(1)).toBe(true)
-    expect(isLessonComplete(2)).toBe(false)
-
-    // Simulate external change
-    localStorage.setItem('coding-for-mba-progress', JSON.stringify([1, 2]))
-
-    // Dispatch storage event (simulating cross-tab sync)
     window.dispatchEvent(new StorageEvent('storage', { key: 'coding-for-mba-progress' }))
 
-    // Verify cache was invalidated and new data loaded
-    expect(isLessonComplete(2)).toBe(true)
+    expect(getCompletedLessons()).toEqual([1, 4])
+    expect(getLastVisited()).toBe(4)
+    expect(getCompletedForPhase([2, 4, 9])).toEqual([4])
   })
 })

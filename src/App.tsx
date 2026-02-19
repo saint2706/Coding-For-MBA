@@ -9,6 +9,8 @@ import MobileNav from './components/MobileNav'
 import { PageSkeleton } from './components/Skeleton'
 import { ThemeProvider } from './context/ThemeProvider'
 import { preloadSearchIndex } from './utils/searchIndex'
+import { hydrateProgressStore } from './utils/progressTracker'
+import { hydrateQuizStore } from './stores/quizStore'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
@@ -30,6 +32,8 @@ export default function App() {
 
   useEffect(() => {
     preloadSearchIndex()
+    hydrateProgressStore()
+    hydrateQuizStore()
   }, [])
 
   useEffect(() => {

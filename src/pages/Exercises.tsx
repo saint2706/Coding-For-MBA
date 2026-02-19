@@ -19,6 +19,7 @@ import {
   phaseIcons,
 } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
+import { useQuizStore } from '../stores/quizStore'
 
 /**
  * Exercise browser page component.
@@ -41,6 +42,8 @@ export default function Exercises() {
   const [difficultyFilter, setDifficultyFilter] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOrder, setSortOrder] = useState<'phase-asc' | 'phase-desc' | 'title-asc'>('phase-asc')
+
+  const lowScoringTopics = useQuizStore((state) => state.getLowScoringTopics(60, 2).slice(0, 5))
 
   // Derive available phases from exercises
   const phases = useMemo(() => {
@@ -117,6 +120,20 @@ export default function Exercises() {
           })}
         </div>
       </div>
+
+      {lowScoringTopics.length > 0 && (
+        <div className="exercises-low-scoring">
+          <h3>📉 Spaced Repetition Focus</h3>
+          <p>Revisit these lower-scoring quiz topics to improve retention:</p>
+          <ul>
+            {lowScoringTopics.map((topic) => (
+              <li key={topic.quizId}>
+                {topic.topic} — accuracy {topic.accuracy}% ({topic.incorrect} misses)
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="exercises-filters">

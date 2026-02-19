@@ -43,6 +43,32 @@
   transform: translateY(-1px);
 }
 
+.exercises-low-scoring {
+  margin-bottom: 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  background: rgba(245, 158, 11, 0.06);
+}
+
+.exercises-low-scoring h3 {
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+}
+
+.exercises-low-scoring p {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.exercises-low-scoring ul {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
 /* --- Filter Bar --- */
 .exercises-filters {
   display: flex;
