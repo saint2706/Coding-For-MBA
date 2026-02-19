@@ -195,9 +195,29 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     Phase {phase.phase}: {phase.title}
                   </span>
                   <span className="phase-toggle-progress">
-                    {completedInPhase.length}/{lessons.length} · 🧠 {dueByPhase[phase.phase] || 0}
+                    <span aria-hidden="true">
+                      {completedInPhase.length}/{lessons.length} · 🧠 {dueByPhase[phase.phase] || 0}
+                    </span>
+                    <span className="sr-only">
+                      {completedInPhase.length} of {lessons.length} completed,{' '}
+                      {dueByPhase[phase.phase] || 0} reviews due
+                    </span>
                   </span>
-                  <span className="phase-toggle-arrow">▶</span>
+                  <span className="phase-toggle-arrow">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </span>
                 </button>
 
                 <div

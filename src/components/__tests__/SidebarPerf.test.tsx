@@ -54,10 +54,14 @@ describe('Sidebar Performance', () => {
 
   it('does not render lesson links for closed phases', async () => {
     // Cast to unknown first to bypass lint rules about direct casting to incompatible types if any
-    vi.mocked(contentLoader.getAllPhases).mockReturnValue(phases as unknown as ReturnType<typeof contentLoader.getAllPhases>)
+    vi.mocked(contentLoader.getAllPhases).mockReturnValue(
+      phases as unknown as ReturnType<typeof contentLoader.getAllPhases>,
+    )
     vi.mocked(contentLoader.getLessonsByPhase).mockImplementation((phase) => {
-      if (phase === 1) return lessonsPhase1 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
-      if (phase === 2) return lessonsPhase2 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
+      if (phase === 1)
+        return lessonsPhase1 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
+      if (phase === 2)
+        return lessonsPhase2 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
       return []
     })
 
@@ -66,7 +70,7 @@ describe('Sidebar Performance', () => {
       root.render(
         <MemoryRouter initialEntries={['/']}>
           <Sidebar isOpen={true} onClose={() => {}} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -75,15 +79,21 @@ describe('Sidebar Performance', () => {
     expect(container.textContent).toContain('Phase 2: Phase 2')
 
     // Lesson links should NOT be in the DOM
-    const lesson1 = Array.from(container.querySelectorAll('a')).find(el => el.textContent?.includes('Day 1: Lesson 1'))
+    const lesson1 = Array.from(container.querySelectorAll('a')).find((el) =>
+      el.textContent?.includes('Day 1: Lesson 1'),
+    )
     expect(lesson1).toBeUndefined()
   })
 
   it('renders lesson links when phase is opened', async () => {
-    vi.mocked(contentLoader.getAllPhases).mockReturnValue(phases as unknown as ReturnType<typeof contentLoader.getAllPhases>)
+    vi.mocked(contentLoader.getAllPhases).mockReturnValue(
+      phases as unknown as ReturnType<typeof contentLoader.getAllPhases>,
+    )
     vi.mocked(contentLoader.getLessonsByPhase).mockImplementation((phase) => {
-      if (phase === 1) return lessonsPhase1 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
-      if (phase === 2) return lessonsPhase2 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
+      if (phase === 1)
+        return lessonsPhase1 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
+      if (phase === 2)
+        return lessonsPhase2 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
       return []
     })
 
@@ -91,17 +101,19 @@ describe('Sidebar Performance', () => {
       root.render(
         <MemoryRouter initialEntries={['/']}>
           <Sidebar isOpen={true} onClose={() => {}} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
     // Initially lesson 1 is not visible
-    let lesson1 = Array.from(container.querySelectorAll('a')).find(el => el.textContent?.includes('Day 1: Lesson 1'))
+    let lesson1 = Array.from(container.querySelectorAll('a')).find((el) =>
+      el.textContent?.includes('Day 1: Lesson 1'),
+    )
     expect(lesson1).toBeUndefined()
 
     // Find and click the toggle for Phase 1
     const buttons = Array.from(container.querySelectorAll('button'))
-    const phase1Button = buttons.find(b => b.textContent?.includes('Phase 1: Phase 1'))
+    const phase1Button = buttons.find((b) => b.textContent?.includes('Phase 1: Phase 1'))
 
     expect(phase1Button).toBeDefined()
 
@@ -110,7 +122,9 @@ describe('Sidebar Performance', () => {
     })
 
     // Now lesson 1 should be visible
-    lesson1 = Array.from(container.querySelectorAll('a')).find(el => el.textContent?.includes('Day 1: Lesson 1'))
+    lesson1 = Array.from(container.querySelectorAll('a')).find((el) =>
+      el.textContent?.includes('Day 1: Lesson 1'),
+    )
     expect(lesson1).toBeDefined()
     expect(lesson1?.textContent).toContain('Day 1: Lesson 1')
   })
