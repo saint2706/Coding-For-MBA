@@ -15,7 +15,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
 import { HelmetProvider } from '@dr.pogodin/react-helmet'
+import { Toaster } from 'react-hot-toast'
 import App from './App'
+import { TOAST_DEFAULT_OPTIONS } from './utils/toast'
 import './styles/index.css'
 
 /**
@@ -27,6 +29,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <HelmetProvider>
       <HashRouter>
         <App />
+        <Toaster position="top-right" toastOptions={TOAST_DEFAULT_OPTIONS} />
       </HashRouter>
     </HelmetProvider>
   </React.StrictMode>,
