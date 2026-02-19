@@ -25,6 +25,7 @@ import {
 } from '../utils/progressTracker'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
+import AnimatedCounter from '../components/AnimatedCounter'
 
 /**
  * Progress dashboard page component.
@@ -77,15 +78,21 @@ export default function ProgressDashboard() {
       {/* Overall Stats */}
       <div className="progress-stats-card">
         <div className="progress-stat-big">
-          <span className="progress-stat-value">{overallPct}%</span>
+          <span className="progress-stat-value">
+            <AnimatedCounter value={overallPct} suffix="%" />
+          </span>
           <span className="progress-stat-label">Complete</span>
         </div>
         <div className="progress-stat-big">
-          <span className="progress-stat-value">{completedLessons.length}</span>
+          <span className="progress-stat-value">
+            <AnimatedCounter value={completedLessons.length} />
+          </span>
           <span className="progress-stat-label">Lessons Done</span>
         </div>
         <div className="progress-stat-big">
-          <span className="progress-stat-value">{totalLessons - completedLessons.length}</span>
+          <span className="progress-stat-value">
+            <AnimatedCounter value={totalLessons - completedLessons.length} />
+          </span>
           <span className="progress-stat-label">Remaining</span>
         </div>
       </div>

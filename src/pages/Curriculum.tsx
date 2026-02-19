@@ -8,7 +8,9 @@
  * @module pages/Curriculum
  */
 
+import { useRef } from 'react'
 import { Link } from 'react-router-dom'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import {
   getAllPhases,
@@ -31,6 +33,32 @@ import ProgressBar from '../components/ProgressBar'
  */
 export default function Curriculum() {
   const phases = getAllPhases()
+  const prefersReducedMotion = useReducedMotion()
+  const timelineRef = useRef<HTMLDivElement | null>(null)
+  const { scrollYProgress } = useScroll({
+    target: timelineRef,
+    offset: ['start 80%', 'end 30%'],
+  })
+  const timelineScaleY = useTransform(scrollYProgress, [0, 1], [0.1, 1])
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: prefersReducedMotion ? 0 : 0.08,
+        delayChildren: prefersReducedMotion ? 0 : 0.05,
+      },
+    },
+  }
+
+  const phaseVariants = {
+    hidden: prefersReducedMotion ? { opacity: 1 } : { opacity: 0, y: 14 },
+    visible: {
+      opacity: 1,
+      y: 0,
+    },
+  }
 
   return (
     <div className="page-container">
@@ -52,7 +80,15 @@ export default function Curriculum() {
         </p>
       </div>
 
-      <div className="curriculum-timeline">
+      <motion.div
+        className="curriculum-timeline"
+        ref={timelineRef}
+        style={{ ['--timeline-scale' as string]: prefersReducedMotion ? 1 : timelineScaleY }}
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.15 }}
+      >
         {phases.map((phase) => {
           const lessons = getLessonsByPhase(phase.phase)
           const diff =
@@ -60,7 +96,12 @@ export default function Curriculum() {
           const icon = phaseIcons[phase.phase - 1] || '📖'
 
           return (
-            <div className="curriculum-phase" key={phase.phase}>
+            <motion.div
+              className="curriculum-phase"
+              key={phase.phase}
+              variants={phaseVariants}
+              transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}
+            >
               <Link to={`/phase/${phase.phase}`} className="curriculum-phase-header">
                 <span style={{ fontSize: '1.25rem' }}>{icon}</span>
                 <h3>
@@ -98,10 +139,10 @@ export default function Curriculum() {
                   </Link>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
     </div>
   )
 }

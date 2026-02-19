@@ -6,6 +6,7 @@
  */
 
 import { useState, useMemo, useEffect, useRef } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase, phaseIcons } from '../utils/contentLoader'
 import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
@@ -41,6 +42,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
   const phases = getAllPhases()
   const navRef = useRef<HTMLDivElement>(null)
+  const prefersReducedMotion = useReducedMotion()
 
   /**
    * Derives which phase should be open based on current URL.
@@ -220,40 +222,71 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   </span>
                 </button>
 
-                <div
-                  className={`phase-days ${isActive ? 'open' : ''}`}
-                  id={`phase-${phase.phase}-days`}
-                  role="region"
-                  aria-label={`Phase ${phase.phase} lessons`}
-                >
-                  {/* Performance: Only render lesson links when phase is active to reduce DOM size and reconciliation overhead */}
+                <AnimatePresence initial={false}>
                   {isActive && (
-                    <>
-                      <Link
-                        to={`/phase/${phase.phase}`}
-                        className={`day-link ${location.pathname === `/phase/${phase.phase}` ? 'active' : ''}`}
-                        onClick={onClose}
+                    <motion.div
+                      className="phase-days open"
+                      id={`phase-${phase.phase}-days`}
+                      role="region"
+                      aria-label={`Phase ${phase.phase} lessons`}
+                      initial={
+                        prefersReducedMotion
+                          ? { opacity: 1, height: 'auto' }
+                          : { opacity: 0, height: 0 }
+                      }
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={
+                        prefersReducedMotion ? { opacity: 1, height: 0 } : { opacity: 0, height: 0 }
+                      }
+                      transition={{
+                        duration: prefersReducedMotion ? 0 : 0.2,
+                        ease: [0.22, 1, 0.36, 1],
+                      }}
+                    >
+                      <motion.div
+                        initial={
+                          prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }
+                        }
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: prefersReducedMotion ? 0 : 0.16 }}
                       >
-                        📄 Phase Overview
-                      </Link>
-                      {lessons.map((lesson) => (
                         <Link
-                          key={lesson.day}
-                          to={`/lesson/${lesson.day}`}
-                          className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
+                          to={`/phase/${phase.phase}`}
+                          className={`day-link ${location.pathname === `/phase/${phase.phase}` ? 'active' : ''}`}
                           onClick={onClose}
                         >
-                          {isLessonComplete(lesson.day) && (
-                            <span className="day-link-check" aria-label="Completed">
-                              ✓
-                            </span>
-                          )}
-                          Day {lesson.day}: {lesson.title}
+                          📄 Phase Overview
                         </Link>
+                      </motion.div>
+                      {lessons.map((lesson, index) => (
+                        <motion.div
+                          key={lesson.day}
+                          initial={
+                            prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }
+                          }
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{
+                            duration: prefersReducedMotion ? 0 : 0.16,
+                            delay: prefersReducedMotion ? 0 : index * 0.012,
+                          }}
+                        >
+                          <Link
+                            to={`/lesson/${lesson.day}`}
+                            className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
+                            onClick={onClose}
+                          >
+                            {isLessonComplete(lesson.day) && (
+                              <span className="day-link-check" aria-label="Completed">
+                                ✓
+                              </span>
+                            )}
+                            Day {lesson.day}: {lesson.title}
+                          </Link>
+                        </motion.div>
                       ))}
-                    </>
+                    </motion.div>
                   )}
-                </div>
+                </AnimatePresence>
               </div>
             )
           })}

@@ -3,6 +3,7 @@
 .curriculum-timeline {
   position: relative;
   padding-left: 2rem;
+  --timeline-scale: 1;
 }
 
 .curriculum-timeline::before {
@@ -19,6 +20,8 @@
     var(--accent-tertiary)
   );
   border-radius: 1px;
+  transform-origin: top;
+  transform: scaleY(var(--timeline-scale));
 }
 
 .curriculum-phase {
@@ -75,6 +78,8 @@
 .curriculum-day-link:hover {
   background: rgba(99, 102, 241, 0.06);
   color: var(--text-primary);
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
 }
 
 .curriculum-day-link .day-num {

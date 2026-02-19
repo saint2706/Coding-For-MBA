@@ -9,6 +9,7 @@
  */
 
 import { useParams, Link } from 'react-router-dom'
+import { motion, useReducedMotion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import {
   getPhase,
@@ -38,6 +39,7 @@ export default function PhaseOverview() {
   const { phaseNum } = useParams<{ phaseNum: string }>()
   const phase = getPhase(phaseNum!)
   const lessons = getLessonsByPhase(phaseNum!)
+  const prefersReducedMotion = useReducedMotion()
 
   if (!phase) {
     return (
@@ -118,19 +120,32 @@ export default function PhaseOverview() {
         <h2>Lessons in This Phase</h2>
       </div>
       <div className="phase-lessons-grid">
-        {lessons.map((lesson) => (
-          <Link to={`/lesson/${lesson.day}`} className="day-card" key={lesson.day}>
-            <div className="day-card-num">{lesson.day}</div>
-            <div className="day-card-info">
-              <h4>{lesson.title}</h4>
-              {lesson.duration && <span>⏱ {lesson.duration} min</span>}
-            </div>
-            {isLessonComplete(lesson.day) && (
-              <span className="day-link-check" aria-label="Completed">
-                ✓
-              </span>
-            )}
-          </Link>
+        {lessons.map((lesson, index) => (
+          <motion.div
+            key={lesson.day}
+            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.26,
+              delay: prefersReducedMotion ? 0 : index * 0.03,
+            }}
+          >
+            <Link to={`/lesson/${lesson.day}`} className="day-card">
+              <motion.div className="day-card-num" layoutId={`lesson-day-badge-${lesson.day}`}>
+                {lesson.day}
+              </motion.div>
+              <div className="day-card-info">
+                <h4>{lesson.title}</h4>
+                {lesson.duration && <span>⏱ {lesson.duration} min</span>}
+              </div>
+              {isLessonComplete(lesson.day) && (
+                <span className="day-link-check" aria-label="Completed">
+                  ✓
+                </span>
+              )}
+            </Link>
+          </motion.div>
         ))}
       </div>
 

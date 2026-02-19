@@ -10,6 +10,7 @@
  */
 
 import { Link } from 'react-router-dom'
+import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { buildWebSiteSchema, buildCourseSchema } from '../utils/seoSchemas'
 import {
@@ -21,6 +22,7 @@ import {
 } from '../utils/contentLoader'
 import { getLastVisited, getCompletedForPhase, getCompletedCount } from '../utils/progressTracker'
 import ProgressBar from '../components/ProgressBar'
+import AnimatedCounter from '../components/AnimatedCounter'
 
 /**
  * Home page component displaying the curriculum landing page.
@@ -39,6 +41,9 @@ export default function Home() {
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
   const completedCount = getCompletedCount()
   const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
+  const prefersReducedMotion = useReducedMotion()
+  const { scrollYProgress } = useScroll()
+  const heroY = useTransform(scrollYProgress, [0, 0.35], [0, prefersReducedMotion ? 0 : -50])
 
   return (
     <div className="page-container">
@@ -50,7 +55,7 @@ export default function Home() {
         breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
       {/* Hero */}
-      <section className="hero">
+      <motion.section className="hero" style={{ y: heroY }}>
         <div className="hero-badge">📚 Self-Study Curriculum</div>
         <h1>
           Master <span className="gradient-text">Technical Skills</span>
@@ -63,19 +68,27 @@ export default function Home() {
         </p>
         <div className="hero-stats">
           <div className="hero-stat">
-            <span className="stat-value">108</span>
+            <span className="stat-value">
+              <AnimatedCounter value={108} />
+            </span>
             <span className="stat-label">Days</span>
           </div>
           <div className="hero-stat">
-            <span className="stat-value">9</span>
+            <span className="stat-value">
+              <AnimatedCounter value={9} />
+            </span>
             <span className="stat-label">Phases</span>
           </div>
           <div className="hero-stat">
-            <span className="stat-value">100+</span>
+            <span className="stat-value">
+              <AnimatedCounter value={100} suffix="+" />
+            </span>
             <span className="stat-label">Hours</span>
           </div>
           <div className="hero-stat">
-            <span className="stat-value">4</span>
+            <span className="stat-value">
+              <AnimatedCounter value={4} />
+            </span>
             <span className="stat-label">Levels</span>
           </div>
         </div>
@@ -96,7 +109,7 @@ export default function Home() {
             )}
           </div>
         )}
-      </section>
+      </motion.section>
 
       {/* Phases Grid */}
       <section>

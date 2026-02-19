@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { getAllLessons, getAllPhases, phaseIcons } from '../utils/contentLoader'
 import { getReadingTime } from '../utils/contentLoader'
 import SEOHead from '../components/SEOHead'
+import AnimatedCounter from '../components/AnimatedCounter'
 
 /**
  * Content statistics page component.
@@ -121,19 +122,27 @@ export default function ContentStats() {
       {/* Hero stats */}
       <div className="stats-hero-grid">
         <div className="stats-hero-card">
-          <span className="stats-hero-value">{stats.lessonCount}</span>
+          <span className="stats-hero-value">
+            <AnimatedCounter value={stats.lessonCount} />
+          </span>
           <span className="stats-hero-label">Lessons</span>
         </div>
         <div className="stats-hero-card">
-          <span className="stats-hero-value">{stats.phaseCount}</span>
+          <span className="stats-hero-value">
+            <AnimatedCounter value={stats.phaseCount} />
+          </span>
           <span className="stats-hero-label">Phases</span>
         </div>
         <div className="stats-hero-card">
-          <span className="stats-hero-value">{stats.totalWords.toLocaleString()}</span>
+          <span className="stats-hero-value">
+            <AnimatedCounter value={stats.totalWords} format={(value) => value.toLocaleString()} />
+          </span>
           <span className="stats-hero-label">Words</span>
         </div>
         <div className="stats-hero-card">
-          <span className="stats-hero-value">{Math.round(stats.totalReadingMins / 60)}h</span>
+          <span className="stats-hero-value">
+            <AnimatedCounter value={Math.round(stats.totalReadingMins / 60)} suffix="h" />
+          </span>
           <span className="stats-hero-label">Reading Time</span>
         </div>
       </div>

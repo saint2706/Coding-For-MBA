@@ -86,19 +86,18 @@ describe('ExerciseWidget', () => {
     // 3. Click "Hide Solution"
     await act(async () => {
       showButton.click()
+      await new Promise((resolve) => setTimeout(resolve, 260))
     })
 
     // Button text should change back
     expect(showButton.textContent).toContain('Show Solution')
 
-    // Solution code should STILL be in the document (hidden via CSS, but mounted)
+    // Solution code should be unmounted after closing the panel
     const solutionCodeHidden = container.querySelector('.syntax-highlighter')
-    expect(solutionCodeHidden).not.toBeNull()
+    expect(solutionCodeHidden).toBeNull()
 
-    // Check if the container is hidden
-    const solutionPanel = container.querySelector(
-      '.exercise-widget__solution-panel',
-    ) as HTMLDivElement
-    expect(solutionPanel.hidden).toBe(true)
+    // The panel container should also be unmounted
+    const solutionPanel = container.querySelector('.exercise-widget__solution-panel')
+    expect(solutionPanel).toBeNull()
   })
 })

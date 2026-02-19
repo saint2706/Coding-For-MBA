@@ -10,6 +10,7 @@
 
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { motion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import {
   getAllExercises,
@@ -39,6 +40,7 @@ export default function Exercises() {
   const [phaseFilter, setPhaseFilter] = useState<number | ''>('')
   const [difficultyFilter, setDifficultyFilter] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [sortOrder, setSortOrder] = useState<'phase-asc' | 'phase-desc' | 'title-asc'>('phase-asc')
 
   // Derive available phases from exercises
   const phases = useMemo(() => {
@@ -54,7 +56,7 @@ export default function Exercises() {
 
   // Filter logic
   const filtered = useMemo(() => {
-    return exercises.filter((ex) => {
+    const results = exercises.filter((ex) => {
       if (phaseFilter !== '' && ex.phase !== phaseFilter) return false
       if (difficultyFilter && ex.difficulty !== difficultyFilter) return false
       if (searchQuery) {
@@ -68,7 +70,13 @@ export default function Exercises() {
       }
       return true
     })
-  }, [exercises, phaseFilter, difficultyFilter, searchQuery])
+
+    return results.sort((a, b) => {
+      if (sortOrder === 'phase-desc') return b.phase - a.phase || b.day - a.day
+      if (sortOrder === 'title-asc') return a.title.localeCompare(b.title)
+      return a.phase - b.phase || a.day - b.day
+    })
+  }, [exercises, phaseFilter, difficultyFilter, searchQuery, sortOrder])
 
   // Group by phase for notebook links
   const notebookPhases = new Set(notebooks.map((n) => n.phase))
@@ -144,6 +152,21 @@ export default function Exercises() {
           </select>
         </div>
 
+        <div className="exercises-filter-group">
+          <label htmlFor="sort-order">Sort</label>
+          <select
+            id="sort-order"
+            value={sortOrder}
+            onChange={(e) =>
+              setSortOrder(e.target.value as 'phase-asc' | 'phase-desc' | 'title-asc')
+            }
+          >
+            <option value="phase-asc">Phase (Ascending)</option>
+            <option value="phase-desc">Phase (Descending)</option>
+            <option value="title-asc">Title (A→Z)</option>
+          </select>
+        </div>
+
         <div className="exercises-filter-group exercises-filter-search">
           <label htmlFor="exercise-search">Search</label>
           <input
@@ -162,12 +185,17 @@ export default function Exercises() {
       </p>
 
       {/* Exercise Grid */}
-      <div className="exercises-grid">
+      <motion.div className="exercises-grid" layout>
         {filtered.map((ex, idx) => {
           const diff = difficultyConfig[ex.difficulty] || difficultyConfig.beginner!
           const icon = phaseIcons[ex.phase - 1] || '📖'
           return (
-            <div className="exercise-card" key={`${ex.day}-${idx}`}>
+            <motion.div
+              className="exercise-card"
+              key={`${ex.day}-${idx}`}
+              layout
+              transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+            >
               <div className="exercise-card__header">
                 <span className="exercise-card__phase">
                   {icon} Phase {ex.phase}
@@ -186,10 +214,10 @@ export default function Exercises() {
                   Day {ex.day}: {ex.lessonTitle} →
                 </Link>
               </div>
-            </div>
+            </motion.div>
           )
         })}
-      </div>
+      </motion.div>
 
       {filtered.length === 0 && (
         <div className="exercises-empty">
