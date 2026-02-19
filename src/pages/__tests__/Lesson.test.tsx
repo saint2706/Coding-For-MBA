@@ -3,12 +3,21 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import Lesson from '../Lesson'
 
-const mockToggleLessonComplete = vi.fn()
-const mockIsLessonComplete = vi.fn(() => false)
-const mockSetLastVisited = vi.fn()
-const mockToastSuccess = vi.fn()
-const mockToastInfo = vi.fn()
-const mockGetCompletedLessons = vi.fn(() => [])
+const {
+  mockToggleLessonComplete,
+  mockIsLessonComplete,
+  mockSetLastVisited,
+  mockToastSuccess,
+  mockToastInfo,
+  mockGetCompletedLessons,
+} = vi.hoisted(() => ({
+  mockToggleLessonComplete: vi.fn(),
+  mockIsLessonComplete: vi.fn(() => false),
+  mockSetLastVisited: vi.fn(),
+  mockToastSuccess: vi.fn(),
+  mockToastInfo: vi.fn(),
+  mockGetCompletedLessons: vi.fn(() => []),
+}))
 
 vi.mock('react-router-dom', () => ({
   useParams: () => ({ dayNum: '1' }),
@@ -38,10 +47,10 @@ vi.mock('../../utils/contentLoader', () => ({
 }))
 
 vi.mock('../../utils/progressTracker', () => ({
-  isLessonComplete: (...args: unknown[]) => mockIsLessonComplete(...args),
-  toggleLessonComplete: (...args: unknown[]) => mockToggleLessonComplete(...args),
-  setLastVisited: (...args: unknown[]) => mockSetLastVisited(...args),
-  getCompletedLessons: (...args: unknown[]) => mockGetCompletedLessons(...args),
+  isLessonComplete: mockIsLessonComplete,
+  toggleLessonComplete: mockToggleLessonComplete,
+  setLastVisited: mockSetLastVisited,
+  getCompletedLessons: mockGetCompletedLessons,
 }))
 
 vi.mock('../../utils/confetti', () => ({
@@ -51,8 +60,8 @@ vi.mock('../../utils/confetti', () => ({
 }))
 
 vi.mock('../../utils/toast', () => ({
-  toastSuccess: (...args: unknown[]) => mockToastSuccess(...args),
-  toastInfo: (...args: unknown[]) => mockToastInfo(...args),
+  toastSuccess: mockToastSuccess,
+  toastInfo: mockToastInfo,
 }))
 
 vi.mock('../../components/SEOHead', () => ({ default: () => null }))

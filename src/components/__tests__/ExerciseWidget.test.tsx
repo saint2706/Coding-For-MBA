@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import { act } from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import ExerciseWidget from '../ExerciseWidget'
 
 // Mock SyntaxHighlighter
@@ -51,7 +52,11 @@ describe('ExerciseWidget', () => {
 
   it('lazy loads the solution content', async () => {
     await act(async () => {
-      root.render(<ExerciseWidget {...defaultProps} />)
+      root.render(
+        <MemoryRouter>
+          <ExerciseWidget {...defaultProps} />
+        </MemoryRouter>,
+      )
     })
 
     // 1. Initial state: Solution button exists
