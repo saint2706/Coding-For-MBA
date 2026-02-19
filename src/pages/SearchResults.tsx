@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import { difficultyConfig } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 import { highlightText } from '../utils/searchHighlight'
@@ -62,9 +62,12 @@ export default function SearchResults() {
 
   return (
     <div className="page-container">
-      <Helmet>
-        <title>{query ? `Search: ${query}` : 'Search'} — Coding for MBA</title>
-      </Helmet>
+      <SEOHead
+        title={query ? `Search: ${query}` : 'Search'}
+        description="Search the 108-day Coding for MBA curriculum by title, concepts, tags, phase, or content."
+        path="/search"
+        noIndex
+      />
 
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Search' }]} />
 
@@ -145,7 +148,7 @@ export default function SearchResults() {
       ) : (
         <div className="search-empty-page">
           <p>Type at least 2 characters to search.</p>
-          <p>Shortcut: press “/” to focus this box and Esc to clear.</p>
+          <p>Shortcut: press "/" to focus this box and Esc to clear.</p>
         </div>
       )}
     </div>

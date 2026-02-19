@@ -8,6 +8,24 @@ import {
 
 describe('reviewTracker', () => {
   beforeEach(() => {
+    // Basic localStorage mock for JSDOM
+    const store: Record<string, string> = {}
+    Object.defineProperty(window, 'localStorage', {
+      value: {
+        getItem: (key: string) => store[key] || null,
+        setItem: (key: string, value: string) => {
+          store[key] = value.toString()
+        },
+        clear: () => {
+          for (const key in store) delete store[key]
+        },
+        removeItem: (key: string) => {
+          delete store[key]
+        },
+      },
+      writable: true,
+    })
+
     localStorage.clear()
     clearReviewState()
   })

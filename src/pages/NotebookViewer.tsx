@@ -9,7 +9,7 @@
  */
 
 import { useParams, Link } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import { getNotebook, getPhase, phaseIcons, type NotebookCell } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
@@ -226,9 +226,11 @@ export default function NotebookViewer() {
   if (!notebook || notebook.cells.length === 0) {
     return (
       <div className="page-container">
-        <Helmet>
-          <title>Solutions Not Found — Coding for MBA</title>
-        </Helmet>
+        <SEOHead
+          title="Solutions Not Found"
+          description="The requested solution notebook does not exist in the Coding for MBA curriculum."
+          noIndex
+        />
         <h1>Solutions not found</h1>
         <p>No solution notebook exists for Phase {phaseNum}.</p>
         <Link to="/exercises">← Back to Exercises</Link>
@@ -241,13 +243,16 @@ export default function NotebookViewer() {
 
   return (
     <div className="page-container">
-      <Helmet>
-        <title>{title} Solutions — Coding for MBA</title>
-        <meta
-          name="description"
-          content={`Solution notebook for ${title}. Complete Python solutions with explanations.`}
-        />
-      </Helmet>
+      <SEOHead
+        title={`${title} Solutions`}
+        description={`Solution notebook for ${title}. Complete Python solutions with explanations.`}
+        path={`/solutions/${phaseNum}`}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: `Phase ${phaseNum}`, url: `/phase/${phaseNum}` },
+          { name: 'Solutions', url: `/solutions/${phaseNum}` },
+        ]}
+      />
       <Breadcrumb
         items={[
           { label: 'Home', to: '/' },

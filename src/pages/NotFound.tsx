@@ -9,7 +9,7 @@
  */
 
 import { Link } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import { getAllPhases, phaseIcons } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 
@@ -30,10 +30,11 @@ export default function NotFound() {
 
   return (
     <div className="page-container">
-      <Helmet>
-        <title>Page Not Found — Coding for MBA</title>
-        <meta name="robots" content="noindex" />
-      </Helmet>
+      <SEOHead
+        title="Page Not Found"
+        description="The page you are looking for does not exist."
+        noIndex
+      />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: '404' }]} />
       <div className="not-found">
         <h1 className="not-found-code">404</h1>

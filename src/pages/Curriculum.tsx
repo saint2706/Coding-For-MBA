@@ -9,7 +9,7 @@
  */
 
 import { Link } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import {
   getAllPhases,
   getLessonsByPhase,
@@ -34,13 +34,15 @@ export default function Curriculum() {
 
   return (
     <div className="page-container">
-      <Helmet>
-        <title>Full Curriculum Roadmap — Coding for MBA</title>
-        <meta
-          name="description"
-          content="Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL."
-        />
-      </Helmet>
+      <SEOHead
+        title="Full Curriculum Roadmap"
+        description="Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL."
+        path="/curriculum"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Curriculum', url: '/curriculum' },
+        ]}
+      />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Curriculum' }]} />
       <div className="section-header" style={{ marginBottom: '2.5rem' }}>
         <h2>Full Curriculum Roadmap</h2>

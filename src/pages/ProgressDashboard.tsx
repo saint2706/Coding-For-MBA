@@ -10,7 +10,7 @@
 
 import { useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import {
   getAllPhases,
   getLessonsByPhase,
@@ -57,13 +57,15 @@ export default function ProgressDashboard() {
 
   return (
     <div className="page-container">
-      <Helmet>
-        <title>Your Progress — Coding for MBA</title>
-        <meta
-          name="description"
-          content="Track your progress through the 108-day Coding for MBA curriculum."
-        />
-      </Helmet>
+      <SEOHead
+        title="Your Progress"
+        description="Track your progress through the 108-day Coding for MBA curriculum. View completion statistics, lesson heatmap, and per-phase breakdowns."
+        path="/progress"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Progress', url: '/progress' },
+        ]}
+      />
 
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Progress' }]} />
 

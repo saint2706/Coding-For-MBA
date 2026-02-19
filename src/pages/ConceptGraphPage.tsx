@@ -10,7 +10,7 @@
  */
 
 import { useState, useCallback } from 'react'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import ConceptGraph from '../components/ConceptGraph'
 import Breadcrumb from '../components/Breadcrumb'
 import { useDebounce } from '../hooks/useDebounce'
@@ -80,13 +80,15 @@ export default function ConceptGraphPage() {
 
   return (
     <div className="concept-graph-page">
-      <Helmet>
-        <title>Concept Dependency Graph — Coding for MBA</title>
-        <meta
-          name="description"
-          content="Interactive visualization of lesson dependencies and concept relationships across the 108-day curriculum."
-        />
-      </Helmet>
+      <SEOHead
+        title="Concept Dependency Graph"
+        description="Interactive visualization of lesson dependencies and concept relationships across the 108-day curriculum."
+        path="/concepts"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Concept Graph', url: '/concepts' },
+        ]}
+      />
 
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Concept Graph' }]} />
 

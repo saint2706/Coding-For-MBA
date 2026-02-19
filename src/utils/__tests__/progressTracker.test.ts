@@ -64,7 +64,7 @@ describe('progressTracker', () => {
   })
 
   it('does not throw when storage is unavailable or quota exceeded', () => {
-    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+    const setItemSpy = vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
       throw new DOMException('Quota exceeded', 'QuotaExceededError')
     })
 
@@ -73,7 +73,7 @@ describe('progressTracker', () => {
 
     setItemSpy.mockRestore()
 
-    const removeSpy = vi.spyOn(Storage.prototype, 'removeItem').mockImplementation(() => {
+    const removeSpy = vi.spyOn(localStorage, 'removeItem').mockImplementation(() => {
       throw new DOMException('Blocked', 'SecurityError')
     })
 
@@ -83,7 +83,7 @@ describe('progressTracker', () => {
   })
 
   it('returns typed fallbacks when storage reads throw', () => {
-    const getItemSpy = vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {
+    const getItemSpy = vi.spyOn(localStorage, 'getItem').mockImplementation(() => {
       throw new DOMException('Blocked', 'SecurityError')
     })
 
@@ -95,7 +95,7 @@ describe('progressTracker', () => {
   })
 
   it('uses memory cache to avoid redundant storage access', () => {
-    const getItemSpy = vi.spyOn(Storage.prototype, 'getItem')
+    const getItemSpy = vi.spyOn(localStorage, 'getItem')
 
     // First operation - should access storage to prime cache
     markLessonComplete(1)

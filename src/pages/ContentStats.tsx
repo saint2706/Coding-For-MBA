@@ -13,7 +13,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllLessons, getAllPhases, phaseIcons } from '../utils/contentLoader'
 import { getReadingTime } from '../utils/contentLoader'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 
 /**
  * Content statistics page component.
@@ -104,7 +104,15 @@ export default function ContentStats() {
 
   return (
     <div className="content-stats-page">
-      <Helmet title="Content Stats" />
+      <SEOHead
+        title="Content Statistics"
+        description="Comprehensive content analytics for the 108-day Coding for MBA curriculum — word counts, reading times, difficulty distributions, tag clouds, and phase breakdowns."
+        path="/stats"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Content Stats', url: '/stats' },
+        ]}
+      />
       <h1>📊 Content Statistics</h1>
       <p className="stats-subtitle">
         An overview of the entire curriculum's content, structure, and coverage.

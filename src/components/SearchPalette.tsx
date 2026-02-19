@@ -54,7 +54,6 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
    */
   useEffect(() => {
     if (isOpen) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional: reset on open
       setQuery('')
       setActiveIndex(0)
       requestAnimationFrame(() => {

@@ -10,7 +10,7 @@
 
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import {
   getAllExercises,
   getAllNotebooks,
@@ -75,13 +75,15 @@ export default function Exercises() {
 
   return (
     <div className="page-container">
-      <Helmet>
-        <title>Exercises — Coding for MBA</title>
-        <meta
-          name="description"
-          content="Browse and filter all exercises across the 108-day curriculum. Practice Python, SQL, and data science."
-        />
-      </Helmet>
+      <SEOHead
+        title="Exercises"
+        description="Browse and filter all exercises across the 108-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises."
+        path="/exercises"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Exercises', url: '/exercises' },
+        ]}
+      />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Exercises' }]} />
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>

@@ -31,7 +31,6 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional reset on route change
     setSidebarOpen(false)
     window.scrollTo(0, 0)
   }, [location.pathname])

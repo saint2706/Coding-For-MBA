@@ -9,7 +9,7 @@
  */
 
 import { useParams, Link } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import {
   getPhase,
   getLessonsByPhase,
@@ -42,9 +42,11 @@ export default function PhaseOverview() {
   if (!phase) {
     return (
       <div className="page-container">
-        <Helmet>
-          <title>Phase Not Found — Coding for MBA</title>
-        </Helmet>
+        <SEOHead
+          title="Phase Not Found"
+          description="The requested phase does not exist in the Coding for MBA curriculum."
+          noIndex
+        />
         <h1>Phase not found</h1>
         <p>Phase {phaseNum} doesn&apos;t exist.</p>
         <Link to="/">← Back to Home</Link>
@@ -59,17 +61,35 @@ export default function PhaseOverview() {
   const completedInPhase = getCompletedForPhase(lessonDays)
   const notebook = getNotebook(phaseNum!)
 
+  const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
+  const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 108-day Coding for MBA curriculum.`
+  const phasePath = `/phase/${phase.phase}`
+
   return (
     <div className="page-container">
-      <Helmet>
-        <title>
-          Phase {phase.phase}: {phase.title} — Coding for MBA
-        </title>
-        <meta
-          name="description"
-          content={`Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 108-day Coding for MBA curriculum.`}
-        />
-      </Helmet>
+      <SEOHead
+        title={phaseTitle}
+        description={phaseDescription}
+        path={phasePath}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: phaseTitle, url: phasePath },
+        ]}
+        jsonLd={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'CollectionPage',
+            name: phaseTitle,
+            description: phaseDescription,
+            url: `https://saint2706.github.io/Coding-For-MBA/#${phasePath}`,
+            isPartOf: {
+              '@type': 'Course',
+              name: 'Coding for MBA — 108-Day Technical Curriculum',
+            },
+            numberOfItems: lessons.length,
+          },
+        ]}
+      />
       {/* Phase Header */}
       <div className="phase-header">
         <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: `Phase ${phase.phase}` }]} />
@@ -135,9 +155,9 @@ export default function PhaseOverview() {
       )}
 
       {/* Phase Overview markdown content */}
-      <div style={{ marginTop: '2rem' }}>
+      <article style={{ marginTop: '2rem' }}>
         <MarkdownRenderer content={phase.content} />
-      </div>
+      </article>
     </div>
   )
 }

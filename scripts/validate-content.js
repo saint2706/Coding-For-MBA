@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * Content Validation Script
  * Checks all 108 lesson READMEs have required frontmatter fields.

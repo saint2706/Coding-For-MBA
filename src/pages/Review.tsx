@@ -10,7 +10,7 @@
  */
 
 import { useMemo, useState } from 'react'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
 import Breadcrumb from '../components/Breadcrumb'
 import {
   getDueReviewCards,
@@ -52,9 +52,15 @@ export default function Review() {
 
   return (
     <div className="page-container review-page">
-      <Helmet>
-        <title>Review — Coding for MBA</title>
-      </Helmet>
+      <SEOHead
+        title="Review"
+        description="Reinforce your learning with spaced repetition review cards. Track your streak and master the Coding for MBA curriculum."
+        path="/review"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'Review', url: '/review' },
+        ]}
+      />
 
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Review' }]} />
 

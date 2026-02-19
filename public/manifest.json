@@ -1,0 +1,20 @@
+{
+  "name": "Coding for MBA — 108-Day Technical Curriculum",
+  "short_name": "Coding for MBA",
+  "description": "A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.",
+  "start_url": "/Coding-For-MBA/",
+  "scope": "/Coding-For-MBA/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#6366f1",
+  "orientation": "any",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ]
+}

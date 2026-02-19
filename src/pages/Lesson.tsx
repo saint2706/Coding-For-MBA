@@ -10,7 +10,8 @@
 
 import { useEffect, useState, useCallback, useMemo } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
+import { buildLessonSchema } from '../utils/seoSchemas'
 import { getLesson, getAdjacentLessons, difficultyConfig } from '../utils/contentLoader'
 import { isLessonComplete, toggleLessonComplete, setLastVisited } from '../utils/progressTracker'
 import MarkdownRenderer from '../components/MarkdownRenderer'
@@ -93,9 +94,11 @@ export default function Lesson() {
   if (!lesson) {
     return (
       <div className="page-container">
-        <Helmet>
-          <title>Lesson Not Found — Coding for MBA</title>
-        </Helmet>
+        <SEOHead
+          title="Lesson Not Found"
+          description="The requested lesson does not exist in the Coding for MBA curriculum."
+          noIndex
+        />
         <h1>Lesson not found</h1>
         <p>Day {dayNum} doesn&apos;t exist in the curriculum.</p>
         <Link to="/">← Back to Home</Link>
@@ -104,18 +107,26 @@ export default function Lesson() {
   }
 
   const diff = difficultyConfig[lesson.difficulty || 'beginner'] || difficultyConfig.beginner!
+  const lessonTitle = `Day ${lesson.day}: ${lesson.title}`
+  const lessonDescription = `Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 108-day Coding for MBA curriculum.`
+  const lessonPath = `/lesson/${lesson.day}`
 
   return (
     <div className="page-container lesson-with-toc" ref={swipeRef}>
-      <Helmet>
-        <title>
-          Day {lesson.day}: {lesson.title} — Coding for MBA
-        </title>
-        <meta
-          name="description"
-          content={`Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 108-day Coding for MBA curriculum.`}
-        />
-      </Helmet>
+      <SEOHead
+        title={lessonTitle}
+        description={lessonDescription}
+        path={lessonPath}
+        ogType="article"
+        jsonLd={[
+          buildLessonSchema(lessonTitle, lessonDescription, lessonPath, lesson.day, lesson.phase),
+        ]}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: `Phase ${lesson.phase}`, url: `/phase/${lesson.phase}` },
+          { name: `Day ${lesson.day}`, url: lessonPath },
+        ]}
+      />
       {/* Main content column */}
       <div className="lesson-main-content">
         {/* Breadcrumb */}
@@ -154,8 +165,10 @@ export default function Lesson() {
           <PrerequisitePills lesson={lesson} />
         </div>
 
-        {/* Markdown content */}
-        <MarkdownRenderer content={lesson.content} />
+        {/* Markdown content wrapped in semantic article tag */}
+        <article>
+          <MarkdownRenderer content={lesson.content} />
+        </article>
 
         {/* Prev/Next navigation */}
         <nav className="lesson-nav" aria-label="Lesson navigation">

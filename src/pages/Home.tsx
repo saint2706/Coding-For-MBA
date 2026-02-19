@@ -10,7 +10,8 @@
  */
 
 import { Link } from 'react-router-dom'
-import { Helmet } from '@dr.pogodin/react-helmet'
+import SEOHead from '../components/SEOHead'
+import { buildWebSiteSchema, buildCourseSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
   getLessonsByPhase,
@@ -41,13 +42,13 @@ export default function Home() {
 
   return (
     <div className="page-container">
-      <Helmet>
-        <title>Coding for MBA — 108-Day Technical Curriculum</title>
-        <meta
-          name="description"
-          content="A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals."
-        />
-      </Helmet>
+      <SEOHead
+        title="Coding for MBA — 108-Day Technical Curriculum"
+        description="A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals."
+        path="/"
+        jsonLd={[buildWebSiteSchema(), buildCourseSchema()]}
+        breadcrumbs={[{ name: 'Home', url: '/' }]}
+      />
       {/* Hero */}
       <section className="hero">
         <div className="hero-badge">📚 Self-Study Curriculum</div>
