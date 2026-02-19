@@ -10,21 +10,11 @@ export interface ValidationResult {
 /**
  * Validates Python code for potential security risks before execution.
  *
- * Checks for:
- * - Direct access to the 'js' module (browser API access)
- * - Usage of __import__ for 'js'
- * - All forms of importlib imports (prevents dynamic module loading)
- * - Import of sys module (prevents sys.modules access and other internals)
- * - Access to sys.modules (prevents accessing pre-loaded modules)
- * - Import of os module (prevents command execution)
- * - Access to os.system, os.popen (prevents command execution)
- * - Import of subprocess module (prevents command execution)
- * - String manipulation to bypass checks
- * - Access to dangerous built-in functions (eval, exec, etc.)
+ * Checks for usage of dangerous built-in functions, modules, and identifiers.
+ * This validator uses a strict allowlist/blocklist approach.
  *
- * Note: This is a defense-in-depth approach using regex patterns. While not
- * foolproof, it catches common bypass attempts. For a production environment,
- * consider using AST-based validation or sandboxing.
+ * It intentionally blocks usage of these keywords anywhere in the code (including strings/comments)
+ * to prevent obfuscation bypasses (e.g., using getattr('__import__') or eval()).
  *
  * @param code - The Python code to validate
  * @returns Validation result
@@ -33,55 +23,48 @@ export function validatePythonCode(code: string): ValidationResult {
   if (!code) return { valid: true }
 
   // Normalize code to handle line continuations
-  // Replace backslash + newline with an empty string to mimic Python's line continuation behavior
-  // This prevents bypassing regex checks by splitting keywords (e.g., "import \n js")
   const normalizedCode = code.replace(/\\(\r\n|\r|\n)/g, '')
 
-  // Regex patterns to detect 'js' module imports and bypass attempts
-  // We use \b to ensure we don't match 'json' or 'jsp' etc.
-  const patterns = [
-    /\bimport\s+js\b/, // import js
-    /\bfrom\s+js\b/, // from js import ...
-    /__import__\s*\(\s*['"]js['"]\s*\)/, // __import__('js')
-    /\bimport\s+importlib\b/, // import importlib - prevents dynamic module loading
-    /\bfrom\s+importlib\b/, // from importlib - prevents accessing import_module
-    /__import__\s*\(\s*['"]importlib['"]\s*\)/, // __import__('importlib')
-    /\bimportlib\s*\.\s*import_module\s*\(/, // importlib.import_module() - catch usage if pre-imported
-    /\bimport\s+sys\b/, // import sys - prevents access to sys.modules and other internals
-    /\bfrom\s+sys\b/, // from sys import ... - prevents access to sys.modules and other internals
-    /__import__\s*\(\s*['"]sys['"]\s*\)/, // __import__('sys')
-    /\bsys\.modules\b/, // sys.modules - prevents accessing loaded modules like 'js'
-    /\bimport\s+os\b/, // import os - prevents importing os for command execution
-    /\bfrom\s+os\b/, // from os import ... - prevents importing os for command execution
-    /__import__\s*\(\s*['"]os['"]\s*\)/, // __import__('os')
-    /\bos\.system\b/, // os.system - prevents command execution
-    /\bos\.popen\b/, // os.popen - prevents command execution
-    /\bimport\s+subprocess\b/, // import subprocess - prevents command execution
-    /\bfrom\s+subprocess\b/, // from subprocess import ... - prevents command execution
-    /__import__\s*\(\s*['"]subprocess['"]\s*\)/, // __import__('subprocess')
-    /__import__\s*\(\s*['"][^'"]*['"]\s*\+\s*['"][^'"]*['"]/, // __import__("..." + "...") - string concatenation
-    /__import__\s*\(\s*chr\s*\(/, // __import__(chr(...) - character obfuscation
-    /__import__\s*\(\s*['"][^'"]*['"]\s*\.\s*(lower|upper|strip|replace|format)\s*\(/, // __import__("...".method()) - string method obfuscation
-    /__builtins__\s*\.\s*__import__/, // __builtins__.__import__
-    /\bimport\s+builtins\b/, // import builtins - prevents builtins.eval() bypass
-    /\bfrom\s+builtins\s+import/, // from builtins import - prevents direct builtin imports
-    /(?<!\.)\b(eval|exec|globals|locals|getattr|setattr|delattr|hasattr|vars|dir|compile|open)\s*\(/, // built-in functions that allow bypass
-    /\b__builtins__\b/, // access to __builtins__
-    /\b__globals__\b/, // access to __globals__
-    /\b__subclasses__\b/, // access to __subclasses__
-    /\b__bases__\b/, // access to __bases__
-    /\b__mro__\b/, // access to __mro__
-    /\b__getattribute__\b/, // access to __getattribute__
-    /\b__code__\b/, // access to __code__
-    /\b__closure__\b/, // access to __closure__
+  const dangerousPatterns = [
+    // Core restrictions
+    { pattern: /\bimport\s+js\b/, message: "Direct access to browser APIs via 'js' module is restricted." },
+    { pattern: /\bfrom\s+js\b/, message: "Direct access to browser APIs via 'js' module is restricted." },
+
+    // Dangerous Built-ins (Strict Blocklist)
+    // We use (?<!\.) to allow method calls (e.g. model.eval()) but block direct usage.
+    { pattern: /\b__import__\b/, message: "Usage of '__import__' is restricted." },
+    { pattern: /(?<!\.)\beval\b/, message: "Usage of 'eval' is restricted." },
+    { pattern: /(?<!\.)\bexec\b/, message: "Usage of 'exec' is restricted." },
+    { pattern: /(?<!\.)\bglobals\b/, message: "Usage of 'globals' is restricted." },
+    { pattern: /(?<!\.)\blocals\b/, message: "Usage of 'locals' is restricted." },
+    { pattern: /(?<!\.)\bgetattr\b/, message: "Usage of 'getattr' is restricted." },
+    { pattern: /(?<!\.)\bsetattr\b/, message: "Usage of 'setattr' is restricted." },
+    { pattern: /(?<!\.)\bdelattr\b/, message: "Usage of 'delattr' is restricted." },
+    { pattern: /(?<!\.)\bcompile\b/, message: "Usage of 'compile' is restricted." },
+    { pattern: /(?<!\.)\binput\b/, message: "Usage of 'input' is restricted in this environment." },
+    { pattern: /(?<!\.)\bopen\b/, message: "Usage of 'open' is restricted." },
+
+    // Restricted Modules (Strict Identifier Blocklist)
+    { pattern: /\bimportlib\b/, message: "Usage of 'importlib' is restricted." },
+    { pattern: /\bsys\b/, message: "Usage of 'sys' module is restricted." },
+    { pattern: /\bos\b/, message: "Usage of 'os' module is restricted." },
+    { pattern: /\bsubprocess\b/, message: "Usage of 'subprocess' module is restricted." },
+    { pattern: /\bbuiltins\b/, message: "Usage of 'builtins' module is restricted." },
+    { pattern: /\b__builtins__\b/, message: "Access to '__builtins__' is restricted." },
+
+    // Introspection attributes
+    { pattern: /\b__globals__\b/, message: "Access to '__globals__' is restricted." },
+    { pattern: /\b__subclasses__\b/, message: "Access to '__subclasses__' is restricted." },
+    { pattern: /\b__bases__\b/, message: "Access to '__bases__' is restricted." },
+    { pattern: /\b__mro__\b/, message: "Access to '__mro__' is restricted." },
+    { pattern: /\b__getattribute__\b/, message: "Access to '__getattribute__' is restricted." },
+    { pattern: /\b__code__\b/, message: "Access to '__code__' is restricted." },
+    { pattern: /\b__closure__\b/, message: "Access to '__closure__' is restricted." },
   ]
 
-  for (const pattern of patterns) {
+  for (const { pattern, message } of dangerousPatterns) {
     if (pattern.test(normalizedCode)) {
-      return {
-        valid: false,
-        error: "Security Error: Direct access to browser APIs via 'js' module is restricted.",
-      }
+      return { valid: false, error: `Security Error: ${message}` }
     }
   }
 

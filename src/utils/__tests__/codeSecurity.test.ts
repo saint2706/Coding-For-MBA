@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validatePythonCode } from './codeSecurity'
+import { validatePythonCode } from '../codeSecurity'
 
 describe('validatePythonCode', () => {
   it('should allow safe code', () => {
@@ -145,9 +145,7 @@ print("bad")
   it('should block additional dangerous functions', () => {
     expect(validatePythonCode('setattr(obj, "name", "value")').valid).toBe(false)
     expect(validatePythonCode('delattr(obj, "name")').valid).toBe(false)
-    expect(validatePythonCode('hasattr(obj, "name")').valid).toBe(false)
-    expect(validatePythonCode('vars(obj)').valid).toBe(false)
-    expect(validatePythonCode('dir(obj)').valid).toBe(false)
+    // vars, dir, hasattr are allowed now
     expect(validatePythonCode('compile("code", "filename", "exec")').valid).toBe(false)
     expect(validatePythonCode('open("file.txt")').valid).toBe(false)
   })
@@ -160,6 +158,12 @@ print("bad")
     expect(validatePythonCode('obj.dir()').valid).toBe(true)
     expect(validatePythonCode('obj.compile()').valid).toBe(true)
     expect(validatePythonCode('obj.open()').valid).toBe(true)
+  })
+
+  it('should allow vars and dir and hasattr', () => {
+    expect(validatePythonCode('hasattr(obj, "name")').valid).toBe(true)
+    expect(validatePythonCode('vars(obj)').valid).toBe(true)
+    expect(validatePythonCode('dir(obj)').valid).toBe(true)
   })
 
   it('should block introspection and escape vectors', () => {
