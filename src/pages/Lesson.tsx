@@ -8,7 +8,7 @@
  * @module pages/Lesson
  */
 
-import { useEffect, useState, useCallback, useMemo } from 'react'
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import { buildLessonSchema } from '../utils/seoSchemas'
@@ -22,6 +22,7 @@ import ReadingTime from '../components/ReadingTime'
 import PrerequisitePills from '../components/PrerequisitePills'
 import RelatedLessons from '../components/RelatedLessons'
 import { useSwipe } from '../hooks/useSwipe'
+import { toastInfo, toastSuccess } from '../utils/toast'
 
 /**
  * Lesson page component displaying a single day's lesson.
@@ -46,6 +47,7 @@ export default function Lesson() {
   const [completed, setCompleted] = useState(() =>
     dayNum ? isLessonComplete(Number(dayNum)) : false,
   )
+  const lastToastAtRef = useRef(0)
 
   // Track last visited lesson
   useEffect(() => {
@@ -62,6 +64,19 @@ export default function Lesson() {
   const handleToggleComplete = useCallback(() => {
     const nowComplete = toggleLessonComplete(Number(dayNum))
     setCompleted(nowComplete)
+
+    const now = Date.now()
+    if (now - lastToastAtRef.current < 400) {
+      return
+    }
+
+    lastToastAtRef.current = now
+    if (nowComplete) {
+      toastSuccess('Progress saved ✓')
+      return
+    }
+
+    toastInfo('Marked as incomplete')
   }, [dayNum])
 
   // Keyboard shortcuts: ← prev, → next
