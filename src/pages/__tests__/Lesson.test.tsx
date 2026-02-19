@@ -3,11 +3,21 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import Lesson from '../Lesson'
 
-const mockToggleLessonComplete = vi.fn()
-const mockIsLessonComplete = vi.fn(() => false)
-const mockSetLastVisited = vi.fn()
-const mockToastSuccess = vi.fn()
-const mockToastInfo = vi.fn()
+const {
+  mockToggleLessonComplete,
+  mockIsLessonComplete,
+  mockSetLastVisited,
+  mockToastSuccess,
+  mockToastInfo,
+  mockGetCompletedLessons,
+} = vi.hoisted(() => ({
+  mockToggleLessonComplete: vi.fn(),
+  mockIsLessonComplete: vi.fn(() => false),
+  mockSetLastVisited: vi.fn(),
+  mockToastSuccess: vi.fn(),
+  mockToastInfo: vi.fn(),
+  mockGetCompletedLessons: vi.fn(() => []),
+}))
 
 vi.mock('react-router-dom', () => ({
   useParams: () => ({ dayNum: '1' }),
@@ -29,20 +39,29 @@ vi.mock('../../utils/contentLoader', () => ({
     tags: [],
   }),
   getAdjacentLessons: () => ({ prev: null, next: null }),
+  getAllPhases: () => [{ phase: 1 }, { phase: 2 }],
+  getLessonsByPhase: (phase: number) => (phase === 1 ? [{ day: 1 }] : [{ day: 2 }]),
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
   },
 }))
 
 vi.mock('../../utils/progressTracker', () => ({
-  isLessonComplete: (...args: unknown[]) => mockIsLessonComplete(...args),
-  toggleLessonComplete: (...args: unknown[]) => mockToggleLessonComplete(...args),
-  setLastVisited: (...args: unknown[]) => mockSetLastVisited(...args),
+  isLessonComplete: mockIsLessonComplete,
+  toggleLessonComplete: mockToggleLessonComplete,
+  setLastVisited: mockSetLastVisited,
+  getCompletedLessons: mockGetCompletedLessons,
+}))
+
+vi.mock('../../utils/confetti', () => ({
+  triggerSparkle: vi.fn(),
+  triggerPhaseUnlockConfetti: vi.fn(),
+  triggerCurriculumFireworks: vi.fn(),
 }))
 
 vi.mock('../../utils/toast', () => ({
-  toastSuccess: (...args: unknown[]) => mockToastSuccess(...args),
-  toastInfo: (...args: unknown[]) => mockToastInfo(...args),
+  toastSuccess: mockToastSuccess,
+  toastInfo: mockToastInfo,
 }))
 
 vi.mock('../../components/SEOHead', () => ({ default: () => null }))

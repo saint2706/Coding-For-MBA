@@ -1,6 +1,7 @@
 /**
  * Content Validation Script
- * Checks lesson READMEs have required frontmatter fields.
+ * Checks lesson/phase markdown frontmatter, phase metadata consistency,
+ * and extracted exercise data schemas.
  * Run: node scripts/validate-content.js
  */
 
@@ -11,7 +12,11 @@ import {
   normalizeLineEndingsForScripts,
   parseNormalizedMarkdownForScripts,
 } from './frontmatter-parser.js'
-import { lessonFrontmatterSchema, phaseOverviewFrontmatterSchema } from './content-schemas.js'
+import {
+  lessonFrontmatterSchema,
+  phaseOverviewFrontmatterSchema,
+  exerciseSchema,
+} from './content-schemas.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
@@ -35,22 +40,21 @@ export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
   return results
 }
 
-function formatZodIssues(error) {
+function formatZodIssues(error, prefix = 'Invalid') {
   return error.issues.map((issue) => {
     const pathLabel = issue.path.length > 0 ? issue.path.join('.') : 'frontmatter'
-    return `Invalid ${pathLabel}: ${issue.message}`
+    return `${prefix} ${pathLabel}: ${issue.message}`
   })
 }
 
-export function validateLessonContent(rawContent, fileName = 'README.md') {
+function parseAndValidateMarkdown(rawContent, fileName = 'README.md') {
   const normalizedContent = normalizeLineEndingsForScripts(rawContent)
   const { frontmatter: fields, content: body } =
     parseNormalizedMarkdownForScripts(normalizedContent)
   const fileErrors = []
 
   if (Object.keys(fields).length === 0) {
-    fileErrors.push('Missing frontmatter block')
-    return fileErrors
+    return { fields, body, fileErrors: ['Missing frontmatter block'] }
   }
 
   const schema =
@@ -64,22 +68,93 @@ export function validateLessonContent(rawContent, fileName = 'README.md') {
     fileErrors.push('Content body is suspiciously short (< 100 chars)')
   }
 
-  return fileErrors
+  return { fields, body, fileErrors }
+}
+
+function extractExercisesFromLesson(fields, body) {
+  const exercises = []
+  const regex =
+    /### Exercise \d+:\s*(.+?)\n([\s\S]*?)(?=\n### Exercise \d+:|\n## |\n---\s*\n## |$)/g
+  let match
+
+  while ((match = regex.exec(body)) !== null) {
+    const title = match[1]?.trim()
+    if (!title) continue
+    const section = match[2] ?? ''
+    const goalMatch = section.match(/\*\*Goal\*\*:\s*(.+)/)
+    const goal = goalMatch?.[1]?.trim() ?? ''
+
+    const codeRegex = /```(?:python|py)\s*\n([\s\S]*?)```/g
+    let codeMatch
+    const codeBlocks = []
+    while ((codeMatch = codeRegex.exec(section)) !== null) {
+      if (codeMatch[1]) codeBlocks.push(codeMatch[1].trim())
+    }
+
+    const expectedMatch = section.match(
+      /\*\*Expected Output[:\s]*\*\*[\s\S]*?```(?:text|)\s*\n([\s\S]*?)```/,
+    )
+    const expectedOutput = expectedMatch?.[1]?.trim()
+
+    exercises.push({
+      day: fields.day,
+      lessonTitle: fields.title,
+      phase: fields.phase,
+      difficulty: fields.difficulty,
+      title,
+      goal,
+      starterCode: codeBlocks[0] || '',
+      expectedOutput,
+    })
+  }
+
+  return exercises
+}
+
+function getPhaseRoot(filePath, lessonsDir) {
+  const relative = path.relative(lessonsDir, filePath)
+  return relative.split(path.sep)[0]
+}
+
+export function validateLessonContent(rawContent, fileName = 'README.md') {
+  return parseAndValidateMarkdown(rawContent, fileName).fileErrors
 }
 
 export function runValidation(lessonsDir = LESSONS_DIR) {
-  const readmes = findReadmes(lessonsDir, lessonsDir).sort()
-  const totalFiles = readmes.length
+  const files = findReadmes(lessonsDir, lessonsDir).sort()
+  const totalFiles = files.length
   let passCount = 0
   let failCount = 0
   const errors = []
 
   console.log(`\n📋 Validating ${totalFiles} lesson files...\n`)
 
-  for (const filePath of readmes) {
+  const phaseFiles = files.filter((file) => path.basename(file) === 'Phase_Overview.md')
+  const lessonFiles = files.filter((file) => path.basename(file) === 'README.md')
+  const phaseFileByDir = new Map()
+  const phaseMetadata = new Map()
+
+  for (const filePath of files) {
     const relativePath = path.relative(lessonsDir, filePath)
+    const fileName = path.basename(filePath)
     const fileContent = fs.readFileSync(filePath, 'utf8')
-    const fileErrors = validateLessonContent(fileContent, path.basename(filePath))
+    const { fields, body, fileErrors } = parseAndValidateMarkdown(fileContent, fileName)
+
+    if (fileName === 'Phase_Overview.md' && fileErrors.length === 0) {
+      const phaseRoot = getPhaseRoot(filePath, lessonsDir)
+      phaseMetadata.set(phaseRoot, fields)
+      phaseFileByDir.set(phaseRoot, filePath)
+    }
+
+    if (fileName === 'README.md' && fileErrors.length === 0) {
+      const exercises = extractExercisesFromLesson(fields, body)
+      for (const exercise of exercises) {
+        const result = exerciseSchema.safeParse(exercise)
+        if (!result.success) {
+          fileErrors.push(...formatZodIssues(result.error, 'Invalid exercise'))
+        }
+      }
+    }
 
     if (fileErrors.length > 0) {
       failCount++
@@ -89,10 +164,48 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
     }
   }
 
+  // Cross-check phase metadata against lesson files in each phase directory
+  const lessonsByPhaseDir = new Map()
+  for (const lessonFile of lessonFiles) {
+    const phaseDir = getPhaseRoot(lessonFile, lessonsDir)
+    const list = lessonsByPhaseDir.get(phaseDir) ?? []
+    const content = fs.readFileSync(lessonFile, 'utf8')
+    const { fields } = parseAndValidateMarkdown(content, 'README.md')
+    list.push(fields)
+    lessonsByPhaseDir.set(phaseDir, list)
+  }
+
+  for (const [phaseDir, overviewPath] of phaseFileByDir.entries()) {
+    const overview = phaseMetadata.get(phaseDir)
+    if (!overview) continue
+
+    const phaseLessons = lessonsByPhaseDir.get(phaseDir) ?? []
+    const expectedDays = [...new Set(phaseLessons.map((lesson) => lesson.day))].sort(
+      (a, b) => a - b,
+    )
+    const actualDays = [...new Set(overview.days ?? [])].sort((a, b) => a - b)
+
+    const mismatchedDays =
+      expectedDays.length !== actualDays.length ||
+      expectedDays.some((value, idx) => value !== actualDays[idx])
+
+    const phaseIssues = []
+    if (mismatchedDays) {
+      phaseIssues.push(
+        `Phase days mismatch: overview has [${actualDays.join(', ')}], lessons have [${expectedDays.join(', ')}]`,
+      )
+    }
+    if (phaseIssues.length > 0) {
+      failCount++
+      const relativePath = path.relative(lessonsDir, overviewPath)
+      errors.push({ file: relativePath, issues: phaseIssues })
+    }
+  }
+
   console.log(`✅ Passed: ${passCount}/${totalFiles}`)
 
   if (failCount > 0) {
-    console.log(`❌ Failed: ${failCount}/${totalFiles}\n`)
+    console.log(`❌ Failed: ${failCount} issues\n`)
     for (const { file, issues } of errors) {
       console.log(`  📄 ${file}`)
       for (const issue of issues) {
@@ -103,7 +216,7 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
     return 1
   }
 
-  console.log('\n🎉 All lessons have valid frontmatter!\n')
+  console.log('\n🎉 All lessons have valid frontmatter and metadata!\n')
   return 0
 }
 

@@ -1,4 +1,5 @@
 import { parseMarkdown } from './frontmatter'
+import { difficultyConfig, phaseIcons } from './curriculumConfig'
 
 /** Lesson metadata and markdown body loaded from a lesson README. */
 export interface Lesson {
@@ -24,13 +25,6 @@ export interface Phase {
   content: string
   path: string
   [key: string]: unknown
-}
-
-/** UI token set for rendering difficulty badges. */
-export interface DifficultyInfo {
-  label: string
-  color: string
-  bg: string
 }
 
 const lessonFiles = import.meta.glob('/content/lessons/**/README.md', {
@@ -479,13 +473,4 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
   )
 }
 
-/** Difficulty-level display metadata used by the lesson UI. */
-export const difficultyConfig: Record<string, DifficultyInfo> = {
-  beginner: { label: 'Beginner', color: '#22c55e', bg: 'rgba(34,197,94,0.12)' },
-  intermediate: { label: 'Intermediate', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' },
-  advanced: { label: 'Advanced', color: '#f97316', bg: 'rgba(249,115,22,0.12)' },
-  expert: { label: 'Expert', color: '#ef4444', bg: 'rgba(239,68,68,0.12)' },
-}
-
-/** Phase icon lookup (index 0 => phase 1). */
-export const phaseIcons: string[] = ['🐍', '🔧', '🌐', '📐', '🧠', '🚀', '📊', '🗄️', '⚡']
+export { difficultyConfig, phaseIcons }

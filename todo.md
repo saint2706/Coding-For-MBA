@@ -9,25 +9,25 @@
 ## 🔥 Quick Wins (1-2 hours each)
 
 ### Toast Notifications — `react-hot-toast`
-- [ ] Add toast feedback on progress save ("Progress saved ✓")
-- [ ] Toast on exercise submission (correct/incorrect)
-- [ ] Toast on theme toggle ("Switched to dark mode")
-- [ ] Toast on search palette open/close (keyboard shortcut hint)
-- [ ] Error boundary toasts instead of blank error screens
+- [x] Add toast feedback on progress save ("Progress saved ✓")
+- [x] Toast on exercise submission (correct/incorrect)
+- [x] Toast on theme toggle ("Switched to dark mode")
+- [x] Toast on search palette open/close (keyboard shortcut hint)
+- [x] Error boundary toasts instead of blank error screens
 
 ### Confetti Celebrations — `canvas-confetti`
-- [ ] Confetti burst when a quiz is aced (100%)
-- [ ] Confetti on completing all exercises for a day
-- [ ] Confetti on unlocking a new phase
-- [ ] Subtle sparkle effect when marking a lesson complete
-- [ ] End-of-curriculum celebration (full-screen fireworks)
+- [x] Confetti burst when a quiz is aced (100%)
+- [x] Confetti on completing all exercises for a day
+- [x] Confetti on unlocking a new phase
+- [x] Subtle sparkle effect when marking a lesson complete
+- [x] End-of-curriculum celebration (full-screen fireworks)
 
 ### Content Validation — `zod`
-- [ ] Define Zod schemas for lesson frontmatter
-- [ ] Validate phase metadata at build time
-- [ ] Schema-validate exercise JSON data
-- [ ] Type-safe curriculum config with `z.infer<>`
-- [ ] Add schema validation to the `validate-content` script
+- [x] Define Zod schemas for lesson frontmatter
+- [x] Validate phase metadata at build time
+- [x] Schema-validate exercise JSON data
+- [x] Type-safe curriculum config with `z.infer<>`
+- [x] Add schema validation to the `validate-content` script
 
 ---
 

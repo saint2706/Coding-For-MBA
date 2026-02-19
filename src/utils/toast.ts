@@ -1,6 +1,6 @@
-import { toast, type ToastOptions } from 'react-hot-toast'
+import { toast, type DefaultToastOptions, type ToastOptions } from 'react-hot-toast'
 
-export const TOAST_DEFAULT_OPTIONS: ToastOptions = {
+export const TOAST_DEFAULT_OPTIONS: DefaultToastOptions = {
   duration: 3500,
   style: {
     background: 'var(--bg-elevated, #1f2937)',

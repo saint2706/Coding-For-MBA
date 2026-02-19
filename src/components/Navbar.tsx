@@ -13,6 +13,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
   const { theme, toggleTheme } = useTheme()
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
+  const lastSearchToastAtRef = useRef(0)
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -30,12 +31,19 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
 
         event.preventDefault()
         inputRef.current?.focus()
+
+        const now = Date.now()
+        if (now - lastSearchToastAtRef.current > 800) {
+          toastInfo('Search opened. Type a query and press Enter. Press Esc to close.')
+          lastSearchToastAtRef.current = now
+        }
       }
 
       if (event.key === 'Escape' && document.activeElement === inputRef.current) {
         event.preventDefault()
         setQuery('')
         navigate('/search')
+        toastInfo('Search closed. Press / to reopen quickly.')
       }
     }
 

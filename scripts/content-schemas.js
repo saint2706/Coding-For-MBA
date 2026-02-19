@@ -1,23 +1,38 @@
 import { z } from 'zod'
 
 const nonEmptyString = z.string().trim().min(1)
+const positiveInt = z.coerce.number().int().positive()
+const positiveNumber = z.coerce.number().positive()
+
+export const difficultyLevelSchema = z.enum(['beginner', 'intermediate', 'advanced', 'expert'])
 
 export const lessonFrontmatterSchema = z.object({
-  day: z.coerce.number().int().positive(),
+  day: positiveInt,
   title: nonEmptyString,
-  phase: z.coerce.number().int().positive(),
-  difficulty: nonEmptyString,
-  duration: z.coerce.number().positive(),
+  phase: positiveInt,
+  difficulty: difficultyLevelSchema,
+  duration: positiveNumber,
   tags: z.array(nonEmptyString).optional(),
   concepts: z.array(nonEmptyString).optional(),
 })
 
 export const phaseOverviewFrontmatterSchema = z.object({
-  phase: z.coerce.number().int().positive(),
+  phase: positiveInt,
   title: nonEmptyString,
-  days: z.array(z.coerce.number().int().positive()).nonempty(),
-  totalDuration: z.coerce.number().positive(),
-  difficulty: nonEmptyString,
+  days: z.array(positiveInt).nonempty(),
+  totalDuration: positiveNumber,
+  difficulty: difficultyLevelSchema,
   tags: z.array(nonEmptyString).optional(),
   concepts: z.array(nonEmptyString).optional(),
+})
+
+export const exerciseSchema = z.object({
+  day: positiveInt,
+  lessonTitle: nonEmptyString,
+  phase: positiveInt,
+  difficulty: difficultyLevelSchema,
+  title: nonEmptyString,
+  goal: z.string(),
+  starterCode: z.string(),
+  expectedOutput: z.string().optional(),
 })

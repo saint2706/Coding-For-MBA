@@ -6,11 +6,16 @@
  * and an optional solution that can be revealed on demand.
  */
 
-import { useState, useId, useRef } from 'react'
+import { useState, useId, useRef, useMemo, useCallback } from 'react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import CodePlayground, { type CodePlaygroundHandle } from './CodePlayground'
 import CopyButton from './CopyButton'
+import { useLocation } from 'react-router-dom'
+import { getAllExercises } from '../utils/contentLoader'
+import { markExerciseComplete } from '../utils/exerciseProgress'
+import { triggerDayExercisesCompleteConfetti } from '../utils/confetti'
+import { toastSuccess } from '../utils/toast'
 
 /**
  * Custom syntax highlighting theme for solution code display.
@@ -79,6 +84,34 @@ export default function ExerciseWidget({
   const solutionId = useId()
   const playgroundRef = useRef<CodePlaygroundHandle>(null)
 
+  const location = useLocation()
+  const lessonDay = useMemo(() => {
+    const match = location.pathname.match(/\/lesson\/(\d+)/)
+    return match ? Number(match[1]) : null
+  }, [location.pathname])
+
+  const totalExercisesForDay = useMemo(() => {
+    if (!lessonDay) return 0
+    return getAllExercises().filter((exercise) => exercise.day === lessonDay).length
+  }, [lessonDay])
+
+  const exerciseId = useMemo(() => {
+    if (!lessonDay) return title.trim().toLowerCase()
+    return `${lessonDay}-${title
+      .trim()
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')}`
+  }, [lessonDay, title])
+
+  const handleExerciseMatch = useCallback(() => {
+    if (!lessonDay) return
+    const completedAll = markExerciseComplete(lessonDay, exerciseId, totalExercisesForDay)
+    if (completedAll) {
+      triggerDayExercisesCompleteConfetti()
+      toastSuccess(`All exercises complete for Day ${lessonDay}!`)
+    }
+  }, [exerciseId, lessonDay, totalExercisesForDay])
+
   const handleToggleSolution = () => {
     if (!showSolution && !hasRevealed) {
       setHasRevealed(true)
@@ -113,6 +146,7 @@ export default function ExerciseWidget({
         ref={playgroundRef}
         initialCode={starterCode}
         expectedOutput={expectedOutput}
+        onExpectedOutputMatched={handleExerciseMatch}
       />
 
       {solution && (
