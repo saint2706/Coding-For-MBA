@@ -17,6 +17,7 @@ import { getAllExercises } from '../utils/contentLoader'
 import { markExerciseComplete } from '../utils/exerciseProgress'
 import { triggerDayExercisesCompleteConfetti } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
+import { useQuizStore } from '../stores/quizStore'
 
 /**
  * Custom syntax highlighting theme for solution code display.
@@ -82,6 +83,7 @@ export default function ExerciseWidget({
 }: ExerciseWidgetProps) {
   const [showSolution, setShowSolution] = useState(false)
   const [hasRevealed, setHasRevealed] = useState(false)
+  const [hasSubmitted, setHasSubmitted] = useState(false)
   const solutionId = useId()
   const playgroundRef = useRef<CodePlaygroundHandle>(null)
   const prefersReducedMotion = useReducedMotion()
@@ -113,6 +115,36 @@ export default function ExerciseWidget({
       toastSuccess(`All exercises complete for Day ${lessonDay}!`)
     }
   }, [exerciseId, lessonDay, totalExercisesForDay])
+
+  const quizId = useMemo(() => `exercise-${exerciseId}`, [exerciseId])
+
+  const quizTopic = useMemo(() => {
+    if (!lessonDay) return title
+    return `Day ${lessonDay}: ${title}`
+  }, [lessonDay, title])
+
+  const quizStats = useQuizStore((state) => state.getQuizStats(quizId))
+  const recentAttempts = useQuizStore((state) => state.getRecentAttempts(quizId, 3))
+
+  const handleSubmissionEvaluated = useCallback(
+    (result: {
+      correct: boolean
+      output: string | null
+      error: string | null
+      attemptedAt: Date
+    }) => {
+      setHasSubmitted(true)
+      useQuizStore.getState().recordAttempt({
+        quizId,
+        topic: quizTopic,
+        correct: result.correct,
+        attemptedAt: result.attemptedAt,
+        ...(result.output ? { output: result.output } : {}),
+        ...(result.error ? { error: result.error } : {}),
+      })
+    },
+    [quizId, quizTopic],
+  )
 
   const handleToggleSolution = () => {
     if (!showSolution && !hasRevealed) {
@@ -149,7 +181,22 @@ export default function ExerciseWidget({
         initialCode={starterCode}
         expectedOutput={expectedOutput}
         onExpectedOutputMatched={handleExerciseMatch}
+        onSubmissionEvaluated={handleSubmissionEvaluated}
       />
+
+      {quizStats && (
+        <div className="exercise-widget__quiz-stats">
+          <small>
+            Attempts: {quizStats.attempts} · Accuracy: {quizStats.accuracy}% · Incorrect:{' '}
+            {quizStats.incorrect}
+          </small>
+          {recentAttempts.length > 0 && (
+            <small>
+              Recent: {recentAttempts.map((attempt) => (attempt.correct ? '✅' : '❌')).join(' ')}
+            </small>
+          )}
+        </div>
+      )}
 
       {solution && (
         <div className="exercise-widget__solution">
@@ -159,7 +206,11 @@ export default function ExerciseWidget({
             aria-expanded={showSolution}
             aria-controls={solutionId}
           >
-            {showSolution ? '🔽 Hide Solution' : '💡 Show Solution'}
+            {showSolution
+              ? '🔽 Hide Solution'
+              : hasSubmitted
+                ? '💡 Show Solution (Review Mode)'
+                : '💡 Show Solution'}
           </button>
           <AnimatePresence initial={false}>
             {showSolution && (

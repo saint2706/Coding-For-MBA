@@ -64,16 +64,16 @@
 ## 🧠 State Management — `zustand`
 
 ### Progress Store
-- [ ] Migrate localStorage progress reads/writes to a zustand store
-- [ ] Persist middleware for automatic localStorage sync
-- [ ] Computed selectors: `completedLessonsCount`, `phaseProgress`, `streakDays`
-- [ ] Hydrate progress from localStorage on first mount (SSR-safe)
+- [x] Migrate localStorage progress reads/writes to a zustand store
+- [x] Persist middleware for automatic localStorage sync
+- [x] Computed selectors: `completedLessonsCount`, `phaseProgress`, `streakDays`
+- [x] Hydrate progress from localStorage on first mount (SSR-safe)
 
 ### Quiz State
-- [ ] Track quiz attempts, scores, and timestamps
-- [ ] Per-question analytics (most-missed questions)
-- [ ] Quiz review mode: show correct answers after submission
-- [ ] Spaced repetition: surface low-scoring quiz topics
+- [x] Track quiz attempts, scores, and timestamps
+- [x] Per-question analytics (most-missed questions)
+- [x] Quiz review mode: show correct answers after submission
+- [x] Spaced repetition: surface low-scoring quiz topics
 
 ### User Preferences Store
 - [ ] Theme preference (already in context, consolidate)
@@ -165,4 +165,4 @@
 
 ---
 
-*Last updated: Feb 19, 2026*
+*Last updated: Feb 21, 2026*

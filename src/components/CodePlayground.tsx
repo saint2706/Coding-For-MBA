@@ -50,6 +50,12 @@ interface CodePlaygroundProps {
   initialCode: string
   expectedOutput?: string
   onExpectedOutputMatched?: () => void
+  onSubmissionEvaluated?: (result: {
+    correct: boolean
+    output: string | null
+    error: string | null
+    attemptedAt: Date
+  }) => void
 }
 
 const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g, '\n')
@@ -70,7 +76,7 @@ const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g,
  * @returns An interactive code playground component
  */
 const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
-  ({ initialCode, expectedOutput, onExpectedOutputMatched }, ref) => {
+  ({ initialCode, expectedOutput, onExpectedOutputMatched, onSubmissionEvaluated }, ref) => {
     const [code, setCode] = useState(initialCode)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const preRef = useRef<HTMLDivElement>(null)
@@ -136,8 +142,10 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
       ({ output, error }: { output: string | null; error: string | null }) => {
         if (!expectedOutput) return
         runCountRef.current += 1
+        const attemptedAt = new Date()
 
         if (error) {
+          onSubmissionEvaluated?.({ correct: false, output, error, attemptedAt })
           toastError('Exercise submission incorrect — check your code and try again.')
           return
         }
@@ -145,6 +153,7 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
         const actual = normalizeOutput(output ?? '')
         const expected = normalizeOutput(expectedOutput)
         if (actual === expected) {
+          onSubmissionEvaluated?.({ correct: true, output, error: null, attemptedAt })
           if (runCountRef.current === 1) {
             triggerQuizAcedConfetti()
           }
@@ -153,9 +162,10 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
           return
         }
 
+        onSubmissionEvaluated?.({ correct: false, output, error: null, attemptedAt })
         toastError('Exercise submission incorrect — compare your output and retry.')
       },
-      [expectedOutput, onExpectedOutputMatched],
+      [expectedOutput, onExpectedOutputMatched, onSubmissionEvaluated],
     )
 
     return (
