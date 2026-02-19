@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/useTheme'
+import { toastInfo } from '../utils/toast'
 
 interface NavbarProps {
   onToggleSidebar: () => void
@@ -48,6 +49,12 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
     navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search')
   }
 
+  const handleThemeToggle = () => {
+    const nextTheme = theme === 'dark' ? 'light' : 'dark'
+    toggleTheme()
+    toastInfo(`Switched to ${nextTheme} mode`)
+  }
+
   return (
     <nav className="navbar" role="navigation" aria-label="Main navigation">
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -88,7 +95,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         </form>
         <button
           className="theme-toggle"
-          onClick={toggleTheme}
+          onClick={handleThemeToggle}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
           title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
         >
