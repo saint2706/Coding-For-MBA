@@ -55,7 +55,9 @@ describe('ExerciseWidget', () => {
     })
 
     // 1. Initial state: Solution button exists
-    const showButton = container.querySelector('.exercise-widget__solution-btn') as HTMLButtonElement
+    const showButton = container.querySelector(
+      '.exercise-widget__solution-btn',
+    ) as HTMLButtonElement
     expect(showButton).not.toBeNull()
     expect(showButton.textContent).toContain('Show Solution')
 
@@ -89,7 +91,9 @@ describe('ExerciseWidget', () => {
     expect(solutionCodeHidden).not.toBeNull()
 
     // Check if the container is hidden
-    const solutionPanel = container.querySelector('.exercise-widget__solution-panel') as HTMLDivElement
+    const solutionPanel = container.querySelector(
+      '.exercise-widget__solution-panel',
+    ) as HTMLDivElement
     expect(solutionPanel.hidden).toBe(true)
   })
 })
