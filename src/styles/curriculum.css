@@ -27,6 +27,8 @@
 .curriculum-phase {
   position: relative;
   margin-bottom: 2.5rem;
+  border-radius: var(--radius-lg);
+  padding: 1rem 1rem 0.875rem;
 }
 
 .curriculum-phase::before {
