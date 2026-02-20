@@ -1,41 +1,25 @@
 /**
- * Breadcrumb Component
+ * Breadcrumb Navigation
  *
- * Displays a hierarchical breadcrumb navigation trail showing the user's
- * current location within the site structure.
+ * Displays a hierarchical trail of links indicating the current page location.
+ *
+ * Key Responsibilities:
+ * - Render a list of navigation items.
+ * - Mark the current page with `aria-current="page"`.
+ * - Use accessible separators.
  */
 
 import { Link } from 'react-router-dom'
 
-/**
- * Represents a single breadcrumb item in the navigation trail.
- *
- * @property label - Display text for the breadcrumb item
- * @property to - Optional URL path for navigation. If omitted, renders as plain text
- */
 export interface BreadcrumbItem {
   label: string
   to?: string
 }
 
-/**
- * Props for the Breadcrumb component.
- *
- * @property items - Array of breadcrumb items to display in order
- */
 interface BreadcrumbProps {
   items: BreadcrumbItem[]
 }
 
-/**
- * Breadcrumb navigation component.
- *
- * Renders a horizontal list of navigation items separated by forward slashes.
- * The last item (current page) is rendered as plain text without a link.
- *
- * @param items - Array of breadcrumb items to render
- * @returns A breadcrumb navigation element
- */
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
     <nav aria-label="Breadcrumb">

@@ -1,8 +1,13 @@
 /**
- * Progress tracker compatibility layer.
+ * Legacy Progress Tracker (Facade)
  *
- * Legacy callsites still import this module. Internally, all reads/writes route
- * through the zustand progress store.
+ * Provides a backward-compatible procedural API for the Progress Store.
+ * Used by older components or non-React contexts to interact with the global state.
+ *
+ * Key Responsibilities:
+ * - Wrap Zustand's `useProgressStore` methods for direct invocation.
+ * - Ensure hydration before access.
+ * - Listen for storage events to sync state across tabs.
  */
 
 import { useProgressStore } from '../stores/progressStore'

@@ -1,5 +1,13 @@
 /**
- * Security validation for Python code execution.
+ * Code Security Utilities
+ *
+ * Provides validation and sanitization for user-submitted Python code.
+ * Ensures that executed code cannot access sensitive browser APIs or system internals.
+ *
+ * Key Responsibilities:
+ * - Validate Python code against a blocklist of dangerous modules and functions.
+ * - Prevent direct access to the 'js' module and other Pyodide internals.
+ * - Normalize code to prevent regex bypass attempts.
  */
 
 export interface ValidationResult {

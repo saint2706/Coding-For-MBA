@@ -1,37 +1,25 @@
 /**
- * Skeleton Component
+ * Skeleton Loader Component
  *
- * Loading placeholder components that show animated skeletons
- * while content is being fetched.
+ * Displays animated placeholders for content while data is fetching.
+ *
+ * Key Responsibilities:
+ * - Provide multiple variants (text, heading, card, block).
+ * - Support custom dimensions and repeat counts.
+ * - Render an accessible loading state (aria-hidden).
  */
 
-/**
- * Props for the Skeleton component.
- *
- * @property variant - Visual style variant (text, heading, card, block)
- * @property width - Optional custom width
- * @property height - Optional custom height
- * @property count - Number of skeleton elements to render (default: 1)
- */
 interface SkeletonProps {
+  /** Visual style variant. */
   variant?: 'text' | 'heading' | 'card' | 'block'
+  /** Optional custom width (CSS string). */
   width?: string
+  /** Optional custom height (CSS string). */
   height?: string
+  /** Number of skeleton elements to render. */
   count?: number
 }
 
-/**
- * Skeleton loading placeholder component.
- *
- * Displays animated skeleton placeholders in various styles while
- * content is loading. Supports multiple variants and custom dimensions.
- *
- * @param variant - Style of skeleton (text, heading, card, or block)
- * @param width - Custom width value
- * @param height - Custom height value
- * @param count - Number of skeleton items to render
- * @returns One or more skeleton placeholder elements
- */
 export default function Skeleton({ variant = 'text', width, height, count = 1 }: SkeletonProps) {
   const items = Array.from({ length: count }, (_, i) => i)
 

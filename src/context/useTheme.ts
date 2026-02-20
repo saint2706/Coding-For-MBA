@@ -1,8 +1,11 @@
 /**
- * Theme Hook
+ * Theme Access Hook
  *
- * Custom hook for accessing the theme context.
- * Provides convenient access to current theme and toggle function.
+ * Provides a simplified interface for consuming the `ThemeContext`.
+ *
+ * Key Responsibilities:
+ * - Return the current theme and toggle function.
+ * - Abstract `useContext` usage.
  */
 
 import { useContext } from 'react'

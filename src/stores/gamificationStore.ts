@@ -1,3 +1,16 @@
+/**
+ * Gamification Store
+ *
+ * Manages user engagement mechanics including XP (Experience Points),
+ * achievements, streaks, and daily challenges.
+ *
+ * Key Responsibilities:
+ * - Track XP gains from lessons, exercises, and quizzes.
+ * - Manage achievement unlocking logic.
+ * - Persist gamification state to localStorage.
+ * - Calculate level progression based on XP.
+ */
+
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
 import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'

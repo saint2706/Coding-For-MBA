@@ -1,8 +1,11 @@
 /**
- * Theme Context
+ * Theme Context Definition
  *
- * Defines the React context for theme management (dark/light mode).
- * Provides shared theme state and toggle functionality across the application.
+ * Defines the React Context for managing application theming (light/dark mode).
+ *
+ * Key Responsibilities:
+ * - Define the shape of the theme context (theme state, toggle function).
+ * - Create the context with safe default values.
  */
 
 import { createContext } from 'react'

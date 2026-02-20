@@ -1,3 +1,15 @@
+/**
+ * User Preferences Store
+ *
+ * Manages global user settings and UI customization.
+ *
+ * Key Responsibilities:
+ * - Store theme preferences (light/dark/system).
+ * - Manage editor font size and density settings.
+ * - Set default code languages (Python vs SQL).
+ * - Persist settings to localStorage.
+ */
+
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
 import { getStoredString } from '../utils/safeStorage'

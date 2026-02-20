@@ -12,6 +12,19 @@ import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
+/**
+ * Lesson Page
+ *
+ * The core learning view where users read content and complete exercises.
+ *
+ * Key Responsibilities:
+ * - Fetch lesson content based on URL params (`/lesson/:day`).
+ * - Render markdown content with interactive widgets.
+ * - Track reading progress, time spent, and completion status.
+ * - Handle navigation to next/previous lessons.
+ * - Manage keyboard shortcuts (ArrowLeft/Right).
+ */
+
 import { buildLessonSchema } from '../utils/seoSchemas'
 import {
   getLesson,

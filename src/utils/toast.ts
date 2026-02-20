@@ -1,3 +1,13 @@
+/**
+ * Toast Notification Wrapper
+ *
+ * Configures and wraps `react-hot-toast` for consistent application-wide notifications.
+ *
+ * Key Responsibilities:
+ * - Define default styling and themes for success/error/info toasts.
+ * - Export simplified helper functions (toastSuccess, toastError).
+ */
+
 import { toast, type DefaultToastOptions, type ToastOptions } from 'react-hot-toast'
 
 export const TOAST_DEFAULT_OPTIONS: DefaultToastOptions = {

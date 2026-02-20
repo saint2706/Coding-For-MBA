@@ -6,6 +6,18 @@
  * and an optional solution that can be revealed on demand.
  */
 
+/**
+ * Exercise Widget Component
+ *
+ * Provides a self-contained environment for coding exercises within lessons.
+ *
+ * Key Responsibilities:
+ * - Display exercise title, goal, and instructions.
+ * - Embed a `CodePlayground` for code execution.
+ * - Track exercise completion and award XP/confetti.
+ * - Provide a collapsible solution panel with syntax highlighting.
+ */
+
 import { useState, useId, useRef, useMemo, useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
@@ -38,43 +50,21 @@ const solutionTheme = {
   },
 }
 
-/**
- * Props for the ExerciseWidget component.
- *
- * @property title - Exercise title
- * @property goal - Optional goal or objective of the exercise
- * @property instructions - Optional step-by-step instructions
- * @property starterCode - Initial Python code provided to the user
- * @property expectedOutput - Optional expected output to show users what result to aim for
- * @property solution - Optional solution code that can be revealed
- */
 interface ExerciseWidgetProps {
+  /** Exercise title (must be unique within the day). */
   title: string
+  /** Brief goal statement explaining what to achieve. */
   goal?: string
+  /** Detailed step-by-step instructions. */
   instructions?: string
+  /** Initial code populated in the editor. */
   starterCode: string
+  /** The exact output string the user code should produce to pass. */
   expectedOutput?: string
+  /** Complete solution code for reference. */
   solution?: string
 }
 
-/**
- * Interactive exercise widget with code playground and solution reveal.
- *
- * Provides a complete learning exercise experience with:
- * - Clear exercise title and goals
- * - Step-by-step instructions
- * - Interactive code playground for practice
- * - Expected output display
- * - Collapsible solution viewer with syntax highlighting
- *
- * @param title - Exercise title to display
- * @param goal - Learning goal for the exercise
- * @param instructions - Detailed instructions for the learner
- * @param starterCode - Starting code template
- * @param expectedOutput - Expected output to guide learners
- * @param solution - Complete solution code
- * @returns An interactive exercise widget component
- */
 export default function ExerciseWidget({
   title,
   goal,

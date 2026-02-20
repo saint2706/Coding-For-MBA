@@ -1,3 +1,15 @@
+/**
+ * Main Application Component
+ *
+ * Defines the core layout structure and routing configuration.
+ *
+ * Key Responsibilities:
+ * - Manage global layout (Sidebar, Navbar, Main Content).
+ * - Configure client-side routing (React Router).
+ * - Handle page transitions (Framer Motion).
+ * - Initialize global providers (Theme, etc.).
+ */
+
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'motion/react'

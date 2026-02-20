@@ -34,9 +34,9 @@ interface SidebarProps {
  * - Mobile overlay with click-outside to close
  * - Phase-level progress counters
  *
- * @param isOpen - Controls sidebar visibility on mobile
- * @param onClose - Function to close the sidebar
- * @returns A navigation sidebar with phase accordion
+ * @param isOpen - Controls sidebar visibility on mobile.
+ * @param onClose - Function to close the sidebar.
+ * @returns A navigation sidebar with phase accordion.
  */
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
@@ -44,10 +44,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const navRef = useRef<HTMLDivElement>(null)
   const prefersReducedMotion = useReducedMotion()
 
-  /**
-   * Derives which phase should be open based on current URL.
-   * Automatically expands the phase containing the current lesson.
-   */
   const derivedOpenPhase = useMemo(() => {
     const lessonMatch = location.pathname.match(/\/lesson\/(\d+)/)
     if (lessonMatch) {
@@ -64,14 +60,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const dueByPhase = useMemo(() => getReviewDueCountByPhase(), [])
   const reviewStreak = useMemo(() => getReviewStreak(), [])
 
-  /**
-   * Determines currently open phase: manual toggle takes precedence over auto-derived.
-   */
+  // Determines currently open phase: manual toggle takes precedence over auto-derived.
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
 
-  /**
-   * Auto-scrolls sidebar to show the active lesson link.
-   */
+  // Auto-scrolls sidebar to show the active lesson link.
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
@@ -85,11 +77,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return () => clearTimeout(timer)
   }, [location.pathname])
 
-  /**
-   * Toggles a phase accordion open or closed.
-   *
-   * @param phaseNum - Phase number to toggle
-   */
   const togglePhase = (phaseNum: number) => {
     setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
   }

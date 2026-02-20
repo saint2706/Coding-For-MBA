@@ -1,11 +1,12 @@
 /**
- * Phase overview page displaying detailed information about a specific phase.
+ * Phase Overview Page
  *
- * This page shows comprehensive information for a single phase including
- * its lessons, difficulty level, estimated time, progress tracking, and
- * access to solution notebooks. The phase content is rendered from markdown.
+ * Provides a high-level summary of a specific curriculum phase.
  *
- * @module pages/PhaseOverview
+ * Key Responsibilities:
+ * - Display phase objectives and overview content.
+ * - List all lessons within the phase.
+ * - Show phase-specific progress.
  */
 
 import { useParams, Link } from 'react-router-dom'

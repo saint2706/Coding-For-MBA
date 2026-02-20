@@ -1,8 +1,14 @@
 /**
- * PythonRunner Component
+ * Python Runner Component
  *
- * A Python code execution component using Pyodide for in-browser Python execution.
- * Displays run button with loading states and shows execution output or errors.
+ * Manages the execution lifecycle of Python code via Pyodide.
+ * Handles loading states, security validation, execution timeouts, and result display.
+ *
+ * Key Responsibilities:
+ * - Load Pyodide lazily (via `usePyodide` hook).
+ * - Validate code against security rules before execution.
+ * - Manage execution state (running, loading, error, success).
+ * - Render execution controls (Run/Cancel) and output console.
  */
 
 import { useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
@@ -19,35 +25,15 @@ export interface PythonRunnerHandle {
   cancel: () => void
 }
 
-/**
- * Props for the PythonRunner component.
- *
- * @property code - Python code to execute
- * @property compact - Whether to use compact layout (default: false)
- */
 interface PythonRunnerProps {
+  /** The Python source code to execute. */
   code: string
+  /** Whether to render in a compact layout (e.g., for small widgets). */
   compact?: boolean
+  /** Callback fired when execution finishes (success or failure). */
   onExecutionComplete?: (result: { output: string | null; error: string | null }) => void
 }
 
-/**
- * Python code runner with Pyodide execution.
- *
- * Provides a run button that executes Python code in the browser
- * and displays the output or errors. Handles Pyodide loading state
- * and execution state with appropriate UI feedback.
- *
- * Maintainer note: cancellation/timeout are UI-level controls that race the
- * Promise returned by `runPythonAsync`. Pyodide does not get forcefully
- * interrupted here, so long-running code may continue in the background until
- * execution yields. We guard state updates to prevent stale results from
- * clobbering newer runs.
- *
- * @param code - Python code to run
- * @param compact - Use compact visual layout
- * @returns A Python code runner component
- */
 const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
   ({ code, compact = false, onExecutionComplete }, ref) => {
     const { loading: pyodideLoading, runPython } = usePyodide()

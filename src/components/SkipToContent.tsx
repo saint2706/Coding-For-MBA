@@ -1,21 +1,15 @@
 /**
- * SkipToContent Component
+ * Skip to Content Link
  *
- * An accessibility component that allows keyboard users to skip
- * navigation and jump directly to main content.
+ * Hidden link for accessibility, allowing keyboard users to bypass navigation.
+ *
+ * Key Responsibilities:
+ * - Render an anchor link that becomes visible on focus.
+ * - Programmatically move focus to the `#main-content` element.
  */
 
 import type { MouseEvent } from 'react'
 
-/**
- * Skip-to-content link for keyboard navigation.
- *
- * Provides an accessible way for keyboard users to skip repetitive navigation
- * and jump directly to the main content. The link is visually hidden but
- * becomes visible when focused via keyboard navigation.
- *
- * @returns A skip-to-content link element
- */
 export default function SkipToContent() {
   const handleSkipToContent = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()

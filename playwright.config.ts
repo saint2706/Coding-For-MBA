@@ -1,3 +1,14 @@
+/**
+ * Playwright Configuration
+ *
+ * Configures End-to-End (E2E) testing options.
+ *
+ * Key Responsibilities:
+ * - Define test directory and parallelism.
+ * - Configure browser projects (Chromium, Mobile Chrome).
+ * - Set up the local development server for testing.
+ */
+
 import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({

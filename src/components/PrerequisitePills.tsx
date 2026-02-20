@@ -1,22 +1,17 @@
 /**
- * PrerequisitePills Component
+ * Prerequisite Links
  *
- * Displays prerequisite lessons as clickable pill-shaped links
- * to help users understand lesson dependencies.
+ * Displays a list of lesson dependencies as navigation pills.
+ *
+ * Key Responsibilities:
+ * - Identify prerequisite lessons from the current lesson object.
+ * - Render clickable links to those lessons.
+ * - Alert the user if they are jumping ahead of the curriculum order.
  */
 
 import { Link } from 'react-router-dom'
 import { Lesson, getPrerequisiteLessons } from '../utils/contentLoader'
 
-/**
- * Prerequisite pills navigation component.
- *
- * Shows a horizontal list of prerequisite lesson links that users
- * should complete before the current lesson. Returns null if no prerequisites exist.
- *
- * @param lesson - The current lesson to show prerequisites for
- * @returns Prerequisite navigation bar or null if no prerequisites
- */
 export default function PrerequisitePills({ lesson }: { lesson: Lesson }) {
   const prereqs = getPrerequisiteLessons(lesson)
 

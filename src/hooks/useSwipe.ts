@@ -1,8 +1,13 @@
 /**
  * Swipe Gesture Hook
  *
- * Detects horizontal swipe gestures for touch-enabled devices.
- * Useful for implementing mobile navigation patterns.
+ * Provides a touch-based swipe detection for mobile navigation.
+ * Detects left and right swipes on a target element.
+ *
+ * Key Responsibilities:
+ * - Listen for touchstart and touchend events.
+ * - Calculate swipe distance and direction.
+ * - Trigger callbacks if movement exceeds a threshold.
  */
 
 import { useEffect, useRef, useCallback } from 'react'

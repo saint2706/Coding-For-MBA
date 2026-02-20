@@ -1,3 +1,14 @@
+/**
+ * Keyboard Shortcuts Configuration
+ *
+ * Defines the application's keyboard shortcut mappings and helper utilities
+ * for detecting keyboard events.
+ *
+ * Key Responsibilities:
+ * - Centralize shortcut definitions (keys, descriptions, scopes).
+ * - Provide a utility to detect if a user is typing in an input field.
+ */
+
 export type ShortcutScope = 'Global' | 'Search' | 'Lesson'
 
 export interface ShortcutDefinition {

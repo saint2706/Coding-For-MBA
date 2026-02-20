@@ -1,11 +1,12 @@
 /**
- * 404 Not Found error page.
+ * 404 Not Found Page
  *
- * This page is displayed when users navigate to a non-existent route.
- * Provides helpful navigation options including links to home, curriculum,
- * and all phases, plus keyboard shortcut hints.
+ * Displayed when the user navigates to an unknown route.
  *
- * @module pages/NotFound
+ * Key Responsibilities:
+ * - Inform the user that the page does not exist.
+ * - Provide a clear path back to the home page.
+ * - Set `noindex` meta tag to prevent SEO issues.
  */
 
 import { Link } from 'react-router-dom'

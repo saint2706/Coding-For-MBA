@@ -1,3 +1,15 @@
+/**
+ * Error Boundary Component
+ *
+ * Catches JavaScript errors anywhere in the child component tree, logs those errors,
+ * and displays a fallback UI instead of the component tree that crashed.
+ *
+ * Key Responsibilities:
+ * - Catch unhandled errors in children.
+ * - Log errors to console (and optionally a service).
+ * - Render a user-friendly fallback UI with retry options.
+ */
+
 import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { toastError } from '../utils/toast'
 

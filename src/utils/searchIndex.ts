@@ -1,3 +1,16 @@
+/**
+ * Search Index Engine (Fuse.js)
+ *
+ * Configures the client-side full-text search engine for the curriculum.
+ * Indexes lessons, concepts, and metadata.
+ *
+ * Key Responsibilities:
+ * - Build searchable documents from lesson content.
+ * - Configure Fuse.js weights (title > concepts > body).
+ * - Generate result snippets with context.
+ * - Preload the index during browser idle time.
+ */
+
 import Fuse from 'fuse.js'
 import { getAllLessons, type Lesson } from './contentLoader'
 

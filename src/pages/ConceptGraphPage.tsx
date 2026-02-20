@@ -1,12 +1,12 @@
 /**
- * Interactive concept dependency graph visualization page.
+ * Concept Graph Page
  *
- * This page displays a visual network graph showing relationships between
- * lessons through their prerequisites. Users can explore how concepts build
- * upon each other throughout the curriculum, with interactive filtering by
- * phase and search capabilities.
+ * Displays a visual network graph of connected curriculum concepts.
  *
- * @module pages/ConceptGraphPage
+ * Key Responsibilities:
+ * - Aggregate concepts from all lessons.
+ * - Render the interactive D3 graph (`ConceptGraph`).
+ * - Provide context and navigation instructions.
  */
 
 import { useState, useCallback } from 'react'

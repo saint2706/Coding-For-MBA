@@ -1,3 +1,16 @@
+/**
+ * Learning Analytics Store
+ *
+ * Tracks detailed user engagement metrics, including time spent per lesson,
+ * daily study streaks, and visit counts.
+ *
+ * Key Responsibilities:
+ * - Record active session time with idle detection.
+ * - Aggregate study time by day and by lesson.
+ * - Calculate study streaks and weekly activity.
+ * - Persist analytics data to localStorage.
+ */
+
 import { create } from 'zustand'
 import { createJSONStorage, persist, StateStorage } from 'zustand/middleware'
 

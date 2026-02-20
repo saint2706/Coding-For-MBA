@@ -9,16 +9,16 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
 /**
- * Mobile navigation bar component.
+ * Mobile Navigation Bar
  *
- * Provides fixed bottom navigation with icons and labels for:
- * - Home
- * - Curriculum (Learn)
- * - Progress
- * - Concepts (Explore)
+ * Fixed bottom navigation bar for mobile devices.
  *
- * @returns A mobile-optimized bottom navigation bar
+ * Key Responsibilities:
+ * - Provide quick access to primary app sections (Home, Learn, Progress, Explore).
+ * - Highlight active route state.
+ * - Hide on desktop viewports via CSS media queries.
  */
+
 export default function MobileNav() {
   const location = useLocation()
   const isLesson = location.pathname.startsWith('/lesson/')

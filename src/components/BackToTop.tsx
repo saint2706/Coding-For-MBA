@@ -1,21 +1,18 @@
 /**
- * BackToTop Component
+ * Back to Top Button
  *
- * A floating button that appears when the user scrolls down the page,
- * allowing quick navigation back to the top of the page with smooth scrolling.
+ * A floating button that appears after scrolling down, allowing users to
+ * quickly return to the top of the page.
+ *
+ * Key Responsibilities:
+ * - Monitor scroll position to toggle visibility (threshold: 400px).
+ * - Smoothly scroll to top on click.
+ * - Respect reduced motion preferences (fade in/out vs slide).
  */
 
 import { useState, useEffect } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 
-/**
- * BackToTop button component that shows/hides based on scroll position.
- *
- * The button becomes visible after scrolling down 400 pixels and smoothly
- * scrolls the page back to the top when clicked.
- *
- * @returns A floating back-to-top button element
- */
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
   const prefersReducedMotion = useReducedMotion()

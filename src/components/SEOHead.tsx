@@ -1,11 +1,12 @@
 /**
- * Centralized SEO head component for managing per-page metadata.
+ * SEO Head Component
  *
- * Provides canonical URLs, Open Graph tags, Twitter Cards, and JSON-LD
- * structured data for every page. Replaces scattered Helmet usage with
- * a single, consistent interface.
+ * Manages per-page meta tags for Search Engine Optimization and Social Sharing.
  *
- * @module components/SEOHead
+ * Key Responsibilities:
+ * - Inject `<title>`, `<meta name="description">`, and canonical links.
+ * - Configure Open Graph (Facebook/LinkedIn) and Twitter Card tags.
+ * - Inject JSON-LD structured data for rich snippets (Course, Article, Breadcrumbs).
  */
 
 import { Helmet } from '@dr.pogodin/react-helmet'
@@ -22,25 +23,25 @@ interface BreadcrumbItem {
 }
 
 interface SEOHeadProps {
-  /** Page title (will be suffixed with " — Coding for MBA" unless it already contains it) */
+  /** Page title (will be suffixed with " — Coding for MBA" unless it already contains it). */
   title: string
-  /** Meta description for the page */
+  /** Meta description for the page. */
   description?: string
   /** Canonical path (e.g. "/curriculum"). Defaults to current hash path. */
   path?: string
-  /** Open Graph type. Defaults to "website" */
+  /** Open Graph type. Defaults to "website". */
   ogType?: string
-  /** Custom OG image URL */
+  /** Custom OG image URL. */
   image?: string
-  /** JSON-LD structured data objects to inject (array of schema objects) */
+  /** JSON-LD structured data objects to inject (array of schema objects). */
   jsonLd?: Record<string, unknown>[]
-  /** Breadcrumb items for BreadcrumbList schema */
+  /** Breadcrumb items for BreadcrumbList schema. */
   breadcrumbs?: BreadcrumbItem[]
-  /** Whether to add noindex meta tag */
+  /** Whether to add noindex meta tag. */
   noIndex?: boolean
-  /** Article-specific: published date */
+  /** Article-specific: published date. */
   articlePublished?: string
-  /** Article-specific: modified date */
+  /** Article-specific: modified date. */
   articleModified?: string
 }
 
@@ -58,12 +59,6 @@ function buildBreadcrumbSchema(items: BreadcrumbItem[]): Record<string, unknown>
   }
 }
 
-/**
- * Reusable SEO head component.
- *
- * Injects comprehensive meta tags, canonical URLs, Open Graph tags,
- * Twitter Cards, and JSON-LD structured data into the document head.
- */
 export default function SEOHead({
   title,
   description = DEFAULT_DESCRIPTION,

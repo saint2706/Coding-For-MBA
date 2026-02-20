@@ -1,8 +1,13 @@
 /**
- * Debounce Hook
+ * Debounce Value Hook
  *
- * Provides debouncing functionality for values to reduce update frequency.
- * Useful for optimizing expensive operations like search queries or API calls.
+ * Delays updating a value until a specified time has passed since the last change.
+ * Useful for rate-limiting expensive operations like search queries or API calls.
+ *
+ * Key Responsibilities:
+ * - Manage a local state that updates only after a delay.
+ * - Allow immediate updates for specific conditions (e.g. clearing input).
+ * - Clean up timers on unmount or value change.
  */
 
 import { useState, useEffect } from 'react'
@@ -15,10 +20,10 @@ import { useState, useEffect } from 'react'
  * immediate reset for specific values (e.g., empty strings).
  *
  * @template T - Type of the value being debounced
- * @param value - The value to debounce
- * @param delay - Delay in milliseconds before updating the debounced value
- * @param shouldResetImmediately - Optional function to determine if value should update immediately
- * @returns The debounced value
+ * @param value - The value to debounce.
+ * @param delay - Delay in milliseconds before updating the debounced value.
+ * @param shouldResetImmediately - Optional function to determine if value should update immediately.
+ * @returns The debounced value.
  *
  * @example
  * ```tsx

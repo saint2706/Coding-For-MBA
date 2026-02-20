@@ -1,3 +1,15 @@
+/**
+ * Curriculum Configuration
+ *
+ * Defines visual and structural constants for the curriculum, such as difficulty levels,
+ * phase icons, and associated metadata. Validated at runtime using Zod schemas.
+ *
+ * Key Responsibilities:
+ * - Define supported difficulty levels (beginner, intermediate, etc.) and their UI colors.
+ * - Map phase numbers to representative icons.
+ * - Enforce schema validation on configuration objects.
+ */
+
 import { z } from 'zod'
 
 const difficultyInfoSchema = z.object({

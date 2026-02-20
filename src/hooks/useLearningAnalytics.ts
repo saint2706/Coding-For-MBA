@@ -1,8 +1,26 @@
+/**
+ * Learning Analytics Hook
+ *
+ * Automatically tracks page visits and session duration for learning analytics.
+ * Connects the current route to the `learningAnalyticsStore`.
+ *
+ * Key Responsibilities:
+ * - Start tracking when a route component mounts.
+ * - Pause tracking when the document becomes hidden (tab switch).
+ * - Stop tracking on component unmount or page unload.
+ */
+
 import { useEffect } from 'react'
 import { useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
 
 let activeSubscribers = 0
 
+/**
+ * Tracks engagement time for a specific route.
+ * Handles visibility changes (pausing/resuming) and cleanup automatically.
+ *
+ * @param route - The identifier for the current route/page (e.g., "Lesson 1").
+ */
 export function useLearningAnalytics(route: string): void {
   useEffect(() => {
     useLearningAnalyticsStore.getState().hydrate()

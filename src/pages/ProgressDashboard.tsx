@@ -1,11 +1,13 @@
 /**
- * Progress tracking dashboard page.
+ * Progress Dashboard Page
  *
- * This page provides comprehensive progress tracking across the entire curriculum,
- * displaying completion statistics, heatmap visualizations, and per-phase breakdowns.
- * Users can view their learning journey and clear their progress if needed.
+ * A consolidated view of the user's learning journey.
  *
- * @module pages/ProgressDashboard
+ * Key Responsibilities:
+ * - Display gamification stats (XP, level, streak, achievements).
+ * - Visualize time spent and learning habits.
+ * - Highlight weak areas based on quiz performance.
+ * - Show detailed progress per phase.
  */
 
 import { useEffect, useMemo, useState, useCallback } from 'react'

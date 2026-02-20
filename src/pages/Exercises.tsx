@@ -1,11 +1,12 @@
 /**
- * Exercise browser and filter page.
+ * Exercises List Page
  *
- * This page provides a comprehensive view of all exercises across the curriculum
- * with advanced filtering capabilities by phase, difficulty, and keyword search.
- * Also displays links to solution notebooks for each phase.
+ * A centralized dashboard of all coding exercises available in the curriculum.
  *
- * @module pages/Exercises
+ * Key Responsibilities:
+ * - List all exercises sorted by day.
+ * - Show completion status for each exercise.
+ * - Provide a total progress summary.
  */
 
 import { useState, useMemo } from 'react'

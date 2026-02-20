@@ -1,3 +1,15 @@
+/**
+ * Content Schemas (Zod)
+ *
+ * Defines runtime validation schemas for lesson frontmatter and phase metadata.
+ * Ensures consistent data structure across all markdown content.
+ *
+ * Key Responsibilities:
+ * - Validate lesson properties (day, title, tags, concepts).
+ * - Validate phase overview structure.
+ * - Define strict types for difficulties and prerequisites.
+ */
+
 import { z } from 'zod'
 
 const nonEmptyString = z.string().trim().min(1)
