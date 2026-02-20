@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/useTheme'
 import { toastInfo } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
 interface NavbarProps {
   onToggleSidebar: () => void
@@ -77,7 +78,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
             <path d="M3 12h18M3 6h18M3 18h18" />
           </svg>
         </button>
-        <Link to="/" className="navbar-brand">
+        <Link to="/" className="navbar-brand" {...createRoutePrefetchHandlers('/')}>
           <div className="brand-icon">M</div>
           <span>Coding for MBA</span>
         </Link>
@@ -104,13 +105,25 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         >
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <Link to="/" className={location.pathname === '/' ? 'active' : ''}>
+        <Link
+          to="/"
+          className={location.pathname === '/' ? 'active' : ''}
+          {...createRoutePrefetchHandlers('/')}
+        >
           Home
         </Link>
-        <Link to="/curriculum" className={location.pathname === '/curriculum' ? 'active' : ''}>
+        <Link
+          to="/curriculum"
+          className={location.pathname === '/curriculum' ? 'active' : ''}
+          {...createRoutePrefetchHandlers('/curriculum')}
+        >
           Curriculum
         </Link>
-        <Link to="/search" className={location.pathname === '/search' ? 'active' : ''}>
+        <Link
+          to="/search"
+          className={location.pathname === '/search' ? 'active' : ''}
+          {...createRoutePrefetchHandlers('/search')}
+        >
           Search
         </Link>
         <a
