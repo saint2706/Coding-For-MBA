@@ -8,8 +8,8 @@
 
 import { useState, useId, useRef, useMemo, useCallback } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import SyntaxHighlighter from '../utils/prism'
 import CodePlayground, { type CodePlaygroundHandle } from './CodePlayground'
 import CopyButton from './CopyButton'
 import { useLocation } from 'react-router-dom'
@@ -18,6 +18,7 @@ import { markExerciseComplete } from '../utils/exerciseProgress'
 import { triggerDayExercisesCompleteConfetti } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
 import { useQuizStore } from '../stores/quizStore'
+import { useShallow } from 'zustand/react/shallow'
 
 /**
  * Custom syntax highlighting theme for solution code display.
@@ -123,8 +124,8 @@ export default function ExerciseWidget({
     return `Day ${lessonDay}: ${title}`
   }, [lessonDay, title])
 
-  const quizStats = useQuizStore((state) => state.getQuizStats(quizId))
-  const recentAttempts = useQuizStore((state) => state.getRecentAttempts(quizId, 3))
+  const quizStats = useQuizStore(useShallow((state) => state.getQuizStats(quizId)))
+  const recentAttempts = useQuizStore(useShallow((state) => state.getRecentAttempts(quizId, 3)))
 
   const handleSubmissionEvaluated = useCallback(
     (result: {

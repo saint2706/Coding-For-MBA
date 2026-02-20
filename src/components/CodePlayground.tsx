@@ -7,8 +7,8 @@
  */
 
 import { useState, useCallback, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import SyntaxHighlighter from '../utils/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
 import CopyButton from './CopyButton'
 import { toastError, toastSuccess } from '../utils/toast'
