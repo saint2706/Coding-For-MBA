@@ -76,42 +76,42 @@
 - [x] Spaced repetition: surface low-scoring quiz topics
 
 ### User Preferences Store
-- [ ] Theme preference (already in context, consolidate)
-- [ ] Sidebar default state (open/closed)
-- [ ] Font size preference
-- [ ] Code playground language preference (Python/SQL)
-- [ ] Preferred lesson display density (compact/comfortable)
+- [x] Theme preference (already in context, consolidate)
+- [x] Sidebar default state (open/closed)
+- [x] Font size preference
+- [x] Code playground language preference (Python/SQL)
+- [x] Preferred lesson display density (compact/comfortable)
 
 ### Learning Analytics
-- [ ] Time-on-page tracking per lesson
-- [ ] Study streak counter with daily reset
-- [ ] Weekly study summary chart
-- [ ] Total learning time tracker
+- [x] Time-on-page tracking per lesson
+- [x] Study streak counter with daily reset
+- [x] Weekly study summary chart
+- [x] Total learning time tracker
 
 ---
 
 ## 🎨 UI/UX Polish
 
 ### Visual Refinements
-- [ ] Glassmorphism cards with backdrop-blur on dark mode
-- [ ] Animated gradient mesh background for hero sections
+- [x] Glassmorphism cards with backdrop-blur on dark mode
+- [x] Animated gradient mesh background for hero sections
 - [ ] Custom cursor effects on interactive elements
-- [ ] Sleek loading shimmer instead of skeleton pulses
+- [x] Sleek loading shimmer instead of skeleton pulses
 - [ ] Animated SVG illustrations for empty states
 
 ### Navigation Enhancements
-- [ ] Breadcrumb trail with animated chevrons
-- [ ] "Continue where you left off" banner on Home page
-- [ ] Keyboard shortcut overlay (press `?` to see all shortcuts)
-- [ ] Swipe navigation between lessons on mobile
-- [ ] Mini-map/scroll spy in sidebar for long lessons
+- [x] Breadcrumb trail with animated chevrons
+- [x] "Continue where you left off" banner on Home page
+- [x] Keyboard shortcut overlay (press `?` to see all shortcuts)
+- [x] Swipe navigation between lessons on mobile
+- [x] Mini-map/scroll spy in sidebar for long lessons
 
 ### Gamification Layer
-- [ ] XP points system (earn XP for completing lessons, exercises)
-- [ ] Achievement badges (First Lesson, Speed Reader, Night Owl, etc.)
-- [ ] Daily challenge: random exercise from any completed phase
-- [ ] Leaderboard (local only, localStorage-persisted)
-- [ ] Learning badges displayed on Progress page
+- [x] XP points system (earn XP for completing lessons, exercises)
+- [x] Achievement badges (First Lesson, Speed Reader, Night Owl, etc.)
+- [x] Daily challenge: random exercise from any completed phase
+- [x] Leaderboard (local only, localStorage-persisted)
+- [x] Learning badges displayed on Progress page
 
 ---
 
@@ -127,13 +127,13 @@
 ### Testing
 - [ ] Add Playwright visual regression tests for each page
 - [ ] Test motion animations with `prefers-reduced-motion` mock
-- [ ] Zustand store unit tests
-- [ ] Zod schema validation tests
+- [x] Zustand store unit tests
+- [x] Zod schema validation tests
 - [ ] Increase unit test coverage to 80%+
 
 ### Code Quality
 - [ ] Strict TypeScript 5.9 `satisfies` patterns for config objects
-- [ ] Error boundaries with toast fallbacks
+- [x] Error boundaries with toast fallbacks
 - [ ] React 19 `use()` hook for promise-based data loading
 - [ ] `useOptimistic` for instant progress updates
 
