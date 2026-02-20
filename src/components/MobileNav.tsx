@@ -6,6 +6,7 @@
  */
 
 import { NavLink, useLocation } from 'react-router-dom'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
 /**
  * Mobile navigation bar component.
@@ -24,7 +25,11 @@ export default function MobileNav() {
 
   return (
     <nav className="mobile-nav" aria-label="Mobile navigation">
-      <NavLink to="/" className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}>
+      <NavLink
+        to="/"
+        className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
+        {...createRoutePrefetchHandlers('/')}
+      >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
         </svg>
@@ -33,6 +38,7 @@ export default function MobileNav() {
       <NavLink
         to="/curriculum"
         className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
+        {...createRoutePrefetchHandlers('/curriculum')}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
@@ -43,6 +49,7 @@ export default function MobileNav() {
       <NavLink
         to="/progress"
         className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
+        {...createRoutePrefetchHandlers('/progress')}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
@@ -52,6 +59,7 @@ export default function MobileNav() {
       <NavLink
         to="/concepts"
         className={({ isActive }) => `mobile-nav-item ${isActive || isLesson ? 'active' : ''}`}
+        {...createRoutePrefetchHandlers('/concepts')}
       >
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="3" />

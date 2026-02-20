@@ -20,6 +20,41 @@
     />
     <meta name="theme-color" content="#6366f1" />
 
+    <!-- Minimal critical CSS for first paint of the home route -->
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f8fafc;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      .page-container {
+        width: min(1200px, 100% - 2rem);
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+      }
+      .hero {
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(59, 130, 246, 0.08));
+      }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 3.8vw, 3rem);
+        line-height: 1.15;
+      }
+      .hero p {
+        margin: 0.9rem 0 0;
+        max-width: 65ch;
+      }
+    </style>
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Coding for MBA — 108-Day Technical Curriculum" />

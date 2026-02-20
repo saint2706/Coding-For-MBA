@@ -98,11 +98,20 @@ content/lessons/       # 108 lesson markdown files
 | ---------------------- | ----------------------------- |
 | `npm run dev`          | Start Vite dev server         |
 | `npm run build`        | Type-check + production build |
+| `npm run analyze`      | Build + generate `dist/stats.html` bundle report |
 | `npm run lint`         | Run ESLint                    |
 | `npm run typecheck`    | Run TypeScript compiler check |
 | `npm run format`       | Format code with Prettier     |
 | `npm run format:check` | Verify formatting             |
 | `npm run deploy`       | Deploy to GitHub Pages        |
+
+
+## ⚡ Build & Performance Notes
+
+- **Bundle analysis**: run `npm run analyze` to generate a visual treemap report at `dist/stats.html` (powered by `rollup-plugin-visualizer`).
+- **Route prefetching**: key nav links now prefetch lazy route chunks on hover/focus/touch so common transitions feel instant on warm networks.
+- **Module preload tuning**: Vite preload dependencies are filtered/prioritized for JS/CSS runtime chunks to avoid noisy preload graphs.
+- **Critical CSS plan**: we intentionally inline a small, maintainable CSS block in `index.html` for the home above-the-fold shell (`body`, `.page-container`, `.hero`), while leaving the main stylesheets untouched for long-term maintainability.
 
 ## 📄 License
 
