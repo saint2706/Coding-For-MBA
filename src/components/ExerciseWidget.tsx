@@ -7,6 +7,7 @@
  */
 
 import { useState, useId, useRef, useMemo, useCallback } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -123,8 +124,8 @@ export default function ExerciseWidget({
     return `Day ${lessonDay}: ${title}`
   }, [lessonDay, title])
 
-  const quizStats = useQuizStore((state) => state.getQuizStats(quizId))
-  const recentAttempts = useQuizStore((state) => state.getRecentAttempts(quizId, 3))
+  const quizStats = useQuizStore(useShallow((state) => state.getQuizStats(quizId)))
+  const recentAttempts = useQuizStore(useShallow((state) => state.getRecentAttempts(quizId, 3)))
 
   const handleSubmissionEvaluated = useCallback(
     (result: {
