@@ -64,7 +64,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "npm run typecheck"
+      "sh -c 'npm run typecheck'"
     ],
     "*.{ts,tsx,js,jsx,css,md,json}": [
       "prettier --check"

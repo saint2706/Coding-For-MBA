@@ -50,7 +50,7 @@ describe('usePyodide Output Limit', () => {
                 }
                 return undefined
               }
-              return "result"
+              return 'result'
             }),
             setStdout: vi.fn().mockImplementation(({ batched }) => {
               window.__stdoutCallback = batched

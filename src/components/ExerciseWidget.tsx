@@ -19,6 +19,7 @@ import { markExerciseComplete } from '../utils/exerciseProgress'
 import { triggerDayExercisesCompleteConfetti } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
 import { useQuizStore } from '../stores/quizStore'
+import { useGamificationStore } from '../stores/gamificationStore'
 
 /**
  * Custom syntax highlighting theme for solution code display.
@@ -110,6 +111,7 @@ export default function ExerciseWidget({
 
   const handleExerciseMatch = useCallback(() => {
     if (!lessonDay) return
+    useGamificationStore.getState().awardExerciseCompletion(lessonDay, exerciseId)
     const completedAll = markExerciseComplete(lessonDay, exerciseId, totalExercisesForDay)
     if (completedAll) {
       triggerDayExercisesCompleteConfetti()
@@ -135,7 +137,8 @@ export default function ExerciseWidget({
       attemptedAt: Date
     }) => {
       setHasSubmitted(true)
-      useQuizStore.getState().recordAttempt({
+      const quizStore = useQuizStore.getState()
+      quizStore.recordAttempt({
         quizId,
         topic: quizTopic,
         correct: result.correct,
@@ -143,6 +146,11 @@ export default function ExerciseWidget({
         ...(result.output ? { output: result.output } : {}),
         ...(result.error ? { error: result.error } : {}),
       })
+
+      const stats = quizStore.getQuizStats(quizId)
+      if (result.correct && stats && stats.accuracy === 100 && stats.attempts >= 1) {
+        useGamificationStore.getState().awardPerfectQuiz(quizId)
+      }
     },
     [quizId, quizTopic],
   )

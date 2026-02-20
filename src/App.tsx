@@ -14,6 +14,7 @@ import { hydrateProgressStore } from './utils/progressTracker'
 import { hydrateQuizStore } from './stores/quizStore'
 import { useUserPreferencesStore } from './stores/userPreferencesStore'
 import { useLearningAnalytics } from './hooks/useLearningAnalytics'
+import { hydrateGamificationStore } from './stores/gamificationStore'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
@@ -40,6 +41,7 @@ export default function App() {
     preloadSearchIndex()
     hydrateProgressStore()
     hydrateQuizStore()
+    hydrateGamificationStore()
   }, [])
 
   useEffect(() => {

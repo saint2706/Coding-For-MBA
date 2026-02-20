@@ -36,6 +36,7 @@ import RelatedLessons from '../components/RelatedLessons'
 import { useSwipe } from '../hooks/useSwipe'
 import { toastInfo, toastSuccess } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
+import { useGamificationStore } from '../stores/gamificationStore'
 import {
   triggerSparkle,
   triggerPhaseUnlockConfetti,
@@ -94,6 +95,9 @@ export default function Lesson() {
     if (nowComplete) {
       triggerSparkle()
       toastSuccess('Progress saved ✓')
+      if (!beforeCompleted.has(day)) {
+        useGamificationStore.getState().awardLessonCompletion(day)
+      }
 
       const afterCompleted = getCompletedLessons()
       const wasPhaseCompleted = lesson
