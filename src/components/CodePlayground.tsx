@@ -78,6 +78,7 @@ const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g,
 const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
   ({ initialCode, expectedOutput, onExpectedOutputMatched, onSubmissionEvaluated }, ref) => {
     const [code, setCode] = useState(initialCode)
+  const [isConfirmingReset, setIsConfirmingReset] = useState(false)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const preRef = useRef<HTMLDivElement>(null)
     const runnerRef = useRef<PythonRunnerHandle>(null)
@@ -85,10 +86,16 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
 
     /**
      * Resets the code editor to its initial state.
+   * Prompts for confirmation if code has been modified.
      */
     const handleReset = useCallback(() => {
+    if (code !== initialCode && !isConfirmingReset) {
+      setIsConfirmingReset(true)
+      return
+    }
       setCode(initialCode)
-    }, [initialCode])
+    setIsConfirmingReset(false)
+  }, [code, initialCode, isConfirmingReset])
 
     useImperativeHandle(
       ref,
@@ -177,10 +184,22 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
             <button
               className="code-playground__btn code-playground__btn--reset"
               onClick={handleReset}
-              aria-label="Reset code to original"
-              title="Reset code to original"
+              onBlur={() => setIsConfirmingReset(false)}
+              aria-label={
+                isConfirmingReset ? 'Click again to confirm reset' : 'Reset code to original'
+              }
+              title={isConfirmingReset ? 'Click again to confirm' : 'Reset code to original'}
+              style={
+                isConfirmingReset
+                  ? {
+                      color: '#ef4444',
+                      borderColor: '#ef4444',
+                      background: 'rgba(239, 68, 68, 0.1)',
+                    }
+                  : undefined
+              }
             >
-              ↺ Reset
+              {isConfirmingReset ? '⚠️ Confirm Reset?' : '↺ Reset'}
             </button>
           </div>
         </div>

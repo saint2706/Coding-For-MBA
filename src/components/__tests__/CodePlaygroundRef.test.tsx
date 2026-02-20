@@ -68,7 +68,12 @@ describe('CodePlayground Ref', () => {
 
     expect(textarea?.value).toBe('updated')
 
-    // Reset code via ref
+    // Reset code via ref (triggers confirmation first)
+    await act(async () => {
+      ref.current?.reset()
+    })
+
+    // Confirm reset
     await act(async () => {
       ref.current?.reset()
     })
