@@ -1223,3 +1223,24 @@ Today you learned:
 - ✅ Production monitoring for concept drift and model degradation
 
 **Tomorrow**: Recommender systems—collaborative filtering, matrix factorization, and content-based recommendations.
+
+---
+
+## Optional Build Tracks (Day 49-60 Extension)
+
+Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
+
+| Track | Day 56 assignment artifact |
+| --- | --- |
+| **NLP** | Temporal text trend model baseline (moving-average keyword trends) vs advanced sequence model for text-driven demand. |
+| **Forecasting** | Core time-series assignment baseline (ARIMA/Prophet) vs advanced deep forecaster (TFT/LSTM). |
+| **Recommenders/Graph** | Time-aware recommendation features baseline (recency heuristics) vs advanced sequential interaction model. |
+
+### Track requirements (apply to all three tracks)
+
+1. **Baseline + advanced model comparison (required):** report offline metrics, error slices, and deployment trade-offs.
+2. **Constraint scenario test (required):** run at least one scenario each day from: **limited data**, **latency limit**, **explainability requirement**.
+3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
+4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
+5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
+

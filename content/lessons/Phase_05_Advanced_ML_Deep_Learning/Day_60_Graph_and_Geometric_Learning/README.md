@@ -1477,3 +1477,24 @@ You've mastered:
 - Graph neural networks
 
 **Next**: Apply these skills to real-world projects and continue learning cutting-edge ML research!
+
+---
+
+## Optional Build Tracks (Day 49-60 Extension)
+
+Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
+
+| Track | Day 60 assignment artifact |
+| --- | --- |
+| **NLP** | Graph-enhanced NLP baseline (non-graph model) vs advanced knowledge-graph-aware NLP system + final memo. |
+| **Forecasting** | Graph-based forecasting baseline (tabular-only model) vs advanced graph temporal network + final memo. |
+| **Recommenders/Graph** | Graph recommendation baseline (matrix factorization) vs advanced GNN recommender + final memo. |
+
+### Track requirements (apply to all three tracks)
+
+1. **Baseline + advanced model comparison (required):** report offline metrics, error slices, and deployment trade-offs.
+2. **Constraint scenario test (required):** run at least one scenario each day from: **limited data**, **latency limit**, **explainability requirement**.
+3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
+4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
+5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
+

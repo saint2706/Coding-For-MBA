@@ -1088,3 +1088,24 @@ Today you learned:
 - ✅ Production MLOps requires orchestration, monitoring, and feedback loops
 
 **Tomorrow**: Regularization techniques—preventing overfitting in complex models.
+
+---
+
+## Optional Build Tracks (Day 49-60 Extension)
+
+Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
+
+| Track | Day 50 assignment artifact |
+| --- | --- |
+| **NLP** | NLP model delivery pipeline baseline (manual batch scoring) vs advanced CI/CD + monitoring deployment. |
+| **Forecasting** | Forecast retraining ops baseline (weekly notebook rerun) vs advanced scheduled feature/model pipeline with drift alerts. |
+| **Recommenders/Graph** | Recommendation serving ops baseline (offline top-N export) vs advanced online feature store + canary rollout. |
+
+### Track requirements (apply to all three tracks)
+
+1. **Baseline + advanced model comparison (required):** report offline metrics, error slices, and deployment trade-offs.
+2. **Constraint scenario test (required):** run at least one scenario each day from: **limited data**, **latency limit**, **explainability requirement**.
+3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
+4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
+5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
+
