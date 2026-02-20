@@ -195,6 +195,19 @@ print(flat_rows[1])
 
 ---
 
+## Translation Lab: Ingestion Quality to Governance Signals
+
+**Scenario**: A schema migration introduces silent null inflation that skews fairness monitoring.
+
+**Your task**:
+
+1. Translate ingestion-quality, causal, and fairness outputs into KPI impact narratives.
+2. Define BI metrics for long-term degradation and bias detection (null-rate drift, schema-change impact, subgroup metric stability).
+3. Convert pipeline/deployment monitoring signals into dashboard specs and escalation rules.
+4. Write a one-page decision memo with technical evidence and business recommendation.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Parquet

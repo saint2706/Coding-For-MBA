@@ -165,6 +165,19 @@ executives don't want to see your "work." They want to see your **conclusion**.
 
 ---
 
+## Translation Lab: Stakeholder Alignment Under Model Uncertainty
+
+**Scenario**: Product, Finance, and Risk teams disagree on whether to scale a model with uneven segment performance.
+
+**Your task**:
+
+1. Translate technical causality/fairness outputs into a shared KPI narrative tied to strategic goals.
+2. Define BI metrics for degradation and bias tracking that each stakeholder group accepts.
+3. Convert deployment/monitoring signals into dashboard ownership and escalation governance.
+4. Produce a one-page decision memo with recommendation, trade-offs, and accountability.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Data Translation

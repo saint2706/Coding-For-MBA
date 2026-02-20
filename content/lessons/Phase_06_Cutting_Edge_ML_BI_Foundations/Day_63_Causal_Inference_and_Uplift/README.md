@@ -245,6 +245,19 @@ Customer Z Uplift: -0.05 (Do Not Contact)
 
 ---
 
+## Translation Lab: Causal Findings to KPI Story
+
+**Scenario**: Your uplift model shows positive treatment effect overall, but negative effect for one protected segment.
+
+**Your task**:
+
+1. Translate causal and fairness outputs (ATE/CATE + subgroup parity gap) into a business KPI narrative for revenue, retention, and brand trust.
+2. Define BI metrics to track model degradation and bias over time (weekly uplift drift, subgroup conversion delta, intervention ROI by segment).
+3. Draft dashboard tiles and escalation rules for non-technical stakeholders (e.g., pause campaign if subgroup harm exceeds threshold).
+4. Write a one-page decision memo with technical evidence and a business recommendation.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Confounders

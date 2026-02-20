@@ -167,6 +167,19 @@ How addictive is your app?
 
 ---
 
+## Translation Lab: Metric Design for ML Accountability
+
+**Scenario**: Teams track accuracy but miss model decay and subgroup harm until quarterly reviews.
+
+**Your task**:
+
+1. Reframe causal/fairness outputs into business KPI narratives for growth, efficiency, and trust.
+2. Define a BI metric framework to detect degradation and bias over time (leading + lagging indicators).
+3. Convert monitoring signals into dashboard layouts, threshold bands, and escalation rules.
+4. Write a one-page decision memo justifying metric priorities and intervention policy.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Goodhart's Law
