@@ -39,6 +39,9 @@ export default function Home() {
   const phases = getAllPhases()
   const lastVisitedDay = getLastVisited()
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
+  const lastVisitedPhase = lastVisitedLesson
+    ? phases.find((phase) => phase.phase === lastVisitedLesson.phase)
+    : null
   const completedCount = getCompletedCount()
   const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
   const prefersReducedMotion = useReducedMotion()
@@ -57,6 +60,20 @@ export default function Home() {
       {/* Hero */}
       <motion.section className="hero" style={{ y: heroY }}>
         <div className="hero-badge">📚 Self-Study Curriculum</div>
+        {lastVisitedLesson && (
+          <article className="continue-banner" aria-label="Continue learning">
+            <p className="continue-banner-title">Continue learning</p>
+            <p className="continue-banner-subtitle">
+              {lastVisitedLesson.title}
+              {lastVisitedPhase
+                ? ` • Phase ${lastVisitedPhase.phase}: ${lastVisitedPhase.title}`
+                : ''}
+            </p>
+            <Link className="continue-banner-cta" to={`/lesson/${lastVisitedLesson.day}`}>
+              Resume Day {lastVisitedLesson.day}
+            </Link>
+          </article>
+        )}
         <h1>
           Master <span className="gradient-text">Technical Skills</span>
           <br />
@@ -95,18 +112,11 @@ export default function Home() {
         <div className="hero-cta">
           <Link to="/lesson/1">Start Learning →</Link>
         </div>
-        {(lastVisitedLesson || completedCount > 0) && (
+        {completedCount > 0 && (
           <div className="hero-continue">
-            {lastVisitedLesson && (
-              <Link to={`/lesson/${lastVisitedLesson.day}`}>
-                ▶ Continue: Day {lastVisitedLesson.day}
-              </Link>
-            )}
-            {completedCount > 0 && (
-              <Link to="/progress">
-                📊 {completedCount}/{totalLessons} Complete
-              </Link>
-            )}
+            <Link to="/progress">
+              📊 {completedCount}/{totalLessons} Complete
+            </Link>
           </div>
         )}
       </motion.section>
