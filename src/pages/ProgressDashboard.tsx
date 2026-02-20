@@ -8,7 +8,7 @@
  * @module pages/ProgressDashboard
  */
 
-import { useState, useCallback } from 'react'
+import { useMemo, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import {
@@ -19,6 +19,7 @@ import {
 } from '../utils/contentLoader'
 import {
   getCompletedLessons,
+  getStreakDays,
   isLessonComplete,
   getCompletedForPhase,
   clearAllProgress,
@@ -27,6 +28,7 @@ import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
 import { useUserPreferencesStore } from '../stores/userPreferencesStore'
+import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
 
 /**
  * Progress dashboard page component.
@@ -56,6 +58,15 @@ export default function ProgressDashboard() {
       forceUpdate()
     }
   }
+
+  const totalLearningMs = useLearningAnalyticsStore((state) => state.totalLearningMs())
+  const thisWeekLearningMs = useLearningAnalyticsStore((state) => state.weekLearningMs())
+  const todayLearningMs = useLearningAnalyticsStore((state) => state.todayLearningMs())
+  const studyStreak = useLearningAnalyticsStore((state) => state.studyStreakDays(5))
+  const completionStreak = useMemo(() => getStreakDays(), [completedLessons.length])
+  const last7Days = useLearningAnalyticsStore((state) => state.getLast7Days())
+
+  const chartMax = Math.max(1, ...last7Days.map((item) => item.ms))
 
   const {
     theme,
@@ -112,6 +123,73 @@ export default function ProgressDashboard() {
       </div>
 
       <ProgressBar completed={completedLessons.length} total={totalLessons} />
+
+      <section className="learning-analytics-card" aria-labelledby="learning-analytics-heading">
+        <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
+          <h2 id="learning-analytics-heading">Learning Analytics</h2>
+          <p>Local-only study time summaries from your device.</p>
+        </div>
+
+        <div className="learning-analytics-grid">
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{formatDuration(totalLearningMs)}</span>
+            <span className="progress-stat-label">Total Study Time</span>
+          </div>
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{formatDuration(thisWeekLearningMs)}</span>
+            <span className="progress-stat-label">This Week</span>
+          </div>
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{formatDuration(todayLearningMs)}</span>
+            <span className="progress-stat-label">Today</span>
+          </div>
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{studyStreak}</span>
+            <span className="progress-stat-label">Study Streak (5m+)</span>
+          </div>
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{completionStreak}</span>
+            <span className="progress-stat-label">Completion Streak</span>
+          </div>
+        </div>
+
+        <svg
+          className="learning-analytics-chart"
+          viewBox="0 0 420 140"
+          role="img"
+          aria-label="Last 7 days time studied"
+        >
+          {last7Days.map((entry, index) => {
+            const barWidth = 48
+            const gap = 10
+            const x = 16 + index * (barWidth + gap)
+            const height = Math.round((entry.ms / chartMax) * 96)
+            const y = 110 - height
+            const dayLabel = entry.date.slice(5)
+            return (
+              <g key={entry.date}>
+                <title>{`${entry.date}: ${formatDuration(entry.ms)}`}</title>
+                <rect
+                  x={x}
+                  y={y}
+                  width={barWidth}
+                  height={Math.max(2, height)}
+                  rx={5}
+                  className="learning-analytics-bar"
+                />
+                <text
+                  x={x + barWidth / 2}
+                  y={128}
+                  textAnchor="middle"
+                  className="learning-analytics-label"
+                >
+                  {dayLabel}
+                </text>
+              </g>
+            )
+          })}
+        </svg>
+      </section>
 
       <section className="preferences-card" aria-labelledby="preferences-heading">
         <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
