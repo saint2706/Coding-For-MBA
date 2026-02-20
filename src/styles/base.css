@@ -1,14 +1,14 @@
 /* --- Base Styles --- */
 html {
   scroll-behavior: smooth;
-  font-size: 16px;
+  font-size: var(--app-font-size, 1rem);
 }
 
 body {
   font-family: var(--font-body);
   background: var(--bg-primary);
   color: var(--text-primary);
-  line-height: 1.7;
+  line-height: calc(1.7 * var(--density-scale, 1));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;

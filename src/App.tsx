@@ -11,6 +11,7 @@ import { ThemeProvider } from './context/ThemeProvider'
 import { preloadSearchIndex } from './utils/searchIndex'
 import { hydrateProgressStore } from './utils/progressTracker'
 import { hydrateQuizStore } from './stores/quizStore'
+import { useUserPreferencesStore } from './stores/userPreferencesStore'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
@@ -26,7 +27,8 @@ const Review = lazy(() => import('./pages/Review'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const sidebarDefaultOpen = useUserPreferencesStore((state) => state.sidebarDefaultOpen)
+  const [sidebarOpen, setSidebarOpen] = useState(sidebarDefaultOpen)
   const location = useLocation()
   const prefersReducedMotion = useReducedMotion()
 
@@ -37,9 +39,9 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    setSidebarOpen(false)
+    setSidebarOpen(sidebarDefaultOpen)
     window.scrollTo(0, 0)
-  }, [location.pathname])
+  }, [location.pathname, sidebarDefaultOpen])
 
   useEffect(() => {
     document.body.classList.toggle('sidebar-open', sidebarOpen)

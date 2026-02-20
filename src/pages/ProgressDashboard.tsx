@@ -26,6 +26,7 @@ import {
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
+import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 
 /**
  * Progress dashboard page component.
@@ -55,6 +56,19 @@ export default function ProgressDashboard() {
       forceUpdate()
     }
   }
+
+  const {
+    theme,
+    sidebarDefaultOpen,
+    fontSize,
+    codeLanguage,
+    density,
+    setTheme,
+    setSidebarDefaultOpen,
+    setFontSize,
+    setCodeLanguage,
+    setDensity,
+  } = useUserPreferencesStore()
 
   return (
     <div className="page-container">
@@ -98,6 +112,84 @@ export default function ProgressDashboard() {
       </div>
 
       <ProgressBar completed={completedLessons.length} total={totalLessons} />
+
+      <section className="preferences-card" aria-labelledby="preferences-heading">
+        <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
+          <h2 id="preferences-heading">Preferences</h2>
+          <p>Customize your learning experience. Settings are saved automatically.</p>
+        </div>
+
+        <div className="preferences-grid">
+          <label className="preferences-field" htmlFor="theme-preference">
+            Theme
+            <select
+              id="theme-preference"
+              value={theme}
+              onChange={(event) => setTheme(event.target.value as 'light' | 'dark' | 'system')}
+              aria-label="Theme preference"
+            >
+              <option value="system">System</option>
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+            </select>
+          </label>
+
+          <label className="preferences-field" htmlFor="font-size-preference">
+            Font size
+            <select
+              id="font-size-preference"
+              value={fontSize}
+              onChange={(event) => setFontSize(event.target.value as 'sm' | 'md' | 'lg')}
+              aria-label="Font size"
+            >
+              <option value="sm">Small</option>
+              <option value="md">Medium</option>
+              <option value="lg">Large</option>
+            </select>
+          </label>
+
+          <label className="preferences-field" htmlFor="density-preference">
+            Layout density
+            <select
+              id="density-preference"
+              value={density}
+              onChange={(event) => setDensity(event.target.value as 'comfortable' | 'compact')}
+              aria-label="Layout density"
+            >
+              <option value="comfortable">Comfortable</option>
+              <option value="compact">Compact</option>
+            </select>
+          </label>
+
+          <label className="preferences-field" htmlFor="code-language-preference">
+            Code language
+            <select
+              id="code-language-preference"
+              value={codeLanguage}
+              onChange={(event) => setCodeLanguage(event.target.value as 'python' | 'sql')}
+              aria-label="Preferred code language"
+            >
+              <option value="python">Python</option>
+              <option value="sql">SQL</option>
+            </select>
+          </label>
+
+          <label className="preferences-field preferences-toggle" htmlFor="sidebar-default-open">
+            Sidebar default
+            <span className="preferences-toggle-row">
+              <input
+                id="sidebar-default-open"
+                type="checkbox"
+                checked={sidebarDefaultOpen}
+                onChange={(event) => setSidebarDefaultOpen(event.target.checked)}
+                aria-describedby="sidebar-default-help"
+              />
+              Open sidebar on new pages
+            </span>
+            <small id="sidebar-default-help">You can still toggle the sidebar anytime.</small>
+          </label>
+        </div>
+      </section>
 
       {/* Heatmap Grid */}
       <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
