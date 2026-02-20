@@ -619,6 +619,7 @@ Today you learned:
 Refactor `sales_tracker_phase1.py` into reusable functions.
 
 **Challenge**
+
 - Decompose logic into at least three functions, for example:
   - `classify_traffic(orders_count, is_weekend)`
   - `build_snapshot(...)`
@@ -627,5 +628,5 @@ Refactor `sales_tracker_phase1.py` into reusable functions.
 - Keep outputs identical to prior summary lines for easy regression checks.
 
 **Measurable output**
-- Print one function-generated line confirming KPI parity, e.g., `"FUNCTION_CHECK | weekly_revenue=..."`.
 
+- Print one function-generated line confirming KPI parity, e.g., `"FUNCTION_CHECK | weekly_revenue=..."`.

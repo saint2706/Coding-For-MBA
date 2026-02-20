@@ -468,10 +468,11 @@ Today you learned:
 Keep extending `sales_tracker_phase1.py` by tracking uniqueness.
 
 **Challenge**
+
 - Build a set of unique customer IDs from a list that intentionally contains duplicates.
 - Reuse prior-day records by associating each tuple record with a customer ID list for the same day.
 - Identify repeated IDs by comparing raw count vs unique count.
 
 **Measurable output**
-- Print one anomaly line: `"DUPLICATE_CUSTOMERS=<count>"`.
 
+- Print one anomaly line: `"DUPLICATE_CUSTOMERS=<count>"`.

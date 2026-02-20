@@ -1154,4 +1154,3 @@ Keep the **core lab tasks** in this lesson common for all learners, then add one
 3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
 4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
 5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
-

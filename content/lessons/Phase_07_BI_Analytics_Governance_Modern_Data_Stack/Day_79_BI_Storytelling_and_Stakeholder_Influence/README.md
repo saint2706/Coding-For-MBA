@@ -144,7 +144,6 @@ Every good data story follows this structure:
 4. "Clicking here (Drill Down) shows the cause: The 'Atlanta Hub' was flooded."
 5. "Recommendation: Re-route packages through Nashville until Monday."
 
-
 ---
 
 ## Standardized Scoring Rubric (Storytelling Quality)

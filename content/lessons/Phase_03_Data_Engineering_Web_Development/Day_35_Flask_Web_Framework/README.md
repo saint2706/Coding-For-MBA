@@ -286,7 +286,6 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
-
 ### Reliability & Maintainability Tasks
 
 - Split configuration by environment (`development`, `testing`, `production`) and load settings from env vars instead of hardcoding secrets.
@@ -298,6 +297,7 @@ if __name__ == "__main__":
 Deliberately remove one required environment variable and trigger an unhandled exception in a route.
 
 Your debugging goals:
+
 1. Fail fast at startup with actionable config validation errors.
 2. Verify error middleware returns consistent `500` behavior without stack traces to users.
 3. Use structured logs to trace the failing request end-to-end.

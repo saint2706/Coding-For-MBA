@@ -459,10 +459,11 @@ Today you learned:
 Continue in `sales_tracker_phase1.py` with immutable record modeling.
 
 **Challenge**
+
 - Represent one transaction summary as a tuple: `(store_code, report_date, orders_count, daily_revenue)`.
 - Store multiple tuple records in a list to preserve sequence.
 - Reuse Day 5 totals and compare latest tuple orders vs list average.
 
 **Measurable output**
-- Print one report line showing the latest tuple and whether orders are above/below average.
 
+- Print one report line showing the latest tuple and whether orders are above/below average.

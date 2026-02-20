@@ -317,7 +317,6 @@ def get_user(username: str):
     return {"username": user.username, "email": user.email}
 ```
 
-
 ### Reliability & Maintainability Tasks
 
 - Define an input validation matrix per route (query params, body fields, edge constraints, unsafe input).
@@ -329,6 +328,7 @@ def get_user(username: str):
 Introduce a controlled breaking change (for example, return `201` instead of `200`, rename `message` → `detail`, or remove pagination metadata).
 
 Your debugging goals:
+
 1. Catch the regression via contract tests.
 2. Restore backward compatibility (or version the endpoint).
 3. Update API docs/changelog with clear migration notes.

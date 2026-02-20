@@ -516,10 +516,11 @@ You now understand:
 Complete the end-of-phase version of `sales_tracker_phase1.py`.
 
 **Challenge**
+
 - Refactor at least one loop into a list comprehension (for example, collecting surge-day dates or discount-eligible days).
 - Keep function boundaries from Day 11 and only replace internals where comprehension improves clarity.
 - Produce a final runnable script that executes the full Day 2-12 flow in order.
 
 **Measurable output**
-- Print one final report line that includes both a KPI value and a computed list, e.g., `"FINAL_REPORT | weekly_revenue=... | surge_days=[...]"`.
 
+- Print one final report line that includes both a KPI value and a computed list, e.g., `"FINAL_REPORT | weekly_revenue=... | surge_days=[...]"`.

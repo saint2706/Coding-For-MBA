@@ -594,18 +594,22 @@ Today you learned:
 ## Task Block (Core / Stretch / Expert)
 
 ### Project Thread (Days 18–21): Retail Operations Toolkit
+
 Use the same mini-project across these days so each concept compounds into a usable product artifact.
 
 ### Core
+
 - Model `Customer`, `Product`, and `Order` classes for a retail workflow.
 - Add methods that compute order totals and update inventory in memory.
 - Write 3–5 asserts that validate class behavior and edge cases.
 
 ### Stretch
+
 - Add inheritance or composition for discount strategies (e.g., member, promo code, seasonal).
 - Persist object state to JSON-friendly dictionaries for packaging later.
 
 ### Expert
+
 - Refactor class boundaries to reduce coupling and document why your design supports packaging on Day 20.
 - Add a tiny CLI entry function (`main()`) that runs one realistic order scenario.
 
@@ -617,4 +621,3 @@ Use the same mini-project across these days so each concept compounds into a usa
 | Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
 | Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
 | Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
-

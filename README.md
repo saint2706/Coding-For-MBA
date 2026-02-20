@@ -80,7 +80,6 @@ src/
 content/lessons/       # 108 lesson markdown files
 ```
 
-
 ## 🔎 Lesson Search
 
 - Use the **navbar search input** from any page, or open `/search` directly.
@@ -107,8 +106,6 @@ content/lessons/       # 108 lesson markdown files
 | `npm run test:coverage`| Run unit tests with coverage threshold (80%) |
 | `npm run test:e2e`     | Run Playwright end-to-end tests |
 | `npm run deploy`       | Deploy to GitHub Pages        |
-
-
 
 ## 🧪 Visual Snapshot Testing
 

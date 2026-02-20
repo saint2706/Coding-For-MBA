@@ -476,10 +476,11 @@ Today you learned:
 Extend the same `sales_tracker_phase1.py` file with multi-day tracking.
 
 **Challenge**
+
 - Model 5 daily order counts in a list (e.g., `daily_orders = [...]`).
 - Reuse earlier variables by appending today's `orders_count` to that list.
 - Compute total orders and average orders from the list.
 
 **Measurable output**
-- Print one KPI line: `"WEEK-TO-DATE | total_orders=... | avg_orders=..."`.
 
+- Print one KPI line: `"WEEK-TO-DATE | total_orders=... | avg_orders=..."`.

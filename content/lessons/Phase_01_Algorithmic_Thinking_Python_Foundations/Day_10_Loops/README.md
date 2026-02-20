@@ -547,10 +547,11 @@ Today you learned:
 Extend `sales_tracker_phase1.py` with loop-based rollups.
 
 **Challenge**
+
 - Loop over `weekly_snapshots` to count how many days are `LOW_TRAFFIC`, `NORMAL`, and `SURGE`.
 - Accumulate weekly revenue and compute average daily revenue.
 - Reuse Day 9 policy tiers rather than recalculating from scratch.
 
 **Measurable output**
-- Print one weekly summary line: `"WEEKLY_SUMMARY | low=... normal=... surge=... avg_revenue=..."`.
 
+- Print one weekly summary line: `"WEEKLY_SUMMARY | low=... normal=... surge=... avg_revenue=..."`.

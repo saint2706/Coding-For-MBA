@@ -120,7 +120,6 @@ Don't just upload a CSV. Show the **System**:
 **Junior Answer**: "Inner is match, Left is everything."
 **Senior Answer**: "Inner Join keeps only matching rows, filtering out non-matches. It's riskier for production pipelines because you might lose data silently. Left Join keeps all rows from the primary table, filling nulls for non-matches. I prefer Left Joins in staging to audit data quality first."
 
-
 ---
 
 ## Standardized Scoring Rubric (Capstone Quality)

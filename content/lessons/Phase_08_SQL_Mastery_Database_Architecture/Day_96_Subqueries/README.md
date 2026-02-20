@@ -141,10 +141,10 @@ WHERE p.price < c.avg_price;
 
 ### Non-Functional Constraints (Apply to All Exercises)
 
-- **Performance / Scale**: Document a target query runtime of **p95 < 2s** for your final solution, validate behavior at **30 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
-- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
-- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
-  - KPI focus for this day: *Subquery rewrites should reduce p95 query latency and increase concurrent analyst throughput during peak reporting windows.*
+* **Performance / Scale**: Document a target query runtime of **p95 < 2s** for your final solution, validate behavior at **30 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
+* **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+* **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  * KPI focus for this day: *Subquery rewrites should reduce p95 query latency and increase concurrent analyst throughput during peak reporting windows.*
 
 ## Mastery Check
 
