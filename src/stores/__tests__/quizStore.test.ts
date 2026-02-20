@@ -2,6 +2,7 @@ import { useQuizStore } from '../quizStore'
 
 describe('quizStore', () => {
   beforeEach(() => {
+    localStorage.clear()
     useQuizStore.getState().clearQuizHistory()
     useQuizStore.setState({ hasHydrated: false })
   })
@@ -19,11 +20,21 @@ describe('quizStore', () => {
       incorrect: 1,
       accuracy: 50,
     })
+    expect(stats?.lastAttemptAt).toBeTypeOf('string')
+  })
+
+  it('ignores attempts with blank ids/topics and returns null stats for missing quiz', () => {
+    useQuizStore.getState().recordAttempt({ quizId: '   ', topic: 'Topic 1', correct: true })
+    useQuizStore.getState().recordAttempt({ quizId: 'q1', topic: '   ', correct: true })
+
+    expect(useQuizStore.getState().attempts).toHaveLength(0)
+    expect(useQuizStore.getState().getQuizStats('unknown')).toBeNull()
   })
 
   it('returns most missed and low-scoring topics', () => {
     useQuizStore.getState().recordAttempt({ quizId: 'q1', topic: 'Topic 1', correct: false })
     useQuizStore.getState().recordAttempt({ quizId: 'q1', topic: 'Topic 1', correct: false })
+    useQuizStore.getState().recordAttempt({ quizId: 'q2', topic: 'Topic 2', correct: true })
     useQuizStore.getState().recordAttempt({ quizId: 'q2', topic: 'Topic 2', correct: true })
     useQuizStore.getState().recordAttempt({ quizId: 'q2', topic: 'Topic 2', correct: false })
 
@@ -32,6 +43,7 @@ describe('quizStore', () => {
 
     expect(mostMissed[0]?.quizId).toBe('q1')
     expect(lowScoring.map((s) => s.quizId)).toContain('q1')
+    expect(lowScoring.map((s) => s.quizId)).not.toContain('q2')
   })
 
   it('returns recent attempts in descending chronological order', () => {
@@ -53,5 +65,46 @@ describe('quizStore', () => {
     expect(recent).toHaveLength(2)
     expect(recent[0]?.correct).toBe(true)
     expect(recent[1]?.correct).toBe(false)
+  })
+
+  it('clears quiz history', () => {
+    useQuizStore.getState().recordAttempt({ quizId: 'q1', topic: 'Topic 1', correct: true })
+    expect(useQuizStore.getState().attempts.length).toBe(1)
+
+    useQuizStore.getState().clearQuizHistory()
+    expect(useQuizStore.getState().attempts).toEqual([])
+  })
+
+  it('normalizes persisted attempts in migration', () => {
+    const migrate = useQuizStore.persist.getOptions().migrate
+    expect(migrate).toBeTypeOf('function')
+
+    const migrated = migrate?.(
+      {
+        attempts: [
+          {
+            id: 'a',
+            quizId: 'q1',
+            topic: 'Topic 1',
+            attemptedAt: '2026-01-01T00:00:00.000Z',
+            correct: true,
+          },
+          { id: 1, quizId: 'bad', topic: 'bad', attemptedAt: 'x', correct: 'no' },
+        ],
+      },
+      1,
+    )
+
+    expect(migrated).toEqual({
+      attempts: [
+        {
+          id: 'a',
+          quizId: 'q1',
+          topic: 'Topic 1',
+          attemptedAt: '2026-01-01T00:00:00.000Z',
+          correct: true,
+        },
+      ],
+    })
   })
 })
