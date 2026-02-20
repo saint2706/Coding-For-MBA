@@ -25,9 +25,9 @@ vi.mock('../CopyButton', () => ({
   default: () => <button>Copy</button>,
 }))
 
-// Mock SyntaxHighlighter because it might use canvas or complex DOM
-vi.mock('react-syntax-highlighter', () => ({
-  Prism: ({ children }: { children: React.ReactNode }) => (
+// Mock SyntaxHighlighter utility because it might use canvas or complex DOM
+vi.mock('../../utils/prism', () => ({
+  default: ({ children }: { children: React.ReactNode }) => (
     <div className="syntax-highlighter">{children}</div>
   ),
 }))

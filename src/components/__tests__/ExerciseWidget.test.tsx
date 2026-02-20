@@ -5,9 +5,9 @@ import { act } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import ExerciseWidget from '../ExerciseWidget'
 
-// Mock SyntaxHighlighter
-vi.mock('react-syntax-highlighter', () => ({
-  Prism: ({ children }: { children: React.ReactNode }) => (
+// Mock SyntaxHighlighter utility
+vi.mock('../../utils/prism', () => ({
+  default: ({ children }: { children: React.ReactNode }) => (
     <pre className="syntax-highlighter">{children}</pre>
   ),
 }))
