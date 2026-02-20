@@ -365,3 +365,63 @@
   font-size: 0.625rem;
   fill: var(--text-muted);
 }
+
+.gamification-card {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.gamification-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.xp-milestone-track {
+  width: 100%;
+  margin: 1rem 0;
+  height: 10px;
+  border-radius: 100px;
+  background: rgba(148, 163, 184, 0.15);
+  overflow: hidden;
+}
+
+.xp-milestone-fill {
+  height: 100%;
+  background: var(--gradient-hero);
+  border-radius: inherit;
+  transition: width var(--transition-base);
+}
+
+.daily-challenge-card {
+  margin-top: 1rem;
+  padding: 0.875rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-card);
+  background: var(--bg-elevated);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.badge-grid {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+
+.badge-chip {
+  border: 1px solid var(--border-card);
+  background: var(--bg-surface);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}

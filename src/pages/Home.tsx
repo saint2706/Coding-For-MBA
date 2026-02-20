@@ -9,6 +9,7 @@
  * @module pages/Home
  */
 
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
@@ -23,6 +24,7 @@ import {
 import { getLastVisited, getCompletedForPhase, getCompletedCount } from '../utils/progressTracker'
 import ProgressBar from '../components/ProgressBar'
 import AnimatedCounter from '../components/AnimatedCounter'
+import { useGamificationStore } from '../stores/gamificationStore'
 
 /**
  * Home page component displaying the curriculum landing page.
@@ -48,6 +50,15 @@ export default function Home() {
   const { scrollYProgress } = useScroll()
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, prefersReducedMotion ? 0 : -50])
 
+  const dailyChallenge = useGamificationStore((state) => state.dailyChallenge)
+  const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
+
+  useEffect(() => {
+    refreshDailyChallenge()
+  }, [refreshDailyChallenge])
+
+  const challengeLesson = getLesson(dailyChallenge.day)
+
   return (
     <div className="page-container">
       <SEOHead
@@ -71,6 +82,18 @@ export default function Home() {
             </p>
             <Link className="continue-banner-cta" to={`/lesson/${lastVisitedLesson.day}`}>
               Resume Day {lastVisitedLesson.day}
+            </Link>
+          </article>
+        )}
+
+        {challengeLesson && (
+          <article className="continue-banner glass-card" aria-label="Daily challenge">
+            <p className="continue-banner-title">Daily Challenge</p>
+            <p className="continue-banner-subtitle">
+              Day {challengeLesson.day}: {challengeLesson.title}
+            </p>
+            <Link className="continue-banner-cta" to={`/lesson/${challengeLesson.day}`}>
+              Take today&apos;s challenge
             </Link>
           </article>
         )}

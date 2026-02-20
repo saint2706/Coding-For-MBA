@@ -8,12 +8,13 @@
  * @module pages/ProgressDashboard
  */
 
-import { useMemo, useState, useCallback } from 'react'
+import { useEffect, useMemo, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import {
   getAllPhases,
   getLessonsByPhase,
+  getLesson,
   phaseIcons,
   difficultyConfig,
 } from '../utils/contentLoader'
@@ -29,6 +30,7 @@ import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
 import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
+import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
 
 /**
  * Progress dashboard page component.
@@ -67,6 +69,19 @@ export default function ProgressDashboard() {
   const last7Days = useLearningAnalyticsStore((state) => state.getLast7Days())
 
   const chartMax = Math.max(1, ...last7Days.map((item) => item.ms))
+
+  const xpTotal = useGamificationStore((state) => state.xpTotal)
+  const achievementsUnlocked = useGamificationStore((state) => state.achievementsUnlocked)
+  const dailyChallenge = useGamificationStore((state) => state.dailyChallenge)
+  const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
+  const xpToNextMilestone = useGamificationStore((state) => state.xpToNextMilestone)
+  const milestoneProgress = xpToNextMilestone()
+  const earnedBadges = ACHIEVEMENTS.filter((badge) => achievementsUnlocked.includes(badge.id))
+  const challengeLesson = getLesson(dailyChallenge.day)
+
+  useEffect(() => {
+    refreshDailyChallenge()
+  }, [refreshDailyChallenge])
 
   const {
     theme,
@@ -123,6 +138,61 @@ export default function ProgressDashboard() {
       </div>
 
       <ProgressBar completed={completedLessons.length} total={totalLessons} />
+
+      <section className="gamification-card" aria-labelledby="gamification-heading">
+        <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
+          <h2 id="gamification-heading">Gamification</h2>
+          <p>XP, badges, and your daily challenge — saved only on this device.</p>
+        </div>
+
+        <div className="gamification-summary-grid">
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{xpTotal}</span>
+            <span className="progress-stat-label">XP Total</span>
+          </div>
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{earnedBadges.length}</span>
+            <span className="progress-stat-label">Badges Earned</span>
+          </div>
+          <div className="progress-stat-big">
+            <span className="progress-stat-value">{milestoneProgress.next ?? 'MAX'}</span>
+            <span className="progress-stat-label">Next XP Milestone</span>
+          </div>
+        </div>
+
+        <div className="xp-milestone-track" aria-label="XP progress to next badge">
+          <div className="xp-milestone-fill" style={{ width: `${milestoneProgress.percent}%` }} />
+        </div>
+
+        {challengeLesson && (
+          <div className="daily-challenge-card">
+            <div>
+              <h3>Daily Challenge</h3>
+              <p>
+                Day {challengeLesson.day}: {challengeLesson.title}
+              </p>
+            </div>
+            <Link className="continue-banner-cta" to={`/lesson/${challengeLesson.day}`}>
+              Start challenge
+            </Link>
+          </div>
+        )}
+
+        <div className="badge-grid">
+          {earnedBadges.length === 0 ? (
+            <p className="progress-stat-label">
+              No badges yet — complete your first lesson to begin.
+            </p>
+          ) : (
+            earnedBadges.map((badge) => (
+              <div className="badge-chip" key={badge.id} title={badge.description}>
+                <span aria-hidden="true">{badge.icon}</span>
+                <span>{badge.label}</span>
+              </div>
+            ))
+          )}
+        </div>
+      </section>
 
       <section className="learning-analytics-card" aria-labelledby="learning-analytics-heading">
         <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
