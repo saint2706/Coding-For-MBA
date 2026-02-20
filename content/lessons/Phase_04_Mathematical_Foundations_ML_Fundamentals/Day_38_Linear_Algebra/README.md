@@ -531,6 +531,13 @@ D, I = index.search(query_vector.reshape(1, -1), 10)
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Operation-to-symptom mapping drill**: For each operation (`scaling`, `matrix projection`, `feature interaction`, `PCA rotation`), map how it changes feature geometry and identify one multicollinearity symptom (unstable coefficients, inflated variance, sign flips).
+2. **Collinearity diagnosis mini-case**: You observe opposite-signed coefficients for two nearly identical marketing spend variables. Explain conceptually (linear dependence in `X^T X`) *why the model failed*, then take corrective action by computing VIF and applying either feature dropping, Ridge regularization, or PCA.
+
+---
+
 ## Summary
 
 Today you learned:

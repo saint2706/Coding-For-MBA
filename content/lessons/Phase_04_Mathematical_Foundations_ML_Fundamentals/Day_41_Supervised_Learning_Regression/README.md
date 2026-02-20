@@ -754,6 +754,13 @@ Monitor the train-test gap as you tune!
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Residual diagnostics tied to assumptions**: Use residual-vs-fitted and Q-Q plots to test linearity, constant variance, and near-normal error assumptions; document which assumption breaks first and expected business impact on predictions.
+2. **Why-model-failed case (regression)**: RMSE is good on train but poor on test, with funnel-shaped residuals. Explain conceptually *why the model failed* (heteroscedasticity + omitted nonlinearity), then take corrective action with log/Box-Cox transform, interaction or polynomial terms, and weighted/robust regression.
+
+---
+
 ## Summary
 
 Today you learned:

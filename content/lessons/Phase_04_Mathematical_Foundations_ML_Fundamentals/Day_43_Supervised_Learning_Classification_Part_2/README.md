@@ -659,6 +659,13 @@ A decision tree for loan approval says: "IF credit_score > 700 AND income > 5000
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Tree/forest confusion-matrix deep dive**: Compare confusion matrices across depth settings and explain how bias-variance tradeoffs alter error types under the assumption that training and production class mix are similar.
+2. **Why-model-failed case (classification)**: Random forest recall collapses after deployment. Explain conceptually *why the model failed* (distribution shift + overfit leaf rules), then take corrective action with re-stratified validation, probability calibration, depth/min-samples constraints, and retraining on fresher data.
+
+---
+
 ## Summary
 
 Today you learned:

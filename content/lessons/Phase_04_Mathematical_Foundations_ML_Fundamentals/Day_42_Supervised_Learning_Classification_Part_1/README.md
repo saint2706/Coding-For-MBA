@@ -708,6 +708,13 @@ y_pred = (y_prob >= 0.3).astype(int)
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Confusion-matrix diagnosis tied to assumptions**: Diagnose whether class overlap, threshold choice, or class imbalance is driving FP/FN patterns; relate findings to probability calibration and decision-threshold assumptions.
+2. **Why-model-failed case (classification)**: Model shows 92% accuracy but misses most positives. Explain conceptually *why the model failed* (accuracy paradox under imbalance + default threshold assumption), then take corrective action with class-weighting, threshold tuning, and PR-AUC/F1 tracking.
+
+---
+
 ## Summary
 
 Today you learned:

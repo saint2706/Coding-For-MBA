@@ -314,6 +314,14 @@ Why use sklearn Pipeline over manual preprocessing?
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Leakage detection protocol**: Audit each feature with a timestamp and data-availability table; flag any feature that is unavailable at prediction time or computed before split.
+2. **Metric selection under class imbalance**: For the same model, compare accuracy, balanced accuracy, F1, ROC-AUC, and PR-AUC; justify which metric should govern decisions when positives are rare.
+3. **Why-model-failed case**: Offline AUC is excellent but production performance collapses. Explain conceptually *why the model failed* (target leakage + metric mismatch), then take corrective action by rebuilding a leakage-safe pipeline, enforcing temporal validation, and selecting threshold/metric based on minority-class business cost.
+
+---
+
 ## Summary
 
 - ✅ Feature engineering transforms raw data into model-ready signals

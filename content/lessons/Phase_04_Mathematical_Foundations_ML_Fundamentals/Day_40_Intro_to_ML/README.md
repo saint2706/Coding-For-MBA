@@ -691,6 +691,13 @@ For 10,000 samples, 5-fold gives reliable estimates while training only 5 models
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Math-foundation failure map**: For one failed baseline model, connect symptoms to foundation-level causes (linear algebra: collinearity, calculus: unstable optimization, statistics: distribution shift).
+2. **Why-model-failed case**: Validation accuracy drops while training accuracy rises. Explain conceptually *why the model failed* (high variance + weak generalization assumptions), then take corrective action using stronger regularization, simpler hypothesis class, and cross-validation-based model selection.
+
+---
+
 ## Summary
 
 Today you learned:
