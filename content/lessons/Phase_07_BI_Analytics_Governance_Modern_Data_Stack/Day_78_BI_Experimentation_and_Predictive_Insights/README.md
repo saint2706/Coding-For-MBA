@@ -143,6 +143,21 @@ A grid showing how every variable relates to every other variable.
 
 ---
 
+## Standardized Scoring Rubric (Experimentation Quality)
+
+Score each criterion from **1 (Needs Work)** to **5 (Excellent)**.
+
+1. **Hypothesis Rigor**: Is the hypothesis specific, testable, and tied to a measurable outcome?
+2. **Guardrail Metrics**: Are safety metrics defined to avoid harmful side effects (e.g., churn, latency, support tickets)?
+3. **Interpretation Validity**: Are conclusions consistent with sample size, significance, and assumptions?
+
+**Required reflection workflow**:
+
+* **Self-score** one experimentation artifact (test plan, significance analysis, or forecast interpretation) using all rubric criteria and include short justification comments.
+* **Peer-review** one classmate artifact with rubric comments that include one risk you noticed and one concrete recommendation.
+
+---
+
 ## Mastery Check
 
 ### Question 1: P-Value

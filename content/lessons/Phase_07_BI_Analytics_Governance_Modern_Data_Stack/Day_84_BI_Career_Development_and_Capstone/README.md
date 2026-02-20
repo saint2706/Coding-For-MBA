@@ -120,6 +120,22 @@ Don't just upload a CSV. Show the **System**:
 **Junior Answer**: "Inner is match, Left is everything."
 **Senior Answer**: "Inner Join keeps only matching rows, filtering out non-matches. It's riskier for production pipelines because you might lose data silently. Left Join keeps all rows from the primary table, filling nulls for non-matches. I prefer Left Joins in staging to audit data quality first."
 
+
+---
+
+## Standardized Scoring Rubric (Capstone Quality)
+
+Score each criterion from **1 (Needs Work)** to **5 (Excellent)**.
+
+1. **Business Impact Estimate**: Is expected value (revenue lift, cost savings, risk reduction, or efficiency gain) quantified credibly?
+2. **Reproducibility**: Can another analyst reproduce the work from documented data sources, logic, and steps?
+3. **Governance Readiness**: Are data definitions, ownership, quality checks, and access/privacy controls clearly addressed?
+
+**Required reflection workflow**:
+
+* **Self-score** one capstone artifact (repo, dashboard, or presentation) using all rubric criteria and include concise rationale comments.
+* **Peer-review** one classmate capstone artifact with rubric comments, noting one high-risk gap and one prioritized improvement.
+
 ---
 
 ## Mastery Check

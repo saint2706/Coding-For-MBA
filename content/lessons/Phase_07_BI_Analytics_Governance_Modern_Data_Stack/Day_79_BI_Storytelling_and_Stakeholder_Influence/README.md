@@ -144,6 +144,22 @@ Every good data story follows this structure:
 4. "Clicking here (Drill Down) shows the cause: The 'Atlanta Hub' was flooded."
 5. "Recommendation: Re-route packages through Nashville until Monday."
 
+
+---
+
+## Standardized Scoring Rubric (Storytelling Quality)
+
+Score each criterion from **1 (Needs Work)** to **5 (Excellent)**.
+
+1. **Evidence Chain**: Is every major claim supported by clear, traceable data evidence?
+2. **Decision Framing**: Does the story clearly present options, trade-offs, and recommended next action?
+3. **Risk Disclosure**: Are assumptions, uncertainty, and potential downside risks explicitly stated?
+
+**Required reflection workflow**:
+
+* **Self-score** one storytelling artifact (slide, memo, or presentation script) using all rubric criteria and add brief comments per score.
+* **Peer-review** one classmate artifact with rubric comments, including one strength and one question that improves executive decision confidence.
+
 ---
 
 ## Mastery Check
