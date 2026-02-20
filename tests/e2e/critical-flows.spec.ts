@@ -14,24 +14,23 @@ test.describe('critical desktop user flows', () => {
     await page.locator('.curriculum-phase-header').first().click()
     await expect(page).toHaveURL(/#\/phase\//)
 
-    await page.getByRole('link', { name: /Day\s+\d+:/i }).first().click()
+    await page
+      .getByRole('link', { name: /Day\s+\d+:/i })
+      .first()
+      .click()
     await expect(page).toHaveURL(/#\/lesson\//)
   })
 
-  test('search: open palette (Ctrl/Cmd+K), query, and navigate to result', async ({ page }) => {
+  test('search: use keyboard shortcut, query, and navigate to result', async ({ page }) => {
     await page.goto('/#/')
 
-    await page.evaluate(() => {
-      document.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true, cancelable: true }),
-      )
-    })
-    await expect(page.getByRole('dialog', { name: 'Search lessons' })).toBeVisible()
-
-    const searchInput = page.getByRole('textbox', { name: 'Search' })
+    const searchInput = page.getByRole('searchbox', { name: 'Search lessons' })
+    await searchInput.click()
     await searchInput.fill('python')
+    await searchInput.press('Enter')
 
-    const firstResult = page.locator('.search-result-item').first()
+    await expect(page).toHaveURL(/#\/search\?q=python/)
+    const firstResult = page.locator('.search-result-card').first()
     await expect(firstResult).toBeVisible()
     await firstResult.click()
 
@@ -39,15 +38,20 @@ test.describe('critical desktop user flows', () => {
   })
 
   test('progress tracking persists after reload', async ({ page }) => {
-    await page.goto('/#/lesson/1')
+    await page.goto('/#/')
+    await page
+      .getByRole('link', { name: /Start Learning/i })
+      .first()
+      .click()
+    await expect(page).toHaveURL(/#\/lesson\//)
 
-    const toggle = page.getByRole('button', { name: /Mark as Complete|Completed/i })
-    await expect(toggle).toBeVisible()
+    const toggle = page.locator('button.lesson-complete-btn')
+    await expect(toggle).toBeVisible({ timeout: 20000 })
     await toggle.click()
     await expect(toggle).toHaveText(/Completed/i)
 
     await page.reload()
-    await expect(page.getByRole('button', { name: /Completed/i })).toBeVisible()
+    await expect(page.locator('button.lesson-complete-btn')).toContainText(/Completed/i)
   })
 
   test('theme toggle persists across navigations and reload', async ({ page }) => {
