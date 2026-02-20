@@ -143,6 +143,22 @@ If they can't answer all 3, **delete half the charts.**
 
 ---
 
+## Standardized Scoring Rubric (Dashboard Quality)
+
+Score each criterion from **1 (Needs Work)** to **5 (Excellent)**.
+
+1. **Clarity**: Is the core message understandable in 5 seconds?
+2. **Bias Risk**: Are scales, colors, and chart choices fair and non-misleading?
+3. **Actionability**: Does the dashboard make the next decision obvious?
+4. **Latency/Freshness Fit**: Is update frequency appropriate for the business decision (real-time, daily, weekly)?
+
+**Required reflection workflow**:
+
+* **Self-score** one dashboard artifact using all four criteria (total out of 20) and add 1-2 sentences of rationale per criterion.
+* **Peer-review** one classmate's dashboard artifact and leave rubric-based comments, including one strength and one improvement suggestion.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Pie Charts
