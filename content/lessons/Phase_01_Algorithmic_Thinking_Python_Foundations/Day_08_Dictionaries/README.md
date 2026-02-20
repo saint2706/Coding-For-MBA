@@ -505,10 +505,11 @@ Today you learned:
 Extend `sales_tracker_phase1.py` into a richer business model.
 
 **Challenge**
+
 - Create a dictionary per day with keys like `store_code`, `orders_count`, `daily_revenue`, `unique_customers`, `is_anomaly`.
 - Store all day dictionaries in a list called `weekly_snapshots`.
 - Reuse Day 7 duplicate logic to populate dictionary fields.
 
 **Measurable output**
-- Print one dictionary-driven summary line for the latest day: `"SNAPSHOT <date> | revenue=... | unique_customers=..."`.
 
+- Print one dictionary-driven summary line for the latest day: `"SNAPSHOT <date> | revenue=... | unique_customers=..."`.

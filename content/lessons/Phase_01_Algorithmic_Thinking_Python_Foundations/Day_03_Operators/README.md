@@ -498,10 +498,11 @@ Today you learned:
 Continue in `sales_tracker_phase1.py` using yesterday's variables.
 
 **Challenge**
+
 - Add operator-based calculations: `daily_revenue = orders_count * avg_ticket_usd` and `is_anomaly = orders_count > ANOMALY_ORDER_LIMIT`.
 - Build a label code with operators and conversion, e.g. `report_label = store_code + "-" + str(report_date)`.
 - Print a status line that includes both `daily_revenue` and `is_anomaly`.
 
 **Measurable output**
-- Print one formatted report line: `"REPORT {report_label} | Revenue=$... | Anomaly=True/False"`.
 
+- Print one formatted report line: `"REPORT {report_label} | Revenue=$... | Anomaly=True/False"`.

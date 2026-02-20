@@ -483,10 +483,11 @@ Today you learned:
 Keep extending `sales_tracker_phase1.py`; do not restart.
 
 **Challenge**
+
 - Parse a raw text code like `"KIOSK-NYC-2024-07-15"` using string methods/splitting.
 - Extract and store `channel`, `city_code`, and date parts in clearly named variables.
 - Generate a cleaned label in title case for reporting, such as `"Kiosk | Nyc | 2024-07-15"`.
 
 **Measurable output**
-- Print one parsed-label line showing extracted city and normalized date so correctness is visible immediately.
 
+- Print one parsed-label line showing extracted city and normalized date so correctness is visible immediately.

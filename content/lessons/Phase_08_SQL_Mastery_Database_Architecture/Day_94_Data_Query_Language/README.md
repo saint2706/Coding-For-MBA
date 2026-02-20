@@ -126,10 +126,10 @@ SELECT * FROM orders WHERE amount > 100;
 
 ### Non-Functional Constraints (Apply to All Exercises)
 
-- **Performance / Scale**: Document a target query runtime of **p95 < 1.5s** for your final solution, validate behavior at **35 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
-- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
-- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
-  - KPI focus for this day: *Query optimization choices should improve dashboard p95 latency and analyst self-service throughput.*
+* **Performance / Scale**: Document a target query runtime of **p95 < 1.5s** for your final solution, validate behavior at **35 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
+* **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+* **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  * KPI focus for this day: *Query optimization choices should improve dashboard p95 latency and analyst self-service throughput.*
 
 ## Mastery Check
 

@@ -205,7 +205,6 @@ Match each scenario to the best database:
 
 </details>
 
-
 ### Reliability & Maintainability Tasks
 
 - Create schema validation rules for NoSQL documents (required fields, allowed types, defaults).
@@ -217,6 +216,7 @@ Match each scenario to the best database:
 Insert malformed documents with missing or renamed fields into a collection, then run your aggregation pipeline.
 
 Your debugging goals:
+
 1. Identify where the pipeline breaks or produces wrong counts.
 2. Add validation + fallback transforms to normalize legacy documents.
 3. Produce a short migration plan to repair historical records safely.

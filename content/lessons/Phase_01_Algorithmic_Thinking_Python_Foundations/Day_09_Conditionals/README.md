@@ -570,6 +570,7 @@ Today you learned:
 Continue in `sales_tracker_phase1.py` by adding policy decisions.
 
 **Challenge**
+
 - Define policy rules with `if/elif/else`, such as:
   - `orders_count < 40` → `"LOW_TRAFFIC"`
   - `40-120` → `"NORMAL"`
@@ -578,5 +579,5 @@ Continue in `sales_tracker_phase1.py` by adding policy decisions.
 - Flag discount eligibility when `LOW_TRAFFIC` and not weekend.
 
 **Measurable output**
-- Print one policy result line for the latest day: `"POLICY=<tier> | discount_action=True/False"`.
 
+- Print one policy result line for the latest day: `"POLICY=<tier> | discount_action=True/False"`.

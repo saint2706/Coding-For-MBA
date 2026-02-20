@@ -136,10 +136,10 @@ AND id < (SELECT MAX(id) FROM numbers);
 
 ### Non-Functional Constraints (Apply to All Exercises)
 
-- **Performance / Scale**: Document a target query runtime of **p95 < 4s** for your final solution, validate behavior at **15 concurrent analytical users/sessions**, and keep compute spend below **$1** per production-equivalent run.
-- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
-- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
-  - KPI focus for this day: *Interview artifacts should demonstrate how database design decisions improve SLA attainment, reporting speed, and cost-to-serve metrics.*
+* **Performance / Scale**: Document a target query runtime of **p95 < 4s** for your final solution, validate behavior at **15 concurrent analytical users/sessions**, and keep compute spend below **$1** per production-equivalent run.
+* **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+* **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  * KPI focus for this day: *Interview artifacts should demonstrate how database design decisions improve SLA attainment, reporting speed, and cost-to-serve metrics.*
 
 ## Mastery Check
 

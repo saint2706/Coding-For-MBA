@@ -509,17 +509,21 @@ Today you learned:
 ## Task Block (Core / Stretch / Expert)
 
 ### Project Thread (Days 18–21): Retail Operations Toolkit
+
 Use the same mini-project across these days so each concept compounds into a usable product artifact.
 
 ### Core
+
 - Extend the Day 18 classes with timestamp fields (`created_at`, `updated_at`, `fulfilled_at`).
 - Implement date parsing/formatting utilities for order and shipment records.
 
 ### Stretch
+
 - Add timezone-aware handling for at least two regions and compare fulfillment windows.
 - Build one report function that flags stale/unfulfilled orders by date threshold.
 
 ### Expert
+
 - Create a scheduling helper class that calculates SLA deadlines and late penalties.
 - Keep interfaces packaging-ready by separating datetime utilities into a dedicated module.
 
@@ -531,4 +535,3 @@ Use the same mini-project across these days so each concept compounds into a usa
 | Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
 | Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
 | Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
-

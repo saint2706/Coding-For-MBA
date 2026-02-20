@@ -138,10 +138,10 @@ A pre-computed table that auto-updates (mostly).
 
 ### Non-Functional Constraints (Apply to All Exercises)
 
-- **Performance / Scale**: Document a target query runtime of **p95 < 3s** for your final solution, validate behavior at **30 concurrent analytical users/sessions**, and keep compute spend below **$5** per production-equivalent run.
-- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
-- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
-  - KPI focus for this day: *BI dashboard freshness and warehouse spend should keep executive reporting latency under 10 minutes while staying inside budget.*
+* **Performance / Scale**: Document a target query runtime of **p95 < 3s** for your final solution, validate behavior at **30 concurrent analytical users/sessions**, and keep compute spend below **$5** per production-equivalent run.
+* **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+* **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  * KPI focus for this day: *BI dashboard freshness and warehouse spend should keep executive reporting latency under 10 minutes while staying inside budget.*
 
 ## Mastery Check
 

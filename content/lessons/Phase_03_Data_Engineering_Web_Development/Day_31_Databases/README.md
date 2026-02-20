@@ -326,7 +326,6 @@ print(top_customers)
 conn.close()
 ```
 
-
 ### Reliability & Maintainability Tasks
 
 - Add transaction boundaries and rollback handling for all multi-step writes.
@@ -338,6 +337,7 @@ conn.close()
 Inject a failure between two dependent inserts (for example, write to `orders` succeeds but write to `order_items` fails).
 
 Your debugging goals:
+
 1. Reproduce the inconsistent state intentionally.
 2. Wrap writes in a transaction and confirm rollback restores consistency.
 3. Add a verification query that fails CI if orphaned records appear.

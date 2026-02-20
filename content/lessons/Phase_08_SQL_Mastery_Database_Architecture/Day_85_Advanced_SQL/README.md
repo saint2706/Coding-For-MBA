@@ -192,10 +192,10 @@ LATERAL (
 
 ### Non-Functional Constraints (Apply to All Exercises)
 
-- **Performance / Scale**: Document a target query runtime of **p95 < 2s** for your final solution, validate behavior at **20 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
-- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
-- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
-  - KPI focus for this day: *Manager-chain lookups and JSON-based behavioral reporting should support <5 minute leadership and product analytics refresh cycles.*
+* **Performance / Scale**: Document a target query runtime of **p95 < 2s** for your final solution, validate behavior at **20 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
+* **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+* **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  * KPI focus for this day: *Manager-chain lookups and JSON-based behavioral reporting should support <5 minute leadership and product analytics refresh cycles.*
 
 ## Mastery Check
 

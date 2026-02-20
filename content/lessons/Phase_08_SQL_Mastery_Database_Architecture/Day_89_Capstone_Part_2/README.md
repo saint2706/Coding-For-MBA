@@ -143,10 +143,10 @@ with open('seed.sql', 'w') as f:
 
 ### Non-Functional Constraints (Apply to All Exercises)
 
-- **Performance / Scale**: Document a target query runtime of **p95 < 5s** for your final solution, validate behavior at **40 concurrent analytical users/sessions**, and keep compute spend below **$8** per production-equivalent run.
-- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
-- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
-  - KPI focus for this day: *Capstone implementation should deliver stakeholder-ready KPI dashboards with <15 minute latency and predictable monthly infra spend.*
+* **Performance / Scale**: Document a target query runtime of **p95 < 5s** for your final solution, validate behavior at **40 concurrent analytical users/sessions**, and keep compute spend below **$8** per production-equivalent run.
+* **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+* **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  * KPI focus for this day: *Capstone implementation should deliver stakeholder-ready KPI dashboards with <15 minute latency and predictable monthly infra spend.*
 
 ### Architecture Decision Log (Capstone Requirement)
 
@@ -156,7 +156,6 @@ For your final capstone submission, include an **Architecture Decision Log** tha
 2. **Tradeoffs**: What you gain and what you accept (performance, flexibility, governance, operational complexity).
 3. **Rejected Alternatives**: At least two alternatives considered, with concise reasons they were rejected.
 4. **Expected Operational Impact**: Predicted impact on reliability, on-call burden, incident recovery time, and ongoing cost.
-
 
 ## Mastery Check
 

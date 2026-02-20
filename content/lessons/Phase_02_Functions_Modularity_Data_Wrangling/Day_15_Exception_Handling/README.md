@@ -522,14 +522,17 @@ Today you learned:
 ## Task Block (Core / Stretch / Expert)
 
 ### Core
+
 - Complete one end-to-end task that applies today’s main concept to realistic business data.
 - Add basic validation (assertions or checks) for normal and edge-case inputs.
 
 ### Stretch
+
 - Refactor for modularity: split logic into reusable helper functions or modules.
 - Add one additional scenario that tests robustness under imperfect data.
 
 ### Expert
+
 - Generalize your solution for reuse across datasets or teams.
 - Document key tradeoffs and why your implementation is maintainable.
 
@@ -541,4 +544,3 @@ Today you learned:
 | Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
 | Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
 | Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
-

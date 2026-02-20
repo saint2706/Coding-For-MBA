@@ -258,16 +258,16 @@ Use these three drills as a connected simulation sequence. Each drill is intenti
 **Required outputs**:
 
 1. **Root-cause analysis using query plans and schema objects**
-   - Capture `EXPLAIN (ANALYZE, BUFFERS)` for the top 3 slow statements from `pg_stat_statements`.
-   - Identify the dominant bottleneck (e.g., sequential scans, stale stats, sort spill, lock waits).
-   - Map the issue to schema objects (specific index, table, materialized view, partition, or join path).
+   * Capture `EXPLAIN (ANALYZE, BUFFERS)` for the top 3 slow statements from `pg_stat_statements`.
+   * Identify the dominant bottleneck (e.g., sequential scans, stale stats, sort spill, lock waits).
+   * Map the issue to schema objects (specific index, table, materialized view, partition, or join path).
 2. **Mitigation patch strategy and rollback criteria**
-   - Propose a low-risk patch (index change, query rewrite, refresh strategy, stats maintenance, or connection throttling).
-   - Define rollout steps, canary checks, and explicit rollback triggers (p95 latency, error rate, lock queue depth, CPU threshold).
+   * Propose a low-risk patch (index change, query rewrite, refresh strategy, stats maintenance, or connection throttling).
+   * Define rollout steps, canary checks, and explicit rollback triggers (p95 latency, error rate, lock queue depth, CPU threshold).
 3. **Post-incident report**
-   - Summarize business impact (checkout conversion, order delay, SLA breach duration).
-   - Document prevention controls (capacity threshold alerting, index review checklist, load-test gate before release).
-   - Add monitoring updates (query-plan drift alert, wait-event dashboard, incident runbook links).
+   * Summarize business impact (checkout conversion, order delay, SLA breach duration).
+   * Document prevention controls (capacity threshold alerting, index review checklist, load-test gate before release).
+   * Add monitoring updates (query-plan drift alert, wait-event dashboard, incident runbook links).
 
 ### Drill 2 (Severity 1): Security policy breach involving row-level access
 
@@ -276,17 +276,17 @@ Use these three drills as a connected simulation sequence. Each drill is intenti
 **Required outputs**:
 
 1. **Root-cause analysis using query plans and schema objects**
-   - Reproduce the leak using a least-privilege role and capture relevant SQL.
-   - Inspect policy definitions (`pg_policies`), grants, security-definer functions, and view ownership chains.
-   - Use query plans to show where policy filters are bypassed or pushed incorrectly.
+   * Reproduce the leak using a least-privilege role and capture relevant SQL.
+   * Inspect policy definitions (`pg_policies`), grants, security-definer functions, and view ownership chains.
+   * Use query plans to show where policy filters are bypassed or pushed incorrectly.
 2. **Mitigation patch strategy and rollback criteria**
-   - Provide an emergency containment patch (policy fix, revoke path, view hardening, function privilege correction).
-   - Define validation tests for allowed vs denied row sets per role.
-   - Set rollback criteria tied to false-deny rate, support-ticket spike, and audit-log anomalies.
+   * Provide an emergency containment patch (policy fix, revoke path, view hardening, function privilege correction).
+   * Define validation tests for allowed vs denied row sets per role.
+   * Set rollback criteria tied to false-deny rate, support-ticket spike, and audit-log anomalies.
 3. **Post-incident report**
-   - Quantify business/compliance impact (records exposed, jurisdictions affected, notification obligations).
-   - List prevention controls (policy-as-code review, CI policy simulation, privileged object inventory).
-   - Add monitoring updates (cross-tenant access detectors, policy-change alerts, immutable audit retention).
+   * Quantify business/compliance impact (records exposed, jurisdictions affected, notification obligations).
+   * List prevention controls (policy-as-code review, CI policy simulation, privileged object inventory).
+   * Add monitoring updates (cross-tenant access detectors, policy-change alerts, immutable audit retention).
 
 ### Drill 3 (Severity 1 / Executive Escalation): Data correctness regression from trigger/procedure change
 
@@ -295,15 +295,14 @@ Use these three drills as a connected simulation sequence. Each drill is intenti
 **Required outputs**:
 
 1. **Root-cause analysis using query plans and schema objects**
-   - Diff trigger/procedure versions and execution order; trace writes across dependent tables/views.
-   - Use plans and dependency metadata (`pg_trigger`, `pg_proc`, `pg_depend`) to locate duplicate or missing mutations.
-   - Build a minimal reproducible dataset proving the correctness gap.
+   * Diff trigger/procedure versions and execution order; trace writes across dependent tables/views.
+   * Use plans and dependency metadata (`pg_trigger`, `pg_proc`, `pg_depend`) to locate duplicate or missing mutations.
+   * Build a minimal reproducible dataset proving the correctness gap.
 2. **Mitigation patch strategy and rollback criteria**
-   - Deliver a hotfix plan (procedure correction + backfill/reconciliation script) with idempotency guarantees.
-   - Include data repair strategy for already-corrupted records and freeze windows for risky writes.
-   - Define rollback criteria based on reconciliation deltas, financial control checks, and downstream report parity.
+   * Deliver a hotfix plan (procedure correction + backfill/reconciliation script) with idempotency guarantees.
+   * Include data repair strategy for already-corrupted records and freeze windows for risky writes.
+   * Define rollback criteria based on reconciliation deltas, financial control checks, and downstream report parity.
 3. **Post-incident report**
-   - Summarize business impact (close-delay, misstated KPI exposure, executive communication timeline).
-   - Document prevention controls (change contracts for triggers, shadow writes, dual-run verification, release checklist).
-   - Add monitoring updates (data quality assertions, ledger-vs-fact drift alarms, automated reconciliation jobs).
-
+   * Summarize business impact (close-delay, misstated KPI exposure, executive communication timeline).
+   * Document prevention controls (change contracts for triggers, shadow writes, dual-run verification, release checklist).
+   * Add monitoring updates (data quality assertions, ledger-vs-fact drift alarms, automated reconciliation jobs).

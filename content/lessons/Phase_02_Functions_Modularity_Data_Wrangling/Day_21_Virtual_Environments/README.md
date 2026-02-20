@@ -425,22 +425,27 @@ Today you learned:
 ## Task Block (Core / Stretch / Expert)
 
 ### Project Thread (Days 18–21): Retail Operations Toolkit
+
 Use the same mini-project across these days so each concept compounds into a usable product artifact.
 
 ### Prereq Refresh (2–5 minutes)
+
 - Create and activate one virtual environment, then install your Day 20 package in editable mode.
 - If blocked, review: activation commands by OS and how `pip list` confirms environment isolation.
 
 ### Core
+
 - Run the packaged toolkit in a fresh virtual environment and verify reproducible setup.
 - Capture a short setup script/checklist (`create venv -> install -> run demo`).
 - Validate imports, command entry point, and one sample report.
 
 ### Stretch
+
 - Create separate `dev` and `runtime` environments and compare installed dependency sets.
 - Add a troubleshooting note for common environment mismatch issues.
 
 ### Expert
+
 - Automate environment bootstrap with a single command (`Makefile`, script, or task runner).
 - Demonstrate deterministic installs (pinning strategy and lockfile/tooling recommendation).
 
@@ -452,4 +457,3 @@ Use the same mini-project across these days so each concept compounds into a usa
 | Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
 | Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
 | Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
-
