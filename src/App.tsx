@@ -12,6 +12,7 @@ import { preloadSearchIndex } from './utils/searchIndex'
 import { hydrateProgressStore } from './utils/progressTracker'
 import { hydrateQuizStore } from './stores/quizStore'
 import { useUserPreferencesStore } from './stores/userPreferencesStore'
+import { useLearningAnalytics } from './hooks/useLearningAnalytics'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
@@ -31,6 +32,8 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(sidebarDefaultOpen)
   const location = useLocation()
   const prefersReducedMotion = useReducedMotion()
+
+  useLearningAnalytics(location.pathname)
 
   useEffect(() => {
     preloadSearchIndex()

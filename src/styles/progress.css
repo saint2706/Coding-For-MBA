@@ -337,3 +337,31 @@
 .preferences-toggle small {
   color: var(--text-muted);
 }
+
+.learning-analytics-card {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.learning-analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.learning-analytics-chart {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.learning-analytics-bar {
+  fill: rgba(99, 102, 241, 0.65);
+}
+
+.learning-analytics-label {
+  font-size: 0.625rem;
+  fill: var(--text-muted);
+}
