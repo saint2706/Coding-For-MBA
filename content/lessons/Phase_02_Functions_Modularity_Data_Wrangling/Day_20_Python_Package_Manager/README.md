@@ -373,3 +373,37 @@ Today you learned:
 - ✅ Pin versions for reproducible builds
 
 **Tomorrow**: We'll explore **virtual environments**—isolating project dependencies.
+
+---
+
+## Task Block (Core / Stretch / Expert)
+
+### Project Thread (Days 18–21): Retail Operations Toolkit
+Use the same mini-project across these days so each concept compounds into a usable product artifact.
+
+### Prereq Refresh (2–5 minutes)
+- Confirm you can import your Day 18/19 modules from a local folder and run one function.
+- If blocked, review: `__init__.py`, absolute vs relative imports, and running `python -m package.module`.
+
+### Core
+- Convert your Days 18–19 toolkit into an installable package structure (`src/` layout preferred).
+- Expose a clean public API for core classes and datetime/report helpers.
+- Add a `pyproject.toml` with dependencies and a short package description.
+
+### Stretch
+- Add a console script entry point that runs a demo order pipeline end-to-end.
+- Add lightweight tests (or doctests) for import stability and one business flow.
+
+### Expert
+- Split optional dependencies into extras (e.g., `dev`, `analysis`) and justify each group.
+- Publish package usage notes so Day 21 can run it inside isolated environments without path hacks.
+
+## Common Grading Rubric (applies every day)
+
+| Criterion | 1 - Emerging | 2 - Developing | 3 - Proficient | 4 - Strong |
+|---|---|---|---|---|
+| Correctness | Major logic errors; results frequently wrong. | Core path works but multiple inaccuracies remain. | Outputs are correct for expected inputs and checked with examples. | Outputs are consistently correct, including tricky cases and clear verification. |
+| Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
+| Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
+| Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
+

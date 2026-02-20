@@ -181,3 +181,31 @@ sales.set_index("date")["revenue"].resample("M").sum()
 - ✅ `resample()` handles time-based aggregation
 
 **🎉 Congratulations!** You've completed **Phase 2: Functions, Modularity & Data Wrangling**!
+
+---
+
+## Task Block (Core / Stretch / Expert)
+
+### Data Migration Thread (Days 22–24): Arrays → DataFrame Pipelines
+
+### Core
+- Upgrade the Day 23 Pandas pipeline with advanced operations (`merge`, `pivot_table`, `resample`).
+- Keep each step modular so learners can trace migration from raw arrays to analytical tables.
+
+### Stretch
+- Add an explicit migration exercise: optimize one NumPy-heavy section into a Pandas-native pattern.
+- Produce a compact before/after comparison (code length, clarity, and maintainability).
+
+### Expert
+- Create a production-style mini workflow with configuration-driven transformations.
+- Add regression checks that protect outputs when new columns or dates appear.
+
+## Common Grading Rubric (applies every day)
+
+| Criterion | 1 - Emerging | 2 - Developing | 3 - Proficient | 4 - Strong |
+|---|---|---|---|---|
+| Correctness | Major logic errors; results frequently wrong. | Core path works but multiple inaccuracies remain. | Outputs are correct for expected inputs and checked with examples. | Outputs are consistently correct, including tricky cases and clear verification. |
+| Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
+| Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
+| Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
+
