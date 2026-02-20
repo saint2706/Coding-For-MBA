@@ -695,6 +695,13 @@ print(f"Max gradient: {np.max(np.abs(gradient))}")
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Gradient behavior explanation**: Given three training logs (smooth convergence, oscillation, exploding loss), use derivative magnitude and curvature intuition to explain gradient behavior in each run.
+2. **Learning instability case**: A network loss becomes `nan` after 40 iterations. Explain conceptually *why the model failed* (step size too large on steep curvature + unstable updates), then apply concrete fixes: lower learning rate, gradient clipping, and feature normalization; verify by plotting gradient norms over epochs.
+
+---
+
 ## Summary
 
 Today you learned:

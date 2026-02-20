@@ -806,6 +806,13 @@ profiles_normalized = profiles / overall  # Ratio to average
 
 ---
 
+## Math-to-Debug Tasks
+
+1. **Geometry-to-debug mapping**: Connect linear transformations (scaling, PCA projection, distance metric changes) to cluster boundary changes and instability symptoms.
+2. **Why-model-failed case**: K-Means segments look random between runs. Explain conceptually *why the model failed* (poor feature geometry + weak cluster separation), then take corrective action with standardized features, informed `k` selection (silhouette/elbow), multiple initializations, and cluster-stability checks.
+
+---
+
 ## Summary
 
 Today you learned:
