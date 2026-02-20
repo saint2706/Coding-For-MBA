@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/useTheme'
 import { toastInfo } from '../utils/toast'
+import { isTypingInEditableElement } from '../utils/shortcuts'
 
 interface NavbarProps {
   onToggleSidebar: () => void
@@ -21,13 +22,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
       if (location.pathname === '/search') return
 
       if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
-        const target = event.target as HTMLElement | null
-        if (
-          target?.tagName === 'INPUT' ||
-          target?.tagName === 'TEXTAREA' ||
-          target?.isContentEditable
-        )
-          return
+        if (isTypingInEditableElement(event.target)) return
 
         event.preventDefault()
         inputRef.current?.focus()

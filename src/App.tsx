@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar'
 import SkipToContent from './components/SkipToContent'
 import ScrollProgress from './components/ScrollProgress'
 import MobileNav from './components/MobileNav'
+import KeyboardShortcutsOverlay from './components/KeyboardShortcutsOverlay'
 import { PageSkeleton } from './components/Skeleton'
 import { ThemeProvider } from './context/ThemeProvider'
 import { preloadSearchIndex } from './utils/searchIndex'
@@ -94,6 +95,7 @@ export default function App() {
           </Suspense>
         </main>
         <MobileNav />
+        <KeyboardShortcutsOverlay />
       </div>
     </ThemeProvider>
   )
