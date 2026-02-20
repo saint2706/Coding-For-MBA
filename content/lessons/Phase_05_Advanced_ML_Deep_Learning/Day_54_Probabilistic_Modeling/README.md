@@ -1001,3 +1001,24 @@ Today you learned:
 - ✅ Uncertainty matters as much as accuracy in risk-sensitive applications
 
 **Tomorrow**: Advanced unsupervised learning—clustering, dimensionality reduction, and anomaly detection.
+
+---
+
+## Optional Build Tracks (Day 49-60 Extension)
+
+Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
+
+| Track | Day 54 assignment artifact |
+| --- | --- |
+| **NLP** | Probabilistic classification baseline (point predictions only) vs advanced calibrated uncertainty model. |
+| **Forecasting** | Probabilistic forecast baseline (point estimate) vs advanced quantile/interval forecasting. |
+| **Recommenders/Graph** | CTR prediction baseline (deterministic score) vs advanced Bayesian uncertainty-aware ranking. |
+
+### Track requirements (apply to all three tracks)
+
+1. **Baseline + advanced model comparison (required):** report offline metrics, error slices, and deployment trade-offs.
+2. **Constraint scenario test (required):** run at least one scenario each day from: **limited data**, **latency limit**, **explainability requirement**.
+3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
+4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
+5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
+

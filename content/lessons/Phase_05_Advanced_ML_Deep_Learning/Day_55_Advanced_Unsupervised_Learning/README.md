@@ -1134,3 +1134,24 @@ Today you learned:
 - ✅ Always validate clustering results with metrics in original high-dimensional space
 
 **Tomorrow**: Time series forecasting—predicting future values from sequential data.
+
+---
+
+## Optional Build Tracks (Day 49-60 Extension)
+
+Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
+
+| Track | Day 55 assignment artifact |
+| --- | --- |
+| **NLP** | Document clustering baseline (k-means on TF-IDF) vs advanced topic/embedding clustering. |
+| **Forecasting** | Demand regime discovery baseline (k-means on aggregate stats) vs advanced latent-state clustering. |
+| **Recommenders/Graph** | User/item segmentation baseline (k-means) vs advanced graph/representation clustering. |
+
+### Track requirements (apply to all three tracks)
+
+1. **Baseline + advanced model comparison (required):** report offline metrics, error slices, and deployment trade-offs.
+2. **Constraint scenario test (required):** run at least one scenario each day from: **limited data**, **latency limit**, **explainability requirement**.
+3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
+4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
+5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
+

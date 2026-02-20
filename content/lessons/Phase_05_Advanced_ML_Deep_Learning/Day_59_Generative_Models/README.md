@@ -1375,3 +1375,24 @@ Today you learned:
 - ✅ Modern approaches: Stable Diffusion (latent diffusion), DALL-E 3, Midjourney
 
 **Tomorrow**: Graph Neural Networks—learning on network data (social networks, molecules, knowledge graphs).
+
+---
+
+## Optional Build Tracks (Day 49-60 Extension)
+
+Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
+
+| Track | Day 59 assignment artifact |
+| --- | --- |
+| **NLP** | Generative assistant baseline (template responses) vs advanced retrieval-augmented generation workflow. |
+| **Forecasting** | Scenario planning baseline (static what-if spreadsheet) vs advanced generative simulation narratives. |
+| **Recommenders/Graph** | Recommendation explanation baseline (static rules) vs advanced generative explanation model. |
+
+### Track requirements (apply to all three tracks)
+
+1. **Baseline + advanced model comparison (required):** report offline metrics, error slices, and deployment trade-offs.
+2. **Constraint scenario test (required):** run at least one scenario each day from: **limited data**, **latency limit**, **explainability requirement**.
+3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
+4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
+5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
+

@@ -867,3 +867,24 @@ Today you learned:
 - ✅ Use cross-validation (RidgeCV, LassoCV) to find optimal alpha
 
 **Tomorrow**: Ensemble methods—combining multiple models for superior performance.
+
+---
+
+## Optional Build Tracks (Day 49-60 Extension)
+
+Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
+
+| Track | Day 51 assignment artifact |
+| --- | --- |
+| **NLP** | Sparse text classifier baseline (unregularized linear model) vs advanced L1/L2/ElasticNet regularized model. |
+| **Forecasting** | Demand regression baseline (OLS) vs advanced regularized forecaster (Ridge/Lasso/ElasticNet). |
+| **Recommenders/Graph** | Ranking baseline (plain matrix factorization) vs advanced regularized latent-factor model. |
+
+### Track requirements (apply to all three tracks)
+
+1. **Baseline + advanced model comparison (required):** report offline metrics, error slices, and deployment trade-offs.
+2. **Constraint scenario test (required):** run at least one scenario each day from: **limited data**, **latency limit**, **explainability requirement**.
+3. **Refactoring checkpoint #1 (Day 53):** modularize data prep, training, evaluation, and inference into reusable pipeline components.
+4. **Refactoring checkpoint #2 (Day 58):** externalize hyperparameters/model settings into versioned config files.
+5. **Final deliverable (Day 60):** submit a concise **performance + business-impact memo** tying model lift to ROI, risk, and rollout recommendation.
+
