@@ -42,6 +42,14 @@ export const glossaryTerms: Record<string, string> = {
     'Summarizing and visualizing data to discover patterns before modeling.',
   outlier: 'A data point that differs significantly from other observations.',
   correlation: 'A statistical measure of how two variables move together.',
+  'star schema':
+    'A BI data model with a central fact table connected to denormalized dimension tables.',
+  'slowly changing dimension':
+    'A dimension-management approach for tracking how descriptive attributes change over time.',
+  'data lineage':
+    'Documentation of where data comes from, how it changes, and where it is consumed.',
+  'data governance':
+    'Policies, ownership, and controls that ensure data is trustworthy, secure, and compliant.',
 
   // Machine learning
   'machine learning': 'Algorithms that learn patterns from data to make predictions or decisions.',
@@ -56,6 +64,13 @@ export const glossaryTerms: Record<string, string> = {
   classification: 'Predicting a discrete category (e.g., spam/not-spam, positive/negative).',
   'random forest': 'An ensemble of decision trees that vote on predictions for better accuracy.',
   'cross-validation': 'Evaluating a model by splitting data into multiple train/test folds.',
+  AUC: 'Area Under the ROC Curve — a threshold-independent measure of classification ranking quality.',
+  RMSE: 'Root Mean Squared Error — a regression metric that penalizes larger prediction errors.',
+  MAE: 'Mean Absolute Error — a regression metric averaging absolute prediction differences.',
+  SHAP: 'SHapley Additive exPlanations — a method for attributing model predictions to features.',
+  LSTM: 'Long Short-Term Memory network — an RNN architecture designed for long-range sequence patterns.',
+  transformer:
+    'A neural architecture that relies on attention mechanisms to model relationships in sequences.',
 
   // SQL & databases
   SQL: 'Structured Query Language — the standard language for querying relational databases.',
@@ -64,12 +79,28 @@ export const glossaryTerms: Record<string, string> = {
   'primary key': 'A column (or set of columns) that uniquely identifies each row in a table.',
   'foreign key':
     'A column that references the primary key of another table, creating a relationship.',
+  transaction: 'A unit of database work that is committed completely or rolled back entirely.',
+  ACID: 'Atomicity, Consistency, Isolation, Durability — properties that ensure reliable database transactions.',
+  CTE: 'Common Table Expression — a named temporary result set defined with WITH for clearer SQL queries.',
+  MVCC: 'Multi-Version Concurrency Control — a technique that lets readers and writers work with minimal blocking.',
+  WAL: 'Write-Ahead Logging — recording changes before applying them to support crash recovery.',
+  'query plan':
+    'The execution strategy chosen by the database optimizer for running a SQL statement.',
+  vacuum:
+    'A maintenance process (notably in PostgreSQL) that reclaims storage and updates table statistics.',
+  JSONB:
+    'A binary JSON type in PostgreSQL that supports indexing and efficient semi-structured queries.',
+  XML: 'Extensible Markup Language — a tagged text format used for hierarchical structured data.',
 
   // Web & engineering
   API: 'Application Programming Interface — a set of rules for software components to communicate.',
   REST: 'An architectural style for web APIs using standard HTTP methods (GET, POST, PUT, DELETE).',
   JSON: 'JavaScript Object Notation — a lightweight text format for structured data exchange.',
   ETL: 'Extract, Transform, Load — a pipeline pattern for moving data between systems.',
+  ELT: 'Extract, Load, Transform — a pipeline pattern where transformations run after loading data.',
+  KPI: 'Key Performance Indicator — a metric tied to business goals and performance tracking.',
+  SLA: 'Service Level Agreement — a formal commitment for system availability or response expectations.',
+  RBAC: 'Role-Based Access Control — permission management based on roles rather than individual users.',
 
   // Statistics
   'standard deviation': 'A measure of how spread out values are from the mean.',
@@ -78,6 +109,10 @@ export const glossaryTerms: Record<string, string> = {
   'hypothesis testing': 'A statistical method for deciding whether data supports a specific claim.',
   'confidence interval':
     'A range of values within which the true population parameter likely falls.',
+  'p-hacking':
+    'Manipulating analyses or repeated testing to force statistically significant-looking results.',
+  'false positive': 'An incorrect positive prediction (Type I error).',
+  'false negative': 'An incorrect negative prediction (Type II error).',
 }
 
 /**
