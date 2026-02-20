@@ -247,6 +247,22 @@ def get_all_repos(username, max_pages=3):
 repos = get_all_repos("torvalds", max_pages=2)
 ```
 
+
+### Reliability & Maintainability Tasks
+
+- Build an input validation matrix for each endpoint (valid, boundary, invalid, and malicious payloads).
+- Write status-code contract tests for success and error paths (`200`, `400`, `401`, `404`, `429`, `500` as relevant).
+- Implement robust pagination + rate-limit handling (`next` links, `Retry-After`, bounded retries, checkpoint resume).
+
+### Exercise 4: Failure Injection — Throttling and Bad Payload
+
+Use a mock/stub API mode that intermittently returns `429` and occasionally malformed JSON.
+
+Your debugging goals:
+1. Confirm your client honors `Retry-After` and backoff limits.
+2. Validate payload shape before transformation.
+3. Record failed pages for replay without re-fetching successful pages.
+
 ---
 
 ## Mastery Check

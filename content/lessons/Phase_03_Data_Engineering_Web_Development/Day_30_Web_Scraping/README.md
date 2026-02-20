@@ -285,6 +285,22 @@ gdp_table = tables[0]
 print(gdp_table.head())
 ```
 
+
+### Reliability & Maintainability Tasks
+
+- Add retry + exponential backoff to every network request and log each retry attempt with URL, status, and wait time.
+- Implement schema drift guards: if expected selectors are missing, write the raw HTML snapshot to a `debug/` folder and raise a descriptive parsing error.
+- Add an ethics checklist prompt before each run: review `robots.txt`, terms of service, crawl frequency, and contact info in User-Agent.
+
+### Exercise 4: Failure Injection — Broken HTML Layout
+
+Simulate a controlled breakage by changing one critical CSS selector (for example, `span.text` → `span.quote-text`) and run your scraper.
+
+Your debugging goals:
+1. Detect the selector failure quickly with explicit assertions.
+2. Capture a sample failing page for investigation.
+3. Patch the extractor to support both old and new selector variants without silently dropping rows.
+
 ---
 
 ## Mastery Check
