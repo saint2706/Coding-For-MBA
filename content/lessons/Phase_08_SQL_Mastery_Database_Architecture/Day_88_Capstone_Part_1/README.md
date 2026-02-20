@@ -131,6 +131,23 @@ Every major feature at Google/Amazon starts with a Doc.
 
 ---
 
+### Non-Functional Constraints (Apply to All Exercises)
+
+- **Performance / Scale**: Document a target query runtime of **p95 < 5s** for your final solution, validate behavior at **40 concurrent analytical users/sessions**, and keep compute spend below **$8** per production-equivalent run.
+- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  - KPI focus for this day: *Schema and platform design choices should enable <2 hour monthly close and <15 minute operational KPI refresh for business teams.*
+
+### Architecture Decision Log (Capstone Requirement)
+
+For your final capstone submission, include an **Architecture Decision Log** that captures:
+
+1. **Decision and Context**: The architecture/schema/query decision, business context, and constraints.
+2. **Tradeoffs**: What you gain and what you accept (performance, flexibility, governance, operational complexity).
+3. **Rejected Alternatives**: At least two alternatives considered, with concise reasons they were rejected.
+4. **Expected Operational Impact**: Predicted impact on reliability, on-call burden, incident recovery time, and ongoing cost.
+
+
 ## Mastery Check
 
 ### Question 1: Use Case
