@@ -459,3 +459,85 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ---------- Keyboard Shortcuts Overlay ---------- */
+.shortcut-overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.shortcut-overlay-dialog {
+  width: min(640px, 100%);
+  max-height: min(85vh, 700px);
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+  padding: 1.25rem;
+}
+
+.shortcut-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.shortcut-overlay-header h2 {
+  margin: 0;
+}
+
+.shortcut-overlay-close {
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.6rem;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.shortcut-overlay-group + .shortcut-overlay-group {
+  margin-top: 1rem;
+}
+
+.shortcut-overlay-group h3 {
+  margin: 0 0 0.4rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.shortcut-overlay-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.shortcut-overlay-group li {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.shortcut-overlay-keys kbd {
+  display: inline-block;
+  min-width: 28px;
+  text-align: center;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+  padding: 0.2rem 0.45rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+}

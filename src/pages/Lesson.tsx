@@ -35,6 +35,7 @@ import PrerequisitePills from '../components/PrerequisitePills'
 import RelatedLessons from '../components/RelatedLessons'
 import { useSwipe } from '../hooks/useSwipe'
 import { toastInfo, toastSuccess } from '../utils/toast'
+import { isTypingInEditableElement } from '../utils/shortcuts'
 import {
   triggerSparkle,
   triggerPhaseUnlockConfetti,
@@ -127,9 +128,7 @@ export default function Lesson() {
   // Keyboard shortcuts: ← prev, → next
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement
-      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)
-        return
+      if (isTypingInEditableElement(e.target)) return
       if (e.key === 'ArrowLeft' && prev) {
         navigate(`/lesson/${prev.day}`)
       } else if (e.key === 'ArrowRight' && next) {
