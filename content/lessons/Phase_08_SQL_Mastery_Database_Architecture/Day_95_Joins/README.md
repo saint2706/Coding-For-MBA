@@ -144,6 +144,13 @@ WHERE u1.id < u2.id; -- Avoid matching (1,1) and (2,1) vs (1,2)
 
 ---
 
+### Non-Functional Constraints (Apply to All Exercises)
+
+- **Performance / Scale**: Document a target query runtime of **p95 < 2s** for your final solution, validate behavior at **30 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
+- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  - KPI focus for this day: *Join strategy should improve report generation SLA adherence and reduce compute consumed per dashboard refresh.*
+
 ## Mastery Check
 
 ### Question 1: Hash Join

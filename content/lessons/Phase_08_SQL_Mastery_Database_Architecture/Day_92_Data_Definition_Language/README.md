@@ -146,6 +146,13 @@ INSERT INTO sales VALUES (1, 'US', 100); -- Goes to sales_us
 
 ---
 
+### Non-Functional Constraints (Apply to All Exercises)
+
+- **Performance / Scale**: Document a target query runtime of **p95 < 3s** for your final solution, validate behavior at **20 concurrent analytical users/sessions**, and keep compute spend below **$2** per production-equivalent run.
+- **Data Governance / Security**: Define acceptance criteria for least-privilege access, PII handling (masking/tokenization where applicable), audit logging of query access, and retention/deletion alignment with policy.
+- **Business KPI Impact**: Explicitly state which business KPI(s) improve based on your schema/query decisions and quantify expected directional impact.
+  - KPI focus for this day: *DDL decisions should reduce schema-change lead time and incident frequency for customer-facing product releases.*
+
 ## Mastery Check
 
 ### Question 1: Partitioning
