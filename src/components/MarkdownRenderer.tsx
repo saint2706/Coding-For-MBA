@@ -1,3 +1,16 @@
+/**
+ * Markdown Content Renderer
+ *
+ * Renders lesson content from markdown into interactive React components.
+ *
+ * Key Responsibilities:
+ * - Convert markdown to HTML (via `react-markdown`).
+ * - Sanitize HTML output to prevent XSS (via `rehype-sanitize`).
+ * - Detect and render interactive blocks (Exercises, Mastery Checks).
+ * - Inject glossary tooltips for technical terms.
+ * - Render code blocks with syntax highlighting and copy buttons.
+ */
+
 import { useState, memo, JSX, useMemo, type ComponentProps } from 'react'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -27,6 +40,10 @@ const customTheme = {
   },
 }
 
+/**
+ * Custom CodeBlock component for ReactMarkdown.
+ * Renders code with syntax highlighting and a copy button.
+ */
 function CodeBlock({ className, children }: { className?: string; children: React.ReactNode }) {
   const match = /language-(\w+)/.exec(className || '')
   const lang = match ? match[1]! : ''

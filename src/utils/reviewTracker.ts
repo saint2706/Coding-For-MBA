@@ -1,10 +1,14 @@
 /**
- * Review Tracker Module
+ * Review State Persistence
  *
- * Manages persistent storage and state tracking for spaced repetition review cards.
- * Handles localStorage persistence with versioned schema, migration from legacy formats,
- * in-memory caching, and provides APIs for querying due cards, rating cards, computing
- * statistics, and managing review state.
+ * Manages the storage, retrieval, and updates of review card states (progress, due dates).
+ * Handles version migration and cross-tab synchronization.
+ *
+ * Key Responsibilities:
+ * - Load and save review state to localStorage.
+ * - Migrate legacy state formats (v1 -> v2).
+ * - Aggregate review statistics (streaks, counts).
+ * - Provide a facade for rating cards and updating their schedules.
  */
 
 import { getAllReviewCardSeeds } from './contentLoader'

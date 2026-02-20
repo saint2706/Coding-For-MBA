@@ -1,3 +1,15 @@
+/**
+ * Top Navigation Bar
+ *
+ * The primary desktop navigation header.
+ *
+ * Key Responsibilities:
+ * - Display brand identity and hamburger menu toggle.
+ * - Provide a global search input with keyboard shortcut `/`.
+ * - Show primary navigation links and theme toggle.
+ * - Link to the external GitHub repository.
+ */
+
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTheme } from '../context/useTheme'

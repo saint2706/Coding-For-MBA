@@ -1,9 +1,13 @@
 /**
- * Review Scheduler Module
+ * Review Scheduler (SM-2 Algorithm)
  *
- * Implements an SM-2-like spaced repetition scheduling algorithm for review cards.
- * Manages scheduling state including repetition count, interval days, ease factor,
- * and due dates based on user ratings of recall difficulty.
+ * Implements a modified SM-2 spaced repetition algorithm for scheduling review cards.
+ * Determines the next review date based on user performance ratings.
+ *
+ * Key Responsibilities:
+ * - Calculate new intervals and ease factors based on recall quality (Again, Hard, Good, Easy).
+ * - Manage scheduling state (repetitions, due dates).
+ * - Provide pure functions for state transitions (no side effects).
  */
 
 export type ReviewRating = 'again' | 'hard' | 'good' | 'easy'

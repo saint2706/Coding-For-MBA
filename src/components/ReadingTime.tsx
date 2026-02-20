@@ -1,20 +1,15 @@
 /**
- * ReadingTime Component
+ * Reading Time Indicator
  *
- * Displays an estimated reading time for content based on word count.
+ * Calculates and displays the estimated reading time for a lesson.
+ *
+ * Key Responsibilities:
+ * - Process raw markdown content to estimate word count.
+ * - Display time in a "min read" format with an icon.
  */
 
 import { getReadingTime } from '../utils/contentLoader'
 
-/**
- * Reading time estimator component.
- *
- * Calculates and displays estimated reading time for the given content
- * as a styled pill badge with book icon.
- *
- * @param content - Text content to calculate reading time for
- * @returns A reading time indicator badge
- */
 export default function ReadingTime({ content }: { content: string }) {
   const minutes = getReadingTime(content)
   return (

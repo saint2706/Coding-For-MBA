@@ -1,3 +1,14 @@
+/**
+ * Vitest Configuration
+ *
+ * Configures the unit testing environment.
+ *
+ * Key Responsibilities:
+ * - Set up JSDOM environment for React component testing.
+ * - Configure coverage thresholds and reporters.
+ * - Define setup files for global test context.
+ */
+
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({

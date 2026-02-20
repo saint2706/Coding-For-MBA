@@ -1,8 +1,13 @@
 /**
- * Safe localStorage helpers with typed fallbacks.
+ * Safe Storage Accessor
  *
- * These wrappers prevent localStorage failures (security, quota, private mode)
- * from crashing runtime logic.
+ * Provides a resilient wrapper around `localStorage` to handle environments where
+ * storage might be restricted or unavailable (e.g., private browsing, iframes).
+ *
+ * Key Responsibilities:
+ * - Wrap `getItem`, `setItem`, `removeItem` with try-catch blocks.
+ * - Provide typed helpers for JSON parsing and validation.
+ * - Return default fallbacks on failure instead of throwing.
  */
 
 /**

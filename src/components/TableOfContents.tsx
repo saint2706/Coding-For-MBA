@@ -1,42 +1,22 @@
 /**
- * TableOfContents Component
+ * Table of Contents Component
  *
- * An automatically generated table of contents from markdown headings
- * with active section highlighting and smooth scrolling.
+ * Dynamically generated sidebar navigation for lesson headings.
+ *
+ * Key Responsibilities:
+ * - Parse H2/H3 headings from content.
+ * - Track scroll position to highlight active section.
+ * - Smooth scroll to anchors.
+ * - Hide if insufficient headings exist.
  */
 
 import { useMemo, useState, useEffect } from 'react'
 import { parseHeadings } from '../utils/toc'
 
-/**
- * Represents a heading entry in the table of contents.
- *
- * @property id - Generated ID for the heading (used for anchor links)
- * @property text - Display text of the heading
- * @property level - Heading level (2 or 3 for h2/h3)
- */
-/**
- * Props for the TableOfContents component.
- *
- * @property content - Markdown content to generate TOC from
- */
 interface TableOfContentsProps {
   content: string
 }
 
-/**
- * Automatically generated table of contents component.
- *
- * Features:
- * - Parses h2 and h3 headings from markdown
- * - Highlights currently visible section
- * - Smooth scroll to section on click
- * - Hierarchical indentation for h3 headings
- * - Returns null if fewer than 2 headings
- *
- * @param content - Markdown content to extract headings from
- * @returns A fixed-position table of contents or null
- */
 export default function TableOfContents({ content }: TableOfContentsProps) {
   const headings = useMemo(() => parseHeadings(content), [content])
   const [activeId, setActiveId] = useState<string>('')

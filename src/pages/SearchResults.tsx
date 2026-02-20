@@ -1,3 +1,15 @@
+/**
+ * Search Results Page
+ *
+ * Displays search results from the client-side Fuse.js index.
+ *
+ * Key Responsibilities:
+ * - Read query from URL search params.
+ * - Execute search and render paginated results.
+ * - Highlight matched terms in titles and snippets.
+ * - Provide a dedicated search input for refining queries.
+ */
+
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { useReducedMotion } from 'motion/react'

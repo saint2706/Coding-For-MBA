@@ -1,12 +1,13 @@
 /**
- * Home page component for the Coding for MBA curriculum.
+ * Home Page
  *
- * This page serves as the main landing page, displaying the hero section with
- * curriculum overview, statistics, and a grid of all 9 learning phases. It shows
- * progress indicators and provides quick navigation to continue learning or start
- * from day 1.
+ * The landing page for the application.
  *
- * @module pages/Home
+ * Key Responsibilities:
+ * - Introduce the curriculum value proposition.
+ * - Display high-level progress stats (if user has started).
+ * - Link to the "Resume Learning" or "Start Course" action.
+ * - Highlight key features (Python, Data Science, SQL).
  */
 
 import { useEffect } from 'react'

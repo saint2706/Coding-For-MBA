@@ -1,3 +1,15 @@
+/**
+ * Quiz Store
+ *
+ * Manages the state and history of mastery checks and quizzes.
+ *
+ * Key Responsibilities:
+ * - Record quiz attempts with results (correct/incorrect, output).
+ * - Compute statistics (accuracy, attempt counts) for each topic.
+ * - Identify "most missed" questions and low-scoring topics for review.
+ * - Persist quiz history to localStorage.
+ */
+
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
 

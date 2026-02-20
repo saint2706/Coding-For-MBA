@@ -1,6 +1,25 @@
+/**
+ * Link Safety Utilities
+ *
+ * Provides validation and sanitization for URL links, particularly those
+ * generated from user content or external sources.
+ *
+ * Key Responsibilities:
+ * - Validate protocols to prevent javascript: or data: URI attacks.
+ * - Enforce `rel="noopener noreferrer"` for external links to prevent reverse tabnabbing.
+ * - Normalize relative vs absolute URLs.
+ */
+
 const SAFE_SCHEMES = new Set(['http:', 'https:', 'mailto:'])
 const URL_SCHEME_PATTERN = /^[a-zA-Z][a-zA-Z\d+.-]*:/
 
+/**
+ * Validates and normalizes a URL string.
+ * Detects if the link is external and safe to use.
+ *
+ * @param href - The raw URL string to check.
+ * @returns Object containing the normalized URL and safety flags.
+ */
 export const normalizeAndValidateHref = (href?: string | null) => {
   if (typeof href !== 'string') {
     return { normalizedHref: null, isExternal: false, isSafe: false }
@@ -43,6 +62,14 @@ export interface LinkProps {
   rel?: string
 }
 
+/**
+ * Generates secure HTML attributes for a link.
+ * Automatically adds `rel="noopener noreferrer"` and `target="_blank"` for external links.
+ *
+ * @param href - The destination URL.
+ * @param props - Additional link properties (target, rel).
+ * @returns Safe props object or null if the link is unsafe.
+ */
 export const getSecureLinkAttributes = (href?: string | null, props: LinkProps = {}) => {
   const { normalizedHref, isExternal, isSafe } = normalizeAndValidateHref(href)
 

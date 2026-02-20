@@ -1,9 +1,13 @@
 /**
- * SEO JSON-LD schema builders.
+ * SEO Schema Generators (JSON-LD)
  *
- * Extracted from SEOHead to satisfy react-refresh single-component-export rule.
+ * Constructs structured data objects (Schema.org) for search engine optimization.
+ * Helps search engines understand the course structure, lessons, and hierarchy.
  *
- * @module utils/seoSchemas
+ * Key Responsibilities:
+ * - Generate WebSite, Course, and LearningResource schemas.
+ * - Format canonical URLs.
+ * - Ensure valid JSON-LD structure.
  */
 
 const SITE_URL = 'https://saint2706.github.io/Coding-For-MBA'

@@ -1,11 +1,12 @@
 /**
- * Curriculum roadmap page showing the complete 108-day learning path.
+ * Curriculum Overview Page
  *
- * This page displays all lessons organized by phase in a timeline format,
- * showing progress, difficulty levels, and completion status for each lesson.
- * Provides a bird's-eye view of the entire curriculum structure.
+ * Displays the full syllabus grouped by phase.
  *
- * @module pages/Curriculum
+ * Key Responsibilities:
+ * - List all phases and their contained lessons.
+ * - Show progress bars per phase.
+ * - Provide quick navigation to any lesson.
  */
 
 import { useRef } from 'react'

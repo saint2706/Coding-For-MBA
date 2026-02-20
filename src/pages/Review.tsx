@@ -25,17 +25,17 @@ function getRatingLabel(rating: ReviewRating): string {
 }
 
 /**
- * Review page component for spaced repetition learning.
+ * Spaced Repetition Review Page
  *
- * Features:
- * - Displays due review cards one at a time
- * - Shows review streak and total due count
- * - Allows users to reveal answers before rating
- * - Provides four difficulty ratings: again, hard, good, easy
- * - Automatically advances to next card after rating
+ * An interactive flashcard interface for reviewing concepts.
  *
- * @returns The Review page component
+ * Key Responsibilities:
+ * - Fetch due cards from the review store.
+ * - Display cards one by one (Front -> Reveal -> Rate).
+ * - Handle user ratings (Again/Hard/Good/Easy) to update schedules.
+ * - Show daily streak and total due count.
  */
+
 export default function Review() {
   const [now, setNow] = useState(() => new Date())
   const [showAnswer, setShowAnswer] = useState(false)

@@ -1,5 +1,24 @@
+/**
+ * Slug Generation Utilities
+ *
+ * Provides functions for generating URL-safe slugs from text and React nodes.
+ * Used for anchor links, IDs, and URL paths.
+ *
+ * Key Responsibilities:
+ * - Normalize text (remove accents, lowercase, sanitize).
+ * - Extract plain text from React component trees.
+ * - Manage slug uniqueness (deduplication).
+ */
+
 import { isValidElement, type ReactNode } from 'react'
 
+/**
+ * Normalizes a string for use as a URL slug.
+ * Removes accents, special characters, and converts to lowercase.
+ *
+ * @param value - The input string.
+ * @returns A URL-safe slug string.
+ */
 function normalizeForSlug(value: string): string {
   return value
     .normalize('NFKD')

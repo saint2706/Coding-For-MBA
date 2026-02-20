@@ -1,12 +1,12 @@
 /**
- * Content statistics and analytics page.
+ * Content Statistics Page
  *
- * This page provides comprehensive statistics about the curriculum content,
- * including word counts, reading times, difficulty distributions, tag clouds,
- * and per-phase breakdowns. Useful for understanding curriculum structure
- * and scope at a glance.
+ * Visualizes curriculum metrics (word count, reading time, exercises).
  *
- * @module pages/ContentStats
+ * Key Responsibilities:
+ * - Aggregate stats from all lessons and exercises.
+ * - Visualize distribution by phase using Recharts.
+ * - Display key totals (Total Lessons, Total Exercises, Total Reading Time).
  */
 
 import { useMemo } from 'react'

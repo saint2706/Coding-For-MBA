@@ -1,26 +1,25 @@
 /**
- * CopyButton Component
+ * Copy to Clipboard Button
  *
- * A reusable button component for copying text to the clipboard.
- * Features include visual feedback, accessibility support, error handling,
- * and proper cleanup of timeouts.
+ * A reusable button for copying text (code, snippets) to the clipboard.
+ *
+ * Key Responsibilities:
+ * - Execute `navigator.clipboard.writeText`.
+ * - Provide visual feedback (checkmark) for 2 seconds.
+ * - Manage cleanup of timeouts on unmount.
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react'
 
 interface CopyButtonProps {
+  /** The text content to be copied. */
   text: string
+  /** Optional custom class names. */
   className?: string
+  /** Whether to display a clipboard emoji icon. */
   showEmoji?: boolean
 }
 
-/**
- * A button that copies text to the clipboard with visual feedback.
- *
- * @param text - The text to copy to the clipboard
- * @param className - Optional CSS class name for styling
- * @param showEmoji - Whether to show the emoji (📋) in the button text
- */
 export default function CopyButton({
   text,
   className = 'code-block-copy',

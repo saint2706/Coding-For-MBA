@@ -1,3 +1,14 @@
+/**
+ * Prism Syntax Highlighter Configuration
+ *
+ * Configures and exports a lightweight version of `react-syntax-highlighter`.
+ * Only registers the specific languages needed for the course to minimize bundle size.
+ *
+ * Key Responsibilities:
+ * - Register specific languages (Python, Bash, JSON, etc.).
+ * - Export the configured `SyntaxHighlighter` component.
+ */
+
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter'
 import python from 'react-syntax-highlighter/dist/esm/languages/prism/python'
 import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash'

@@ -1,3 +1,16 @@
+/**
+ * Vite Configuration
+ *
+ * Configures the build toolchain for the React application.
+ *
+ * Key Responsibilities:
+ * - Configure React plugin.
+ * - Set base URL for GitHub Pages deployment.
+ * - Define code splitting chunks (manualChunks).
+ * - Relax CSP for development mode (HMR support).
+ * - Configure bundle analysis (optional).
+ */
+
 import { defineConfig, type HtmlTagDescriptor, type PluginOption, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 

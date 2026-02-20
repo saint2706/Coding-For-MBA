@@ -5,6 +5,21 @@
  * Run: node scripts/validate-content.js
  */
 
+/**
+ * Content Validation Script
+ *
+ * A CI/CD tool to verify the integrity of the curriculum's Markdown content.
+ * Ensures that all lessons have valid frontmatter, exercises have correct
+ * structures, and phase metadata matches the file system.
+ *
+ * Key Responsibilities:
+ * - Scan all `README.md` and `Phase_Overview.md` files.
+ * - Validate Frontmatter against Zod schemas.
+ * - Verify that exercise code blocks and goals are present.
+ * - Cross-check phase day counts with actual lesson files.
+ * - Report errors to the console and exit with a status code.
+ */
+
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'

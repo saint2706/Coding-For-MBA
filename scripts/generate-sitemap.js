@@ -8,6 +8,19 @@
  * Usage: node scripts/generate-sitemap.js
  */
 
+/**
+ * Sitemap Generator
+ *
+ * Scans the curriculum content directory to generate a `sitemap.xml` file.
+ * Helps search engines discover all lesson and phase pages.
+ *
+ * Key Responsibilities:
+ * - Crawl `content/lessons` for Markdown files.
+ * - Extract metadata (day, phase) to build route URLs.
+ * - Assign priority and change frequency based on page type.
+ * - Output a standards-compliant XML sitemap.
+ */
+
 import { readdirSync, readFileSync, writeFileSync, statSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'

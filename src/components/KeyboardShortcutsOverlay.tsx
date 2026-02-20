@@ -1,3 +1,14 @@
+/**
+ * Keyboard Shortcuts Overlay
+ *
+ * A modal dialog displaying all available keyboard shortcuts.
+ *
+ * Key Responsibilities:
+ * - List all shortcuts grouped by scope (Global, Search, Lesson).
+ * - Handle opening/closing via keyboard (Shift+?) and mouse.
+ * - Manage focus trap within the dialog.
+ */
+
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { SHORTCUTS, isTypingInEditableElement, type ShortcutDefinition } from '../utils/shortcuts'
 

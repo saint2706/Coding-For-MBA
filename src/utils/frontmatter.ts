@@ -1,8 +1,12 @@
 /**
- * Shared markdown frontmatter parser.
+ * Frontmatter Parser Facade
  *
- * Runtime logic lives in `frontmatter-core.js` so browser code and Node scripts
- * consume the exact same implementation.
+ * Provides a unified interface for parsing Markdown Frontmatter, abstracting the
+ * underlying implementation which is shared between browser and Node.js environments.
+ *
+ * Key Responsibilities:
+ * - Re-export core parsing logic from `frontmatter-core.js`.
+ * - Provide TypeScript interfaces for parsed content.
  */
 
 import {
@@ -20,14 +24,23 @@ export interface ParsedMarkdown {
   content: string
 }
 
+/**
+ * Normalizes line endings to LF (\n) to ensure consistent parsing across OSs.
+ */
 export function normalizeMarkdownLineEndings(raw: string): string {
   return normalizeMarkdownLineEndingsCore(raw)
 }
 
+/**
+ * Parses markdown that has already been normalized.
+ */
 export function parseNormalizedMarkdown(normalized: string): ParsedMarkdown {
   return parseNormalizedMarkdownCore(normalized)
 }
 
+/**
+ * Normalizes and parses raw markdown content.
+ */
 export function parseMarkdown(raw: string): ParsedMarkdown {
   return parseMarkdownCore(raw)
 }

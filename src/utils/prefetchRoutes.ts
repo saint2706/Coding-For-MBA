@@ -1,3 +1,15 @@
+/**
+ * Route Prefetching Strategy
+ *
+ * Implements a manual prefetching mechanism to load page chunks before navigation.
+ * Uses `import()` syntax to trigger Vite's code splitting and preloading.
+ *
+ * Key Responsibilities:
+ * - Map route paths to their corresponding component imports.
+ * - Deduplicate prefetch requests to avoid redundant network calls.
+ * - Provide event handlers (onMouseEnter, etc.) for predictive loading.
+ */
+
 const routePrefetchers: Array<{ match: (path: string) => boolean; load: () => Promise<unknown> }> =
   [
     { match: (path) => path === '/', load: () => import('../pages/Home') },
@@ -18,6 +30,12 @@ const routePrefetchers: Array<{ match: (path: string) => boolean; load: () => Pr
 
 const prefetchedRoutes = new Set<string>()
 
+/**
+ * Trigger a prefetch for the code chunk associated with a route path.
+ * Safe to call multiple times; will only load once.
+ *
+ * @param path - The route path to prefetch (e.g., '/lesson/1').
+ */
 export function prefetchRoute(path: string) {
   if (prefetchedRoutes.has(path)) {
     return
@@ -32,6 +50,12 @@ export function prefetchRoute(path: string) {
   void route.load()
 }
 
+/**
+ * Creates event handlers for prefetching on hover, focus, or touch.
+ * Spread these props onto a Link or Button element.
+ *
+ * @param path - The target route path.
+ */
 export function createRoutePrefetchHandlers(path: string) {
   return {
     onMouseEnter: () => prefetchRoute(path),

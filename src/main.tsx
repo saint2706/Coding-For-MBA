@@ -1,14 +1,12 @@
 /**
  * Application Entry Point
  *
- * Initializes the React application with necessary providers:
- * - React.StrictMode for development checks
- * - HelmetProvider for managing document head
- * - HashRouter for GitHub Pages compatibility
- * - App component as root
+ * Bootstraps the React application and mounts it to the DOM.
  *
- * Uses HashRouter instead of BrowserRouter to support GitHub Pages
- * deployment without server-side routing configuration.
+ * Key Responsibilities:
+ * - Initialize React Root.
+ * - Configure global providers (Helmet, Router, ErrorBoundary).
+ * - Import global styles.
  */
 
 import React from 'react'

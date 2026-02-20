@@ -1,8 +1,14 @@
 /**
  * Theme Provider Component
  *
- * Bridges existing theme context API to the persisted zustand user preferences store.
- * Supports light/dark/system preferences and listens to system scheme changes.
+ * Manages the application's visual theme state and CSS variable injection.
+ * Synchronizes with the `UserPreferencesStore` and system color scheme.
+ *
+ * Key Responsibilities:
+ * - Listen for system "prefers-color-scheme" changes.
+ * - Apply theme attributes (`data-theme`) to the document root.
+ * - Inject dynamic CSS variables for font size and density.
+ * - Provide theme context to child components.
  */
 
 import { useEffect, useMemo, useState, type ReactNode } from 'react'

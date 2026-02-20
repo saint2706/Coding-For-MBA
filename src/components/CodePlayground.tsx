@@ -35,21 +35,22 @@ const highlightTheme = {
  * Handle interface for accessing CodePlayground methods imperatively.
  */
 export interface CodePlaygroundHandle {
+  /** Trigger code execution */
   run: () => void
+  /** Programmatically update the editor content */
   setCode: (code: string) => void
+  /** Reset code to the initial state */
   reset: () => void
 }
 
-/**
- * Props for the CodePlayground component.
- *
- * @property initialCode - The starting Python code to display in the editor
- * @property expectedOutput - Optional expected output text to display below the editor
- */
 interface CodePlaygroundProps {
+  /** Initial code snippet to populate the editor. */
   initialCode: string
+  /** The exact output string required to pass the exercise. */
   expectedOutput?: string
+  /** Callback fired when execution output matches expected output. */
   onExpectedOutputMatched?: () => void
+  /** Callback fired with full execution results (pass/fail, output, error). */
   onSubmissionEvaluated?: (result: {
     correct: boolean
     output: string | null

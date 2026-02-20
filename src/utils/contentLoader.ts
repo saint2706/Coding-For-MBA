@@ -1,8 +1,25 @@
+/**
+ * Content Loading and Parsing Utilities
+ *
+ * Centralizes the loading, parsing, and normalization of static content files
+ * (Markdown lessons, Jupyter notebooks, phases, etc.) via Vite's import.meta.glob.
+ *
+ * Key Responsibilities:
+ * - Load and parse Frontmatter from lesson READMEs.
+ * - Manage relationships between lessons (prerequisites, phases).
+ * - Extract exercises, concepts, and review cards from content.
+ * - Provide immutable, cached access to all content data.
+ */
+
 import { parseMarkdown } from './frontmatter'
 import { difficultyConfig, phaseIcons } from './curriculumConfig'
 
-/** Lesson metadata and markdown body loaded from a lesson README. */
+/**
+ * Represents a single lesson unit.
+ * Contains metadata (Frontmatter) and the raw Markdown body.
+ */
 export interface Lesson {
+  /** The day number of the lesson (unique ID). */
   day: number
   title: string
   phase: number

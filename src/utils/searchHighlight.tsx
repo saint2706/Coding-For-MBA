@@ -1,9 +1,28 @@
+/**
+ * Search Highlight Utility
+ *
+ * Provides text highlighting for search result snippets.
+ * Wraps matched terms in `<mark>` tags for visual emphasis.
+ *
+ * Key Responsibilities:
+ * - Escape regex special characters in search terms.
+ * - Split text by matched terms and render React nodes.
+ * - Prioritize longer term matches to avoid partial word highlighting.
+ */
+
 import type React from 'react'
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+/**
+ * Highlights occurrences of search terms within a text string.
+ *
+ * @param text - The source text to highlight.
+ * @param terms - One or more terms to highlight.
+ * @returns Array of React nodes with matched terms wrapped in <mark>.
+ */
 export function highlightText(text: string, terms: string | readonly string[]): React.ReactNode[] {
   const normalized = (Array.isArray(terms) ? terms : [terms])
     .map((term) => term.trim())

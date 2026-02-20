@@ -1,16 +1,16 @@
 /**
- * Glossary Module
+ * Glossary Definitions and Matcher
  *
- * Provides a comprehensive glossary of technical terms with short definitions
- * for hover tooltips throughout the application. Terms cover Python, data science,
- * machine learning, SQL, web development, and statistics concepts.
+ * Defines the central dictionary of technical terms and provides utilities
+ * for detecting them within text content.
+ *
+ * Key Responsibilities:
+ * - Maintain a key-value store of terms and definitions.
+ * - Generate a regex for efficient term detection (longest-first matching).
  */
 
 /**
  * Glossary of technical terms with short definitions for hover tooltips.
- *
- * Maps technical terms (as keys) to their concise definitions (as values).
- * Used for providing contextual help throughout the learning platform.
  */
 export const glossaryTerms: Record<string, string> = {
   // Python fundamentals

@@ -1,11 +1,12 @@
 /**
- * Jupyter notebook viewer page for displaying solution notebooks.
+ * Jupyter Notebook Viewer
  *
- * This page renders Jupyter notebook (.ipynb) files with interactive Python
- * code execution capabilities. Code cells are merged for better readability
- * and can be executed directly in the browser using Pyodide.
+ * Renders read-only Jupyter notebooks (Solutions) within the application.
  *
- * @module pages/NotebookViewer
+ * Key Responsibilities:
+ * - Parse and render notebook cells (markdown, code, output).
+ * - Match notebook to the correct phase via URL params.
+ * - Provide a consistent reading experience for solutions.
  */
 
 import { useParams, Link } from 'react-router-dom'

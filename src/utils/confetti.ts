@@ -1,13 +1,40 @@
+/**
+ * Confetti Animation Utilities
+ *
+ * Provides a centralized interface for triggering visual celebration effects
+ * using the `canvas-confetti` library. Respects user accessibility settings
+ * by disabling animations when 'prefers-reduced-motion' is active.
+ *
+ * Key Responsibilities:
+ * - Trigger different intensity levels of confetti (sparkle, quiz aced, phase unlock).
+ * - Enforce accessibility checks (prefers-reduced-motion).
+ * - Manage animation timing and cleanup.
+ */
+
 import confetti from 'canvas-confetti'
 
+/**
+ * Checks if the user has requested reduced motion in their system settings.
+ *
+ * @returns True if reduced motion is preferred, false otherwise.
+ */
 const prefersReducedMotion = (): boolean =>
   typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
+/**
+ * Safely triggers a confetti burst, respecting accessibility preferences.
+ *
+ * @param options - Configuration options for the confetti burst.
+ */
 function safeConfetti(options: confetti.Options): void {
   if (typeof window === 'undefined' || prefersReducedMotion()) return
   confetti(options)
 }
 
+/**
+ * Triggers a small, subtle sparkle effect.
+ * Useful for minor achievements or interactions.
+ */
 export function triggerSparkle(): void {
   safeConfetti({
     particleCount: 24,
@@ -18,6 +45,9 @@ export function triggerSparkle(): void {
   })
 }
 
+/**
+ * Triggers a medium-sized burst for acing a quiz.
+ */
 export function triggerQuizAcedConfetti(): void {
   safeConfetti({
     particleCount: 120,
@@ -27,6 +57,9 @@ export function triggerQuizAcedConfetti(): void {
   })
 }
 
+/**
+ * Triggers a large burst for completing all daily exercises.
+ */
 export function triggerDayExercisesCompleteConfetti(): void {
   safeConfetti({
     particleCount: 140,
@@ -36,6 +69,9 @@ export function triggerDayExercisesCompleteConfetti(): void {
   })
 }
 
+/**
+ * Triggers a major celebration effect for unlocking a new phase.
+ */
 export function triggerPhaseUnlockConfetti(): void {
   safeConfetti({
     particleCount: 180,
@@ -45,6 +81,10 @@ export function triggerPhaseUnlockConfetti(): void {
   })
 }
 
+/**
+ * Triggers an extended fireworks-style animation sequence.
+ * Used for major curriculum milestones or completion.
+ */
 export function triggerCurriculumFireworks(): void {
   if (typeof window === 'undefined' || prefersReducedMotion()) return
 

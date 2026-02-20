@@ -1,3 +1,15 @@
+/**
+ * Exercise Progress Persistence
+ *
+ * Manages the local storage of completed exercises and daily celebration flags.
+ * Ensures that user progress is saved across sessions.
+ *
+ * Key Responsibilities:
+ * - Persist completed exercise IDs by day.
+ * - Track whether a "day complete" celebration has already been triggered.
+ * - Provide a transactional update mechanism for marking exercises as done.
+ */
+
 import { getStoredJson, setStoredString } from './safeStorage'
 
 const EXERCISE_PROGRESS_KEY = 'coding-for-mba-exercise-progress'
@@ -13,6 +25,15 @@ function getMap(key: string): DayExerciseMap {
   )
 }
 
+/**
+ * Marks a specific exercise as complete for a given day.
+ * Checks if all exercises for the day are done to potentially trigger a celebration.
+ *
+ * @param day - The day number of the exercise.
+ * @param exerciseId - The unique ID of the completed exercise.
+ * @param totalForDay - The total number of exercises available for that day.
+ * @returns True if this completion completes the day (and it hasn't been celebrated yet), false otherwise.
+ */
 export function markExerciseComplete(
   day: number,
   exerciseId: string,

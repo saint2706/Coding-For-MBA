@@ -1,3 +1,15 @@
+/**
+ * Progress Store
+ *
+ * The central store for tracking lesson completion and curriculum progress.
+ *
+ * Key Responsibilities:
+ * - Mark lessons as complete/incomplete.
+ * - Calculate completion percentages by phase and overall.
+ * - Track the "last visited" lesson for resume functionality.
+ * - Persist progress to localStorage.
+ */
+
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
 import { getStoredString, removeStoredValue } from '../utils/safeStorage'

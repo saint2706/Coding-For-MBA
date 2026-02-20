@@ -1,9 +1,14 @@
 /**
- * Pyodide (Python Runtime) Hook
+ * Pyodide Runtime Hook
  *
- * Manages the Pyodide WebAssembly Python runtime for executing Python code
- * in the browser. Handles lazy loading, singleton instance management, and
- * code execution with output capture.
+ * Manages the Pyodide WebAssembly Python runtime for executing code in the browser.
+ * Handles lazy loading, singleton management, and output capturing.
+ *
+ * Key Responsibilities:
+ * - Load the Pyodide script from CDN (with SRI validation).
+ * - Initialize the runtime as a global singleton.
+ * - Provide a `runPython` interface with stdout/stderr capture.
+ * - Manage execution timeouts and cancellation.
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react'

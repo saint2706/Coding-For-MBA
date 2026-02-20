@@ -1,3 +1,14 @@
+/**
+ * Table of Contents Parser
+ *
+ * Scans markdown content to generate a hierarchical table of contents.
+ *
+ * Key Responsibilities:
+ * - Identify and extract H2 and H3 headings.
+ * - Generate unique IDs/slugs for anchor linking.
+ * - Ignore code blocks to prevent false positives.
+ */
+
 import { createSlugger, stripMarkdownInlineFormatting } from './slug'
 
 interface TocEntry {
