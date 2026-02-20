@@ -4,18 +4,24 @@ import { createRoot } from 'react-dom/client'
 import { usePyodide } from '../usePyodide'
 
 // Mock global window properties for Pyodide
+interface MockPyodide {
+  runPythonAsync: (code: string) => Promise<unknown>
+  setStdout: (opts: { batched: (text: string) => void }) => void
+  setStderr: (opts: { batched: (text: string) => void }) => void
+}
+
 declare global {
   interface Window {
-    loadPyodide?: any
-    _pyodideInstance?: any
-    _pyodideLoading?: any
+    loadPyodide?: () => Promise<MockPyodide>
+    _pyodideInstance?: MockPyodide
+    _pyodideLoading?: Promise<MockPyodide>
     __stdoutCallback?: (text: string) => void
   }
 }
 
 describe('usePyodide Output Limit', () => {
   let container: HTMLDivElement
-  let root: any
+  let root: ReturnType<typeof createRoot> | undefined
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -62,7 +68,8 @@ describe('usePyodide Output Limit', () => {
 
   afterEach(() => {
     if (root) {
-        act(() => root.unmount())
+      const r = root
+      act(() => r.unmount())
     }
     document.body.removeChild(container)
     vi.restoreAllMocks()
@@ -73,6 +80,7 @@ describe('usePyodide Output Limit', () => {
   })
 
   it('truncates output when it exceeds the limit', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let hookResult: any
 
     function TestComponent() {
@@ -81,10 +89,13 @@ describe('usePyodide Output Limit', () => {
     }
 
     await act(async () => {
-      root.render(<TestComponent />)
+      if (root) {
+        root.render(<TestComponent />)
+      }
     })
 
     // Trigger runPython
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let result: any
     await act(async () => {
       result = await hookResult.runPython('print_large')
@@ -96,8 +107,5 @@ describe('usePyodide Output Limit', () => {
     // Check if output contains truncation message
     expect(result.output).toContain('[Output truncated due to size limit]')
     expect(result.output.length).toBeLessThan(60000)
-    // Actually, expect length to be around 50000 + message length
-    // Wait, my logic cuts strictly at MAX_OUTPUT_LENGTH?
-    // Yes: stdout.slice(0, MAX_OUTPUT_LENGTH) + TRUNCATION_MSG
   })
 })
