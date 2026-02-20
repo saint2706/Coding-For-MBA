@@ -64,15 +64,25 @@
 
 /* ---------- Skeleton Shimmer ---------- */
 .skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-card) 25%,
-    var(--bg-card-hover) 50%,
-    var(--bg-card) 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite ease-in-out;
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--bg-card) 78%, white 22%);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    color-mix(in srgb, var(--bg-card-hover) 45%, white 55%) 45%,
+    transparent 72%
+  );
+  transform: translateX(-130%);
+  animation: skeletonShimmer 1.4s infinite;
 }
 
 .skeleton-text {
@@ -105,13 +115,58 @@
   padding: 0 var(--page-padding);
 }
 
-@keyframes shimmer {
+@keyframes skeletonShimmer {
   0% {
-    background-position: 200% 0;
+    transform: translateX(-130%);
   }
 
   100% {
-    background-position: -200% 0;
+    transform: translateX(130%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}
+
+/* ---------- Glassmorphism Utility ---------- */
+.glass-card {
+  position: relative;
+  background: color-mix(in srgb, var(--bg-card) 88%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border-card) 80%, white 20%);
+  box-shadow: var(--shadow-card);
+}
+
+@media (prefers-reduced-transparency: no-preference) {
+  :root:not([data-theme='light']) .glass-card {
+    background: color-mix(in srgb, var(--bg-card) 72%, transparent);
+    backdrop-filter: blur(12px) saturate(120%);
+    -webkit-backdrop-filter: blur(12px) saturate(120%);
+  }
+}
+
+/* ---------- Desktop Pointer Hover Glow ---------- */
+@media (hover: hover) and (pointer: fine) {
+  a,
+  button,
+  .interactive {
+    transition:
+      box-shadow var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  a:hover,
+  button:hover,
+  .interactive:hover {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 24%, transparent);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  .interactive:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 28%, transparent);
   }
 }
 
@@ -540,4 +595,53 @@
   padding: 0.2rem 0.45rem;
   font-family: inherit;
   font-size: 0.82rem;
+}
+
+/* ---------- Empty-state Illustrations ---------- */
+
+.empty-state-illustration {
+  width: min(220px, 100%);
+  height: auto;
+  margin: 0 auto 0.75rem;
+  display: block;
+}
+
+.empty-state-line {
+  stroke: rgba(148, 163, 184, 0.65);
+  stroke-width: 5;
+  stroke-linecap: round;
+  animation: emptyStatePulse 1.9s ease-in-out infinite;
+}
+
+.empty-state-dot {
+  animation: emptyStateFloat 2.4s ease-in-out infinite;
+}
+
+@keyframes emptyStatePulse {
+  0%,
+  100% {
+    opacity: 0.42;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes emptyStateFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .empty-state-line,
+  .empty-state-dot {
+    animation: none;
+  }
 }

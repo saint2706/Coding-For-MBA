@@ -58,10 +58,10 @@ export default function Home() {
         breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
       {/* Hero */}
-      <motion.section className="hero" style={{ y: heroY }}>
+      <motion.section className="hero glass-card" style={{ y: heroY }}>
         <div className="hero-badge">📚 Self-Study Curriculum</div>
         {lastVisitedLesson && (
-          <article className="continue-banner" aria-label="Continue learning">
+          <article className="continue-banner glass-card" aria-label="Continue learning">
             <p className="continue-banner-title">Continue learning</p>
             <p className="continue-banner-subtitle">
               {lastVisitedLesson.title}
@@ -142,7 +142,11 @@ export default function Home() {
             const completedInPhase = getCompletedForPhase(lessonDays)
 
             return (
-              <Link to={`/phase/${phase.phase}`} className="phase-card" key={phase.phase}>
+              <Link
+                to={`/phase/${phase.phase}`}
+                className="phase-card glass-card"
+                key={phase.phase}
+              >
                 <div className="phase-card-header">
                   <div className="phase-card-icon">{icon}</div>
                   <div className="phase-card-title">

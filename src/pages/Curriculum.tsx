@@ -97,7 +97,7 @@ export default function Curriculum() {
 
           return (
             <motion.div
-              className="curriculum-phase"
+              className="curriculum-phase glass-card"
               key={phase.phase}
               variants={phaseVariants}
               transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}

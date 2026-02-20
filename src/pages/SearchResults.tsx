@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useReducedMotion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { difficultyConfig } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
@@ -11,12 +12,59 @@ import {
   type SearchResult,
 } from '../utils/searchIndex'
 
+function SearchEmptyIllustration({ reducedMotion }: { reducedMotion: boolean }) {
+  return (
+    <svg
+      className="empty-state-illustration"
+      viewBox="0 0 220 130"
+      role="img"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <defs>
+        <linearGradient id="searchEmptyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="rgba(99,102,241,0.9)" />
+          <stop offset="100%" stopColor="rgba(167,139,250,0.75)" />
+        </linearGradient>
+      </defs>
+      <rect x="34" y="36" width="150" height="58" rx="12" fill="rgba(148,163,184,0.12)" />
+      <circle
+        cx="88"
+        cy="65"
+        r="15"
+        fill="none"
+        stroke="url(#searchEmptyGradient)"
+        strokeWidth="5"
+      />
+      <line
+        x1="99"
+        y1="76"
+        x2="118"
+        y2="95"
+        stroke="url(#searchEmptyGradient)"
+        strokeWidth="5"
+        strokeLinecap="round"
+      />
+      <line x1="129" y1="58" x2="170" y2="58" className={reducedMotion ? '' : 'empty-state-line'} />
+      <line x1="129" y1="72" x2="162" y2="72" className={reducedMotion ? '' : 'empty-state-line'} />
+      <circle
+        cx="174"
+        cy="34"
+        r="4"
+        fill="rgba(99,102,241,0.65)"
+        className={reducedMotion ? '' : 'empty-state-dot'}
+      />
+    </svg>
+  )
+}
+
 export default function SearchResults() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const queryFromUrl = searchParams.get('q') ?? ''
   const [query, setQuery] = useState(queryFromUrl)
   const inputRef = useRef<HTMLInputElement>(null)
+  const prefersReducedMotion = !!useReducedMotion()
 
   useEffect(() => {
     setQuery(queryFromUrl)
@@ -141,12 +189,14 @@ export default function SearchResults() {
           })}
         </div>
       ) : query.trim().length >= 2 ? (
-        <div className="search-empty-page">
+        <div className="search-empty-page glass-card">
+          <SearchEmptyIllustration reducedMotion={prefersReducedMotion} />
           <p>No lessons matched your search.</p>
           <p>Try broader or different keywords.</p>
         </div>
       ) : (
-        <div className="search-empty-page">
+        <div className="search-empty-page glass-card">
+          <SearchEmptyIllustration reducedMotion={prefersReducedMotion} />
           <p>Type at least 2 characters to search.</p>
           <p>Shortcut: press "/" to focus this box and Esc to clear.</p>
         </div>
