@@ -1,71 +1,73 @@
 /**
  * Theme Provider Component
  *
- * Manages theme state and persistence for the application.
- * Supports localStorage persistence and system preference detection.
+ * Bridges existing theme context API to the persisted zustand user preferences store.
+ * Supports light/dark/system preferences and listens to system scheme changes.
  */
 
-import { useState, useEffect, useCallback, ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Theme, ThemeContext } from './ThemeContext'
-import { getStoredString, setStoredString } from '../utils/safeStorage'
+import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 
-/**
- * Determines the initial theme based on localStorage and system preferences.
- *
- * Priority order:
- * 1. Value from localStorage (if valid)
- * 2. System prefers-color-scheme media query
- * 3. Default to 'dark'
- *
- * @returns The initial theme to use
- */
-function getInitialTheme(): Theme {
-  // Check localStorage first
-  const stored = getStoredString('theme')
-  if (stored === 'light' || stored === 'dark') return stored
-
-  // Respect prefers-color-scheme
-  if (window.matchMedia?.('(prefers-color-scheme: light)').matches) return 'light'
-
-  return 'dark'
+function resolveTheme(themePreference: 'light' | 'dark' | 'system', prefersDark: boolean): Theme {
+  if (themePreference === 'system') {
+    return prefersDark ? 'dark' : 'light'
+  }
+  return themePreference
 }
 
-/**
- * ThemeProvider component that manages and persists theme state.
- *
- * Provides theme context to child components with automatic persistence
- * to localStorage and dynamic updates based on system preferences.
- * Applies theme to document root via data-theme attribute.
- *
- * @param props - Component props
- * @param props.children - Child components that will have access to theme context
- * @returns Provider component wrapping children
- */
+function getInitialSystemDarkMode(): boolean {
+  const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)')
+  return mediaQuery?.matches ?? false
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  const themePreference = useUserPreferencesStore((state) => state.theme)
+  const setThemePreference = useUserPreferencesStore((state) => state.setTheme)
+  const fontSize = useUserPreferencesStore((state) => state.fontSize)
+  const density = useUserPreferencesStore((state) => state.density)
+  const [prefersDark, setPrefersDark] = useState(getInitialSystemDarkMode)
 
-  // Apply theme to document
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    setStoredString('theme', theme)
-  }, [theme])
+  const resolvedTheme = useMemo(
+    () => resolveTheme(themePreference, prefersDark),
+    [themePreference, prefersDark],
+  )
 
-  // Listen for system preference changes
   useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: light)')
-    const handler = (e: MediaQueryListEvent) => {
-      // Only auto-switch if no explicit preference stored
-      if (!getStoredString('theme')) {
-        setTheme(e.matches ? 'light' : 'dark')
-      }
+    const mediaQuery = window.matchMedia?.('(prefers-color-scheme: dark)')
+    if (!mediaQuery) return
+
+    const listener = (event: MediaQueryListEvent) => {
+      setPrefersDark(event.matches)
     }
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
+
+    setPrefersDark(mediaQuery.matches)
+    mediaQuery.addEventListener('change', listener)
+    return () => mediaQuery.removeEventListener('change', listener)
   }, [])
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
-  }, [])
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', resolvedTheme)
+    document.documentElement.dataset.themePreference = themePreference
+  }, [resolvedTheme, themePreference])
 
-  return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>
+  useEffect(() => {
+    const fontScale = fontSize === 'sm' ? '0.9375rem' : fontSize === 'lg' ? '1.0625rem' : '1rem'
+    const densityScale = density === 'compact' ? '0.88' : '1'
+
+    document.documentElement.style.setProperty('--app-font-size', fontScale)
+    document.documentElement.style.setProperty('--density-scale', densityScale)
+    document.documentElement.dataset.density = density
+    document.documentElement.dataset.fontSize = fontSize
+  }, [fontSize, density])
+
+  const toggleTheme = () => {
+    setThemePreference(resolvedTheme === 'dark' ? 'light' : 'dark')
+  }
+
+  return (
+    <ThemeContext.Provider value={{ theme: resolvedTheme, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  )
 }

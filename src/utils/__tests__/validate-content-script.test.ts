@@ -57,11 +57,11 @@ This body is intentionally short.`
 
     expect(errors).toEqual(
       expect.arrayContaining([
-        'Invalid day: Expected number, received nan',
-        'Invalid title: Required',
-        'Invalid phase: Number must be greater than 0',
-        'Invalid difficulty: Required',
-        'Invalid duration: Expected number, received nan',
+        'Invalid day: Invalid input: expected number, received NaN',
+        'Invalid title: Invalid input: expected string, received undefined',
+        'Invalid phase: Too small: expected number to be >0',
+        'Invalid difficulty: Invalid option: expected one of "beginner"|"intermediate"|"advanced"|"expert"',
+        'Invalid duration: Invalid input: expected number, received NaN',
         'Content body is suspiciously short (< 100 chars)',
       ]),
     )

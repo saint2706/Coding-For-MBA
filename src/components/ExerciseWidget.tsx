@@ -19,7 +19,6 @@ import { markExerciseComplete } from '../utils/exerciseProgress'
 import { triggerDayExercisesCompleteConfetti } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
 import { useQuizStore } from '../stores/quizStore'
-import { useShallow } from 'zustand/react/shallow'
 
 /**
  * Custom syntax highlighting theme for solution code display.
