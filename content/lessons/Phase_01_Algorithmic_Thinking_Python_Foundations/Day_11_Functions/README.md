@@ -611,3 +611,21 @@ Today you learned:
 - ✅ Scope determines variable visibility (LEGB rule)
 
 **Tomorrow**: We'll explore **list comprehensions**—a powerful Pythonic way to create and transform lists.
+
+---
+
+## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 11)
+
+Refactor `sales_tracker_phase1.py` into reusable functions.
+
+**Challenge**
+- Decompose logic into at least three functions, for example:
+  - `classify_traffic(orders_count, is_weekend)`
+  - `build_snapshot(...)`
+  - `summarize_week(weekly_snapshots)`
+- Ensure functions reuse existing Day 2-10 variables/data structures.
+- Keep outputs identical to prior summary lines for easy regression checks.
+
+**Measurable output**
+- Print one function-generated line confirming KPI parity, e.g., `"FUNCTION_CHECK | weekly_revenue=..."`.
+

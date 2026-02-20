@@ -497,3 +497,18 @@ Today you learned:
 - ✅ Dictionary lookups are O(1)—instant regardless of size
 
 **Tomorrow**: We'll explore **conditionals**—teaching your programs to make decisions.
+
+---
+
+## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 8)
+
+Extend `sales_tracker_phase1.py` into a richer business model.
+
+**Challenge**
+- Create a dictionary per day with keys like `store_code`, `orders_count`, `daily_revenue`, `unique_customers`, `is_anomaly`.
+- Store all day dictionaries in a list called `weekly_snapshots`.
+- Reuse Day 7 duplicate logic to populate dictionary fields.
+
+**Measurable output**
+- Print one dictionary-driven summary line for the latest day: `"SNAPSHOT <date> | revenue=... | unique_customers=..."`.
+
