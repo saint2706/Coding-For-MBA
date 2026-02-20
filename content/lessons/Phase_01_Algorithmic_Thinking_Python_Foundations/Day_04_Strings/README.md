@@ -475,3 +475,18 @@ Today you learned:
 - ✅ Strings are immutable—operations create new strings
 
 **Tomorrow**: We'll explore **lists**—collections that let you store and manipulate multiple values at once.
+
+---
+
+## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 4)
+
+Keep extending `sales_tracker_phase1.py`; do not restart.
+
+**Challenge**
+- Parse a raw text code like `"KIOSK-NYC-2024-07-15"` using string methods/splitting.
+- Extract and store `channel`, `city_code`, and date parts in clearly named variables.
+- Generate a cleaned label in title case for reporting, such as `"Kiosk | Nyc | 2024-07-15"`.
+
+**Measurable output**
+- Print one parsed-label line showing extracted city and normalized date so correctness is visible immediately.
+

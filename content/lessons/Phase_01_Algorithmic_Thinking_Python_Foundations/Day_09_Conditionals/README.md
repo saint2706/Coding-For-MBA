@@ -562,3 +562,21 @@ Today you learned:
 - ✅ Order matters in elif chains—check specific cases first
 
 **Tomorrow**: We'll explore **loops**—repeating actions without repeating code.
+
+---
+
+## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 9)
+
+Continue in `sales_tracker_phase1.py` by adding policy decisions.
+
+**Challenge**
+- Define policy rules with `if/elif/else`, such as:
+  - `orders_count < 40` → `"LOW_TRAFFIC"`
+  - `40-120` → `"NORMAL"`
+  - `>120` → `"SURGE"`
+- Apply rule classification to each day's dictionary.
+- Flag discount eligibility when `LOW_TRAFFIC` and not weekend.
+
+**Measurable output**
+- Print one policy result line for the latest day: `"POLICY=<tier> | discount_action=True/False"`.
+

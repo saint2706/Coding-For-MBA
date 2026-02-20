@@ -413,3 +413,18 @@ Today you learned:
 - ✅ Professional code uses consistent naming conventions
 
 **Tomorrow**: We'll explore **operators**—the tools for comparing, combining, and transforming your data.
+
+---
+
+## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 2)
+
+Build the starter for a single script named `sales_tracker_phase1.py` that you will extend through Day 12.
+
+**Challenge**
+- Create well-named variables in `snake_case` for one day of kiosk data: `store_code`, `report_date`, `orders_count`, `avg_ticket_usd`, `is_weekend`.
+- Add one constant in `UPPER_SNAKE_CASE`: `ANOMALY_ORDER_LIMIT`.
+- Print one progress line using f-strings: `"KPI | {store_code} | Orders={orders_count}"`.
+
+**Measurable output**
+- Output exactly one KPI line that includes the store code and order count so you can compare later days against a visible baseline.
+

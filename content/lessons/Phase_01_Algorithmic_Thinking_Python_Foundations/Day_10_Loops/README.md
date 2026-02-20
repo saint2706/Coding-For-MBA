@@ -539,3 +539,18 @@ Today you learned:
 - ✅ `break` exits loops; `continue` skips iterations
 
 **Tomorrow**: We'll explore **functions**—reusable blocks of code that make programs modular.
+
+---
+
+## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 10)
+
+Extend `sales_tracker_phase1.py` with loop-based rollups.
+
+**Challenge**
+- Loop over `weekly_snapshots` to count how many days are `LOW_TRAFFIC`, `NORMAL`, and `SURGE`.
+- Accumulate weekly revenue and compute average daily revenue.
+- Reuse Day 9 policy tiers rather than recalculating from scratch.
+
+**Measurable output**
+- Print one weekly summary line: `"WEEKLY_SUMMARY | low=... normal=... surge=... avg_revenue=..."`.
+
