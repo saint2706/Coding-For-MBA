@@ -138,3 +138,31 @@ print(high_earners)
 - ✅ Filter with boolean conditions
 
 **Tomorrow**: Advanced Pandas—groupby, merges, and pivots.
+
+---
+
+## Task Block (Core / Stretch / Expert)
+
+### Data Migration Thread (Days 22–24): Arrays → DataFrame Pipelines
+
+### Core
+- Rebuild yesterday’s NumPy workflow in Pandas using explicit column names and typed parsing.
+- Verify metric parity between NumPy and Pandas outputs with assertions.
+
+### Stretch
+- Replace index-based NumPy logic with label-based Pandas operations (`loc`, `assign`, `groupby`).
+- Add one migration exercise where learners convert a provided NumPy snippet into idiomatic Pandas.
+
+### Expert
+- Package the pipeline into reusable functions (`load`, `transform`, `summarize`) with clear contracts.
+- Add validation checks for nulls, schema drift, and unexpected category values.
+
+## Common Grading Rubric (applies every day)
+
+| Criterion | 1 - Emerging | 2 - Developing | 3 - Proficient | 4 - Strong |
+|---|---|---|---|---|
+| Correctness | Major logic errors; results frequently wrong. | Core path works but multiple inaccuracies remain. | Outputs are correct for expected inputs and checked with examples. | Outputs are consistently correct, including tricky cases and clear verification. |
+| Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
+| Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
+| Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
+

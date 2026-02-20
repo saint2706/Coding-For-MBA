@@ -435,3 +435,31 @@ Today you learned:
 - ✅ Broadcasting handles different-shaped arrays
 
 **Tomorrow**: We'll explore **Pandas**—the data analysis powerhouse built on NumPy.
+
+---
+
+## Task Block (Core / Stretch / Expert)
+
+### Data Migration Thread (Days 22–24): Arrays → DataFrame Pipelines
+
+### Core
+- Implement a NumPy-only pipeline for a small sales dataset (clean, transform, aggregate).
+- Document array shapes and dtypes at each step so migration targets are explicit.
+
+### Stretch
+- Identify two operations that become harder in raw arrays (e.g., labeled joins, mixed dtypes).
+- Write migration notes mapping each NumPy step to a future Pandas equivalent.
+
+### Expert
+- Build a side-by-side prototype: same output from NumPy arrays and a minimal DataFrame version.
+- Compare readability/performance tradeoffs and define migration criteria for Day 23.
+
+## Common Grading Rubric (applies every day)
+
+| Criterion | 1 - Emerging | 2 - Developing | 3 - Proficient | 4 - Strong |
+|---|---|---|---|---|
+| Correctness | Major logic errors; results frequently wrong. | Core path works but multiple inaccuracies remain. | Outputs are correct for expected inputs and checked with examples. | Outputs are consistently correct, including tricky cases and clear verification. |
+| Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
+| Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
+| Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
+
