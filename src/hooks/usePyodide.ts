@@ -207,8 +207,34 @@ export function usePyodide() {
         const pyodide = await ensureLoaded()
         let stdout = ''
         let stderr = ''
-        pyodide.setStdout({ batched: (text: string) => (stdout += text + '\n') })
-        pyodide.setStderr({ batched: (text: string) => (stderr += text + '\n') })
+
+        // Limit output size to prevent browser hang/crash (DoS)
+        const MAX_OUTPUT_LENGTH = 50_000 // 50KB
+        const TRUNCATION_MSG = '\n... [Output truncated due to size limit]'
+
+        const appendOutput = (current: string, text: string): string => {
+          if (current.length >= MAX_OUTPUT_LENGTH) return current
+          const toAdd = text + '\n'
+          if (current.length + toAdd.length > MAX_OUTPUT_LENGTH) {
+            return (
+              current +
+              toAdd.slice(0, Math.max(0, MAX_OUTPUT_LENGTH - current.length)) +
+              TRUNCATION_MSG
+            )
+          }
+          return current + toAdd
+        }
+
+        pyodide.setStdout({
+          batched: (text: string) => {
+            stdout = appendOutput(stdout, text)
+          },
+        })
+        pyodide.setStderr({
+          batched: (text: string) => {
+            stderr = appendOutput(stderr, text)
+          },
+        })
 
         const pythonExecutionPromise = pyodide.runPythonAsync(code)
 

@@ -7,6 +7,7 @@
  */
 
 import { useState, useId, useRef, useMemo, useCallback } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
