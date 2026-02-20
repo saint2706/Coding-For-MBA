@@ -185,6 +185,19 @@ WHERE status = 'succeeded'
 
 ---
 
+## Translation Lab: Data Landscape to Decision Readiness
+
+**Scenario**: Source-system inconsistencies create different fairness conclusions across business units.
+
+**Your task**:
+
+1. Translate causal/fairness findings from heterogeneous datasets into a single KPI narrative.
+2. Define BI metrics that monitor degradation and bias over time across domains and geographies.
+3. Map deployment/monitoring signals to stakeholder dashboards and escalation ownership.
+4. Produce a one-page decision memo combining technical caveats with business recommendation.
+
+---
+
 ## Mastery Check
 
 ### Question 1: OLAP vs OLTP

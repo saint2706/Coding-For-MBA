@@ -163,6 +163,19 @@ WHERE
 
 ---
 
+## Translation Lab: Analyst Storytelling for Model Risk
+
+**Scenario**: BI analysts receive weekly ML reports but leaders are unclear on business implications.
+
+**Your task**:
+
+1. Translate causal/fairness outputs into KPI narratives executives can act on.
+2. Define BI metrics that reveal degradation and bias trends over time.
+3. Specify dashboard visuals and escalation rules for analyst-to-leadership handoff.
+4. Deliver a one-page decision memo that merges technical evidence and business action.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Descriptive Analytics

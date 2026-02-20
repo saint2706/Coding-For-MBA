@@ -232,6 +232,24 @@ Current Fraud Rate: 40.0%
 
 ---
 
+## Translation Lab: Monitoring Alerts to Action Plan
+
+**Scenario**: Monitoring detects data drift, rising false negatives, and widening error-rate gaps across regions.
+
+**Required artifacts**:
+
+* **Notebook analysis**: compute drift, reliability, and fairness diagnostics from the last 30 days.
+* **Dashboard specification**: map each monitoring signal to executive/ops views, escalation triggers, and response owners.
+
+**Your task**:
+
+1. Translate reliability and fairness outputs into KPI narratives (revenue leakage, customer experience, compliance risk).
+2. Define BI metrics for degradation/bias over time (drift index, performance decay slope, fairness gap trend).
+3. Build dashboard and escalation rules from monitoring signals.
+4. Write a one-page decision memo recommending retrain, threshold change, or rollback.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Drift Types

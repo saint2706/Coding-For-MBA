@@ -234,6 +234,24 @@ Processed 100 records in 1.05 seconds.
 
 ---
 
+## Translation Lab: Deployment Telemetry to Executive Decisions
+
+**Scenario**: A new model endpoint reduces latency but increases prediction disparity for a protected segment during peak traffic.
+
+**Required artifacts**:
+
+* **Notebook analysis**: quantify latency/cost gains, segment-level performance changes, and fairness gaps from deployment logs.
+* **Dashboard specification**: define tiles, filters, thresholds, owners, and escalation SLAs for deployment health + bias monitoring.
+
+**Your task**:
+
+1. Turn deployment and fairness signals into KPI narratives (conversion, SLA compliance, trust, regulatory exposure).
+2. Define BI metrics that catch degradation and bias over time (p95 latency by segment, calibration drift, disparity index).
+3. Convert monitoring signals into stakeholder dashboard and escalation rules.
+4. Produce a one-page decision memo with technical evidence and business recommendation.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Latency

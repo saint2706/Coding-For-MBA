@@ -242,6 +242,19 @@ Input: {'usage_minutes': 5.5, 'contract_months': 1} -> Churn Probability: True
 
 ---
 
+## Translation Lab: CI/CD Signals to BI Controls
+
+**Scenario**: Your CI pipeline starts failing data-validation checks intermittently after schema changes.
+
+**Your task**:
+
+1. Translate pipeline reliability and fairness test outputs into KPI narratives (release velocity, incident cost, customer-impact risk).
+2. Define BI metrics for ongoing degradation/bias detection (failed fairness gate rate, retrain frequency, lead time to recovery).
+3. Design dashboard requirements and escalation paths for engineering, product, and compliance stakeholders.
+4. Deliver a one-page decision memo recommending deploy, rollback, or conditional release.
+
+---
+
 ## Mastery Check
 
 ### Question 1: MLOps Definition

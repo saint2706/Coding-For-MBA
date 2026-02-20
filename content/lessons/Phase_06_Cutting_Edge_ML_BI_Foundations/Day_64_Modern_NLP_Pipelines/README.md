@@ -226,6 +226,19 @@ Score: 0.75 (approx)
 
 ---
 
+## Translation Lab: NLP Quality to Business Outcomes
+
+**Scenario**: A support-ticket classifier improves macro F1, but error analysis shows intent confusion for high-value customers.
+
+**Your task**:
+
+1. Convert model-quality and fairness findings into KPI impact language (AHT, CSAT, churn risk, escalations).
+2. Define BI metrics that detect degradation and bias over time (topic drift score, F1 by customer tier, false-negative rate for priority intents).
+3. Propose stakeholder dashboard views and escalation logic when priority-intent performance drops.
+4. Produce a one-page memo that combines technical evidence with a go/no-go recommendation.
+
+---
+
 ## Mastery Check
 
 ### Question 1: Context
