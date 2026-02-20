@@ -103,8 +103,22 @@ content/lessons/       # 108 lesson markdown files
 | `npm run typecheck`    | Run TypeScript compiler check |
 | `npm run format`       | Format code with Prettier     |
 | `npm run format:check` | Verify formatting             |
+| `npm test`             | Run unit tests (Vitest)       |
+| `npm run test:coverage`| Run unit tests with coverage threshold (80%) |
+| `npm run test:e2e`     | Run Playwright end-to-end tests |
 | `npm run deploy`       | Deploy to GitHub Pages        |
 
+
+
+## 🧪 Visual Snapshot Testing
+
+- Visual smoke tests live in `tests/e2e/visual-smoke.spec.ts` and capture snapshots for: home, curriculum, phase 1, lesson 1, progress, and search routes.
+- Snapshots are generated from deterministic full-page screenshots and compared via committed SHA-256 text snapshots (no binary image baselines) with a fixed viewport and reduced-motion mode for stability.
+- Update snapshots intentionally with:
+
+```bash
+npm run test:e2e -- --project=chromium tests/e2e/visual-smoke.spec.ts --update-snapshots
+```
 
 ## ⚡ Build & Performance Notes
 

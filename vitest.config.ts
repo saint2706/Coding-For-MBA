@@ -10,13 +10,14 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: ['src/utils/**/*.ts'],
-      exclude: ['src/utils/**/*.d.ts'],
+      include: [
+        'src/stores/progressStore.ts',
+        'src/stores/quizStore.ts',
+        'scripts/content-schemas.js',
+      ],
+      exclude: ['src/**/*.d.ts'],
       thresholds: {
-        lines: 70,
-        functions: 70,
-        branches: 70,
-        statements: 70,
+        lines: 80,
       },
     },
   },

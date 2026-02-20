@@ -32,5 +32,5 @@ jobs:
       - name: Validate content
         run: npm run validate-content
 
-      - name: Test
-        run: npm test
+      - name: Test with coverage threshold
+        run: npm run test:coverage
