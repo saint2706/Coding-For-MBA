@@ -51,6 +51,55 @@
   line-height: 1.7;
 }
 
+.continue-banner {
+  margin: 0 auto 1.5rem;
+  max-width: 640px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  text-align: left;
+}
+
+.continue-banner-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.continue-banner-subtitle {
+  margin: 0.5rem 0 0.875rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.continue-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: var(--gradient-hero);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.continue-banner-cta:hover {
+  color: #fff;
+}
+
+.continue-banner-cta:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
 .hero-stats {
   display: flex;
   justify-content: center;
@@ -230,4 +279,18 @@
 .section-header p {
   color: var(--text-secondary);
   font-size: 0.9375rem;
+}
+
+@media (max-width: 640px) {
+  .continue-banner {
+    padding: 0.875rem;
+  }
+
+  .continue-banner-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .continue-banner-cta {
+    width: 100%;
+  }
 }
