@@ -205,6 +205,22 @@ Match each scenario to the best database:
 
 </details>
 
+
+### Reliability & Maintainability Tasks
+
+- Create schema validation rules for NoSQL documents (required fields, allowed types, defaults).
+- Add migration/version metadata to documents so future structure changes are traceable.
+- Define read/write consistency expectations for each workload and document tradeoffs.
+
+### Exercise 4: Failure Injection — Document Shape Drift
+
+Insert malformed documents with missing or renamed fields into a collection, then run your aggregation pipeline.
+
+Your debugging goals:
+1. Identify where the pipeline breaks or produces wrong counts.
+2. Add validation + fallback transforms to normalize legacy documents.
+3. Produce a short migration plan to repair historical records safely.
+
 ---
 
 ## Mastery Check

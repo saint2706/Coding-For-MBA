@@ -286,6 +286,22 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
+
+### Reliability & Maintainability Tasks
+
+- Split configuration by environment (`development`, `testing`, `production`) and load settings from env vars instead of hardcoding secrets.
+- Add structured logging (JSON or key-value) with request ID, route, status, latency, and user/session context where appropriate.
+- Add centralized error-handling middleware for consistent responses and safe user-facing messages.
+
+### Exercise 4: Failure Injection — Production Misconfiguration
+
+Deliberately remove one required environment variable and trigger an unhandled exception in a route.
+
+Your debugging goals:
+1. Fail fast at startup with actionable config validation errors.
+2. Verify error middleware returns consistent `500` behavior without stack traces to users.
+3. Use structured logs to trace the failing request end-to-end.
+
 ---
 
 ## Mastery Check

@@ -317,6 +317,22 @@ def get_user(username: str):
     return {"username": user.username, "email": user.email}
 ```
 
+
+### Reliability & Maintainability Tasks
+
+- Define an input validation matrix per route (query params, body fields, edge constraints, unsafe input).
+- Add status-code contract tests covering expected responses and stable error models.
+- Implement first-class pagination and rate-limit behavior, including documented headers and client guidance.
+
+### Exercise 4: Failure Injection — Contract Break Regression
+
+Introduce a controlled breaking change (for example, return `201` instead of `200`, rename `message` → `detail`, or remove pagination metadata).
+
+Your debugging goals:
+1. Catch the regression via contract tests.
+2. Restore backward compatibility (or version the endpoint).
+3. Update API docs/changelog with clear migration notes.
+
 ---
 
 ## Mastery Check

@@ -365,6 +365,22 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
+
+### Reliability & Maintainability Tasks
+
+- Add data quality checks at transform/load boundaries: null-rate thresholds, uniqueness constraints, and freshness SLA checks.
+- Complete an idempotency challenge: rerun the same batch twice and prove no duplicate or conflicting records are created.
+- Add an incident postmortem template (`impact`, `timeline`, `root cause`, `detection gaps`, `action items`, `owner`, `due date`).
+
+### Exercise 4: Failure Injection — Stale + Duplicate Batch
+
+Inject a controlled pipeline incident where the source sends yesterday's snapshot with duplicated IDs.
+
+Your debugging goals:
+1. Trip freshness and uniqueness quality checks automatically.
+2. Contain blast radius by quarantining bad data instead of loading to production tables.
+3. Write a short postmortem using the template and propose prevention controls.
+
 ---
 
 ## Mastery Check
