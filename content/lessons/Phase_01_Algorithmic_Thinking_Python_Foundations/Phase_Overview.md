@@ -293,6 +293,134 @@ score = policy.strength_score("SecureP@ssw0rd!")
 
 ---
 
+### Question 5: The Streamed Inventory Reconciliation
+
+**Combines**: Functions (Day 11), Generators (Day 11B), Iteration Patterns (Day 10), Memory-Aware Processing (Day 11C prep)
+
+**Scenario**: You receive a massive transaction feed (too large to load fully in memory) and must reconcile inventory in a streaming fashion.
+
+**Input Data** (simulate as an iterable of lines):
+
+```python
+raw_events = [
+    "2024-03-01,SKU-1001,IN,30",
+    "2024-03-01,SKU-1002,OUT,4",
+    "2024-03-02,SKU-1001,OUT,6",
+    "2024-03-02,SKU-9999,OUT,2",  # unknown SKU
+    "2024-03-03,SKU-1002,IN,10",
+]
+initial_stock = {"SKU-1001": 50, "SKU-1002": 20}
+```
+
+**Requirements**:
+
+1. `parse_events(lines)` → generator yielding normalized tuples `(date, sku, movement, qty)`
+2. `apply_event(stock, event)` → function that mutates stock safely and returns warning message (or `None`)
+3. `reconcile_stream(lines, initial_stock)` → processes events one by one without creating a full intermediate list
+4. Return:
+   - `final_stock` dictionary
+   - generator/list of warnings (unknown SKU, negative stock attempt, malformed lines)
+
+**Expected Usage**:
+
+```python
+final_stock, warnings = reconcile_stream(raw_events, initial_stock)
+# final_stock could be {"SKU-1001": 74, "SKU-1002": 26}
+# warnings includes at least one message about SKU-9999
+```
+
+<details>
+<summary>💡 Hints</summary>
+
+1. Use `yield` in `parse_events` so parsing is lazy
+2. Do validation in small helper functions to keep logic testable
+3. Avoid `events = list(parse_events(...))` because it defeats memory-aware design
+4. Keep warnings structured: `(line_number, reason)`
+
+</details>
+
+---
+
+### Question 6: Debug the Broken Revenue Script
+
+**Combines**: Debugging Workflow (Day 11C), Functions (Day 11), Traceback Interpretation, Root-Cause Analysis
+
+**Scenario**: A teammate gives you this script and says, “it crashes in production.”
+
+```python
+def normalize_amount(value):
+    return float(value.strip().replace("$", ""))
+
+
+def total_revenue(rows):
+    total = 0
+    for row in rows:
+        amount = normalize_amount(row["amount"])
+        if row["status"].lower() == "paid":
+            total += amount
+    return total
+
+
+transactions = [
+    {"amount": "$120.00", "status": "PAID"},
+    {"amount": None, "status": "PAID"},
+    {"amount": "$75.50", "status": "PENDING"},
+]
+
+print(total_revenue(transactions))
+```
+
+**Observed Traceback**:
+
+```text
+AttributeError: 'NoneType' object has no attribute 'strip'
+```
+
+**Requirements**:
+
+1. Explain the traceback path (which function call chain fails and on what input)
+2. Identify root cause (not just symptom)
+3. Propose and implement a robust fix strategy (input validation + clear error handling)
+4. Provide a short “debug log” showing your reasoning steps
+
+**Expected Outcome**:
+
+- Script no longer crashes on missing/invalid amounts
+- Output clearly separates skipped rows vs counted paid revenue
+- Explanation includes why the original code passed some rows but failed on a specific row
+
+<details>
+<summary>💡 Hints</summary>
+
+1. Reproduce first, then isolate the failing row index
+2. Add temporary prints or assertions during debugging, then clean up
+3. Consider `None`, empty string, and malformed currency strings separately
+4. Keep business rule explicit: should invalid paid rows be skipped or hard-fail?
+
+</details>
+
+---
+
+## Milestone Exam Rubric (Process-Focused)
+
+Score each question out of 10 points (60 total). Prioritize how the learner reasons, not just whether final output is correct.
+
+| Criterion | 0-1 (Needs Work) | 2-3 (Developing) | 4 (Strong) |
+| --- | --- | --- | --- |
+| **Problem Decomposition** | Jumps straight to code with no plan | Partial breakdown but misses key constraints | Clear step-by-step plan before implementation |
+| **Traceability of Reasoning** | No explanation of choices | Some rationale, inconsistent | Decisions justified with concise reasoning and trade-offs |
+| **Debugging Method** | Trial-and-error only | Uses traceback but misses root cause depth | Uses traceback, isolates cause, verifies fix with targeted tests |
+| **Function & Abstraction Design** | Monolithic code, repeated logic | Some helper functions but weak boundaries | Small reusable functions with clear responsibilities |
+| **Generator/Memory Discipline** | Materializes full datasets unnecessarily | Mixes lazy/eager patterns inconsistently | Correctly uses streaming/generator approach where required |
+| **Validation & Edge Cases** | Ignores invalid inputs | Handles common cases only | Explicit handling of malformed/edge inputs with sensible outcomes |
+
+**Passing Guidance**:
+
+- **Phase ready**: 42+/60 overall **and** at least 3/4 on Debugging Method + Generator/Memory Discipline.
+- **Needs reinforcement**: below threshold; revisit Day 11B and Day 11C before entering Phase 2.
+
+---
+
 ## Completion Checklist
 
 Before moving to Phase 2, ensure you can:
@@ -305,6 +433,10 @@ Before moving to Phase 2, ensure you can:
 - [ ] Write clean list comprehensions
 - [ ] Debug code by reading error messages
 - [ ] Follow PEP 8 naming conventions
+- [ ] Complete **Day 11B: Generators & Iterators** prep: [Day_11B_Generators_Iterators](./Day_11B_Generators_Iterators/README.md)
+- [ ] Complete **Day 11C: Debugging Workflows** prep: [Day_11C_Debugging_Workflows](./Day_11C_Debugging_Workflows/README.md)
+
+> ✅ **Required before Phase 2**: Finish Day 11B and Day 11C, then re-attempt Milestone Questions 5 and 6 if your rubric scores are below readiness.
 
 ---
 
