@@ -1,7 +1,7 @@
 ---
 phase: 8
 title: "SQL Mastery & Database Architecture"
-days: [85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97]
+days: [85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, "96B"]
 totalDuration: 660
 difficulty: "advanced"
 ---
@@ -67,7 +67,7 @@ This phase represents the **technical ceiling** of data engineering.
 - System Design Interviews and Whiteboard Coding.
 - *Why it matters*: How to get hired as a Senior Data Engineer.
 
-### Week 3: Database Internals (Days 91-96)
+### Week 3: Database Internals (Days 91-96B)
 
 **Day 91: Relational Database Internals**
 
@@ -98,6 +98,12 @@ This phase represents the **technical ceiling** of data engineering.
 
 - Correlated Subqueries vs Joins and unnesting.
 - *Why it matters*: Avoiding O(N^2) complexity.
+
+**Day 96B: NoSQL Deep Dive**
+
+- Document, key-value, and column-family trade-offs vs relational systems.
+- *Why it matters*: Not every workload should be forced into a relational model.
+
 
 ---
 

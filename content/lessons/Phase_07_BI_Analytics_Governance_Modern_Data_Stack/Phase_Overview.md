@@ -1,7 +1,7 @@
 ---
 phase: 7
 title: "BI Analytics, Governance & Modern Data Stack"
-days: [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85]
+days: [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, "84B"]
 totalDuration: 660
 difficulty: "advanced"
 ---
@@ -34,7 +34,34 @@ Welcome to the command center of the modern enterprise.
 
 ## The Journey Through Phase 7
 
-### Week 1: The Foundation (Days 73-76)
+### Week 1: BI Foundations (Days 68-72)
+
+**Day 68: BI Analyst Foundations**
+
+- Core BI role expectations, workflows, and delivery standards.
+- *Why it matters*: Set the operating system for the rest of the phase.
+
+**Day 69: BI Strategy & Stakeholders**
+
+- Stakeholder mapping, business context, and decision cycles.
+- *Why it matters*: Analytics only creates value when aligned to strategy.
+
+**Day 70: BI Metrics & Data Literacy**
+
+- KPI trees, guardrail metrics, and metric definitions.
+- *Why it matters*: Shared metric language prevents costly misalignment.
+
+**Day 71: BI Data Landscape**
+
+- Source systems, ownership boundaries, and data contracts.
+- *Why it matters*: Better source understanding means fewer downstream surprises.
+
+**Day 72: BI Data Formats & Ingestion**
+
+- CSV/JSON/Parquet basics and ingestion patterns.
+- *Why it matters*: Most BI bottlenecks begin at ingestion.
+
+### Week 2: The Foundation Build-Out (Days 73-76)
 
 **Day 73: BI SQL & Advanced Databases**
 
@@ -56,7 +83,7 @@ Welcome to the command center of the modern enterprise.
 - Power BI vs Tableau vs Looker architectures.
 - *Why it matters*: Choosing the right tool saves millions in TCO.
 
-### Week 2: The Analysis (Days 77-79)
+### Week 3: The Analysis (Days 77-79)
 
 **Day 77: BI Domain Analytics & Value**
 
@@ -73,7 +100,7 @@ Welcome to the command center of the modern enterprise.
 - The Narrative Arc and the Minto Pyramid.
 - *Why it matters*: Data without a story is just a spreadsheet.
 
-### Week 3: The System (Days 80-83)
+### Week 4: The System (Days 80-83)
 
 **Day 80: BI Data Quality & Governance**
 
@@ -95,12 +122,17 @@ Welcome to the command center of the modern enterprise.
 - Separation of Compute/Storage and FinOps.
 - *Why it matters*: The Cloud is infinite, but your budget is not.
 
-### Week 4: The Career (Day 84)
+### Week 5: The Career (Days 84-84B)
 
 **Day 84: BI Career & Capstone**
 
 - Building a full-stack portfolio.
 - *Why it matters*: Proving you can do the job before you get the job.
+
+**Day 84B: dbt Fundamentals**
+
+- Models, tests, docs, and lineage in a modern transformation workflow.
+- *Why it matters*: dbt operationalizes analytics engineering best practices.
 
 ---
 
