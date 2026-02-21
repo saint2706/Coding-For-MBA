@@ -506,6 +506,8 @@ You now understand:
 
 **Next Phase**: Functions, Modularity & Data Wrangling—where you'll learn to build larger, more organized programs.
 
+**Next-step depth**: Before moving on, deepen your Phase 1 data-processing toolkit with [Day 11B: Generators & Iterators](../Day_11B_Generators_Iterators/README.md).
+
 ---
 
 ## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 12)

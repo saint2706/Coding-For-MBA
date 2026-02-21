@@ -658,6 +658,8 @@ Today you learned:
 
 **Tomorrow**: We'll explore **list comprehensions**—a powerful Pythonic way to create and transform lists.
 
+**Next-step depth**: After Day 12, continue with [Day 11B: Generators & Iterators](../Day_11B_Generators_Iterators/README.md) to handle large, streaming datasets efficiently.
+
 ---
 
 ## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 11)
