@@ -241,6 +241,118 @@ print(top.unstack())
 sales.set_index("date")["revenue"].resample("M").sum()
 ```
 
+### Performance Toolkit
+
+When data grows from thousands to millions of rows, small Pandas choices create big runtime and memory differences.
+
+```python
+import pandas as pd
+
+# Read only needed columns
+df = pd.read_csv("large_sales.csv", usecols=["date", "region", "product", "revenue"])
+
+# Specify dtypes at read-time to avoid expensive inference
+dtype_map = {"region": "string", "product": "string", "revenue": "float32"}
+df = pd.read_csv("large_sales.csv", usecols=list(dtype_map) + ["date"], dtype=dtype_map)
+
+# Convert repeated text columns to category to reduce memory
+df["region"] = df["region"].astype("category")
+df["product"] = df["product"].astype("category")
+```
+
+```python
+# Chunked reading for files that don't fit comfortably in memory
+chunk_totals = {}
+for chunk in pd.read_csv("large_sales.csv", chunksize=100_000):
+    grouped = chunk.groupby("region")["revenue"].sum()
+    for region, total in grouped.items():
+        chunk_totals[region] = chunk_totals.get(region, 0) + total
+
+print(chunk_totals)
+```
+
+```python
+# Prefer vectorized operations over row-wise .apply() where possible
+df["is_high_value"] = df["revenue"] > 500
+df["commission"] = df["revenue"] * 0.08  # vectorized, fast
+
+# Slower alternative (avoid on large frames)
+# df["commission"] = df.apply(lambda row: row["revenue"] * 0.08, axis=1)
+```
+
+```python
+# Readable and performant method chains
+summary = (
+    df.query("revenue > 0")
+      .eval("net_revenue = revenue * 0.92")
+      .pipe(lambda d: d.groupby(["region", "product"], as_index=False)["net_revenue"].sum())
+      .sort_values("net_revenue", ascending=False)
+)
+```
+
+```python
+# Simple timing + memory profiling pattern
+import time
+
+start = time.perf_counter()
+result = df.groupby("region", as_index=False)["revenue"].sum()
+elapsed = time.perf_counter() - start
+
+memory_mb = df.memory_usage(deep=True).sum() / (1024 ** 2)
+print(f"Elapsed: {elapsed:.4f}s")
+print(f"DataFrame memory: {memory_mb:.2f} MB")
+```
+
+### Lab: Chunked Processing vs Full-Load Validation
+
+Goal: process a larger synthetic CSV in chunks and prove the aggregated output matches the full-load method.
+
+```python
+import pandas as pd
+import numpy as np
+
+# 1) Create synthetic large dataset
+np.random.seed(42)
+n = 1_000_000
+large_sales = pd.DataFrame(
+    {
+        "region": np.random.choice(["North", "South", "East", "West"], n),
+        "product": np.random.choice(["A", "B", "C", "D"], n),
+        "revenue": np.random.randint(50, 2000, n),
+    }
+)
+large_sales.to_csv("large_sales.csv", index=False)
+
+# 2) Full-load aggregation
+full = (
+    pd.read_csv("large_sales.csv")
+    .groupby(["region", "product"], as_index=False)["revenue"]
+    .sum()
+    .sort_values(["region", "product"])
+    .reset_index(drop=True)
+)
+
+# 3) Chunked aggregation
+accumulator = {}
+for chunk in pd.read_csv("large_sales.csv", chunksize=200_000):
+    grouped = chunk.groupby(["region", "product"])["revenue"].sum()
+    for key, value in grouped.items():
+        accumulator[key] = accumulator.get(key, 0) + value
+
+chunked = (
+    pd.Series(accumulator)
+    .rename("revenue")
+    .reset_index()
+    .rename(columns={"level_0": "region", "level_1": "product"})
+    .sort_values(["region", "product"])
+    .reset_index(drop=True)
+)
+
+# 4) Equality check
+pd.testing.assert_frame_equal(full, chunked)
+print("✅ Chunked output matches full-load output")
+```
+
 ---
 
 ## Mastery Check
