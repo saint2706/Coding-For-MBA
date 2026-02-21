@@ -1,8 +1,8 @@
 ---
 day: 68
 title: "BI Analyst Foundations"
-phase: 6
-phaseTitle: "Cutting-Edge ML & BI Foundations"
+phase: 7
+phaseTitle: "BI Analytics, Governance & Modern Data Stack"
 slug: "bi-foundations"
 duration: 120
 difficulty: "intermediate"

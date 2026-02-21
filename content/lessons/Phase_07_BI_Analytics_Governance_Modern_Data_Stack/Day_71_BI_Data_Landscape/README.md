@@ -1,8 +1,8 @@
 ---
 day: 71
 title: "BI Data Landscape"
-phase: 6
-phaseTitle: "Cutting-Edge ML & BI Foundations"
+phase: 7
+phaseTitle: "BI Analytics, Governance & Modern Data Stack"
 slug: "data-landscape"
 duration: 120
 difficulty: "advanced"

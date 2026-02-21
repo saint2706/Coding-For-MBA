@@ -1,8 +1,8 @@
 ---
 day: 72
 title: "BI Data Formats & Ingestion"
-phase: 6
-phaseTitle: "Cutting-Edge ML & BI Foundations"
+phase: 7
+phaseTitle: "BI Analytics, Governance & Modern Data Stack"
 slug: "data-ingestion"
 duration: 120
 difficulty: "advanced"
