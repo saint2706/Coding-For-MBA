@@ -189,6 +189,12 @@ function normalizeIdPart(value: string): string {
     .replace(/\s+/g, '-')
 }
 
+function getLessonIdPrefix(lesson: Lesson): string {
+  const segments = lesson.path.split('/')
+  const lessonDir = segments[segments.length - 2] || `day-${lesson.day}`
+  return `p${lesson.phase}-d${lesson.day}-${normalizeIdPart(lessonDir)}`
+}
+
 function extractHeadingsFromLessonContent(content: string): string[] {
   const headingRegex = /^###?\s+(.+)$/gm
   const headings = new Set<string>()
@@ -224,8 +230,10 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
     return uniqueId
   }
 
+  const lessonIdPrefix = getLessonIdPrefix(lesson)
+
   concepts.forEach((concept) => {
-    const baseId = `d${lesson.day}-concept-${normalizeIdPart(concept)}`
+    const baseId = `${lessonIdPrefix}-concept-${normalizeIdPart(concept)}`
     cards.push({
       id: createUniqueId(baseId),
       day: lesson.day,
@@ -238,7 +246,7 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
   })
 
   headings.forEach((heading) => {
-    const baseId = `d${lesson.day}-heading-${normalizeIdPart(heading)}`
+    const baseId = `${lessonIdPrefix}-heading-${normalizeIdPart(heading)}`
     cards.push({
       id: createUniqueId(baseId),
       day: lesson.day,
@@ -251,7 +259,7 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
   })
 
   exercises.forEach((exercise, index) => {
-    const baseId = `d${lesson.day}-exercise-${index + 1}-${normalizeIdPart(exercise.title)}`
+    const baseId = `${lessonIdPrefix}-exercise-${index + 1}-${normalizeIdPart(exercise.title)}`
     cards.push({
       id: createUniqueId(baseId),
       day: lesson.day,
