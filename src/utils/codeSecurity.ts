@@ -16,23 +16,55 @@ export interface ValidationResult {
 }
 
 /**
+ * Strips comments and string literals from Python code.
+ * This allows for stricter security checks on the remaining code structure
+ * without flagging keywords inside strings or comments.
+ *
+ * CRITICAL SECURITY NOTE:
+ * f-strings (e.g. f"{exec()}") are NOT stripped because they can contain executable code.
+ * Any string literal prefixed with 'f' or 'F' is preserved to ensure dangerous keywords inside are detected.
+ *
+ * @param code - The Python code to process
+ * @returns The code with SAFE strings and comments removed
+ */
+export function stripPythonCommentsAndStrings(code: string): string {
+  let stripped = code;
+
+  // Regex explanation:
+  // ([a-zA-Z]*) captures the prefix (e.g. f, r, u, b, fr, etc.) immediately preceding the quote.
+  // Then we match one of the quote types (triple double, triple single, double, single).
+  // We use a callback to check the prefix.
+  const stringRegex = /([a-zA-Z]*)(?:('''[\s\S]*?'''|"""[\s\S]*?""")|("(\\.|[^"\\])*")|('(\\.|[^'\\])*'))/g;
+
+  stripped = stripped.replace(stringRegex, (match, prefix) => {
+    // If the prefix contains f or F, it's an f-string (or potential f-string like 'fr').
+    // We MUST preserve it because it might contain code execution (e.g. f"{eval()}").
+    if (prefix && /[fF]/.test(prefix)) {
+      return match;
+    }
+    // Otherwise, it's a safe string (raw, unicode, bytes, or normal).
+    // We strip the content but keep the prefix to maintain syntax structure (e.g. u"..." -> u"").
+    return (prefix || '') + '""';
+  });
+
+  // Remove comments (after string processing to avoid stripping # inside preserved f-strings)
+  stripped = stripped.replace(/#.*/g, '');
+
+  return stripped;
+}
+
+/**
  * Validates Python code for potential security risks before execution.
  *
  * Checks for:
  * - Direct access to the 'js' module (browser API access)
- * - Usage of __import__ for 'js'
- * - All forms of importlib imports (prevents dynamic module loading)
- * - Import of sys module (prevents sys.modules access and other internals)
- * - Access to sys.modules (prevents accessing pre-loaded modules)
- * - Import of os module (prevents command execution)
- * - Access to os.system, os.popen (prevents command execution)
- * - Import of subprocess module (prevents command execution)
- * - String manipulation to bypass checks
- * - Access to dangerous built-in functions (eval, exec, etc.)
+ * - Usage of __import__ (prevents dynamic module loading)
+ * - Import/Access of sys, os, subprocess, importlib (prevents system access)
+ * - Access to dangerous built-in functions (eval, exec)
+ * - Access to internal dunder methods (__subclasses__, etc.)
  *
- * Note: This is a defense-in-depth approach using regex patterns. While not
- * foolproof, it catches common bypass attempts. For a production environment,
- * consider using AST-based validation or sandboxing.
+ * Note: This validation runs on code STRIPPED of safe strings and comments.
+ * f-strings are preserved to catch hidden execution.
  *
  * @param code - The Python code to validate
  * @returns Validation result
@@ -41,51 +73,60 @@ export function validatePythonCode(code: string): ValidationResult {
   if (!code) return { valid: true }
 
   // Normalize code to handle line continuations
-  // Replace backslash + newline with an empty string to mimic Python's line continuation behavior
-  // This prevents bypassing regex checks by splitting keywords (e.g., "import \n js")
   const normalizedCode = code.replace(/\\(\r\n|\r|\n)/g, '')
 
-  // Regex patterns to detect 'js' module imports and bypass attempts
-  // We use \b to ensure we don't match 'json' or 'jsp' etc.
-  const patterns = [
-    /\bimport\s+js\b/, // import js
-    /\bfrom\s+js\b/, // from js import ...
-    /__import__\s*\(\s*['"]js['"]\s*\)/, // __import__('js')
-    /\bimport\s+importlib\b/, // import importlib - prevents dynamic module loading
-    /\bfrom\s+importlib\b/, // from importlib - prevents accessing import_module
-    /__import__\s*\(\s*['"]importlib['"]\s*\)/, // __import__('importlib')
-    /\bimportlib\s*\.\s*import_module\s*\(/, // importlib.import_module() - catch usage if pre-imported
-    /\bimport\s+sys\b/, // import sys - prevents access to sys.modules and other internals
-    /\bfrom\s+sys\b/, // from sys import ... - prevents access to sys.modules and other internals
-    /__import__\s*\(\s*['"]sys['"]\s*\)/, // __import__('sys')
-    /\bsys\.modules\b/, // sys.modules - prevents accessing loaded modules like 'js'
-    /\bimport\s+os\b/, // import os - prevents importing os for command execution
-    /\bfrom\s+os\b/, // from os import ... - prevents importing os for command execution
-    /__import__\s*\(\s*['"]os['"]\s*\)/, // __import__('os')
-    /\bos\.system\b/, // os.system - prevents command execution
-    /\bos\.popen\b/, // os.popen - prevents command execution
-    /\bimport\s+subprocess\b/, // import subprocess - prevents command execution
-    /\bfrom\s+subprocess\b/, // from subprocess import ... - prevents command execution
-    /__import__\s*\(\s*['"]subprocess['"]\s*\)/, // __import__('subprocess')
-    /__import__\s*\(\s*['"][^'"]*['"]\s*\+\s*['"][^'"]*['"]/, // __import__("..." + "...") - string concatenation
-    /__import__\s*\(\s*chr\s*\(/, // __import__(chr(...) - character obfuscation
-    /__import__\s*\(\s*['"][^'"]*['"]\s*\.\s*(lower|upper|strip|replace|format)\s*\(/, // __import__("...".method()) - string method obfuscation
-    /__builtins__\s*\.\s*__import__/, // __builtins__.__import__
-    /\bimport\s+builtins\b/, // import builtins - prevents builtins.eval() bypass
-    /\bfrom\s+builtins\s+import/, // from builtins import - prevents direct builtin imports
-    /(?<!\.)\b(eval|exec|globals|locals|getattr|setattr|delattr|hasattr|vars|dir|compile|open)\s*\(/, // built-in functions that allow bypass
-    /\b__builtins__\b/, // access to __builtins__
-    /\b__globals__\b/, // access to __globals__
-    /\b__subclasses__\b/, // access to __subclasses__
-    /\b__bases__\b/, // access to __bases__
-    /\b__mro__\b/, // access to __mro__
-    /\b__getattribute__\b/, // access to __getattribute__
-    /\b__code__\b/, // access to __code__
-    /\b__closure__\b/, // access to __closure__
+  // Strip safe strings and comments to focus on logic
+  const strippedCode = stripPythonCommentsAndStrings(normalizedCode)
+
+  // 1. Property-Safe Deny Patterns (Keywords banned as references/assignments UNLESS properties)
+  // e.g. eval() is banned, but model.eval() is allowed.
+  const propertySafeKeywords = [
+    'eval', 'exec'
+  ]
+  const propertySafeRegex = new RegExp(`(?<!\\.)\\b(${propertySafeKeywords.join('|')})\\b`)
+  if (propertySafeRegex.test(strippedCode)) {
+    return {
+      valid: false,
+      error: "Security Error: Usage of dangerous built-in functions is restricted.",
+    }
+  }
+
+  // 2. Strict Deny Patterns (Keywords banned GLOBALLY, even as properties)
+  // e.g. func.__globals__ is dangerous. importlib is dangerous.
+  const globalKeywords = [
+    'globals', 'locals', '__import__',
+    'subprocess', 'sys', 'os', 'importlib', 'builtins',
+    '__builtins__', '__globals__', '__subclasses__', '__bases__',
+    '__mro__', '__getattribute__', '__code__', '__closure__'
+  ]
+  const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
+  if (globalRegex.test(strippedCode)) {
+    return {
+      valid: false,
+      error: "Security Error: Usage of dangerous built-ins, modules, or internals is restricted.",
+    }
+  }
+
+  // 3. Call Deny Patterns (Keywords banned ONLY when called)
+  const callKeywords = [
+    'getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir'
+  ]
+  const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
+  if (callRegex.test(strippedCode)) {
+    return {
+      valid: false,
+      error: "Security Error: Usage of reflection/introspection functions is restricted.",
+    }
+  }
+
+  // 4. Import Deny Patterns (Specific module imports)
+  const importPatterns = [
+    /\bimport\s+js\b/,
+    /\bfrom\s+js\b/
   ]
 
-  for (const pattern of patterns) {
-    if (pattern.test(normalizedCode)) {
+  for (const pattern of importPatterns) {
+    if (pattern.test(strippedCode)) {
       return {
         valid: false,
         error: "Security Error: Direct access to browser APIs via 'js' module is restricted.",
