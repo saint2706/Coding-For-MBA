@@ -32,15 +32,26 @@ const PHASE_WEIGHT = 2
 const DAY_WEIGHT = 2
 const BODY_WEIGHT = 1
 
+/**
+ * Strips markdown syntax to create plain text for search indexing.
+ * Optimized for performance by reducing regex passes and string allocations.
+ */
 function stripMarkdown(md: string): string {
   return md
+    // Remove code blocks (heavy content)
     .replace(/```[\s\S]*?```/g, ' ')
+    // Remove inline code
     .replace(/`[^`]*`/g, ' ')
+    // Remove images
     .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
+    // Remove links but keep text
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/[#>*_~\-|]/g, ' ')
-    .replace(/^\s*\d+\.\s+/gm, ' ')
-    .replace(/\s+/g, ' ')
+    // Remove list markers (e.g. "1. ") OR special chars/whitespace
+    // This combines two steps:
+    // 1. ^\s*\d+\.\s+ matches ordered list markers at start of line
+    // 2. [#>*_~\-|\s]+ matches markdown chars and whitespace
+    // Both are replaced by a single space.
+    .replace(/(^\s*\d+\.\s+|[#>*_~\-|\s]+)/gm, ' ')
     .trim()
 }
 
