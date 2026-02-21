@@ -15,6 +15,11 @@ import { z } from 'zod'
 const nonEmptyString = z.string().trim().min(1)
 const positiveInt = z.coerce.number().int().positive()
 const positiveNumber = z.coerce.number().positive()
+const bDayString = z
+  .string()
+  .trim()
+  .regex(/^\d+B$/i)
+const phaseDayValueSchema = z.union([positiveInt, bDayString])
 
 export const difficultyLevelSchema = z.enum(['beginner', 'intermediate', 'advanced', 'expert'])
 
@@ -31,7 +36,7 @@ export const lessonFrontmatterSchema = z.object({
 export const phaseOverviewFrontmatterSchema = z.object({
   phase: positiveInt,
   title: nonEmptyString,
-  days: z.array(positiveInt).nonempty(),
+  days: z.array(phaseDayValueSchema).nonempty(),
   totalDuration: positiveNumber,
   difficulty: difficultyLevelSchema,
   tags: z.array(nonEmptyString).optional(),

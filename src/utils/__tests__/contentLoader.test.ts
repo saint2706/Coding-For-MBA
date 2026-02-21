@@ -19,7 +19,7 @@ describe('contentLoader', () => {
 
     expect(lessons.length).toBeGreaterThan(100)
     expect(lessons.every((lesson) => typeof lesson.day === 'number' && lesson.day > 0)).toBe(true)
-    expect(new Set(lessons.map((lesson) => lesson.day)).size).toBe(lessons.length)
+    expect(new Set(lessons.map((lesson) => lesson.path)).size).toBe(lessons.length)
   })
 
   it('resolves lessons and phases consistently', () => {

@@ -126,6 +126,34 @@ function extractExercisesFromLesson(fields, body) {
   return exercises
 }
 
+function normalizeDayToken(value) {
+  const raw = String(value ?? '').trim()
+  const match = raw.match(/^(\d+)([a-zA-Z]?)$/)
+  if (!match) return raw.toUpperCase()
+  const number = Number(match[1])
+  const suffix = (match[2] || '').toUpperCase()
+  return `${number}${suffix}`
+}
+
+function compareDayTokens(a, b) {
+  const parse = (v) => {
+    const normalized = normalizeDayToken(v)
+    const match = normalized.match(/^(\d+)([A-Z]?)$/)
+    if (!match) return { numeric: Number.POSITIVE_INFINITY, suffix: normalized }
+    return { numeric: Number(match[1]), suffix: match[2] || '' }
+  }
+  const aa = parse(a)
+  const bb = parse(b)
+  if (aa.numeric !== bb.numeric) return aa.numeric - bb.numeric
+  return aa.suffix.localeCompare(bb.suffix)
+}
+
+function getDayTokenFromLessonPath(filePath) {
+  const lessonDir = path.basename(path.dirname(filePath))
+  const match = lessonDir.match(/^Day_(\d+[A-Za-z]?)/)
+  return match ? normalizeDayToken(match[1]) : null
+}
+
 function getPhaseRoot(filePath, lessonsDir) {
   const relative = path.relative(lessonsDir, filePath)
   return relative.split(path.sep)[0]
@@ -184,9 +212,10 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
   for (const lessonFile of lessonFiles) {
     const phaseDir = getPhaseRoot(lessonFile, lessonsDir)
     const list = lessonsByPhaseDir.get(phaseDir) ?? []
-    const content = fs.readFileSync(lessonFile, 'utf8')
-    const { fields } = parseAndValidateMarkdown(content, 'README.md')
-    list.push(fields)
+    const dayToken = getDayTokenFromLessonPath(lessonFile)
+    if (dayToken) {
+      list.push(dayToken)
+    }
     lessonsByPhaseDir.set(phaseDir, list)
   }
 
@@ -195,10 +224,12 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
     if (!overview) continue
 
     const phaseLessons = lessonsByPhaseDir.get(phaseDir) ?? []
-    const expectedDays = [...new Set(phaseLessons.map((lesson) => lesson.day))].sort(
-      (a, b) => a - b,
+    const expectedDays = [...new Set(phaseLessons.map((day) => normalizeDayToken(day)))].sort(
+      compareDayTokens,
     )
-    const actualDays = [...new Set(overview.days ?? [])].sort((a, b) => a - b)
+    const actualDays = [
+      ...new Set((overview.days ?? []).map((day) => normalizeDayToken(day))),
+    ].sort(compareDayTokens)
 
     const mismatchedDays =
       expectedDays.length !== actualDays.length ||

@@ -1,7 +1,7 @@
 ---
 phase: 9
 title: "Enterprise SQL Performance Engineering"
-days: [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109]
+days: [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, "108B"]
 totalDuration: 660
 difficulty: "expert"
 ---
@@ -77,7 +77,7 @@ This phase is the **capstone** of database engineering.
 - Normalization (1NF, 2NF, 3NF), Denormalization (Star Schema).
 - *Why it matters*: The schema lasts 10 years; the code lasts 1.
 
-### Week 3: Advanced Data Types & Security (Days 105-108)
+### Week 3: Advanced Data Types, Security & Capstone (Days 105-108B)
 
 **Day 105: JSON & NoSQL in SQL**
 
@@ -98,6 +98,12 @@ This phase is the **capstone** of database engineering.
 
 - EXPLAIN ANALYZE, configuration tuning, VACUUM management.
 - *Why it matters*: The difference between a $500/month server and a $50k/month cluster.
+
+**Day 108B: Curriculum Grand Finale Capstone**
+
+- End-to-end enterprise SQL implementation spanning design, optimization, and governance.
+- *Why it matters*: Demonstrates production readiness across the full program arc.
+
 
 ---
 
