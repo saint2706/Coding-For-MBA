@@ -4,7 +4,8 @@ import type { Lesson } from '../contentLoader'
 
 const lessons: Lesson[] = [
   {
-    day: 1,
+    day: '1',
+    daySortKey: '00001:',
     title: 'Python Variables',
     phase: 1,
     tags: ['basics'],
@@ -13,7 +14,8 @@ const lessons: Lesson[] = [
     path: '/fake/1',
   },
   {
-    day: 2,
+    day: '2',
+    daySortKey: '00002:',
     title: 'Intro',
     phase: 1,
     tags: ['python variables'],
@@ -22,7 +24,8 @@ const lessons: Lesson[] = [
     path: '/fake/2',
   },
   {
-    day: 3,
+    day: '3',
+    daySortKey: '00003:',
     title: 'Intro to loops',
     phase: 1,
     tags: ['control flow'],
@@ -55,6 +58,6 @@ describe('search index', () => {
   it('returns title match first from fuse search', () => {
     const engine = createSearchEngine(lessons)
     const results = engine.search('python variables')
-    expect(results[0]?.item.day).toBe(1)
+    expect(results[0]?.item.day).toBe('1')
   })
 })

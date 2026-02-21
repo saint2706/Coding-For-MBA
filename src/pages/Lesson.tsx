@@ -26,6 +26,7 @@ import SEOHead from '../components/SEOHead'
  */
 
 import { buildLessonSchema } from '../utils/seoSchemas'
+import { dayTokenToProgressId, parseDayToken } from '../utils/dayToken'
 import {
   getLesson,
   getAdjacentLessons,
@@ -77,7 +78,7 @@ export default function Lesson() {
   const lesson = getLesson(dayNum!)
   const { prev, next } = getAdjacentLessons(dayNum!)
   const [completed, setCompleted] = useState(() =>
-    dayNum ? isLessonComplete(Number(dayNum)) : false,
+    dayNum ? isLessonComplete(dayTokenToProgressId(dayNum)) : false,
   )
   const lastToastAtRef = useRef(0)
 
@@ -90,11 +91,11 @@ export default function Lesson() {
 
   // Sync completed state when navigating between lessons
   useEffect(() => {
-    setCompleted(isLessonComplete(Number(dayNum)))
+    setCompleted(dayNum ? isLessonComplete(dayTokenToProgressId(dayNum)) : false)
   }, [dayNum])
 
   const handleToggleComplete = useCallback(() => {
-    const day = Number(dayNum)
+    const day = dayNum ? dayTokenToProgressId(dayNum) : Number.NaN
     const beforeCompleted = new Set(getCompletedLessons())
     const nowComplete = toggleLessonComplete(day)
     setCompleted(nowComplete)
@@ -114,10 +115,14 @@ export default function Lesson() {
 
       const afterCompleted = getCompletedLessons()
       const wasPhaseCompleted = lesson
-        ? getLessonsByPhase(lesson.phase).every((entry) => beforeCompleted.has(entry.day))
+        ? getLessonsByPhase(lesson.phase).every((entry) =>
+            beforeCompleted.has(dayTokenToProgressId(entry.day)),
+          )
         : false
       const isPhaseCompleted = lesson
-        ? getLessonsByPhase(lesson.phase).every((entry) => afterCompleted.includes(entry.day))
+        ? getLessonsByPhase(lesson.phase).every((entry) =>
+            afterCompleted.includes(dayTokenToProgressId(entry.day)),
+          )
         : false
 
       if (lesson && !wasPhaseCompleted && isPhaseCompleted) {
@@ -195,7 +200,13 @@ export default function Lesson() {
         path={lessonPath}
         ogType="article"
         jsonLd={[
-          buildLessonSchema(lessonTitle, lessonDescription, lessonPath, lesson.day, lesson.phase),
+          buildLessonSchema(
+            lessonTitle,
+            lessonDescription,
+            lessonPath,
+            parseDayToken(lesson.day)?.number || 0,
+            lesson.phase,
+          ),
         ]}
         breadcrumbs={[
           { name: 'Home', url: '/' },

@@ -15,16 +15,17 @@ import { z } from 'zod'
 const nonEmptyString = z.string().trim().min(1)
 const positiveInt = z.coerce.number().int().positive()
 const positiveNumber = z.coerce.number().positive()
-const bDayString = z
+const dayTokenString = z
   .string()
   .trim()
-  .regex(/^\d+B$/i)
-const phaseDayValueSchema = z.union([positiveInt, bDayString])
+  .regex(/^\d+[A-Za-z]?$/)
+const dayTokenSchema = z.union([positiveInt, dayTokenString])
+const phaseDayValueSchema = z.union([positiveInt, dayTokenString])
 
 export const difficultyLevelSchema = z.enum(['beginner', 'intermediate', 'advanced', 'expert'])
 
 export const lessonFrontmatterSchema = z.object({
-  day: positiveInt,
+  day: dayTokenSchema,
   title: nonEmptyString,
   phase: positiveInt,
   difficulty: difficultyLevelSchema,
@@ -44,7 +45,7 @@ export const phaseOverviewFrontmatterSchema = z.object({
 })
 
 export const exerciseSchema = z.object({
-  day: positiveInt,
+  day: dayTokenSchema,
   lessonTitle: nonEmptyString,
   phase: positiveInt,
   difficulty: difficultyLevelSchema,

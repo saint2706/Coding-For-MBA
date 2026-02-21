@@ -18,7 +18,9 @@ describe('contentLoader', () => {
     const lessons = getAllLessons()
 
     expect(lessons.length).toBeGreaterThan(100)
-    expect(lessons.every((lesson) => typeof lesson.day === 'number' && lesson.day > 0)).toBe(true)
+    expect(lessons.every((lesson) => typeof lesson.day === 'string' && lesson.day.length > 0)).toBe(
+      true,
+    )
     expect(new Set(lessons.map((lesson) => lesson.path)).size).toBe(lessons.length)
   })
 
@@ -27,7 +29,7 @@ describe('contentLoader', () => {
 
     expect(phases.length).toBeGreaterThan(0)
 
-    const lesson = getLesson(1)
+    const lesson = getLesson('1')
     expect(lesson).toBeDefined()
 
     const phaseLessons = getLessonsByPhase(lesson!.phase)
@@ -82,6 +84,20 @@ test words repeated `.repeat(120)
     expect(getAdjacentLessons(999999)).toEqual({ prev: null, next: null })
   })
 
+  it('supports mixed day tokens for lookup and sorting', () => {
+    const day36 = getLesson('36')
+    const day36B = getLesson('36B')
+
+    expect(day36).toBeDefined()
+    expect(day36B).toBeDefined()
+
+    const around36 = getAdjacentLessons('36')
+    expect(around36.next?.day).toBe('36B')
+
+    const around36B = getAdjacentLessons('36B')
+    expect(around36B.prev?.day).toBe('36')
+  })
+
   it('handles notebook lookups safely', () => {
     const notebooks = getAllNotebooks()
     expect(notebooks.length).toBeGreaterThan(0)
@@ -106,7 +122,7 @@ test words repeated `.repeat(120)
 
     const prereqs = getPrerequisiteLessons(lessonWithPrereqs!)
     expect(Array.isArray(prereqs)).toBe(true)
-    expect(prereqs.every((lesson) => typeof lesson.day === 'number')).toBe(true)
+    expect(prereqs.every((lesson) => typeof lesson.day === 'string')).toBe(true)
 
     const related = getRelatedLessons(lessonWithPrereqs!, 4)
     expect(related.length).toBeLessThanOrEqual(4)

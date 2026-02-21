@@ -32,6 +32,7 @@ import {
   phaseOverviewFrontmatterSchema,
   exerciseSchema,
 } from './content-schemas.js'
+import { compareDayTokens, getDayTokenFromLessonPath, normalizeDayToken } from './day-token.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
@@ -124,34 +125,6 @@ function extractExercisesFromLesson(fields, body) {
   }
 
   return exercises
-}
-
-function normalizeDayToken(value) {
-  const raw = String(value ?? '').trim()
-  const match = raw.match(/^(\d+)([a-zA-Z]?)$/)
-  if (!match) return raw.toUpperCase()
-  const number = Number(match[1])
-  const suffix = (match[2] || '').toUpperCase()
-  return `${number}${suffix}`
-}
-
-function compareDayTokens(a, b) {
-  const parse = (v) => {
-    const normalized = normalizeDayToken(v)
-    const match = normalized.match(/^(\d+)([A-Z]?)$/)
-    if (!match) return { numeric: Number.POSITIVE_INFINITY, suffix: normalized }
-    return { numeric: Number(match[1]), suffix: match[2] || '' }
-  }
-  const aa = parse(a)
-  const bb = parse(b)
-  if (aa.numeric !== bb.numeric) return aa.numeric - bb.numeric
-  return aa.suffix.localeCompare(bb.suffix)
-}
-
-function getDayTokenFromLessonPath(filePath) {
-  const lessonDir = path.basename(path.dirname(filePath))
-  const match = lessonDir.match(/^Day_(\d+[A-Za-z]?)/)
-  return match ? normalizeDayToken(match[1]) : null
 }
 
 function getPhaseRoot(filePath, lessonsDir) {

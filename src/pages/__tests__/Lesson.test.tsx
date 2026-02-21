@@ -20,7 +20,7 @@ const {
 }))
 
 vi.mock('react-router-dom', () => ({
-  useParams: () => ({ dayNum: '1' }),
+  useParams: () => ({ dayNum: '1B' }),
   useNavigate: () => vi.fn(),
   Link: ({ children, to, ...props }: { children: React.ReactNode; to: string }) => (
     <a href={to} {...props}>
@@ -31,7 +31,7 @@ vi.mock('react-router-dom', () => ({
 
 vi.mock('../../utils/contentLoader', () => ({
   getLesson: () => ({
-    day: 1,
+    day: '1B',
     title: 'Intro',
     phase: 1,
     content: '# Intro',
@@ -40,7 +40,7 @@ vi.mock('../../utils/contentLoader', () => ({
   }),
   getAdjacentLessons: () => ({ prev: null, next: null }),
   getAllPhases: () => [{ phase: 1 }, { phase: 2 }],
-  getLessonsByPhase: (phase: number) => (phase === 1 ? [{ day: 1 }] : [{ day: 2 }]),
+  getLessonsByPhase: (phase: number) => (phase === 1 ? [{ day: '1B' }] : [{ day: '2' }]),
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
   },

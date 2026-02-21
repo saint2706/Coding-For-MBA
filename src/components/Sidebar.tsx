@@ -11,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase, phaseIcons } from '../utils/contentLoader'
 import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
+import { dayTokenToProgressId, normalizeDayToken } from '../utils/dayToken'
 
 /**
  * Props for the Sidebar component.
@@ -45,10 +46,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const prefersReducedMotion = useReducedMotion()
 
   const derivedOpenPhase = useMemo(() => {
-    const lessonMatch = location.pathname.match(/\/lesson\/(\d+)/)
-    if (lessonMatch) {
-      const dayNum = Number(lessonMatch[1])
-      const phase = phases.find((p) => p.days && p.days.includes(dayNum))
+    const lessonMatch = location.pathname.match(/\/lesson\/([^/]+)/)
+    if (lessonMatch && lessonMatch[1]) {
+      const dayToken = normalizeDayToken(lessonMatch[1])
+      const phase = phases.find((p) => p.days && p.days.includes(dayToken))
       if (phase) return phase.phase
     }
     const phaseMatch = location.pathname.match(/\/phase\/(\d+)/)
@@ -262,7 +263,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
                             onClick={onClose}
                           >
-                            {isLessonComplete(lesson.day) && (
+                            {isLessonComplete(dayTokenToProgressId(lesson.day)) && (
                               <span className="day-link-check" aria-label="Completed">
                                 ✓
                               </span>

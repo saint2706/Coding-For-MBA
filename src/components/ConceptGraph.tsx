@@ -10,6 +10,7 @@ import { useRef, useEffect, useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as d3 from 'd3'
 import { getAllLessons, phaseIcons } from '../utils/contentLoader'
+import { dayTokenFromReference } from '../utils/dayToken'
 
 /**
  * Color palette for phase differentiation in the graph.
@@ -37,7 +38,7 @@ const PHASE_COLORS = [
  * @property concepts - Array of concept tags associated with the lesson
  */
 interface GraphNode extends d3.SimulationNodeDatum {
-  id: number
+  id: string
   label: string
   title: string
   phase: number
@@ -51,8 +52,8 @@ interface GraphNode extends d3.SimulationNodeDatum {
  * @property target - Target node or node ID
  */
 interface GraphEdge extends d3.SimulationLinkDatum<GraphNode> {
-  source: GraphNode | number
-  target: GraphNode | number
+  source: GraphNode | string
+  target: GraphNode | string
 }
 
 /**
@@ -110,7 +111,7 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
 
     // Build nodes & edges
     const nodes: GraphNode[] = lessons.map((l) => ({
-      id: l.day,
+      id: String(l.day),
       label: `D${l.day}`,
       title: l.title,
       phase: l.phase,
@@ -122,12 +123,14 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     const edges: GraphEdge[] = []
     const edgeSet = new Set<string>()
     for (const l of lessons) {
-      const prereqs = (l.prerequisites as number[]) || []
+      const prereqs = ((l.prerequisites as unknown[]) || [])
+        .map((entry) => dayTokenFromReference(entry))
+        .filter((entry): entry is string => Boolean(entry))
       for (const p of prereqs) {
         const key = `${p}-${l.day}`
         if (!edgeSet.has(key) && nodeById.has(p)) {
           edgeSet.add(key)
-          edges.push({ source: p, target: l.day })
+          edges.push({ source: p, target: String(l.day) })
         }
       }
     }
@@ -310,7 +313,7 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     const hasFilter = search.length > 0 || highlightPhase !== null
 
     // Track visible node IDs to efficiently update edges without DOM re-querying
-    const visibleNodeIds = new Set<number>()
+    const visibleNodeIds = new Set<string>()
 
     // 1. First pass: Check all nodes and determine visibility
     d3Svg.selectAll<SVGGElement, GraphNode>('.graph-node').each(function (d) {
@@ -344,8 +347,8 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
       }
 
       // Handle both number (initial) and object (simulated) references
-      const sId = typeof d.source === 'number' ? d.source : (d.source as GraphNode).id
-      const tId = typeof d.target === 'number' ? d.target : (d.target as GraphNode).id
+      const sId = typeof d.source === 'string' ? d.source : (d.source as GraphNode).id
+      const tId = typeof d.target === 'string' ? d.target : (d.target as GraphNode).id
 
       const sMatch = visibleNodeIds.has(sId)
       const tMatch = visibleNodeIds.has(tId)

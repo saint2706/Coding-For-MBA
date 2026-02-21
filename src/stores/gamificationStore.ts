@@ -17,6 +17,7 @@ import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
 import { useProgressStore } from './progressStore'
 import { triggerSparkle } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
+import { dayTokenToProgressId } from '../utils/dayToken'
 
 const STORAGE_KEY = 'coding-for-mba-gamification'
 
@@ -169,7 +170,9 @@ function resolveChallengeCandidates(): number[] {
   }
 
   return getAllPhases().flatMap((phase) =>
-    getLessonsByPhase(phase.phase).map((lesson) => lesson.day),
+    getLessonsByPhase(phase.phase)
+      .map((lesson) => dayTokenToProgressId(lesson.day))
+      .filter((day) => Number.isInteger(day) && day > 0),
   )
 }
 

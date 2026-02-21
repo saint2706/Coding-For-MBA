@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Algorithmic Thinking & Python Foundations"
-days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11B, 11C, 12]
 totalDuration: 570
 difficulty: "beginner"
 ---

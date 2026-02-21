@@ -50,7 +50,7 @@ interface LegacyReviewStateV1 {
  * Full review card data including seed metadata and scheduling state.
  */
 export interface ReviewCard extends StoredReviewCard {
-  day: number
+  day: string | number
   phase: number
   lessonTitle: string
   sourceType: 'concept' | 'heading' | 'exercise'
