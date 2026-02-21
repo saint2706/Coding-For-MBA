@@ -1,8 +1,8 @@
 ---
 phase: 2
 title: "Functions, Modularity & Data Wrangling"
-days: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-totalDuration: 610
+days: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, "24B"]
+totalDuration: 670
 difficulty: "intermediate"
 ---
 
@@ -30,8 +30,8 @@ Classes, encapsulation, and inheritance. Date/time handling for business applica
 **Days 20-21: Environment Management**
 pip for package management, virtual environments for project isolation. The foundation for reproducible, shareable projects.
 
-**Days 22-24: Data Science Foundation**
-NumPy for fast numerical computing. Pandas for data wrangling, analysis, and transformation. GroupBy, merges, pivots—the tools that turn raw data into insights.
+**Days 22-24B: Data Science Foundation + EDA Bridge**
+NumPy for fast numerical computing. Pandas for data wrangling, analysis, and transformation. GroupBy, merges, pivots, and business-first exploratory data analysis (EDA)—the workflow that validates assumptions before visualization. Day 24B is the bridge to Phase 3: you learn which patterns are trustworthy enough to visualize and present to decision-makers.
 
 ### Skills Unlocked
 
