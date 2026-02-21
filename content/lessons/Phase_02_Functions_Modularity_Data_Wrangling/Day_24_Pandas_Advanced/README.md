@@ -130,6 +130,88 @@ df.dropna(subset=["important_col"])
 
 ---
 
+### Validation plots before dashboarding
+
+Before you build a polished dashboard, make three **quick validation plots** with `DataFrame.plot()` to catch data issues early.
+
+#### 1) Trend check (time)
+Use a **line plot** to verify direction and volatility.
+
+```python
+# Example: daily sales trend
+sales_by_day = df.groupby("date", as_index=False)["sales"].sum()
+sales_by_day.plot(x="date", y="sales", kind="line", title="Daily Sales Trend")
+```
+
+#### 2) Distribution check (shape + outliers)
+Use a **histogram** to inspect spread, skew, and suspicious values.
+
+```python
+# Example: order-value distribution
+df.plot(y="sales", kind="hist", bins=20, title="Sales Distribution")
+```
+
+#### 3) Category comparison (ranking)
+Use a **bar chart** to compare categories side by side.
+
+```python
+# Example: region performance
+region_totals = df.groupby("region", as_index=False)["sales"].sum()
+region_totals.plot(x="region", y="sales", kind="bar", title="Sales by Region")
+```
+
+#### Chart-choice heuristics for business decisions
+
+- **"What changed over time?"** → line chart.
+- **"How are values distributed?"** → histogram/box plot.
+- **"Who is ahead/behind?"** → bar chart (sorted if possible).
+- **"Part-to-whole"** decisions are usually clearer with bars than pie charts when categories are many or close in size.
+
+#### Common misreads to prevent
+
+- **Axis scaling traps:** a truncated y-axis can exaggerate tiny differences.
+- **Aggregation mismatch:** comparing daily metrics to monthly targets creates false conclusions.
+- **Granularity confusion:** totals can hide segment-level declines; always validate at the decision level.
+
+#### Hands-on exercise: 3 diagnostic plots from `extras/sample_sales.csv`
+
+Create three quick plots and add a one-sentence interpretation for each.
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load sample file from Phase 2 extras
+sales = pd.read_csv("content/lessons/Phase_02_Functions_Modularity_Data_Wrangling/extras/sample_sales.csv")
+sales["date"] = pd.to_datetime(sales["date"])
+
+# 1) Trend plot: total sales by date
+(
+    sales.groupby("date", as_index=False)["sales"].sum()
+    .plot(x="date", y="sales", kind="line", title="Diagnostic 1: Sales Trend")
+)
+plt.show()
+# Interpretation: "Sales trend is mostly stable with a late-period uptick worth validating against campaigns."
+
+# 2) Distribution plot: sales value distribution
+sales.plot(y="sales", kind="hist", bins=15, title="Diagnostic 2: Sales Distribution")
+plt.show()
+# Interpretation: "The right-skew suggests a few high-value transactions are driving average sales."
+
+# 3) Category comparison: sales by region
+(
+    sales.groupby("region", as_index=False)["sales"].sum()
+    .sort_values("sales", ascending=False)
+    .plot(x="region", y="sales", kind="bar", title="Diagnostic 3: Sales by Region")
+)
+plt.show()
+# Interpretation: "Region ranking shows concentration risk because one region contributes a disproportionate share."
+```
+
+➡️ Continue this storyline in **[Phase 3 Day 27: Data Visualization](../../Phase_03_Data_Engineering_Web_Development/Day_27_Visualization/README.md)**, where you turn these validation checks into presentation-ready visual narratives.
+
+---
+
 ## Hands-on Lab
 
 ### Exercise: Sales Dashboard
