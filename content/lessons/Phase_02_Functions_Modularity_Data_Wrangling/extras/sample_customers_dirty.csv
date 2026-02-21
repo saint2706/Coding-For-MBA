@@ -1,0 +1,13 @@
+customer_id,name,email,signup_date,age,lifetime_value,updated_at,region
+1001,John Doe,john.doe@email.com,2024-01-15,34,12500.50,2024-02-01 09:15:00,North
+1002, Jane Smith ,jane.smith@company.org,2024-02-30,29,9800,2024-02-05 10:00:00,West
+1003,Bob Wilson,bob.wilson@email,2024/03/12,thirty-two,11000.75,2024-03-14 18:20:00,South
+1004,Alice Jones,alice.jones@email.com,2024-03-25,,8700.20,2024-03-26 08:45:00,East
+1005,Priya Sharma,priya.sharma@email.com,15-04-2024,41,N/A,2024-04-16 12:00:00,North
+1006,Carlos Garcia,carlos.garcia@email.com,2024-04-20,27,5400.00,2024-04-22 14:35:00,South
+1003,BOB WILSON,bob.wilson@email.com,2024-03-12,32,11200.00,2024-03-20 09:05:00,South
+1007,Emily Zhang,emily.zhang@valid.org,2024-05-02,not_available,7600.40,2024-05-05 16:10:00,West
+1008,Frank Miller,frank@bad email.com,2024-05-18,45,13200.10,2024-05-19 11:11:00,East
+1009,Grace Lee,,2024-06-01,38,10100.00,2024-06-02 13:00:00,North
+1010,Liam Patel,liam.patel@email.com,2024-13-01,26,6200.90,2024-06-20 07:30:00,West
+1011,Nora Khan,nora.khan@email.com,2024-07-09,31,"7,500",2024-07-10 10:10:00,South

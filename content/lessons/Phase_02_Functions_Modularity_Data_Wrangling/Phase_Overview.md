@@ -1,8 +1,8 @@
 ---
 phase: 2
 title: "Functions, Modularity & Data Wrangling"
-days: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, "24B"]
-totalDuration: 670
+days: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, "24B", "24C"]
+totalDuration: 730
 difficulty: "intermediate"
 ---
 
@@ -30,8 +30,8 @@ Classes, encapsulation, and inheritance. Date/time handling for business applica
 **Days 20-21: Environment Management**
 pip for package management, virtual environments for project isolation. The foundation for reproducible, shareable projects.
 
-**Days 22-24B: Data Science Foundation + EDA Bridge**
-NumPy for fast numerical computing. Pandas for data wrangling, analysis, and transformation. GroupBy, merges, pivots, and business-first exploratory data analysis (EDA)—the workflow that validates assumptions before visualization. Day 24B is the bridge to Phase 3: you learn which patterns are trustworthy enough to visualize and present to decision-makers.
+**Days 22-24C: Data Science Foundation + EDA + Cleaning Playbook**
+NumPy for fast numerical computing. Pandas for data wrangling, analysis, and transformation. GroupBy, merges, pivots, and business-first exploratory data analysis (EDA)—the workflow that validates assumptions before visualization. Day 24B is the bridge to Phase 3: you learn which patterns are trustworthy enough to visualize and present to decision-makers. Day 24C adds the operational cleaning playbook (profiling, null strategy, deduplication, coercion, and assertions) so your analyses are reproducible under real data quality constraints.
 
 ### Skills Unlocked
 
