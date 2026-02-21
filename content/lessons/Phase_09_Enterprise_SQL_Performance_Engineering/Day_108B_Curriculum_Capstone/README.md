@@ -75,13 +75,15 @@ import random
 np.random.seed(42)
 random.seed(42)
 
+
 def generate_capstone_dataset():
     """Generate synthetic retail dataset for the capstone project."""
 
     # 50 stores × 3 years × 365 days = 54,750 records
     stores = [f"STORE_{i:03d}" for i in range(1, 51)]
     regions = {
-        "STORE_001": "North", "STORE_002": "North",
+        "STORE_001": "North",
+        "STORE_002": "North",
         # ... (simplified for demo)
     }
     regions = {s: random.choice(["North", "South", "East", "West"]) for s in stores}
@@ -101,17 +103,20 @@ def generate_capstone_dataset():
             for category in random.sample(categories, k=random.randint(2, 4)):
                 base_revenue = random.gauss(15000, 4000)
                 revenue = max(0, base_revenue * seasonal_mult * weekend_mult)
-                records.append({
-                    "date": date.strftime("%Y-%m-%d"),
-                    "store_id": store,
-                    "region": regions[store],
-                    "category": category,
-                    "revenue": round(revenue, 2),
-                    "units_sold": int(revenue / random.uniform(50, 200)),
-                    "returns": int(random.gauss(revenue * 0.03, revenue * 0.01)),
-                })
+                records.append(
+                    {
+                        "date": date.strftime("%Y-%m-%d"),
+                        "store_id": store,
+                        "region": regions[store],
+                        "category": category,
+                        "revenue": round(revenue, 2),
+                        "units_sold": int(revenue / random.uniform(50, 200)),
+                        "returns": int(random.gauss(revenue * 0.03, revenue * 0.01)),
+                    }
+                )
 
     return pd.DataFrame(records)
+
 
 df = generate_capstone_dataset()
 df.to_csv("retail_raw_data.csv", index=False)
@@ -128,6 +133,7 @@ print(f"Generated {len(df):,} records")
 import pandas as pd
 import sqlite3
 from pathlib import Path
+
 
 def load_and_clean(filepath: str) -> pd.DataFrame:
     """
@@ -146,6 +152,7 @@ def load_and_clean(filepath: str) -> pd.DataFrame:
 
     return df
 
+
 def load_to_sqlite(df: pd.DataFrame, db_path: str = "capstone.db"):
     """Load cleaned DataFrame to SQLite for SQL analysis."""
     conn = sqlite3.connect(db_path)
@@ -158,6 +165,7 @@ def load_to_sqlite(df: pd.DataFrame, db_path: str = "capstone.db"):
     conn.commit()
     conn.close()
     print(f"Loaded {len(df):,} records to {db_path}")
+
 
 # Run
 df = load_and_clean("retail_raw_data.csv")
@@ -233,6 +241,7 @@ from sklearn.metrics import mean_absolute_percentage_error
 import pandas as pd
 import numpy as np
 
+
 def create_features(df: pd.DataFrame) -> pd.DataFrame:
     """Create time series features for ML forecasting."""
     df = df.copy()
@@ -250,17 +259,17 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
     store_daily = store_daily.sort_values(["store_id", "date"])
 
     for lag in [7, 14, 28]:  # 1-week, 2-week, 4-week lags
-        store_daily[f"revenue_lag_{lag}"] = (
-            store_daily.groupby("store_id")["revenue"].shift(lag)
-        )
+        store_daily[f"revenue_lag_{lag}"] = store_daily.groupby("store_id")[
+            "revenue"
+        ].shift(lag)
 
     # Rolling averages
-    store_daily["revenue_7d_avg"] = (
-        store_daily.groupby("store_id")["revenue"]
-        .transform(lambda x: x.shift(1).rolling(7).mean())
-    )
+    store_daily["revenue_7d_avg"] = store_daily.groupby("store_id")[
+        "revenue"
+    ].transform(lambda x: x.shift(1).rolling(7).mean())
 
     return store_daily.dropna()
+
 
 # Train model
 conn = sqlite3.connect("capstone.db")
@@ -268,9 +277,17 @@ df = pd.read_sql("SELECT * FROM sales", conn)
 conn.close()
 
 features_df = create_features(df)
-feature_cols = ["month", "quarter", "day_of_week", "is_weekend",
-                "week_of_year", "revenue_lag_7", "revenue_lag_14",
-                "revenue_lag_28", "revenue_7d_avg"]
+feature_cols = [
+    "month",
+    "quarter",
+    "day_of_week",
+    "is_weekend",
+    "week_of_year",
+    "revenue_lag_7",
+    "revenue_lag_14",
+    "revenue_lag_28",
+    "revenue_7d_avg",
+]
 
 X = features_df[feature_cols]
 y = features_df["revenue"]
@@ -287,7 +304,7 @@ for fold, (train_idx, val_idx) in enumerate(tscv.split(X)):
     preds = model.predict(X_val)
     mape = mean_absolute_percentage_error(y_val, preds) * 100
     mape_scores.append(mape)
-    print(f"Fold {fold+1} MAPE: {mape:.1f}%")
+    print(f"Fold {fold + 1} MAPE: {mape:.1f}%")
 
 print(f"\nMean MAPE: {np.mean(mape_scores):.1f}%  (Target: <15%)")
 ```
@@ -301,6 +318,7 @@ print(f"\nMean MAPE: {np.mean(mape_scores):.1f}%  (Target: <15%)")
 ```python
 from sklearn.ensemble import IsolationForest
 
+
 def detect_store_anomalies(df: pd.DataFrame) -> pd.DataFrame:
     """
     Detect stores with anomalous behavior using Isolation Forest.
@@ -308,7 +326,8 @@ def detect_store_anomalies(df: pd.DataFrame) -> pd.DataFrame:
     """
     # Aggregate features per store (last 30 days)
     conn = sqlite3.connect("capstone.db")
-    store_features = pd.read_sql("""
+    store_features = pd.read_sql(
+        """
         SELECT
             store_id,
             AVG(revenue) AS avg_daily_revenue,
@@ -319,11 +338,14 @@ def detect_store_anomalies(df: pd.DataFrame) -> pd.DataFrame:
         WHERE date >= date('now', '-30 days')
         GROUP BY store_id
         HAVING COUNT(*) >= 20
-    """, conn)
+    """,
+        conn,
+    )
     conn.close()
 
     # Normalize features
     from sklearn.preprocessing import StandardScaler
+
     scaler = StandardScaler()
     feature_cols = ["avg_daily_revenue", "revenue_std", "returns_rate"]
     X = scaler.fit_transform(store_features[feature_cols].fillna(0))
@@ -333,7 +355,9 @@ def detect_store_anomalies(df: pd.DataFrame) -> pd.DataFrame:
     store_features["anomaly_score"] = clf.fit_predict(X)
     store_features["is_anomaly"] = store_features["anomaly_score"] == -1
 
-    anomalous = store_features[store_features["is_anomaly"]].sort_values("avg_daily_revenue")
+    anomalous = store_features[store_features["is_anomaly"]].sort_values(
+        "avg_daily_revenue"
+    )
     print(f"Found {len(anomalous)} anomalous stores:")
     print(anomalous[["store_id", "avg_daily_revenue", "returns_rate"]])
     return anomalous
@@ -347,12 +371,17 @@ def detect_store_anomalies(df: pd.DataFrame) -> pd.DataFrame:
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
+
 def build_executive_dashboard(kpi_df, forecast_df, anomalies_df):
     """Build a multi-panel executive dashboard."""
 
     fig = plt.figure(figsize=(20, 16))
-    fig.suptitle("Nexus Retail — Analytics Intelligence Dashboard",
-                 fontsize=20, fontweight='bold', y=0.98)
+    fig.suptitle(
+        "Nexus Retail — Analytics Intelligence Dashboard",
+        fontsize=20,
+        fontweight="bold",
+        y=0.98,
+    )
 
     gs = gridspec.GridSpec(3, 3, figure=fig, hspace=0.4, wspace=0.3)
 
@@ -362,7 +391,7 @@ def build_executive_dashboard(kpi_df, forecast_df, anomalies_df):
         ax1.plot(data["year_month"], data["revenue"] / 1e6, label=region, linewidth=2)
     ax1.set_title("Monthly Revenue by Region (₹M)")
     ax1.legend()
-    ax1.tick_params(axis='x', rotation=45)
+    ax1.tick_params(axis="x", rotation=45)
 
     # Panel 2: Top store performance
     ax2 = fig.add_subplot(gs[0, 2])
@@ -379,6 +408,7 @@ def build_executive_dashboard(kpi_df, forecast_df, anomalies_df):
     plt.savefig("capstone_dashboard.png", dpi=150, bbox_inches="tight")
     print("Dashboard saved: capstone_dashboard.png")
     return fig
+
 
 build_executive_dashboard(kpi_data, pd.DataFrame(), detect_store_anomalies(df))
 ```

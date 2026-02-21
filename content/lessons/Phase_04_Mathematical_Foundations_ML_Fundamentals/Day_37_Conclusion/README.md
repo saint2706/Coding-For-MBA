@@ -57,19 +57,19 @@ NumPy is the backbone of all Python data science. Machine learning libraries lik
 import numpy as np
 
 # Array creation - the building blocks
-arr = np.array([1, 2, 3, 4, 5])              # From list
-zeros = np.zeros((3, 4))                      # 3x4 matrix of zeros
-ones = np.ones((2, 3))                        # 2x3 matrix of ones
-identity = np.eye(3)                          # 3x3 identity matrix
-random = np.random.randn(100)                 # 100 random normal values
-linspace = np.linspace(0, 10, 50)             # 50 evenly spaced from 0 to 10
-arange = np.arange(0, 10, 0.5)                # Step by 0.5
+arr = np.array([1, 2, 3, 4, 5])  # From list
+zeros = np.zeros((3, 4))  # 3x4 matrix of zeros
+ones = np.ones((2, 3))  # 2x3 matrix of ones
+identity = np.eye(3)  # 3x3 identity matrix
+random = np.random.randn(100)  # 100 random normal values
+linspace = np.linspace(0, 10, 50)  # 50 evenly spaced from 0 to 10
+arange = np.arange(0, 10, 0.5)  # Step by 0.5
 
 # Vectorized operations - why NumPy is fast
 arr = np.array([1, 2, 3, 4, 5])
-print(arr * 2)          # [2, 4, 6, 8, 10] - element-wise
-print(arr ** 2)         # [1, 4, 9, 16, 25] - element-wise
-print(arr + arr)        # [2, 4, 6, 8, 10] - element-wise
+print(arr * 2)  # [2, 4, 6, 8, 10] - element-wise
+print(arr**2)  # [1, 4, 9, 16, 25] - element-wise
+print(arr + arr)  # [2, 4, 6, 8, 10] - element-wise
 
 # Statistics - essential for ML
 print(f"Mean: {arr.mean()}")
@@ -79,14 +79,14 @@ print(f"Min:  {arr.min()}, Max: {arr.max()}")
 
 # Boolean indexing - filtering data
 data = np.array([10, 25, 5, 30, 15])
-print(data[data > 15])      # [25, 30] - only values > 15
+print(data[data > 15])  # [25, 30] - only values > 15
 print(data[data % 2 == 0])  # [10, 30] - only even values
 
 # Reshaping - critical for ML input formats
 flat = np.arange(12)
-matrix = flat.reshape(3, 4)     # 3 rows, 4 columns
-print(matrix.shape)              # (3, 4)
-print(matrix.T.shape)            # (4, 3) - transpose
+matrix = flat.reshape(3, 4)  # 3 rows, 4 columns
+print(matrix.shape)  # (3, 4)
+print(matrix.T.shape)  # (4, 3) - transpose
 
 # Broadcasting - NumPy's superpower
 matrix = np.array([[1, 2], [3, 4], [5, 6]])  # 3x2
@@ -105,43 +105,46 @@ import pandas as pd
 df = pd.read_csv("data.csv")
 
 # First look - always do this
-print(df.head())              # First 5 rows
-print(df.info())              # Data types, missing values
-print(df.describe())          # Statistics for numeric columns
-print(df.shape)               # (rows, columns)
-print(df.columns.tolist())    # Column names
+print(df.head())  # First 5 rows
+print(df.info())  # Data types, missing values
+print(df.describe())  # Statistics for numeric columns
+print(df.shape)  # (rows, columns)
+print(df.columns.tolist())  # Column names
 
 # Selection - accessing data
-df["column"]                  # Single column (Series)
-df[["col1", "col2"]]          # Multiple columns (DataFrame)
-df.loc[0]                     # Row by label
-df.iloc[0]                    # Row by position
-df.loc[0:5, "column"]         # Slice rows, specific column
+df["column"]  # Single column (Series)
+df[["col1", "col2"]]  # Multiple columns (DataFrame)
+df.loc[0]  # Row by label
+df.iloc[0]  # Row by position
+df.loc[0:5, "column"]  # Slice rows, specific column
 
 # Filtering - subset by condition
-df[df["age"] > 30]                          # Age over 30
+df[df["age"] > 30]  # Age over 30
 df[(df["age"] > 30) & (df["city"] == "NYC")]  # Multiple conditions
-df[df["category"].isin(["A", "B"])]         # In a list
-df[df["name"].str.contains("John")]         # String matching
+df[df["category"].isin(["A", "B"])]  # In a list
+df[df["name"].str.contains("John")]  # String matching
 
 # Aggregation - computing statistics
-df.groupby("category")["sales"].mean()      # Mean sales per category
-df.groupby("category").agg({
-    "sales": "sum",
-    "quantity": "mean",
-    "customer_id": "nunique"                # Unique count
-})
+df.groupby("category")["sales"].mean()  # Mean sales per category
+df.groupby("category").agg(
+    {
+        "sales": "sum",
+        "quantity": "mean",
+        "customer_id": "nunique",  # Unique count
+    }
+)
 
 # Creating new columns
 df["revenue"] = df["price"] * df["quantity"]
 df["year"] = pd.to_datetime(df["date"]).dt.year
-df["age_group"] = pd.cut(df["age"], bins=[0, 18, 35, 50, 100], 
-                         labels=["child", "young", "middle", "senior"])
+df["age_group"] = pd.cut(
+    df["age"], bins=[0, 18, 35, 50, 100], labels=["child", "young", "middle", "senior"]
+)
 
 # Handling missing values
-df.isnull().sum()                           # Count missing per column
-df.dropna(subset=["critical_column"])       # Drop rows with missing
-df.fillna({"age": df["age"].mean()})        # Fill with mean
+df.isnull().sum()  # Count missing per column
+df.dropna(subset=["critical_column"])  # Drop rows with missing
+df.fillna({"age": df["age"].mean()})  # Fill with mean
 ```
 
 ### Visualization Essentials: Seeing Patterns
@@ -153,7 +156,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Set style
-plt.style.use('seaborn-v0_8-whitegrid')
+plt.style.use("seaborn-v0_8-whitegrid")
 
 # Scatter plot - relationship between two variables
 plt.figure(figsize=(10, 6))
@@ -231,8 +234,8 @@ print(df.memory_usage(deep=True).sum() / 1e6, "MB")
 
 # Optimize dtypes
 df["category"] = df["category"].astype("category")  # String → Category
-df["count"] = df["count"].astype("int32")           # int64 → int32
-df["price"] = df["price"].astype("float32")         # float64 → float32
+df["count"] = df["count"].astype("int32")  # int64 → int32
+df["price"] = df["price"].astype("float32")  # float64 → float32
 
 # For very large files, read in chunks
 chunk_size = 10_000
@@ -288,14 +291,16 @@ import numpy as np
 np.random.seed(42)
 n = 200
 
-df = pd.DataFrame({
-    "customer_id": range(1, n + 1),
-    "age": np.random.randint(18, 70, n),
-    "income": np.random.normal(60000, 20000, n).round(2),
-    "spending": np.random.normal(1000, 500, n).round(2),
-    "category": np.random.choice(["Gold", "Silver", "Bronze"], n),
-    "signup_date": pd.date_range("2020-01-01", periods=n, freq="D")
-})
+df = pd.DataFrame(
+    {
+        "customer_id": range(1, n + 1),
+        "age": np.random.randint(18, 70, n),
+        "income": np.random.normal(60000, 20000, n).round(2),
+        "spending": np.random.normal(1000, 500, n).round(2),
+        "category": np.random.choice(["Gold", "Silver", "Bronze"], n),
+        "signup_date": pd.date_range("2020-01-01", periods=n, freq="D"),
+    }
+)
 df.loc[0:10, "income"] = np.nan  # Add some missing values
 
 # Task: Explore and prepare this dataset
@@ -311,19 +316,26 @@ df["income"] = df.groupby("category")["income"].transform(
 )
 
 # 3. Create derived features
-df["age_group"] = pd.cut(df["age"], bins=[0, 30, 50, 100], 
-                         labels=["Young", "Middle", "Senior"])
+df["age_group"] = pd.cut(
+    df["age"], bins=[0, 30, 50, 100], labels=["Young", "Middle", "Senior"]
+)
 df["spending_ratio"] = df["spending"] / df["income"]
 df["signup_year"] = df["signup_date"].dt.year
 df["signup_month"] = df["signup_date"].dt.month
 
 # 4. Aggregation
-category_summary = df.groupby("category").agg({
-    "customer_id": "count",
-    "income": "mean",
-    "spending": "mean",
-    "spending_ratio": "mean"
-}).rename(columns={"customer_id": "count"})
+category_summary = (
+    df.groupby("category")
+    .agg(
+        {
+            "customer_id": "count",
+            "income": "mean",
+            "spending": "mean",
+            "spending_ratio": "mean",
+        }
+    )
+    .rename(columns={"customer_id": "count"})
+)
 
 print("\nCategory Summary:")
 print(category_summary.round(2))
@@ -346,23 +358,25 @@ import matplotlib.pyplot as plt
 np.random.seed(42)
 n = 500
 
-df = pd.DataFrame({
-    "age": np.random.randint(18, 65, n),
-    "income": np.random.normal(55000, 15000, n),
-    "website_visits": np.random.poisson(10, n),
-    "email_clicks": np.random.poisson(5, n),
-    "is_member": np.random.choice([0, 1], n, p=[0.7, 0.3])
-})
+df = pd.DataFrame(
+    {
+        "age": np.random.randint(18, 65, n),
+        "income": np.random.normal(55000, 15000, n),
+        "website_visits": np.random.poisson(10, n),
+        "email_clicks": np.random.poisson(5, n),
+        "is_member": np.random.choice([0, 1], n, p=[0.7, 0.3]),
+    }
+)
 
 # Target: purchase_amount influenced by features
 df["purchase_amount"] = (
-    50 + 
-    0.5 * df["age"] +
-    0.001 * df["income"] +
-    10 * df["website_visits"] +
-    15 * df["email_clicks"] +
-    50 * df["is_member"] +
-    np.random.normal(0, 30, n)
+    50
+    + 0.5 * df["age"]
+    + 0.001 * df["income"]
+    + 10 * df["website_visits"]
+    + 15 * df["email_clicks"]
+    + 50 * df["is_member"]
+    + np.random.normal(0, 30, n)
 )
 
 # Task: Prepare for ML
@@ -408,7 +422,7 @@ What is the output of this code?
 
 ```python
 a = np.array([[1], [2], [3]])  # Shape (3, 1)
-b = np.array([10, 20, 30])     # Shape (3,)
+b = np.array([10, 20, 30])  # Shape (3,)
 print(a + b)
 ```
 
@@ -445,7 +459,9 @@ df.groupby("department")["salary"].transform("mean")
 This is useful for creating features like "salary relative to department average":
 
 ```python
-df["salary_vs_dept_avg"] = df["salary"] / df.groupby("department")["salary"].transform("mean")
+df["salary_vs_dept_avg"] = df["salary"] / df.groupby("department")["salary"].transform(
+    "mean"
+)
 ```
 
 Unlike `groupby().mean()` which returns one value per group, `transform()` returns values aligned with the original index.

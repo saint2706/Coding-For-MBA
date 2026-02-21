@@ -230,9 +230,11 @@ By the end of Phase 5, you should be able to:
 ```python
 # Hugging Face ecosystem
 from transformers import (
-    BertTokenizer, BertForSequenceClassification,  # Understanding
-    GPT2LMHeadModel, GPT2Tokenizer,  # Generation
-    pipeline  # One-line inference
+    BertTokenizer,
+    BertForSequenceClassification,  # Understanding
+    GPT2LMHeadModel,
+    GPT2Tokenizer,  # Generation
+    pipeline,  # One-line inference
 )
 
 # Your skills:

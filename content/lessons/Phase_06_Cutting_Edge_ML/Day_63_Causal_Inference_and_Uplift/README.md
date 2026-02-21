@@ -135,12 +135,13 @@ Alcohol -> Headache
 def causal_mechanism(alcohol_consumed):
     shoes_on = False
     headache = False
-    
+
     if alcohol_consumed > 5:
-        shoes_on = True # Too drunk to take them off
-        headache = True # Hangover
-        
+        shoes_on = True  # Too drunk to take them off
+        headache = True  # Hangover
+
     return shoes_on, headache
+
 
 # Simulation
 print(causal_mechanism(6))
@@ -218,6 +219,7 @@ Total: A=0.95, B=0.45
 ```python
 def get_uplift(prob_treat, prob_ctrl):
     return prob_treat - prob_ctrl
+
 
 # Customer X (Sure Thing / Persuadable mix)
 uplift_X = get_uplift(0.80, 0.70)

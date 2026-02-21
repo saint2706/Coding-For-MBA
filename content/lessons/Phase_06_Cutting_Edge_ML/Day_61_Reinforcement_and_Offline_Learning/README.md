@@ -187,45 +187,53 @@ import numpy as np
 import random
 
 # Setup
-states = 4 # 0, 1, 2, 3
-actions = 2 # 0: Left, 1: Right
-Q = np.zeros((states, actions)) # The "Cheat Sheet"
+states = 4  # 0, 1, 2, 3
+actions = 2  # 0: Left, 1: Right
+Q = np.zeros((states, actions))  # The "Cheat Sheet"
 
-alpha = 0.1   # Learning rate
-gamma = 0.9   # Discount factor
-epsilon = 0.1 # Exploration rate
+alpha = 0.1  # Learning rate
+gamma = 0.9  # Discount factor
+epsilon = 0.1  # Exploration rate
+
 
 # Simulation of the world
 def get_next_step(state, action):
-    if action == 0: next_state = max(0, state - 1) # Move Left
-    else: next_state = min(states - 1, state + 1)  # Move Right
-    
+    if action == 0:
+        next_state = max(0, state - 1)  # Move Left
+    else:
+        next_state = min(states - 1, state + 1)  # Move Right
+
     # Rewards
-    if next_state == 3: return next_state, 100, True  # Use index 3 for Treasure
-    if next_state == 2: return next_state, -100, True # Use index 2 for Spike
-    return next_state, -1, False                     # Step cost
+    if next_state == 3:
+        return next_state, 100, True  # Use index 3 for Treasure
+    if next_state == 2:
+        return next_state, -100, True  # Use index 2 for Spike
+    return next_state, -1, False  # Step cost
+
 
 # Training Loop
 for episode in range(500):
-    state = 0 # Start at left
+    state = 0  # Start at left
     done = False
-    
+
     while not done:
         # 1. Epsilon-Greedy Action Selection
         if random.uniform(0, 1) < epsilon:
-            action = random.choice([0, 1]) # Explore
+            action = random.choice([0, 1])  # Explore
         else:
-            action = np.argmax(Q[state])   # Exploit
-            
+            action = np.argmax(Q[state])  # Exploit
+
         # 2. Take Action
         next_state, reward, done = get_next_step(state, action)
-        
+
         # 3. Update Q-Table (CRITICAL STEP)
         # YOUR CODE HERE
         # Q[state, action] = ...
         best_next_action = np.max(Q[next_state])
-        Q[state, action] = Q[state, action] + alpha * (reward + gamma * best_next_action - Q[state, action])
-        
+        Q[state, action] = Q[state, action] + alpha * (
+            reward + gamma * best_next_action - Q[state, action]
+        )
+
         state = next_state
 
 print("Final Q-Table Values:")
@@ -256,11 +264,14 @@ for i, row in enumerate(Q):
 ```python
 # Revised function for success
 def get_next_step(state, action):
-    if action == 0: next_state = max(0, state - 1) # Left
-    else: next_state = min(states - 1, state + 1)  # Right
-    
-    if next_state == 3: return next_state, 100, True  # Treasure
-    return next_state, -1, False                      # Step Cost
+    if action == 0:
+        next_state = max(0, state - 1)  # Left
+    else:
+        next_state = min(states - 1, state + 1)  # Right
+
+    if next_state == 3:
+        return next_state, 100, True  # Treasure
+    return next_state, -1, False  # Step Cost
 ```
 
 **Expected Output with Revised World**:
@@ -293,31 +304,38 @@ State 3: [0, 0] (Terminal)
 ```python
 def calculate_reward(stock_level, action_order, demand):
     # Constants
-    HOLDING_COST = 2 # per unit
-    PROFIT_MARGIN = 10 # per unit
-    MISSED_SALE_PENALTY = 5 # per unit
-    
+    HOLDING_COST = 2  # per unit
+    PROFIT_MARGIN = 10  # per unit
+    MISSED_SALE_PENALTY = 5  # per unit
+
     # 1. Update Stock
     current_stock = stock_level + action_order
-    
+
     # 2. Sales
     sales = min(current_stock, demand)
     missed_sales = demand - sales
-    
+
     # 3. Remaining Stock
     ending_stock = current_stock - sales
-    
+
     # 4. Calculate components
     revenue = sales * PROFIT_MARGIN
     cost = ending_stock * HOLDING_COST
     penalty = missed_sales * MISSED_SALE_PENALTY
-    
+
     return revenue - cost - penalty
 
+
 # Test it
-print("Scenario 1 (Good):", calculate_reward(10, 20, 30)) # Stock 30, Demand 30. Perfect.
-print("Scenario 2 (Overstock):", calculate_reward(10, 50, 10)) # Stock 60, Demand 10. High holding cost.
-print("Scenario 3 (Understock):", calculate_reward(5, 0, 50)) # Stock 5, Demand 50. High penalty.
+print(
+    "Scenario 1 (Good):", calculate_reward(10, 20, 30)
+)  # Stock 30, Demand 30. Perfect.
+print(
+    "Scenario 2 (Overstock):", calculate_reward(10, 50, 10)
+)  # Stock 60, Demand 10. High holding cost.
+print(
+    "Scenario 3 (Understock):", calculate_reward(5, 0, 50)
+)  # Stock 5, Demand 50. High penalty.
 ```
 
 ---

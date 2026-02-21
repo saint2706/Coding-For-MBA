@@ -309,12 +309,12 @@ GROUP BY 1;
 ```sql
 -- Partition by date (Day 92) — query scans 1 partition, not all 5
 CREATE TABLE orders_2024 PARTITION OF orders
-    FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
+FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');
 
 -- Partial index (Day 94) — only indexes 2024 rows
 CREATE INDEX CONCURRENTLY idx_orders_2024
-    ON orders(created_at, amount)
-    WHERE created_at >= '2024-01-01';
+ON orders (created_at, amount)
+WHERE created_at >= '2024-01-01';
 -- Result: 4 minutes → 80ms
 ```
 
@@ -331,13 +331,13 @@ CREATE INDEX CONCURRENTLY idx_orders_2024
 ```sql
 -- Crypto-shredding: delete the key, not the data (Day 87)
 CREATE TABLE user_encryption_keys (
-    user_id   UUID PRIMARY KEY,
-    key_id    UUID NOT NULL,
+    user_id UUID PRIMARY KEY,
+    key_id UUID NOT NULL,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- GDPR erasure: delete key → data unreadable in <1ms
-CREATE OR REPLACE FUNCTION gdpr_erase_user(p_user_id UUID) RETURNS void AS $$
+CREATE OR REPLACE FUNCTION GDPR_ERASE_USER(p_user_id UUID) RETURNS VOID AS $$
 BEGIN
     INSERT INTO gdpr_audit_log(user_id, action, erased_at)
     VALUES (p_user_id, 'KEY_DELETION', NOW());
@@ -362,13 +362,22 @@ $$ LANGUAGE plpgsql;
 -- ✅ After: single window function pass → 0.4 seconds
 WITH ranked AS (
     SELECT
-        user_id, score,
-        RANK() OVER (PARTITION BY cohort ORDER BY score DESC)          AS rank,
-        PERCENT_RANK() OVER (PARTITION BY cohort ORDER BY score DESC)  AS percentile,
-        score - LAG(score) OVER (PARTITION BY cohort ORDER BY score DESC) AS gap_to_next
-    FROM scores WHERE cohort = 'week-2025-08'
+        user_id,
+        score,
+        RANK() OVER (PARTITION BY cohort ORDER BY score DESC) AS rank,
+        PERCENT_RANK()
+            OVER (PARTITION BY cohort ORDER BY score DESC)
+            AS percentile,
+        score
+        - LAG(score)
+            OVER (PARTITION BY cohort ORDER BY score DESC)
+            AS gap_to_next
+    FROM scores
+    WHERE cohort = 'week-2025-08'
 )
-SELECT * FROM ranked WHERE rank <= 100;
+
+SELECT * FROM ranked
+WHERE rank <= 100;
 -- 45x faster. New percentile feature added with zero extra work.
 ```
 
@@ -403,8 +412,8 @@ CREATE INDEX idx_email_lower ON users(LOWER(email));
 **Fix**: Index every FK on the fact table. Use BRIN for time-ordered facts.
 
 ```sql
-CREATE INDEX idx_fact_product ON fact_sales(product_id);
-CREATE INDEX idx_fact_date ON fact_sales USING BRIN(sale_date);
+CREATE INDEX idx_fact_product ON fact_sales (product_id);
+CREATE INDEX idx_fact_date ON fact_sales USING brin (sale_date);
 ```
 
 ### Pitfall 4: "More indexes = slower writes"

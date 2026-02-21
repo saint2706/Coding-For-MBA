@@ -191,11 +191,7 @@ for i in range(1, 4):
     print("---")
 
 # Processing 2D data
-matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
 for row in matrix:
     for value in row:
@@ -300,7 +296,7 @@ for month, amount in sales_data:
 
 print("-" * 30)
 print(f"{'TOTAL':12} ${total:>10,}")
-print(f"{'AVERAGE':12} ${total/len(sales_data):>10,.0f}")
+print(f"{'AVERAGE':12} ${total / len(sales_data):>10,.0f}")
 ```
 
 ---
@@ -313,10 +309,11 @@ print(f"{'AVERAGE':12} ${total/len(sales_data):>10,.0f}")
 def is_prime(n):
     if n < 2:
         return False
-    for i in range(2, int(n ** 0.5) + 1):
+    for i in range(2, int(n**0.5) + 1):
         if n % i == 0:
             return False
     return True
+
 
 # Find primes up to 50
 limit = 50
@@ -348,6 +345,7 @@ def validate_password(password):
         return False, "Needs a digit"
     return True, "Valid"
 
+
 # Simulation with max 3 attempts
 passwords_to_try = ["pass", "Password", "Password123"]
 max_attempts = 3
@@ -355,11 +353,11 @@ max_attempts = 3
 for attempt, pwd in enumerate(passwords_to_try, 1):
     valid, message = validate_password(pwd)
     print(f"Attempt {attempt}: '{pwd}' → {message}")
-    
+
     if valid:
         print("✅ Login successful!")
         break
-    
+
     if attempt == max_attempts:
         print("❌ Account locked - too many attempts")
 ```
@@ -494,18 +492,19 @@ for i, word in enumerate(words):
 ```python
 def batch_processor(queue):
     processed = 0
-    
+
     for item in queue:
         if item == "ERROR":
             print(f"⚠️ Error encountered. Stopping.")
             break
-        
+
         print(f"Processing: {item}")
         processed += 1
     else:
         print("✅ All items processed successfully")
-    
+
     return processed
+
 
 # Test
 test_queue = ["item1", "item2", "item3", "ERROR", "item4"]

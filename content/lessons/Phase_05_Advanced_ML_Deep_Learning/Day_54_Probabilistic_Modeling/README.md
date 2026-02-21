@@ -93,7 +93,9 @@ import numpy as np
 iris = load_iris()
 X, y = iris.data, iris.target
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Assumes features follow Gaussian (normal) distribution
 gnb = GaussianNB()
@@ -114,8 +116,8 @@ for i in range(5):
     print(f"  Class probabilities: {y_proba[i]}")
 
 # Example 2: Multinomial Naive Bayes (count features, e.g., text)
-categories = ['alt.atheism', 'soc.religion.christian']
-newsgroups = fetch_20newsgroups(subset='train', categories=categories, random_state=42)
+categories = ["alt.atheism", "soc.religion.christian"]
+newsgroups = fetch_20newsgroups(subset="train", categories=categories, random_state=42)
 
 vectorizer = CountVectorizer()
 X_text = vectorizer.fit_transform(newsgroups.data)
@@ -157,8 +159,13 @@ import matplotlib.pyplot as plt
 
 # Generate data
 from sklearn.datasets import make_classification
-X, y = make_classification(n_samples=10000, n_features=20, n_informative=15, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+X, y = make_classification(
+    n_samples=10000, n_features=20, n_informative=15, random_state=42
+)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Train uncalibrated models
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -168,19 +175,19 @@ svm = SVC(probability=True, random_state=42)
 svm.fit(X_train, y_train)
 
 # Calibrate models
-rf_calibrated = CalibratedClassifierCV(rf, method='isotonic', cv=5)
+rf_calibrated = CalibratedClassifierCV(rf, method="isotonic", cv=5)
 rf_calibrated.fit(X_train, y_train)
 
-svm_calibrated = CalibratedClassifierCV(svm, method='sigmoid', cv=5)
+svm_calibrated = CalibratedClassifierCV(svm, method="sigmoid", cv=5)
 svm_calibrated.fit(X_train, y_train)
 
 # Compare calibration
 models = {
-    'Random Forest (uncalibrated)': rf,
-    'Random Forest (calibrated)': rf_calibrated,
-    'SVM (uncalibrated)': svm,
-    'SVM (calibrated)': svm_calibrated,
-    'Naive Bayes (naturally calibrated)': GaussianNB().fit(X_train, y_train)
+    "Random Forest (uncalibrated)": rf,
+    "Random Forest (calibrated)": rf_calibrated,
+    "SVM (uncalibrated)": svm,
+    "SVM (calibrated)": svm_calibrated,
+    "Naive Bayes (naturally calibrated)": GaussianNB().fit(X_train, y_train),
 }
 
 fig, axes = plt.subplots(2, 3, figsize=(15, 10))
@@ -188,16 +195,18 @@ axes = axes.flatten()
 
 for idx, (name, model) in enumerate(models.items()):
     y_proba = model.predict_proba(X_test)[:, 1]
-    
+
     # Calibration curve
     fraction_of_positives, mean_predicted_value = calibration_curve(
-        y_test, y_proba, n_bins=10, strategy='uniform'
+        y_test, y_proba, n_bins=10, strategy="uniform"
     )
-    
-    axes[idx].plot(mean_predicted_value, fraction_of_positives, marker='o', label='Model')
-    axes[idx].plot([0, 1], [0, 1], linestyle='--', label='Perfect Calibration')
-    axes[idx].set_xlabel('Mean Predicted Probability')
-    axes[idx].set_ylabel('Fraction of Positives')
+
+    axes[idx].plot(
+        mean_predicted_value, fraction_of_positives, marker="o", label="Model"
+    )
+    axes[idx].plot([0, 1], [0, 1], linestyle="--", label="Perfect Calibration")
+    axes[idx].set_xlabel("Mean Predicted Probability")
+    axes[idx].set_ylabel("Fraction of Positives")
     axes[idx].set_title(name)
     axes[idx].legend()
     axes[idx].grid(True, alpha=0.3)
@@ -233,50 +242,57 @@ y_data = 2 * x_data + 1 + np.random.randn(100) * 0.5
 # Bayesian linear regression
 with pm.Model() as bayesian_model:
     # Priors
-    intercept = pm.Normal('intercept', mu=0, sigma=10)
-    slope = pm.Normal('slope', mu=0, sigma=10)
-    sigma = pm.HalfNormal('sigma', sigma=1)
-    
+    intercept = pm.Normal("intercept", mu=0, sigma=10)
+    slope = pm.Normal("slope", mu=0, sigma=10)
+    sigma = pm.HalfNormal("sigma", sigma=1)
+
     # Linear model
     mu = intercept + slope * x_data
-    
+
     # Likelihood
-    y_obs = pm.Normal('y_obs', mu=mu, sigma=sigma, observed=y_data)
-    
+    y_obs = pm.Normal("y_obs", mu=mu, sigma=sigma, observed=y_data)
+
     # Inference
     trace = pm.sample(2000, return_inferencedata=True, random_seed=42)
 
 # Results
 print("=== Bayesian Linear Regression ===")
-print(az.summary(trace, var_names=['intercept', 'slope', 'sigma']))
+print(az.summary(trace, var_names=["intercept", "slope", "sigma"]))
 
 # Visualize posterior distributions
-az.plot_posterior(trace, var_names=['intercept', 'slope'])
+az.plot_posterior(trace, var_names=["intercept", "slope"])
 plt.tight_layout()
 plt.show()
 
 # Uncertainty in predictions
 with bayesian_model:
     x_new = np.linspace(-3, 3, 100)
-    pm.set_data({'x': x_new})
-    posterior_predictive = pm.sample_posterior_predictive(trace, var_names=['y_obs'])
+    pm.set_data({"x": x_new})
+    posterior_predictive = pm.sample_posterior_predictive(trace, var_names=["y_obs"])
 
 # Plot with uncertainty bands
 plt.figure(figsize=(10, 6))
-plt.scatter(x_data, y_data, alpha=0.5, label='Data')
+plt.scatter(x_data, y_data, alpha=0.5, label="Data")
 
 # Mean prediction
-y_pred_mean = posterior_predictive.posterior_predictive['y_obs'].mean(dim=['chain', 'draw'])
-plt.plot(x_new, y_pred_mean, 'r-', label='Mean Prediction')
+y_pred_mean = posterior_predictive.posterior_predictive["y_obs"].mean(
+    dim=["chain", "draw"]
+)
+plt.plot(x_new, y_pred_mean, "r-", label="Mean Prediction")
 
 # 95% credible interval
-y_pred_hdi = az.hdi(posterior_predictive.posterior_predictive['y_obs'], hdi_prob=0.95)
-plt.fill_between(x_new, y_pred_hdi['y_obs'][:, 0], y_pred_hdi['y_obs'][:, 1], 
-                 alpha=0.3, label='95% Credible Interval')
+y_pred_hdi = az.hdi(posterior_predictive.posterior_predictive["y_obs"], hdi_prob=0.95)
+plt.fill_between(
+    x_new,
+    y_pred_hdi["y_obs"][:, 0],
+    y_pred_hdi["y_obs"][:, 1],
+    alpha=0.3,
+    label="95% Credible Interval",
+)
 
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Bayesian Linear Regression with Uncertainty')
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Bayesian Linear Regression with Uncertainty")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
@@ -308,14 +324,21 @@ y_pred, sigma = gp.predict(X_test_dense, return_std=True)
 
 # Plot
 plt.figure(figsize=(12, 6))
-plt.scatter(X_train_sparse, y_train_sparse, c='r', s=100, zorder=10, label='Training Data')
-plt.plot(X_test_dense, y_pred, 'b-', label='GP Mean Prediction')
-plt.fill_between(X_test_dense.ravel(), y_pred - 1.96*sigma, y_pred + 1.96*sigma,
-                 alpha=0.3, label='95% Confidence Interval')
-plt.plot(X_test_dense, np.sin(X_test_dense), 'k--', alpha=0.5, label='True Function')
-plt.xlabel('x')
-plt.ylabel('y')
-plt.title('Gaussian Process Regression with Uncertainty')
+plt.scatter(
+    X_train_sparse, y_train_sparse, c="r", s=100, zorder=10, label="Training Data"
+)
+plt.plot(X_test_dense, y_pred, "b-", label="GP Mean Prediction")
+plt.fill_between(
+    X_test_dense.ravel(),
+    y_pred - 1.96 * sigma,
+    y_pred + 1.96 * sigma,
+    alpha=0.3,
+    label="95% Confidence Interval",
+)
+plt.plot(X_test_dense, np.sin(X_test_dense), "k--", alpha=0.5, label="True Function")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.title("Gaussian Process Regression with Uncertainty")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
@@ -344,13 +367,13 @@ print(f"Learned kernel: {gp.kernel_}")
 # - Makes no assumptions about probability distribution
 # - Can overfit on small datasets
 # - Use when: n > 1000 samples
-CalibratedClassifierCV(model, method='isotonic', cv=5)
+CalibratedClassifierCV(model, method="isotonic", cv=5)
 
 # Platt scaling (parametric sigmoid)
 # - Assumes logistic relationship
 # - More stable on small datasets
 # - Use when: n < 1000 samples
-CalibratedClassifierCV(model, method='sigmoid', cv=5)
+CalibratedClassifierCV(model, method="sigmoid", cv=5)
 ```
 
 ### Naive Bayes Assumptions
@@ -395,15 +418,21 @@ from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 
 # Load spam/ham-like categories
-categories = ['rec.sport.baseball', 'sci.space']
-newsgroups_train = fetch_20newsgroups(subset='train', categories=categories, random_state=42)
-newsgroups_test = fetch_20newsgroups(subset='test', categories=categories, random_state=42)
+categories = ["rec.sport.baseball", "sci.space"]
+newsgroups_train = fetch_20newsgroups(
+    subset="train", categories=categories, random_state=42
+)
+newsgroups_test = fetch_20newsgroups(
+    subset="test", categories=categories, random_state=42
+)
 
 # Build pipeline
-text_clf = Pipeline([
-    ('tfidf', TfidfVectorizer(max_features=5000, stop_words='english')),
-    ('clf', MultinomialNB(alpha=0.1))
-])
+text_clf = Pipeline(
+    [
+        ("tfidf", TfidfVectorizer(max_features=5000, stop_words="english")),
+        ("clf", MultinomialNB(alpha=0.1)),
+    ]
+)
 
 # Train
 text_clf.fit(newsgroups_train.data, newsgroups_train.target)
@@ -418,14 +447,23 @@ print(classification_report(newsgroups_test.target, y_pred, target_names=categor
 # Confusion matrix
 cm = confusion_matrix(newsgroups_test.target, y_pred)
 plt.figure(figsize=(8, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=categories, yticklabels=categories)
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Confusion Matrix')
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=categories,
+    yticklabels=categories,
+)
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix")
 plt.show()
 
 # Show uncertain predictions
-uncertain_indices = np.where((y_proba.max(axis=1) < 0.7) & (y_proba.max(axis=1) > 0.3))[0]
+uncertain_indices = np.where((y_proba.max(axis=1) < 0.7) & (y_proba.max(axis=1) > 0.3))[
+    0
+]
 print(f"\n=== Uncertain Predictions (30-70% confidence) ===")
 print(f"Found {len(uncertain_indices)} uncertain samples")
 for idx in uncertain_indices[:3]:
@@ -444,15 +482,19 @@ from sklearn.calibration import CalibratedClassifierCV, calibration_curve
 from sklearn.metrics import brier_score_loss, log_loss
 
 # Generate imbalanced data (realistic for fraud detection)
-X, y = make_classification(n_samples=10000, n_features=20, weights=[0.95, 0.05], random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y, random_state=42)
+X, y = make_classification(
+    n_samples=10000, n_features=20, weights=[0.95, 0.05], random_state=42
+)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, stratify=y, random_state=42
+)
 
 # Train model
 rf_uncalibrated = RandomForestClassifier(n_estimators=100, random_state=42)
 rf_uncalibrated.fit(X_train, y_train)
 
 # Calibrate
-rf_calibrated = CalibratedClassifierCV(rf_uncalibrated, method='isotonic', cv=5)
+rf_calibrated = CalibratedClassifierCV(rf_uncalibrated, method="isotonic", cv=5)
 rf_calibrated.fit(X_train, y_train)
 
 # Compare probabilities
@@ -469,19 +511,22 @@ print(f"Log Loss (calibrated): {log_loss(y_test, y_proba_calib):.4f}")
 # Reliability diagram
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
 
-for ax, proba, title in [(ax1, y_proba_uncalib, 'Uncalibrated'), 
-                          (ax2, y_proba_calib, 'Calibrated')]:
+for ax, proba, title in [
+    (ax1, y_proba_uncalib, "Uncalibrated"),
+    (ax2, y_proba_calib, "Calibrated"),
+]:
     fraction_pos, mean_pred = calibration_curve(y_test, proba, n_bins=10)
-    ax.plot(mean_pred, fraction_pos, marker='o', label='Model')
-    ax.plot([0, 1], [0, 1], '--', label='Perfect Calibration')
-    ax.set_xlabel('Mean Predicted Probability')
-    ax.set_ylabel('Fraction of Positives')
-    ax.set_title(f'{title} RF')
+    ax.plot(mean_pred, fraction_pos, marker="o", label="Model")
+    ax.plot([0, 1], [0, 1], "--", label="Perfect Calibration")
+    ax.set_xlabel("Mean Predicted Probability")
+    ax.set_ylabel("Fraction of Positives")
+    ax.set_title(f"{title} RF")
     ax.legend()
     ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.show()
+
 
 # Production threshold tuning based on cost
 def expected_cost(threshold, y_true, y_proba, cost_fp=1, cost_fn=10):
@@ -491,16 +536,24 @@ def expected_cost(threshold, y_true, y_proba, cost_fp=1, cost_fn=10):
     fn = np.sum((y_pred == 0) & (y_true == 1))
     return fp * cost_fp + fn * cost_fn
 
+
 thresholds = np.linspace(0.01, 0.99, 100)
-costs = [expected_cost(t, y_test, y_proba_calib, cost_fp=1, cost_fn=50) for t in thresholds]
+costs = [
+    expected_cost(t, y_test, y_proba_calib, cost_fp=1, cost_fn=50) for t in thresholds
+]
 
 plt.figure(figsize=(10, 6))
 plt.plot(thresholds, costs)
 optimal_threshold = thresholds[np.argmin(costs)]
-plt.axvline(optimal_threshold, color='r', linestyle='--', label=f'Optimal: {optimal_threshold:.2f}')
-plt.xlabel('Threshold')
-plt.ylabel('Expected Cost')
-plt.title('Cost-Sensitive Threshold Selection\n(FP cost=1, FN cost=50)')
+plt.axvline(
+    optimal_threshold,
+    color="r",
+    linestyle="--",
+    label=f"Optimal: {optimal_threshold:.2f}",
+)
+plt.xlabel("Threshold")
+plt.ylabel("Expected Cost")
+plt.title("Cost-Sensitive Threshold Selection\n(FP cost=1, FN cost=50)")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
@@ -519,13 +572,17 @@ from sklearn.gaussian_process.kernels import RBF, Matern, RationalQuadratic, Whi
 # Simulate expensive experiment (only 15 data points)
 np.random.seed(42)
 X_sparse = np.random.uniform(-5, 5, 15).reshape(-1, 1)
-y_sparse = np.sin(X_sparse).ravel() + 0.5*np.cos(2*X_sparse).ravel() + np.random.randn(15) * 0.1
+y_sparse = (
+    np.sin(X_sparse).ravel()
+    + 0.5 * np.cos(2 * X_sparse).ravel()
+    + np.random.randn(15) * 0.1
+)
 
 # Try different kernels
 kernels = {
-    'RBF': RBF(length_scale=1.0),
-    'Matern': Matern(length_scale=1.0, nu=1.5),
-    'RationalQuadratic': RationalQuadratic(length_scale=1.0, alpha=0.1),
+    "RBF": RBF(length_scale=1.0),
+    "Matern": Matern(length_scale=1.0, nu=1.5),
+    "RationalQuadratic": RationalQuadratic(length_scale=1.0, alpha=0.1),
 }
 
 X_dense = np.linspace(-7, 7, 500).reshape(-1, 1)
@@ -535,19 +592,24 @@ fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 for ax, (name, kernel) in zip(axes, kernels.items()):
     # Add noise kernel
     full_kernel = kernel + WhiteKernel(noise_level=0.1)
-    
+
     gp = GaussianProcessRegressor(kernel=full_kernel, n_restarts_optimizer=10)
     gp.fit(X_sparse, y_sparse)
-    
+
     y_pred, sigma = gp.predict(X_dense, return_std=True)
-    
-    ax.scatter(X_sparse, y_sparse, c='r', s=50, zorder=10, label='Data')
-    ax.plot(X_dense, y_pred, 'b-', label='GP Mean')
-    ax.fill_between(X_dense.ravel(), y_pred - 2*sigma, y_pred + 2*sigma,
-                     alpha=0.2, label='95% CI')
-    ax.set_title(f'{name} Kernel')
-    ax.set_xlabel('x')
-    ax.set_ylabel('y')
+
+    ax.scatter(X_sparse, y_sparse, c="r", s=50, zorder=10, label="Data")
+    ax.plot(X_dense, y_pred, "b-", label="GP Mean")
+    ax.fill_between(
+        X_dense.ravel(),
+        y_pred - 2 * sigma,
+        y_pred + 2 * sigma,
+        alpha=0.2,
+        label="95% CI",
+    )
+    ax.set_title(f"{name} Kernel")
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
     ax.legend()
     ax.grid(True, alpha=0.3)
 
@@ -869,7 +931,7 @@ import gpytorch
 scenarios = {
     "n < 1000": "Exact GP",
     "1000 < n < 100000": "Sparse GP",
-    "n > 100000": "Deep learning (Bayesian NN) or ensemble"
+    "n > 100000": "Deep learning (Bayesian NN) or ensemble",
 }
 ```
 
@@ -922,6 +984,7 @@ def expected_cost(threshold, y_true, y_proba, cost_fp, cost_fn):
     FP = np.sum((y_pred == 1) & (y_true == 0))
     FN = np.sum((y_pred == 0) & (y_true == 1))
     return FP * cost_fp + FN * cost_fn
+
 
 thresholds = np.linspace(0, 1, 1000)
 costs = [expected_cost(t, y_test, y_proba, 10, 500) for t in thresholds]

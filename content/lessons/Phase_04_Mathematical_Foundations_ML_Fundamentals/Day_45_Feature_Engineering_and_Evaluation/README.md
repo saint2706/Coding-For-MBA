@@ -54,22 +54,24 @@ import pandas as pd
 np.random.seed(42)
 n = 500
 
-data = pd.DataFrame({
-    'transaction_date': pd.date_range('2024-01-01', periods=n, freq='D'),
-    'amount': np.random.exponential(100, n),
-    'tenure_days': np.random.randint(1, 1000, n),
-})
+data = pd.DataFrame(
+    {
+        "transaction_date": pd.date_range("2024-01-01", periods=n, freq="D"),
+        "amount": np.random.exponential(100, n),
+        "tenure_days": np.random.randint(1, 1000, n),
+    }
+)
 
 # Date features
-data['day_of_week'] = data['transaction_date'].dt.dayofweek
-data['month'] = data['transaction_date'].dt.month
-data['is_weekend'] = data['day_of_week'].isin([5, 6]).astype(int)
+data["day_of_week"] = data["transaction_date"].dt.dayofweek
+data["month"] = data["transaction_date"].dt.month
+data["is_weekend"] = data["day_of_week"].isin([5, 6]).astype(int)
 
 # Numeric transformations
-data['log_amount'] = np.log1p(data['amount'])
-data['amount_per_tenure'] = data['amount'] / data['tenure_days']
+data["log_amount"] = np.log1p(data["amount"])
+data["amount_per_tenure"] = data["amount"] / data["tenure_days"]
 
-print(data[['day_of_week', 'is_weekend', 'log_amount']].head())
+print(data[["day_of_week", "is_weekend", "log_amount"]].head())
 ```
 
 ### Encoding Categorical Variables
@@ -77,20 +79,19 @@ print(data[['day_of_week', 'is_weekend', 'log_amount']].head())
 ```python
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, OrdinalEncoder
 
-categories = pd.DataFrame({
-    'color': ['Red', 'Blue', 'Green'],
-    'quality': ['Low', 'Medium', 'High']
-})
+categories = pd.DataFrame(
+    {"color": ["Red", "Blue", "Green"], "quality": ["Low", "Medium", "High"]}
+)
 
 # One-hot for nominal variables
-categories_onehot = pd.get_dummies(categories['color'], prefix='color')
+categories_onehot = pd.get_dummies(categories["color"], prefix="color")
 
 # Ordinal for ordered variables
-oe = OrdinalEncoder(categories=[['Low', 'Medium', 'High']])
-categories['quality_encoded'] = oe.fit_transform(categories[['quality']])
+oe = OrdinalEncoder(categories=[["Low", "Medium", "High"]])
+categories["quality_encoded"] = oe.fit_transform(categories[["quality"]])
 
 print("One-Hot:", categories_onehot.values)
-print("Ordinal:", categories['quality_encoded'].values)
+print("Ordinal:", categories["quality_encoded"].values)
 ```
 
 ### Cross-Validation Strategies
@@ -142,26 +143,28 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.impute import SimpleImputer
 
 # Preprocessing pipelines
-numeric_transformer = Pipeline([
-    ('imputer', SimpleImputer(strategy='median')),
-    ('scaler', StandardScaler())
-])
+numeric_transformer = Pipeline(
+    [("imputer", SimpleImputer(strategy="median")), ("scaler", StandardScaler())]
+)
 
-categorical_transformer = Pipeline([
-    ('imputer', SimpleImputer(strategy='most_frequent')),
-    ('onehot', OneHotEncoder(handle_unknown='ignore'))
-])
+categorical_transformer = Pipeline(
+    [
+        ("imputer", SimpleImputer(strategy="most_frequent")),
+        ("onehot", OneHotEncoder(handle_unknown="ignore")),
+    ]
+)
 
 # Full pipeline with model
-preprocessor = ColumnTransformer([
-    ('num', numeric_transformer, ['age', 'income']),
-    ('cat', categorical_transformer, ['education'])
-])
+preprocessor = ColumnTransformer(
+    [
+        ("num", numeric_transformer, ["age", "income"]),
+        ("cat", categorical_transformer, ["education"]),
+    ]
+)
 
-pipeline = Pipeline([
-    ('preprocessor', preprocessor),
-    ('classifier', RandomForestClassifier())
-])
+pipeline = Pipeline(
+    [("preprocessor", preprocessor), ("classifier", RandomForestClassifier())]
+)
 
 # Cross-validate entire pipeline (no leakage!)
 # cv_scores = cross_val_score(pipeline, df, y, cv=5)
@@ -202,15 +205,17 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 np.random.seed(42)
-df = pd.DataFrame({
-    'age': np.random.randint(18, 70, 500),
-    'income': np.random.exponential(50000, 500),
-    'tenure': np.random.randint(1, 1000, 500),
-})
+df = pd.DataFrame(
+    {
+        "age": np.random.randint(18, 70, 500),
+        "income": np.random.exponential(50000, 500),
+        "tenure": np.random.randint(1, 1000, 500),
+    }
+)
 
 # Engineer features
-df['log_income'] = np.log1p(df['income'])
-df['income_per_year'] = df['income'] / (df['age'] - 17)
+df["log_income"] = np.log1p(df["income"])
+df["income_per_year"] = df["income"] / (df["age"] - 17)
 
 print(df.describe())
 ```
@@ -227,8 +232,8 @@ y = (X[:, 0] > 1).astype(int)  # Imbalanced
 
 model = LogisticRegression()
 
-for cv_name, cv in [('KFold', KFold(5)), ('Stratified', StratifiedKFold(5))]:
-    scores = cross_val_score(model, X, y, cv=cv, scoring='f1')
+for cv_name, cv in [("KFold", KFold(5)), ("Stratified", StratifiedKFold(5))]:
+    scores = cross_val_score(model, X, y, cv=cv, scoring="f1")
     print(f"{cv_name}: {scores.mean():.3f} ± {scores.std():.3f}")
 ```
 
@@ -243,7 +248,7 @@ scaler = StandardScaler()
 X_all = scaler.fit_transform(X)  # Leakage!
 X_train, X_test = X_all[:160], X_all[160:]
 
-# CORRECT  
+# CORRECT
 X_train, X_test = X[:160], X[160:]
 scaler = StandardScaler()
 X_train_s = scaler.fit_transform(X_train)

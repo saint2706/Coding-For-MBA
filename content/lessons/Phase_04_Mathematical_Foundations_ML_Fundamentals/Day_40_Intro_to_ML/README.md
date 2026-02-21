@@ -80,21 +80,35 @@ import pandas as pd
 # Step 1: Prepare your data
 # X = features (what you know)
 # y = target (what you want to predict)
-df = pd.DataFrame({
-    'sqft': [1400, 1600, 1700, 1875, 1100, 1550, 2350, 2450, 1425, 1700],
-    'bedrooms': [3, 3, 2, 4, 2, 3, 4, 4, 3, 3],
-    'price': [245000, 312000, 279000, 308000, 199000, 289000, 349000, 392000, 262000, 299000]
-})
+df = pd.DataFrame(
+    {
+        "sqft": [1400, 1600, 1700, 1875, 1100, 1550, 2350, 2450, 1425, 1700],
+        "bedrooms": [3, 3, 2, 4, 2, 3, 4, 4, 3, 3],
+        "price": [
+            245000,
+            312000,
+            279000,
+            308000,
+            199000,
+            289000,
+            349000,
+            392000,
+            262000,
+            299000,
+        ],
+    }
+)
 
-X = df[['sqft', 'bedrooms']]  # Features
-y = df['price']                # Target
+X = df[["sqft", "bedrooms"]]  # Features
+y = df["price"]  # Target
 
 # Step 2: Split into training and test sets
 # NEVER train and test on the same data!
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, 
-    test_size=0.2,      # 20% for testing
-    random_state=42     # Reproducibility
+    X,
+    y,
+    test_size=0.2,  # 20% for testing
+    random_state=42,  # Reproducibility
 )
 
 print(f"Training samples: {len(X_train)}")
@@ -133,7 +147,7 @@ All Data (100%)
 ```python
 # Common mistake: evaluating on training data
 train_score = model.score(X_train, y_train)  # Overly optimistic!
-test_score = model.score(X_test, y_test)      # Realistic performance
+test_score = model.score(X_test, y_test)  # Realistic performance
 
 print(f"Training score: {train_score:.3f}")
 print(f"Test score: {test_score:.3f}")
@@ -152,7 +166,7 @@ from sklearn.pipeline import make_pipeline
 # Generate data: true relationship is quadratic
 np.random.seed(42)
 X = np.linspace(0, 10, 30).reshape(-1, 1)
-y = 2 + 3*X.squeeze() - 0.5*X.squeeze()**2 + np.random.randn(30)*2
+y = 2 + 3 * X.squeeze() - 0.5 * X.squeeze() ** 2 + np.random.randn(30) * 2
 
 # Fit models of different complexity
 degrees = [1, 4, 15]  # Underfitting, Good fit, Overfitting
@@ -161,16 +175,18 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 for ax, degree in zip(axes, degrees):
     model = make_pipeline(PolynomialFeatures(degree), LinearRegression())
     model.fit(X, y)
-    
+
     # Plot
     X_plot = np.linspace(0, 10, 100).reshape(-1, 1)
     y_plot = model.predict(X_plot)
-    
-    ax.scatter(X, y, alpha=0.7, label='Data')
-    ax.plot(X_plot, y_plot, 'r-', linewidth=2, label=f'Degree {degree}')
-    ax.set_title(f'Degree {degree}: {"Underfit" if degree==1 else "Good fit" if degree==4 else "Overfit"}')
-    ax.set_xlabel('X')
-    ax.set_ylabel('y')
+
+    ax.scatter(X, y, alpha=0.7, label="Data")
+    ax.plot(X_plot, y_plot, "r-", linewidth=2, label=f"Degree {degree}")
+    ax.set_title(
+        f"Degree {degree}: {'Underfit' if degree == 1 else 'Good fit' if degree == 4 else 'Overfit'}"
+    )
+    ax.set_xlabel("X")
+    ax.set_ylabel("y")
     ax.legend()
     ax.set_ylim(-20, 30)
 
@@ -194,10 +210,11 @@ from sklearn.linear_model import LinearRegression
 # 5-fold cross-validation
 # Splits data into 5 parts, trains on 4, tests on 1, rotates
 scores = cross_val_score(
-    LinearRegression(), 
-    X, y, 
-    cv=5,                    # 5 folds
-    scoring='neg_mean_squared_error'  # Negative because sklearn maximizes
+    LinearRegression(),
+    X,
+    y,
+    cv=5,  # 5 folds
+    scoring="neg_mean_squared_error",  # Negative because sklearn maximizes
 )
 
 rmse_scores = np.sqrt(-scores)
@@ -296,15 +313,18 @@ print(f"F1 Score: {f1:.2%}")
 ```python
 # 1. Stratified split for classification (maintain class ratios)
 from sklearn.model_selection import train_test_split
+
 X_train, X_test, y_train, y_test = train_test_split(
-    X, y, 
-    test_size=0.2, 
+    X,
+    y,
+    test_size=0.2,
     stratify=y,  # Maintain class balance
-    random_state=42
+    random_state=42,
 )
 
 # 2. Time-series split (preserve temporal order)
 from sklearn.model_selection import TimeSeriesSplit
+
 tscv = TimeSeriesSplit(n_splits=5)
 for train_idx, test_idx in tscv.split(X):
     X_train, X_test = X[train_idx], X[test_idx]
@@ -312,7 +332,8 @@ for train_idx, test_idx in tscv.split(X):
 
 # 3. Group split (keep related samples together)
 from sklearn.model_selection import GroupKFold
-groups = df['customer_id']  # Keep all transactions from same customer together
+
+groups = df["customer_id"]  # Keep all transactions from same customer together
 gkf = GroupKFold(n_splits=5)
 for train_idx, test_idx in gkf.split(X, y, groups):
     # Customer in train won't appear in test
@@ -362,11 +383,11 @@ for k in k_values:
 
 # Plot K vs accuracy
 plt.figure(figsize=(10, 5))
-plt.plot(k_values, train_scores, 'b-', label='Training accuracy')
-plt.plot(k_values, test_scores, 'r-', label='Test accuracy')
-plt.xlabel('K (number of neighbors)')
-plt.ylabel('Accuracy')
-plt.title('K-NN: Finding Optimal K')
+plt.plot(k_values, train_scores, "b-", label="Training accuracy")
+plt.plot(k_values, test_scores, "r-", label="Test accuracy")
+plt.xlabel("K (number of neighbors)")
+plt.ylabel("Accuracy")
+plt.title("K-NN: Finding Optimal K")
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
@@ -390,11 +411,17 @@ print(classification_report(y_test, y_pred, target_names=target_names))
 # Confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 plt.figure(figsize=(8, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
-            xticklabels=target_names, yticklabels=target_names)
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Confusion Matrix')
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=target_names,
+    yticklabels=target_names,
+)
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix")
 plt.show()
 ```
 
@@ -421,28 +448,40 @@ fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
 for ax, degree in zip(axes, [1, 3, 10]):
     model = make_pipeline(PolynomialFeatures(degree), LinearRegression())
-    
+
     train_sizes, train_scores, test_scores = learning_curve(
-        model, X, y, 
-        train_sizes=np.linspace(0.1, 1.0, 10),
-        cv=5
+        model, X, y, train_sizes=np.linspace(0.1, 1.0, 10), cv=5
     )
-    
+
     train_mean = train_scores.mean(axis=1)
     train_std = train_scores.std(axis=1)
     test_mean = test_scores.mean(axis=1)
     test_std = test_scores.std(axis=1)
-    
-    ax.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1, color='blue')
-    ax.fill_between(train_sizes, test_mean - test_std, test_mean + test_std, alpha=0.1, color='orange')
-    ax.plot(train_sizes, train_mean, 'b-', label='Training score')
-    ax.plot(train_sizes, test_mean, 'o-', color='orange', label='Cross-validation score')
-    
-    ax.set_xlabel('Training examples')
-    ax.set_ylabel('Score')
+
+    ax.fill_between(
+        train_sizes,
+        train_mean - train_std,
+        train_mean + train_std,
+        alpha=0.1,
+        color="blue",
+    )
+    ax.fill_between(
+        train_sizes,
+        test_mean - test_std,
+        test_mean + test_std,
+        alpha=0.1,
+        color="orange",
+    )
+    ax.plot(train_sizes, train_mean, "b-", label="Training score")
+    ax.plot(
+        train_sizes, test_mean, "o-", color="orange", label="Cross-validation score"
+    )
+
+    ax.set_xlabel("Training examples")
+    ax.set_ylabel("Score")
     status = "Underfit" if degree == 1 else "Good" if degree == 3 else "Overfit"
-    ax.set_title(f'Degree {degree}: {status}')
-    ax.legend(loc='best')
+    ax.set_title(f"Degree {degree}: {status}")
+    ax.legend(loc="best")
     ax.set_ylim(-0.5, 1.1)
     ax.grid(True, alpha=0.3)
 
@@ -472,30 +511,34 @@ from sklearn.metrics import mean_squared_error, r2_score
 np.random.seed(42)
 n = 500
 
-data = pd.DataFrame({
-    'sqft': np.random.randint(800, 3000, n),
-    'bedrooms': np.random.randint(1, 6, n),
-    'bathrooms': np.random.randint(1, 4, n),
-    'age': np.random.randint(0, 50, n),
-    'garage': np.random.randint(0, 3, n)
-})
+data = pd.DataFrame(
+    {
+        "sqft": np.random.randint(800, 3000, n),
+        "bedrooms": np.random.randint(1, 6, n),
+        "bathrooms": np.random.randint(1, 4, n),
+        "age": np.random.randint(0, 50, n),
+        "garage": np.random.randint(0, 3, n),
+    }
+)
 
 # Target with some noise
-data['price'] = (
-    100 * data['sqft'] + 
-    20000 * data['bedrooms'] + 
-    15000 * data['bathrooms'] - 
-    500 * data['age'] + 
-    10000 * data['garage'] +
-    np.random.normal(0, 20000, n)
+data["price"] = (
+    100 * data["sqft"]
+    + 20000 * data["bedrooms"]
+    + 15000 * data["bathrooms"]
+    - 500 * data["age"]
+    + 10000 * data["garage"]
+    + np.random.normal(0, 20000, n)
 )
 
 # Prepare features and target
-X = data.drop('price', axis=1)
-y = data['price']
+X = data.drop("price", axis=1)
+y = data["price"]
 
 # Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Scale features (important for some models)
 scaler = StandardScaler()
@@ -504,34 +547,33 @@ X_test_scaled = scaler.transform(X_test)
 
 # Define models to compare
 models = {
-    'Linear Regression': LinearRegression(),
-    'Ridge (L2 Regularization)': Ridge(alpha=1.0),
-    'Random Forest': RandomForestRegressor(n_estimators=100, random_state=42)
+    "Linear Regression": LinearRegression(),
+    "Ridge (L2 Regularization)": Ridge(alpha=1.0),
+    "Random Forest": RandomForestRegressor(n_estimators=100, random_state=42),
 }
 
 # Evaluate each model
 results = []
 for name, model in models.items():
     # Use scaled data for linear models
-    X_tr = X_train_scaled if 'Linear' in name or 'Ridge' in name else X_train
-    X_te = X_test_scaled if 'Linear' in name or 'Ridge' in name else X_test
-    
+    X_tr = X_train_scaled if "Linear" in name or "Ridge" in name else X_train
+    X_te = X_test_scaled if "Linear" in name or "Ridge" in name else X_test
+
     # Cross-validation
-    cv_scores = cross_val_score(model, X_tr, y_train, cv=5, scoring='neg_mean_squared_error')
+    cv_scores = cross_val_score(
+        model, X_tr, y_train, cv=5, scoring="neg_mean_squared_error"
+    )
     cv_rmse = np.sqrt(-cv_scores.mean())
-    
+
     # Train and evaluate on test set
     model.fit(X_tr, y_train)
     y_pred = model.predict(X_te)
     test_rmse = np.sqrt(mean_squared_error(y_test, y_pred))
     test_r2 = r2_score(y_test, y_pred)
-    
-    results.append({
-        'Model': name,
-        'CV RMSE': cv_rmse,
-        'Test RMSE': test_rmse,
-        'Test R²': test_r2
-    })
+
+    results.append(
+        {"Model": name, "CV RMSE": cv_rmse, "Test RMSE": test_rmse, "Test R²": test_r2}
+    )
 
 # Display results
 results_df = pd.DataFrame(results)
@@ -539,11 +581,10 @@ print("=== Model Comparison ===")
 print(results_df.to_string(index=False))
 
 # Feature importance for Random Forest
-rf_model = models['Random Forest']
-importance = pd.DataFrame({
-    'Feature': X.columns,
-    'Importance': rf_model.feature_importances_
-}).sort_values('Importance', ascending=False)
+rf_model = models["Random Forest"]
+importance = pd.DataFrame(
+    {"Feature": X.columns, "Importance": rf_model.feature_importances_}
+).sort_values("Importance", ascending=False)
 
 print("\n=== Feature Importance (Random Forest) ===")
 print(importance.to_string(index=False))

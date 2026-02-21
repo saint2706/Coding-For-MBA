@@ -89,26 +89,28 @@ db = client["ecommerce"]
 orders = db["orders"]
 
 # Insert — no schema required
-orders.insert_many([
-    {
-        "order_id": "ORD-001",
-        "customer": {"name": "Priya", "email": "priya@example.com"},
-        "items": [
-            {"sku": "LAPTOP-PRO", "qty": 1, "price": 999.99},
-            {"sku": "MOUSE-WL", "qty": 2, "price": 29.99}
-        ],
-        "total": 1059.97,
-        "status": "shipped",
-        "tags": ["electronics", "premium"]
-    },
-    {
-        "order_id": "ORD-002",
-        "customer": {"name": "Rahul"},  # No email — that's OK in MongoDB
-        "total": 45.00,
-        "status": "pending"
-        # No items array — MongoDB won't complain
-    }
-])
+orders.insert_many(
+    [
+        {
+            "order_id": "ORD-001",
+            "customer": {"name": "Priya", "email": "priya@example.com"},
+            "items": [
+                {"sku": "LAPTOP-PRO", "qty": 1, "price": 999.99},
+                {"sku": "MOUSE-WL", "qty": 2, "price": 29.99},
+            ],
+            "total": 1059.97,
+            "status": "shipped",
+            "tags": ["electronics", "premium"],
+        },
+        {
+            "order_id": "ORD-002",
+            "customer": {"name": "Rahul"},  # No email — that's OK in MongoDB
+            "total": 45.00,
+            "status": "pending",
+            # No items array — MongoDB won't complain
+        },
+    ]
+)
 
 # Query
 shipped = list(orders.find({"status": "shipped"}))
@@ -118,12 +120,14 @@ high_value = list(orders.find({"total": {"$gte": 500}}).sort("total", -1))
 # Aggregation pipeline — like SQL GROUP BY
 pipeline = [
     {"$match": {"status": "shipped"}},
-    {"$group": {
-        "_id": "$status",
-        "count": {"$sum": 1},
-        "total_revenue": {"$sum": "$total"}
-    }},
-    {"$sort": {"total_revenue": -1}}
+    {
+        "$group": {
+            "_id": "$status",
+            "count": {"$sum": 1},
+            "total_revenue": {"$sum": "$total"},
+        }
+    },
+    {"$sort": {"total_revenue": -1}},
 ]
 for result in orders.aggregate(pipeline):
     print(result)
@@ -132,7 +136,7 @@ for result in orders.aggregate(pipeline):
 # Update
 orders.update_one(
     {"order_id": "ORD-002"},
-    {"$set": {"status": "cancelled"}, "$push": {"tags": "refund"}}
+    {"$set": {"status": "cancelled"}, "$push": {"tags": "refund"}},
 )
 ```
 
@@ -156,11 +160,15 @@ r.expire("user:1001:score", timedelta(hours=24))  # Auto-expiry
 
 name = r.get("user:1001:name")  # "Priya Sharma"
 
+
 # ── Cache Pattern (Cache-Aside) ───────────────────
 def get_user_expensive(user_id: int) -> dict:
     """Simulates a slow database call."""
-    import time; time.sleep(0.5)
+    import time
+
+    time.sleep(0.5)
     return {"id": user_id, "name": "Priya", "segment": "premium"}
+
 
 def get_user(user_id: int) -> dict:
     cache_key = f"user:{user_id}"
@@ -174,10 +182,9 @@ def get_user(user_id: int) -> dict:
     r.setex(cache_key, timedelta(minutes=15), json.dumps(user))
     return user
 
+
 # ── Sorted Sets (Leaderboards) ────────────────────
-r.zadd("weekly_sales_leaderboard", {
-    "sarah": 48200, "michael": 41500, "priya": 52100
-})
+r.zadd("weekly_sales_leaderboard", {"sarah": 48200, "michael": 41500, "priya": 52100})
 top_3 = r.zrevrange("weekly_sales_leaderboard", 0, 2, withscores=True)
 # [('priya', 52100.0), ('sarah', 48200.0), ('michael', 41500.0)]
 
@@ -280,11 +287,13 @@ import redis
 
 r = redis.Redis(host="localhost", port=6379, decode_responses=True)
 
+
 def cached(ttl_seconds: int = 300):
     """
     Decorator that caches function results in Redis.
     Cache key = function name + serialized arguments.
     """
+
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -293,14 +302,19 @@ def cached(ttl_seconds: int = 300):
             # TODO: If hit, return parsed JSON
             # TODO: If miss, call func, store in Redis with TTL, return result
             pass
+
         return wrapper
+
     return decorator
+
 
 @cached(ttl_seconds=60)
 def get_top_products(category: str, limit: int = 10) -> list:
     """Simulates an expensive DB query."""
-    import time; time.sleep(1)
-    return [{"name": f"Product {i}", "sales": 1000-i*10} for i in range(limit)]
+    import time
+
+    time.sleep(1)
+    return [{"name": f"Product {i}", "sales": 1000 - i * 10} for i in range(limit)]
 ```
 
 ### Exercise 3: NoSQL vs SQL Decision

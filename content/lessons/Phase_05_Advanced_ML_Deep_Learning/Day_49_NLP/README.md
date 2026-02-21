@@ -74,7 +74,7 @@ from nltk.stem import PorterStemmer, WordNetLemmatizer
 text = "This product is AMAZING!!! I've been using it for 3 months and I'm loving it. Best purchase ever! 😊"
 
 # Step 1: Lowercase and remove special characters
-cleaned = re.sub(r'[^a-zA-Z\s]', '', text.lower())
+cleaned = re.sub(r"[^a-zA-Z\s]", "", text.lower())
 print(f"Cleaned: {cleaned}")
 # Output: "this product is amazing ive been using it for  months and im loving it best purchase ever"
 
@@ -84,7 +84,7 @@ print(f"Tokens: {tokens}")
 # Output: ['this', 'product', 'is', 'amazing', 'ive', 'been', 'using', ...]
 
 # Step 3: Remove stopwords (common words like "the", "is", "and")
-stop_words = set(stopwords.words('english'))
+stop_words = set(stopwords.words("english"))
 filtered_tokens = [word for word in tokens if word not in stop_words]
 print(f"Without stopwords: {filtered_tokens}")
 # Output: ['product', 'amazing', 'ive', 'using', 'months', 'im', 'loving', 'best', 'purchase', 'ever']
@@ -97,7 +97,7 @@ print(f"Stemmed: {stemmed}")
 
 # Step 4b: Lemmatization (smart: "running" → "run", "ran" → "run")
 lemmatizer = WordNetLemmatizer()
-lemmatized = [lemmatizer.lemmatize(word, pos='v') for word in filtered_tokens]
+lemmatized = [lemmatizer.lemmatize(word, pos="v") for word in filtered_tokens]
 print(f"Lemmatized: {lemmatized}")
 # Output: ['product', 'amazing', 'ive', 'use', 'month', 'im', 'love', 'best', 'purchase', 'ever']
 ```
@@ -116,7 +116,7 @@ documents = [
     "Python is great for machine learning",
     "I hate debugging errors",
     "Machine learning is the future",
-    "Python programming is fun"
+    "Python programming is fun",
 ]
 
 # Bag of Words (BoW): Count word frequency
@@ -125,7 +125,9 @@ bow_matrix = bow_vectorizer.fit_transform(documents)
 
 print("Vocabulary:", bow_vectorizer.get_feature_names_out())
 print("\nBoW Matrix:")
-print(pd.DataFrame(bow_matrix.toarray(), columns=bow_vectorizer.get_feature_names_out()))
+print(
+    pd.DataFrame(bow_matrix.toarray(), columns=bow_vectorizer.get_feature_names_out())
+)
 
 # TF-IDF: Term Frequency-Inverse Document Frequency
 # Downweights common words, highlights unique words
@@ -133,7 +135,11 @@ tfidf_vectorizer = TfidfVectorizer()
 tfidf_matrix = tfidf_vectorizer.fit_transform(documents)
 
 print("\nTF-IDF Matrix:")
-print(pd.DataFrame(tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out()).round(2))
+print(
+    pd.DataFrame(
+        tfidf_matrix.toarray(), columns=tfidf_vectorizer.get_feature_names_out()
+    ).round(2)
+)
 
 # What this shows:
 # - "python" appears in many docs → lower TF-IDF score
@@ -152,27 +158,42 @@ import matplotlib.pyplot as plt
 
 # Load pretrained Word2Vec embeddings (run once, downloads ~1.6GB)
 print("Loading Word2Vec model (this may take a minute)...")
-word2vec_model = api.load('word2vec-google-news-300')
+word2vec_model = api.load("word2vec-google-news-300")
 
 # Embedding examples
-king = word2vec_model['king']
+king = word2vec_model["king"]
 print(f"'king' embedding shape: {king.shape}")  # 300-dimensional vector
 
 # Semantic similarity
-similarity = word2vec_model.similarity('king', 'queen')
+similarity = word2vec_model.similarity("king", "queen")
 print(f"Similarity between 'king' and 'queen': {similarity:.3f}")  # ~0.651
 
-similarity_dog_cat = word2vec_model.similarity('dog', 'cat')
+similarity_dog_cat = word2vec_model.similarity("dog", "cat")
 print(f"Similarity between 'dog' and 'cat': {similarity_dog_cat:.3f}")  # ~0.760
 
 # Famous word analogy: king - man + woman ≈ queen
-result = word2vec_model.most_similar(positive=['king', 'woman'], negative=['man'], topn=1)
+result = word2vec_model.most_similar(
+    positive=["king", "woman"], negative=["man"], topn=1
+)
 print(f"king - man + woman = {result[0][0]}")  # queen
 
 # Visualize embeddings with t-SNE
-words = ['king', 'queen', 'man', 'woman', 'prince', 'princess', 
-         'dog', 'cat', 'puppy', 'kitten',
-         'python', 'java', 'programming', 'code']
+words = [
+    "king",
+    "queen",
+    "man",
+    "woman",
+    "prince",
+    "princess",
+    "dog",
+    "cat",
+    "puppy",
+    "kitten",
+    "python",
+    "java",
+    "programming",
+    "code",
+]
 
 word_vectors = np.array([word2vec_model[word] for word in words])
 
@@ -185,9 +206,9 @@ plt.figure(figsize=(12, 8))
 plt.scatter(embeddings_2d[:, 0], embeddings_2d[:, 1], alpha=0.5)
 for i, word in enumerate(words):
     plt.annotate(word, (embeddings_2d[i, 0], embeddings_2d[i, 1]), fontsize=12)
-plt.title('Word2Vec Embeddings (t-SNE projection)')
-plt.xlabel('Dimension 1')
-plt.ylabel('Dimension 2')
+plt.title("Word2Vec Embeddings (t-SNE projection)")
+plt.xlabel("Dimension 1")
+plt.ylabel("Dimension 2")
 plt.grid(True, alpha=0.3)
 plt.show()
 ```
@@ -212,7 +233,7 @@ reviews = [
     "Brilliant cinematography and storytelling.",
     "I fell asleep halfway through.",
     "Amazing! Best movie of the year!",
-    "Disappointing. Expected much more."
+    "Disappointing. Expected much more.",
 ]
 
 # Labels: 1 = positive, 0 = negative
@@ -224,7 +245,9 @@ X = vectorizer.fit_transform(reviews)
 y = np.array(labels)
 
 # Train-test split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Train classifier
 model = LogisticRegression(max_iter=1000)
@@ -233,7 +256,7 @@ model.fit(X_train, y_train)
 # Evaluate
 y_pred = model.predict(X_test)
 print("=== Sentiment Analysis Performance ===")
-print(classification_report(y_test, y_pred, target_names=['Negative', 'Positive']))
+print(classification_report(y_test, y_pred, target_names=["Negative", "Positive"]))
 
 # Predict on new review
 new_review = ["This movie exceeded all my expectations!"]
@@ -253,13 +276,15 @@ from transformers import pipeline
 
 # Load pretrained sentiment analysis model
 # First run downloads model (~500MB)
-sentiment_analyzer = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
+sentiment_analyzer = pipeline(
+    "sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english"
+)
 
 # Analyze sentiment
 texts = [
     "I absolutely love this product!",
     "This is the worst experience ever.",
-    "It's okay, nothing special."
+    "It's okay, nothing special.",
 ]
 
 results = sentiment_analyzer(texts)
@@ -268,14 +293,20 @@ for text, result in zip(texts, results):
     print(f"  → {result['label']}: {result['score']:.2%}\n")
 
 # Named Entity Recognition (NER)
-ner = pipeline("ner", model="dbmdz/bert-large-cased-finetuned-conll03-english", grouped_entities=True)
+ner = pipeline(
+    "ner",
+    model="dbmdz/bert-large-cased-finetuned-conll03-english",
+    grouped_entities=True,
+)
 
 text = "Apple Inc. CEO Tim Cook announced new products in Cupertino on March 15th."
 entities = ner(text)
 
 print("=== Named Entities ===")
 for entity in entities:
-    print(f"{entity['word']}: {entity['entity_group']} (confidence: {entity['score']:.2%})")
+    print(
+        f"{entity['word']}: {entity['entity_group']} (confidence: {entity['score']:.2%})"
+    )
 ```
 
 ---
@@ -345,7 +376,7 @@ emails = [
     "You have been selected for a special prize",
     "Project deadline reminder: Submit by Friday",
     "Click here to claim your free iPhone!",
-    "Thanks for your email. I'll get back to you soon."
+    "Thanks for your email. I'll get back to you soon.",
 ]
 
 labels = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0]  # 1 = spam, 0 = ham
@@ -355,11 +386,13 @@ X_text = emails * 10  # Duplicate for demonstration
 y = labels * 10
 
 # Vectorize
-vectorizer = TfidfVectorizer(max_features=50, stop_words='english')
+vectorizer = TfidfVectorizer(max_features=50, stop_words="english")
 X = vectorizer.fit_transform(X_text)
 
 # Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Train Naive Bayes (classic for spam detection)
 model = MultinomialNB()
@@ -368,15 +401,22 @@ model.fit(X_train, y_train)
 # Evaluate
 y_pred = model.predict(X_test)
 print("=== Spam Classifier Performance ===")
-print(classification_report(y_test, y_pred, target_names=['Ham', 'Spam']))
+print(classification_report(y_test, y_pred, target_names=["Ham", "Spam"]))
 
 # Confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 plt.figure(figsize=(6, 5))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['Ham', 'Spam'], yticklabels=['Ham', 'Spam'])
-plt.xlabel('Predicted')
-plt.ylabel('Actual')
-plt.title('Spam Detection Confusion Matrix')
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=["Ham", "Spam"],
+    yticklabels=["Ham", "Spam"],
+)
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Spam Detection Confusion Matrix")
 plt.show()
 
 # Show most indicative words
@@ -397,21 +437,24 @@ from textblob import TextBlob
 import matplotlib.pyplot as plt
 
 # Sample product reviews
-reviews_data = pd.DataFrame({
-    'review': [
-        "Absolutely love this product! Best purchase ever.",
-        "Terrible quality. Broke after 2 days.",
-        "Good value for money. Works as expected.",
-        "Not worth the price. Very disappointed.",
-        "Amazing! Exceeded all expectations.",
-        "Meh, it's okay. Nothing special.",
-        "Fantastic quality and fast shipping!",
-        "Worst product I've ever bought.",
-        "Pretty decent, would buy again.",
-        "Complete waste of money."
-    ],
-    'date': pd.date_range('2024-01-01', periods=10, freq='D')
-})
+reviews_data = pd.DataFrame(
+    {
+        "review": [
+            "Absolutely love this product! Best purchase ever.",
+            "Terrible quality. Broke after 2 days.",
+            "Good value for money. Works as expected.",
+            "Not worth the price. Very disappointed.",
+            "Amazing! Exceeded all expectations.",
+            "Meh, it's okay. Nothing special.",
+            "Fantastic quality and fast shipping!",
+            "Worst product I've ever bought.",
+            "Pretty decent, would buy again.",
+            "Complete waste of money.",
+        ],
+        "date": pd.date_range("2024-01-01", periods=10, freq="D"),
+    }
+)
+
 
 # Sentiment analysis with TextBlob (simpler than training custom model)
 def get_sentiment(text):
@@ -419,43 +462,50 @@ def get_sentiment(text):
     # Polarity: -1 (negative) to +1 (positive)
     polarity = analysis.sentiment.polarity
     if polarity > 0.1:
-        return 'Positive', polarity
+        return "Positive", polarity
     elif polarity < -0.1:
-        return 'Negative', polarity
+        return "Negative", polarity
     else:
-        return 'Neutral', polarity
+        return "Neutral", polarity
 
-reviews_data[['sentiment', 'polarity']] = reviews_data['review'].apply(
+
+reviews_data[["sentiment", "polarity"]] = reviews_data["review"].apply(
     lambda x: pd.Series(get_sentiment(x))
 )
 
 print("=== Sentiment Analysis Results ===")
-print(reviews_data[['review', 'sentiment', 'polarity']])
+print(reviews_data[["review", "sentiment", "polarity"]])
 
 # Visualize sentiment distribution
-sentiment_counts = reviews_data['sentiment'].value_counts()
+sentiment_counts = reviews_data["sentiment"].value_counts()
 plt.figure(figsize=(10, 5))
 
 plt.subplot(1, 2, 1)
-sentiment_counts.plot(kind='bar', color=['green', 'gray', 'red'])
-plt.title('Sentiment Distribution')
-plt.xlabel('Sentiment')
-plt.ylabel('Count')
+sentiment_counts.plot(kind="bar", color=["green", "gray", "red"])
+plt.title("Sentiment Distribution")
+plt.xlabel("Sentiment")
+plt.ylabel("Count")
 plt.xticks(rotation=0)
 
 plt.subplot(1, 2, 2)
-plt.scatter(reviews_data['date'], reviews_data['polarity'], 
-            c=reviews_data['polarity'], cmap='RdYlGn', s=100, alpha=0.6)
-plt.axhline(y=0, color='black', linestyle='--', alpha=0.3)
-plt.title('Sentiment Over Time')
-plt.xlabel('Date')
-plt.ylabel('Polarity Score')
-plt.colorbar(label='Sentiment')
+plt.scatter(
+    reviews_data["date"],
+    reviews_data["polarity"],
+    c=reviews_data["polarity"],
+    cmap="RdYlGn",
+    s=100,
+    alpha=0.6,
+)
+plt.axhline(y=0, color="black", linestyle="--", alpha=0.3)
+plt.title("Sentiment Over Time")
+plt.xlabel("Date")
+plt.ylabel("Polarity Score")
+plt.colorbar(label="Sentiment")
 plt.tight_layout()
 plt.show()
 
 # Alert on negative trend
-avg_sentiment = reviews_data['polarity'].mean()
+avg_sentiment = reviews_data["polarity"].mean()
 print(f"\nAverage Sentiment: {avg_sentiment:.2f}")
 if avg_sentiment < -0.2:
     print("⚠️  ALERT: Negative sentiment trend detected!")
@@ -481,7 +531,7 @@ documents = [
     "SQL is essential for database management",
     "Data scientists use Python and R for analytics",
     "Neural networks are inspired by the human brain",
-    "Web developers prefer React and Vue frameworks"
+    "Web developers prefer React and Vue frameworks",
 ]
 
 # Vectorize documents
@@ -491,16 +541,18 @@ tfidf_matrix = vectorizer.fit_transform(documents)
 # Compute cosine similarity between all documents
 similarity_matrix = cosine_similarity(tfidf_matrix)
 
+
 # Function to find similar documents
 def find_similar(query_idx, top_n=3):
     similarities = similarity_matrix[query_idx]
     # Get indices of most similar (excluding the query itself)
-    similar_idx = similarities.argsort()[::-1][1:top_n+1]
-    
-    print(f"Query Document: \"{documents[query_idx]}\"")
+    similar_idx = similarities.argsort()[::-1][1 : top_n + 1]
+
+    print(f'Query Document: "{documents[query_idx]}"')
     print(f"\nTop {top_n} Similar Documents:")
     for idx in similar_idx:
-        print(f"  Similarity: {similarities[idx]:.3f} - \"{documents[idx]}\"")
+        print(f'  Similarity: {similarities[idx]:.3f} - "{documents[idx]}"')
+
 
 # Example: Find documents similar to document 0
 find_similar(0, top_n=3)
@@ -510,11 +562,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 plt.figure(figsize=(10, 8))
-sns.heatmap(similarity_matrix, annot=True, fmt='.2f', cmap='YlGnBu', 
-            xticklabels=range(len(documents)), yticklabels=range(len(documents)))
-plt.title('Document Similarity Matrix')
-plt.xlabel('Document Index')
-plt.ylabel('Document Index')
+sns.heatmap(
+    similarity_matrix,
+    annot=True,
+    fmt=".2f",
+    cmap="YlGnBu",
+    xticklabels=range(len(documents)),
+    yticklabels=range(len(documents)),
+)
+plt.title("Document Similarity Matrix")
+plt.xlabel("Document Index")
+plt.ylabel("Document Index")
 plt.tight_layout()
 plt.show()
 ```
@@ -617,7 +675,7 @@ king - man + woman ≈ [0.1, 0.4, 0.7, ...] ≈ queen
 ```python
 # BoW: Each word is a separate dimension
 king = [0, 1, 0, 0, ...]  # Position 1 in vocabulary
-man = [0, 0, 1, 0, ...]   # Position 2 in vocabulary
+man = [0, 0, 1, 0, ...]  # Position 2 in vocabulary
 # Subtracting gives nonsensical results
 ```
 
@@ -722,22 +780,23 @@ import logging
 app = FastAPI()
 classifier = pipeline("text-classification", model="fine-tuned-bert")
 
+
 @app.post("/classify")
 def classify_ticket(text: str):
     result = classifier(text)[0]
-    
+
     # Log for monitoring
     logging.info(f"Prediction: {result['label']} ({result['score']:.2f})")
-    
+
     # Route if confident
-    if result['score'] > 0.60:
-        route = result['label']
+    if result["score"] > 0.60:
+        route = result["label"]
         status = "auto-routed"
     else:
         route = "manual-review"
         status = "low-confidence"
-    
-    return {"category": route, "confidence": result['score'], "status": status}
+
+    return {"category": route, "confidence": result["score"], "status": status}
 ```
 
 **Production considerations:**

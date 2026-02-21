@@ -73,7 +73,9 @@ from sklearn.metrics import accuracy_score
 
 # Generate non-linear data
 X, y = make_moons(n_samples=500, noise=0.3, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Single decision tree (high variance, overfits)
 tree = DecisionTreeClassifier(random_state=42)
@@ -85,7 +87,7 @@ bagging = BaggingClassifier(
     estimator=DecisionTreeClassifier(),
     n_estimators=50,
     max_samples=0.8,  # Each tree sees 80% of data (bootstrap sample)
-    random_state=42
+    random_state=42,
 )
 bagging.fit(X_train, y_train)
 bagging_accuracy = accuracy_score(y_test, bagging.predict(X_test))
@@ -94,28 +96,33 @@ print(f"Single Tree Accuracy: {single_accuracy:.3f}")
 print(f"Bagging (50 trees) Accuracy: {bagging_accuracy:.3f}")
 print(f"Improvement: {bagging_accuracy - single_accuracy:.3f}")
 
+
 # Visualize decision boundaries
 def plot_decision_boundary(model, X, y, title):
-    h = .02
+    h = 0.02
     x_min, x_max = X[:, 0].min() - 0.5, X[:, 0].max() + 0.5
     y_min, y_max = X[:, 1].min() - 0.5, X[:, 1].max() + 0.5
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
-                         np.arange(y_min, y_max, h))
-    
+    xx, yy = np.meshgrid(np.arange(x_min, x_max, h), np.arange(y_min, y_max, h))
+
     Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
     Z = Z.reshape(xx.shape)
-    
-    plt.contourf(xx, yy, Z, alpha=0.3, cmap='RdYlBu')
-    plt.scatter(X[:, 0], X[:, 1], c=y, edgecolors='k', cmap='RdYlBu')
+
+    plt.contourf(xx, yy, Z, alpha=0.3, cmap="RdYlBu")
+    plt.scatter(X[:, 0], X[:, 1], c=y, edgecolors="k", cmap="RdYlBu")
     plt.title(title)
+
 
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
 plt.sca(ax1)
-plot_decision_boundary(tree, X_test, y_test, f'Single Tree (Acc: {single_accuracy:.2f})')
+plot_decision_boundary(
+    tree, X_test, y_test, f"Single Tree (Acc: {single_accuracy:.2f})"
+)
 
 plt.sca(ax2)
-plot_decision_boundary(bagging, X_test, y_test, f'Bagging (Acc: {bagging_accuracy:.2f})')
+plot_decision_boundary(
+    bagging, X_test, y_test, f"Bagging (Acc: {bagging_accuracy:.2f})"
+)
 
 plt.tight_layout()
 plt.show()
@@ -142,15 +149,17 @@ cancer = load_breast_cancer()
 X, y = cancer.data, cancer.target
 feature_names = cancer.feature_names
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Train Random Forest
 rf = RandomForestClassifier(
-    n_estimators=100,      # Number of trees
-    max_depth=10,          # Limit tree depth
+    n_estimators=100,  # Number of trees
+    max_depth=10,  # Limit tree depth
     min_samples_split=10,  # Don't split tiny nodes
-    max_features='sqrt',   # √n features per split (default for classification)
-    random_state=42
+    max_features="sqrt",  # √n features per split (default for classification)
+    random_state=42,
 )
 rf.fit(X_train, y_train)
 
@@ -159,19 +168,18 @@ rf_accuracy = accuracy_score(y_test, rf.predict(X_test))
 print(f"Random Forest Accuracy: {rf_accuracy:.3f}")
 
 # Feature importance
-importance_df = pd.DataFrame({
-    'Feature': feature_names,
-    'Importance': rf.feature_importances_
-}).sort_values('Importance', ascending=False)
+importance_df = pd.DataFrame(
+    {"Feature": feature_names, "Importance": rf.feature_importances_}
+).sort_values("Importance", ascending=False)
 
 print("\n=== Top 10 Most Important Features ===")
 print(importance_df.head(10).to_string(index=False))
 
 # Visualize
 plt.figure(figsize=(10, 6))
-plt.barh(importance_df['Feature'][:15], importance_df['Importance'][:15])
-plt.xlabel('Importance')
-plt.title('Random Forest Feature Importance')
+plt.barh(importance_df["Feature"][:15], importance_df["Importance"][:15])
+plt.xlabel("Importance")
+plt.title("Random Forest Feature Importance")
 plt.gca().invert_yaxis()
 plt.tight_layout()
 plt.show()
@@ -188,8 +196,8 @@ from sklearn.ensemble import GradientBoostingClassifier
 gb = GradientBoostingClassifier(
     n_estimators=100,
     learning_rate=0.1,  # Shrinkage factor (smaller = more robust)
-    max_depth=3,         # Shallow trees (weak learners)
-    random_state=42
+    max_depth=3,  # Shallow trees (weak learners)
+    random_state=42,
 )
 gb.fit(X_train, y_train)
 
@@ -221,11 +229,11 @@ xgb_model = xgb.XGBClassifier(
     n_estimators=100,
     learning_rate=0.1,
     max_depth=5,
-    subsample=0.8,          # Row sampling
-    colsample_bytree=0.8,   # Column sampling
-    reg_alpha=0.1,          # L1 regularization
-    reg_lambda=1.0,         # L2 regularization
-    random_state=42
+    subsample=0.8,  # Row sampling
+    colsample_bytree=0.8,  # Column sampling
+    reg_alpha=0.1,  # L1 regularization
+    reg_lambda=1.0,  # L2 regularization
+    random_state=42,
 )
 
 xgb_model.fit(X_train, y_train)
@@ -242,11 +250,11 @@ print(f"XGBoost Accuracy: {xgb_accuracy:.3f}")
 print(f"XGBoost AUC: {xgb_auc:.3f}")
 
 print("\n=== Classification Report ===")
-print(classification_report(y_test, y_pred, target_names=['Malignant', 'Benign']))
+print(classification_report(y_test, y_pred, target_names=["Malignant", "Benign"]))
 
 # Feature importance
-xgb.plot_importance(xgb_model, max_num_features=15, importance_type='gain')
-plt.title('XGB Feature Importance (Gain)')
+xgb.plot_importance(xgb_model, max_num_features=15, importance_type="gain")
+plt.title("XGB Feature Importance (Gain)")
 plt.tight_layout()
 plt.show()
 ```
@@ -260,11 +268,7 @@ import lightgbm as lgb
 
 # LightGBM Classifier
 lgb_model = lgb.LGBMClassifier(
-    n_estimators=100,
-    learning_rate=0.1,
-    max_depth=5,
-    num_leaves=31,
-    random_state=42
+    n_estimators=100, learning_rate=0.1, max_depth=5, num_leaves=31, random_state=42
 )
 
 lgb_model.fit(X_train, y_train)
@@ -284,20 +288,16 @@ from sklearn.svm import SVC
 
 # Base models
 base_models = [
-    ('rf', RandomForestClassifier(n_estimators=50, random_state=42)),
-    ('gb', GradientBoostingClassifier(n_estimators=50, random_state=42)),
-    ('svm', SVC(probability=True, random_state=42))
+    ("rf", RandomForestClassifier(n_estimators=50, random_state=42)),
+    ("gb", GradientBoostingClassifier(n_estimators=50, random_state=42)),
+    ("svm", SVC(probability=True, random_state=42)),
 ]
 
 # Meta-model
 meta_model = LogisticRegression()
 
 # Stacking ensemble
-stacking = StackingClassifier(
-    estimators=base_models,
-    final_estimator=meta_model,
-    cv=5
-)
+stacking = StackingClassifier(estimators=base_models, final_estimator=meta_model, cv=5)
 
 stacking.fit(X_train, y_train)
 
@@ -327,32 +327,32 @@ print(f"Stacking Ensemble Accuracy: {stacking_accuracy:.3f}")
 
 ```python
 # Most important
-n_estimators = 100-500    # More trees = better (diminishing returns)
-max_depth = 10-30          # Control overfitting
-min_samples_split = 2-20   # Prevent tiny splits
+n_estimators = 100 - 500  # More trees = better (diminishing returns)
+max_depth = 10 - 30  # Control overfitting
+min_samples_split = 2 - 20  # Prevent tiny splits
 
 # Less critical
-max_features = 'sqrt'      # √n features per split
+max_features = "sqrt"  # √n features per split
 ```
 
 **XGBoost:**
 
 ```python
 # Learning
-learning_rate = 0.01-0.3   # Lower = more robust, needs more trees
-n_estimators = 100-1000    # More trees if learning_rate is low
+learning_rate = 0.01 - 0.3  # Lower = more robust, needs more trees
+n_estimators = 100 - 1000  # More trees if learning_rate is low
 
 # Tree structure
-max_depth = 3-10           # Shallow trees (3-6) prevent overfitting
-min_child_weight = 1-10    # Minimum samples in leaf
+max_depth = 3 - 10  # Shallow trees (3-6) prevent overfitting
+min_child_weight = 1 - 10  # Minimum samples in leaf
 
 # Sampling
-subsample = 0.6-1.0        # Row sampling
-colsample_bytree = 0.6-1.0 # Column sampling
+subsample = 0.6 - 1.0  # Row sampling
+colsample_bytree = 0.6 - 1.0  # Column sampling
 
 # Regularization
-reg_alpha = 0-1            # L1 (Lasso)
-reg_lambda = 0-10          # L2 (Ridge)
+reg_alpha = 0 - 1  # L1 (Lasso)
+reg_lambda = 0 - 10  # L2 (Ridge)
 ```
 
 ### Production Considerations
@@ -388,21 +388,27 @@ import time
 
 # Create challenging dataset
 X, y = make_classification(
-    n_samples=10000,
-    n_features=20,
-    n_informative=15,
-    n_redundant=5,
-    random_state=42
+    n_samples=10000, n_features=20, n_informative=15, n_redundant=5, random_state=42
 )
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Define models
 models = {
-    'Random Forest (50 trees)': RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42),
-    'Random Forest (200 trees)': RandomForestClassifier(n_estimators=200, max_depth=10, random_state=42),
-    'XGBoost (lr=0.1)': xgb.XGBClassifier(n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42),
-    'XGBoost (lr=0.01)': xgb.XGBClassifier(n_estimators=500, learning_rate=0.01, max_depth=5, random_state=42),
+    "Random Forest (50 trees)": RandomForestClassifier(
+        n_estimators=50, max_depth=10, random_state=42
+    ),
+    "Random Forest (200 trees)": RandomForestClassifier(
+        n_estimators=200, max_depth=10, random_state=42
+    ),
+    "XGBoost (lr=0.1)": xgb.XGBClassifier(
+        n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42
+    ),
+    "XGBoost (lr=0.01)": xgb.XGBClassifier(
+        n_estimators=500, learning_rate=0.01, max_depth=5, random_state=42
+    ),
 }
 
 # Benchmark all models
@@ -410,32 +416,34 @@ results = []
 for name, model in models.items():
     # Cross-validation
     start_time = time.time()
-    cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring='roc_auc')
+    cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring="roc_auc")
     cv_time = time.time() - start_time
-    
+
     # Train on full training set
     start_time = time.time()
     model.fit(X_train, y_train)
     train_time = time.time() - start_time
-    
+
     # Test set performance
     test_score = model.score(X_test, y_test)
-    
-    results.append({
-        'Model': name,
-        'CV AUC (mean)': cv_scores.mean(),
-        'CV AUC (std)': cv_scores.std(),
-        'Test Accuracy': test_score,
-        'CV Time (s)': cv_time,
-        'Train Time (s)': train_time
-    })
+
+    results.append(
+        {
+            "Model": name,
+            "CV AUC (mean)": cv_scores.mean(),
+            "CV AUC (std)": cv_scores.std(),
+            "Test Accuracy": test_score,
+            "CV Time (s)": cv_time,
+            "Train Time (s)": train_time,
+        }
+    )
 
 results_df = pd.DataFrame(results)
 print("=== Model Comparison ===")
 print(results_df.to_string(index=False))
 
 # Winner analysis
-best_model = results_df.loc[results_df['Test Accuracy'].idxmax()]
+best_model = results_df.loc[results_df["Test Accuracy"].idxmax()]
 print(f"\n🏆 Best Model: {best_model['Model']}")
 print(f"   Test Accuracy: {best_model['Test Accuracy']:.4f}")
 ```
@@ -450,11 +458,11 @@ import xgboost as xgb
 
 # Define parameter grid
 param_grid = {
-    'n_estimators': [50, 100, 200],
-    'max_depth': [3, 5, 7],
-    'learning_rate': [0.01, 0.1, 0.3],
-    'subsample': [0.8, 1.0],
-    'colsample_bytree': [0.8, 1.0]
+    "n_estimators": [50, 100, 200],
+    "max_depth": [3, 5, 7],
+    "learning_rate": [0.01, 0.1, 0.3],
+    "subsample": [0.8, 1.0],
+    "colsample_bytree": [0.8, 1.0],
 }
 
 # Grid search
@@ -462,9 +470,9 @@ grid_search = GridSearchCV(
     xgb.XGBClassifier(random_state=42),
     param_grid,
     cv=3,
-    scoring='roc_auc',
+    scoring="roc_auc",
     n_jobs=-1,
-    verbose=1
+    verbose=1,
 )
 
 grid_search.fit(X_train, y_train)
@@ -481,7 +489,9 @@ print(f"Test Accuracy: {test_score:.4f}")
 
 # Analyze grid search results
 results_grid = pd.DataFrame(grid_search.cv_results_)
-top_5 = results_grid.nsmallest(5, 'rank_test_score')[['param_n_estimators', 'param_max_depth', 'param_learning_rate', 'mean_test_score']]
+top_5 = results_grid.nsmallest(5, "rank_test_score")[
+    ["param_n_estimators", "param_max_depth", "param_learning_rate", "mean_test_score"]
+]
 print("\n=== Top 5 Configurations ===")
 print(top_5.to_string(index=False))
 ```
@@ -498,10 +508,15 @@ from sklearn.neighbors import KNeighborsClassifier
 
 # Diverse base models
 base_models = [
-    ('rf', RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)),
-    ('xgb', xgb.XGBClassifier(n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42)),
-    ('svm', SVC(probability=True, C=1.0, random_state=42)),
-    ('knn', KNeighborsClassifier(n_neighbors=5))
+    ("rf", RandomForestClassifier(n_estimators=100, max_depth=10, random_state=42)),
+    (
+        "xgb",
+        xgb.XGBClassifier(
+            n_estimators=100, learning_rate=0.1, max_depth=5, random_state=42
+        ),
+    ),
+    ("svm", SVC(probability=True, C=1.0, random_state=42)),
+    ("knn", KNeighborsClassifier(n_neighbors=5)),
 ]
 
 # Meta-model (learns how to combine base predictions)
@@ -512,7 +527,7 @@ stacking = StackingClassifier(
     estimators=base_models,
     final_estimator=meta_model,
     cv=5,
-    passthrough=False  # Only use base predictions, not original features
+    passthrough=False,  # Only use base predictions, not original features
 )
 
 stacking.fit(X_train, y_train)
@@ -526,11 +541,13 @@ individual_scores = []
 for name, model in base_models:
     model.fit(X_train, y_train)
     score = model.score(X_test, y_test)
-    individual_scores.append({'Model': name, 'Accuracy': score})
+    individual_scores.append({"Model": name, "Accuracy": score})
     print(f"{name}: {score:.4f}")
 
 print(f"\nStacking (ensemble): {stacking_score:.4f}")
-print(f"Improvement over best single model: {stacking_score - max([s['Accuracy'] for s in individual_scores]):.4f}")
+print(
+    f"Improvement over best single model: {stacking_score - max([s['Accuracy'] for s in individual_scores]):.4f}"
+)
 ```
 
 ---
@@ -577,8 +594,12 @@ rf.fit(X, y)
 
 # Production model after tuning phase
 xgb_tuned = XGBClassifier(
-    n_estimators=500, learning_rate=0.01, max_depth=5,
-    subsample=0.8, colsample_bytree=0.8, reg_alpha=0.1
+    n_estimators=500,
+    learning_rate=0.01,
+    max_depth=5,
+    subsample=0.8,
+    colsample_bytree=0.8,
+    reg_alpha=0.1,
 )  # Needs tuning, but yields +2-3% accuracy
 ```
 
@@ -681,31 +702,31 @@ XGBClassifier(n_estimators=500, learning_rate=0.01)
 
 ```python
 # Before
-max_depth=10  # Deep trees memorize
+max_depth = 10  # Deep trees memorize
 
 # After
-max_depth=3  # Shallow trees generalize
+max_depth = 3  # Shallow trees generalize
 ```
 
 **3. Add regularization**
 
 ```python
-reg_alpha=1.0,    # L1 (Lasso) – feature selection
-reg_lambda=10.0   # L2 (Ridge) – coefficient shrinkage
+reg_alpha = (1.0,)  # L1 (Lasso) – feature selection
+reg_lambda = 10.0  # L2 (Ridge) – coefficient shrinkage
 ```
 
 **4. Increase sampling randomness**
 
 ```python
-subsample=0.7,         # Use 70% of rows per tree
-colsample_bytree=0.7   # Use 70% of features per tree
+subsample = (0.7,)  # Use 70% of rows per tree
+colsample_bytree = 0.7  # Use 70% of features per tree
 # Adds randomness → reduces overfitting
 ```
 
 **5. Increase min_child_weight**
 
 ```python
-min_child_weight=5  # Need ≥5 samples to create leaf
+min_child_weight = 5  # Need ≥5 samples to create leaf
 # Prevents tiny, overfit leaves
 ```
 
@@ -721,12 +742,12 @@ cv_results = xgb.cv(
     dtrain,
     num_boost_round=1000,
     early_stopping_rounds=50,
-    metrics='auc',
-    as_pandas=True
+    metrics="auc",
+    as_pandas=True,
 )
 
-cv_results[['train-auc-mean', 'test-auc-mean']].plot()
-plt.title('Learning Curve')
+cv_results[["train-auc-mean", "test-auc-mean"]].plot()
+plt.title("Learning Curve")
 # If train-test gap widens → overfitting
 ```
 
@@ -810,9 +831,9 @@ You're stacking 5 models together. Should the base models be similar (e.g., 5 Ra
 ```python
 # All Random Forests with different seeds
 base_models = [
-    ('rf1', RandomForestClassifier(random_state=1)),
-    ('rf2', RandomForestClassifier(random_state=2)),
-    ('rf3', RandomForestClassifier(random_state=3)),
+    ("rf1", RandomForestClassifier(random_state=1)),
+    ("rf2", RandomForestClassifier(random_state=2)),
+    ("rf3", RandomForestClassifier(random_state=3)),
 ]
 # Problem: They all make similar mistakes
 # Meta-model has little new information to learn from
@@ -822,11 +843,11 @@ base_models = [
 
 ```python
 base_models = [
-    ('rf', RandomForestClassifier()),       # Tree-based, non-linear
-    ('xgb', XGBClassifier()),               # Boosted trees
-    ('lr', LogisticRegression()),           # Linear model
-    ('svm', SVC(kernel='rbf')),             # Non-linear, different approach
-    ('mlp', MLPClassifier()),               # Neural network
+    ("rf", RandomForestClassifier()),  # Tree-based, non-linear
+    ("xgb", XGBClassifier()),  # Boosted trees
+    ("lr", LogisticRegression()),  # Linear model
+    ("svm", SVC(kernel="rbf")),  # Non-linear, different approach
+    ("mlp", MLPClassifier()),  # Neural network
 ]
 # Each model has different biases
 # Meta-model learns which to trust for which patterns
@@ -838,9 +859,7 @@ base_models = [
 import numpy as np
 
 # Get base model predictions
-base_preds = np.column_stack([
-    model.predict(X_val) for name, model in base_models
-])
+base_preds = np.column_stack([model.predict(X_val) for name, model in base_models])
 
 # Correlation matrix
 correlation = np.corrcoef(base_preds.T)

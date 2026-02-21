@@ -129,10 +129,12 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+
 # 1. Define Input Schema (Data Validation)
 class InputData(BaseModel):
     feature_a: float
     feature_b: float
+
 
 # 2. Define Endpoint
 @app.post("/predict")
@@ -140,6 +142,7 @@ def predict(data: InputData):
     # Simulate model
     prediction = (data.feature_a * 2) + data.feature_b
     return {"result": prediction, "status": "success"}
+
 
 # To test (Python client):
 # import requests
@@ -193,22 +196,26 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
 import pandas as pd
 import time
 
+
 # Fake Model
 def predict_churn(usage):
-    time.sleep(0.01) # Simulate computation
+    time.sleep(0.01)  # Simulate computation
     return 1 if usage < 5 else 0
 
+
 # Input Data
-users = pd.DataFrame({
-    'user_id': range(1, 101),
-    'usage_hours': [x % 10 for x in range(100)] # 0 to 9 repeating
-})
+users = pd.DataFrame(
+    {
+        "user_id": range(1, 101),
+        "usage_hours": [x % 10 for x in range(100)],  # 0 to 9 repeating
+    }
+)
 
 print("Starting Batch Job...")
 start_time = time.time()
 
 # Processing
-users['churn_pred'] = users['usage_hours'].apply(predict_churn)
+users["churn_pred"] = users["usage_hours"].apply(predict_churn)
 
 duration = time.time() - start_time
 print(f"Processed {len(users)} records in {round(duration, 2)} seconds.")

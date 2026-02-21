@@ -44,7 +44,7 @@ print(len(signups_list))  # 3 (but we only have 2 unique people!)
 
 # With a set (solution: automatic deduplication)
 signups_set = {"alice@email.com", "bob@email.com", "alice@email.com"}
-print(len(signups_set))   # 2 (correct!)
+print(len(signups_set))  # 2 (correct!)
 ```
 
 Sets also answer questions like:
@@ -72,7 +72,7 @@ unique = {1, 1, 2, 2, 3, 3}  # {1, 2, 3}
 
 # From other iterables
 from_list = set([1, 2, 2, 3, 3, 3])  # {1, 2, 3}
-from_string = set("hello")          # {'h', 'e', 'l', 'o'}
+from_string = set("hello")  # {'h', 'e', 'l', 'o'}
 ```
 
 ### Set Characteristics
@@ -103,9 +103,9 @@ skills.add("Tableau")
 skills.update(["PowerBI", "R"])
 
 # Remove elements
-skills.remove("R")        # Raises KeyError if not found
-skills.discard("Ruby")    # No error if not found
-item = skills.pop()       # Remove and return arbitrary element
+skills.remove("R")  # Raises KeyError if not found
+skills.discard("Ruby")  # No error if not found
+item = skills.pop()  # Remove and return arbitrary element
 
 # Clear all
 # skills.clear()
@@ -159,11 +159,11 @@ a = {1, 2, 3}
 b = {1, 2, 3, 4, 5}
 c = {1, 2, 3}
 
-a == c           # True (same elements)
-a < b            # True (a is proper subset of b)
-a <= b           # True (a is subset of b)
-b > a            # True (b is proper superset of a)
-a.issubset(b)    # True
+a == c  # True (same elements)
+a < b  # True (a is proper subset of b)
+a <= b  # True (a is subset of b)
+b > a  # True (b is proper superset of a)
+a.issubset(b)  # True
 b.issuperset(a)  # True
 a.isdisjoint({4, 5})  # True (no common elements)
 ```
@@ -201,7 +201,7 @@ start = time.time()
 set_time = time.time() - start
 
 print(f"List: {list_time:.6f}s")  # ~0.015s
-print(f"Set:  {set_time:.6f}s")   # ~0.000001s
+print(f"Set:  {set_time:.6f}s")  # ~0.000001s
 ```
 
 ### Frozen Sets (Immutable Sets)
@@ -302,7 +302,7 @@ raw_emails = [
     "alice@company.com",  # duplicate
     "charlie@company.com",
     "diana@gmail.com",
-    "bob@gmail.com",      # duplicate
+    "bob@gmail.com",  # duplicate
 ]
 
 # Deduplicate
@@ -377,8 +377,8 @@ print(type(x), type(y))
 <summary>Click for Answer</summary>
 
 ```python
-x = {}      # <class 'dict'>  (empty dictionary!)
-y = set()   # <class 'set'>   (empty set)
+x = {}  # <class 'dict'>  (empty dictionary!)
+y = set()  # <class 'set'>   (empty set)
 ```
 
 This is a common Python gotcha. Always use `set()` for empty sets.

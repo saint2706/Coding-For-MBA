@@ -90,8 +90,8 @@ Don't use Mongo just because you have JSON. SQL can do it.
 ```sql
 SELECT
     id,
-    info ->> 'email' as email,
-    info -> 'preferences' ->> 'theme' as theme
+    info ->> 'email' AS email,
+    info -> 'preferences' ->> 'theme' AS theme
 FROM users
 WHERE info ->> 'status' = 'active';
 ```

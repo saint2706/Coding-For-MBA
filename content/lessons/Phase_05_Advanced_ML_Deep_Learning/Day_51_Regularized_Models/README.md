@@ -70,9 +70,11 @@ from sklearn.metrics import mean_squared_error
 # Generate data: true relationship is quadratic
 np.random.seed(42)
 X = np.linspace(0, 1, 30).reshape(-1, 1)
-y = 2 + 3*X.squeeze() + 2*X.squeeze()**2 + np.random.randn(30) * 0.5
+y = 2 + 3 * X.squeeze() + 2 * X.squeeze() ** 2 + np.random.randn(30) * 0.5
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Fit models of different polynomial degrees
 degrees = [1, 2, 9, 15]
@@ -83,24 +85,26 @@ for ax, degree in zip(axes.flatten(), degrees):
     poly = PolynomialFeatures(degree)
     X_train_poly = poly.fit_transform(X_train)
     X_test_poly = poly.transform(X_test)
-    
+
     # Fit model
     model = LinearRegression()
     model.fit(X_train_poly, y_train)
-    
+
     # Evaluate
     train_mse = mean_squared_error(y_train, model.predict(X_train_poly))
     test_mse = mean_squared_error(y_test, model.predict(X_test_poly))
-    
+
     # Plot
     X_plot = np.linspace(0, 1, 100).reshape(-1, 1)
     X_plot_poly = poly.transform(X_plot)
     y_plot = model.predict(X_plot_poly)
-    
-    ax.scatter(X_train, y_train, label='Train', alpha=0.7)
-    ax.scatter(X_test, y_test, label='Test', alpha=0.7, marker='s')
-    ax.plot(X_plot, y_plot, 'r-', linewidth=2)
-    ax.set_title(f'Degree {degree}\nTrain MSE: {train_mse:.2f}, Test MSE: {test_mse:.2f}')
+
+    ax.scatter(X_train, y_train, label="Train", alpha=0.7)
+    ax.scatter(X_test, y_test, label="Test", alpha=0.7, marker="s")
+    ax.plot(X_plot, y_plot, "r-", linewidth=2)
+    ax.set_title(
+        f"Degree {degree}\nTrain MSE: {train_mse:.2f}, Test MSE: {test_mse:.2f}"
+    )
     ax.legend()
     ax.set_ylim(0, 10)
 
@@ -129,10 +133,14 @@ import pandas as pd
 np.random.seed(42)
 n_samples, n_features = 100, 50
 X = np.random.randn(n_samples, n_features)
-true_coefs = np.random.randn(n_features) * (np.random.rand(n_features) < 0.2)  # Most are zero
+true_coefs = np.random.randn(n_features) * (
+    np.random.rand(n_features) < 0.2
+)  # Most are zero
 y = X @ true_coefs + np.random.randn(n_samples) * 0.5
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.3, random_state=42
+)
 
 # Standardize features (important for regularization!)
 scaler = StandardScaler()
@@ -146,17 +154,19 @@ results = []
 for alpha in alphas:
     model = Ridge(alpha=alpha)
     model.fit(X_train_scaled, y_train)
-    
+
     train_score = model.score(X_train_scaled, y_train)
     test_score = model.score(X_test_scaled, y_test)
     n_large_coefs = np.sum(np.abs(model.coef_) > 0.1)
-    
-    results.append({
-        'alpha': alpha,
-        'train_R2': train_score,
-        'test_R2': test_score,
-        'large_coefs': n_large_coefs
-    })
+
+    results.append(
+        {
+            "alpha": alpha,
+            "train_R2": train_score,
+            "test_R2": test_score,
+            "large_coefs": n_large_coefs,
+        }
+    )
 
 results_df = pd.DataFrame(results)
 print("=== Ridge Regression: Effect of Alpha ===")
@@ -169,21 +179,21 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 for alpha in [0, 1.0, 10.0]:
     model = Ridge(alpha=alpha)
     model.fit(X_train_scaled, y_train)
-    ax1.plot(model.coef_, marker='o', label=f'α={alpha}', alpha=0.6)
+    ax1.plot(model.coef_, marker="o", label=f"α={alpha}", alpha=0.6)
 
-ax1.set_xlabel('Feature Index')
-ax1.set_ylabel('Coefficient Value')
-ax1.set_title('Ridge: Coefficient Shrinkage')
+ax1.set_xlabel("Feature Index")
+ax1.set_ylabel("Coefficient Value")
+ax1.set_title("Ridge: Coefficient Shrinkage")
 ax1.legend()
 ax1.grid(True, alpha=0.3)
 
 # Train vs Test R²
-ax2.plot(results_df['alpha'], results_df['train_R2'], marker='o', label='Train R²')
-ax2.plot(results_df['alpha'], results_df['test_R2'], marker='s', label='Test R²')
-ax2.set_xscale('log')
-ax2.set_xlabel('Alpha (Regularization Strength)')
-ax2.set_ylabel('R² Score')
-ax2.set_title('Ridge: Finding Optimal Alpha')
+ax2.plot(results_df["alpha"], results_df["train_R2"], marker="o", label="Train R²")
+ax2.plot(results_df["alpha"], results_df["test_R2"], marker="s", label="Test R²")
+ax2.set_xscale("log")
+ax2.set_xlabel("Alpha (Regularization Strength)")
+ax2.set_ylabel("R² Score")
+ax2.set_title("Ridge: Finding Optimal Alpha")
 ax2.legend()
 ax2.grid(True, alpha=0.3)
 
@@ -211,17 +221,19 @@ results_lasso = []
 for alpha in alphas:
     model = Lasso(alpha=alpha, max_iter=10000)
     model.fit(X_train_scaled, y_train)
-    
+
     train_score = model.score(X_train_scaled, y_train)
     test_score = model.score(X_test_scaled, y_test)
     n_nonzero = np.sum(model.coef_ != 0)
-    
-    results_lasso.append({
-        'alpha': alpha,
-        'train_R2': train_score,
-        'test_R2': test_score,
-        'features_selected': n_nonzero
-    })
+
+    results_lasso.append(
+        {
+            "alpha": alpha,
+            "train_R2": train_score,
+            "test_R2": test_score,
+            "features_selected": n_nonzero,
+        }
+    )
 
 results_lasso_df = pd.DataFrame(results_lasso)
 print("\n=== Lasso Regression: Feature Selection ===")
@@ -230,16 +242,18 @@ print(results_lasso_df.to_string(index=False))
 # Visualize regularization path
 from sklearn.linear_model import lasso_path
 
-alphas_path, coefs_path, _ = lasso_path(X_train_scaled, y_train, alphas=np.logspace(-3, 1, 100))
+alphas_path, coefs_path, _ = lasso_path(
+    X_train_scaled, y_train, alphas=np.logspace(-3, 1, 100)
+)
 
 plt.figure(figsize=(12, 6))
 for i in range(coefs_path.shape[0]):
     plt.plot(alphas_path, coefs_path[i], alpha=0.3)
-plt.xscale('log')
-plt.xlabel('Alpha (Regularization Strength)')
-plt.ylabel('Coefficient Value')
-plt.title('Lasso Regularization Path\n(Coefficients shrink to zero as alpha increases)')
-plt.axhline(y=0, color='black', linestyle='--', linewidth=0.5)
+plt.xscale("log")
+plt.xlabel("Alpha (Regularization Strength)")
+plt.ylabel("Coefficient Value")
+plt.title("Lasso Regularization Path\n(Coefficients shrink to zero as alpha increases)")
+plt.axhline(y=0, color="black", linestyle="--", linewidth=0.5)
 plt.grid(True, alpha=0.3)
 plt.show()
 
@@ -268,16 +282,22 @@ results_elastic = []
 for l1_ratio in [0, 0.25, 0.5, 0.75, 1.0]:
     model = ElasticNet(alpha=0.1, l1_ratio=l1_ratio, max_iter=10000)
     model.fit(X_train_scaled, y_train)
-    
+
     test_score = model.score(X_test_scaled, y_test)
     n_nonzero = np.sum(model.coef_ != 0)
-    
-    results_elastic.append({
-        'l1_ratio': l1_ratio,
-        'test_R2': test_score,
-        'features_selected': n_nonzero,
-        'method': 'Ridge' if l1_ratio == 0 else 'Lasso' if l1_ratio == 1 else 'ElasticNet'
-    })
+
+    results_elastic.append(
+        {
+            "l1_ratio": l1_ratio,
+            "test_R2": test_score,
+            "features_selected": n_nonzero,
+            "method": "Ridge"
+            if l1_ratio == 0
+            else "Lasso"
+            if l1_ratio == 1
+            else "ElasticNet",
+        }
+    )
 
 results_elastic_df = pd.DataFrame(results_elastic)
 print("\n=== ElasticNet: L1/L2 Trade-off ===")
@@ -303,16 +323,16 @@ lasso_cv.fit(X_train_scaled, y_train)
 print(f"Best Lasso alpha: {lasso_cv.alpha_:.4f}")
 
 # ElasticNet
-elastic_cv = ElasticNetCV(alphas=alphas, l1_ratio=[0.1, 0.5, 0.9], cv=5, max_iter=10000, random_state=42)
+elastic_cv = ElasticNetCV(
+    alphas=alphas, l1_ratio=[0.1, 0.5, 0.9], cv=5, max_iter=10000, random_state=42
+)
 elastic_cv.fit(X_train_scaled, y_train)
-print(f"Best ElasticNet alpha: {elastic_cv.alpha_:.4f}, l1_ratio: {elastic_cv.l1_ratio_:.2f}")
+print(
+    f"Best ElasticNet alpha: {elastic_cv.alpha_:.4f}, l1_ratio: {elastic_cv.l1_ratio_:.2f}"
+)
 
 # Compare final models
-models = {
-    'Ridge': ridge_cv,
-    'Lasso': lasso_cv,
-    'ElasticNet': elastic_cv
-}
+models = {"Ridge": ridge_cv, "Lasso": lasso_cv, "ElasticNet": elastic_cv}
 
 print("\n=== Final Model Comparison ===")
 for name, model in models.items():
@@ -400,7 +420,9 @@ from sklearn.metrics import mean_squared_error, r2_score
 diabetes = load_diabetes()
 X, y = diabetes.data, diabetes.target
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Standardize
 scaler = StandardScaler()
@@ -409,32 +431,34 @@ X_test_scaled = scaler.transform(X_test)
 
 # Compare Linear Regression vs Ridge
 models_to_compare = {
-    'Linear Regression (no regularization)': LinearRegression(),
-    'Ridge (alpha=0.1)': Ridge(alpha=0.1),
-    'Ridge (alpha=1.0)': Ridge(alpha=1.0),
-    'Ridge (alpha=10.0)': Ridge(alpha=10.0),
+    "Linear Regression (no regularization)": LinearRegression(),
+    "Ridge (alpha=0.1)": Ridge(alpha=0.1),
+    "Ridge (alpha=1.0)": Ridge(alpha=1.0),
+    "Ridge (alpha=10.0)": Ridge(alpha=10.0),
 }
 
 results = []
 for name, model in models_to_compare.items():
     model.fit(X_train_scaled, y_train)
-    
+
     train_pred = model.predict(X_train_scaled)
     test_pred = model.predict(X_test_scaled)
-    
+
     train_mse = mean_squared_error(y_train, train_pred)
     test_mse = mean_squared_error(y_test, test_pred)
     train_r2 = r2_score(y_train, train_pred)
     test_r2 = r2_score(y_test, test_pred)
-    
-    results.append({
-        'Model': name,
-        'Train MSE': train_mse,
-        'Test MSE': test_mse,
-        'Train R²': train_r2,
-        'Test R²': test_r2,
-        'Gap (Train-Test R²)': train_r2 - test_r2
-    })
+
+    results.append(
+        {
+            "Model": name,
+            "Train MSE": train_mse,
+            "Test MSE": test_mse,
+            "Train R²": train_r2,
+            "Test R²": test_r2,
+            "Gap (Train-Test R²)": train_r2 - test_r2,
+        }
+    )
 
 results_df = pd.DataFrame(results)
 print("=== Overfitting Analysis ===")
@@ -528,9 +552,11 @@ alphas_lasso, coefs_lasso, _ = lasso_path(X_scaled, y, alphas=np.logspace(-2, 2,
 alphas_ridge = np.logspace(-2, 2, 100)
 coefs_ridge = []
 for alpha in alphas_ridge:
-    coef = ridge_regression(X_scaled.T @ X_scaled + alpha * np.eye(X_scaled.shape[1]), 
-                            X_scaled.T @ y, 
-                            solver='cholesky')
+    coef = ridge_regression(
+        X_scaled.T @ X_scaled + alpha * np.eye(X_scaled.shape[1]),
+        X_scaled.T @ y,
+        solver="cholesky",
+    )
     coefs_ridge.append(coef)
 coefs_ridge = np.array(coefs_ridge).T
 
@@ -539,26 +565,42 @@ fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
 
 # Lasso path
 for i in range(coefs_lasso.shape[0]):
-    linestyle = '-' if i < 5 else '--'
+    linestyle = "-" if i < 5 else "--"
     linewidth = 2 if i < 5 else 0.5
-    ax1.plot(alphas_lasso, coefs_lasso[i], linestyle=linestyle, linewidth=linewidth, alpha=0.7)
-ax1.set_xscale('log')
-ax1.set_xlabel('Alpha (Regularization Strength)', fontsize=12)
-ax1.set_ylabel('Coefficient Value', fontsize=12)
-ax1.set_title('Lasso Regularization Path\n(Bold lines = important features)', fontsize=14)
-ax1.axhline(y=0, color='black', linestyle='--', linewidth=0.5)
+    ax1.plot(
+        alphas_lasso,
+        coefs_lasso[i],
+        linestyle=linestyle,
+        linewidth=linewidth,
+        alpha=0.7,
+    )
+ax1.set_xscale("log")
+ax1.set_xlabel("Alpha (Regularization Strength)", fontsize=12)
+ax1.set_ylabel("Coefficient Value", fontsize=12)
+ax1.set_title(
+    "Lasso Regularization Path\n(Bold lines = important features)", fontsize=14
+)
+ax1.axhline(y=0, color="black", linestyle="--", linewidth=0.5)
 ax1.grid(True, alpha=0.3)
 
 # Ridge path
 for i in range(coefs_ridge.shape[0]):
-    linestyle = '-' if i < 5 else '--'
+    linestyle = "-" if i < 5 else "--"
     linewidth = 2 if i < 5 else 0.5
-    ax2.plot(alphas_ridge, coefs_ridge[i], linestyle=linestyle, linewidth=linewidth, alpha=0.7)
-ax2.set_xscale('log')
-ax2.set_xlabel('Alpha (Regularization Strength)', fontsize=12)
-ax2.set_ylabel('Coefficient Value', fontsize=12)
-ax2.set_title('Ridge Regularization Path\n(Coefficients shrink but never zero)', fontsize=14)
-ax2.axhline(y=0, color='black', linestyle='--', linewidth=0.5)
+    ax2.plot(
+        alphas_ridge,
+        coefs_ridge[i],
+        linestyle=linestyle,
+        linewidth=linewidth,
+        alpha=0.7,
+    )
+ax2.set_xscale("log")
+ax2.set_xlabel("Alpha (Regularization Strength)", fontsize=12)
+ax2.set_ylabel("Coefficient Value", fontsize=12)
+ax2.set_title(
+    "Ridge Regularization Path\n(Coefficients shrink but never zero)", fontsize=14
+)
+ax2.axhline(y=0, color="black", linestyle="--", linewidth=0.5)
 ax2.grid(True, alpha=0.3)
 
 plt.tight_layout()
@@ -761,10 +803,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import Ridge
 
-pipeline = Pipeline([
-    ('scaler', StandardScaler()),
-    ('ridge', Ridge(alpha=1.0))
-])
+pipeline = Pipeline([("scaler", StandardScaler()), ("ridge", Ridge(alpha=1.0))])
 pipeline.fit(X_train, y_train)
 ```
 
@@ -785,7 +824,7 @@ Your Lasso model selected 10 features out of 100. In production, one of the sele
 
 ```python
 # Remove unavailable feature
-X_train_reduced = X_train.drop(columns=['unavailable_feature'])
+X_train_reduced = X_train.drop(columns=["unavailable_feature"])
 
 # Retrain Lasso
 lasso = LassoCV(cv=5)
@@ -805,7 +844,7 @@ lasso.fit(X_train_reduced, y_train)
 # Impute missing feature with mean/median/model prediction
 from sklearn.impute import SimpleImputer
 
-imputer = SimpleImputer(strategy='median')
+imputer = SimpleImputer(strategy="median")
 X_production = imputer.fit_transform(X_production)
 
 # Use existing model

@@ -62,16 +62,20 @@ In Python, functions are objects. You can:
 def greet(name):
     return f"Hello, {name}!"
 
+
 # Assign to variable
 say_hi = greet
 print(say_hi("Alice"))  # Hello, Alice!
+
 
 # Pass as argument
 def apply_twice(func, value):
     return func(func(value))
 
+
 def double(x):
     return x * 2
+
 
 print(apply_twice(double, 5))  # 20 (5 → 10 → 20)
 ```
@@ -84,11 +88,11 @@ Apply a function to every item in an iterable:
 numbers = [1, 2, 3, 4, 5]
 
 # Using map
-squared = list(map(lambda x: x ** 2, numbers))
+squared = list(map(lambda x: x**2, numbers))
 # [1, 4, 9, 16, 25]
 
 # Equivalent comprehension
-squared = [x ** 2 for x in numbers]
+squared = [x**2 for x in numbers]
 
 # With multiple iterables
 a = [1, 2, 3]
@@ -115,7 +119,7 @@ evens = [x for x in numbers if x % 2 == 0]
 products = [
     {"name": "Laptop", "price": 999},
     {"name": "Mouse", "price": 29},
-    {"name": "Keyboard", "price": 79}
+    {"name": "Keyboard", "price": 79},
 ]
 expensive = list(filter(lambda p: p["price"] > 50, products))
 ```
@@ -149,10 +153,11 @@ Anonymous, inline functions:
 ```python
 # Regular function
 def square(x):
-    return x ** 2
+    return x**2
+
 
 # Lambda equivalent
-square = lambda x: x ** 2
+square = lambda x: x**2
 
 # Common patterns
 sorted(items, key=lambda x: x["price"])
@@ -168,7 +173,9 @@ Functions that remember their environment:
 def make_multiplier(factor):
     def multiplier(x):
         return x * factor  # 'factor' is captured
+
     return multiplier
+
 
 double = make_multiplier(2)
 triple = make_multiplier(3)
@@ -187,7 +194,7 @@ print(triple(5))  # 15
 
 ```python
 # This doesn't compute anything yet
-squared = map(lambda x: x ** 2, range(1_000_000))
+squared = map(lambda x: x**2, range(1_000_000))
 
 # Computation happens on iteration
 for s in squared:
@@ -212,14 +219,16 @@ Pre-fill some arguments:
 ```python
 from functools import partial
 
+
 def power(base, exponent):
-    return base ** exponent
+    return base**exponent
+
 
 square = partial(power, exponent=2)
 cube = partial(power, exponent=3)
 
 print(square(5))  # 25
-print(cube(5))    # 125
+print(cube(5))  # 125
 ```
 
 ---
@@ -233,20 +242,18 @@ sales = [
     {"rep": "Alice", "amount": 5000},
     {"rep": "Bob", "amount": 3000},
     {"rep": "Charlie", "amount": 7500},
-    {"rep": "Diana", "amount": 4200}
+    {"rep": "Diana", "amount": 4200},
 ]
 
 # Filter: Only sales >= 4000
 top_sales = list(filter(lambda s: s["amount"] >= 4000, sales))
 
 # Map: Add 10% bonus
-with_bonus = list(map(
-    lambda s: {**s, "bonus": s["amount"] * 0.1}, 
-    top_sales
-))
+with_bonus = list(map(lambda s: {**s, "bonus": s["amount"] * 0.1}, top_sales))
 
 # Reduce: Total bonuses
 from functools import reduce
+
 total_bonus = reduce(lambda acc, s: acc + s["bonus"], with_bonus, 0)
 
 print(f"Top performers: {len(top_sales)}")
@@ -261,23 +268,24 @@ print(f"Total bonus pool: ${total_bonus:,.2f}")
 def create_operation(operator):
     """Factory for arithmetic operations."""
     operations = {
-        '+': lambda a, b: a + b,
-        '-': lambda a, b: a - b,
-        '*': lambda a, b: a * b,
-        '/': lambda a, b: a / b if b != 0 else None
+        "+": lambda a, b: a + b,
+        "-": lambda a, b: a - b,
+        "*": lambda a, b: a * b,
+        "/": lambda a, b: a / b if b != 0 else None,
     }
     return operations.get(operator)
 
+
 # Create operations
-add = create_operation('+')
-multiply = create_operation('*')
+add = create_operation("+")
+multiply = create_operation("*")
 
 # Use them
-print(add(5, 3))       # 8
+print(add(5, 3))  # 8
 print(multiply(4, 7))  # 28
 
 # Apply dynamically
-expression = [('+', 5, 3), ('*', 4, 7), ('-', 10, 4)]
+expression = [("+", 5, 3), ("*", 4, 7), ("-", 10, 4)]
 results = [create_operation(op)(a, b) for op, a, b in expression]
 print(results)  # [8, 28, 6]
 ```
@@ -291,7 +299,7 @@ products = [
     {"name": "Laptop", "price": 999, "rating": 4.5},
     {"name": "Mouse", "price": 29, "rating": 4.8},
     {"name": "Monitor", "price": 299, "rating": 4.2},
-    {"name": "Keyboard", "price": 79, "rating": 4.7}
+    {"name": "Keyboard", "price": 79, "rating": 4.7},
 ]
 
 # Sort by price
@@ -355,6 +363,7 @@ Trace through this:
 
 ```python
 from functools import reduce
+
 reduce(lambda a, b: a * b, [1, 2, 3, 4])
 ```
 
@@ -378,11 +387,14 @@ Step by step:
 ```python
 def make_counter():
     count = 0
+
     def counter():
         nonlocal count
         count += 1
         return count
+
     return counter
+
 
 c = make_counter()
 print(c(), c(), c())
@@ -419,11 +431,8 @@ transactions = [150, -30, 200, -15, 75, 300]
 # Pipeline
 result = reduce(
     lambda acc, x: acc + x,
-    map(
-        lambda x: x * 1.08,
-        filter(lambda x: x > 0, transactions)
-    ),
-    0
+    map(lambda x: x * 1.08, filter(lambda x: x > 0, transactions)),
+    0,
 )
 
 print(f"Total with tax: ${result:.2f}")

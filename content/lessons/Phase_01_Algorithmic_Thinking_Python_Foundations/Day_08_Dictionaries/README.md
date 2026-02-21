@@ -43,11 +43,7 @@ contacts = [["Alice", "555-0101"], ["Bob", "555-0102"], ["Charlie", "555-0103"]]
 # To find Bob, I need to check each entry...
 
 # Dictionary approach (search by name - instant)
-contacts = {
-    "Alice": "555-0101",
-    "Bob": "555-0102",
-    "Charlie": "555-0103"
-}
+contacts = {"Alice": "555-0101", "Bob": "555-0102", "Charlie": "555-0103"}
 print(contacts["Bob"])  # 555-0102 (instant lookup!)
 ```
 
@@ -85,12 +81,12 @@ from_pairs = dict(pairs)  # {"a": 1, "b": 2, "c": 3}
 user = {"name": "Bob", "email": "bob@email.com", "age": 25}
 
 # Direct access (KeyError if missing)
-print(user["name"])      # "Bob"
+print(user["name"])  # "Bob"
 # print(user["phone"])   # KeyError!
 
 # Safe access with .get()
-print(user.get("phone"))           # None
-print(user.get("phone", "N/A"))    # "N/A" (default)
+print(user.get("phone"))  # None
+print(user.get("phone", "N/A"))  # "N/A" (default)
 
 # Check existence first
 if "phone" in user:
@@ -103,16 +99,16 @@ if "phone" in user:
 inventory = {"apples": 50, "bananas": 30}
 
 # Add/Update single item
-inventory["oranges"] = 25      # Add new
-inventory["apples"] = 45       # Update existing
+inventory["oranges"] = 25  # Add new
+inventory["apples"] = 45  # Update existing
 
 # Update multiple items
 inventory.update({"grapes": 60, "apples": 40})
 
 # Remove items
-del inventory["bananas"]             # Delete by key
-removed = inventory.pop("oranges")   # Remove and return value
-inventory.popitem()                  # Remove last inserted pair
+del inventory["bananas"]  # Delete by key
+removed = inventory.pop("oranges")  # Remove and return value
+inventory.popitem()  # Remove last inserted pair
 
 # Clear all
 # inventory.clear()
@@ -123,11 +119,11 @@ inventory.popitem()                  # Remove last inserted pair
 ```python
 product = {"name": "Laptop", "price": 999.99, "category": "Electronics"}
 
-product.keys()      # dict_keys(['name', 'price', 'category'])
-product.values()    # dict_values(['Laptop', 999.99, 'Electronics'])
-product.items()     # dict_items([('name', 'Laptop'), ...])
+product.keys()  # dict_keys(['name', 'price', 'category'])
+product.values()  # dict_values(['Laptop', 999.99, 'Electronics'])
+product.items()  # dict_items([('name', 'Laptop'), ...])
 
-len(product)        # 3
+len(product)  # 3
 "price" in product  # True (checks keys)
 ```
 
@@ -160,13 +156,14 @@ company = {
     "name": "TechCorp",
     "employees": {
         "E001": {"name": "Alice", "dept": "Engineering"},
-        "E002": {"name": "Bob", "dept": "Sales"}
+        "E002": {"name": "Bob", "dept": "Sales"},
     },
-    "locations": ["NYC", "SF", "London"]
+    "locations": ["NYC", "SF", "London"],
 }
 
 # Access nested data
 ceo_name = company["employees"]["E001"]["name"]  # "Alice"
+
 
 # Safely handle missing nested keys
 def safe_get(d, *keys, default=None):
@@ -176,6 +173,7 @@ def safe_get(d, *keys, default=None):
         else:
             return default
     return d if d is not None else default
+
 
 phone = safe_get(company, "employees", "E001", "phone", default="N/A")
 ```
@@ -262,6 +260,7 @@ catalog = {
     "SKU003": {"name": "USB-C Hub", "price": 49.99, "stock": 200},
 }
 
+
 # Lookup function
 def lookup_product(sku):
     product = catalog.get(sku)
@@ -271,6 +270,7 @@ def lookup_product(sku):
         print(f"In Stock: {product['stock']} units")
     else:
         print(f"SKU {sku} not found")
+
 
 # Test
 lookup_product("SKU002")
@@ -295,6 +295,7 @@ words = text.lower().replace(".", "").replace(",", "").split()
 
 # Count frequencies
 from collections import defaultdict
+
 frequency = defaultdict(int)
 for word in words:
     frequency[word] += 1
@@ -324,6 +325,7 @@ transactions = [
 
 # Aggregate by region
 from collections import defaultdict
+
 by_region = defaultdict(float)
 for t in transactions:
     by_region[t["region"]] += t["amount"]
@@ -457,23 +459,25 @@ import time
 cache = {}
 CACHE_DURATION = 300  # 5 minutes
 
+
 def cached_api_call(key):
     now = time.time()
-    
+
     # Check if cached and not expired
     if key in cache:
         data, timestamp = cache[key]
         if now - timestamp < CACHE_DURATION:
             print(f"Cache hit for {key}")
             return data
-    
+
     # Simulate API call
     print(f"Fetching {key} from API...")
     result = {"data": f"Fresh data for {key}", "fetched_at": now}
-    
+
     # Store in cache
     cache[key] = (result, now)
     return result
+
 
 # Usage
 data1 = cached_api_call("user_123")  # "Fetching from API..."

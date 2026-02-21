@@ -125,9 +125,9 @@ Models learn bias from data. If you hire mostly men, the model learns that "Woma
 ```python
 # Try it in Python
 score_base = 50
-score_A = 60 # Base + 10
-score_B = 70 # Base + 20
-score_AB = 85 # Base + 10 + 20 + 5 (synergy)
+score_A = 60  # Base + 10
+score_B = 70  # Base + 20
+score_AB = 85  # Base + 10 + 20 + 5 (synergy)
 
 # Marginal Contribution of A
 # 1. Added to Empty Set: score_A - score_base

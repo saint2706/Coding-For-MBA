@@ -90,12 +90,12 @@ tools = [
                 "properties": {
                     "city": {
                         "type": "string",
-                        "description": "City name, e.g. 'London'"
+                        "description": "City name, e.g. 'London'",
                     }
                 },
-                "required": ["city"]
-            }
-        }
+                "required": ["city"],
+            },
+        },
     },
     {
         "type": "function",
@@ -107,19 +107,21 @@ tools = [
                 "properties": {
                     "expression": {
                         "type": "string",
-                        "description": "Math expression e.g. '2 + 2 * 10'"
+                        "description": "Math expression e.g. '2 + 2 * 10'",
                     }
                 },
-                "required": ["expression"]
-            }
-        }
-    }
+                "required": ["expression"],
+            },
+        },
+    },
 ]
+
 
 # Actual implementations
 def get_weather(city: str) -> str:
     # In production: call a weather API
     return f"Weather in {city}: 22°C, Partly Cloudy"
+
 
 def calculate(expression: str) -> str:
     try:
@@ -128,15 +130,14 @@ def calculate(expression: str) -> str:
     except Exception as e:
         return f"Error: {e}"
 
+
 # Agent loop
 def run_agent(user_message: str):
     messages = [{"role": "user", "content": user_message}]
 
     while True:
         response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=messages,
-            tools=tools
+            model="gpt-4o", messages=messages, tools=tools
         )
 
         msg = response.choices[0].message
@@ -158,11 +159,10 @@ def run_agent(user_message: str):
             else:
                 result = "Tool not found"
 
-            messages.append({
-                "role": "tool",
-                "tool_call_id": tool_call.id,
-                "content": result
-            })
+            messages.append(
+                {"role": "tool", "tool_call_id": tool_call.id, "content": result}
+            )
+
 
 # Run it
 answer = run_agent("What's the weather in Tokyo, and what is 15% of 2500?")
@@ -181,20 +181,24 @@ from langchain import hub
 
 llm = ChatOpenAI(model="gpt-4o", temperature=0)
 
+
 @tool
 def search_company_data(query: str) -> str:
     """Search internal company knowledge base."""
     # Connect to your actual data source
     return f"Found 3 results for: {query}"
 
+
 @tool
 def run_sql_query(sql: str) -> str:
     """Execute a SQL query against the analytics database."""
     import sqlite3
+
     # In production: connect to your actual DB
     conn = sqlite3.connect(":memory:")
     # Demo only
     return f"Query executed: {sql}"
+
 
 tools = [search_company_data, run_sql_query]
 
@@ -204,9 +208,9 @@ prompt = hub.pull("hwchase17/react")
 agent = create_react_agent(llm, tools, prompt)
 executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
-result = executor.invoke({
-    "input": "What products had the highest revenue last quarter? Check the database."
-})
+result = executor.invoke(
+    {"input": "What products had the highest revenue last quarter? Check the database."}
+)
 print(result["output"])
 ```
 
@@ -226,8 +230,8 @@ print(result["output"])
 executor = AgentExecutor(
     agent=agent,
     tools=tools,
-    max_iterations=10,          # Stop after 10 steps
-    handle_parsing_errors=True  # Recover from LLM output errors
+    max_iterations=10,  # Stop after 10 steps
+    handle_parsing_errors=True,  # Recover from LLM output errors
 )
 ```
 
@@ -266,10 +270,11 @@ def simple_react_agent(question: str, tools: dict, max_steps: int = 5):
         # TODO: If "Final Answer:" in response, return it
         break
 
+
 # Test tool set
 available_tools = {
     "get_today_date": lambda: "2026-02-21",
-    "calculate": lambda expr: str(eval(expr, {"__builtins__": {}}))
+    "calculate": lambda expr: str(eval(expr, {"__builtins__": {}})),
 }
 
 simple_react_agent("What is today's date? And what is 365 * 3?", available_tools)
@@ -288,8 +293,8 @@ retrieve_lesson_schema = {
         "parameters": {
             # TODO: Define the JSON Schema
             # Parameters needed: day (integer), section (string, optional)
-        }
-    }
+        },
+    },
 }
 ```
 
@@ -299,6 +304,7 @@ Extend the function-calling example with a human approval step before any write 
 
 ```python
 WRITE_TOOLS = {"send_email", "update_database", "make_payment"}
+
 
 def safe_execute_tool(tool_name: str, args: dict) -> str:
     if tool_name in WRITE_TOOLS:

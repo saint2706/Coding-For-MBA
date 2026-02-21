@@ -220,7 +220,7 @@ cat requirements.txt
 # version_check.py
 import pkg_resources
 
-packages = ['numpy', 'pandas', 'requests']
+packages = ["numpy", "pandas", "requests"]
 
 print("Installed Package Versions:")
 print("-" * 40)

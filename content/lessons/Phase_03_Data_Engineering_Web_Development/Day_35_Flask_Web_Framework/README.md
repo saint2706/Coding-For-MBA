@@ -44,13 +44,16 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
     return "<h1>Welcome to Flask!</h1>"
 
+
 @app.route("/about")
 def about():
     return "<h1>About Page</h1>"
+
 
 if __name__ == "__main__":
     app.run(debug=True)
@@ -64,16 +67,18 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
     return render_template("index.html", title="Home", user="Alice")
+
 
 @app.route("/items")
 def items():
     products = [
         {"name": "Laptop", "price": 999},
         {"name": "Mouse", "price": 29},
-        {"name": "Keyboard", "price": 79}
+        {"name": "Keyboard", "price": 79},
     ]
     return render_template("items.html", products=products)
 ```
@@ -109,6 +114,7 @@ from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -117,6 +123,7 @@ def login():
         # Validate credentials...
         return redirect(url_for("dashboard", user=username))
     return render_template("login.html")
+
 
 @app.route("/dashboard/<user>")
 def dashboard(user):
@@ -138,6 +145,7 @@ def dashboard(user):
 @app.route("/user/<username>")
 def user_profile(username):
     return f"<h1>Profile: {username}</h1>"
+
 
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
@@ -194,10 +202,12 @@ myapp/
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 
+
 class LoginForm(FlaskForm):
     username = StringField("Username")
     password = PasswordField("Password")
     submit = SubmitField("Login")
+
 
 # Escape user input (Jinja2 does this by default)
 # {{ user_input }}  <- Safe, auto-escaped
@@ -217,18 +227,21 @@ app = Flask(__name__)
 
 posts = [
     {"title": "First Post", "content": "Hello World!", "author": "Alice"},
-    {"title": "Flask Tutorial", "content": "Flask is great...", "author": "Bob"}
+    {"title": "Flask Tutorial", "content": "Flask is great...", "author": "Bob"},
 ]
+
 
 @app.route("/")
 def index():
     return render_template("blog_index.html", posts=posts)
+
 
 @app.route("/post/<int:post_id>")
 def post_detail(post_id):
     if 0 <= post_id < len(posts):
         return render_template("post.html", post=posts[post_id])
     return "Post not found", 404
+
 
 if __name__ == "__main__":
     app.run(debug=True)
@@ -242,18 +255,20 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 app = Flask(__name__)
 app.secret_key = "your-secret-key"
 
+
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
     if request.method == "POST":
         name = request.form.get("name")
         email = request.form.get("email")
         message = request.form.get("message")
-        
+
         # Here you'd save or email the message
         flash(f"Thanks {name}! We'll respond to {email} soon.")
         return redirect(url_for("contact"))
-    
+
     return render_template("contact.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
@@ -267,6 +282,7 @@ import pandas as pd
 
 app = Flask(__name__)
 
+
 @app.route("/dashboard")
 def dashboard():
     # Sample data
@@ -277,10 +293,11 @@ def dashboard():
         "top_products": [
             {"name": "Product A", "sales": 450},
             {"name": "Product B", "sales": 320},
-            {"name": "Product C", "sales": 280}
-        ]
+            {"name": "Product C", "sales": 280},
+        ],
     }
     return render_template("dashboard.html", **data)
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -69,7 +69,7 @@ doubled = [x * 2 for x in numbers]
 # [2, 4, 6, 8, 10]
 
 # Square each number
-squares = [x ** 2 for x in numbers]
+squares = [x**2 for x in numbers]
 # [1, 4, 9, 16, 25]
 
 # Convert to strings
@@ -89,7 +89,7 @@ evens = [x for x in numbers if x % 2 == 0]
 # [2, 4, 6, 8, 10]
 
 # Squares of even numbers
-even_squares = [x ** 2 for x in numbers if x % 2 == 0]
+even_squares = [x**2 for x in numbers if x % 2 == 0]
 # [4, 16, 36, 64, 100]
 
 # Filter by length
@@ -145,7 +145,7 @@ flat = [num for row in matrix for num in row]
 colors = ["red", "blue"]
 sizes = ["S", "M", "L"]
 combinations = [(c, s) for c in colors for s in sizes]
-# [('red', 'S'), ('red', 'M'), ('red', 'L'), 
+# [('red', 'S'), ('red', 'M'), ('red', 'L'),
 #  ('blue', 'S'), ('blue', 'M'), ('blue', 'L')]
 ```
 
@@ -196,8 +196,11 @@ lengths = {len(w) for w in words}
 ```python
 # Too complex - use regular loop
 # Bad:
-result = [process(x) if complex_condition(x) else fallback(x) 
-          for x in items if filter1(x) and filter2(x)]
+result = [
+    process(x) if complex_condition(x) else fallback(x)
+    for x in items
+    if filter1(x) and filter2(x)
+]
 
 # Good - clearer with loop
 result = []
@@ -215,13 +218,13 @@ for x in items:
 
 ```python
 # List comprehension - stores all in memory
-big_list = [x ** 2 for x in range(1_000_000)]  # ~40MB
+big_list = [x**2 for x in range(1_000_000)]  # ~40MB
 
 # Generator expression - computes on demand
-big_gen = (x ** 2 for x in range(1_000_000))   # ~100 bytes
+big_gen = (x**2 for x in range(1_000_000))  # ~100 bytes
 
 # Use generator when you only need to iterate once
-total = sum(x ** 2 for x in range(1_000_000))  # No brackets needed
+total = sum(x**2 for x in range(1_000_000))  # No brackets needed
 ```
 
 ### Performance Comparison
@@ -303,7 +306,7 @@ raw_data = [
     "bob@company.org",
     "  CHARLIE@DOMAIN.NET",
     "invalid-email",
-    "diana@test.io  "
+    "diana@test.io  ",
 ]
 
 # Step 1: Clean all entries
@@ -320,6 +323,7 @@ print("Unique domains:", domains)
 
 # Step 4: Group by domain
 from collections import defaultdict
+
 by_domain = defaultdict(list)
 for email in valid:
     domain = email.split("@")[1]
@@ -335,11 +339,7 @@ print("By domain:", dict(by_domain))
 
 ```python
 # 3x3 matrix
-matrix = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9]
-]
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 
 # Flatten to 1D list
 flat = [n for row in matrix for n in row]
@@ -373,14 +373,14 @@ Convert to list comprehension:
 ```python
 result = []
 for x in range(10):
-    result.append(x ** 2)
+    result.append(x**2)
 ```
 
 <details>
 <summary>Click for Answer</summary>
 
 ```python
-result = [x ** 2 for x in range(10)]
+result = [x**2 for x in range(10)]
 ```
 
 </details>
@@ -395,7 +395,7 @@ Create a list of even numbers from 1-20, squared:
 <summary>Click for Answer</summary>
 
 ```python
-result = [x ** 2 for x in range(1, 21) if x % 2 == 0]
+result = [x**2 for x in range(1, 21) if x % 2 == 0]
 # [4, 16, 36, 64, 100, 144, 196, 256, 324, 400]
 ```
 
@@ -461,18 +461,15 @@ transactions = [50, 150, 200, 75, 300, 25]
 ```python
 transactions = [50, 150, 200, 75, 300, 25]
 
-result = [
-    (t, round(t * 0.08, 2), round(t * 1.08, 2))
-    for t in transactions
-    if t > 100
-]
+result = [(t, round(t * 0.08, 2), round(t * 1.08, 2)) for t in transactions if t > 100]
 
 print(result)
 # [(150, 12.0, 162.0), (200, 16.0, 216.0), (300, 24.0, 324.0)]
 
 # With named tuple for clarity
 from collections import namedtuple
-TaxBreakdown = namedtuple('TaxBreakdown', ['amount', 'tax', 'total'])
+
+TaxBreakdown = namedtuple("TaxBreakdown", ["amount", "tax", "total"])
 
 result = [
     TaxBreakdown(t, round(t * 0.08, 2), round(t * 1.08, 2))

@@ -72,19 +72,19 @@ Python is a powerful calculator. No special syntax needed—just type math natur
 
 ```python
 # Addition
-print(100 + 50)        # Output: 150
+print(100 + 50)  # Output: 150
 
 # Subtraction
-print(1000 - 250)      # Output: 750
+print(1000 - 250)  # Output: 750
 
 # Multiplication (use * not ×)
-print(25 * 4)          # Output: 100
+print(25 * 4)  # Output: 100
 
 # Division
-print(100 / 4)         # Output: 25.0
+print(100 / 4)  # Output: 25.0
 
 # Exponents (powers)
-print(2 ** 10)         # Output: 1024
+print(2**10)  # Output: 1024
 ```
 
 > **Note:** Lines starting with `#` are *comments*—notes for humans that Python ignores completely.

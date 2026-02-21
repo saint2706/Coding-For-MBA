@@ -71,29 +71,38 @@ monthly_charges = np.random.uniform(20, 100, n)
 usage_hours = np.random.uniform(0, 50, n)
 
 # Churn probability increases with high charges and low tenure/usage
-churn_prob = 1 / (1 + np.exp(-(
-    -3 + 
-    0.05 * monthly_charges - 
-    0.05 * tenure - 
-    0.1 * usage_hours +
-    np.random.randn(n) * 0.5
-)))
+churn_prob = 1 / (
+    1
+    + np.exp(
+        -(
+            -3
+            + 0.05 * monthly_charges
+            - 0.05 * tenure
+            - 0.1 * usage_hours
+            + np.random.randn(n) * 0.5
+        )
+    )
+)
 churn = (np.random.random(n) < churn_prob).astype(int)
 
-df = pd.DataFrame({
-    'tenure': tenure,
-    'monthly_charges': monthly_charges,
-    'usage_hours': usage_hours,
-    'churn': churn
-})
+df = pd.DataFrame(
+    {
+        "tenure": tenure,
+        "monthly_charges": monthly_charges,
+        "usage_hours": usage_hours,
+        "churn": churn,
+    }
+)
 
 print(f"Churn rate: {churn.mean():.1%}")
 
 # Prepare data
-X = df[['tenure', 'monthly_charges', 'usage_hours']]
-y = df['churn']
+X = df[["tenure", "monthly_charges", "usage_hours"]]
+y = df["churn"]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
 
 # Train logistic regression
 model = LogisticRegression()
@@ -107,7 +116,7 @@ y_prob = model.predict_proba(X_test)[:, 1]  # Probability of churn
 print("\n=== Model Performance ===")
 print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
 print("\nClassification Report:")
-print(classification_report(y_test, y_pred, target_names=['Stay', 'Churn']))
+print(classification_report(y_test, y_pred, target_names=["Stay", "Churn"]))
 ```
 
 ### Understanding the Confusion Matrix
@@ -124,12 +133,17 @@ print(cm)
 
 # Visualize
 plt.figure(figsize=(8, 6))
-sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
-            xticklabels=['Predicted: Stay', 'Predicted: Churn'],
-            yticklabels=['Actual: Stay', 'Actual: Churn'])
-plt.title('Confusion Matrix')
-plt.ylabel('Actual')
-plt.xlabel('Predicted')
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=["Predicted: Stay", "Predicted: Churn"],
+    yticklabels=["Actual: Stay", "Actual: Churn"],
+)
+plt.title("Confusion Matrix")
+plt.ylabel("Actual")
+plt.xlabel("Predicted")
 plt.show()
 
 # Interpretation:
@@ -198,12 +212,12 @@ auc = roc_auc_score(y_test, y_prob)
 
 # Plot
 plt.figure(figsize=(8, 6))
-plt.plot(fpr, tpr, 'b-', linewidth=2, label=f'Model (AUC = {auc:.3f})')
-plt.plot([0, 1], [0, 1], 'k--', linewidth=1, label='Random (AUC = 0.5)')
-plt.xlabel('False Positive Rate (1 - Specificity)')
-plt.ylabel('True Positive Rate (Recall)')
-plt.title('ROC Curve')
-plt.legend(loc='lower right')
+plt.plot(fpr, tpr, "b-", linewidth=2, label=f"Model (AUC = {auc:.3f})")
+plt.plot([0, 1], [0, 1], "k--", linewidth=1, label="Random (AUC = 0.5)")
+plt.xlabel("False Positive Rate (1 - Specificity)")
+plt.ylabel("True Positive Rate (Recall)")
+plt.title("ROC Curve")
+plt.legend(loc="lower right")
 plt.grid(True, alpha=0.3)
 plt.show()
 
@@ -229,28 +243,30 @@ precisions, recalls, thresholds_pr = precision_recall_curve(y_test, y_prob)
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Precision-Recall curve
-axes[0].plot(recalls, precisions, 'b-', linewidth=2)
-axes[0].set_xlabel('Recall')
-axes[0].set_ylabel('Precision')
-axes[0].set_title('Precision-Recall Curve')
+axes[0].plot(recalls, precisions, "b-", linewidth=2)
+axes[0].set_xlabel("Recall")
+axes[0].set_ylabel("Precision")
+axes[0].set_title("Precision-Recall Curve")
 axes[0].grid(True, alpha=0.3)
 
 # Threshold impact
-axes[1].plot(thresholds_pr, precisions[:-1], 'b-', label='Precision')
-axes[1].plot(thresholds_pr, recalls[:-1], 'r-', label='Recall')
-axes[1].axvline(x=0.5, color='k', linestyle='--', alpha=0.5, label='Default threshold')
-axes[1].set_xlabel('Threshold')
-axes[1].set_ylabel('Score')
-axes[1].set_title('Precision & Recall vs Threshold')
+axes[1].plot(thresholds_pr, precisions[:-1], "b-", label="Precision")
+axes[1].plot(thresholds_pr, recalls[:-1], "r-", label="Recall")
+axes[1].axvline(x=0.5, color="k", linestyle="--", alpha=0.5, label="Default threshold")
+axes[1].set_xlabel("Threshold")
+axes[1].set_ylabel("Score")
+axes[1].set_title("Precision & Recall vs Threshold")
 axes[1].legend()
 axes[1].grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.show()
 
+
 # Custom threshold example
 def predict_with_threshold(probs, threshold):
     return (probs >= threshold).astype(int)
+
 
 for thresh in [0.3, 0.5, 0.7]:
     y_pred_custom = predict_with_threshold(y_prob, thresh)
@@ -283,7 +299,7 @@ print(f"Class distribution:\n{y_train.value_counts(normalize=True)}")
 # Solutions:
 
 # 1. Class weights (built-in)
-model_balanced = LogisticRegression(class_weight='balanced')
+model_balanced = LogisticRegression(class_weight="balanced")
 model_balanced.fit(X_train, y_train)
 
 # 2. Adjust threshold
@@ -310,7 +326,9 @@ for name, coef in zip(X.columns, model.coef_[0]):
     if odds_ratio > 1:
         print(f"  → Each unit increase multiplies churn odds by {odds_ratio:.2f}")
     else:
-        print(f"  → Each unit increase multiplies churn odds by {odds_ratio:.2f} (reduces)")
+        print(
+            f"  → Each unit increase multiplies churn odds by {odds_ratio:.2f} (reduces)"
+        )
 ```
 
 ---
@@ -327,8 +345,10 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.metrics import (
-    classification_report, confusion_matrix, 
-    roc_auc_score, precision_recall_curve
+    classification_report,
+    confusion_matrix,
+    roc_auc_score,
+    precision_recall_curve,
 )
 import matplotlib.pyplot as plt
 
@@ -336,45 +356,59 @@ import matplotlib.pyplot as plt
 np.random.seed(42)
 n = 1000
 
-data = pd.DataFrame({
-    'tenure_months': np.random.exponential(24, n).clip(1, 72),
-    'monthly_spend': np.random.uniform(30, 150, n),
-    'support_calls': np.random.poisson(2, n),
-    'contract_type': np.random.choice(['month-to-month', 'one-year', 'two-year'], n, p=[0.5, 0.3, 0.2]),
-    'has_partner': np.random.choice([0, 1], n, p=[0.4, 0.6]),
-})
+data = pd.DataFrame(
+    {
+        "tenure_months": np.random.exponential(24, n).clip(1, 72),
+        "monthly_spend": np.random.uniform(30, 150, n),
+        "support_calls": np.random.poisson(2, n),
+        "contract_type": np.random.choice(
+            ["month-to-month", "one-year", "two-year"], n, p=[0.5, 0.3, 0.2]
+        ),
+        "has_partner": np.random.choice([0, 1], n, p=[0.4, 0.6]),
+    }
+)
 
 # Encode categorical
-data['contract_monthly'] = (data['contract_type'] == 'month-to-month').astype(int)
+data["contract_monthly"] = (data["contract_type"] == "month-to-month").astype(int)
 
 # Generate churn (higher for: low tenure, high support calls, monthly contracts)
 churn_score = (
-    -0.05 * data['tenure_months'] +
-    0.3 * data['support_calls'] +
-    1.5 * data['contract_monthly'] -
-    0.5 * data['has_partner'] -
-    1
+    -0.05 * data["tenure_months"]
+    + 0.3 * data["support_calls"]
+    + 1.5 * data["contract_monthly"]
+    - 0.5 * data["has_partner"]
+    - 1
 )
-data['churn'] = (np.random.random(n) < 1/(1 + np.exp(-churn_score))).astype(int)
+data["churn"] = (np.random.random(n) < 1 / (1 + np.exp(-churn_score))).astype(int)
 
 print(f"Churn rate: {data['churn'].mean():.1%}")
 
 # Prepare features
-features = ['tenure_months', 'monthly_spend', 'support_calls', 'contract_monthly', 'has_partner']
+features = [
+    "tenure_months",
+    "monthly_spend",
+    "support_calls",
+    "contract_monthly",
+    "has_partner",
+]
 X = data[features]
-y = data['churn']
+y = data["churn"]
 
 # Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
 
 # Build pipeline
-pipeline = Pipeline([
-    ('scaler', StandardScaler()),
-    ('classifier', LogisticRegression(class_weight='balanced', random_state=42))
-])
+pipeline = Pipeline(
+    [
+        ("scaler", StandardScaler()),
+        ("classifier", LogisticRegression(class_weight="balanced", random_state=42)),
+    ]
+)
 
 # Cross-validate
-cv_scores = cross_val_score(pipeline, X_train, y_train, cv=5, scoring='roc_auc')
+cv_scores = cross_val_score(pipeline, X_train, y_train, cv=5, scoring="roc_auc")
 print(f"CV AUC: {cv_scores.mean():.3f} (+/- {cv_scores.std():.3f})")
 
 # Train and evaluate
@@ -383,16 +417,18 @@ y_pred = pipeline.predict(X_test)
 y_prob = pipeline.predict_proba(X_test)[:, 1]
 
 print("\n=== Test Set Performance ===")
-print(classification_report(y_test, y_pred, target_names=['Stay', 'Churn']))
+print(classification_report(y_test, y_pred, target_names=["Stay", "Churn"]))
 print(f"AUC: {roc_auc_score(y_test, y_prob):.3f}")
 
 # Feature importance
-model = pipeline.named_steps['classifier']
-importance = pd.DataFrame({
-    'Feature': features,
-    'Coefficient': model.coef_[0],
-    'Odds_Ratio': np.exp(model.coef_[0])
-}).sort_values('Coefficient', key=abs, ascending=False)
+model = pipeline.named_steps["classifier"]
+importance = pd.DataFrame(
+    {
+        "Feature": features,
+        "Coefficient": model.coef_[0],
+        "Odds_Ratio": np.exp(model.coef_[0]),
+    }
+).sort_values("Coefficient", key=abs, ascending=False)
 
 print("\n=== Feature Importance ===")
 print(importance.to_string(index=False))
@@ -411,13 +447,15 @@ from sklearn.metrics import precision_score, recall_score, f1_score
 # Assume: Cost of FN (missed churn) = $500, Cost of FP (unnecessary retention offer) = $50
 
 cost_fn = 500  # Lost customer
-cost_fp = 50   # Wasted retention effort
+cost_fp = 50  # Wasted retention effort
+
 
 def calculate_cost(y_true, y_pred, cost_fn, cost_fp):
     """Calculate total cost of predictions."""
     fn = ((y_true == 1) & (y_pred == 0)).sum()
     fp = ((y_true == 0) & (y_pred == 1)).sum()
     return fn * cost_fn + fp * cost_fp
+
 
 # Test different thresholds
 thresholds = np.linspace(0.1, 0.9, 50)
@@ -437,26 +475,34 @@ for thresh in thresholds:
 fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 
 # Cost curve
-axes[0].plot(thresholds, costs, 'b-', linewidth=2)
+axes[0].plot(thresholds, costs, "b-", linewidth=2)
 optimal_idx = np.argmin(costs)
-axes[0].axvline(x=thresholds[optimal_idx], color='r', linestyle='--', 
-                label=f'Optimal: {thresholds[optimal_idx]:.2f}')
-axes[0].set_xlabel('Threshold')
-axes[0].set_ylabel('Total Cost ($)')
-axes[0].set_title(f'Business Cost vs Threshold\n(FN=${cost_fn}, FP=${cost_fp})')
+axes[0].axvline(
+    x=thresholds[optimal_idx],
+    color="r",
+    linestyle="--",
+    label=f"Optimal: {thresholds[optimal_idx]:.2f}",
+)
+axes[0].set_xlabel("Threshold")
+axes[0].set_ylabel("Total Cost ($)")
+axes[0].set_title(f"Business Cost vs Threshold\n(FN=${cost_fn}, FP=${cost_fp})")
 axes[0].legend()
 axes[0].grid(True, alpha=0.3)
 
 # Metrics curves
-axes[1].plot(thresholds, precisions, 'b-', label='Precision')
-axes[1].plot(thresholds, recalls, 'r-', label='Recall')
-axes[1].plot(thresholds, f1s, 'g-', label='F1')
-axes[1].axvline(x=0.5, color='k', linestyle='--', alpha=0.5, label='Default (0.5)')
-axes[1].axvline(x=thresholds[optimal_idx], color='orange', linestyle='--', 
-                label=f'Cost-optimal ({thresholds[optimal_idx]:.2f})')
-axes[1].set_xlabel('Threshold')
-axes[1].set_ylabel('Score')
-axes[1].set_title('Classification Metrics vs Threshold')
+axes[1].plot(thresholds, precisions, "b-", label="Precision")
+axes[1].plot(thresholds, recalls, "r-", label="Recall")
+axes[1].plot(thresholds, f1s, "g-", label="F1")
+axes[1].axvline(x=0.5, color="k", linestyle="--", alpha=0.5, label="Default (0.5)")
+axes[1].axvline(
+    x=thresholds[optimal_idx],
+    color="orange",
+    linestyle="--",
+    label=f"Cost-optimal ({thresholds[optimal_idx]:.2f})",
+)
+axes[1].set_xlabel("Threshold")
+axes[1].set_ylabel("Score")
+axes[1].set_title("Classification Metrics vs Threshold")
 axes[1].legend()
 axes[1].grid(True, alpha=0.3)
 
@@ -490,11 +536,12 @@ X_test_scaled = scaler.transform(X_test)
 
 # Define classifiers
 classifiers = {
-    'Logistic Regression': LogisticRegression(class_weight='balanced', random_state=42),
-    'Logistic Reg (L1)': LogisticRegression(penalty='l1', solver='liblinear', 
-                                             class_weight='balanced', random_state=42),
-    'K-Nearest Neighbors': KNeighborsClassifier(n_neighbors=5),
-    'Naive Bayes': GaussianNB()
+    "Logistic Regression": LogisticRegression(class_weight="balanced", random_state=42),
+    "Logistic Reg (L1)": LogisticRegression(
+        penalty="l1", solver="liblinear", class_weight="balanced", random_state=42
+    ),
+    "K-Nearest Neighbors": KNeighborsClassifier(n_neighbors=5),
+    "Naive Bayes": GaussianNB(),
 }
 
 # Evaluate with cross-validation
@@ -503,19 +550,21 @@ results = []
 
 for name, clf in classifiers.items():
     # Use scaled data for KNN
-    X_for_cv = X_train_scaled if 'Neighbors' in name else X_train
-    
+    X_for_cv = X_train_scaled if "Neighbors" in name else X_train
+
     # Cross-validate
-    auc_scores = cross_val_score(clf, X_for_cv, y_train, cv=cv, scoring='roc_auc')
-    f1_scores = cross_val_score(clf, X_for_cv, y_train, cv=cv, scoring='f1')
-    
-    results.append({
-        'Classifier': name,
-        'AUC Mean': auc_scores.mean(),
-        'AUC Std': auc_scores.std(),
-        'F1 Mean': f1_scores.mean(),
-        'F1 Std': f1_scores.std()
-    })
+    auc_scores = cross_val_score(clf, X_for_cv, y_train, cv=cv, scoring="roc_auc")
+    f1_scores = cross_val_score(clf, X_for_cv, y_train, cv=cv, scoring="f1")
+
+    results.append(
+        {
+            "Classifier": name,
+            "AUC Mean": auc_scores.mean(),
+            "AUC Std": auc_scores.std(),
+            "F1 Mean": f1_scores.mean(),
+            "F1 Std": f1_scores.std(),
+        }
+    )
 
 results_df = pd.DataFrame(results)
 print("=== Classifier Comparison (Cross-Validation) ===")
@@ -526,18 +575,30 @@ fig, ax = plt.subplots(figsize=(10, 6))
 x = np.arange(len(classifiers))
 width = 0.35
 
-bars1 = ax.bar(x - width/2, results_df['AUC Mean'], width, 
-               yerr=results_df['AUC Std'], label='AUC', capsize=5)
-bars2 = ax.bar(x + width/2, results_df['F1 Mean'], width, 
-               yerr=results_df['F1 Std'], label='F1', capsize=5)
+bars1 = ax.bar(
+    x - width / 2,
+    results_df["AUC Mean"],
+    width,
+    yerr=results_df["AUC Std"],
+    label="AUC",
+    capsize=5,
+)
+bars2 = ax.bar(
+    x + width / 2,
+    results_df["F1 Mean"],
+    width,
+    yerr=results_df["F1 Std"],
+    label="F1",
+    capsize=5,
+)
 
-ax.set_ylabel('Score')
-ax.set_title('Classifier Comparison')
+ax.set_ylabel("Score")
+ax.set_title("Classifier Comparison")
 ax.set_xticks(x)
-ax.set_xticklabels(results_df['Classifier'], rotation=15, ha='right')
+ax.set_xticklabels(results_df["Classifier"], rotation=15, ha="right")
 ax.legend()
 ax.set_ylim(0, 1)
-ax.grid(True, alpha=0.3, axis='y')
+ax.grid(True, alpha=0.3, axis="y")
 
 plt.tight_layout()
 plt.show()

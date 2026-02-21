@@ -89,10 +89,10 @@ Python automatically detects the type of data you store:
 
 ```python
 # Check the type of any value
-print(type(42))           # <class 'int'>
-print(type(3.14))         # <class 'float'>
-print(type("Hello"))      # <class 'str'>
-print(type(True))         # <class 'bool'>
+print(type(42))  # <class 'int'>
+print(type(3.14))  # <class 'float'>
+print(type("Hello"))  # <class 'str'>
+print(type(True))  # <class 'bool'>
 ```
 
 ### Type Conversion
@@ -102,18 +102,18 @@ Sometimes you need to convert between types:
 ```python
 # String to number
 user_input = "150"
-quantity = int(user_input)     # 150 (integer)
-price = float("29.99")          # 29.99 (decimal)
+quantity = int(user_input)  # 150 (integer)
+price = float("29.99")  # 29.99 (decimal)
 
 # Number to string
 revenue = 50000
 message = "Revenue: $" + str(revenue)
 
 # Anything to boolean
-bool(0)      # False
-bool(1)      # True
-bool("")     # False (empty string)
-bool("Hi")   # True (non-empty string)
+bool(0)  # False
+bool(1)  # True
+bool("")  # False (empty string)
+bool("Hi")  # True (non-empty string)
 ```
 
 ### Essential Built-in Functions
@@ -163,9 +163,9 @@ Variables are *references* (pointers) to objects in memory. When you write `x = 
 
 ```python
 a = [1, 2, 3]
-b = a        # b points to the SAME list
+b = a  # b points to the SAME list
 b.append(4)
-print(a)     # [1, 2, 3, 4] - a changed too!
+print(a)  # [1, 2, 3, 4] - a changed too!
 ```
 
 **Production Tip**: For large datasets, be mindful of copying vs. referencing. Use `copy()` or `deepcopy()` when you need independent copies.
@@ -177,6 +177,7 @@ Since Python 3.5+, you can add type hints for documentation and tooling:
 ```python
 def calculate_tax(amount: float, rate: float) -> float:
     return amount * rate
+
 
 # IDE can now warn you about type mismatches
 ```

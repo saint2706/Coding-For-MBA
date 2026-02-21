@@ -61,8 +61,8 @@ When data should NEVER change, use a tuple.
 empty = ()
 
 # Single element (note the comma!)
-single = (42,)    # This is a tuple
-not_tuple = (42)  # This is just 42 in parentheses
+single = (42,)  # This is a tuple
+not_tuple = 42  # This is just 42 in parentheses
 
 # Multiple elements
 coordinates = (37.7749, -122.4194)
@@ -83,9 +83,9 @@ from_string = tuple("hello")  # ('h', 'e', 'l', 'l', 'o')
 product = ("Laptop", 999.99, "Electronics", True)
 #            0        1         2            3
 
-name = product[0]      # "Laptop"
-price = product[1]     # 999.99
-last = product[-1]     # True
+name = product[0]  # "Laptop"
+price = product[1]  # 999.99
+last = product[-1]  # True
 
 # Slicing works too
 subset = product[1:3]  # (999.99, "Electronics")
@@ -110,9 +110,11 @@ point = (15, 20)  # This is a new tuple
 coordinates = (37.7749, -122.4194)
 latitude, longitude = coordinates
 
+
 # Function returns
 def get_min_max(numbers):
     return min(numbers), max(numbers)
+
 
 low, high = get_min_max([5, 2, 8, 1, 9])
 print(f"Range: {low} to {high}")  # Range: 1 to 9
@@ -174,7 +176,7 @@ len((1, 2, 3))  # 3
 locations = {
     (40.7128, -74.0060): "New York",
     (51.5074, -0.1278): "London",
-    (35.6762, 139.6503): "Tokyo"
+    (35.6762, 139.6503): "Tokyo",
 }
 
 coords = (40.7128, -74.0060)
@@ -189,17 +191,17 @@ For readable tuple access:
 from collections import namedtuple
 
 # Define a "record" structure
-Employee = namedtuple('Employee', ['name', 'age', 'department'])
+Employee = namedtuple("Employee", ["name", "age", "department"])
 
 # Create instances
-alice = Employee('Alice', 28, 'Engineering')
+alice = Employee("Alice", 28, "Engineering")
 
 # Access by name (much clearer!)
-print(alice.name)        # "Alice"
+print(alice.name)  # "Alice"
 print(alice.department)  # "Engineering"
 
 # Still works like a tuple
-print(alice[0])          # "Alice"
+print(alice[0])  # "Alice"
 name, age, dept = alice  # Unpacking works too
 ```
 
@@ -218,8 +220,8 @@ name, age, dept = alice  # Unpacking works too
 import sys
 
 # Memory usage
-list_size = sys.getsizeof([1, 2, 3, 4, 5])    # 104 bytes
-tuple_size = sys.getsizeof((1, 2, 3, 4, 5))   #  80 bytes
+list_size = sys.getsizeof([1, 2, 3, 4, 5])  # 104 bytes
+tuple_size = sys.getsizeof((1, 2, 3, 4, 5))  #  80 bytes
 
 # Creation speed (tuples are slightly faster)
 # This matters at scale (millions of records)
@@ -257,11 +259,13 @@ print(f"In Stock: {'Yes' if in_stock else 'No'}")
 ```python
 import math
 
+
 def calculate_distance(point1, point2):
     """Calculate distance between two (x, y) coordinates."""
     x1, y1 = point1
     x2, y2 = point2
-    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
 
 # Store locations as tuples
 warehouse = (0, 0)
@@ -285,20 +289,24 @@ print(f"Distance to Customer 2: {d2:.2f} units")  # 10.00
 from collections import namedtuple
 
 # Define the record structure
-SalesRecord = namedtuple('SalesRecord', ['date', 'region', 'product', 'quantity', 'revenue'])
+SalesRecord = namedtuple(
+    "SalesRecord", ["date", "region", "product", "quantity", "revenue"]
+)
 
 # Create records
 records = [
-    SalesRecord('2024-01-15', 'North', 'Widget', 100, 2999.00),
-    SalesRecord('2024-01-15', 'South', 'Gadget', 75, 5624.25),
-    SalesRecord('2024-01-16', 'North', 'Widget', 120, 3598.80),
+    SalesRecord("2024-01-15", "North", "Widget", 100, 2999.00),
+    SalesRecord("2024-01-15", "South", "Gadget", 75, 5624.25),
+    SalesRecord("2024-01-16", "North", "Widget", 120, 3598.80),
 ]
 
 # Process records
 print("=== SALES SUMMARY ===")
 total_revenue = 0
 for record in records:
-    print(f"{record.date} | {record.region:5} | {record.product:6} | {record.quantity:4} units | ${record.revenue:,.2f}")
+    print(
+        f"{record.date} | {record.region:5} | {record.product:6} | {record.quantity:4} units | ${record.revenue:,.2f}"
+    )
     total_revenue += record.revenue
 
 print(f"\nTotal Revenue: ${total_revenue:,.2f}")
@@ -313,9 +321,9 @@ print(f"\nTotal Revenue: ${total_revenue:,.2f}")
 Which of these creates a single-element tuple?
 
 ```python
-a = (42)
+a = 42
 b = (42,)
-c = 42,
+c = (42,)
 ```
 
 <details>
@@ -410,25 +418,23 @@ locations = {(40.7, -74.0): "NYC"}
 from collections import namedtuple
 
 # Define immutable config structure
-DBConfig = namedtuple('DBConfig', [
-    'host', 
-    'port', 
-    'database', 
-    'user', 
-    'max_connections'
-])
+DBConfig = namedtuple(
+    "DBConfig", ["host", "port", "database", "user", "max_connections"]
+)
 
 # Create the configuration (can't be modified after this)
 prod_db = DBConfig(
-    host='db.company.com',
+    host="db.company.com",
     port=5432,
-    database='production',
-    user='app_user',
-    max_connections=100
+    database="production",
+    user="app_user",
+    max_connections=100,
 )
 
 # Usage
-connection_string = f"postgresql://{prod_db.user}@{prod_db.host}:{prod_db.port}/{prod_db.database}"
+connection_string = (
+    f"postgresql://{prod_db.user}@{prod_db.host}:{prod_db.port}/{prod_db.database}"
+)
 print(connection_string)
 
 # prod_db.port = 5433  # This would FAIL - protecting config integrity

@@ -71,60 +71,60 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score
 
 # Create sample data
 X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Set experiment (organizes related runs)
 mlflow.set_experiment("customer_churn_prediction")
 
 # Run multiple experiments
 hyperparameters = [
-    {'n_estimators': 50, 'max_depth': 10},
-    {'n_estimators': 100, 'max_depth': 15},
-    {'n_estimators': 200, 'max_depth': 20},
+    {"n_estimators": 50, "max_depth": 10},
+    {"n_estimators": 100, "max_depth": 15},
+    {"n_estimators": 200, "max_depth": 20},
 ]
 
 for params in hyperparameters:
     with mlflow.start_run(run_name=f"RF_{params['n_estimators']}_trees"):
         # Log parameters
         mlflow.log_params(params)
-        
+
         # Train model
         model = RandomForestClassifier(**params, random_state=42)
         model.fit(X_train, y_train)
-        
+
         # Make predictions
         y_pred = model.predict(X_test)
-        
+
         # Calculate metrics
         accuracy = accuracy_score(y_test, y_pred)
         precision = precision_score(y_test, y_pred)
         recall = recall_score(y_test, y_pred)
-        
+
         # Log metrics
-        mlflow.log_metrics({
-            'accuracy': accuracy,
-            'precision': precision,
-            'recall': recall
-        })
-        
+        mlflow.log_metrics(
+            {"accuracy": accuracy, "precision": precision, "recall": recall}
+        )
+
         # Log model
         mlflow.sklearn.log_model(model, "random_forest_model")
-        
+
         # Log additional artifacts
         import matplotlib.pyplot as plt
         from sklearn.metrics import confusion_matrix
         import seaborn as sns
-        
+
         cm = confusion_matrix(y_test, y_pred)
         plt.figure(figsize=(6, 5))
-        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues')
-        plt.title(f'Confusion Matrix (n_estimators={params["n_estimators"]})')
-        plt.ylabel('True')
-        plt.xlabel('Predicted')
-        plt.savefig('confusion_matrix.png')
-        mlflow.log_artifact('confusion_matrix.png')
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+        plt.title(f"Confusion Matrix (n_estimators={params['n_estimators']})")
+        plt.ylabel("True")
+        plt.xlabel("Predicted")
+        plt.savefig("confusion_matrix.png")
+        mlflow.log_artifact("confusion_matrix.png")
         plt.close()
-        
+
         print(f"Run completed: {params} → Accuracy: {accuracy:.3f}")
 
 # View results in MLflow UI
@@ -168,7 +168,7 @@ print(f"Model registered as {model_name} version {model_version.version}")
 client.transition_model_version_stage(
     name=model_name,
     version=model_version.version,
-    stage="Staging"  # or "Production"
+    stage="Staging",  # or "Production"
 )
 
 # Load production model (anywhere in organization)
@@ -191,12 +191,14 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 
 X, y = make_classification(n_samples=1000, n_features=10, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-joblib.dump(model, 'churn_model.pkl')
+joblib.dump(model, "churn_model.pkl")
 print("Model saved successfully!")
 ```
 
@@ -210,14 +212,15 @@ from typing import List
 import uvicorn
 
 # Load model at startup
-model = joblib.load('churn_model.pkl')
+model = joblib.load("churn_model.pkl")
 
 app = FastAPI(title="Churn Prediction API", version="1.0")
+
 
 # Define input schema
 class PredictionInput(BaseModel):
     features: List[float]
-    
+
     class Config:
         schema_extra = {
             "example": {
@@ -225,15 +228,18 @@ class PredictionInput(BaseModel):
             }
         }
 
+
 # Define output schema
 class PredictionOutput(BaseModel):
     prediction: int
     probability: float
     risk_level: str
 
+
 @app.get("/")
 def home():
     return {"message": "Churn Prediction API", "status": "healthy"}
+
 
 @app.post("/predict", response_model=PredictionOutput)
 def predict(input_data: PredictionInput):
@@ -241,14 +247,14 @@ def predict(input_data: PredictionInput):
         # Validate input
         if len(input_data.features) != 10:
             raise HTTPException(status_code=400, detail="Expected 10 features")
-        
+
         # Prepare data
         X = np.array(input_data.features).reshape(1, -1)
-        
+
         # Make prediction
         prediction = int(model.predict(X)[0])
         probability = float(model.predict_proba(X)[0][1])
-        
+
         # Determine risk level
         if probability > 0.7:
             risk_level = "HIGH"
@@ -256,19 +262,19 @@ def predict(input_data: PredictionInput):
             risk_level = "MEDIUM"
         else:
             risk_level = "LOW"
-        
+
         return PredictionOutput(
-            prediction=prediction,
-            probability=probability,
-            risk_level=risk_level
+            prediction=prediction, probability=probability, risk_level=risk_level
         )
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @app.get("/health")
 def health_check():
     return {"status": "healthy", "model_loaded": model is not None}
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
@@ -285,55 +291,72 @@ from scipy import stats
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 class ModelMonitor:
     """Monitor model performance and detect data drift."""
-    
+
     def __init__(self, reference_data):
         """Store reference data from training."""
         self.reference_data = reference_data
         self.reference_mean = reference_data.mean(axis=0)
         self.reference_std = reference_data.std(axis=0)
-    
+
     def detect_drift(self, new_data, threshold=0.05):
         """Detect distribution drift using Kolmogorov-Smirnov test."""
         drifted_features = []
-        
+
         for i in range(new_data.shape[1]):
             # KS test: are distributions significantly different?
             statistic, p_value = stats.ks_2samp(
-                self.reference_data[:, i],
-                new_data[:, i]
+                self.reference_data[:, i], new_data[:, i]
             )
-            
+
             if p_value < threshold:
-                drifted_features.append({
-                    'feature_idx': i,
-                    'p_value': p_value,
-                    'statistic': statistic
-                })
-        
+                drifted_features.append(
+                    {"feature_idx": i, "p_value": p_value, "statistic": statistic}
+                )
+
         return drifted_features
-    
+
     def compare_distributions(self, new_data, feature_idx=0):
         """Visualize distribution drift."""
         plt.figure(figsize=(10, 5))
-        
-        plt.hist(self.reference_data[:, feature_idx], bins=30, alpha=0.5, 
-                 label='Training Data', density=True)
-        plt.hist(new_data[:, feature_idx], bins=30, alpha=0.5, 
-                 label='Production Data', density=True)
-        
-        plt.axvline(self.reference_mean[feature_idx], color='blue', 
-                    linestyle='--', label='Training Mean')
-        plt.axvline(new_data[:, feature_idx].mean(), color='orange', 
-                    linestyle='--', label='Production Mean')
-        
-        plt.xlabel(f'Feature {feature_idx}')
-        plt.ylabel('Density')
-        plt.title('Data Distribution: Training vs Production')
+
+        plt.hist(
+            self.reference_data[:, feature_idx],
+            bins=30,
+            alpha=0.5,
+            label="Training Data",
+            density=True,
+        )
+        plt.hist(
+            new_data[:, feature_idx],
+            bins=30,
+            alpha=0.5,
+            label="Production Data",
+            density=True,
+        )
+
+        plt.axvline(
+            self.reference_mean[feature_idx],
+            color="blue",
+            linestyle="--",
+            label="Training Mean",
+        )
+        plt.axvline(
+            new_data[:, feature_idx].mean(),
+            color="orange",
+            linestyle="--",
+            label="Production Mean",
+        )
+
+        plt.xlabel(f"Feature {feature_idx}")
+        plt.ylabel("Density")
+        plt.title("Data Distribution: Training vs Production")
         plt.legend()
         plt.grid(True, alpha=0.3)
         plt.show()
+
 
 # Example usage
 np.random.seed(42)
@@ -655,73 +678,87 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 
+
 class ProductionMonitor:
     """Track model performance over time."""
-    
+
     def __init__(self):
         self.predictions_log = []
         self.performance_log = []
-    
+
     def log_prediction(self, timestamp, features, prediction, ground_truth=None):
         """Log each prediction."""
-        self.predictions_log.append({
-            'timestamp': timestamp,
-            'prediction': prediction,
-            'ground_truth': ground_truth,
-            'feature_mean': np.mean(features)
-        })
-    
+        self.predictions_log.append(
+            {
+                "timestamp": timestamp,
+                "prediction": prediction,
+                "ground_truth": ground_truth,
+                "feature_mean": np.mean(features),
+            }
+        )
+
     def calculate_daily_metrics(self):
         """Aggregate daily performance."""
         df = pd.DataFrame(self.predictions_log)
-        df['date'] = pd.to_datetime(df['timestamp']).dt.date
-        
+        df["date"] = pd.to_datetime(df["timestamp"]).dt.date
+
         # Calculate accuracy where ground truth is available
-        daily_stats = df.groupby('date').agg({
-            'prediction': 'count',  # Volume
-            'ground_truth': lambda x: (df[df['ground_truth'].notna()]['prediction'] 
-                                      == df[df['ground_truth'].notna()]['ground_truth']).mean()
-        }).rename(columns={'prediction': 'volume', 'ground_truth': 'accuracy'})
-        
+        daily_stats = (
+            df.groupby("date")
+            .agg(
+                {
+                    "prediction": "count",  # Volume
+                    "ground_truth": lambda x: (
+                        df[df["ground_truth"].notna()]["prediction"]
+                        == df[df["ground_truth"].notna()]["ground_truth"]
+                    ).mean(),
+                }
+            )
+            .rename(columns={"prediction": "volume", "ground_truth": "accuracy"})
+        )
+
         return daily_stats
-    
+
     def plot_dashboard(self):
         """Visualize monitoring metrics."""
         daily_stats = self.calculate_daily_metrics()
-        
+
         fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-        
+
         # Prediction volume
-        axes[0, 0].plot(daily_stats.index, daily_stats['volume'], marker='o')
-        axes[0, 0].set_title('Daily Prediction Volume')
-        axes[0, 0].set_xlabel('Date')
-        axes[0, 0].set_ylabel('Predictions')
+        axes[0, 0].plot(daily_stats.index, daily_stats["volume"], marker="o")
+        axes[0, 0].set_title("Daily Prediction Volume")
+        axes[0, 0].set_xlabel("Date")
+        axes[0, 0].set_ylabel("Predictions")
         axes[0, 0].grid(True, alpha=0.3)
-        
+
         # Accuracy over time
-        axes[0, 1].plot(daily_stats.index, daily_stats['accuracy'], marker='o', color='green')
-        axes[0, 1].axhline(y=0.85, color='r', linestyle='--', label='Threshold')
-        axes[0, 1].set_title('Model Accuracy Over Time')
-        axes[0, 1].set_ylabel('Accuracy')
+        axes[0, 1].plot(
+            daily_stats.index, daily_stats["accuracy"], marker="o", color="green"
+        )
+        axes[0, 1].axhline(y=0.85, color="r", linestyle="--", label="Threshold")
+        axes[0, 1].set_title("Model Accuracy Over Time")
+        axes[0, 1].set_ylabel("Accuracy")
         axes[0, 1].legend()
         axes[0, 1].grid(True, alpha=0.3)
-        
+
         # Prediction distribution
         df = pd.DataFrame(self.predictions_log)
-        axes[1, 0].hist(df['prediction'], bins=20, edgecolor='black')
-        axes[1, 0].set_title('Prediction Distribution')
-        axes[1, 0].set_xlabel('Predicted Class')
-        axes[1, 0].set_ylabel('Frequency')
-        
+        axes[1, 0].hist(df["prediction"], bins=20, edgecolor="black")
+        axes[1, 0].set_title("Prediction Distribution")
+        axes[1, 0].set_xlabel("Predicted Class")
+        axes[1, 0].set_ylabel("Frequency")
+
         # Feature drift
-        axes[1, 1].plot(df['timestamp'], df['feature_mean'], alpha=0.5)
-        axes[1, 1].set_title('Feature Drift (Mean)')
-        axes[1, 1].set_xlabel('Time')
-        axes[1, 1].set_ylabel('Feature Mean')
+        axes[1, 1].plot(df["timestamp"], df["feature_mean"], alpha=0.5)
+        axes[1, 1].set_title("Feature Drift (Mean)")
+        axes[1, 1].set_xlabel("Time")
+        axes[1, 1].set_ylabel("Feature Mean")
         axes[1, 1].grid(True, alpha=0.3)
-        
+
         plt.tight_layout()
         plt.show()
+
 
 # Simulate production usage
 monitor = ProductionMonitor()
@@ -733,13 +770,13 @@ for day in range(30):
         timestamp = start_date + timedelta(days=day, hours=np.random.randint(0, 24))
         features = np.random.randn(10)
         prediction = np.random.choice([0, 1], p=[0.7, 0.3])
-        
+
         # Simulate ground truth availability (50% of cases)
         if np.random.random() < 0.5:
             ground_truth = prediction if np.random.random() < 0.90 else 1 - prediction
         else:
             ground_truth = None
-        
+
         monitor.log_prediction(timestamp, features, prediction, ground_truth)
 
 # Display dashboard
@@ -805,19 +842,20 @@ Your FastAPI model endpoint takes 500ms to respond. Users expect <100ms. What's 
 ```python
 import time
 
+
 @app.post("/predict")
 def predict(input_data: PredictionInput):
     start = time.time()
-    
+
     # Time each step
     t1 = time.time()
-    model = joblib.load('model.pkl')  # ⚠️  Loading on each request!
+    model = joblib.load("model.pkl")  # ⚠️  Loading on each request!
     print(f"Load time: {time.time() - t1:.3f}s")
-    
+
     t2 = time.time()
     X = preprocess(input_data)  # Maybe slow preprocessing?
     print(f"Preprocess time: {time.time() - t2:.3f}s")
-    
+
     t3 = time.time()
     prediction = model.predict(X)
     print(f"Predict time: {time.time() - t3:.3f}s")

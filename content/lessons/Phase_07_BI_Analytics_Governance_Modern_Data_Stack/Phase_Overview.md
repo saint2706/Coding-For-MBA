@@ -166,8 +166,13 @@ By the end of Phase 7, you should be able to:
 ```sql
 -- Snowflake / BigQuery / SQL
 WITH clean_data AS (
-    SELECT id, amount FROM raw_sales WHERE status = 'complete'
+    SELECT
+        id,
+        amount
+    FROM raw_sales
+    WHERE status = 'complete'
 )
+
 SELECT * FROM clean_data;
 ```
 

@@ -65,11 +65,7 @@ print(f"Followers: {data['followers']}")
 import requests
 
 # Add query parameters
-params = {
-    "q": "python",
-    "sort": "stars",
-    "order": "desc"
-}
+params = {"q": "python", "sort": "stars", "order": "desc"}
 response = requests.get("https://api.github.com/search/repositories", params=params)
 data = response.json()
 
@@ -83,16 +79,11 @@ for repo in data["items"][:5]:
 import requests
 
 # POST with JSON body
-payload = {
-    "name": "New Repository",
-    "description": "Created via API"
-}
+payload = {"name": "New Repository", "description": "Created via API"}
 headers = {"Authorization": "token YOUR_TOKEN"}
 
 response = requests.post(
-    "https://api.github.com/user/repos",
-    json=payload,
-    headers=headers
+    "https://api.github.com/user/repos", json=payload, headers=headers
 )
 print(f"Status: {response.status_code}")
 ```
@@ -102,6 +93,7 @@ print(f"Status: {response.status_code}")
 ```python
 import requests
 from requests.exceptions import RequestException
+
 
 def safe_api_call(url, params=None):
     try:
@@ -115,6 +107,7 @@ def safe_api_call(url, params=None):
     except RequestException as e:
         print(f"Request failed: {e}")
     return None
+
 
 data = safe_api_call("https://api.github.com/users/octocat")
 ```
@@ -156,6 +149,7 @@ response = requests.get(url, auth=("username", "password"))
 ```python
 import time
 
+
 def rate_limited_request(urls, delay=1):
     results = []
     for url in urls:
@@ -174,19 +168,21 @@ def rate_limited_request(urls, delay=1):
 ```python
 import requests
 
+
 def get_user_repos(username):
     """Fetch user's public repositories."""
     url = f"https://api.github.com/users/{username}/repos"
     response = requests.get(url, params={"sort": "updated", "per_page": 5})
-    
+
     if response.status_code != 200:
         print(f"Error: {response.status_code}")
         return []
-    
+
     repos = response.json()
     for repo in repos:
         print(f"- {repo['name']}: {repo['stargazers_count']} stars")
     return repos
+
 
 repos = get_user_repos("python")
 ```
@@ -197,24 +193,31 @@ repos = get_user_repos("python")
 import requests
 import pandas as pd
 
+
 def analyze_github_org(org_name):
     """Analyze an organization's repositories."""
     url = f"https://api.github.com/orgs/{org_name}/repos"
     response = requests.get(url, params={"per_page": 30})
     repos = response.json()
-    
-    df = pd.DataFrame([{
-        "name": r["name"],
-        "stars": r["stargazers_count"],
-        "forks": r["forks_count"],
-        "language": r["language"]
-    } for r in repos])
-    
+
+    df = pd.DataFrame(
+        [
+            {
+                "name": r["name"],
+                "stars": r["stargazers_count"],
+                "forks": r["forks_count"],
+                "language": r["language"],
+            }
+            for r in repos
+        ]
+    )
+
     print(f"Total repos: {len(df)}")
     print(f"Total stars: {df['stars'].sum()}")
     print(f"\nTop languages:\n{df['language'].value_counts().head()}")
-    
+
     return df
+
 
 df = analyze_github_org("python")
 ```
@@ -224,25 +227,27 @@ df = analyze_github_org("python")
 ```python
 import requests
 
+
 def get_all_repos(username, max_pages=3):
     """Fetch all repos with pagination."""
     all_repos = []
-    
+
     for page in range(1, max_pages + 1):
         response = requests.get(
             f"https://api.github.com/users/{username}/repos",
-            params={"page": page, "per_page": 30}
+            params={"page": page, "per_page": 30},
         )
         repos = response.json()
-        
+
         if not repos:
             break
-            
+
         all_repos.extend(repos)
         print(f"Page {page}: {len(repos)} repos")
-    
+
     print(f"Total: {len(all_repos)} repos")
     return all_repos
+
 
 repos = get_all_repos("torvalds", max_pages=2)
 ```
@@ -368,8 +373,9 @@ Fix:
 ```python
 response = requests.post(url, json=data)  # Sends as JSON
 # OR
-response = requests.post(url, data=json.dumps(data), 
-                         headers={"Content-Type": "application/json"})
+response = requests.post(
+    url, data=json.dumps(data), headers={"Content-Type": "application/json"}
+)
 ```
 
 </details>

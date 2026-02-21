@@ -122,23 +122,25 @@ Storing the same data in Snappy-Compressed Parquet costs ~$2,000/month.
 ```python
 import time
 
+
 def fetch_page(page_num):
     # Simulate API call
     print(f"Fetching Page {page_num}...")
     if page_num < 3:
         return {"data": [1, 2, 3], "next_page": page_num + 1}
     else:
-        return {"data": [4, 5], "next_page": None} # Last page
+        return {"data": [4, 5], "next_page": None}  # Last page
+
 
 all_data = []
 current_page = 1
 
 while current_page is not None:
     response = fetch_page(current_page)
-    all_data.extend(response['data'])
-    
-    current_page = response['next_page']
-    time.sleep(0.5) # Respect rate limits!
+    all_data.extend(response["data"])
+
+    current_page = response["next_page"]
+    time.sleep(0.5)  # Respect rate limits!
 
 print(f"Captured {len(all_data)} records: {all_data}")
 ```
@@ -159,14 +161,14 @@ Captured 8 records: [1, 2, 3, 1, 2, 3, 4, 5]
 ```python
 data = [
     {"user": "Alice", "events": ["login", "click", "logout"]},
-    {"user": "Bob", "events": ["login"]}
+    {"user": "Bob", "events": ["login"]},
 ]
 
 flat_rows = []
 
 for entry in data:
-    user_name = entry['user']
-    for event in entry['events']:
+    user_name = entry["user"]
+    for event in entry["events"]:
         # Create one row per event
         flat_rows.append({"user": user_name, "event_type": event})
 

@@ -206,6 +206,7 @@ def process_order(order):
                 # Process...
                 pass
 
+
 # Guard clauses (cleaner)
 def process_order(order):
     if not order:
@@ -214,7 +215,7 @@ def process_order(order):
         return "Invalid order"
     if not order.in_stock:
         return "Out of stock"
-    
+
     # Happy path - process order
     return "Order processed"
 ```
@@ -373,21 +374,22 @@ print(f"Total Shipping: ${total:.2f}")
 ```python
 def classify_customer(annual_spend, years_active):
     """Classify customer tier based on spending and tenure."""
-    
+
     # VIP: High spend OR long tenure with decent spend
     if annual_spend >= 10000 or (years_active >= 5 and annual_spend >= 5000):
         return "VIP"
-    
+
     # Premium: Good spend
     if annual_spend >= 5000:
         return "Premium"
-    
+
     # Regular: Some activity
     if annual_spend >= 1000:
         return "Regular"
-    
+
     # Inactive
     return "Inactive"
+
 
 # Test cases
 customers = [
@@ -533,17 +535,18 @@ def calculate_shipping_days(tier, order_total, availability):
         base_days = 3
     else:
         base_days = 5
-    
+
     # Add backorder delay
     delay = 5 if availability == "backorder" else 0
-    
+
     total_days = base_days + delay
-    
+
     return total_days
 
+
 # Test
-print(calculate_shipping_days("vip", 100, "in-stock"))      # 1
-print(calculate_shipping_days("premium", 60, "in-stock"))   # 2
+print(calculate_shipping_days("vip", 100, "in-stock"))  # 1
+print(calculate_shipping_days("premium", 60, "in-stock"))  # 2
 print(calculate_shipping_days("regular", 30, "backorder"))  # 10
 ```
 

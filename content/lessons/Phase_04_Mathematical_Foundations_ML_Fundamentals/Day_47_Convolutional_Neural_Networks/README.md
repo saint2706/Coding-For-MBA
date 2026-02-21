@@ -53,41 +53,42 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Simple 2D convolution demonstration
-image = np.array([
-    [100, 100, 100, 0, 0],
-    [100, 100, 100, 0, 0],
-    [100, 100, 100, 0, 0],
-    [100, 100, 100, 0, 0],
-    [100, 100, 100, 0, 0]
-], dtype=float)
+image = np.array(
+    [
+        [100, 100, 100, 0, 0],
+        [100, 100, 100, 0, 0],
+        [100, 100, 100, 0, 0],
+        [100, 100, 100, 0, 0],
+        [100, 100, 100, 0, 0],
+    ],
+    dtype=float,
+)
 
 # Edge detection filter
-edge_filter = np.array([
-    [-1, 0, 1],
-    [-1, 0, 1],
-    [-1, 0, 1]
-])
+edge_filter = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])
+
 
 # Manual convolution
 def convolve2d(image, kernel):
     h, w = image.shape
     kh, kw = kernel.shape
     output = np.zeros((h - kh + 1, w - kw + 1))
-    
+
     for i in range(output.shape[0]):
         for j in range(output.shape[1]):
-            output[i, j] = np.sum(image[i:i+kh, j:j+kw] * kernel)
+            output[i, j] = np.sum(image[i : i + kh, j : j + kw] * kernel)
     return output
+
 
 result = convolve2d(image, edge_filter)
 
 fig, axes = plt.subplots(1, 3, figsize=(12, 4))
-axes[0].imshow(image, cmap='gray')
-axes[0].set_title('Original Image')
-axes[1].imshow(edge_filter, cmap='RdBu')
-axes[1].set_title('Edge Filter')
-axes[2].imshow(result, cmap='gray')
-axes[2].set_title('After Convolution')
+axes[0].imshow(image, cmap="gray")
+axes[0].set_title("Original Image")
+axes[1].imshow(edge_filter, cmap="RdBu")
+axes[1].set_title("Edge Filter")
+axes[2].imshow(result, cmap="gray")
+axes[2].set_title("After Convolution")
 plt.tight_layout()
 plt.show()
 
@@ -101,29 +102,26 @@ from tensorflow import keras
 from tensorflow.keras import layers
 
 # CNN for image classification (e.g., MNIST digits)
-model = keras.Sequential([
-    # Convolutional layers: extract features
-    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
-    layers.MaxPooling2D((2, 2)),
-    
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    
-    # Dense layers: classify
-    layers.Flatten(),
-    layers.Dense(64, activation='relu'),
-    layers.Dense(10, activation='softmax')  # 10 digit classes
-])
+model = keras.Sequential(
+    [
+        # Convolutional layers: extract features
+        layers.Conv2D(32, (3, 3), activation="relu", input_shape=(28, 28, 1)),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(64, (3, 3), activation="relu"),
+        layers.MaxPooling2D((2, 2)),
+        layers.Conv2D(64, (3, 3), activation="relu"),
+        # Dense layers: classify
+        layers.Flatten(),
+        layers.Dense(64, activation="relu"),
+        layers.Dense(10, activation="softmax"),  # 10 digit classes
+    ]
+)
 
 model.summary()
 
 # Compile
 model.compile(
-    optimizer='adam',
-    loss='sparse_categorical_crossentropy',
-    metrics=['accuracy']
+    optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"]
 )
 ```
 
@@ -136,19 +134,15 @@ from tensorflow.keras.datasets import mnist
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 # Normalize and reshape
-X_train = X_train.reshape(-1, 28, 28, 1).astype('float32') / 255
-X_test = X_test.reshape(-1, 28, 28, 1).astype('float32') / 255
+X_train = X_train.reshape(-1, 28, 28, 1).astype("float32") / 255
+X_test = X_test.reshape(-1, 28, 28, 1).astype("float32") / 255
 
 print(f"Training samples: {X_train.shape}")
 print(f"Test samples: {X_test.shape}")
 
 # Train
 history = model.fit(
-    X_train, y_train,
-    epochs=5,
-    batch_size=64,
-    validation_split=0.1,
-    verbose=1
+    X_train, y_train, epochs=5, batch_size=64, validation_split=0.1, verbose=1
 )
 
 # Evaluate
@@ -187,9 +181,9 @@ print(f"First conv layer: {first_layer_weights.shape}")
 # Plot some filters
 fig, axes = plt.subplots(4, 8, figsize=(10, 5))
 for i, ax in enumerate(axes.flatten()):
-    ax.imshow(first_layer_weights[:, :, 0, i], cmap='gray')
-    ax.axis('off')
-plt.suptitle('First Layer Filters (Edge Detectors)')
+    ax.imshow(first_layer_weights[:, :, 0, i], cmap="gray")
+    ax.axis("off")
+plt.suptitle("First Layer Filters (Edge Detectors)")
 plt.tight_layout()
 plt.show()
 ```
@@ -201,11 +195,11 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # Augmentation increases effective training data
 datagen = ImageDataGenerator(
-    rotation_range=10,        # Random rotation
-    width_shift_range=0.1,    # Horizontal shift
-    height_shift_range=0.1,   # Vertical shift
-    zoom_range=0.1,           # Random zoom
-    horizontal_flip=True      # For non-digit images
+    rotation_range=10,  # Random rotation
+    width_shift_range=0.1,  # Horizontal shift
+    height_shift_range=0.1,  # Vertical shift
+    zoom_range=0.1,  # Random zoom
+    horizontal_flip=True,  # For non-digit images
 )
 
 # Example: augment a single image
@@ -215,9 +209,9 @@ aug_iter = datagen.flow(sample, batch_size=1)
 fig, axes = plt.subplots(2, 5, figsize=(10, 4))
 for i, ax in enumerate(axes.flatten()):
     augmented = next(aug_iter)[0].reshape(28, 28)
-    ax.imshow(augmented, cmap='gray')
-    ax.axis('off')
-plt.suptitle('Data Augmentation Examples')
+    ax.imshow(augmented, cmap="gray")
+    ax.axis("off")
+plt.suptitle("Data Augmentation Examples")
 plt.tight_layout()
 plt.show()
 ```
@@ -228,21 +222,25 @@ plt.show()
 from tensorflow.keras.applications import VGG16
 
 # Load pre-trained model (trained on ImageNet)
-base_model = VGG16(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
+base_model = VGG16(weights="imagenet", include_top=False, input_shape=(224, 224, 3))
 base_model.trainable = False  # Freeze weights
 
 # Add custom classification head
-model_transfer = keras.Sequential([
-    base_model,
-    layers.GlobalAveragePooling2D(),
-    layers.Dense(256, activation='relu'),
-    layers.Dropout(0.5),
-    layers.Dense(10, activation='softmax')  # Your classes
-])
+model_transfer = keras.Sequential(
+    [
+        base_model,
+        layers.GlobalAveragePooling2D(),
+        layers.Dense(256, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(10, activation="softmax"),  # Your classes
+    ]
+)
 
 print(f"Base model layers: {len(base_model.layers)}")
 print(f"Total parameters: {model_transfer.count_params():,}")
-print(f"Trainable parameters: {sum(np.prod(w.shape) for w in model_transfer.trainable_weights):,}")
+print(
+    f"Trainable parameters: {sum(np.prod(w.shape) for w in model_transfer.trainable_weights):,}"
+)
 ```
 
 ---
@@ -278,21 +276,25 @@ from tensorflow.keras import layers
 from tensorflow.keras.datasets import mnist
 
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
-X_train = X_train.reshape(-1, 28, 28, 1).astype('float32') / 255
-X_test = X_test.reshape(-1, 28, 28, 1).astype('float32') / 255
+X_train = X_train.reshape(-1, 28, 28, 1).astype("float32") / 255
+X_test = X_test.reshape(-1, 28, 28, 1).astype("float32") / 255
 
-model = keras.Sequential([
-    layers.Conv2D(32, 3, activation='relu', input_shape=(28, 28, 1)),
-    layers.MaxPooling2D(2),
-    layers.Conv2D(64, 3, activation='relu'),
-    layers.MaxPooling2D(2),
-    layers.Flatten(),
-    layers.Dense(128, activation='relu'),
-    layers.Dropout(0.5),
-    layers.Dense(10, activation='softmax')
-])
+model = keras.Sequential(
+    [
+        layers.Conv2D(32, 3, activation="relu", input_shape=(28, 28, 1)),
+        layers.MaxPooling2D(2),
+        layers.Conv2D(64, 3, activation="relu"),
+        layers.MaxPooling2D(2),
+        layers.Flatten(),
+        layers.Dense(128, activation="relu"),
+        layers.Dropout(0.5),
+        layers.Dense(10, activation="softmax"),
+    ]
+)
 
-model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+model.compile(
+    optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"]
+)
 model.fit(X_train, y_train, epochs=5, validation_split=0.1, verbose=1)
 print(f"Test accuracy: {model.evaluate(X_test, y_test, verbose=0)[1]:.3f}")
 ```
@@ -309,10 +311,10 @@ pred_classes = predictions.argmax(axis=1)
 # Visualize
 fig, axes = plt.subplots(5, 5, figsize=(10, 10))
 for i, ax in enumerate(axes.flatten()):
-    ax.imshow(X_test[i].reshape(28, 28), cmap='gray')
-    color = 'green' if pred_classes[i] == y_test[i] else 'red'
-    ax.set_title(f'Pred: {pred_classes[i]}', color=color)
-    ax.axis('off')
+    ax.imshow(X_test[i].reshape(28, 28), cmap="gray")
+    color = "green" if pred_classes[i] == y_test[i] else "red"
+    ax.set_title(f"Pred: {pred_classes[i]}", color=color)
+    ax.axis("off")
 plt.tight_layout()
 plt.show()
 ```
@@ -321,26 +323,30 @@ plt.show()
 
 ```python
 architectures = [
-    ([32], []),             # Simple
-    ([32, 64], []),         # Medium
+    ([32], []),  # Simple
+    ([32, 64], []),  # Medium
     ([32, 64, 64], [128]),  # Deep
 ]
 
 for conv_layers, dense_layers in architectures:
     model = keras.Sequential()
-    model.add(layers.Conv2D(conv_layers[0], 3, activation='relu', input_shape=(28, 28, 1)))
+    model.add(
+        layers.Conv2D(conv_layers[0], 3, activation="relu", input_shape=(28, 28, 1))
+    )
     model.add(layers.MaxPooling2D(2))
-    
+
     for filters in conv_layers[1:]:
-        model.add(layers.Conv2D(filters, 3, activation='relu'))
+        model.add(layers.Conv2D(filters, 3, activation="relu"))
         model.add(layers.MaxPooling2D(2))
-    
+
     model.add(layers.Flatten())
     for units in dense_layers:
-        model.add(layers.Dense(units, activation='relu'))
-    model.add(layers.Dense(10, activation='softmax'))
-    
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+        model.add(layers.Dense(units, activation="relu"))
+    model.add(layers.Dense(10, activation="softmax"))
+
+    model.compile(
+        optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"]
+    )
     model.fit(X_train, y_train, epochs=3, verbose=0)
     acc = model.evaluate(X_test, y_test, verbose=0)[1]
     print(f"Conv: {conv_layers}, Dense: {dense_layers}, Accuracy: {acc:.3f}")

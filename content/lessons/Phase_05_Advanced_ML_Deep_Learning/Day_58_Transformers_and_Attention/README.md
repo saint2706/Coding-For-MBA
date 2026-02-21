@@ -120,25 +120,27 @@ words = ["The", "cat", "sat", "on", "the", "mat"]
 # Simplified attention (real transformers use learned matrices)
 # For word "sat", compute attention to all words
 
+
 def simple_attention(query_word, all_words):
     """
     Compute how much 'query_word' should attend to each word.
     """
     # Simplified: based on position distance
     query_idx = all_words.index(query_word)
-    
+
     scores = []
     for i, word in enumerate(all_words):
         # Closer words get higher attention
         distance = abs(i - query_idx)
         score = 1 / (1 + distance)
         scores.append(score)
-    
+
     # Softmax: normalize to probabilities
     scores = np.array(scores)
     attention_weights = np.exp(scores) / np.sum(np.exp(scores))
-    
+
     return attention_weights
+
 
 # Attention for "sat"
 sat_attention = simple_attention("sat", words)
@@ -158,54 +160,68 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class SelfAttention(nn.Module):
     def __init__(self, embed_dim, num_heads=8):
         super().__init__()
         self.embed_dim = embed_dim
         self.num_heads = num_heads
         self.head_dim = embed_dim // num_heads
-        
-        assert self.head_dim * num_heads == embed_dim, "embed_dim must be divisible by num_heads"
-        
+
+        assert self.head_dim * num_heads == embed_dim, (
+            "embed_dim must be divisible by num_heads"
+        )
+
         # Linear transformations for Q, K, V
         self.query = nn.Linear(embed_dim, embed_dim)
         self.key = nn.Linear(embed_dim, embed_dim)
         self.value = nn.Linear(embed_dim, embed_dim)
-        
+
         self.fc_out = nn.Linear(embed_dim, embed_dim)
-    
+
     def forward(self, x):
         # x shape: (batch_size, seq_length, embed_dim)
         batch_size, seq_length, embed_dim = x.shape
-        
+
         # Generate Q, K, V
         Q = self.query(x)  # (batch, seq_len, embed_dim)
         K = self.key(x)
         V = self.value(x)
-        
+
         # Split into multiple heads
-        Q = Q.view(batch_size, seq_length, self.num_heads, self.head_dim).transpose(1, 2)
-        K = K.view(batch_size, seq_length, self.num_heads, self.head_dim).transpose(1, 2)
-        V = V.view(batch_size, seq_length, self.num_heads, self.head_dim).transpose(1, 2)
+        Q = Q.view(batch_size, seq_length, self.num_heads, self.head_dim).transpose(
+            1, 2
+        )
+        K = K.view(batch_size, seq_length, self.num_heads, self.head_dim).transpose(
+            1, 2
+        )
+        V = V.view(batch_size, seq_length, self.num_heads, self.head_dim).transpose(
+            1, 2
+        )
         # Now: (batch, num_heads, seq_len, head_dim)
-        
+
         # Scaled dot-product attention
-        scores = torch.matmul(Q, K.transpose(-2, -1)) / (self.head_dim ** 0.5)
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / (self.head_dim**0.5)
         # scores: (batch, num_heads, seq_len, seq_len)
-        
+
         attention_weights = F.softmax(scores, dim=-1)
-        
+
         # Apply attention to values
         attended = torch.matmul(attention_weights, V)
         # attended: (batch, num_heads, seq_len, head_dim)
-        
+
         # Concatenate heads
-        attended = attended.transpose(1, 2).contiguous().view(batch_size, seq_length, embed_dim)
-        
+        attended = (
+            attended.transpose(1, 2)
+            .contiguous()
+            .view(batch_size, seq_length, embed_dim)
+        )
+
         # Final linear layer
         output = self.fc_out(attended)
-        
+
         return output, attention_weights
+
 
 # Example usage
 batch_size, seq_length, embed_dim = 2, 10, 512
@@ -227,73 +243,84 @@ print(f"Attention weights shape: {weights.shape}")
 class TransformerBlock(nn.Module):
     def __init__(self, embed_dim, num_heads, ff_dim, dropout=0.1):
         super().__init__()
-        
+
         # Multi-head self-attention
         self.attention = SelfAttention(embed_dim, num_heads)
-        
+
         # Feed-forward network
         self.ffn = nn.Sequential(
-            nn.Linear(embed_dim, ff_dim),
-            nn.ReLU(),
-            nn.Linear(ff_dim, embed_dim)
+            nn.Linear(embed_dim, ff_dim), nn.ReLU(), nn.Linear(ff_dim, embed_dim)
         )
-        
+
         # Layer normalization
         self.ln1 = nn.LayerNorm(embed_dim)
         self.ln2 = nn.LayerNorm(embed_dim)
-        
+
         # Dropout
         self.dropout = nn.Dropout(dropout)
-    
+
     def forward(self, x):
         # Self-attention with residual connection
         attn_output, _ = self.attention(x)
         x = self.ln1(x + self.dropout(attn_output))
-        
+
         # Feed-forward with residual connection
         ffn_output = self.ffn(x)
         x = self.ln2(x + self.dropout(ffn_output))
-        
+
         return x
+
 
 # Stack multiple transformer blocks
 class TransformerEncoder(nn.Module):
-    def __init__(self, vocab_size, embed_dim=512, num_heads=8, num_layers=6, ff_dim=2048, max_len=512):
+    def __init__(
+        self,
+        vocab_size,
+        embed_dim=512,
+        num_heads=8,
+        num_layers=6,
+        ff_dim=2048,
+        max_len=512,
+    ):
         super().__init__()
-        
+
         # Token embeddings
         self.token_embedding = nn.Embedding(vocab_size, embed_dim)
-        
+
         # Positional embeddings
         self.position_embedding = nn.Embedding(max_len, embed_dim)
-        
+
         # Transformer blocks
-        self.blocks = nn.ModuleList([
-            TransformerBlock(embed_dim, num_heads, ff_dim)
-            for _ in range(num_layers)
-        ])
-        
+        self.blocks = nn.ModuleList(
+            [TransformerBlock(embed_dim, num_heads, ff_dim) for _ in range(num_layers)]
+        )
+
         self.dropout = nn.Dropout(0.1)
-    
+
     def forward(self, x):
         # x: (batch, seq_len) of token indices
         batch_size, seq_len = x.shape
-        
+
         # Token embeddings
         token_emb = self.token_embedding(x)  # (batch, seq_len, embed_dim)
-        
+
         # Positional embeddings
-        positions = torch.arange(0, seq_len, device=x.device).unsqueeze(0).expand(batch_size, -1)
+        positions = (
+            torch.arange(0, seq_len, device=x.device)
+            .unsqueeze(0)
+            .expand(batch_size, -1)
+        )
         pos_emb = self.position_embedding(positions)
-        
+
         # Combine
         x = self.dropout(token_emb + pos_emb)
-        
+
         # Pass through transformer blocks
         for block in self.blocks:
             x = block(x)
-        
+
         return x
+
 
 # Example
 vocab_size = 10000
@@ -336,7 +363,7 @@ print(answer)  # {'answer': 'Paris', 'score': 0.98}
 generator = pipeline("text-generation", model="gpt2")
 generated = generator("Machine learning is", max_length=50, num_return_sequences=2)
 for i, text in enumerate(generated):
-    print(f"\nGeneration {i+1}: {text['generated_text']}")
+    print(f"\nGeneration {i + 1}: {text['generated_text']}")
 
 # 5. Summarization
 summarizer = pipeline("summarization")
@@ -355,7 +382,12 @@ print(french)  # [{'translation_text': 'Bonjour, comment allez-vous?'}]
 **Use case: Text classification, Q&A, NER**
 
 ```python
-from transformers import BertTokenizer, BertForSequenceClassification, Trainer, TrainingArguments
+from transformers import (
+    BertTokenizer,
+    BertForSequenceClassification,
+    Trainer,
+    TrainingArguments,
+)
 import torch
 from torch.utils.data import Dataset
 
@@ -369,26 +401,30 @@ texts = [
     "This movie was amazing!",
     "Terrible waste of time.",
     "Absolutely loved it!",
-    "Boring and predictable."
+    "Boring and predictable.",
 ]
 labels = [1, 0, 1, 0]  # 1 = positive, 0 = negative
 
 # Tokenize
-encodings = tokenizer(texts, truncation=True, padding=True, max_length=128, return_tensors="pt")
+encodings = tokenizer(
+    texts, truncation=True, padding=True, max_length=128, return_tensors="pt"
+)
+
 
 # Create dataset
 class SentimentDataset(Dataset):
     def __init__(self, encodings, labels):
         self.encodings = encodings
         self.labels = labels
-    
+
     def __len__(self):
         return len(self.labels)
-    
+
     def __getitem__(self, idx):
         item = {key: val[idx] for key, val in self.encodings.items()}
-        item['labels'] = torch.tensor(self.labels[idx])
+        item["labels"] = torch.tensor(self.labels[idx])
         return item
+
 
 dataset = SentimentDataset(encodings, labels)
 
@@ -453,13 +489,13 @@ output = model.generate(
     temperature=0.8,  # Controls randomness (0.1 = conservative, 1.5 = creative)
     top_k=50,  # Sample from top 50 tokens
     top_p=0.95,  # Nucleus sampling
-    do_sample=True
+    do_sample=True,
 )
 
 print("=== GPT-2 Generations ===")
 for i, generated_sequence in enumerate(output):
     text = tokenizer.decode(generated_sequence, skip_special_tokens=True)
-    print(f"\nGeneration {i+1}:")
+    print(f"\nGeneration {i + 1}:")
     print(text)
 ```
 
@@ -494,20 +530,20 @@ strategies = {
         "Method": "Freeze pretrained layers, train only classifier head",
         "Data needed": "100-1000 examples",
         "Speed": "Fast",
-        "Use when": "Very limited data, task similar to pretraining"
+        "Use when": "Very limited data, task similar to pretraining",
     },
     "Fine-tuning top layers": {
         "Method": "Freeze bottom layers, train top layers + head",
         "Data needed": "1000-10000 examples",
         "Speed": "Medium",
-        "Use when": "Moderate data, some domain shift"
+        "Use when": "Moderate data, some domain shift",
     },
     "Full fine-tuning": {
         "Method": "Train all layers (with low LR)",
         "Data needed": "10000+ examples",
         "Speed": "Slow",
-        "Use when": "Lots of data, significant domain shift"
-    }
+        "Use when": "Lots of data, significant domain shift",
+    },
 }
 ```
 
@@ -552,19 +588,21 @@ train_labels = [1, 0, 1, ...]  # 1=positive, 0=negative
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 train_encodings = tokenizer(train_texts, truncation=True, padding=True, max_length=128)
 
+
 # Dataset
 class ReviewDataset(torch.utils.data.Dataset):
     def __init__(self, encodings, labels):
         self.encodings = encodings
         self.labels = labels
-    
+
     def __getitem__(self, idx):
         item = {key: torch.tensor(val[idx]) for key, val in self.encodings.items()}
-        item['labels'] = torch.tensor(self.labels[idx])
+        item["labels"] = torch.tensor(self.labels[idx])
         return item
-    
+
     def __len__(self):
         return len(self.labels)
+
 
 train_dataset = ReviewDataset(train_encodings, train_labels)
 train_loader = DataLoader(train_dataset, batch_size=8, shuffle=True)
@@ -579,20 +617,20 @@ for epoch in range(3):
     total_loss = 0
     for batch in train_loader:
         optimizer.zero_grad()
-        
+
         outputs = model(
-            input_ids=batch['input_ids'],
-            attention_mask=batch['attention_mask'],
-            labels=batch['labels']
+            input_ids=batch["input_ids"],
+            attention_mask=batch["attention_mask"],
+            labels=batch["labels"],
         )
-        
+
         loss = outputs.loss
         loss.backward()
         optimizer.step()
-        
+
         total_loss += loss.item()
-    
-    print(f"Epoch {epoch+1}, Loss: {total_loss/len(train_loader):.4f}")
+
+    print(f"Epoch {epoch + 1}, Loss: {total_loss / len(train_loader):.4f}")
 
 # Save model
 model.save_pretrained("./sentiment_model")
@@ -604,7 +642,12 @@ tokenizer.save_pretrained("./sentiment_model")
 ### Exercise 2: Text Generation with GPT-2 Fine-Tuning
 
 ```python
-from transformers import GPT2LMHeadModel, GPT2Tokenizer, TextDataset, DataCollatorForLanguageModeling
+from transformers import (
+    GPT2LMHeadModel,
+    GPT2Tokenizer,
+    TextDataset,
+    DataCollatorForLanguageModeling,
+)
 from transformers import Trainer, TrainingArguments
 
 # Prepare custom text data
@@ -623,14 +666,12 @@ tokenizer.pad_token = tokenizer.eos_token
 
 # Prepare dataset
 train_dataset = TextDataset(
-    tokenizer=tokenizer,
-    file_path="custom_text.txt",
-    block_size=128
+    tokenizer=tokenizer, file_path="custom_text.txt", block_size=128
 )
 
 data_collator = DataCollatorForLanguageModeling(
     tokenizer=tokenizer,
-    mlm=False  # GPT uses causal LM, not masked LM
+    mlm=False,  # GPT uses causal LM, not masked LM
 )
 
 # Training arguments
@@ -659,10 +700,7 @@ prompt = "Machine learning"
 input_ids = tokenizer.encode(prompt, return_tensors="pt")
 
 output = model.generate(
-    input_ids,
-    max_length=100,
-    temperature=0.7,
-    num_return_sequences=1
+    input_ids, max_length=100, temperature=0.7, num_return_sequences=1
 )
 
 generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
@@ -677,7 +715,9 @@ print(f"Generated: {generated_text}")
 from transformers import pipeline
 
 # Load QA model
-qa_pipeline = pipeline("question-answering", model="distilbert-base-cased-distilled-squad")
+qa_pipeline = pipeline(
+    "question-answering", model="distilbert-base-cased-distilled-squad"
+)
 
 # Custom knowledge base
 knowledge_base = """
@@ -692,7 +732,7 @@ questions = [
     "When was DeepMind founded?",
     "Who acquired DeepMind?",
     "What is DeepMind known for?",
-    "What did AlphaGo do in 2016?"
+    "What did AlphaGo do in 2016?",
 ]
 
 print("=== Question Answering System ===")
@@ -1051,31 +1091,33 @@ attention(sentence1) == attention(sentence2)
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def positional_encoding(seq_len, d_model):
     """
     Generate sinusoidal positional encodings.
-    
+
     PE(pos, 2i) = sin(pos / 10000^(2i/d_model))
     PE(pos, 2i+1) = cos(pos / 10000^(2i/d_model))
     """
     position = np.arange(seq_len)[:, np.newaxis]
     div_term = np.exp(np.arange(0, d_model, 2) * -(np.log(10000.0) / d_model))
-    
+
     pe = np.zeros((seq_len, d_model))
     pe[:, 0::2] = np.sin(position * div_term)
     pe[:, 1::2] = np.cos(position * div_term)
-    
+
     return pe
+
 
 # Visualize
 pe = positional_encoding(seq_len=100, d_model=128)
 
 plt.figure(figsize=(12, 8))
-plt.imshow(pe.T, cmap='RdBu', aspect='auto')
+plt.imshow(pe.T, cmap="RdBu", aspect="auto")
 plt.colorbar()
-plt.xlabel('Position')
-plt.ylabel('Embedding Dimension')
-plt.title('Sinusoidal Positional Encodings')
+plt.xlabel("Position")
+plt.ylabel("Embedding Dimension")
+plt.title("Sinusoidal Positional Encodings")
 plt.show()
 
 # Each position has unique pattern
@@ -1101,11 +1143,14 @@ class PositionalEmbedding(nn.Module):
         super().__init__()
         # Learnable position embeddings
         self.position_embeddings = nn.Embedding(max_len, d_model)
-    
+
     def forward(self, x):
         batch_size, seq_len = x.shape
-        positions = torch.arange(seq_len, device=x.device).unsqueeze(0).expand(batch_size, -1)
+        positions = (
+            torch.arange(seq_len, device=x.device).unsqueeze(0).expand(batch_size, -1)
+        )
         return self.position_embeddings(positions)
+
 
 # Combined with token embeddings
 class TransformerEmbedding(nn.Module):
@@ -1113,12 +1158,12 @@ class TransformerEmbedding(nn.Module):
         super().__init__()
         self.token_emb = nn.Embedding(vocab_size, d_model)
         self.pos_emb = PositionalEmbedding(max_len, d_model)
-    
+
     def forward(self, tokens):
         # tokens: (batch, seq_len)
         token_embeddings = self.token_emb(tokens)  # (batch, seq_len, d_model)
         position_embeddings = self.pos_emb(tokens)
-        
+
         # Add together
         return token_embeddings + position_embeddings
 ```
@@ -1154,7 +1199,7 @@ final_dog = dog_emb + pos_0  # Position 0
 final_bit = bit_emb + pos_1  # Position 1
 final_man = man_emb + pos_2  # Position 2
 
-# "man bit dog"  
+# "man bit dog"
 final_man_v2 = man_emb + pos_0  # Position 0 (different!)
 final_bit_v2 = bit_emb + pos_1  # Position 1
 final_dog_v2 = dog_emb + pos_2  # Position 2
@@ -1234,7 +1279,7 @@ model = AutoModelForSequenceClassification.from_pretrained("bert-base-uncased")
 quantized_model = torch.quantization.quantize_dynamic(
     model,
     {torch.nn.Linear},  # Quantize linear layers
-    dtype=torch.qint8
+    dtype=torch.qint8,
 )
 
 # Latency: 500ms → 200ms
@@ -1250,8 +1295,7 @@ from optimum.onnxruntime import ORTModelForSequenceClassification
 
 # Convert
 model = ORTModelForSequenceClassification.from_pretrained(
-    "bert-base-uncased",
-    from_transformers=True
+    "bert-base-uncased", from_transformers=True
 )
 
 # Inference with ONNX Runtime
@@ -1295,9 +1339,11 @@ model.predict(batch)
 # Cache frequent queries
 from functools import lru_cache
 
+
 @lru_cache(maxsize=10000)
 def predict_sentiment(text):
     return model.predict(text)
+
 
 # Repeated queries: 500ms → 0.1ms (cache hit)
 ```
@@ -1312,7 +1358,7 @@ import torch.nn.utils.prune as prune
 # Prune 30% of weights
 for module in model.modules():
     if isinstance(module, torch.nn.Linear):
-        prune.l1_unstructured(module, name='weight', amount=0.3)
+        prune.l1_unstructured(module, name="weight", amount=0.3)
 
 # Latency: 500ms → 350ms
 # Accuracy: -1% to -2%
@@ -1322,7 +1368,7 @@ for module in model.modules():
 
 ```python
 # CPU → GPU: 500ms → 50ms (10x)
-model.to('cuda')
+model.to("cuda")
 
 # GPU → TPU/custom chips: Even faster
 
@@ -1373,7 +1419,7 @@ metrics = {
     "p95_latency": "90ms",
     "p99_latency": "150ms",
     "throughput": "200 req/sec",
-    "accuracy": "92.5%"
+    "accuracy": "92.5%",
 }
 
 # Alert if p95 > 100ms or accuracy < 90%

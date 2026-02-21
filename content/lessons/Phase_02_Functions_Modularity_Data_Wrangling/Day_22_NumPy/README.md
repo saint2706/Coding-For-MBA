@@ -44,6 +44,7 @@ for salary in salaries:
 ```python
 # NumPy: One operation on all employees
 import numpy as np
+
 bonuses = salaries * 0.10
 # Time: ~0.5ms (100x faster!)
 ```
@@ -67,14 +68,14 @@ import numpy as np
 arr = np.array([1, 2, 3, 4, 5])
 
 # Common array creation
-zeros = np.zeros(5)           # [0., 0., 0., 0., 0.]
-ones = np.ones((3, 3))        # 3x3 matrix of 1s
+zeros = np.zeros(5)  # [0., 0., 0., 0., 0.]
+ones = np.ones((3, 3))  # 3x3 matrix of 1s
 range_arr = np.arange(0, 10, 2)  # [0, 2, 4, 6, 8]
 linspace = np.linspace(0, 1, 5)  # 5 evenly spaced: [0, 0.25, 0.5, 0.75, 1]
 
 # Random arrays
-random = np.random.rand(3, 3)       # Uniform [0,1)
-normal = np.random.randn(3, 3)      # Standard normal
+random = np.random.rand(3, 3)  # Uniform [0,1)
+normal = np.random.randn(3, 3)  # Standard normal
 integers = np.random.randint(1, 100, size=10)  # Random integers
 ```
 
@@ -83,10 +84,10 @@ integers = np.random.randint(1, 100, size=10)  # Random integers
 ```python
 arr = np.array([[1, 2, 3], [4, 5, 6]])
 
-arr.shape      # (2, 3) - 2 rows, 3 columns
-arr.ndim       # 2 - dimensions
-arr.size       # 6 - total elements
-arr.dtype      # int64 - data type
+arr.shape  # (2, 3) - 2 rows, 3 columns
+arr.ndim  # 2 - dimensions
+arr.size  # 6 - total elements
+arr.dtype  # int64 - data type
 ```
 
 ### Indexing and Slicing
@@ -95,19 +96,17 @@ arr.dtype      # int64 - data type
 arr = np.array([10, 20, 30, 40, 50])
 
 # Basic indexing
-arr[0]        # 10
-arr[-1]       # 50
-arr[1:4]      # [20, 30, 40]
+arr[0]  # 10
+arr[-1]  # 50
+arr[1:4]  # [20, 30, 40]
 
 # 2D arrays
-matrix = np.array([[1, 2, 3], 
-                   [4, 5, 6], 
-                   [7, 8, 9]])
+matrix = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
-matrix[0, 0]      # 1 (row 0, col 0)
-matrix[1, :]      # [4, 5, 6] (entire row 1)
-matrix[:, 2]      # [3, 6, 9] (entire column 2)
-matrix[0:2, 1:]   # [[2, 3], [5, 6]] (submatrix)
+matrix[0, 0]  # 1 (row 0, col 0)
+matrix[1, :]  # [4, 5, 6] (entire row 1)
+matrix[:, 2]  # [3, 6, 9] (entire column 2)
+matrix[0:2, 1:]  # [[2, 3], [5, 6]] (submatrix)
 ```
 
 ### Vectorized Operations
@@ -116,18 +115,18 @@ matrix[0:2, 1:]   # [[2, 3], [5, 6]] (submatrix)
 arr = np.array([1, 2, 3, 4, 5])
 
 # Arithmetic (applies to all elements)
-arr + 10      # [11, 12, 13, 14, 15]
-arr * 2       # [2, 4, 6, 8, 10]
-arr ** 2      # [1, 4, 9, 16, 25]
+arr + 10  # [11, 12, 13, 14, 15]
+arr * 2  # [2, 4, 6, 8, 10]
+arr**2  # [1, 4, 9, 16, 25]
 
 # Array with array
 a = np.array([1, 2, 3])
 b = np.array([4, 5, 6])
-a + b         # [5, 7, 9]
-a * b         # [4, 10, 18]
+a + b  # [5, 7, 9]
+a * b  # [4, 10, 18]
 
 # Comparison
-arr > 3       # [False, False, False, True, True]
+arr > 3  # [False, False, False, True, True]
 ```
 
 ### Aggregation Functions
@@ -135,18 +134,18 @@ arr > 3       # [False, False, False, True, True]
 ```python
 arr = np.array([1, 2, 3, 4, 5])
 
-np.sum(arr)      # 15
-np.mean(arr)     # 3.0
-np.std(arr)      # 1.414...
-np.min(arr)      # 1
-np.max(arr)      # 5
-np.argmax(arr)   # 4 (index of max)
+np.sum(arr)  # 15
+np.mean(arr)  # 3.0
+np.std(arr)  # 1.414...
+np.min(arr)  # 1
+np.max(arr)  # 5
+np.argmax(arr)  # 4 (index of max)
 
 # 2D aggregation
 matrix = np.array([[1, 2, 3], [4, 5, 6]])
-np.sum(matrix)           # 21 (all elements)
-np.sum(matrix, axis=0)   # [5, 7, 9] (column sums)
-np.sum(matrix, axis=1)   # [6, 15] (row sums)
+np.sum(matrix)  # 21 (all elements)
+np.sum(matrix, axis=0)  # [5, 7, 9] (column sums)
+np.sum(matrix, axis=1)  # [6, 15] (row sums)
 ```
 
 ### Reshaping Arrays
@@ -170,12 +169,12 @@ transposed = reshaped.T  # 4x3
 arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
 # Filter with condition
-evens = arr[arr % 2 == 0]       # [2, 4, 6, 8, 10]
-greater_5 = arr[arr > 5]        # [6, 7, 8, 9, 10]
+evens = arr[arr % 2 == 0]  # [2, 4, 6, 8, 10]
+greater_5 = arr[arr > 5]  # [6, 7, 8, 9, 10]
 
 # Multiple conditions
-mask = (arr > 3) & (arr < 8)    # Use & for 'and', | for 'or'
-filtered = arr[mask]            # [4, 5, 6, 7]
+mask = (arr > 3) & (arr < 8)  # Use & for 'and', | for 'or'
+filtered = arr[mask]  # [4, 5, 6, 7]
 ```
 
 ---
@@ -249,13 +248,15 @@ print(f"NumPy: {time.time() - start:.4f}s")
 import numpy as np
 
 # Daily sales for 4 products over 5 days
-sales = np.array([
-    [120, 95, 80, 110],   # Day 1
-    [135, 88, 92, 105],   # Day 2
-    [142, 102, 75, 98],   # Day 3
-    [128, 98, 88, 115],   # Day 4
-    [155, 110, 95, 108]   # Day 5
-])
+sales = np.array(
+    [
+        [120, 95, 80, 110],  # Day 1
+        [135, 88, 92, 105],  # Day 2
+        [142, 102, 75, 98],  # Day 3
+        [128, 98, 88, 115],  # Day 4
+        [155, 110, 95, 108],  # Day 5
+    ]
+)
 
 print("Sales Analysis:")
 print(f"Total sales: {np.sum(sales)}")
@@ -342,7 +343,7 @@ What does this produce?
 
 ```python
 a = np.array([[1], [2], [3]])  # 3x1
-b = np.array([10, 20, 30])     # 1x3 (broadcast to 3x3)
+b = np.array([10, 20, 30])  # 1x3 (broadcast to 3x3)
 a + b
 ```
 

@@ -52,9 +52,10 @@ outcomes:
 ```python
 import numpy as np
 
+
 def simple_rnn_cell(x_t, h_prev, Wx, Wh, b):
     """One step of a simple RNN.
-    
+
     Args:
         x_t: Current input
         h_prev: Previous hidden state (memory)
@@ -63,6 +64,7 @@ def simple_rnn_cell(x_t, h_prev, Wx, Wh, b):
     """
     h_t = np.tanh(np.dot(x_t, Wx) + np.dot(h_prev, Wh) + b)
     return h_t
+
 
 # Example: Process a sequence
 sequence = [[1, 0, 0], [0, 1, 0], [0, 0, 1]]  # 3 time steps, 3 features
@@ -96,13 +98,15 @@ np.random.seed(42)
 x = np.linspace(0, 100, 1000)
 y = np.sin(x) + np.random.randn(1000) * 0.1
 
+
 # Create sequences (10 steps → predict next)
 def create_sequences(data, seq_length):
     X, Y = [], []
     for i in range(len(data) - seq_length):
-        X.append(data[i:i+seq_length])
-        Y.append(data[i+seq_length])
+        X.append(data[i : i + seq_length])
+        Y.append(data[i + seq_length])
     return np.array(X), np.array(Y)
+
 
 seq_length = 20
 X, Y = create_sequences(y, seq_length)
@@ -121,28 +125,25 @@ print(f"Each sample: {seq_length} timesteps, 1 feature")
 
 ```python
 # Simple RNN (suffers from vanishing gradients)
-model_rnn = keras.Sequential([
-    layers.SimpleRNN(32, input_shape=(seq_length, 1)),
-    layers.Dense(1)
-])
+model_rnn = keras.Sequential(
+    [layers.SimpleRNN(32, input_shape=(seq_length, 1)), layers.Dense(1)]
+)
 
 # LSTM (Long Short-Term Memory) - handles long dependencies
-model_lstm = keras.Sequential([
-    layers.LSTM(32, input_shape=(seq_length, 1)),
-    layers.Dense(1)
-])
+model_lstm = keras.Sequential(
+    [layers.LSTM(32, input_shape=(seq_length, 1)), layers.Dense(1)]
+)
 
 # GRU (Gated Recurrent Unit) - simpler than LSTM, often similar performance
-model_gru = keras.Sequential([
-    layers.GRU(32, input_shape=(seq_length, 1)),
-    layers.Dense(1)
-])
+model_gru = keras.Sequential(
+    [layers.GRU(32, input_shape=(seq_length, 1)), layers.Dense(1)]
+)
 
 # Compare models
-models = {'SimpleRNN': model_rnn, 'LSTM': model_lstm, 'GRU': model_gru}
+models = {"SimpleRNN": model_rnn, "LSTM": model_lstm, "GRU": model_gru}
 
 for name, model in models.items():
-    model.compile(optimizer='adam', loss='mse')
+    model.compile(optimizer="adam", loss="mse")
     model.fit(X_train, Y_train, epochs=20, verbose=0)
     mse = model.evaluate(X_test, Y_test, verbose=0)
     print(f"{name}: MSE = {mse:.4f}")
@@ -183,11 +184,11 @@ predictions = model_lstm.predict(X_test, verbose=0)
 import matplotlib.pyplot as plt
 
 plt.figure(figsize=(12, 4))
-plt.plot(Y_test[:100], 'b-', label='Actual', alpha=0.7)
-plt.plot(predictions[:100], 'r--', label='Predicted', alpha=0.7)
-plt.xlabel('Time Step')
-plt.ylabel('Value')
-plt.title('LSTM Predictions on Sine Wave')
+plt.plot(Y_test[:100], "b-", label="Actual", alpha=0.7)
+plt.plot(predictions[:100], "r--", label="Predicted", alpha=0.7)
+plt.xlabel("Time Step")
+plt.ylabel("Value")
+plt.title("LSTM Predictions on Sine Wave")
 plt.legend()
 plt.show()
 ```
@@ -196,14 +197,16 @@ plt.show()
 
 ```python
 # Stacked LSTM for more complex sequences
-model_stacked = keras.Sequential([
-    layers.LSTM(64, return_sequences=True, input_shape=(seq_length, 1)),
-    layers.LSTM(32, return_sequences=False),
-    layers.Dense(16, activation='relu'),
-    layers.Dense(1)
-])
+model_stacked = keras.Sequential(
+    [
+        layers.LSTM(64, return_sequences=True, input_shape=(seq_length, 1)),
+        layers.LSTM(32, return_sequences=False),
+        layers.Dense(16, activation="relu"),
+        layers.Dense(1),
+    ]
+)
 
-model_stacked.compile(optimizer='adam', loss='mse')
+model_stacked.compile(optimizer="adam", loss="mse")
 model_stacked.summary()
 
 # Note: return_sequences=True passes output at each timestep to next layer
@@ -230,14 +233,18 @@ print(f"Training samples: {X_train.shape}")
 print(f"Each review: {max_length} words (padded)")
 
 # Build model
-model_text = keras.Sequential([
-    layers.Embedding(vocab_size, 128, input_length=max_length),
-    layers.LSTM(64, dropout=0.2),
-    layers.Dense(1, activation='sigmoid')
-])
+model_text = keras.Sequential(
+    [
+        layers.Embedding(vocab_size, 128, input_length=max_length),
+        layers.LSTM(64, dropout=0.2),
+        layers.Dense(1, activation="sigmoid"),
+    ]
+)
 
-model_text.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-model_text.fit(X_train, y_train, epochs=3, batch_size=64, validation_split=0.2, verbose=1)
+model_text.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+model_text.fit(
+    X_train, y_train, epochs=3, batch_size=64, validation_split=0.2, verbose=1
+)
 
 print(f"Test accuracy: {model_text.evaluate(X_test, y_test, verbose=0)[1]:.3f}")
 ```
@@ -267,17 +274,21 @@ print(f"Test accuracy: {model_text.evaluate(X_test, y_test, verbose=0)[1]:.3f}")
 
 ```python
 # Variable length sequences: use masking
-model = keras.Sequential([
-    layers.Masking(mask_value=0, input_shape=(max_length, features)),
-    layers.LSTM(32),
-    layers.Dense(1)
-])
+model = keras.Sequential(
+    [
+        layers.Masking(mask_value=0, input_shape=(max_length, features)),
+        layers.LSTM(32),
+        layers.Dense(1),
+    ]
+)
 
 # Bidirectional: process forward and backward
-model = keras.Sequential([
-    layers.Bidirectional(layers.LSTM(32), input_shape=(seq_length, 1)),
-    layers.Dense(1)
-])
+model = keras.Sequential(
+    [
+        layers.Bidirectional(layers.LSTM(32), input_shape=(seq_length, 1)),
+        layers.Dense(1),
+    ]
+)
 ```
 
 ---
@@ -300,8 +311,8 @@ y = np.sin(x) * np.exp(-0.02 * x) + np.random.randn(500) * 0.1
 seq_length = 15
 X, Y = [], []
 for i in range(len(y) - seq_length):
-    X.append(y[i:i+seq_length])
-    Y.append(y[i+seq_length])
+    X.append(y[i : i + seq_length])
+    Y.append(y[i + seq_length])
 X, Y = np.array(X).reshape(-1, seq_length, 1), np.array(Y)
 
 # Split
@@ -310,11 +321,10 @@ X_train, X_test = X[:train_size], X[train_size:]
 Y_train, Y_test = Y[:train_size], Y[train_size:]
 
 # Model
-model = keras.Sequential([
-    layers.LSTM(32, input_shape=(seq_length, 1)),
-    layers.Dense(1)
-])
-model.compile(optimizer='adam', loss='mse')
+model = keras.Sequential(
+    [layers.LSTM(32, input_shape=(seq_length, 1)), layers.Dense(1)]
+)
+model.compile(optimizer="adam", loss="mse")
 model.fit(X_train, Y_train, epochs=30, verbose=0)
 
 print(f"Test MSE: {model.evaluate(X_test, Y_test, verbose=0):.4f}")
@@ -324,22 +334,22 @@ print(f"Test MSE: {model.evaluate(X_test, Y_test, verbose=0):.4f}")
 
 ```python
 architectures = [
-    ('SimpleRNN', lambda: layers.SimpleRNN(32)),
-    ('LSTM', lambda: layers.LSTM(32)),
-    ('GRU', lambda: layers.GRU(32)),
-    ('Stacked LSTM', lambda: [layers.LSTM(32, return_sequences=True), layers.LSTM(16)]),
+    ("SimpleRNN", lambda: layers.SimpleRNN(32)),
+    ("LSTM", lambda: layers.LSTM(32)),
+    ("GRU", lambda: layers.GRU(32)),
+    ("Stacked LSTM", lambda: [layers.LSTM(32, return_sequences=True), layers.LSTM(16)]),
 ]
 
 for name, layer_fn in architectures:
     model = keras.Sequential()
-    if 'Stacked' in name:
+    if "Stacked" in name:
         for layer in layer_fn():
             model.add(layer)
     else:
         model.add(layer_fn())
     model.add(layers.Dense(1))
-    
-    model.compile(optimizer='adam', loss='mse')
+
+    model.compile(optimizer="adam", loss="mse")
     model.fit(X_train, Y_train, epochs=20, verbose=0)
     mse = model.evaluate(X_test, Y_test, verbose=0)
     print(f"{name}: MSE = {mse:.4f}")
@@ -351,12 +361,14 @@ for name, layer_fn in architectures:
 # Predict multiple steps ahead
 future_steps = 5
 
+
 def create_multistep_data(data, seq_length, future_steps):
     X, Y = [], []
     for i in range(len(data) - seq_length - future_steps):
-        X.append(data[i:i+seq_length])
-        Y.append(data[i+seq_length:i+seq_length+future_steps])
+        X.append(data[i : i + seq_length])
+        Y.append(data[i + seq_length : i + seq_length + future_steps])
     return np.array(X), np.array(Y)
+
 
 X_multi, Y_multi = create_multistep_data(y, seq_length, future_steps)
 X_multi = X_multi.reshape(-1, seq_length, 1)
@@ -365,13 +377,15 @@ train_size = int(len(X_multi) * 0.8)
 X_train_m, X_test_m = X_multi[:train_size], X_multi[train_size:]
 Y_train_m, Y_test_m = Y_multi[:train_size], Y_multi[train_size:]
 
-model_multi = keras.Sequential([
-    layers.LSTM(64, input_shape=(seq_length, 1)),
-    layers.Dense(32, activation='relu'),
-    layers.Dense(future_steps)  # Output multiple steps
-])
+model_multi = keras.Sequential(
+    [
+        layers.LSTM(64, input_shape=(seq_length, 1)),
+        layers.Dense(32, activation="relu"),
+        layers.Dense(future_steps),  # Output multiple steps
+    ]
+)
 
-model_multi.compile(optimizer='adam', loss='mse')
+model_multi.compile(optimizer="adam", loss="mse")
 model_multi.fit(X_train_m, Y_train_m, epochs=30, verbose=0)
 print(f"Multi-step MSE: {model_multi.evaluate(X_test_m, Y_test_m, verbose=0):.4f}")
 ```

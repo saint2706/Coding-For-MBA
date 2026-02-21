@@ -47,6 +47,7 @@ Each department has specialized knowledge. When Finance needs engineering input,
 
 ```python
 import math
+
 print(math.sqrt(16))  # 4.0 - We didn't write this code!
 ```
 
@@ -61,13 +62,15 @@ Your custom code can be organized into modules too, making it reusable across pr
 ```python
 # Import entire module
 import math
-print(math.pi)       # 3.14159...
-print(math.sqrt(16)) # 4.0
+
+print(math.pi)  # 3.14159...
+print(math.sqrt(16))  # 4.0
 
 # Import specific items
 from math import pi, sqrt
-print(pi)       # 3.14159...
-print(sqrt(16)) # 4.0
+
+print(pi)  # 3.14159...
+print(sqrt(16))  # 4.0
 
 # Import with alias
 import pandas as pd
@@ -97,12 +100,15 @@ Python includes powerful built-in modules:
 ```python
 # Examples
 import random
+
 print(random.randint(1, 100))
 
 import datetime
+
 print(datetime.date.today())
 
 import json
+
 data = json.loads('{"name": "Alice"}')
 ```
 
@@ -116,9 +122,11 @@ def calculate_tax(amount, rate=0.08):
     """Calculate tax for an amount."""
     return amount * rate
 
+
 def format_currency(amount):
     """Format as USD currency."""
     return f"${amount:,.2f}"
+
 
 TAX_RATE = 0.08
 ```
@@ -129,7 +137,7 @@ import utils
 
 tax = utils.calculate_tax(100)
 print(utils.format_currency(tax))  # $8.00
-print(utils.TAX_RATE)              # 0.08
+print(utils.TAX_RATE)  # 0.08
 
 # Or import specific items
 from utils import calculate_tax, format_currency
@@ -141,6 +149,7 @@ from utils import calculate_tax, format_currency
 # mymodule.py
 def main():
     print("Running as main program")
+
 
 if __name__ == "__main__":
     main()  # Only runs if executed directly
@@ -178,7 +187,7 @@ Controls what's available when importing the package:
 from .module_a import function_a
 from .module_b import function_b
 
-__all__ = ['function_a', 'function_b']
+__all__ = ["function_a", "function_b"]
 ```
 
 ```python
@@ -197,8 +206,8 @@ from my_package import function_a  # Clean import
 from my_package.module_a import function
 
 # Relative imports (within package)
-from . import module_b          # Same level
-from .. import parent_module    # Parent level
+from . import module_b  # Same level
+from .. import parent_module  # Parent level
 from .subpackage import module_c
 ```
 
@@ -222,6 +231,7 @@ from a import function_a  # Imports a → CIRCULAR!
 
 ```python
 import sys
+
 print(sys.path)  # List of directories Python searches
 ```
 
@@ -231,6 +241,7 @@ print(sys.path)  # List of directories Python searches
 # Only import when first accessed
 def get_heavy_module():
     import heavy_module
+
     return heavy_module
 ```
 
@@ -244,15 +255,18 @@ def get_heavy_module():
 # finance.py
 """Financial calculation utilities."""
 
+
 def calculate_roi(revenue, cost):
     """Calculate Return on Investment."""
     if cost == 0:
         return None
     return ((revenue - cost) / cost) * 100
 
+
 def calculate_compound_interest(principal, rate, years):
     """Calculate compound interest."""
     return principal * (1 + rate) ** years
+
 
 def calculate_break_even(fixed_costs, price, variable_cost):
     """Calculate break-even units."""
@@ -260,6 +274,7 @@ def calculate_break_even(fixed_costs, price, variable_cost):
     if margin <= 0:
         return None
     return fixed_costs / margin
+
 
 if __name__ == "__main__":
     # Test when run directly
@@ -284,6 +299,7 @@ utils/
 def clean_text(text):
     return text.strip().lower()
 
+
 def create_slug(text):
     return text.lower().replace(" ", "-")
 ```
@@ -292,6 +308,7 @@ def create_slug(text):
 # utils/number_utils.py
 def format_currency(amount):
     return f"${amount:,.2f}"
+
 
 def calculate_percentage(part, whole):
     return (part / whole) * 100 if whole else 0
@@ -306,8 +323,9 @@ from .number_utils import format_currency, calculate_percentage
 ```python
 # main.py
 from utils import clean_text, format_currency
+
 print(clean_text("  HELLO WORLD  "))  # "hello world"
-print(format_currency(1234.5))         # "$1,234.50"
+print(format_currency(1234.5))  # "$1,234.50"
 ```
 
 ---
@@ -406,6 +424,7 @@ project/
 ```python
 # In main.py
 from utils import helper
+
 # or
 from utils.helper import specific_function
 ```

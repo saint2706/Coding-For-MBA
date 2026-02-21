@@ -43,10 +43,13 @@ df = px.data.gapminder()
 
 fig = px.scatter(
     df.query("year == 2007"),
-    x="gdpPercap", y="lifeExp",
-    size="pop", color="continent",
-    hover_name="country", log_x=True,
-    title="GDP vs Life Expectancy (2007)"
+    x="gdpPercap",
+    y="lifeExp",
+    size="pop",
+    color="continent",
+    hover_name="country",
+    log_x=True,
+    title="GDP vs Life Expectancy (2007)",
 )
 fig.show()
 ```
@@ -59,12 +62,20 @@ import plotly.express as px
 df = px.data.gapminder()
 
 # Line chart
-fig = px.line(df.query("country == 'United States'"), 
-              x="year", y="gdpPercap", title="US GDP Over Time")
+fig = px.line(
+    df.query("country == 'United States'"),
+    x="year",
+    y="gdpPercap",
+    title="US GDP Over Time",
+)
 
 # Bar chart
-fig = px.bar(df.query("year == 2007 and continent == 'Europe'").nlargest(10, "pop"),
-             x="country", y="pop", title="European Populations")
+fig = px.bar(
+    df.query("year == 2007 and continent == 'Europe'").nlargest(10, "pop"),
+    x="country",
+    y="pop",
+    title="European Populations",
+)
 
 # Histogram
 fig = px.histogram(df, x="lifeExp", nbins=30, title="Life Expectancy Distribution")
@@ -76,14 +87,15 @@ fig = px.box(df, x="continent", y="lifeExp", title="Life Expectancy by Continent
 ### Customization
 
 ```python
-fig = px.scatter(df.query("year == 2007"), 
-                 x="gdpPercap", y="lifeExp", color="continent")
+fig = px.scatter(
+    df.query("year == 2007"), x="gdpPercap", y="lifeExp", color="continent"
+)
 
 fig.update_layout(
     title=dict(text="Global Development", font=dict(size=24)),
     xaxis_title="GDP per Capita ($)",
     yaxis_title="Life Expectancy (years)",
-    template="plotly_white"
+    template="plotly_white",
 )
 fig.update_traces(marker=dict(opacity=0.7))
 fig.show()
@@ -92,17 +104,26 @@ fig.show()
 ### Animations
 
 ```python
-fig = px.scatter(df, x="gdpPercap", y="lifeExp",
-                 animation_frame="year", animation_group="country",
-                 size="pop", color="continent", hover_name="country",
-                 range_x=[100, 100000], range_y=[25, 90], log_x=True)
+fig = px.scatter(
+    df,
+    x="gdpPercap",
+    y="lifeExp",
+    animation_frame="year",
+    animation_group="country",
+    size="pop",
+    color="continent",
+    hover_name="country",
+    range_x=[100, 100000],
+    range_y=[25, 90],
+    log_x=True,
+)
 fig.show()
 ```
 
 ### Saving Charts
 
 ```python
-fig.write_html("chart.html")           # Interactive HTML
+fig.write_html("chart.html")  # Interactive HTML
 fig.write_image("chart.png", scale=2)  # Static image (needs kaleido)
 ```
 
@@ -140,19 +161,25 @@ import numpy as np
 
 np.random.seed(42)
 dates = pd.date_range("2024-01-01", periods=90, freq="D")
-df = pd.DataFrame({
-    "date": dates,
-    "revenue": np.cumsum(np.random.randn(90) * 500 + 300),
-    "region": np.random.choice(["North", "South", "East"], 90)
-})
+df = pd.DataFrame(
+    {
+        "date": dates,
+        "revenue": np.cumsum(np.random.randn(90) * 500 + 300),
+        "region": np.random.choice(["North", "South", "East"], 90),
+    }
+)
 
 # Revenue trend
 fig = px.line(df, x="date", y="revenue", title="Daily Revenue")
 fig.show()
 
 # By region
-fig = px.bar(df.groupby("region")["revenue"].sum().reset_index(),
-             x="region", y="revenue", color="region")
+fig = px.bar(
+    df.groupby("region")["revenue"].sum().reset_index(),
+    x="region",
+    y="revenue",
+    color="region",
+)
 fig.show()
 ```
 
@@ -169,11 +196,13 @@ df = pd.DataFrame({"date": dates, "value": np.cumsum(np.random.randn(365) * 10)}
 fig = px.line(df, x="date", y="value", title="Interactive Time Series")
 fig.update_xaxes(
     rangeslider_visible=True,
-    rangeselector=dict(buttons=[
-        dict(count=1, label="1M", step="month"),
-        dict(count=3, label="3M", step="month"),
-        dict(step="all", label="All")
-    ])
+    rangeselector=dict(
+        buttons=[
+            dict(count=1, label="1M", step="month"),
+            dict(count=3, label="3M", step="month"),
+            dict(step="all", label="All"),
+        ]
+    ),
 )
 fig.show()
 ```
@@ -184,10 +213,18 @@ fig.show()
 import plotly.express as px
 
 df = px.data.gapminder()
-fig = px.scatter(df, x="gdpPercap", y="lifeExp",
-                 animation_frame="year", size="pop", color="continent",
-                 hover_name="country", log_x=True,
-                 range_x=[100, 100000], range_y=[25, 90])
+fig = px.scatter(
+    df,
+    x="gdpPercap",
+    y="lifeExp",
+    animation_frame="year",
+    size="pop",
+    color="continent",
+    hover_name="country",
+    log_x=True,
+    range_x=[100, 100000],
+    range_y=[25, 90],
+)
 fig.write_html("animated_scatter.html")
 fig.show()
 ```
