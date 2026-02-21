@@ -102,7 +102,7 @@ You discovered that raw data is rarely model-ready. Feature engineering transfor
     "bathrooms": 2,
     "age_years": 15,
     "neighborhood": "downtown",
-    "price": 450000
+    "price": 450000,
 }
 ```
 
@@ -113,17 +113,21 @@ def load_and_clean(filepath: str) -> pd.DataFrame:
     """Load data, handle missing values, convert types."""
     pass
 
+
 def engineer_features(df: pd.DataFrame) -> pd.DataFrame:
     """Create new features: price_per_sqft, age_category, etc."""
     pass
+
 
 def train_models(X_train, y_train) -> dict:
     """Train LinearRegression, Ridge, and RandomForest. Return dict of models."""
     pass
 
+
 def evaluate_with_cv(models: dict, X, y) -> pd.DataFrame:
     """Cross-validate each model, return comparison DataFrame."""
     pass
+
 
 def interpret_best_model(model, feature_names: list):
     """Print feature importances or coefficients."""
@@ -161,13 +165,16 @@ def prepare_imbalanced_data(df: pd.DataFrame) -> tuple:
     """Split data, apply SMOTE or class weights."""
     pass
 
+
 def train_classifier(X_train, y_train) -> object:
     """Train a classifier handling imbalance."""
     pass
 
+
 def find_optimal_threshold(model, X_val, y_val) -> float:
     """Find threshold that maximizes F1-score."""
     pass
+
 
 def evaluate_classifier(model, X_test, y_test, threshold: float):
     """Print confusion matrix, precision, recall, F1, ROC-AUC."""
@@ -205,13 +212,16 @@ def build_cnn(input_shape: tuple, num_classes: int) -> keras.Model:
     """
     pass
 
+
 def train_with_augmentation(model, X_train, y_train):
     """Train with data augmentation to prevent overfitting."""
     pass
 
+
 def plot_training_history(history):
     """Plot training vs validation accuracy and loss."""
     pass
+
 
 def evaluate_and_visualize(model, X_test, y_test):
     """Show confusion matrix and sample predictions."""
@@ -244,13 +254,16 @@ def create_sequences(data: np.array, window_size: int) -> tuple:
     """Create sliding window sequences for LSTM input."""
     pass
 
+
 def build_lstm(window_size: int) -> keras.Model:
     """Build LSTM with return_sequences for multi-step output."""
     pass
 
+
 def forecast_next_n(model, last_sequence: np.array, n_steps: int) -> np.array:
     """Iteratively predict next n values."""
     pass
+
 
 def plot_forecast(actual: np.array, predicted: np.array):
     """Visualize actual vs predicted values."""

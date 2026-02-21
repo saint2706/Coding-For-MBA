@@ -166,8 +166,8 @@ labels = ["billing issue", "technical support", "sales inquiry"]
 
 result = classifier(ticket, labels)
 
-print("Ticket Topic:", result['labels'][0])
-print("Confidence:", round(result['scores'][0], 2))
+print("Ticket Topic:", result["labels"][0])
+print("Confidence:", round(result["scores"][0], 2))
 ```
 
 **Expected Output**:
@@ -192,12 +192,12 @@ Confidence: 0.98
 from sentence_transformers import SentenceTransformer, util
 
 # Load a model designed for sentence similarity
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer("all-MiniLM-L6-v2")
 
 sentences = [
     "The cat sits outside",
     "A man is playing guitar",
-    "The new movie is awesome"
+    "The new movie is awesome",
 ]
 
 query = "The film was great"

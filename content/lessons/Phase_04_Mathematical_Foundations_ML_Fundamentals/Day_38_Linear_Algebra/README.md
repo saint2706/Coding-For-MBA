@@ -61,11 +61,13 @@ import numpy as np
 customer = np.array([35, 75000, 85])
 
 # A dataset is a matrix: rows are samples, columns are features
-customers = np.array([
-    [35, 75000, 85],   # Customer 1
-    [42, 82000, 72],   # Customer 2
-    [28, 45000, 91],   # Customer 3
-])
+customers = np.array(
+    [
+        [35, 75000, 85],  # Customer 1
+        [42, 82000, 72],  # Customer 2
+        [28, 45000, 91],  # Customer 3
+    ]
+)
 print(f"Shape: {customers.shape}")  # (3, 3) - 3 customers, 3 features
 
 # Vector operations
@@ -73,9 +75,9 @@ a = np.array([1, 2, 3])
 b = np.array([4, 5, 6])
 
 # Element-wise operations
-print(a + b)          # [5, 7, 9] - addition
-print(a * b)          # [4, 10, 18] - element-wise multiplication
-print(a * 2)          # [2, 4, 6] - scalar multiplication
+print(a + b)  # [5, 7, 9] - addition
+print(a * b)  # [4, 10, 18] - element-wise multiplication
+print(a * 2)  # [2, 4, 6] - scalar multiplication
 
 # Vector norm (length/magnitude)
 magnitude = np.linalg.norm(a)
@@ -98,8 +100,8 @@ b = np.array([4, 5, 6])
 
 dot_product = np.dot(a, b)  # 1*4 + 2*5 + 3*6 = 32
 # Alternative syntax:
-dot_product = a @ b         # Same result: 32
-dot_product = (a * b).sum() # Same result: 32
+dot_product = a @ b  # Same result: 32
+dot_product = (a * b).sum()  # Same result: 32
 
 print(f"Dot product: {dot_product}")
 
@@ -113,9 +115,11 @@ target = np.array([30, 60000, 80])
 customer_a = np.array([32, 62000, 78])
 customer_b = np.array([55, 40000, 45])
 
+
 # Cosine similarity (normalized dot product)
 def cosine_similarity(v1, v2):
     return np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
+
 
 sim_a = cosine_similarity(target, customer_a)
 sim_b = cosine_similarity(target, customer_b)
@@ -131,15 +135,15 @@ A matrix is a 2D array. In ML, your entire dataset is a matrix.
 ```python
 # Create matrices
 A = np.array([[1, 2], [3, 4], [5, 6]])  # 3x2 matrix
-B = np.array([[1, 2, 3], [4, 5, 6]])    # 2x3 matrix
+B = np.array([[1, 2, 3], [4, 5, 6]])  # 2x3 matrix
 
 print(f"A shape: {A.shape}")  # (3, 2)
 print(f"B shape: {B.shape}")  # (2, 3)
 
 # Matrix properties
-print(f"Transpose of A:\n{A.T}")      # Swap rows and columns: (2, 3)
-print(f"First row: {A[0, :]}")         # [1, 2]
-print(f"First column: {A[:, 0]}")      # [1, 3, 5]
+print(f"Transpose of A:\n{A.T}")  # Swap rows and columns: (2, 3)
+print(f"First row: {A[0, :]}")  # [1, 2]
+print(f"First column: {A[:, 0]}")  # [1, 3, 5]
 
 # Matrix multiplication: (m x n) @ (n x p) = (m x p)
 # Inner dimensions must match!
@@ -162,13 +166,15 @@ Here's why matrix multiplication matters for ML:
 # w: weight vector (n_features x 1)
 # y: predictions (n_samples x 1)
 
-X = np.array([
-    [1, 2],      # Sample 1: 2 features
-    [3, 4],      # Sample 2
-    [5, 6]       # Sample 3
-])
+X = np.array(
+    [
+        [1, 2],  # Sample 1: 2 features
+        [3, 4],  # Sample 2
+        [5, 6],  # Sample 3
+    ]
+)
 w = np.array([0.5, 0.3])  # Learned weights
-b = 0.1                    # Bias
+b = 0.1  # Bias
 
 # Predictions via matrix-vector multiplication
 predictions = X @ w + b
@@ -180,7 +186,7 @@ print(f"Predictions: {predictions}")
 W = np.random.randn(2, 3)  # 2 input features → 3 neurons
 b = np.zeros(3)
 
-hidden = X @ W + b         # (3 samples x 3 neurons)
+hidden = X @ W + b  # (3 samples x 3 neurons)
 output = np.maximum(0, hidden)  # ReLU activation
 print(f"Neural layer output shape: {output.shape}")
 ```
@@ -278,27 +284,31 @@ import numpy as np
 
 # Product embeddings (simplified: 3 features per product)
 products = {
-    "laptop_pro": np.array([0.9, 0.8, 0.1]),     # [tech, expensive, home]
+    "laptop_pro": np.array([0.9, 0.8, 0.1]),  # [tech, expensive, home]
     "laptop_budget": np.array([0.8, 0.3, 0.1]),
     "gaming_chair": np.array([0.5, 0.6, 0.2]),
     "office_desk": np.array([0.1, 0.4, 0.9]),
     "monitor_4k": np.array([0.9, 0.7, 0.3]),
 }
 
+
 def find_similar(query_name, products, top_k=3):
     """Find top-k most similar products using cosine similarity."""
     query = products[query_name]
     similarities = {}
-    
+
     for name, vector in products.items():
         if name != query_name:
             # Cosine similarity
-            sim = np.dot(query, vector) / (np.linalg.norm(query) * np.linalg.norm(vector))
+            sim = np.dot(query, vector) / (
+                np.linalg.norm(query) * np.linalg.norm(vector)
+            )
             similarities[name] = sim
-    
+
     # Sort by similarity (descending)
     sorted_items = sorted(similarities.items(), key=lambda x: x[1], reverse=True)
     return sorted_items[:top_k]
+
 
 # Find products similar to laptop_pro
 similar = find_similar("laptop_pro", products)
@@ -378,9 +388,17 @@ plt.scatter(data[:, 0], data[:, 1], alpha=0.5, label="Data")
 # Plot eigenvectors (scaled by eigenvalues for visibility)
 origin = data.mean(axis=0)
 for i, (val, vec) in enumerate(zip(eigenvalues, eigenvectors.T)):
-    plt.arrow(origin[0], origin[1], vec[0]*val*2, vec[1]*val*2,
-              head_width=0.1, head_length=0.05, fc=f'C{i+1}', ec=f'C{i+1}',
-              label=f'PC{i+1} (variance={val:.2f})')
+    plt.arrow(
+        origin[0],
+        origin[1],
+        vec[0] * val * 2,
+        vec[1] * val * 2,
+        head_width=0.1,
+        head_length=0.05,
+        fc=f"C{i + 1}",
+        ec=f"C{i + 1}",
+        label=f"PC{i + 1} (variance={val:.2f})",
+    )
 
 plt.xlabel("Feature 1")
 plt.ylabel("Feature 2")
@@ -393,7 +411,7 @@ plt.show()
 pc1 = eigenvectors[:, np.argmax(eigenvalues)]
 data_1d = data_centered @ pc1
 print(f"Reduced from {data.shape[1]}D to 1D")
-print(f"Variance retained: {eigenvalues.max()/eigenvalues.sum()*100:.1f}%")
+print(f"Variance retained: {eigenvalues.max() / eigenvalues.sum() * 100:.1f}%")
 ```
 
 ---

@@ -110,10 +110,7 @@ with open("sales.csv") as f:
         print(f"{row['product']}: ${row['price']}")
 
 # Writing CSV
-data = [
-    {"product": "Laptop", "price": 999},
-    {"product": "Mouse", "price": 29}
-]
+data = [{"product": "Laptop", "price": 999}, {"product": "Mouse", "price": 29}]
 
 with open("products.csv", "w", newline="") as f:
     writer = csv.DictWriter(f, fieldnames=["product", "price"])
@@ -154,10 +151,10 @@ if file_path.exists():
     content = file_path.read_text()
 
 # Common operations
-file_path.name        # "sales.csv"
-file_path.stem        # "sales"
-file_path.suffix      # ".csv"
-file_path.parent      # Path("data")
+file_path.name  # "sales.csv"
+file_path.stem  # "sales"
+file_path.suffix  # ".csv"
+file_path.parent  # Path("data")
 
 # Create directories
 Path("output/reports").mkdir(parents=True, exist_ok=True)
@@ -204,14 +201,11 @@ from pathlib import Path
 import tempfile
 import shutil
 
+
 def atomic_write(path, content):
     """Write that won't corrupt file on crash."""
     path = Path(path)
-    with tempfile.NamedTemporaryFile(
-        mode='w', 
-        dir=path.parent, 
-        delete=False
-    ) as tmp:
+    with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, delete=False) as tmp:
         tmp.write(content)
         temp_path = tmp.name
     shutil.move(temp_path, path)
@@ -227,11 +221,12 @@ def atomic_write(path, content):
 from collections import Counter
 from datetime import datetime
 
+
 def analyze_log(log_path):
     """Analyze a log file for patterns."""
     errors = []
     status_counts = Counter()
-    
+
     with open(log_path) as f:
         for line in f:
             # Parse: 2024-01-15 10:30:45 ERROR Database connection failed
@@ -241,12 +236,13 @@ def analyze_log(log_path):
                 status_counts[level] += 1
                 if level == "ERROR":
                     errors.append({"time": f"{date} {time}", "message": message})
-    
+
     return {
         "total_lines": sum(status_counts.values()),
         "by_level": dict(status_counts),
-        "errors": errors
+        "errors": errors,
     }
+
 
 # Simulate log file
 log_content = """2024-01-15 10:30:45 INFO Server started
@@ -271,25 +267,27 @@ print(f"Errors: {len(report['errors'])}")
 import json
 from pathlib import Path
 
+
 class ConfigManager:
     def __init__(self, config_path):
         self.path = Path(config_path)
         self.config = self._load()
-    
+
     def _load(self):
         if self.path.exists():
             return json.loads(self.path.read_text())
         return {}
-    
+
     def get(self, key, default=None):
         return self.config.get(key, default)
-    
+
     def set(self, key, value):
         self.config[key] = value
         self._save()
-    
+
     def _save(self):
         self.path.write_text(json.dumps(self.config, indent=2))
+
 
 # Usage
 config = ConfigManager("app_config.json")
@@ -305,12 +303,13 @@ print(config.get("theme"))  # "dark"
 ```python
 import csv
 
+
 def transform_sales_data(input_path, output_path):
     """Transform raw sales data with calculations."""
     with open(input_path) as infile:
         reader = csv.DictReader(infile)
         rows = list(reader)
-    
+
     # Add calculated fields
     for row in rows:
         price = float(row["price"])
@@ -318,15 +317,16 @@ def transform_sales_data(input_path, output_path):
         row["revenue"] = price * quantity
         row["tax"] = row["revenue"] * 0.08
         row["total"] = row["revenue"] + row["tax"]
-    
+
     # Write enhanced data
     fieldnames = list(rows[0].keys())
     with open(output_path, "w", newline="") as outfile:
         writer = csv.DictWriter(outfile, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
-    
+
     return len(rows)
+
 
 # Create sample data
 sample = """product,price,quantity
@@ -435,23 +435,25 @@ import json
 from pathlib import Path
 from datetime import datetime
 
+
 def backup_json_files(source_dir, backup_dir):
     source = Path(source_dir)
     backup = Path(backup_dir)
     backup.mkdir(exist_ok=True)
-    
+
     # Collect all data
     combined = {}
     for json_file in source.glob("*.json"):
         data = json.loads(json_file.read_text())
         combined[json_file.stem] = data
-    
+
     # Create timestamped backup
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_file = backup / f"backup_{timestamp}.json"
     backup_file.write_text(json.dumps(combined, indent=2))
-    
+
     return backup_file
+
 
 # Usage
 backup_path = backup_json_files("config/", "backups/")

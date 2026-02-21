@@ -99,18 +99,20 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
+
 def scrape_quotes(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    
+
     data = []
     for div in soup.select("div.quote"):
         quote = div.select_one("span.text").text
         author = div.select_one("small.author").text
         tags = [tag.text for tag in div.select("a.tag")]
         data.append({"quote": quote, "author": author, "tags": tags})
-    
+
     return data
+
 
 quotes = scrape_quotes("http://quotes.toscrape.com")
 df = pd.DataFrame(quotes)
@@ -124,31 +126,33 @@ import time
 import requests
 from bs4 import BeautifulSoup
 
+
 def scrape_all_pages(base_url, max_pages=5):
     all_quotes = []
-    
+
     for page in range(1, max_pages + 1):
         url = f"{base_url}/page/{page}/"
         response = requests.get(url)
-        
+
         if response.status_code != 200:
             break
-            
+
         soup = BeautifulSoup(response.text, "html.parser")
         quotes = soup.select("div.quote")
-        
+
         if not quotes:
             break
-            
+
         for div in quotes:
             quote = div.select_one("span.text").text
             author = div.select_one("small.author").text
             all_quotes.append({"quote": quote, "author": author})
-        
+
         print(f"Scraped page {page}: {len(quotes)} quotes")
         time.sleep(1)  # Be polite!
-    
+
     return all_quotes
+
 
 quotes = scrape_all_pages("http://quotes.toscrape.com", max_pages=3)
 print(f"Total: {len(quotes)} quotes")
@@ -164,9 +168,10 @@ print(f"Total: {len(quotes)} quotes")
 import requests
 from requests.exceptions import RequestException
 
+
 def safe_request(url, retries=3):
     headers = {"User-Agent": "Mozilla/5.0 (Educational scraper)"}
-    
+
     for attempt in range(retries):
         try:
             response = requests.get(url, headers=headers, timeout=10)
@@ -174,8 +179,8 @@ def safe_request(url, retries=3):
             return response
         except RequestException as e:
             print(f"Attempt {attempt + 1} failed: {e}")
-            time.sleep(2 ** attempt)  # Exponential backoff
-    
+            time.sleep(2**attempt)  # Exponential backoff
+
     return None
 ```
 
@@ -208,18 +213,22 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 
+
 def scrape_quotes_page(url):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
-    
+
     data = []
     for div in soup.select("div.quote"):
-        data.append({
-            "text": div.select_one("span.text").text.strip('"" '),
-            "author": div.select_one("small.author").text,
-            "tags": ", ".join([t.text for t in div.select("a.tag")])
-        })
+        data.append(
+            {
+                "text": div.select_one("span.text").text.strip('"" '),
+                "author": div.select_one("small.author").text,
+                "tags": ", ".join([t.text for t in div.select("a.tag")]),
+            }
+        )
     return data
+
 
 quotes = scrape_quotes_page("http://quotes.toscrape.com")
 df = pd.DataFrame(quotes)
@@ -235,33 +244,37 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+
 def scrape_all_quotes(max_pages=5):
     all_data = []
     base_url = "http://quotes.toscrape.com"
-    
+
     for page in range(1, max_pages + 1):
         url = f"{base_url}/page/{page}/"
         response = requests.get(url, timeout=10)
-        
+
         if response.status_code != 200:
             break
-        
+
         soup = BeautifulSoup(response.text, "html.parser")
         quotes = soup.select("div.quote")
-        
+
         if not quotes:
             break
-        
+
         for div in quotes:
-            all_data.append({
-                "text": div.select_one("span.text").text,
-                "author": div.select_one("small.author").text
-            })
-        
+            all_data.append(
+                {
+                    "text": div.select_one("span.text").text,
+                    "author": div.select_one("small.author").text,
+                }
+            )
+
         print(f"Page {page}: {len(quotes)} quotes")
         time.sleep(1)
-    
+
     return pd.DataFrame(all_data)
+
 
 df = scrape_all_quotes(3)
 print(f"Total scraped: {len(df)}")

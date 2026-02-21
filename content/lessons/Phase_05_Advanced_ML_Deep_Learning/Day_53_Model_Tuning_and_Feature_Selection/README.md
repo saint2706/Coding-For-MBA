@@ -66,15 +66,19 @@ import pandas as pd
 import time
 
 # Generate data
-X, y = make_classification(n_samples=1000, n_features=20, n_informative=15, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X, y = make_classification(
+    n_samples=1000, n_features=20, n_informative=15, random_state=42
+)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Define parameter grid
 param_grid = {
-    'n_estimators': [50, 100, 200],
-    'max_depth': [5, 10, 15, None],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4]
+    "n_estimators": [50, 100, 200],
+    "max_depth": [5, 10, 15, None],
+    "min_samples_split": [2, 5, 10],
+    "min_samples_leaf": [1, 2, 4],
 }
 
 # Grid search
@@ -83,9 +87,9 @@ grid_search = GridSearchCV(
     RandomForestClassifier(random_state=42),
     param_grid,
     cv=5,
-    scoring='accuracy',
+    scoring="accuracy",
     n_jobs=-1,  # Use all CPU cores
-    verbose=1
+    verbose=1,
 )
 
 grid_search.fit(X_train, y_train)
@@ -100,9 +104,15 @@ print(f"Total combinations tested: {len(grid_search.cv_results_['params'])}")
 
 # Analyze all results
 results_df = pd.DataFrame(grid_search.cv_results_)
-top_10 = results_df.nsmallest(10, 'rank_test_score')[
-    ['param_n_estimators', 'param_max_depth', 'param_min_samples_split', 
-     'param_min_samples_leaf', 'mean_test_score', 'std_test_score']
+top_10 = results_df.nsmallest(10, "rank_test_score")[
+    [
+        "param_n_estimators",
+        "param_max_depth",
+        "param_min_samples_split",
+        "param_min_samples_leaf",
+        "mean_test_score",
+        "std_test_score",
+    ]
 ]
 print("\n=== Top 10 Configurations ===")
 print(top_10.to_string(index=False))
@@ -125,11 +135,11 @@ import numpy as np
 
 # Define parameter distributions
 param_distributions = {
-    'n_estimators': randint(50, 300),  # Uniform integer from 50-300
-    'max_depth': randint(5, 30),
-    'min_samples_split': randint(2, 20),
-    'min_samples_leaf': randint(1, 10),
-    'max_features': uniform(0.1, 0.9),  # Continuous uniform from 0.1-1.0
+    "n_estimators": randint(50, 300),  # Uniform integer from 50-300
+    "max_depth": randint(5, 30),
+    "min_samples_split": randint(2, 20),
+    "min_samples_leaf": randint(1, 10),
+    "max_features": uniform(0.1, 0.9),  # Continuous uniform from 0.1-1.0
 }
 
 # Random search (try 50 random combinations)
@@ -139,10 +149,10 @@ random_search = RandomizedSearchCV(
     param_distributions,
     n_iter=50,  # Number of random combinations to try
     cv=5,
-    scoring='accuracy',
+    scoring="accuracy",
     n_jobs=-1,
     random_state=42,
-    verbose=1
+    verbose=1,
 )
 
 random_search.fit(X_train, y_train)
@@ -168,11 +178,11 @@ from skopt.space import Real, Integer
 
 # Define search space
 search_spaces = {
-    'n_estimators': Integer(50, 300),
-    'max_depth': Integer(5, 30),
-    'min_samples_split': Integer(2, 20),
-    'min_samples_leaf': Integer(1, 10),
-    'max_features': Real(0.1, 1.0)
+    "n_estimators": Integer(50, 300),
+    "max_depth": Integer(5, 30),
+    "min_samples_split": Integer(2, 20),
+    "min_samples_leaf": Integer(1, 10),
+    "max_features": Real(0.1, 1.0),
 }
 
 # Bayesian optimization
@@ -183,7 +193,7 @@ bayes_search = BayesSearchCV(
     cv=5,
     n_jobs=-1,
     random_state=42,
-    verbose=1
+    verbose=1,
 )
 
 bayes_search.fit(X_train, y_train)
@@ -206,7 +216,9 @@ cancer = load_breast_cancer()
 X, y = cancer.data, cancer.target
 feature_names = cancer.feature_names
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Method 1: ANOVA F-test
 selector_f = SelectKBest(f_classif, k=10)
@@ -216,8 +228,10 @@ X_test_selected_f = selector_f.transform(X_test)
 # Get selected feature names
 selected_features_f = feature_names[selector_f.get_support()]
 print("=== ANOVA F-test: Top 10 Features ===")
-for i, (name, score) in enumerate(zip(selected_features_f, selector_f.scores_[selector_f.get_support()])):
-    print(f"{i+1}. {name}: {score:.2f}")
+for i, (name, score) in enumerate(
+    zip(selected_features_f, selector_f.scores_[selector_f.get_support()])
+):
+    print(f"{i + 1}. {name}: {score:.2f}")
 
 # Method 2: Mutual Information
 selector_mi = SelectKBest(mutual_info_classif, k=10)
@@ -226,21 +240,21 @@ selector_mi.fit(X_train, y_train)
 selected_features_mi = feature_names[selector_mi.get_support()]
 print("\n=== Mutual Information: Top 10 Features ===")
 for i, name in enumerate(selected_features_mi):
-    print(f"{i+1}. {name}")
+    print(f"{i + 1}. {name}")
 
 # Visualize feature scores
 plt.figure(figsize=(12, 6))
 plt.subplot(1, 2, 1)
 plt.barh(range(len(selector_f.scores_)), selector_f.scores_)
-plt.xlabel('F-score')
-plt.ylabel('Feature Index')
-plt.title('ANOVA F-test Scores')
+plt.xlabel("F-score")
+plt.ylabel("Feature Index")
+plt.title("ANOVA F-test Scores")
 
 plt.subplot(1, 2, 2)
 plt.barh(range(len(selector_mi.scores_)), selector_mi.scores_)
-plt.xlabel('Mutual Information')
-plt.ylabel('Feature Index')
-plt.title('Mutual Information Scores')
+plt.xlabel("Mutual Information")
+plt.ylabel("Feature Index")
+plt.title("Mutual Information Scores")
 
 plt.tight_layout()
 plt.show()
@@ -257,7 +271,7 @@ from sklearn.feature_selection import RFE, RFECV
 rfe = RFE(
     estimator=RandomForestClassifier(n_estimators=100, random_state=42),
     n_features_to_select=10,
-    step=1  # Remove 1 feature at a time
+    step=1,  # Remove 1 feature at a time
 )
 
 rfe.fit(X_train, y_train)
@@ -273,22 +287,29 @@ rfecv = RFECV(
     estimator=RandomForestClassifier(n_estimators=50, random_state=42),
     step=1,
     cv=5,
-    scoring='accuracy',
-    n_jobs=-1
+    scoring="accuracy",
+    n_jobs=-1,
 )
 
 rfecv.fit(X_train, y_train)
 
 print(f"\nOptimal number of features: {rfecv.n_features_}")
-print(f"CV score with optimal features: {rfecv.grid_scores_[rfecv.n_features_-1]:.4f}")
+print(
+    f"CV score with optimal features: {rfecv.grid_scores_[rfecv.n_features_ - 1]:.4f}"
+)
 
 # Plot number of features vs CV score
 plt.figure(figsize=(10, 6))
-plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_, marker='o')
-plt.xlabel('Number of Features')
-plt.ylabel('CV Score')
-plt.title('RFECV: Optimal Number of Features')
-plt.axvline(x=rfecv.n_features_, color='r', linestyle='--', label=f'Optimal: {rfecv.n_features_}')
+plt.plot(range(1, len(rfecv.grid_scores_) + 1), rfecv.grid_scores_, marker="o")
+plt.xlabel("Number of Features")
+plt.ylabel("CV Score")
+plt.title("RFECV: Optimal Number of Features")
+plt.axvline(
+    x=rfecv.n_features_,
+    color="r",
+    linestyle="--",
+    label=f"Optimal: {rfecv.n_features_}",
+)
 plt.legend()
 plt.grid(True, alpha=0.3)
 plt.show()
@@ -307,17 +328,16 @@ rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
 
 # Get feature importance
-importance_df = pd.DataFrame({
-    'Feature': feature_names,
-    'Importance': rf.feature_importances_
-}).sort_values('Importance', ascending=False)
+importance_df = pd.DataFrame(
+    {"Feature": feature_names, "Importance": rf.feature_importances_}
+).sort_values("Importance", ascending=False)
 
 print("=== Feature Importance from Random Forest ===")
 print(importance_df.head(10).to_string(index=False))
 
 # Select top K features
 k = 10
-top_features = importance_df.head(k)['Feature'].values
+top_features = importance_df.head(k)["Feature"].values
 top_feature_indices = [np.where(feature_names == f)[0][0] for f in top_features]
 
 X_train_important = X_train[:, top_feature_indices]
@@ -339,10 +359,7 @@ from sklearn.inspection import permutation_importance
 
 # Compute permutation importance
 perm_importance = permutation_importance(
-    rf, X_test, y_test,
-    n_repeats=10,
-    random_state=42,
-    n_jobs=-1
+    rf, X_test, y_test, n_repeats=10, random_state=42, n_jobs=-1
 )
 
 # Sort by importance
@@ -350,15 +367,20 @@ perm_sorted_idx = perm_importance.importances_mean.argsort()[::-1]
 
 print("=== Permutation Importance ===")
 for i in perm_sorted_idx[:10]:
-    print(f"{feature_names[i]}: {perm_importance.importances_mean[i]:.4f} "
-          f"± {perm_importance.importances_std[i]:.4f}")
+    print(
+        f"{feature_names[i]}: {perm_importance.importances_mean[i]:.4f} "
+        f"± {perm_importance.importances_std[i]:.4f}"
+    )
 
 # Visualize
 plt.figure(figsize=(10, 6))
-plt.boxplot(perm_importance.importances[perm_sorted_idx[:15]].T,
-            vert=False, labels=feature_names[perm_sorted_idx[:15]])
-plt.xlabel('Permutation Importance')
-plt.title('Top 15 Features by Permutation Importance')
+plt.boxplot(
+    perm_importance.importances[perm_sorted_idx[:15]].T,
+    vert=False,
+    labels=feature_names[perm_sorted_idx[:15]],
+)
+plt.xlabel("Permutation Importance")
+plt.title("Top 15 Features by Permutation Importance")
 plt.tight_layout()
 plt.show()
 ```
@@ -404,8 +426,9 @@ print(grid_search.best_score_)  # Overly optimistic!
 # RIGHT: Nested CV
 outer_scores = cross_val_score(
     GridSearchCV(model, param_grid, cv=5),  # Inner CV for tuning
-    X, y,
-    cv=5  # Outer CV for evaluation
+    X,
+    y,
+    cv=5,  # Outer CV for evaluation
 )
 print(f"True generalization performance: {outer_scores.mean():.4f}")
 ```
@@ -419,7 +442,7 @@ tuning_checklist = {
     "3. Budget": "Time limit for tuning (hours, not days)",
     "4. Validation": "Holdout test set never touched during tuning",
     "5. Reproducibility": "Fix random_state, log all configs",
-    "6. Monitor": "Track performance over time in production"
+    "6. Monitor": "Track performance over time in production",
 }
 ```
 
@@ -436,19 +459,23 @@ from scipy.stats import randint, uniform
 import time
 
 # Load data
-X, y = make_classification(n_samples=5000, n_features=30, n_informative=20, random_state=42)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X, y = make_classification(
+    n_samples=5000, n_features=30, n_informative=20, random_state=42
+)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Define search space
 param_dist = {
-    'n_estimators': randint(50, 500),
-    'max_depth': randint(3, 15),
-    'learning_rate': uniform(0.01, 0.3),
-    'subsample': uniform(0.6, 0.4),  # 0.6 to 1.0
-    'colsample_bytree': uniform(0.6, 0.4),
-    'gamma': uniform(0, 5),
-    'reg_alpha': uniform(0, 1),
-    'reg_lambda': uniform(0, 5)
+    "n_estimators": randint(50, 500),
+    "max_depth": randint(3, 15),
+    "learning_rate": uniform(0.01, 0.3),
+    "subsample": uniform(0.6, 0.4),  # 0.6 to 1.0
+    "colsample_bytree": uniform(0.6, 0.4),
+    "gamma": uniform(0, 5),
+    "reg_alpha": uniform(0, 1),
+    "reg_lambda": uniform(0, 5),
 }
 
 # Random search
@@ -457,10 +484,10 @@ random_search = RandomizedSearchCV(
     param_dist,
     n_iter=100,
     cv=5,
-    scoring='roc_auc',
+    scoring="roc_auc",
     n_jobs=-1,
     verbose=2,
-    random_state=42
+    random_state=42,
 )
 
 start_time = time.time()
@@ -496,9 +523,12 @@ import matplotlib.pyplot as plt
 
 # Load high-dimensional data
 from sklearn.datasets import load_digits
+
 digits = load_digits()
 X, y = digits.data, digits.target
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 print(f"Original features: {X_train.shape[1]}")
 
@@ -508,7 +538,9 @@ X_train_kb = selector_kb.fit_transform(X_train, y_train)
 X_test_kb = selector_kb.transform(X_test)
 
 # Method 2: RFE with Random Forest
-selector_rfe = RFE(RandomForestClassifier(n_estimators=50, random_state=42), n_features_to_select=20)
+selector_rfe = RFE(
+    RandomForestClassifier(n_estimators=50, random_state=42), n_features_to_select=20
+)
 X_train_rfe = selector_rfe.fit_transform(X_train, y_train)
 X_test_rfe = selector_rfe.transform(X_test)
 
@@ -528,11 +560,11 @@ X_test_rf = selector_rf.transform(X_test)
 from sklearn.linear_model import LogisticRegression
 
 methods = {
-    'All Features (64)': (X_train, X_test),
-    'SelectKBest (20)': (X_train_kb, X_test_kb),
-    'RFE (20)': (X_train_rfe, X_test_rfe),
-    'LASSO (20)': (X_train_lasso, X_test_lasso),
-    'RF Importance (20)': (X_train_rf, X_test_rf)
+    "All Features (64)": (X_train, X_test),
+    "SelectKBest (20)": (X_train_kb, X_test_kb),
+    "RFE (20)": (X_train_rfe, X_test_rfe),
+    "LASSO (20)": (X_train_lasso, X_test_lasso),
+    "RF Importance (20)": (X_train_rf, X_test_rf),
 }
 
 results = []
@@ -540,15 +572,15 @@ for name, (X_tr, X_te) in methods.items():
     model = LogisticRegression(max_iter=1000, random_state=42)
     model.fit(X_tr, y_train)
     score = model.score(X_te, y_test)
-    results.append({'Method': name, 'Accuracy': score})
+    results.append({"Method": name, "Accuracy": score})
     print(f"{name}: {score:.4f}")
 
 # Visualize
 results_df = pd.DataFrame(results)
 plt.figure(figsize=(10, 6))
-plt.barh(results_df['Method'], results_df['Accuracy'])
-plt.xlabel('Accuracy')
-plt.title('Feature Selection Methods Comparison')
+plt.barh(results_df["Method"], results_df["Accuracy"])
+plt.xlabel("Accuracy")
+plt.title("Feature Selection Methods Comparison")
 plt.xlim(0.9, 1.0)
 plt.tight_layout()
 plt.show()
@@ -570,7 +602,7 @@ tpot = TPOTClassifier(
     random_state=42,
     verbosity=2,
     max_time_mins=10,  # Time budget
-    n_jobs=-1
+    n_jobs=-1,
 )
 
 tpot.fit(X_train, y_train)
@@ -579,7 +611,7 @@ tpot.fit(X_train, y_train)
 print(f"\nTPOT Test Score: {tpot.score(X_test, y_test):.4f}")
 
 # Export  best pipeline
-tpot.export('best_pipeline.py')
+tpot.export("best_pipeline.py")
 print("Best pipeline exported to best_pipeline.py")
 ```
 
@@ -720,11 +752,11 @@ outer_scores = []
 for train_idx, test_idx in outer_cv.split(X, y):
     X_train_outer, X_test_outer = X[train_idx], X[test_idx]
     y_train_outer, y_test_outer = y[train_idx], y[test_idx]
-    
+
     # Inner CV: Hyperparameter tuning
     grid_search = GridSearchCV(model, params, cv=inner_cv)
     grid_search.fit(X_train_outer, y_train_outer)
-    
+
     # Evaluate on outer test fold
     score = grid_search.score(X_test_outer, y_test_outer)
     outer_scores.append(score)
@@ -737,7 +769,9 @@ print(f"True performance: {np.mean(outer_scores):.2%}")
 ```python
 # Split once
 X_train_val, X_test, y_train_val, y_test = train_test_split(X, y, test_size=0.2)
-X_train, X_val, y_train, y_val = train_test_split(X_train_val, y_train_val, test_size=0.25)
+X_train, X_val, y_train, y_val = train_test_split(
+    X_train_val, y_train_val, test_size=0.25
+)
 
 # Tune on train/val
 # ... (100 configs)
@@ -802,7 +836,7 @@ perm_imp = permutation_importance(rf, X_test, y_test, n_repeats=10)
 **Test 2: Retrain without the feature**
 
 ```python
-X_no_id = X.drop(columns=['customer_id'])
+X_no_id = X.drop(columns=["customer_id"])
 rf_no_id = RandomForestClassifier().fit(X_no_id_train, y_train)
 
 print(f"With customer_id: {rf.score(X_test, y_test):.2%}")
@@ -816,8 +850,8 @@ print(f"Without customer_id: {rf_no_id.score(X_no_id_test, y_test):.2%}")
 
 ```python
 # Are customer IDs unique to train/test?
-train_ids = set(X_train['customer_id'])
-test_ids = set(X_test['customer_id'])
+train_ids = set(X_train["customer_id"])
+test_ids = set(X_test["customer_id"])
 
 if len(train_ids & test_ids) > 0:
     print("LEAKAGE: Same customer IDs in train and test!")
@@ -884,10 +918,10 @@ rfe.fit(X_available_train, y_train)
 
 ```python
 # Rank remaining 195 features by importance
-remaining_importance = importance_df[~importance_df['Feature'].isin(unavailable)]
+remaining_importance = importance_df[~importance_df["Feature"].isin(unavailable)]
 
 # Select top 20
-new_top_20 = remaining_importance.head(20)['Feature'].values
+new_top_20 = remaining_importance.head(20)["Feature"].values
 ```
 
 **Pros**: Fast, interpretable  

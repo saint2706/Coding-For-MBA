@@ -79,19 +79,17 @@ import torch
 model_name = "microsoft/phi-2"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    torch_dtype=torch.float16,
-    device_map="auto"
+    model_name, torch_dtype=torch.float16, device_map="auto"
 )
 
 # Configure LoRA
 lora_config = LoraConfig(
     task_type=TaskType.CAUSAL_LM,
-    r=16,              # Rank — higher = more capacity, more params
-    lora_alpha=32,     # Scaling factor (usually 2*r)
+    r=16,  # Rank — higher = more capacity, more params
+    lora_alpha=32,  # Scaling factor (usually 2*r)
     target_modules=["q_proj", "v_proj"],  # Which layers to adapt
     lora_dropout=0.1,
-    bias="none"
+    bias="none",
 )
 
 # Wrap model with LoRA
@@ -109,13 +107,21 @@ from datasets import Dataset
 
 # Prepare instruction dataset
 data = [
-    {"input": "What is our refund policy?", "output": "We offer 30-day full refunds for all products."},
-    {"input": "How do I track my order?", "output": "Log in and visit Orders > Track Shipment."},
+    {
+        "input": "What is our refund policy?",
+        "output": "We offer 30-day full refunds for all products.",
+    },
+    {
+        "input": "How do I track my order?",
+        "output": "Log in and visit Orders > Track Shipment.",
+    },
     # ... more company-specific Q&As
 ]
 
+
 def format_prompt(sample):
     return {"text": f"### Question: {sample['input']}\n### Answer: {sample['output']}"}
+
 
 dataset = Dataset.from_list(data).map(format_prompt)
 
@@ -128,14 +134,11 @@ training_args = TrainingArguments(
     learning_rate=2e-4,
     fp16=True,
     logging_steps=10,
-    save_strategy="epoch"
+    save_strategy="epoch",
 )
 
 trainer = Trainer(
-    model=peft_model,
-    train_dataset=dataset,
-    args=training_args,
-    tokenizer=tokenizer
+    model=peft_model, train_dataset=dataset, args=training_args, tokenizer=tokenizer
 )
 
 trainer.train()
@@ -155,15 +158,13 @@ from transformers import BitsAndBytesConfig
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_use_double_quant=True,
-    bnb_4bit_quant_type="nf4",        # NormalFloat4 — best for LLMs
-    bnb_4bit_compute_dtype=torch.float16
+    bnb_4bit_quant_type="nf4",  # NormalFloat4 — best for LLMs
+    bnb_4bit_compute_dtype=torch.float16,
 )
 
 # Load model in 4-bit — fits 70B model on a 2×A100 instead of 8×A100
 model = AutoModelForCausalLM.from_pretrained(
-    "meta-llama/Llama-3-8b-hf",
-    quantization_config=bnb_config,
-    device_map="auto"
+    "meta-llama/Llama-3-8b-hf", quantization_config=bnb_config, device_map="auto"
 )
 # Then apply LoRA as before — this combination is QLoRA
 ```
@@ -213,8 +214,9 @@ def count_lora_params(d_model: int, rank: int, num_target_modules: int) -> dict:
     return {
         "lora_params": params_per_module_lora * num_target_modules,
         "original_params": original_params_per_module * num_target_modules,
-        "reduction_percent": None  # (1 - lora/original) * 100
+        "reduction_percent": None,  # (1 - lora/original) * 100
     }
+
 
 result = count_lora_params(d_model=768, rank=16, num_target_modules=12)
 print(result)
@@ -226,9 +228,13 @@ Convert this raw Q&A data into the Alpaca instruction format used to fine-tune i
 
 ```python
 raw_data = [
-    {"q": "What does EBITDA stand for?", "a": "Earnings Before Interest, Taxes, Depreciation, and Amortization"},
+    {
+        "q": "What does EBITDA stand for?",
+        "a": "Earnings Before Interest, Taxes, Depreciation, and Amortization",
+    },
     {"q": "What is working capital?", "a": "Current Assets minus Current Liabilities"},
 ]
+
 
 def to_alpaca_format(sample: dict) -> dict:
     """
@@ -237,6 +243,7 @@ def to_alpaca_format(sample: dict) -> dict:
     """
     # TODO: Format with instruction, input, output keys
     pass
+
 
 formatted = [to_alpaca_format(d) for d in raw_data]
 print(formatted[0])

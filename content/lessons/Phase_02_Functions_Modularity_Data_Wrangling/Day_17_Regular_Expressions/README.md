@@ -61,14 +61,14 @@ import re
 text = "The quick brown fox jumps over the lazy dog"
 
 # match - checks start of string
-re.match(r"The", text)      # Matches "The"
-re.match(r"quick", text)    # None (not at start)
+re.match(r"The", text)  # Matches "The"
+re.match(r"quick", text)  # None (not at start)
 
 # search - finds first match anywhere
-re.search(r"quick", text)   # Matches "quick"
+re.search(r"quick", text)  # Matches "quick"
 
 # findall - finds all matches
-re.findall(r"o", text)      # ['o', 'o', 'o', 'o']
+re.findall(r"o", text)  # ['o', 'o', 'o', 'o']
 ```
 
 ### Basic Syntax
@@ -96,7 +96,7 @@ re.findall(r"o", text)      # ['o', 'o', 'o', 'o']
 
 ```python
 # Examples
-re.findall(r"\d+", "abc 123 def 456")    # ['123', '456']
+re.findall(r"\d+", "abc 123 def 456")  # ['123', '456']
 re.findall(r"\d{3}", "abc 12 345 6789")  # ['345', '678']
 ```
 
@@ -104,13 +104,13 @@ re.findall(r"\d{3}", "abc 12 345 6789")  # ['345', '678']
 
 ```python
 # [abc] - matches a, b, or c
-re.findall(r"[aeiou]", "hello")         # ['e', 'o']
+re.findall(r"[aeiou]", "hello")  # ['e', 'o']
 
 # [a-z] - range
-re.findall(r"[a-z]+", "Hello World!")   # ['ello', 'orld']
+re.findall(r"[a-z]+", "Hello World!")  # ['ello', 'orld']
 
 # [^abc] - NOT a, b, or c
-re.findall(r"[^0-9]+", "abc123def")     # ['abc', 'def']
+re.findall(r"[^0-9]+", "abc123def")  # ['abc', 'def']
 ```
 
 ### Groups and Captures
@@ -126,8 +126,8 @@ matches = re.findall(pattern, text)
 # Named groups
 pattern = r"(?P<user>\w+)@(?P<domain>\w+)\.(?P<tld>\w+)"
 match = re.search(pattern, text)
-print(match.group('user'))    # "john"
-print(match.group('domain'))  # "example"
+print(match.group("user"))  # "john"
+print(match.group("domain"))  # "example"
 ```
 
 ### Substitution
@@ -201,13 +201,16 @@ re.findall(r"python", "Python PYTHON python", re.IGNORECASE)
 re.findall(r"^line", "line1\nline2", re.MULTILINE)
 
 # Verbose mode for readable patterns
-pattern = re.compile(r"""
+pattern = re.compile(
+    r"""
     (\d{3})     # Area code
     [-.\s]?     # Optional separator
     (\d{3})     # First 3 digits
     [-.\s]?     # Optional separator
     (\d{4})     # Last 4 digits
-""", re.VERBOSE)
+""",
+    re.VERBOSE,
+)
 ```
 
 ### Lookahead and Lookbehind
@@ -252,7 +255,9 @@ print("Emails:", emails)
 # Parse full entries
 pattern = r"\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (\w+)\s+(.+)"
 for match in re.finditer(pattern, log_entry):
-    print(f"Time: {match.group(1)}, Level: {match.group(2)}, Message: {match.group(3)[:30]}...")
+    print(
+        f"Time: {match.group(1)}, Level: {match.group(2)}, Message: {match.group(3)[:30]}..."
+    )
 ```
 
 ---
@@ -262,13 +267,16 @@ for match in re.finditer(pattern, log_entry):
 ```python
 import re
 
+
 def validate_email(email):
     pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     return bool(re.match(pattern, email))
 
+
 def validate_phone(phone):
     pattern = r"^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$"
     return bool(re.match(pattern, phone))
+
 
 def validate_password(password):
     """Must have: 8+ chars, uppercase, lowercase, digit."""
@@ -281,6 +289,7 @@ def validate_password(password):
     if not re.search(r"\d", password):
         return False, "Needs digit"
     return True, "Valid"
+
 
 # Test
 test_data = [
@@ -301,35 +310,41 @@ for email, phone, password in test_data:
 ```python
 import re
 
+
 def clean_text(text):
     """Comprehensive text cleaning."""
     # Remove HTML tags
     text = re.sub(r"<[^>]+>", "", text)
-    
+
     # Normalize whitespace
     text = re.sub(r"\s+", " ", text)
-    
+
     # Remove special characters (keep alphanumeric and basic punctuation)
     text = re.sub(r"[^\w\s.,!?'-]", "", text)
-    
+
     # Fix multiple punctuation
     text = re.sub(r"([.!?]){2,}", r"\1", text)
-    
+
     return text.strip()
+
 
 def extract_urls(text):
     pattern = r"https?://[^\s<>\"']+"
     return re.findall(pattern, text)
 
+
 def mask_sensitive(text):
     """Mask credit card and SSN numbers."""
     # Credit card: XXXX-XXXX-XXXX-1234
-    text = re.sub(r"\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?(\d{4})", r"XXXX-XXXX-XXXX-\1", text)
-    
+    text = re.sub(
+        r"\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?(\d{4})", r"XXXX-XXXX-XXXX-\1", text
+    )
+
     # SSN: XXX-XX-1234
     text = re.sub(r"\d{3}-\d{2}-(\d{4})", r"XXX-XX-\1", text)
-    
+
     return text
+
 
 # Test
 sample = """
@@ -378,7 +393,7 @@ What's the difference between `.*` and `.*?`?
 
 ```python
 text = "'a' and 'b'"
-re.findall(r"'.*'", text)   # ["'a' and 'b'"]
+re.findall(r"'.*'", text)  # ["'a' and 'b'"]
 re.findall(r"'.*?'", text)  # ["'a'", "'b'"]
 ```
 
@@ -443,10 +458,10 @@ pattern = r'(\d+\.\d+\.\d+\.\d+).*"(\w+) ([^\s]+).*" (\d+)'
 
 match = re.search(pattern, log_line)
 if match:
-    ip = match.group(1)         # "192.168.1.1"
-    method = match.group(2)      # "GET"
-    url = match.group(3)         # "/api/users"
-    status = match.group(4)      # "200"
+    ip = match.group(1)  # "192.168.1.1"
+    method = match.group(2)  # "GET"
+    url = match.group(3)  # "/api/users"
+    status = match.group(4)  # "200"
     print(f"IP: {ip}, Method: {method}, URL: {url}, Status: {status}")
 ```
 

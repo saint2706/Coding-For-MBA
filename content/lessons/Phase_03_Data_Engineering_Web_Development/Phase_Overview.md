@@ -103,7 +103,7 @@ You evolved from consuming APIs to building them. You created REST endpoints wit
         {"date": "2024-01-15", "close": "185.92", "volume": "50000000"},
         {"date": "2024-01-16", "close": None, "volume": "48000000"},
         # ... more entries
-    ]
+    ],
 }
 ```
 
@@ -114,17 +114,21 @@ def fetch_stock_data(symbol: str) -> pd.DataFrame:
     """Fetch and parse stock data from API."""
     pass
 
+
 def clean_stock_data(df: pd.DataFrame) -> pd.DataFrame:
     """Handle missing values, convert types, validate dates."""
     pass
+
 
 def store_to_database(df: pd.DataFrame, db_path: str):
     """Store cleaned data in SQLite with proper schema."""
     pass
 
+
 def generate_price_chart(db_path: str, symbol: str):
     """Create line chart from database data."""
     pass
+
 
 def run_pipeline(symbol: str):
     """Execute complete ETL pipeline."""
@@ -165,6 +169,7 @@ def scrape_all_pages(base_url: str, max_pages: int = 5) -> list:
     """
     pass
 
+
 def clean_product_data(products: list) -> pd.DataFrame:
     """
     Standardize product data:
@@ -173,6 +178,7 @@ def clean_product_data(products: list) -> pd.DataFrame:
     - Remove duplicates
     """
     pass
+
 
 def analyze_prices(df: pd.DataFrame) -> dict:
     """
@@ -183,6 +189,7 @@ def analyze_prices(df: pd.DataFrame) -> dict:
     - count by category
     """
     pass
+
 
 def generate_report(df: pd.DataFrame, stats: dict) -> str:
     """Create formatted summary report."""
@@ -215,21 +222,23 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, validator
 import sqlite3
 
+
 class Product(BaseModel):
     name: str
     price: float
     category: str
     stock: int = 0
-    
+
     @validator("price")
     def price_must_be_positive(cls, v):
         if v <= 0:
             raise ValueError("Price must be positive")
         return round(v, 2)
-    
+
     @validator("name")
     def name_must_be_clean(cls, v):
         return v.strip().title()
+
 
 # Implement these endpoints:
 # GET /products - List all products (with optional category filter)

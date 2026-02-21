@@ -124,11 +124,10 @@ Novice analysts put 50 charts on a dashboard.
 
 ```sql
 -- Calculate Weekly Active Users (WAU) for the last week
-SELECT 
-    COUNT(DISTINCT user_id) as WAU
-FROM 
+SELECT COUNT(DISTINCT user_id) AS wau
+FROM
     events
-WHERE 
+WHERE
     timestamp >= NOW() - INTERVAL '7 days'
 ```
 

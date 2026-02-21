@@ -104,14 +104,16 @@ If I run my script twice, what happens?
 import pandas as pd
 from sqlalchemy import create_engine
 
+
 def load_daily_sales(date, df, db_engine):
     # Step 1: Clear existing data for this date (Idempotency)
     sql = f"DELETE FROM sales WHERE sale_date = '{date}'"
     db_engine.execute(sql)
-    
+
     # Step 2: Insert new data
-    df.to_sql('sales', db_engine, if_exists='append', index=False)
+    df.to_sql("sales", db_engine, if_exists="append", index=False)
     print(f"Loaded {len(df)} rows for {date}")
+
 
 # If we run this 5 times, we still only have 1 copy of the data.
 ```

@@ -24,6 +24,7 @@ Think of Pandas as a programmable spreadsheet. Load, analyze, export—in 3 line
 
 ```python
 import pandas as pd
+
 df = pd.read_csv("sales.csv")
 summary = df.groupby("region")["revenue"].sum()
 ```
@@ -37,11 +38,13 @@ summary = df.groupby("region")["revenue"].sum()
 ```python
 import pandas as pd
 
-df = pd.DataFrame({
-    "name": ["Alice", "Bob", "Charlie"],
-    "department": ["Sales", "Engineering", "Sales"],
-    "salary": [75000, 95000, 72000]
-})
+df = pd.DataFrame(
+    {
+        "name": ["Alice", "Bob", "Charlie"],
+        "department": ["Sales", "Engineering", "Sales"],
+        "salary": [75000, 95000, 72000],
+    }
+)
 ```
 
 ### Loading Data
@@ -54,19 +57,19 @@ df = pd.read_excel("data.xlsx", sheet_name="Sales")
 ### Exploring Data
 
 ```python
-df.head()      # First 5 rows
-df.shape       # (rows, columns)
-df.info()      # Summary info
+df.head()  # First 5 rows
+df.shape  # (rows, columns)
+df.info()  # Summary info
 df.describe()  # Statistics
 ```
 
 ### Selecting Data
 
 ```python
-df["name"]              # Single column
+df["name"]  # Single column
 df[["name", "salary"]]  # Multiple columns
-df.loc[0:2, "name"]     # Label-based
-df.iloc[0:2, 0]         # Position-based
+df.loc[0:2, "name"]  # Label-based
+df.iloc[0:2, 0]  # Position-based
 ```
 
 ### Filtering Data
@@ -104,11 +107,13 @@ df.to_excel("output.xlsx", index=False)
 ### Exercise: Employee Analysis
 
 ```python
-employees = pd.DataFrame({
-    "name": ["Alice", "Bob", "Charlie"],
-    "department": ["Sales", "Engineering", "Sales"],
-    "salary": [75000, 95000, 72000]
-})
+employees = pd.DataFrame(
+    {
+        "name": ["Alice", "Bob", "Charlie"],
+        "department": ["Sales", "Engineering", "Sales"],
+        "salary": [75000, 95000, 72000],
+    }
+)
 
 # Average salary
 print(f"Avg salary: ${employees['salary'].mean():,.2f}")

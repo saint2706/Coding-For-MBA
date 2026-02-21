@@ -116,9 +116,11 @@ EXECUTE FUNCTION sanitize_user();
 **Goal**: Log changes to JSONB.
 
 ```sql
-CREATE TABLE audits (id serial, diff jsonb, changed_at timestamptz DEFAULT now());
+CREATE TABLE audits (
+    id serial, diff jsonb, changed_at timestamptz DEFAULT now()
+);
 
-CREATE OR REPLACE FUNCTION log_change() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION log_change() RETURNS trigger AS $$
 BEGIN
     INSERT INTO audits(diff)
     VALUES (to_jsonb(NEW) - to_jsonb(OLD)); -- Storage efficient diff

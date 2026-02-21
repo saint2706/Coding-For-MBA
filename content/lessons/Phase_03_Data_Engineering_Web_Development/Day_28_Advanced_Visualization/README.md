@@ -113,18 +113,31 @@ sns.countplot(x="day", data=tips, ax=axes[0, 0], palette="Blues_d")
 axes[0, 0].set_title("Visit Count by Day")
 
 # Bar plot with aggregation (mean + error bars)
-sns.barplot(x="day", y="total_bill", data=tips, ax=axes[0, 1], 
-            estimator="mean", errorbar="sd", palette="coolwarm")
+sns.barplot(
+    x="day",
+    y="total_bill",
+    data=tips,
+    ax=axes[0, 1],
+    estimator="mean",
+    errorbar="sd",
+    palette="coolwarm",
+)
 axes[0, 1].set_title("Average Bill by Day (with Std Dev)")
 
 # Strip plot (individual points)
-sns.stripplot(x="day", y="total_bill", data=tips, ax=axes[1, 0], 
-              jitter=True, alpha=0.5, palette="Set1")
+sns.stripplot(
+    x="day",
+    y="total_bill",
+    data=tips,
+    ax=axes[1, 0],
+    jitter=True,
+    alpha=0.5,
+    palette="Set1",
+)
 axes[1, 0].set_title("Individual Bills by Day")
 
 # Swarm plot (no overlapping points)
-sns.swarmplot(x="day", y="total_bill", data=tips, ax=axes[1, 1], 
-              size=4, palette="Set2")
+sns.swarmplot(x="day", y="total_bill", data=tips, ax=axes[1, 1], size=4, palette="Set2")
 axes[1, 1].set_title("Swarm Plot (No Overlap)")
 
 plt.tight_layout()
@@ -141,18 +154,26 @@ tips = sns.load_dataset("tips")
 fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
 # Scatter with regression line
-sns.regplot(x="total_bill", y="tip", data=tips, ax=axes[0],
-            scatter_kws={"alpha": 0.5}, line_kws={"color": "red"})
+sns.regplot(
+    x="total_bill",
+    y="tip",
+    data=tips,
+    ax=axes[0],
+    scatter_kws={"alpha": 0.5},
+    line_kws={"color": "red"},
+)
 axes[0].set_title("Tips vs Bill (with Trend Line)")
 
 # Scatter with categorical color
-sns.scatterplot(x="total_bill", y="tip", hue="smoker", style="time",
-                data=tips, ax=axes[1], s=80)
+sns.scatterplot(
+    x="total_bill", y="tip", hue="smoker", style="time", data=tips, ax=axes[1], s=80
+)
 axes[1].set_title("Multi-dimensional Scatter")
 
 # Residual plot (check linear relationship)
-sns.residplot(x="total_bill", y="tip", data=tips, ax=axes[2],
-              scatter_kws={"alpha": 0.5})
+sns.residplot(
+    x="total_bill", y="tip", data=tips, ax=axes[2], scatter_kws={"alpha": 0.5}
+)
 axes[2].set_title("Residuals (should be random)")
 
 plt.tight_layout()
@@ -177,15 +198,31 @@ fig, axes = plt.subplots(1, 2, figsize=(14, 5))
 # Basic correlation heatmap
 numeric_cols = tips.select_dtypes(include=[np.number])
 corr = numeric_cols.corr()
-sns.heatmap(corr, annot=True, cmap="coolwarm", center=0, 
-            vmin=-1, vmax=1, ax=axes[0], fmt=".2f",
-            square=True, linewidths=0.5)
+sns.heatmap(
+    corr,
+    annot=True,
+    cmap="coolwarm",
+    center=0,
+    vmin=-1,
+    vmax=1,
+    ax=axes[0],
+    fmt=".2f",
+    square=True,
+    linewidths=0.5,
+)
 axes[0].set_title("Correlation Matrix")
 
 # Pivot table heatmap
 pivot = tips.pivot_table(values="tip", index="day", columns="time", aggfunc="mean")
-sns.heatmap(pivot, annot=True, cmap="YlGnBu", fmt=".2f", ax=axes[1],
-            linewidths=0.5, cbar_kws={"label": "Average Tip ($)"})
+sns.heatmap(
+    pivot,
+    annot=True,
+    cmap="YlGnBu",
+    fmt=".2f",
+    ax=axes[1],
+    linewidths=0.5,
+    cbar_kws={"label": "Average Tip ($)"},
+)
 axes[1].set_title("Average Tip by Day and Time")
 
 plt.tight_layout()
@@ -202,14 +239,14 @@ import matplotlib.pyplot as plt
 tips = sns.load_dataset("tips")
 
 # Basic pair plot
-g = sns.pairplot(tips, hue="smoker", palette="husl", 
-                 diag_kind="kde", plot_kws={"alpha": 0.6})
+g = sns.pairplot(
+    tips, hue="smoker", palette="husl", diag_kind="kde", plot_kws={"alpha": 0.6}
+)
 g.fig.suptitle("Tips Dataset: All Pairwise Relationships", y=1.02)
 plt.show()
 
 # More focused: specific columns only
-g = sns.pairplot(tips, vars=["total_bill", "tip", "size"], 
-                 hue="time", palette="Set1")
+g = sns.pairplot(tips, vars=["total_bill", "tip", "size"], hue="time", palette="Set1")
 plt.show()
 ```
 
@@ -222,17 +259,23 @@ import matplotlib.pyplot as plt
 tips = sns.load_dataset("tips")
 
 # Create grid of histograms by categories
-g = sns.FacetGrid(tips, col="time", row="smoker", 
-                  height=4, aspect=1.2)
+g = sns.FacetGrid(tips, col="time", row="smoker", height=4, aspect=1.2)
 g.map(sns.histplot, "total_bill", kde=True)
 g.set_titles("{row_name} | {col_name}")
 g.add_legend()
 plt.show()
 
 # Using relplot for automatic FacetGrid
-g = sns.relplot(x="total_bill", y="tip", col="time", 
-                hue="smoker", style="smoker",
-                data=tips, height=5, aspect=1.2)
+g = sns.relplot(
+    x="total_bill",
+    y="tip",
+    col="time",
+    hue="smoker",
+    style="smoker",
+    data=tips,
+    height=5,
+    aspect=1.2,
+)
 g.fig.suptitle("Tips by Bill Amount, Time, and Smoking Status", y=1.02)
 plt.show()
 ```
@@ -268,9 +311,15 @@ sns.regplot(x="total_bill", y="tip", data=tips, ax=ax)
 
 # Calculate and display correlation
 r, p = stats.pearsonr(tips["total_bill"], tips["tip"])
-ax.text(0.05, 0.95, f"r = {r:.3f}\np < 0.001" if p < 0.001 else f"r = {r:.3f}\np = {p:.3f}",
-        transform=ax.transAxes, fontsize=12, verticalalignment="top",
-        bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5))
+ax.text(
+    0.05,
+    0.95,
+    f"r = {r:.3f}\np < 0.001" if p < 0.001 else f"r = {r:.3f}\np = {p:.3f}",
+    transform=ax.transAxes,
+    fontsize=12,
+    verticalalignment="top",
+    bbox=dict(boxstyle="round", facecolor="wheat", alpha=0.5),
+)
 
 ax.set_title("Tips vs Total Bill (with Correlation)")
 plt.show()
@@ -317,42 +366,64 @@ import numpy as np
 
 tips = sns.load_dataset("tips")
 
+
 def distribution_analysis(data, value_col, group_col):
     """Create comprehensive distribution analysis."""
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-    
+
     # 1. Overall distribution
     sns.histplot(data[value_col], kde=True, ax=axes[0, 0], color="steelblue")
     mean_val = data[value_col].mean()
     median_val = data[value_col].median()
-    axes[0, 0].axvline(mean_val, color="red", linestyle="--", label=f"Mean: {mean_val:.2f}")
-    axes[0, 0].axvline(median_val, color="green", linestyle="-.", label=f"Median: {median_val:.2f}")
+    axes[0, 0].axvline(
+        mean_val, color="red", linestyle="--", label=f"Mean: {mean_val:.2f}"
+    )
+    axes[0, 0].axvline(
+        median_val, color="green", linestyle="-.", label=f"Median: {median_val:.2f}"
+    )
     axes[0, 0].legend()
     axes[0, 0].set_title(f"Overall {value_col.title()} Distribution")
-    
+
     # 2. Box plots by group
     sns.boxplot(x=group_col, y=value_col, data=data, ax=axes[0, 1], palette="Set2")
     axes[0, 1].set_title(f"{value_col.title()} by {group_col.title()}")
-    
+
     # 3. Violin plots (show distribution shape)
-    sns.violinplot(x=group_col, y=value_col, data=data, ax=axes[1, 0], 
-                   inner="quartile", palette="Set3")
+    sns.violinplot(
+        x=group_col,
+        y=value_col,
+        data=data,
+        ax=axes[1, 0],
+        inner="quartile",
+        palette="Set3",
+    )
     axes[1, 0].set_title(f"Distribution Shape by {group_col.title()}")
-    
+
     # 4. Strip plot with means
-    sns.stripplot(x=group_col, y=value_col, data=data, ax=axes[1, 1], 
-                  jitter=True, alpha=0.4, palette="dark")
+    sns.stripplot(
+        x=group_col,
+        y=value_col,
+        data=data,
+        ax=axes[1, 1],
+        jitter=True,
+        alpha=0.4,
+        palette="dark",
+    )
     # Overlay means
     means = data.groupby(group_col)[value_col].mean()
     for i, (group, mean) in enumerate(means.items()):
         axes[1, 1].scatter(i, mean, color="red", s=100, zorder=5, marker="D")
     axes[1, 1].set_title(f"Individual Points with Mean (red diamond)")
-    
-    plt.suptitle(f"Distribution Analysis: {value_col.title()} by {group_col.title()}", 
-                 fontsize=16, fontweight="bold")
+
+    plt.suptitle(
+        f"Distribution Analysis: {value_col.title()} by {group_col.title()}",
+        fontsize=16,
+        fontweight="bold",
+    )
     plt.tight_layout()
     plt.savefig("distribution_analysis.png", dpi=150)
     plt.show()
+
 
 distribution_analysis(tips, "total_bill", "day")
 ```
@@ -369,42 +440,61 @@ import pandas as pd
 
 tips = sns.load_dataset("tips")
 
+
 def create_correlation_dashboard(data):
     """Create comprehensive correlation analysis dashboard."""
     fig, axes = plt.subplots(2, 2, figsize=(14, 12))
-    
+
     # 1. Correlation heatmap
     numeric_data = data.select_dtypes(include=[np.number])
     corr = numeric_data.corr()
     mask = np.triu(np.ones_like(corr, dtype=bool))  # Upper triangle mask
-    sns.heatmap(corr, mask=mask, annot=True, cmap="RdBu_r", center=0,
-                square=True, linewidths=0.5, ax=axes[0, 0], fmt=".2f",
-                cbar_kws={"shrink": 0.8})
+    sns.heatmap(
+        corr,
+        mask=mask,
+        annot=True,
+        cmap="RdBu_r",
+        center=0,
+        square=True,
+        linewidths=0.5,
+        ax=axes[0, 0],
+        fmt=".2f",
+        cbar_kws={"shrink": 0.8},
+    )
     axes[0, 0].set_title("Correlation Matrix")
-    
+
     # 2. Primary relationship with regression
-    sns.regplot(x="total_bill", y="tip", data=data, ax=axes[0, 1],
-                scatter_kws={"alpha": 0.5})
+    sns.regplot(
+        x="total_bill", y="tip", data=data, ax=axes[0, 1], scatter_kws={"alpha": 0.5}
+    )
     r = data["total_bill"].corr(data["tip"])
     axes[0, 1].set_title(f"Tip vs Total Bill (r = {r:.3f})")
-    
+
     # 3. Joint plot embedded (scatter + marginal distributions)
     # We'll simulate this with scatterplot + histograms
     ax_main = axes[1, 0]
-    sns.scatterplot(x="total_bill", y="tip", hue="time", data=data, 
-                    ax=ax_main, alpha=0.6)
+    sns.scatterplot(
+        x="total_bill", y="tip", hue="time", data=data, ax=ax_main, alpha=0.6
+    )
     ax_main.set_title("Tip vs Bill by Time")
-    
+
     # 4. Residual analysis
-    sns.residplot(x="total_bill", y="tip", data=data, ax=axes[1, 1],
-                  scatter_kws={"alpha": 0.5}, color="purple")
+    sns.residplot(
+        x="total_bill",
+        y="tip",
+        data=data,
+        ax=axes[1, 1],
+        scatter_kws={"alpha": 0.5},
+        color="purple",
+    )
     axes[1, 1].axhline(0, color="black", linestyle="--", alpha=0.5)
     axes[1, 1].set_title("Residuals (should be random around 0)")
-    
+
     plt.suptitle("Correlation Analysis Dashboard", fontsize=16, fontweight="bold")
     plt.tight_layout()
     plt.savefig("correlation_dashboard.png", dpi=150)
     plt.show()
+
 
 create_correlation_dashboard(tips)
 ```
@@ -420,32 +510,44 @@ import pandas as pd
 
 tips = sns.load_dataset("tips")
 
+
 def multi_dimensional_analysis(data):
     """Explore data across multiple dimensions with FacetGrid."""
-    
+
     # 1. FacetGrid: Histograms across categories
-    g = sns.FacetGrid(data, col="time", row="smoker", 
-                      height=4, aspect=1.3, margin_titles=True)
+    g = sns.FacetGrid(
+        data, col="time", row="smoker", height=4, aspect=1.3, margin_titles=True
+    )
     g.map(sns.histplot, "total_bill", kde=True, color="steelblue")
     g.set_titles(row_template="{row_name}", col_template="{col_name}")
     g.fig.suptitle("Bill Distribution: Time × Smoking Status", y=1.02, fontsize=14)
     g.savefig("facetgrid_histograms.png", dpi=150)
     plt.show()
-    
+
     # 2. Catplot: Box plots across multiple dimensions
-    g = sns.catplot(x="day", y="total_bill", hue="smoker", col="time",
-                    data=data, kind="box", height=5, aspect=1.2)
+    g = sns.catplot(
+        x="day",
+        y="total_bill",
+        hue="smoker",
+        col="time",
+        data=data,
+        kind="box",
+        height=5,
+        aspect=1.2,
+    )
     g.fig.suptitle("Bill by Day, Time, and Smoking", y=1.02, fontsize=14)
     g.savefig("catplot_boxes.png", dpi=150)
     plt.show()
-    
+
     # 3. Pair plot with categorical coloring
     subset = data[["total_bill", "tip", "size", "time"]]
-    g = sns.pairplot(subset, hue="time", palette="husl",
-                     diag_kind="kde", plot_kws={"alpha": 0.6})
+    g = sns.pairplot(
+        subset, hue="time", palette="husl", diag_kind="kde", plot_kws={"alpha": 0.6}
+    )
     g.fig.suptitle("Pairwise Relationships by Time", y=1.02)
     g.savefig("pairplot_analysis.png", dpi=150)
     plt.show()
+
 
 multi_dimensional_analysis(tips)
 ```
@@ -535,9 +637,9 @@ g.map(sns.scatterplot, "total_bill", "tip")
 
 # Regular subplots: Different chart types
 fig, axes = plt.subplots(1, 3)
-axes[0].plot(...)   # Line chart
-axes[1].pie(...)    # Pie chart  
-axes[2].hist(...)   # Histogram
+axes[0].plot(...)  # Line chart
+axes[1].pie(...)  # Pie chart
+axes[2].hist(...)  # Histogram
 ```
 
 </details>

@@ -60,17 +60,24 @@ It has two parts joined by `UNION ALL`.
 ```sql
 WITH RECURSIVE subordinates AS (
     -- Anchor: The CEO
-    SELECT id, name, manager_id 
-    FROM employees 
+    SELECT
+        id,
+        name,
+        manager_id
+    FROM employees
     WHERE manager_id IS NULL
-    
+
     UNION ALL
-    
+
     -- Recursive: Employees managed by people already found
-    SELECT e.id, e.name, e.manager_id
-    FROM employees e
-    INNER JOIN subordinates s ON s.id = e.manager_id
+    SELECT
+        e.id,
+        e.name,
+        e.manager_id
+    FROM employees AS e
+    INNER JOIN subordinates AS s ON e.manager_id = s.id
 )
+
 SELECT * FROM subordinates;
 ```
 

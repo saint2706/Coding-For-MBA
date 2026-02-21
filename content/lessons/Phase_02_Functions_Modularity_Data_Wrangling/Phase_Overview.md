@@ -90,6 +90,7 @@ from pathlib import Path
 import pandas as pd
 import re
 
+
 def process_data_files(directory):
     """Process all CSV files in directory."""
     pass  # Your implementation
@@ -122,13 +123,13 @@ Create a `SalesAnalyzer` class that:
 class SalesAnalyzer:
     def __init__(self, data_path):
         pass
-    
+
     def yoy_growth(self, column):
         pass
-    
+
     def top_products(self, n=10):
         pass
-    
+
     def summary_by_period(self, period="M"):
         pass
 ```
@@ -276,6 +277,7 @@ from pathlib import Path
 import pandas as pd
 import re
 
+
 class CustomerDataPipeline:
     EMAIL_REGEX = re.compile(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 
@@ -309,6 +311,7 @@ class CustomerDataPipeline:
             "missing_revenue": df["annual_revenue"].isna().sum(),
             "load_errors": len(self.errors),
         }
+
 
 pipeline = CustomerDataPipeline("data/crm_exports/")
 raw = pipeline.load_all()
@@ -364,6 +367,7 @@ class RevenueAnalyzer:
         df = self.df.join(first, on="customer_id")
         return df.groupby(["cohort", "month"])["customer_id"].nunique().unstack()
 
+
 analyzer = RevenueAnalyzer("sales_2024.csv")
 print(analyzer.monthly_summary())
 print(analyzer.top_sellers(n=5, period="2024-11"))
@@ -393,6 +397,7 @@ LOG_PATTERN = re.compile(
     r"(?P<message>.+)"
 )
 
+
 def parse_log_line(line: str) -> dict | None:
     m = LOG_PATTERN.match(line.strip())
     if not m:
@@ -403,6 +408,7 @@ def parse_log_line(line: str) -> dict | None:
         "message": m["message"],
     }
 
+
 def stream_log_lines(filepath: str) -> Generator[dict, None, None]:
     """Memory-efficient: process 10GB log without loading into RAM."""
     with open(filepath, encoding="utf-8", errors="replace") as f:
@@ -410,6 +416,7 @@ def stream_log_lines(filepath: str) -> Generator[dict, None, None]:
             parsed = parse_log_line(line)
             if parsed:
                 yield parsed
+
 
 def error_spike_detector(filepath: str, threshold: int = 50) -> list[str]:
     """Detect hours with unusually high ERROR rate."""
@@ -419,6 +426,7 @@ def error_spike_detector(filepath: str, threshold: int = 50) -> list[str]:
             hour_key = entry["timestamp"].strftime("%Y-%m-%d %H:00")
             hourly_errors[hour_key] += 1
     return [hour for hour, count in hourly_errors.items() if count >= threshold]
+
 
 spikes = error_spike_detector("app.log", threshold=50)
 print(f"Error spikes detected at: {spikes}")
@@ -453,6 +461,7 @@ with open("huge.csv") as f:
 def get_domain(email: str) -> str:
     return re.search(r"@(.+)", email).group(1)  # AttributeError if None
 
+
 # ✅ Safe
 def get_domain(email: str) -> str | None:
     m = re.search(r"@(.+)", email)
@@ -486,7 +495,9 @@ except Exception as e:
 
 ```python
 # ❌ Python loop — 100x slower
-df["discounted"] = df.apply(lambda row: row["price"] * 0.9 if row["is_member"] else row["price"], axis=1)
+df["discounted"] = df.apply(
+    lambda row: row["price"] * 0.9 if row["is_member"] else row["price"], axis=1
+)
 
 # ✅ Vectorized — instant
 df["discounted"] = df["price"].where(~df["is_member"], df["price"] * 0.9)
@@ -502,10 +513,12 @@ class Analyzer:
     def __init__(self):
         self.db = Database("production")  # Hardcoded!
 
+
 # ✅ Testable — inject any data source
 class Analyzer:
     def __init__(self, data_source):
         self.db = data_source  # Can inject a mock in tests
+
 
 # In production
 analyzer = Analyzer(Database("production"))

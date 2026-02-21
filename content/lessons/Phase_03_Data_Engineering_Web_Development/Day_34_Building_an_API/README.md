@@ -47,13 +47,16 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+
 @app.get("/")
 def root():
     return {"message": "Hello, World!"}
 
+
 @app.get("/items/{item_id}")
 def get_item(item_id: int):
     return {"item_id": item_id}
+
 
 # Run with: uvicorn main:app --reload
 ```
@@ -65,15 +68,18 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+
 # Path parameter
 @app.get("/users/{user_id}")
 def get_user(user_id: int):
     return {"user_id": user_id}
 
+
 # Query parameter
 @app.get("/search")
 def search(q: str, limit: int = 10):
     return {"query": q, "limit": limit}
+
 
 # Combined
 @app.get("/users/{user_id}/items")
@@ -89,14 +95,17 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
+
 class Item(BaseModel):
     name: str
     price: float
     description: str = None
 
+
 @app.post("/items")
 def create_item(item: Item):
     return {"name": item.name, "price": item.price}
+
 
 # Request validation automatic!
 # {"name": "Widget", "price": 9.99} -> Valid
@@ -115,9 +124,11 @@ app = FastAPI()
 # In-memory database (use real DB in production)
 items_db = {}
 
+
 class Item(BaseModel):
     name: str
     price: float
+
 
 # CREATE
 @app.post("/items/{item_id}")
@@ -127,12 +138,14 @@ def create_item(item_id: int, item: Item):
     items_db[item_id] = item
     return {"id": item_id, **item.dict()}
 
+
 # READ
 @app.get("/items/{item_id}")
 def get_item(item_id: int):
     if item_id not in items_db:
         raise HTTPException(status_code=404, detail="Not found")
     return items_db[item_id]
+
 
 # UPDATE
 @app.put("/items/{item_id}")
@@ -141,6 +154,7 @@ def update_item(item_id: int, item: Item):
         raise HTTPException(status_code=404, detail="Not found")
     items_db[item_id] = item
     return {"id": item_id, **item.dict()}
+
 
 # DELETE
 @app.delete("/items/{item_id}")
@@ -185,11 +199,12 @@ def delete_item(item_id: int):
 ```python
 from pydantic import BaseModel, Field, validator
 
+
 class User(BaseModel):
     name: str = Field(..., min_length=1, max_length=100)
     email: str
     age: int = Field(..., ge=0, le=150)
-    
+
     @validator("email")
     def validate_email(cls, v):
         if "@" not in v:
@@ -210,11 +225,14 @@ from typing import Optional
 
 app = FastAPI()
 
+
 class Todo(BaseModel):
     title: str
     completed: bool = False
 
+
 todos = {}
+
 
 @app.post("/todos")
 def create_todo(todo: Todo):
@@ -222,9 +240,11 @@ def create_todo(todo: Todo):
     todos[todo_id] = todo
     return {"id": todo_id, **todo.dict()}
 
+
 @app.get("/todos")
 def list_todos():
     return list(todos.values())
+
 
 @app.get("/todos/{todo_id}")
 def get_todo(todo_id: int):
@@ -232,12 +252,14 @@ def get_todo(todo_id: int):
         raise HTTPException(404, "Todo not found")
     return todos[todo_id]
 
+
 @app.put("/todos/{todo_id}")
 def update_todo(todo_id: int, todo: Todo):
     if todo_id not in todos:
         raise HTTPException(404, "Todo not found")
     todos[todo_id] = todo
     return {"id": todo_id, **todo.dict()}
+
 
 @app.delete("/todos/{todo_id}")
 def delete_todo(todo_id: int):
@@ -254,13 +276,16 @@ from fastapi import FastAPI, Query
 
 app = FastAPI()
 
+
 @app.get("/add")
 def add(a: float = Query(...), b: float = Query(...)):
     return {"result": a + b}
 
+
 @app.get("/multiply")
 def multiply(a: float = Query(...), b: float = Query(...)):
     return {"result": a * b}
+
 
 @app.get("/calculate")
 def calculate(operation: str, a: float, b: float):
@@ -268,7 +293,7 @@ def calculate(operation: str, a: float, b: float):
         "add": a + b,
         "subtract": a - b,
         "multiply": a * b,
-        "divide": a / b if b != 0 else None
+        "divide": a / b if b != 0 else None,
     }
     if operation not in operations:
         raise HTTPException(400, f"Unknown operation: {operation}")
@@ -283,24 +308,27 @@ from pydantic import BaseModel, EmailStr, validator
 
 app = FastAPI()
 
+
 class UserCreate(BaseModel):
     username: str
     email: str
     password: str
-    
+
     @validator("username")
     def username_valid(cls, v):
         if len(v) < 3:
             raise ValueError("Username must be 3+ characters")
         return v
-    
+
     @validator("password")
     def password_strong(cls, v):
         if len(v) < 8:
             raise ValueError("Password must be 8+ characters")
         return v
 
+
 users = {}
+
 
 @app.post("/register")
 def register(user: UserCreate):
@@ -308,6 +336,7 @@ def register(user: UserCreate):
         raise HTTPException(400, "Username taken")
     users[user.username] = user
     return {"message": f"User {user.username} created"}
+
 
 @app.get("/users/{username}")
 def get_user(username: str):
@@ -381,6 +410,7 @@ if "name" not in data:
     raise HTTPException(400, "name required")
 if not isinstance(data["name"], str):
     raise HTTPException(400, "name must be string")
+
 
 # Pydantic (automatic)
 class Item(BaseModel):

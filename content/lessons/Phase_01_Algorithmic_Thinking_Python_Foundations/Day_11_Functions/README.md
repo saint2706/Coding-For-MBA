@@ -51,9 +51,11 @@ price1, tax1 = 100, 100 * 0.08
 price2, tax2 = 250, 250 * 0.08
 price3, tax3 = 175, 175 * 0.08
 
+
 # With function (clean and maintainable)
 def calculate_tax(price, rate=0.08):
     return price * rate
+
 
 tax1 = calculate_tax(100)
 tax2 = calculate_tax(250)
@@ -72,6 +74,7 @@ Now if the tax rate changes, you update ONE line.
 def greet():
     """Say hello to the user."""
     print("Hello, World!")
+
 
 # Calling the function
 greet()  # Output: Hello, World!
@@ -93,19 +96,24 @@ greet()  # Output: Hello, World!
 def greet(name):
     print(f"Hello, {name}!")
 
+
 greet("Alice")  # "Hello, Alice!"
+
 
 # Multiple parameters
 def full_greeting(name, time_of_day):
     print(f"Good {time_of_day}, {name}!")
 
+
 full_greeting("Bob", "morning")
+
 
 # Default parameters
 def greet_with_default(name, greeting="Hello"):
     print(f"{greeting}, {name}!")
 
-greet_with_default("Charlie")           # "Hello, Charlie!"
+
+greet_with_default("Charlie")  # "Hello, Charlie!"
 greet_with_default("Diana", "Welcome")  # "Welcome, Diana!"
 ```
 
@@ -114,6 +122,7 @@ greet_with_default("Diana", "Welcome")  # "Welcome, Diana!"
 ```python
 def create_profile(name, age, city, role="Member"):
     print(f"{name}, {age}, from {city} - {role}")
+
 
 # Positional
 create_profile("Alice", 30, "NYC")
@@ -132,13 +141,17 @@ create_profile("Charlie", 28, role="Admin", city="Chicago")
 def calculate_tax(amount, rate=0.08):
     return amount * rate
 
+
 tax = calculate_tax(100)  # 8.0
+
 
 # Multiple returns (tuple)
 def get_stats(numbers):
     return min(numbers), max(numbers), sum(numbers) / len(numbers)
 
+
 low, high, avg = get_stats([10, 20, 30, 40, 50])
+
 
 # Early return
 def divide(a, b):
@@ -154,15 +167,19 @@ def divide(a, b):
 def sum_all(*numbers):
     return sum(numbers)
 
-sum_all(1, 2, 3)        # 6
+
+sum_all(1, 2, 3)  # 6
 sum_all(1, 2, 3, 4, 5)  # 15
+
 
 # **kwargs - variable number of keyword arguments
 def print_info(**details):
     for key, value in details.items():
         print(f"{key}: {value}")
 
+
 print_info(name="Alice", age=30, city="NYC")
+
 
 # Combining
 def flexible_func(required, *args, **kwargs):
@@ -177,16 +194,20 @@ def flexible_func(required, *args, **kwargs):
 # Global scope
 tax_rate = 0.08
 
+
 def calculate_tax(amount):
     # Local scope - can read global
     return amount * tax_rate
 
+
 # Can't modify global without 'global' keyword
 counter = 0
+
 
 def increment():
     global counter  # Now we can modify it
     counter += 1
+
 
 # LEGB Rule: Local → Enclosing → Global → Built-in
 ```
@@ -196,10 +217,11 @@ def increment():
 ```python
 # Regular function
 def square(x):
-    return x ** 2
+    return x**2
+
 
 # Lambda equivalent
-square = lambda x: x ** 2
+square = lambda x: x**2
 
 # Common use: sorting
 products = [
@@ -223,8 +245,10 @@ def calculate_roi(revenue: float, cost: float) -> float:
     """Calculate Return on Investment."""
     return (revenue - cost) / cost * 100
 
+
 # Complex types
 from typing import List, Dict, Optional
+
 
 def process_orders(orders: List[Dict]) -> Optional[str]:
     if not orders:
@@ -238,15 +262,15 @@ def process_orders(orders: List[Dict]) -> Optional[str]:
 def calculate_compound_interest(principal: float, rate: float, years: int) -> float:
     """
     Calculate compound interest.
-    
+
     Args:
         principal: Initial investment amount
         rate: Annual interest rate (e.g., 0.05 for 5%)
         years: Number of years to compound
-    
+
     Returns:
         Final amount after compound interest
-    
+
     Example:
         >>> calculate_compound_interest(1000, 0.05, 10)
         1628.89
@@ -261,11 +285,15 @@ def calculate_compound_interest(principal: float, rate: float, years: int) -> fl
 def pure_double(x):
     return x * 2
 
+
 # Impure: has side effects
 results = []
+
+
 def impure_double(x):
     results.append(x * 2)  # Side effect!
     return x * 2
+
 
 # Pure functions are easier to test and reason about
 ```
@@ -275,20 +303,25 @@ def impure_double(x):
 ```python
 import time
 
+
 def timer(func):
     """Decorator to measure function execution time."""
+
     def wrapper(*args, **kwargs):
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()
         print(f"{func.__name__} took {end - start:.4f} seconds")
         return result
+
     return wrapper
+
 
 @timer
 def slow_function():
     time.sleep(1)
     return "Done"
+
 
 slow_function()  # "slow_function took 1.0012 seconds"
 ```
@@ -308,11 +341,13 @@ def calculate_roi(revenue, cost):
         return None
     return ((revenue - cost) / cost) * 100
 
+
 def calculate_cagr(start_value, end_value, years):
     """Calculate Compound Annual Growth Rate."""
     if start_value <= 0 or years <= 0:
         return None
     return ((end_value / start_value) ** (1 / years) - 1) * 100
+
 
 def calculate_break_even(fixed_costs, price_per_unit, cost_per_unit):
     """Calculate break-even point in units."""
@@ -320,6 +355,7 @@ def calculate_break_even(fixed_costs, price_per_unit, cost_per_unit):
     if margin <= 0:
         return None
     return fixed_costs / margin
+
 
 # Test the functions
 print(f"ROI: {calculate_roi(150000, 100000):.1f}%")
@@ -344,6 +380,7 @@ def validate_email(email):
         return False, "Invalid domain"
     return True, "Valid email"
 
+
 def validate_age(age):
     """Validate age is reasonable."""
     if not isinstance(age, int):
@@ -354,19 +391,21 @@ def validate_age(age):
         return False, "Age seems unrealistic"
     return True, "Valid age"
 
+
 def validate_user(email, age):
     """Validate complete user profile."""
     errors = []
-    
+
     valid, msg = validate_email(email)
     if not valid:
         errors.append(f"Email: {msg}")
-    
+
     valid, msg = validate_age(age)
     if not valid:
         errors.append(f"Age: {msg}")
-    
+
     return len(errors) == 0, errors
+
 
 # Test
 is_valid, errors = validate_user("test@example.com", 25)
@@ -387,7 +426,7 @@ print(f"Errors: {errors}")
 def generate_report(data, title="Report", show_total=True, show_average=False):
     """
     Generate a formatted report from data.
-    
+
     Args:
         data: List of (label, value) tuples
         title: Report title
@@ -398,22 +437,23 @@ def generate_report(data, title="Report", show_total=True, show_average=False):
     print("=" * width)
     print(f"{title:^{width}}")
     print("=" * width)
-    
+
     total = 0
     for label, value in data:
         print(f"{label:<20} ${value:>15,.2f}")
         total += value
-    
+
     print("-" * width)
-    
+
     if show_total:
         print(f"{'TOTAL':<20} ${total:>15,.2f}")
-    
+
     if show_average:
         avg = total / len(data)
         print(f"{'AVERAGE':<20} ${avg:>15,.2f}")
-    
+
     print("=" * width)
+
 
 # Usage
 sales = [
@@ -472,6 +512,7 @@ What's the difference?
 def func_a(x):
     print(x * 2)
 
+
 def func_b(x):
     return x * 2
 ```
@@ -501,9 +542,12 @@ What prints?
 
 ```python
 x = 10
+
+
 def modify():
     x = 20
     print(x)
+
 
 modify()
 print(x)
@@ -534,6 +578,7 @@ Write a function that takes any number of prices and applies a discount:
 def apply_discount(discount_rate, *prices):
     return [price * (1 - discount_rate) for price in prices]
 
+
 # Usage
 discounted = apply_discount(0.15, 100, 250, 75)
 print(discounted)  # [85.0, 212.5, 63.75]
@@ -558,41 +603,42 @@ print(discounted)  # [85.0, 212.5, 63.75]
 def process_payment(amount, payment_type="credit"):
     """
     Process a payment with applicable fees.
-    
+
     Args:
         amount: Payment amount
         payment_type: credit, debit, or bank_transfer
-    
+
     Returns:
         Dict with breakdown and total
     """
     # Validation
     if amount <= 0:
         return {"error": "Invalid amount"}
-    
+
     # Fee structure
     fees = {
-        "credit": 0.029,      # 2.9%
-        "debit": 0.015,       # 1.5%
-        "bank_transfer": 0.005  # 0.5%
+        "credit": 0.029,  # 2.9%
+        "debit": 0.015,  # 1.5%
+        "bank_transfer": 0.005,  # 0.5%
     }
-    
+
     fee_rate = fees.get(payment_type, 0.029)
     fee_amount = round(amount * fee_rate, 2)
     total = round(amount + fee_amount, 2)
-    
+
     return {
         "subtotal": amount,
         "payment_type": payment_type,
         "fee_rate": f"{fee_rate:.1%}",
         "fee_amount": fee_amount,
-        "total": total
+        "total": total,
     }
+
 
 # Usage
 result = process_payment(100, "credit")
 print(result)
-# {'subtotal': 100, 'payment_type': 'credit', 'fee_rate': '2.9%', 
+# {'subtotal': 100, 'payment_type': 'credit', 'fee_rate': '2.9%',
 #  'fee_amount': 2.9, 'total': 102.9}
 ```
 

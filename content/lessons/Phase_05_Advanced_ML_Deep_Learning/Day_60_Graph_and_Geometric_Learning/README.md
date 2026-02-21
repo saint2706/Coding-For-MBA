@@ -116,8 +116,15 @@ print(f"\nAdjacency Matrix:\n{A.todense()}")
 # Visualize
 plt.figure(figsize=(8, 6))
 pos = nx.spring_layout(G, seed=42)
-nx.draw(G, pos, with_labels=True, node_color='lightblue', 
-        node_size=500, font_size=16, font_weight='bold')
+nx.draw(
+    G,
+    pos,
+    with_labels=True,
+    node_color="lightblue",
+    node_size=500,
+    font_size=16,
+    font_weight="bold",
+)
 plt.title("Simple Graph")
 plt.show()
 
@@ -127,6 +134,7 @@ print(f"Average shortest path: {nx.average_shortest_path_length(G):.3f}")
 
 # Community detection
 from networkx.algorithms import community
+
 communities = community.greedy_modularity_communities(G)
 print(f"\nCommunities detected: {len(list(communities))}")
 ```
@@ -151,7 +159,7 @@ node2vec = Node2Vec(
     num_walks=200,  # Number of walks per node
     p=1,  # Return parameter (BFS vs DFS)
     q=1,  # In-out parameter
-    workers=4
+    workers=4,
 )
 
 # Train embeddings
@@ -162,7 +170,7 @@ node_0_embedding = model.wv[0]
 print(f"\nNode 0 embedding (64D): {node_0_embedding[:5]}...")  # Show first 5 dims
 
 # Find similar nodes
-similar_nodes = model.wv.most_similar('0', topn=3)
+similar_nodes = model.wv.most_similar("0", topn=3)
 print(f"\nNodes most similar to node 0:")
 for node, similarity in similar_nodes:
     print(f"  Node {node}: {similarity:.3f}")
@@ -203,7 +211,7 @@ from torch_geometric.datasets import Planetoid
 from torch_geometric.data import Data
 
 # Load Cora dataset (citation network)
-dataset = Planetoid(root='/tmp/Cora', name='Cora')
+dataset = Planetoid(root="/tmp/Cora", name="Cora")
 
 print(f"Dataset: {dataset}")
 print(f"Number of graphs: {len(dataset)}")
@@ -215,29 +223,32 @@ print(f"\nNodes: {data.num_nodes}")
 print(f"Edges: {data.num_edges}")
 print(f"Features per node: {data.num_node_features}")
 
+
 # Graph Convolutional Network
 class GCN(nn.Module):
     def __init__(self, num_features, num_classes):
         super().__init__()
         self.conv1 = GCNConv(num_features, 16)
         self.conv2 = GCNConv(16, num_classes)
-    
+
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
-        
+
         # First GCN layer
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = F.dropout(x, p=0.5, training=self.training)
-        
+
         # Second GCN layer
         x = self.conv2(x, edge_index)
-        
+
         return F.log_softmax(x, dim=1)
+
 
 # Initialize model
 model = GCN(num_features=dataset.num_features, num_classes=dataset.num_classes)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
+
 
 # Training
 def train():
@@ -249,19 +260,21 @@ def train():
     optimizer.step()
     return loss.item()
 
+
 # Testing
 def test():
     model.eval()
     logits = model(data)
     pred = logits.argmax(dim=1)
-    
+
     accs = []
     for mask in [data.train_mask, data.val_mask, data.test_mask]:
         correct = (pred[mask] == data.y[mask]).sum()
         acc = int(correct) / int(mask.sum())
         accs.append(acc)
-    
+
     return accs
+
 
 # Train model
 print("\n=== Training GCN ===")
@@ -269,14 +282,16 @@ for epoch in range(1, 201):
     loss = train()
     if epoch % 20 == 0:
         train_acc, val_acc, test_acc = test()
-        print(f'Epoch {epoch:03d}, Loss: {loss:.4f}, Train: {train_acc:.4f}, Val: {val_acc:.4f}, Test: {test_acc:.4f}')
+        print(
+            f"Epoch {epoch:03d}, Loss: {loss:.4f}, Train: {train_acc:.4f}, Val: {val_acc:.4f}, Test: {test_acc:.4f}"
+        )
 
 # Final evaluation
 train_acc, val_acc, test_acc = test()
-print(f'\n=== Final Results ===')
-print(f'Train Accuracy: {train_acc:.4f}')
-print(f'Val Accuracy: {val_acc:.4f}')
-print(f'Test Accuracy: {test_acc:.4f}')
+print(f"\n=== Final Results ===")
+print(f"Train Accuracy: {train_acc:.4f}")
+print(f"Val Accuracy: {val_acc:.4f}")
+print(f"Test Accuracy: {test_acc:.4f}")
 ```
 
 ### Message Passing Framework
@@ -289,42 +304,43 @@ class MessagePassingGNN(nn.Module):
         super().__init__()
         self.linear1 = nn.Linear(num_features, hidden_dim)
         self.linear2 = nn.Linear(hidden_dim, num_classes)
-    
+
     def aggregate_neighbors(self, x, edge_index):
         """
         Aggregate features from neighbors.
-        
+
         x: Node features [num_nodes, num_features]
         edge_index: Edges [2, num_edges]
         """
         num_nodes = x.size(0)
-        
+
         # Initialize aggregated features
         aggregated = torch.zeros(num_nodes, x.size(1))
-        
+
         # For each edge (source → target)
         for i in range(edge_index.size(1)):
             source = edge_index[0, i]
             target = edge_index[1, i]
-            
+
             # Add source's features to target's aggregation
             aggregated[target] += x[source]
-        
+
         return aggregated
-    
+
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
-        
+
         # Layer 1: Transform + Aggregate + Activate
         x = self.linear1(x)
         x = self.aggregate_neighbors(x, edge_index)
         x = F.relu(x)
-        
+
         # Layer 2
         x = self.linear2(x)
         x = self.aggregate_neighbors(x, edge_index)
-        
+
         return F.log_softmax(x, dim=1)
+
 
 # This is simplified - real GNNs use efficient sparse operations
 ```
@@ -336,6 +352,7 @@ class MessagePassingGNN(nn.Module):
 ```python
 from torch_geometric.nn import GATConv
 
+
 class GAT(nn.Module):
     def __init__(self, num_features, num_classes):
         super().__init__()
@@ -344,20 +361,21 @@ class GAT(nn.Module):
         # Concatenate 8 heads: 8*8=64 features
         # Single head for output
         self.conv2 = GATConv(8 * 8, num_classes, heads=1, concat=False, dropout=0.6)
-    
+
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
-        
+
         # First GAT layer
         x = F.dropout(x, p=0.6, training=self.training)
         x = self.conv1(x, edge_index)
         x = F.elu(x)
-        
+
         # Second GAT layer
         x = F.dropout(x, p=0.6, training=self.training)
         x = self.conv2(x, edge_index)
-        
+
         return F.log_softmax(x, dim=1)
+
 
 # Train similar to GCN
 gat_model = GAT(num_features=dataset.num_features, num_classes=dataset.num_classes)
@@ -373,68 +391,72 @@ from torch_geometric.utils import negative_sampling, train_test_split_edges
 # Split edges into train/test
 data = train_test_split_edges(data)
 
+
 class GCNLinkPredictor(nn.Module):
     def __init__(self, num_features, embedding_dim):
         super().__init__()
         self.conv1 = GCNConv(num_features, 128)
         self.conv2 = GCNConv(128, embedding_dim)
-    
+
     def encode(self, x, edge_index):
         """Generate node embeddings"""
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = self.conv2(x, edge_index)
         return x
-    
+
     def decode(self, z, edge_index):
         """Predict edge probability from embeddings"""
         # Dot product of source and target embeddings
         src, dst = edge_index
         return (z[src] * z[dst]).sum(dim=-1)
-    
+
     def forward(self, data):
         z = self.encode(data.x, data.train_pos_edge_index)
         return z
+
 
 # Training
 link_pred_model = GCNLinkPredictor(num_features=dataset.num_features, embedding_dim=64)
 optimizer = torch.optim.Adam(link_pred_model.parameters(), lr=0.01)
 
+
 def train_link_prediction():
     link_pred_model.train()
     optimizer.zero_grad()
-    
+
     # Encode nodes
     z = link_pred_model(data)
-    
+
     # Positive edges (actual edges)
     pos_edge_index = data.train_pos_edge_index
     pos_pred = link_pred_model.decode(z, pos_edge_index)
-    
+
     # Negative edges (sample non-existent edges)
     neg_edge_index = negative_sampling(
         edge_index=data.train_pos_edge_index,
         num_nodes=data.num_nodes,
-        num_neg_samples=pos_edge_index.size(1)
+        num_neg_samples=pos_edge_index.size(1),
     )
     neg_pred = link_pred_model.decode(z, neg_edge_index)
-    
+
     # Binary cross-entropy loss
     pos_loss = -torch.log(torch.sigmoid(pos_pred) + 1e-15).mean()
     neg_loss = -torch.log(1 - torch.sigmoid(neg_pred) + 1e-15).mean()
     loss = pos_loss + neg_loss
-    
+
     loss.backward()
     optimizer.step()
-    
+
     return loss.item()
+
 
 # Train
 print("\n=== Training Link Predictor ===")
 for epoch in range(1, 101):
     loss = train_link_prediction()
     if epoch % 10 == 0:
-        print(f'Epoch {epoch:03d}, Loss: {loss:.4f}')
+        print(f"Epoch {epoch:03d}, Loss: {loss:.4f}")
 ```
 
 ### Graph Classification
@@ -447,7 +469,7 @@ from torch_geometric.loader import DataLoader
 from torch_geometric.nn import global_mean_pool
 
 # Load molecule dataset
-dataset = TUDataset(root='/tmp/ENZYMES', name='ENZYMES')
+dataset = TUDataset(root="/tmp/ENZYMES", name="ENZYMES")
 
 print(f"Number of graphs: {len(dataset)}")
 print(f"Number of classes: {dataset.num_classes}")
@@ -462,6 +484,7 @@ test_dataset = dataset[540:]
 train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=64)
 
+
 # Graph classifier
 class GraphClassifier(nn.Module):
     def __init__(self, num_features, num_classes):
@@ -470,31 +493,32 @@ class GraphClassifier(nn.Module):
         self.conv2 = GCNConv(64, 64)
         self.conv3 = GCNConv(64, 64)
         self.fc = nn.Linear(64, num_classes)
-    
+
     def forward(self, data):
         x, edge_index, batch = data.x, data.edge_index, data.batch
-        
+
         # Node-level features
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = self.conv2(x, edge_index)
         x = F.relu(x)
         x = self.conv3(x, edge_index)
-        
+
         # Graph-level pooling (aggregate all nodes in graph)
         x = global_mean_pool(x, batch)
-        
+
         # Classification
         x = F.dropout(x, p=0.5, training=self.training)
         x = self.fc(x)
-        
+
         return F.log_softmax(x, dim=1)
 
+
 graph_classifier = GraphClassifier(
-    num_features=dataset.num_features,
-    num_classes=dataset.num_classes
+    num_features=dataset.num_features, num_classes=dataset.num_classes
 )
 optimizer = torch.optim.Adam(graph_classifier.parameters(), lr=0.01)
+
 
 def train_graph_classifier():
     graph_classifier.train()
@@ -508,6 +532,7 @@ def train_graph_classifier():
         total_loss += loss.item() * data.num_graphs
     return total_loss / len(train_dataset)
 
+
 def test_graph_classifier(loader):
     graph_classifier.eval()
     correct = 0
@@ -517,6 +542,7 @@ def test_graph_classifier(loader):
         correct += (pred == data.y).sum().item()
     return correct / len(loader.dataset)
 
+
 # Train
 print("\n=== Training Graph Classifier ===")
 for epoch in range(1, 201):
@@ -524,7 +550,9 @@ for epoch in range(1, 201):
     if epoch % 20 == 0:
         train_acc = test_graph_classifier(train_loader)
         test_acc = test_graph_classifier(test_loader)
-        print(f'Epoch {epoch:03d}, Loss: {loss:.4f}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}')
+        print(
+            f"Epoch {epoch:03d}, Loss: {loss:.4f}, Train Acc: {train_acc:.4f}, Test Acc: {test_acc:.4f}"
+        )
 ```
 
 ---
@@ -616,10 +644,11 @@ social_data = Data(x=node_features, edge_index=edge_index)
 from rdkit import Chem
 from rdkit.Chem import Descriptors
 
+
 def smiles_to_graph(smiles):
     """Convert SMILES string to graph"""
     mol = Chem.MolFromSmiles(smiles)
-    
+
     # Node features: Atom type, charge, etc.
     atom_features = []
     for atom in mol.GetAtoms():
@@ -627,10 +656,10 @@ def smiles_to_graph(smiles):
             atom.GetAtomicNum(),
             atom.GetDegree(),
             atom.GetFormalCharge(),
-            int(atom.GetHybridization())
+            int(atom.GetHybridization()),
         ]
         atom_features.append(features)
-    
+
     # Edge list: Bonds
     edge_list = []
     for bond in mol.GetBonds():
@@ -638,11 +667,12 @@ def smiles_to_graph(smiles):
         j = bond.GetEndAtomIdx()
         edge_list.append([i, j])
         edge_list.append([j, i])  # Undirected
-    
+
     x = torch.tensor(atom_features, dtype=torch.float)
     edge_index = torch.tensor(edge_list, dtype=torch.long).t().contiguous()
-    
+
     return Data(x=x, edge_index=edge_index)
+
 
 # Example: Aspirin
 aspirin_smiles = "CC(=O)Oc1ccccc1C(=O)O"
@@ -666,23 +696,25 @@ print(f"Aspirin: {aspirin_graph.num_nodes} atoms, {aspirin_graph.num_edges} bond
 # Node features: Current speed, time of day, weather
 # Task: Predict speed in next hour
 
+
 class TrafficGNN(nn.Module):
     def __init__(self, num_features):
         super().__init__()
         self.conv1 = GCNConv(num_features, 64)
         self.conv2 = GCNConv(64, 32)
         self.fc = nn.Linear(32, 1)  # Predict speed
-    
+
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
-        
+
         x = self.conv1(x, edge_index)
         x = F.relu(x)
         x = self.conv2(x, edge_index)
         x = F.relu(x)
         x = self.fc(x)
-        
+
         return x
+
 
 # Temporal extension: Combine GNN with RNN for time-series prediction
 ```
@@ -777,11 +809,12 @@ You have user behavior data. When should you model it as a graph vs a table?
 # - Social graph: Friendships (graph)
 # - Purchase predictions: Use both
 
+
 class HybridModel(nn.Module):
     def __init__(self):
         self.gnn = GCN(...)  # Process social graph
         self.mlp = MLP(...)  # Process user features
-    
+
     def forward(self, graph_data, user_features):
         social_embedding = self.gnn(graph_data)
         feature_embedding = self.mlp(user_features)
@@ -961,16 +994,17 @@ Your 10-layer GCN performs worse than a 2-layer GCN. Why?
 class ResGCN(nn.Module):
     def forward(self, x, edge_index):
         h = x
-        
+
         # Layer 1
         h_new = self.conv1(h, edge_index)
         h = F.relu(h_new + h)  # Skip connection!
-        
+
         # Layer 2
         h_new = self.conv2(h, edge_index)
         h = F.relu(h_new + h)  # Skip connection!
-        
+
         return h
+
 
 # Preserves original node information
 ```
@@ -981,16 +1015,17 @@ class ResGCN(nn.Module):
 class JKNet(nn.Module):
     def forward(self, x, edge_index):
         layer_outputs = [x]
-        
+
         h = x
         for conv in self.convs:
             h = F.relu(conv(h, edge_index))
             layer_outputs.append(h)
-        
+
         # Concatenate all layer outputs
         # Or max-pool across layers
         final = torch.cat(layer_outputs, dim=1)
         return final
+
 
 # Uses information from all layers
 # Early layers: local structure
@@ -1006,17 +1041,18 @@ class NormGCN(nn.Module):
         self.norm1 = nn.LayerNorm(hidden_dim)
         self.conv2 = GCNConv(...)
         self.norm2 = nn.LayerNorm(hidden_dim)
-    
+
     def forward(self, x, edge_index):
         x = self.conv1(x, edge_index)
         x = self.norm1(x)  # Normalize!
         x = F.relu(x)
-        
+
         x = self.conv2(x, edge_index)
         x = self.norm2(x)
         x = F.relu(x)
-        
+
         return x
+
 
 # Prevents saturation, maintains diversity
 ```
@@ -1029,12 +1065,13 @@ def pairnorm(x):
     # Center
     mean = x.mean(dim=0, keepdim=True)
     x = x - mean
-    
+
     # Scale
     row_norm = torch.norm(x, dim=1, keepdim=True)
     x = x / row_norm
-    
+
     return x * np.sqrt(x.size(0))
+
 
 # Maintains node distinctions even in deep networks
 ```
@@ -1094,7 +1131,7 @@ loader = NeighborLoader(
     data,
     num_neighbors=[10, 10],  # 2 layers, 10 neighbors each
     batch_size=1024,
-    shuffle=True
+    shuffle=True,
 )
 
 # Each batch: ~1000 nodes (not 1M!)
@@ -1109,7 +1146,7 @@ for batch in loader:
 **2. Layer-wise Sampling**
 
 ```python
-# Precompute and cache  
+# Precompute and cache
 
 # Layer 1: Sample neighbors, compute embeddings
 # Layer 2: Use Layer 1 embeddings (cached), sample again
@@ -1140,12 +1177,7 @@ for subgraph in loader:
 from torch_geometric.loader import GraphSAINTRandomWalkSampler
 
 # Sample connected subgraphs via random walks
-loader = GraphSAINTRandomWalkSampler(
-    data,
-    batch_size=6000,
-    walk_length=2,
-    num_steps=10
-)
+loader = GraphSAINTRandomWalkSampler(data, batch_size=6000, walk_length=2, num_steps=10)
 
 # Each batch: Connected subgraph
 # Better than random nodes (preserves local structure)
@@ -1268,22 +1300,21 @@ redis_client.set(f"embedding:{node_id}", embedding.tolist())
 ```python
 # New user joins → Need embedding immediately
 
+
 def encode_new_user(user_features, friend_ids):
     """Inductive inference for new user"""
-    
+
     # Fetch friend embeddings from cache
-    friend_embeddings = [
-        get_cached_embedding(friend_id)
-        for friend_id in friend_ids
-    ]
-    
+    friend_embeddings = [get_cached_embedding(friend_id) for friend_id in friend_ids]
+
     # Aggregate (without full graph)
     aggregated = torch.mean(torch.stack(friend_embeddings), dim=0)
-    
+
     # Combine with user features
     user_embedding = model.aggregate(user_features, aggregated)
-    
+
     return user_embedding
+
 
 # Latency: <10ms
 ```
@@ -1298,17 +1329,19 @@ def encode_new_user(user_features, friend_ids):
 # - Mutual friends
 # - Random sample
 
+
 def encode_with_sampling(node_id, max_neighbors=50):
     # Fetch neighbors
     all_neighbors = get_neighbors(node_id)
-    
+
     # Sample (prioritized)
     sampled = select_top_k(all_neighbors, k=max_neighbors)
-    
+
     # Encode with sampled neighbors only
     embedding = model.encode_sampled(node_id, sampled)
-    
+
     return embedding
+
 
 # 10K neighbors → 50 neighbors
 # 200x speedup
@@ -1435,7 +1468,7 @@ metrics = {
     "avg_latency_ms": 15,
     "p99_latency_ms": 180,
     "embeddings_computed_per_sec": 500,
-    "stale_embeddings_pct": 5  # 5% >24h old
+    "stale_embeddings_pct": 5,  # 5% >24h old
 }
 
 # Alerts:

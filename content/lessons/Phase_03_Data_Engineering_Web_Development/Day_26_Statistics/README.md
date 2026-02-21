@@ -65,7 +65,9 @@ Central tendency tells you where the "center" of your data lies.
 import numpy as np
 import pandas as pd
 
-sales = pd.Series([100, 150, 200, 180, 220, 300, 50, 175, 10000])  # Note: 10000 is outlier
+sales = pd.Series(
+    [100, 150, 200, 180, 220, 300, 50, 175, 10000]
+)  # Note: 10000 is outlier
 
 # Mean: Sum divided by count
 mean_sales = sales.mean()
@@ -76,7 +78,9 @@ median_sales = sales.median()
 print(f"Median: ${median_sales:,.2f}")  # $180.00 - not affected by outlier
 
 # Mode: Most frequent value (for categorical/discrete data)
-categories = pd.Series(["Electronics", "Clothing", "Electronics", "Home", "Electronics"])
+categories = pd.Series(
+    ["Electronics", "Clothing", "Electronics", "Home", "Electronics"]
+)
 print(f"Mode: {categories.mode()[0]}")  # Electronics
 ```
 
@@ -95,8 +99,8 @@ print(f"Mode: {categories.mode()[0]}")  # Electronics
 # Classic example: Income data
 incomes = [50000, 55000, 60000, 52000, 1000000]  # CEO outlier
 
-print(f"Mean income: ${np.mean(incomes):,.0f}")    # $243,400 (misleading!)
-print(f"Median income: ${np.median(incomes):,.0f}") # $55,000 (realistic)
+print(f"Mean income: ${np.mean(incomes):,.0f}")  # $243,400 (misleading!)
+print(f"Median income: ${np.median(incomes):,.0f}")  # $55,000 (realistic)
 ```
 
 ### Measures of Spread
@@ -104,9 +108,7 @@ print(f"Median income: ${np.median(incomes):,.0f}") # $55,000 (realistic)
 Spread tells you how dispersed your data is around the center.
 
 ```python
-df = pd.DataFrame({
-    "revenue": [1000, 1100, 1050, 1200, 950, 1150, 1000, 1100]
-})
+df = pd.DataFrame({"revenue": [1000, 1100, 1050, 1200, 950, 1150, 1000, 1100]})
 
 # Range: Max - Min
 data_range = df["revenue"].max() - df["revenue"].min()
@@ -135,11 +137,13 @@ print(df["revenue"].describe())
 Correlation measures the strength and direction of relationships between variables.
 
 ```python
-df = pd.DataFrame({
-    "marketing_spend": [1000, 2000, 1500, 3000, 2500, 4000, 3500],
-    "revenue": [10000, 18000, 14000, 28000, 22000, 35000, 32000],
-    "temperature": [72, 68, 75, 80, 65, 78, 82]
-})
+df = pd.DataFrame(
+    {
+        "marketing_spend": [1000, 2000, 1500, 3000, 2500, 4000, 3500],
+        "revenue": [10000, 18000, 14000, 28000, 22000, 35000, 32000],
+        "temperature": [72, 68, 75, 80, 65, 78, 82],
+    }
+)
 
 # Correlation matrix
 correlation = df.corr()
@@ -167,10 +171,12 @@ print(f"Marketing vs Revenue correlation: {marketing_revenue_corr:.3f}")
 Percentiles divide your data into 100 equal parts. Essential for benchmarking.
 
 ```python
-df = pd.DataFrame({
-    "sales_rep": ["Alice", "Bob", "Charlie", "Diana", "Eve"],
-    "revenue": [50000, 75000, 125000, 200000, 300000]
-})
+df = pd.DataFrame(
+    {
+        "sales_rep": ["Alice", "Bob", "Charlie", "Diana", "Eve"],
+        "revenue": [50000, 75000, 125000, 200000, 300000],
+    }
+)
 
 # Calculate percentiles
 print(f"25th percentile: ${df['revenue'].quantile(0.25):,.0f}")
@@ -218,7 +224,8 @@ plt.show()
 
 # Check skewness
 from scipy.stats import skew
-print(f"Normal skew: {skew(normal_data):.3f}")   # Near 0
+
+print(f"Normal skew: {skew(normal_data):.3f}")  # Near 0
 print(f"Skewed data skew: {skew(skewed_data):.3f}")  # Positive = right skew
 ```
 
@@ -273,18 +280,20 @@ def safe_statistics(series, name="column"):
     """Compute statistics with validation."""
     if series.isnull().all():
         raise ValueError(f"{name}: All values are null")
-    
+
     n = len(series.dropna())
     if n < 30:
-        print(f"Warning: {name} has only {n} valid values. Statistics may be unreliable.")
-    
+        print(
+            f"Warning: {name} has only {n} valid values. Statistics may be unreliable."
+        )
+
     return {
         "count": n,
         "mean": series.mean(),
         "median": series.median(),
         "std": series.std(),
         "min": series.min(),
-        "max": series.max()
+        "max": series.max(),
     }
 ```
 
@@ -299,42 +308,61 @@ import pandas as pd
 import numpy as np
 
 # Monthly revenue data with outlier
-monthly_revenue = pd.DataFrame({
-    "month": pd.date_range("2024-01-01", periods=12, freq="M"),
-    "revenue": [50000, 55000, 48000, 62000, 58000, 65000, 
-                500000,  # Outlier: one-time large contract
-                70000, 72000, 68000, 75000, 80000]
-})
+monthly_revenue = pd.DataFrame(
+    {
+        "month": pd.date_range("2024-01-01", periods=12, freq="M"),
+        "revenue": [
+            50000,
+            55000,
+            48000,
+            62000,
+            58000,
+            65000,
+            500000,  # Outlier: one-time large contract
+            70000,
+            72000,
+            68000,
+            75000,
+            80000,
+        ],
+    }
+)
+
 
 # Task: Analyze revenue with and without the outlier
 def analyze_revenue(df):
     """Compare statistics with and without outliers."""
     revenue = df["revenue"]
-    
+
     # With outlier
     print("=== With Outlier ===")
     print(f"Mean: ${revenue.mean():,.2f}")
     print(f"Median: ${revenue.median():,.2f}")
     print(f"Std Dev: ${revenue.std():,.2f}")
-    
+
     # Detect outlier using IQR
     Q1, Q3 = revenue.quantile(0.25), revenue.quantile(0.75)
     IQR = Q3 - Q1
-    outliers = df[(revenue < Q1 - 1.5*IQR) | (revenue > Q3 + 1.5*IQR)]
+    outliers = df[(revenue < Q1 - 1.5 * IQR) | (revenue > Q3 + 1.5 * IQR)]
     print(f"\nOutliers detected: {len(outliers)}")
     print(outliers)
-    
+
     # Without outlier
-    clean_revenue = revenue[(revenue >= Q1 - 1.5*IQR) & (revenue <= Q3 + 1.5*IQR)]
+    clean_revenue = revenue[(revenue >= Q1 - 1.5 * IQR) & (revenue <= Q3 + 1.5 * IQR)]
     print("\n=== Without Outlier ===")
     print(f"Mean: ${clean_revenue.mean():,.2f}")
     print(f"Median: ${clean_revenue.median():,.2f}")
     print(f"Std Dev: ${clean_revenue.std():,.2f}")
-    
+
     # Business insight
     print("\n=== Business Insight ===")
-    print(f"The outlier inflated the mean by ${revenue.mean() - clean_revenue.mean():,.2f}")
-    print(f"For forecasting, use median (${revenue.median():,.2f}) or exclude one-time contracts")
+    print(
+        f"The outlier inflated the mean by ${revenue.mean() - clean_revenue.mean():,.2f}"
+    )
+    print(
+        f"For forecasting, use median (${revenue.median():,.2f}) or exclude one-time contracts"
+    )
+
 
 analyze_revenue(monthly_revenue)
 ```
@@ -348,21 +376,26 @@ import pandas as pd
 import numpy as np
 
 np.random.seed(42)
-customers = pd.DataFrame({
-    "customer_id": range(1, 101),
-    "total_purchases": np.random.exponential(500, 100),  # Skewed distribution
-    "avg_order_value": np.random.normal(75, 25, 100),
-    "days_since_last_order": np.random.exponential(30, 100)
-})
+customers = pd.DataFrame(
+    {
+        "customer_id": range(1, 101),
+        "total_purchases": np.random.exponential(500, 100),  # Skewed distribution
+        "avg_order_value": np.random.normal(75, 25, 100),
+        "days_since_last_order": np.random.exponential(30, 100),
+    }
+)
+
 
 def segment_customers(df):
     """Segment customers using percentile-based approach."""
-    
+
     # Calculate percentiles for each metric
     df["purchase_percentile"] = df["total_purchases"].rank(pct=True) * 100
     df["aov_percentile"] = df["avg_order_value"].rank(pct=True) * 100
-    df["recency_percentile"] = (1 - df["days_since_last_order"].rank(pct=True)) * 100  # Inverse for recency
-    
+    df["recency_percentile"] = (
+        1 - df["days_since_last_order"].rank(pct=True)
+    ) * 100  # Inverse for recency
+
     # Create segments
     def assign_segment(row):
         if row["purchase_percentile"] >= 80 and row["recency_percentile"] >= 50:
@@ -375,17 +408,24 @@ def segment_customers(df):
             return "At Risk"
         else:
             return "Average"
-    
+
     df["segment"] = df.apply(assign_segment, axis=1)
-    
+
     # Summary by segment
-    summary = df.groupby("segment").agg({
-        "customer_id": "count",
-        "total_purchases": ["mean", "median"],
-        "days_since_last_order": "median"
-    }).round(2)
-    
+    summary = (
+        df.groupby("segment")
+        .agg(
+            {
+                "customer_id": "count",
+                "total_purchases": ["mean", "median"],
+                "days_since_last_order": "median",
+            }
+        )
+        .round(2)
+    )
+
     return df, summary
+
 
 segmented, summary = segment_customers(customers)
 print("=== Customer Segment Summary ===")
@@ -406,44 +446,50 @@ np.random.seed(42)
 # Generate correlated marketing data
 n = 100
 marketing_spend = np.random.uniform(1000, 10000, n)
-website_traffic = marketing_spend * 5 + np.random.normal(0, 5000, n)  # Strong correlation
+website_traffic = marketing_spend * 5 + np.random.normal(
+    0, 5000, n
+)  # Strong correlation
 revenue = website_traffic * 0.1 + np.random.normal(0, 500, n)  # Moderate correlation
 temperature = np.random.normal(70, 10, n)  # No correlation (control variable)
 
-df = pd.DataFrame({
-    "marketing_spend": marketing_spend,
-    "website_traffic": website_traffic,
-    "revenue": revenue,
-    "temperature": temperature
-})
+df = pd.DataFrame(
+    {
+        "marketing_spend": marketing_spend,
+        "website_traffic": website_traffic,
+        "revenue": revenue,
+        "temperature": temperature,
+    }
+)
+
 
 def correlation_analysis(df):
     """Analyze and interpret correlations."""
     corr_matrix = df.corr()
-    
+
     print("=== Correlation Matrix ===")
     print(corr_matrix.round(3))
-    
+
     print("\n=== Interpretation ===")
     pairs = [
         ("marketing_spend", "website_traffic"),
         ("marketing_spend", "revenue"),
         ("website_traffic", "revenue"),
-        ("temperature", "revenue")
+        ("temperature", "revenue"),
     ]
-    
+
     for var1, var2 in pairs:
         r = df[var1].corr(df[var2])
         strength = "Strong" if abs(r) > 0.7 else "Moderate" if abs(r) > 0.3 else "Weak"
         direction = "positive" if r > 0 else "negative"
         print(f"{var1} vs {var2}: r = {r:.3f} ({strength} {direction})")
-    
+
     # Business recommendations
     print("\n=== Business Insights ===")
     mkt_traffic = df["marketing_spend"].corr(df["website_traffic"])
     if mkt_traffic > 0.5:
         print(f"✓ Marketing spend strongly drives traffic (r={mkt_traffic:.2f})")
         print("  → Continue investing in marketing channels")
+
 
 correlation_analysis(df)
 ```
@@ -555,7 +601,7 @@ group_c = {"success_rate": 0.80, "sample_size": 50}
 simple_avg = (0.20 + 0.50 + 0.80) / 3  # 0.50 or 50%
 
 # Correct: Weighted average
-total_successes = 0.20*1000 + 0.50*100 + 0.80*50  # 200 + 50 + 40 = 290
+total_successes = 0.20 * 1000 + 0.50 * 100 + 0.80 * 50  # 200 + 50 + 40 = 290
 total_samples = 1000 + 100 + 50  # 1150
 weighted_avg = total_successes / total_samples  # 290/1150 ≈ 0.252 or 25.2%
 ```
@@ -581,9 +627,11 @@ You need to set up automated alerts for "unusual" daily sales. How would you def
 mean = df["daily_sales"].mean()
 std = df["daily_sales"].std()
 
+
 def is_unusual(value, threshold=2):
     z_score = (value - mean) / std
     return abs(z_score) > threshold  # Alert if beyond 2 std deviations
+
 
 # Alert conditions:
 # z > 2: Unusually high (investigate opportunity)
@@ -593,8 +641,9 @@ def is_unusual(value, threshold=2):
 **Method 2: Percentile approach (robust to outliers)**
 
 ```python
-p5 = df["daily_sales"].quantile(0.05)   # Lower bound
+p5 = df["daily_sales"].quantile(0.05)  # Lower bound
 p95 = df["daily_sales"].quantile(0.95)  # Upper bound
+
 
 def is_unusual(value):
     return value < p5 or value > p95

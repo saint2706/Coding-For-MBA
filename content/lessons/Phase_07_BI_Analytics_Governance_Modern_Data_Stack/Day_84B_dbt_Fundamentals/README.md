@@ -89,10 +89,10 @@ A dbt model is just a `SELECT` statement saved as a `.sql` file:
 SELECT
     order_id,
     customer_id,
-    LOWER(TRIM(status))                           AS status,
-    CAST(amount_cents AS FLOAT) / 100             AS amount_usd,
-    DATE(created_at)                              AS order_date,
-    created_at
+    created_at,
+    LOWER(TRIM(status)) AS status,
+    CAST(amount_cents AS FLOAT) / 100 AS amount_usd,
+    DATE(created_at) AS order_date
 FROM {{ source('raw', 'orders') }}
 WHERE created_at >= '2023-01-01'  -- remove test data
 ```
@@ -104,6 +104,7 @@ WHERE created_at >= '2023-01-01'  -- remove test data
 WITH orders AS (
     SELECT * FROM {{ ref('stg_orders') }}    -- ref() = dependency declaration
 ),
+
 customers AS (
     SELECT * FROM {{ ref('stg_customers') }}
 )
@@ -114,8 +115,8 @@ SELECT
     o.amount_usd,
     c.customer_segment,
     c.country
-FROM orders o
-LEFT JOIN customers c ON o.customer_id = c.customer_id
+FROM orders AS o
+LEFT JOIN customers AS c ON o.customer_id = c.customer_id
 WHERE o.status = 'completed'
 ```
 

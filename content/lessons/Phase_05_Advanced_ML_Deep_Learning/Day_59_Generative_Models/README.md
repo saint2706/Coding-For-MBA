@@ -111,6 +111,7 @@ img_shape = (1, 28, 28)
 batch_size = 64
 lr = 0.0002
 
+
 # Generator
 class Generator(nn.Module):
     def __init__(self):
@@ -124,14 +125,15 @@ class Generator(nn.Module):
             nn.Linear(256, 512),
             nn.BatchNorm1d(512),
             nn.LeakyReLU(0.2),
-            nn.Linear(512, 28*28),
-            nn.Tanh()  # Output in [-1, 1]
+            nn.Linear(512, 28 * 28),
+            nn.Tanh(),  # Output in [-1, 1]
         )
-    
+
     def forward(self, z):
         img = self.model(z)
         img = img.view(img.size(0), *img_shape)
         return img
+
 
 # Discriminator
 class Discriminator(nn.Module):
@@ -139,19 +141,20 @@ class Discriminator(nn.Module):
         super().__init__()
         self.model = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(28*28, 512),
+            nn.Linear(28 * 28, 512),
             nn.LeakyReLU(0.2),
             nn.Dropout(0.3),
             nn.Linear(512, 256),
             nn.LeakyReLU(0.2),
             nn.Dropout(0.3),
             nn.Linear(256, 1),
-            nn.Sigmoid()  # Probability [0, 1]
+            nn.Sigmoid(),  # Probability [0, 1]
         )
-    
+
     def forward(self, img):
         validity = self.model(img)
         return validity
+
 
 # Initialize
 generator = Generator()
@@ -165,12 +168,14 @@ optimizer_D = optim.Adam(discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
 adversarial_loss = nn.BCELoss()
 
 # Data
-transform = transforms.Compose([
-    transforms.ToTensor(),
-    transforms.Normalize([0.5], [0.5])  # Normalize to [-1, 1]
-])
+transform = transforms.Compose(
+    [
+        transforms.ToTensor(),
+        transforms.Normalize([0.5], [0.5]),  # Normalize to [-1, 1]
+    ]
+)
 
-mnist = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+mnist = datasets.MNIST(root="./data", train=True, download=True, transform=transform)
 dataloader = DataLoader(mnist, batch_size=batch_size, shuffle=True)
 
 # Training loop
@@ -179,63 +184,65 @@ num_epochs = 50
 for epoch in range(num_epochs):
     for i, (real_imgs, _) in enumerate(dataloader):
         batch_size_current = real_imgs.size(0)
-        
+
         # Labels
         real_labels = torch.ones(batch_size_current, 1)
         fake_labels = torch.zeros(batch_size_current, 1)
-        
+
         # ---------------------
         #  Train Discriminator
         # ---------------------
         optimizer_D.zero_grad()
-        
+
         # Real images
         real_validity = discriminator(real_imgs)
         d_loss_real = adversarial_loss(real_validity, real_labels)
-        
+
         # Fake images
         z = torch.randn(batch_size_current, latent_dim)
         fake_imgs = generator(z)
         fake_validity = discriminator(fake_imgs.detach())
         d_loss_fake = adversarial_loss(fake_validity, fake_labels)
-        
+
         # Total discriminator loss
         d_loss = (d_loss_real + d_loss_fake) / 2
         d_loss.backward()
         optimizer_D.step()
-        
+
         # -----------------
         #  Train Generator
         # -----------------
         optimizer_G.zero_grad()
-        
+
         # Generate images
         z = torch.randn(batch_size_current, latent_dim)
         gen_imgs = generator(z)
-        
+
         # Generator wants discriminator to think these are real
         validity = discriminator(gen_imgs)
         g_loss = adversarial_loss(validity, real_labels)  # Trick: use real_labels
-        
+
         g_loss.backward()
         optimizer_G.step()
-        
+
         if i % 100 == 0:
-            print(f"Epoch [{epoch}/{num_epochs}] Batch [{i}/{len(dataloader)}] "
-                  f"D_loss: {d_loss.item():.4f} G_loss: {g_loss.item():.4f}")
-    
+            print(
+                f"Epoch [{epoch}/{num_epochs}] Batch [{i}/{len(dataloader)}] "
+                f"D_loss: {d_loss.item():.4f} G_loss: {g_loss.item():.4f}"
+            )
+
     # Save generated images
     if epoch % 10 == 0:
         with torch.no_grad():
             z = torch.randn(16, latent_dim)
             gen_imgs = generator(z).cpu()
-            
+
             fig, axes = plt.subplots(4, 4, figsize=(8, 8))
             for idx, ax in enumerate(axes.flatten()):
-                ax.imshow(gen_imgs[idx].squeeze(), cmap='gray')
-                ax.axis('off')
-            plt.suptitle(f'Epoch {epoch}')
-            plt.savefig(f'gan_epoch_{epoch}.png')
+                ax.imshow(gen_imgs[idx].squeeze(), cmap="gray")
+                ax.axis("off")
+            plt.suptitle(f"Epoch {epoch}")
+            plt.savefig(f"gan_epoch_{epoch}.png")
             plt.close()
 
 print("Training complete!")
@@ -262,13 +269,14 @@ class DCGenerator(nn.Module):
             nn.ReLU(True),
             # State: 128 x 16 x 16
             nn.ConvTranspose2d(128, 1, 4, 2, 1, bias=False),
-            nn.Tanh()
+            nn.Tanh(),
             # Output: 1 x 32 x 32
         )
-    
+
     def forward(self, z):
         z = z.view(z.size(0), z.size(1), 1, 1)
         return self.model(z)
+
 
 class DCDiscriminator(nn.Module):
     def __init__(self):
@@ -287,10 +295,10 @@ class DCDiscriminator(nn.Module):
             nn.LeakyReLU(0.2, inplace=True),
             # State: 512 x 4 x 4
             nn.Conv2d(512, 1, 4, 1, 0, bias=False),
-            nn.Sigmoid()
+            nn.Sigmoid(),
             # Output: 1 x 1 x 1
         )
-    
+
     def forward(self, img):
         validity = self.model(img)
         return validity.view(-1, 1)
@@ -304,53 +312,49 @@ class DCDiscriminator(nn.Module):
 class VAE(nn.Module):
     def __init__(self, latent_dim=20):
         super().__init__()
-        
+
         # Encoder
-        self.encoder = nn.Sequential(
-            nn.Linear(28*28, 400),
-            nn.ReLU()
-        )
-        
+        self.encoder = nn.Sequential(nn.Linear(28 * 28, 400), nn.ReLU())
+
         # Latent space: mean and log-variance
         self.fc_mu = nn.Linear(400, latent_dim)
         self.fc_logvar = nn.Linear(400, latent_dim)
-        
+
         # Decoder
         self.decoder = nn.Sequential(
-            nn.Linear(latent_dim, 400),
-            nn.ReLU(),
-            nn.Linear(400, 28*28),
-            nn.Sigmoid()
+            nn.Linear(latent_dim, 400), nn.ReLU(), nn.Linear(400, 28 * 28), nn.Sigmoid()
         )
-    
+
     def encode(self, x):
-        h = self.encoder(x.view(-1, 28*28))
+        h = self.encoder(x.view(-1, 28 * 28))
         return self.fc_mu(h), self.fc_logvar(h)
-    
+
     def reparameterize(self, mu, logvar):
         # Sample from N(mu, var) using reparameterization trick
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return mu + eps * std
-    
+
     def decode(self, z):
         return self.decoder(z).view(-1, 1, 28, 28)
-    
+
     def forward(self, x):
         mu, logvar = self.encode(x)
         z = self.reparameterize(mu, logvar)
         return self.decode(z), mu, logvar
 
+
 # Loss function
 def vae_loss(recon_x, x, mu, logvar):
     # Reconstruction loss (Binary Cross-Entropy)
-    BCE = nn.functional.binary_cross_entropy(recon_x, x, reduction='sum')
-    
+    BCE = nn.functional.binary_cross_entropy(recon_x, x, reduction="sum")
+
     # KL divergence loss
     # KL(N(mu, var) || N(0, 1)) = -0.5 * sum(1 + log(var) - mu^2 - var)
     KLD = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    
+
     return BCE + KLD
+
 
 # Training
 vae = VAE(latent_dim=20)
@@ -361,16 +365,16 @@ for epoch in range(50):
     train_loss = 0
     for batch_idx, (data, _) in enumerate(dataloader):
         optimizer.zero_grad()
-        
+
         recon_batch, mu, logvar = vae(data)
         loss = vae_loss(recon_batch, data, mu, logvar)
-        
+
         loss.backward()
         train_loss += loss.item()
         optimizer.step()
-    
+
     avg_loss = train_loss / len(dataloader.dataset)
-    print(f'Epoch {epoch}, Loss: {avg_loss:.4f}')
+    print(f"Epoch {epoch}, Loss: {avg_loss:.4f}")
 
 # Generate new samples
 vae.eval()
@@ -378,12 +382,12 @@ with torch.no_grad():
     # Sample from standard normal
     z = torch.randn(16, 20)
     samples = vae.decode(z).cpu()
-    
+
     fig, axes = plt.subplots(4, 4, figsize=(8, 8))
     for idx, ax in enumerate(axes.flatten()):
-        ax.imshow(samples[idx].squeeze(), cmap='gray')
-        ax.axis('off')
-    plt.suptitle('VAE Generated Samples')
+        ax.imshow(samples[idx].squeeze(), cmap="gray")
+        ax.axis("off")
+    plt.suptitle("VAE Generated Samples")
     plt.show()
 ```
 
@@ -396,7 +400,7 @@ class ConditionalGenerator(nn.Module):
     def __init__(self, latent_dim=100, num_classes=10):
         super().__init__()
         self.label_embedding = nn.Embedding(num_classes, num_classes)
-        
+
         self.model = nn.Sequential(
             nn.Linear(latent_dim + num_classes, 128),
             nn.LeakyReLU(0.2),
@@ -406,10 +410,10 @@ class ConditionalGenerator(nn.Module):
             nn.Linear(256, 512),
             nn.BatchNorm1d(512),
             nn.LeakyReLU(0.2),
-            nn.Linear(512, 28*28),
-            nn.Tanh()
+            nn.Linear(512, 28 * 28),
+            nn.Tanh(),
         )
-    
+
     def forward(self, noise, labels):
         # Concatenate noise and label embedding
         label_input = self.label_embedding(labels)
@@ -417,6 +421,7 @@ class ConditionalGenerator(nn.Module):
         img = self.model(gen_input)
         img = img.view(img.size(0), 1, 28, 28)
         return img
+
 
 # Usage: Generate specific digit
 cgan_gen = ConditionalGenerator()
@@ -433,55 +438,59 @@ generated_seven = cgan_gen(z, label)
 import torch
 import torch.nn as nn
 
+
 class SimpleDiffusion:
     def __init__(self, num_steps=1000):
         self.num_steps = num_steps
-        
+
         # Define noise schedule (variance at each step)
         self.betas = torch.linspace(0.0001, 0.02, num_steps)
         self.alphas = 1.0 - self.betas
         self.alphas_cumprod = torch.cumprod(self.alphas, dim=0)
-    
+
     def add_noise(self, x, t):
         """Add noise to x at timestep t"""
         batch_size = x.shape[0]
-        
+
         # Sample noise
         noise = torch.randn_like(x)
-        
+
         # Get alpha for timestep t
         alphas_t = self.alphas_cumprod[t].view(-1, 1, 1, 1)
-        
+
         # Add noise: x_t = sqrt(alpha_t) * x_0 + sqrt(1 - alpha_t) * noise
         noisy_x = torch.sqrt(alphas_t) * x + torch.sqrt(1 - alphas_t) * noise
-        
+
         return noisy_x, noise
-    
+
     def denoise_step(self, model, x_t, t):
         """Single denoising step"""
         # Predict noise
         predicted_noise = model(x_t, t)
-        
+
         # Compute alpha values
         alpha_t = self.alphas[t]
         alpha_cumprod_t = self.alphas_cumprod[t]
-        
+
         # Remove predicted noise
-        x_t_minus_1 = (x_t - (1 - alpha_t) / torch.sqrt(1 - alpha_cumprod_t) * predicted_noise) / torch.sqrt(alpha_t)
-        
+        x_t_minus_1 = (
+            x_t - (1 - alpha_t) / torch.sqrt(1 - alpha_cumprod_t) * predicted_noise
+        ) / torch.sqrt(alpha_t)
+
         return x_t_minus_1
-    
+
     def sample(self, model, shape):
         """Generate samples by denoising from pure noise"""
         # Start from pure noise
         x = torch.randn(shape)
-        
+
         # Gradually denoise
         for t in reversed(range(self.num_steps)):
             t_tensor = torch.full((shape[0],), t, dtype=torch.long)
             x = self.denoise_step(model, x, t_tensor)
-        
+
         return x
+
 
 # Noise prediction network (U-Net)
 class NoisePredictor(nn.Module):
@@ -494,15 +503,16 @@ class NoisePredictor(nn.Module):
             nn.ReLU(),
             nn.Conv2d(64, 64, 3, padding=1),
             nn.ReLU(),
-            nn.Conv2d(64, 1, 3, padding=1)
+            nn.Conv2d(64, 1, 3, padding=1),
         )
-        
+
         # Time embedding
         self.time_embedding = nn.Embedding(1000, 64)
-    
+
     def forward(self, x, t):
         # In full implementation: inject time embedding throughout network
         return self.model(x)
+
 
 # Training diffusion model
 diffusion = SimpleDiffusion(num_steps=1000)
@@ -513,21 +523,21 @@ for epoch in range(10):
     for batch, _ in dataloader:
         # Random timestep
         t = torch.randint(0, diffusion.num_steps, (batch.size(0),))
-        
+
         # Add noise
         noisy_batch, noise = diffusion.add_noise(batch, t)
-        
+
         # Predict noise
         predicted_noise = noise_predictor(noisy_batch, t)
-        
+
         # Loss: MSE between true noise and predicted noise
         loss = nn.functional.mse_loss(predicted_noise, noise)
-        
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-    
-    print(f'Epoch {epoch}, Loss: {loss.item():.4f}')
+
+    print(f"Epoch {epoch}, Loss: {loss.item():.4f}")
 
 # Generate samples
 generated = diffusion.sample(noise_predictor, shape=(16, 1, 28, 28))
@@ -578,7 +588,7 @@ generated = diffusion.sample(noise_predictor, shape=(16, 1, 28, 28))
 # - Range: 1-10+ (ImageNet)
 
 # 2. Fréchet Inception Distance (FID)
-# - Lower is better  
+# - Lower is better
 # - Compares distribution of real vs generated
 # - SOTA models: FID < 10
 
@@ -596,12 +606,13 @@ generated = diffusion.sample(noise_predictor, shape=(16, 1, 28, 28))
 ```python
 # Implement GAN with progressively increasing difficulty
 
+
 class ProgressiveGAN:
     def __init__(self):
         self.generator = Generator()
         self.discriminator = Discriminator()
         self.current_epoch = 0
-    
+
     def get_difficulty(self, epoch):
         """Increase discriminator difficulty over time"""
         if epoch < 10:
@@ -610,12 +621,12 @@ class ProgressiveGAN:
             return 0.3  # Medium
         else:
             return 0.5  # Hard
-    
+
     def train_epoch(self, dataloader, epoch):
         # Adjust discriminator
         dropout_rate = self.get_difficulty(epoch)
         # Update discriminator dropout layers
-        
+
         # Training loop
         # ...
 ```
@@ -627,6 +638,7 @@ class ProgressiveGAN:
 ```python
 # Explore VAE latent space by interpolating between two images
 
+
 def interpolate_latent_space(vae, img1, img2, num_steps=10):
     """Interpolate between two images in latent space"""
     vae.eval()
@@ -634,23 +646,24 @@ def interpolate_latent_space(vae, img1, img2, num_steps=10):
         # Encode both images
         mu1, _ = vae.encode(img1.unsqueeze(0))
         mu2, _ = vae.encode(img2.unsqueeze(0))
-        
+
         # Interpolate
         alphas = torch.linspace(0, 1, num_steps)
         interpolations = []
-        
+
         for alpha in alphas:
             z = (1 - alpha) * mu1 + alpha * mu2
             recon = vae.decode(z)
             interpolations.append(recon.squeeze())
-    
+
     # Visualize
     fig, axes = plt.subplots(1, num_steps, figsize=(20, 2))
     for idx, (ax, img) in enumerate(zip(axes, interpolations)):
-        ax.imshow(img.cpu(), cmap='gray')
-        ax.set_title(f'α={alphas[idx]:.1f}')
-        ax.axis('off')
+        ax.imshow(img.cpu(), cmap="gray")
+        ax.set_title(f"α={alphas[idx]:.1f}")
+        ax.axis("off")
     plt.show()
+
 
 # Usage
 img_0 = mnist[0][0]
@@ -665,19 +678,21 @@ interpolate_latent_space(vae, img_0, img_7, num_steps=10)
 ```python
 # Generate specific digits on command
 
+
 def generate_digit_grid(cgan, digit, num_samples=16):
     """Generate grid of specific digit"""
     with torch.no_grad():
         z = torch.randn(num_samples, 100)
         labels = torch.full((num_samples,), digit, dtype=torch.long)
         generated = cgan(z, labels)
-    
+
     fig, axes = plt.subplots(4, 4, figsize=(8, 8))
     for idx, ax in enumerate(axes.flatten()):
-        ax.imshow(generated[idx].squeeze().cpu(), cmap='gray')
-        ax.axis('off')
-    plt.suptitle(f'Generated Digit: {digit}')
+        ax.imshow(generated[idx].squeeze().cpu(), cmap="gray")
+        ax.axis("off")
+    plt.suptitle(f"Generated Digit: {digit}")
     plt.show()
+
 
 # Generate all digits
 for digit in range(10):
@@ -720,7 +735,7 @@ for epoch in range(num_epochs):
         # Train discriminator every 5 batches
         if batch_idx % 5 == 0:
             train_discriminator()
-        
+
         # Train generator every batch
         train_generator()
 ```
@@ -773,7 +788,6 @@ optimizer_D = Adam(discriminator.parameters(), lr=0.0001)  # Half of G's LR
 **Monitoring:**
 
 ```python
-
 # Healthy GAN training
 
 # - D accuracy: 60-80% (not 100%!)
@@ -783,7 +797,6 @@ optimizer_D = Adam(discriminator.parameters(), lr=0.0001)  # Half of G's LR
 # - D loss: Stable (not → 0)
 
 # If D accuracy > 95% for multiple epochs → discriminator too strong
-
 ```
 
 </details>
@@ -827,13 +840,15 @@ import torchvision.models as models
 # Pretrained VGG
 vgg = models.vgg16(pretrained=True).features[:16].eval()
 
+
 def perceptual_loss(x, x_recon):
     # Extract features
     features_x = vgg(x)
     features_recon = vgg(x_recon)
-    
+
     # Compare features (not pixels)
     return F.mse_loss(features_x, features_recon)
+
 
 # Encourages semantic similarity, not pixel accuracy
 ```
@@ -845,18 +860,19 @@ class VAEGAN(nn.Module):
     def __init__(self):
         self.vae = VAE()
         self.discriminator = Discriminator()
-    
+
     def total_loss(self, x):
         # VAE loss (reconstruction + KL)
         x_recon, mu, logvar = self.vae(x)
         vae_loss = reconstruction_loss(x, x_recon) + kl_loss(mu, logvar)
-        
+
         # Adversarial loss (make discriminator think it's real)
         validity = self.discriminator(x_recon)
         adversarial_loss = F.binary_cross_entropy(validity, torch.ones_like(validity))
-        
+
         # Combined
         return vae_loss + 0.1 * adversarial_loss
+
 
 # Gets sharpness from adversarial training
 ```
@@ -895,6 +911,7 @@ loss = reconstruction_loss + beta * KL_loss
 # Add skip connections (U-Net style)
 # Use transposed convolutions instead of upsampling
 # Add residual blocks
+
 
 class BetterDecoder(nn.Module):
     def __init__(self):
@@ -939,7 +956,7 @@ Diffusion models gradually add noise, then reverse the process. Why does this wo
 **Reverse (denoising): Learn to recover data**
 
 ```python
-# Start: Pure noise  
+# Start: Pure noise
 # Step 999: Predict and remove noise → less noisy
 # Step 998: Predict and remove noise → even less noisy
 # ...
@@ -1053,16 +1070,18 @@ How do you control what a generative model creates (e.g., "generate a red car")?
 ```python
 # Feed class label as additional input
 
+
 class ConditionalGenerator(nn.Module):
     def forward(self, noise, class_label):
         # Embed class label
         label_embedding = self.embed(class_label)  # e.g., "car" → [0.2, 0.5, ...]
-        
+
         # Concatenate with noise
         input = torch.cat([noise, label_embedding], dim=1)
-        
+
         # Generate
         return self.model(input)
+
 
 # Usage
 z = torch.randn(1, 100)
@@ -1081,7 +1100,7 @@ text_embedding = clip_text_encoder(text)  # 512D vector
 for t in reversed(range(num_steps)):
     # Normal denoising
     noise_pred = model(x_t, t, text_embedding)
-    
+
     # Also: classifier-free guidance
     # Unconditional : model(x_t, t, empty_embedding)
     # Conditional: model(x_t, t, text_embedding)
@@ -1118,7 +1137,7 @@ red_car_image = stylegan(z_red)
 for t in reversed(range(num_steps)):
     # Denoise full image
     x_t = denoise_step(x_t, t, prompt="red hood")
-    
+
     # Keep unmasked regions from original
     x_t = mask * x_t + (1 - mask) * original_noisy[t]
 
@@ -1131,7 +1150,7 @@ for t in reversed(range(num_steps)):
 prompts = {
     "Basic": "A car",
     "Better": "A red sports car",
-    "Best": "A red Ferrari F40 sports car, sunset lighting, 4k, photorealistic, trending on ArtStation"
+    "Best": "A red Ferrari F40 sports car, sunset lighting, 4k, photorealistic, trending on ArtStation",
 }
 
 # More detailed prompt → better control
@@ -1147,9 +1166,7 @@ negative_prompt = "blurry, low quality, watermark"
 
 # Guidance: Move away from negative
 image = generate(
-    prompt=positive_prompt,
-    negative_prompt=negative_prompt,
-    guidance_scale=7.5
+    prompt=positive_prompt, negative_prompt=negative_prompt, guidance_scale=7.5
 )
 ```
 
@@ -1194,14 +1211,17 @@ Your image generation model takes 30 seconds per image (1000 diffusion steps). H
 ```python
 # DDPM: 1000 steps, 30 seconds
 from diffusers import DDPMScheduler
+
 scheduler = DDPMScheduler(num_train_timesteps=1000)
 
 # ↓ DDIM: 50 steps, 1.5 seconds (20x faster!)
-from diffusers import DDIMScheduler  
+from diffusers import DDIMScheduler
+
 scheduler = DDIMScheduler(num_inference_timesteps=50)
 
 # ↓ DPM-Solver++: 20 steps, 0.6 seconds (50x faster!)
 from diffusers import DPMSolverMultistepScheduler
+
 scheduler = DPMSolverMultistepScheduler(num_inference_timesteps=20)
 
 # Quality: DDPM (best) > DDIM > DPM (fastest)
@@ -1260,7 +1280,7 @@ images = pipe(prompts, num_inference_steps=20).images  # Batch!
 
 pipe = StableDiffusionPipeline.from_pretrained(
     "runwayml/stable-diffusion-v1-5",
-    torch_dtype=torch.float16  # FP16 instead of FP32
+    torch_dtype=torch.float16,  # FP16 instead of FP32
 ).to("cuda")
 
 # 2x faster, 2x less memory
@@ -1300,10 +1320,12 @@ pipe.unet = torch.compile(pipe.unet, mode="reduce-overhead")
 
 from functools import lru_cache
 
+
 @lru_cache(maxsize=1000)
 def generate_cached(prompt, seed):
     torch.manual_seed(seed)
     return pipe(prompt, num_inference_steps=20).images[0]
+
 
 # Repeated "red car" prompt: 2 sec → 0.001 sec (cache hit)
 ```
@@ -1354,7 +1376,7 @@ metrics = {
     "p50_latency": "2.1s",
     "p95_latency": "4.8s",
     "throughput": "30 images/sec/GPU",
-    "cost_per_image": "$0.002"
+    "cost_per_image": "$0.002",
 }
 ```
 

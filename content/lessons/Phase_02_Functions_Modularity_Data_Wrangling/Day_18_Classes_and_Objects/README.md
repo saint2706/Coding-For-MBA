@@ -51,7 +51,7 @@ class Customer:
         self.name = name
         self.email = email
         self.orders = []
-    
+
     def place_order(self, order):
         self.orders.append(order)
         return f"Order placed for {self.name}"
@@ -67,27 +67,28 @@ class Customer:
 class Dog:
     # Class attribute (shared by all instances)
     species = "Canis familiaris"
-    
+
     # Constructor (initializer)
     def __init__(self, name, age):
         # Instance attributes (unique to each instance)
         self.name = name
         self.age = age
-    
+
     # Instance method
     def bark(self):
         return f"{self.name} says Woof!"
-    
+
     def description(self):
         return f"{self.name} is {self.age} years old"
+
 
 # Create instances
 buddy = Dog("Buddy", 3)
 max = Dog("Max", 5)
 
-print(buddy.bark())        # "Buddy says Woof!"
-print(max.description())   # "Max is 5 years old"
-print(Dog.species)         # "Canis familiaris"
+print(buddy.bark())  # "Buddy says Woof!"
+print(max.description())  # "Max is 5 years old"
+print(Dog.species)  # "Canis familiaris"
 ```
 
 ### The `self` Parameter
@@ -98,10 +99,11 @@ print(Dog.species)         # "Canis familiaris"
 class Counter:
     def __init__(self):
         self.count = 0
-    
+
     def increment(self):
         self.count += 1
         return self.count
+
 
 c1 = Counter()
 c2 = Counter()
@@ -117,12 +119,12 @@ c2.increment()  # c2.count = 1 (separate instance)
 class BankAccount:
     def __init__(self, balance=0):
         self._balance = balance  # Convention: _private
-    
+
     @property
     def balance(self):
         """Getter for balance."""
         return self._balance
-    
+
     @balance.setter
     def balance(self, value):
         """Setter with validation."""
@@ -130,9 +132,10 @@ class BankAccount:
             raise ValueError("Balance cannot be negative")
         self._balance = value
 
+
 account = BankAccount(100)
-print(account.balance)     # 100 (calls getter)
-account.balance = 200      # Calls setter
+print(account.balance)  # 100 (calls getter)
+account.balance = 200  # Calls setter
 # account.balance = -50    # Raises ValueError
 ```
 
@@ -141,29 +144,30 @@ account.balance = 200      # Calls setter
 ```python
 class Employee:
     raise_rate = 1.05  # Class attribute
-    
+
     def __init__(self, name, salary):
         self.name = name
         self.salary = salary
-    
+
     def apply_raise(self):
         self.salary = int(self.salary * Employee.raise_rate)
-    
+
     @classmethod
     def set_raise_rate(cls, rate):
         """Modify class attribute."""
         cls.raise_rate = rate
-    
+
     @classmethod
     def from_string(cls, emp_str):
         """Alternative constructor."""
         name, salary = emp_str.split("-")
         return cls(name, int(salary))
-    
+
     @staticmethod
     def is_workday(day):
         """Utility function, doesn't need instance or class."""
         return day.weekday() < 5
+
 
 # Usage
 Employee.set_raise_rate(1.10)
@@ -176,17 +180,20 @@ emp = Employee.from_string("Alice-50000")
 class Animal:
     def __init__(self, name):
         self.name = name
-    
+
     def speak(self):
         raise NotImplementedError
+
 
 class Dog(Animal):
     def speak(self):
         return f"{self.name} says Woof!"
 
+
 class Cat(Animal):
     def speak(self):
         return f"{self.name} says Meow!"
+
 
 # Polymorphism
 animals = [Dog("Buddy"), Cat("Whiskers")]
@@ -201,26 +208,27 @@ class Product:
     def __init__(self, name, price):
         self.name = name
         self.price = price
-    
+
     def __str__(self):
         """Human-readable string."""
         return f"{self.name}: ${self.price}"
-    
+
     def __repr__(self):
         """Debug/developer string."""
         return f"Product('{self.name}', {self.price})"
-    
+
     def __eq__(self, other):
         """Equality comparison."""
         return self.name == other.name and self.price == other.price
-    
+
     def __lt__(self, other):
         """Less than (enables sorting)."""
         return self.price < other.price
 
+
 p = Product("Laptop", 999)
-print(p)        # "Laptop: $999"
-repr(p)         # "Product('Laptop', 999)"
+print(p)  # "Laptop: $999"
+repr(p)  # "Product('Laptop', 999)"
 ```
 
 ---
@@ -235,10 +243,11 @@ class Engine:
     def start(self):
         return "Engine running"
 
+
 class Car:
     def __init__(self):
         self.engine = Engine()  # Composition
-    
+
     def start(self):
         return self.engine.start()
 ```
@@ -248,15 +257,17 @@ class Car:
 ```python
 from dataclasses import dataclass
 
+
 @dataclass
 class Product:
     name: str
     price: float
     quantity: int = 0
-    
+
     @property
     def total_value(self):
         return self.price * self.quantity
+
 
 # Automatically generates __init__, __repr__, __eq__
 p = Product("Laptop", 999, 5)
@@ -268,19 +279,21 @@ print(p)  # Product(name='Laptop', price=999, quantity=5)
 ```python
 from abc import ABC, abstractmethod
 
+
 class PaymentProcessor(ABC):
     @abstractmethod
     def process(self, amount):
         pass
-    
+
     @abstractmethod
     def refund(self, transaction_id):
         pass
 
+
 class CreditCardProcessor(PaymentProcessor):
     def process(self, amount):
         return f"Charged ${amount} to credit card"
-    
+
     def refund(self, transaction_id):
         return f"Refunded transaction {transaction_id}"
 ```
@@ -297,18 +310,18 @@ class BankAccount:
         self.owner = owner
         self._balance = balance
         self.transactions = []
-    
+
     @property
     def balance(self):
         return self._balance
-    
+
     def deposit(self, amount):
         if amount <= 0:
             raise ValueError("Deposit must be positive")
         self._balance += amount
         self.transactions.append(("deposit", amount))
         return self._balance
-    
+
     def withdraw(self, amount):
         if amount <= 0:
             raise ValueError("Withdrawal must be positive")
@@ -317,7 +330,7 @@ class BankAccount:
         self._balance -= amount
         self.transactions.append(("withdraw", amount))
         return self._balance
-    
+
     def statement(self):
         print(f"Account: {self.owner}")
         print("-" * 30)
@@ -326,6 +339,7 @@ class BankAccount:
             print(f"{action.title():12} {sign}${amount:>10.2f}")
         print("-" * 30)
         print(f"{'Balance':12} ${self._balance:>10.2f}")
+
 
 # Usage
 account = BankAccount("Alice", 1000)
@@ -342,6 +356,7 @@ account.statement()
 from dataclasses import dataclass
 from typing import List
 
+
 @dataclass
 class Product:
     sku: str
@@ -349,27 +364,29 @@ class Product:
     price: float
     stock: int
 
+
 class Inventory:
     def __init__(self):
         self.products: dict[str, Product] = {}
-    
+
     def add_product(self, product: Product):
         self.products[product.sku] = product
-    
+
     def get_product(self, sku: str) -> Product:
         if sku not in self.products:
             raise KeyError(f"Product {sku} not found")
         return self.products[sku]
-    
+
     def update_stock(self, sku: str, quantity: int):
         product = self.get_product(sku)
         product.stock += quantity
-    
+
     def low_stock_report(self, threshold: int = 10) -> List[Product]:
         return [p for p in self.products.values() if p.stock < threshold]
-    
+
     def total_value(self) -> float:
         return sum(p.price * p.stock for p in self.products.values())
+
 
 # Usage
 inv = Inventory()
@@ -387,15 +404,17 @@ from datetime import datetime
 from dataclasses import dataclass, field
 from typing import List
 
+
 @dataclass
 class OrderItem:
     product_name: str
     quantity: int
     unit_price: float
-    
+
     @property
     def subtotal(self):
         return self.quantity * self.unit_price
+
 
 @dataclass
 class Order:
@@ -403,19 +422,20 @@ class Order:
     items: List[OrderItem] = field(default_factory=list)
     status: str = "pending"
     created_at: datetime = field(default_factory=datetime.now)
-    
+
     def add_item(self, name, quantity, price):
         self.items.append(OrderItem(name, quantity, price))
-    
+
     @property
     def total(self):
         return sum(item.subtotal for item in self.items)
-    
+
     def process(self):
         if not self.items:
             raise ValueError("Cannot process empty order")
         self.status = "processed"
         return f"Order processed. Total: ${self.total:.2f}"
+
 
 # Usage
 order = Order("Alice")
@@ -442,9 +462,10 @@ What's the difference between class and instance attributes?
 ```python
 class Dog:
     species = "Canine"  # Class attribute
-    
+
     def __init__(self, name):
         self.name = name  # Instance attribute
+
 
 d1 = Dog("Buddy")
 d2 = Dog("Max")
@@ -502,25 +523,28 @@ Create a class hierarchy for shapes with area calculation:
 from abc import ABC, abstractmethod
 import math
 
+
 class Shape(ABC):
     @abstractmethod
     def area(self):
         pass
 
+
 class Rectangle(Shape):
     def __init__(self, width, height):
         self.width = width
         self.height = height
-    
+
     def area(self):
         return self.width * self.height
+
 
 class Circle(Shape):
     def __init__(self, radius):
         self.radius = radius
-    
+
     def area(self):
-        return math.pi * self.radius ** 2
+        return math.pi * self.radius**2
 ```
 
 </details>
@@ -539,6 +563,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import List, Optional
 
+
 @dataclass
 class Book:
     isbn: str
@@ -546,12 +571,13 @@ class Book:
     author: str
     available: bool = True
 
+
 @dataclass
 class Member:
     member_id: str
     name: str
     loans: List["Loan"] = field(default_factory=list)
-    
+
     def borrow(self, book: Book) -> "Loan":
         if not book.available:
             raise ValueError(f"{book.title} is not available")
@@ -560,14 +586,17 @@ class Member:
         self.loans.append(loan)
         return loan
 
+
 @dataclass
 class Loan:
     member: Member
     book: Book
     checkout_date: datetime = field(default_factory=datetime.now)
-    due_date: datetime = field(default_factory=lambda: datetime.now() + timedelta(days=14))
+    due_date: datetime = field(
+        default_factory=lambda: datetime.now() + timedelta(days=14)
+    )
     returned: bool = False
-    
+
     def return_book(self):
         self.book.available = True
         self.returned = True

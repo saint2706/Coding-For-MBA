@@ -85,7 +85,7 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 
 # Generate synthetic retail sales data
 np.random.seed(42)
-dates = pd.date_range('2020-01-01', periods=365*3, freq='D')
+dates = pd.date_range("2020-01-01", periods=365 * 3, freq="D")
 
 # Trend: growing business
 trend = np.linspace(100, 200, len(dates))
@@ -102,19 +102,19 @@ noise = np.random.normal(0, 10, len(dates))
 # Combined series
 sales = trend + seasonal_weekly + seasonal_yearly + noise
 
-df = pd.DataFrame({'date': dates, 'sales': sales})
-df.set_index('date', inplace=True)
+df = pd.DataFrame({"date": dates, "sales": sales})
+df.set_index("date", inplace=True)
 
 # Decompose
-decomposition = seasonal_decompose(df['sales'], model='additive', period=7)
+decomposition = seasonal_decompose(df["sales"], model="additive", period=7)
 
 # Plot
 fig, axes = plt.subplots(4, 1, figsize=(12, 10))
 
-df['sales'].plot(ax=axes[0], title='Original Time Series')
-decomposition.trend.plot(ax=axes[1], title='Trend Component')
-decomposition.seasonal.plot(ax=axes[2], title='Seasonal Component (Weekly)')
-decomposition.resid.plot(ax=axes[3], title='Residual (Noise)')
+df["sales"].plot(ax=axes[0], title="Original Time Series")
+decomposition.trend.plot(ax=axes[1], title="Trend Component")
+decomposition.seasonal.plot(ax=axes[2], title="Seasonal Component (Weekly)")
+decomposition.resid.plot(ax=axes[3], title="Residual (Noise)")
 
 plt.tight_layout()
 plt.show()
@@ -129,32 +129,38 @@ plt.show()
 ```python
 from statsmodels.tsa.stattools import adfuller, kpss
 
-def test_stationarity(series, name=''):
+
+def test_stationarity(series, name=""):
     """Test if time series is stationary."""
-    
+
     # Augmented Dickey-Fuller test
     # H0: Series has unit root (non-stationary)
     adf_result = adfuller(series.dropna())
-    
+
     # KPSS test
     # H0: Series is stationary
-    kpss_result = kpss(series.dropna(), regression='ct')
-    
+    kpss_result = kpss(series.dropna(), regression="ct")
+
     print(f"=== Stationarity Tests for {name} ===")
     print(f"ADF Statistic: {adf_result[0]:.4f}")
     print(f"ADF p-value: {adf_result[1]:.4f}")
-    print(f"  → {'Stationary' if adf_result[1] < 0.05 else 'Non-stationary'} (reject H0 if p<0.05)")
-    
+    print(
+        f"  → {'Stationary' if adf_result[1] < 0.05 else 'Non-stationary'} (reject H0 if p<0.05)"
+    )
+
     print(f"\nKPSS Statistic: {kpss_result[0]:.4f}")
     print(f"KPSS p-value: {kpss_result[1]:.4f}")
-    print(f"  → {'Stationary' if kpss_result[1] > 0.05 else 'Non-stationary'} (fail to reject H0 if p>0.05)")
+    print(
+        f"  → {'Stationary' if kpss_result[1] > 0.05 else 'Non-stationary'} (fail to reject H0 if p>0.05)"
+    )
+
 
 # Test original series
-test_stationarity(df['sales'], 'Original Sales')
+test_stationarity(df["sales"], "Original Sales")
 
 # Make stationary through differencing
-df['sales_diff'] = df['sales'].diff()
-test_stationarity(df['sales_diff'], 'Differenced Sales')
+df["sales_diff"] = df["sales"].diff()
+test_stationarity(df["sales_diff"], "Differenced Sales")
 ```
 
 ### ARIMA: AutoRegressive Integrated Moving Average
@@ -171,14 +177,14 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 # Plot ACF and PACF to determine p and q
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
-plot_acf(df['sales_diff'].dropna(), lags=30, ax=ax1, title='ACF')
-plot_pacf(df['sales_diff'].dropna(), lags=30, ax=ax2, title='PACF')
+plot_acf(df["sales_diff"].dropna(), lags=30, ax=ax1, title="ACF")
+plot_pacf(df["sales_diff"].dropna(), lags=30, ax=ax2, title="PACF")
 plt.tight_layout()
 plt.show()
 
 # Split train/test
 train_size = int(len(df) * 0.8)
-train, test = df['sales'][:train_size], df['sales'][train_size:]
+train, test = df["sales"][:train_size], df["sales"][train_size:]
 
 # Fit ARIMA model
 model_arima = ARIMA(train, order=(2, 1, 2))  # p=2, d=1, q=2
@@ -192,13 +198,13 @@ forecast_arima = fitted_arima.forecast(steps=forecast_steps)
 
 # Plot
 plt.figure(figsize=(14, 6))
-plt.plot(train.index, train, label='Train', alpha=0.7)
-plt.plot(test.index, test, label='Test (Actual)', alpha=0.7)
-plt.plot(test.index, forecast_arima, label='ARIMA Forecast', linestyle='--')
+plt.plot(train.index, train, label="Train", alpha=0.7)
+plt.plot(test.index, test, label="Test (Actual)", alpha=0.7)
+plt.plot(test.index, forecast_arima, label="ARIMA Forecast", linestyle="--")
 plt.legend()
-plt.title('ARIMA Forecasting')
-plt.xlabel('Date')
-plt.ylabel('Sales')
+plt.title("ARIMA Forecasting")
+plt.xlabel("Date")
+plt.ylabel("Sales")
 plt.grid(True, alpha=0.3)
 plt.show()
 
@@ -226,7 +232,7 @@ model_sarimax = SARIMAX(
     order=(1, 1, 1),  # Non-seasonal: (p, d, q)
     seasonal_order=(1, 1, 1, 7),  # Seasonal: (P, D, Q, s)
     enforce_stationarity=False,
-    enforce_invertibility=False
+    enforce_invertibility=False,
 )
 
 fitted_sarimax = model_sarimax.fit(disp=False)
@@ -236,14 +242,14 @@ forecast_sarimax = fitted_sarimax.forecast(steps=forecast_steps)
 
 # Plot
 plt.figure(figsize=(14, 6))
-plt.plot(train.index, train, label='Train')
-plt.plot(test.index, test, label='Test (Actual)')
-plt.plot(test.index, forecast_arima, label='ARIMA', linestyle='--', alpha=0.7)
-plt.plot(test.index, forecast_sarimax, label='SARIMAX', linestyle='--', alpha=0.7)
+plt.plot(train.index, train, label="Train")
+plt.plot(test.index, test, label="Test (Actual)")
+plt.plot(test.index, forecast_arima, label="ARIMA", linestyle="--", alpha=0.7)
+plt.plot(test.index, forecast_sarimax, label="SARIMAX", linestyle="--", alpha=0.7)
 plt.legend()
-plt.title('Comparing ARIMA vs SARIMAX')
-plt.xlabel('Date')
-plt.ylabel('Sales')
+plt.title("Comparing ARIMA vs SARIMAX")
+plt.xlabel("Date")
+plt.ylabel("Sales")
 plt.grid(True, alpha=0.3)
 plt.show()
 
@@ -264,7 +270,7 @@ print(f"SARIMAX - MAE: {mae_sarimax:.2f}, RMSE: {rmse_sarimax:.2f}")
 from prophet import Prophet
 
 # Prophet requires 'ds' (date) and 'y' (value) columns
-prophet_df = df.reset_index().rename(columns={'date': 'ds', 'sales': 'y'})
+prophet_df = df.reset_index().rename(columns={"date": "ds", "sales": "y"})
 
 train_prophet = prophet_df[:train_size]
 test_prophet = prophet_df[train_size:]
@@ -274,26 +280,26 @@ model_prophet = Prophet(
     yearly_seasonality=True,
     weekly_seasonality=True,
     daily_seasonality=False,
-    changepoint_prior_scale=0.05  # Flexibility of trend changes
+    changepoint_prior_scale=0.05,  # Flexibility of trend changes
 )
 
 # Add custom seasonality if needed
-model_prophet.add_seasonality(name='monthly', period=30.5, fourier_order=5)
+model_prophet.add_seasonality(name="monthly", period=30.5, fourier_order=5)
 
 # Fit
 model_prophet.fit(train_prophet)
 
 # Create future dataframe
-future = model_prophet.make_future_dataframe(periods=forecast_steps, freq='D')
+future = model_prophet.make_future_dataframe(periods=forecast_steps, freq="D")
 
 # Forecast
 forecast_prophet = model_prophet.predict(future)
 
 # Plot
 fig1 = model_prophet.plot(forecast_prophet)
-plt.title('Prophet Forecast')
-plt.xlabel('Date')
-plt.ylabel('Sales')
+plt.title("Prophet Forecast")
+plt.xlabel("Date")
+plt.ylabel("Sales")
 plt.show()
 
 # Plot components (trend, seasonality)
@@ -301,7 +307,7 @@ fig2 = model_prophet.plot_components(forecast_prophet)
 plt.show()
 
 # Evaluate
-forecast_values = forecast_prophet.tail(forecast_steps)['yhat'].values
+forecast_values = forecast_prophet.tail(forecast_steps)["yhat"].values
 mae_prophet = mean_absolute_error(test, forecast_values)
 rmse_prophet = np.sqrt(mean_squared_error(test, forecast_values))
 
@@ -320,42 +326,42 @@ from sklearn.preprocessing import MinMaxScaler
 
 # Prepare data for LSTM
 scaler = MinMaxScaler()
-sales_scaled = scaler.fit_transform(df['sales'].values.reshape(-1, 1))
+sales_scaled = scaler.fit_transform(df["sales"].values.reshape(-1, 1))
+
 
 def create_sequences(data, seq_length):
     X, y = [], []
     for i in range(len(data) - seq_length):
-        X.append(data[i:i+seq_length])
-        y.append(data[i+seq_length])
+        X.append(data[i : i + seq_length])
+        y.append(data[i + seq_length])
     return np.array(X), np.array(y)
+
 
 seq_length = 30  # Use past 30 days to predict next day
 
 X, y = create_sequences(sales_scaled, seq_length)
 
 # Train/test split
-X_train, X_test = X[:train_size-seq_length], X[train_size-seq_length:]
-y_train, y_test = y[:train_size-seq_length], y[train_size-seq_length:]
+X_train, X_test = X[: train_size - seq_length], X[train_size - seq_length :]
+y_train, y_test = y[: train_size - seq_length], y[train_size - seq_length :]
 
 # Build LSTM model
-model_lstm = Sequential([
-    LSTM(50, return_sequences=True, input_shape=(seq_length, 1)),
-    Dropout(0.2),
-    LSTM(50, return_sequences=False),
-    Dropout(0.2),
-    Dense(25, activation='relu'),
-    Dense(1)
-])
+model_lstm = Sequential(
+    [
+        LSTM(50, return_sequences=True, input_shape=(seq_length, 1)),
+        Dropout(0.2),
+        LSTM(50, return_sequences=False),
+        Dropout(0.2),
+        Dense(25, activation="relu"),
+        Dense(1),
+    ]
+)
 
-model_lstm.compile(optimizer='adam', loss='mse')
+model_lstm.compile(optimizer="adam", loss="mse")
 
 # Train
 history = model_lstm.fit(
-    X_train, y_train,
-    epochs=50,
-    batch_size=32,
-    validation_split=0.1,
-    verbose=1
+    X_train, y_train, epochs=50, batch_size=32, validation_split=0.1, verbose=1
 )
 
 # Forecast
@@ -371,12 +377,12 @@ print(f"\nLSTM - MAE: {mae_lstm:.2f}, RMSE: {rmse_lstm:.2f}")
 
 # Plot
 plt.figure(figsize=(14, 6))
-plt.plot(range(len(y_test_actual)), y_test_actual, label='Actual')
-plt.plot(range(len(y_pred)), y_pred, label='LSTM Forecast', linestyle='--')
+plt.plot(range(len(y_test_actual)), y_test_actual, label="Actual")
+plt.plot(range(len(y_pred)), y_pred, label="LSTM Forecast", linestyle="--")
 plt.legend()
-plt.title('LSTM Time Series Forecasting')
-plt.xlabel('Time Steps')
-plt.ylabel('Sales')
+plt.title("LSTM Time Series Forecasting")
+plt.xlabel("Time Steps")
+plt.ylabel("Sales")
 plt.grid(True, alpha=0.3)
 plt.show()
 ```
@@ -404,13 +410,15 @@ plt.show()
 mae = np.mean(np.abs(actual - forecast))
 
 # RMSE: Root Mean Squared Error (penalizes large errors)
-rmse = np.sqrt(np.mean((actual - forecast)**2))
+rmse = np.sqrt(np.mean((actual - forecast) ** 2))
 
 # MAPE: Mean Absolute Percentage Error (scale-independent)
 mape = np.mean(np.abs((actual - forecast) / actual)) * 100
 
 # Directional Accuracy (for trading)
-directional_acc = np.mean(np.sign(actual[1:] - actual[:-1]) == np.sign(forecast[1:] - forecast[:-1]))
+directional_acc = np.mean(
+    np.sign(actual[1:] - actual[:-1]) == np.sign(forecast[1:] - forecast[:-1])
+)
 ```
 
 ### Cross-Validation for Time Series
@@ -441,13 +449,13 @@ ticker = yf.Ticker("AAPL")
 stock_data = ticker.history(period="2y")
 
 # Use closing price
-prices = stock_data['Close']
+prices = stock_data["Close"]
 
 # Log returns (more stationary)
 log_returns = np.log(prices / prices.shift(1)).dropna()
 
 # Test stationarity
-test_stationarity(log_returns, 'Log Returns')
+test_stationarity(log_returns, "Log Returns")
 
 # Auto ARIMA (finds best p, d, q)
 from pmdarima import auto_arima
@@ -457,7 +465,7 @@ auto_model = auto_arima(
     seasonal=False,
     stepwise=True,
     suppress_warnings=True,
-    error_action='ignore'
+    error_action="ignore",
 )
 
 print(auto_model.summary())
@@ -480,7 +488,7 @@ print(forecast_prices)
 ```python
 # Simulate e-commerce demand with holidays
 np.random.seed(42)
-dates = pd.date_range('2021-01-01', '2023-12-31', freq='D')
+dates = pd.date_range("2021-01-01", "2023-12-31", freq="D")
 
 # Base demand
 demand = 1000 + 200 * np.sin(2 * np.pi * np.arange(len(dates)) / 365)
@@ -491,9 +499,12 @@ demand += (weekday < 5) * 100  # Higher on weekdays
 
 # Holiday spikes (Black Friday, Christmas)
 holidays = [
-    ('2021-11-26', 500), ('2021-12-25', 700),
-    ('2022-11-25', 550), ('2022-12-25', 750),
-    ('2023-11-24', 600), ('2023-12-25', 800)
+    ("2021-11-26", 500),
+    ("2021-12-25", 700),
+    ("2022-11-25", 550),
+    ("2022-12-25", 750),
+    ("2023-11-24", 600),
+    ("2023-12-25", 800),
 ]
 
 for holiday_date, spike in holidays:
@@ -504,29 +515,31 @@ for holiday_date, spike in holidays:
 demand += np.random.normal(0, 50, len(dates))
 
 # DataFrame
-df_demand = pd.DataFrame({'ds': dates, 'y': demand})
+df_demand = pd.DataFrame({"ds": dates, "y": demand})
 
 # Prophet with holidays
 model_demand = Prophet()
 
 # Add custom holidays
-us_holidays = pd.DataFrame({
-    'holiday': 'christmas',
-    'ds': pd.to_datetime(['2021-12-25', '2022-12-25', '2023-12-25']),
-    'lower_window': -7,  # Effect starts 7 days before
-    'upper_window': 1   # Effect ends 1 day after
-})
+us_holidays = pd.DataFrame(
+    {
+        "holiday": "christmas",
+        "ds": pd.to_datetime(["2021-12-25", "2022-12-25", "2023-12-25"]),
+        "lower_window": -7,  # Effect starts 7 days before
+        "upper_window": 1,  # Effect ends 1 day after
+    }
+)
 
 model_demand = Prophet(holidays=us_holidays, yearly_seasonality=True)
 model_demand.fit(df_demand)
 
 # Forecast 2024
-future = model_demand.make_future_dataframe(periods=365, freq='D')
+future = model_demand.make_future_dataframe(periods=365, freq="D")
 forecast_demand = model_demand.predict(future)
 
 # Plot
 model_demand.plot(forecast_demand)
-plt.title('E-commerce Demand Forecasting with Holidays')
+plt.title("E-commerce Demand Forecasting with Holidays")
 plt.show()
 
 model_demand.plot_components(forecast_demand)
@@ -540,12 +553,14 @@ plt.show()
 ```python
 # Build model that predicts next 7 days (not just 1)
 
+
 def create_multi_step_sequences(data, input_len, output_len):
     X, y = [], []
     for i in range(len(data) - input_len - output_len + 1):
-        X.append(data[i:i+input_len])
-        y.append(data[i+input_len:i+input_len+output_len])
+        X.append(data[i : i + input_len])
+        y.append(data[i + input_len : i + input_len + output_len])
     return np.array(X), np.array(y)
+
 
 input_len = 30
 output_len = 7  # Predict next week
@@ -558,23 +573,26 @@ X_train_multi, X_test_multi = X_multi[:split_idx], X_multi[split_idx:]
 y_train_multi, y_test_multi = y_multi[:split_idx], y_multi[split_idx:]
 
 # Multi-output LSTM
-model_multi_lstm = Sequential([
-    LSTM(100, return_sequences=True, input_shape=(input_len, 1)),
-    Dropout(0.2),
-    LSTM(100),
-    Dropout(0.2),
-    Dense(50, activation='relu'),
-    Dense(output_len)  # Output 7 values
-])
+model_multi_lstm = Sequential(
+    [
+        LSTM(100, return_sequences=True, input_shape=(input_len, 1)),
+        Dropout(0.2),
+        LSTM(100),
+        Dropout(0.2),
+        Dense(50, activation="relu"),
+        Dense(output_len),  # Output 7 values
+    ]
+)
 
-model_multi_lstm.compile(optimizer='adam', loss='mse')
+model_multi_lstm.compile(optimizer="adam", loss="mse")
 
 history_multi = model_multi_lstm.fit(
-    X_train_multi, y_train_multi,
+    X_train_multi,
+    y_train_multi,
     epochs=50,
     batch_size=32,
     validation_split=0.1,
-    verbose=1
+    verbose=1,
 )
 
 # Predict
@@ -585,14 +603,14 @@ y_test_multi_actual = scaler.inverse_transform(y_test_multi)
 # Evaluate each forecast horizon
 for i in range(output_len):
     mae_horizon = mean_absolute_error(y_test_multi_actual[:, i], y_pred_multi[:, i])
-    print(f"Day +{i+1} MAE: {mae_horizon:.2f}")
+    print(f"Day +{i + 1} MAE: {mae_horizon:.2f}")
 
 # Plot first 3 test samples
 fig, axes = plt.subplots(3, 1, figsize=(14, 10))
 for i, ax in enumerate(axes):
-    ax.plot(range(output_len), y_test_multi_actual[i], label='Actual', marker='o')
-    ax.plot(range(output_len), y_pred_multi[i], label='Forecast', marker='x')
-    ax.set_title(f'Test Sample {i+1}: 7-Day Forecast')
+    ax.plot(range(output_len), y_test_multi_actual[i], label="Actual", marker="o")
+    ax.plot(range(output_len), y_pred_multi[i], label="Forecast", marker="x")
+    ax.set_title(f"Test Sample {i + 1}: 7-Day Forecast")
     ax.legend()
     ax.grid(True, alpha=0.3)
 
@@ -666,6 +684,7 @@ log_series = np.log(series)
 
 ```python
 from scipy import signal
+
 detrended = signal.detrend(series)
 ```
 
@@ -725,8 +744,8 @@ prophet_model = Prophet(holidays=us_holidays)
 
 ```python
 # Daily + weekly + yearly patterns
-prophet_model.add_seasonality(name='daily', period=1, fourier_order=5)
-prophet_model.add_seasonality(name='weekly', period=7, fourier_order=3)
+prophet_model.add_seasonality(name="daily", period=1, fourier_order=5)
+prophet_model.add_seasonality(name="weekly", period=7, fourier_order=3)
 # ARIMA: Would need SARIMAX with complex seasonal orders
 ```
 
@@ -887,9 +906,9 @@ print(f"Optimal sequence length: {best_seq_length}")
 
 ```python
 # Use multiple sequence lengths
-input_short = X[:, -7:, :]   # Last week
+input_short = X[:, -7:, :]  # Last week
 input_medium = X[:, -30:, :]  # Last month
-input_long = X[:, -90:, :]    # Last quarter
+input_long = X[:, -90:, :]  # Last quarter
 
 # Separate LSTM branches, then concat
 # Captures patterns at different time scales
@@ -961,10 +980,12 @@ model_day7 = train_model(X, y_day7)  # Target: t+7
 
 ```python
 # Single model outputs all 7 days at once
-model = Sequential([
-    LSTM(100, input_shape=(30, 1)),
-    Dense(7)  # Output 7 values simultaneously
-])
+model = Sequential(
+    [
+        LSTM(100, input_shape=(30, 1)),
+        Dense(7),  # Output 7 values simultaneously
+    ]
+)
 
 # Learns dependencies between future time steps
 ```
@@ -1011,8 +1032,8 @@ sarimax_model = SARIMAX(sales, exog=external_features, ...)
 # Accept that long-horizon forecasts are uncertain
 # Provide prediction intervals
 
-prophet_forecast['yhat_lower']  # 80% lower bound
-prophet_forecast['yhat_upper']  # 80% upper bound
+prophet_forecast["yhat_lower"]  # 80% lower bound
+prophet_forecast["yhat_upper"]  # 80% upper bound
 
 # Day 1: ±5 uncertainty
 # Day 7: ±30 uncertainty (wider interval)
@@ -1055,7 +1076,7 @@ for day in production_days:
     actual = get_actual(day)
     forecast = get_forecast(day)
     error = abs(actual - forecast)
-    
+
     recent_errors = errors[-window:]
     rolling_mae.append(np.mean(recent_errors))
 
@@ -1088,6 +1109,7 @@ residuals = actual - forecast
 
 # Test for autocorrelation
 from statsmodels.stats.diagnostic import acorr_ljungbox
+
 lb_stat, p_value = acorr_ljungbox(residuals, lags=[10])
 
 if p_value < 0.05:
@@ -1152,7 +1174,7 @@ if rolling_mae > baseline_mae * 1.3:  # 30% worse
 events = [
     "2023-03-15",  # New product launch
     "2023-06-20",  # Pricing change
-    "2023-09-01"   # Market expansion
+    "2023-09-01",  # Market expansion
 ]
 
 if today in events:
@@ -1171,7 +1193,7 @@ cd = KSDrift(X_train, p_val=0.05)
 recent_batch = X_recent[-1000:]
 drift_detected = cd.predict(recent_batch)
 
-if drift_detected['data']['is_drift']:
+if drift_detected["data"]["is_drift"]:
     print("Drift detected! Retraining...")
     retrain()
 ```

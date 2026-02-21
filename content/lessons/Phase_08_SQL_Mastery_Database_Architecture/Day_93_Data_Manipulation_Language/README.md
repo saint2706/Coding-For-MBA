@@ -138,9 +138,9 @@ You can `DELETE` and `INSERT` in one statement.
 2. If 'home' exists, increments `hits`.
 
 ```sql
-INSERT INTO page_views (url, hits) 
+INSERT INTO page_views (url, hits)
 VALUES ('home', 1)
-ON CONFLICT (url) 
+ON CONFLICT (url)
 DO UPDATE SET hits = page_views.hits + 1;
 ```
 
@@ -156,6 +156,7 @@ WITH deleted AS (
     WHERE created_at < NOW() - INTERVAL '30 days'
     RETURNING *
 )
+
 INSERT INTO logs_archive
 SELECT * FROM deleted;
 ```

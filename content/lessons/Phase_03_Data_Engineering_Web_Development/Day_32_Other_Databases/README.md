@@ -51,18 +51,15 @@ collection = db["customers"]
 customer = {
     "name": "Alice",
     "email": "alice@example.com",
-    "addresses": [
-        {"type": "home", "city": "NYC"},
-        {"type": "work", "city": "Boston"}
-    ],
-    "purchases": 15
+    "addresses": [{"type": "home", "city": "NYC"}, {"type": "work", "city": "Boston"}],
+    "purchases": 15,
 }
 collection.insert_one(customer)
 
 # Insert many
 customers = [
     {"name": "Bob", "email": "bob@example.com", "purchases": 8},
-    {"name": "Charlie", "email": "charlie@example.com", "purchases": 23}
+    {"name": "Charlie", "email": "charlie@example.com", "purchases": 23},
 ]
 collection.insert_many(customers)
 ```
@@ -79,10 +76,7 @@ high_value = collection.find({"purchases": {"$gt": 10}})  # Purchases > 10
 one = collection.find_one({"name": "Alice"})  # Single document
 
 # UPDATE
-collection.update_one(
-    {"name": "Bob"},
-    {"$set": {"purchases": 12}}
-)
+collection.update_one({"name": "Bob"}, {"$set": {"purchases": 12}})
 
 # DELETE
 collection.delete_one({"name": "Diana"})
@@ -150,11 +144,13 @@ db = client["test_db"]
 products = db["products"]
 
 # Insert products with different structures
-products.insert_many([
-    {"name": "Laptop", "price": 999, "specs": {"ram": "16GB", "storage": "512GB"}},
-    {"name": "Mouse", "price": 29, "colors": ["black", "white"]},
-    {"name": "Monitor", "price": 299, "specs": {"size": "27 inch"}, "warranty": 3}
-])
+products.insert_many(
+    [
+        {"name": "Laptop", "price": 999, "specs": {"ram": "16GB", "storage": "512GB"}},
+        {"name": "Mouse", "price": 29, "colors": ["black", "white"]},
+        {"name": "Monitor", "price": 299, "specs": {"size": "27 inch"}, "warranty": 3},
+    ]
+)
 
 # Query products over $100
 expensive = products.find({"price": {"$gt": 100}})
@@ -171,12 +167,14 @@ products.drop()
 # MongoDB aggregation (like GROUP BY in SQL)
 pipeline = [
     {"$match": {"category": "Electronics"}},
-    {"$group": {
-        "_id": "$brand",
-        "avg_price": {"$avg": "$price"},
-        "count": {"$sum": 1}
-    }},
-    {"$sort": {"avg_price": -1}}
+    {
+        "$group": {
+            "_id": "$brand",
+            "avg_price": {"$avg": "$price"},
+            "count": {"$sum": 1},
+        }
+    },
+    {"$sort": {"avg_price": -1}},
 ]
 
 results = collection.aggregate(pipeline)

@@ -127,26 +127,32 @@ import random
 # Simulated MLflow database
 experiment_log = []
 
+
 def run_experiment(n_estimators, max_depth):
     # Simulate training (random accuracy for demo)
-    accuracy = 0.80 + (n_estimators * 0.001) - (max_depth * 0.01) + random.uniform(-0.02, 0.02)
-    
+    accuracy = (
+        0.80 + (n_estimators * 0.001) - (max_depth * 0.01) + random.uniform(-0.02, 0.02)
+    )
+
     # Log the run
     run_data = {
         "params": {"n_estimators": n_estimators, "max_depth": max_depth},
-        "metrics": {"accuracy": round(accuracy, 4)}
+        "metrics": {"accuracy": round(accuracy, 4)},
     }
     experiment_log.append(run_data)
     print(f"Run Logged: {run_data}")
 
+
 # Run 3 experiments
 run_experiment(100, 5)
-run_experiment(200, 10) # Maybe overfitting?
+run_experiment(200, 10)  # Maybe overfitting?
 run_experiment(50, 3)
 
 # Find best run
-best_run = max(experiment_log, key=lambda x: x['metrics']['accuracy'])
-print(f"\n🏆 Best Run: {best_run['params']} with Accuracy: {best_run['metrics']['accuracy']}")
+best_run = max(experiment_log, key=lambda x: x["metrics"]["accuracy"])
+print(
+    f"\n🏆 Best Run: {best_run['params']} with Accuracy: {best_run['metrics']['accuracy']}"
+)
 ```
 
 **Expected Output**:
@@ -169,27 +175,30 @@ Run Logged: ...
 ```python
 data_batch = [
     {"id": 1, "age": 25, "income": 50000},
-    {"id": 2, "age": 150, "income": 0},    # Error: Age too high
-    {"id": 3, "age": -5, "income": 10000}, # Error: Age negative
-    {"id": 4, "age": 30, "income": -500}   # Error: Income negative
+    {"id": 2, "age": 150, "income": 0},  # Error: Age too high
+    {"id": 3, "age": -5, "income": 10000},  # Error: Age negative
+    {"id": 4, "age": 30, "income": -500},  # Error: Income negative
 ]
+
 
 def validate_data(data):
     errors = []
     for row in data:
         # Check 1: Age
-        if not (0 <= row['age'] <= 120):
+        if not (0 <= row["age"] <= 120):
             errors.append(f"Row {row['id']}: Invalid Age {row['age']}")
-        
+
         # Check 2: Income
-        if row['income'] < 0:
+        if row["income"] < 0:
             errors.append(f"Row {row['id']}: Negative Income {row['income']}")
-            
+
     if errors:
         print("❌ Validation Failed!")
-        for e in errors: print(e)
+        for e in errors:
+            print(e)
     else:
         print("✅ Data Validated!")
+
 
 validate_data(data_batch)
 ```
@@ -215,18 +224,20 @@ Row 4: Negative Income -500
 # MLOps Best Practice: Type Hinting & Schema Definition
 from typing import List, Dict
 
+
 def predict_churn(features: Dict[str, float]) -> bool:
     """
     Accepts customer features and returns True if Churn is likely.
-    
+
     Schema:
     - usage_minutes: float (must be >= 0)
     - contract_months: int (1, 12, or 24)
     """
     # Pseudo-model logic
-    if features['usage_minutes'] < 10 and features['contract_months'] == 1:
+    if features["usage_minutes"] < 10 and features["contract_months"] == 1:
         return True
     return False
+
 
 # Test valid input
 input_data = {"usage_minutes": 5.5, "contract_months": 1}

@@ -123,10 +123,10 @@ Part of the `tablefunc` extension.
 **Task**: Show students as rows, subjects (Math, Science) as columns.
 
 ```sql
-SELECT 
+SELECT
     student,
-    MAX(score) FILTER (WHERE subject = 'Math') as math_score,
-    MAX(score) FILTER (WHERE subject = 'Science') as science_score
+    MAX(score) FILTER (WHERE subject = 'Math') AS math_score,
+    MAX(score) FILTER (WHERE subject = 'Science') AS science_score
 FROM grades
 GROUP BY student;
 ```
@@ -144,9 +144,9 @@ GROUP BY student;
 **Goal**: flexible columns.
 
 ```sql
-SELECT 
+SELECT
     student,
-    jsonb_object_agg(subject, score) as report_card
+    jsonb_object_agg(subject, score) AS report_card
 FROM grades
 GROUP BY student;
 ```

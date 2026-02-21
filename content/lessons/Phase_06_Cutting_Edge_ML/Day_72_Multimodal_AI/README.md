@@ -71,10 +71,12 @@ from pathlib import Path
 
 client = OpenAI()
 
+
 def encode_image(image_path: str) -> str:
     """Base64 encode an image for API submission."""
     with open(image_path, "rb") as f:
         return base64.b64encode(f.read()).decode("utf-8")
+
 
 def analyze_chart(image_path: str, question: str) -> str:
     """Ask a question about a chart or graph image."""
@@ -90,24 +92,22 @@ def analyze_chart(image_path: str, question: str) -> str:
                         "type": "image_url",
                         "image_url": {
                             "url": f"data:image/jpeg;base64,{image_b64}",
-                            "detail": "high"  # "low" or "high" resolution
-                        }
+                            "detail": "high",  # "low" or "high" resolution
+                        },
                     },
-                    {
-                        "type": "text",
-                        "text": question
-                    }
-                ]
+                    {"type": "text", "text": question},
+                ],
             }
         ],
-        max_tokens=500
+        max_tokens=500,
     )
     return response.choices[0].message.content
+
 
 # Example: Analyze a sales dashboard screenshot
 answer = analyze_chart(
     "sales_dashboard.png",
-    "What is the highest-performing region shown in this chart, and by what percentage does it lead?"
+    "What is the highest-performing region shown in this chart, and by what percentage does it lead?",
 )
 print(answer)
 ```
@@ -119,6 +119,7 @@ import anthropic
 import base64
 
 claude = anthropic.Anthropic()
+
 
 def extract_invoice_data(pdf_image_path: str) -> dict:
     """Extract structured fields from an invoice image."""
@@ -137,8 +138,8 @@ def extract_invoice_data(pdf_image_path: str) -> dict:
                         "source": {
                             "type": "base64",
                             "media_type": "image/jpeg",
-                            "data": image_b64
-                        }
+                            "data": image_b64,
+                        },
                     },
                     {
                         "type": "text",
@@ -153,19 +154,21 @@ Return a JSON object with these exact keys:
 - total_amount
 - payment_terms
 
-If a field is not visible, use null."""
-                    }
-                ]
+If a field is not visible, use null.""",
+                    },
+                ],
             }
-        ]
+        ],
     )
 
     import json
+
     # Parse the JSON from the response
     text = response.content[0].text
     start = text.find("{")
     end = text.rfind("}") + 1
     return json.loads(text[start:end])
+
 
 # Usage
 invoice_data = extract_invoice_data("vendor_invoice.jpg")
@@ -190,9 +193,18 @@ multimodal_docs = [
     # Text documents
     {"content": "Q3 2025 revenue was $42M. Top region: North India.", "type": "text"},
     # Image documents (described by VLM for indexing)
-    {"content": "Bar chart showing Q3 regional sales. North India: $18M, South: $12M, West: $8M, East: $4M.", "type": "image", "image_path": "q3_chart.png"},
-    {"content": "Scanned contract showing payment terms of Net-30 with Acme Corp.", "type": "document", "image_path": "contract.pdf"},
+    {
+        "content": "Bar chart showing Q3 regional sales. North India: $18M, South: $12M, West: $8M, East: $4M.",
+        "type": "image",
+        "image_path": "q3_chart.png",
+    },
+    {
+        "content": "Scanned contract showing payment terms of Net-30 with Acme Corp.",
+        "type": "document",
+        "image_path": "contract.pdf",
+    },
 ]
+
 
 def index_multimodal_content(docs: list, collection) -> None:
     """Index mixed text and image content."""
@@ -202,11 +214,8 @@ def index_multimodal_content(docs: list, collection) -> None:
         if "image_path" in doc:
             metadata["image_path"] = doc["image_path"]
 
-        collection.add(
-            documents=[content],
-            ids=[f"doc_{i}"],
-            metadatas=[metadata]
-        )
+        collection.add(documents=[content], ids=[f"doc_{i}"], metadatas=[metadata])
+
 
 # Query works the same — embedding space is now shared for text + image descriptions
 ```
@@ -250,20 +259,23 @@ def analyze_public_image(image_url: str, question: str) -> str:
     """
     response = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{
-            "role": "user",
-            "content": [
-                {"type": "image_url", "image_url": {"url": image_url}},
-                {"type": "text", "text": question}
-            ]
-        }]
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "image_url", "image_url": {"url": image_url}},
+                    {"type": "text", "text": question},
+                ],
+            }
+        ],
     )
     return response.choices[0].message.content
+
 
 # Test with a public chart
 result = analyze_public_image(
     "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg",
-    "Describe what you see in exactly one sentence."
+    "Describe what you see in exactly one sentence.",
 )
 print(result)
 ```
@@ -280,6 +292,7 @@ def scan_receipt(image_path: str) -> dict:
     # TODO: Prompt for structured JSON output
     # TODO: Parse and return the JSON
     pass
+
 
 # Test
 receipt = scan_receipt("restaurant_receipt.jpg")

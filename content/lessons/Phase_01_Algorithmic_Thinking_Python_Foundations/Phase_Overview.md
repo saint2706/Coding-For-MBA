@@ -95,7 +95,7 @@ You learned the art of functions—encapsulating logic into reusable blocks. Com
 products = {
     "laptop": {"name": "Laptop Pro", "price": 999.99, "stock": 10},
     "mouse": {"name": "Wireless Mouse", "price": 29.99, "stock": 50},
-    "keyboard": {"name": "Mechanical Keyboard", "price": 79.99, "stock": 25}
+    "keyboard": {"name": "Mechanical Keyboard", "price": 79.99, "stock": 25},
 }
 ```
 
@@ -136,7 +136,7 @@ raw_customers = [
     "jane smith, JANE@COMPANY.ORG, 555.987.6543",
     "Bob Wilson, bob@test.com, 555-123-4567",  # Duplicate phone
     "  alice jones, alice@email.com, invalid-phone",
-    "john doe, johndoe@email.com, 555-111-2222"  # Duplicate name
+    "john doe, johndoe@email.com, 555-111-2222",  # Duplicate name
 ]
 ```
 
@@ -230,19 +230,25 @@ big_north = filter_sales(sales_log, min_amount=1000, region="North")
 
 ```python
 class PasswordPolicy:
-    def __init__(self, min_length=8, require_upper=True, 
-                 require_lower=True, require_digit=True, 
-                 require_special=False, special_chars="!@#$%^&*"):
+    def __init__(
+        self,
+        min_length=8,
+        require_upper=True,
+        require_lower=True,
+        require_digit=True,
+        require_special=False,
+        special_chars="!@#$%^&*",
+    ):
         # Store configuration
         pass
-    
+
     def validate(self, password):
         """
         Returns (is_valid: bool, errors: list)
         errors is empty if valid, otherwise contains failure reasons
         """
         pass
-    
+
     def strength_score(self, password):
         """
         Returns score 0-100 based on:
@@ -265,7 +271,7 @@ class PasswordPolicy:
 policy = PasswordPolicy(min_length=10, require_special=True)
 
 valid, errors = policy.validate("short")
-# (False, ["Password must be at least 10 characters", 
+# (False, ["Password must be at least 10 characters",
 #          "Password must contain a special character"])
 
 valid, errors = policy.validate("SecureP@ss123")

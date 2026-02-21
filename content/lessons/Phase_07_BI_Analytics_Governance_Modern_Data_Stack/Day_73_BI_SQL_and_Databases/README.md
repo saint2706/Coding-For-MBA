@@ -63,10 +63,10 @@ SELECT
     region,
     sales,
     -- Running Total per Region
-    SUM(sales) OVER (PARTITION BY region ORDER BY date) as running_total,
+    SUM(sales) OVER (PARTITION BY region ORDER BY date) AS running_total,
     -- Percent Difference from Previous Day
-    (sales - LAG(sales) OVER (PARTITION BY region ORDER BY date)) / 
-     LAG(sales) OVER (PARTITION BY region ORDER BY date) as growth_rate
+    (sales - LAG(sales) OVER (PARTITION BY region ORDER BY date))
+    / LAG(sales) OVER (PARTITION BY region ORDER BY date) AS growth_rate
 FROM daily_sales;
 ```
 
@@ -129,7 +129,7 @@ WHERE region IN (SELECT region FROM top_regions)
 **Goal**: Find the Top 3 Products by Revenue in *each* Category.
 
 ```sql
-/* 
+/*
 Input: 'sales' table [product_id, category, revenue]
 */
 
@@ -138,10 +138,11 @@ WITH ranked_sales AS (
         product_id,
         category,
         revenue,
-        RANK() OVER (PARTITION BY category ORDER BY revenue DESC) as rank_num
+        RANK() OVER (PARTITION BY category ORDER BY revenue DESC) AS rank_num
     FROM sales
 )
-SELECT * 
+
+SELECT *
 FROM ranked_sales
 WHERE rank_num <= 3;
 ```
@@ -158,10 +159,10 @@ WHERE rank_num <= 3;
 SELECT
     month,
     amount,
-    LAG(amount) OVER (ORDER BY month) as previous_month_amount,
+    LAG(amount) OVER (ORDER BY month) AS previous_month_amount,
     -- Calculation (Current - Prev) / Prev
-    (amount - LAG(amount) OVER (ORDER BY month)) / 
-     NULLIF(LAG(amount) OVER (ORDER BY month), 0) as growth_pct
+    (amount - LAG(amount) OVER (ORDER BY month))
+    / NULLIF(LAG(amount) OVER (ORDER BY month), 0) AS growth_pct
 FROM monthly_revenue;
 ```
 
@@ -178,7 +179,7 @@ SELECT
     AVG(daily_visitors) OVER (
         ORDER BY date
         ROWS BETWEEN 6 PRECEDING AND CURRENT ROW
-    ) as mavg_7_day
+    ) AS mavg_7_day
 FROM web_traffic;
 ```
 

@@ -73,25 +73,29 @@ employment_years = np.random.randint(0, 30, n)
 
 # Approval logic
 approval_score = (
-    0.4 * (income > 50000) +
-    0.3 * (credit_score > 650) +
-    0.2 * (debt_ratio < 0.4) +
-    0.1 * (employment_years > 2)
+    0.4 * (income > 50000)
+    + 0.3 * (credit_score > 650)
+    + 0.2 * (debt_ratio < 0.4)
+    + 0.1 * (employment_years > 2)
 )
 approved = (approval_score + np.random.randn(n) * 0.15 > 0.5).astype(int)
 
-df = pd.DataFrame({
-    'income': income,
-    'credit_score': credit_score,
-    'debt_ratio': debt_ratio,
-    'employment_years': employment_years,
-    'approved': approved
-})
+df = pd.DataFrame(
+    {
+        "income": income,
+        "credit_score": credit_score,
+        "debt_ratio": debt_ratio,
+        "employment_years": employment_years,
+        "approved": approved,
+    }
+)
 
-X = df.drop('approved', axis=1)
-y = df['approved']
+X = df.drop("approved", axis=1)
+y = df["approved"]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Train decision tree
 tree_model = DecisionTreeClassifier(max_depth=4, random_state=42)
@@ -99,9 +103,15 @@ tree_model.fit(X_train, y_train)
 
 # Visualize the tree
 plt.figure(figsize=(20, 10))
-plot_tree(tree_model, feature_names=X.columns, class_names=['Denied', 'Approved'],
-          filled=True, rounded=True, fontsize=10)
-plt.title('Decision Tree: Loan Approval')
+plot_tree(
+    tree_model,
+    feature_names=X.columns,
+    class_names=["Denied", "Approved"],
+    filled=True,
+    rounded=True,
+    fontsize=10,
+)
+plt.title("Decision Tree: Loan Approval")
 plt.tight_layout()
 plt.show()
 
@@ -109,26 +119,25 @@ plt.show()
 y_pred = tree_model.predict(X_test)
 print("=== Decision Tree Performance ===")
 print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
-print(classification_report(y_test, y_pred, target_names=['Denied', 'Approved']))
+print(classification_report(y_test, y_pred, target_names=["Denied", "Approved"]))
 ```
 
 ### Understanding Tree Decisions
 
 ```python
 # Feature importance
-importance = pd.DataFrame({
-    'Feature': X.columns,
-    'Importance': tree_model.feature_importances_
-}).sort_values('Importance', ascending=False)
+importance = pd.DataFrame(
+    {"Feature": X.columns, "Importance": tree_model.feature_importances_}
+).sort_values("Importance", ascending=False)
 
 print("=== Feature Importance ===")
 print(importance.to_string(index=False))
 
 # Visualize importance
 plt.figure(figsize=(8, 5))
-plt.barh(importance['Feature'], importance['Importance'])
-plt.xlabel('Importance')
-plt.title('Feature Importance (Decision Tree)')
+plt.barh(importance["Feature"], importance["Importance"])
+plt.xlabel("Importance")
+plt.title("Feature Importance (Decision Tree)")
 plt.gca().invert_yaxis()
 plt.tight_layout()
 plt.show()
@@ -148,10 +157,10 @@ from sklearn.ensemble import RandomForestClassifier
 
 # Train random forest
 rf_model = RandomForestClassifier(
-    n_estimators=100,      # Number of trees
-    max_depth=10,          # Limit tree depth
-    min_samples_split=5,   # Minimum samples to split
-    random_state=42
+    n_estimators=100,  # Number of trees
+    max_depth=10,  # Limit tree depth
+    min_samples_split=5,  # Minimum samples to split
+    random_state=42,
 )
 rf_model.fit(X_train, y_train)
 
@@ -166,10 +175,9 @@ print(f"Single Tree Accuracy: {accuracy_score(y_test, y_pred):.3f}")
 print(f"Random Forest Accuracy: {accuracy_score(y_test, y_pred_rf):.3f}")
 
 # Feature importance (averaged across all trees)
-rf_importance = pd.DataFrame({
-    'Feature': X.columns,
-    'Importance': rf_model.feature_importances_
-}).sort_values('Importance', ascending=False)
+rf_importance = pd.DataFrame(
+    {"Feature": X.columns, "Importance": rf_model.feature_importances_}
+).sort_values("Importance", ascending=False)
 
 print("\n=== RF Feature Importance ===")
 print(rf_importance.to_string(index=False))
@@ -192,7 +200,9 @@ Final prediction = Majority vote (or average probability)
 sample = X_test.iloc[[0]]
 sample_predictions = [tree.predict(sample)[0] for tree in rf_model.estimators_]
 
-print(f"Individual tree votes: {sum(sample_predictions)} Approved, {100-sum(sample_predictions)} Denied")
+print(
+    f"Individual tree votes: {sum(sample_predictions)} Approved, {100 - sum(sample_predictions)} Denied"
+)
 print(f"Majority vote: {'Approved' if sum(sample_predictions) > 50 else 'Denied'}")
 print(f"RF prediction: {'Approved' if rf_model.predict(sample)[0] else 'Denied'}")
 ```
@@ -204,20 +214,20 @@ from sklearn.model_selection import GridSearchCV
 
 # Define parameter grid
 param_grid = {
-    'n_estimators': [50, 100, 200],
-    'max_depth': [5, 10, 15, None],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4]
+    "n_estimators": [50, 100, 200],
+    "max_depth": [5, 10, 15, None],
+    "min_samples_split": [2, 5, 10],
+    "min_samples_leaf": [1, 2, 4],
 }
 
 # Grid search
 grid_search = GridSearchCV(
     RandomForestClassifier(random_state=42),
     param_grid,
-    cv=5,                    # 5-fold cross-validation
-    scoring='accuracy',      # or 'roc_auc', 'f1'
-    n_jobs=-1,               # Use all CPU cores
-    verbose=1
+    cv=5,  # 5-fold cross-validation
+    scoring="accuracy",  # or 'roc_auc', 'f1'
+    n_jobs=-1,  # Use all CPU cores
+    verbose=1,
 )
 
 grid_search.fit(X_train, y_train)
@@ -248,15 +258,19 @@ for depth in depths:
     test_scores.append(model.score(X_test, y_test))
 
 plt.figure(figsize=(10, 5))
-plt.plot(depths, train_scores, 'b-', label='Training Accuracy')
-plt.plot(depths, test_scores, 'r-', label='Test Accuracy')
-plt.xlabel('Max Depth')
-plt.ylabel('Accuracy')
-plt.title('Decision Tree: Overfitting with Increasing Depth')
+plt.plot(depths, train_scores, "b-", label="Training Accuracy")
+plt.plot(depths, test_scores, "r-", label="Test Accuracy")
+plt.xlabel("Max Depth")
+plt.ylabel("Accuracy")
+plt.title("Decision Tree: Overfitting with Increasing Depth")
 plt.legend()
 plt.grid(True, alpha=0.3)
-plt.axvline(x=depths[np.argmax(test_scores)], color='g', linestyle='--', 
-            label=f'Optimal depth: {depths[np.argmax(test_scores)]}')
+plt.axvline(
+    x=depths[np.argmax(test_scores)],
+    color="g",
+    linestyle="--",
+    label=f"Optimal depth: {depths[np.argmax(test_scores)]}",
+)
 plt.legend()
 plt.show()
 
@@ -326,62 +340,71 @@ import matplotlib.pyplot as plt
 np.random.seed(42)
 n = 1000
 
-data = pd.DataFrame({
-    'tenure': np.random.exponential(24, n).clip(1, 72),
-    'monthly_charges': np.random.uniform(20, 100, n),
-    'total_charges': np.random.uniform(100, 5000, n),
-    'contract_length': np.random.choice([1, 12, 24], n, p=[0.5, 0.3, 0.2]),
-    'support_calls': np.random.poisson(2, n),
-    'online_security': np.random.choice([0, 1], n, p=[0.6, 0.4]),
-})
+data = pd.DataFrame(
+    {
+        "tenure": np.random.exponential(24, n).clip(1, 72),
+        "monthly_charges": np.random.uniform(20, 100, n),
+        "total_charges": np.random.uniform(100, 5000, n),
+        "contract_length": np.random.choice([1, 12, 24], n, p=[0.5, 0.3, 0.2]),
+        "support_calls": np.random.poisson(2, n),
+        "online_security": np.random.choice([0, 1], n, p=[0.6, 0.4]),
+    }
+)
 
 # Churn logic
 churn_score = (
-    -0.04 * data['tenure'] +
-    0.02 * data['monthly_charges'] +
-    0.4 * data['support_calls'] -
-    0.3 * data['online_security'] +
-    0.8 * (data['contract_length'] == 1)
+    -0.04 * data["tenure"]
+    + 0.02 * data["monthly_charges"]
+    + 0.4 * data["support_calls"]
+    - 0.3 * data["online_security"]
+    + 0.8 * (data["contract_length"] == 1)
 )
-data['churn'] = (np.random.random(n) < 1/(1 + np.exp(-churn_score))).astype(int)
+data["churn"] = (np.random.random(n) < 1 / (1 + np.exp(-churn_score))).astype(int)
 
 print(f"Churn rate: {data['churn'].mean():.1%}")
 
 # Prepare data
-X = data.drop('churn', axis=1)
-y = data['churn']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, stratify=y, random_state=42)
+X = data.drop("churn", axis=1)
+y = data["churn"]
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42
+)
 
 # Compare models
 models = {
-    'Decision Tree (depth=3)': DecisionTreeClassifier(max_depth=3, random_state=42),
-    'Decision Tree (depth=10)': DecisionTreeClassifier(max_depth=10, random_state=42),
-    'Random Forest (50 trees)': RandomForestClassifier(n_estimators=50, max_depth=10, random_state=42),
-    'Random Forest (200 trees)': RandomForestClassifier(n_estimators=200, max_depth=10, random_state=42),
+    "Decision Tree (depth=3)": DecisionTreeClassifier(max_depth=3, random_state=42),
+    "Decision Tree (depth=10)": DecisionTreeClassifier(max_depth=10, random_state=42),
+    "Random Forest (50 trees)": RandomForestClassifier(
+        n_estimators=50, max_depth=10, random_state=42
+    ),
+    "Random Forest (200 trees)": RandomForestClassifier(
+        n_estimators=200, max_depth=10, random_state=42
+    ),
 }
 
 results = []
 for name, model in models.items():
-    cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring='roc_auc')
+    cv_scores = cross_val_score(model, X_train, y_train, cv=5, scoring="roc_auc")
     model.fit(X_train, y_train)
     test_score = model.score(X_test, y_test)
-    results.append({
-        'Model': name,
-        'CV AUC': cv_scores.mean(),
-        'CV Std': cv_scores.std(),
-        'Test Accuracy': test_score
-    })
+    results.append(
+        {
+            "Model": name,
+            "CV AUC": cv_scores.mean(),
+            "CV Std": cv_scores.std(),
+            "Test Accuracy": test_score,
+        }
+    )
 
 results_df = pd.DataFrame(results)
 print("=== Model Comparison ===")
 print(results_df.to_string(index=False))
 
 # Feature importance from best model
-best_rf = models['Random Forest (200 trees)']
-importance = pd.DataFrame({
-    'Feature': X.columns,
-    'Importance': best_rf.feature_importances_
-}).sort_values('Importance', ascending=False)
+best_rf = models["Random Forest (200 trees)"]
+importance = pd.DataFrame(
+    {"Feature": X.columns, "Importance": best_rf.feature_importances_}
+).sort_values("Importance", ascending=False)
 
 print("\n=== Feature Importance ===")
 print(importance.to_string(index=False))
@@ -397,22 +420,22 @@ from scipy.stats import randint
 
 # Random search is faster than grid search for large parameter spaces
 param_distributions = {
-    'n_estimators': randint(50, 300),
-    'max_depth': [5, 10, 15, 20, None],
-    'min_samples_split': randint(2, 20),
-    'min_samples_leaf': randint(1, 10),
-    'max_features': ['sqrt', 'log2', None]
+    "n_estimators": randint(50, 300),
+    "max_depth": [5, 10, 15, 20, None],
+    "min_samples_split": randint(2, 20),
+    "min_samples_leaf": randint(1, 10),
+    "max_features": ["sqrt", "log2", None],
 }
 
 random_search = RandomizedSearchCV(
     RandomForestClassifier(random_state=42),
     param_distributions,
-    n_iter=50,              # Number of random combinations to try
+    n_iter=50,  # Number of random combinations to try
     cv=5,
-    scoring='roc_auc',
+    scoring="roc_auc",
     n_jobs=-1,
     random_state=42,
-    verbose=1
+    verbose=1,
 )
 
 random_search.fit(X_train, y_train)
@@ -427,17 +450,22 @@ y_pred = best_model.predict(X_test)
 y_prob = best_model.predict_proba(X_test)[:, 1]
 
 print(f"\nTest Performance:")
-print(classification_report(y_test, y_pred, target_names=['Stay', 'Churn']))
+print(classification_report(y_test, y_pred, target_names=["Stay", "Churn"]))
 
 # Visualize search results
 results_cv = pd.DataFrame(random_search.cv_results_)
 plt.figure(figsize=(10, 6))
-plt.scatter(results_cv['param_n_estimators'], results_cv['mean_test_score'], 
-            c=results_cv['param_max_depth'].fillna(25), cmap='viridis', alpha=0.6)
-plt.colorbar(label='max_depth')
-plt.xlabel('n_estimators')
-plt.ylabel('Mean CV AUC')
-plt.title('Hyperparameter Search Results')
+plt.scatter(
+    results_cv["param_n_estimators"],
+    results_cv["mean_test_score"],
+    c=results_cv["param_max_depth"].fillna(25),
+    cmap="viridis",
+    alpha=0.6,
+)
+plt.colorbar(label="max_depth")
+plt.xlabel("n_estimators")
+plt.ylabel("Mean CV AUC")
+plt.title("Hyperparameter Search Results")
 plt.show()
 ```
 
@@ -457,26 +485,26 @@ rules = export_text(rule_tree, feature_names=list(X.columns))
 print("=== Business Rules (Decision Tree) ===")
 print(rules)
 
+
 # Custom rule extraction
-def extract_rules(tree, feature_names, class_names=['Stay', 'Churn']):
+def extract_rules(tree, feature_names, class_names=["Stay", "Churn"]):
     """Extract human-readable rules from a decision tree."""
     tree_ = tree.tree_
     feature_name = [
-        feature_names[i] if i != -2 else "undefined!"
-        for i in tree_.feature
+        feature_names[i] if i != -2 else "undefined!" for i in tree_.feature
     ]
-    
+
     rules = []
-    
+
     def recurse(node, rule_so_far=""):
         if tree_.feature[node] != -2:  # Not a leaf
             name = feature_name[node]
             threshold = tree_.threshold[node]
-            
+
             # Left branch (<=)
             left_rule = f"{rule_so_far}IF {name} <= {threshold:.2f}"
             recurse(tree_.children_left[node], left_rule + " AND ")
-            
+
             # Right branch (>)
             right_rule = f"{rule_so_far}IF {name} > {threshold:.2f}"
             recurse(tree_.children_right[node], right_rule + " AND ")
@@ -485,22 +513,27 @@ def extract_rules(tree, feature_names, class_names=['Stay', 'Churn']):
             class_idx = np.argmax(tree_.value[node])
             samples = tree_.n_node_samples[node]
             confidence = tree_.value[node][0][class_idx] / samples
-            
+
             clean_rule = rule_so_far.rstrip(" AND ")
-            rules.append({
-                'rule': clean_rule,
-                'prediction': class_names[class_idx],
-                'samples': samples,
-                'confidence': confidence
-            })
-    
+            rules.append(
+                {
+                    "rule": clean_rule,
+                    "prediction": class_names[class_idx],
+                    "samples": samples,
+                    "confidence": confidence,
+                }
+            )
+
     recurse(0)
     return pd.DataFrame(rules)
+
 
 rules_df = extract_rules(rule_tree, list(X.columns))
 print("\n=== Extracted Rules ===")
 for _, row in rules_df.iterrows():
-    print(f"Prediction: {row['prediction']} (confidence: {row['confidence']:.1%}, samples: {row['samples']})")
+    print(
+        f"Prediction: {row['prediction']} (confidence: {row['confidence']:.1%}, samples: {row['samples']})"
+    )
     print(f"  {row['rule']}")
     print()
 ```
@@ -586,11 +619,7 @@ Your decision tree has 100% training accuracy but 70% test accuracy. How do you 
 tree = DecisionTreeClassifier()  # No limits → overfits
 
 # After
-tree = DecisionTreeClassifier(
-    max_depth=6,
-    min_samples_split=10,
-    min_samples_leaf=5
-)
+tree = DecisionTreeClassifier(max_depth=6, min_samples_split=10, min_samples_leaf=5)
 ```
 
 Use cross-validation to find optimal values.

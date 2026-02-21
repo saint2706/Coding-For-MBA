@@ -122,11 +122,13 @@ import random
 fake = Faker()
 
 # Generate SQL
-with open('seed.sql', 'w') as f:
+with open("seed.sql", "w") as f:
     for _ in range(100000):
         name = fake.name().replace("'", "''")
-        city = random.choice(['NY', 'SF', 'London'])
-        f.write(f"INSERT INTO drivers (name, current_city, rating) VALUES ('{name}', '{city}', 4.5);\n")
+        city = random.choice(["NY", "SF", "London"])
+        f.write(
+            f"INSERT INTO drivers (name, current_city, rating) VALUES ('{name}', '{city}', 4.5);\n"
+        )
 ```
 
 ### Exercise 3: The Optimize

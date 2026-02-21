@@ -255,27 +255,30 @@ pip list
 import sys
 import os
 
+
 def show_environment_info():
     print("=== Python Environment Info ===\n")
-    
+
     # Python version and location
     print(f"Python Version: {sys.version}")
     print(f"Python Executable: {sys.executable}")
-    
+
     # Virtual environment detection
-    venv = os.environ.get('VIRTUAL_ENV')
+    venv = os.environ.get("VIRTUAL_ENV")
     if venv:
         print(f"\n✅ Virtual Environment ACTIVE")
         print(f"   Location: {venv}")
     else:
         print("\n⚠️ No virtual environment detected!")
         print("   Consider creating one: python -m venv venv")
-    
+
     # List key packages
     print("\n=== Installed Packages ===")
     import pkg_resources
+
     for pkg in sorted(pkg_resources.working_set, key=lambda x: x.key):
         print(f"   {pkg.key}: {pkg.version}")
+
 
 if __name__ == "__main__":
     show_environment_info()
@@ -317,6 +320,7 @@ How do you verify your venv is activated?
 
 ```python
 import sys
+
 print(sys.executable)  # Should show path inside venv/
 ```
 

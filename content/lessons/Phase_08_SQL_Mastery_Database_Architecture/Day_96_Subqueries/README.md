@@ -115,13 +115,18 @@ WHERE price < (
 
 ```sql
 WITH category_avgs AS (
-    SELECT category_id, AVG(price) as avg_price
+    SELECT
+        category_id,
+        AVG(price) AS avg_price
     FROM products
     GROUP BY category_id
 )
-SELECT p.product_name, p.price
-FROM products p
-JOIN category_avgs c ON p.category_id = c.category_id
+
+SELECT
+    p.product_name,
+    p.price
+FROM products AS p
+INNER JOIN category_avgs AS c ON p.category_id = c.category_id
 WHERE p.price < c.avg_price;
 ```
 

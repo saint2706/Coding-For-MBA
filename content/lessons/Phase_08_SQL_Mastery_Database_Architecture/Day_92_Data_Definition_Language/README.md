@@ -135,7 +135,7 @@ EXECUTE FUNCTION log_change();
 **Goal**: Split data by region.
 
 ```sql
-CREATE TABLE sales (id int, region text, amount int) 
+CREATE TABLE sales (id int, region text, amount int)
 PARTITION BY LIST (region);
 
 CREATE TABLE sales_us PARTITION OF sales FOR VALUES IN ('US');

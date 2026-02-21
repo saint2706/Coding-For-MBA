@@ -92,22 +92,30 @@ labels_dbscan = dbscan.fit_predict(X_moons)
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
 # Ground truth
-ax1.scatter(X_moons[:, 0], X_moons[:, 1], c=y_moons, cmap='viridis', edgecolors='k')
-ax1.set_title('Ground Truth (2 crescent shapes)')
+ax1.scatter(X_moons[:, 0], X_moons[:, 1], c=y_moons, cmap="viridis", edgecolors="k")
+ax1.set_title("Ground Truth (2 crescent shapes)")
 
 # DBSCAN result
-scatter = ax2.scatter(X_moons[:, 0], X_moons[:, 1], c=labels_dbscan, cmap='viridis', edgecolors='k')
-ax2.set_title(f'DBSCAN (eps=0.2, found {len(set(labels_dbscan)) - (1 if -1 in labels_dbscan else 0)} clusters)')
+scatter = ax2.scatter(
+    X_moons[:, 0], X_moons[:, 1], c=labels_dbscan, cmap="viridis", edgecolors="k"
+)
+ax2.set_title(
+    f"DBSCAN (eps=0.2, found {len(set(labels_dbscan)) - (1 if -1 in labels_dbscan else 0)} clusters)"
+)
 
 # Highlight outliers (label = -1)
 outliers = X_moons[labels_dbscan == -1]
-ax2.scatter(outliers[:, 0], outliers[:, 1], c='red', marker='x', s=100, label='Outliers')
+ax2.scatter(
+    outliers[:, 0], outliers[:, 1], c="red", marker="x", s=100, label="Outliers"
+)
 ax2.legend()
 
 plt.tight_layout()
 plt.show()
 
-print(f"Number of clusters: {len(set(labels_dbscan)) - (1 if -1 in labels_dbscan else 0)}")
+print(
+    f"Number of clusters: {len(set(labels_dbscan)) - (1 if -1 in labels_dbscan else 0)}"
+)
 print(f"Number of outliers: {np.sum(labels_dbscan == -1)}")
 ```
 
@@ -123,14 +131,14 @@ neighbors.fit(X_moons)
 distances, indices = neighbors.kneighbors(X_moons)
 
 # Sort distances
-distances = np.sort(distances[:, k-1], axis=0)
+distances = np.sort(distances[:, k - 1], axis=0)
 
 # Plot elbow
 plt.figure(figsize=(10, 6))
 plt.plot(distances)
-plt.xlabel('Points sorted by distance')
-plt.ylabel(f'{k}-th Nearest Neighbor Distance')
-plt.title('K-Distance Graph (Elbow suggests optimal eps)')
+plt.xlabel("Points sorted by distance")
+plt.ylabel(f"{k}-th Nearest Neighbor Distance")
+plt.title("K-Distance Graph (Elbow suggests optimal eps)")
 plt.grid(True, alpha=0.3)
 plt.show()
 
@@ -149,7 +157,9 @@ import hdbscan
 clusterer = hdbscan.HDBSCAN(min_cluster_size=10, min_samples=5)
 labels_hdbscan = clusterer.fit_predict(X_moons)
 
-print(f"HDBSCAN found {len(set(labels_hdbscan)) - (1 if -1 in labels_hdbscan else 0)} clusters")
+print(
+    f"HDBSCAN found {len(set(labels_hdbscan)) - (1 if -1 in labels_hdbscan else 0)} clusters"
+)
 print(f"Cluster persistence (strength of clustering):")
 for i, prob in enumerate(clusterer.probabilities_[:5]):
     print(f"  Point {i}: {prob:.2%} confidence")
@@ -172,7 +182,7 @@ X, y = make_classification(
     n_clusters_per_class=1,
     flip_y=0,
     class_sep=2.0,
-    random_state=42
+    random_state=42,
 )
 
 # Add anomalies
@@ -189,25 +199,53 @@ y_pred = iso_forest.fit_predict(X_combined)
 from sklearn.metrics import classification_report, confusion_matrix
 
 print("=== Anomaly Detection Performance ===")
-print(classification_report(y_true, y_pred, target_names=['Anomaly', 'Normal']))
+print(classification_report(y_true, y_pred, target_names=["Anomaly", "Normal"]))
 
 # Visualize
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
 
 # Ground truth
-ax1.scatter(X_combined[y_true == 1, 0], X_combined[y_true == 1, 1], 
-            c='blue', label='Normal', alpha=0.6, edgecolors='k')
-ax1.scatter(X_combined[y_true == -1, 0], X_combined[y_true == -1, 1], 
-            c='red', label='Anomaly', alpha=0.6, edgecolors='k', marker='x', s=100)
-ax1.set_title('Ground Truth')
+ax1.scatter(
+    X_combined[y_true == 1, 0],
+    X_combined[y_true == 1, 1],
+    c="blue",
+    label="Normal",
+    alpha=0.6,
+    edgecolors="k",
+)
+ax1.scatter(
+    X_combined[y_true == -1, 0],
+    X_combined[y_true == -1, 1],
+    c="red",
+    label="Anomaly",
+    alpha=0.6,
+    edgecolors="k",
+    marker="x",
+    s=100,
+)
+ax1.set_title("Ground Truth")
 ax1.legend()
 
 # Predictions
-ax2.scatter(X_combined[y_pred == 1, 0], X_combined[y_pred == 1, 1], 
-            c='blue', label='Normal', alpha=0.6, edgecolors='k')
-ax2.scatter(X_combined[y_pred == -1, 0], X_combined[y_pred == -1, 1], 
-            c='red', label='Anomaly', alpha=0.6, edgecolors='k', marker='x', s=100)
-ax2.set_title('Isolation Forest Predictions')
+ax2.scatter(
+    X_combined[y_pred == 1, 0],
+    X_combined[y_pred == 1, 1],
+    c="blue",
+    label="Normal",
+    alpha=0.6,
+    edgecolors="k",
+)
+ax2.scatter(
+    X_combined[y_pred == -1, 0],
+    X_combined[y_pred == -1, 1],
+    c="red",
+    label="Anomaly",
+    alpha=0.6,
+    edgecolors="k",
+    marker="x",
+    s=100,
+)
+ax2.set_title("Isolation Forest Predictions")
 ax2.legend()
 
 plt.tight_layout()
@@ -226,11 +264,12 @@ from tensorflow.keras.optimizers import Adam
 
 # Load MNIST for demonstration
 from tensorflow.keras.datasets import mnist
+
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
 # Preprocess
-X_train = X_train.reshape(-1, 784).astype('float32') / 255
-X_test = X_test.reshape(-1, 784).astype('float32') / 255
+X_train = X_train.reshape(-1, 784).astype("float32") / 255
+X_test = X_test.reshape(-1, 784).astype("float32") / 255
 
 # Build autoencoder
 input_dim = 784
@@ -238,26 +277,27 @@ encoding_dim = 32  # Compress to 32 dimensions
 
 # Encoder
 input_layer = Input(shape=(input_dim,))
-encoded = Dense(128, activation='relu')(input_layer)
-encoded = Dense(64, activation='relu')(encoded)
-encoded = Dense(encoding_dim, activation='relu')(encoded)
+encoded = Dense(128, activation="relu")(input_layer)
+encoded = Dense(64, activation="relu")(encoded)
+encoded = Dense(encoding_dim, activation="relu")(encoded)
 
 # Decoder
-decoded = Dense(64, activation='relu')(encoded)
-decoded = Dense(128, activation='relu')(decoded)
-decoded = Dense(input_dim, activation='sigmoid')(decoded)
+decoded = Dense(64, activation="relu")(encoded)
+decoded = Dense(128, activation="relu")(decoded)
+decoded = Dense(input_dim, activation="sigmoid")(decoded)
 
 # Autoencoder model
 autoencoder = Model(input_layer, decoded)
-autoencoder.compile(optimizer=Adam(learning_rate=0.001), loss='mse')
+autoencoder.compile(optimizer=Adam(learning_rate=0.001), loss="mse")
 
 # Train
 history = autoencoder.fit(
-    X_train, X_train,
+    X_train,
+    X_train,
     epochs=20,
     batch_size=256,
     validation_data=(X_test, X_test),
-    verbose=1
+    verbose=1,
 )
 
 # Encoder model (for embeddings)
@@ -274,16 +314,16 @@ decoded_imgs = autoencoder.predict(X_test[:n_samples])
 fig, axes = plt.subplots(2, n_samples, figsize=(20, 4))
 for i in range(n_samples):
     # Original
-    axes[0, i].imshow(X_test[i].reshape(28, 28), cmap='gray')
-    axes[0, i].axis('off')
+    axes[0, i].imshow(X_test[i].reshape(28, 28), cmap="gray")
+    axes[0, i].axis("off")
     if i == 0:
-        axes[0, i].set_title('Original', fontsize=12)
-    
+        axes[0, i].set_title("Original", fontsize=12)
+
     # Reconstruction
-    axes[1, i].imshow(decoded_imgs[i].reshape(28, 28), cmap='gray')
-    axes[1, i].axis('off')
+    axes[1, i].imshow(decoded_imgs[i].reshape(28, 28), cmap="gray")
+    axes[1, i].axis("off")
     if i == 0:
-        axes[1, i].set_title('Reconstructed', fontsize=12)
+        axes[1, i].set_title("Reconstructed", fontsize=12)
 
 plt.tight_layout()
 plt.show()
@@ -313,18 +353,22 @@ X_umap = umap_model.fit_transform(X_encoded_large)
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
 
 # t-SNE
-scatter1 = ax1.scatter(X_tsne[:, 0], X_tsne[:, 1], c=y_subset, cmap='tab10', alpha=0.6, s=5)
-ax1.set_title('t-SNE Visualization of MNIST')
-ax1.set_xlabel('t-SNE Dimension 1')
-ax1.set_ylabel('t-SNE Dimension 2')
-plt.colorbar(scatter1, ax=ax1, label='Digit')
+scatter1 = ax1.scatter(
+    X_tsne[:, 0], X_tsne[:, 1], c=y_subset, cmap="tab10", alpha=0.6, s=5
+)
+ax1.set_title("t-SNE Visualization of MNIST")
+ax1.set_xlabel("t-SNE Dimension 1")
+ax1.set_ylabel("t-SNE Dimension 2")
+plt.colorbar(scatter1, ax=ax1, label="Digit")
 
 # UMAP
-scatter2 = ax2.scatter(X_umap[:, 0], X_umap[:, 1], c=y_subset, cmap='tab10', alpha=0.6, s=5)
-ax2.set_title('UMAP Visualization of MNIST')
-ax2.set_xlabel('UMAP Dimension 1')
-ax2.set_ylabel('UMAP Dimension 2')
-plt.colorbar(scatter2, ax=ax2, label='Digit')
+scatter2 = ax2.scatter(
+    X_umap[:, 0], X_umap[:, 1], c=y_subset, cmap="tab10", alpha=0.6, s=5
+)
+ax2.set_title("UMAP Visualization of MNIST")
+ax2.set_xlabel("UMAP Dimension 1")
+ax2.set_ylabel("UMAP Dimension 2")
+plt.colorbar(scatter2, ax=ax2, label="Digit")
 
 plt.tight_layout()
 plt.show()
@@ -351,23 +395,23 @@ methods = {
     "Isolation Forest": {
         "Best for": "High-dimensional data, fast",
         "Assumption": "Anomalies are easily separated",
-        "Scalability": "100k+ samples"
+        "Scalability": "100k+ samples",
     },
     "One-Class SVM": {
         "Best for": "Small datasets, bounded anomalies",
         "Assumption": "Normal data forms tight boundary",
-        "Scalability": "< 10k samples"
+        "Scalability": "< 10k samples",
     },
     "Autoencoder": {
         "Best for": "Complex patterns, images",
         "Assumption": "Anomalies reconstruct poorly",
-        "Scalability": "Millions (with GPUs)"
+        "Scalability": "Millions (with GPUs)",
     },
     "Local Outlier Factor": {
         "Best for": "Local density deviations",
         "Assumption": "Anomalies have different density",
-        "Scalability": "< 100k samples"
-    }
+        "Scalability": "< 100k samples",
+    },
 }
 ```
 
@@ -397,9 +441,11 @@ np.random.seed(42)
 n_customers = 1000
 
 data = {
-    'recency': np.random.exponential(scale=30, size=n_customers),  # Days since last purchase
-    'frequency': np.random.poisson(lam=5, size=n_customers),       # Purchases per year
-    'monetary': np.random.gamma(shape=2, scale=50, size=n_customers)  # Average spend
+    "recency": np.random.exponential(
+        scale=30, size=n_customers
+    ),  # Days since last purchase
+    "frequency": np.random.poisson(lam=5, size=n_customers),  # Purchases per year
+    "monetary": np.random.gamma(shape=2, scale=50, size=n_customers),  # Average spend
 }
 
 df = pd.DataFrame(data)
@@ -412,7 +458,7 @@ X_scaled = scaler.fit_transform(df)
 dbscan = DBSCAN(eps=0.5, min_samples=10)
 labels = dbscan.fit_predict(X_scaled)
 
-df['Cluster'] = labels
+df["Cluster"] = labels
 
 # Analyze clusters
 print("=== Cluster Statistics ===")
@@ -421,36 +467,44 @@ for cluster_id in sorted(set(labels)):
         cluster_name = "Outliers"
     else:
         cluster_name = f"Cluster {cluster_id}"
-    
-    cluster_data = df[df['Cluster'] == cluster_id]
+
+    cluster_data = df[df["Cluster"] == cluster_id]
     print(f"\n{cluster_name} (n={len(cluster_data)}):")
-    print(cluster_data[['recency', 'frequency', 'monetary']].describe())
+    print(cluster_data[["recency", "frequency", "monetary"]].describe())
 
 # Visualize
 from mpl_toolkits.mplot3d import Axes3D
 
 fig = plt.figure(figsize=(12, 8))
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection="3d")
 
-colors = ['blue', 'green', 'orange', 'purple', 'red']
+colors = ["blue", "green", "orange", "purple", "red"]
 for cluster_id in sorted(set(labels)):
     if cluster_id == -1:
-        color = 'red'
-        marker = 'x'
-        label = 'Outliers'
+        color = "red"
+        marker = "x"
+        label = "Outliers"
     else:
         color = colors[cluster_id % len(colors)]
-        marker = 'o'
-        label = f'Cluster {cluster_id}'
-    
-    cluster_data = df[df['Cluster'] == cluster_id]
-    ax.scatter(cluster_data['recency'], cluster_data['frequency'], 
-               cluster_data['monetary'], c=color, marker=marker, label=label, s=50, alpha=0.6)
+        marker = "o"
+        label = f"Cluster {cluster_id}"
 
-ax.set_xlabel('Recency (days)')
-ax.set_ylabel('Frequency (purchases/year)')
-ax.set_zlabel('Monetary (avg spend)')
-ax.set_title('Customer Segmentation with DBSCAN')
+    cluster_data = df[df["Cluster"] == cluster_id]
+    ax.scatter(
+        cluster_data["recency"],
+        cluster_data["frequency"],
+        cluster_data["monetary"],
+        c=color,
+        marker=marker,
+        label=label,
+        s=50,
+        alpha=0.6,
+    )
+
+ax.set_xlabel("Recency (days)")
+ax.set_ylabel("Frequency (purchases/year)")
+ax.set_zlabel("Monetary (avg spend)")
+ax.set_title("Customer Segmentation with DBSCAN")
 ax.legend()
 plt.show()
 ```
@@ -470,16 +524,16 @@ n_fraud = 500
 
 # Normal transactions
 normal_transactions = {
-    'amount': np.random.gamma(shape=2, scale=50, size=n_normal),
-    'time': np.random.uniform(0, 24, size=n_normal),
-    'merchant_risk': np.random.beta(a=2, b=5, size=n_normal)
+    "amount": np.random.gamma(shape=2, scale=50, size=n_normal),
+    "time": np.random.uniform(0, 24, size=n_normal),
+    "merchant_risk": np.random.beta(a=2, b=5, size=n_normal),
 }
 
 # Fraudulent transactions (different distribution)
 fraud_transactions = {
-    'amount': np.random.gamma(shape=5, scale=200, size=n_fraud),  # Larger amounts
-    'time': np.random.uniform(22, 6, size=n_fraud) % 24,  # Late night
-    'merchant_risk': np.random.beta(a=5, b=2, size=n_fraud)  # Risky merchants
+    "amount": np.random.gamma(shape=5, scale=200, size=n_fraud),  # Larger amounts
+    "time": np.random.uniform(22, 6, size=n_fraud) % 24,  # Late night
+    "merchant_risk": np.random.beta(a=5, b=2, size=n_fraud),  # Risky merchants
 }
 
 # Combine
@@ -497,32 +551,34 @@ scores = iso_forest.score_samples(X_combined)
 
 # Metrics
 print("=== Fraud Detection Performance ===")
-print(classification_report(y_true, y_pred, target_names=['Fraud', 'Normal']))
+print(classification_report(y_true, y_pred, target_names=["Fraud", "Normal"]))
 print(f"\nROC-AUC: {roc_auc_score(y_true, -scores):.3f}")
 
 # Precision-Recall curve
 precision, recall, thresholds = precision_recall_curve(y_true, -scores)
 
 plt.figure(figsize=(10, 6))
-plt.plot(recall, precision, marker='.')
-plt.xlabel('Recall')
-plt.ylabel('Precision')
-plt.title('Precision-Recall Curve for Fraud Detection')
+plt.plot(recall, precision, marker=".")
+plt.xlabel("Recall")
+plt.ylabel("Precision")
+plt.title("Precision-Recall Curve for Fraud Detection")
 plt.grid(True, alpha=0.3)
 plt.show()
 
 # Show top anomalies
-anomaly_scores_df = pd.DataFrame({
-    'amount': X_combined['amount'],
-    'time': X_combined['time'],
-    'merchant_risk': X_combined['merchant_risk'],
-    'anomaly_score': -scores,
-    'predicted': y_pred,
-    'true_label': y_true
-})
+anomaly_scores_df = pd.DataFrame(
+    {
+        "amount": X_combined["amount"],
+        "time": X_combined["time"],
+        "merchant_risk": X_combined["merchant_risk"],
+        "anomaly_score": -scores,
+        "predicted": y_pred,
+        "true_label": y_true,
+    }
+)
 
 print("\n=== Top 10 Most Anomalous Transactions ===")
-print(anomaly_scores_df.nlargest(10, 'anomaly_score'))
+print(anomaly_scores_df.nlargest(10, "anomaly_score"))
 ```
 
 ---
@@ -534,6 +590,7 @@ print(anomaly_scores_df.nlargest(10, 'anomaly_score'))
 from tensorflow.keras.layers import Lambda
 from tensorflow.keras import backend as K
 
+
 # Sampling layer for VAE
 def sampling(args):
     z_mean, z_log_var = args
@@ -542,13 +599,14 @@ def sampling(args):
     epsilon = K.random_normal(shape=(batch, dim))
     return z_mean + K.exp(0.5 * z_log_var) * epsilon
 
+
 # VAE architecture
 latent_dim = 16
 
 # Encoder
 inputs = Input(shape=(784,))
-h = Dense(256, activation='relu')(inputs)
-h = Dense(128, activation='relu')(h)
+h = Dense(256, activation="relu")(inputs)
+h = Dense(128, activation="relu")(h)
 z_mean = Dense(latent_dim)(h)
 z_log_var = Dense(latent_dim)(h)
 z = Lambda(sampling, output_shape=(latent_dim,))([z_mean, z_log_var])
@@ -557,9 +615,9 @@ encoder_vae = Model(inputs, [z_mean, z_log_var, z])
 
 # Decoder
 latent_inputs = Input(shape=(latent_dim,))
-h_decoded = Dense(128, activation='relu')(latent_inputs)
-h_decoded = Dense(256, activation='relu')(h_decoded)
-outputs = Dense(784, activation='sigmoid')(h_decoded)
+h_decoded = Dense(128, activation="relu")(latent_inputs)
+h_decoded = Dense(256, activation="relu")(h_decoded)
+outputs = Dense(784, activation="sigmoid")(h_decoded)
 
 decoder_vae = Model(latent_inputs, outputs)
 
@@ -573,7 +631,7 @@ kl_loss = -0.5 * K.sum(1 + z_log_var - K.square(z_mean) - K.exp(z_log_var), axis
 vae_loss = K.mean(reconstruction_loss + kl_loss)
 
 vae.add_loss(vae_loss)
-vae.compile(optimizer='adam')
+vae.compile(optimizer="adam")
 
 # Train
 vae.fit(X_train, epochs=20, batch_size=128, validation_data=(X_test, None))
@@ -590,9 +648,9 @@ generated_images = decoder_vae.predict(random_latent)
 
 fig, axes = plt.subplots(1, n_samples, figsize=(20, 2))
 for i, ax in enumerate(axes):
-    ax.imshow(generated_images[i].reshape(28, 28), cmap='gray')
-    ax.axis('off')
-plt.suptitle('Generated Images from Random Latent Vectors', fontsize=14)
+    ax.imshow(generated_images[i].reshape(28, 28), cmap="gray")
+    ax.axis("off")
+plt.suptitle("Generated Images from Random Latent Vectors", fontsize=14)
 plt.show()
 ```
 
@@ -708,7 +766,7 @@ IsolationForest(contamination=0.02)
 **2. Use anomaly scores instead of labels**
 
 ```python
-iso_forest = IsolationForest(contamination='auto')  # No hard threshold
+iso_forest = IsolationForest(contamination="auto")  # No hard threshold
 scores = iso_forest.score_samples(X)
 
 # Manual threshold based on business cost
@@ -797,7 +855,7 @@ from sklearn.metrics import roc_curve, auc
 errors_normal = [0.03, 0.04, 0.05, ...]
 errors_anomaly = [0.12, 0.15, 0.18, ...]
 
-y_true = [0]*len(errors_normal) + [1]*len(errors_anomaly)
+y_true = [0] * len(errors_normal) + [1] * len(errors_anomaly)
 errors_combined = errors_normal + errors_anomaly
 
 fpr, tpr, thresholds = roc_curve(y_true, errors_combined)
@@ -825,6 +883,7 @@ def expected_cost(threshold, errors, y_true, cost_fp, cost_fn):
     FP = np.sum((y_pred == 1) & (y_true == 0))
     FN = np.sum((y_pred == 0) & (y_true == 1))
     return FP * cost_fp + FN * cost_fn
+
 
 thresholds_test = np.linspace(0.03, 0.20, 100)
 costs = [expected_cost(t, errors_combined, y_true, 10, 1000) for t in thresholds_test]
@@ -930,7 +989,7 @@ print(f"Optimal clusters in original space: {optimal_k}")
 # Overlay optimal clustering on t-SNE
 labels_optimal = KMeans(n_clusters=optimal_k).fit_predict(X)
 
-plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=labels_optimal, cmap='tab10')
+plt.scatter(X_tsne[:, 0], X_tsne[:, 1], c=labels_optimal, cmap="tab10")
 plt.title(f"t-SNE with {optimal_k} True Clusters")
 # May show that "5 visual clusters" actually belong to 3 true clusters
 ```
@@ -983,21 +1042,21 @@ confidence = -iso_scores  # Higher = more anomalous
 ```python
 def business_impact(transaction):
     impact = 0
-    
+
     # Transaction amount
-    impact += transaction['amount'] / 100  # $100 = 1 point
-    
+    impact += transaction["amount"] / 100  # $100 = 1 point
+
     # User tier
-    if transaction['user_tier'] == 'VIP':
+    if transaction["user_tier"] == "VIP":
         impact *= 3  # VIPs are high-priority
-    
+
     # Merchant risk
-    impact *= (1 + transaction['merchant_risk_score'])
-    
+    impact *= 1 + transaction["merchant_risk_score"]
+
     # Time sensitivity
-    if transaction['hours_since'] < 1:
+    if transaction["hours_since"] < 1:
         impact *= 2  # Recent = prioritize
-    
+
     return impact
 ```
 
@@ -1006,17 +1065,17 @@ def business_impact(transaction):
 ```python
 def historical_risk(user_id):
     user_history = get_history(user_id)
-    
+
     # Previous fraud
-    if user_history['fraud_count'] > 0:
+    if user_history["fraud_count"] > 0:
         return 10  # High priority
-    
+
     # First-time anomaly
-    if user_history['anomaly_count'] == 0:
+    if user_history["anomaly_count"] == 0:
         return 0.5  # May be false positive
-    
+
     # Repeat anomalies
-    return min(user_history['anomaly_count'], 5)
+    return min(user_history["anomaly_count"], 5)
 ```
 
 **Combined severity score:**
@@ -1025,9 +1084,10 @@ def historical_risk(user_id):
 def severity_score(anomaly):
     conf = anomaly_confidence(anomaly)
     impact = business_impact(anomaly)
-    hist = historical_risk(anomaly['user_id'])
-    
+    hist = historical_risk(anomaly["user_id"])
+
     return conf * impact * hist
+
 
 # Rank all 500 anomalies
 anomalies_ranked = sorted(anomalies, key=severity_score, reverse=True)

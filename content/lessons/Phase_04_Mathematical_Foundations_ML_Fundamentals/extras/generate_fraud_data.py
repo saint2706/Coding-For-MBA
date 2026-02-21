@@ -1,5 +1,7 @@
 """Generate synthetic fraud detection data for classification exercise."""
+
 import random
+
 
 def generate_fraud_csv(n=1000, fraud_rate=0.03, seed=42):
     random.seed(seed)
@@ -24,6 +26,7 @@ def generate_fraud_csv(n=1000, fraud_rate=0.03, seed=42):
             dist = round(random.uniform(0, 50), 1)
         rows.append(f"{amount},{hour},{is_intl},{cat},{velocity},{dist},{is_fraud}")
     return "\n".join(rows)
+
 
 if __name__ == "__main__":
     print(generate_fraud_csv(20))

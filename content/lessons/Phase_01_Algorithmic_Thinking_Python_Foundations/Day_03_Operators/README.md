@@ -68,11 +68,11 @@ If you've done anything in spreadsheets, you're already halfway there.
 # Business examples
 revenue = 150000
 costs = 95000
-profit = revenue - costs           # 55000
+profit = revenue - costs  # 55000
 
 units = 1247
-boxes_needed = units // 50         # 24 (full boxes)
-remaining_units = units % 50       # 47 (leftover)
+boxes_needed = units // 50  # 24 (full boxes)
+remaining_units = units % 50  # 47 (leftover)
 
 # Compound interest: P * (1 + r)^n
 principal = 10000
@@ -99,12 +99,12 @@ These return `True` or `False`:
 revenue = 125000
 target = 100000
 
-met_target = revenue >= target     # True
+met_target = revenue >= target  # True
 exceeded_by_50 = revenue > target * 1.5  # False
 
 # String comparison
 status = "active"
-is_active = status == "active"     # True
+is_active = status == "active"  # True
 ```
 
 > ⚠️ **Common Mistake**: `=` is assignment, `==` is comparison!
@@ -150,10 +150,10 @@ Shortcuts for updating variables:
 ```python
 # Sales counter
 daily_sales = 0
-daily_sales += 150    # First sale
-daily_sales += 275    # Second sale
-daily_sales += 99     # Third sale
-print(daily_sales)    # 524
+daily_sales += 150  # First sale
+daily_sales += 275  # Second sale
+daily_sales += 99  # Third sale
+print(daily_sales)  # 524
 ```
 
 ### Operator Precedence
@@ -193,7 +193,7 @@ Python is smart about `and` / `or`:
 result = False and expensive_function()  # expensive_function never runs!
 
 # With 'or', Python stops at the first True
-result = True or expensive_function()    # expensive_function never runs!
+result = True or expensive_function()  # expensive_function never runs!
 ```
 
 **Production Use**: Guard clauses to prevent errors:
@@ -343,7 +343,7 @@ print("NEEDS ATTENTION:", needs_attention)
 What does this expression evaluate to?
 
 ```python
-result = 2 + 3 * 4 ** 2
+result = 2 + 3 * 4**2
 ```
 
 <details>
@@ -425,8 +425,8 @@ A warehouse ships products in boxes of 12. If you have 50 items, how many boxes 
 items = 50
 box_size = 12
 
-full_boxes = items // box_size    # 4
-leftover = items % box_size       # 2
+full_boxes = items // box_size  # 4
+leftover = items % box_size  # 2
 
 print("Full boxes:", full_boxes)  # 4
 print("Leftover items:", leftover)  # 2
@@ -463,10 +463,10 @@ location_risk = zip_code.startswith("9")
 # High risk if ANY factor is true
 is_high_risk = age_risk or claims_risk or location_risk
 
-print("Age Risk:", age_risk)           # True (23 < 25)
-print("Claims Risk:", claims_risk)      # False
+print("Age Risk:", age_risk)  # True (23 < 25)
+print("Claims Risk:", claims_risk)  # False
 print("Location Risk:", location_risk)  # True (starts with 9)
-print("HIGH RISK:", is_high_risk)       # True
+print("HIGH RISK:", is_high_risk)  # True
 ```
 
 **Production Considerations**:

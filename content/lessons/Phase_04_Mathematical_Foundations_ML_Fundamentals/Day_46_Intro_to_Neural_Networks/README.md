@@ -52,19 +52,21 @@ outcomes:
 ```python
 import numpy as np
 
-def neuron(inputs, weights, bias, activation='relu'):
+
+def neuron(inputs, weights, bias, activation="relu"):
     """A single artificial neuron."""
     # Weighted sum
     z = np.dot(inputs, weights) + bias
-    
+
     # Activation function
-    if activation == 'relu':
+    if activation == "relu":
         return np.maximum(0, z)
-    elif activation == 'sigmoid':
+    elif activation == "sigmoid":
         return 1 / (1 + np.exp(-z))
-    elif activation == 'linear':
+    elif activation == "linear":
         return z
-    
+
+
 # Example: 3 inputs → 1 output
 inputs = np.array([0.5, 0.3, 0.2])
 weights = np.array([0.4, -0.2, 0.8])
@@ -92,20 +94,20 @@ tanh = np.tanh(x)
 plt.figure(figsize=(12, 4))
 
 plt.subplot(1, 3, 1)
-plt.plot(x, relu, 'b-', linewidth=2)
-plt.title('ReLU: max(0, x)')
+plt.plot(x, relu, "b-", linewidth=2)
+plt.title("ReLU: max(0, x)")
 plt.grid(True, alpha=0.3)
-plt.axhline(y=0, color='k', linewidth=0.5)
-plt.axvline(x=0, color='k', linewidth=0.5)
+plt.axhline(y=0, color="k", linewidth=0.5)
+plt.axvline(x=0, color="k", linewidth=0.5)
 
 plt.subplot(1, 3, 2)
-plt.plot(x, sigmoid, 'g-', linewidth=2)
-plt.title('Sigmoid: 1/(1+e^-x)')
+plt.plot(x, sigmoid, "g-", linewidth=2)
+plt.title("Sigmoid: 1/(1+e^-x)")
 plt.grid(True, alpha=0.3)
 
 plt.subplot(1, 3, 3)
-plt.plot(x, tanh, 'r-', linewidth=2)
-plt.title('Tanh: (e^x - e^-x)/(e^x + e^-x)')
+plt.plot(x, tanh, "r-", linewidth=2)
+plt.title("Tanh: (e^x - e^-x)/(e^x + e^-x)")
 plt.grid(True, alpha=0.3)
 
 plt.tight_layout()
@@ -132,7 +134,7 @@ np.random.seed(42)
 n = 1000
 
 X = np.random.randn(n, 10)
-y = ((X[:, 0] + X[:, 1] - X[:, 2]**2 + 0.5*X[:, 3]*X[:, 4]) > 0).astype(int)
+y = ((X[:, 0] + X[:, 1] - X[:, 2] ** 2 + 0.5 * X[:, 3] * X[:, 4]) > 0).astype(int)
 
 # Split and scale
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
@@ -141,18 +143,16 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Build model
-model = keras.Sequential([
-    layers.Dense(64, activation='relu', input_shape=(10,)),
-    layers.Dense(32, activation='relu'),
-    layers.Dense(1, activation='sigmoid')
-])
+model = keras.Sequential(
+    [
+        layers.Dense(64, activation="relu", input_shape=(10,)),
+        layers.Dense(32, activation="relu"),
+        layers.Dense(1, activation="sigmoid"),
+    ]
+)
 
 # Compile
-model.compile(
-    optimizer='adam',
-    loss='binary_crossentropy',
-    metrics=['accuracy']
-)
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 
 # Summary
 model.summary()
@@ -163,11 +163,7 @@ model.summary()
 ```python
 # Train
 history = model.fit(
-    X_train, y_train,
-    epochs=50,
-    batch_size=32,
-    validation_split=0.2,
-    verbose=1
+    X_train, y_train, epochs=50, batch_size=32, validation_split=0.2, verbose=1
 )
 
 # Evaluate
@@ -179,18 +175,18 @@ import matplotlib.pyplot as plt
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
 
-axes[0].plot(history.history['loss'], label='Train')
-axes[0].plot(history.history['val_loss'], label='Validation')
-axes[0].set_xlabel('Epoch')
-axes[0].set_ylabel('Loss')
-axes[0].set_title('Loss over Training')
+axes[0].plot(history.history["loss"], label="Train")
+axes[0].plot(history.history["val_loss"], label="Validation")
+axes[0].set_xlabel("Epoch")
+axes[0].set_ylabel("Loss")
+axes[0].set_title("Loss over Training")
 axes[0].legend()
 
-axes[1].plot(history.history['accuracy'], label='Train')
-axes[1].plot(history.history['val_accuracy'], label='Validation')
-axes[1].set_xlabel('Epoch')
-axes[1].set_ylabel('Accuracy')
-axes[1].set_title('Accuracy over Training')
+axes[1].plot(history.history["accuracy"], label="Train")
+axes[1].plot(history.history["val_accuracy"], label="Validation")
+axes[1].set_xlabel("Epoch")
+axes[1].set_ylabel("Accuracy")
+axes[1].set_title("Accuracy over Training")
 axes[1].legend()
 
 plt.tight_layout()
@@ -203,7 +199,7 @@ plt.show()
 """
 Forward Pass:
   Input → Hidden Layer 1 → Hidden Layer 2 → Output
-  
+
   At each layer:
     z = weights @ input + bias
     a = activation(z)
@@ -212,7 +208,7 @@ Backward Pass (Backpropagation):
   1. Compute loss: L = loss_function(prediction, target)
   2. Compute gradient: dL/dw for each weight
   3. Update weights: w = w - learning_rate * dL/dw
-  
+
 The chain rule propagates gradients backward through layers.
 """
 
@@ -223,16 +219,16 @@ learning_rate = 0.1
 
 for i in range(50):
     # Simulated loss: (w - 2)^2 (optimal at w=2)
-    loss = (weights - 2)**2
+    loss = (weights - 2) ** 2
     gradient = 2 * (weights - 2)
     weights = weights - learning_rate * gradient
     losses.append(loss)
 
 plt.figure(figsize=(8, 4))
-plt.plot(losses, 'b-', linewidth=2)
-plt.xlabel('Iteration')
-plt.ylabel('Loss')
-plt.title('Gradient Descent Reducing Loss')
+plt.plot(losses, "b-", linewidth=2)
+plt.xlabel("Iteration")
+plt.ylabel("Loss")
+plt.title("Gradient Descent Reducing Loss")
 plt.grid(True, alpha=0.3)
 plt.show()
 ```
@@ -264,19 +260,19 @@ plt.show()
 ```python
 from tensorflow.keras import layers, regularizers
 
-model = keras.Sequential([
-    layers.Dense(64, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
-    layers.Dropout(0.3),  # Randomly zero 30% of neurons during training
-    layers.Dense(32, activation='relu'),
-    layers.Dropout(0.2),
-    layers.Dense(1, activation='sigmoid')
-])
+model = keras.Sequential(
+    [
+        layers.Dense(64, activation="relu", kernel_regularizer=regularizers.l2(0.01)),
+        layers.Dropout(0.3),  # Randomly zero 30% of neurons during training
+        layers.Dense(32, activation="relu"),
+        layers.Dropout(0.2),
+        layers.Dense(1, activation="sigmoid"),
+    ]
+)
 
 # Early stopping
 early_stop = keras.callbacks.EarlyStopping(
-    monitor='val_loss',
-    patience=5,
-    restore_best_weights=True
+    monitor="val_loss", patience=5, restore_best_weights=True
 )
 
 # history = model.fit(..., callbacks=[early_stop])
@@ -307,13 +303,15 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Build
-model = keras.Sequential([
-    layers.Dense(32, activation='relu', input_shape=(30,)),
-    layers.Dense(16, activation='relu'),
-    layers.Dense(1, activation='sigmoid')
-])
+model = keras.Sequential(
+    [
+        layers.Dense(32, activation="relu", input_shape=(30,)),
+        layers.Dense(16, activation="relu"),
+        layers.Dense(1, activation="sigmoid"),
+    ]
+)
 
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
 
 # Train
 history = model.fit(X_train, y_train, epochs=50, validation_split=0.2, verbose=0)
@@ -326,19 +324,19 @@ print(f"Test accuracy: {model.evaluate(X_test, y_test, verbose=0)[1]:.3f}")
 
 ```python
 architectures = [
-    [32],              # Shallow
-    [64, 32],          # Medium
-    [128, 64, 32],     # Deep
+    [32],  # Shallow
+    [64, 32],  # Medium
+    [128, 64, 32],  # Deep
 ]
 
 for arch in architectures:
     model = keras.Sequential()
-    model.add(layers.Dense(arch[0], activation='relu', input_shape=(30,)))
+    model.add(layers.Dense(arch[0], activation="relu", input_shape=(30,)))
     for units in arch[1:]:
-        model.add(layers.Dense(units, activation='relu'))
-    model.add(layers.Dense(1, activation='sigmoid'))
-    
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        model.add(layers.Dense(units, activation="relu"))
+    model.add(layers.Dense(1, activation="sigmoid"))
+
+    model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
     model.fit(X_train, y_train, epochs=30, verbose=0)
     acc = model.evaluate(X_test, y_test, verbose=0)[1]
     print(f"Architecture {arch}: Accuracy = {acc:.3f}")
@@ -359,13 +357,15 @@ X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
 # Regression model (linear output, MSE loss)
-model = keras.Sequential([
-    layers.Dense(64, activation='relu', input_shape=(8,)),
-    layers.Dense(32, activation='relu'),
-    layers.Dense(1)  # Linear activation for regression
-])
+model = keras.Sequential(
+    [
+        layers.Dense(64, activation="relu", input_shape=(8,)),
+        layers.Dense(32, activation="relu"),
+        layers.Dense(1),  # Linear activation for regression
+    ]
+)
 
-model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+model.compile(optimizer="adam", loss="mse", metrics=["mae"])
 model.fit(X_train, y_train, epochs=50, validation_split=0.2, verbose=0)
 
 print(f"Test MAE: {model.evaluate(X_test, y_test, verbose=0)[1]:.3f}")

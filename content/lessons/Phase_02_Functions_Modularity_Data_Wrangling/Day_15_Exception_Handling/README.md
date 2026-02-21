@@ -98,7 +98,7 @@ else:
     print(f"Read {len(content)} characters")
 finally:
     # Always runs (cleanup)
-    if 'file' in locals():
+    if "file" in locals():
         file.close()
 ```
 
@@ -125,6 +125,7 @@ def withdraw(balance, amount):
         raise ValueError("Insufficient funds")
     return balance - amount
 
+
 try:
     new_balance = withdraw(100, 150)
 except ValueError as e:
@@ -136,17 +137,18 @@ except ValueError as e:
 ```python
 class InsufficientFundsError(Exception):
     """Raised when account doesn't have enough funds."""
+
     def __init__(self, balance, amount):
         self.balance = balance
         self.amount = amount
-        super().__init__(
-            f"Cannot withdraw ${amount} from balance ${balance}"
-        )
+        super().__init__(f"Cannot withdraw ${amount} from balance ${balance}")
+
 
 def withdraw(balance, amount):
     if amount > balance:
         raise InsufficientFundsError(balance, amount)
     return balance - amount
+
 
 try:
     withdraw(100, 150)
@@ -190,13 +192,15 @@ with open("file.txt") as f:
 ```python
 from contextlib import contextmanager
 
+
 @contextmanager
 def database_connection(host):
     conn = connect(host)  # Setup
     try:
-        yield conn        # Provide resource
+        yield conn  # Provide resource
     finally:
-        conn.close()      # Cleanup
+        conn.close()  # Cleanup
+
 
 with database_connection("localhost") as db:
     db.query("SELECT * FROM users")
@@ -263,6 +267,7 @@ def get_positive_number(prompt, max_attempts=3):
                 return None
     return None
 
+
 # Usage
 price = get_positive_number("Enter price: $")
 if price:
@@ -280,7 +285,7 @@ def process_data_files(file_paths):
     """Process multiple files, continuing on errors."""
     results = []
     errors = []
-    
+
     for path in file_paths:
         try:
             with open(path) as f:
@@ -292,13 +297,14 @@ def process_data_files(file_paths):
             errors.append({"file": path, "error": "Permission denied"})
         except Exception as e:
             errors.append({"file": path, "error": str(e)})
-    
+
     return {
         "processed": len(results),
         "failed": len(errors),
         "results": results,
-        "errors": errors
+        "errors": errors,
     }
+
 
 # Test
 files = ["data1.txt", "data2.txt", "nonexistent.txt"]
@@ -313,22 +319,27 @@ print(f"Processed: {report['processed']}, Failed: {report['failed']}")
 ```python
 class TransactionError(Exception):
     """Base exception for transactions."""
+
     pass
+
 
 class InsufficientFundsError(TransactionError):
     pass
 
+
 class InvalidAmountError(TransactionError):
     pass
 
+
 class AccountLockedError(TransactionError):
     pass
+
 
 class BankAccount:
     def __init__(self, balance=0, locked=False):
         self.balance = balance
         self.locked = locked
-    
+
     def withdraw(self, amount):
         if self.locked:
             raise AccountLockedError("Account is locked")
@@ -340,6 +351,7 @@ class BankAccount:
             )
         self.balance -= amount
         return self.balance
+
 
 # Usage
 account = BankAccount(100)
@@ -398,6 +410,7 @@ def test():
         return "try"
     finally:
         print("finally")
+
 
 result = test()
 print(result)
@@ -471,11 +484,12 @@ import json
 import os
 import logging
 
+
 def load_config(config_path, defaults=None):
     """Load config with multiple fallback levels."""
     defaults = defaults or {}
     config = defaults.copy()
-    
+
     # Try JSON file
     try:
         with open(config_path) as f:
@@ -487,17 +501,17 @@ def load_config(config_path, defaults=None):
         logging.warning(f"Config file {config_path} not found")
     except json.JSONDecodeError as e:
         logging.error(f"Invalid JSON in {config_path}: {e}")
-    
+
     # Fallback: environment variables
     env_mappings = {"DB_HOST": "database_host", "DB_PORT": "database_port"}
     for env_var, config_key in env_mappings.items():
         if env_var in os.environ:
             config[config_key] = os.environ[env_var]
             logging.info(f"Loaded {config_key} from environment")
-    
+
     if config == defaults:
         logging.warning("Using default configuration")
-    
+
     return config
 ```
 

@@ -102,8 +102,23 @@ plt.xlabel("Month")
 plt.ylabel("Units Sold (thousands)")
 plt.legend(loc="upper left")
 plt.grid(True, alpha=0.3)
-plt.xticks(months, ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"])
+plt.xticks(
+    months,
+    [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ],
+)
 plt.tight_layout()
 plt.show()
 ```
@@ -124,8 +139,14 @@ bars = plt.bar(categories, values, color=colors, edgecolor="black")
 
 # Add value labels on top of bars
 for bar, value in zip(bars, values):
-    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 2000,
-             f"${value:,}", ha="center", fontsize=10, fontweight="bold")
+    plt.text(
+        bar.get_x() + bar.get_width() / 2,
+        bar.get_height() + 2000,
+        f"${value:,}",
+        ha="center",
+        fontsize=10,
+        fontweight="bold",
+    )
 
 plt.title("Revenue by Category", fontsize=16, fontweight="bold")
 plt.xlabel("Category")
@@ -141,8 +162,14 @@ plt.show()
 import matplotlib.pyplot as plt
 
 # Great for ranked data with long labels
-products = ["MacBook Pro 16\"", "iPhone 15 Pro", "iPad Air", 
-            "AirPods Pro", "Apple Watch", "Magic Keyboard"]
+products = [
+    'MacBook Pro 16"',
+    "iPhone 15 Pro",
+    "iPad Air",
+    "AirPods Pro",
+    "Apple Watch",
+    "Magic Keyboard",
+]
 revenue = [125000, 180000, 75000, 95000, 68000, 28000]
 
 # Sort by value for better readability
@@ -175,16 +202,23 @@ np.random.seed(42)
 customer_ages = np.random.normal(35, 10, 1000)
 
 plt.figure(figsize=(10, 6))
-n, bins, patches = plt.hist(customer_ages, bins=30, edgecolor="black", 
-                             color="#2196F3", alpha=0.7)
+n, bins, patches = plt.hist(
+    customer_ages, bins=30, edgecolor="black", color="#2196F3", alpha=0.7
+)
 
 # Add mean and median lines
 mean_age = np.mean(customer_ages)
 median_age = np.median(customer_ages)
-plt.axvline(mean_age, color="red", linestyle="--", linewidth=2, 
-            label=f"Mean: {mean_age:.1f}")
-plt.axvline(median_age, color="green", linestyle="-.", linewidth=2, 
-            label=f"Median: {median_age:.1f}")
+plt.axvline(
+    mean_age, color="red", linestyle="--", linewidth=2, label=f"Mean: {mean_age:.1f}"
+)
+plt.axvline(
+    median_age,
+    color="green",
+    linestyle="-.",
+    linewidth=2,
+    label=f"Median: {median_age:.1f}",
+)
 
 plt.title("Customer Age Distribution", fontsize=16, fontweight="bold")
 plt.xlabel("Age")
@@ -210,8 +244,13 @@ plt.scatter(marketing_spend, revenue, s=100, c="#2196F3", alpha=0.7, edgecolor="
 # Add trend line
 z = np.polyfit(marketing_spend, revenue, 1)
 p = np.poly1d(z)
-plt.plot(marketing_spend, p(marketing_spend), "r--", linewidth=2, 
-         label=f"Trend (slope: {z[0]:.2f})")
+plt.plot(
+    marketing_spend,
+    p(marketing_spend),
+    "r--",
+    linewidth=2,
+    label=f"Trend (slope: {z[0]:.2f})",
+)
 
 plt.title("Marketing Spend vs Revenue", fontsize=16, fontweight="bold")
 plt.xlabel("Marketing Spend ($)")
@@ -253,8 +292,13 @@ axes[0, 1].set_title("Monthly Profit/Loss", fontweight="bold")
 axes[0, 1].set_ylabel("Profit ($K)")
 
 # Plot 3: Pie chart
-axes[1, 0].pie(category_values, labels=categories, autopct="%1.1f%%",
-               colors=["#4CAF50", "#2196F3", "#FF9800"], startangle=90)
+axes[1, 0].pie(
+    category_values,
+    labels=categories,
+    autopct="%1.1f%%",
+    colors=["#4CAF50", "#2196F3", "#FF9800"],
+    startangle=90,
+)
 axes[1, 0].set_title("Sales by Category", fontweight="bold")
 
 # Plot 4: Histogram
@@ -311,16 +355,22 @@ plt.show()
 colorblind_palette = ["#0072B2", "#E69F00", "#009E73", "#D55E00", "#CC79A7"]
 
 # Use patterns/markers in addition to color
-plt.plot(x, y1, color=colorblind_palette[0], marker="o", linestyle="-", label="Series A")
-plt.plot(x, y2, color=colorblind_palette[1], marker="s", linestyle="--", label="Series B")
+plt.plot(
+    x, y1, color=colorblind_palette[0], marker="o", linestyle="-", label="Series A"
+)
+plt.plot(
+    x, y2, color=colorblind_palette[1], marker="s", linestyle="--", label="Series B"
+)
 
 # Ensure sufficient contrast and font sizes
-plt.rcParams.update({
-    "font.size": 12,
-    "axes.labelsize": 14,
-    "axes.titlesize": 16,
-    "legend.fontsize": 12,
-})
+plt.rcParams.update(
+    {
+        "font.size": 12,
+        "axes.labelsize": 14,
+        "axes.titlesize": 16,
+        "legend.fontsize": 12,
+    }
+)
 ```
 
 ### Export Best Practices
@@ -348,35 +398,67 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Monthly data for 2023 and 2024
-months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
-          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+]
 sales_2023 = [85, 92, 88, 95, 102, 98, 105, 115, 108, 120, 135, 150]
 sales_2024 = [95, 105, 100, 112, 118, 125, 130, 142, 138, 155, 0, 0]  # Incomplete year
+
 
 def create_yoy_comparison(months, data_2023, data_2024):
     """Create year-over-year sales comparison chart."""
     plt.figure(figsize=(12, 6))
-    
+
     x = np.arange(len(months))
     width = 0.35
-    
+
     # Create grouped bar chart
-    bars_2023 = plt.bar(x - width/2, data_2023, width, label="2023", 
-                        color="#2196F3", edgecolor="black")
-    
+    bars_2023 = plt.bar(
+        x - width / 2,
+        data_2023,
+        width,
+        label="2023",
+        color="#2196F3",
+        edgecolor="black",
+    )
+
     # Only plot 2024 where we have data (non-zero)
     data_2024_masked = [v if v > 0 else np.nan for v in data_2024]
-    bars_2024 = plt.bar(x + width/2, data_2024_masked, width, label="2024", 
-                        color="#4CAF50", edgecolor="black")
-    
+    bars_2024 = plt.bar(
+        x + width / 2,
+        data_2024_masked,
+        width,
+        label="2024",
+        color="#4CAF50",
+        edgecolor="black",
+    )
+
     # Calculate and annotate YoY growth
     for i, (v23, v24) in enumerate(zip(data_2023, data_2024)):
         if v24 > 0:
             growth = ((v24 - v23) / v23) * 100
             color = "green" if growth > 0 else "red"
-            plt.text(i + width/2, v24 + 3, f"+{growth:.0f}%" if growth > 0 else f"{growth:.0f}%",
-                    ha="center", fontsize=8, color=color, fontweight="bold")
-    
+            plt.text(
+                i + width / 2,
+                v24 + 3,
+                f"+{growth:.0f}%" if growth > 0 else f"{growth:.0f}%",
+                ha="center",
+                fontsize=8,
+                color=color,
+                fontweight="bold",
+            )
+
     plt.title("Year-over-Year Sales Comparison", fontsize=16, fontweight="bold")
     plt.xlabel("Month")
     plt.ylabel("Sales ($K)")
@@ -386,6 +468,7 @@ def create_yoy_comparison(months, data_2023, data_2024):
     plt.tight_layout()
     plt.savefig("yoy_comparison.png", dpi=150)
     plt.show()
+
 
 create_yoy_comparison(months, sales_2023, sales_2024)
 ```
@@ -403,45 +486,61 @@ revenue = [450000, 380000, 520000, 290000]
 growth = [12, -5, 18, 3]  # YoY growth percentage
 employees = [45, 38, 52, 29]
 
+
 def create_regional_dashboard(regions, revenue, growth, employees):
     """Create multi-metric regional performance dashboard."""
     fig, axes = plt.subplots(1, 3, figsize=(16, 5))
-    
+
     # Chart 1: Revenue bars
     colors = ["#4CAF50" if g > 0 else "#F44336" for g in growth]
     bars = axes[0].bar(regions, revenue, color=colors, edgecolor="black")
     for bar, val in zip(bars, revenue):
-        axes[0].text(bar.get_x() + bar.get_width()/2, bar.get_height() + 10000,
-                    f"${val/1000:.0f}K", ha="center", fontweight="bold")
+        axes[0].text(
+            bar.get_x() + bar.get_width() / 2,
+            bar.get_height() + 10000,
+            f"${val / 1000:.0f}K",
+            ha="center",
+            fontweight="bold",
+        )
     axes[0].set_title("Revenue by Region", fontweight="bold")
     axes[0].set_ylabel("Revenue ($)")
     axes[0].set_ylim(0, max(revenue) * 1.15)
-    
+
     # Chart 2: Growth bars (can be negative)
     colors = ["#4CAF50" if g > 0 else "#F44336" for g in growth]
     bars = axes[1].bar(regions, growth, color=colors, edgecolor="black")
     axes[1].axhline(0, color="black", linewidth=0.5)
     for bar, val in zip(bars, growth):
         offset = 1 if val > 0 else -3
-        axes[1].text(bar.get_x() + bar.get_width()/2, val + offset,
-                    f"{val:+d}%", ha="center", fontweight="bold")
+        axes[1].text(
+            bar.get_x() + bar.get_width() / 2,
+            val + offset,
+            f"{val:+d}%",
+            ha="center",
+            fontweight="bold",
+        )
     axes[1].set_title("YoY Growth Rate", fontweight="bold")
     axes[1].set_ylabel("Growth (%)")
-    
+
     # Chart 3: Revenue per employee (efficiency)
-    efficiency = [r/e for r, e in zip(revenue, employees)]
+    efficiency = [r / e for r, e in zip(revenue, employees)]
     axes[2].barh(regions, efficiency, color="#2196F3", edgecolor="black")
     for i, val in enumerate(efficiency):
         axes[2].text(val + 200, i, f"${val:,.0f}", va="center", fontweight="bold")
     axes[2].set_title("Revenue per Employee", fontweight="bold")
     axes[2].set_xlabel("Revenue/Employee ($)")
     axes[2].set_xlim(0, max(efficiency) * 1.15)
-    
-    plt.suptitle("Regional Performance Dashboard - Q3 2024", 
-                 fontsize=18, fontweight="bold", y=1.02)
+
+    plt.suptitle(
+        "Regional Performance Dashboard - Q3 2024",
+        fontsize=18,
+        fontweight="bold",
+        y=1.02,
+    )
     plt.tight_layout()
     plt.savefig("regional_dashboard.png", dpi=150, bbox_inches="tight")
     plt.show()
+
 
 create_regional_dashboard(regions, revenue, growth, employees)
 ```
@@ -460,44 +559,78 @@ np.random.seed(42)
 website_orders = np.random.exponential(75, 500)  # Skewed right (many small orders)
 enterprise_orders = np.random.normal(5000, 1500, 100)  # Normal (large contracts)
 
+
 def compare_distributions(data1, data2, label1, label2):
     """Compare two distributions with statistics overlay."""
     fig, axes = plt.subplots(1, 2, figsize=(14, 5))
-    
+
     # Website orders
     axes[0].hist(data1, bins=30, edgecolor="black", color="#2196F3", alpha=0.7)
-    axes[0].axvline(np.mean(data1), color="red", linestyle="--", linewidth=2,
-                   label=f"Mean: ${np.mean(data1):,.0f}")
-    axes[0].axvline(np.median(data1), color="green", linestyle="-.", linewidth=2,
-                   label=f"Median: ${np.median(data1):,.0f}")
+    axes[0].axvline(
+        np.mean(data1),
+        color="red",
+        linestyle="--",
+        linewidth=2,
+        label=f"Mean: ${np.mean(data1):,.0f}",
+    )
+    axes[0].axvline(
+        np.median(data1),
+        color="green",
+        linestyle="-.",
+        linewidth=2,
+        label=f"Median: ${np.median(data1):,.0f}",
+    )
     axes[0].set_title(f"{label1} Order Distribution", fontweight="bold")
     axes[0].set_xlabel("Order Value ($)")
     axes[0].set_ylabel("Frequency")
     axes[0].legend()
-    
+
     # Enterprise orders
     axes[1].hist(data2, bins=20, edgecolor="black", color="#FF9800", alpha=0.7)
-    axes[1].axvline(np.mean(data2), color="red", linestyle="--", linewidth=2,
-                   label=f"Mean: ${np.mean(data2):,.0f}")
-    axes[1].axvline(np.median(data2), color="green", linestyle="-.", linewidth=2,
-                   label=f"Median: ${np.median(data2):,.0f}")
+    axes[1].axvline(
+        np.mean(data2),
+        color="red",
+        linestyle="--",
+        linewidth=2,
+        label=f"Mean: ${np.mean(data2):,.0f}",
+    )
+    axes[1].axvline(
+        np.median(data2),
+        color="green",
+        linestyle="-.",
+        linewidth=2,
+        label=f"Median: ${np.median(data2):,.0f}",
+    )
     axes[1].set_title(f"{label2} Order Distribution", fontweight="bold")
     axes[1].set_xlabel("Order Value ($)")
     axes[1].set_ylabel("Frequency")
     axes[1].legend()
-    
+
     # Add annotations about distribution shape
-    axes[0].text(0.95, 0.95, "Right-skewed\n(many small orders)", 
-                transform=axes[0].transAxes, ha="right", va="top",
-                bbox=dict(boxstyle="round", facecolor="wheat"))
-    axes[1].text(0.95, 0.95, "Normal distribution\n(centered around mean)", 
-                transform=axes[1].transAxes, ha="right", va="top",
-                bbox=dict(boxstyle="round", facecolor="wheat"))
-    
+    axes[0].text(
+        0.95,
+        0.95,
+        "Right-skewed\n(many small orders)",
+        transform=axes[0].transAxes,
+        ha="right",
+        va="top",
+        bbox=dict(boxstyle="round", facecolor="wheat"),
+    )
+    axes[1].text(
+        0.95,
+        0.95,
+        "Normal distribution\n(centered around mean)",
+        transform=axes[1].transAxes,
+        ha="right",
+        va="top",
+        bbox=dict(boxstyle="round", facecolor="wheat"),
+    )
+
     plt.suptitle("Order Value Distribution Comparison", fontsize=16, fontweight="bold")
     plt.tight_layout()
     plt.savefig("distribution_comparison.png", dpi=150)
     plt.show()
+
 
 compare_distributions(website_orders, enterprise_orders, "Website", "Enterprise")
 ```
@@ -560,7 +693,7 @@ A bar chart shows sales from 50 to 60 units, but the y-axis starts at 48. Why is
 plt.ylim(48, 62)  # Exaggerates differences
 
 # GOOD: Start at zero
-plt.ylim(0, 65)   # Accurate representation
+plt.ylim(0, 65)  # Accurate representation
 ```
 
 **Exception**: Line charts can use truncated axes when showing trends, but should be clearly labeled.
@@ -585,11 +718,13 @@ What's wrong with `plt.savefig("chart.png")` for a presentation?
 **Better approach:**
 
 ```python
-plt.savefig("chart.png", 
-            dpi=300,                    # High resolution
-            bbox_inches="tight",        # Include all elements
-            facecolor="white",          # White background
-            edgecolor="none")           # No border
+plt.savefig(
+    "chart.png",
+    dpi=300,  # High resolution
+    bbox_inches="tight",  # Include all elements
+    facecolor="white",  # White background
+    edgecolor="none",
+)  # No border
 ```
 
 For different uses:
@@ -663,8 +798,14 @@ axes[1, 0].barh(customer_names, customer_revenue)
 axes[1, 0].set_title("Top 10 Customers")
 
 # Bottom right: Summary KPIs or leave as text
-axes[1, 1].text(0.5, 0.5, f"Total: ${total:,}\nGrowth: {growth}%",
-               ha="center", va="center", fontsize=20)
+axes[1, 1].text(
+    0.5,
+    0.5,
+    f"Total: ${total:,}\nGrowth: {growth}%",
+    ha="center",
+    va="center",
+    fontsize=20,
+)
 axes[1, 1].set_title("Key Metrics")
 axes[1, 1].axis("off")
 

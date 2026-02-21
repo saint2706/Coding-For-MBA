@@ -90,44 +90,62 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # Sample movie data
-movies = pd.DataFrame({
-    'movie_id': [1, 2, 3, 4, 5],
-    'title': ['The Matrix', 'John Wick', 'Inception', 'Toy Story', 'Finding Nemo'],
-    'genre': ['sci-fi action', 'action thriller', 'sci-fi thriller', 'animation comedy', 'animation adventure'],
-    'director': ['Wachowski', 'Stahelski', 'Nolan', 'Lasseter', 'Stanton'],
-    'actors': ['Reeves Fishburne', 'Reeves McShane', 'DiCaprio Cotillard', 'Hanks Allen', 'DeGeneres Brooks']
-})
+movies = pd.DataFrame(
+    {
+        "movie_id": [1, 2, 3, 4, 5],
+        "title": ["The Matrix", "John Wick", "Inception", "Toy Story", "Finding Nemo"],
+        "genre": [
+            "sci-fi action",
+            "action thriller",
+            "sci-fi thriller",
+            "animation comedy",
+            "animation adventure",
+        ],
+        "director": ["Wachowski", "Stahelski", "Nolan", "Lasseter", "Stanton"],
+        "actors": [
+            "Reeves Fishburne",
+            "Reeves McShane",
+            "DiCaprio Cotillard",
+            "Hanks Allen",
+            "DeGeneres Brooks",
+        ],
+    }
+)
 
 # Combine features into description
-movies['description'] = movies['genre'] + ' ' + movies['director'] + ' ' + movies['actors']
+movies["description"] = (
+    movies["genre"] + " " + movies["director"] + " " + movies["actors"]
+)
 
 # TF-IDF vectorization
-tfidf = TfidfVectorizer(stop_words='english')
-tfidf_matrix = tfidf.fit_transform(movies['description'])
+tfidf = TfidfVectorizer(stop_words="english")
+tfidf_matrix = tfidf.fit_transform(movies["description"])
 
 # Compute item similarity
 item_similarity = cosine_similarity(tfidf_matrix)
 
 print("=== Item Similarity Matrix ===")
 similarity_df = pd.DataFrame(
-    item_similarity,
-    index=movies['title'],
-    columns=movies['title']
+    item_similarity, index=movies["title"], columns=movies["title"]
 )
 print(similarity_df.round(2))
 
+
 # Recommend movies similar to "The Matrix"
 def get_recommendations(movie_title, n=3):
-    idx = movies[movies['title'] == movie_title].index[0]
+    idx = movies[movies["title"] == movie_title].index[0]
     sim_scores = list(enumerate(item_similarity[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[1:n+1]  # Exclude itself
-    
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)[
+        1 : n + 1
+    ]  # Exclude itself
+
     print(f"\n=== Recommendations for '{movie_title}' ===")
     for i, score in sim_scores:
         print(f"{movies.iloc[i]['title']}: {score:.2f} similarity")
 
-get_recommendations('The Matrix')
-get_recommendations('Toy Story')
+
+get_recommendations("The Matrix")
+get_recommendations("Toy Story")
 ```
 
 ### User-Based Collaborative Filtering
@@ -136,14 +154,18 @@ get_recommendations('Toy Story')
 
 ```python
 # User-item ratings matrix
-ratings = pd.DataFrame({
-    'user_id': [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5],
-    'movie_id': [1, 2, 3, 1, 2, 4, 2, 3, 5, 1, 4, 3, 5],
-    'rating': [5, 4, 3, 4, 5, 2, 5, 4, 4, 5, 3, 4, 5]
-})
+ratings = pd.DataFrame(
+    {
+        "user_id": [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5, 5],
+        "movie_id": [1, 2, 3, 1, 2, 4, 2, 3, 5, 1, 4, 3, 5],
+        "rating": [5, 4, 3, 4, 5, 2, 5, 4, 4, 5, 3, 4, 5],
+    }
+)
 
 # Pivot to user-item matrix
-user_item_matrix = ratings.pivot(index='user_id', columns='movie_id', values='rating').fillna(0)
+user_item_matrix = ratings.pivot(
+    index="user_id", columns="movie_id", values="rating"
+).fillna(0)
 
 print("=== User-Item Matrix ===")
 print(user_item_matrix)
@@ -153,37 +175,39 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 user_similarity = cosine_similarity(user_item_matrix)
 user_similarity_df = pd.DataFrame(
-    user_similarity,
-    index=user_item_matrix.index,
-    columns=user_item_matrix.index
+    user_similarity, index=user_item_matrix.index, columns=user_item_matrix.index
 )
 
 print("\n=== User Similarity Matrix ===")
 print(user_similarity_df.round(2))
 
+
 # Predict rating for user=1, movie=5
 def predict_rating(user_id, movie_id, k=2):
     """Predict rating using k nearest neighbors."""
-    
+
     # Get k most similar users who rated this movie
     user_idx = user_id - 1
     movie_col = movie_id
-    
+
     similar_users = user_similarity_df.iloc[user_idx].drop(user_id).nlargest(k)
-    
+
     # Weighted average of their ratings
     total_similarity = 0
     weighted_sum = 0
-    
+
     for similar_user_id, similarity in similar_users.items():
         if user_item_matrix.loc[similar_user_id, movie_col] > 0:
-            weighted_sum += similarity * user_item_matrix.loc[similar_user_id, movie_col]
+            weighted_sum += (
+                similarity * user_item_matrix.loc[similar_user_id, movie_col]
+            )
             total_similarity += similarity
-    
+
     if total_similarity == 0:
         return user_item_matrix.mean(axis=0)[movie_col]  # Fall back to average
-    
+
     return weighted_sum / total_similarity
+
 
 # Predict
 predicted_rating = predict_rating(user_id=1, movie_id=5, k=2)
@@ -198,37 +222,37 @@ print(f"\nPredicted rating for User 1, Movie 5: {predicted_rating:.2f}")
 # Compute item similarity
 item_similarity_cf = cosine_similarity(user_item_matrix.T)
 item_similarity_cf_df = pd.DataFrame(
-    item_similarity_cf,
-    index=user_item_matrix.columns,
-    columns=user_item_matrix.columns
+    item_similarity_cf, index=user_item_matrix.columns, columns=user_item_matrix.columns
 )
 
 print("=== Item Similarity (Collaborative Filtering) ===")
 print(item_similarity_cf_df.round(2))
 
+
 def predict_rating_item_based(user_id, movie_id, k=2):
     """Predict rating using item-based CF."""
-    
+
     # Get user's rated movies
     user_ratings = user_item_matrix.loc[user_id]
     rated_movies = user_ratings[user_ratings > 0]
-    
+
     # Get k most similar items
     similar_items = item_similarity_cf_df[movie_id].drop(movie_id).nlargest(k)
-    
+
     # Weighted average
     total_similarity = 0
     weighted_sum = 0
-    
+
     for similar_item_id, similarity in similar_items.items():
         if similar_item_id in rated_movies.index and rated_movies[similar_item_id] > 0:
             weighted_sum += similarity * rated_movies[similar_item_id]
             total_similarity += similarity
-    
+
     if total_similarity == 0:
         return user_item_matrix.mean(axis=0)[movie_id]
-    
+
     return weighted_sum / total_similarity
+
 
 predicted_item_based = predict_rating_item_based(user_id=1, movie_id=5, k=2)
 print(f"\nItem-based predicted rating for User 1, Movie 5: {predicted_item_based:.2f}")
@@ -244,7 +268,7 @@ from surprise.model_selection import train_test_split
 
 # Prepare data for Surprise library
 reader = Reader(rating_scale=(1, 5))
-data = Dataset.load_from_df(ratings[['user_id', 'movie_id', 'rating']], reader)
+data = Dataset.load_from_df(ratings[["user_id", "movie_id", "rating"]], reader)
 
 # Train/test split
 trainset, testset = train_test_split(data, test_size=0.25, random_state=42)
@@ -269,19 +293,21 @@ print(f"\nSVD Prediction for User 1, Movie 5: {pred.est:.2f} (actual: unknown)")
 # Get top N recommendations for a user
 from collections import defaultdict
 
+
 def get_top_n_recommendations(predictions, n=3):
     """Get top N recommendations for each user."""
-    
+
     top_n = defaultdict(list)
     for uid, iid, true_r, est, _ in predictions:
         top_n[uid].append((iid, est))
-    
+
     # Sort and get top N
     for uid, user_ratings in top_n.items():
         user_ratings.sort(key=lambda x: x[1], reverse=True)
         top_n[uid] = user_ratings[:n]
-    
+
     return top_n
+
 
 top_n = get_top_n_recommendations(predictions, n=3)
 
@@ -299,16 +325,21 @@ from scipy.sparse import csr_matrix
 from implicit.als import AlternatingLeastSquares
 
 # Simulate implicit feedback (e.g., number of times watched)
-implicit_data = pd.DataFrame({
-    'user_id': [0, 0, 1, 1, 2, 2, 3],
-    'movie_id': [0, 1, 1, 2, 0, 3, 2],
-    'confidence': [5, 3, 10, 2, 7, 4, 8]  # Higher = more confidence
-})
+implicit_data = pd.DataFrame(
+    {
+        "user_id": [0, 0, 1, 1, 2, 2, 3],
+        "movie_id": [0, 1, 1, 2, 0, 3, 2],
+        "confidence": [5, 3, 10, 2, 7, 4, 8],  # Higher = more confidence
+    }
+)
 
 # Create sparse matrix (required for implicit library)
 sparse_matrix = csr_matrix(
-    (implicit_data['confidence'], (implicit_data['user_id'], implicit_data['movie_id'])),
-    shape=(4, 4)
+    (
+        implicit_data["confidence"],
+        (implicit_data["user_id"], implicit_data["movie_id"]),
+    ),
+    shape=(4, 4),
 )
 
 # ALS model
@@ -346,19 +377,19 @@ strategies = {
         "Ask for preferences during onboarding",
         "Recommend popular items (most viewed/purchased)",
         "Use demographic info (age, location)",
-        "Content-based on clicked items"
+        "Content-based on clicked items",
     ],
     "New Item": [
         "Content-based similarity to existing items",
         "Boost new items temporarily (exploration)",
         "Use item metadata (genre, tags)",
-        "Hybrid: combine content + collaborative"
+        "Hybrid: combine content + collaborative",
     ],
     "New System": [
         "Bootstrap with external data (IMDb ratings)",
         "Active learning: ask users to rate seed items",
-        "Use non-personalized rules initially"
-    ]
+        "Use non-personalized rules initially",
+    ],
 }
 ```
 
@@ -371,22 +402,32 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 rmse = np.sqrt(mean_squared_error(y_true, y_pred))  # Penalizes large errors
 mae = mean_absolute_error(y_true, y_pred)  # Average error
 
+
 # Ranking metrics
 def precision_at_k(recommended, relevant, k):
     """Precision @ K"""
     recommended_k = recommended[:k]
     return len(set(recommended_k) & set(relevant)) / k
 
+
 def recall_at_k(recommended, relevant, k):
     """Recall @ K"""
     recommended_k = recommended[:k]
     return len(set(recommended_k) & set(relevant)) / len(relevant)
 
+
 def ndcg_at_k(recommended, relevant, k):
     """Normalized Discounted Cumulative Gain"""
-    dcg = sum([1 / np.log2(i + 2) for i, item in enumerate(recommended[:k]) if item in relevant])
+    dcg = sum(
+        [
+            1 / np.log2(i + 2)
+            for i, item in enumerate(recommended[:k])
+            if item in relevant
+        ]
+    )
     idcg = sum([1 / np.log2(i + 2) for i in range(min(len(relevant), k))])
     return dcg / idcg if idcg > 0 else 0
+
 
 # Example
 recommended = [1, 3, 5, 2, 7]
@@ -410,21 +451,27 @@ from surprise import SVD, KNNBasic, NMF
 from surprise.model_selection import cross_validate
 
 # Load data
-data = Dataset.load_builtin('ml-100k')
+data = Dataset.load_builtin("ml-100k")
 
 # Compare algorithms
 algorithms = {
-    'SVD': SVD(n_factors=100, n_epochs=20),
-    'KNN-User': KNNBasic(sim_options={'name': 'cosine', 'user_based': True}),
-    'KNN-Item': KNNBasic(sim_options={'name': 'cosine', 'user_based': False}),
-    'NMF': NMF(n_factors=15)
+    "SVD": SVD(n_factors=100, n_epochs=20),
+    "KNN-User": KNNBasic(sim_options={"name": "cosine", "user_based": True}),
+    "KNN-Item": KNNBasic(sim_options={"name": "cosine", "user_based": False}),
+    "NMF": NMF(n_factors=15),
 }
 
 print("=== Algorithm Comparison on MovieLens ===")
 for name, algo in algorithms.items():
-    cv_results = cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=False)
-    print(f"{name:12} RMSE: {cv_results['test_rmse'].mean():.3f} ± {cv_results['test_rmse'].std():.3f}")
-    print(f"             MAE:  {cv_results['test_mae'].mean():.3f} ± {cv_results['test_mae'].std():.3f}")
+    cv_results = cross_validate(
+        algo, data, measures=["RMSE", "MAE"], cv=5, verbose=False
+    )
+    print(
+        f"{name:12} RMSE: {cv_results['test_rmse'].mean():.3f} ± {cv_results['test_rmse'].std():.3f}"
+    )
+    print(
+        f"             MAE:  {cv_results['test_mae'].mean():.3f} ± {cv_results['test_mae'].std():.3f}"
+    )
     print()
 ```
 
@@ -435,6 +482,7 @@ for name, algo in algorithms.items():
 ```python
 # Combine content-based + collaborative filtering
 
+
 class HybridRecommender:
     def __init__(self, alpha=0.5):
         """
@@ -443,44 +491,52 @@ class HybridRecommender:
         self.alpha = alpha
         self.svd_model = None
         self.content_similarity = None
-    
+
     def fit(self, ratings_df, item_features_df):
         """Train both models."""
-        
+
         # Collaborative filtering (SVD)
         reader = Reader(rating_scale=(1, 5))
-        data = Dataset.load_from_df(ratings_df[['user_id', 'item_id', 'rating']], reader)
+        data = Dataset.load_from_df(
+            ratings_df[["user_id", "item_id", "rating"]], reader
+        )
         trainset = data.build_full_trainset()
-        
+
         self.svd_model = SVD(n_factors=50, n_epochs=20)
         self.svd_model.fit(trainset)
-        
+
         # Content-based (item similarity)
-        tfidf = TfidfVectorizer(stop_words='english')
-        tfidf_matrix = tfidf.fit_transform(item_features_df['description'])
+        tfidf = TfidfVectorizer(stop_words="english")
+        tfidf_matrix = tfidf.fit_transform(item_features_df["description"])
         self.content_similarity = cosine_similarity(tfidf_matrix)
-        
+
         self.items = item_features_df.index.tolist()
-    
+
     def predict(self, user_id, item_id, user_history):
         """Hybrid prediction."""
-        
+
         # Collaborative filtering score
         cf_score = self.svd_model.predict(user_id, item_id).est
-        
+
         # Content-based score (average similarity to user's history)
         if len(user_history) == 0:
             content_score = 2.5  # Neutral
         else:
             item_idx = self.items.index(item_id)
-            similarities = [self.content_similarity[item_idx][self.items.index(hist_item)] 
-                           for hist_item in user_history if hist_item in self.items]
-            content_score = np.mean(similarities) * 5 if similarities else 2.5  # Scale to 1-5
-        
+            similarities = [
+                self.content_similarity[item_idx][self.items.index(hist_item)]
+                for hist_item in user_history
+                if hist_item in self.items
+            ]
+            content_score = (
+                np.mean(similarities) * 5 if similarities else 2.5
+            )  # Scale to 1-5
+
         # Weighted combination
         hybrid_score = self.alpha * cf_score + (1 - self.alpha) * content_score
-        
+
         return hybrid_score
+
 
 # Example usage
 hybrid = HybridRecommender(alpha=0.7)  # 70% CF, 30% content
@@ -499,50 +555,58 @@ print(f"Hybrid prediction: {score:.2f}")
 ```python
 import tensorflow as tf
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Input, Embedding, Flatten, Concatenate, Dense, Dropout
+from tensorflow.keras.layers import (
+    Input,
+    Embedding,
+    Flatten,
+    Concatenate,
+    Dense,
+    Dropout,
+)
 
 # Prepare data
-n_users = ratings['user_id'].nunique()
-n_items = ratings['movie_id'].nunique()
+n_users = ratings["user_id"].nunique()
+n_items = ratings["movie_id"].nunique()
 
-user_ids = ratings['user_id'].values - 1  # Zero-indexed
-item_ids = ratings['movie_id'].values - 1
-ratings_values = ratings['rating'].values
+user_ids = ratings["user_id"].values - 1  # Zero-indexed
+item_ids = ratings["movie_id"].values - 1
+ratings_values = ratings["rating"].values
 
 # Train/test split
 from sklearn.model_selection import train_test_split
-user_train, user_test, item_train, item_test, rating_train, rating_test = train_test_split(
-    user_ids, item_ids, ratings_values, test_size=0.2, random_state=42
+
+user_train, user_test, item_train, item_test, rating_train, rating_test = (
+    train_test_split(user_ids, item_ids, ratings_values, test_size=0.2, random_state=42)
 )
 
 # Neural network architecture
 embedding_size = 20
 
 # User input
-user_input = Input(shape=(1,), name='user_input')
-user_embedding = Embedding(n_users, embedding_size, name='user_embedding')(user_input)
+user_input = Input(shape=(1,), name="user_input")
+user_embedding = Embedding(n_users, embedding_size, name="user_embedding")(user_input)
 user_vec = Flatten()(user_embedding)
 
 # Item input
-item_input = Input(shape=(1,), name='item_input')
-item_embedding = Embedding(n_items, embedding_size, name='item_embedding')(item_input)
+item_input = Input(shape=(1,), name="item_input")
+item_embedding = Embedding(n_items, embedding_size, name="item_embedding")(item_input)
 item_vec = Flatten()(item_embedding)
 
 # Concatenate
 concat = Concatenate()([user_vec, item_vec])
 
 # Deep layers
-dense1 = Dense(64, activation='relu')(concat)
+dense1 = Dense(64, activation="relu")(concat)
 dropout1 = Dropout(0.2)(dense1)
-dense2 = Dense(32, activation='relu')(dropout1)
+dense2 = Dense(32, activation="relu")(dropout1)
 dropout2 = Dropout(0.2)(dense2)
 
 # Output
-output = Dense(1, activation='linear')(dropout2)
+output = Dense(1, activation="linear")(dropout2)
 
 # Model
 ncf_model = Model(inputs=[user_input, item_input], outputs=output)
-ncf_model.compile(optimizer='adam', loss='mse', metrics=['mae'])
+ncf_model.compile(optimizer="adam", loss="mse", metrics=["mae"])
 
 print(ncf_model.summary())
 
@@ -553,30 +617,32 @@ history = ncf_model.fit(
     batch_size=64,
     epochs=10,
     validation_split=0.1,
-    verbose=1
+    verbose=1,
 )
 
 # Evaluate
 test_loss, test_mae = ncf_model.evaluate([user_test, item_test], rating_test)
 print(f"\nTest MAE: {test_mae:.3f}")
 
+
 # Recommend for user
 def recommend_for_user(user_id, n=5):
     """Get top N recommendations for a user."""
-    
+
     # All items
     all_items = np.arange(n_items)
     user_array = np.full(n_items, user_id)
-    
+
     # Predict ratings
     predictions = ncf_model.predict([user_array, all_items]).flatten()
-    
+
     # Get top N
     top_indices = np.argsort(predictions)[::-1][:n]
-    
+
     print(f"\n=== Top {n} Recommendations for User {user_id} ===")
     for idx in top_indices:
         print(f"Item {idx}: Predicted rating {predictions[idx]:.2f}")
+
 
 recommend_for_user(user_id=0, n=5)
 ```
@@ -1078,13 +1144,13 @@ model.fit(user_video_features, watch_time_seconds)
 # Combine multiple implicit signals
 
 interactions = {
-    'click': 1,           # Base signal
-    'watch_25%': 2,       # Quarter watched
-    'watch_50%': 3,
-    'watch_100%': 5,      # Full video
-    'like': 3,
-    'share': 5,
-    'subscribe': 10       # Strong signal
+    "click": 1,  # Base signal
+    "watch_25%": 2,  # Quarter watched
+    "watch_50%": 3,
+    "watch_100%": 5,  # Full video
+    "like": 3,
+    "share": 5,
+    "subscribe": 10,  # Strong signal
 }
 
 # Aggregate into confidence score
@@ -1097,36 +1163,38 @@ user_video_confidence = sum(interactions.values())
 class YouTubeImplicitModel:
     def compute_confidence(self, interaction_data):
         """Convert implicit signals to confidence."""
-        
+
         # Watch time (most important)
-        watch_ratio = interaction_data['watch_time'] / interaction_data['video_duration']
+        watch_ratio = (
+            interaction_data["watch_time"] / interaction_data["video_duration"]
+        )
         confidence = watch_ratio * 10  # Scale 0-10
-        
+
         # Engagement boosts
-        if interaction_data['liked']:
+        if interaction_data["liked"]:
             confidence += 3
-        if interaction_data['commented']:
-            confidence +=2
-        if interaction_data['shared']:
+        if interaction_data["commented"]:
+            confidence += 2
+        if interaction_data["shared"]:
             confidence += 5
-        
+
         # Negative signals (discount)
-        if interaction_data['disliked']:
+        if interaction_data["disliked"]:
             confidence = max(0, confidence - 5)
-        if interaction_data['skipped_within_30sec']:
+        if interaction_data["skipped_within_30sec"]:
             confidence = max(0, confidence - 2)
-        
+
         return confidence
-    
+
     def mark_negative_samples(self, user_history, all_videos):
         """Sample negative examples."""
-        
+
         # Impressions not clicked = weak negative
-        shown_not_clicked = all_videos - user_history['clicked']
-        
+        shown_not_clicked = all_videos - user_history["clicked"]
+
         # Random sample from un-shown videos = neutral (ignore)
         # Only use shown-but-not-clicked as negatives
-        
+
         return shown_not_clicked
 ```
 
@@ -1192,13 +1260,13 @@ Memory: User matrix (100M × 100) + Item matrix (10M × 100)
 from pyspark.ml.recommendation import ALS
 
 als = ALS(
-    userCol='user_id',
-    itemCol='item_id',
-    ratingCol='rating',
+    userCol="user_id",
+    itemCol="item_id",
+    ratingCol="rating",
     maxIter=10,
     regParam=0.01,
     rank=50,  # Latent factors
-    coldStartStrategy='drop'
+    coldStartStrategy="drop",
 )
 
 # Spark distributes computation across cluster
@@ -1258,7 +1326,7 @@ distances, item_ids = index.search(user_vector, k=100)  # Top 100
 for user, positive_item in user_interactions:
     # Sample 5 negative items (not 10M)
     negative_items = random.sample(all_items - user_interacted, k=5)
-    
+
     for neg_item in negative_items:
         # Train on triplet (user, positive, negative)
         update_model(user, positive_item, neg_item)

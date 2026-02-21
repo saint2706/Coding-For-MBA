@@ -66,12 +66,12 @@ np.random.seed(42)
 n = 300
 
 # Three natural clusters
-cluster1 = np.random.randn(100, 2) * 0.5 + [2, 2]   # High value
-cluster2 = np.random.randn(100, 2) * 0.8 + [6, 6]   # Premium  
-cluster3 = np.random.randn(100, 2) * 0.6 + [2, 6]   # Engaged
+cluster1 = np.random.randn(100, 2) * 0.5 + [2, 2]  # High value
+cluster2 = np.random.randn(100, 2) * 0.8 + [6, 6]  # Premium
+cluster3 = np.random.randn(100, 2) * 0.6 + [2, 6]  # Engaged
 
 X = np.vstack([cluster1, cluster2, cluster3])
-df = pd.DataFrame(X, columns=['recency_score', 'monetary_score'])
+df = pd.DataFrame(X, columns=["recency_score", "monetary_score"])
 
 # Scale features (important for distance-based algorithms)
 scaler = StandardScaler()
@@ -86,17 +86,17 @@ plt.figure(figsize=(10, 5))
 
 plt.subplot(1, 2, 1)
 plt.scatter(X[:, 0], X[:, 1], alpha=0.6)
-plt.title('Before Clustering')
-plt.xlabel('Recency Score')
-plt.ylabel('Monetary Score')
+plt.title("Before Clustering")
+plt.xlabel("Recency Score")
+plt.ylabel("Monetary Score")
 
 plt.subplot(1, 2, 2)
-plt.scatter(X[:, 0], X[:, 1], c=clusters, cmap='viridis', alpha=0.6)
+plt.scatter(X[:, 0], X[:, 1], c=clusters, cmap="viridis", alpha=0.6)
 centers = scaler.inverse_transform(kmeans.cluster_centers_)
-plt.scatter(centers[:, 0], centers[:, 1], c='red', marker='X', s=200, label='Centers')
-plt.title('After K-Means Clustering (K=3)')
-plt.xlabel('Recency Score')
-plt.ylabel('Monetary Score')
+plt.scatter(centers[:, 0], centers[:, 1], c="red", marker="X", s=200, label="Centers")
+plt.title("After K-Means Clustering (K=3)")
+plt.xlabel("Recency Score")
+plt.ylabel("Monetary Score")
 plt.legend()
 
 plt.tight_layout()
@@ -118,11 +118,11 @@ for k in K_range:
 plt.figure(figsize=(10, 5))
 
 plt.subplot(1, 2, 1)
-plt.plot(K_range, inertias, 'bo-', linewidth=2)
-plt.xlabel('Number of Clusters (K)')
-plt.ylabel('Inertia (Sum of Squared Distances)')
-plt.title('Elbow Method')
-plt.axvline(x=3, color='r', linestyle='--', label='Elbow at K=3')
+plt.plot(K_range, inertias, "bo-", linewidth=2)
+plt.xlabel("Number of Clusters (K)")
+plt.ylabel("Inertia (Sum of Squared Distances)")
+plt.title("Elbow Method")
+plt.axvline(x=3, color="r", linestyle="--", label="Elbow at K=3")
 plt.legend()
 plt.grid(True, alpha=0.3)
 
@@ -136,11 +136,11 @@ for k in range(2, 11):  # Silhouette needs at least 2 clusters
     silhouettes.append(silhouette_score(X_scaled, labels))
 
 plt.subplot(1, 2, 2)
-plt.plot(range(2, 11), silhouettes, 'go-', linewidth=2)
-plt.xlabel('Number of Clusters (K)')
-plt.ylabel('Silhouette Score')
-plt.title('Silhouette Method')
-plt.axvline(x=3, color='r', linestyle='--', label='Best at K=3')
+plt.plot(range(2, 11), silhouettes, "go-", linewidth=2)
+plt.xlabel("Number of Clusters (K)")
+plt.ylabel("Silhouette Score")
+plt.title("Silhouette Method")
+plt.axvline(x=3, color="r", linestyle="--", label="Best at K=3")
 plt.legend()
 plt.grid(True, alpha=0.3)
 
@@ -155,30 +155,26 @@ print(f"Best silhouette score: {max(silhouettes):.3f}")
 
 ```python
 # Add cluster labels to data
-df['cluster'] = clusters
+df["cluster"] = clusters
 
 # Cluster profiles
-cluster_profiles = df.groupby('cluster').agg(['mean', 'std', 'count'])
+cluster_profiles = df.groupby("cluster").agg(["mean", "std", "count"])
 print("=== Cluster Profiles ===")
 print(cluster_profiles.round(2))
 
 # Naming clusters based on characteristics
-cluster_names = {
-    0: 'Budget-Conscious',
-    1: 'Premium Customers',
-    2: 'Engaged Shoppers'
-}
-df['segment'] = df['cluster'].map(cluster_names)
+cluster_names = {0: "Budget-Conscious", 1: "Premium Customers", 2: "Engaged Shoppers"}
+df["segment"] = df["cluster"].map(cluster_names)
 
 # Visualize cluster distributions
 fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-for i, col in enumerate(['recency_score', 'monetary_score']):
-    df.boxplot(column=col, by='segment', ax=axes[i])
-    axes[i].set_title(f'{col} by Segment')
-    axes[i].set_xlabel('Segment')
+for i, col in enumerate(["recency_score", "monetary_score"]):
+    df.boxplot(column=col, by="segment", ax=axes[i])
+    axes[i].set_title(f"{col} by Segment")
+    axes[i].set_xlabel("Segment")
 
-plt.suptitle('')
+plt.suptitle("")
 plt.tight_layout()
 plt.show()
 ```
@@ -212,7 +208,7 @@ X_pca = pca.fit_transform(X_high_scaled)
 # Explained variance
 print("=== PCA Variance Explained ===")
 for i, var in enumerate(pca.explained_variance_ratio_):
-    print(f"PC{i+1}: {var:.1%}")
+    print(f"PC{i + 1}: {var:.1%}")
 print(f"Cumulative: {pca.explained_variance_ratio_.cumsum()}")
 
 # Visualize
@@ -220,24 +216,24 @@ plt.figure(figsize=(12, 4))
 
 plt.subplot(1, 3, 1)
 plt.bar(range(1, 7), pca.explained_variance_ratio_)
-plt.xlabel('Principal Component')
-plt.ylabel('Variance Explained')
-plt.title('Variance by Component')
+plt.xlabel("Principal Component")
+plt.ylabel("Variance Explained")
+plt.title("Variance by Component")
 
 plt.subplot(1, 3, 2)
-plt.plot(range(1, 7), pca.explained_variance_ratio_.cumsum(), 'bo-')
-plt.axhline(y=0.95, color='r', linestyle='--', label='95% threshold')
-plt.xlabel('Number of Components')
-plt.ylabel('Cumulative Variance')
-plt.title('Cumulative Variance Explained')
+plt.plot(range(1, 7), pca.explained_variance_ratio_.cumsum(), "bo-")
+plt.axhline(y=0.95, color="r", linestyle="--", label="95% threshold")
+plt.xlabel("Number of Components")
+plt.ylabel("Cumulative Variance")
+plt.title("Cumulative Variance Explained")
 plt.legend()
 plt.grid(True, alpha=0.3)
 
 plt.subplot(1, 3, 3)
 plt.scatter(X_pca[:, 0], X_pca[:, 1], alpha=0.5)
-plt.xlabel('PC1')
-plt.ylabel('PC2')
-plt.title('Data Projected onto First 2 PCs')
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.title("Data Projected onto First 2 PCs")
 
 plt.tight_layout()
 plt.show()
@@ -275,24 +271,27 @@ clusters_iris = kmeans_iris.fit_predict(X_iris_scaled)
 plt.figure(figsize=(12, 5))
 
 plt.subplot(1, 2, 1)
-plt.scatter(X_iris_2d[:, 0], X_iris_2d[:, 1], c=y_iris, cmap='Set1', alpha=0.7)
-plt.xlabel('PC1')
-plt.ylabel('PC2')
-plt.title('True Labels (Iris)')
-plt.colorbar(label='Species')
+plt.scatter(X_iris_2d[:, 0], X_iris_2d[:, 1], c=y_iris, cmap="Set1", alpha=0.7)
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.title("True Labels (Iris)")
+plt.colorbar(label="Species")
 
 plt.subplot(1, 2, 2)
-plt.scatter(X_iris_2d[:, 0], X_iris_2d[:, 1], c=clusters_iris, cmap='viridis', alpha=0.7)
-plt.xlabel('PC1')
-plt.ylabel('PC2')
-plt.title('K-Means Clusters (K=3)')
-plt.colorbar(label='Cluster')
+plt.scatter(
+    X_iris_2d[:, 0], X_iris_2d[:, 1], c=clusters_iris, cmap="viridis", alpha=0.7
+)
+plt.xlabel("PC1")
+plt.ylabel("PC2")
+plt.title("K-Means Clusters (K=3)")
+plt.colorbar(label="Cluster")
 
 plt.tight_layout()
 plt.show()
 
 # Compare to true labels
 from sklearn.metrics import adjusted_rand_score
+
 ari = adjusted_rand_score(y_iris, clusters_iris)
 print(f"Adjusted Rand Index: {ari:.3f} (1.0 = perfect match)")
 ```
@@ -333,6 +332,7 @@ X_scaled = scaler.fit_transform(X)
 
 # 3. Stability check: run multiple times
 from sklearn.cluster import KMeans
+
 results = []
 for seed in range(10):
     km = KMeans(n_clusters=3, random_state=seed, n_init=10)
@@ -370,26 +370,34 @@ n = 500
 # Type 3: VIP customers (high all)
 # Type 4: At-risk customers (high recency, low recent frequency)
 
-data = pd.DataFrame({
-    'recency_days': np.concatenate([
-        np.random.exponential(10, 125),   # New
-        np.random.exponential(30, 125),   # Loyal
-        np.random.exponential(15, 125),   # VIP
-        np.random.exponential(90, 125)    # At-risk
-    ]),
-    'frequency': np.concatenate([
-        np.random.poisson(2, 125),        # New
-        np.random.poisson(15, 125),       # Loyal
-        np.random.poisson(20, 125),       # VIP
-        np.random.poisson(5, 125)         # At-risk
-    ]),
-    'monetary': np.concatenate([
-        np.random.exponential(50, 125),   # New
-        np.random.exponential(150, 125),  # Loyal
-        np.random.exponential(500, 125),  # VIP
-        np.random.exponential(80, 125)    # At-risk
-    ])
-})
+data = pd.DataFrame(
+    {
+        "recency_days": np.concatenate(
+            [
+                np.random.exponential(10, 125),  # New
+                np.random.exponential(30, 125),  # Loyal
+                np.random.exponential(15, 125),  # VIP
+                np.random.exponential(90, 125),  # At-risk
+            ]
+        ),
+        "frequency": np.concatenate(
+            [
+                np.random.poisson(2, 125),  # New
+                np.random.poisson(15, 125),  # Loyal
+                np.random.poisson(20, 125),  # VIP
+                np.random.poisson(5, 125),  # At-risk
+            ]
+        ),
+        "monetary": np.concatenate(
+            [
+                np.random.exponential(50, 125),  # New
+                np.random.exponential(150, 125),  # Loyal
+                np.random.exponential(500, 125),  # VIP
+                np.random.exponential(80, 125),  # At-risk
+            ]
+        ),
+    }
+)
 
 # Scale features
 scaler = StandardScaler()
@@ -408,16 +416,16 @@ for k in K_range:
 
 # Plot
 fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-axes[0].plot(K_range, inertias, 'bo-')
-axes[0].set_xlabel('K')
-axes[0].set_ylabel('Inertia')
-axes[0].set_title('Elbow Method')
+axes[0].plot(K_range, inertias, "bo-")
+axes[0].set_xlabel("K")
+axes[0].set_ylabel("Inertia")
+axes[0].set_title("Elbow Method")
 axes[0].grid(True, alpha=0.3)
 
-axes[1].plot(K_range, silhouettes, 'go-')
-axes[1].set_xlabel('K')
-axes[1].set_ylabel('Silhouette Score')
-axes[1].set_title('Silhouette Method')
+axes[1].plot(K_range, silhouettes, "go-")
+axes[1].set_xlabel("K")
+axes[1].set_ylabel("Silhouette Score")
+axes[1].set_title("Silhouette Method")
 axes[1].grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
@@ -427,19 +435,19 @@ optimal_k = K_range[np.argmax(silhouettes)]
 print(f"Optimal K: {optimal_k}")
 
 kmeans = KMeans(n_clusters=optimal_k, random_state=42, n_init=10)
-data['cluster'] = kmeans.fit_predict(X_scaled)
+data["cluster"] = kmeans.fit_predict(X_scaled)
 
 # Analyze clusters
 print("\n=== Cluster Profiles ===")
-profiles = data.groupby('cluster').mean().round(1)
+profiles = data.groupby("cluster").mean().round(1)
 print(profiles)
 
 # Name segments
 segment_names = {
-    0: 'New Customers',
-    1: 'VIP Customers', 
-    2: 'Loyal Regulars',
-    3: 'At-Risk'
+    0: "New Customers",
+    1: "VIP Customers",
+    2: "Loyal Regulars",
+    3: "At-Risk",
 }
 # Assign based on profile characteristics
 ```
@@ -460,19 +468,24 @@ n_normal = 450
 n_anomaly = 50
 
 # Normal transactions
-normal = np.column_stack([
-    np.random.normal(100, 30, n_normal),    # Amount
-    np.random.normal(12, 3, n_normal),      # Hour (around noon)
-])
+normal = np.column_stack(
+    [
+        np.random.normal(100, 30, n_normal),  # Amount
+        np.random.normal(12, 3, n_normal),  # Hour (around noon)
+    ]
+)
 
 # Anomalous transactions (high amounts at unusual hours)
-anomalies = np.column_stack([
-    np.random.normal(500, 100, n_anomaly),  # Higher amounts
-    np.random.choice([2, 3, 23], n_anomaly) + np.random.randn(n_anomaly)*0.5,  # Night hours
-])
+anomalies = np.column_stack(
+    [
+        np.random.normal(500, 100, n_anomaly),  # Higher amounts
+        np.random.choice([2, 3, 23], n_anomaly)
+        + np.random.randn(n_anomaly) * 0.5,  # Night hours
+    ]
+)
 
 X = np.vstack([normal, anomalies])
-y_true = np.array([0]*n_normal + [1]*n_anomaly)  # 0=normal, 1=anomaly
+y_true = np.array([0] * n_normal + [1] * n_anomaly)  # 0=normal, 1=anomaly
 
 # Scale
 scaler = StandardScaler()
@@ -492,28 +505,29 @@ anomaly_pred = (distances > threshold).astype(int)
 # Visualize
 fig, axes = plt.subplots(1, 3, figsize=(15, 4))
 
-axes[0].scatter(X[:, 0], X[:, 1], c=y_true, cmap='coolwarm', alpha=0.6)
-axes[0].set_xlabel('Transaction Amount')
-axes[0].set_ylabel('Hour')
-axes[0].set_title('True Labels (Red=Anomaly)')
+axes[0].scatter(X[:, 0], X[:, 1], c=y_true, cmap="coolwarm", alpha=0.6)
+axes[0].set_xlabel("Transaction Amount")
+axes[0].set_ylabel("Hour")
+axes[0].set_title("True Labels (Red=Anomaly)")
 
-axes[1].scatter(X[:, 0], X[:, 1], c=distances, cmap='viridis', alpha=0.6)
+axes[1].scatter(X[:, 0], X[:, 1], c=distances, cmap="viridis", alpha=0.6)
 axes[1].colorbar = plt.colorbar(axes[1].collections[0], ax=axes[1])
-axes[1].set_xlabel('Transaction Amount')
-axes[1].set_ylabel('Hour')
-axes[1].set_title('Distance to Cluster Center')
+axes[1].set_xlabel("Transaction Amount")
+axes[1].set_ylabel("Hour")
+axes[1].set_title("Distance to Cluster Center")
 
-axes[2].scatter(X[:, 0], X[:, 1], c=anomaly_pred, cmap='coolwarm', alpha=0.6)
-axes[2].axhline(y=threshold, color='k', linestyle='--', alpha=0.5)
-axes[2].set_xlabel('Transaction Amount')
-axes[2].set_ylabel('Hour')
-axes[2].set_title('Predicted Anomalies (Distance-based)')
+axes[2].scatter(X[:, 0], X[:, 1], c=anomaly_pred, cmap="coolwarm", alpha=0.6)
+axes[2].axhline(y=threshold, color="k", linestyle="--", alpha=0.5)
+axes[2].set_xlabel("Transaction Amount")
+axes[2].set_ylabel("Hour")
+axes[2].set_title("Predicted Anomalies (Distance-based)")
 
 plt.tight_layout()
 plt.show()
 
 # Evaluate
 from sklearn.metrics import precision_score, recall_score
+
 print(f"Precision: {precision_score(y_true, anomaly_pred):.2f}")
 print(f"Recall: {recall_score(y_true, anomaly_pred):.2f}")
 ```
@@ -541,15 +555,17 @@ p = 20  # 20 features
 X = np.random.randn(n, p)
 # Add correlations
 for i in range(5, 10):
-    X[:, i] = 0.7 * X[:, i-5] + 0.3 * np.random.randn(n)
+    X[:, i] = 0.7 * X[:, i - 5] + 0.3 * np.random.randn(n)
 for i in range(10, 15):
-    X[:, i] = 0.5 * X[:, i-10] + 0.5 * np.random.randn(n)
+    X[:, i] = 0.5 * X[:, i - 10] + 0.5 * np.random.randn(n)
 
 # Generate target (only depends on first 3 features)
-y = (X[:, 0] + 0.5*X[:, 1] - 0.8*X[:, 2] + np.random.randn(n)*0.5 > 0).astype(int)
+y = (X[:, 0] + 0.5 * X[:, 1] - 0.8 * X[:, 2] + np.random.randn(n) * 0.5 > 0).astype(int)
 
 # Split
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Scale
 scaler = StandardScaler()
@@ -562,26 +578,27 @@ results = []
 # Full features
 clf_full = LogisticRegression(random_state=42, max_iter=1000)
 clf_full.fit(X_train_scaled, y_train)
-results.append({
-    'Method': 'Full Features (20)',
-    'Accuracy': clf_full.score(X_test_scaled, y_test)
-})
+results.append(
+    {"Method": "Full Features (20)", "Accuracy": clf_full.score(X_test_scaled, y_test)}
+)
 
 # PCA with different n_components
 for n_comp in [2, 5, 10, 15]:
     pca = PCA(n_components=n_comp)
     X_train_pca = pca.fit_transform(X_train_scaled)
     X_test_pca = pca.transform(X_test_scaled)
-    
+
     clf_pca = LogisticRegression(random_state=42, max_iter=1000)
     clf_pca.fit(X_train_pca, y_train)
-    
+
     var_explained = pca.explained_variance_ratio_.sum()
-    results.append({
-        'Method': f'PCA ({n_comp} components)',
-        'Accuracy': clf_pca.score(X_test_pca, y_test),
-        'Variance': var_explained
-    })
+    results.append(
+        {
+            "Method": f"PCA ({n_comp} components)",
+            "Accuracy": clf_pca.score(X_test_pca, y_test),
+            "Variance": var_explained,
+        }
+    )
 
 results_df = pd.DataFrame(results)
 print("=== Comparison: Full vs PCA ===")
@@ -593,22 +610,22 @@ pca_full.fit(X_train_scaled)
 
 plt.figure(figsize=(10, 4))
 plt.subplot(1, 2, 1)
-plt.plot(range(1, 21), pca_full.explained_variance_ratio_.cumsum(), 'bo-')
-plt.axhline(y=0.95, color='r', linestyle='--', label='95% variance')
-plt.xlabel('Number of Components')
-plt.ylabel('Cumulative Variance Explained')
-plt.title('PCA: Variance by Components')
+plt.plot(range(1, 21), pca_full.explained_variance_ratio_.cumsum(), "bo-")
+plt.axhline(y=0.95, color="r", linestyle="--", label="95% variance")
+plt.xlabel("Number of Components")
+plt.ylabel("Cumulative Variance Explained")
+plt.title("PCA: Variance by Components")
 plt.legend()
 plt.grid(True, alpha=0.3)
 
 plt.subplot(1, 2, 2)
-accuracies = [r['Accuracy'] for r in results[1:]]
+accuracies = [r["Accuracy"] for r in results[1:]]
 n_comps = [2, 5, 10, 15]
 plt.bar(n_comps, accuracies)
-plt.axhline(y=results[0]['Accuracy'], color='r', linestyle='--', label='Full features')
-plt.xlabel('PCA Components')
-plt.ylabel('Test Accuracy')
-plt.title('Accuracy vs Dimensionality')
+plt.axhline(y=results[0]["Accuracy"], color="r", linestyle="--", label="Full features")
+plt.xlabel("PCA Components")
+plt.ylabel("Test Accuracy")
+plt.title("Accuracy vs Dimensionality")
 plt.legend()
 
 plt.tight_layout()
@@ -751,9 +768,9 @@ for seed in range(20):
 # Compare all pairs
 scores = []
 for i in range(len(results)):
-    for j in range(i+1, len(results)):
+    for j in range(i + 1, len(results)):
         scores.append(adjusted_rand_score(results[i], results[j]))
-        
+
 print(f"Stability (ARI): {np.mean(scores):.3f}")
 # ARI near 1.0 = stable, near 0 = unstable
 ```
@@ -780,14 +797,12 @@ You've clustered customers into 4 segments. Marketing asks "What makes these seg
 
 ```python
 # Create cluster profiles
-profiles = df.groupby('cluster').agg({
-    'recency': 'mean',
-    'frequency': 'mean',
-    'monetary': 'mean'
-})
+profiles = df.groupby("cluster").agg(
+    {"recency": "mean", "frequency": "mean", "monetary": "mean"}
+)
 
 # Compare to overall
-overall = df[['recency', 'frequency', 'monetary']].mean()
+overall = df[["recency", "frequency", "monetary"]].mean()
 profiles_normalized = profiles / overall  # Ratio to average
 
 # Naming based on profiles:

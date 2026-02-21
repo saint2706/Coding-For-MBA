@@ -31,11 +31,13 @@ Yesterday you learned to load and filter data. Today you'll learn to **aggregate
 ```python
 import pandas as pd
 
-df = pd.DataFrame({
-    "region": ["North", "South", "North", "South"],
-    "product": ["A", "A", "B", "B"],
-    "sales": [100, 150, 200, 120]
-})
+df = pd.DataFrame(
+    {
+        "region": ["North", "South", "North", "South"],
+        "product": ["A", "A", "B", "B"],
+        "sales": [100, 150, 200, 120],
+    }
+)
 
 # Single aggregation
 df.groupby("region")["sales"].sum()
@@ -62,16 +64,13 @@ df["pct_of_region"] = df["sales"] / df["region_total"]
 ### Merging DataFrames
 
 ```python
-orders = pd.DataFrame({
-    "order_id": [1, 2, 3],
-    "customer_id": [101, 102, 101],
-    "amount": [250, 150, 300]
-})
+orders = pd.DataFrame(
+    {"order_id": [1, 2, 3], "customer_id": [101, 102, 101], "amount": [250, 150, 300]}
+)
 
-customers = pd.DataFrame({
-    "customer_id": [101, 102, 103],
-    "name": ["Alice", "Bob", "Charlie"]
-})
+customers = pd.DataFrame(
+    {"customer_id": [101, 102, 103], "name": ["Alice", "Bob", "Charlie"]}
+)
 
 # Inner join (default)
 merged = pd.merge(orders, customers, on="customer_id")
@@ -86,29 +85,26 @@ pd.merge(df1, df2, left_on="id", right_on="customer_id")
 ### Pivot Tables
 
 ```python
-sales = pd.DataFrame({
-    "date": ["2024-01", "2024-01", "2024-02", "2024-02"],
-    "region": ["North", "South", "North", "South"],
-    "revenue": [100, 150, 120, 180]
-})
+sales = pd.DataFrame(
+    {
+        "date": ["2024-01", "2024-01", "2024-02", "2024-02"],
+        "region": ["North", "South", "North", "South"],
+        "revenue": [100, 150, 120, 180],
+    }
+)
 
 # Pivot table
 pivot = pd.pivot_table(
-    sales,
-    values="revenue",
-    index="region",
-    columns="date",
-    aggfunc="sum"
+    sales, values="revenue", index="region", columns="date", aggfunc="sum"
 )
 ```
 
 ### Time Series Basics
 
 ```python
-df = pd.DataFrame({
-    "date": pd.date_range("2024-01-01", periods=100, freq="D"),
-    "value": range(100)
-})
+df = pd.DataFrame(
+    {"date": pd.date_range("2024-01-01", periods=100, freq="D"), "value": range(100)}
+)
 
 df.set_index("date", inplace=True)
 
@@ -143,12 +139,14 @@ import pandas as pd
 import numpy as np
 
 np.random.seed(42)
-sales = pd.DataFrame({
-    "date": pd.date_range("2024-01-01", periods=90, freq="D"),
-    "region": np.random.choice(["North", "South", "East"], 90),
-    "product": np.random.choice(["A", "B", "C"], 90),
-    "revenue": np.random.randint(100, 1000, 90)
-})
+sales = pd.DataFrame(
+    {
+        "date": pd.date_range("2024-01-01", periods=90, freq="D"),
+        "region": np.random.choice(["North", "South", "East"], 90),
+        "product": np.random.choice(["A", "B", "C"], 90),
+        "revenue": np.random.randint(100, 1000, 90),
+    }
+)
 
 # Revenue by region
 print(sales.groupby("region")["revenue"].agg(["sum", "mean"]))

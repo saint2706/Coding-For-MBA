@@ -165,14 +165,14 @@ WITH raw_charges AS (
 
 cleaned AS (
     SELECT
-        id as charge_id,
-        created_at as transaction_date,
-        amount / 100.0 as amount_dollars, -- Fix cents to dollars
-        status,
-        CASE 
-            WHEN refunded = true THEN 0 
-            ELSE 1 
-        END as is_valid_revenue
+        id AS charge_id,
+        created_at AS transaction_date,
+        status, -- Fix cents to dollars
+        amount / 100.0 AS amount_dollars,
+        CASE
+            WHEN refunded = true THEN 0
+            ELSE 1
+        END AS is_valid_revenue
     FROM
         raw_charges
 )

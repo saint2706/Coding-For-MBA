@@ -81,14 +81,14 @@ products = ["Laptop", "Phone", "Tablet", "Watch", "Earbuds"]
 #            -5        -4       -3        -2       -1
 
 # Single element
-print(products[0])     # "Laptop" (first)
-print(products[-1])    # "Earbuds" (last)
+print(products[0])  # "Laptop" (first)
+print(products[-1])  # "Earbuds" (last)
 
 # Slicing [start:end:step]
-print(products[1:4])   # ["Phone", "Tablet", "Watch"]
-print(products[:3])    # ["Laptop", "Phone", "Tablet"]
-print(products[2:])    # ["Tablet", "Watch", "Earbuds"]
-print(products[::2])   # ["Laptop", "Tablet", "Earbuds"]
+print(products[1:4])  # ["Phone", "Tablet", "Watch"]
+print(products[:3])  # ["Laptop", "Phone", "Tablet"]
+print(products[2:])  # ["Tablet", "Watch", "Earbuds"]
+print(products[::2])  # ["Laptop", "Tablet", "Earbuds"]
 print(products[::-1])  # Reversed list
 ```
 
@@ -101,15 +101,15 @@ inventory = ["Apple", "Banana", "Cherry"]
 inventory[1] = "Blueberry"  # ["Apple", "Blueberry", "Cherry"]
 
 # Add elements
-inventory.append("Date")           # Add to end
-inventory.insert(0, "Avocado")     # Insert at position
-inventory.extend(["Elderberry"])   # Add multiple
+inventory.append("Date")  # Add to end
+inventory.insert(0, "Avocado")  # Insert at position
+inventory.extend(["Elderberry"])  # Add multiple
 
 # Remove elements
-inventory.remove("Cherry")      # Remove by value
-popped = inventory.pop()        # Remove & return last
-deleted = inventory.pop(0)      # Remove & return at index
-del inventory[0]                # Delete at index
+inventory.remove("Cherry")  # Remove by value
+popped = inventory.pop()  # Remove & return last
+deleted = inventory.pop(0)  # Remove & return at index
+del inventory[0]  # Delete at index
 
 # Clear all
 # inventory.clear()
@@ -133,13 +133,13 @@ del inventory[0]                # Delete at index
 ```python
 # Sorting example
 sales = [45000, 32000, 78000, 56000]
-sales.sort()                    # [32000, 45000, 56000, 78000]
-sales.sort(reverse=True)        # [78000, 56000, 45000, 32000]
+sales.sort()  # [32000, 45000, 56000, 78000]
+sales.sort(reverse=True)  # [78000, 56000, 45000, 32000]
 
 # Sorted returns new list (original unchanged)
 original = [3, 1, 4, 1, 5]
-new_sorted = sorted(original)   # new_sorted: [1, 1, 3, 4, 5]
-print(original)                 # Still [3, 1, 4, 1, 5]
+new_sorted = sorted(original)  # new_sorted: [1, 1, 3, 4, 5]
+print(original)  # Still [3, 1, 4, 1, 5]
 ```
 
 ### Iterating Over Lists
@@ -166,12 +166,12 @@ for index, product in enumerate(products):
 ```python
 numbers = [10, 20, 30, 40, 50]
 
-len(numbers)           # 5 (length)
-sum(numbers)           # 150 (sum)
-min(numbers)           # 10 (minimum)
-max(numbers)           # 50 (maximum)
-30 in numbers          # True (membership)
-99 not in numbers      # True
+len(numbers)  # 5 (length)
+sum(numbers)  # 150 (sum)
+min(numbers)  # 10 (minimum)
+max(numbers)  # 50 (maximum)
+30 in numbers  # True (membership)
+99 not in numbers  # True
 ```
 
 ---
@@ -184,9 +184,11 @@ max(numbers)           # 50 (maximum)
 def add_item(lst):
     lst.append("new item")
 
+
 my_list = ["a", "b", "c"]
 add_item(my_list)
 print(my_list)  # ["a", "b", "c", "new item"] - CHANGED!
+
 
 # To avoid this, pass a copy:
 def safe_add(lst):
@@ -202,7 +204,7 @@ def safe_add(lst):
 big_list = [x**2 for x in range(1_000_000)]  # Uses ~40MB
 
 # Generator: Computes on-demand
-big_gen = (x**2 for x in range(1_000_000))   # Uses ~100 bytes
+big_gen = (x**2 for x in range(1_000_000))  # Uses ~100 bytes
 
 # Use generators for huge datasets you only iterate once
 ```
@@ -226,7 +228,7 @@ big_gen = (x**2 for x in range(1_000_000))   # Uses ~100 bytes
 sales_matrix = [
     [45000, 52000, 48000, 61000],  # North
     [38000, 41000, 39000, 45000],  # South
-    [62000, 58000, 71000, 69000]   # West
+    [62000, 58000, 71000, 69000],  # West
 ]
 
 # Access: matrix[row][column]
@@ -307,7 +309,7 @@ sales_data = [
     ("Bob", 72000),
     ("Charlie", 91000),
     ("Diana", 68000),
-    ("Eve", 95000)
+    ("Eve", 95000),
 ]
 
 # Extract just the sales numbers
@@ -382,7 +384,7 @@ What's the difference between `sort()` and `sorted()`?
 
 ```python
 nums = [3, 1, 2]
-nums.sort()      # nums is now [1, 2, 3], returns None
+nums.sort()  # nums is now [1, 2, 3], returns None
 
 nums = [3, 1, 2]
 new = sorted(nums)  # new is [1, 2, 3], nums still [3, 1, 2]
@@ -431,11 +433,13 @@ print(f"Items over $100: {expensive}")
 MAX_HISTORY = 10
 interactions = []
 
+
 def add_interaction(message):
     interactions.append(message)
     # Remove oldest if over limit
     if len(interactions) > MAX_HISTORY:
         interactions.pop(0)
+
 
 # Simulation
 for i in range(15):
@@ -449,6 +453,7 @@ print(interactions)
 
 ```python
 from collections import deque
+
 interactions = deque(maxlen=10)
 interactions.append("message")  # Auto-removes oldest
 ```

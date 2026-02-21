@@ -142,10 +142,10 @@ SELECT
     d.date,
     p.product_name,
     c.customer_city
-FROM fact_sales f
-JOIN dim_date d ON f.date_key = d.date_key
-JOIN dim_product p ON f.product_key = p.product_key
-JOIN dim_customer c ON f.customer_key = c.customer_key;
+FROM fact_sales AS f
+INNER JOIN dim_date AS d ON f.date_key = d.date_key
+INNER JOIN dim_product AS p ON f.product_key = p.product_key
+INNER JOIN dim_customer AS c ON f.customer_key = c.customer_key;
 ```
 
 * *Result*: One wide table ready for Tableau/Power BI Import Mode.

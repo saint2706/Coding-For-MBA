@@ -68,21 +68,27 @@ conn.commit()
 
 ```python
 # CREATE - Insert data
-cursor.execute("""
+cursor.execute(
+    """
 INSERT INTO employees (name, department, salary, hire_date)
 VALUES (?, ?, ?, ?)
-""", ("Alice", "Engineering", 85000, "2023-01-15"))
+""",
+    ("Alice", "Engineering", 85000, "2023-01-15"),
+)
 
 # Insert multiple rows
 employees_data = [
     ("Bob", "Sales", 75000, "2023-02-01"),
     ("Charlie", "Engineering", 90000, "2023-03-10"),
-    ("Diana", "Marketing", 70000, "2023-04-20")
+    ("Diana", "Marketing", 70000, "2023-04-20"),
 ]
-cursor.executemany("""
+cursor.executemany(
+    """
 INSERT INTO employees (name, department, salary, hire_date)
 VALUES (?, ?, ?, ?)
-""", employees_data)
+""",
+    employees_data,
+)
 conn.commit()
 
 # READ - Query data
@@ -92,9 +98,12 @@ for row in rows:
     print(row)
 
 # UPDATE - Modify data
-cursor.execute("""
+cursor.execute(
+    """
 UPDATE employees SET salary = ? WHERE name = ?
-""", (95000, "Charlie"))
+""",
+    (95000, "Charlie"),
+)
 conn.commit()
 
 # DELETE - Remove data
@@ -112,20 +121,25 @@ df = pd.read_sql_query("SELECT * FROM employees", conn)
 print(df)
 
 # Query with conditions
-df = pd.read_sql_query("""
+df = pd.read_sql_query(
+    """
 SELECT name, salary FROM employees
 WHERE department = 'Engineering' AND salary > 80000
 ORDER BY salary DESC
-""", conn)
+""",
+    conn,
+)
 print(df)
 
 # Write DataFrame to SQL
-new_data = pd.DataFrame({
-    "name": ["Eve", "Frank"],
-    "department": ["HR", "Engineering"],
-    "salary": [65000, 88000],
-    "hire_date": ["2024-01-01", "2024-02-15"]
-})
+new_data = pd.DataFrame(
+    {
+        "name": ["Eve", "Frank"],
+        "department": ["HR", "Engineering"],
+        "salary": [65000, 88000],
+        "hire_date": ["2024-01-01", "2024-02-15"],
+    }
+)
 new_data.to_sql("employees", conn, if_exists="append", index=False)
 ```
 
@@ -197,9 +211,10 @@ cursor.execute("SELECT * FROM employees WHERE name = ?", (name,))  # SAFE
 import sqlite3
 import pandas as pd
 
+
 def create_employee_db():
     conn = sqlite3.connect(":memory:")  # In-memory database
-    
+
     # Create table
     conn.execute("""
     CREATE TABLE employees (
@@ -209,28 +224,34 @@ def create_employee_db():
         salary REAL
     )
     """)
-    
+
     # Insert sample data
     data = [
         ("Alice", "Engineering", 85000),
         ("Bob", "Sales", 75000),
         ("Charlie", "Engineering", 90000),
         ("Diana", "Marketing", 70000),
-        ("Eve", "Sales", 78000)
+        ("Eve", "Sales", 78000),
     ]
-    conn.executemany("INSERT INTO employees (name, department, salary) VALUES (?, ?, ?)", data)
-    
+    conn.executemany(
+        "INSERT INTO employees (name, department, salary) VALUES (?, ?, ?)", data
+    )
+
     # Query: Average salary by department
-    df = pd.read_sql_query("""
+    df = pd.read_sql_query(
+        """
     SELECT department, AVG(salary) as avg_salary, COUNT(*) as count
     FROM employees
     GROUP BY department
     ORDER BY avg_salary DESC
-    """, conn)
+    """,
+        conn,
+    )
     print("Salary by Department:")
     print(df)
-    
+
     return conn
+
 
 conn = create_employee_db()
 ```
@@ -242,9 +263,10 @@ import sqlite3
 import pandas as pd
 import numpy as np
 
+
 def create_sales_db():
     conn = sqlite3.connect(":memory:")
-    
+
     # Create tables
     conn.execute("""
     CREATE TABLE products (
@@ -253,7 +275,7 @@ def create_sales_db():
         price REAL
     )
     """)
-    
+
     conn.execute("""
     CREATE TABLE sales (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -263,32 +285,41 @@ def create_sales_db():
         FOREIGN KEY (product_id) REFERENCES products(id)
     )
     """)
-    
+
     # Insert products
     products = [(1, "Laptop", 999), (2, "Mouse", 29), (3, "Keyboard", 79)]
     conn.executemany("INSERT INTO products VALUES (?, ?, ?)", products)
-    
+
     # Insert sales
     sales = [
-        (1, 5, "2024-01-15"), (2, 20, "2024-01-15"),
-        (1, 3, "2024-01-16"), (3, 10, "2024-01-16"),
-        (2, 15, "2024-01-17"), (1, 2, "2024-01-17")
+        (1, 5, "2024-01-15"),
+        (2, 20, "2024-01-15"),
+        (1, 3, "2024-01-16"),
+        (3, 10, "2024-01-16"),
+        (2, 15, "2024-01-17"),
+        (1, 2, "2024-01-17"),
     ]
-    conn.executemany("INSERT INTO sales (product_id, quantity, sale_date) VALUES (?, ?, ?)", sales)
-    
+    conn.executemany(
+        "INSERT INTO sales (product_id, quantity, sale_date) VALUES (?, ?, ?)", sales
+    )
+
     # Revenue analysis with JOIN
-    df = pd.read_sql_query("""
+    df = pd.read_sql_query(
+        """
     SELECT p.name, SUM(s.quantity) as units_sold, 
            SUM(s.quantity * p.price) as revenue
     FROM sales s
     JOIN products p ON s.product_id = p.id
     GROUP BY p.name
     ORDER BY revenue DESC
-    """, conn)
+    """,
+        conn,
+    )
     print("Revenue by Product:")
     print(df)
-    
+
     return conn
+
 
 create_sales_db()
 ```
@@ -302,24 +333,29 @@ import numpy as np
 
 # Create sample DataFrame
 np.random.seed(42)
-df = pd.DataFrame({
-    "customer_id": range(1, 101),
-    "name": [f"Customer_{i}" for i in range(1, 101)],
-    "total_purchases": np.random.uniform(100, 5000, 100),
-    "signup_date": pd.date_range("2023-01-01", periods=100, freq="D")
-})
+df = pd.DataFrame(
+    {
+        "customer_id": range(1, 101),
+        "name": [f"Customer_{i}" for i in range(1, 101)],
+        "total_purchases": np.random.uniform(100, 5000, 100),
+        "signup_date": pd.date_range("2023-01-01", periods=100, freq="D"),
+    }
+)
 
 # Save to database
 conn = sqlite3.connect("customers.db")
 df.to_sql("customers", conn, if_exists="replace", index=False)
 
 # Query back with filtering
-top_customers = pd.read_sql_query("""
+top_customers = pd.read_sql_query(
+    """
 SELECT * FROM customers
 WHERE total_purchases > 3000
 ORDER BY total_purchases DESC
 LIMIT 10
-""", conn)
+""",
+    conn,
+)
 print("Top 10 Customers:")
 print(top_customers)
 
@@ -433,7 +469,7 @@ SELECT * FROM orders WHERE customer_email = 'user@example.com'
 **Fix**: Create an index:
 
 ```sql
-CREATE INDEX idx_customer_email ON orders(customer_email);
+CREATE INDEX idx_customer_email ON orders (customer_email);
 ```
 
 Now the query uses the index for fast lookups.

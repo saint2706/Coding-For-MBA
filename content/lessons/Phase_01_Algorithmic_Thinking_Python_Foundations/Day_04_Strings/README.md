@@ -57,7 +57,7 @@ Strings can use single or double quotes:
 
 ```python
 name = "Alice Johnson"
-company = 'TechCorp Inc.'
+company = "TechCorp Inc."
 message = "She said, 'Hello!'"  # Mixing quotes for apostrophes
 
 # Multi-line strings with triple quotes
@@ -122,15 +122,15 @@ text = "PYTHON"
 #       012345   (index positions)
 
 # Indexing
-print(text[0])    # P (first character)
-print(text[-1])   # N (last character)
+print(text[0])  # P (first character)
+print(text[-1])  # N (last character)
 
 # Slicing: [start:end] (end is exclusive)
 print(text[0:3])  # PYT
-print(text[3:])   # HON (from index 3 to end)
-print(text[:3])   # PYT (from start to index 3)
+print(text[3:])  # HON (from index 3 to end)
+print(text[:3])  # PYT (from start to index 3)
 print(text[::2])  # PTO (every 2nd character)
-print(text[::-1]) # NOHTYP (reversed)
+print(text[::-1])  # NOHTYP (reversed)
 ```
 
 ### Essential String Methods
@@ -164,10 +164,10 @@ product, quantity, price = row.split(",")
 ```python
 text = "ABC123"
 
-text.isalpha()     # False (has numbers)
-text.isdigit()     # False (has letters)
-text.isalnum()     # True (letters and numbers)
-text.isupper()     # False (has numbers)
+text.isalpha()  # False (has numbers)
+text.isdigit()  # False (has letters)
+text.isalnum()  # True (letters and numbers)
+text.isupper()  # False (has numbers)
 "12345".isdigit()  # True
 "hello".islower()  # True
 ```
@@ -198,7 +198,7 @@ When simple methods aren't enough:
 import re
 
 text = "Contact us at support@company.com or sales@company.com"
-emails = re.findall(r'\b[\w.-]+@[\w.-]+\.\w+\b', text)
+emails = re.findall(r"\b[\w.-]+@[\w.-]+\.\w+\b", text)
 print(emails)  # ['support@company.com', 'sales@company.com']
 ```
 
@@ -250,8 +250,8 @@ last_clean = last_name.lower().replace("'", "").strip()
 email = f"{first_clean}.{last_clean}@company.com"
 display = f"{first_name} {last_name} ({department})"
 
-print("Email:", email)        # sarah.oconnor@company.com
-print("Display:", display)    # Sarah O'Connor (Marketing)
+print("Email:", email)  # sarah.oconnor@company.com
+print("Display:", display)  # Sarah O'Connor (Marketing)
 ```
 
 ---
@@ -265,7 +265,7 @@ print("Display:", display)    # Sarah O'Connor (Marketing)
 products = [
     ("Widget Pro", 3, 29.99),
     ("Gadget Max", 1, 149.50),
-    ("Cable Basic", 10, 4.99)
+    ("Cable Basic", 10, 4.99),
 ]
 
 print("=" * 50)
@@ -401,10 +401,7 @@ Write code to check if a username is valid (only letters and numbers, 3-15 chara
 ```python
 username = "User123"
 
-is_valid = (
-    username.isalnum() and
-    3 <= len(username) <= 15
-)
+is_valid = username.isalnum() and 3 <= len(username) <= 15
 
 print(f"Username '{username}' is valid: {is_valid}")
 ```
@@ -431,23 +428,25 @@ Expected: "top-10-tips-for-python-developers-2024-edition"
 ```python
 import re
 
+
 def create_slug(title, max_length=50):
     # Lowercase
     slug = title.lower()
-    
+
     # Replace spaces with hyphens
     slug = slug.replace(" ", "-")
-    
+
     # Remove special characters (keep letters, numbers, hyphens)
-    slug = re.sub(r'[^a-z0-9-]', '', slug)
-    
+    slug = re.sub(r"[^a-z0-9-]", "", slug)
+
     # Remove multiple consecutive hyphens
-    slug = re.sub(r'-+', '-', slug)
-    
+    slug = re.sub(r"-+", "-", slug)
+
     # Trim to max length
-    slug = slug[:max_length].rstrip('-')
-    
+    slug = slug[:max_length].rstrip("-")
+
     return slug
+
 
 title = "Top 10 Tips for Python Developers! (2024 Edition)"
 print(create_slug(title))

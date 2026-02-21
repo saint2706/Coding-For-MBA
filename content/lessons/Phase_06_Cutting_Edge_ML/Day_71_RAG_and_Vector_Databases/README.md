@@ -81,19 +81,25 @@ model = SentenceTransformer("all-MiniLM-L6-v2")  # Fast, free, runs locally
 
 sentences = [
     "Revenue increased by 15% year-over-year",
-    "Sales grew 15% compared to last year",     # Semantically similar ↑
-    "The cat sat on the mat",                    # Unrelated
+    "Sales grew 15% compared to last year",  # Semantically similar ↑
+    "The cat sat on the mat",  # Unrelated
 ]
 
 embeddings = model.encode(sentences)
 print(f"Embedding shape: {embeddings.shape}")  # (3, 384) — 384-dimensional vectors
 
+
 # Cosine similarity
 def cosine_sim(a, b):
     return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
 
-print(f"Revenue vs Sales similarity: {cosine_sim(embeddings[0], embeddings[1]):.3f}")  # ~0.92
-print(f"Revenue vs Cat similarity:   {cosine_sim(embeddings[0], embeddings[2]):.3f}")  # ~0.12
+
+print(
+    f"Revenue vs Sales similarity: {cosine_sim(embeddings[0], embeddings[1]):.3f}"
+)  # ~0.92
+print(
+    f"Revenue vs Cat similarity:   {cosine_sim(embeddings[0], embeddings[2]):.3f}"
+)  # ~0.12
 ```
 
 ### 3. ChromaDB — Your Vector Store
@@ -110,10 +116,7 @@ emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name="all-MiniLM-L6-v2"
 )
 
-collection = client.create_collection(
-    name="company_docs",
-    embedding_function=emb_fn
-)
+collection = client.create_collection(name="company_docs", embedding_function=emb_fn)
 
 # Index your documents (chunks)
 documents = [
@@ -126,13 +129,12 @@ documents = [
 collection.add(
     documents=documents,
     ids=[f"doc_{i}" for i in range(len(documents))],
-    metadatas=[{"source": "internal"} for _ in documents]
+    metadatas=[{"source": "internal"} for _ in documents],
 )
 
 # Query
 results = collection.query(
-    query_texts=["What was our profitability last quarter?"],
-    n_results=2
+    query_texts=["What was our profitability last quarter?"], n_results=2
 )
 print("Retrieved chunks:")
 for doc, dist in zip(results["documents"][0], results["distances"][0]):
@@ -146,19 +148,18 @@ from openai import OpenAI
 
 openai_client = OpenAI()
 
+
 def rag_pipeline(user_question: str, collection, n_results: int = 3) -> str:
     """Full RAG: retrieve → augment → generate."""
 
     # Step 1: Retrieve relevant chunks
-    results = collection.query(
-        query_texts=[user_question],
-        n_results=n_results
-    )
+    results = collection.query(query_texts=[user_question], n_results=n_results)
     retrieved_chunks = results["documents"][0]
 
     # Step 2: Build augmented prompt
-    context = "\n\n".join([f"[Source {i+1}]: {chunk}"
-                           for i, chunk in enumerate(retrieved_chunks)])
+    context = "\n\n".join(
+        [f"[Source {i + 1}]: {chunk}" for i, chunk in enumerate(retrieved_chunks)]
+    )
 
     prompt = f"""You are a helpful assistant. Answer the question using ONLY the provided context.
 If the answer is not in the context, say "I don't have that information in my documents."
@@ -173,16 +174,14 @@ Answer:"""
     response = openai_client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": prompt}],
-        temperature=0  # Low temperature for factual answers
+        temperature=0,  # Low temperature for factual answers
     )
 
     return response.choices[0].message.content
 
+
 # Test it
-answer = rag_pipeline(
-    "What was the EBITDA in Q3 2025?",
-    collection
-)
+answer = rag_pipeline("What was the EBITDA in Q3 2025?", collection)
 print(answer)
 # "According to the documents, Q3 2025 EBITDA was $42M, up 18% YoY..."
 ```
@@ -196,9 +195,9 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # Fixed-size chunking (simple but ignores structure)
 splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,       # characters per chunk
-    chunk_overlap=50,     # overlap prevents cutting mid-sentence context
-    separators=["\n\n", "\n", ".", " "]  # hierarchy of split points
+    chunk_size=500,  # characters per chunk
+    chunk_overlap=50,  # overlap prevents cutting mid-sentence context
+    separators=["\n\n", "\n", ".", " "],  # hierarchy of split points
 )
 
 long_document = """
@@ -253,11 +252,16 @@ import numpy as np
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 lesson_titles = [
-    "Variables and Data Types", "Loops and Conditionals",
-    "Pandas DataFrames", "Linear Regression",
-    "Neural Networks", "Transformers and BERT",
-    "SQL Joins", "Data Visualization"
+    "Variables and Data Types",
+    "Loops and Conditionals",
+    "Pandas DataFrames",
+    "Linear Regression",
+    "Neural Networks",
+    "Transformers and BERT",
+    "SQL Joins",
+    "Data Visualization",
 ]
+
 
 def semantic_search(query: str, titles: list, top_k: int = 3) -> list:
     """Return top-k most semantically similar titles to the query."""
@@ -266,6 +270,7 @@ def semantic_search(query: str, titles: list, top_k: int = 3) -> list:
     # TODO: Compute cosine similarities
     # TODO: Return top-k titles with scores
     pass
+
 
 results = semantic_search("how to combine database tables", lesson_titles)
 print(results)  # Should rank "SQL Joins" highest

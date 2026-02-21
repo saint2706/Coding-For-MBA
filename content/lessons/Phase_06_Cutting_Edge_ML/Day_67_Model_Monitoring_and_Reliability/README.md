@@ -112,24 +112,26 @@ If you alert on everything, you alert on nothing.
 ```python
 import numpy as np
 
+
 def calculate_psi(expected, actual):
     # Avoid div by zero
     expected = np.array(expected) + 0.0001
     actual = np.array(actual) + 0.0001
-    
+
     psi_values = (actual - expected) * np.log(actual / expected)
     return sum(psi_values)
+
 
 # Case 1: No Drift
 expected_dist = [0.8, 0.2]
 actual_no_drift = [0.8, 0.2]
 psi_1 = calculate_psi(expected_dist, actual_no_drift)
-print(f"PSI (No Drift): {round(psi_1, 4)}") # Should be ~0
+print(f"PSI (No Drift): {round(psi_1, 4)}")  # Should be ~0
 
 # Case 2: Major Drift
 actual_drift = [0.5, 0.5]
 psi_2 = calculate_psi(expected_dist, actual_drift)
-print(f"PSI (Drift): {round(psi_2, 4)}") # Should be > 0.2
+print(f"PSI (Drift): {round(psi_2, 4)}")  # Should be > 0.2
 
 if psi_2 > 0.2:
     print("🚨 ALERT: Significant Drift Detected! Retrain Model.")
@@ -154,29 +156,34 @@ PSI (Drift): 0.2749
 ```python
 import random
 
+
 def risky_model_predict(input_data):
     # Simulate random crash
     if random.random() < 0.3:
         raise ValueError("Model Timeout")
-    
+
     # Simulate prediction
     confidence = random.random()
     return {"pred": "Spam", "conf": confidence}
 
+
 def robust_predict(input_data):
     try:
         result = risky_model_predict(input_data)
-        
+
         # Check Confidence
-        if result['conf'] < 0.6:
-            print(f"⚠️ Low Confidence ({round(result['conf'],2)}). Using Rule-Based Fallback.")
-            return "Not Spam" # Safe default
-            
-        return result['pred']
-        
+        if result["conf"] < 0.6:
+            print(
+                f"⚠️ Low Confidence ({round(result['conf'], 2)}). Using Rule-Based Fallback."
+            )
+            return "Not Spam"  # Safe default
+
+        return result["pred"]
+
     except Exception as e:
         print(f"🔥 Model Failed: {e}. Using Default.")
-        return "Not Spam" # Safe default
+        return "Not Spam"  # Safe default
+
 
 # Run 10 times
 print("--- Reliability Test ---")
@@ -206,16 +213,18 @@ Final Decision: Not Spam
 **Scenario**: A fraud model usually predicts 1% fraud. If it suddenly predicts 20% fraud, either there's a massive attack, or the model is broken.
 
 ```python
-predictions_last_hour = [0, 0, 0, 1, 0, 0, 0, 1, 1, 1] # 40% fraud!
+predictions_last_hour = [0, 0, 0, 1, 0, 0, 0, 1, 1, 1]  # 40% fraud!
+
 
 def check_anomaly(predictions, threshold=0.10):
     current_fraud_rate = sum(predictions) / len(predictions)
-    
+
     print(f"Current Fraud Rate: {current_fraud_rate * 100}%")
-    
+
     if current_fraud_rate > threshold:
-        return True # Trigger Alert
+        return True  # Trigger Alert
     return False
+
 
 if check_anomaly(predictions_last_hour):
     print("🚨 PAGERDUTY: Fraud Rate Spike! Investigate immediately.")
