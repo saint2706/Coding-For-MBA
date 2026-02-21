@@ -1,0 +1,286 @@
+---
+day: "24B"
+title: "Exploratory Data Analysis (EDA)"
+phase: 2
+phaseTitle: "Functions, Modularity & Data Wrangling"
+slug: "exploratory-data-analysis"
+duration: 60
+difficulty: "intermediate"
+tags: [python, pandas, eda, business-analysis]
+concepts:
+  [business-question framing, univariate and bivariate analysis, missingness audit, outlier strategy, correlation caveats]
+prerequisites: [23, 24]
+outcomes:
+  [Frame EDA around business decisions, Audit distributions and data quality, Communicate risks and next actions with an executive-ready memo]
+---
+
+# 🎯 Day 24B: Exploratory Data Analysis (EDA)
+
+> *"EDA is where raw tables become decisions."*
+
+---
+
+## The "Never-Coded" Bridge
+
+MBA teams rarely ask, *"What is the mean of column X?"* They ask:
+
+- Why did churn rise in Q2?
+- Which customer segment should we target first?
+- Are discounts increasing revenue or just reducing margin?
+
+EDA is the structured middle step between cleaning data and presenting charts. It helps you validate assumptions, expose data risks, and prioritize the analyses that matter before building dashboards.
+
+---
+
+## EDA Question Framework (Business Questions First)
+
+Use this sequence before opening any plotting library:
+
+1. **Decision context**: What decision will this analysis inform?
+2. **Primary KPI**: Which metric defines success (e.g., conversion, margin, churn)?
+3. **Driver hypotheses**: What factors might explain KPI movement?
+4. **Segment lens**: Which cuts matter (region, channel, cohort, product line)?
+5. **Risk checks**: What data quality issues could invalidate conclusions?
+
+### Practical Template
+
+```text
+Business decision:
+Primary KPI:
+Working hypotheses (top 3):
+Key segments to compare:
+Must-pass data quality checks:
+```
+
+---
+
+## The Technical Deep Dive
+
+### 1) Univariate Checks (One Variable at a Time)
+
+Goal: understand distribution, data type integrity, and suspicious values.
+
+```python
+import pandas as pd
+
+# Numeric overview
+num_cols = df.select_dtypes(include="number").columns
+univariate_num = df[num_cols].describe().T
+
+# Categorical overview
+cat_cols = df.select_dtypes(exclude="number").columns
+for c in cat_cols:
+    print(f"\n{c}")
+    print(df[c].value_counts(dropna=False).head(10))
+```
+
+Checklist:
+
+- Range and units make business sense
+- Heavy skew or long tails are identified
+- Cardinality is manageable for reporting
+- Category labels are standardized
+
+### 2) Missingness Audit
+
+Missing data is not just a technical issue—it can indicate process breakdown.
+
+```python
+missing = (
+    df.isna()
+    .mean()
+    .mul(100)
+    .sort_values(ascending=False)
+    .rename("missing_pct")
+)
+print(missing[missing > 0])
+
+# Optional: segment-level missingness
+missing_by_region = df.groupby("region")["revenue"].apply(lambda s: s.isna().mean())
+print(missing_by_region)
+```
+
+Ask:
+
+- Is missingness random or concentrated by segment/time/channel?
+- Could missingness bias KPI comparisons?
+- Do we impute, exclude, or escalate data collection fixes?
+
+### 3) Outlier Strategy
+
+Outliers can be signal (fraud, VIP behavior, stockout spikes) or noise (data entry error).
+
+```python
+q1 = df["order_value"].quantile(0.25)
+q3 = df["order_value"].quantile(0.75)
+iqr = q3 - q1
+
+lower = q1 - 1.5 * iqr
+upper = q3 + 1.5 * iqr
+
+outliers = df[(df["order_value"] < lower) | (df["order_value"] > upper)]
+print(f"Outliers found: {len(outliers)}")
+```
+
+Decision options:
+
+- Keep and flag (when extreme values are meaningful)
+- Cap/winsorize for robust modeling
+- Remove only with explicit, documented justification
+
+### 4) Bivariate Checks (Relationship Scanning)
+
+Goal: test whether candidate drivers move with your KPI.
+
+```python
+# Numeric-numeric
+print(df[["marketing_spend", "revenue"]].corr(numeric_only=True))
+
+# Category-numeric
+segment_summary = df.groupby("channel", as_index=False)["conversion_rate"].agg(["mean", "median", "count"])
+print(segment_summary)
+```
+
+Useful comparisons:
+
+- KPI by segment (bar/box summaries)
+- Time trend vs intervention periods
+- Rate metrics normalized by exposure (e.g., per customer, per visit)
+
+### 5) Correlation Caveats (MBA Audience)
+
+Correlation is useful for prioritizing investigation, not for proving causality.
+
+- **Correlation ≠ causation**: Two metrics can move together due to a third factor.
+- **Simpson's paradox**: Relationship direction can flip after segmentation.
+- **Scale effects**: Shared growth trends can inflate correlation.
+- **Nonlinearity**: Pearson correlation misses curved relationships.
+- **Policy implication**: Treat correlations as hypotheses to test with experiments or stronger causal designs.
+
+---
+
+## Quick Profiling Tools
+
+### Optional Fast Path: `ydata-profiling`
+
+```python
+# pip install ydata-profiling
+from ydata_profiling import ProfileReport
+
+profile = ProfileReport(df, title="EDA Profile", explorative=True)
+profile.to_file("eda_profile.html")
+```
+
+Use when you need a rapid first-pass report for stakeholders.
+
+### Pure Pandas Fallback (No Extra Dependency)
+
+```python
+def quick_profile(df: pd.DataFrame) -> pd.DataFrame:
+    return pd.DataFrame(
+        {
+            "dtype": df.dtypes.astype(str),
+            "n_unique": df.nunique(dropna=True),
+            "missing_pct": df.isna().mean().mul(100).round(2),
+            "sample_values": df.apply(lambda s: ", ".join(map(str, s.dropna().astype(str).head(3))), axis=0),
+        }
+    ).sort_values("missing_pct", ascending=False)
+
+print(quick_profile(df).head(20))
+```
+
+---
+
+## Deliverable Template: 1-Page EDA Memo
+
+Use this exact structure for business communication.
+
+```text
+Title: EDA Memo — <Project / Dataset / Date>
+
+1) Objective (2-3 lines)
+- Decision to support
+- KPI and scope
+
+2) Key Findings (3-5 bullets)
+- Most important directional insights from univariate and bivariate checks
+- Segment differences that matter for action
+
+3) Data Risks & Limitations (3-5 bullets)
+- Missingness patterns and likely impact
+- Outlier handling decision and rationale
+- Correlation caveats / causal uncertainty
+
+4) Recommended Next Actions (3 bullets max)
+- Immediate operational action
+- Analysis/modeling follow-up
+- Data collection or instrumentation fix
+```
+
+---
+
+## Hands-on Lab
+
+### Exercise: Revenue Drop Investigation
+
+You are given a monthly transaction dataset where revenue declined in one region.
+
+Tasks:
+
+1. Frame three business-first EDA questions.
+2. Run univariate checks for `revenue`, `discount`, and `order_count`.
+3. Perform a missingness audit and identify high-risk columns.
+4. Create an outlier strategy for `order_value` and justify it.
+5. Run bivariate checks against `revenue` and draft the 1-page EDA memo.
+
+---
+
+## Mastery Check
+
+**Q1**: Why start EDA with business questions instead of charts?
+
+**Q2**: When should outliers be retained rather than removed?
+
+**Q3**: Give one example of why a high correlation might still be non-actionable.
+
+---
+
+## Summary
+
+- ✅ EDA starts with **decision context**, not code
+- ✅ Univariate + bivariate checks surface patterns and data quality risks
+- ✅ Missingness and outliers require explicit business-aware strategy
+- ✅ Correlation guides hypotheses, not causal claims
+- ✅ A concise EDA memo translates analysis into next actions
+
+**Next bridge:** Phase 3 will convert these validated EDA findings into clear visual stories and dashboards.
+
+---
+
+## Task Block (Core / Stretch / Expert)
+
+### Data Migration Thread (Days 22–24B): Arrays → DataFrame Pipelines → Insight Readiness
+
+### Core
+
+- Complete a business-first EDA checklist on a Pandas dataset from Day 24.
+- Produce a 1-page EDA memo with findings, risks, and actions.
+
+### Stretch
+
+- Compare optional `ydata-profiling` output against your manual Pandas checks.
+- Reconcile at least two differences and explain which method you trust more.
+
+### Expert
+
+- Design a reusable `run_eda(df, kpi, segments)` utility returning a dictionary of profile, risk flags, and memo-ready summaries.
+- Include explicit guardrails for leakage, sparse segments, and unstable correlations.
+
+## Common Grading Rubric (applies every day)
+
+| Criterion | 1 - Emerging | 2 - Developing | 3 - Proficient | 4 - Strong |
+|---|---|---|---|---|
+| Correctness | Major logic errors; results frequently wrong. | Core path works but multiple inaccuracies remain. | Outputs are correct for expected inputs and checked with examples. | Outputs are consistently correct, including tricky cases and clear verification. |
+| Robustness | Breaks on minor input changes or missing values. | Handles some variation but fails on common edge cases. | Handles expected edge cases with explicit guards/validation. | Gracefully handles unexpected data, with informative failures and recovery paths. |
+| Readability | Hard to follow; unclear naming/structure. | Partially clear but inconsistent style or organization. | Clear naming, structure, and comments/docstrings where needed. | Highly readable, well-organized, and easy for teammates to extend quickly. |
+| Reuse | One-off script with duplicated logic. | Some modularization, limited reuse. | Reusable functions/classes with sensible boundaries. | Well-factored components with clean interfaces and minimal duplication. |
