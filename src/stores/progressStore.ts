@@ -13,6 +13,7 @@
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
 import { getStoredString, removeStoredValue } from '../utils/safeStorage'
+import { dayTokenToProgressId } from '../utils/dayToken'
 
 const STORAGE_KEY = 'coding-for-mba-progress'
 const LAST_VISITED_KEY = 'coding-for-mba-last-visited'
@@ -63,15 +64,15 @@ type ProgressStore = {
   completionDates: Record<number, string>
   hasHydrated: boolean
   hydrate: () => void
-  markLessonComplete: (day: number, completedAt?: Date) => void
-  markLessonIncomplete: (day: number) => void
-  toggleLessonComplete: (day: number, completedAt?: Date) => boolean
-  isLessonComplete: (day: number) => boolean
+  markLessonComplete: (day: string | number, completedAt?: Date) => void
+  markLessonIncomplete: (day: string | number) => void
+  toggleLessonComplete: (day: string | number, completedAt?: Date) => boolean
+  isLessonComplete: (day: string | number) => boolean
   clearAllProgress: () => void
-  setLastVisited: (day: number) => void
-  getCompletedForPhase: (phaseLessonDays: number[]) => number[]
+  setLastVisited: (day: string | number) => void
+  getCompletedForPhase: (phaseLessonDays: Array<string | number>) => number[]
   completedLessonsCount: () => number
-  phaseProgress: (phaseLessonDays: number[]) => PhaseProgress
+  phaseProgress: (phaseLessonDays: Array<string | number>) => PhaseProgress
   streakDays: (now?: Date) => number
 }
 
@@ -184,42 +185,47 @@ export const useProgressStore = create<ProgressStore>()(
         useProgressStore.persist.rehydrate()
       },
       markLessonComplete: (day, completedAt = new Date()) => {
-        if (!Number.isInteger(day) || day < 1) return
+        const normalizedDay = dayTokenToProgressId(day)
+        if (!Number.isInteger(normalizedDay) || normalizedDay < 1) return
 
         set((state) => {
-          if (state.completedLessons.includes(day)) return state
+          if (state.completedLessons.includes(normalizedDay)) return state
           return {
-            completedLessons: [...state.completedLessons, day].sort((a, b) => a - b),
+            completedLessons: [...state.completedLessons, normalizedDay].sort((a, b) => a - b),
             completionDates: {
               ...state.completionDates,
-              [day]: toDayKey(completedAt),
+              [normalizedDay]: toDayKey(completedAt),
             },
           }
         })
       },
       markLessonIncomplete: (day) => {
-        if (!Number.isInteger(day) || day < 1) return
+        const normalizedDay = dayTokenToProgressId(day)
+        if (!Number.isInteger(normalizedDay) || normalizedDay < 1) return
 
         set((state) => ({
-          completedLessons: state.completedLessons.filter((value) => value !== day),
+          completedLessons: state.completedLessons.filter((value) => value !== normalizedDay),
           completionDates: Object.fromEntries(
-            Object.entries(state.completionDates).filter(([savedDay]) => Number(savedDay) !== day),
+            Object.entries(state.completionDates).filter(
+              ([savedDay]) => Number(savedDay) !== normalizedDay,
+            ),
           ),
         }))
       },
       toggleLessonComplete: (day, completedAt = new Date()) => {
-        if (!Number.isInteger(day) || day < 1) return false
+        const normalizedDay = dayTokenToProgressId(day)
+        if (!Number.isInteger(normalizedDay) || normalizedDay < 1) return false
 
-        const isCompleted = get().completedLessons.includes(day)
+        const isCompleted = get().completedLessons.includes(normalizedDay)
         if (isCompleted) {
-          get().markLessonIncomplete(day)
+          get().markLessonIncomplete(normalizedDay)
           return false
         }
 
-        get().markLessonComplete(day, completedAt)
+        get().markLessonComplete(normalizedDay, completedAt)
         return true
       },
-      isLessonComplete: (day) => get().completedLessons.includes(day),
+      isLessonComplete: (day) => get().completedLessons.includes(dayTokenToProgressId(day)),
       clearAllProgress: () => {
         set({
           completedLessons: [],
@@ -229,12 +235,15 @@ export const useProgressStore = create<ProgressStore>()(
         removeStoredValue(LAST_VISITED_KEY)
       },
       setLastVisited: (day) => {
-        if (!Number.isInteger(day) || day < 1) return
-        set({ lastVisitedLesson: day })
+        const normalizedDay = dayTokenToProgressId(day)
+        if (!Number.isInteger(normalizedDay) || normalizedDay < 1) return
+        set({ lastVisitedLesson: normalizedDay })
       },
       getCompletedForPhase: (phaseLessonDays) => {
         const completed = new Set(get().completedLessons)
-        return phaseLessonDays.filter((day) => completed.has(day))
+        return phaseLessonDays
+          .map((day) => dayTokenToProgressId(day))
+          .filter((day) => completed.has(day))
       },
       completedLessonsCount: () => get().completedLessons.length,
       phaseProgress: (phaseLessonDays) => {

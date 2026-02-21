@@ -11,7 +11,7 @@ const {
 describe('content zod schemas', () => {
   it('accepts valid lesson frontmatter fixture', () => {
     const validLesson = {
-      day: 1,
+      day: '11B',
       title: 'Python Basics for Business',
       phase: 1,
       difficulty: 'beginner',
@@ -47,7 +47,7 @@ describe('content zod schemas', () => {
     const validPhase = {
       phase: 2,
       title: 'Functions & Modularity',
-      days: [13, 14, 15],
+      days: [13, '14B', 15],
       totalDuration: 360,
       difficulty: 'intermediate',
     }

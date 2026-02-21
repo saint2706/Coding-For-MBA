@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 const lessons = [
   {
-    day: 1,
+    day: '11',
+    daySortKey: '00011:',
     title: 'Intro to Python Variables',
     phase: 1,
     tags: ['python', 'basics'],
@@ -11,7 +12,8 @@ const lessons = [
     path: '/content/lessons/Phase_1/README.md',
   },
   {
-    day: 2,
+    day: '11B',
+    daySortKey: '00011:B',
     title: 'SQL JOIN Deep Dive',
     phase: 2,
     tags: ['sql'],
@@ -41,11 +43,11 @@ describe('searchIndex', () => {
   it('finds and ranks likely results by relevance', () => {
     const results = search('python')
     expect(results.length).toBeGreaterThan(0)
-    expect((results[0] as { item: { day: number } }).item.day).toBe(1)
+    expect((results[0] as { item: { day: string } }).item.day).toBe('11')
   })
 
   it('respects result limit', () => {
-    const results = search('learn', 1)
+    const results = search('11B', 1)
     expect(results.length).toBe(1)
   })
 })

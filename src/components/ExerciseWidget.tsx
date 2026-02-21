@@ -28,6 +28,7 @@ import CopyButton from './CopyButton'
 import { useLocation } from 'react-router-dom'
 import { getAllExercises } from '../utils/contentLoader'
 import { markExerciseComplete } from '../utils/exerciseProgress'
+import { dayTokenToProgressId, normalizeDayToken } from '../utils/dayToken'
 import { triggerDayExercisesCompleteConfetti } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
 import { useQuizStore } from '../stores/quizStore'
@@ -82,13 +83,14 @@ export default function ExerciseWidget({
 
   const location = useLocation()
   const lessonDay = useMemo(() => {
-    const match = location.pathname.match(/\/lesson\/(\d+)/)
-    return match ? Number(match[1]) : null
+    const match = location.pathname.match(/\/lesson\/([^/]+)/)
+    return match && match[1] ? normalizeDayToken(match[1]) : null
   }, [location.pathname])
 
   const totalExercisesForDay = useMemo(() => {
     if (!lessonDay) return 0
-    return getAllExercises().filter((exercise) => exercise.day === lessonDay).length
+    return getAllExercises().filter((exercise) => normalizeDayToken(exercise.day) === lessonDay)
+      .length
   }, [lessonDay])
 
   const exerciseId = useMemo(() => {
@@ -101,8 +103,14 @@ export default function ExerciseWidget({
 
   const handleExerciseMatch = useCallback(() => {
     if (!lessonDay) return
-    useGamificationStore.getState().awardExerciseCompletion(lessonDay, exerciseId)
-    const completedAll = markExerciseComplete(lessonDay, exerciseId, totalExercisesForDay)
+    useGamificationStore
+      .getState()
+      .awardExerciseCompletion(dayTokenToProgressId(lessonDay), exerciseId)
+    const completedAll = markExerciseComplete(
+      dayTokenToProgressId(lessonDay),
+      exerciseId,
+      totalExercisesForDay,
+    )
     if (completedAll) {
       triggerDayExercisesCompleteConfetti()
       toastSuccess(`All exercises complete for Day ${lessonDay}!`)

@@ -13,6 +13,14 @@
 
 import { parseMarkdown } from './frontmatter'
 import { difficultyConfig, phaseIcons } from './curriculumConfig'
+import {
+  compareDayTokens,
+  dayTokenFromPath,
+  dayTokenFromReference,
+  normalizeDayToken,
+  parseDayToken,
+  type DayToken,
+} from './dayToken'
 
 /**
  * Represents a single lesson unit.
@@ -20,7 +28,8 @@ import { difficultyConfig, phaseIcons } from './curriculumConfig'
  */
 export interface Lesson {
   /** The day number of the lesson (unique ID). */
-  day: number
+  day: DayToken
+  daySortKey?: string
   title: string
   phase: number
   difficulty?: string
@@ -38,7 +47,7 @@ export interface Phase {
   title: string
   difficulty?: string
   totalDuration?: number
-  days?: readonly number[]
+  days?: readonly DayToken[]
   content: string
   path: string
   [key: string]: unknown
@@ -59,19 +68,41 @@ const phaseFiles = import.meta.glob('/content/lessons/**/Phase_Overview.md', {
 const lessons: Lesson[] = Object.entries(lessonFiles)
   .map(([path, raw]) => {
     const { frontmatter, content } = parseMarkdown(raw)
+    const frontmatterDay =
+      typeof frontmatter.day === 'string' || typeof frontmatter.day === 'number'
+        ? normalizeDayToken(frontmatter.day)
+        : null
+    const pathDay = dayTokenFromPath(path)
+    const day = pathDay || frontmatterDay || '0'
+    const parsedDay = parseDayToken(day)
+    const prerequisites = Array.isArray(frontmatter.prerequisites)
+      ? frontmatter.prerequisites
+          .map((entry) => dayTokenFromReference(entry))
+          .filter((entry): entry is DayToken => Boolean(entry))
+      : undefined
+
     return {
       ...frontmatter,
+      day,
+      daySortKey: parsedDay?.sortKey || day,
+      prerequisites,
       content,
       path,
-    } as Lesson
+    } as unknown as Lesson
   })
-  .sort((a, b) => (a.day || 0) - (b.day || 0))
+  .sort((a, b) => compareDayTokens(a.day, b.day))
 
 const phases: Phase[] = Object.entries(phaseFiles)
   .map(([path, raw]) => {
     const { frontmatter, content } = parseMarkdown(raw)
+    const days = Array.isArray(frontmatter.days)
+      ? frontmatter.days
+          .map((entry) => dayTokenFromReference(entry))
+          .filter((entry): entry is DayToken => Boolean(entry))
+      : undefined
     return {
       ...frontmatter,
+      days,
       content,
       path,
     } as Phase
@@ -95,7 +126,8 @@ export function getAllLessons(): readonly ImmutableLesson[] {
 
 /** Return a lesson by day number. */
 export function getLesson(dayNum: string | number): ImmutableLesson | undefined {
-  return immutableLessons.find((l) => l.day === Number(dayNum))
+  const dayToken = normalizeDayToken(dayNum)
+  return immutableLessons.find((l) => l.day === dayToken)
 }
 
 /** Return all lessons in a phase. */
@@ -108,8 +140,8 @@ export function getAdjacentLessons(dayNum: string | number): {
   prev: ImmutableLesson | null
   next: ImmutableLesson | null
 } {
-  const day = Number(dayNum)
-  const currentIndex = immutableLessons.findIndex((l) => l.day === day)
+  const dayToken = normalizeDayToken(dayNum)
+  const currentIndex = immutableLessons.findIndex((l) => l.day === dayToken)
 
   if (currentIndex === -1) {
     return { prev: null, next: null }
@@ -126,7 +158,7 @@ export function getAdjacentLessons(dayNum: string | number): {
 
 /** Exercise parsed from lesson markdown. */
 export interface Exercise {
-  day: number
+  day: DayToken
   lessonTitle: string
   phase: number
   difficulty: string
@@ -138,7 +170,7 @@ export interface Exercise {
 
 export interface ReviewCardSeed {
   id: string
-  day: number
+  day: DayToken
   phase: number
   lessonTitle: string
   sourceType: 'concept' | 'heading' | 'exercise'
@@ -329,7 +361,7 @@ function freezeStringArray(values?: readonly string[]): readonly string[] | unde
   return values ? Object.freeze([...values]) : undefined
 }
 
-function freezeNumberArray(values?: readonly number[]): readonly number[] | undefined {
+function freezeDayTokenArray(values?: readonly DayToken[]): readonly DayToken[] | undefined {
   return values ? Object.freeze([...values]) : undefined
 }
 
@@ -338,14 +370,14 @@ function freezeLesson(lesson: Lesson): ImmutableLesson {
     ...lesson,
     tags: freezeStringArray(lesson.tags),
     concepts: freezeStringArray(lesson.concepts),
-    prerequisites: freezeNumberArray(lesson.prerequisites as readonly number[] | undefined),
+    prerequisites: freezeDayTokenArray(lesson.prerequisites as readonly DayToken[] | undefined),
   })
 }
 
 function freezePhase(phase: Phase): ImmutablePhase {
   return Object.freeze({
     ...phase,
-    days: freezeNumberArray(phase.days),
+    days: freezeDayTokenArray(phase.days),
   })
 }
 
@@ -451,16 +483,21 @@ export function getReadingTime(content: string): number {
 
 /** Resolve prerequisite day references into lesson objects. */
 export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly ImmutableLesson[] {
-  const prereqs = lesson.prerequisites as readonly number[] | undefined
+  const prereqs = lesson.prerequisites as readonly unknown[] | undefined
   if (!prereqs || !Array.isArray(prereqs) || prereqs.length === 0) return []
   return prereqs
-    .map((day) => immutableLessons.find((l) => l.day === Number(day)))
+    .map((day) => dayTokenFromReference(day))
+    .map((day) => (day ? immutableLessons.find((l) => l.day === day) : undefined))
     .filter((l): l is ImmutableLesson => l !== undefined)
 }
 
 /** Return top related lessons ranked by shared tags/concepts and phase proximity. */
 export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly ImmutableLesson[] {
-  const prereqs = new Set((lesson.prerequisites as readonly number[]) || [])
+  const prereqs = new Set(
+    ((lesson.prerequisites as readonly unknown[]) || [])
+      .map((entry) => dayTokenFromReference(entry))
+      .filter((entry): entry is DayToken => Boolean(entry)),
+  )
   const myTags = new Set((lesson.tags as readonly string[]) || [])
   const myConcepts = new Set((lesson.concepts as readonly string[]) || [])
 

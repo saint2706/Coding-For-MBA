@@ -13,6 +13,7 @@
 
 import Fuse from 'fuse.js'
 import { getAllLessons, type Lesson } from './contentLoader'
+import { parseDayToken } from './dayToken'
 
 export interface SearchDocument extends Lesson {
   plainContent: string
@@ -37,29 +38,39 @@ const BODY_WEIGHT = 1
  * Optimized for performance by reducing regex passes and string allocations.
  */
 function stripMarkdown(md: string): string {
-  return md
-    // Remove code blocks (heavy content)
-    .replace(/```[\s\S]*?```/g, ' ')
-    // Remove inline code
-    .replace(/`[^`]*`/g, ' ')
-    // Remove images
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
-    // Remove links but keep text
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    // Remove list markers (e.g. "1. ") OR special chars/whitespace
-    // This combines two steps:
-    // 1. ^\s*\d+\.\s+ matches ordered list markers at start of line
-    // 2. [#>*_~\-|\s]+ matches markdown chars and whitespace
-    // Both are replaced by a single space.
-    .replace(/(^\s*\d+\.\s+|[#>*_~\-|\s]+)/gm, ' ')
-    .trim()
+  return (
+    md
+      // Remove code blocks (heavy content)
+      .replace(/```[\s\S]*?```/g, ' ')
+      // Remove inline code
+      .replace(/`[^`]*`/g, ' ')
+      // Remove images
+      .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
+      // Remove links but keep text
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+      // Remove list markers (e.g. "1. ") OR special chars/whitespace
+      // This combines two steps:
+      // 1. ^\s*\d+\.\s+ matches ordered list markers at start of line
+      // 2. [#>*_~\-|\s]+ matches markdown chars and whitespace
+      // Both are replaced by a single space.
+      .replace(/(^\s*\d+\.\s+|[#>*_~\-|\s]+)/gm, ' ')
+      .trim()
+  )
 }
 
 function toDocument(lesson: Lesson): SearchDocument {
+  const parsedDay = parseDayToken(lesson.day)
+  const dayParts = parsedDay
+    ? [
+        `day ${parsedDay.token}`,
+        `day ${parsedDay.number}`,
+        parsedDay.suffix ? `day ${parsedDay.number} ${parsedDay.suffix}` : '',
+      ]
+    : [`day ${lesson.day}`]
   return {
     ...lesson,
     plainContent: stripMarkdown(lesson.content),
-    dayText: `day ${lesson.day}`,
+    dayText: dayParts.filter(Boolean).join(' '),
     phaseText: `phase ${lesson.phase}`,
   }
 }

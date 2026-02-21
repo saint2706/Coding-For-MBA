@@ -20,6 +20,7 @@ import {
   phaseIcons,
 } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
+import { compareDayTokens } from '../utils/dayToken'
 import { useQuizStore } from '../stores/quizStore'
 
 /**
@@ -139,9 +140,9 @@ export default function Exercises() {
     })
 
     return results.sort((a, b) => {
-      if (sortOrder === 'phase-desc') return b.phase - a.phase || b.day - a.day
+      if (sortOrder === 'phase-desc') return b.phase - a.phase || compareDayTokens(b.day, a.day)
       if (sortOrder === 'title-asc') return a.title.localeCompare(b.title)
-      return a.phase - b.phase || a.day - b.day
+      return a.phase - b.phase || compareDayTokens(a.day, b.day)
     })
   }, [exercises, phaseFilter, difficultyFilter, searchQuery, sortOrder])
 

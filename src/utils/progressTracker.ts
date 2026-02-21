@@ -30,22 +30,22 @@ if (typeof window !== 'undefined') {
   })
 }
 
-export function markLessonComplete(day: number): void {
+export function markLessonComplete(day: string | number): void {
   ensureHydrated()
   useProgressStore.getState().markLessonComplete(day)
 }
 
-export function markLessonIncomplete(day: number): void {
+export function markLessonIncomplete(day: string | number): void {
   ensureHydrated()
   useProgressStore.getState().markLessonIncomplete(day)
 }
 
-export function isLessonComplete(day: number): boolean {
+export function isLessonComplete(day: string | number): boolean {
   ensureHydrated()
   return useProgressStore.getState().isLessonComplete(day)
 }
 
-export function toggleLessonComplete(day: number): boolean {
+export function toggleLessonComplete(day: string | number): boolean {
   ensureHydrated()
   return useProgressStore.getState().toggleLessonComplete(day)
 }
@@ -60,12 +60,12 @@ export function getCompletedCount(): number {
   return useProgressStore.getState().completedLessonsCount()
 }
 
-export function getCompletedForPhase(phaseLessonDays: number[]): number[] {
+export function getCompletedForPhase(phaseLessonDays: Array<string | number>): number[] {
   ensureHydrated()
   return useProgressStore.getState().getCompletedForPhase(phaseLessonDays)
 }
 
-export function setLastVisited(day: number): void {
+export function setLastVisited(day: string | number): void {
   ensureHydrated()
   useProgressStore.getState().setLastVisited(day)
 }
@@ -80,7 +80,7 @@ export function clearAllProgress(): void {
   useProgressStore.getState().clearAllProgress()
 }
 
-export function getPhaseProgress(phaseLessonDays: number[]): {
+export function getPhaseProgress(phaseLessonDays: Array<string | number>): {
   completed: number
   total: number
   percent: number
