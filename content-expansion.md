@@ -46,19 +46,21 @@
 
 ### Phase 2 — Functions, Modularity & Data Wrangling ⚠️ Needs Depth
 
-**Current state**: 12 days (6.8KB overview — smallest by far). The phase overview is ~50% shorter than Phase 1 and almost entirely missing the narrative depth, real-world scenario tables, and skills matrices found in Phases 5, 8.
+**Current state**: Phase 2 has materially improved since the initial gap review: `Phase_Overview.md` is expanded, `Day_24B_Exploratory_Data_Analysis` and `Day_24C_Data_Cleaning_Playbook` now exist, and an `extras/` dataset pack is present.
 
-**Gaps identified**:
-- `Day_22_NumPy` and `Day_23_Pandas` + `Day_24_Pandas_Advanced` are the only data tooling lessons — **no dedicated EDA (Exploratory Data Analysis) lesson**
-- **Matplotlib & Seaborn** appear first in Phase 3 (Day 27), but no connection to Pandas plotting in Phase 2
-- **Pandas performance** (`.pipe()`, `eval()`, `query()`, chunked reading) missing
-- Phase Overview lacks the ROI table / skills matrix depth of later phases
-- No `extras/` folder present in Phase 2 (Phase 3, 4, 6 have extras)
+**Validated on (2026-02-21)**: `Phase_Overview.md`, `Day_23_Pandas/README.md`, `Day_24_Pandas_Advanced/README.md`, and `extras/*` in `Phase_02_Functions_Modularity_Data_Wrangling`.
 
-**Expansion targets**:
-- `Day_24B_Exploratory_Data_Analysis` — profiling with `pandas-profiling`, descriptive stats, correlation
-- Expand `Phase_Overview.md` to match Phase 5 depth (add ROI table, advanced/expert skills tiers, business scenario walkthroughs, 2 more milestone exam questions)
-- Add `extras/` with sample dirty datasets for Day_25 (Data Cleaning) prerequisite practice
+**True remaining gaps**:
+- **EDA workflow depth** still needs a more explicit end-to-end analyst workflow (question framing → quick profiling → slice diagnostics → hypothesis logging → handoff to visualization)
+- **Pandas performance patterns** are still under-covered (`.pipe()`, `query()`, `eval()`, categorical dtypes, chunked reads, memory profiling)
+- **Cleaning playbook explicitness** needs stronger decision rules and reusable checklists (null strategy matrix, dedupe policy, type coercion guardrails, validation assertions)
+- **Capstone depth** remains light for phase-end synthesis (needs a richer mini-capstone rubric, deliverables, and business narrative expectations)
+
+**Revised expansion targets (priority order)**:
+1. Expand `Day_24B_Exploratory_Data_Analysis` with a concrete business EDA workflow template and decision checkpoints.
+2. Add/expand a dedicated Pandas performance section (within `Day_24_Pandas_Advanced` or a `Day_24E_Pandas_Performance` extension).
+3. Deepen `Day_24C_Data_Cleaning_Playbook` with explicit rulebooks, quality gates, and reusable validation snippets.
+4. Strengthen `Day_24D_Phase2_Mini_Capstone` with clearer scope tiers, scoring rubric, and executive-ready output requirements.
 
 ---
 
