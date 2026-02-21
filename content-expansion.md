@@ -32,15 +32,15 @@
 
 **Current state**: 12 days, solid, 4 milestone challenges, covers D1–D12.
 
-**Gaps identified**:
-- Day 11 covers functions, but **generators & iterators** (memory efficiency) are absent
-- **Decorators** (`@property`, `@staticmethod`, `@wraps`) not covered — needed for Phase 2 OOP
-- No lesson on **debugging tools** (`pdb`, breakpoints, `traceback`) despite being beginner-critical
-- No **type hints** introduction (Python 3.9+ is assumed across later phases)
+**Validated against current content**: 2026-02-21 (`Day_11_Functions` includes intro coverage of both type hints and decorators).
+
+**Gaps identified (remaining, true gaps)**:
+- Day 11 introduces modern function syntax, but **iterators/generators depth** is still missing (custom iterator protocol, `yield from`, `itertools`, practical memory profiling)
+- No dedicated **debugging workflow** lesson (`pdb`, breakpoints/watch expressions, stack traces, reproducible bug triage)
 
 **Expansion targets** (2 new days):
-- `Day_13B_Generators_Iterators` — yield, lazy evaluation, infinite sequences
-- `Day_13C_Debugging_and_Type_Hints` — pdb, mypy basics, annotation syntax
+- `Day_13B_Generators_Iterators` — deepen iteration model beyond Day 11 (custom iterators, generator composition, lazy pipelines, business-scale data streaming examples)
+- `Day_13C_Debugging_Workflows` — structured debugging playbook (`pdb`, IDE breakpoints, `traceback`, logging-first diagnosis); avoid re-teaching Day 11 type hints/decorators except brief references
 
 ---
 
