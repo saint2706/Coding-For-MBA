@@ -39,8 +39,8 @@
 - No dedicated **debugging workflow** lesson (`pdb`, breakpoints/watch expressions, stack traces, reproducible bug triage)
 
 **Expansion targets** (2 new days):
-- `Day_13B_Generators_Iterators` — deepen iteration model beyond Day 11 (custom iterators, generator composition, lazy pipelines, business-scale data streaming examples)
-- `Day_13C_Debugging_Workflows` — structured debugging playbook (`pdb`, IDE breakpoints, `traceback`, logging-first diagnosis); avoid re-teaching Day 11 type hints/decorators except brief references
+- `Day_11B_Generators_Iterators` — deepen iteration model beyond Day 11 (custom iterators, generator composition, lazy pipelines, business-scale data streaming examples)
+- `Day_11C_Debugging_Workflows` — structured debugging playbook (`pdb`, IDE breakpoints, `traceback`, logging-first diagnosis); avoid re-teaching Day 11 type hints/decorators except brief references
 
 ---
 
