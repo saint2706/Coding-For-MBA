@@ -163,6 +163,18 @@
   background: rgba(255, 255, 255, 0.06);
 }
 
+.code-playground__btn--confirm {
+  color: #fca5a5 !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  background: rgba(239, 68, 68, 0.1) !important;
+}
+
+.code-playground__btn--confirm:hover {
+  color: #fecaca !important;
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.7) !important;
+}
+
 .code-playground__editor-area {
   position: relative;
   min-height: 60px;
