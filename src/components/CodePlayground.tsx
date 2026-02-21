@@ -79,17 +79,43 @@ const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g,
 const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
   ({ initialCode, expectedOutput, onExpectedOutputMatched, onSubmissionEvaluated }, ref) => {
     const [code, setCode] = useState(initialCode)
+    const [isConfirmingReset, setIsConfirmingReset] = useState(false)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const preRef = useRef<HTMLDivElement>(null)
     const runnerRef = useRef<PythonRunnerHandle>(null)
     const runCountRef = useRef(0)
+    const resetTimeoutRef = useRef<number | null>(null)
 
     /**
      * Resets the code editor to its initial state.
      */
     const handleReset = useCallback(() => {
       setCode(initialCode)
+      setIsConfirmingReset(false)
+      if (resetTimeoutRef.current) {
+        clearTimeout(resetTimeoutRef.current)
+        resetTimeoutRef.current = null
+      }
     }, [initialCode])
+
+    const handleResetClick = useCallback(() => {
+      if (isConfirmingReset) {
+        handleReset()
+      } else {
+        setIsConfirmingReset(true)
+        if (resetTimeoutRef.current) clearTimeout(resetTimeoutRef.current)
+        resetTimeoutRef.current = window.setTimeout(() => {
+          setIsConfirmingReset(false)
+          resetTimeoutRef.current = null
+        }, 3000)
+      }
+    }, [isConfirmingReset, handleReset])
+
+    useEffect(() => {
+      return () => {
+        if (resetTimeoutRef.current) clearTimeout(resetTimeoutRef.current)
+      }
+    }, [])
 
     useImperativeHandle(
       ref,
@@ -176,12 +202,16 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
           <div className="code-playground__actions">
             <CopyButton text={code} className="code-playground__btn" showEmoji={true} />
             <button
-              className="code-playground__btn code-playground__btn--reset"
-              onClick={handleReset}
-              aria-label="Reset code to original"
-              title="Reset code to original"
+              className={`code-playground__btn code-playground__btn--reset ${isConfirmingReset ? 'code-playground__btn--confirm' : ''}`}
+              onClick={handleResetClick}
+              aria-label={
+                isConfirmingReset
+                  ? 'Confirm reset? This will discard your changes'
+                  : 'Reset code to original'
+              }
+              title={isConfirmingReset ? 'Click again to confirm reset' : 'Reset code to original'}
             >
-              ↺ Reset
+              {isConfirmingReset ? '⚠️ Confirm?' : '↺ Reset'}
             </button>
           </div>
         </div>
