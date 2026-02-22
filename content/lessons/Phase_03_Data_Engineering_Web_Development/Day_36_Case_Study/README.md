@@ -8,7 +8,7 @@ duration: 60
 difficulty: "intermediate"
 tags: [python, etl, pipeline, integration]
 concepts: [ETL pipelines, data integration, automation, end-to-end projects]
-prerequisites: [25, 27, 31, 33]
+prerequisites: [25, 27, 31, 33, 36]
 outcomes: [Build complete ETL pipelines, Integrate APIs with databases, Create data dashboards]
 ---
 
@@ -30,6 +30,22 @@ outcomes: [Build complete ETL pipelines, Integrate APIs with databases, Create d
 4. **Serve**: Display via web dashboard
 
 **This is what data engineers actually do.** Every company needs pipelines that automatically gather, process, and present data.
+
+---
+
+## Before You Start
+
+This case study now supports **two implementation tracks**:
+
+- **Track A (core):** synchronous ETL + Flask dashboard (the baseline path).
+- **Track B (advanced):** async ingestion + FastAPI-style patterns + Dockerized deployment.
+
+To be successful, review:
+
+- [Day 36B: Docker Fundamentals](../Day_36B_Docker_Fundamentals/README.md)
+- [Day 36C: Async Python and FastAPI](../Day_36C_Async_Python_and_FastAPI/README.md)
+
+If you are short on time, finish Track A first, then extend to Track B as your stretch implementation.
 
 ---
 
@@ -64,6 +80,36 @@ def extract_data(url):
 # Example: Using JSONPlaceholder (fake API)
 url = "https://jsonplaceholder.typicode.com/users"
 raw_data = extract_data(url)
+```
+
+### Track B Extract (Advanced): Async + Bounded Concurrency
+
+```python
+import asyncio
+import httpx
+
+
+async def fetch_json(client, url, semaphore):
+    async with semaphore:
+        response = await client.get(url, timeout=10.0)
+        response.raise_for_status()
+        return response.json()
+
+
+async def extract_many(urls, concurrency=5):
+    semaphore = asyncio.Semaphore(concurrency)
+    async with httpx.AsyncClient() as client:
+        tasks = [fetch_json(client, url, semaphore) for url in urls]
+        return await asyncio.gather(*tasks)
+
+
+urls = [
+    "https://jsonplaceholder.typicode.com/users",
+    "https://jsonplaceholder.typicode.com/posts",
+    "https://jsonplaceholder.typicode.com/comments",
+]
+results = asyncio.run(extract_many(urls, concurrency=3))
+print(f"Fetched {len(results)} payloads with bounded concurrency")
 ```
 
 ### Step 2: Transform
@@ -261,6 +307,77 @@ def robust_extract(url, retries=3):
 ---
 
 ## Hands-on Lab
+
+## Implementation Tracks & Required Deliverables
+
+### Track A (Core)
+
+- Build the existing synchronous ETL pipeline (`requests` + `pandas` + `sqlite3`).
+- Serve results with Flask.
+- Demonstrate idempotent reruns and basic error handling.
+
+### Track B (Advanced)
+
+- Add async extraction using `httpx.AsyncClient` with bounded concurrency.
+- Containerize API + database for reproducible local deployment.
+- Add operational runbook notes for local debugging.
+
+### Explicit Deliverables (submit all)
+
+1. **`Dockerfile` + `docker-compose.yml` skeleton (API + DB)**
+
+```dockerfile
+# Dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+EXPOSE 8000
+CMD ["python", "app.py"]
+```
+
+```yaml
+# docker-compose.yml
+version: "3.9"
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://etl:etl@db:5432/etl_db
+    depends_on:
+      - db
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: etl
+      POSTGRES_PASSWORD: etl
+      POSTGRES_DB: etl_db
+    ports:
+      - "5432:5432"
+```
+
+2. **Async extraction example with bounded concurrency (`httpx`)**
+   - Reuse/adapt the Track B extract snippet above.
+
+3. **Minimal runbook**
+   - Local run commands:
+     - `python pipeline.py`
+     - `python app.py` (or `uvicorn app:app --reload` for async API variant)
+     - `docker compose up --build`
+   - Health-check endpoint:
+     - `GET /health` returns `{"status": "ok"}` once API and DB are reachable.
+   - Troubleshooting checklist:
+     - Verify API key/env vars are loaded.
+     - Check DB connectivity and port conflicts.
+     - Confirm migration/table creation happened before serving requests.
+     - Inspect logs for timeout/retry failures during extraction.
+     - Validate duplicate protection/idempotency settings.
 
 ### Exercise 1: Weather Pipeline
 
@@ -525,6 +642,31 @@ for chunk in pd.read_json(file, chunksize=10000):
     cleaned = transform(chunk)
     conn.execute("INSERT INTO ...", cleaned)
 ```
+
+</details>
+
+### Question 6: Architecture Tradeoffs
+
+You need to productionize this project for a small team. Which architecture do you choose first, and why?
+
+- **Option A:** Flask + synchronous ETL + local process deployment
+- **Option B:** FastAPI + async ingestion + containerized deployment
+
+In your answer, justify tradeoffs in:
+
+1. Team complexity and learning curve
+2. Throughput and latency needs
+3. Operational consistency across environments
+4. Debuggability and incident response
+
+<details>
+<summary>Click for Sample Rubric</summary>
+
+Strong answers are context-dependent, but should show:
+
+- **Option A is often best first** when team size is small, traffic is modest, and speed of delivery matters.
+- **Option B is often best** when concurrency matters (many network-bound calls), deployment consistency is critical, and the team can operate containers confidently.
+- A staged path is valid: launch with Flask sync baseline, then migrate extraction/API layers to async + containers as scale and reliability requirements grow.
 
 </details>
 
