@@ -303,6 +303,112 @@ print(f"Elapsed: {elapsed:.4f}s")
 print(f"DataFrame memory: {memory_mb:.2f} MB")
 ```
 
+### Performance Decision Matrix
+
+Use this matrix before optimizing. Pick the smallest change that meaningfully improves runtime or memory for your current bottleneck.
+
+| Technique | Best for | Primary benefit | Tradeoff / watch-out | Use when... |
+|---|---|---|---|---|
+| `usecols` in `read_csv` | Wide files with many unused columns | Faster IO + lower memory | Can break downstream code expecting dropped columns | You only need a subset of columns for analysis |
+| `dtype` map at load | Large CSVs where type inference is slow | Lower parse time + predictable memory | Wrong dtypes can cause coercion errors | You already know schema and can enforce it safely |
+| Cast repeated strings to `category` | Low-cardinality text columns (e.g., region/product) | Big memory reduction | Can add overhead if cardinality is very high | Unique values are much smaller than row count |
+| Vectorized operations | Column-level transformations | Major runtime improvement | Complex logic may be harder than simple `apply` | You can express logic with Pandas/NumPy expressions |
+| Chunked processing (`chunksize`) | Files near/above memory limit | Prevents memory spikes | More code and accumulator logic | Full-load approach risks OOM or swap thrashing |
+| `query` / `eval` / `pipe` chains | Multi-step filtering + derived metrics | Readable pipelines, sometimes faster expressions | Over-chaining can reduce beginner readability | You need reproducible, composable transformation steps |
+
+### Benchmark Lab: Baseline vs Optimized `large_sales.csv`
+
+Goal: quantify performance decisions using runtime and memory, then decide on a final approach using explicit thresholds.
+
+```python
+import time
+import pandas as pd
+import numpy as np
+
+# 1) Create synthetic dataset (same workflow family as above)
+np.random.seed(42)
+n = 1_000_000
+large_sales = pd.DataFrame(
+    {
+        "date": pd.date_range("2024-01-01", periods=n, freq="min"),
+        "region": np.random.choice(["North", "South", "East", "West"], n),
+        "product": np.random.choice(["A", "B", "C", "D"], n),
+        "revenue": np.random.randint(50, 2000, n),
+        "discount": np.random.uniform(0.0, 0.25, n),
+    }
+)
+large_sales.to_csv("large_sales.csv", index=False)
+
+
+def run_baseline(path: str):
+    """No explicit optimization."""
+    t0 = time.perf_counter()
+    df = pd.read_csv(path)
+    out = (
+        df[df["revenue"] > 0]
+        .assign(net_revenue=lambda d: d["revenue"] * (1 - d["discount"]))
+        .groupby(["region", "product"], as_index=False)["net_revenue"]
+        .sum()
+    )
+    elapsed = time.perf_counter() - t0
+    memory_mb = df.memory_usage(deep=True).sum() / (1024 ** 2)
+    return out, elapsed, memory_mb
+
+
+def run_optimized(path: str):
+    """Optimized with usecols + dtype map + category + query/eval/pipe."""
+    t0 = time.perf_counter()
+    dtype_map = {
+        "region": "category",
+        "product": "category",
+        "revenue": "float32",
+        "discount": "float32",
+    }
+    df = pd.read_csv(path, usecols=["region", "product", "revenue", "discount"], dtype=dtype_map)
+    out = (
+        df.query("revenue > 0")
+        .eval("net_revenue = revenue * (1 - discount)")
+        .pipe(lambda d: d.groupby(["region", "product"], as_index=False)["net_revenue"].sum())
+    )
+    elapsed = time.perf_counter() - t0
+    memory_mb = df.memory_usage(deep=True).sum() / (1024 ** 2)
+    return out, elapsed, memory_mb
+
+
+# 2) Run both versions
+baseline_out, baseline_time, baseline_mem = run_baseline("large_sales.csv")
+opt_out, opt_time, opt_mem = run_optimized("large_sales.csv")
+
+# Optional correctness check (same totals after sorting)
+baseline_sorted = baseline_out.sort_values(["region", "product"]).reset_index(drop=True)
+opt_sorted = opt_out.sort_values(["region", "product"]).reset_index(drop=True)
+pd.testing.assert_frame_equal(baseline_sorted, opt_sorted, check_exact=False, rtol=1e-5)
+
+# 3) Compute measurable improvement
+speedup_pct = ((baseline_time - opt_time) / baseline_time) * 100
+memory_reduction_pct = ((baseline_mem - opt_mem) / baseline_mem) * 100
+
+print(f"Baseline   -> time: {baseline_time:.3f}s | memory: {baseline_mem:.2f} MB")
+print(f"Optimized  -> time: {opt_time:.3f}s | memory: {opt_mem:.2f} MB")
+print(f"Speedup: {speedup_pct:.1f}%")
+print(f"Memory reduction: {memory_reduction_pct:.1f}%")
+
+# 4) Decision rule (required)
+if speedup_pct > 20 or memory_reduction_pct > 30:
+    final_choice = "optimized"
+else:
+    final_choice = "baseline"
+
+print(f"Final approach selected: {final_choice}")
+```
+
+#### Required learner report
+
+1. Record baseline runtime and memory.
+2. Record optimized runtime and memory.
+3. Report `speedup_pct` and `memory_reduction_pct`.
+4. State your final approach using the threshold rule: **choose optimized if speedup > 20% OR memory reduction > 30%; otherwise choose baseline for readability/simplicity.**
+
 ### Lab: Chunked Processing vs Full-Load Validation
 
 Goal: process a larger synthetic CSV in chunks and prove the aggregated output matches the full-load method.
@@ -362,6 +468,8 @@ print("✅ Chunked output matches full-load output")
 **Q2**: Merge with left join: `pd.merge(df1, df2, on="key", how="left")`
 
 **Q3**: Pivot table: `pd.pivot_table(df, values="val", index="row", columns="col")`
+
+**Q4**: Your optimized pipeline is 24% faster but only saves 8% memory and is less readable for junior analysts. Based on your benchmark thresholds and team maintainability needs, which version do you ship and why?
 
 ---
 
