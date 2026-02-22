@@ -1,0 +1,21 @@
+name: codeql-config
+
+queries:
+  - uses: security-extended
+  - uses: security-and-quality
+
+# Baseline noise control: keep high-confidence and actionable findings,
+# and skip low-impact recommendations/warnings to reduce alert fatigue.
+query-filters:
+  - exclude:
+      problem.severity:
+        - warning
+        - recommendation
+  - exclude:
+      precision:
+        - low
+
+paths-ignore:
+  - node_modules
+  - dist
+  - coverage
