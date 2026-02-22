@@ -1,8 +1,8 @@
 ---
 phase: 7
 title: "BI Analytics, Governance & Modern Data Stack"
-days: [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, "84B"]
-totalDuration: 660
+days: [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, "84B", "84C"]
+totalDuration: 750
 difficulty: "advanced"
 ---
 
@@ -133,6 +133,12 @@ Welcome to the command center of the modern enterprise.
 
 - Models, tests, docs, and lineage in a modern transformation workflow.
 - *Why it matters*: dbt operationalizes analytics engineering best practices.
+
+**Day 84C: Reverse ETL & Semantic Layer**
+
+- Syncing warehouse insights back to CRM, marketing, and CS tools (Hightouch, Census).
+- Defining metrics once in code via dbt Metrics / Cube.js for consistent multi-tool reporting.
+- *Why it matters*: Closes the last-mile gap between warehouse insights and operational action.
 
 ---
 
@@ -432,3 +438,13 @@ You have completed **Phase 7: BI Analytics, Governance & Modern Data Stack**!
 **Lead on.** 🚀
 
 ---
+
+## What's Next
+
+| Phase        | Focus                                  | Key Bridge                                      |
+| ------------ | -------------------------------------- | ----------------------------------------------- |
+| **Phase 8**  | SQL Mastery & Database Architecture    | The relational foundation under every BI system |
+| **Phase 9**  | Enterprise SQL Performance Engineering | Optimization, security, and cloud-native SQL    |
+| **Phase 10** | Generative AI & LLM Engineering        | AI-powered BI: Q&A over data warehouses         |
+
+> **Extras folder**: See `extras/` for a sample dbt project scaffold and Cube.js/dbt Metrics YAML examples — use them to practice Days 84B and 84C hands-on exercises.

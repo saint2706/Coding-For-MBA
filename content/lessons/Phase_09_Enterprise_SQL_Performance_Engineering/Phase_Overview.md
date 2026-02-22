@@ -1,8 +1,8 @@
 ---
 phase: 9
 title: "Enterprise SQL Performance Engineering"
-days: [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, "108B"]
-totalDuration: 660
+days: [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, "108B", "108C"]
+totalDuration: 750
 difficulty: "expert"
 ---
 
@@ -104,7 +104,13 @@ This phase is the **capstone** of database engineering.
 - End-to-end enterprise SQL implementation spanning design, optimization, and governance.
 - *Why it matters*: Demonstrates production readiness across the full program arc.
 
+**Day 108C: Cloud-Native SQL**
 
+- BigQuery ML: train logistic regression, XGBoost, and ARIMA+ models with `CREATE MODEL` SQL syntax.
+- Snowflake Cortex: LLM functions (SENTIMENT, COMPLETE, CLASSIFY_TEXT) directly in SQL.
+- Redshift ML: SageMaker Autopilot integration — enterprise AWS ML via SQL.
+- Cost engineering: partitioning + clustering + materialized views = 100-400x query cost reduction.
+- *Why it matters*: The modern BI professional runs ML models without leaving the data warehouse.
 ---
 
 ## The Business Value Proposition
@@ -595,3 +601,18 @@ The journey continues with **Phase 10: Generative AI & LLM Engineering** — whe
 
 ---
 
+## Curriculum Progression
+
+| Phases  | Journey                                                          |
+| ------- | ---------------------------------------------------------------- |
+| 1–2     | Python foundations, algorithmic thinking, data wrangling         |
+| 3       | Data engineering, web APIs, Flask, cloud fundamentals            |
+| 4       | Mathematical ML foundations, probability, sklearn pipelines      |
+| 5       | Advanced ML, deep learning, Transformers, GNNs                   |
+| 6       | Cutting-edge ML, AI agents, responsible AI, LLM fine-tuning      |
+| 7       | BI analytics, governance, modern data stack, dbt, semantic layer |
+| 8       | SQL mastery, database internals, NoSQL, streaming                |
+| 9       | Enterprise SQL performance, triggers, RLS, cloud-native ML       |
+| **10+** | **Generative AI & LLM Engineering — the frontier**               |
+
+> **Day 108C** (Cloud-Native SQL) is the bridge: BigQuery ML and Snowflake Cortex are where SQL meets LLMs in production.

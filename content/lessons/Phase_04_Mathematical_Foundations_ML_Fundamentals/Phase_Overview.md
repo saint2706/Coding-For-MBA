@@ -1,8 +1,8 @@
 ---
 phase: 4
 title: "Mathematical Foundations & ML Fundamentals"
-days: [37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
-totalDuration: 660
+days: [37, "37B", "37C", 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48]
+totalDuration: 795
 difficulty: "intermediate"
 ---
 
@@ -18,8 +18,8 @@ This phase transforms you from a Python programmer into a machine learning pract
 
 ### What You've Accomplished
 
-**Days 37-39: Mathematical Foundations**
-You consolidated your Python skills and built the mathematical foundation that powers all of machine learning. Linear algebra taught you to think in vectors and matrices—the language of data. Calculus showed you how optimization works: how gradient descent finds the best model parameters by following the steepest path downhill. These aren't abstract concepts; they're the mechanics inside every neural network and ML algorithm you'll ever use.
+**Days 37–37C: Mathematical Foundations & ML Engineering**
+You consolidated your Python skills and built the full mathematical foundation for machine learning. Day 37 transitions from Phase 3. **Day 37B** fills a critical gap: probability theory (Bayes' theorem, distributions, CLT, hypothesis testing) — the math that every probabilistic model in Phase 5 assumes you know. **Day 37C** introduces `sklearn.Pipeline` and `ColumnTransformer` — the engineering backbone that makes ML reproducible, leakage-proof, and production-deployable. Days 38–39 then build linear algebra and calculus intuition that powers every gradient and transformation you'll encounter.
 
 **Days 40-44: Supervised & Unsupervised Learning**
 You mastered the core paradigms of machine learning. Regression models taught you to predict continuous values—housing prices, sales forecasts, stock trends. Classification models showed you how to categorize data—spam detection, customer churn, disease diagnosis. You learned that accuracy isn't everything: precision, recall, and F1-score matter when mistakes have different costs. Then unsupervised learning revealed patterns you didn't know existed—customer segments, anomalies, and hidden structures in your data.
@@ -29,18 +29,20 @@ You discovered that raw data is rarely model-ready. Feature engineering transfor
 
 ### Skills Unlocked
 
-| Skill               | Tools                                            |
-| ------------------- | ------------------------------------------------ |
-| **Linear Algebra**  | NumPy, vectors, matrices, dot products           |
-| **Optimization**    | Gradient descent, learning rates, convergence    |
-| **Regression**      | LinearRegression, Ridge, Lasso, MSE, R²          |
-| **Classification**  | LogisticRegression, DecisionTree, RandomForest   |
-| **Metrics**         | Precision, Recall, F1, ROC-AUC, Confusion Matrix |
-| **Clustering**      | K-Means, Elbow Method, Silhouette Score          |
-| **Dimensionality**  | PCA, feature selection, variance explained       |
-| **Neural Networks** | Keras, Dense, activation functions               |
-| **CNNs**            | Conv2D, MaxPooling, image classification         |
-| **RNNs**            | LSTM, GRU, sequence modeling                     |
+| Skill               | Tools                                             |
+| ------------------- | ------------------------------------------------- |
+| **Linear Algebra**  | NumPy, vectors, matrices, dot products            |
+| **Optimization**    | Gradient descent, learning rates, convergence     |
+| **Regression**      | LinearRegression, Ridge, Lasso, MSE, R²           |
+| **Classification**  | LogisticRegression, DecisionTree, RandomForest    |
+| **Metrics**         | Precision, Recall, F1, ROC-AUC, Confusion Matrix  |
+| **Clustering**      | K-Means, Elbow Method, Silhouette Score           |
+| **Dimensionality**  | PCA, feature selection, variance explained        |
+| **Neural Networks** | Keras, Dense, activation functions                |
+| **CNNs**            | Conv2D, MaxPooling, image classification          |
+| **RNNs**            | LSTM, GRU, sequence modeling                      |
+| **Probability**     | Bayes' theorem, distributions, CLT, scipy.stats   |
+| **ML Pipelines**    | Pipeline, ColumnTransformer, joblib, GridSearchCV |
 
 ---
 
@@ -327,6 +329,21 @@ Before moving to Phase 5, ensure you can:
 - [ ] Build neural networks with Keras: Sequential, Dense, compile, fit
 - [ ] Design CNNs for images: Conv2D, MaxPooling, Flatten, Dropout
 - [ ] Design RNNs for sequences: LSTM, sequence-to-sequence, time series
+- [ ] Apply Bayes' theorem to a real classification problem (Day 37B)
+- [ ] Use `scipy.stats` to perform a hypothesis test and interpret p-value correctly
+- [ ] Build an end-to-end `Pipeline` with `ColumnTransformer` and serialize with `joblib` (Day 37C)
+
+---
+
+## What's Next
+
+| Phase        | Focus                            | Key Topics                                                   |
+| ------------ | -------------------------------- | ------------------------------------------------------------ |
+| **Phase 5**  | Advanced ML & Deep Learning      | Ensemble methods, NLP, Transformers, MLOps                   |
+| **Phase 6**  | Cutting-Edge ML & BI Foundations | AI Agents, Responsible AI, RAG, LLM Fine-Tuning              |
+| **Phase 10** | Generative AI & LLM Engineering  | Full LLM stack — from prompting to fine-tuning to deployment |
+
+> **Bridge Note**: Day 37B (Probability) directly prepares you for **Day 54** (Probabilistic Modeling) in Phase 5. Day 37C (Pipelines) is assumed knowledge for **Day 50** (MLOps Fundamentals).
 
 ---
 

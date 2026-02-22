@@ -1,8 +1,8 @@
 ---
 phase: 5
 title: "Advanced ML & Deep Learning"
-days: [49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
-totalDuration: 660
+days: [49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, "60B", "60C"]
+totalDuration: 780
 difficulty: "advanced"
 ---
 
@@ -139,6 +139,21 @@ Welcome to the final frontier of machine learning—the techniques powering mode
 - *Why it matters*: Most real data has relationships (social networks, molecules, knowledge graphs)
 
 **The evolution**: Transformers revolutionized NLP (2017) → Generative models create new data (2020) → GNNs handle networked data (2022)
+
+**Day 60B: LLM Fine-Tuning & PEFT *(Bridge Lesson)***
+
+- Why full fine-tuning is economically infeasible at 7B+ parameters
+- LoRA: Low-Rank Adaptation — the math behind parameter efficiency
+- QLoRA: 4-bit quantization + LoRA = fine-tune LLaMA on a consumer GPU
+- *Forward reference*: Full implementation in Phase 10, Day 113
+
+**Day 60C: RAG & Vector Databases *(Bridge Lesson)***
+
+- Embeddings as semantic GPS coordinates — building on Day 58 attention
+- RAG pipeline architecture: embed → retrieve → augment → generate
+- Vector databases: ChromaDB, Pinecone, pgvector, Weaviate
+- When to use RAG vs fine-tuning vs prompt engineering
+- *Forward reference*: Full implementation in Phase 10, Day 112
 
 ---
 
@@ -709,3 +724,15 @@ You've completed **Phase 5: Advanced ML & Deep Learning**!
 ---
 
 **Thank you for your dedication to mastering machine learning. The future of AI is in your hands!** 💡
+
+---
+
+## What's Next
+
+| Phase        | Focus                           | Bridge from Phase 5                                    |
+| ------------ | ------------------------------- | ------------------------------------------------------ |
+| **Phase 6**  | Cutting-Edge ML & BI            | AI Agents, Responsible AI, PEFT (Day 70), RAG (Day 71) |
+| **Phase 9**  | Enterprise SQL                  | The database layer powering every ML data pipeline     |
+| **Phase 10** | Generative AI & LLM Engineering | Full implementation of Days 60B/60C concepts           |
+
+> **Days 60B/60C** are conceptual bridges. Go to **Phase 10 → Days 112–113** for complete, runnable RAG and fine-tuning implementations.

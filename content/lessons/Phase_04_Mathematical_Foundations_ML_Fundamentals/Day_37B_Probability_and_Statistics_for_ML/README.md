@@ -1,0 +1,416 @@
+---
+day: "37B"
+title: "Probability & Statistics for ML"
+phase: 4
+phaseTitle: "Mathematical Foundations & ML Fundamentals"
+slug: "probability-statistics-ml"
+duration: 75
+difficulty: "intermediate"
+tags:
+  - probability
+  - statistics
+  - bayes
+  - distributions
+  - scipy
+concepts:
+  - "probability distributions"
+  - "Bayes' theorem"
+  - "conditional probability"
+  - "Central Limit Theorem"
+  - "hypothesis testing"
+prerequisites: [37]
+outcomes:
+  - "Interpret Normal, Binomial, and Poisson distributions"
+  - "Apply Bayes' theorem to real business problems"
+  - "Understand the Central Limit Theorem and why it matters for ML"
+  - "Conduct a basic hypothesis test with scipy.stats"
+---
+
+# 🎲 Day 37B: Probability & Statistics for Machine Learning
+
+> *"All of machine learning is just probability theory with a GPU."*
+
+---
+
+## The "Never-Coded" Bridge
+
+**Imagine your CFO asks:** "What's the probability this customer churns next month?"
+
+Before ML, you'd guess. After this lesson, you'll know the mathematical vocabulary to answer precisely — using probability distributions, Bayes' theorem, and statistical inference.
+
+**Why this matters for ML:**
+
+- **Linear regression** assumes normally distributed errors
+- **Naive Bayes classifier** is built entirely on Bayes' theorem
+- **A/B testing** uses hypothesis testing to decide if a new feature works
+- **Probabilistic forecasting** (e.g., demand planning) requires distribution modeling
+- **Day 54 (Probabilistic Modeling)** directly builds on today's foundations
+
+Every time a model outputs a **confidence score**, it's applying probability theory. Today you'll understand what that actually means.
+
+---
+
+## The Technical Deep Dive
+
+### Probability Fundamentals
+
+```python
+import numpy as np
+from scipy import stats
+import matplotlib.pyplot as plt
+
+# --- Basic probability vocabulary ---
+# P(A): probability of event A (between 0 and 1)
+# P(A|B): conditional probability — "probability of A given B occurred"
+# P(A ∩ B): joint probability — "A and B both happen"
+# P(A ∪ B): union — "A or B happens" = P(A) + P(B) - P(A∩B)
+
+# Example: email spam classifier
+p_spam = 0.20         # 20% of emails are spam
+p_word_given_spam = 0.40  # "free" appears in 40% of spam
+p_word_given_ham = 0.02   # "free" appears in 2% of legit emails
+
+# P(contains "free") = P(spam)*P(word|spam) + P(ham)*P(word|ham)
+p_word = p_spam * p_word_given_spam + (1 - p_spam) * p_word_given_ham
+print(f"P('free' in email): {p_word:.3f}")
+
+# Bayes' Theorem: P(spam|word) = P(word|spam) * P(spam) / P(word)
+p_spam_given_word = (p_word_given_spam * p_spam) / p_word
+print(f"P(spam | contains 'free'): {p_spam_given_word:.3f}")
+# → ~82% chance an email with "free" is spam
+```
+
+### Probability Distributions
+
+Three distributions power 80% of ML models. Know them cold.
+
+```python
+# --- 1. Normal (Gaussian) Distribution ---
+# Shape: bell curve. Mean μ, standard deviation σ.
+# Used for: regression errors, feature distributions, confidence intervals
+
+mu, sigma = 0, 1  # standard normal
+normal_dist = stats.norm(loc=mu, scale=sigma)
+
+print("Normal Distribution:")
+print(f"  Mean: {normal_dist.mean():.2f}")
+print(f"  P(X ≤ 0): {normal_dist.cdf(0):.3f}")      # 50%
+print(f"  P(-1 ≤ X ≤ 1): {normal_dist.cdf(1) - normal_dist.cdf(-1):.3f}")  # 68% rule
+
+# Standardization (Z-score): convert any normal distribution to standard
+revenue = np.array([10000, 15000, 12000, 18000, 8000])
+z_scores = (revenue - revenue.mean()) / revenue.std()
+print(f"\nRevenue z-scores: {z_scores.round(2)}")
+# Z > 2 or Z < -2 → outlier (see Day 45: Feature Engineering)
+
+
+# --- 2. Binomial Distribution ---
+# Shape: discrete counts of successes in n trials.
+# Used for: click rates, conversion rates, binary outcomes
+
+n_customers = 1000      # trials
+p_convert = 0.05        # success probability
+binomial = stats.binom(n=n_customers, p=p_convert)
+
+print("\nBinomial Distribution (conversions from 1000 visitors):")
+print(f"  Expected conversions: {binomial.mean():.0f}")
+print(f"  Std dev: {binomial.std():.1f}")
+print(f"  P(≥ 60 conversions): {1 - binomial.cdf(59):.4f}")
+
+
+# --- 3. Poisson Distribution ---
+# Shape: counts of rare events per time interval.
+# Used for: customer arrivals, server requests, defect rates
+
+avg_orders_per_hour = 12  # lambda (λ)
+poisson = stats.poisson(mu=avg_orders_per_hour)
+
+print("\nPoisson Distribution (orders per hour, λ=12):")
+print(f"  P(exactly 12 orders): {poisson.pmf(12):.4f}")
+print(f"  P(≤ 10 orders): {poisson.cdf(10):.4f}")
+print(f"  P(> 15 orders — need extra staff): {1 - poisson.cdf(15):.4f}")
+```
+
+### The Central Limit Theorem (CLT)
+
+The CLT is the mathematical reason sampling works — and why ML validation is valid.
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# CLT: The sampling distribution of the mean approaches Normal,
+# regardless of the original distribution's shape.
+
+# Start with a highly skewed distribution (e.g., customer order values)
+np.random.seed(42)
+population = np.random.exponential(scale=50, size=100_000)  # skewed right
+
+print(f"Population mean: ${population.mean():.2f}")
+print(f"Population std: ${population.std():.2f}")
+print(f"Population skew: {stats.skew(population):.2f}")  # Highly skewed!
+
+# Draw many samples and compute their means
+sample_means = []
+sample_size = 30  # Small sample size!
+
+for _ in range(10_000):
+    sample = np.random.choice(population, size=sample_size)
+    sample_means.append(sample.mean())
+
+sample_means = np.array(sample_means)
+
+print(f"\nSampling distribution of means (n={sample_size}):")
+print(f"  Mean of means: ${sample_means.mean():.2f}")  # ≈ population mean
+print(f"  Std of means (SE): ${sample_means.std():.2f}")  # ≈ σ/√n
+print(f"  Skew of means: {stats.skew(sample_means):.3f}")  # ≈ 0 (Normal!)
+
+# Theoretical standard error
+theoretical_se = population.std() / np.sqrt(sample_size)
+print(f"\nTheoretical SE (σ/√n): ${theoretical_se:.2f}")
+
+# Why this matters for ML:
+# Cross-validation computes mean accuracy across k folds.
+# CLT guarantees this mean is normally distributed → valid confidence intervals!
+```
+
+### Hypothesis Testing for Business Decisions
+
+```python
+from scipy import stats
+import numpy as np
+
+# Scenario: You redesigned your checkout page.
+# Control group (old): 500 users, 47 converted (9.4%)
+# Treatment group (new): 500 users, 63 converted (12.6%)
+# Is the improvement real, or just random noise?
+
+control_converts = 47
+control_n = 500
+treatment_converts = 63
+treatment_n = 500
+
+# Two-proportion z-test
+p_control = control_converts / control_n
+p_treatment = treatment_converts / treatment_n
+
+# Pooled proportion
+p_pool = (control_converts + treatment_converts) / (control_n + treatment_n)
+
+# Standard error of difference
+se = np.sqrt(p_pool * (1 - p_pool) * (1/control_n + 1/treatment_n))
+
+# Z-statistic
+z = (p_treatment - p_control) / se
+
+# Two-tailed p-value
+p_value = 2 * (1 - stats.norm.cdf(abs(z)))
+
+print("A/B Test Results:")
+print(f"  Control conversion rate: {p_control:.1%}")
+print(f"  Treatment conversion rate: {p_treatment:.1%}")
+print(f"  Lift: +{(p_treatment - p_control) / p_control:.1%}")
+print(f"  Z-statistic: {z:.3f}")
+print(f"  P-value: {p_value:.4f}")
+print(f"  Significant at α=0.05: {'✅ YES' if p_value < 0.05 else '❌ NO'}")
+# → p < 0.05 → the new checkout is genuinely better!
+```
+
+---
+
+## 💼 MBA Context: Where This Shows Up
+
+| Business Scenario                  | Probability Concept     | Model                |
+| ---------------------------------- | ----------------------- | -------------------- |
+| **Email spam filter**              | Bayes' theorem          | Naive Bayes          |
+| **Conversion rate estimation**     | Binomial distribution   | Logistic Regression  |
+| **Call center staffing**           | Poisson distribution    | Operational planning |
+| **A/B test significance**          | Hypothesis testing      | Statistics           |
+| **Demand forecasting uncertainty** | Normal distribution     | Confidence intervals |
+| **Fraud detection thresholds**     | Conditional probability | Anomaly detection    |
+
+**Airbnb** uses Bayesian methods to personalize search rankings. **Amazon** uses Poisson distributions to optimize warehouse staffing. **Netflix** runs thousands of A/B tests simultaneously using hypothesis testing — all built on today's foundations.
+
+---
+
+## Senior-Level Insights
+
+### The Common Pitfall: p-Value Misinterpretation
+
+> ⚠️ **p-value does NOT mean "probability the null hypothesis is true."**
+
+A p-value of 0.03 means: "If there were truly no difference, we'd see results this extreme only 3% of the time." It says nothing about how likely the null hypothesis is — that's Bayesian territory.
+
+In practice: report **effect size** (how big is the difference?) alongside p-value (is it real?). An A/B test with p=0.001 but a 0.01% conversion lift isn't actionable.
+
+### Bayesian vs. Frequentist: A Quick Map
+
+| Approach            | Frequentist                   | Bayesian                               |
+| ------------------- | ----------------------------- | -------------------------------------- |
+| **Question**        | "Does the data reject H₀?"    | "What do I believe after seeing data?" |
+| **Output**          | p-value + confidence interval | Posterior distribution                 |
+| **Prior knowledge** | Ignored                       | Incorporated                           |
+| **ML algorithms**   | Logistic Regression, SVM      | Bayesian Networks, GP, VAE             |
+
+For Day 54 (Probabilistic Modeling), you'll go deep into Bayesian ML.
+
+---
+
+## Hands-on Lab
+
+### Exercise 1: Distribution Identification (Easy)
+
+```python
+import numpy as np
+from scipy import stats
+
+# Classify each scenario as Normal, Binomial, or Poisson:
+# 1. Daily revenue across 365 days (hint: many small transactions aggregated)
+# 2. Number of defective products in a batch of 200 (p=0.02)
+# 3. Number of customer support tickets per hour (avg=8)
+# 4. Heights of 10,000 employees
+
+# For scenarios 2 and 3, compute:
+# What is the probability of seeing MORE than twice the expected value?
+n, p = 200, 0.02
+binom = stats.binom(n, p)
+print(f"Defects — P(X > {2 * n * p:.0f}): {1 - binom.cdf(2 * n * p):.4f}")
+
+lambda_val = 8
+poisson = stats.poisson(lambda_val)
+print(f"Tickets — P(X > {2 * lambda_val}): {1 - poisson.cdf(2 * lambda_val):.4f}")
+```
+
+### Exercise 2: Naive Bayes Spam Classifier from Scratch (Medium)
+
+```python
+import numpy as np
+
+# A minimal Naive Bayes classifier for email classification
+# Training data: word presence (binary) and spam labels
+
+emails = {
+    "free money win lottery": True,   # spam
+    "free gift claim now win": True,   # spam
+    "meeting agenda tomorrow free": False,  # ham
+    "project update team meeting": False,   # ham
+    "win free vacation limited time": True, # spam
+    "quarterly report board meeting": False,# ham
+}
+
+# Step 1: Compute priors
+labels = list(emails.values())
+p_spam = sum(labels) / len(labels)
+p_ham = 1 - p_spam
+print(f"P(spam) = {p_spam:.2f}, P(ham) = {p_ham:.2f}")
+
+# Step 2: Compute word likelihoods with Laplace smoothing
+# Your task: build word frequency tables and classify a new email:
+# "free project win" → is it spam or ham?
+
+# Hint: P(spam | words) ∝ P(spam) × ∏ P(word_i | spam)
+# Use log-probabilities to avoid numerical underflow:
+# log P(spam | words) = log P(spam) + Σ log P(word_i | spam)
+```
+
+### Exercise 3: Bootstrap Confidence Interval (Hard)
+
+```python
+import numpy as np
+
+# You measured average cart value for 50 users: $67.40
+# You want a 95% confidence interval WITHOUT assuming normality.
+# Use bootstrapping (repeatedly resample and compute statistics).
+
+np.random.seed(42)
+cart_values = np.random.lognormal(mean=4.0, sigma=0.5, size=50)
+print(f"Sample mean: ${cart_values.mean():.2f}")
+
+# Bootstrap: resample 10,000 times, compute mean each time
+n_bootstrap = 10_000
+bootstrap_means = []
+
+for _ in range(n_bootstrap):
+    resample = np.random.choice(cart_values, size=len(cart_values), replace=True)
+    bootstrap_means.append(resample.mean())
+
+bootstrap_means = np.array(bootstrap_means)
+
+# 95% CI = 2.5th to 97.5th percentile
+ci_lower = np.percentile(bootstrap_means, 2.5)
+ci_upper = np.percentile(bootstrap_means, 97.5)
+print(f"95% Bootstrap CI: [${ci_lower:.2f}, ${ci_upper:.2f}]")
+
+# Compare to parametric (normal-assumption) CI:
+from scipy import stats
+ci_param = stats.t.interval(
+    0.95, df=len(cart_values)-1,
+    loc=cart_values.mean(),
+    scale=stats.sem(cart_values)
+)
+print(f"95% Parametric CI: [${ci_param[0]:.2f}, ${ci_param[1]:.2f}]")
+```
+
+---
+
+## Mastery Check
+
+**Q1**: In Bayes' theorem — P(H|E) = P(E|H)×P(H) / P(E) — what does each term represent?
+<details><summary>Answer</summary>
+
+- **P(H|E)** = Posterior: updated belief after seeing evidence
+- **P(E|H)** = Likelihood: probability of observing this evidence if H is true
+- **P(H)** = Prior: belief before seeing evidence
+- **P(E)** = Marginal likelihood: normalizing constant (probability of the evidence)
+
+In the spam example: H = spam, E = email contains "free"
+</details>
+
+**Q2**: Why does the Central Limit Theorem matter for cross-validation?
+<details><summary>Answer</summary>
+
+When you run k-fold cross-validation and average the accuracy scores, the CLT guarantees that this average is approximately normally distributed — regardless of how accuracy is distributed across folds. This makes your confidence intervals and significance tests for model comparison valid, even with small k.
+</details>
+
+**Q3**: Your model outputs 0.73 confidence for a fraud prediction. What does this mean probabilistically?
+<details><summary>Answer</summary>
+
+It means the model estimates P(fraud | features) = 0.73. This is the **posterior probability** of fraud given the transaction features. A well-calibrated model means that among all transactions where it predicts 0.73, roughly 73% are actually fraud. Use `sklearn.calibration.calibration_curve` to verify your model is well-calibrated.
+</details>
+
+**Q4**: When would you use a Poisson distribution instead of a Binomial?
+<details><summary>Answer</summary>
+
+Use **Poisson** when: (1) n is very large, (2) p is very small, (3) you're counting events per unit of time/space (not successes in fixed trials). Rule of thumb: if n > 20 and p < 0.05, Poisson ≈ Binomial(n,p) with λ = n×p. Poisson is simpler when modeling arrivals, requests, defects per unit.
+</details>
+
+**Q5**: A p-value of 0.04 was obtained in an A/B test. The head of marketing says "there's a 96% probability the new design is better." What's wrong with this statement?
+<details><summary>Answer</summary>
+
+This is the **base-rate fallacy** applied to p-values. A p-value of 0.04 means: "Assuming no true difference, we'd see results this extreme 4% of the time" — it says nothing about the probability that the new design is better. To make that statement, you'd need a Bayesian analysis with a prior. The correct statement: "We reject the null hypothesis (no difference) at α=0.05 significance level." Report effect size (e.g., +3.2% conversion lift) to convey practical significance.
+</details>
+
+---
+
+## Further Reading & Tools
+
+- 📖 [Think Bayes](https://greenteapress.com/wp/think-bayes/) — Free O'Reilly book on Bayesian statistics in Python
+- 📖 [Statistics for Machine Learning](https://machinelearningmastery.com/statistics_for_machine_learning/) — Jason Brownlee's rapid primer
+- 🔧 [`scipy.stats` documentation](https://docs.scipy.org/doc/scipy/reference/stats.html) — Complete distribution reference
+- 🔧 [Seeing Theory](https://seeing-theory.brown.edu/) — Visual probability and statistics explorer
+- 🏢 **Airbnb Tech Blog**: "How Airbnb Democratizes Data Science With Data University" — real-world Bayesian A/B testing
+
+---
+
+## Summary
+
+Today you bridged probability theory to practical ML:
+
+- ✅ **Bayes' theorem** explains every probabilistic classifier (Naive Bayes → Day 54)
+- ✅ **Normal distribution** models errors and natural phenomena — assumed by linear regression
+- ✅ **Binomial** counts outcomes across binary trials (conversion rates, click-through)
+- ✅ **Poisson** counts rare events per time unit (arrivals, defects, requests)
+- ✅ **CLT** validates sampling, cross-validation, and confidence intervals
+- ✅ **Hypothesis testing** turns "it looks better" into "we can prove it's better"
+
+**Next → Day 37C**: Sklearn Pipelines — chain all your preprocessing and modeling steps into reproducible, leakage-proof workflows.

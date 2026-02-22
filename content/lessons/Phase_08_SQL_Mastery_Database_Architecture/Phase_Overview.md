@@ -1,8 +1,8 @@
 ---
 phase: 8
 title: "SQL Mastery & Database Architecture"
-days: [85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, "96B"]
-totalDuration: 660
+days: [85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, "96B", "96C"]
+totalDuration: 750
 difficulty: "advanced"
 ---
 
@@ -104,20 +104,27 @@ This phase represents the **technical ceiling** of data engineering.
 - Document, key-value, and column-family trade-offs vs relational systems.
 - *Why it matters*: Not every workload should be forced into a relational model.
 
+**Day 96C: Streaming SQL Fundamentals**
 
+- Apache Kafka producer/consumer/topic model. ksqlDB streaming SQL syntax.
+- Tumbling, hopping, and session windows for real-time aggregations.
+- Streaming vs batch decision framework.
+- *Why it matters*: Real-time fraud detection, live dashboards, and event-driven analytics.
 ---
 
 ## The Business Value Proposition
 
 ### ROI by Technique
 
-| Technique         | Impact Example                      | Value                           |
-| ----------------- | ----------------------------------- | ------------------------------- |
-| **Indexing**      | Reduce Customer Dashboard load time | 5s -> 200ms (User Retention)    |
-| **Partitioning**  | Cloud Warehouse Cost                | Scan 1TB -> 10GB (99% Savings)  |
-| **Upserts**       | Data Pipeline Reliability           | Zero Duplicates (Trust)         |
-| **RLS**           | Multi-Tenant Security               | Prevent Data Leaks (Compliance) |
-| **Recursive SQL** | Org Chart Application               | feature enabled in SQL (Speed)  |
+| Technique                   | Impact Example                      | Value                            |
+| --------------------------- | ----------------------------------- | -------------------------------- |
+| **Indexing**                | Reduce Customer Dashboard load time | 5s -> 200ms (User Retention)     |
+| **Partitioning**            | Cloud Warehouse Cost                | Scan 1TB -> 10GB (99% Savings)   |
+| **Upserts**                 | Data Pipeline Reliability           | Zero Duplicates (Trust)          |
+| **RLS**                     | Multi-Tenant Security               | Prevent Data Leaks (Compliance)  |
+| **Recursive SQL**           | Org Chart Application               | feature enabled in SQL (Speed)   |
+| **NoSQL (Day 96B)**         | High-write microservices            | 10x throughput vs relational     |
+| **Streaming SQL (Day 96C)** | Real-time fraud detection           | Sub-second alerting vs overnight |
 
 ---
 
@@ -465,3 +472,11 @@ You've mastered the *Science* of Database Architecture. In Phase 9, you master t
 
 ---
 
+## What's Next
+
+| Phase        | Focus                                  | Bridge                                                                           |
+| ------------ | -------------------------------------- | -------------------------------------------------------------------------------- |
+| **Phase 9**  | Enterprise SQL Performance Engineering | Materialized views, triggers, RLS, cloud SQL                                     |
+| **Phase 10** | Generative AI & LLM Engineering        | Vector databases underpin RAG pipelines (Day 96B connects to ChromaDB, pgvector) |
+
+> **Day 96C (Streaming)** connects to Confluent Cloud, Amazon MSK, and Google Pub/Sub at cloud scale in Phase 11.
