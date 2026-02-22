@@ -30,6 +30,18 @@ Your mission is to produce a **modular Python package** that ingests raw data, c
 
 ## Required Deliverables
 
+## Track Options (choose one based on your target challenge level)
+
+Use these tracks to differentiate scope while keeping the same core learning outcomes.
+
+| Track | Scope | Required additions |
+|---|---|---|
+| **Core** | Single dataset pipeline | Ingest one CSV, clean + aggregate, produce `final_metrics.csv` and `business_insights.md`. |
+| **Stretch** | Multi-file ingestion + QA visibility | Ingest multiple files (e.g., weekly extracts), union safely, and generate a data quality report (`reports/data_quality.md`). |
+| **Expert** | Config-driven pipeline + automation discipline | Add config-driven behavior (YAML/JSON), CLI arguments for paths/parameters, and automated tests for key transforms/metrics. |
+
+> Recommendation: Start with Core, then layer Stretch/Expert features only after end-to-end correctness is stable.
+
 ### 1) Modular Python package structure
 
 Create a package-style project (not a single script), for example:
@@ -113,6 +125,46 @@ Your report should include:
 - 1 business risk/caveat tied to data quality assumptions
 - 2 recommended next actions for stakeholders
 
+### 6) Executive Readout Template (`reports/business_insights.md`)
+
+Use this exact structure so stakeholders can quickly evaluate decisions:
+
+```markdown
+# Executive Readout
+
+## 1) Context
+- Time period covered, data sources included, and business question.
+
+## 2) KPI Movement
+- KPI 1: what changed (absolute + %), compared to what baseline.
+- KPI 2: what changed (absolute + %), compared to what baseline.
+
+## 3) Caveats / Data Quality Notes
+- Known limitations (missing values, dropped records, schema assumptions, late-arriving data).
+
+## 4) Recommendation
+- Decision/action to take now.
+- Why this recommendation follows from the KPI evidence.
+
+## 5) Next Experiment
+- One measurable follow-up test (hypothesis, metric, decision threshold).
+```
+
+Requirement: every recommendation must cite at least one specific metric from `final_metrics.csv`.
+
+### 7) Sample expected outputs (minimum)
+
+`data/processed/final_metrics.csv` (minimum schema example):
+
+```csv
+period,segment,customers_active,churn_rate,revenue,total_tickets
+2025-01,SMB,1240,0.043,185000,312
+```
+
+Example insight bullet (minimum evidence standard):
+
+- **SMB churn increased from 3.6% to 4.3% (+0.7pp MoM), while support tickets rose 18% (264 → 312); prioritize SMB onboarding improvements and track churn back below 4.0% next month.**
+
 ---
 
 ## Suggested Implementation Flow
@@ -153,11 +205,13 @@ Your report should include:
 
 | Deliverable | Criteria | Points |
 |---|---|---:|
-| Modular package structure | Required folders/modules present; clear separation of concerns; runnable entry point. | 15 |
-| Ingestion-cleaning-aggregation pipeline | End-to-end flow works; cleaning decisions applied; aggregated table is business-ready. | 20 |
-| Exception handling + logging | Critical steps protected with try/except; useful logs written to console + file. | 10 |
+| Modular package structure | Required folders/modules present; clear separation of concerns; runnable entry point. | 12 |
+| Ingestion-cleaning-aggregation pipeline | End-to-end flow works; cleaning decisions applied; aggregated table is business-ready. | 18 |
+| Exception handling + logging | Critical steps protected with try/except; useful logs written to console + file. | 8 |
 | Reproducible environment | `requirements.txt` complete; README includes accurate venv + run commands. | 5 |
-| Output dataset + insight report | `final_metrics.csv` generated; insight report is concise, evidence-based, action-oriented. | 10 |
+| Output dataset + insight report | `final_metrics.csv` generated; insight report is concise, evidence-based, action-oriented. | 7 |
+| Communication quality | Executive readout is concise, structured, stakeholder-ready, and uses clear business language. | 5 |
+| Decision traceability | Each recommendation is explicitly linked to metric evidence (values, deltas, and comparison baseline). | 5 |
 
 ### C) Pass thresholds
 
