@@ -50,7 +50,7 @@ jobs:
 
       - name: Upload Playwright HTML report
         if: ${{ failure() && (github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true') }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: nightly-playwright-html-report
           path: playwright-report
@@ -59,7 +59,7 @@ jobs:
 
       - name: Upload Playwright traces
         if: ${{ failure() && (github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true') }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: nightly-playwright-traces
           path: test-results
