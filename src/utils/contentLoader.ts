@@ -132,7 +132,21 @@ export function getLesson(dayNum: string | number): ImmutableLesson | undefined 
 
 /** Return all lessons in a phase. */
 export function getLessonsByPhase(phaseNum: string | number): readonly ImmutableLesson[] {
-  return immutableLessons.filter((l) => l.phase === Number(phaseNum))
+  if (!immutableLessonsByPhase) {
+    const byPhase: Record<number, Lesson[]> = {}
+    for (const lesson of immutableLessons) {
+      const p = lesson.phase
+      if (!byPhase[p]) byPhase[p] = []
+      byPhase[p].push(lesson as Lesson)
+    }
+
+    const frozenByPhase: Record<number, readonly ImmutableLesson[]> = {}
+    for (const [p, list] of Object.entries(byPhase)) {
+      frozenByPhase[Number(p)] = Object.freeze(list)
+    }
+    immutableLessonsByPhase = frozenByPhase
+  }
+  return immutableLessonsByPhase[Number(phaseNum)] || []
 }
 
 /** Return previous and next lessons around the given day. */
@@ -309,6 +323,7 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
 const immutableLessons = Object.freeze(lessons.map(freezeLesson))
 const immutablePhases = Object.freeze(phases.map(freezePhase))
 
+let immutableLessonsByPhase: Record<number, readonly ImmutableLesson[]> | null = null
 let immutableExercises: readonly ImmutableExercise[] | null = null
 let immutableReviewCards: readonly ImmutableReviewCardSeed[] | null = null
 
