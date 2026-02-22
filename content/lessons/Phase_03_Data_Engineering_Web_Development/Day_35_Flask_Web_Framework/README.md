@@ -214,6 +214,56 @@ class LoginForm(FlaskForm):
 # {{ user_input|safe }}  <- Dangerous, renders raw HTML
 ```
 
+### Deployment-Ready Baseline (Flask)
+
+**API contract tests (minimum set):**
+
+- Happy path: valid request returns expected status + response keys.
+- Validation failure: bad/missing form or JSON input returns `400` with stable error fields.
+
+```python
+# tests/test_contact.py
+
+def test_contact_happy_path(client):
+    r = client.post("/contact", data={"name": "Ana", "email": "ana@example.com", "message": "Hi"})
+    assert r.status_code in (200, 302)
+
+
+def test_contact_validation_error(client):
+    r = client.post("/contact", data={"name": "", "email": "bad", "message": ""})
+    assert r.status_code == 400
+    assert "error" in r.get_json()
+```
+
+**Structured logging with request IDs + error context:**
+
+```python
+import logging, uuid
+from flask import g, request
+
+logger = logging.getLogger("web")
+
+
+@app.before_request
+def attach_request_id():
+    g.request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+
+
+@app.after_request
+def log_response(response):
+    response.headers["X-Request-ID"] = g.request_id
+    logger.info("request_complete", extra={"request_id": g.request_id, "path": request.path, "status": response.status_code})
+    return response
+```
+
+**Security baseline (Phase 3 level):**
+
+- Validate/sanitize form and JSON input (length, format, required fields).
+- Store `SECRET_KEY`, DB creds, and API tokens in env vars; never commit them.
+- Harden sessions (`SESSION_COOKIE_HTTPONLY=True`, `SESSION_COOKIE_SECURE=True` in prod).
+- Restrict CORS origins and methods if frontend is hosted separately.
+
+
 ---
 
 ## Hands-on Lab
@@ -318,6 +368,19 @@ Your debugging goals:
 1. Fail fast at startup with actionable config validation errors.
 2. Verify error middleware returns consistent `500` behavior without stack traces to users.
 3. Use structured logs to trace the failing request end-to-end.
+
+### Exercise 5: Definition of Done (DoD) Drill
+
+For one Flask feature you built today, release only when all boxes are checked:
+
+- [ ] Contract tests include one happy path and one validation failure.
+- [ ] Request logs include `request_id`, route, status, and error context when failures happen.
+- [ ] Input validation exists for all user-provided fields.
+- [ ] Secrets/config are loaded from env vars and validated at startup.
+- [ ] Session + CORS settings are explicitly reviewed for production defaults.
+- [ ] User-facing errors are safe; debugging detail stays in logs.
+
+Reuse this checklist in Phase 5 when deploying model-backed web services.
 
 ---
 
