@@ -99,6 +99,18 @@ Is the column required for the business decision?
    └─ Escalate: collect source fix or exclude metric from decision.
 ```
 
+### Null Strategy Matrix (Decision Governance Template)
+
+Use this table to make null handling explicit, reviewable, and auditable across teams.
+
+| column | business criticality (high/medium/low) | missing % | strategy | rationale | owner |
+|---|---|---:|---|---|---|
+| customer_id | high | 0.2% | drop rows | Primary key cannot be null; low rate makes row drop acceptable | Data Engineering |
+| lifetime_value | medium | 12.8% | median impute + flag | Needed for segmentation, but nulls are moderate and likely recoverable | Analytics |
+| campaign_source | low | 31.5% | keep null | Not required for current KPI decision; monitor for future attribution use | Marketing Ops |
+
+> Tip: treat this matrix as a living artifact. Update it whenever business use-cases or source systems change.
+
 ### Practical policy example
 
 ```python
@@ -141,6 +153,20 @@ clean = (
     .drop_duplicates(subset=["customer_id"], keep="last")
 )
 ```
+
+### Duplicate Conflict Resolution Policy
+
+When duplicate records disagree, apply tie-break rules in this order:
+
+1. **Latest timestamp wins**
+   - Prefer the row with the most recent trusted `updated_at` or ingestion timestamp.
+2. **Trusted source ranking**
+   - If timestamps are tied/missing, choose based on source reliability (example: `crm` > `billing` > `marketing_upload`).
+3. **Field-level merge precedence**
+   - If neither rule fully resolves the conflict, merge by column-level precedence (example: contact fields from `crm`, revenue fields from `billing`).
+   - Record merged fields in a change log to preserve lineage.
+
+If conflicts remain unresolved after these rules, quarantine affected records and escalate to data governance owner before analysis.
 
 ---
 
@@ -200,6 +226,22 @@ assert clean["age"].between(0, 120).all(), "Age out of range"
 
 Treat assertion failures as data-quality incidents, not minor warnings.
 
+### Quality Gates (Severity-Based)
+
+Map assertion outcomes to severity so teams know when to block vs continue.
+
+| Severity | Gate rule | Assertion outcome example | Action |
+|---|---|---|---|
+| P0 (block) | Hard contract violated | `customer_id` not unique, required dates unparsed, row count = 0 | Stop pipeline, open incident, no dashboard refresh |
+| P1 (warn) | Material but tolerable degradation | Email validity drops below threshold (e.g., < 98%), null rate exceeds policy by small margin | Continue with warning, notify owner, create remediation ticket |
+| P2 (monitor) | Minor drift/trend change | Parse failure rate increases but stays under warning threshold | Log metric to quality dashboard and review weekly |
+
+Example implementation idea:
+
+- `assert` for **P0** checks (must pass).
+- Conditional checks that emit warnings for **P1**.
+- Time-series metric logging for **P2**.
+
 ---
 
 ## Hands-on Lab: Clean the Dirty Customer File
@@ -221,5 +263,6 @@ Use this file from extras:
 - `clean_customers.csv`
 - `cleaning_decisions.md` (short rationale log)
 - `validation_report.md` (passed/failed checks)
+- `data_quality_decisions.md` (null/duplicate policies chosen, quality gate thresholds, and unresolved risks)
 
 ➡️ After this playbook, you are ready for Phase 3 visualization and pipeline automation with much lower risk.
