@@ -28,58 +28,6 @@
 
 ## 2. Gap Analysis by Phase
 
-### Phase 1 — Algorithmic Thinking & Python Foundations ✅ Strong
-
-**Current state**: 12 days, solid, 4 milestone challenges, covers D1–D12.
-
-**Validated against current content**: 2026-02-21 (`Day_11_Functions` includes intro coverage of both type hints and decorators).
-
-**Gaps identified (remaining, true gaps)**:
-- Day 11 introduces modern function syntax, but **iterators/generators depth** is still missing (custom iterator protocol, `yield from`, `itertools`, practical memory profiling)
-- No dedicated **debugging workflow** lesson (`pdb`, breakpoints/watch expressions, stack traces, reproducible bug triage)
-
-**Expansion targets** (2 new days):
-- `Day_11B_Generators_Iterators` — deepen iteration model beyond Day 11 (custom iterators, generator composition, lazy pipelines, business-scale data streaming examples)
-- `Day_11C_Debugging_Workflows` — structured debugging playbook (`pdb`, IDE breakpoints, `traceback`, logging-first diagnosis); avoid re-teaching Day 11 type hints/decorators except brief references
-
----
-
-### Phase 2 — Functions, Modularity & Data Wrangling ⚠️ Needs Depth
-
-**Current state**: Phase 2 has materially improved since the initial gap review: `Phase_Overview.md` is expanded, `Day_24B_Exploratory_Data_Analysis` and `Day_24C_Data_Cleaning_Playbook` now exist, and an `extras/` dataset pack is present.
-
-**Validated on (2026-02-21)**: `Phase_Overview.md`, `Day_23_Pandas/README.md`, `Day_24_Pandas_Advanced/README.md`, and `extras/*` in `Phase_02_Functions_Modularity_Data_Wrangling`.
-
-**True remaining gaps**:
-- **EDA workflow depth** still needs a more explicit end-to-end analyst workflow (question framing → quick profiling → slice diagnostics → hypothesis logging → handoff to visualization)
-- **Pandas performance patterns** are still under-covered (`.pipe()`, `query()`, `eval()`, categorical dtypes, chunked reads, memory profiling)
-- **Cleaning playbook explicitness** needs stronger decision rules and reusable checklists (null strategy matrix, dedupe policy, type coercion guardrails, validation assertions)
-- **Capstone depth** remains light for phase-end synthesis (needs a richer mini-capstone rubric, deliverables, and business narrative expectations)
-
-**Revised expansion targets (priority order)**:
-1. Expand `Day_24B_Exploratory_Data_Analysis` with a concrete business EDA workflow template and decision checkpoints.
-2. Add/expand a dedicated Pandas performance section (within `Day_24_Pandas_Advanced` or a `Day_24E_Pandas_Performance` extension).
-3. Deepen `Day_24C_Data_Cleaning_Playbook` with explicit rulebooks, quality gates, and reusable validation snippets.
-4. Strengthen `Day_24D_Phase2_Mini_Capstone` with clearer scope tiers, scoring rubric, and executive-ready output requirements.
-
----
-
-### Phase 3 — Data Engineering & Web Development ✅ Good
-
-**Current state**: 12 days + 2 extras. Well-structured. Day 36 is "Case Study" which wraps it up.
-
-**Gaps identified**:
-- **Docker & containerization** not covered — critical bridge to Phase 5's MLOps Day 50
-- **Async Python** (`asyncio`, `httpx`, async APIs) not covered — Day 33/34 cover APIs synchronously
-- Day 35 (Flask) only — no mention of **FastAPI** even though it's used in Phase 5 (Day 50)
-
-**Expansion targets**:
-- `Day_36B_Docker_Fundamentals` — Dockerfile, docker-compose, containerizing Flask/FastAPI apps
-- `Day_36C_Async_Python_and_FastAPI` — asyncio basics, FastAPI vs Flask, async request handling
-- Update Day 35 `README.md` to cross-reference FastAPI intro
-
----
-
 ### Phase 4 — Mathematical Foundations & ML Fundamentals ✅ Good
 
 **Current state**: 12 days. Day 37 is a "Conclusion" day that recaps Phase 3 — slightly misaligned positioning (should be a Phase 3 review or transition day, not Phase 4 Day 37).
