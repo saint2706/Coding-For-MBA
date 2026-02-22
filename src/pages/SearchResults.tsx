@@ -16,6 +16,7 @@ import { useReducedMotion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { difficultyConfig } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
+import { useDebounce } from '../hooks/useDebounce'
 import { highlightText } from '../utils/searchHighlight'
 import {
   extractMatchedTerms,
@@ -75,6 +76,7 @@ export default function SearchResults() {
   const navigate = useNavigate()
   const queryFromUrl = searchParams.get('q') ?? ''
   const [query, setQuery] = useState(queryFromUrl)
+  const debouncedQuery = useDebounce(query, 250, (value) => value.trim() === '')
   const inputRef = useRef<HTMLInputElement>(null)
   const prefersReducedMotion = !!useReducedMotion()
 
@@ -108,11 +110,11 @@ export default function SearchResults() {
   }, [navigate])
 
   const results: SearchResult[] = useMemo(() => {
-    if (query.trim().length < 2) return []
-    return search(query, 50)
-  }, [query])
+    if (debouncedQuery.trim().length < 2) return []
+    return search(debouncedQuery, 50)
+  }, [debouncedQuery])
 
-  const terms = useMemo(() => extractMatchedTerms(query), [query])
+  const terms = useMemo(() => extractMatchedTerms(debouncedQuery), [debouncedQuery])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -180,7 +182,7 @@ export default function SearchResults() {
                 </div>
 
                 <p className="search-result-card-snippet">
-                  {highlightText(getSearchSnippet(result.item.plainContent, query), terms)}
+                  {highlightText(getSearchSnippet(result.item.plainContent, debouncedQuery), terms)}
                 </p>
 
                 <div className="search-result-card-tags">
@@ -200,7 +202,7 @@ export default function SearchResults() {
             )
           })}
         </div>
-      ) : query.trim().length >= 2 ? (
+      ) : debouncedQuery.trim().length >= 2 ? (
         <div className="search-empty-page glass-card">
           <SearchEmptyIllustration reducedMotion={prefersReducedMotion} />
           <p>No lessons matched your search.</p>
