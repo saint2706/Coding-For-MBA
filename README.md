@@ -20,6 +20,7 @@
   2. `Deploy to GitHub Pages` (`.github/workflows/deploy.yml`) runs automatically only after `CI` completes successfully on `main` (`workflow_run` trigger).
   3. Deploy workflow now performs only deployment-critical tasks (install deps, build artifact, upload, Pages deploy), with no duplicated quality gates.
   4. Manual deploy remains available through `workflow_dispatch` for maintainer-controlled re-deploys.
+  5. `Dependency Review` (`.github/workflows/dependency-review.yml`) runs on pull requests to protected branches and blocks dependency updates that introduce high/critical vulnerabilities or unacceptable license/policy changes.
 
 ## 📚 What's Inside
 
