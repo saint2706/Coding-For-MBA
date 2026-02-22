@@ -48,3 +48,4 @@ jobs:
           name: lighthouse-report
           path: .lighthouseci
           if-no-files-found: warn
+          retention-days: 7

@@ -121,6 +121,24 @@ content/lessons/       # 108 lesson markdown files
 npm run test:e2e -- --project=chromium tests/e2e/visual-smoke.spec.ts --update-snapshots
 ```
 
+## 🧾 CI Artifacts (for maintainers)
+
+GitHub Actions uploads machine-readable test and diagnostics artifacts to support debugging and historical comparisons:
+
+- **CI workflow (`.github/workflows/ci.yml`)**
+  - `unit-test-results`: Vitest JUnit XML at `test-results/vitest-junit.xml`.
+  - `coverage-report`: coverage outputs from `coverage/` (including `lcov.info`, `cobertura-coverage.xml`, and HTML report files).
+  - Retention: **14 days**.
+- **Nightly Smoke workflow (`.github/workflows/nightly-smoke.yml`)**
+  - On Playwright failures only: `nightly-playwright-html-report` from `playwright-report/`.
+  - On Playwright failures only: `nightly-playwright-traces` from `test-results/` (trace bundles and related outputs).
+  - Retention: **7 days**.
+- **Lighthouse CI workflow (`.github/workflows/lighthouse.yml`)**
+  - `lighthouse-report` from `.lighthouseci/`.
+  - Retention: **7 days**.
+
+You can download artifacts from the corresponding workflow run page in the **Actions** tab.
+
 ## ⚡ Build & Performance Notes
 
 - **Bundle analysis**: run `npm run analyze` to generate a visual treemap report at `dist/stats.html` (powered by `rollup-plugin-visualizer`).
