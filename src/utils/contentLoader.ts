@@ -127,7 +127,7 @@ export function getAllLessons(): readonly ImmutableLesson[] {
 /** Return a lesson by day number. */
 export function getLesson(dayNum: string | number): ImmutableLesson | undefined {
   const dayToken = normalizeDayToken(dayNum)
-  return immutableLessons.find((l) => l.day === dayToken)
+  return immutableLessonByDay.get(dayToken)
 }
 
 /** Return all lessons in a phase. */
@@ -322,6 +322,9 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
 
 const immutableLessons = Object.freeze(lessons.map(freezeLesson))
 const immutablePhases = Object.freeze(phases.map(freezePhase))
+const immutableLessonByDay: Map<DayToken, ImmutableLesson> = new Map(
+  immutableLessons.map((lesson) => [lesson.day, lesson]),
+)
 
 let immutableLessonsByPhase: Record<number, readonly ImmutableLesson[]> | null = null
 let immutableExercises: readonly ImmutableExercise[] | null = null
@@ -502,7 +505,7 @@ export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly Immut
   if (!prereqs || !Array.isArray(prereqs) || prereqs.length === 0) return []
   return prereqs
     .map((day) => dayTokenFromReference(day))
-    .map((day) => (day ? immutableLessons.find((l) => l.day === day) : undefined))
+    .map((day) => (day ? immutableLessonByDay.get(day) : undefined))
     .filter((l): l is ImmutableLesson => l !== undefined)
 }
 
