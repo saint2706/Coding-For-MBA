@@ -112,6 +112,13 @@ content/lessons/       # 108 lesson markdown files
 | `npm run test:e2e`     | Run Playwright end-to-end tests |
 | `npm run deploy`       | Deploy to GitHub Pages        |
 
+
+## 🤖 Dependabot Updates
+
+- **Automatic schedule:** Dependabot checks both `npm` and `github-actions` every **Thursday at 1:00 PM IST** via `.github/dependabot.yml`.
+- **Manual on-demand run:** Maintainers can trigger **Actions → "Dependabot On-Demand" → Run workflow** and choose which ecosystem/directory to update.
+- **Required permissions/token:** Configure a repository secret named `DEPENDABOT_TRIGGER_TOKEN` with scopes/permissions that allow Dependabot update triggers (for example, a fine-grained PAT with Dependabot write access to this repo). Without this secret, the workflow falls back to `GITHUB_TOKEN`, which may not have sufficient privileges depending on repository settings.
+
 ## 🧪 Visual Snapshot Testing
 
 - Visual smoke tests live in `tests/e2e/visual-smoke.spec.ts` and capture snapshots for: home, curriculum, phase 1, lesson 1, progress, and search routes.

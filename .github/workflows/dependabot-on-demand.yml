@@ -1,0 +1,68 @@
+name: Dependabot On-Demand
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_npm:
+        description: Trigger npm ecosystem updates
+        type: boolean
+        default: true
+      npm_directory:
+        description: npm directory to update
+        type: string
+        default: "/"
+      run_github_actions:
+        description: Trigger GitHub Actions ecosystem updates
+        type: boolean
+        default: true
+      github_actions_directory:
+        description: GitHub Actions directory to update
+        type: string
+        default: "/"
+
+permissions:
+  contents: read
+
+jobs:
+  trigger-dependabot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Dependabot updates
+        uses: actions/github-script@v8
+        env:
+          DEPENDABOT_TOKEN: ${{ secrets.DEPENDABOT_TRIGGER_TOKEN }}
+        with:
+          github-token: ${{ env.DEPENDABOT_TOKEN != '' && env.DEPENDABOT_TOKEN || github.token }}
+          script: |
+            const updates = [];
+
+            if (core.getInput('run_npm') === 'true') {
+              updates.push({
+                package_ecosystem: 'npm',
+                directory: core.getInput('npm_directory'),
+              });
+            }
+
+            if (core.getInput('run_github_actions') === 'true') {
+              updates.push({
+                package_ecosystem: 'github-actions',
+                directory: core.getInput('github_actions_directory'),
+              });
+            }
+
+            if (updates.length === 0) {
+              core.setFailed('No ecosystems selected. Enable at least one ecosystem input.');
+              return;
+            }
+
+            for (const update of updates) {
+              core.info(`Triggering Dependabot update for ${update.package_ecosystem} at ${update.directory}`);
+              await github.request('POST /repos/{owner}/{repo}/dependabot/updates', {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                package_ecosystem: update.package_ecosystem,
+                directory: update.directory,
+              });
+            }
+
+            core.info(`Triggered ${updates.length} Dependabot update request(s).`);
