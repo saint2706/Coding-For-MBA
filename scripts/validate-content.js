@@ -44,6 +44,7 @@ export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const fullPath = path.join(dir, entry.name)
     if (entry.isDirectory()) {
+      if (entry.name === 'extras') continue
       results.push(...findReadmes(fullPath, lessonsDir))
     } else if (
       (entry.name === 'README.md' || entry.name === 'Phase_Overview.md') &&
