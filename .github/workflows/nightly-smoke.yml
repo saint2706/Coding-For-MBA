@@ -92,3 +92,51 @@ jobs:
                 labels: ['ci', 'nightly-smoke'],
               });
             }
+
+      - name: Close matching failure issues on success
+        if: ${{ success() && github.event_name != 'pull_request' }}
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const title = '🚨 Nightly smoke workflow failed';
+            const marker = '<!-- nightly-smoke-failure -->';
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const closeComment = `Nightly smoke workflow succeeded: ${runUrl}`;
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'ci,nightly-smoke',
+              per_page: 100,
+            });
+
+            const matches = issues.filter((issue) =>
+              issue.title === title || (issue.body && issue.body.includes(marker))
+            );
+
+            for (const issue of matches) {
+              const { data: comments } = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                per_page: 100,
+              });
+
+              const hasCloseComment = comments.some((comment) => comment.body === closeComment);
+              if (!hasCloseComment) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  body: closeComment,
+                });
+              }
+
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+              });
+            }
