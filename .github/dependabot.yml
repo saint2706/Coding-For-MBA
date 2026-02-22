@@ -7,7 +7,7 @@ updates:
       day: "thursday"
       time: "13:00"
       timezone: "Asia/Kolkata"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 15
     labels: ["dependencies"]
     groups:
       react-stack:
