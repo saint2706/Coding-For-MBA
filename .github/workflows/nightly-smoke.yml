@@ -54,6 +54,24 @@ jobs:
         if: ${{ github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true' }}
         run: npm run test:e2e -- --project=chromium --grep '@smoke' --pass-with-no-tests
 
+      - name: Upload Playwright HTML report
+        if: ${{ failure() && (github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-playwright-html-report
+          path: playwright-report
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Upload Playwright traces
+        if: ${{ failure() && (github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: nightly-playwright-traces
+          path: test-results
+          if-no-files-found: warn
+          retention-days: 7
+
       - name: Create or update failure issue
         if: ${{ failure() && github.event_name != 'pull_request' }}
         uses: actions/github-script@v8

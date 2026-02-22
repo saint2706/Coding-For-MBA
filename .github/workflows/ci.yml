@@ -40,4 +40,35 @@ jobs:
         run: npm run validate-content
 
       - name: Test with coverage threshold
-        run: npm run test:coverage
+        run: |
+          mkdir -p test-results coverage
+          npm run test:coverage -- \
+            --reporter=default \
+            --reporter=junit \
+            --outputFile.junit=./test-results/vitest-junit.xml \
+            --coverage.reporter=text \
+            --coverage.reporter=html \
+            --coverage.reporter=lcov \
+            --coverage.reporter=cobertura
+
+      - name: Upload unit test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: unit-test-results
+          path: test-results/vitest-junit.xml
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: |
+            coverage/lcov.info
+            coverage/cobertura-coverage.xml
+            coverage/index.html
+            coverage/**
+          if-no-files-found: warn
+          retention-days: 14
