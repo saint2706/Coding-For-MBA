@@ -15,7 +15,11 @@
 
 - **Primary production environment:** GitHub Pages via `.github/workflows/deploy.yml`.
 - **Surge (`coding-for-mba.surge.sh`) usage:** optional preview/release deployment, triggered manually (`workflow_dispatch`) or on published GitHub releases.
-- **Default behavior:** pushes to `main` continue to rely on the GitHub Pages deployment workflow.
+- **Promotion model (CI → Deploy):**
+  1. `CI` (`.github/workflows/ci.yml`) runs on PRs and pushes to `main` and is the canonical gate for linting, type checking, content validation, and test coverage.
+  2. `Deploy to GitHub Pages` (`.github/workflows/deploy.yml`) runs automatically only after `CI` completes successfully on `main` (`workflow_run` trigger).
+  3. Deploy workflow now performs only deployment-critical tasks (install deps, build artifact, upload, Pages deploy), with no duplicated quality gates.
+  4. Manual deploy remains available through `workflow_dispatch` for maintainer-controlled re-deploys.
 
 ## 📚 What's Inside
 
