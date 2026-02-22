@@ -212,6 +212,57 @@ class User(BaseModel):
         return v
 ```
 
+### Deployment-Ready Baseline (FastAPI)
+
+**API contract tests (minimum set):**
+
+- Happy path: valid request returns expected status + response shape.
+- Validation failure: invalid type/missing field returns `422` with stable error keys.
+
+```python
+from fastapi.testclient import TestClient
+from main import app
+
+client = TestClient(app)
+
+
+def test_create_item_happy_path():
+    r = client.post("/items", json={"name": "Pen", "price": 1.5})
+    assert r.status_code == 200
+    assert r.json()["name"] == "Pen"
+
+
+def test_create_item_validation_error():
+    r = client.post("/items", json={"name": "Pen", "price": "bad"})
+    assert r.status_code == 422
+    assert "detail" in r.json()
+```
+
+**Structured logging with request IDs:**
+
+```python
+import logging, uuid
+from fastapi import Request
+
+logger = logging.getLogger("api")
+
+
+@app.middleware("http")
+async def add_request_context(request: Request, call_next):
+    req_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
+    response = await call_next(request)
+    response.headers["X-Request-ID"] = req_id
+    logger.info("request_complete", extra={"request_id": req_id, "path": request.url.path, "status": response.status_code})
+    return response
+```
+
+**Security baseline (Phase 3 level):**
+
+- Validate all external input with Pydantic constraints (length, bounds, formats).
+- Keep secrets in env vars (`DATABASE_URL`, `API_KEY`), never in source.
+- If browser clients call your API, allow only trusted CORS origins + needed methods.
+- Return safe client errors; log technical context internally with request IDs.
+
 ---
 
 ## Hands-on Lab
@@ -361,6 +412,19 @@ Your debugging goals:
 1. Catch the regression via contract tests.
 2. Restore backward compatibility (or version the endpoint).
 3. Update API docs/changelog with clear migration notes.
+
+### Exercise 5: Definition of Done (DoD) Drill
+
+For one endpoint you built today, ship it only when all boxes are checked:
+
+- [ ] Contract tests include one happy path and one validation failure.
+- [ ] Logs include `request_id`, route, status, and one error-context field.
+- [ ] Input constraints are explicit (type + range/length rules).
+- [ ] Secrets come from env vars (no hardcoded tokens/passwords).
+- [ ] CORS policy is explicit (no wildcard in production intent).
+- [ ] API docs show success + error examples.
+
+Reuse this checklist in later MLOps phases as your minimum release gate.
 
 ---
 
