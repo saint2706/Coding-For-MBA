@@ -109,13 +109,14 @@ export function validatePythonCode(code: string): ValidationResult {
 
   // 3. Call Deny Patterns (Keywords banned ONLY when called)
   const callKeywords = [
-    'getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir'
+    'getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir',
+    'input', 'breakpoint', 'help', 'exit', 'quit'
   ]
   const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
   if (callRegex.test(strippedCode)) {
     return {
       valid: false,
-      error: "Security Error: Usage of reflection/introspection functions is restricted.",
+      error: "Security Error: Usage of interactive or reflection functions is restricted.",
     }
   }
 

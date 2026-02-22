@@ -250,4 +250,26 @@ print("bad")
     expect(validatePythonCode('from \\\njs import window').valid).toBe(false)
     expect(validatePythonCode('import \\\n  js').valid).toBe(false)
   })
+
+  describe('Interactive functions (DoS protection)', () => {
+    it('should detect input() usage', () => {
+      expect(validatePythonCode('input("Enter something:")').valid).toBe(false);
+    });
+
+    it('should detect breakpoint() usage', () => {
+      expect(validatePythonCode('breakpoint()').valid).toBe(false);
+    });
+
+    it('should detect help() usage', () => {
+      expect(validatePythonCode('help(print)').valid).toBe(false);
+    });
+
+    it('should detect exit() usage', () => {
+      expect(validatePythonCode('exit()').valid).toBe(false);
+    });
+
+    it('should detect quit() usage', () => {
+      expect(validatePythonCode('quit()').valid).toBe(false);
+    });
+  });
 })
