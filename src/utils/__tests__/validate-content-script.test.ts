@@ -57,7 +57,7 @@ This body is intentionally short.`
 
     expect(errors).toEqual(
       expect.arrayContaining([
-        'Invalid day: Invalid input: expected number, received NaN',
+        'Invalid day: Invalid string: must match pattern /^\\d+[A-Za-z]?$/',
         'Invalid title: Invalid input: expected string, received undefined',
         'Invalid phase: Too small: expected number to be >0',
         'Invalid difficulty: Invalid option: expected one of "beginner"|"intermediate"|"advanced"|"expert"',
