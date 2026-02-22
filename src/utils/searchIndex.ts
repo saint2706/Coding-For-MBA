@@ -19,6 +19,12 @@ export interface SearchDocument extends Lesson {
   plainContent: string
   dayText: string
   phaseText: string
+  titleLower: string
+  conceptsLower: string
+  tagsLower: string
+  phaseTextLower: string
+  dayTextLower: string
+  plainContentLower: string
 }
 
 export interface SearchResult {
@@ -67,11 +73,22 @@ function toDocument(lesson: Lesson): SearchDocument {
         parsedDay.suffix ? `day ${parsedDay.number} ${parsedDay.suffix}` : '',
       ]
     : [`day ${lesson.day}`]
+  const plainContent = stripMarkdown(lesson.content)
+  const dayText = dayParts.filter(Boolean).join(' ')
+  const phaseText = `phase ${lesson.phase}`
+  const conceptsLower = (lesson.concepts ?? []).join(' ').toLowerCase()
+  const tagsLower = (lesson.tags ?? []).join(' ').toLowerCase()
   return {
     ...lesson,
-    plainContent: stripMarkdown(lesson.content),
-    dayText: dayParts.filter(Boolean).join(' '),
-    phaseText: `phase ${lesson.phase}`,
+    plainContent,
+    dayText,
+    phaseText,
+    titleLower: lesson.title.toLowerCase(),
+    conceptsLower,
+    tagsLower,
+    phaseTextLower: phaseText.toLowerCase(),
+    dayTextLower: dayText.toLowerCase(),
+    plainContentLower: plainContent.toLowerCase(),
   }
 }
 
@@ -83,29 +100,20 @@ function normalizeQuery(query: string): string[] {
     .filter((token) => token.length > 1 || /^\d+$/.test(token))
 }
 
-function scoreField(
-  text: string | readonly string[] | undefined,
-  terms: readonly string[],
-  weight: number,
-) {
+function scoreField(text: string | undefined, terms: readonly string[], weight: number) {
   if (!text || terms.length === 0) return 0
-  const haystack = Array.isArray(text)
-    ? text.join(' ').toLowerCase()
-    : typeof text === 'string'
-      ? text.toLowerCase()
-      : ''
-  return terms.reduce((acc, term) => (haystack.includes(term) ? acc + weight : acc), 0)
+  return terms.reduce((acc, term) => (text.includes(term) ? acc + weight : acc), 0)
 }
 
 export function computeRankingBoost(doc: SearchDocument, query: string): number {
   const terms = normalizeQuery(query)
   return (
-    scoreField(doc.title, terms, TITLE_WEIGHT) +
-    scoreField(doc.concepts, terms, CONCEPT_WEIGHT) +
-    scoreField(doc.tags, terms, TAG_WEIGHT) +
-    scoreField(doc.phaseText, terms, PHASE_WEIGHT) +
-    scoreField(doc.dayText, terms, DAY_WEIGHT) +
-    scoreField(doc.plainContent, terms, BODY_WEIGHT)
+    scoreField(doc.titleLower, terms, TITLE_WEIGHT) +
+    scoreField(doc.conceptsLower, terms, CONCEPT_WEIGHT) +
+    scoreField(doc.tagsLower, terms, TAG_WEIGHT) +
+    scoreField(doc.phaseTextLower, terms, PHASE_WEIGHT) +
+    scoreField(doc.dayTextLower, terms, DAY_WEIGHT) +
+    scoreField(doc.plainContentLower, terms, BODY_WEIGHT)
   )
 }
 
