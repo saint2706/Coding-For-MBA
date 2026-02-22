@@ -1,5 +1,5 @@
 ---
-day: 36
+day: 36B
 title: "Docker Fundamentals"
 phase: 3
 phaseTitle: "Data Engineering & Web Development"

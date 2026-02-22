@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "Data Engineering & Web Development"
-days: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, "36B"]
+days: [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, "36B", "36C"]
 totalDuration: 640
 difficulty: "intermediate"
 ---
@@ -27,8 +27,8 @@ You progressed from basic Matplotlib charts to sophisticated Seaborn statistical
 **Days 30-32: Data Sources**
 You discovered that data doesn't always arrive in clean CSVs. You learned to scrape websites ethically with BeautifulSoup, query relational databases with SQL, and understand when NoSQL document stores like MongoDB make sense. You can now pull data from anywhere.
 
-**Days 33-36B: Web Development**
-You evolved from consuming APIs to building them. You created REST endpoints with FastAPI, built full web applications with Flask, and designed end-to-end data pipelines that extract, transform, and load data automatically.
+**Days 33-36C: Web Development**
+You evolved from consuming APIs to building them. The sequencing at the end of this phase is explicit: **Day 36 = ETL Case Study**, **Day 36B = Docker Fundamentals**, and **Day 36C = Async Python + FastAPI (after creation)**. You created REST endpoints with FastAPI, built full web applications with Flask, and designed end-to-end data pipelines that extract, transform, and load data automatically.
 
 ### Skills Unlocked
 
