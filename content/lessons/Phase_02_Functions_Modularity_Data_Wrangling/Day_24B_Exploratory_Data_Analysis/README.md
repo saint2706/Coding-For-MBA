@@ -52,6 +52,16 @@ Key segments to compare:
 Must-pass data quality checks:
 ```
 
+### EDA Hypothesis Log
+
+Track how your assumptions evolve as evidence accumulates.
+
+| Hypothesis | Metric | Segment | Evidence Status | Confidence | Next Test |
+|---|---|---|---|---|---|
+| Discounts are driving revenue decline through margin erosion | Revenue, gross margin % | Region A, promo orders | Pending / Supported / Rejected | Low / Medium / High | Compare pre/post promo cohorts controlling for product mix |
+| Missing orders in one channel are distorting conversion trends | Conversion rate, order count | Paid channel by month | Pending / Supported / Rejected | Low / Medium / High | Audit ingestion completeness vs source system logs |
+| VIP customers offset volume declines with higher basket size | Order value, customer count | VIP vs non-VIP | Pending / Supported / Rejected | Low / Medium / High | Segment bivariate check with outlier-flagged and raw views |
+
 ---
 
 ## The Technical Deep Dive
@@ -225,23 +235,35 @@ Title: EDA Memo — <Project / Dataset / Date>
 
 You are given a monthly transaction dataset where revenue declined in one region.
 
-Tasks:
+Follow these explicit steps in order:
 
-1. Frame three business-first EDA questions.
-2. Run univariate checks for `revenue`, `discount`, and `order_count`.
-3. Perform a missingness audit and identify high-risk columns.
-4. Create an outlier strategy for `order_value` and justify it.
-5. Run bivariate checks against `revenue` and draft the 1-page EDA memo.
+1. **Question framing** → Frame three business-first EDA questions tied to a decision and KPI.
+2. **Profiling** → Run univariate checks for `revenue`, `discount`, and `order_count` to baseline distribution and quality.
+3. **Diagnostics** → Perform a missingness audit and define an outlier strategy for `order_value` with justification.
+4. **Hypothesis updates** → Update the EDA Hypothesis Log with evidence status, confidence, and the next test for each hypothesis.
+5. **Memo + handoff** → Draft the 1-page EDA memo and complete the visualization handoff checklist for Day 27.
 
 ---
 
 ## Mastery Check
 
-**Q1**: Why start EDA with business questions instead of charts?
+**Q1.** Why start EDA with business questions instead of charts?
 
-**Q2**: When should outliers be retained rather than removed?
+**Q2.** When should outliers be retained rather than removed?
 
-**Q3**: Give one example of why a high correlation might still be non-actionable.
+**Q3.** Give one example of why a high correlation might still be non-actionable.
+
+---
+
+## Visualization Handoff Checklist (for Day 27)
+
+Before moving from EDA to visualization/storytelling, confirm these outputs are finalized:
+
+- [ ] **Validated metrics**: Final KPI definitions and formulas are locked.
+- [ ] **Analytical grain**: Time/entity grain is explicitly stated (e.g., monthly-region, customer-week).
+- [ ] **Exclusions**: Rows/segments removed from analysis are listed with business rationale.
+- [ ] **Caveats**: Data quality limits, missingness risk, and causal uncertainty are documented.
+- [ ] **Chart recommendation**: Proposed chart type(s) and decision narrative are specified for Day 27 build.
 
 ---
 
