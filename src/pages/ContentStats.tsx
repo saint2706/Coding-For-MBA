@@ -35,24 +35,34 @@ export default function ContentStats() {
     const lessons = getAllLessons()
     const phases = getAllPhases()
 
-    // Total word count
-    let totalWords = 0
-    for (const l of lessons) {
-      const text = l.content.replace(/```[\s\S]*?```/g, '').replace(/[#*_>`()!-]/g, '')
-      totalWords += text.split(/\s+/).filter(Boolean).length
+    const getWordCount = (markdown: string) => {
+      const plainText = markdown.replace(/```[\s\S]*?```/g, '').replace(/[#*_>`()!-]/g, '')
+      return plainText.split(/\s+/).filter(Boolean).length
     }
+
+    const lessonMetrics = lessons.map((l) => ({
+      phase: l.phase,
+      difficulty: (l.difficulty as string) || 'unknown',
+      tags: ((l.tags as string[]) || []).map((t) => t.trim()).filter(Boolean),
+      concepts: ((l.concepts as string[]) || []).map((c) => c.trim()).filter(Boolean),
+      wordCount: getWordCount(l.content),
+      readingTime: getReadingTime(l.content),
+    }))
+
+    // Total word count
+    const totalWords = lessonMetrics.reduce((sum, l) => sum + l.wordCount, 0)
+    const totalReadingMins = lessonMetrics.reduce((sum, l) => sum + l.readingTime, 0)
 
     // Difficulty breakdown
     const difficultyMap: Record<string, number> = {}
-    for (const l of lessons) {
-      const d = (l.difficulty as string) || 'unknown'
-      difficultyMap[d] = (difficultyMap[d] || 0) + 1
+    for (const l of lessonMetrics) {
+      difficultyMap[l.difficulty] = (difficultyMap[l.difficulty] || 0) + 1
     }
 
     // Tag cloud
     const tagMap: Record<string, number> = {}
-    for (const l of lessons) {
-      for (const t of (l.tags as string[]) || []) {
+    for (const l of lessonMetrics) {
+      for (const t of l.tags) {
         tagMap[t] = (tagMap[t] || 0) + 1
       }
     }
@@ -62,32 +72,26 @@ export default function ContentStats() {
 
     // Phase stats
     const phaseStats = phases.map((p) => {
-      const phaseLessons = lessons.filter((l) => l.phase === p.phase)
-      const words = phaseLessons.reduce((sum, l) => {
-        const text = l.content.replace(/```[\s\S]*?```/g, '').replace(/[#*_>`()!-]/g, '')
-        return sum + text.split(/\s+/).filter(Boolean).length
-      }, 0)
+      const phaseLessons = lessonMetrics.filter((l) => l.phase === p.phase)
       return {
         phase: p.phase,
         title: p.title,
         lessonCount: phaseLessons.length,
-        totalWords: words,
-        totalReadingTime: phaseLessons.reduce((s, l) => s + getReadingTime(l.content), 0),
+        totalWords: phaseLessons.reduce((sum, l) => sum + l.wordCount, 0),
+        totalReadingTime: phaseLessons.reduce((sum, l) => sum + l.readingTime, 0),
       }
     })
 
     // Concept stats
     const conceptMap: Record<string, number> = {}
-    for (const l of lessons) {
-      for (const c of (l.concepts as string[]) || []) {
+    for (const l of lessonMetrics) {
+      for (const c of l.concepts) {
         conceptMap[c] = (conceptMap[c] || 0) + 1
       }
     }
     const topConcepts = Object.entries(conceptMap)
       .sort((a, b) => b[1] - a[1])
       .slice(0, 20)
-
-    const totalReadingMins = lessons.reduce((s, l) => s + getReadingTime(l.content), 0)
 
     return {
       lessonCount: lessons.length,
