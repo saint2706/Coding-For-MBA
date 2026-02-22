@@ -130,10 +130,32 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
 
   // Remove target and rel from props so they don't override secure attributes
   const { target: _target, rel: _rel, ...rest } = props
+  const isExternal = attributes.target === '_blank'
 
   return (
     <a href={attributes.href} target={attributes.target} rel={attributes.rel} {...rest}>
       {children}
+      {isExternal && (
+        <>
+          <span className="sr-only"> (opens in a new tab)</span>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            width="12"
+            height="12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ marginLeft: '0.25rem', display: 'inline-block', verticalAlign: 'middle' }}
+          >
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+        </>
+      )}
     </a>
   )
 }

@@ -28,29 +28,30 @@ export interface ValidationResult {
  * @returns The code with SAFE strings and comments removed
  */
 export function stripPythonCommentsAndStrings(code: string): string {
-  let stripped = code;
+  let stripped = code
 
   // Regex explanation:
   // ([a-zA-Z]*) captures the prefix (e.g. f, r, u, b, fr, etc.) immediately preceding the quote.
   // Then we match one of the quote types (triple double, triple single, double, single).
   // We use a callback to check the prefix.
-  const stringRegex = /([a-zA-Z]*)(?:('''[\s\S]*?'''|"""[\s\S]*?""")|("(\\.|[^"\\])*")|('(\\.|[^'\\])*'))/g;
+  const stringRegex =
+    /([a-zA-Z]*)(?:('''[\s\S]*?'''|"""[\s\S]*?""")|("(\\.|[^"\\])*")|('(\\.|[^'\\])*'))/g
 
   stripped = stripped.replace(stringRegex, (match, prefix) => {
     // If the prefix contains f or F, it's an f-string (or potential f-string like 'fr').
     // We MUST preserve it because it might contain code execution (e.g. f"{eval()}").
     if (prefix && /[fF]/.test(prefix)) {
-      return match;
+      return match
     }
     // Otherwise, it's a safe string (raw, unicode, bytes, or normal).
     // We strip the content but keep the prefix to maintain syntax structure (e.g. u"..." -> u"").
-    return (prefix || '') + '""';
-  });
+    return (prefix || '') + '""'
+  })
 
   // Remove comments (after string processing to avoid stripping # inside preserved f-strings)
-  stripped = stripped.replace(/#.*/g, '');
+  stripped = stripped.replace(/#.*/g, '')
 
-  return stripped;
+  return stripped
 }
 
 /**
@@ -80,50 +81,55 @@ export function validatePythonCode(code: string): ValidationResult {
 
   // 1. Property-Safe Deny Patterns (Keywords banned as references/assignments UNLESS properties)
   // e.g. eval() is banned, but model.eval() is allowed.
-  const propertySafeKeywords = [
-    'eval', 'exec'
-  ]
+  const propertySafeKeywords = ['eval', 'exec']
   const propertySafeRegex = new RegExp(`(?<!\\.)\\b(${propertySafeKeywords.join('|')})\\b`)
   if (propertySafeRegex.test(strippedCode)) {
     return {
       valid: false,
-      error: "Security Error: Usage of dangerous built-in functions is restricted.",
+      error: 'Security Error: Usage of dangerous built-in functions is restricted.',
     }
   }
 
   // 2. Strict Deny Patterns (Keywords banned GLOBALLY, even as properties)
   // e.g. func.__globals__ is dangerous. importlib is dangerous.
   const globalKeywords = [
-    'globals', 'locals', '__import__',
-    'subprocess', 'sys', 'os', 'importlib', 'builtins',
-    '__builtins__', '__globals__', '__subclasses__', '__bases__',
-    '__mro__', '__getattribute__', '__code__', '__closure__'
+    'globals',
+    'locals',
+    '__import__',
+    'subprocess',
+    'sys',
+    'os',
+    'importlib',
+    'builtins',
+    '__builtins__',
+    '__globals__',
+    '__subclasses__',
+    '__bases__',
+    '__mro__',
+    '__getattribute__',
+    '__code__',
+    '__closure__',
   ]
   const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
   if (globalRegex.test(strippedCode)) {
     return {
       valid: false,
-      error: "Security Error: Usage of dangerous built-ins, modules, or internals is restricted.",
+      error: 'Security Error: Usage of dangerous built-ins, modules, or internals is restricted.',
     }
   }
 
   // 3. Call Deny Patterns (Keywords banned ONLY when called)
-  const callKeywords = [
-    'getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir'
-  ]
+  const callKeywords = ['getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir']
   const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
   if (callRegex.test(strippedCode)) {
     return {
       valid: false,
-      error: "Security Error: Usage of reflection/introspection functions is restricted.",
+      error: 'Security Error: Usage of reflection/introspection functions is restricted.',
     }
   }
 
   // 4. Import Deny Patterns (Specific module imports)
-  const importPatterns = [
-    /\bimport\s+js\b/,
-    /\bfrom\s+js\b/
-  ]
+  const importPatterns = [/\bimport\s+js\b/, /\bfrom\s+js\b/]
 
   for (const pattern of importPatterns) {
     if (pattern.test(strippedCode)) {
