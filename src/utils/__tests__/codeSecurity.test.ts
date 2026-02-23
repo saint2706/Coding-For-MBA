@@ -272,4 +272,27 @@ print("bad")
       expect(validatePythonCode('quit()').valid).toBe(false);
     });
   });
+
+  describe('Pyodide Internals', () => {
+    it('should block import pyodide', () => {
+      expect(validatePythonCode('import pyodide').valid).toBe(false)
+      expect(validatePythonCode('import   pyodide').valid).toBe(false)
+      expect(validatePythonCode('import pyodide as p').valid).toBe(false)
+    })
+
+    it('should block from pyodide import', () => {
+      expect(validatePythonCode('from pyodide import code').valid).toBe(false)
+      expect(validatePythonCode('from pyodide.code import run_js').valid).toBe(false)
+    })
+
+    it('should block import micropip', () => {
+      expect(validatePythonCode('import micropip').valid).toBe(false)
+      expect(validatePythonCode('from micropip import install').valid).toBe(false)
+    })
+
+    it('should block submodules', () => {
+      expect(validatePythonCode('import pyodide.code').valid).toBe(false)
+      expect(validatePythonCode('import micropip.transactions').valid).toBe(false)
+    })
+  })
 })

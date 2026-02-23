@@ -123,14 +123,18 @@ export function validatePythonCode(code: string): ValidationResult {
   // 4. Import Deny Patterns (Specific module imports)
   const importPatterns = [
     /\bimport\s+js\b/,
-    /\bfrom\s+js\b/
+    /\bfrom\s+js\b/,
+    /\bimport\s+pyodide\b/,
+    /\bfrom\s+pyodide\b/,
+    /\bimport\s+micropip\b/,
+    /\bfrom\s+micropip\b/
   ]
 
   for (const pattern of importPatterns) {
     if (pattern.test(strippedCode)) {
       return {
         valid: false,
-        error: "Security Error: Direct access to browser APIs via 'js' module is restricted.",
+        error: "Security Error: Direct access to internal modules (js, pyodide, micropip) is restricted.",
       }
     }
   }
