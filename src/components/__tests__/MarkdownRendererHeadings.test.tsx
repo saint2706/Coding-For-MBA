@@ -17,4 +17,10 @@ describe('MarkdownRenderer heading ids', () => {
     expect(html).toMatch(/<h2[^>]*id="repeat-title"/)
     expect(html).toMatch(/<h2[^>]*id="repeat-title-1"/)
   })
+
+  it('adds tabIndex="-1" to headings for programmatic focus', () => {
+    const content = '# Accessible Heading'
+    const html = renderToStaticMarkup(<MarkdownRenderer content={content} />)
+    expect(html).toMatch(/<h1[^>]*id="accessible-heading"[^>]*tabindex="-1"/)
+  })
 })
