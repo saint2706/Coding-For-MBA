@@ -12,9 +12,10 @@ vi.mock('../../utils/contentLoader', () => ({
   phaseIcons: ['A', 'B'],
 }))
 
-vi.mock('../../utils/progressTracker', () => ({
-  isLessonComplete: () => false,
-  getCompletedForPhase: () => [],
+// Mock store
+const useProgressStoreMock = vi.fn((selector) => selector({ completedLessons: [] }))
+vi.mock('../../stores/progressStore', () => ({
+  useProgressStore: (selector: any) => useProgressStoreMock(selector),
 }))
 
 vi.mock('../../utils/reviewTracker', () => ({

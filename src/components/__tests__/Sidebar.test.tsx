@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import Sidebar from '../Sidebar'
 import { MemoryRouter } from 'react-router-dom'
 import * as contentLoader from '../../utils/contentLoader'
-import * as progressTracker from '../../utils/progressTracker'
 import * as reviewTracker from '../../utils/reviewTracker'
 
 // Mock dependencies
@@ -14,9 +13,10 @@ vi.mock('../../utils/contentLoader', () => ({
   phaseIcons: ['A', 'B'],
 }))
 
-vi.mock('../../utils/progressTracker', () => ({
-  isLessonComplete: vi.fn(),
-  getCompletedForPhase: vi.fn(),
+// Mock store
+const useProgressStoreMock = vi.fn((selector) => selector({ completedLessons: [] }))
+vi.mock('../../stores/progressStore', () => ({
+  useProgressStore: (selector: any) => useProgressStoreMock(selector),
 }))
 
 vi.mock('../../utils/reviewTracker', () => ({
@@ -55,9 +55,10 @@ describe('Sidebar Accessibility', () => {
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue(
       lessonsPhase1 as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>,
     )
-    vi.mocked(progressTracker.getCompletedForPhase).mockReturnValue([1] as unknown as ReturnType<
-      typeof progressTracker.getCompletedForPhase
-    >) // 1 completed
+
+    // Mock 1 completed lesson (Day 1 -> ID 1)
+    useProgressStoreMock.mockImplementation((selector) => selector({ completedLessons: [1] }))
+
     vi.mocked(reviewTracker.getReviewDueCountByPhase).mockReturnValue({
       1: 5,
     } as unknown as ReturnType<typeof reviewTracker.getReviewDueCountByPhase>) // 5 reviews due
