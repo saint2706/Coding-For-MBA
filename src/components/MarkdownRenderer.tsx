@@ -24,7 +24,7 @@ import MasteryCheck from './MasteryCheck'
 import CopyButton from './CopyButton'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 import { getSecureLinkAttributes } from '../utils/linkSafety'
-import { createSlugger, extractTextFromReactNode } from '../utils/slug'
+import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
 
 const customTheme = {
   ...oneDark,
@@ -138,15 +138,11 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
   )
 }
 
-function createHeadingComponent(
-  Tag: 'h1' | 'h2' | 'h3',
-  slugger: ReturnType<typeof createSlugger>,
-) {
+function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3') {
   return ({ children, ...props }: JSX.IntrinsicElements['h1'] & ExtraProps) => {
-    const id = slugger.slug(extractTextFromReactNode(children))
-
+    // The 'id' prop is now provided by rehype-slug-custom plugin
     return (
-      <Tag id={id} {...props}>
+      <Tag tabIndex={-1} style={{ outline: 'none' }} {...props}>
         {children}
       </Tag>
     )
@@ -329,25 +325,84 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
   return blocks
 }
 
-function createMarkdownComponents(slugger: ReturnType<typeof createSlugger>): Components {
+function createMarkdownComponents(): Components {
   return {
     code: CodeComponent,
     table: TableComponent,
     a: LinkComponent,
-    h1: createHeadingComponent('h1', slugger),
-    h2: createHeadingComponent('h2', slugger),
-    h3: createHeadingComponent('h3', slugger),
+    h1: createHeadingComponent('h1'),
+    h2: createHeadingComponent('h2'),
+    h3: createHeadingComponent('h3'),
     p: ParagraphWithGlossary,
   }
 }
 
+const lessonSanitizerSchema: RehypeSanitizeOptions = {
+  tagNames: [
+    'a',
+    'blockquote',
+    'br',
+    'code',
+    'del',
+    'details',
+    'div',
+    'em',
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6',
+    'hr',
+    'img',
+    'input',
+    'li',
+    'ol',
+    'p',
+    'pre',
+    'span',
+    'strong',
+    'summary',
+    'table',
+    'tbody',
+    'td',
+    'th',
+    'thead',
+    'tr',
+    'ul',
+  ],
+  attributes: {
+    a: ['href', 'title', 'target', 'rel'],
+    code: ['className'],
+    div: ['className'],
+    img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+    input: [
+      ['type', 'checkbox'],
+      ['disabled', true],
+      ['checked', true],
+    ],
+    span: ['className', 'dataDefinition'],
+    td: ['align'],
+    th: ['align'],
+    '*': ['id'],
+  },
+  protocols: {
+    href: ['http', 'https', 'mailto', 'tel'],
+    src: ['http', 'https'],
+  },
+}
+
+const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlugins']> = [
+  rehypeRaw,
+  [rehypeSanitize, lessonSanitizerSchema],
+  rehypeSlugCustom,
+]
+
+const remarkPlugins = [remarkGfm]
+
 function InteractiveContent({ content }: { content: string }) {
   const blocks = useMemo(() => findInteractiveBlocks(content), [content])
-  const slugger = useMemo(() => {
-    void content
-    return createSlugger()
-  }, [content])
-  const markdownComponents = useMemo(() => createMarkdownComponents(slugger), [slugger])
+  const markdownComponents = useMemo(() => createMarkdownComponents(), [])
 
   if (blocks.length === 0) {
     return (
@@ -431,68 +486,6 @@ function InteractiveContent({ content }: { content: string }) {
 
   return <>{segments}</>
 }
-
-const remarkPlugins = [remarkGfm]
-
-const lessonSanitizerSchema: RehypeSanitizeOptions = {
-  tagNames: [
-    'a',
-    'blockquote',
-    'br',
-    'code',
-    'del',
-    'details',
-    'div',
-    'em',
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'hr',
-    'img',
-    'input',
-    'li',
-    'ol',
-    'p',
-    'pre',
-    'span',
-    'strong',
-    'summary',
-    'table',
-    'tbody',
-    'td',
-    'th',
-    'thead',
-    'tr',
-    'ul',
-  ],
-  attributes: {
-    a: ['href', 'title', 'target', 'rel'],
-    code: ['className'],
-    div: ['className'],
-    img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
-    input: [
-      ['type', 'checkbox'],
-      ['disabled', true],
-      ['checked', true],
-    ],
-    span: ['className', 'dataDefinition'],
-    td: ['align'],
-    th: ['align'],
-    '*': ['id'],
-  },
-  protocols: {
-    href: ['http', 'https', 'mailto', 'tel'],
-    src: ['http', 'https'],
-  },
-}
-
-const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlugins']> = [
-  rehypeRaw,
-  [rehypeSanitize, lessonSanitizerSchema],
-]
 
 interface MarkdownRendererProps {
   content: string

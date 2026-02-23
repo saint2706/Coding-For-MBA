@@ -17,4 +17,14 @@ describe('MarkdownRenderer heading ids', () => {
     expect(html).toMatch(/<h2[^>]*id="repeat-title"/)
     expect(html).toMatch(/<h2[^>]*id="repeat-title-1"/)
   })
+
+  it('adds tabIndex="-1" to headings for programmatic focus', () => {
+    const content = '# Accessible Heading'
+    const html = renderToStaticMarkup(<MarkdownRenderer content={content} />)
+    // The order of attributes in the rendered string is unpredictable/varies by React version or environment
+    // so we check for both attributes independently within the tag
+    expect(html).toContain('id="accessible-heading"')
+    expect(html).toContain('tabindex="-1"')
+    expect(html).toContain('style="outline:none"')
+  })
 })

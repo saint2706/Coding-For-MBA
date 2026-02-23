@@ -64,6 +64,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
                   const el = document.getElementById(h.id)
                   if (el) {
                     el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    el.focus({ preventScroll: true })
                     setActiveId(h.id)
                   }
                 }}
