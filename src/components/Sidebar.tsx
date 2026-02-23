@@ -9,9 +9,9 @@ import { useState, useMemo, useEffect, useRef } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase, phaseIcons } from '../utils/contentLoader'
-import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
 import { dayTokenToProgressId, normalizeDayToken } from '../utils/dayToken'
+import { useProgressStore } from '../stores/progressStore'
 
 /**
  * Props for the Sidebar component.
@@ -60,6 +60,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const [manualOpen, setManualOpen] = useState<number | null>(null)
   const dueByPhase = useMemo(() => getReviewDueCountByPhase(), [])
   const reviewStreak = useMemo(() => getReviewStreak(), [])
+
+  // Reactive progress tracking
+  const completedLessons = useProgressStore((state) => state.completedLessons)
+  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
   // Determines currently open phase: manual toggle takes precedence over auto-derived.
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
@@ -167,8 +171,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             const lessons = getLessonsByPhase(phase.phase)
             const isActive = openPhase === phase.phase
             const icon = phaseIcons[phase.phase - 1] || '📖'
-            const lessonDays = lessons.map((l) => l.day)
-            const completedInPhase = getCompletedForPhase(lessonDays)
+            const completedCount = lessons.filter((l) =>
+              completedSet.has(dayTokenToProgressId(l.day)),
+            ).length
 
             return (
               <div className="phase-group" key={phase.phase}>
@@ -186,10 +191,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                   </span>
                   <span className="phase-toggle-progress">
                     <span aria-hidden="true">
-                      {completedInPhase.length}/{lessons.length} · 🧠 {dueByPhase[phase.phase] || 0}
+                      {completedCount}/{lessons.length} · 🧠 {dueByPhase[phase.phase] || 0}
                     </span>
                     <span className="sr-only">
-                      {completedInPhase.length} of {lessons.length} completed,{' '}
+                      {completedCount} of {lessons.length} completed,{' '}
                       {dueByPhase[phase.phase] || 0} reviews due
                     </span>
                   </span>
@@ -263,7 +268,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
                             onClick={onClose}
                           >
-                            {isLessonComplete(dayTokenToProgressId(lesson.day)) && (
+                            {completedSet.has(dayTokenToProgressId(lesson.day)) && (
                               <span className="day-link-check" aria-label="Completed">
                                 ✓
                               </span>
