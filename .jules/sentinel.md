@@ -9,3 +9,8 @@
 **Vulnerability:** Unrestricted use of `input()`, `help()`, and `breakpoint()` in client-side Python (Pyodide) caused UI freezes (waiting for prompt) or unexpected runtime states.
 **Learning:** Functions that block execution or require user interaction are denial-of-service vectors in synchronous WASM environments.
 **Prevention:** Explicitly block interactive keywords (`input`, `breakpoint`, `help`, `quit`, `exit`) in the validation layer.
+
+## 2025-05-25 - Pyodide Internals Exposure
+**Vulnerability:** The `pyodide` and `micropip` modules were not blocked, allowing access to `pyodide.code.run_js` (arbitrary JS execution) and package installation from external sources.
+**Learning:** Pyodide exposes powerful internals (like JS interop) via its own module, which must be explicitly blocked alongside the `js` module in sandboxed environments.
+**Prevention:** Add `pyodide` and `micropip` to the import blocklist in the code validation layer.
