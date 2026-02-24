@@ -14,6 +14,7 @@
 import { parseMarkdown } from './frontmatter'
 import { difficultyConfig, phaseIcons } from './curriculumConfig'
 import {
+
   compareDayTokens,
   dayTokenFromPath,
   dayTokenFromReference,
@@ -21,6 +22,7 @@ import {
   parseDayToken,
   type DayToken,
 } from './dayToken'
+import { extractExercises } from './exerciseExtractor'
 
 /**
  * Represents a single lesson unit.
@@ -194,37 +196,17 @@ export interface ReviewCardSeed {
 
 /** Parse exercise sections from a lesson markdown body. */
 function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
-  const exercises: Exercise[] = []
-  const regex =
-    /### Exercise \d+:\s*(.+?)\n([\s\S]*?)(?=\n### Exercise \d+:|\n## |\n---\s*\n## |$)/g
-  let match
-  while ((match = regex.exec(lesson.content)) !== null) {
-    const titleText = match[1]
-    if (!titleText) continue
-    const title = titleText.trim()
-    const body = match[2] || ''
-    const goalMatch = body.match(/\*\*Goal\*\*:\s*(.+)/)
-    const goalText = goalMatch?.[1]
-    const goal = goalText ? goalText.trim() : ''
-    const codeRegex = /```(?:python|py)\s*\n([\s\S]*?)```/g
-    let codeMatch
-    const codeBlocks: string[] = []
-    while ((codeMatch = codeRegex.exec(body)) !== null) {
-      const code = codeMatch[1]
-      if (code) codeBlocks.push(code.trim())
-    }
-    exercises.push({
-      day: lesson.day,
-      lessonTitle: lesson.title,
-      phase: lesson.phase,
-      difficulty: lesson.difficulty || 'beginner',
-      title,
-      goal,
-      starterCode: codeBlocks[0] || '',
-      tags: lesson.tags || [],
-    })
-  }
-  return exercises
+  return extractExercises(lesson.content).map((ex) => ({
+    day: lesson.day,
+    phase: lesson.phase,
+    difficulty: lesson.difficulty || 'beginner',
+    lessonTitle: lesson.title,
+    title: ex.title,
+    goal: ex.goal,
+    starterCode: ex.starterCode,
+    tags: lesson.tags || [],
+    expectedOutput: ex.expectedOutput,
+  }))
 }
 
 function normalizeIdPart(value: string): string {
