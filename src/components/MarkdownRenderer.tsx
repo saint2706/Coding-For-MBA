@@ -121,6 +121,10 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
   )
 }
 
+const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
+  return <img loading="lazy" decoding="async" {...props} />
+}
+
 const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] & ExtraProps) => {
   const attributes = getSecureLinkAttributes(href, props)
 
@@ -329,6 +333,7 @@ function createMarkdownComponents(): Components {
   return {
     code: CodeComponent,
     table: TableComponent,
+    img: ImageComponent,
     a: LinkComponent,
     h1: createHeadingComponent('h1'),
     h2: createHeadingComponent('h2'),
@@ -375,7 +380,7 @@ const lessonSanitizerSchema: RehypeSanitizeOptions = {
     a: ['href', 'title', 'target', 'rel'],
     code: ['className'],
     div: ['className'],
-    img: ['src', 'alt', 'title', 'width', 'height', 'loading'],
+    img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding'],
     input: [
       ['type', 'checkbox'],
       ['disabled', true],

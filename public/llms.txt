@@ -1,0 +1,22 @@
+# Coding for MBA
+
+> A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.
+
+## Site Architecture
+
+- /: Home - Landing page and curriculum overview
+- /curriculum: Full curriculum list
+- /phase/{1-9}: Phase overviews (e.g., /phase/1 for Python Basics)
+- /lesson/{1-108}: Daily lessons (e.g., /lesson/1 for Setup)
+- /exercises: Interactive coding exercises
+- /concepts: Knowledge graph of technical concepts
+- /solutions/{1-9}: Notebook solutions for each phase
+- /stats: Content statistics
+- /review: Review questions
+
+## Key Concepts
+- Python Programming
+- Data Science (Pandas, NumPy)
+- Machine Learning (Scikit-Learn)
+- Business Intelligence
+- SQL & Data Engineering
