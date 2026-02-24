@@ -27,3 +27,8 @@
 **Vulnerability:** `open()`, `compile()`, and `memoryview()` were allowed, presenting risks of file system access (virtual), code object creation (potential escape), and raw memory manipulation.
 **Learning:** Even in a virtualized environment, file access and low-level memory operations increase the attack surface for escapes or side-channel attacks.
 **Prevention:** Explicitly block `open`, `compile`, and `memoryview` in the validation layer, while ensuring method calls (e.g. `obj.open()`) remain valid.
+
+## 2025-06-05 - Interactive Help and Internal Attributes
+**Vulnerability:** Interactive functions like `copyright()`, `credits()`, and `license()` can trigger interactive prompts that hang the Pyodide environment. Additionally, access to internal attributes like `__loader__` and `__spec__` could expose system modules even after `del sys`.
+**Learning:** Standard Python interactive helpers are dangerous in non-interactive environments. Internal attributes can serve as bridges to deleted modules.
+**Prevention:** Explicitly block `copyright`, `credits`, `license` calls and global access to `__loader__` and `__spec__`.

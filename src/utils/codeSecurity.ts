@@ -109,6 +109,8 @@ export function validatePythonCode(code: string): ValidationResult {
     '__getattribute__',
     '__code__',
     '__closure__',
+    '__loader__',
+    '__spec__',
   ]
   const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
   if (globalRegex.test(strippedCode)) {
@@ -134,6 +136,9 @@ export function validatePythonCode(code: string): ValidationResult {
     'open',
     'compile',
     'memoryview',
+    'copyright',
+    'credits',
+    'license',
   ]
   const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
   if (callRegex.test(strippedCode)) {
