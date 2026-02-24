@@ -12,6 +12,7 @@
  */
 
 import Fuse from 'fuse.js'
+import type { IFuseOptions } from 'fuse.js'
 import { getAllLessons, type Lesson } from './contentLoader'
 import { parseDayToken } from './dayToken'
 
@@ -38,6 +39,21 @@ const TAG_WEIGHT = 3
 const PHASE_WEIGHT = 2
 const DAY_WEIGHT = 2
 const BODY_WEIGHT = 1
+
+const FUSE_OPTIONS: IFuseOptions<SearchDocument> = {
+  keys: [
+    { name: 'title', weight: TITLE_WEIGHT },
+    { name: 'concepts', weight: CONCEPT_WEIGHT },
+    { name: 'tags', weight: TAG_WEIGHT },
+    { name: 'phaseText', weight: PHASE_WEIGHT },
+    { name: 'dayText', weight: DAY_WEIGHT },
+    { name: 'plainContent', weight: BODY_WEIGHT },
+  ],
+  includeScore: true,
+  threshold: 0.38,
+  ignoreLocation: true,
+  minMatchCharLength: 2,
+}
 
 /**
  * Strips markdown syntax to create plain text for search indexing.
@@ -73,17 +89,19 @@ function toDocument(lesson: Lesson): SearchDocument {
         parsedDay.suffix ? `day ${parsedDay.number} ${parsedDay.suffix}` : '',
       ]
     : [`day ${lesson.day}`]
-  const plainContent = stripMarkdown(lesson.content)
+  const plainContent = stripMarkdown(lesson.content || '')
   const dayText = dayParts.filter(Boolean).join(' ')
   const phaseText = `phase ${lesson.phase}`
   const conceptsLower = (lesson.concepts ?? []).join(' ').toLowerCase()
   const tagsLower = (lesson.tags ?? []).join(' ').toLowerCase()
+  const title = lesson.title || ''
+
   return {
     ...lesson,
     plainContent,
     dayText,
     phaseText,
-    titleLower: lesson.title.toLowerCase(),
+    titleLower: title.toLowerCase(),
     conceptsLower,
     tagsLower,
     phaseTextLower: phaseText.toLowerCase(),
@@ -122,26 +140,84 @@ export function createSearchDocuments(lessons: readonly Lesson[]): SearchDocumen
 }
 
 export function createSearchEngine(lessons = getAllLessons()): Fuse<SearchDocument> {
-  return new Fuse(createSearchDocuments(lessons), {
-    keys: [
-      { name: 'title', weight: TITLE_WEIGHT },
-      { name: 'concepts', weight: CONCEPT_WEIGHT },
-      { name: 'tags', weight: TAG_WEIGHT },
-      { name: 'phaseText', weight: PHASE_WEIGHT },
-      { name: 'dayText', weight: DAY_WEIGHT },
-      { name: 'plainContent', weight: BODY_WEIGHT },
-    ],
-    includeScore: true,
-    threshold: 0.38,
-    ignoreLocation: true,
-    minMatchCharLength: 2,
-  })
+  return new Fuse(createSearchDocuments(lessons), FUSE_OPTIONS)
 }
 
 let cachedEngine: Fuse<SearchDocument> | null = null
+const processedDocs: SearchDocument[] = []
+let indexingComplete = false
+let isIndexing = false
+let currentIndex = 0
+
+function processChunk() {
+  if (indexingComplete || cachedEngine) {
+    indexingComplete = true
+    isIndexing = false
+    return
+  }
+
+  const allLessons = getAllLessons()
+  const startTime = performance.now()
+  const CHUNK_TIME_LIMIT = 12 // ms
+
+  while (currentIndex < allLessons.length && performance.now() - startTime < CHUNK_TIME_LIMIT) {
+    const lesson = allLessons[currentIndex]
+    if (lesson) {
+      processedDocs.push(toDocument(lesson))
+    }
+    currentIndex++
+  }
+
+  if (currentIndex < allLessons.length) {
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      ;(
+        window as Window & {
+          requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void
+        }
+      ).requestIdleCallback(processChunk, { timeout: 1000 })
+    } else {
+      setTimeout(processChunk, 50)
+    }
+  } else {
+    // Finished
+    cachedEngine = new Fuse(processedDocs, FUSE_OPTIONS)
+    indexingComplete = true
+    isIndexing = false
+  }
+}
+
+export function startBackgroundIndexing(): void {
+  if (isIndexing || indexingComplete || cachedEngine) return
+  isIndexing = true
+
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+    ;(
+      window as Window & {
+        requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void
+      }
+    ).requestIdleCallback(processChunk, { timeout: 1000 })
+  } else {
+    setTimeout(processChunk, 10)
+  }
+}
 
 function getEngine(): Fuse<SearchDocument> {
-  if (!cachedEngine) cachedEngine = createSearchEngine()
+  if (cachedEngine) return cachedEngine
+
+  // If background indexing is in progress or not started, force finish it
+  const allLessons = getAllLessons()
+  while (currentIndex < allLessons.length) {
+    const lesson = allLessons[currentIndex]
+    if (lesson) {
+      processedDocs.push(toDocument(lesson))
+    }
+    currentIndex++
+  }
+
+  cachedEngine = new Fuse(processedDocs, FUSE_OPTIONS)
+  indexingComplete = true
+  isIndexing = false
+
   return cachedEngine
 }
 
@@ -184,22 +260,9 @@ export function getSearchSnippet(content: string, query: string, maxLength = 180
 }
 
 export function preloadSearchIndex(): void {
-  const preload = () => {
-    try {
-      getEngine()
-    } catch (error) {
-      console.error('Failed to preload search index:', error)
-    }
+  try {
+    startBackgroundIndexing()
+  } catch (error) {
+    console.error('Failed to start search index preloading:', error)
   }
-
-  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    ;(
-      window as Window & {
-        requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void
-      }
-    ).requestIdleCallback(preload, { timeout: 1000 })
-    return
-  }
-
-  setTimeout(preload, 400)
 }
