@@ -46,6 +46,26 @@ describe('quizStore', () => {
     expect(lowScoring.map((s) => s.quizId)).not.toContain('q2')
   })
 
+  it('sorts low scoring topics by accuracy then by incorrect count', () => {
+    // q1: 50% accuracy (1/2), 1 incorrect
+    useQuizStore.getState().recordAttempt({ quizId: 'q1', topic: 'Topic 1', correct: false })
+    useQuizStore.getState().recordAttempt({ quizId: 'q1', topic: 'Topic 1', correct: true })
+
+    // q3: 50% accuracy (2/4), 2 incorrect - should be ranked higher (worse) than q1 if we prioritize incorrect count for ties?
+    // Sort logic: a.accuracy - b.accuracy || b.incorrect - a.incorrect
+    // If accuracy is same, higher incorrect count comes FIRST (b.incorrect - a.incorrect implies descending sort of incorrects)
+
+    useQuizStore.getState().recordAttempt({ quizId: 'q3', topic: 'Topic 3', correct: false })
+    useQuizStore.getState().recordAttempt({ quizId: 'q3', topic: 'Topic 3', correct: false })
+    useQuizStore.getState().recordAttempt({ quizId: 'q3', topic: 'Topic 3', correct: true })
+    useQuizStore.getState().recordAttempt({ quizId: 'q3', topic: 'Topic 3', correct: true })
+
+    const lowScoring = useQuizStore.getState().getLowScoringTopics(60, 1)
+
+    expect(lowScoring[0].quizId).toBe('q3')
+    expect(lowScoring[1].quizId).toBe('q1')
+  })
+
   it('returns recent attempts in descending chronological order', () => {
     useQuizStore.getState().recordAttempt({
       quizId: 'q1',

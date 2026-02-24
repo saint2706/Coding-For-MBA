@@ -16,6 +16,12 @@ const localStorageMock = {
   key: (_index: number): string | null => null,
 }
 
+// Mock window.scrollTo
+Object.defineProperty(window, 'scrollTo', {
+  value: () => {},
+  writable: true,
+})
+
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
   writable: true,
