@@ -1,0 +1,177 @@
+
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest"
+import React from "react"
+import { createRoot, Root } from "react-dom/client"
+import { act } from "react"
+import MarkdownRenderer from "../MarkdownRenderer"
+
+// Mock Child Components
+vi.mock("../CodePlayground", () => ({
+  default: ({ initialCode }: { initialCode: string }) => (
+    <div data-testid="code-playground">{initialCode}</div>
+  ),
+}))
+
+vi.mock("../ExerciseWidget", () => ({
+  default: (props: any) => (
+    <div data-testid="exercise-widget" data-title={props.title}>
+      {props.goal}
+    </div>
+  ),
+}))
+
+vi.mock("../MasteryCheck", () => ({
+  default: (props: any) => (
+    <div data-testid="mastery-check" data-title={props.title}>
+      {props.questionText}
+    </div>
+  ),
+}))
+
+vi.mock("../../utils/prism", () => ({
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div className="syntax-highlighter">{children}</div>
+  ),
+}))
+
+vi.mock("react-syntax-highlighter/dist/esm/styles/prism", () => ({
+  oneDark: {},
+}))
+
+// Mock CopyButton
+vi.mock("../CopyButton", () => ({
+  default: () => <button>Copy</button>,
+}))
+
+describe("MarkdownRenderer", () => {
+  let container: HTMLDivElement
+  let root: Root
+
+  beforeEach(() => {
+    container = document.createElement("div")
+    document.body.appendChild(container)
+    root = createRoot(container)
+  })
+
+  afterEach(() => {
+    act(() => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
+  it("renders basic markdown content", () => {
+    const content = "# Hello World\nThis is a paragraph."
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    expect(container.querySelector("h1")?.textContent).toBe("Hello World")
+    expect(container.querySelector("p")?.textContent).toBe("This is a paragraph.")
+  })
+
+  it("renders code blocks with syntax highlighting", () => {
+    const content = "```python\nprint(\"hello\")\n```"
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const codeBlock = container.querySelector(".code-block-wrapper")
+    expect(codeBlock).toBeTruthy()
+    expect(codeBlock?.querySelector(".code-block-lang")?.textContent).toBe("python")
+    expect(codeBlock?.querySelector(".syntax-highlighter")?.textContent).toBe("print(\"hello\")")
+  })
+
+  it("renders \"Try It\" button for Python code blocks", () => {
+    const content = "```python\nprint(\"hello\")\n```"
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const tryBtn = container.querySelector(".code-block-try-btn")
+    expect(tryBtn).toBeTruthy()
+    expect(tryBtn?.textContent).toContain("Try It")
+
+    // Click it to open playground
+    act(() => {
+      tryBtn?.dispatchEvent(new MouseEvent("click", { bubbles: true }))
+    })
+
+    const playground = container.querySelector("[data-testid=\"code-playground\"]")
+    expect(playground).toBeTruthy()
+    expect(playground?.textContent).toBe("print(\"hello\")")
+  })
+
+  it("does not render \"Try It\" button for non-Python code blocks", () => {
+    const content = "```javascript\nconsole.log(\"hello\")\n```"
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const tryBtn = container.querySelector(".code-block-try-btn")
+    expect(tryBtn).toBeNull()
+  })
+
+  it("renders ExerciseWidget for exercise blocks", () => {
+    const content = `
+### Exercise 1: Test Exercise
+**Goal**: Test Goal
+\`\`\`python
+starter code
+\`\`\`
+**Expected Output**:
+\`\`\`text
+output
+\`\`\`
+    `
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const widget = container.querySelector("[data-testid=\"exercise-widget\"]")
+    expect(widget).toBeTruthy()
+    expect(widget?.getAttribute("data-title")).toBe("Test Exercise")
+    expect(widget?.textContent).toBe("Test Goal")
+  })
+
+  it("renders MasteryCheck for mastery blocks", () => {
+    const content = `
+### Question 1: Test Question
+What is it?
+<details>
+<summary>Answer</summary>
+It is a test.
+</details>
+    `
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const check = container.querySelector("[data-testid=\"mastery-check\"]")
+    expect(check).toBeTruthy()
+    expect(check?.getAttribute("data-title")).toBe("Test Question")
+    expect(check?.textContent).toContain("What is it?")
+  })
+
+  it("sanitizes unsafe HTML", () => {
+    const content = "<script>alert(\"xss\")</script>"
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    expect(container.innerHTML).not.toContain("<script>")
+    expect(container.innerHTML).not.toContain("alert(\"xss\")")
+  })
+
+  it("injects glossary tooltips", () => {
+    const content = "This is a function."
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const glossaryTerm = container.querySelector(".glossary-term")
+    expect(glossaryTerm).toBeTruthy()
+    expect(glossaryTerm?.textContent).toBe("function")
+    expect(glossaryTerm?.getAttribute("data-definition")).toBeTruthy()
+  })
+})
