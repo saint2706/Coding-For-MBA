@@ -186,7 +186,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
               const diff =
                 difficultyConfig[result.item.difficulty || 'beginner'] || difficultyConfig.beginner!
               return (
-                <button
+                <div
                   key={result.item.day}
                   id={`search-result-${index}`}
                   className={`search-result-item ${index === activeIndex ? 'active' : ''}`}
@@ -214,7 +214,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
                       ))}
                     </div>
                   )}
-                </button>
+                </div>
               )
             })}
           </div>
@@ -222,6 +222,18 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
         {debouncedQuery.trim().length >= 2 && results.length === 0 && (
           <div className="search-empty">
+            <svg
+              className="search-empty-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <path d="M21 21l-4.35-4.35" />
+              <path d="M8 11h8" strokeLinecap="round" />
+            </svg>
             <p>No results found for &ldquo;{debouncedQuery}&rdquo;</p>
           </div>
         )}
