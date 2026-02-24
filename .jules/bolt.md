@@ -12,3 +12,8 @@
 
 **Learning:** `getLessonsByPhase` was filtering the full lesson array (O(N)) on every call. In the Sidebar, this resulted in O(P*N) complexity.
 **Action:** Implemented a lazy, cached index to group lessons by phase once (O(N)), reducing subsequent lookups to O(1).
+
+## 2025-05-23 - Chunked Search Indexing and Robustness
+
+**Learning:** Heavy synchronous operations like full-text search indexing (Fuse.js) block the main thread, causing UI freezes. Lazy loading with chunked execution via `requestIdleCallback` improves responsiveness, but requires a synchronous fallback (force-finish) to guarantee correctness if the user interacts immediately.
+**Action:** Implement chunked processing for expensive initializations and always include defensive checks for optional fields (e.g., `lesson.title`) to prevent crashes during large batch operations.
