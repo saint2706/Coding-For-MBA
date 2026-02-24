@@ -21,14 +21,19 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html'],
-      include: [
-        'src/stores/progressStore.ts',
-        'src/stores/quizStore.ts',
-        'scripts/content-schemas.js',
+      include: ['src/**/*.{ts,tsx}', 'scripts/**/*.{js,ts}'],
+      exclude: [
+        'src/**/*.d.ts',
+        'src/test/**',
+        'src/**/__tests__/**',
+        'src/main.tsx',
+        'src/vite-env.d.ts',
       ],
-      exclude: ['src/**/*.d.ts'],
       thresholds: {
-        lines: 80,
+        lines: 45,
+        functions: 40,
+        branches: 35,
+        statements: 40,
       },
     },
   },

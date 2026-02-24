@@ -37,3 +37,6 @@ yarn.lock
 playwright-report/
 test-results/
 actionlint
+
+# Coverage
+coverage/
