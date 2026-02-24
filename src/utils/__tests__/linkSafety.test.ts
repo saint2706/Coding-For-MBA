@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getSecureLinkAttributes } from '../linkSafety'
+import { getSecureLinkAttributes, normalizeAndValidateHref } from '../linkSafety'
 
 describe('getSecureLinkAttributes', () => {
   it('should handle safe external links', () => {
@@ -63,5 +63,47 @@ describe('getSecureLinkAttributes', () => {
   it('should not duplicate noopener noreferrer', () => {
     const result = getSecureLinkAttributes('https://example.com', { rel: 'noopener' })
     expect(result?.rel).toBe('noopener noreferrer')
+  })
+})
+
+describe('normalizeAndValidateHref', () => {
+  it('rejects javascript URLs', () => {
+    expect(normalizeAndValidateHref('javascript:alert(1)')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
+  it('rejects data URLs', () => {
+    expect(normalizeAndValidateHref('data:text/html,<script>alert(1)</script>')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
+  it('allows relative paths', () => {
+    expect(normalizeAndValidateHref('/lessons/intro')).toEqual({
+      normalizedHref: '/lessons/intro',
+      isExternal: false,
+      isSafe: true,
+    })
+  })
+
+  it('allows absolute https links and marks them external', () => {
+    expect(normalizeAndValidateHref('https://example.com/docs')).toEqual({
+      normalizedHref: 'https://example.com/docs',
+      isExternal: true,
+      isSafe: true,
+    })
+  })
+
+  it('allows hash links', () => {
+    expect(normalizeAndValidateHref('#chapter-1')).toEqual({
+      normalizedHref: '#chapter-1',
+      isExternal: false,
+      isSafe: true,
+    })
   })
 })
