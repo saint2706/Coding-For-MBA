@@ -40,8 +40,8 @@ describe('quizStore storage & hydration', () => {
   })
 
   it('handles localStorage.setItem errors gracefully', () => {
-     // Mock localStorage.setItem to throw
-     const mockStorage = {
+    // Mock localStorage.setItem to throw
+    const mockStorage = {
       getItem: vi.fn(),
       setItem: vi.fn(() => {
         throw new Error('Quota exceeded')
@@ -59,22 +59,22 @@ describe('quizStore storage & hydration', () => {
       useQuizStore.getState().recordAttempt({
         quizId: 'q1',
         topic: 'T1',
-        correct: true
+        correct: true,
       })
     }).not.toThrow()
   })
 
   it('handles localStorage.removeItem errors gracefully', () => {
-      // It's hard to trigger removeItem via zustand persist unless we explicitly call storage.removeItem
-      // But safeStorage is internal.
-      // However, we can verify that the store methods don't crash if we could trigger it.
-      // Since we can't easily trigger removeItem from the public API in this config,
-      // we might skip this unless we find a way.
-      // Actually, persist might call removeItem if state is cleared? No, it usually sets to null or empty.
+    // It's hard to trigger removeItem via zustand persist unless we explicitly call storage.removeItem
+    // But safeStorage is internal.
+    // However, we can verify that the store methods don't crash if we could trigger it.
+    // Since we can't easily trigger removeItem from the public API in this config,
+    // we might skip this unless we find a way.
+    // Actually, persist might call removeItem if state is cleared? No, it usually sets to null or empty.
 
-      // Let's at least test the public hydrateQuizStore function
-      hydrateQuizStore()
-      expect(useQuizStore.getState().hasHydrated).toBe(true)
+    // Let's at least test the public hydrateQuizStore function
+    hydrateQuizStore()
+    expect(useQuizStore.getState().hasHydrated).toBe(true)
   })
 
   it('prevents double hydration', () => {
@@ -87,7 +87,7 @@ describe('quizStore storage & hydration', () => {
   })
 
   it('computes stats correctly for empty records', () => {
-      const stats = useQuizStore.getState().getQuizStats('nonexistent')
-      expect(stats).toBeNull()
+    const stats = useQuizStore.getState().getQuizStats('nonexistent')
+    expect(stats).toBeNull()
   })
 })

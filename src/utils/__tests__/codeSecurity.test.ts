@@ -3,45 +3,45 @@ import { validatePythonCode, stripPythonCommentsAndStrings } from '../codeSecuri
 
 describe('stripPythonCommentsAndStrings', () => {
   it('should strip simple strings', () => {
-    const code = 'print("hello")\nprint(\'world\')';
-    expect(stripPythonCommentsAndStrings(code)).toBe('print("")\nprint("")');
-  });
+    const code = 'print("hello")\nprint(\'world\')'
+    expect(stripPythonCommentsAndStrings(code)).toBe('print("")\nprint("")')
+  })
 
   it('should strip triple quoted strings', () => {
-    const code = 'print("""hello\nworld""")';
-    expect(stripPythonCommentsAndStrings(code)).toBe('print("")');
-  });
+    const code = 'print("""hello\nworld""")'
+    expect(stripPythonCommentsAndStrings(code)).toBe('print("")')
+  })
 
   it('should strip comments', () => {
-    const code = 'print(1) # this is a comment';
-    expect(stripPythonCommentsAndStrings(code).trim()).toBe('print(1)');
-  });
+    const code = 'print(1) # this is a comment'
+    expect(stripPythonCommentsAndStrings(code).trim()).toBe('print(1)')
+  })
 
   it('should handle strings with comments inside', () => {
-    const code = 'print("# not a comment")';
-    expect(stripPythonCommentsAndStrings(code)).toBe('print("")');
-  });
+    const code = 'print("# not a comment")'
+    expect(stripPythonCommentsAndStrings(code)).toBe('print("")')
+  })
 
   it('should handle escaped quotes', () => {
-    const code = 'print("say \\"hello\\"")';
-    expect(stripPythonCommentsAndStrings(code)).toBe('print("")');
-  });
+    const code = 'print("say \\"hello\\"")'
+    expect(stripPythonCommentsAndStrings(code)).toBe('print("")')
+  })
 
   it('should preserve f-strings', () => {
-    const code = 'print(f"hello {name}")';
-    expect(stripPythonCommentsAndStrings(code)).toBe('print(f"hello {name}")');
-  });
+    const code = 'print(f"hello {name}")'
+    expect(stripPythonCommentsAndStrings(code)).toBe('print(f"hello {name}")')
+  })
 
   it('should preserve F-strings', () => {
-    const code = 'print(F"hello {name}")';
-    expect(stripPythonCommentsAndStrings(code)).toBe('print(F"hello {name}")');
-  });
+    const code = 'print(F"hello {name}")'
+    expect(stripPythonCommentsAndStrings(code)).toBe('print(F"hello {name}")')
+  })
 
   it('should strip r-strings', () => {
-    const code = 'print(r"raw")';
-    expect(stripPythonCommentsAndStrings(code)).toBe('print(r"")');
-  });
-});
+    const code = 'print(r"raw")'
+    expect(stripPythonCommentsAndStrings(code)).toBe('print(r"")')
+  })
+})
 
 describe('validatePythonCode', () => {
   it('should allow safe code', () => {
@@ -175,7 +175,7 @@ print("bad")
   })
 
   it('should flag standalone "exec" inside f-string', () => {
-     expect(validatePythonCode('f"exec task"').valid).toBe(false)
+    expect(validatePythonCode('f"exec task"').valid).toBe(false)
   })
 
   it('should block globals, locals, getattr', () => {
@@ -258,25 +258,25 @@ print("bad")
 
   describe('Interactive functions (DoS protection)', () => {
     it('should detect input() usage', () => {
-      expect(validatePythonCode('input("Enter something:")').valid).toBe(false);
-    });
+      expect(validatePythonCode('input("Enter something:")').valid).toBe(false)
+    })
 
     it('should detect breakpoint() usage', () => {
-      expect(validatePythonCode('breakpoint()').valid).toBe(false);
-    });
+      expect(validatePythonCode('breakpoint()').valid).toBe(false)
+    })
 
     it('should detect help() usage', () => {
-      expect(validatePythonCode('help(print)').valid).toBe(false);
-    });
+      expect(validatePythonCode('help(print)').valid).toBe(false)
+    })
 
     it('should detect exit() usage', () => {
-      expect(validatePythonCode('exit()').valid).toBe(false);
-    });
+      expect(validatePythonCode('exit()').valid).toBe(false)
+    })
 
     it('should detect quit() usage', () => {
-      expect(validatePythonCode('quit()').valid).toBe(false);
-    });
-  });
+      expect(validatePythonCode('quit()').valid).toBe(false)
+    })
+  })
 
   describe('Pyodide Internals', () => {
     it('should block import pyodide', () => {

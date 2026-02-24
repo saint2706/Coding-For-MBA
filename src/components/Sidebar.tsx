@@ -194,8 +194,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                       {completedCount}/{lessons.length} · 🧠 {dueByPhase[phase.phase] || 0}
                     </span>
                     <span className="sr-only">
-                      {completedCount} of {lessons.length} completed,{' '}
-                      {dueByPhase[phase.phase] || 0} reviews due
+                      {completedCount} of {lessons.length} completed, {dueByPhase[phase.phase] || 0}{' '}
+                      reviews due
                     </span>
                   </span>
                   <span className="phase-toggle-arrow">

@@ -24,17 +24,17 @@
 
 ## 📚 What's Inside
 
-| Phase | Topic                       | Days   |
-| ----- | --------------------------- | ------ |
-| 1     | Python Foundations          | 1–12   |
-| 2     | Functions & Modularity      | 13–24  |
-| 3     | Data Engineering & Web Dev  | 25–36  |
-| 4     | Math & ML Foundations       | 37–48  |
-| 5     | Advanced ML & Deep Learning | 49–60  |
-| 6     | Cutting-Edge ML             | 61–72  |
-| 7     | BI & Analytics              | 73–84  |
-| 8     | SQL Mastery                 | 85–96  |
-| 9     | Enterprise SQL              | 97–108 |
+| Phase | Topic | Days |
+| ----- | ----- | ---- |
+| 1 | Python Foundations | 1–12 |
+| 2 | Functions & Modularity | 13–24 |
+| 3 | Data Engineering & Web Dev | 25–36 |
+| 4 | Math & ML Foundations | 37–48 |
+| 5 | Advanced ML & Deep Learning | 49–60 |
+| 6 | Cutting-Edge ML | 61–72 |
+| 7 | BI & Analytics | 73–84 |
+| 8 | SQL Mastery | 85–96 |
+| 9 | Enterprise SQL | 97–108 |
 
 ## 🛠️ Tech Stack
 
@@ -83,6 +83,7 @@ src/
 ├── App.tsx
 └── main.tsx
 content/lessons/       # 108 lesson markdown files
+docs/                  # Documentation (Roadmap, Architecture)
 ```
 
 ## 🔎 Lesson Search
@@ -98,20 +99,31 @@ content/lessons/       # 108 lesson markdown files
 
 ## 📜 Available Scripts
 
-| Script                 | Description                   |
-| ---------------------- | ----------------------------- |
-| `npm run dev`          | Start Vite dev server         |
-| `npm run build`        | Type-check + production build |
-| `npm run analyze`      | Build + generate `dist/stats.html` bundle report |
-| `npm run lint`         | Run ESLint                    |
-| `npm run typecheck`    | Run TypeScript compiler check |
-| `npm run format`       | Format code with Prettier     |
-| `npm run format:check` | Verify formatting             |
-| `npm test`             | Run unit tests (Vitest)       |
-| `npm run test:coverage`| Run unit tests with coverage threshold (80%) |
-| `npm run test:e2e`     | Run Playwright end-to-end tests |
-| `npm run deploy`       | Deploy to GitHub Pages        |
+| Script | Description |
+| ------ | ----------- |
+| `npm run dev` | Start Vite dev server |
+| `npm run build` | Type-check + production build |
+| `npm run analyze` | Build + generate `dist/stats.html` bundle report |
+| `npm run lint` | Run TypeScript compiler check (alias for `typecheck`) |
+| `npm run typecheck` | Run TypeScript compiler check |
+| `npm run format` | Format code with Prettier |
+| `npm run format:check` | Verify formatting |
+| `npm run validate-content` | Verify markdown content integrity |
+| `npm run preview` | Preview the production build locally |
+| `npm test` | Run unit tests (Vitest) |
+| `npm run test:watch` | Run unit tests in watch mode |
+| `npm run test:coverage` | Run unit tests with coverage threshold (80%) |
+| `npm run test:e2e` | Run Playwright end-to-end tests |
+| `npm run deploy` | Deploy to GitHub Pages |
 
+## 📄 Documentation
+
+For more details, please see:
+
+- **[Contributing Guide](CONTRIBUTING.md)**: How to set up and contribute.
+- **[Architecture](docs/ARCHITECTURE.md)**: Technical overview of the project.
+- **[Roadmap](docs/todo.md)**: Upcoming features and improvements.
+- **[Content Strategy](docs/content-expansion.md)**: Plan for curriculum expansion.
 
 ## 🤖 Dependabot Updates
 
