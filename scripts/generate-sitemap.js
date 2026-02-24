@@ -24,6 +24,7 @@
 import { readdirSync, readFileSync, writeFileSync, statSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { parseMarkdown } from '../src/utils/frontmatter-core.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
@@ -38,8 +39,8 @@ function formatDate(date) {
 /** Extract frontmatter `day` or `phase` value from a markdown file. */
 function extractNumber(filePath, key) {
   const raw = readFileSync(filePath, 'utf-8')
-  const match = raw.match(new RegExp(`^${key}:\\s*(\\d+)`, 'm'))
-  return match ? Number(match[1]) : null
+  const { frontmatter } = parseMarkdown(raw)
+  return frontmatter[key] ? Number(frontmatter[key]) : null
 }
 
 /** Get the last modified date of a file */
