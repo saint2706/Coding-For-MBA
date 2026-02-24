@@ -1,0 +1,48 @@
+
+> coding-for-mba@1.0.0 build
+> node scripts/generate-sitemap.js && tsc -b && vite build
+
+✓ Sitemap written to /app/public/sitemap.xml (145 URLs)
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 2444 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                 6.02 kB │ gzip:   1.84 kB
+dist/assets/index-DB6wAJcY.css                 70.09 kB │ gzip:  12.98 kB
+dist/assets/useDebounce-Dv57vxHo.js             0.22 kB │ gzip:   0.18 kB
+dist/assets/Breadcrumb-B1yBNO37.js              0.44 kB │ gzip:   0.28 kB
+dist/assets/AnimatedCounter-BfSBKanF.js         0.49 kB │ gzip:   0.36 kB
+dist/assets/ProgressBar-Dx7JJVuX.js             0.68 kB │ gzip:   0.42 kB
+dist/assets/BackToTop-CirKzZao.js               0.89 kB │ gzip:   0.53 kB
+dist/assets/NotFound-AekI79OU.js                1.68 kB │ gzip:   0.77 kB
+dist/assets/Review-DsGD7I7E.js                  2.17 kB │ gzip:   1.02 kB
+dist/assets/Curriculum-CgG_o-_F.js              2.69 kB │ gzip:   1.29 kB
+dist/assets/zustand-B9hqAtue.js                 3.51 kB │ gzip:   1.64 kB
+dist/assets/NotebookViewer-BHVhXXGb.js          3.62 kB │ gzip:   1.56 kB
+dist/assets/PhaseOverview-C46cr1JQ.js           3.75 kB │ gzip:   1.66 kB
+dist/assets/Home-DUK2YJOP.js                    4.72 kB │ gzip:   1.72 kB
+dist/assets/SearchResults-B_sEXImw.js           5.03 kB │ gzip:   2.16 kB
+dist/assets/ContentStats-B4pSj4dz.js            5.07 kB │ gzip:   1.65 kB
+dist/assets/SEOHead-BecFVQAb.js                 5.47 kB │ gzip:   2.31 kB
+dist/assets/Exercises-CfeOzgKp.js               6.45 kB │ gzip:   2.36 kB
+dist/assets/ConceptGraphPage-EW4OAYYA.js        7.25 kB │ gzip:   3.24 kB
+dist/assets/Lesson-DPr9oN8l.js                  7.65 kB │ gzip:   3.03 kB
+dist/assets/ProgressDashboard-DyOuellt.js      10.59 kB │ gzip:   3.04 kB
+dist/assets/search-Dw8P0qyA.js                 18.25 kB │ gzip:   6.61 kB
+dist/assets/MarkdownRenderer-C_4-C-4R.js       31.18 kB │ gzip:  11.79 kB
+dist/assets/react-vendor-CONEDzKk.js           47.87 kB │ gzip:  17.38 kB
+dist/assets/syntax-highlighter-BphLrgiX.js     60.79 kB │ gzip:  18.71 kB
+dist/assets/d3-vendor-BmCheUa-.js              62.44 kB │ gzip:  21.44 kB
+dist/assets/motion-DiwrRvD_.js                137.39 kB │ gzip:  45.79 kB
+dist/assets/react-dom-fP3VSZ3o.js             180.27 kB │ gzip:  56.27 kB
+dist/assets/phase-content-CyAGORNg.js         182.88 kB │ gzip:  64.21 kB
+dist/assets/markdown-DRjFHmqW.js              334.09 kB │ gzip: 102.58 kB
+dist/assets/index-B13ybse2.js                 462.55 kB │ gzip: 120.09 kB
+dist/assets/lesson-content-BD9RcoNF.js      2,010.67 kB │ gzip: 630.93 kB
+
+(!) Some chunks are larger than 1500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.79s

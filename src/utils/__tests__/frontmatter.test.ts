@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { parseMarkdown } from '../frontmatter'
-import { parseMarkdownForScripts } from '../../../scripts/frontmatter-parser.ts'
+import { parseMarkdown as parseMarkdownCore } from '../frontmatter-core.js'
 
 describe('frontmatter parser parity', () => {
   const samples = [
@@ -11,11 +11,11 @@ describe('frontmatter parser parity', () => {
     `---\ninvalid-frontmatter\n---\nStill body`,
   ]
 
-  it.each(samples)('returns identical parse output across app and scripts for sample %#', (raw) => {
+  it.each(samples)('returns identical parse output across app and core for sample %#', (raw) => {
     const appResult = parseMarkdown(raw)
-    const scriptResult = parseMarkdownForScripts(raw)
+    const coreResult = parseMarkdownCore(raw)
 
-    expect(scriptResult).toEqual(appResult)
+    expect(coreResult).toEqual(appResult)
     expect(Object.getPrototypeOf(appResult.frontmatter)).toBeNull()
   })
 })

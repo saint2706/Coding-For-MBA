@@ -24,9 +24,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import {
-  normalizeLineEndingsForScripts,
-  parseNormalizedMarkdownForScripts,
-} from './frontmatter-parser.js'
+  normalizeMarkdownLineEndings,
+  parseNormalizedMarkdown,
+} from '../src/utils/frontmatter-core.js'
 import {
   lessonFrontmatterSchema,
   phaseOverviewFrontmatterSchema,
@@ -67,9 +67,9 @@ function formatZodIssues(error, prefix = 'Invalid') {
 }
 
 function parseAndValidateMarkdown(rawContent, fileName = 'README.md') {
-  const normalizedContent = normalizeLineEndingsForScripts(rawContent)
+  const normalizedContent = normalizeMarkdownLineEndings(rawContent)
   const { frontmatter: fields, content: body } =
-    parseNormalizedMarkdownForScripts(normalizedContent)
+    parseNormalizedMarkdown(normalizedContent)
   const fileErrors = []
 
   if (Object.keys(fields).length === 0) {
@@ -178,7 +178,8 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
     )
     const actualDays = [
       ...new Set((overview.days ?? []).map((day) => normalizeDayToken(day))),
-    ].sort(compareDayTokens)
+    ].sort(compareDayTokens,
+    )
 
     const mismatchedDays =
       expectedDays.length !== actualDays.length ||
