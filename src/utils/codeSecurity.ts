@@ -110,7 +110,8 @@ export function validatePythonCode(code: string): ValidationResult {
   // 3. Call Deny Patterns (Keywords banned ONLY when called)
   const callKeywords = [
     'getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir',
-    'input', 'breakpoint', 'help', 'exit', 'quit'
+    'input', 'breakpoint', 'help', 'exit', 'quit',
+    'open', 'compile', 'memoryview'
   ]
   const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
   if (callRegex.test(strippedCode)) {
