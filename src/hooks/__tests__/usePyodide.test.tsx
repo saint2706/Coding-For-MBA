@@ -40,7 +40,7 @@ describe('usePyodide Output Limit', () => {
           window.loadPyodide = vi.fn().mockResolvedValue({
             runPythonAsync: vi.fn().mockImplementation(async (code) => {
               // Simulate output larger than 50KB limit
-              if (code === 'print_large') {
+              if (code.includes('print_large')) {
                 const chunk1 = 'a'.repeat(30000)
                 const chunk2 = 'b'.repeat(30000)
                 // Use the captured callback

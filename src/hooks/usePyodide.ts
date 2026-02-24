@@ -241,7 +241,14 @@ export function usePyodide() {
           },
         })
 
-        const pythonExecutionPromise = pyodide.runPythonAsync(code)
+        // Prepend recursion limit to prevent stack overflow DoS
+        const protectedCode = `
+import sys
+sys.setrecursionlimit(500)
+del sys
+${code}
+`
+        const pythonExecutionPromise = pyodide.runPythonAsync(protectedCode)
 
         // NOTE: Timeout/abort cannot preempt Python code already running in Pyodide.
         // We resolve early so UI can recover, but the underlying execution may continue

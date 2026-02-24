@@ -1,4 +1,7 @@
-## 2025-05-18 - Client-Side DoS via Output\n**Vulnerability:** Unbounded Python stdout/stderr in Pyodide execution allowed browser hangs via large output (e.g. infinite loops).\n**Learning:** Client-side execution environments (WASM) still need resource constraints (output size, time) to prevent UI freezing.\n**Prevention:** Enforce strict output length limits in execution wrappers (hooks)
+## 2025-05-18 - Client-Side DoS via Output
+**Vulnerability:** Unbounded Python stdout/stderr in Pyodide execution allowed browser hangs via large output (e.g. infinite loops).
+**Learning:** Client-side execution environments (WASM) still need resource constraints (output size, time) to prevent UI freezing.
+**Prevention:** Enforce strict output length limits in execution wrappers (hooks)
 
 ## 2025-05-20 - Regex Validation Bypass in Python Runner
 **Vulnerability:** `validatePythonCode` regex checks for `exec(` or `eval(` allowed bypass via variable assignment (`e = exec; e(...)`), while blocking safe usage in strings.
@@ -14,3 +17,13 @@
 **Vulnerability:** The `pyodide` and `micropip` modules were not blocked, allowing access to `pyodide.code.run_js` (arbitrary JS execution) and package installation from external sources.
 **Learning:** Pyodide exposes powerful internals (like JS interop) via its own module, which must be explicitly blocked alongside the `js` module in sandboxed environments.
 **Prevention:** Add `pyodide` and `micropip` to the import blocklist in the code validation layer.
+
+## 2025-05-30 - Recursion Limit DoS
+**Vulnerability:** Default recursion limits in Python (usually 1000) combined with browser stack limits can cause browser tab crashes or hangs when users write deep recursion.
+**Learning:** Client-side WASM runs on the main thread's stack. Deep recursion can exceed browser limits before Python's limit is hit, or simply freeze the UI.
+**Prevention:** Enforce a lower recursion limit (e.g., 500) by prepending `sys.setrecursionlimit(500)` to user code execution.
+
+## 2025-05-30 - Dangerous Built-ins Access
+**Vulnerability:** `open()`, `compile()`, and `memoryview()` were allowed, presenting risks of file system access (virtual), code object creation (potential escape), and raw memory manipulation.
+**Learning:** Even in a virtualized environment, file access and low-level memory operations increase the attack surface for escapes or side-channel attacks.
+**Prevention:** Explicitly block `open`, `compile`, and `memoryview` in the validation layer, while ensuring method calls (e.g. `obj.open()`) remain valid.

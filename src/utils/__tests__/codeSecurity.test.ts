@@ -215,9 +215,14 @@ print("bad")
     expect(validatePythonCode('dir(obj)').valid).toBe(false)
   })
 
-  it('should allow compile and open (Usability Fix)', () => {
-    expect(validatePythonCode('compile("code", "filename", "exec")').valid).toBe(true)
-    expect(validatePythonCode('open("file.txt")').valid).toBe(true)
+  it('should block compile and open (Security Fix)', () => {
+    expect(validatePythonCode('compile("code", "filename", "exec")').valid).toBe(false)
+    expect(validatePythonCode('open("file.txt")').valid).toBe(false)
+  })
+
+  it('should block memoryview (Security Fix)', () => {
+    expect(validatePythonCode('memoryview(b"123")').valid).toBe(false)
+    expect(validatePythonCode('m = memoryview(data)').valid).toBe(false)
   })
 
   it('should allow method calls for introspection functions', () => {
