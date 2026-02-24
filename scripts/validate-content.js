@@ -32,7 +32,9 @@ import {
   phaseOverviewFrontmatterSchema,
   exerciseSchema,
 } from './content-schemas.js'
-import { compareDayTokens, getDayTokenFromLessonPath, normalizeDayToken } from './day-token.js'
+import { compareDayTokens, dayTokenFromPath, normalizeDayToken } from '../src/utils/dayToken-core.js'
+import { extractExercisesFromContent } from '../src/utils/exercise-extractor-core.js'
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
@@ -89,43 +91,16 @@ function parseAndValidateMarkdown(rawContent, fileName = 'README.md') {
 }
 
 function extractExercisesFromLesson(fields, body) {
-  const exercises = []
-  const regex =
-    /### Exercise \d+:\s*(.+?)\n([\s\S]*?)(?=\n### Exercise \d+:|\n## |\n---\s*\n## |$)/g
-  let match
-
-  while ((match = regex.exec(body)) !== null) {
-    const title = match[1]?.trim()
-    if (!title) continue
-    const section = match[2] ?? ''
-    const goalMatch = section.match(/\*\*Goal\*\*:\s*(.+)/)
-    const goal = goalMatch?.[1]?.trim() ?? ''
-
-    const codeRegex = /```(?:python|py)\s*\n([\s\S]*?)```/g
-    let codeMatch
-    const codeBlocks = []
-    while ((codeMatch = codeRegex.exec(section)) !== null) {
-      if (codeMatch[1]) codeBlocks.push(codeMatch[1].trim())
-    }
-
-    const expectedMatch = section.match(
-      /\*\*Expected Output[:\s]*\*\*[\s\S]*?```(?:text|)\s*\n([\s\S]*?)```/,
-    )
-    const expectedOutput = expectedMatch?.[1]?.trim()
-
-    exercises.push({
-      day: fields.day,
-      lessonTitle: fields.title,
-      phase: fields.phase,
-      difficulty: fields.difficulty,
-      title,
-      goal,
-      starterCode: codeBlocks[0] || '',
-      expectedOutput,
-    })
-  }
-
-  return exercises
+  return extractExercisesFromContent(body).map((ex) => ({
+    day: fields.day,
+    lessonTitle: fields.title,
+    phase: fields.phase,
+    difficulty: fields.difficulty,
+    title: ex.title,
+    goal: ex.goal,
+    starterCode: ex.starterCode,
+    expectedOutput: ex.expectedOutput,
+  }))
 }
 
 function getPhaseRoot(filePath, lessonsDir) {
@@ -186,7 +161,7 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
   for (const lessonFile of lessonFiles) {
     const phaseDir = getPhaseRoot(lessonFile, lessonsDir)
     const list = lessonsByPhaseDir.get(phaseDir) ?? []
-    const dayToken = getDayTokenFromLessonPath(lessonFile)
+    const dayToken = dayTokenFromPath(lessonFile)
     if (dayToken) {
       list.push(dayToken)
     }
