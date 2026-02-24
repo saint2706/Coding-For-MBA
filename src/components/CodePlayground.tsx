@@ -43,6 +43,16 @@ export interface CodePlaygroundHandle {
   reset: () => void
 }
 
+/**
+ * Result of a code submission evaluation.
+ */
+export interface SubmissionResult {
+  correct: boolean
+  output: string | null
+  error: string | null
+  attemptedAt: Date
+}
+
 interface CodePlaygroundProps {
   /** Initial code snippet to populate the editor. */
   initialCode: string
@@ -51,12 +61,7 @@ interface CodePlaygroundProps {
   /** Callback fired when execution output matches expected output. */
   onExpectedOutputMatched?: () => void
   /** Callback fired with full execution results (pass/fail, output, error). */
-  onSubmissionEvaluated?: (result: {
-    correct: boolean
-    output: string | null
-    error: string | null
-    attemptedAt: Date
-  }) => void
+  onSubmissionEvaluated?: (result: SubmissionResult) => void
 }
 
 const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g, '\n')
