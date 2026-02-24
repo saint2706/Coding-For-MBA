@@ -111,6 +111,11 @@ export function validatePythonCode(code: string): ValidationResult {
     '__closure__',
     '__loader__',
     '__spec__',
+    'globals', 'locals', '__import__',
+    'subprocess', 'sys', 'os', 'importlib', 'builtins',
+    '__builtins__', '__globals__', '__subclasses__', '__bases__',
+    '__mro__', '__getattribute__', '__code__', '__closure__',
+    '__loader__', '__spec__'
   ]
   const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
   if (globalRegex.test(strippedCode)) {
@@ -139,6 +144,10 @@ export function validatePythonCode(code: string): ValidationResult {
     'copyright',
     'credits',
     'license',
+    'getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir',
+    'input', 'breakpoint', 'help', 'exit', 'quit',
+    'open', 'compile', 'memoryview',
+    'copyright', 'credits', 'license'
   ]
   const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
   if (callRegex.test(strippedCode)) {
