@@ -62,8 +62,8 @@ describe('quizStore', () => {
 
     const lowScoring = useQuizStore.getState().getLowScoringTopics(60, 1)
 
-    expect(lowScoring[0].quizId).toBe('q3')
-    expect(lowScoring[1].quizId).toBe('q1')
+    expect(lowScoring[0]?.quizId).toBe('q3')
+    expect(lowScoring[1]?.quizId).toBe('q1')
   })
 
   it('returns recent attempts in descending chronological order', () => {
