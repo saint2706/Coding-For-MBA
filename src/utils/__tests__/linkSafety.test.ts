@@ -106,4 +106,44 @@ describe('normalizeAndValidateHref', () => {
       isSafe: true,
     })
   })
+
+  it('rejects javascript URLs with newlines', () => {
+    expect(normalizeAndValidateHref('j\navascript:alert(1)')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
+  it('rejects javascript URLs with null bytes', () => {
+    expect(normalizeAndValidateHref('jav\0ascript:alert(1)')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
+  it('rejects vbscript URLs', () => {
+    expect(normalizeAndValidateHref('vbscript:alert(1)')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
+  it('allows complex safe URLs', () => {
+    expect(normalizeAndValidateHref('https://example.com/path?query=1#hash')).toEqual({
+      normalizedHref: 'https://example.com/path?query=1#hash',
+      isExternal: true,
+      isSafe: true,
+    })
+  })
+
+  it('allows relative URLs containing colons in query parameters', () => {
+    expect(normalizeAndValidateHref('search?q=filter:value')).toEqual({
+      normalizedHref: 'search?q=filter:value',
+      isExternal: false,
+      isSafe: true,
+    })
+  })
 })

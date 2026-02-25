@@ -300,4 +300,13 @@ print("bad")
       expect(validatePythonCode('import micropip.transactions').valid).toBe(false)
     })
   })
+
+  it('should block __getattribute__ on objects', () => {
+    expect(validatePythonCode('obj.__getattribute__("name")').valid).toBe(false)
+  })
+
+  it('should handle complex f-strings', () => {
+    expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
+    expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
+  })
 })
