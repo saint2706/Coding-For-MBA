@@ -69,7 +69,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
               {showPlayground ? '✕ Close' : '▶ Try It'}
             </button>
           )}
-          <CopyButton text={code} />
+          <CopyButton text={code} ariaLabel="Copy code to clipboard" />
         </div>
       </div>
       <SyntaxHighlighter
@@ -83,6 +83,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
           fontSize: '0.8125rem',
           lineHeight: '1.65',
         }}
+        tabIndex={0}
         codeTagProps={{
           style: {
             fontFamily: 'var(--font-mono)',
