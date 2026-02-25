@@ -6,8 +6,8 @@
   "homepage": "https://saint2706.github.io/Coding-For-MBA",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-sitemap.js && tsc -b && vite build",
-    "analyze": "node scripts/generate-sitemap.js && tsc -b && vite build --mode analyze",
+    "build": "node scripts/generate-sitemap.js && node scripts/generate-llms-txt.js && tsc -b && vite build",
+    "analyze": "node scripts/generate-sitemap.js && node scripts/generate-llms-txt.js && tsc -b && vite build --mode analyze",
     "lint": "npm run typecheck",
     "typecheck": "tsc -b",
     "preview": "vite preview",
