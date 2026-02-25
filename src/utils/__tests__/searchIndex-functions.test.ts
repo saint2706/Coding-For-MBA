@@ -57,7 +57,8 @@ describe('search index', () => {
   })
 
   it('strips complex markdown correctly', () => {
-    const complexLesson: Lesson = {
+    // Force cast since we know lessons[0] is valid but TS inference is strict on the spread
+    const complexLesson = {
         ...lessons[0],
         content: `
 # Heading
@@ -72,11 +73,13 @@ block code
 **Bold**
 _Italic_
 `
-    }
+    } as Lesson
+
     const docs = createSearchDocuments([complexLesson])
-    const plain = docs[0].plainContent
+    const plain = docs[0]?.plainContent
 
     // Should NOT contain markdown syntax
+    expect(plain).toBeDefined()
     expect(plain).not.toContain('```')
     expect(plain).not.toContain('![')
     expect(plain).not.toContain('](')

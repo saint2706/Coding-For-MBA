@@ -92,6 +92,8 @@ describe('reviewTracker', () => {
     const card1 = cards[0]
     const card2 = cards[1]
 
+    if (!card1 || !card2) throw new Error('Not enough cards generated for test')
+
     rateReviewCard(card1.id, 'good', today)
     expect(getReviewStreak(today)).toBe(1)
 
@@ -107,6 +109,8 @@ describe('reviewTracker', () => {
 
     // Let's review a DIFFERENT card on Jan 2nd.
     const card3 = cards[2]
+    if (!card3) throw new Error('Not enough cards generated for test')
+
     rateReviewCard(card3.id, 'good', jan2)
 
     // So reviews on: Jan 5, Jan 4, Jan 2.
@@ -129,10 +133,11 @@ describe('reviewTracker', () => {
           expect(counts[1]).toBe(phase1Cards.length)
 
           // Complete one phase 1 card
-          rateReviewCard(phase1Cards[0].id, 'easy', now)
-
-          const newCounts = getReviewDueCountByPhase(now)
-          expect(newCounts[1]).toBe(phase1Cards.length - 1)
+          if (phase1Cards[0]) {
+            rateReviewCard(phase1Cards[0].id, 'easy', now)
+            const newCounts = getReviewDueCountByPhase(now)
+            expect(newCounts[1]).toBe(phase1Cards.length - 1)
+          }
       }
   })
 })
