@@ -267,6 +267,10 @@ ${code}
 
         const abortPromise = signal
           ? new Promise<never>((_, reject) => {
+              if (signal.aborted) {
+                reject(new Error('Execution cancelled by user.'))
+                return
+              }
               const onAbort = () => {
                 signal.removeEventListener('abort', onAbort)
                 reject(new Error('Execution cancelled by user.'))

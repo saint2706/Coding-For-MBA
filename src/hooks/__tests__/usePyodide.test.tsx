@@ -16,10 +16,11 @@ declare global {
     _pyodideInstance?: MockPyodide
     _pyodideLoading?: Promise<MockPyodide>
     __stdoutCallback?: (text: string) => void
+    __stderrCallback?: (text: string) => void
   }
 }
 
-describe('usePyodide Output Limit', () => {
+describe('usePyodide', () => {
   let container: HTMLDivElement
   let root: ReturnType<typeof createRoot> | undefined
 
@@ -50,12 +51,24 @@ describe('usePyodide Output Limit', () => {
                 }
                 return undefined
               }
+              if (code.includes('raise_error')) {
+                 throw new Error('Python Error')
+              }
+              if (code.includes('print_hello')) {
+                 if (window.__stdoutCallback) window.__stdoutCallback('Hello World')
+                 return undefined
+              }
+              if (code.includes('return_value')) {
+                 return 'Returned Value'
+              }
               return 'result'
             }),
             setStdout: vi.fn().mockImplementation(({ batched }) => {
               window.__stdoutCallback = batched
             }),
-            setStderr: vi.fn(),
+            setStderr: vi.fn().mockImplementation(({ batched }) => {
+              window.__stderrCallback = batched
+            }),
           })
 
           script.onload?.(new Event('load'))
@@ -77,6 +90,57 @@ describe('usePyodide Output Limit', () => {
     delete window._pyodideInstance
     delete window._pyodideLoading
     delete window.__stdoutCallback
+    delete window.__stderrCallback
+  })
+
+  it('runs python code successfully and captures output', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let hookResult: any
+
+    function TestComponent() {
+      hookResult = usePyodide()
+      return null
+    }
+
+    await act(async () => {
+      if (root) {
+        root.render(<TestComponent />)
+      }
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let result: any
+    await act(async () => {
+      result = await hookResult.runPython('print_hello')
+    })
+
+    expect(result.output).toBe('Hello World')
+    expect(result.error).toBeNull()
+  })
+
+  it('handles python errors gracefully', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let hookResult: any
+
+    function TestComponent() {
+      hookResult = usePyodide()
+      return null
+    }
+
+    await act(async () => {
+      if (root) {
+        root.render(<TestComponent />)
+      }
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let result: any
+    await act(async () => {
+      result = await hookResult.runPython('raise_error')
+    })
+
+    expect(result.error).toBe('Python Error')
+    expect(result.output).toBe('')
   })
 
   it('truncates output when it exceeds the limit', async () => {
@@ -107,5 +171,122 @@ describe('usePyodide Output Limit', () => {
     // Check if output contains truncation message
     expect(result.output).toContain('[Output truncated due to size limit]')
     expect(result.output.length).toBeLessThan(60000)
+  })
+
+  it('returns the return value if no stdout', async () => {
+     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let hookResult: any
+
+    function TestComponent() {
+      hookResult = usePyodide()
+      return null
+    }
+
+    await act(async () => {
+      if (root) {
+        root.render(<TestComponent />)
+      }
+    })
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let result: any
+    await act(async () => {
+      result = await hookResult.runPython('return_value')
+    })
+
+    expect(result.output).toBe('Returned Value')
+  })
+
+  it('handles timeout', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let hookResult: any
+
+    function TestComponent() {
+      hookResult = usePyodide()
+      return null
+    }
+
+    await act(async () => {
+      if (root) {
+        root.render(<TestComponent />)
+      }
+    })
+
+    // Ensure loaded so we can modify the instance
+    await act(async () => {
+      await hookResult.ensureLoaded()
+    })
+
+    // Simulate runPythonAsync taking longer than timeout
+    const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
+    if (window._pyodideInstance) {
+        window._pyodideInstance.runPythonAsync = async () => {
+            await new Promise(resolve => setTimeout(resolve, 100))
+            return 'done'
+        }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let result: any
+    await act(async () => {
+      // Small timeout
+      result = await hookResult.runPython('sleep', { timeoutMs: 10 })
+    })
+
+    expect(result.error).toContain('Python execution timed out')
+
+    // Restore
+    if (window._pyodideInstance && originalRunPythonAsync) {
+        window._pyodideInstance.runPythonAsync = originalRunPythonAsync
+    }
+  })
+
+  it('handles abort signal', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let hookResult: any
+
+    function TestComponent() {
+      hookResult = usePyodide()
+      return null
+    }
+
+    await act(async () => {
+      if (root) {
+        root.render(<TestComponent />)
+      }
+    })
+
+    // Ensure loaded so we can modify the instance
+    await act(async () => {
+      await hookResult.ensureLoaded()
+    })
+
+    // Simulate runPythonAsync taking time
+    const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
+    if (window._pyodideInstance) {
+        window._pyodideInstance.runPythonAsync = async () => {
+            await new Promise(resolve => setTimeout(resolve, 100))
+            return 'done'
+        }
+    }
+
+    const controller = new AbortController()
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let resultPromise: Promise<any>
+
+    // Start execution
+    resultPromise = hookResult.runPython('sleep', { signal: controller.signal })
+
+    // Abort immediately
+    controller.abort()
+
+    const result = await resultPromise
+    expect(result.error).toBe('Execution cancelled by user.')
+
+    // Restore
+    if (window._pyodideInstance && originalRunPythonAsync) {
+        window._pyodideInstance.runPythonAsync = originalRunPythonAsync
+    }
   })
 })
