@@ -32,3 +32,10 @@
 **Vulnerability:** Interactive functions like `copyright()`, `credits()`, and `license()` can trigger interactive prompts that hang the Pyodide environment. Additionally, access to internal attributes like `__loader__` and `__spec__` could expose system modules even after `del sys`.
 **Learning:** Standard Python interactive helpers are dangerous in non-interactive environments. Internal attributes can serve as bridges to deleted modules.
 **Prevention:** Explicitly block `copyright`, `credits`, `license` calls and global access to `__loader__` and `__spec__`.
+
+## 2025-06-10 - Regex Bypass via Control Characters and Obfuscated Schemes
+**Vulnerability:** Simple regex checks for schemes (`^[a-z]+:`) could be bypassed by inserting control characters (e.g., `jav\nscript:`) or using schemes not in the whitelist that browsers might execute or treat unpredictably. Also, broad regexes could flag relative URLs with colons (e.g., `search?q=filter:value`) as unsafe schemes.
+**Learning:** URL validation must robustly handle obfuscation (stripping control characters) and strictly define what constitutes a scheme to avoid false positives on valid relative paths.
+**Prevention:**
+1.  Strip all control characters (ASCII 0-31, 127) before validation.
+2.  Use a strict regex `^[a-zA-Z][^:/?#]*:` to identify schemes, ensuring that characters like `/`, `?`, `#` terminate the scheme detection (preventing relative paths from being misidentified).

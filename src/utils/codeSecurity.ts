@@ -20,9 +20,18 @@ export interface ValidationResult {
  * This allows for stricter security checks on the remaining code structure
  * without flagging keywords inside strings or comments.
  *
- * CRITICAL SECURITY NOTE:
- * f-strings (e.g. f"{exec()}") are NOT stripped because they can contain executable code.
- * Any string literal prefixed with 'f' or 'F' is preserved to ensure dangerous keywords inside are detected.
+ * SECURITY MODEL:
+ * 1. Safe Strings (e.g. "hello", 'world', b"bytes", u"unicode"):
+ *    - These are replaced with empty strings ("") or prefix + "" (u"").
+ *    - Content is removed because keywords inside a string literal (e.g. print("import os")) are harmless.
+ *
+ * 2. Unsafe Strings (f-strings, e.g. f"{exec()}", F"Dangerous"):
+ *    - These are PRESERVED (content is kept).
+ *    - This is because f-strings allow code execution within the curly braces {}.
+ *    - By preserving them, the subsequent validation logic can scan the code inside the f-string.
+ *
+ * 3. Comments (# ...):
+ *    - Removed entirely as they are not executable.
  *
  * @param code - The Python code to process
  * @returns The code with SAFE strings and comments removed
@@ -81,6 +90,7 @@ export function validatePythonCode(code: string): ValidationResult {
 
   // 1. Property-Safe Deny Patterns (Keywords banned as references/assignments UNLESS properties)
   // e.g. eval() is banned, but model.eval() is allowed.
+  // Note: __getattribute__ is in strict deny, so obj.__getattribute__ is also banned.
   const propertySafeKeywords = ['eval', 'exec']
   const propertySafeRegex = new RegExp(`(?<!\\.)\\b(${propertySafeKeywords.join('|')})\\b`)
   if (propertySafeRegex.test(strippedCode)) {
@@ -111,11 +121,6 @@ export function validatePythonCode(code: string): ValidationResult {
     '__closure__',
     '__loader__',
     '__spec__',
-    'globals', 'locals', '__import__',
-    'subprocess', 'sys', 'os', 'importlib', 'builtins',
-    '__builtins__', '__globals__', '__subclasses__', '__bases__',
-    '__mro__', '__getattribute__', '__code__', '__closure__',
-    '__loader__', '__spec__'
   ]
   const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
   if (globalRegex.test(strippedCode)) {
@@ -144,10 +149,6 @@ export function validatePythonCode(code: string): ValidationResult {
     'copyright',
     'credits',
     'license',
-    'getattr', 'setattr', 'delattr', 'hasattr', 'vars', 'dir',
-    'input', 'breakpoint', 'help', 'exit', 'quit',
-    'open', 'compile', 'memoryview',
-    'copyright', 'credits', 'license'
   ]
   const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
   if (callRegex.test(strippedCode)) {

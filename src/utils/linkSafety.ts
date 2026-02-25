@@ -11,7 +11,13 @@
  */
 
 const SAFE_SCHEMES = new Set(['http:', 'https:', 'mailto:'])
-const URL_SCHEME_PATTERN = /^[a-zA-Z][a-zA-Z\d+.-]*:/
+
+// Matches anything that looks like a scheme: starts with a letter,
+// followed by any characters EXCEPT colon, slash, question mark, or hash,
+// and ends with a colon.
+// This prevents relative URLs like "search?q=filter:value" from being treated as schemes,
+// while still catching valid schemes and obfuscated ones (if they don't contain /?#).
+const URL_SCHEME_PATTERN = /^[a-zA-Z][^:/?#]*:/
 
 /**
  * Validates and normalizes a URL string.
@@ -25,12 +31,16 @@ export const normalizeAndValidateHref = (href?: string | null) => {
     return { normalizedHref: null, isExternal: false, isSafe: false }
   }
 
-  const normalizedHref = href.trim()
+  // Remove control characters (ASCII 0-31, 127) and trim whitespace.
+  // This neutralizes obfuscation attempts like "j\navascript:" or "jav\0ascript:".
+  const normalizedHref = href.replace(/[\x00-\x1F\x7F]/g, '').trim()
 
   if (!normalizedHref || normalizedHref.startsWith('//')) {
     return { normalizedHref: null, isExternal: false, isSafe: false }
   }
 
+  // If it doesn't look like a URL with a scheme, treat it as a relative path.
+  // We check specific prefixes to be sure, or fallback to the regex check.
   if (
     normalizedHref.startsWith('#') ||
     normalizedHref.startsWith('/') ||
@@ -43,6 +53,7 @@ export const normalizeAndValidateHref = (href?: string | null) => {
 
   try {
     const url = new URL(normalizedHref)
+    // Validate protocol against allowlist
     if (!SAFE_SCHEMES.has(url.protocol)) {
       return { normalizedHref: null, isExternal: false, isSafe: false }
     }
@@ -53,6 +64,7 @@ export const normalizeAndValidateHref = (href?: string | null) => {
       isSafe: true,
     }
   } catch {
+    // If it looks like a URL (has scheme) but fails parsing, it's unsafe.
     return { normalizedHref: null, isExternal: false, isSafe: false }
   }
 }
