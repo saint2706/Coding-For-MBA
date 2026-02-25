@@ -1,3 +1,11 @@
+/**
+ * Frontmatter Core Utilities
+ *
+ * Provides safe, lightweight frontmatter parsing for markdown content.
+ * This module is designed to work in both Node.js (scripts) and browser environments.
+ * It avoids heavy dependencies like `js-yaml` in favor of a custom, restrictive parser.
+ */
+
 const BLOCKED_KEYS = new Set(['__proto__', 'constructor', 'prototype'])
 const FRONTMATTER_START_DELIMITER = '---\n'
 const FRONTMATTER_END_DELIMITER = '\n---\n'
@@ -12,10 +20,25 @@ function coerceScalar(rawValue) {
   return unquoted
 }
 
+/**
+ * Normalizes line endings in a markdown string to Unix style (LF).
+ * This ensures consistent processing regardless of the OS (Windows CRLF vs Unix LF).
+ *
+ * @param {string} raw - The raw markdown content.
+ * @returns {string} The markdown content with all line endings converted to `\n`.
+ */
 export function normalizeMarkdownLineEndings(raw) {
   return raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
 }
 
+/**
+ * Parses frontmatter from a normalized markdown string.
+ * Supports basic YAML-like syntax including scalars, arrays, and inline arrays.
+ * Blocks unsafe keys like `__proto__`.
+ *
+ * @param {string} normalized - The markdown content with normalized line endings.
+ * @returns {{ frontmatter: Record<string, any>, content: string }} An object containing the parsed frontmatter fields and the remaining markdown content.
+ */
 export function parseNormalizedMarkdown(normalized) {
   if (!normalized.startsWith(FRONTMATTER_START_DELIMITER)) {
     return { frontmatter: Object.create(null), content: normalized }

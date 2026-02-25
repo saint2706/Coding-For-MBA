@@ -112,8 +112,10 @@ docs/                  # Documentation (Roadmap, Architecture)
 | `npm run preview` | Preview the production build locally |
 | `npm test` | Run unit tests (Vitest) |
 | `npm run test:watch` | Run unit tests in watch mode |
-| `npm run test:coverage` | Run unit tests with coverage threshold (80%) |
+| `npm run test:coverage` | Run unit tests with coverage report |
 | `npm run test:e2e` | Run Playwright end-to-end tests |
+| `npm run test:e2e:headed` | Run Playwright end-to-end tests in headed mode |
+| `npm run test:e2e:report` | Show Playwright test report |
 | `npm run deploy` | Deploy to GitHub Pages |
 
 ## 📄 Documentation
