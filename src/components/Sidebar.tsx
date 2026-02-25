@@ -127,6 +127,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className={`day-link ${location.pathname === '/' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
             onClick={onClose}
+            aria-current={location.pathname === '/' ? 'page' : undefined}
           >
             🏠 Home
           </Link>
@@ -135,6 +136,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className={`day-link ${location.pathname === '/curriculum' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
             onClick={onClose}
+            aria-current={location.pathname === '/curriculum' ? 'page' : undefined}
           >
             📋 Full Curriculum
           </Link>
@@ -143,6 +145,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className={`day-link ${location.pathname === '/progress' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
             onClick={onClose}
+            aria-current={location.pathname === '/progress' ? 'page' : undefined}
           >
             📊 Progress
           </Link>
@@ -151,6 +154,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className={`day-link ${location.pathname === '/exercises' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
             onClick={onClose}
+            aria-current={location.pathname === '/exercises' ? 'page' : undefined}
           >
             🧪 Exercises
           </Link>
@@ -160,6 +164,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className={`day-link ${location.pathname === '/review' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
             onClick={onClose}
+            aria-current={location.pathname === '/review' ? 'page' : undefined}
           >
             🧠 Review
           </Link>
@@ -247,6 +252,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                           to={`/phase/${phase.phase}`}
                           className={`day-link ${location.pathname === `/phase/${phase.phase}` ? 'active' : ''}`}
                           onClick={onClose}
+                          aria-current={location.pathname === `/phase/${phase.phase}` ? 'page' : undefined}
                         >
                           📄 Phase Overview
                         </Link>
@@ -267,6 +273,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                             to={`/lesson/${lesson.day}`}
                             className={`day-link ${location.pathname === `/lesson/${lesson.day}` ? 'active' : ''}`}
                             onClick={onClose}
+                            aria-current={location.pathname === `/lesson/${lesson.day}` ? 'page' : undefined}
                           >
                             {completedSet.has(dayTokenToProgressId(lesson.day)) && (
                               <span className="day-link-check" aria-label="Completed">

@@ -145,6 +145,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         <Link
           to="/"
           className={location.pathname === '/' ? 'active' : ''}
+          aria-current={location.pathname === '/' ? 'page' : undefined}
           {...createRoutePrefetchHandlers('/')}
         >
           Home
@@ -152,6 +153,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         <Link
           to="/curriculum"
           className={location.pathname === '/curriculum' ? 'active' : ''}
+          aria-current={location.pathname === '/curriculum' ? 'page' : undefined}
           {...createRoutePrefetchHandlers('/curriculum')}
         >
           Curriculum
@@ -159,6 +161,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         <Link
           to="/search"
           className={location.pathname === '/search' ? 'active' : ''}
+          aria-current={location.pathname === '/search' ? 'page' : undefined}
           {...createRoutePrefetchHandlers('/search')}
         >
           Search
