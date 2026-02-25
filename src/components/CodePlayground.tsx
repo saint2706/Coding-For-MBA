@@ -54,13 +54,24 @@ export interface SubmissionResult {
 }
 
 interface CodePlaygroundProps {
-  /** Initial code snippet to populate the editor. */
+  /** Initial Python code to populate the editor. */
   initialCode: string
-  /** The exact output string required to pass the exercise. */
+  /**
+   * The exact output string required to pass the exercise.
+   * If provided, the runner will compare the actual output against this value.
+   */
   expectedOutput?: string
-  /** Callback fired when execution output matches expected output. */
+  /**
+   * Callback fired when the execution output strictly matches the `expectedOutput`.
+   * Useful for triggering success animations or unlocking the next step.
+   */
   onExpectedOutputMatched?: () => void
-  /** Callback fired with full execution results (pass/fail, output, error). */
+  /**
+   * Callback fired with the full result of the code execution.
+   * This is called regardless of success or failure.
+   *
+   * @param result - The result object containing correctness status, output, error, and timestamp.
+   */
   onSubmissionEvaluated?: (result: SubmissionResult) => void
 }
 

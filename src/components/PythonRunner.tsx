@@ -28,9 +28,17 @@ export interface PythonRunnerHandle {
 interface PythonRunnerProps {
   /** The Python source code to execute. */
   code: string
-  /** Whether to render in a compact layout (e.g., for small widgets). */
+  /**
+   * Whether to render in a compact layout.
+   * If true, the runner uses minimal padding and smaller fonts, suitable for embedding in widgets.
+   * Defaults to `false`.
+   */
   compact?: boolean
-  /** Callback fired when execution finishes (success or failure). */
+  /**
+   * Callback fired when execution finishes, whether successful or failed.
+   *
+   * @param result - An object containing the standard output (`output`) or error message (`error`).
+   */
   onExecutionComplete?: (result: { output: string | null; error: string | null }) => void
 }
 
