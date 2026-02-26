@@ -22,6 +22,7 @@ on:
 
 permissions:
   contents: read
+  security-events: write
 
 jobs:
   trigger-dependabot:
@@ -64,12 +65,27 @@ jobs:
 
             for (const update of updates) {
               core.info(`Triggering Dependabot update for ${update.package_ecosystem} at ${update.directory}`);
-              await github.request('POST /repos/{owner}/{repo}/dependabot/updates', {
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                package_ecosystem: update.package_ecosystem,
-                directory: update.directory,
-              });
+              try {
+                await github.request('POST /repos/{owner}/{repo}/dependabot/updates', {
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  package_ecosystem: update.package_ecosystem,
+                  directory: update.directory,
+                  headers: {
+                    'X-GitHub-Api-Version': '2022-11-28',
+                  },
+                });
+              } catch (error) {
+                if (error.status === 404) {
+                  core.setFailed(
+                    `Dependabot update trigger endpoint returned 404 for ${update.package_ecosystem} at ${update.directory}. ` +
+                    'Verify Dependabot is enabled and that DEPENDABOT_TRIGGER_TOKEN (or GITHUB_TOKEN fallback) has Dependabot/security-events write access.'
+                  );
+                  return;
+                }
+
+                throw error;
+              }
             }
 
             core.info(`Triggered ${updates.length} Dependabot update request(s).`);
