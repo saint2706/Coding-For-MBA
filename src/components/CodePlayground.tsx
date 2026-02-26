@@ -6,7 +6,7 @@
  * and optional expected output display.
  */
 
-import { useState, useCallback, useRef, useEffect, forwardRef, useImperativeHandle } from 'react'
+import { useState, useCallback, useRef, useEffect, forwardRef, useImperativeHandle, useDeferredValue } from 'react'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
@@ -95,6 +95,7 @@ const normalizeOutput = (value: string): string => value.trim().replace(/\r\n/g,
 const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
   ({ initialCode, expectedOutput, onExpectedOutputMatched, onSubmissionEvaluated }, ref) => {
     const [code, setCode] = useState(initialCode)
+    const deferredCode = useDeferredValue(code)
     const [isConfirmingReset, setIsConfirmingReset] = useState(false)
     const textareaRef = useRef<HTMLTextAreaElement>(null)
     const preRef = useRef<HTMLDivElement>(null)
@@ -250,7 +251,7 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
                 style: { fontFamily: 'var(--font-mono)' },
               }}
             >
-              {code + '\n'}
+              {deferredCode + '\n'}
             </SyntaxHighlighter>
           </div>
           <textarea

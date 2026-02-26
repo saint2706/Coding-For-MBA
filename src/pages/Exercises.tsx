@@ -13,6 +13,7 @@ import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
+import ExerciseCard from '../components/ExerciseCard'
 import {
   getAllExercises,
   getAllNotebooks,
@@ -268,37 +269,9 @@ export default function Exercises() {
 
       {/* Exercise Grid */}
       <motion.div className="exercises-grid" layout>
-        {filtered.map((ex, idx) => {
-          const diff = difficultyConfig[ex.difficulty] || difficultyConfig.beginner!
-          const icon = phaseIcons[ex.phase - 1] || '📖'
-          return (
-            <motion.div
-              className="exercise-card"
-              key={`${ex.day}-${idx}`}
-              layout
-              transition={{ type: 'spring', stiffness: 220, damping: 24 }}
-            >
-              <div className="exercise-card__header">
-                <span className="exercise-card__phase">
-                  {icon} Phase {ex.phase}
-                </span>
-                <span
-                  className="difficulty-badge"
-                  style={{ color: diff.color, background: diff.bg }}
-                >
-                  {diff.label}
-                </span>
-              </div>
-              <h4 className="exercise-card__title">{ex.title}</h4>
-              {ex.goal && <p className="exercise-card__goal">{ex.goal}</p>}
-              <div className="exercise-card__footer">
-                <Link to={`/lesson/${ex.day}`} className="exercise-card__link">
-                  Day {ex.day}: {ex.lessonTitle} →
-                </Link>
-              </div>
-            </motion.div>
-          )
-        })}
+        {filtered.map((ex, idx) => (
+          <ExerciseCard key={`${ex.day}-${idx}`} exercise={ex} />
+        ))}
       </motion.div>
 
       {filtered.length === 0 && (
