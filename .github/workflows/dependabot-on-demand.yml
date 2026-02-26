@@ -2,90 +2,30 @@ name: Dependabot On-Demand
 
 on:
   workflow_dispatch:
-    inputs:
-      run_npm:
-        description: Trigger npm ecosystem updates
-        type: boolean
-        default: true
-      npm_directory:
-        description: npm directory to update
-        type: string
-        default: "/"
-      run_github_actions:
-        description: Trigger GitHub Actions ecosystem updates
-        type: boolean
-        default: true
-      github_actions_directory:
-        description: GitHub Actions directory to update
-        type: string
-        default: "/"
 
 permissions:
   contents: read
   security-events: write
 
 jobs:
-  trigger-dependabot:
+  explain-manual-trigger-support:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Dependabot updates
+      - name: Explain Dependabot manual trigger limitations
         uses: actions/github-script@v8
-        env:
-          DEPENDABOT_TOKEN: ${{ secrets.DEPENDABOT_TRIGGER_TOKEN }}
         with:
-          github-token: ${{ env.DEPENDABOT_TOKEN != '' && env.DEPENDABOT_TOKEN || github.token }}
           script: |
-            const inputs = context.payload.inputs ?? {};
-            const isTrue = (value, fallback = false) => {
-              if (value === undefined) return fallback;
-              return String(value).toLowerCase() === 'true';
-            };
-            const valueOrDefault = (value, fallback) => value ?? fallback;
+            const message = [
+              'Dependabot version updates cannot currently be triggered via public GitHub REST/GraphQL APIs from Actions workflows.',
+              'The previously used endpoint `POST /repos/{owner}/{repo}/dependabot/updates` is not publicly available and returns 404 on GitHub.com repos.',
+              '',
+              'How to run updates now:',
+              '1) Use the normal schedule configured in `.github/dependabot.yml`.',
+              '2) In the GitHub UI, open **Insights → Dependency graph → Dependabot** and use **Check for updates**.',
+              '3) If urgent, push a commit changing dependencies; Dependabot will evaluate on its next run.',
+            ].join('\n');
 
-            const updates = [];
-
-            if (isTrue(inputs.run_npm, true)) {
-              updates.push({
-                package_ecosystem: 'npm',
-                directory: valueOrDefault(inputs.npm_directory, '/'),
-              });
-            }
-
-            if (isTrue(inputs.run_github_actions, true)) {
-              updates.push({
-                package_ecosystem: 'github-actions',
-                directory: valueOrDefault(inputs.github_actions_directory, '/'),
-              });
-            }
-
-            if (updates.length === 0) {
-              core.setFailed('No ecosystems selected. Enable at least one ecosystem input.');
-              return;
-            }
-
-            for (const update of updates) {
-              core.info(`Triggering Dependabot update for ${update.package_ecosystem} at ${update.directory}`);
-              try {
-                await github.request('POST /repos/{owner}/{repo}/dependabot/updates', {
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  package_ecosystem: update.package_ecosystem,
-                  directory: update.directory,
-                  headers: {
-                    'X-GitHub-Api-Version': '2022-11-28',
-                  },
-                });
-              } catch (error) {
-                if (error.status === 404) {
-                  core.setFailed(
-                    `Dependabot update trigger endpoint returned 404 for ${update.package_ecosystem} at ${update.directory}. ` +
-                    'Verify Dependabot is enabled and that DEPENDABOT_TRIGGER_TOKEN (or GITHUB_TOKEN fallback) has Dependabot/security-events write access.'
-                  );
-                  return;
-                }
-
-                throw error;
-              }
-            }
-
-            core.info(`Triggered ${updates.length} Dependabot update request(s).`);
+            core.warning(message);
+            core.setFailed(
+              'Manual Dependabot trigger via workflow is not supported by public GitHub APIs. See logs for supported alternatives.'
+            );

@@ -132,8 +132,8 @@ For more details, please see:
 ## 🤖 Dependabot Updates
 
 - **Automatic schedule:** Dependabot checks both `npm` and `github-actions` every **Thursday at 1:00 PM IST** via `.github/dependabot.yml`.
-- **Manual on-demand run:** Maintainers can trigger **Actions → "Dependabot On-Demand" → Run workflow** and choose which ecosystem/directory to update.
-- **Required permissions/token:** Configure a repository secret named `DEPENDABOT_TRIGGER_TOKEN` with scopes/permissions that allow Dependabot update triggers (for example, a fine-grained PAT with Dependabot write access to this repo). Without this secret, the workflow falls back to `GITHUB_TOKEN`, which may not have sufficient privileges depending on repository settings.
+- **Manual on-demand run:** GitHub does not currently provide a public API to trigger Dependabot version updates from a workflow. The `Dependabot On-Demand` workflow documents this limitation and points maintainers to supported alternatives.
+- **Manual alternatives:** Use the GitHub UI **Insights → Dependency graph → Dependabot → Check for updates**, or rely on the weekly schedule in `.github/dependabot.yml`.
 
 ## 🧪 Visual Snapshot Testing
 
