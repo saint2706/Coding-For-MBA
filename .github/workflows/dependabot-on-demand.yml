@@ -34,19 +34,26 @@ jobs:
         with:
           github-token: ${{ env.DEPENDABOT_TOKEN != '' && env.DEPENDABOT_TOKEN || github.token }}
           script: |
+            const inputs = context.payload.inputs ?? {};
+            const isTrue = (value, fallback = false) => {
+              if (value === undefined) return fallback;
+              return String(value).toLowerCase() === 'true';
+            };
+            const valueOrDefault = (value, fallback) => value ?? fallback;
+
             const updates = [];
 
-            if (core.getInput('run_npm') === 'true') {
+            if (isTrue(inputs.run_npm, true)) {
               updates.push({
                 package_ecosystem: 'npm',
-                directory: core.getInput('npm_directory'),
+                directory: valueOrDefault(inputs.npm_directory, '/'),
               });
             }
 
-            if (core.getInput('run_github_actions') === 'true') {
+            if (isTrue(inputs.run_github_actions, true)) {
               updates.push({
                 package_ecosystem: 'github-actions',
-                directory: core.getInput('github_actions_directory'),
+                directory: valueOrDefault(inputs.github_actions_directory, '/'),
               });
             }
 
