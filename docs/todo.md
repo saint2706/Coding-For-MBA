@@ -1,168 +1,177 @@
 # 📋 TODO — Coding for MBA
 
-> Feature roadmap leveraging the upgraded stack.
-> New deps: **motion**, **zustand**, **canvas-confetti**, **react-hot-toast**, **zod**.
-> Major upgrades: **Vite 7**, **React 19.2.4**, **TypeScript 5.9**.
+> **Unified roadmap** — app features, curriculum expansion, DX improvements, and
+> long-horizon ideas.  
+> Stack: **Vite 7 · React 19 · TypeScript 5.9 · motion · zustand · zod · react-hot-toast · canvas-confetti**
+
+*Last updated: Feb 26, 2026*
 
 ---
 
-## 🔥 Quick Wins (1-2 hours each)
+## ✅ Completed
 
-### Toast Notifications — `react-hot-toast`
+<details>
+<summary>Click to expand completed items</summary>
 
-- [x] Add toast feedback on progress save ("Progress saved ✓")
-- [x] Toast on exercise submission (correct/incorrect)
-- [x] Toast on theme toggle ("Switched to dark mode")
-- [x] Toast on search palette open/close (keyboard shortcut hint)
-- [x] Error boundary toasts instead of blank error screens
+### Quick Wins — already shipped
 
-### Confetti Celebrations — `canvas-confetti`
+- [x] Toast feedback on progress save, exercise submission, theme toggle
+- [x] Confetti on quiz ace, phase unlock, lesson complete, full-curriculum finale
+- [x] Zod schemas for lesson frontmatter + build-time validation
+- [x] Page transitions (AnimatePresence fade + slide)
+- [x] Staggered card entrance, spring-physics progress bar, hover lift
+- [x] Parallax hero, scroll-triggered fade-in lessons, animated stats counters
+- [x] `layoutId` shared transitions, masonry stagger for concept graph
+- [x] Zustand progress store + persist middleware
+- [x] Quiz attempt tracking, per-question analytics, spaced repetition surfacing
+- [x] User preferences store (theme, sidebar, font-size, code lang, density)
+- [x] Time-on-page / study streak / weekly chart / total learning time
+- [x] Glassmorphism dark-mode cards, animated gradient mesh hero
+- [x] Breadcrumb trail, "continue where you left off" banner
+- [x] Keyboard shortcut overlay (`?`)
+- [x] XP + badge gamification layer on Progress page
+- [x] Vite 7 module preload optimisation, bundle analysis script
+- [x] Playwright visual regression + reduced-motion tests
+- [x] Zustand + Zod unit tests
+- [x] Strict TypeScript `satisfies` patterns, error boundaries with toast fallbacks
 
-- [x] Confetti burst when a quiz is aced (100%)
-- [x] Confetti on completing all exercises for a day
-- [x] Confetti on unlocking a new phase
-- [x] Subtle sparkle effect when marking a lesson complete
-- [x] End-of-curriculum celebration (full-screen fireworks)
-
-### Content Validation — `zod`
-
-- [x] Define Zod schemas for lesson frontmatter
-- [x] Validate phase metadata at build time
-- [x] Schema-validate exercise JSON data
-- [x] Type-safe curriculum config with `z.infer<>`
-- [x] Add schema validation to the `validate-content` script
-
----
-
-## ⚡ Animations & Motion — `motion`
-
-### Page Transitions
-
-- [x] Fade + slide transitions between routes (AnimatePresence)
-- [x] Staggered card entrance on Curriculum page
-- [x] Smooth height transitions on accordion/collapsible sections
-- [x] Exit animations when navigating away from a page
-
-### Micro-Interactions
-
-- [x] Sidebar items animate in on open
-- [x] Progress bar fills with spring physics
-- [x] Hover lift on lesson cards (scale + shadow)
-- [x] Button press scale-down feedback
-- [x] Code playground expand/collapse animation
-- [x] Tooltip fade-in with slight offset
-
-### Scroll Animations
-
-- [x] Parallax hero section on Home page
-- [x] Lessons fade-in as they scroll into view
-- [x] Phase timeline animates on scroll
-- [x] Stats counters animate up when visible (intersection observer + motion)
-- [x] "Back to top" button slides in when scrolling down
-
-### Layout Animations
-
-- [x] `layoutId` shared transitions for lesson → phase navigation
-- [x] Reorder animation for exercise list sorting
-- [x] Masonry-style stagger for concept graph nodes
+</details>
 
 ---
 
-## 🧠 State Management — `zustand`
+## 🔴 Priority 1 — Curriculum (do next)
 
-### Progress Store
+*These fix the most critical content gaps identified in the curriculum audit.*
 
-- [x] Migrate localStorage progress reads/writes to a zustand store
-- [x] Persist middleware for automatic localStorage sync
-- [x] Computed selectors: `completedLessonsCount`, `phaseProgress`, `streakDays`
-- [x] Hydrate progress from localStorage on first mount (SSR-safe)
+### Phase Overviews — Depth Upgrades
 
-### Quiz State
+- [ ] **Phase 2 Overview** — expand to Phase 5 depth standard (300+ lines, ROI table, 3-tier skills matrix, 5+ pitfalls, 4+ exam Qs)
+- [ ] **Phase 8 Overview** — add scenario walkthroughs, 2 exam questions, expert track, extras/ folder
+- [ ] **Phase 9 Overview** — target 10–15 KB; add Cloud-native SQL section, curriculum capstone preview
 
-- [x] Track quiz attempts, scores, and timestamps
-- [x] Per-question analytics (most-missed questions)
-- [x] Quiz review mode: show correct answers after submission
-- [x] Spaced repetition: surface low-scoring quiz topics
+### Gap-Filling Lesson Days
 
-### User Preferences Store
+- [ ] `Day_37B_Probability_and_Statistics_for_ML` — distributions, Bayes theorem, CLT (prerequisite for Phase 5 Day 54)
+- [ ] `Day_37C_Sklearn_Pipelines` — Pipeline, ColumnTransformer, custom transformers, CV
+- [ ] `Day_36B_Docker_Fundamentals` — containers, images, Compose for data apps (Phase 3 bonus)
+- [ ] `Day_60B_LLM_Fine_Tuning_and_PEFT` — LoRA, QLoRA, Hugging Face PEFT library
+- [ ] `Day_60C_RAG_and_Vector_Databases` — embeddings, ChromaDB, LangChain RAG pipeline
+- [ ] `Day_84B_dbt_Fundamentals` — models, refs, tests, docs, dbt Cloud
+- [ ] `Day_96B_NoSQL_Deep_Dive` — MongoDB, Redis, Cassandra — when to use each
 
-- [x] Theme preference (already in context, consolidate)
-- [x] Sidebar default state (open/closed)
-- [x] Font size preference
-- [x] Code playground language preference (Python/SQL)
-- [x] Preferred lesson display density (compact/comfortable)
+### Extras/ Folders
 
-### Learning Analytics
-
-- [x] Time-on-page tracking per lesson
-- [x] Study streak counter with daily reset
-- [x] Weekly study summary chart
-- [x] Total learning time tracker
+- [ ] Add `extras/` to Phase 2 (sample DataFrames, advanced Pandas notebooks)
+- [ ] Add `extras/` to Phase 5 (PEFT configs, RAG starters)
+- [ ] Add `extras/` to Phase 8 (DDL scripts, sample datasets)
+- [ ] Add `extras/` to Phase 9 (capstone data + solution scaffold)
 
 ---
 
-## 🎨 UI/UX Polish
+## 🟡 Priority 2 — New Phases & Major Content
 
-### Visual Refinements
+### Phase 10 — Generative AI & LLM Engineering (Days 109–120) ✅ Complete
 
-- [x] Glassmorphism cards with backdrop-blur on dark mode
-- [x] Animated gradient mesh background for hero sections
-- [x] Custom cursor effects on interactive elements
-- [x] Sleek loading shimmer instead of skeleton pulses
-- [x] Animated SVG illustrations for empty states
+> Phase already implemented. Audit & polish pass needed.
 
-### Navigation Enhancements
+- [ ] Verify all 12 day files meet the content depth standard (500+ words, 3+ exercises, 5 Q&A)
+- [ ] Add `quiz.json` to each Phase 10 day
+- [ ] Phase 10 Overview polish — ensure ROI table and expert track are present
+- [ ] Add `extras/` with LLM starter notebooks and prompt library
 
-- [x] Breadcrumb trail with animated chevrons
-- [x] "Continue where you left off" banner on Home page
-- [x] Keyboard shortcut overlay (press `?` to see all shortcuts)
-- [x] Swipe navigation between lessons on mobile
-- [x] Mini-map/scroll spy in sidebar for long lessons
+### Phase 11 — Cloud Data Engineering (Days 121–132) 🆕
 
-### Gamification Layer
+- [ ] `Day_121_Cloud_Fundamentals` — AWS/GCP/Azure architecture, IAM, cost management
+- [ ] `Day_122_Object_Storage` — S3, GCS, Delta Lake, Iceberg table formats
+- [ ] `Day_123_Cloud_Data_Warehouses` — BigQuery, Snowflake, Redshift architecture
+- [ ] `Day_124_dbt_at_Scale` — incremental models, snapshots, advanced patterns
+- [ ] `Day_125_Orchestration` — Apache Airflow, Prefect, Dagster
+- [ ] `Day_126_Streaming_Pipelines` — Kafka, Pub/Sub, Kinesis, real-time ETL
+- [ ] `Day_127_Lakehouse_Architecture` — Databricks, Unity Catalog, Delta Live Tables
+- [ ] `Day_128_Data_Contracts_and_Quality` — Great Expectations, Soda, data SLAs
+- [ ] `Day_129_Cloud_Security_and_Compliance` — VPC, encryption, PII handling
+- [ ] `Day_130_Cost_Engineering` — query optimisation for $/TB, slot management
+- [ ] `Day_131_Platform_Engineering` — Terraform for data infrastructure
+- [ ] `Day_132_Capstone_Cloud_Data_Pipeline` — end-to-end cloud pipeline project
+- [ ] Phase 11 Overview (300+ lines)
 
-- [x] XP points system (earn XP for completing lessons, exercises)
-- [x] Achievement badges (First Lesson, Speed Reader, Night Owl, etc.)
-- [x] Daily challenge: random exercise from any completed phase
-- [x] Leaderboard (local only, localStorage-persisted)
-- [x] Learning badges displayed on Progress page
+### Phase 12 — Analytics Engineering & Data Products (Days 133–140) 🆕
 
----
+- [ ] `Day_133_Analytics_Engineer_Role` — vs Data Analyst, Data Scientist, DE
+- [ ] `Day_134_Semantic_and_Metrics_Layers` — dbt Metrics, Cube.js, LookML
+- [ ] `Day_135_Self_Serve_Analytics` — empowering stakeholders without SQL
+- [ ] `Day_136_Data_Mesh_Principles` — domain ownership, data products
+- [ ] `Day_137_Product_Analytics_Deep_Dive` — Amplitude, Mixpanel, retention analysis
+- [ ] `Day_138_AB_Testing_at_Scale` — Statsig, LaunchDarkly, experimentation platforms
+- [ ] `Day_139_Building_Data_Products` — API-first data, embedded analytics
+- [ ] `Day_140_Capstone_Data_Product` — design a data product for a business unit
+- [ ] Phase 12 Overview
 
-## 🔧 Developer Experience
+### Additional Gap-Filling Days
 
-### Build & Performance
-
-- [x] Vite 7 module preload optimization for lazy routes
-- [x] Image optimization pipeline (WebP/AVIF generation)
-- [x] Bundle analysis script with visualized output
-- [x] Lighthouse CI in GitHub Actions
-- [x] Critical CSS extraction for above-the-fold rendering
-
-### Testing
-
-- [x] Add Playwright visual regression tests for each page
-- [x] Test motion animations with `prefers-reduced-motion` mock
-- [x] Zustand store unit tests
-- [x] Zod schema validation tests
-- [ ] Increase unit test coverage to 80%+
-
-### Code Quality
-
-- [x] Strict TypeScript 5.9 `satisfies` patterns for config objects
-- [x] Error boundaries with toast fallbacks
-- [x] React 19 `use()` hook — N/A (data loading is synchronous, no async fetching)
-- [x] `useOptimistic` — N/A (progress updates are sync localStorage writes)
+- [ ] `Day_67B_AI_Agents_and_Tool_Use` — LangChain/LlamaIndex agents, function calling, ReAct (Phase 6)
+- [ ] `Day_67C_Responsible_AI_in_Practice` — model cards, Fairlearn, audit reporting (Phase 6)
+- [ ] `Day_84C_Reverse_ETL_and_Semantic_Layer` — Hightouch concepts, operational analytics (Phase 7)
+- [ ] `Day_96C_Streaming_SQL_Fundamentals` — Kafka concepts, ksqlDB basics, real-time aggregations (Phase 8)
+- [ ] `Day_108B_Cloud_Native_SQL` — BigQuery ML, Snowflake Cortex, Redshift ML
+- [ ] `Day_108C_Curriculum_Capstone` — ingest → clean → model → visualise → deploy (all 9+ phases)
 
 ---
 
-## 🚀 Ambitious Ideas (Multi-day effort)
+## 🟢 Priority 3 — App Features
 
 ### AI-Powered Study Assistant
 
-- [ ] Integrate an LLM API for "Ask about this lesson" feature
-- [ ] Auto-generate flashcards from lesson content
-- [ ] Smart exercise hint system (progressive hints)
+- [ ] "Ask about this lesson" — LLM API integration (OpenAI / Gemini)
+- [ ] Auto-generate flashcards from lesson markdown
+- [ ] Smart exercise hint system (3-level progressive hints)
+- [ ] Semantic search across all lesson content (embeddings + cosine similarity)
+
+### Structured Quiz JSON Integration
+
+Each lesson day needs a `quiz.json` sidecar for the app's quiz engine:
+
+```json
+{
+  "day": 1,
+  "questions": [
+    {
+      "id": "d01q01",
+      "type": "multiple_choice",
+      "question": "What is a variable in Python?",
+      "options": ["A loop", "A labeled container for data", "A function", "A module"],
+      "answer": 1,
+      "explanation": "Variables are named storage locations..."
+    }
+  ]
+}
+```
+
+- [ ] Script: `scripts/generate-quiz-stubs.js` — scaffold `quiz.json` for all days that don't have one
+- [ ] App: `QuizEngine` component reads `quiz.json`, replaces markdown mastery-check section
+- [ ] App: wrong-answer analytics surfaced in the spaced-repetition store
+
+### Capstone Project Scaffolds (`content/projects/`)
+
+- [ ] `01_python_data_pipeline/` — Phase 1–2 skills showcase
+- [ ] `02_web_dashboard/` — Phase 3 Flask/Streamlit project
+- [ ] `03_ml_churn_predictor/` — Phase 4–5 end-to-end ML model
+- [ ] `04_bi_analytics_suite/` — Phase 6–7 Tableau/Power BI + SQL
+- [ ] `05_sql_data_warehouse/` — Phase 8–9 full DDL + ETL
+- [ ] `06_llm_data_assistant/` — Phase 10 RAG / agent demo
+
+### MBA Case Studies (`content/case-studies/`)
+
+- [ ] 01 — Retail Customer Churn (Logistic Regression, XGBoost) — Phase 4–5
+- [ ] 02 — Finance Fraud Detection (Anomaly Detection, GNN) — Phase 5
+- [ ] 03 — Healthcare Patient Risk (Ensemble, Probabilistic) — Phase 5
+- [ ] 04 — E-Commerce Recommendations (Collaborative Filtering) — Phase 5
+- [ ] 05 — Marketing Campaign Attribution (A/B Testing, Causal Inference) — Phase 6
+- [ ] 06 — Operations Demand Forecasting (Time Series, ARIMA, Prophet) — Phase 5
+- [ ] 07 — HR Attrition Prediction (Classification, SHAP) — Phase 4–5
+- [ ] 08 — SaaS Growth Analytics (Cohorts, Product Analytics) — Phase 7
+- [ ] 09 — Supply Chain Inventory (LP, Simulation) — Phase 4
+- [ ] 10 — Banking Credit Scoring (Scorecard, Fairness) — Phase 6
 
 ### Collaborative Features
 
@@ -170,20 +179,75 @@
 - [ ] "Challenge a friend" — send quiz links
 - [ ] Discussion prompts at the end of each lesson
 
-### Offline Support
+### Offline / PWA Support
 
 - [ ] Service Worker for offline lesson reading
 - [ ] Cache lesson markdown on first visit
 - [ ] Offline progress tracking with sync-on-reconnect
 - [ ] PWA manifest for "Add to Home Screen"
 
-### Advanced Visualizations
+---
 
-- [ ] 3D concept graph using Three.js / React Three Fiber
-- [ ] Animated dependency tree of tech concepts
+## 🔵 Priority 4 — DX & Infrastructure
+
+### Content Quality Automation
+
+- [ ] `scripts/audit-lessons.js` — verify all days meet depth standard (500+ words, 3 exercises, 5 Q&A)
+- [ ] `scripts/generate-quiz-stubs.js` — scaffold missing `quiz.json` files
+- [ ] `scripts/check-phase-overviews.js` — flag overviews below 300 lines / 10 KB
+- [ ] CI gate: fail build if any lesson fails the depth audit
+
+### Cross-Phase "Career Tracks" Page
+
+- [ ] Design "career tracks" routing: Data Scientist / Analytics Engineer / ML Engineer tracks
+- [ ] App page linking days by specialisation
+- [ ] "What's Next" sidebar section on each phase overview page
+
+### Advanced Visualisations
+
 - [ ] Skill radar chart on Progress page
 - [ ] Heatmap calendar of study activity (GitHub-style)
+- [ ] Animated dependency tree of tech concepts
+- [ ] 3D concept graph (Three.js / React Three Fiber) — stretch goal
+
+### Testing
+
+- [ ] Increase unit test coverage to 80%+
+- [ ] Snapshot tests for all major page components
+- [ ] Accessibility audit (axe-core) in CI
+
+### 2026 Market Alignment — Gap Tracker
+
+| Skill                 | Coverage               | 2026 Demand  | Action                     |
+| --------------------- | ---------------------- | ------------ | -------------------------- |
+| Python fundamentals   | ✅ Phase 1–2            | High         | —                          |
+| Pandas / NumPy        | ✅ Phase 2              | High         | —                          |
+| ML fundamentals       | ✅ Phase 4–5            | High         | —                          |
+| Deep learning         | ✅ Phase 5              | High         | —                          |
+| MLOps                 | ✅ Phase 5 (Day 50, 65) | Very High    | Minor depth increase       |
+| LLMs / GPT APIs       | ✅ Phase 10             | **Critical** | Polish pass                |
+| RAG & Vector DBs      | ✅ Phase 10 (Day 112)   | **Critical** | Add Day 60C cross-ref      |
+| AI Agents             | ✅ Phase 10 (Day 115)   | **Critical** | Add Day 67B Phase 6 bridge |
+| dbt                   | ⚠️ Day 84B (planned)    | High         | Implement P1               |
+| Cloud (AWS/GCP/Azure) | ⚠️ Phase 8 surface only | Very High    | Add Phase 11               |
+| Kafka / Streaming     | ⚠️ Day 96C (planned)    | High         | Implement P2               |
+| BI / Tableau          | ✅ Phase 6–7            | High         | —                          |
+| SQL mastery           | ✅ Phase 8–9            | High         | —                          |
+| Data governance       | ✅ Phase 7–8            | High         | —                          |
+| Responsible AI        | ⚠️ Day 62 (partial)     | High         | Add Day 67C Phase 6        |
 
 ---
 
-*Last updated: Feb 26, 2026*
+## 🌌 Ambitious / Long-Horizon
+
+- [ ] Multi-user mode: instructor dashboard, cohort progress overview
+- [ ] AI-graded exercise submissions (code execution sandbox)
+- [ ] Video lesson stubs — embed Loom / YouTube per day
+- [ ] Phase 13: Financial Modelling & Quant Finance (Python, Monte Carlo, Black-Scholes)
+- [ ] Phase 14: Web3 & Decentralised Data (Solidity basics, on-chain analytics)
+- [ ] Localisation: Spanish & Mandarin translations of lesson summaries
+- [ ] Mobile app (React Native): offline-first lesson reader with push-notification streaks
+
+---
+
+*This is a living document. Update priorities as phases are completed or the market shifts.*

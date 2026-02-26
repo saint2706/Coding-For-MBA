@@ -68,11 +68,11 @@
     "vitest": "^4.0.18"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "sh -c 'npm run typecheck'"
-    ],
     "*.{ts,tsx,js,jsx,css,md,json}": [
-      "prettier --check"
+      "prettier --write"
+    ],
+    "*.{ts,tsx}": [
+      "cmd /c npm run typecheck"
     ]
   }
 }
