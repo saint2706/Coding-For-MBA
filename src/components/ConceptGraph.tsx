@@ -407,7 +407,13 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
+        role="img"
+        aria-label="Concept dependency graph showing lesson relationships"
       />
+      <div className="sr-only">
+        This interactive graph visualizes connections between lessons. It is optimized for mouse
+        interaction. Please use the Sidebar or Curriculum page for an accessible list of lessons.
+      </div>
 
       {tooltip && (
         <div className="graph-tooltip visible" style={{ left: tooltip.x, top: tooltip.y }}>

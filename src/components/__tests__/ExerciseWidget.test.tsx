@@ -22,13 +22,19 @@ vi.mock('react-syntax-highlighter/dist/esm/styles/prism', () => ({
 // Mock CodePlayground to capture props
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let capturedCodePlaygroundProps: any
+const mockSetCode = vi.fn()
 
 vi.mock('../CodePlayground', () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  default: (props: any) => {
+  default: React.forwardRef((props: any, ref: any) => {
     capturedCodePlaygroundProps = props
+    React.useImperativeHandle(ref, () => ({
+      setCode: mockSetCode,
+      run: vi.fn(),
+      reset: vi.fn(),
+    }))
     return <div className="code-playground-mock" />
-  },
+  }),
 }))
 
 // Mock CopyButton
@@ -239,5 +245,43 @@ describe('ExerciseWidget', () => {
     // Solution code should be unmounted after closing the panel
     const solutionCodeHidden = container.querySelector('.syntax-highlighter')
     expect(solutionCodeHidden).toBeNull()
+  })
+
+  it('requires confirmation before loading solution', async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter>
+          <ExerciseWidget {...defaultProps} />
+        </MemoryRouter>,
+      )
+    })
+
+    // Open solution
+    const showButton = container.querySelector('.exercise-widget__solution-btn') as HTMLButtonElement
+    await act(async () => {
+      showButton.click()
+    })
+
+    const tryButton = container.querySelector(
+      'button[aria-label="Load solution into playground"]',
+    ) as HTMLButtonElement
+    expect(tryButton).not.toBeNull()
+    expect(tryButton.textContent).toContain('Try Solution')
+
+    // Click 1: Confirm state
+    await act(async () => {
+      tryButton.click()
+    })
+    expect(tryButton.textContent).toContain('Confirm')
+    expect(mockSetCode).not.toHaveBeenCalled()
+
+    // Click 2: Load solution
+    await act(async () => {
+      tryButton.click()
+    })
+    expect(mockSetCode).toHaveBeenCalledWith('def solution(): return True')
+
+    // Should reset after click
+    expect(tryButton.textContent).toContain('Try Solution')
   })
 })
