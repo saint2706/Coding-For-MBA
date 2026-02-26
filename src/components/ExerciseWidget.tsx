@@ -18,7 +18,7 @@
  * - Provide a collapsible solution panel with syntax highlighting.
  */
 
-import { useState, useId, useRef, useMemo, useCallback } from 'react'
+import { useState, useId, useRef, useMemo, useCallback, useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -77,8 +77,10 @@ export default function ExerciseWidget({
   const [showSolution, setShowSolution] = useState(false)
   const [hasRevealed, setHasRevealed] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
+  const [isConfirmingSolution, setIsConfirmingSolution] = useState(false)
   const solutionId = useId()
   const playgroundRef = useRef<CodePlaygroundHandle>(null)
+  const confirmTimeoutRef = useRef<number | null>(null)
   const prefersReducedMotion = useReducedMotion()
 
   const location = useLocation()
@@ -159,6 +161,28 @@ export default function ExerciseWidget({
     }
     setShowSolution((s) => !s)
   }
+
+  const handleTrySolution = useCallback(() => {
+    if (!solution) return
+    if (isConfirmingSolution) {
+      playgroundRef.current?.setCode(solution)
+      setIsConfirmingSolution(false)
+      if (confirmTimeoutRef.current) clearTimeout(confirmTimeoutRef.current)
+      toastSuccess('Solution loaded into editor')
+    } else {
+      setIsConfirmingSolution(true)
+      if (confirmTimeoutRef.current) clearTimeout(confirmTimeoutRef.current)
+      confirmTimeoutRef.current = window.setTimeout(() => {
+        setIsConfirmingSolution(false)
+      }, 3000)
+    }
+  }, [isConfirmingSolution, solution])
+
+  useEffect(() => {
+    return () => {
+      if (confirmTimeoutRef.current) clearTimeout(confirmTimeoutRef.current)
+    }
+  }, [])
 
   return (
     <div className="exercise-widget">
@@ -249,17 +273,24 @@ export default function ExerciseWidget({
                       }}
                     >
                       <button
-                        className="code-block-copy"
-                        onClick={() => playgroundRef.current?.setCode(solution)}
-                        aria-label="Load solution into playground"
-                        title="Try Solution"
+                        className={`code-block-copy ${isConfirmingSolution ? 'confirm-destructive' : ''}`}
+                        onClick={handleTrySolution}
+                        aria-label={
+                          isConfirmingSolution
+                            ? 'Confirm overwriting code with solution?'
+                            : 'Load solution into playground'
+                        }
+                        title={isConfirmingSolution ? 'Click again to confirm' : 'Try Solution'}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
                           gap: '0.35rem',
+                          ...(isConfirmingSolution
+                            ? { color: 'var(--color-danger, #ef4444)' }
+                            : {}),
                         }}
                       >
-                        🚀 Try Solution
+                        {isConfirmingSolution ? '⚠️ Confirm?' : '🚀 Try Solution'}
                       </button>
                       <CopyButton text={solution} className="code-block-copy" showEmoji={true} />
                     </div>
