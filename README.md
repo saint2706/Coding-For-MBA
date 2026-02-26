@@ -38,8 +38,8 @@
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React 19 + TypeScript
-- **Build Tool**: Vite 7
+- **Framework**: React 19.2.4 + TypeScript 5.9.3
+- **Build Tool**: Vite 7.3.1
 - **Routing**: React Router (HashRouter for GH Pages)
 - **Markdown**: react-markdown + remark-gfm + rehype-raw
 - **Syntax Highlighting**: react-syntax-highlighter (Prism)
@@ -80,10 +80,12 @@ src/
 │   └── ...            # Per-component styles
 ├── utils/
 │   └── contentLoader.ts  # Markdown parser & data layer
+├── stores/            # Zustand state stores
 ├── App.tsx
 └── main.tsx
 content/lessons/       # 108 lesson markdown files
 docs/                  # Documentation (Roadmap, Architecture)
+scripts/               # Build and validation scripts
 ```
 
 ## 🔎 Lesson Search
@@ -102,7 +104,7 @@ docs/                  # Documentation (Roadmap, Architecture)
 | Script | Description |
 | ------ | ----------- |
 | `npm run dev` | Start Vite dev server |
-| `npm run build` | Type-check + production build |
+| `npm run build` | Production build (includes sitemap, llms.txt, typecheck) |
 | `npm run analyze` | Build + generate `dist/stats.html` bundle report |
 | `npm run lint` | Run TypeScript compiler check (alias for `typecheck`) |
 | `npm run typecheck` | Run TypeScript compiler check |
