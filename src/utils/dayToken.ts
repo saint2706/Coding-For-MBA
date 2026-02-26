@@ -1,3 +1,19 @@
+/**
+ * Day Token Utilities
+ *
+ * Provides type-safe functions for parsing, normalizing, and comparing "Day Tokens".
+ * A Day Token represents a lesson's position in the curriculum (e.g., "1", "36B").
+ *
+ * This file is a TypeScript wrapper around `dayToken-core.js` to ensure consistent
+ * logic is shared between the frontend application and Node.js build scripts.
+ *
+ * Key Responsibilities:
+ * - Normalize input (number/string) into a standard Day Token string.
+ * - Parse tokens into components (number, suffix) for sorting.
+ * - Compare tokens for correct curriculum ordering.
+ * - Convert tokens to numeric IDs for progress tracking.
+ */
+
 import * as core from './dayToken-core.js'
 
 export type DayToken = string

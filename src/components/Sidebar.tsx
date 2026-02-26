@@ -68,7 +68,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   // Determines currently open phase: manual toggle takes precedence over auto-derived.
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
 
-  // Auto-scrolls sidebar to show the active lesson link.
+  /**
+   * Auto-scrolls sidebar to show the active lesson link.
+   * Triggered when location changes or phase expands.
+   */
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
@@ -82,6 +85,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return () => clearTimeout(timer)
   }, [location.pathname])
 
+  /**
+   * Toggles the expansion state of a phase section.
+   * Overrides the auto-derived open phase.
+   *
+   * @param phaseNum - The phase number to toggle.
+   */
   const togglePhase = (phaseNum: number) => {
     setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
   }
