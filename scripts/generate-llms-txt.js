@@ -95,12 +95,12 @@ let content = `# Coding for MBA
 
 ## Site Architecture
 
-- [Home](${BASE_URL}/#/)
-- [Curriculum](${BASE_URL}/#/curriculum)
-- [Interactive Exercises](${BASE_URL}/#/exercises)
-- [Concepts Graph](${BASE_URL}/#/concepts)
-- [Review](${BASE_URL}/#/review)
-- [Stats](${BASE_URL}/#/stats)
+- [Home](${BASE_URL}/#/): The landing page with curriculum overview.
+- [Curriculum](${BASE_URL}/#/curriculum): Full list of all phases and lessons.
+- [Interactive Exercises](${BASE_URL}/#/exercises): Hands-on coding practice.
+- [Concepts Graph](${BASE_URL}/#/concepts): Visual knowledge graph of key topics.
+- [Review](${BASE_URL}/#/review): Spaced repetition flashcards.
+- [Stats](${BASE_URL}/#/stats): Progress tracking and analytics.
 
 ## Key Concepts
 
