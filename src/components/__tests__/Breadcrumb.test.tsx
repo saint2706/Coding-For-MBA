@@ -39,9 +39,9 @@ describe('Breadcrumb', () => {
     const listItems = container.querySelectorAll('li.breadcrumb-item')
     expect(listItems.length).toBe(3)
 
-    expect(listItems[0].textContent).toContain('Home')
-    expect(listItems[1].textContent).toContain('Phase 1')
-    expect(listItems[2].textContent).toContain('Current Page')
+    expect(listItems[0]?.textContent).toContain('Home')
+    expect(listItems[1]?.textContent).toContain('Phase 1')
+    expect(listItems[2]?.textContent).toContain('Current Page')
   })
 
   it('renders links for items with "to" prop', () => {
@@ -94,6 +94,6 @@ describe('Breadcrumb', () => {
 
     const separators = container.querySelectorAll('.sep')
     expect(separators.length).toBe(1)
-    expect(separators[0].textContent).toBe('/')
+    expect(separators[0]?.textContent).toBe('/')
   })
 })
