@@ -381,7 +381,7 @@ const lessonSanitizerSchema: RehypeSanitizeOptions = {
     a: ['href', 'title', 'target', 'rel'],
     code: ['className'],
     div: ['className'],
-    img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding'],
+    img: ['src', 'alt', 'title', 'width', 'height', 'loading', 'decoding', 'fetchpriority', 'fetchPriority'],
     input: [
       ['type', 'checkbox'],
       ['disabled', true],
