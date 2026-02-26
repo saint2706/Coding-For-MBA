@@ -62,7 +62,7 @@ for (const file of phaseFiles) {
       phase: Number(fm.phase),
       title: fm.title || `Phase ${fm.phase}`,
       description: fm.description || '',
-      days: fm.days || [] // Usually an array of day references
+      days: fm.days || [], // Usually an array of day references
     })
   }
 }
@@ -78,7 +78,7 @@ for (const file of lessonFiles) {
       title: fm.title || `Day ${fm.day}`,
       phase: Number(fm.phase) || 0,
       description: fm.description || '',
-      concepts: fm.concepts || []
+      concepts: fm.concepts || [],
     })
   }
 }
@@ -123,7 +123,7 @@ for (const phase of phases) {
   content += '\n'
 
   // Add Lessons for this phase
-  const phaseLessons = lessons.filter(l => l.phase === phase.phase)
+  const phaseLessons = lessons.filter((l) => l.phase === phase.phase)
   if (phaseLessons.length > 0) {
     content += `**Lessons:**\n`
     for (const lesson of phaseLessons) {

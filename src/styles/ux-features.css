@@ -597,6 +597,57 @@
   font-size: 0.82rem;
 }
 
+/* ---------- Custom Cursor ---------- */
+
+@media (pointer: fine) {
+  .custom-cursor-active,
+  .custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+.custom-cursor-dot {
+  position: fixed;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  mix-blend-mode: difference;
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid color-mix(in srgb, var(--accent-primary) 50%, transparent);
+  pointer-events: none;
+  z-index: 99998;
+  will-change: transform;
+  transition:
+    border-color var(--transition-fast),
+    width var(--transition-fast),
+    height var(--transition-fast);
+}
+
+.custom-cursor-ring--hover {
+  border-color: var(--accent-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none;
+  }
+}
+
 /* ---------- Empty-state Illustrations ---------- */
 
 .empty-state-illustration {

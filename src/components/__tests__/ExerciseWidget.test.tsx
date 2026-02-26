@@ -56,9 +56,7 @@ vi.mock('../../utils/exerciseProgress', () => ({
 }))
 
 vi.mock('../../utils/contentLoader', () => ({
-    getAllExercises: () => [
-        { day: '1', title: 'Test Exercise' }
-    ]
+  getAllExercises: () => [{ day: '1', title: 'Test Exercise' }],
 }))
 
 // Mock Stores
@@ -71,19 +69,19 @@ vi.mock('../../stores/quizStore', () => ({
     // Hook implementation
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (selector: any) => {
-        // Mock state for selector
-        const state = {
-            getQuizStats: mockGetQuizStats,
-            getRecentAttempts: mockGetRecentAttempts,
-        }
-        // Simplified selector execution for useShallow
-        // In real app useShallow wraps the selector. Here we assume selector is the function passed to useQuizStore
-        // Use a simple pass-through or try to execute it
-        try {
-            return selector(state)
-        } catch {
-            return undefined
-        }
+      // Mock state for selector
+      const state = {
+        getQuizStats: mockGetQuizStats,
+        getRecentAttempts: mockGetRecentAttempts,
+      }
+      // Simplified selector execution for useShallow
+      // In real app useShallow wraps the selector. Here we assume selector is the function passed to useQuizStore
+      // Use a simple pass-through or try to execute it
+      try {
+        return selector(state)
+      } catch {
+        return undefined
+      }
     },
     // Static methods
     {
@@ -91,7 +89,7 @@ vi.mock('../../stores/quizStore', () => ({
         recordAttempt: mockRecordAttempt,
         getQuizStats: mockGetQuizStats,
       }),
-    }
+    },
   ),
 }))
 
@@ -106,7 +104,6 @@ vi.mock('../../stores/gamificationStore', () => ({
     }),
   },
 }))
-
 
 describe('ExerciseWidget', () => {
   let container: HTMLDivElement
@@ -133,7 +130,7 @@ describe('ExerciseWidget', () => {
     instructions: 'Step 1\nStep 2',
     starterCode: 'def start(): pass',
     solution: 'def solution(): return True',
-    expectedOutput: 'True'
+    expectedOutput: 'True',
   }
 
   it('renders content correctly', async () => {
@@ -162,21 +159,23 @@ describe('ExerciseWidget', () => {
 
     // Simulate submission from CodePlayground
     const result = {
-        correct: true,
-        output: 'True',
-        error: null,
-        attemptedAt: new Date()
+      correct: true,
+      output: 'True',
+      error: null,
+      attemptedAt: new Date(),
     }
 
     await act(async () => {
-        capturedCodePlaygroundProps.onSubmissionEvaluated(result)
+      capturedCodePlaygroundProps.onSubmissionEvaluated(result)
     })
 
-    expect(mockRecordAttempt).toHaveBeenCalledWith(expect.objectContaining({
+    expect(mockRecordAttempt).toHaveBeenCalledWith(
+      expect.objectContaining({
         correct: true,
         output: 'True',
-        quizId: expect.stringContaining('test-exercise')
-    }))
+        quizId: expect.stringContaining('test-exercise'),
+      }),
+    )
   })
 
   it('awards completion and confetti when matched', async () => {
@@ -191,7 +190,7 @@ describe('ExerciseWidget', () => {
     })
 
     await act(async () => {
-        capturedCodePlaygroundProps.onExpectedOutputMatched()
+      capturedCodePlaygroundProps.onExpectedOutputMatched()
     })
 
     expect(mockAwardExerciseCompletion).toHaveBeenCalled()
@@ -257,7 +256,9 @@ describe('ExerciseWidget', () => {
     })
 
     // Open solution
-    const showButton = container.querySelector('.exercise-widget__solution-btn') as HTMLButtonElement
+    const showButton = container.querySelector(
+      '.exercise-widget__solution-btn',
+    ) as HTMLButtonElement
     await act(async () => {
       showButton.click()
     })

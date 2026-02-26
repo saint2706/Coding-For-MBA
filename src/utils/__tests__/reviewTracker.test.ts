@@ -5,7 +5,7 @@ import {
   rateReviewCard,
   reviewStorageKey,
   getReviewStreak,
-  getReviewDueCountByPhase
+  getReviewDueCountByPhase,
 } from '../reviewTracker'
 
 describe('reviewTracker', () => {
@@ -120,24 +120,24 @@ describe('reviewTracker', () => {
   })
 
   it('counts due cards by phase', () => {
-      const now = new Date()
-      // Initially all cards are due (default state dueAt is now)
+    const now = new Date()
+    // Initially all cards are due (default state dueAt is now)
 
-      const counts = getReviewDueCountByPhase(now)
-      expect(Object.keys(counts).length).toBeGreaterThan(0)
+    const counts = getReviewDueCountByPhase(now)
+    expect(Object.keys(counts).length).toBeGreaterThan(0)
 
-      // Check if phase 1 has cards
-      const phase1Cards = getReviewCards(now).filter(c => c.phase === 1)
-      if (phase1Cards.length > 0) {
-          expect(counts[1]).toBeDefined()
-          expect(counts[1]).toBe(phase1Cards.length)
+    // Check if phase 1 has cards
+    const phase1Cards = getReviewCards(now).filter((c) => c.phase === 1)
+    if (phase1Cards.length > 0) {
+      expect(counts[1]).toBeDefined()
+      expect(counts[1]).toBe(phase1Cards.length)
 
-          // Complete one phase 1 card
-          if (phase1Cards[0]) {
-            rateReviewCard(phase1Cards[0].id, 'easy', now)
-            const newCounts = getReviewDueCountByPhase(now)
-            expect(newCounts[1]).toBe(phase1Cards.length - 1)
-          }
+      // Complete one phase 1 card
+      if (phase1Cards[0]) {
+        rateReviewCard(phase1Cards[0].id, 'easy', now)
+        const newCounts = getReviewDueCountByPhase(now)
+        expect(newCounts[1]).toBe(phase1Cards.length - 1)
       }
+    }
   })
 })

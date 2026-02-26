@@ -32,9 +32,12 @@ import {
   phaseOverviewFrontmatterSchema,
   exerciseSchema,
 } from './content-schemas.js'
-import { compareDayTokens, dayTokenFromPath, normalizeDayToken } from '../src/utils/dayToken-core.js'
+import {
+  compareDayTokens,
+  dayTokenFromPath,
+  normalizeDayToken,
+} from '../src/utils/dayToken-core.js'
 import { extractExercisesFromContent } from '../src/utils/exercise-extractor-core.js'
-
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
@@ -68,8 +71,7 @@ function formatZodIssues(error, prefix = 'Invalid') {
 
 function parseAndValidateMarkdown(rawContent, fileName = 'README.md') {
   const normalizedContent = normalizeMarkdownLineEndings(rawContent)
-  const { frontmatter: fields, content: body } =
-    parseNormalizedMarkdown(normalizedContent)
+  const { frontmatter: fields, content: body } = parseNormalizedMarkdown(normalizedContent)
   const fileErrors = []
 
   if (Object.keys(fields).length === 0) {
@@ -178,8 +180,7 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
     )
     const actualDays = [
       ...new Set((overview.days ?? []).map((day) => normalizeDayToken(day))),
-    ].sort(compareDayTokens,
-    )
+    ].sort(compareDayTokens)
 
     const mismatchedDays =
       expectedDays.length !== actualDays.length ||

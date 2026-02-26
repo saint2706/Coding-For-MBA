@@ -17,7 +17,7 @@ export interface ShortcutDefinition {
   scope: ShortcutScope
 }
 
-export const SHORTCUTS: ShortcutDefinition[] = [
+export const SHORTCUTS = [
   {
     keys: '?',
     description: 'Open keyboard shortcuts overlay',
@@ -48,7 +48,7 @@ export const SHORTCUTS: ShortcutDefinition[] = [
     description: 'Go to next lesson',
     scope: 'Lesson',
   },
-]
+] as const satisfies readonly ShortcutDefinition[]
 
 export const isTypingInEditableElement = (target: EventTarget | null): boolean => {
   if (!(target instanceof HTMLElement)) {

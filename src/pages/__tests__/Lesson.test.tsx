@@ -78,6 +78,11 @@ vi.mock('../../hooks/useSwipe', () => ({
 vi.mock('../../utils/seoSchemas', () => ({
   buildLessonSchema: () => ({}),
 }))
+vi.mock('../../stores/gamificationStore', () => ({
+  useGamificationStore: Object.assign(() => ({}), {
+    getState: () => ({ awardLessonCompletion: vi.fn() }),
+  }),
+}))
 
 describe('Lesson completion toasts', () => {
   beforeEach(() => {

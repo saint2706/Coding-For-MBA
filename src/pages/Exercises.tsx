@@ -11,7 +11,8 @@
 
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useReducedMotion } from 'motion/react'
+import { motion } from 'motion/react'
+import { ExercisesEmptyIllustration } from '../components/EmptyStateIllustrations'
 import SEOHead from '../components/SEOHead'
 import ExerciseCard from '../components/ExerciseCard'
 import {
@@ -39,67 +40,6 @@ import { useQuizStore } from '../stores/quizStore'
  * @returns The rendered exercises page
  */
 
-function ExercisesEmptyIllustration({ reducedMotion }: { reducedMotion: boolean }) {
-  return (
-    <svg
-      className="empty-state-illustration"
-      viewBox="0 0 220 130"
-      role="img"
-      aria-hidden="true"
-      focusable="false"
-    >
-      <defs>
-        <linearGradient id="exerciseEmptyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="rgba(99,102,241,0.85)" />
-          <stop offset="100%" stopColor="rgba(14,165,233,0.75)" />
-        </linearGradient>
-      </defs>
-      <rect x="30" y="20" width="162" height="88" rx="12" fill="rgba(148,163,184,0.1)" />
-      <path
-        d="M56 49h110"
-        stroke="url(#exerciseEmptyGradient)"
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M56 68h72"
-        stroke="url(#exerciseEmptyGradient)"
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M56 87h92"
-        stroke="url(#exerciseEmptyGradient)"
-        strokeWidth="6"
-        strokeLinecap="round"
-      />
-      <circle
-        cx="164"
-        cy="78"
-        r="11"
-        fill="none"
-        stroke="url(#exerciseEmptyGradient)"
-        strokeWidth="4"
-      />
-      <path
-        d="M160 78l4 4 8-9"
-        fill="none"
-        stroke="url(#exerciseEmptyGradient)"
-        strokeWidth="3"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <circle
-        cx="44"
-        cy="34"
-        r="4"
-        fill="rgba(14,165,233,0.75)"
-        className={reducedMotion ? '' : 'empty-state-dot'}
-      />
-    </svg>
-  )
-}
-
 export default function Exercises() {
   const exercises = getAllExercises()
   const notebooks = getAllNotebooks()
@@ -107,7 +47,6 @@ export default function Exercises() {
   const [difficultyFilter, setDifficultyFilter] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOrder, setSortOrder] = useState<'phase-asc' | 'phase-desc' | 'title-asc'>('phase-asc')
-  const prefersReducedMotion = !!useReducedMotion()
 
   const lowScoringTopics = useQuizStore((state) => state.getLowScoringTopics(60, 2).slice(0, 5))
 
@@ -276,7 +215,7 @@ export default function Exercises() {
 
       {filtered.length === 0 && (
         <div className="exercises-empty glass-card">
-          <ExercisesEmptyIllustration reducedMotion={prefersReducedMotion} />
+          <ExercisesEmptyIllustration />
           <p>No exercises match your filters. Try adjusting your search.</p>
         </div>
       )}

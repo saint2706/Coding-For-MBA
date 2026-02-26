@@ -14,7 +14,6 @@
 import { parseMarkdown } from './frontmatter'
 import { difficultyConfig, phaseIcons } from './curriculumConfig'
 import {
-
   compareDayTokens,
   dayTokenFromPath,
   dayTokenFromReference,

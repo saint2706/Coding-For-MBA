@@ -32,7 +32,7 @@ describe('Breadcrumb', () => {
       root?.render(
         <MemoryRouter>
           <Breadcrumb items={items} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -51,7 +51,7 @@ describe('Breadcrumb', () => {
       root?.render(
         <MemoryRouter>
           <Breadcrumb items={items} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -67,7 +67,7 @@ describe('Breadcrumb', () => {
       root?.render(
         <MemoryRouter>
           <Breadcrumb items={items} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -79,16 +79,13 @@ describe('Breadcrumb', () => {
   })
 
   it('renders separators between items', () => {
-    const items = [
-      { label: 'Home', to: '/' },
-      { label: 'Page' },
-    ]
+    const items = [{ label: 'Home', to: '/' }, { label: 'Page' }]
 
     act(() => {
       root?.render(
         <MemoryRouter>
           <Breadcrumb items={items} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 

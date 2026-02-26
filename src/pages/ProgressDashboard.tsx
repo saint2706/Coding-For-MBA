@@ -33,6 +33,7 @@ import AnimatedCounter from '../components/AnimatedCounter'
 import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
 import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
+import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
 
 /**
  * Progress dashboard page component.
@@ -116,6 +117,16 @@ export default function ProgressDashboard() {
         <h2>Your Progress</h2>
         <p>Track your journey through the 108-day curriculum.</p>
       </div>
+
+      {completedLessons.length === 0 && (
+        <div
+          className="exercises-empty glass-card"
+          style={{ textAlign: 'center', padding: '2rem' }}
+        >
+          <FreshStartIllustration />
+          <p>Your journey begins here — complete your first lesson to see progress!</p>
+        </div>
+      )}
 
       {/* Overall Stats */}
       <div className="progress-stats-card">

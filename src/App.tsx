@@ -27,6 +27,7 @@ import { hydrateQuizStore } from './stores/quizStore'
 import { useUserPreferencesStore } from './stores/userPreferencesStore'
 import { useLearningAnalytics } from './hooks/useLearningAnalytics'
 import { hydrateGamificationStore } from './stores/gamificationStore'
+import CustomCursor from './components/CustomCursor'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
@@ -110,6 +111,7 @@ export default function App() {
         </main>
         <MobileNav />
         <KeyboardShortcutsOverlay />
+        <CustomCursor />
       </div>
     </ThemeProvider>
   )

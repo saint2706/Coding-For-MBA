@@ -34,9 +34,7 @@ function SidebarPhaseGroup({
   const prefersReducedMotion = useReducedMotion()
   const lessons = getLessonsByPhase(phase.phase)
   const icon = phaseIcons[phase.phase - 1] || '📖'
-  const completedCount = lessons.filter((l) =>
-    completedSet.has(dayTokenToProgressId(l.day)),
-  ).length
+  const completedCount = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day))).length
 
   return (
     <div className="phase-group">

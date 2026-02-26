@@ -1,5 +1,12 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import { createSearchDocuments, createSearchEngine, computeRankingBoost, getSearchSnippet, search, startBackgroundIndexing } from '../searchIndex'
+import {
+  createSearchDocuments,
+  createSearchEngine,
+  computeRankingBoost,
+  getSearchSnippet,
+  search,
+  startBackgroundIndexing,
+} from '../searchIndex'
 import type { Lesson } from '../contentLoader'
 
 const lessons: Lesson[] = [
@@ -38,16 +45,16 @@ const lessons: Lesson[] = [
 // Mock getAllLessons if it was imported directly, but here passing lessons explicitly to createSearchDocuments
 // However, search() calls getEngine() which calls getAllLessons(). So we need to mock it.
 vi.mock('../contentLoader', () => ({
-    getAllLessons: () => lessons
+  getAllLessons: () => lessons,
 }))
 
 describe('search index', () => {
   beforeEach(() => {
-      vi.useFakeTimers()
+    vi.useFakeTimers()
   })
   afterEach(() => {
-      vi.useRealTimers()
-      vi.restoreAllMocks()
+    vi.useRealTimers()
+    vi.restoreAllMocks()
   })
 
   it('creates plain content without fenced code blocks', () => {
@@ -59,8 +66,8 @@ describe('search index', () => {
   it('strips complex markdown correctly', () => {
     // Force cast since we know lessons[0] is valid but TS inference is strict on the spread
     const complexLesson = {
-        ...lessons[0],
-        content: `
+      ...lessons[0],
+      content: `
 # Heading
 * List item
 1. Ordered item
@@ -72,7 +79,7 @@ block code
 \`\`\`
 **Bold**
 _Italic_
-`
+`,
     } as Lesson
 
     const docs = createSearchDocuments([complexLesson])
@@ -113,35 +120,36 @@ _Italic_
   })
 
   it('generates correct snippets', () => {
-      const content = "This is a long text containing the keyword python in the middle of the sentence."
-      const snippet = getSearchSnippet(content, 'python', 20)
-      expect(snippet).toContain('python')
-      expect(snippet.length).toBeLessThan(50)
+    const content =
+      'This is a long text containing the keyword python in the middle of the sentence.'
+    const snippet = getSearchSnippet(content, 'python', 20)
+    expect(snippet).toContain('python')
+    expect(snippet.length).toBeLessThan(50)
   })
 
   it('handles empty query in snippet', () => {
-    const content = "Some content"
+    const content = 'Some content'
     const snippet = getSearchSnippet(content, '')
-    expect(snippet).toBe("Some content")
+    expect(snippet).toBe('Some content')
   })
 
   it('handles no match in snippet', () => {
-    const content = "Some content"
+    const content = 'Some content'
     const snippet = getSearchSnippet(content, 'keyword')
-    expect(snippet).toBe("Some content…")
+    expect(snippet).toBe('Some content…')
   })
 
   it('starts background indexing using requestIdleCallback', () => {
-      const requestIdleCallback = vi.fn()
-      window.requestIdleCallback = requestIdleCallback
+    const requestIdleCallback = vi.fn()
+    window.requestIdleCallback = requestIdleCallback
 
-      startBackgroundIndexing()
+    startBackgroundIndexing()
 
-      expect(requestIdleCallback).toHaveBeenCalled()
+    expect(requestIdleCallback).toHaveBeenCalled()
   })
 
   it('runs search function', () => {
-      const results = search('python')
-      expect(results.length).toBeGreaterThan(0)
+    const results = search('python')
+    expect(results.length).toBeGreaterThan(0)
   })
 })

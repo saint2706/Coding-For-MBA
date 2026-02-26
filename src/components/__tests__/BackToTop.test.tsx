@@ -43,8 +43,8 @@ describe('BackToTop', () => {
 
     // Simulate scroll
     act(() => {
-        (window as any).scrollY = 500
-        window.dispatchEvent(new Event('scroll'))
+      ;(window as any).scrollY = 500
+      window.dispatchEvent(new Event('scroll'))
     })
 
     // We might need to wait for re-render
@@ -60,15 +60,15 @@ describe('BackToTop', () => {
 
     // Scroll down to make it visible
     act(() => {
-        (window as any).scrollY = 500
-        window.dispatchEvent(new Event('scroll'))
+      ;(window as any).scrollY = 500
+      window.dispatchEvent(new Event('scroll'))
     })
 
     const button = container.querySelector('button')
     expect(button).toBeTruthy()
 
     act(() => {
-        button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' })

@@ -13,6 +13,7 @@
 
 import { defineConfig, type HtmlTagDescriptor, type PluginOption, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import criticalCss from './scripts/vite-plugin-critical-css'
 
 // https://vite.dev/config/
 export default defineConfig(async ({ mode }) => {
@@ -34,6 +35,7 @@ export default defineConfig(async ({ mode }) => {
   const config: UserConfig = {
     plugins: [
       react(),
+      criticalCss(),
       analyzePlugin,
       {
         name: 'dev-csp-relaxation',
@@ -64,8 +66,10 @@ export default defineConfig(async ({ mode }) => {
     ],
     base: process.env.VITE_BASE_PATH || '/Coding-For-MBA/',
     build: {
+      target: 'es2022',
       chunkSizeWarningLimit: 1500,
       modulePreload: {
+        polyfill: false,
         resolveDependencies(_filename: string, deps: string[], context: { hostType: string }) {
           if (context.hostType !== 'js') {
             return deps

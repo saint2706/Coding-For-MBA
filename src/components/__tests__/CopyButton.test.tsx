@@ -48,7 +48,7 @@ describe('CopyButton', () => {
     const button = container.querySelector('button')
 
     await act(async () => {
-        button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith('some code')
@@ -62,41 +62,41 @@ describe('CopyButton', () => {
     const button = container.querySelector('button')
 
     await act(async () => {
-        button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
     expect(button?.textContent).toContain('✓ Copied')
 
     // Check timeout resets state
     act(() => {
-        vi.advanceTimersByTime(2000)
+      vi.advanceTimersByTime(2000)
     })
 
     expect(button?.textContent).toContain('Copy')
   })
 
   it('clears timeout on unmount', async () => {
-      act(() => {
+    act(() => {
       root?.render(<CopyButton text="some code" />)
     })
 
     const button = container.querySelector('button')
 
     await act(async () => {
-        button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
     expect(button?.textContent).toContain('✓ Copied')
 
     // Unmount before timeout finishes
     act(() => {
-        root?.unmount()
-        root = undefined // Prevent double unmount in afterEach
+      root?.unmount()
+      root = undefined // Prevent double unmount in afterEach
     })
 
     // Ensure no errors or state updates on unmounted component
     act(() => {
-        vi.advanceTimersByTime(2000)
+      vi.advanceTimersByTime(2000)
     })
   })
 
@@ -109,19 +109,19 @@ describe('CopyButton', () => {
 
     // First click
     await act(async () => {
-        button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
     expect(button?.textContent).toContain('✓ Copied')
 
     // Advance time slightly
     act(() => {
-        vi.advanceTimersByTime(1000)
+      vi.advanceTimersByTime(1000)
     })
 
     // Second click
     await act(async () => {
-        button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
     // Should still be copied
@@ -129,7 +129,7 @@ describe('CopyButton', () => {
 
     // Advance 1500ms (total 2500ms from start, but only 1500ms from second click)
     act(() => {
-        vi.advanceTimersByTime(1500)
+      vi.advanceTimersByTime(1500)
     })
 
     // Should NOT have reset yet because timeout was reset
@@ -137,7 +137,7 @@ describe('CopyButton', () => {
 
     // Advance remaining 500ms
     act(() => {
-        vi.advanceTimersByTime(500)
+      vi.advanceTimersByTime(500)
     })
 
     expect(button?.textContent).toContain('Copy')
@@ -154,7 +154,7 @@ describe('CopyButton', () => {
     const button = container.querySelector('button')
 
     await act(async () => {
-        button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
     expect(consoleSpy).toHaveBeenCalledWith('Failed to copy text to clipboard', expect.any(Error))

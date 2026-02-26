@@ -30,7 +30,9 @@ vi.mock('../../utils/confetti', () => ({
 }))
 
 // Mock PythonRunner to capture onExecutionComplete
-let capturedOnExecutionComplete: ((result: { output: string | null; error: string | null }) => void) | undefined
+let capturedOnExecutionComplete:
+  | ((result: { output: string | null; error: string | null }) => void)
+  | undefined
 const mockRunFn = vi.fn()
 
 interface MockPythonRunnerProps {
@@ -83,7 +85,7 @@ describe('CodePlayground Interactions', () => {
       // Must set value on element and trigger change event for React controlled input
       const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
         window.HTMLTextAreaElement.prototype,
-        'value'
+        'value',
       )?.set
       nativeInputValueSetter?.call(textarea, 'new code')
 
@@ -103,12 +105,12 @@ describe('CodePlayground Interactions', () => {
 
     // Change code
     await act(async () => {
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-            window.HTMLTextAreaElement.prototype,
-            'value'
-          )?.set
-          nativeInputValueSetter?.call(textarea, 'changed')
-          textarea.dispatchEvent(new Event('input', { bubbles: true }))
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLTextAreaElement.prototype,
+        'value',
+      )?.set
+      nativeInputValueSetter?.call(textarea, 'changed')
+      textarea.dispatchEvent(new Event('input', { bubbles: true }))
     })
     expect(textarea.value).toBe('changed')
 
@@ -123,19 +125,19 @@ describe('CodePlayground Interactions', () => {
 
     // Wait 3s should reset confirm state
     await act(async () => {
-        vi.advanceTimersByTime(3000)
+      vi.advanceTimersByTime(3000)
     })
     expect(resetButton.textContent).toContain('Reset')
 
     // Click again to start confirm
     await act(async () => {
-        resetButton.click()
+      resetButton.click()
     })
     expect(resetButton.textContent).toContain('Confirm?')
 
     // Second click immediately: actual reset
     await act(async () => {
-        resetButton.click()
+      resetButton.click()
     })
 
     expect(textarea.value).toBe('initial')
@@ -151,7 +153,9 @@ describe('CodePlayground Interactions', () => {
     const textarea = container.querySelector('textarea') as HTMLTextAreaElement
 
     await act(async () => {
-      textarea.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', shiftKey: true, bubbles: true }))
+      textarea.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', shiftKey: true, bubbles: true }),
+      )
     })
 
     expect(mockRunFn).toHaveBeenCalled()
@@ -164,52 +168,58 @@ describe('CodePlayground Interactions', () => {
     await act(async () => {
       root.render(
         <CodePlayground
-            initialCode="initial"
-            expectedOutput="Hello World"
-            onExpectedOutputMatched={onExpectedOutputMatched}
-            onSubmissionEvaluated={onSubmissionEvaluated}
-        />
+          initialCode="initial"
+          expectedOutput="Hello World"
+          onExpectedOutputMatched={onExpectedOutputMatched}
+          onSubmissionEvaluated={onSubmissionEvaluated}
+        />,
       )
     })
 
     // Simulate correct execution
     await act(async () => {
-        if (capturedOnExecutionComplete) {
-            capturedOnExecutionComplete({ output: 'Hello World\n', error: null })
-        }
+      if (capturedOnExecutionComplete) {
+        capturedOnExecutionComplete({ output: 'Hello World\n', error: null })
+      }
     })
 
     expect(onExpectedOutputMatched).toHaveBeenCalled()
-    expect(onSubmissionEvaluated).toHaveBeenCalledWith(expect.objectContaining({
+    expect(onSubmissionEvaluated).toHaveBeenCalledWith(
+      expect.objectContaining({
         correct: true,
         output: 'Hello World\n',
-        error: null
-    }))
+        error: null,
+      }),
+    )
 
     // Simulate incorrect execution
     await act(async () => {
-        if (capturedOnExecutionComplete) {
-            capturedOnExecutionComplete({ output: 'Wrong', error: null })
-        }
+      if (capturedOnExecutionComplete) {
+        capturedOnExecutionComplete({ output: 'Wrong', error: null })
+      }
     })
 
-    expect(onSubmissionEvaluated).toHaveBeenCalledWith(expect.objectContaining({
+    expect(onSubmissionEvaluated).toHaveBeenCalledWith(
+      expect.objectContaining({
         correct: false,
         output: 'Wrong',
-        error: null
-    }))
+        error: null,
+      }),
+    )
 
-     // Simulate error execution
-     await act(async () => {
-        if (capturedOnExecutionComplete) {
-            capturedOnExecutionComplete({ output: '', error: 'SyntaxError' })
-        }
+    // Simulate error execution
+    await act(async () => {
+      if (capturedOnExecutionComplete) {
+        capturedOnExecutionComplete({ output: '', error: 'SyntaxError' })
+      }
     })
 
-    expect(onSubmissionEvaluated).toHaveBeenCalledWith(expect.objectContaining({
+    expect(onSubmissionEvaluated).toHaveBeenCalledWith(
+      expect.objectContaining({
         correct: false,
         output: '',
-        error: 'SyntaxError'
-    }))
+        error: 'SyntaxError',
+      }),
+    )
   })
 })

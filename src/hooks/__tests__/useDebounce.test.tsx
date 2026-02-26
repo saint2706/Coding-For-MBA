@@ -92,13 +92,13 @@ describe('useDebounce', () => {
 
     // Since delay is 0, we still need to advance timers to let the loop run
     act(() => {
-        vi.runAllTimers()
+      vi.runAllTimers()
     })
     expect(debouncedValue).toBe('')
   })
 
   it('should cancel previous timeout on new update', () => {
-     let debouncedValue: string | undefined
+    let debouncedValue: string | undefined
 
     function TestComponent({ value, delay }: { value: string; delay: number }) {
       debouncedValue = useDebounce(value, delay)
@@ -117,7 +117,7 @@ describe('useDebounce', () => {
 
     // Advance 200ms
     act(() => {
-        vi.advanceTimersByTime(200)
+      vi.advanceTimersByTime(200)
     })
 
     // Update to 'update2' before 'update1' resolves
@@ -127,7 +127,7 @@ describe('useDebounce', () => {
 
     // Advance another 300ms (total 500ms since start, but only 300ms since update2)
     act(() => {
-        vi.advanceTimersByTime(300)
+      vi.advanceTimersByTime(300)
     })
 
     // Should NOT be update1
@@ -135,7 +135,7 @@ describe('useDebounce', () => {
 
     // Advance another 200ms (total 500ms since update2)
     act(() => {
-        vi.advanceTimersByTime(200)
+      vi.advanceTimersByTime(200)
     })
 
     expect(debouncedValue).toBe('update2')

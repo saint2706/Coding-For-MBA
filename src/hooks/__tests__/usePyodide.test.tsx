@@ -52,14 +52,14 @@ describe('usePyodide', () => {
                 return undefined
               }
               if (code.includes('raise_error')) {
-                 throw new Error('Python Error')
+                throw new Error('Python Error')
               }
               if (code.includes('print_hello')) {
-                 if (window.__stdoutCallback) window.__stdoutCallback('Hello World')
-                 return undefined
+                if (window.__stdoutCallback) window.__stdoutCallback('Hello World')
+                return undefined
               }
               if (code.includes('return_value')) {
-                 return 'Returned Value'
+                return 'Returned Value'
               }
               return 'result'
             }),
@@ -174,7 +174,7 @@ describe('usePyodide', () => {
   })
 
   it('returns the return value if no stdout', async () => {
-     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let hookResult: any
 
     function TestComponent() {
@@ -220,10 +220,10 @@ describe('usePyodide', () => {
     // Simulate runPythonAsync taking longer than timeout
     const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
     if (window._pyodideInstance) {
-        window._pyodideInstance.runPythonAsync = async () => {
-            await new Promise(resolve => setTimeout(resolve, 100))
-            return 'done'
-        }
+      window._pyodideInstance.runPythonAsync = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        return 'done'
+      }
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -237,7 +237,7 @@ describe('usePyodide', () => {
 
     // Restore
     if (window._pyodideInstance && originalRunPythonAsync) {
-        window._pyodideInstance.runPythonAsync = originalRunPythonAsync
+      window._pyodideInstance.runPythonAsync = originalRunPythonAsync
     }
   })
 
@@ -264,10 +264,10 @@ describe('usePyodide', () => {
     // Simulate runPythonAsync taking time
     const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
     if (window._pyodideInstance) {
-        window._pyodideInstance.runPythonAsync = async () => {
-            await new Promise(resolve => setTimeout(resolve, 100))
-            return 'done'
-        }
+      window._pyodideInstance.runPythonAsync = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        return 'done'
+      }
     }
 
     const controller = new AbortController()
@@ -286,7 +286,7 @@ describe('usePyodide', () => {
 
     // Restore
     if (window._pyodideInstance && originalRunPythonAsync) {
-        window._pyodideInstance.runPythonAsync = originalRunPythonAsync
+      window._pyodideInstance.runPythonAsync = originalRunPythonAsync
     }
   })
 })

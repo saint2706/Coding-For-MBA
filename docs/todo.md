@@ -107,9 +107,9 @@
 
 - [x] Glassmorphism cards with backdrop-blur on dark mode
 - [x] Animated gradient mesh background for hero sections
-- [ ] Custom cursor effects on interactive elements
+- [x] Custom cursor effects on interactive elements
 - [x] Sleek loading shimmer instead of skeleton pulses
-- [ ] Animated SVG illustrations for empty states
+- [x] Animated SVG illustrations for empty states
 
 ### Navigation Enhancements
 
@@ -133,26 +133,26 @@
 
 ### Build & Performance
 
-- [ ] Vite 7 module preload optimization for lazy routes
-- [ ] Image optimization pipeline (WebP/AVIF generation)
-- [ ] Bundle analysis script with visualized output
-- [ ] Lighthouse CI in GitHub Actions
-- [ ] Critical CSS extraction for above-the-fold rendering
+- [x] Vite 7 module preload optimization for lazy routes
+- [x] Image optimization pipeline (WebP/AVIF generation)
+- [x] Bundle analysis script with visualized output
+- [x] Lighthouse CI in GitHub Actions
+- [x] Critical CSS extraction for above-the-fold rendering
 
 ### Testing
 
-- [ ] Add Playwright visual regression tests for each page
-- [ ] Test motion animations with `prefers-reduced-motion` mock
+- [x] Add Playwright visual regression tests for each page
+- [x] Test motion animations with `prefers-reduced-motion` mock
 - [x] Zustand store unit tests
 - [x] Zod schema validation tests
 - [ ] Increase unit test coverage to 80%+
 
 ### Code Quality
 
-- [ ] Strict TypeScript 5.9 `satisfies` patterns for config objects
+- [x] Strict TypeScript 5.9 `satisfies` patterns for config objects
 - [x] Error boundaries with toast fallbacks
-- [ ] React 19 `use()` hook for promise-based data loading
-- [ ] `useOptimistic` for instant progress updates
+- [x] React 19 `use()` hook — N/A (data loading is synchronous, no async fetching)
+- [x] `useOptimistic` — N/A (progress updates are sync localStorage writes)
 
 ---
 
@@ -186,4 +186,4 @@
 
 ---
 
-*Last updated: Feb 21, 2026*
+*Last updated: Feb 26, 2026*

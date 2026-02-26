@@ -6,7 +6,15 @@
  * and optional expected output display.
  */
 
-import { useState, useCallback, useRef, useEffect, forwardRef, useImperativeHandle, useDeferredValue } from 'react'
+import {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+  useDeferredValue,
+} from 'react'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
