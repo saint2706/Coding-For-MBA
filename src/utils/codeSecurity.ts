@@ -91,7 +91,27 @@ export function validatePythonCode(code: string): ValidationResult {
   // 1. Property-Safe Deny Patterns (Keywords banned as references/assignments UNLESS properties)
   // e.g. eval() is banned, but model.eval() is allowed.
   // Note: __getattribute__ is in strict deny, so obj.__getattribute__ is also banned.
-  const propertySafeKeywords = ['eval', 'exec']
+  const propertySafeKeywords = [
+    'eval',
+    'exec',
+    'getattr',
+    'setattr',
+    'delattr',
+    'hasattr',
+    'vars',
+    'dir',
+    'input',
+    'breakpoint',
+    'help',
+    'exit',
+    'quit',
+    'open',
+    'compile',
+    'memoryview',
+    'copyright',
+    'credits',
+    'license',
+  ]
   const propertySafeRegex = new RegExp(`(?<!\\.)\\b(${propertySafeKeywords.join('|')})\\b`)
   if (propertySafeRegex.test(strippedCode)) {
     return {
@@ -130,35 +150,7 @@ export function validatePythonCode(code: string): ValidationResult {
     }
   }
 
-  // 3. Call Deny Patterns (Keywords banned ONLY when called)
-  const callKeywords = [
-    'getattr',
-    'setattr',
-    'delattr',
-    'hasattr',
-    'vars',
-    'dir',
-    'input',
-    'breakpoint',
-    'help',
-    'exit',
-    'quit',
-    'open',
-    'compile',
-    'memoryview',
-    'copyright',
-    'credits',
-    'license',
-  ]
-  const callRegex = new RegExp(`(?<!\\.)\\b(${callKeywords.join('|')})\\s*\\(`)
-  if (callRegex.test(strippedCode)) {
-    return {
-      valid: false,
-      error: 'Security Error: Usage of interactive or reflection functions is restricted.',
-    }
-  }
-
-  // 4. Import Deny Patterns (Specific module imports)
+  // 3. Import Deny Patterns (Specific module imports)
   const importPatterns = [
     /\bimport\s+js\b/,
     /\bfrom\s+js\b/,

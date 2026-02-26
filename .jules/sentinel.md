@@ -39,3 +39,12 @@
 **Prevention:**
 1.  Strip all control characters (ASCII 0-31, 127) before validation.
 2.  Use a strict regex `^[a-zA-Z][^:/?#]*:` to identify schemes, ensuring that characters like `/`, `?`, `#` terminate the scheme detection (preventing relative paths from being misidentified).
+
+## 2025-06-12 - Python Sandbox Bypass via Aliasing
+**Vulnerability:** Banning function calls like `input(...)` via regex `input\s*\(` allowed attackers to bypass restrictions by aliasing the function (e.g., `f = input; f()`).
+**Learning:** Regex-based function call detection is insufficient when functions are first-class objects. Blocking dangerous built-ins must be done at the identifier level (banning the word `input`), while carefully allowing property access (e.g., `obj.input`) to maintain usability.
+**Prevention:** Moved critical functions (`input`, `open`, `exit`, `quit`, `help`, `getattr`, etc.) to a `propertySafeKeywords` list, which bans them as standalone identifiers (`\binput\b` not preceded by `.`) but permits them as properties.
+
+## 2025-06-12 - CSP Hardening
+**Vulnerability:** Missing `upgrade-insecure-requests` in Content Security Policy could allow mixed content issues if the site is served over HTTPS but requests HTTP resources.
+**Prevention:** Added `upgrade-insecure-requests` to the CSP meta tag to force all requests to HTTPS.
