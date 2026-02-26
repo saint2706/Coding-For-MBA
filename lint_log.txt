@@ -1,7 +1,0 @@
-
-> coding-for-mba@1.0.0 lint
-> npm run typecheck
-
-
-> coding-for-mba@1.0.0 typecheck
-> tsc -b
