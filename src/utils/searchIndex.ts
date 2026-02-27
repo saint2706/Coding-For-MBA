@@ -60,22 +60,17 @@ const FUSE_OPTIONS: IFuseOptions<SearchDocument> = {
  * Optimized for performance by reducing regex passes and string allocations.
  */
 function stripMarkdown(md: string): string {
+  if (!md) return ''
   return (
     md
-      // Remove code blocks (heavy content)
-      .replace(/```[\s\S]*?```/g, ' ')
-      // Remove inline code
-      .replace(/`[^`]*`/g, ' ')
-      // Remove images
-      .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
-      // Remove links but keep text
+      // Combined pass: Remove code blocks, inline code, and images
+      .replace(/```[\s\S]*?```|`[^`]*`|!\[[^\]]*\]\([^)]+\)/g, ' ')
+      // Pass 2: Extract text from links [text](url) -> text
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      // Remove list markers (e.g. "1. ") OR special chars/whitespace
-      // This combines two steps:
-      // 1. ^\s*\d+\.\s+ matches ordered list markers at start of line
-      // 2. [#>*_~\-|\s]+ matches markdown chars and whitespace
-      // Both are replaced by a single space.
-      .replace(/(^\s*\d+\.\s+|[#>*_~\-|\s]+)/gm, ' ')
+      // Pass 3: Remove list markers (ordered/unordered), headers, blockquotes, horizontal rules
+      .replace(/(^\s*\d+\.\s+|^\s*[-*+]\s+|[#_~>|]+)/gm, ' ')
+      // Pass 4: Collapse whitespace
+      .replace(/\s+/g, ' ')
       .trim()
   )
 }

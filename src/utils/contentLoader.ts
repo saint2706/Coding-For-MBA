@@ -66,76 +66,97 @@ const phaseFiles = import.meta.glob('/content/lessons/**/Phase_Overview.md', {
   eager: true,
 }) as Record<string, string>
 
-const lessons: Lesson[] = Object.entries(lessonFiles)
-  .map(([path, raw]) => {
-    const { frontmatter, content } = parseMarkdown(raw)
-    const frontmatterDay =
-      typeof frontmatter.day === 'string' || typeof frontmatter.day === 'number'
-        ? normalizeDayToken(frontmatter.day)
-        : null
-    const pathDay = dayTokenFromPath(path)
-    const day = pathDay || frontmatterDay || '0'
-    const parsedDay = parseDayToken(day)
-    const prerequisites = Array.isArray(frontmatter.prerequisites)
-      ? frontmatter.prerequisites
-          .map((entry) => dayTokenFromReference(entry))
-          .filter((entry): entry is DayToken => Boolean(entry))
-      : undefined
+let lessons: Lesson[] | null = null
+let phases: Phase[] | null = null
+let immutableLessons: readonly ImmutableLesson[] | null = null
+let immutablePhases: readonly ImmutablePhase[] | null = null
+let immutableLessonByDay: Map<DayToken, ImmutableLesson> | null = null
 
-    return {
-      ...frontmatter,
-      day,
-      daySortKey: parsedDay?.sortKey || day,
-      prerequisites,
-      content,
-      path,
-    } as unknown as Lesson
-  })
-  .sort((a, b) => compareDayTokens(a.day, b.day))
+function initializeContent() {
+  if (lessons && phases) return
 
-const phases: Phase[] = Object.entries(phaseFiles)
-  .map(([path, raw]) => {
-    const { frontmatter, content } = parseMarkdown(raw)
-    const days = Array.isArray(frontmatter.days)
-      ? frontmatter.days
-          .map((entry) => dayTokenFromReference(entry))
-          .filter((entry): entry is DayToken => Boolean(entry))
-      : undefined
-    return {
-      ...frontmatter,
-      days,
-      content,
-      path,
-    } as Phase
-  })
-  .sort((a, b) => (a.phase || 0) - (b.phase || 0))
+  lessons = Object.entries(lessonFiles)
+    .map(([path, raw]) => {
+      const { frontmatter, content } = parseMarkdown(raw)
+      const frontmatterDay =
+        typeof frontmatter.day === 'string' || typeof frontmatter.day === 'number'
+          ? normalizeDayToken(frontmatter.day)
+          : null
+      const pathDay = dayTokenFromPath(path)
+      const day = pathDay || frontmatterDay || '0'
+      const parsedDay = parseDayToken(day)
+      const prerequisites = Array.isArray(frontmatter.prerequisites)
+        ? frontmatter.prerequisites
+            .map((entry) => dayTokenFromReference(entry))
+            .filter((entry): entry is DayToken => Boolean(entry))
+        : undefined
+
+      return {
+        ...frontmatter,
+        day,
+        daySortKey: parsedDay?.sortKey || day,
+        prerequisites,
+        content,
+        path,
+      } as unknown as Lesson
+    })
+    .sort((a, b) => compareDayTokens(a.day, b.day))
+
+  phases = Object.entries(phaseFiles)
+    .map(([path, raw]) => {
+      const { frontmatter, content } = parseMarkdown(raw)
+      const days = Array.isArray(frontmatter.days)
+        ? frontmatter.days
+            .map((entry) => dayTokenFromReference(entry))
+            .filter((entry): entry is DayToken => Boolean(entry))
+        : undefined
+      return {
+        ...frontmatter,
+        days,
+        content,
+        path,
+      } as Phase
+    })
+    .sort((a, b) => (a.phase || 0) - (b.phase || 0))
+
+  immutableLessons = Object.freeze(lessons.map(freezeLesson))
+  immutablePhases = Object.freeze(phases.map(freezePhase))
+  immutableLessonByDay = new Map(
+    immutableLessons.map((lesson) => [lesson.day, lesson]),
+  )
+}
 
 /** Return all phases sorted by phase number. */
 export function getAllPhases(): readonly ImmutablePhase[] {
-  return immutablePhases
+  initializeContent()
+  return immutablePhases!
 }
 
 /** Return a phase by number. */
 export function getPhase(phaseNum: string | number): ImmutablePhase | undefined {
-  return immutablePhases.find((p) => p.phase === Number(phaseNum))
+  initializeContent()
+  return immutablePhases!.find((p) => p.phase === Number(phaseNum))
 }
 
 /** Return all lessons sorted by day number. */
 export function getAllLessons(): readonly ImmutableLesson[] {
-  return immutableLessons
+  initializeContent()
+  return immutableLessons!
 }
 
 /** Return a lesson by day number. */
 export function getLesson(dayNum: string | number): ImmutableLesson | undefined {
+  initializeContent()
   const dayToken = normalizeDayToken(dayNum)
-  return immutableLessonByDay.get(dayToken)
+  return immutableLessonByDay!.get(dayToken)
 }
 
 /** Return all lessons in a phase. */
 export function getLessonsByPhase(phaseNum: string | number): readonly ImmutableLesson[] {
+  initializeContent()
   if (!immutableLessonsByPhase) {
     const byPhase: Record<number, Lesson[]> = {}
-    for (const lesson of immutableLessons) {
+    for (const lesson of immutableLessons!) {
       const p = lesson.phase
       if (!byPhase[p]) byPhase[p] = []
       byPhase[p].push(lesson as Lesson)
@@ -155,18 +176,19 @@ export function getAdjacentLessons(dayNum: string | number): {
   prev: ImmutableLesson | null
   next: ImmutableLesson | null
 } {
+  initializeContent()
   const dayToken = normalizeDayToken(dayNum)
-  const currentIndex = immutableLessons.findIndex((l) => l.day === dayToken)
+  const currentIndex = immutableLessons!.findIndex((l) => l.day === dayToken)
 
   if (currentIndex === -1) {
     return { prev: null, next: null }
   }
 
   return {
-    prev: currentIndex > 0 ? (immutableLessons[currentIndex - 1] ?? null) : null,
+    prev: currentIndex > 0 ? (immutableLessons![currentIndex - 1] ?? null) : null,
     next:
-      currentIndex < immutableLessons.length - 1
-        ? (immutableLessons[currentIndex + 1] ?? null)
+      currentIndex < immutableLessons!.length - 1
+        ? (immutableLessons![currentIndex + 1] ?? null)
         : null,
   }
 }
@@ -301,28 +323,24 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
   return cards
 }
 
-const immutableLessons = Object.freeze(lessons.map(freezeLesson))
-const immutablePhases = Object.freeze(phases.map(freezePhase))
-const immutableLessonByDay: Map<DayToken, ImmutableLesson> = new Map(
-  immutableLessons.map((lesson) => [lesson.day, lesson]),
-)
-
 let immutableLessonsByPhase: Record<number, readonly ImmutableLesson[]> | null = null
 let immutableExercises: readonly ImmutableExercise[] | null = null
 let immutableReviewCards: readonly ImmutableReviewCardSeed[] | null = null
 
 /** Return all parsed exercises across lessons. */
 export function getAllExercises(): readonly ImmutableExercise[] {
+  initializeContent()
   if (!immutableExercises) {
-    const allExercises = lessons.flatMap(extractExercisesFromLesson)
+    const allExercises = lessons!.flatMap(extractExercisesFromLesson)
     immutableExercises = Object.freeze(allExercises.map(freezeExercise))
   }
   return immutableExercises
 }
 
 export function getAllReviewCardSeeds(): readonly ImmutableReviewCardSeed[] {
+  initializeContent()
   if (!immutableReviewCards) {
-    const cards = lessons.flatMap(buildReviewCardsFromLesson)
+    const cards = lessons!.flatMap(buildReviewCardsFromLesson)
     immutableReviewCards = Object.freeze(cards.map(freezeReviewCardSeed))
   }
   return immutableReviewCards
@@ -482,16 +500,18 @@ export function getReadingTime(content: string): number {
 
 /** Resolve prerequisite day references into lesson objects. */
 export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly ImmutableLesson[] {
+  initializeContent()
   const prereqs = lesson.prerequisites as readonly unknown[] | undefined
   if (!prereqs || !Array.isArray(prereqs) || prereqs.length === 0) return []
   return prereqs
     .map((day) => dayTokenFromReference(day))
-    .map((day) => (day ? immutableLessonByDay.get(day) : undefined))
+    .map((day) => (day ? immutableLessonByDay!.get(day) : undefined))
     .filter((l): l is ImmutableLesson => l !== undefined)
 }
 
 /** Return top related lessons ranked by shared tags/concepts and phase proximity. */
 export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly ImmutableLesson[] {
+  initializeContent()
   const prereqs = new Set(
     ((lesson.prerequisites as readonly unknown[]) || [])
       .map((entry) => dayTokenFromReference(entry))
@@ -500,7 +520,7 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
   const myTags = new Set((lesson.tags as readonly string[]) || [])
   const myConcepts = new Set((lesson.concepts as readonly string[]) || [])
 
-  const scored = lessons
+  const scored = lessons!
     .filter((l) => l.day !== lesson.day && !prereqs.has(l.day))
     .map((l) => {
       let score = 0

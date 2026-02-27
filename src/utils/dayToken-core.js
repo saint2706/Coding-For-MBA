@@ -1,5 +1,8 @@
 const DAY_TOKEN_PATTERN = /^(\d+)([A-Za-z]*)$/
 
+const parseCache = new Map()
+const progressIdCache = new Map()
+
 export function normalizeDayToken(value) {
   const raw = String(value ?? '').trim()
   const match = raw.match(DAY_TOKEN_PATTERN)
@@ -14,6 +17,10 @@ export function normalizeDayToken(value) {
 
 export function parseDayToken(value) {
   const token = normalizeDayToken(value)
+  if (parseCache.has(token)) {
+    return parseCache.get(token)
+  }
+
   const match = token.match(DAY_TOKEN_PATTERN)
   if (!match) return null
 
@@ -21,12 +28,16 @@ export function parseDayToken(value) {
   const suffixPart = match[2] || ''
   const dayNumber = Number(numericPart)
   const suffix = suffixPart.toUpperCase()
-  return {
+
+  const result = {
     token,
     number: dayNumber,
     suffix,
     sortKey: `${String(dayNumber).padStart(5, '0')}:${suffix}`,
   }
+
+  parseCache.set(token, result)
+  return result
 }
 
 export function compareDayTokens(a, b) {
@@ -68,14 +79,28 @@ export function dayTokenFromReference(value) {
 }
 
 export function dayTokenToProgressId(value) {
+  const normalizedKey = String(value)
+  if (progressIdCache.has(normalizedKey)) {
+    return progressIdCache.get(normalizedKey)
+  }
+
   const parsed = parseDayToken(value)
-  if (!parsed) return Number.NaN
-  if (!parsed.suffix) return parsed.number
+  if (!parsed) {
+    progressIdCache.set(normalizedKey, Number.NaN)
+    return Number.NaN
+  }
+
+  if (!parsed.suffix) {
+    progressIdCache.set(normalizedKey, parsed.number)
+    return parsed.number
+  }
 
   const suffixCode = [...parsed.suffix].reduce((acc, char) => {
     const code = char.charCodeAt(0) - 64
     return acc * 26 + Math.max(code, 0)
   }, 0)
 
-  return parsed.number * 10000 + suffixCode
+  const result = parsed.number * 10000 + suffixCode
+  progressIdCache.set(normalizedKey, result)
+  return result
 }
