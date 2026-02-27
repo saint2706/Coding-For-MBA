@@ -7,11 +7,25 @@ import ExerciseCard from '../ExerciseCard'
 // Mock motion to avoid animation issues
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, className, ...props }: any) => (
-      <div className={className} {...props}>
-        {children}
-      </div>
-    ),
+    div: ({ children, className, ...props }: any) => {
+      const {
+        layout: _layout,
+        whileHover: _whileHover,
+        whileTap: _whileTap,
+        transition: _transition,
+        ...safeProps
+      } = props
+      void _layout
+      void _whileHover
+      void _whileTap
+      void _transition
+
+      return (
+        <div className={className} {...safeProps}>
+          {children}
+        </div>
+      )
+    },
   },
 }))
 
