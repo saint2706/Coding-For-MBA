@@ -65,6 +65,11 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
     navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search')
   }
 
+  const handleClear = () => {
+    setQuery('')
+    inputRef.current?.focus()
+  }
+
   const handleThemeToggle = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark'
     toggleTheme()
@@ -78,6 +83,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
           className="navbar-hamburger"
           onClick={onToggleSidebar}
           aria-label="Toggle sidebar menu"
+          title="Toggle sidebar"
         >
           <svg
             viewBox="0 0 24 24"
@@ -107,7 +113,19 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
             onChange={(event) => setQuery(event.target.value)}
             aria-label="Search lessons"
           />
-          <span className="navbar-search-shortcut">/</span>
+          {query ? (
+            <button
+              type="button"
+              className="navbar-search-clear"
+              onClick={handleClear}
+              aria-label="Clear search"
+              title="Clear search"
+            >
+              ✕
+            </button>
+          ) : (
+            <span className="navbar-search-shortcut">/</span>
+          )}
         </form>
         <button
           className="theme-toggle"
