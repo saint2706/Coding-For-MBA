@@ -13,6 +13,7 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
+import { buildItemListSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
   getLessonsByPhase,
@@ -61,6 +62,17 @@ export default function Curriculum() {
     },
   }
 
+  const itemListSchema = buildItemListSchema(
+    'Full Curriculum Roadmap',
+    'Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL.',
+    phases.map((phase) => ({
+      name: `Phase ${phase.phase}: ${phase.title}`,
+      url: `/phase/${phase.phase}`,
+      position: phase.phase,
+      description: `Phase ${phase.phase} covers ${getLessonsByPhase(phase.phase).length} lessons on ${phase.title}.`,
+    })),
+  )
+
   return (
     <div className="page-container">
       <SEOHead
@@ -71,6 +83,7 @@ export default function Curriculum() {
           { name: 'Home', url: '/' },
           { name: 'Curriculum', url: '/curriculum' },
         ]}
+        jsonLd={[itemListSchema]}
       />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Curriculum' }]} />
       <div className="section-header" style={{ marginBottom: '2.5rem' }}>

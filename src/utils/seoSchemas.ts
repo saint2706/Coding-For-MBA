@@ -41,6 +41,56 @@ export function buildWebSiteSchema(): Record<string, unknown> {
   }
 }
 
+/**
+ * Build an ItemList schema to describe a list of phases or lessons.
+ * Useful for the Curriculum Overview page.
+ */
+export function buildItemListSchema(
+  name: string,
+  description: string,
+  items: { name: string; url: string; position: number; description?: string }[],
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    description,
+    url: `${SITE_URL}/#/curriculum`,
+    numberOfItems: items.length,
+    itemListElement: items.map((item) => ({
+      '@type': 'ListItem',
+      position: item.position,
+      name: item.name,
+      description: item.description,
+      url: item.url.startsWith('http') ? item.url : buildCanonicalUrl(item.url),
+    })),
+  }
+}
+
+/**
+ * Build a CollectionPage schema for the Exercises page.
+ */
+export function buildCollectionPageSchema(
+  name: string,
+  description: string,
+  path: string,
+  hasPart: { name: string; url: string; description?: string }[],
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name,
+    description,
+    url: buildCanonicalUrl(path),
+    hasPart: hasPart.map((part) => ({
+      '@type': 'CreativeWork',
+      name: part.name,
+      description: part.description,
+      url: part.url.startsWith('http') ? part.url : buildCanonicalUrl(part.url),
+    })),
+  }
+}
+
 /** Build a Course JSON-LD schema for the curriculum */
 export function buildCourseSchema(): Record<string, unknown> {
   return {

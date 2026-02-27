@@ -1,20 +1,21 @@
-# 🧘 Buddha Scroll (SEO/GEO Log)
+# 🧘 Buddha Scroll: SEO & GEO Improvements
 
-## [GEO] Added `llms.txt`
-- Created `public/llms.txt` to provide a structured site architecture for AI agents.
-- Includes key routes and concept overview.
+> "The code that is seen by no one is as if it were never written."
 
-## [PERF] Optimized Markdown Images
-- Updated `MarkdownRenderer.tsx` to automatically apply `loading="lazy"` and `decoding="async"` to all images.
-- This improves LCP and saves bandwidth for images below the fold.
-- Verified with unit test `src/components/__tests__/MarkdownRendererImages.test.tsx`.
+This scroll records the harmonization of the `Coding-For-MBA` codebase for human speed and machine intelligence.
 
-## [GEO] Dynamic `llms.txt` Generation
-- Created `scripts/generate-llms-txt.js` to automatically generate a rich `llms.txt` based on content.
-- Updated `package.json` to run this script during build.
-- Added `<link rel="alternate" type="text/markdown" href="/llms.txt" />` to `index.html` for discovery.
-- `llms.txt` now includes full curriculum structure with lessons and concepts.
+## 📜 Log
 
-## [GEO] Full URL Resolution
-- Updated `generate-llms-txt.js` to use full URLs (with hash fragment) instead of relative paths.
-- This ensures that agents crawling `llms.txt` can correctly resolve links to the SPA hosted on GitHub Pages subpath (`/Coding-For-MBA/`).
+### [Date: Current] - Initial Harmonization
+
+**Priority Areas:**
+1.  **Speed (Velocity)**: Optimizing bundle splitting for lesson content.
+2.  **SEO (Visibility)**: Enhancing structured data for Curriculum and Exercises.
+
+**Changes:**
+-   [x] **Bundle Optimization**: Splitting `lesson-content` into per-phase chunks in `vite.config.ts`.
+-   [x] **Structured Data**: Adding `ItemList` schema to Curriculum page.
+-   [x] **Structured Data**: Adding `CollectionPage` schema to Exercises page.
+
+---
+*May the Lighthouse score be 100 and the Googlebot find peace in our structure.*
