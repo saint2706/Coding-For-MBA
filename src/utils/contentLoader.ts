@@ -54,6 +54,14 @@ export interface Phase {
   [key: string]: unknown
 }
 
+/** A bonus file from a phase's extras/ folder. */
+export interface ExtraFile {
+  phase: number
+  filename: string
+  extension: string
+  content: string
+}
+
 const lessonFiles = import.meta.glob('/content/lessons/**/README.md', {
   query: '?raw',
   import: 'default',
@@ -65,6 +73,11 @@ const phaseFiles = import.meta.glob('/content/lessons/**/Phase_Overview.md', {
   import: 'default',
   eager: true,
 }) as Record<string, string>
+
+const extrasFiles = import.meta.glob(
+  '/content/lessons/**/extras/**/*.{py,sql,csv,json,txt,md,ipynb}',
+  { query: '?raw', import: 'default', eager: true },
+) as Record<string, string>
 
 let lessons: Lesson[] | null = null
 let phases: Phase[] | null = null
@@ -121,9 +134,7 @@ function initializeContent() {
 
   immutableLessons = Object.freeze(lessons.map(freezeLesson))
   immutablePhases = Object.freeze(phases.map(freezePhase))
-  immutableLessonByDay = new Map(
-    immutableLessons.map((lesson) => [lesson.day, lesson]),
-  )
+  immutableLessonByDay = new Map(immutableLessons.map((lesson) => [lesson.day, lesson]))
 }
 
 /** Return all phases sorted by phase number. */
@@ -555,3 +566,36 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
 }
 
 export { difficultyConfig, phaseIcons }
+
+let immutableExtrasByPhase: Record<number, readonly Readonly<ExtraFile>[]> | null = null
+
+function parseExtras(): Record<number, ExtraFile[]> {
+  const byPhase: Record<number, ExtraFile[]> = {}
+  for (const [path, raw] of Object.entries(extrasFiles)) {
+    const phaseMatch = path.match(/Phase_(\d+)/)
+    if (!phaseMatch?.[1]) continue
+    const phase = parseInt(phaseMatch[1], 10)
+    const filename = path.split('/').pop() || 'unknown'
+    const dotIndex = filename.lastIndexOf('.')
+    const extension = dotIndex > 0 ? filename.slice(dotIndex + 1) : ''
+    if (!byPhase[phase]) byPhase[phase] = []
+    byPhase[phase].push({ phase, filename, extension, content: raw })
+  }
+  for (const list of Object.values(byPhase)) {
+    list.sort((a, b) => a.filename.localeCompare(b.filename))
+  }
+  return byPhase
+}
+
+/** Return all extras files for a given phase. */
+export function getExtrasForPhase(phaseNum: string | number): readonly Readonly<ExtraFile>[] {
+  if (!immutableExtrasByPhase) {
+    const parsed = parseExtras()
+    const frozen: Record<number, readonly Readonly<ExtraFile>[]> = {}
+    for (const [p, list] of Object.entries(parsed)) {
+      frozen[Number(p)] = Object.freeze(list.map((f) => Object.freeze({ ...f })))
+    }
+    immutableExtrasByPhase = frozen
+  }
+  return immutableExtrasByPhase[Number(phaseNum)] || []
+}
