@@ -111,6 +111,58 @@ This phase is the **capstone** of database engineering.
 - Redshift ML: SageMaker Autopilot integration — enterprise AWS ML via SQL.
 - Cost engineering: partitioning + clustering + materialized views = 100-400x query cost reduction.
 - *Why it matters*: The modern BI professional runs ML models without leaving the data warehouse.
+
+---
+
+## Cloud-Native SQL Narrative (Bridge to Modern Platforms)
+
+Phase 9 deliberately starts with **portable SQL fundamentals** and ends with **cloud warehouse execution**:
+
+1. **Days 97-104 (portable primitives)**: views, indexing, transactions, procedures, triggers, and schema design.
+2. **Days 105-108 (enterprise hardening)**: semi-structured data, security controls, and performance diagnostics.
+3. **Day 108C (platform acceleration)**: apply the same SQL thinking in BigQuery, Snowflake, and Redshift ML workflows.
+
+### Tool-Bridge Map
+
+- **Postgres Materialized View strategy (Day 97)** -> **BigQuery partition + clustering + materialized view cost tuning (Day 108C)**.
+- **GIN on JSONB (Day 98 + Day 105)** -> **Snowflake semi-structured analytics + Cortex AI functions (Day 108C)**.
+- **Distributed consistency trade-offs (Day 99)** -> **cross-service/cloud analytics design decisions (Day 108C)**.
+- **RLS + encryption (Day 107)** -> **warehouse governance posture for production BI and ML scoring (Day 108C)**.
+
+This progression keeps the curriculum from feeling "Postgres-only" and clarifies how each earlier day transfers to modern cloud analytics stacks.
+
+---
+
+## Curriculum Capstone Preview (Day 108B)
+
+### Expected Deliverables
+
+- **Architecture brief (1-2 pages):** schema choices, normalization/denormalization trade-offs, and data governance controls.
+- **SQL implementation pack:** DDL, indexing plan, procedures/triggers, and optimization notes.
+- **Performance evidence:** before/after query plans (`EXPLAIN ANALYZE`) and measured latency/cost impact.
+- **Security evidence:** RLS policy design, role model, and encryption/audit strategy.
+- **Executive summary:** business impact narrative (risk reduction, cost savings, throughput improvement).
+
+### Evaluation Rubric (Signal Before Build)
+
+- **Correctness & reliability (30%)** — works under realistic concurrency and data-quality stress.
+- **Performance engineering (30%)** — measurable improvement and clear tuning rationale.
+- **Security & governance (20%)** — tenant isolation, least privilege, and auditability.
+- **Communication quality (20%)** — clear trade-off framing for technical and MBA stakeholders.
+
+---
+
+## Difficulty & Progression Signals (Consistency Check)
+
+All day files are labeled `advanced`; this overview translates that into an explicit progression so learners can calibrate effort:
+
+- **Days 97-100: Advanced Core** — optimize primitives and reason about concurrency costs.
+- **Days 101-104: Advanced Systems Design** — automate enforcement and model for long-term maintainability.
+- **Days 105-107: Advanced Enterprise Constraints** — semi-structured data and hard security boundaries.
+- **Days 108-108C: Expert Integration** — tune at production scale, then map skills to cloud-native SQL + ML tooling.
+
+Use this rule of thumb: if you can explain *trade-offs* (not just syntax) for each week, you are on track for the capstone.
+
 ---
 
 ## The Business Value Proposition
