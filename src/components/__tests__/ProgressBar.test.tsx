@@ -6,11 +6,23 @@ import ProgressBar from '../ProgressBar'
 // Mock motion to avoid animation issues in tests
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, className, ...props }: any) => (
-      <div className={className} {...props}>
-        {children}
-      </div>
-    ),
+    div: ({ children, className, ...props }: any) => {
+      const {
+        initial: _initial,
+        animate: _animate,
+        transition: _transition,
+        ...safeProps
+      } = props
+      void _initial
+      void _animate
+      void _transition
+
+      return (
+        <div className={className} {...safeProps}>
+          {children}
+        </div>
+      )
+    },
   },
   useReducedMotion: () => false,
 }))
