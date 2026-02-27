@@ -143,12 +143,17 @@ export default defineConfig(async ({ mode }) => {
             if (normalId.includes('node_modules/zustand')) {
               return 'zustand'
             }
-            // Split lesson content files into their own chunk
-            if (normalId.includes('/content/lessons/') && normalId.includes('README.md')) {
-              return 'lesson-content'
-            }
-            if (normalId.includes('/content/lessons/') && normalId.includes('Phase_Overview.md')) {
-              return 'phase-content'
+            // Split lesson content files into per-phase chunks
+            if (normalId.includes('/content/lessons/')) {
+              const phaseMatch = normalId.match(/Phase_(\d+)/)
+              const phaseNum = phaseMatch ? phaseMatch[1] : 'other'
+
+              if (normalId.includes('README.md')) {
+                return `phase-${phaseNum}-content`
+              }
+              if (normalId.includes('Phase_Overview.md')) {
+                return `phase-${phaseNum}-overview`
+              }
             }
           },
         },

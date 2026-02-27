@@ -15,6 +15,7 @@ import { motion } from 'motion/react'
 import { ExercisesEmptyIllustration } from '../components/EmptyStateIllustrations'
 import SEOHead from '../components/SEOHead'
 import ExerciseCard from '../components/ExerciseCard'
+import { buildCollectionPageSchema } from '../utils/seoSchemas'
 import {
   getAllExercises,
   getAllNotebooks,
@@ -89,6 +90,17 @@ export default function Exercises() {
   // Group by phase for notebook links
   const notebookPhases = new Set(notebooks.map((n) => n.phase))
 
+  const collectionSchema = buildCollectionPageSchema(
+    'Exercises Browser',
+    'Browse and filter all exercises across the 108-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises.',
+    '/exercises',
+    exercises.slice(0, 10).map((ex) => ({
+      name: ex.title,
+      description: ex.goal,
+      url: `/lesson/${ex.day}`,
+    })),
+  )
+
   return (
     <div className="page-container">
       <SEOHead
@@ -99,6 +111,7 @@ export default function Exercises() {
           { name: 'Home', url: '/' },
           { name: 'Exercises', url: '/exercises' },
         ]}
+        jsonLd={[collectionSchema]}
       />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Exercises' }]} />
 
