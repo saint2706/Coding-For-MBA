@@ -9,7 +9,7 @@
  * - Provide a utility to detect if a user is typing in an input field.
  */
 
-export type ShortcutScope = 'Global' | 'Search' | 'Lesson'
+export type ShortcutScope = 'Global' | 'Search' | 'Lesson' | 'Review'
 
 export interface ShortcutDefinition {
   keys: string
@@ -47,6 +47,31 @@ export const SHORTCUTS = [
     keys: '→',
     description: 'Go to next lesson',
     scope: 'Lesson',
+  },
+  {
+    keys: 'Space / Enter',
+    description: 'Reveal answer',
+    scope: 'Review',
+  },
+  {
+    keys: '1',
+    description: 'Rate "Again"',
+    scope: 'Review',
+  },
+  {
+    keys: '2',
+    description: 'Rate "Hard"',
+    scope: 'Review',
+  },
+  {
+    keys: '3',
+    description: 'Rate "Good"',
+    scope: 'Review',
+  },
+  {
+    keys: '4',
+    description: 'Rate "Easy"',
+    scope: 'Review',
   },
 ] as const satisfies readonly ShortcutDefinition[]
 
