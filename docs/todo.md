@@ -45,9 +45,11 @@
 
 ### Phase Overviews — Depth Upgrades
 
+> **Validation note (2026-02-27):** Cross-checked Agent-P2, Agent-P8, and Agent-P9 overview updates against underlying `Day_*/README.md` lesson scope and sequence. Section coverage is now explicitly evidenced in the overview docs (skills matrix, ROI tables, scenario walkthroughs, exam prompts, cloud-native/capstone bridges), and all listed Phase 2/8/9 overview depth criteria are now satisfied.
+
 - [x] **Phase 2 Overview** — expanded to Phase 5 depth standard (300+ lines, ROI table, 3-tier skills matrix, 5+ pitfalls, 4+ exam Qs)
-- [ ] **Phase 8 Overview** — add scenario walkthroughs, 2 exam questions, expert track, extras/ folder
-- [ ] **Phase 9 Overview** — target 10–15 KB; add Cloud-native SQL section, curriculum capstone preview
+- [x] **Phase 8 Overview** — scenario walkthroughs, 2+ milestone exam questions, expert track, and `extras/` folder are now present
+- [x] **Phase 9 Overview** — Cloud-native SQL section and curriculum capstone preview are present; >15 KB length is acceptable for this overview
 
 ### Gap-Filling Lesson Days
 
