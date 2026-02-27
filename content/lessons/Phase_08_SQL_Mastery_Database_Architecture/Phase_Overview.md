@@ -110,6 +110,28 @@ This phase represents the **technical ceiling** of data engineering.
 - Tumbling, hopping, and session windows for real-time aggregations.
 - Streaming vs batch decision framework.
 - *Why it matters*: Real-time fraud detection, live dashboards, and event-driven analytics.
+
+## Day-to-Overview Coverage Matrix
+
+This matrix ensures every lesson day is explicitly represented in the Phase 8 narrative, exam prep, and applied architecture outcomes.
+
+| Day lesson title | Where it is covered in this overview | Coverage type |
+| --- | --- | --- |
+| **Day 85: Advanced SQL Patterns** | Week 1 journey summary; Milestone Exam Q1; ROI table (`LATERAL JOIN`) | Concepts + assessment + business value |
+| **Day 86: Cloud Architecture & Optimization** | Week 1 journey summary; Scenario 1 (slow dashboard); Pitfall 2 (partition pruning) | Scenario walkthrough + troubleshooting |
+| **Day 87: Technical Data Governance & Security** | Week 1 journey summary; Scenario 2 (GDPR crypto-shredding); ROI table (`GDPR Masking`) | Scenario walkthrough + compliance value |
+| **Day 88: Capstone Part 1: Design & Architecture** | Week 2 journey summary; Immediate next steps (capstone design expectations) | Project architecture |
+| **Day 89: Capstone Part 2: Implementation** | Week 2 journey summary; Milestone Exam Q3 (index write amplification) | Build execution + assessment |
+| **Day 90: Technical Interview WorkShop** | Week 2 journey summary; Immediate next steps (interview prep prompts) | Career readiness |
+| **Day 91: Relational Database Internals** | Week 3 journey summary; Milestone Exam Q2 + Q4; Expanded ROI table (`MVCC + Transactions`) | Internals + assessment + ROI |
+| **Day 92: Advanced DDL & Schema** | Week 3 journey summary; Milestone Exam Q1 + Q2; Scenario 1 partition fix | DDL architecture + assessment |
+| **Day 93: Advanced DML & Upserts** | Week 3 journey summary; Milestone Exam Q2 + Q3; Expanded ROI table (`Bulk Loading`) | DML operations + assessment |
+| **Day 94: Advanced DQL & Optimization** | Week 3 journey summary; Scenario 1 (`EXPLAIN ANALYZE`); Pitfall 1 (functional index) | Query tuning walkthrough |
+| **Day 95: Advanced Joins & Algorithms** | Week 3 journey summary; Scenario 3 (leaderboard optimization) | Join strategy + window analytics |
+| **Day 96: Advanced Subqueries** | Week 3 journey summary; Foundational skills (normalization, optimizer reasoning) | Query design patterns |
+| **Day 96B: NoSQL Deep Dive** | Week 3 journey summary; ROI table (`NoSQL`) ; What's Next bridge to vector databases | Engine selection strategy |
+| **Day 96C: Streaming SQL Fundamentals** | Week 3 journey summary; ROI table (`Streaming SQL`); Phase 11 bridge note | Real-time architecture |
+
 ---
 
 ## The Business Value Proposition
@@ -155,6 +177,15 @@ By the end of Phase 8, you should be able to:
 
 > ⚠️ **Synthetic Challenge Questions**
 > These questions require combining knowledge from multiple days.
+
+### Minimum Exam-Coverage Requirement (Phase 8 Overview)
+
+- **Required minimum (2 questions): met.**
+  - **Q1 The Infinite Loop** → Recursive CTEs + constraints architecture.
+  - **Q2 The Billion Row Delete** → WAL behavior + partition lifecycle design.
+- **Depth extension (additional questions): included.**
+  - Q3 The "Slow" Insert (index economics + bulk loading strategy).
+  - Q4 The Phantom Read (isolation-level diagnosis).
 
 ---
 
@@ -292,9 +323,27 @@ By the end of Phase 8, you should be able to:
 - 🔬 Build a database observability stack (pg_stat_statements, slow query log)
 - 🔬 Architect a hybrid HTAP system (transactional + analytical workloads on same DB)
 
+## Explicit Expert Track (Weeks 1-3)
+
+Use this path if your goal is **Staff Data Engineer / Database Architect** outcomes, not just day-level completion.
+
+1. **Week 1 Expert Sprint (Days 85-87)**
+   - Deliverable: a design memo that compares Recursive CTEs, LATERAL JOIN patterns, and JSON querying trade-offs in one production-like workload.
+   - Deliverable: a security architecture note with Row Level Security, masking policy, and GDPR crypto-shredding workflow.
+2. **Week 2 Expert Sprint (Days 88-90)**
+   - Deliverable: a formal Technical Design Doc from Day 88 plus Day 89 implementation evidence (`EXPLAIN ANALYZE` before/after).
+   - Deliverable: a mock system-design interview packet from Day 90 (schema decisions, scaling trade-offs, failure modes).
+3. **Week 3 Expert Sprint (Days 91-96C)**
+   - Deliverable: internals lab report connecting MVCC/WAL behavior to DDL/DML choices.
+   - Deliverable: architecture decision record: SQL-only vs hybrid SQL + NoSQL + Streaming SQL Fundamentals for one business scenario.
+
+**Expert completion gate**: finish all three sprints, then answer Milestone Exam Q1-Q4 in writing with architecture alternatives and cost implications.
+
 ---
 
 ## Real-World Application Scenarios
+
+Each scenario is structured as: **context -> diagnosis -> SQL intervention -> measurable business impact** so learners can practice complete architecture reasoning instead of isolated query tricks.
 
 ### Scenario 1: The Slow Analytics Dashboard
 
@@ -448,6 +497,22 @@ SUM(revenue) OVER (
     ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
 )
 ```
+
+---
+
+## Extras/ Usage Guidance (Tied to Learning Outcomes)
+
+Use `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/extras/` as targeted practice, not optional reading.
+
+| Learning outcome | Use this extras asset | When to use it |
+| --- | --- | --- |
+| "Deploy a working Postgres Database" (Day 89) | DDL starter scripts | Before capstone implementation to accelerate schema bootstrapping |
+| "Write a Python Script to seed 1M rows" (Day 89) | Sample datasets + load templates | During Day 89 stress testing and bulk load benchmarking |
+| "Read and Optimize a `EXPLAIN ANALYZE` query plan" (Days 94-95) | Query benchmark scripts | After Scenario 1 and Scenario 3 to validate speedup claims |
+| "Design a Partitioning strategy for Time-Series data" (Day 92) | Partitioning examples | Before attempting Milestone Exam Q2 |
+| "Select the right Database Engine (SQL vs NoSQL vs Columnar)" (Days 88, 96B, 96C) | Engine comparison notes | During Week 3 expert sprint architecture decision record |
+
+If you are time-limited, prioritize extras that directly unlock your current week's sprint deliverable.
 
 ---
 
