@@ -47,6 +47,26 @@ NumPy for fast numerical computing. Pandas for data wrangling, analysis, and tra
 | **Numerical Computing**    | NumPy arrays, broadcasting        |
 | **Data Analysis**          | Pandas DataFrames, groupby, merge |
 
+### Explicit Lesson-to-Skill Progression (Day 13 → 24D)
+
+| Day(s) | Lesson focus | Skill progression milestone | Business/MBA framing anchor |
+| --- | --- | --- | --- |
+| **13** | Higher-order functions (`map`/`filter`/`reduce`, closures) | Shift from writing one-off steps to parameterized transformation logic | Manager delegation model: pass behavior, not just data |
+| **14** | Modules & packages | Move from single-file scripts to reusable, team-friendly code organization | Company department model (Finance/HR/Engineering boundaries) |
+| **15** | Exception handling | Upgrade scripts into resilient workflows with controlled failure paths | Contingency planning for supplier/payment failures |
+| **16-17** | File handling + regex | Build ingestion/validation pipelines for messy operational inputs | CSV/JSON operations + customer-record quality checks |
+| **18-19** | OOP + datetime | Model entities and time-aware metrics used in recurring business decisions | Customer/order abstractions + invoicing/renewal timelines |
+| **20-21** | pip + virtual environments | Productionize work with reproducible dependency management | "Works on my machine" risk reduction for analytics teams |
+| **22-24** | NumPy + Pandas + advanced transforms | Scale from row-wise scripts to vectorized analysis, joins, pivots, time-series summarization | Bonus calculations, dashboard-ready rollups, regional KPI comparisons |
+| **24B-24C** | EDA memo + cleaning playbook | Add decision framing, quality controls, and validation assertions before storytelling | Executive-ready memo + explicit null/duplicate/type strategy |
+| **24D** | Mini capstone modular pipeline | Deliver an end-to-end package (ingest → clean → aggregate → insight brief) | Subscription-retention scenario with metric-backed recommendations |
+
+### Cross-Day Synthesis You Should Carry Forward
+
+- The phase is a deliberate maturity path: **behavior abstraction (Day 13) → code architecture (Day 14) → operational resilience (Day 15) → data reliability (Days 16-17, 24C) → analytical decision output (Days 23-24D)**.
+- The MBA through-line is consistent across lessons: each technical pattern maps to a management concern (delegation, org structure, risk controls, reporting cadence, and decision traceability).
+- Day 24B/24C/24D together form the bridge from "can compute metrics" to "can defend a recommendation with auditable data assumptions."
+
 ---
 
 ## The Expert's Toolkit
@@ -72,6 +92,20 @@ NumPy for fast numerical computing. Pandas for data wrangling, analysis, and tra
 ---
 
 ## Phase Milestone Exam
+
+### Day-Linked Exam Prompts (targeted practice before full milestone)
+
+1. **Day 13 + Day 15 Prompt (Functional reliability)**  
+   You inherit a list of transaction transforms implemented with lambdas. Refactor the pipeline so each transform can fail safely, logs its own context, and does not stop processing unaffected records.
+
+2. **Day 16 + Day 17 Prompt (Ingestion quality gate)**  
+   Given raw customer CSV exports and free-text notes, implement a pre-Pandas validation pass that flags malformed IDs/emails/phones with regex, writes rejected rows to a quarantine file, and reports rejection-rate by file.
+
+3. **Day 18 + Day 19 Prompt (Time-aware business objects)**  
+   Design a `SubscriptionAccount` class that computes renewal windows, grace periods, and SLA breach flags using timezone-aware timestamps, then emits a summary table for operations review.
+
+4. **Day 20 + Day 21 + Day 24D Prompt (Reproducibility under handoff)**  
+   Package a mini analytics pipeline so a teammate can clone, install via `requirements.txt`, run with one command, and reproduce the same `final_metrics.csv` and insight report without environment drift.
 
 ### Question 1: Data Pipeline
 
@@ -527,6 +561,13 @@ analyzer = Analyzer(MockDatabase({"revenue": [100, 200]}))
 ```
 
 ---
+
+## Prerequisite Links to Next Phases
+
+- **Phase 3 (Data Engineering, Web Development, APIs)**: Days **14-16 + 20-21** are prerequisites for packaging API projects, handling request/response failures safely, and running services in isolated environments.
+- **Phase 4-5 (Machine Learning)**: Days **22-24D** are direct prerequisites for feature preprocessing, train/test dataset shaping, leakage checks, and repeatable experiment inputs.
+- **Phase 6-7 (BI, storytelling, decision communication)**: Days **24B-24D** are prerequisites for executive memo writing, caveat communication, and KPI-to-recommendation traceability.
+- **Phase 8-9 (SQL + warehousing)**: Days **16-17 + 24C** support schema hygiene, entity resolution, and upstream data-quality assertions that keep warehouse models trustworthy.
 
 ## Completion Checklist
 

@@ -45,7 +45,7 @@
 
 ### Phase Overviews — Depth Upgrades
 
-- [ ] **Phase 2 Overview** — expand to Phase 5 depth standard (300+ lines, ROI table, 3-tier skills matrix, 5+ pitfalls, 4+ exam Qs)
+- [x] **Phase 2 Overview** — expanded to Phase 5 depth standard (300+ lines, ROI table, 3-tier skills matrix, 5+ pitfalls, 4+ exam Qs)
 - [ ] **Phase 8 Overview** — add scenario walkthroughs, 2 exam questions, expert track, extras/ folder
 - [ ] **Phase 9 Overview** — target 10–15 KB; add Cloud-native SQL section, curriculum capstone preview
 
