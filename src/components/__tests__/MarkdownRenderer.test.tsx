@@ -162,6 +162,26 @@ It is a test.
     expect(container.innerHTML).not.toContain('alert("xss")')
   })
 
+  it('renders tel markdown links as plain text when disallowed by sanitizer', () => {
+    const content = '[Call us](tel:1234567890)'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    expect(container.querySelector('a')).toBeNull()
+    expect(container.querySelector('span')?.textContent).toContain('Call us')
+  })
+
+  it('renders unsafe markdown links as plain text spans', () => {
+    const content = '[Bad Link](javascript:alert(1))'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    expect(container.querySelector('a')).toBeNull()
+    expect(container.querySelector('span')?.textContent).toContain('Bad Link')
+  })
+
   it('injects glossary tooltips', () => {
     const content = 'This is a function.'
     act(() => {

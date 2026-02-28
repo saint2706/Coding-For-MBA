@@ -126,9 +126,8 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
 const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
   // Respect fetchpriority for LCP (Hero) optimization
   // If fetchpriority="high", we should not lazy load.
-  const isHighPriority =
-    (props as any).fetchpriority === 'high' || props.fetchPriority === 'high';
-  return <img loading={isHighPriority ? "eager" : "lazy"} decoding="async" {...props} />
+  const isHighPriority = (props as any).fetchpriority === 'high' || props.fetchPriority === 'high'
+  return <img loading={isHighPriority ? 'eager' : 'lazy'} decoding="async" {...props} />
 }
 
 const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] & ExtraProps) => {
@@ -408,7 +407,7 @@ const lessonSanitizerSchema: RehypeSanitizeOptions = {
     '*': ['id'],
   },
   protocols: {
-    href: ['http', 'https', 'mailto', 'tel'],
+    href: ['http', 'https', 'mailto'],
     src: ['http', 'https'],
   },
 }

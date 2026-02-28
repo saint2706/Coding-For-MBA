@@ -60,6 +60,11 @@ describe('getSecureLinkAttributes', () => {
     expect(result).toBeNull()
   })
 
+  it('should reject tel links when protocol is not allowlisted', () => {
+    const result = getSecureLinkAttributes('tel:+1234567890')
+    expect(result).toBeNull()
+  })
+
   it('should not duplicate noopener noreferrer', () => {
     const result = getSecureLinkAttributes('https://example.com', { rel: 'noopener' })
     expect(result?.rel).toBe('noopener noreferrer')
@@ -144,6 +149,14 @@ describe('normalizeAndValidateHref', () => {
       normalizedHref: 'search?q=filter:value',
       isExternal: false,
       isSafe: true,
+    })
+  })
+
+  it('rejects tel links when protocol is not allowlisted', () => {
+    expect(normalizeAndValidateHref('tel:+1234567890')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
     })
   })
 })
