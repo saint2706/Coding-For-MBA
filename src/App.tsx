@@ -50,6 +50,8 @@ export default function App() {
 
   useLearningAnalytics(location.pathname)
 
+  const isLesson = location.pathname.startsWith('/lesson/')
+
   useEffect(() => {
     hydrateProgressStore()
     hydrateQuizStore()
@@ -72,7 +74,7 @@ export default function App() {
     <ThemeProvider>
       <div className="app-layout">
         <SkipToContent />
-        <ScrollProgress />
+        <ScrollProgress isLesson={isLesson} targetSelector={isLesson ? 'article' : undefined} />
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         <Navbar onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
         <main className="main-content" id="main-content" tabIndex={-1}>
