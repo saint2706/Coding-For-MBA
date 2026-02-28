@@ -17,6 +17,27 @@ const MAX_DAYS_RETAINED = 30
 
 type DayBuckets<T> = Record<string, T[]>
 
+let idNonce = 0
+
+function createStableId(prefix: 'msg' | 'card'): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return `${prefix}-${crypto.randomUUID()}`
+  }
+
+  idNonce += 1
+  return `${prefix}-${Date.now()}-${idNonce}`
+}
+
+function withMessageId(message: ChatMessage): ChatMessage {
+  if (message.id) return message
+  return { ...message, id: createStableId('msg') }
+}
+
+function withFlashcardId(card: Flashcard): Flashcard {
+  if (card.id) return card
+  return { ...card, id: createStableId('card') }
+}
+
 function pruneDayBuckets<T>(
   buckets: DayBuckets<T>,
   maxItemsPerDay: number,
@@ -35,11 +56,7 @@ function pruneDayBuckets<T>(
 
 function prunePersistedState(state: Pick<AiAssistantState, 'messagesByDay' | 'flashcardsByDay'>) {
   return {
-    messagesByDay: pruneDayBuckets(
-      state.messagesByDay,
-      MAX_MESSAGES_PER_DAY,
-      MAX_DAYS_RETAINED,
-    ),
+    messagesByDay: pruneDayBuckets(state.messagesByDay, MAX_MESSAGES_PER_DAY, MAX_DAYS_RETAINED),
     flashcardsByDay: pruneDayBuckets(
       state.flashcardsByDay,
       MAX_FLASHCARDS_PER_DAY,
@@ -49,111 +66,126 @@ function prunePersistedState(state: Pick<AiAssistantState, 'messagesByDay' | 'fl
 }
 
 interface AiAssistantState {
-    isOpen: boolean
-    isLoading: boolean
-    activeTab: 'chat' | 'flashcards'
-    messagesByDay: Record<string, ChatMessage[]>
-    flashcardsByDay: Record<string, Flashcard[]>
-    hintLevelsByExercise: Record<string, number>
+  isOpen: boolean
+  isLoading: boolean
+  activeTab: 'chat' | 'flashcards'
+  messagesByDay: Record<string, ChatMessage[]>
+  flashcardsByDay: Record<string, Flashcard[]>
+  hintLevelsByExercise: Record<string, number>
 
-    toggle: () => void
-    open: () => void
-    close: () => void
-    setLoading: (loading: boolean) => void
-    setActiveTab: (tab: 'chat' | 'flashcards') => void
-    addMessage: (day: string, message: ChatMessage) => void
-    clearMessages: (day: string) => void
-    setFlashcards: (day: string, cards: Flashcard[]) => void
-    getHintLevel: (exerciseId: string) => number
-    incrementHintLevel: (exerciseId: string) => number
-    resetHintLevel: (exerciseId: string) => void
+  toggle: () => void
+  open: () => void
+  close: () => void
+  setLoading: (loading: boolean) => void
+  setActiveTab: (tab: 'chat' | 'flashcards') => void
+  addMessage: (day: string, message: ChatMessage) => void
+  clearMessages: (day: string) => void
+  setFlashcards: (day: string, cards: Flashcard[]) => void
+  getHintLevel: (exerciseId: string) => number
+  incrementHintLevel: (exerciseId: string) => number
+  resetHintLevel: (exerciseId: string) => void
 }
 
 export const useAiAssistantStore = create<AiAssistantState>()(
-    persist(
-        (set, get) => ({
-            isOpen: false,
-            isLoading: false,
-            activeTab: 'chat',
-            messagesByDay: {},
-            flashcardsByDay: {},
-            hintLevelsByExercise: {},
+  persist(
+    (set, get) => ({
+      isOpen: false,
+      isLoading: false,
+      activeTab: 'chat',
+      messagesByDay: {},
+      flashcardsByDay: {},
+      hintLevelsByExercise: {},
 
-            toggle: () => set((s) => ({ isOpen: !s.isOpen })),
-            open: () => set({ isOpen: true }),
-            close: () => set({ isOpen: false }),
-            setLoading: (loading) => set({ isLoading: loading }),
-            setActiveTab: (tab) => set({ activeTab: tab }),
+      toggle: () => set((s) => ({ isOpen: !s.isOpen })),
+      open: () => set({ isOpen: true }),
+      close: () => set({ isOpen: false }),
+      setLoading: (loading) => set({ isLoading: loading }),
+      setActiveTab: (tab) => set({ activeTab: tab }),
 
-            addMessage: (day, message) =>
-                set((s) => {
-                    const nextMessagesByDay = {
-                        ...s.messagesByDay,
-                        [day]: [...(s.messagesByDay[day] || []), message],
-                    }
+      addMessage: (day, message) =>
+        set((s) => {
+          const nextMessagesByDay = {
+            ...s.messagesByDay,
+            [day]: [...(s.messagesByDay[day] || []), withMessageId(message)],
+          }
 
-                    return {
-                        messagesByDay: pruneDayBuckets(
-                            nextMessagesByDay,
-                            MAX_MESSAGES_PER_DAY,
-                            MAX_DAYS_RETAINED,
-                        ),
-                    }
-                }),
-
-            clearMessages: (day) =>
-                set((s) => ({
-                    messagesByDay: { ...s.messagesByDay, [day]: [] },
-                })),
-
-            setFlashcards: (day, cards) =>
-                set((s) => {
-                    const nextFlashcardsByDay = { ...s.flashcardsByDay, [day]: cards }
-                    return {
-                        flashcardsByDay: pruneDayBuckets(
-                            nextFlashcardsByDay,
-                            MAX_FLASHCARDS_PER_DAY,
-                            MAX_DAYS_RETAINED,
-                        ),
-                    }
-                }),
-
-            getHintLevel: (exerciseId) => get().hintLevelsByExercise[exerciseId] || 0,
-
-            incrementHintLevel: (exerciseId) => {
-                const current = get().hintLevelsByExercise[exerciseId] || 0
-                const next = Math.min(current + 1, 3)
-                set((s) => ({
-                    hintLevelsByExercise: { ...s.hintLevelsByExercise, [exerciseId]: next },
-                }))
-                return next
-            },
-
-            resetHintLevel: (exerciseId) =>
-                set((s) => ({
-                    hintLevelsByExercise: { ...s.hintLevelsByExercise, [exerciseId]: 0 },
-                })),
+          return {
+            messagesByDay: pruneDayBuckets(
+              nextMessagesByDay,
+              MAX_MESSAGES_PER_DAY,
+              MAX_DAYS_RETAINED,
+            ),
+          }
         }),
-        {
-            name: 'ai-assistant-store',
-            version: 1,
-            migrate: (persistedState) => {
-                const raw = (persistedState || {}) as Partial<AiAssistantState>
-                const pruned = prunePersistedState({
-                    messagesByDay: raw.messagesByDay || {},
-                    flashcardsByDay: raw.flashcardsByDay || {},
-                })
 
-                return {
-                    ...raw,
-                    ...pruned,
-                    hintLevelsByExercise: raw.hintLevelsByExercise || {},
-                }
-            },
-            partialize: (state) => ({
-                ...prunePersistedState(state),
-                hintLevelsByExercise: state.hintLevelsByExercise,
-            }),
-        },
-    ),
+      clearMessages: (day) =>
+        set((s) => ({
+          messagesByDay: { ...s.messagesByDay, [day]: [] },
+        })),
+
+      setFlashcards: (day, cards) =>
+        set((s) => {
+          const nextFlashcardsByDay = {
+            ...s.flashcardsByDay,
+            [day]: cards.map(withFlashcardId),
+          }
+          return {
+            flashcardsByDay: pruneDayBuckets(
+              nextFlashcardsByDay,
+              MAX_FLASHCARDS_PER_DAY,
+              MAX_DAYS_RETAINED,
+            ),
+          }
+        }),
+
+      getHintLevel: (exerciseId) => get().hintLevelsByExercise[exerciseId] || 0,
+
+      incrementHintLevel: (exerciseId) => {
+        const current = get().hintLevelsByExercise[exerciseId] || 0
+        const next = Math.min(current + 1, 3)
+        set((s) => ({
+          hintLevelsByExercise: { ...s.hintLevelsByExercise, [exerciseId]: next },
+        }))
+        return next
+      },
+
+      resetHintLevel: (exerciseId) =>
+        set((s) => ({
+          hintLevelsByExercise: { ...s.hintLevelsByExercise, [exerciseId]: 0 },
+        })),
+    }),
+    {
+      name: 'ai-assistant-store',
+      version: 1,
+      migrate: (persistedState) => {
+        const raw = (persistedState || {}) as Partial<AiAssistantState>
+        const pruned = prunePersistedState({
+          messagesByDay: raw.messagesByDay || {},
+          flashcardsByDay: raw.flashcardsByDay || {},
+        })
+
+        return {
+          ...raw,
+          ...pruned,
+          messagesByDay: Object.fromEntries(
+            Object.entries(pruned.messagesByDay).map(([day, messages]) => [
+              day,
+              messages.map(withMessageId),
+            ]),
+          ),
+          flashcardsByDay: Object.fromEntries(
+            Object.entries(pruned.flashcardsByDay).map(([day, cards]) => [
+              day,
+              cards.map(withFlashcardId),
+            ]),
+          ),
+          hintLevelsByExercise: raw.hintLevelsByExercise || {},
+        }
+      },
+      partialize: (state) => ({
+        ...prunePersistedState(state),
+        hintLevelsByExercise: state.hintLevelsByExercise,
+      }),
+    },
+  ),
 )

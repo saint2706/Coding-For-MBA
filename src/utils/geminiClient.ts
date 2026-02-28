@@ -181,11 +181,13 @@ async function postGemini<T>(url: string, payload: Record<string, unknown>): Pro
 }
 
 export interface ChatMessage {
+  id?: string
   role: 'user' | 'model'
   text: string
 }
 
 export interface Flashcard {
+  id?: string
   front: string
   back: string
 }

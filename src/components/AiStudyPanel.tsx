@@ -60,7 +60,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
   const [input, setInput] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isAiAvailable, setIsAiAvailable] = useState(() => isGeminiAvailable())
-  const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set())
+  const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set())
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -154,13 +154,13 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
     }
   }, [isLoading, lessonContent, dayKey, setFlashcards, setLoading])
 
-  const toggleFlashcard = (index: number) => {
+  const toggleFlashcard = (cardId: string) => {
     setFlippedCards((prev) => {
       const next = new Set(prev)
-      if (next.has(index)) {
-        next.delete(index)
+      if (next.has(cardId)) {
+        next.delete(cardId)
       } else {
-        next.add(index)
+        next.add(cardId)
       }
       return next
     })
@@ -260,11 +260,15 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                       </div>
                     )}
 
-                    {messages.map((msg, i) => (
-                      <div key={i} className={`ai-message ${msg.role}`}>
-                        {msg.text}
-                      </div>
-                    ))}
+                    {messages.map((msg) => {
+                      const messageId = msg.id || `${msg.role}-${msg.text}`
+
+                      return (
+                        <div key={messageId} className={`ai-message ${msg.role}`}>
+                          {msg.text}
+                        </div>
+                      )
+                    })}
 
                     {isLoading && (
                       <div className="ai-typing">
@@ -337,16 +341,20 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                   ) : (
                     <>
                       <p className="ai-flashcard-hint">Click a card to reveal the answer</p>
-                      {flashcards.map((card, i) => (
-                        <div
-                          key={i}
-                          className={`ai-flashcard ${!flippedCards.has(i) ? 'collapsed' : ''}`}
-                          onClick={() => toggleFlashcard(i)}
-                        >
-                          <div className="ai-flashcard-front">{card.front}</div>
-                          <div className="ai-flashcard-back">{card.back}</div>
-                        </div>
-                      ))}
+                      {flashcards.map((card) => {
+                        const cardId = card.id || `${card.front}-${card.back}`
+
+                        return (
+                          <div
+                            key={cardId}
+                            className={`ai-flashcard ${!flippedCards.has(cardId) ? 'collapsed' : ''}`}
+                            onClick={() => toggleFlashcard(cardId)}
+                          >
+                            <div className="ai-flashcard-front">{card.front}</div>
+                            <div className="ai-flashcard-back">{card.back}</div>
+                          </div>
+                        )
+                      })}
                       <button
                         className="ai-quick-action ai-flashcard-generate"
                         onClick={handleGenerateFlashcards}
