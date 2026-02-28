@@ -123,10 +123,10 @@
 
 .code-block-lang {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.08em;
 }
 
 .code-block-copy {
@@ -135,7 +135,7 @@
   border-radius: var(--radius-sm);
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.6875rem;
+  font-size: 0.8125rem;
   padding: 0.25rem 0.5rem;
   font-family: var(--font-body);
   transition: all var(--transition-fast);
@@ -158,8 +158,8 @@
 
 .markdown-body pre code {
   font-family: var(--font-mono) !important;
-  font-size: 0.8125rem !important;
-  line-height: 1.65 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.75 !important;
 }
 
 /* Tables */
@@ -173,7 +173,12 @@
 .markdown-body table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+}
+
+.markdown-body thead th,
+.markdown-body tbody td {
+  line-height: 1.5;
 }
 
 .markdown-body thead th {

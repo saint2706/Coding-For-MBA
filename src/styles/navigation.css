@@ -76,9 +76,9 @@
 
 .toc-title {
   font-weight: 600;
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.08em;
   color: var(--text-muted);
   margin-bottom: 0.75rem;
 }
@@ -101,6 +101,7 @@
   display: block;
   min-height: 44px;
   padding: 0.5rem 0.625rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
   text-decoration: none;
   border-left: 2px solid transparent;
@@ -240,6 +241,7 @@
     border: 1px solid var(--border-card);
     background: var(--bg-primary);
     color: var(--text-primary);
+    font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
   }
