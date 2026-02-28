@@ -8,6 +8,54 @@ const EMBED_URL =
 const rateLimitStore = globalThis.__geminiRateLimitStore ?? new Map()
 globalThis.__geminiRateLimitStore = rateLimitStore
 
+const ERROR_KIND = {
+  VALIDATION: 'validation',
+  RATE_LIMIT: 'rate_limit',
+  UPSTREAM: 'upstream',
+  CONFIG: 'config',
+  UNEXPECTED: 'unexpected',
+}
+
+const PUBLIC_ERROR_MAP = {
+  [ERROR_KIND.VALIDATION]: { status: 400, message: 'Invalid request' },
+  [ERROR_KIND.RATE_LIMIT]: { status: 429, message: 'Too many requests' },
+  [ERROR_KIND.UPSTREAM]: { status: 502, message: 'Service unavailable' },
+  [ERROR_KIND.CONFIG]: { status: 503, message: 'Service unavailable' },
+  [ERROR_KIND.UNEXPECTED]: { status: 500, message: 'Internal server error' },
+}
+
+export class InternalApiError extends Error {
+  constructor(kind, details, options = {}) {
+    super(details)
+    this.name = 'InternalApiError'
+    this.kind = kind
+    this.details = details
+    this.headers = options.headers ?? {}
+  }
+}
+
+function createValidationError(details) {
+  return new InternalApiError(ERROR_KIND.VALIDATION, details)
+}
+
+function createRateLimitError(retryAfterSeconds) {
+  return new InternalApiError(ERROR_KIND.RATE_LIMIT, 'Rate limit exceeded', {
+    headers: { 'Retry-After': String(retryAfterSeconds) },
+  })
+}
+
+function createUpstreamError(details) {
+  return new InternalApiError(ERROR_KIND.UPSTREAM, details)
+}
+
+function createConfigError(details) {
+  return new InternalApiError(ERROR_KIND.CONFIG, details)
+}
+
+function createUnexpectedError(details) {
+  return new InternalApiError(ERROR_KIND.UNEXPECTED, details)
+}
+
 function getClientIp(req) {
   const forwarded = req.headers['x-forwarded-for']
   if (typeof forwarded === 'string' && forwarded.length > 0) {
@@ -123,7 +171,7 @@ export function sendJson(res, status, body) {
 
 async function callGemini(url, body) {
   if (!GEMINI_API_KEY) {
-    throw new Error('Server missing GEMINI_API_KEY')
+    throw createConfigError('Server missing GEMINI_API_KEY')
   }
 
   const response = await fetch(`${url}?key=${GEMINI_API_KEY}`, {
@@ -135,7 +183,7 @@ async function callGemini(url, body) {
   if (!response.ok) {
     const error = await response.json().catch(() => ({}))
     const message = error?.error?.message || response.statusText
-    throw new Error(message)
+    throw createUpstreamError(message)
   }
 
   return response.json()
@@ -144,14 +192,13 @@ async function callGemini(url, body) {
 export async function handleGenerate(req, res) {
   const limit = checkRateLimit(req, 'generate', 30, 60_000)
   if (!limit.allowed) {
-    res.setHeader('Retry-After', String(limit.retryAfterSeconds))
-    return sendJson(res, 429, { error: 'Rate limit exceeded' })
+    throw createRateLimitError(limit.retryAfterSeconds)
   }
 
   const payload = await parseJsonBody(req)
   const validation = validateGeneratePayload(payload)
   if (!validation.valid) {
-    return sendJson(res, 400, { error: validation.error })
+    throw createValidationError(validation.error)
   }
 
   const { systemInstruction, userMessage, history = [] } = payload
@@ -172,7 +219,7 @@ export async function handleGenerate(req, res) {
 
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text
   if (!text) {
-    throw new Error('No response from Gemini')
+    throw createUpstreamError('No response from Gemini')
   }
 
   return sendJson(res, 200, { text })
@@ -181,14 +228,13 @@ export async function handleGenerate(req, res) {
 export async function handleEmbed(req, res) {
   const limit = checkRateLimit(req, 'embed', 300, 60_000)
   if (!limit.allowed) {
-    res.setHeader('Retry-After', String(limit.retryAfterSeconds))
-    return sendJson(res, 429, { error: 'Rate limit exceeded' })
+    throw createRateLimitError(limit.retryAfterSeconds)
   }
 
   const payload = await parseJsonBody(req)
   const validation = validateEmbedPayload(payload)
   if (!validation.valid) {
-    return sendJson(res, 400, { error: validation.error })
+    throw createValidationError(validation.error)
   }
 
   const data = await callGemini(EMBED_URL, {
@@ -197,7 +243,7 @@ export async function handleEmbed(req, res) {
 
   const embedding = data?.embedding?.values
   if (!Array.isArray(embedding) || embedding.length === 0) {
-    throw new Error('No embedding returned')
+    throw createUpstreamError('No embedding returned')
   }
 
   return sendJson(res, 200, { embedding })
@@ -207,8 +253,27 @@ export async function withErrorHandling(handler, req, res) {
   try {
     await handler(req, res)
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unexpected server error'
-    const status = message.startsWith('Server missing') ? 503 : 500
-    sendJson(res, status, { error: message })
+    const internalError =
+      error instanceof InternalApiError
+        ? error
+        : createUnexpectedError(error instanceof Error ? error.message : 'Unknown error')
+    const mapping = PUBLIC_ERROR_MAP[internalError.kind] ?? PUBLIC_ERROR_MAP[ERROR_KIND.UNEXPECTED]
+
+    console.error('Gemini API error', {
+      kind: internalError.kind,
+      details: internalError.details,
+      handler: handler.name,
+    })
+
+    Object.entries(internalError.headers).forEach(([key, value]) => {
+      res.setHeader(key, value)
+    })
+
+    sendJson(res, mapping.status, {
+      error: {
+        type: internalError.kind,
+        message: mapping.message,
+      },
+    })
   }
 }
