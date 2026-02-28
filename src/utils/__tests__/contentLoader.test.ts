@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import {
   getAdjacentLessons,
   getAllExercises,
@@ -11,6 +13,7 @@ import {
   getPrerequisiteLessons,
   getReadingTime,
   getRelatedLessons,
+  parseNotebookEntry,
 } from '../contentLoader'
 
 describe('contentLoader', () => {
@@ -103,6 +106,52 @@ test words repeated `.repeat(120)
     expect(notebooks.length).toBeGreaterThan(0)
 
     expect(getNotebook(9999)).toBeUndefined()
+  })
+
+  it('logs notebook parse failures and keeps UX resilient', () => {
+    const notebookPath = '/content/lessons/Phase_99_Test/Phase_99_Solutions.ipynb'
+    const invalidNotebookRaw = readFileSync(
+      resolve(__dirname, 'fixtures', 'invalid-notebook.ipynb'),
+      'utf-8',
+    )
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const parsed = parseNotebookEntry(notebookPath, invalidNotebookRaw, {
+      attachParseError: false,
+    })
+
+    expect(parsed.phase).toBe(99)
+    expect(parsed.cells).toEqual([])
+    expect(parsed.parseError).toBeUndefined()
+    expect(warnSpy).toHaveBeenCalledWith(
+      `[contentLoader] Failed to parse notebook JSON for phase 99 at ${notebookPath}.`,
+      expect.any(SyntaxError),
+    )
+
+    warnSpy.mockRestore()
+  })
+
+  it('attaches parseError metadata in dev diagnostics mode', () => {
+    const notebookPath = '/content/lessons/Phase_7_ML/Phase_7_Solutions.ipynb'
+    const invalidNotebookRaw = readFileSync(
+      resolve(__dirname, 'fixtures', 'invalid-notebook.ipynb'),
+      'utf-8',
+    )
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const parsed = parseNotebookEntry(notebookPath, invalidNotebookRaw, {
+      attachParseError: true,
+    })
+
+    expect(parsed.cells).toEqual([])
+    expect(parsed.parseError).toEqual(
+      expect.objectContaining({
+        path: notebookPath,
+        phase: 7,
+      }),
+    )
+
+    warnSpy.mockRestore()
   })
 
   it('returns empty prerequisites when none are configured', () => {

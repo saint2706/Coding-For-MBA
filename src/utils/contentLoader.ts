@@ -377,6 +377,11 @@ export interface NotebookCell {
 export interface Notebook {
   phase: number
   cells: readonly NotebookCell[]
+  parseError?: {
+    path: string
+    phase: number
+    message: string
+  }
 }
 
 type ImmutableLesson = Readonly<Lesson>
@@ -465,18 +470,47 @@ const notebookFiles = import.meta.glob('/content/lessons/**/Phase_*_Solutions.ip
 /** Parse notebook files and map each one to a phase number. */
 function parseNotebooks(): Notebook[] {
   return Object.entries(notebookFiles)
-    .map(([path, raw]) => {
-      const phaseMatch = path.match(/Phase_(\d+)/)
-      const phaseValue = phaseMatch?.[1]
-      const phase = phaseValue ? parseInt(phaseValue, 10) : 0
-      try {
-        const nb = JSON.parse(raw) as { cells: NotebookCell[] }
-        return { phase, cells: nb.cells || [] }
-      } catch {
-        return { phase, cells: [] }
-      }
-    })
+    .map(([path, raw]) =>
+      parseNotebookEntry(path, raw, { attachParseError: Boolean(import.meta.env.DEV) }),
+    )
     .sort((a, b) => a.phase - b.phase)
+}
+
+type ParseNotebookEntryOptions = {
+  attachParseError?: boolean
+}
+
+export function parseNotebookEntry(
+  path: string,
+  raw: string,
+  options: ParseNotebookEntryOptions = {},
+): Notebook {
+  const phaseMatch = path.match(/Phase_(\d+)/)
+  const phaseValue = phaseMatch?.[1]
+  const phase = phaseValue ? parseInt(phaseValue, 10) : 0
+
+  try {
+    const nb = JSON.parse(raw) as { cells?: NotebookCell[] }
+    return { phase, cells: nb.cells || [] }
+  } catch (error) {
+    console.warn(
+      `[contentLoader] Failed to parse notebook JSON for phase ${phase} at ${path}.`,
+      error,
+    )
+
+    const message = error instanceof Error ? error.message : String(error)
+    return {
+      phase,
+      cells: [],
+      parseError: options.attachParseError
+        ? {
+            path,
+            phase,
+            message,
+          }
+        : undefined,
+    }
+  }
 }
 
 let immutableNotebooks: readonly ImmutableNotebook[] | null = null
