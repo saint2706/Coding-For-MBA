@@ -1,3 +1,5 @@
+import crypto from 'node:crypto'
+
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY
 
 const GENERATE_URL =
@@ -12,6 +14,23 @@ globalThis.__geminiRateLimitMeta = rateLimitMeta
 
 const RATE_LIMIT_CLEANUP_CADENCE = 50
 const MAX_RATE_LIMIT_ENTRIES = 10_000
+
+/**
+ * Deployment assumption:
+ * - Only enable forwarded header trust when traffic is known to come through
+ *   a reverse proxy/load balancer that strips client-supplied forwarding headers.
+ * - Proxies trusted for x-forwarded-for parsing are configured via GEMINI_TRUSTED_PROXIES.
+ * - x-user-id is accepted only from authenticated middleware (req.auth.userId), or
+ *   when its signature is verified with GEMINI_USER_ID_SIGNING_SECRET.
+ */
+function getTrustedProxySet() {
+  return new Set(
+    (process.env.GEMINI_TRUSTED_PROXIES ?? '')
+      .split(',')
+      .map((item) => item.trim())
+      .filter(Boolean),
+  )
+}
 
 const ERROR_KIND = {
   VALIDATION: 'validation',
@@ -61,24 +80,94 @@ function createUnexpectedError(details) {
   return new InternalApiError(ERROR_KIND.UNEXPECTED, details)
 }
 
+function normalizeAddress(address) {
+  if (typeof address !== 'string') {
+    return null
+  }
+
+  if (address.startsWith('::ffff:')) {
+    return address.slice(7)
+  }
+
+  return address
+}
+
+function isTrustedProxy(req) {
+  const remoteAddress = normalizeAddress(req.socket?.remoteAddress)
+  const trustedProxySet = getTrustedProxySet()
+
+  if (!remoteAddress || trustedProxySet.size === 0) {
+    return false
+  }
+  return trustedProxySet.has(remoteAddress)
+}
+
 function getClientIp(req) {
   const forwarded = req.headers['x-forwarded-for']
-  if (typeof forwarded === 'string' && forwarded.length > 0) {
+  if (isTrustedProxy(req) && typeof forwarded === 'string' && forwarded.length > 0) {
     return forwarded.split(',')[0].trim()
   }
 
-  if (Array.isArray(forwarded) && forwarded.length > 0) {
+  if (isTrustedProxy(req) && Array.isArray(forwarded) && forwarded.length > 0) {
     return forwarded[0].split(',')[0].trim()
   }
 
-  return req.socket?.remoteAddress ?? 'unknown'
+  return normalizeAddress(req.socket?.remoteAddress) ?? 'unknown'
+}
+
+function getUserIdFromMiddleware(req) {
+  if (typeof req.auth?.userId === 'string' && req.auth.userId.trim().length > 0) {
+    return req.auth.userId.slice(0, 64)
+  }
+
+  return null
+}
+
+function getHeaderValue(req, key) {
+  const value = req.headers[key]
+  return typeof value === 'string' ? value : null
+}
+
+function isValidUserIdSignature(userId, signature) {
+  const signingSecret = process.env.GEMINI_USER_ID_SIGNING_SECRET
+  if (!signingSecret || !signature) {
+    return false
+  }
+
+  const expected = crypto.createHmac('sha256', signingSecret).update(userId).digest('hex')
+
+  if (signature.length !== expected.length) {
+    return false
+  }
+
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+}
+
+function getUserIdentity(req) {
+  const middlewareUserId = getUserIdFromMiddleware(req)
+  if (middlewareUserId) {
+    return middlewareUserId
+  }
+
+  const userId = getHeaderValue(req, 'x-user-id')
+  const signature =
+    getHeaderValue(req, 'x-user-id-signature') ?? getHeaderValue(req, 'x-user-id-sig')
+
+  if (userId && isValidUserIdSignature(userId, signature)) {
+    return userId.slice(0, 64)
+  }
+
+  const sessionId = req.sessionID ?? req.session?.id
+  if (typeof sessionId === 'string' && sessionId.trim().length > 0) {
+    return `session:${sessionId.slice(0, 64)}`
+  }
+
+  return 'anonymous'
 }
 
 function getClientKey(req) {
   const ip = getClientIp(req)
-  const userIdHeader = req.headers['x-user-id']
-  const userId = typeof userIdHeader === 'string' ? userIdHeader.slice(0, 64) : 'anonymous'
-  return `${ip}:${userId}`
+  return `${ip}:${getUserIdentity(req)}`
 }
 
 function cleanupExpiredRateLimitEntries(now) {
