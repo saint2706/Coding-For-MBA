@@ -7,6 +7,11 @@ const EMBED_URL =
 
 const rateLimitStore = globalThis.__geminiRateLimitStore ?? new Map()
 globalThis.__geminiRateLimitStore = rateLimitStore
+const rateLimitMeta = globalThis.__geminiRateLimitMeta ?? { requestCount: 0 }
+globalThis.__geminiRateLimitMeta = rateLimitMeta
+
+const RATE_LIMIT_CLEANUP_CADENCE = 50
+const MAX_RATE_LIMIT_ENTRIES = 10_000
 
 const ERROR_KIND = {
   VALIDATION: 'validation',
@@ -76,17 +81,46 @@ function getClientKey(req) {
   return `${ip}:${userId}`
 }
 
-function checkRateLimit(req, endpoint, maxRequests, windowMs) {
-  const now = Date.now()
+function cleanupExpiredRateLimitEntries(now) {
+  for (const [key, entry] of rateLimitStore.entries()) {
+    if (entry.resetAt < now) {
+      rateLimitStore.delete(key)
+    }
+  }
+}
+
+function trimRateLimitStore(maxEntries) {
+  while (rateLimitStore.size > maxEntries) {
+    const oldestKey = rateLimitStore.keys().next().value
+    if (typeof oldestKey === 'undefined') {
+      break
+    }
+    rateLimitStore.delete(oldestKey)
+  }
+}
+
+export function checkRateLimit(req, endpoint, maxRequests, windowMs, options = {}) {
+  const now = options.now ?? Date.now()
+  const cleanupEveryNRequests = options.cleanupEveryNRequests ?? RATE_LIMIT_CLEANUP_CADENCE
+  const maxEntries = options.maxEntries ?? MAX_RATE_LIMIT_ENTRIES
+
+  rateLimitMeta.requestCount += 1
+  if (rateLimitMeta.requestCount % cleanupEveryNRequests === 0) {
+    cleanupExpiredRateLimitEntries(now)
+  }
+
   const clientKey = `${endpoint}:${getClientKey(req)}`
   const entry = rateLimitStore.get(clientKey)
 
   if (!entry || now > entry.resetAt) {
     rateLimitStore.set(clientKey, { count: 1, resetAt: now + windowMs })
+    trimRateLimitStore(maxEntries)
     return { allowed: true, retryAfterSeconds: 0 }
   }
 
   if (entry.count >= maxRequests) {
+    rateLimitStore.delete(clientKey)
+    rateLimitStore.set(clientKey, entry)
     return {
       allowed: false,
       retryAfterSeconds: Math.max(1, Math.ceil((entry.resetAt - now) / 1000)),
@@ -94,8 +128,19 @@ function checkRateLimit(req, endpoint, maxRequests, windowMs) {
   }
 
   entry.count += 1
+  rateLimitStore.delete(clientKey)
   rateLimitStore.set(clientKey, entry)
+  trimRateLimitStore(maxEntries)
   return { allowed: true, retryAfterSeconds: 0 }
+}
+
+export function __resetRateLimitStore() {
+  rateLimitStore.clear()
+  rateLimitMeta.requestCount = 0
+}
+
+export function __getRateLimitEntries() {
+  return Array.from(rateLimitStore.entries())
 }
 
 function validateMessages(history) {
