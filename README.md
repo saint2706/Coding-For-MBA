@@ -135,6 +135,9 @@ The frontend no longer calls Google Gemini APIs directly. It now calls backend e
 - Gemini key is never exposed to browser bundles.
 - Backend validates request shape and max input sizes.
 - Backend applies per-IP/per-user in-memory rate limits before calling Gemini.
+- `x-forwarded-for` is used only when requests come from IPs listed in `GEMINI_TRUSTED_PROXIES` (reverse proxy/load balancer).
+- `x-user-id` is ignored unless set by authenticated middleware (`req.auth.userId`) or accompanied by a valid `x-user-id-signature` HMAC generated with `GEMINI_USER_ID_SIGNING_SECRET`.
+- When no trusted user identity is available, rate limiting falls back to socket IP plus optional middleware session ID.
 - Backend returns minimal fields only (`text` for generation, `embedding` for embeddings).
 
 ## 📜 Available Scripts
