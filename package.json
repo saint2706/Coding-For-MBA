@@ -25,7 +25,8 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
     "prepare": "husky",
-    "lint:ci": "npm run typecheck"
+    "lint:ci": "npm run typecheck",
+    "typecheck:staged": "node -e \"require('child_process').spawnSync('npm',['run','typecheck'],{stdio:'inherit',shell:true})\""
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.0.6",
@@ -72,7 +73,7 @@
       "prettier --write"
     ],
     "*.{ts,tsx}": [
-      "cmd /c npm run typecheck"
+      "npm run typecheck:staged"
     ]
   }
 }
