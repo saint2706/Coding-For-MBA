@@ -217,13 +217,24 @@ describe('usePyodide', () => {
       await hookResult.ensureLoaded()
     })
 
+    const unhandledRejections: string[] = []
+    const onUnhandledRejection = (event: PromiseRejectionEvent) => {
+      unhandledRejections.push(String(event.reason))
+      event.preventDefault()
+    }
+    window.addEventListener('unhandledrejection', onUnhandledRejection)
+
     // Simulate runPythonAsync taking longer than timeout
     const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
     if (window._pyodideInstance) {
-      window._pyodideInstance.runPythonAsync = async () => {
-        await new Promise((resolve) => setTimeout(resolve, 100))
-        return 'done'
-      }
+      window._pyodideInstance.runPythonAsync = vi
+        .fn()
+        .mockImplementation(
+          () =>
+            new Promise((_, reject) => {
+              setTimeout(() => reject(new Error('Late python failure')), 100)
+            }),
+        )
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -233,7 +244,18 @@ describe('usePyodide', () => {
       result = await hookResult.runPython('sleep', { timeoutMs: 10 })
     })
 
-    expect(result.error).toContain('Python execution timed out')
+    expect(result).toEqual({
+      output: '',
+      error: 'Python execution timed out after 10ms.',
+    })
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 150))
+    })
+
+    expect(unhandledRejections).toEqual([])
+
+    window.removeEventListener('unhandledrejection', onUnhandledRejection)
 
     // Restore
     if (window._pyodideInstance && originalRunPythonAsync) {
