@@ -135,8 +135,9 @@ export function buildLessonSchema(
 ): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
-    '@type': 'LearningResource',
+    '@type': ['LearningResource', 'TechArticle'],
     name: title,
+    headline: title,
     description,
     url: buildCanonicalUrl(path),
     isPartOf: {
