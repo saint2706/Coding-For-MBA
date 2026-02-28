@@ -68,15 +68,25 @@ const FUSE_OPTIONS: IFuseOptions<SearchDocument> = {
  */
 function stripMarkdown(md: string): string {
   if (!md) return ''
+
   return (
     md
-      // Combined pass: Remove code blocks, inline code, and images
-      .replace(/```[\s\S]*?```|`[^`]*`|!\[[^\]]*\]\([^)]+\)/g, ' ')
-      // Pass 2: Extract text from links [text](url) -> text
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      // Pass 3: Remove list markers (ordered/unordered), headers, blockquotes, horizontal rules
-      .replace(/(^\s*\d+\.\s+|^\s*[-*+]\s+|[#_~>|]+)/gm, ' ')
-      // Pass 4: Collapse whitespace
+      // Keep code content and remove fence markers (` ```python ` / ` ``` `).
+      .replace(/```[^\n]*\n?/g, ' ')
+      // Keep identifier-like tokens from inline code while dropping wrapping ticks.
+      .replace(/`([^`]+)`/g, '$1')
+      // Keep human-readable alt text and link text.
+      .replace(/!\[([^\]]*)\]\([^)]+\)/g, ' $1 ')
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, ' $1 ')
+      // Remove structural markdown syntax without touching intra-token punctuation.
+      .replace(/^\s{0,3}(?:[-*+]|\d+\.)\s+/gm, ' ')
+      .replace(/^\s{0,3}>\s?/gm, ' ')
+      .replace(/^\s{0,3}#{1,6}\s+/gm, ' ')
+      .replace(/^\s{0,3}(?:[-*_]\s*){3,}$/gm, ' ')
+      // Remove emphasis markers only when used as wrappers around words.
+      .replace(/(\*\*|__|~~)(?=\S)([\s\S]*?\S)\1/g, '$2')
+      .replace(/(^|\s)([*_])(?=\S)([^\n]*?\S)\2(?=\s|$)/g, '$1$3')
+      // Collapse whitespace deterministically.
       .replace(/\s+/g, ' ')
       .trim()
   )

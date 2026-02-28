@@ -40,6 +40,32 @@ const lessons: Lesson[] = [
     content: 'Body also mentions python variables in plain text.',
     path: '/fake/3',
   },
+  {
+    day: '4',
+    daySortKey: '00004:',
+    title: 'Python Naming and Tooling',
+    phase: 1,
+    tags: ['style guide'],
+    concepts: ['naming conventions'],
+    content: `
+### Variable Naming Conventions
+
+In professional Python (following PEP 8 style guide):
+
+\`\`\`python
+# Variables and functions: snake_case
+customer_lifetime_value = 2500
+monthly-recurring-revenue = 45000
+\`\`\`
+
+- Read [NumPy Documentation](https://numpy.org/doc/)
+- Review [Pandas Documentation](https://pandas.pydata.org/docs/)
+1. Prefer clear names for feature-engineering pipelines.
+
+Photon is Databricks' C++ query engine for SQL workloads.
+`,
+    path: '/fake/4',
+  },
 ]
 
 // Mock getAllLessons if it was imported directly, but here passing lessons explicitly to createSearchDocuments
@@ -57,10 +83,11 @@ describe('search index', () => {
     vi.restoreAllMocks()
   })
 
-  it('creates plain content without fenced code blocks', () => {
+  it('creates plain content without fence markers', () => {
     const docs = createSearchDocuments(lessons)
     expect(docs[0]?.plainContent).toContain('Variables store values')
-    expect(docs[0]?.plainContent).not.toContain('print("ignore me")')
+    expect(docs[0]?.plainContent).toContain('print("ignore me")')
+    expect(docs[0]?.plainContent).not.toContain('```python')
   })
 
   it('strips complex markdown correctly', () => {
@@ -100,6 +127,19 @@ _Italic_
     expect(plain).toContain('Italic')
   })
 
+  it('preserves technical tokens from lesson markdown structures', () => {
+    const docs = createSearchDocuments([lessons[3]!])
+    const plain = docs[0]?.plainContent ?? ''
+
+    expect(plain).toContain('snake_case')
+    expect(plain).toContain('monthly-recurring-revenue')
+    expect(plain).toContain('C++')
+    expect(plain).toContain('NumPy Documentation')
+    expect(plain).toContain('Pandas Documentation')
+    expect(plain).not.toContain('```')
+    expect(plain).not.toContain('[NumPy Documentation]')
+  })
+
   it('applies stronger ranking for title > concepts > tags > body', () => {
     const docs = createSearchDocuments(lessons)
     const [titleDoc, tagDoc, conceptDoc] = docs
@@ -119,12 +159,28 @@ _Italic_
     expect(results[0]?.item.day).toBe('1')
   })
 
+  it('maintains recall for technical identifier queries', () => {
+    const engine = createSearchEngine(lessons)
+
+    expect(engine.search('snake_case')[0]?.item.day).toBe('4')
+    expect(engine.search('c++ query engine')[0]?.item.day).toBe('4')
+    expect(engine.search('numpy documentation')[0]?.item.day).toBe('4')
+  })
+
   it('generates correct snippets', () => {
     const content =
       'This is a long text containing the keyword python in the middle of the sentence.'
     const snippet = getSearchSnippet(content, 'python', 20)
     expect(snippet).toContain('python')
     expect(snippet.length).toBeLessThan(50)
+  })
+
+  it('generates compact snippets for technical queries', () => {
+    const doc = createSearchDocuments([lessons[3]!])[0]!
+    const snippet = getSearchSnippet(doc.plainContent, 'c++ query engine', 28)
+
+    expect(snippet.toLowerCase()).toContain('engine')
+    expect(snippet.length).toBeLessThanOrEqual(65)
   })
 
   it('handles empty query in snippet', () => {
@@ -139,11 +195,13 @@ _Italic_
     expect(snippet).toBe('Some content…')
   })
 
-  it('starts background indexing using requestIdleCallback', () => {
+  it('starts background indexing using requestIdleCallback', async () => {
+    vi.resetModules()
     const requestIdleCallback = vi.fn()
     window.requestIdleCallback = requestIdleCallback
 
-    startBackgroundIndexing()
+    const { startBackgroundIndexing: startFreshIndexing } = await import('../searchIndex')
+    startFreshIndexing()
 
     expect(requestIdleCallback).toHaveBeenCalled()
   })
