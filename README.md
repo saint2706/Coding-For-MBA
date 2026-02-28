@@ -99,6 +99,44 @@ scripts/               # Build and validation scripts
 - Ranking prioritizes **title > concepts > tags > body** and returns highlighted snippets.
 - The index is built on the client and cached after initial load, so it works offline once assets are cached.
 
+
+## 🤖 Gemini Backend Setup
+
+The frontend no longer calls Google Gemini APIs directly. It now calls backend endpoints:
+
+- `POST /api/gemini/generate`
+- `POST /api/gemini/embed`
+
+### Environment Variables
+
+- `GEMINI_API_KEY` (**server only**): real Gemini key used by backend handlers.
+- `VITE_GEMINI_API_BASE` (optional, frontend): base URL for backend API if it is hosted separately. Leave empty for same-origin (`/api/...`).
+
+### Local Development
+
+1. Create `.env.local` in the project root with:
+
+   ```bash
+   GEMINI_API_KEY=your_real_gemini_key
+   # Optional when API is on another origin
+   # VITE_GEMINI_API_BASE=http://localhost:3000
+   ```
+
+2. Start Vite as usual:
+
+   ```bash
+   npm run dev
+   ```
+
+3. In development, `vite.config.ts` mounts local backend middleware for `/api/gemini/*`.
+
+### Security Controls
+
+- Gemini key is never exposed to browser bundles.
+- Backend validates request shape and max input sizes.
+- Backend applies per-IP/per-user in-memory rate limits before calling Gemini.
+- Backend returns minimal fields only (`text` for generation, `embedding` for embeddings).
+
 ## 📜 Available Scripts
 
 | Script | Description |
