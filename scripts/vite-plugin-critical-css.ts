@@ -7,23 +7,34 @@
  * Uses beasties (the maintained fork of critters).
  */
 
-import type { Plugin } from 'vite'
+import path from 'node:path'
+
+import type { Plugin, ResolvedConfig } from 'vite'
 
 export default function criticalCss(): Plugin {
+  let resolvedConfig: ResolvedConfig | null = null
+
   return {
     name: 'vite-plugin-critical-css',
     apply: 'build',
     enforce: 'post',
 
+    configResolved(config) {
+      resolvedConfig = config
+    },
+
     async transformIndexHtml(html: string) {
       try {
         const { default: Beasties } = await import('beasties')
+        const outDir = resolvedConfig?.build.outDir ?? 'dist'
+        const rootDir = resolvedConfig?.root ?? process.cwd()
         const beasties = new Beasties({
-          path: '', // not used since we pass HTML directly
-          publicPath: '',
+          path: path.resolve(rootDir, outDir),
+          publicPath: resolvedConfig?.base ?? '/',
           inlineFonts: false,
           preload: 'swap',
           pruneSource: false,
+          logLevel: 'error',
         })
         return await beasties.process(html)
       } catch {

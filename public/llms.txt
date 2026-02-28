@@ -341,3 +341,52 @@
   - Concepts: demographic parity and equalized odds, dataset bias, model bias audit, red-teaming LLMs, AI transparency and disclosure
 - [Day 120: Capstone: Build an AI-Powered Data Assistant](https://saint2706.github.io/Coding-For-MBA/#/lesson/120)
   - Concepts: end-to-end LLM application, RAG + agents + evaluation, production-ready deployment, responsible AI principles
+
+### [Phase 11: Cloud Data Engineering](https://saint2706.github.io/Coding-For-MBA/#/phase/11)
+
+**Lessons:**
+- [Day 121: Cloud Fundamentals — AWS, GCP, Azure](https://saint2706.github.io/Coding-For-MBA/#/lesson/121)
+  - Concepts: cloud computing models (IaaS, PaaS, SaaS), shared responsibility model, IAM (Identity and Access Management), regions and availability zones, cloud cost management
+- [Day 122: Object Storage — S3, GCS, Delta Lake, Iceberg](https://saint2706.github.io/Coding-For-MBA/#/lesson/122)
+  - Concepts: object storage vs block storage, data lake architecture, open table formats (Delta Lake, Iceberg), partitioning strategies, lifecycle policies
+- [Day 123: Cloud Data Warehouses — BigQuery, Snowflake, Redshift](https://saint2706.github.io/Coding-For-MBA/#/lesson/123)
+  - Concepts: columnar storage, massively parallel processing (MPP), compute-storage separation, slots vs virtual warehouses, materialized views
+- [Day 124: dbt at Scale — Incremental Models, Snapshots, Advanced Patterns](https://saint2706.github.io/Coding-For-MBA/#/lesson/124)
+  - Concepts: incremental models, dbt snapshots (SCD Type 2), Jinja macros and packages, dbt tests and contracts, model governance
+- [Day 125: Orchestration — Apache Airflow, Prefect, Dagster](https://saint2706.github.io/Coding-For-MBA/#/lesson/125)
+  - Concepts: directed acyclic graphs (DAGs), task dependencies and scheduling, idempotency in data pipelines, retry strategies and alerting, orchestrator selection
+- [Day 126: Streaming Pipelines — Kafka, Pub/Sub, Kinesis](https://saint2706.github.io/Coding-For-MBA/#/lesson/126)
+  - Concepts: event-driven architecture, topics, partitions, and consumer groups, exactly-once vs at-least-once delivery, stream processing patterns, windowing (tumbling, sliding, session)
+- [Day 127: Lakehouse Architecture — Databricks, Unity Catalog, Delta Live Tables](https://saint2706.github.io/Coding-For-MBA/#/lesson/127)
+  - Concepts: lakehouse paradigm, Unity Catalog for data governance, Delta Live Tables for declarative ETL, medallion architecture at scale, photon engine optimization
+- [Day 128: Data Contracts and Quality — Great Expectations, Soda, SLAs](https://saint2706.github.io/Coding-For-MBA/#/lesson/128)
+  - Concepts: data contracts between producers and consumers, expectation suites and validation, data SLAs and SLOs, schema validation and profiling, anomaly detection on data
+- [Day 129: Cloud Security and Compliance — VPC, Encryption, PII](https://saint2706.github.io/Coding-For-MBA/#/lesson/129)
+  - Concepts: network security (VPC, subnets, security groups), encryption at rest and in transit, PII detection and masking, compliance frameworks (GDPR, HIPAA, SOC 2), secrets management
+- [Day 130: Cost Engineering — FinOps for Data Platforms](https://saint2706.github.io/Coding-For-MBA/#/lesson/130)
+  - Concepts: FinOps principles and culture, cost attribution and tagging, reserved vs on-demand vs spot, query cost optimization, storage tiering
+- [Day 131: Platform Engineering — Terraform, IaC, Self-Serve Infrastructure](https://saint2706.github.io/Coding-For-MBA/#/lesson/131)
+  - Concepts: Infrastructure as Code (IaC), Terraform resources and state, CI/CD for data pipelines, self-serve data infrastructure, GitOps for data platforms
+- [Day 132: Capstone — Cloud Data Pipeline End-to-End](https://saint2706.github.io/Coding-For-MBA/#/lesson/132)
+  - Concepts: end-to-end pipeline architecture, medallion architecture implementation, orchestrated ETL with quality gates, cost monitoring and optimization, production deployment checklist
+
+### [Phase 12: Analytics Engineering & Data Products](https://saint2706.github.io/Coding-For-MBA/#/phase/12)
+
+**Lessons:**
+- [Day 133: The Analytics Engineer Role — Beyond the Data Analyst](https://saint2706.github.io/Coding-For-MBA/#/lesson/133)
+  - Concepts: analytics engineer vs data analyst vs data scientist vs data engineer, the analytics engineering workflow, dbt as the analytics engineer's tool, data team structures, career progression paths
+- [Day 134: Semantic and Metrics Layers — Define Once, Use Everywhere](https://saint2706.github.io/Coding-For-MBA/#/lesson/134)
+  - Concepts: semantic layer architecture, metric definitions and governance, dbt Semantic Layer and MetricFlow, Cube.js for headless BI, LookML for Looker
+- [Day 135: Self-Serve Analytics — Empowering Stakeholders Without Chaos](https://saint2706.github.io/Coding-For-MBA/#/lesson/135)
+  - Concepts: self-serve analytics spectrum, guardrails vs gatekeeping, data catalogs and discovery, no-code/low-code analytics tools, measuring self-serve adoption
+- [Day 136: Data Mesh Principles — Domain Ownership and Federated Governance](https://saint2706.github.io/Coding-For-MBA/#/lesson/136)
+  - Concepts: four principles of data mesh, domain-oriented ownership, data as a product, self-serve data platform, federated computational governance
+- [Day 137: Product Analytics Deep Dive — Retention, Funnels, Cohorts](https://saint2706.github.io/Coding-For-MBA/#/lesson/137)
+  - Concepts: product analytics frameworks, retention curves and cohort analysis, funnel analysis and conversion optimization, engagement metrics (DAU/MAU, stickiness), product-led growth metrics
+- [Day 138: A/B Testing at Scale — Statistical Rigor and Experimentation Platforms](https://saint2706.github.io/Coding-For-MBA/#/lesson/138)
+  - Concepts: hypothesis testing and p-values, sample size calculation and power, multiple testing correction, experimentation platforms, sequential testing and peeking
+- [Day 139: Data Products and Monetization — Building Revenue from Data](https://saint2706.github.io/Coding-For-MBA/#/lesson/139)
+  - Concepts: types of data products, data monetization strategies, embedded analytics, data-as-a-service, pricing models for data products
+- [Day 140: Capstone — Design and Pitch a Data Product](https://saint2706.github.io/Coding-For-MBA/#/lesson/140)
+  - Concepts: end-to-end data product design, business case development, technical architecture for data products, go-to-market strategy, stakeholder presentation
+
