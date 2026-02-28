@@ -20,7 +20,7 @@ describe('parseJsonBody', () => {
     const settleSpy = vi.fn()
     promise.then(
       () => settleSpy('resolved'),
-      (error) => settleSpy(`rejected:${(error as Error).message}`),
+      (error: unknown) => settleSpy(`rejected:${(error as Error).message}`),
     )
 
     req.emit('data', 'x'.repeat(100_001))

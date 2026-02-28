@@ -5,7 +5,6 @@ import {
   computeRankingBoost,
   getSearchSnippet,
   search,
-  startBackgroundIndexing,
 } from '../searchIndex'
 import type { Lesson } from '../contentLoader'
 
