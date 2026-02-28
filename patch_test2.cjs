@@ -1,42 +1,10 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { act } from 'react'
-import { createRoot } from 'react-dom/client'
-import BackToTop from '../BackToTop'
+const fs = require('fs');
+const file = 'src/components/__tests__/BackToTop.test.tsx';
+let content = fs.readFileSync(file, 'utf8');
 
-describe('BackToTop', () => {
-  let container: HTMLDivElement
-  let root: ReturnType<typeof createRoot> | undefined
+const regex = /it\('becomes visible after scrolling', async \(\) => \{[\s\S]*?it\('scrolls to top when clicked', async \(\) => \{[\s\S]*?\}\)/;
 
-  beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
-    root = createRoot(container)
-
-    // Spy on scrollTo
-    vi.spyOn(window, 'scrollTo')
-
-    // Mock scrollY
-    Object.defineProperty(window, 'scrollY', { value: 0, writable: true, configurable: true })
-  })
-
-  afterEach(() => {
-    act(() => {
-      root?.unmount()
-    })
-    document.body.removeChild(container)
-    vi.restoreAllMocks()
-  })
-
-  it('is initially hidden', () => {
-    act(() => {
-      root?.render(<BackToTop />)
-    })
-
-    const button = container.querySelector('button')
-    expect(button).toBeNull()
-  })
-
-  it('becomes visible after scrolling', async () => {
+const replacement = `it('becomes visible after scrolling', async () => {
     act(() => {
       root?.render(<BackToTop />)
     })
@@ -74,5 +42,12 @@ describe('BackToTop', () => {
     })
 
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' })
-  })
-})
+  })`;
+
+if (regex.test(content)) {
+  content = content.replace(regex, replacement);
+  fs.writeFileSync(file, content);
+  console.log("Patched test successfully again");
+} else {
+  console.log("Failed to patch test again");
+}

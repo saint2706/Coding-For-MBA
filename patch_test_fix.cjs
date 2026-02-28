@@ -1,4 +1,14 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+const fs = require('fs');
+const file = 'src/components/__tests__/BackToTop.test.tsx';
+let content = fs.readFileSync(file, 'utf8');
+
+// Read the current content
+// Fix the async missing from the second test block
+
+const regex = /it\('scrolls to top when clicked', \(\) => \{\s*act\(\(\) => \{\s*root\?.render\(<BackToTop \/>\)\s*\}\)\s*\/\/ Scroll down to make it visible\s*act\(\(\) => \{\s*;\(window as any\)\.scrollY = 500\s*window\.dispatchEvent\(new Event\('scroll'\)\)\s*\}\)\s*\/\/ Wait for requestAnimationFrame\s*await new Promise\(\(resolve\) => requestAnimationFrame\(resolve\)\)\s*const button = container\.querySelector\('button'\)\s*expect\(button\)\.toBeTruthy\(\)\s*act\(\(\) => \{\s*button\?.dispatchEvent\(new MouseEvent\('click', \{ bubbles: true \}\)\)\s*\}\)\s*expect\(window\.scrollTo\)\.toHaveBeenCalledWith\(\{ top: 0, behavior: 'smooth' \}\)\s*\}\)/;
+
+// Let's just fix it fully with a complete replacement
+const fullReplacement = `import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import BackToTop from '../BackToTop'
@@ -76,3 +86,7 @@ describe('BackToTop', () => {
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' })
   })
 })
+`;
+
+fs.writeFileSync(file, fullReplacement);
+console.log("Patched test completely");
