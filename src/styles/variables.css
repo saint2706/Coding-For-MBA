@@ -12,18 +12,18 @@
 /* --- Custom Properties --- */
 :root {
   /* Background */
-  --bg-primary: #0b0f1a;
-  --bg-secondary: #111827;
-  --bg-card: #1a1f35;
-  --bg-card-hover: #222842;
-  --bg-surface: #151b2e;
-  --bg-code: #1e2540;
+  --bg-primary: #0f1526;
+  --bg-secondary: #141d32;
+  --bg-card: #1a243b;
+  --bg-card-hover: #212f4c;
+  --bg-surface: #172039;
+  --bg-code: #1d2842;
 
   /* Text */
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-heading: #ffffff;
+  --text-primary: #e5ebf5;
+  --text-secondary: #b7c1d4;
+  --text-muted: #8793a9;
+  --text-heading: #f8fbff;
 
   /* Accent */
   --accent-primary: #6366f1;
@@ -32,8 +32,8 @@
   --accent-glow: rgba(99, 102, 241, 0.25);
 
   /* Borders */
-  --border-subtle: rgba(148, 163, 184, 0.08);
-  --border-card: rgba(148, 163, 184, 0.12);
+  --border-subtle: rgba(176, 191, 219, 0.12);
+  --border-card: rgba(176, 191, 219, 0.18);
   --border-active: rgba(99, 102, 241, 0.4);
 
   /* Gradients */
@@ -58,6 +58,7 @@
   --sidebar-width: 300px;
   --navbar-height: 64px;
   --content-max-width: 900px;
+  --reading-max-width: 74ch;
   --page-padding: 2rem;
 
   /* Radius */

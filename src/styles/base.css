@@ -6,9 +6,13 @@ html {
 
 body {
   font-family: var(--font-body);
-  background: var(--bg-primary);
+  background:
+    radial-gradient(circle at 20% -10%, rgba(99, 102, 241, 0.14), transparent 38%),
+    var(--bg-primary);
   color: var(--text-primary);
-  line-height: calc(1.7 * var(--density-scale, 1));
+  line-height: calc(1.75 * var(--density-scale, 1));
+  letter-spacing: 0.005em;
+  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -33,6 +37,16 @@ a:hover {
 img {
   max-width: 100%;
   height: auto;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent-primary) 34%, transparent);
+  color: var(--text-heading);
+}
+
+:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--accent-primary) 68%, white 32%);
+  outline-offset: 2px;
 }
 
 /* --- Accessibility --- */
@@ -134,7 +148,7 @@ img {
 .page-container {
   max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: 2.5rem var(--page-padding) 4rem;
+  padding: 2.75rem var(--page-padding) 4rem;
 }
 
 .page-container.lesson-with-toc {
