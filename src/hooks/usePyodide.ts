@@ -257,7 +257,8 @@ ${code}
           typeof timeoutMs === 'number'
             ? new Promise<never>((_, reject) => {
                 const timeoutId = window.setTimeout(() => {
-                  reject(new Error(`Python execution timed out after ${timeoutMs}ms.`))
+                  const timeoutError = new Error(`Python execution timed out after ${timeoutMs}ms.`)
+                  reject(timeoutError)
                 }, timeoutMs)
                 pythonExecutionPromise
                   .finally(() => window.clearTimeout(timeoutId))
