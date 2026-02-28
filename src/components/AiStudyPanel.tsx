@@ -75,8 +75,16 @@ export default function AiStudyPanel({
     }, [messages.length, isLoading])
 
     useEffect(() => {
+        let focusTimeoutId: ReturnType<typeof setTimeout> | undefined
+
         if (isOpen && activeTab === 'chat') {
-            setTimeout(() => inputRef.current?.focus(), 200)
+            focusTimeoutId = setTimeout(() => inputRef.current?.focus(), 200)
+        }
+
+        return () => {
+            if (focusTimeoutId) {
+                clearTimeout(focusTimeoutId)
+            }
         }
     }, [isOpen, activeTab])
 
