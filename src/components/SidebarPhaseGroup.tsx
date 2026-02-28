@@ -39,6 +39,7 @@ function SidebarPhaseGroup({
   return (
     <div className="phase-group">
       <button
+        type="button"
         className={`phase-toggle ${isActive ? 'open active' : ''}`}
         onClick={() => onToggle(phase.phase)}
         aria-expanded={isActive}

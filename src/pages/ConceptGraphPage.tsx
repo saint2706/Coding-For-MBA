@@ -112,6 +112,7 @@ export default function ConceptGraphPage() {
         <div className="concept-graph-legend">
           {PHASE_NAMES.map((name, i) => (
             <button
+              type="button"
               key={i}
               className="legend-item"
               onClick={() => handlePhaseClick(i + 1)}

@@ -51,6 +51,7 @@ export default function MasteryCheck({
       )}
 
       <button
+        type="button"
         className={`mastery-check__check-btn ${revealed ? 'mastery-check__check-btn--revealed' : ''}`}
         onClick={() => setRevealed((r) => !r)}
         aria-expanded={revealed}

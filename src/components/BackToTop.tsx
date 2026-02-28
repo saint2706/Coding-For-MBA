@@ -40,6 +40,7 @@ export default function BackToTop() {
     <AnimatePresence>
       {visible && (
         <motion.button
+          type="button"
           className="back-to-top visible"
           onClick={scrollToTop}
           aria-label="Back to top"

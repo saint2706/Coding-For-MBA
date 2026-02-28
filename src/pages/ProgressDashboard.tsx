@@ -427,7 +427,7 @@ export default function ProgressDashboard() {
 
       {/* Clear progress */}
       <div style={{ marginTop: '3rem', textAlign: 'center' }}>
-        <button className="progress-clear-btn" onClick={handleClearProgress}>
+        <button type="button" className="progress-clear-btn" onClick={handleClearProgress}>
           Clear All Progress
         </button>
       </div>

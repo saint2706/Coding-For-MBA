@@ -80,6 +80,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
     <nav className="navbar" role="navigation" aria-label="Main navigation">
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button
+          type="button"
           className="navbar-hamburger"
           onClick={onToggleSidebar}
           aria-label="Toggle sidebar menu"
@@ -128,6 +129,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
           )}
         </form>
         <button
+          type="button"
           className="theme-toggle"
           onClick={handleThemeToggle}
           aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
