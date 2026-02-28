@@ -42,11 +42,22 @@ export default function CustomCursor() {
     return () => mql.removeEventListener('change', onChange)
   }, [prefersReducedMotion])
 
+  const ticking = useRef(false)
+
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       if (!dotRef.current || !ringRef.current) return
-      dotRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`
-      ringRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(${hovering ? 1.6 : 1})`
+
+      if (!ticking.current) {
+        window.requestAnimationFrame(() => {
+          if (dotRef.current && ringRef.current) {
+            dotRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`
+            ringRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px) scale(${hovering ? 1.6 : 1})`
+          }
+          ticking.current = false
+        })
+        ticking.current = true
+      }
     },
     [hovering],
   )

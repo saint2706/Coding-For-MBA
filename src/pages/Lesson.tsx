@@ -92,14 +92,21 @@ export default function Lesson() {
     setReadingMode(readingModePreference)
   }, [readingModePreference, dayNum])
   useEffect(() => {
+    let ticking = false
     const updateNearBottom = () => {
-      const maxScrollable = document.documentElement.scrollHeight - window.innerHeight
-      if (maxScrollable <= 0) {
-        setNearBottom(true)
-        return
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const maxScrollable = document.documentElement.scrollHeight - window.innerHeight
+          if (maxScrollable <= 0) {
+            setNearBottom(true)
+          } else {
+            const scrollRatio = window.scrollY / maxScrollable
+            setNearBottom(scrollRatio > 0.78)
+          }
+          ticking = false
+        })
+        ticking = true
       }
-      const scrollRatio = window.scrollY / maxScrollable
-      setNearBottom(scrollRatio > 0.78)
     }
     updateNearBottom()
     window.addEventListener('scroll', updateNearBottom, { passive: true })
