@@ -98,12 +98,12 @@
 
 .phase-toggle:hover {
   color: var(--text-primary);
-  background: rgba(99, 102, 241, 0.04);
+  background: rgba(8, 181, 212, 0.04);
 }
 
 .phase-toggle.active {
   color: var(--text-heading);
-  background: rgba(99, 102, 241, 0.06);
+  background: rgba(8, 181, 212, 0.06);
 }
 
 .phase-toggle-icon {
@@ -153,12 +153,12 @@
 
 .day-link:hover {
   color: var(--text-primary);
-  background: rgba(99, 102, 241, 0.04);
+  background: rgba(8, 181, 212, 0.04);
 }
 
 .day-link.active {
   color: var(--accent-tertiary);
-  background: rgba(99, 102, 241, 0.08);
+  background: rgba(8, 181, 212, 0.08);
   border-left-color: var(--accent-primary);
 }
 

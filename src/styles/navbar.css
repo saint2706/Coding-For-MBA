@@ -65,12 +65,12 @@
 
 .navbar-links a:hover {
   color: var(--text-heading);
-  background: rgba(99, 102, 241, 0.06);
+  background: rgba(8, 181, 212, 0.06);
 }
 
 .navbar-links a.active {
   color: var(--text-heading);
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(8, 181, 212, 0.1);
 }
 
 .navbar-hamburger {

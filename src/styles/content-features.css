@@ -138,8 +138,8 @@
 .related-tag {
   font-size: 0.8125rem;
   padding: 0.125rem 0.5rem;
-  background: rgba(99, 102, 241, 0.08);
-  border: 1px solid rgba(99, 102, 241, 0.12);
+  background: rgba(8, 181, 212, 0.08);
+  border: 1px solid rgba(8, 181, 212, 0.12);
   border-radius: 100px;
   color: var(--accent-tertiary);
 }
@@ -337,7 +337,7 @@
 .graph-tooltip-concept {
   font-size: 0.8125rem;
   padding: 0.125rem 0.5rem;
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(8, 181, 212, 0.1);
   border-radius: 100px;
   color: var(--accent-tertiary);
 }

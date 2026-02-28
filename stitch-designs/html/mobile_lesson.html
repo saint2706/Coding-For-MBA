@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coding for MBA - Lesson</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#07b6d5",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2023",
+                        "surface-dark": "#162a2d",
+                        "surface-lighter": "#1e363a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"],
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for code blocks */
+        .code-scroll::-webkit-scrollbar {
+            height: 8px;
+        }
+        .code-scroll::-webkit-scrollbar-track {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        .code-scroll::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(15, 32, 35, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display antialiased selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl">
+<!-- Header -->
+<header class="sticky top-0 z-50 glass flex items-center justify-between px-4 py-3 border-b border-surface-lighter">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-lighter transition-colors text-slate-200">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="text-base font-semibold text-slate-100">Day 1</h1>
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-lighter transition-colors text-primary">
+<span class="material-symbols-outlined fill-1">bookmark</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto pb-24 scroll-smooth">
+<!-- Lesson Header Info -->
+<div class="px-5 pt-6 pb-2">
+<nav class="flex items-center gap-2 text-xs font-medium text-primary/80 mb-3">
+<span class="hover:underline cursor-pointer">Phase 1</span>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-primary">Day 1</span>
+</nav>
+<h2 class="text-2xl font-bold leading-tight text-white mb-4">Introduction to Python 🐍</h2>
+<div class="flex flex-wrap gap-2 mb-6">
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-dark border border-surface-lighter">
+<span class="material-symbols-outlined text-primary text-[16px]">verified</span>
+<span class="text-xs font-medium text-slate-300">Beginner</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-dark border border-surface-lighter">
+<span class="material-symbols-outlined text-primary text-[16px]">schedule</span>
+<span class="text-xs font-medium text-slate-300">45 min</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-dark border border-surface-lighter">
+<span class="material-symbols-outlined text-primary text-[16px]">menu_book</span>
+<span class="text-xs font-medium text-slate-300">4 min read</span>
+</div>
+</div>
+<div class="flex gap-2 mb-6 overflow-x-auto no-scrollbar">
+<span class="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">#python</span>
+<span class="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">#basics</span>
+<span class="px-2.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium border border-primary/20">#codingformba</span>
+</div>
+<button class="w-full py-3.5 bg-primary hover:bg-primary/90 active:scale-[0.98] transition-all rounded-xl text-background-dark font-bold text-sm shadow-lg shadow-primary/20 flex items-center justify-center gap-2 mb-8">
+<span class="material-symbols-outlined">check_circle</span>
+                    Mark as Complete
+                </button>
+</div>
+<!-- Lesson Body -->
+<article class="px-5 space-y-6 text-slate-300 leading-relaxed text-[16px]">
+<p>
+                    Welcome to Day 1! Today, we are stripping away the complexity and diving straight into why Python is the preferred language for business analytics and automation.
+                </p>
+<!-- Motivational Quote -->
+<div class="relative pl-6 py-2 my-6 border-l-4 border-primary/50 italic text-slate-400 bg-surface-dark/50 rounded-r-lg">
+<span class="absolute top-0 left-0 -ml-2 -mt-2 text-4xl text-primary/20 font-serif">"</span>
+<p class="font-medium text-slate-200">The goal of coding isn't just to write code, but to solve problems efficiently.</p>
+</div>
+<h3 class="text-xl font-bold text-white mt-8 mb-2">Why Python?</h3>
+<p>
+                    Python reads like English. It's concise, powerful, and has a massive ecosystem of libraries that do the heavy lifting for you.
+                </p>
+<!-- Code Block -->
+<div class="my-6 rounded-xl overflow-hidden border border-surface-lighter bg-[#0d1117] shadow-lg">
+<div class="flex items-center justify-between px-4 py-2 bg-surface-lighter/50 border-b border-surface-lighter">
+<span class="text-xs font-mono text-slate-400">hello_world.py</span>
+<button class="flex items-center gap-1 text-xs text-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+                            Copy
+                        </button>
+</div>
+<div class="p-4 overflow-x-auto code-scroll">
+<pre class="font-mono text-sm leading-6"><code class="language-python"><span class="text-purple-400">def</span> <span class="text-blue-400">greet_mba_student</span>(name):
+    <span class="text-slate-500"># This is a simple function</span>
+    message = <span class="text-green-400">f"Welcome, {name}!"</span>
+    <span class="text-purple-400">return</span> message
+
+<span class="text-purple-400">print</span>(greet_mba_student(<span class="text-green-400">"Alex"</span>))</code></pre>
+</div>
+</div>
+<p>
+                    Notice how clean the syntax is? No curly braces <code>{}</code> or semicolons <code>;</code> cluttering the screen. Indentation defines the structure.
+                </p>
+<!-- Warning/Tip Box -->
+<div class="flex gap-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 my-6">
+<span class="material-symbols-outlined text-amber-500 shrink-0">lightbulb</span>
+<div class="space-y-1">
+<h4 class="font-bold text-amber-500 text-sm">Pro Tip</h4>
+<p class="text-sm text-slate-300">Indentation is mandatory in Python. Make sure you use 4 spaces per indentation level to avoid <code class="bg-surface-lighter px-1 py-0.5 rounded text-xs text-amber-200">IndentationError</code>.</p>
+</div>
+</div>
+<h3 class="text-xl font-bold text-white mt-8 mb-2">Variables &amp; Data Types</h3>
+<p>
+                    In Python, you don't need to declare variable types explicitly. The interpreter infers them for you. This is called <em class="text-primary font-medium">dynamic typing</em>.
+                </p>
+</article>
+<!-- Navigation Cards -->
+<div class="mt-12 mb-8 px-5 grid grid-cols-2 gap-4">
+<a class="group relative flex flex-col p-4 rounded-xl bg-surface-dark border border-surface-lighter hover:border-primary/50 transition-all" href="#">
+<span class="text-xs text-slate-500 mb-1 group-hover:text-primary transition-colors">Previous</span>
+<span class="text-sm font-bold text-white line-clamp-2">Introduction Course</span>
+</a>
+<a class="group relative flex flex-col items-end text-right p-4 rounded-xl bg-surface-dark border border-surface-lighter hover:border-primary/50 transition-all" href="#">
+<span class="text-xs text-slate-500 mb-1 group-hover:text-primary transition-colors">Next</span>
+<span class="text-sm font-bold text-white line-clamp-2">Day 2: Data Structures</span>
+</a>
+</div>
+<!-- Spacer for bottom nav -->
+<div class="h-8"></div>
+</main>
+<!-- Floating Action Buttons -->
+<div class="absolute bottom-24 right-5 flex flex-col gap-3 z-40">
+<button aria-label="Table of Contents" class="w-12 h-12 rounded-full bg-surface-lighter border border-surface-lighter shadow-lg flex items-center justify-center text-slate-200 hover:text-white hover:bg-surface-lighter/80 transition-all">
+<span class="material-symbols-outlined">toc</span>
+</button>
+<button aria-label="AI Assistant" class="w-12 h-12 rounded-full bg-primary shadow-lg shadow-primary/30 flex items-center justify-center text-background-dark hover:scale-105 transition-all">
+<span class="material-symbols-outlined">auto_awesome</span>
+</button>
+</div>
+<!-- Bottom Navigation Bar -->
+<nav class="glass border-t border-surface-lighter px-2 pb-5 pt-3 w-full z-50">
+<div class="flex justify-between items-center max-w-sm mx-auto">
+<a class="flex flex-1 flex-col items-center justify-end gap-1 group" href="#">
+<div class="text-slate-500 group-hover:text-primary transition-colors flex h-6 items-center justify-center">
+<span class="material-symbols-outlined">home</span>
+</div>
+<p class="text-slate-500 group-hover:text-primary transition-colors text-[10px] font-medium tracking-wide">Home</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 group" href="#">
+<div class="text-primary flex h-6 items-center justify-center">
+<span class="material-symbols-outlined fill-1">school</span>
+</div>
+<p class="text-primary text-[10px] font-medium tracking-wide">Curriculum</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 group" href="#">
+<div class="text-slate-500 group-hover:text-primary transition-colors flex h-6 items-center justify-center">
+<span class="material-symbols-outlined">search</span>
+</div>
+<p class="text-slate-500 group-hover:text-primary transition-colors text-[10px] font-medium tracking-wide">Search</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 group" href="#">
+<div class="text-slate-500 group-hover:text-primary transition-colors flex h-6 items-center justify-center">
+<span class="material-symbols-outlined">bar_chart</span>
+</div>
+<p class="text-slate-500 group-hover:text-primary transition-colors text-[10px] font-medium tracking-wide">Progress</p>
+</a>
+<a class="flex flex-1 flex-col items-center justify-end gap-1 group" href="#">
+<div class="text-slate-500 group-hover:text-primary transition-colors flex h-6 items-center justify-center">
+<span class="material-symbols-outlined">more_horiz</span>
+</div>
+<p class="text-slate-500 group-hover:text-primary transition-colors text-[10px] font-medium tracking-wide">More</p>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

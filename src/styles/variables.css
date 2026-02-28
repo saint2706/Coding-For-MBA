@@ -12,56 +12,56 @@
 /* --- Custom Properties --- */
 :root {
   /* Background */
-  --bg-primary: #0f1526;
-  --bg-secondary: #141d32;
-  --bg-card: #1a243b;
-  --bg-card-hover: #212f4c;
-  --bg-surface: #172039;
-  --bg-code: #1d2842;
+  --bg-primary: #0d1517;
+  --bg-secondary: #102022;
+  --bg-card: #162a2d;
+  --bg-card-hover: #1b3437;
+  --bg-surface: #132628;
+  --bg-code: #1a2e30;
 
   /* Text */
-  --text-primary: #e5ebf5;
-  --text-secondary: #b7c1d4;
-  --text-muted: #8793a9;
-  --text-heading: #f8fbff;
+  --text-primary: #e2eff2;
+  --text-secondary: #9bb6bb;
+  --text-muted: #6d8a8f;
+  --text-heading: #f0f9fa;
 
   /* Accent */
-  --accent-primary: #6366f1;
-  --accent-secondary: #8b5cf6;
-  --accent-tertiary: #a78bfa;
-  --accent-glow: rgba(99, 102, 241, 0.25);
+  --accent-primary: #08b5d4;
+  --accent-secondary: #0694ad;
+  --accent-tertiary: #22d3ee;
+  --accent-glow: rgba(8, 181, 212, 0.25);
 
   /* Borders */
   --border-subtle: rgba(176, 191, 219, 0.12);
   --border-card: rgba(176, 191, 219, 0.18);
-  --border-active: rgba(99, 102, 241, 0.4);
+  --border-active: rgba(8, 181, 212, 0.4);
 
   /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #6366f1 0%, #8b5cf6 40%, #a78bfa 100%);
+  --gradient-hero: linear-gradient(135deg, #08b5d4 0%, #0694ad 40%, #22d3ee 100%);
   --gradient-card: linear-gradient(
     145deg,
-    rgba(99, 102, 241, 0.08) 0%,
-    rgba(139, 92, 246, 0.04) 100%
+    rgba(8, 181, 212, 0.08) 0%,
+    rgba(6, 182, 212, 0.04) 100%
   );
   --gradient-glow: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(99, 102, 241, 0.06),
+    rgba(8, 181, 212, 0.06),
     transparent 40%
   );
 
   /* Calm reading surface */
-  --reading-bg-primary: #111a2c;
-  --reading-bg-surface: #162238;
-  --reading-bg-code: #1a253d;
+  --reading-bg-primary: #0f1c1e;
+  --reading-bg-surface: #142628;
+  --reading-bg-code: #182c2e;
   --reading-border-subtle: rgba(176, 191, 219, 0.1);
   --reading-border-card: rgba(176, 191, 219, 0.14);
-  --reading-border-active: rgba(139, 92, 246, 0.26);
-  --reading-accent-glow: rgba(99, 102, 241, 0.1);
+  --reading-border-active: rgba(6, 182, 212, 0.26);
+  --reading-accent-glow: rgba(8, 181, 212, 0.1);
 
   /* Shadows */
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.15);
+  --shadow-glow: 0 0 40px rgba(8, 181, 212, 0.15);
 
   /* Layout */
   --sidebar-width: 300px;

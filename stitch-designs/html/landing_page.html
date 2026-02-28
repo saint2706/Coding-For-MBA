@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Coding for MBA</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#08b5d4",
+                        "primary-dark": "#0694ad",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#102022",
+                        "surface-dark": "#162a2d",
+                        "border-dark": "#27373a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased overflow-x-hidden">
+<div class="relative flex min-h-screen w-full flex-col">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-border-dark bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-8 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">Coding for MBA</h2>
+</div>
+<div class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Curriculum</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Community</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-4 md:gap-8 items-center">
+<label class="hidden lg:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full group">
+<div class="text-slate-400 dark:text-[#9bb6bb] flex border-none bg-slate-100 dark:bg-surface-dark items-center justify-center pl-4 rounded-l-xl border-r-0 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-slate-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-slate-100 dark:bg-surface-dark focus:border-none h-full placeholder:text-slate-400 dark:placeholder:text-[#9bb6bb] px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal leading-normal" placeholder="Search curriculum..."/>
+<div class="flex items-center justify-center pr-3 bg-slate-100 dark:bg-surface-dark rounded-r-xl">
+<kbd class="hidden font-sans text-xs text-slate-400 dark:text-slate-500 border border-slate-300 dark:border-slate-600 rounded px-1.5 py-0.5">/</kbd>
+</div>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="hidden sm:flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-slate-100 dark:bg-surface-dark hover:bg-slate-200 dark:hover:bg-[#27373a] text-slate-900 dark:text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 transition-colors">
+<span class="material-symbols-outlined text-[20px]">light_mode</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 bg-slate-100 dark:bg-surface-dark hover:bg-slate-200 dark:hover:bg-[#27373a] text-slate-900 dark:text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 transition-colors">
+<!-- Simple Github Icon replacement using material symbol code for standard 'code' as placeholder or custom SVG if strictly needed, sticking to symbols as requested -->
+<span class="material-symbols-outlined text-[20px]">code</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary hover:bg-primary-dark text-white dark:text-[#111718] text-sm font-bold leading-normal tracking-[0.015em] transition-colors shadow-[0_0_15px_rgba(8,181,212,0.3)]">
+<span class="truncate">Sign In</span>
+</button>
+</div>
+</div>
+</header>
+<main class="flex flex-1 flex-col items-center px-4 md:px-10 py-5">
+<div class="layout-content-container flex flex-col max-w-[1200px] w-full flex-1 gap-12">
+<!-- Hero Section -->
+<div class="@container">
+<div class="flex flex-col gap-6 py-10 @[480px]:gap-8 @[864px]:flex-row items-center">
+<!-- Hero Text -->
+<div class="flex flex-col gap-6 @[480px]:gap-8 flex-1">
+<div class="flex flex-col gap-4 text-left">
+<span class="inline-flex w-fit items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+<span class="size-1.5 rounded-full bg-primary animate-pulse"></span>
+                                        Self-Study Curriculum
+                                    </span>
+<h1 class="text-slate-900 dark:text-white text-5xl font-black leading-[1.1] tracking-[-0.033em] @[480px]:text-6xl">
+                                        Master Technical Skills for Your <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-cyan-200">MBA Career</span>
+</h1>
+<h2 class="text-slate-600 dark:text-slate-300 text-lg font-normal leading-relaxed max-w-xl">
+                                        A rigorous 140-day curriculum designed for business professionals to bridge the gap between business strategy and technical execution.
+                                    </h2>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="flex min-w-[140px] cursor-pointer items-center justify-center rounded-xl h-12 px-6 bg-primary hover:bg-primary-dark text-white dark:text-[#111718] text-base font-bold transition-all hover:scale-105 shadow-[0_0_20px_rgba(8,181,212,0.4)]">
+                                        Start Learning
+                                    </button>
+<button class="flex min-w-[140px] cursor-pointer items-center justify-center rounded-xl h-12 px-6 bg-slate-200 dark:bg-surface-dark hover:bg-slate-300 dark:hover:bg-[#27373a] text-slate-900 dark:text-white text-base font-bold transition-all">
+                                        View Curriculum
+                                    </button>
+</div>
+<div class="flex items-center gap-4 mt-2">
+<div class="flex -space-x-3">
+<img alt="User Avatar" class="size-10 rounded-full border-2 border-background-light dark:border-background-dark object-cover" data-alt="Portrait of a young woman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrj1GB8SNuoHKphFL4tvnycCwB-Qt8rw3Iu-QO6jEulVAR_lLLlN1ApWPZsCIDEl35t7FhYRovFct-2H6zDQQmP4ojtxSumnzw8EywEotkBLY82uwPhBs9X5U8CVcVKouHJ67OSXBYqGm1lCRF4CrREGpVF0rjieJG6hnBSDA7uQRT-g77q7WuCQ6YdyHobElBcHyIeFvepdgUFNai2UoEA9yh0r0193jFbnKjIG4HTU_i4kviXchUOzyWD9ep52lAEaVa7g6-Wz4"/>
+<img alt="User Avatar" class="size-10 rounded-full border-2 border-background-light dark:border-background-dark object-cover" data-alt="Portrait of a young man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN3EV53UC8hHy5_uVbzEPWf7IWvSziJDYtNi3tW1bxk79O6MrP4eslNdh0PStbaOhwJ0oTcpqItSxIYbhhtC2SVPusMBVnjqu3DADEFEds86rCB0jNPy5YjDR-F6uFtqtCEgTFjCtegC5QjUBYBRypjKB2iyGwho7VgKjrOEmNpMuWu-uIi0Ne6dOIQkivwp301qmE4_RlB6RAwsX4sNmsSVf8IFcGvaLAEwp3pabbDG5-cjN0QQJrKKFph8262yFnrcMBu_rXI_8"/>
+<img alt="User Avatar" class="size-10 rounded-full border-2 border-background-light dark:border-background-dark object-cover" data-alt="Portrait of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSlBmIrNaOYEefvGX4bxrz3DOCPlbt4Guhkt75FGQ0RHqEL_UraNQS3dnrjBwWei5hVkF2wajBmpzresTNzhvbHpu_PE0-zdFs62HleFFR_ABuHT0tC391Jg_YVBnNSIYYrMedBqMXCC5uX3Tz8sZffro5SV0wlOp12yTuJeMx7Ebw4QlyVKXEZ4aq0cGlZbdIPMH3c6sNJhIiwIW0piwOwearEIgslgR_7zCKfTtlDkNWdsUMLK8uL_eGM8H-0RiVv-DtjIQpDhA"/>
+<div class="flex size-10 items-center justify-center rounded-full border-2 border-background-light dark:border-background-dark bg-surface-dark text-xs font-medium text-white ring-1 ring-inset ring-slate-700">
+                                            +5k
+                                        </div>
+</div>
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400">Active learners this month</p>
+</div>
+</div>
+<!-- Hero Cards Visuals -->
+<div class="relative w-full max-w-md hidden @[864px]:flex flex-col gap-4 perspective-[1000px]">
+<!-- Card 1: Continue Learning -->
+<div class="relative z-10 w-full rounded-2xl border border-slate-200 dark:border-border-dark bg-white/50 dark:bg-surface-dark/50 backdrop-blur-xl p-5 shadow-2xl transition-transform hover:-translate-y-1 duration-300">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="flex size-10 items-center justify-center rounded-lg bg-primary/20 text-primary">
+<span class="material-symbols-outlined">data_object</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500 dark:text-slate-400">Current Phase</p>
+<p class="font-bold text-slate-900 dark:text-white">Data Structures</p>
+</div>
+</div>
+<span class="rounded-full bg-green-500/10 px-2.5 py-0.5 text-xs font-medium text-green-500 ring-1 ring-inset ring-green-500/20">Active</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs font-medium">
+<span class="text-slate-500 dark:text-slate-400">Progress</span>
+<span class="text-primary">42%</span>
+</div>
+<div class="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-[#111718]">
+<div class="h-full w-[42%] rounded-full bg-primary transition-all duration-500 ease-out"></div>
+</div>
+</div>
+</div>
+<!-- Card 2: Daily Challenge -->
+<div class="absolute -right-8 top-24 z-0 w-full scale-95 rounded-2xl border border-slate-200 dark:border-border-dark bg-white/30 dark:bg-surface-dark/30 backdrop-blur-md p-5 shadow-xl opacity-60">
+<div class="flex items-center gap-3 mb-3">
+<div class="flex size-8 items-center justify-center rounded-lg bg-orange-500/20 text-orange-500">
+<span class="material-symbols-outlined text-lg">local_fire_department</span>
+</div>
+<p class="font-bold text-slate-900 dark:text-white">Daily Streak</p>
+</div>
+<div class="flex justify-between items-end">
+<div class="text-3xl font-black text-slate-900 dark:text-white">12</div>
+<div class="text-xs text-slate-500 dark:text-slate-400 mb-1">Days</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 p-4 border-y border-slate-200 dark:border-border-dark bg-slate-50/50 dark:bg-[#111718]/50">
+<div class="flex flex-col gap-1 items-center justify-center p-4">
+<p class="text-slate-500 dark:text-[#9bb6bb] text-sm font-medium uppercase tracking-wider">Total Duration</p>
+<p class="text-slate-900 dark:text-white text-3xl font-black">140 <span class="text-lg font-bold text-slate-400 dark:text-[#3a5155]">Days</span></p>
+</div>
+<div class="flex flex-col gap-1 items-center justify-center p-4 border-l border-slate-200 dark:border-border-dark/50">
+<p class="text-slate-500 dark:text-[#9bb6bb] text-sm font-medium uppercase tracking-wider">Curriculum</p>
+<p class="text-slate-900 dark:text-white text-3xl font-black">12 <span class="text-lg font-bold text-slate-400 dark:text-[#3a5155]">Phases</span></p>
+</div>
+<div class="flex flex-col gap-1 items-center justify-center p-4 border-l border-slate-200 dark:border-border-dark/50">
+<p class="text-slate-500 dark:text-[#9bb6bb] text-sm font-medium uppercase tracking-wider">Hands-on</p>
+<p class="text-slate-900 dark:text-white text-3xl font-black">25+ <span class="text-lg font-bold text-slate-400 dark:text-[#3a5155]">Projects</span></p>
+</div>
+<div class="flex flex-col gap-1 items-center justify-center p-4 border-l border-slate-200 dark:border-border-dark/50">
+<p class="text-slate-500 dark:text-[#9bb6bb] text-sm font-medium uppercase tracking-wider">Community</p>
+<p class="text-slate-900 dark:text-white text-3xl font-black">5k+ <span class="text-lg font-bold text-slate-400 dark:text-[#3a5155]">Peers</span></p>
+</div>
+</div>
+<!-- Learning Path Section -->
+<div class="flex flex-col gap-8">
+<div class="flex items-end justify-between px-4">
+<div>
+<h2 class="text-slate-900 dark:text-white text-3xl font-bold leading-tight tracking-tight">Your Learning Path</h2>
+<p class="text-slate-500 dark:text-[#9bb6bb] mt-2">A structured journey from basics to advanced applications.</p>
+</div>
+<div class="hidden sm:flex gap-2">
+<button class="p-2 rounded-lg bg-slate-200 dark:bg-surface-dark hover:bg-slate-300 dark:hover:bg-[#27373a] text-slate-900 dark:text-white transition-colors">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="p-2 rounded-lg bg-transparent text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">list</span>
+</button>
+</div>
+</div>
+<!-- Grid of Phases -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+<!-- Phase 1 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-border-dark bg-white dark:bg-[#1b2627] p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="size-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-2xl">
+                                        💻
+                                    </div>
+<span class="inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-500 ring-1 ring-inset ring-green-500/20">Beginner</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Phase 1</p>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Programming Foundations</h3>
+<p class="text-sm text-slate-500 dark:text-[#9bb6bb] mt-2 line-clamp-2">Master Python syntax, variables, loops, and basic logic. The building blocks of everything to come.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-border-dark/50 flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>14 Days</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">folder_open</span>
+<span>3 Projects</span>
+</div>
+</div>
+</div>
+<!-- Phase 2 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-border-dark bg-white dark:bg-[#1b2627] p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="size-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-2xl">
+                                        📊
+                                    </div>
+<span class="inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-500 ring-1 ring-inset ring-green-500/20">Beginner</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Phase 2</p>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Data Analysis &amp; Pandas</h3>
+<p class="text-sm text-slate-500 dark:text-[#9bb6bb] mt-2 line-clamp-2">Learn to manipulate large datasets, clean data, and derive insights using the Pandas library.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-border-dark/50 flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>12 Days</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">folder_open</span>
+<span>4 Projects</span>
+</div>
+</div>
+</div>
+<!-- Phase 3 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-border-dark bg-white dark:bg-[#1b2627] p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="size-12 rounded-xl bg-orange-500/10 flex items-center justify-center text-2xl">
+                                        🌐
+                                    </div>
+<span class="inline-flex items-center rounded-md bg-yellow-500/10 px-2 py-1 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-500/20">Intermediate</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Phase 3</p>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Web Scraping &amp; APIs</h3>
+<p class="text-sm text-slate-500 dark:text-[#9bb6bb] mt-2 line-clamp-2">Automate data collection from the web and connect to external services using REST APIs.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-border-dark/50 flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>10 Days</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">folder_open</span>
+<span>2 Projects</span>
+</div>
+</div>
+</div>
+<!-- Phase 4 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-border-dark bg-white dark:bg-[#1b2627] p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="size-12 rounded-xl bg-cyan-500/10 flex items-center justify-center text-2xl">
+                                        🗄️
+                                    </div>
+<span class="inline-flex items-center rounded-md bg-yellow-500/10 px-2 py-1 text-xs font-medium text-yellow-500 ring-1 ring-inset ring-yellow-500/20">Intermediate</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Phase 4</p>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">SQL &amp; Databases</h3>
+<p class="text-sm text-slate-500 dark:text-[#9bb6bb] mt-2 line-clamp-2">Design schemas, write complex queries, and manage relational databases for scalable applications.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-border-dark/50 flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>15 Days</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">folder_open</span>
+<span>3 Projects</span>
+</div>
+</div>
+</div>
+<!-- Phase 5 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-border-dark bg-white dark:bg-[#1b2627] p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="size-12 rounded-xl bg-pink-500/10 flex items-center justify-center text-2xl">
+                                        📈
+                                    </div>
+<span class="inline-flex items-center rounded-md bg-red-500/10 px-2 py-1 text-xs font-medium text-red-500 ring-1 ring-inset ring-red-500/20">Advanced</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Phase 5</p>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Data Visualization</h3>
+<p class="text-sm text-slate-500 dark:text-[#9bb6bb] mt-2 line-clamp-2">Tell compelling stories with data using Matplotlib, Seaborn, and interactive dashboards.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-border-dark/50 flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>8 Days</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">folder_open</span>
+<span>2 Projects</span>
+</div>
+</div>
+</div>
+<!-- Phase 6 -->
+<div class="group relative flex flex-col gap-4 rounded-2xl border border-slate-200 dark:border-border-dark bg-white dark:bg-[#1b2627] p-6 shadow-sm hover:shadow-md hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start">
+<div class="size-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-2xl">
+                                        🤖
+                                    </div>
+<span class="inline-flex items-center rounded-md bg-red-500/10 px-2 py-1 text-xs font-medium text-red-500 ring-1 ring-inset ring-red-500/20">Advanced</span>
+</div>
+<div>
+<p class="text-xs font-bold text-primary mb-1 uppercase tracking-wider">Phase 6</p>
+<h3 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">Machine Learning Basics</h3>
+<p class="text-sm text-slate-500 dark:text-[#9bb6bb] mt-2 line-clamp-2">Introduction to predictive modeling, regression, classification, and model evaluation.</p>
+</div>
+<div class="mt-auto pt-4 border-t border-slate-100 dark:border-border-dark/50 flex items-center justify-between text-xs font-medium text-slate-500 dark:text-slate-400">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">schedule</span>
+<span>20 Days</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">folder_open</span>
+<span>4 Projects</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Call to Action Footer Area -->
+<div class="w-full mt-12 mb-8">
+<div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-surface-dark to-background-dark border border-border-dark p-8 md:p-12 text-center">
+<!-- Decorative background pattern -->
+<div class="absolute top-0 right-0 -mt-20 -mr-20 size-80 rounded-full bg-primary/10 blur-3xl"></div>
+<div class="absolute bottom-0 left-0 -mb-20 -ml-20 size-80 rounded-full bg-purple-500/10 blur-3xl"></div>
+<div class="relative z-10 flex flex-col items-center gap-6">
+<h2 class="text-3xl md:text-4xl font-black text-white">Ready to accelerate your career?</h2>
+<p class="text-[#9bb6bb] max-w-2xl text-lg">Join 5,000+ ambitious MBAs who are adding technical prowess to their business acumen.</p>
+<button class="flex min-w-[180px] cursor-pointer items-center justify-center rounded-xl h-14 px-8 bg-primary hover:bg-primary-dark text-[#111718] text-lg font-bold transition-all shadow-lg hover:shadow-primary/20 hover:-translate-y-1">
+                                    Get Started for Free
+                                </button>
+<p class="text-xs text-slate-500">No credit card required for the first 7 days.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>
