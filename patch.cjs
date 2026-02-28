@@ -1,30 +1,28 @@
-/**
- * Scroll Progress Indicator
- *
- * A horizontal bar fixed to the top of the viewport indicating reading progress.
- *
- * Key Responsibilities:
- * - Calculate scroll percentage (scrollTop / (scrollHeight - clientHeight)).
- * - Update width style on scroll.
- * - Provide accessible progress role attributes.
- */
+const fs = require('fs');
+const file = 'src/components/ScrollProgress.tsx';
+let content = fs.readFileSync(file, 'utf8');
 
-import { useEffect, useState } from 'react'
-
-interface ScrollProgressProps {
+content = content.replace(
+  `export default function ScrollProgress() {`,
+  `interface ScrollProgressProps {
   targetSelector?: string
   isLesson?: boolean
 }
 
-export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgressProps) {
-  const [progress, setProgress] = useState(0)
+export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgressProps) {`
+);
 
-  useEffect(() => {
-    const handleScroll = () => {
+content = content.replace(
+  `    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      setProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0)
+    }`,
+  `    const handleScroll = () => {
       let calcProgress = 0
 
       if (targetSelector) {
-        const element = document.querySelector<HTMLElement>(targetSelector)
+        const element = document.querySelector(targetSelector)
         if (element) {
           const rect = element.getBoundingClientRect()
           const elementHeight = element.clientHeight
@@ -57,22 +55,13 @@ export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgr
       }
 
       setProgress(calcProgress)
-    }
+    }`
+);
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [targetSelector])
+content = content.replace(
+  `className="scroll-progress"`,
+  `className={\`scroll-progress \${isLesson ? 'lesson-progress' : ''}\`.trim()}`
+);
 
-  return (
-    <div
-      className={`scroll-progress ${isLesson ? 'lesson-progress' : ''}`.trim()}
-      role="progressbar"
-      aria-valuenow={Math.round(progress)}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-label="Reading progress"
-    >
-      <div className="scroll-progress-bar" style={{ width: `${progress}%` }} />
-    </div>
-  )
-}
+fs.writeFileSync(file, content);
+console.log('patched');
