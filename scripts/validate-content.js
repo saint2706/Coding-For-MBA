@@ -117,9 +117,8 @@ export function validateLessonContent(rawContent, fileName = 'README.md') {
 export function runValidation(lessonsDir = LESSONS_DIR) {
   const files = findReadmes(lessonsDir, lessonsDir).sort()
   const totalFiles = files.length
-  let passCount = 0
-  let failCount = 0
-  const errors = []
+  const fileResults = new Map()
+  const crossCheckFailures = []
 
   console.log(`\n📋 Validating ${totalFiles} lesson files...\n`)
 
@@ -150,12 +149,7 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
       }
     }
 
-    if (fileErrors.length > 0) {
-      failCount++
-      errors.push({ file: relativePath, issues: fileErrors })
-    } else {
-      passCount++
-    }
+    fileResults.set(relativePath, [...fileErrors])
   }
 
   // Cross-check phase metadata against lesson files in each phase directory
@@ -193,23 +187,44 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
       )
     }
     if (phaseIssues.length > 0) {
-      failCount++
       const relativePath = path.relative(lessonsDir, overviewPath)
-      errors.push({ file: relativePath, issues: phaseIssues })
+      const existingIssues = fileResults.get(relativePath) ?? []
+      fileResults.set(relativePath, [...existingIssues, ...phaseIssues])
+      crossCheckFailures.push({ file: relativePath, issues: phaseIssues })
     }
   }
 
-  console.log(`✅ Passed: ${passCount}/${totalFiles}`)
+  const failedFiles = [...fileResults.entries()]
+    .filter(([, issues]) => issues.length > 0)
+    .map(([file, issues]) => ({ file, issues }))
+  const failCount = failedFiles.length
+  const passCount = totalFiles - failCount
+
+  console.log(`✅ Passed files: ${passCount}/${totalFiles}`)
+  console.log(`❌ Failed files: ${failCount}/${totalFiles}`)
+  console.log(`🔎 Cross-check failures: ${crossCheckFailures.length}`)
 
   if (failCount > 0) {
-    console.log(`❌ Failed: ${failCount} issues\n`)
-    for (const { file, issues } of errors) {
+    console.log('\n📄 File-level failures:\n')
+    for (const { file, issues } of failedFiles) {
       console.log(`  📄 ${file}`)
       for (const issue of issues) {
         console.log(`     ⚠ ${issue}`)
       }
       console.log()
     }
+
+    if (crossCheckFailures.length > 0) {
+      console.log('🔎 Cross-check failures:\n')
+      for (const { file, issues } of crossCheckFailures) {
+        console.log(`  📄 ${file}`)
+        for (const issue of issues) {
+          console.log(`     ⚠ ${issue}`)
+        }
+        console.log()
+      }
+    }
+
     return 1
   }
 
