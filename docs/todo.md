@@ -53,13 +53,13 @@
 
 ### Gap-Filling Lesson Days
 
-- [ ] `Day_37B_Probability_and_Statistics_for_ML` — distributions, Bayes theorem, CLT (prerequisite for Phase 5 Day 54)
-- [ ] `Day_37C_Sklearn_Pipelines` — Pipeline, ColumnTransformer, custom transformers, CV
-- [ ] `Day_36B_Docker_Fundamentals` — containers, images, Compose for data apps (Phase 3 bonus)
-- [ ] `Day_60B_LLM_Fine_Tuning_and_PEFT` — LoRA, QLoRA, Hugging Face PEFT library
-- [ ] `Day_60C_RAG_and_Vector_Databases` — embeddings, ChromaDB, LangChain RAG pipeline
-- [ ] `Day_84B_dbt_Fundamentals` — models, refs, tests, docs, dbt Cloud
-- [ ] `Day_96B_NoSQL_Deep_Dive` — MongoDB, Redis, Cassandra — when to use each
+- [x] `Day_37B_Probability_and_Statistics_for_ML` — distributions, Bayes theorem, CLT (prerequisite for Phase 5 Day 54)
+- [x] `Day_37C_Sklearn_Pipelines` — Pipeline, ColumnTransformer, custom transformers, CV
+- [x] `Day_36B_Docker_Fundamentals` — containers, images, Compose for data apps (Phase 3 bonus)
+- [x] `Day_60B_LLM_Fine_Tuning_and_PEFT` — LoRA, QLoRA, Hugging Face PEFT library
+- [x] `Day_60C_RAG_and_Vector_Databases` — embeddings, ChromaDB, LangChain RAG pipeline
+- [x] `Day_84B_dbt_Fundamentals` — models, refs, tests, docs, dbt Cloud
+- [x] `Day_96B_NoSQL_Deep_Dive` — MongoDB, Redis, Cassandra — when to use each
 
 ### Extras/ Folders
 
@@ -76,47 +76,47 @@
 
 > Phase already implemented. Audit & polish pass needed.
 
-- [ ] Verify all 12 day files meet the content depth standard (500+ words, 3+ exercises, 5 Q&A)
+- [x] Verify all 12 day files meet the content depth standard (500+ words, 3+ exercises, 5 Q&A)
 - [ ] Add `quiz.json` to each Phase 10 day
-- [ ] Phase 10 Overview polish — ensure ROI table and expert track are present
+- [x] Phase 10 Overview polish — ensure ROI table and expert track are present
 - [ ] Add `extras/` with LLM starter notebooks and prompt library
 
-### Phase 11 — Cloud Data Engineering (Days 121–132) 🆕
+### Phase 11 — Cloud Data Engineering (Days 121–132) ✅ Complete
 
-- [ ] `Day_121_Cloud_Fundamentals` — AWS/GCP/Azure architecture, IAM, cost management
-- [ ] `Day_122_Object_Storage` — S3, GCS, Delta Lake, Iceberg table formats
-- [ ] `Day_123_Cloud_Data_Warehouses` — BigQuery, Snowflake, Redshift architecture
-- [ ] `Day_124_dbt_at_Scale` — incremental models, snapshots, advanced patterns
-- [ ] `Day_125_Orchestration` — Apache Airflow, Prefect, Dagster
-- [ ] `Day_126_Streaming_Pipelines` — Kafka, Pub/Sub, Kinesis, real-time ETL
-- [ ] `Day_127_Lakehouse_Architecture` — Databricks, Unity Catalog, Delta Live Tables
-- [ ] `Day_128_Data_Contracts_and_Quality` — Great Expectations, Soda, data SLAs
-- [ ] `Day_129_Cloud_Security_and_Compliance` — VPC, encryption, PII handling
-- [ ] `Day_130_Cost_Engineering` — query optimisation for $/TB, slot management
-- [ ] `Day_131_Platform_Engineering` — Terraform for data infrastructure
-- [ ] `Day_132_Capstone_Cloud_Data_Pipeline` — end-to-end cloud pipeline project
-- [ ] Phase 11 Overview (300+ lines)
+- [x] `Day_121_Cloud_Fundamentals` — AWS/GCP/Azure architecture, IAM, cost management
+- [x] `Day_122_Object_Storage` — S3, GCS, Delta Lake, Iceberg table formats
+- [x] `Day_123_Cloud_Data_Warehouses` — BigQuery, Snowflake, Redshift architecture
+- [x] `Day_124_dbt_at_Scale` — incremental models, snapshots, advanced patterns
+- [x] `Day_125_Orchestration` — Apache Airflow, Prefect, Dagster
+- [x] `Day_126_Streaming_Pipelines` — Kafka, Pub/Sub, Kinesis, real-time ETL
+- [x] `Day_127_Lakehouse_Architecture` — Databricks, Unity Catalog, Delta Live Tables
+- [x] `Day_128_Data_Contracts_and_Quality` — Great Expectations, Soda, data SLAs
+- [x] `Day_129_Cloud_Security_and_Compliance` — VPC, encryption, PII handling
+- [x] `Day_130_Cost_Engineering` — query optimisation for $/TB, slot management
+- [x] `Day_131_Platform_Engineering` — Terraform for data infrastructure
+- [x] `Day_132_Capstone_Cloud_Data_Pipeline` — end-to-end cloud pipeline project
+- [x] Phase 11 Overview (300+ lines)
 
-### Phase 12 — Analytics Engineering & Data Products (Days 133–140) 🆕
+### Phase 12 — Analytics Engineering & Data Products (Days 133–140) ✅ Complete
 
-- [ ] `Day_133_Analytics_Engineer_Role` — vs Data Analyst, Data Scientist, DE
-- [ ] `Day_134_Semantic_and_Metrics_Layers` — dbt Metrics, Cube.js, LookML
-- [ ] `Day_135_Self_Serve_Analytics` — empowering stakeholders without SQL
-- [ ] `Day_136_Data_Mesh_Principles` — domain ownership, data products
-- [ ] `Day_137_Product_Analytics_Deep_Dive` — Amplitude, Mixpanel, retention analysis
-- [ ] `Day_138_AB_Testing_at_Scale` — Statsig, LaunchDarkly, experimentation platforms
-- [ ] `Day_139_Building_Data_Products` — API-first data, embedded analytics
-- [ ] `Day_140_Capstone_Data_Product` — design a data product for a business unit
-- [ ] Phase 12 Overview
+- [x] `Day_133_Analytics_Engineer_Role` — vs Data Analyst, Data Scientist, DE
+- [x] `Day_134_Semantic_and_Metrics_Layers` — dbt Metrics, Cube.js, LookML
+- [x] `Day_135_Self_Serve_Analytics` — empowering stakeholders without SQL
+- [x] `Day_136_Data_Mesh_Principles` — domain ownership, data products
+- [x] `Day_137_Product_Analytics_Deep_Dive` — retention, funnels, cohort analysis
+- [x] `Day_138_AB_Testing_at_Scale` — statistical rigor, experimentation platforms
+- [x] `Day_139_Data_Products_and_Monetization` — API-first data, embedded analytics
+- [x] `Day_140_Capstone_Data_Product` — design a data product for a business unit
+- [x] Phase 12 Overview
 
 ### Additional Gap-Filling Days
 
-- [ ] `Day_67B_AI_Agents_and_Tool_Use` — LangChain/LlamaIndex agents, function calling, ReAct (Phase 6)
-- [ ] `Day_67C_Responsible_AI_in_Practice` — model cards, Fairlearn, audit reporting (Phase 6)
-- [ ] `Day_84C_Reverse_ETL_and_Semantic_Layer` — Hightouch concepts, operational analytics (Phase 7)
-- [ ] `Day_96C_Streaming_SQL_Fundamentals` — Kafka concepts, ksqlDB basics, real-time aggregations (Phase 8)
-- [ ] `Day_108B_Cloud_Native_SQL` — BigQuery ML, Snowflake Cortex, Redshift ML
-- [ ] `Day_108C_Curriculum_Capstone` — ingest → clean → model → visualise → deploy (all 9+ phases)
+- [x] `Day_68_AI_Agents_and_Tool_Use` — LangChain/LlamaIndex agents, function calling, ReAct (Phase 6)
+- [x] `Day_69_Responsible_AI_in_Practice` — model cards, Fairlearn, audit reporting (Phase 6)
+- [x] `Day_84C_Reverse_ETL_and_Semantic_Layer` — Hightouch concepts, operational analytics (Phase 7)
+- [x] `Day_96C_Streaming_SQL_Fundamentals` — Kafka concepts, ksqlDB basics, real-time aggregations (Phase 8)
+- [x] `Day_108C_Cloud_Native_SQL` — BigQuery ML, Snowflake Cortex, Redshift ML
+- [x] `Day_108B_Curriculum_Capstone` — ingest → clean → model → visualise → deploy (all 9+ phases)
 
 ---
 
