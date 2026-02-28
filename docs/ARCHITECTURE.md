@@ -55,6 +55,18 @@ We use **Zustand** to manage user progress and application state.
 - **Sidebar**: The `Sidebar` component dynamically generates navigation based on the loaded phases and lessons.
 - **Day Tokens**: Lessons are identified by "Day Tokens" (e.g., `1`, `36B`) allowing for flexible curriculum expansion without renumbering everything.
 
+
+### 6. AI Backend Gateway (`/api/gemini/*`)
+
+Gemini access is routed through backend endpoints (`/api/gemini/generate` and `/api/gemini/embed`) instead of direct browser-to-Google API calls.
+
+- **Secret management**: the real key is stored in `GEMINI_API_KEY` on the server runtime only.
+- **Validation**: backend checks payload shape, required fields, and input size limits before upstream calls.
+- **Rate limiting**: per-IP/per-user in-memory limits are applied to generation and embedding routes.
+- **Response minimization**: backend strips Gemini responses down to the fields the frontend needs (`text` or `embedding`).
+- **Local dev**: Vite mounts middleware for these endpoints in `vite.config.ts` so `npm run dev` works with the same API contract.
+
+
 ## 📂 Directory Structure
 
 See `CONTRIBUTING.md` for a breakdown of the project structure.

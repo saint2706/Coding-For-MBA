@@ -14,21 +14,22 @@
 import { defineConfig, type HtmlTagDescriptor, type PluginOption, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import criticalCss from './scripts/vite-plugin-critical-css'
+import { handleEmbed, handleGenerate, withErrorHandling } from './api/gemini/_shared.js'
 
 // https://vite.dev/config/
 export default defineConfig(async ({ mode }) => {
   const analyzePlugin: PluginOption = (
     mode === 'analyze'
       ? await import('rollup-plugin-visualizer' as string)
-        .then((mod) =>
-          (mod as { visualizer: (options: Record<string, unknown>) => unknown }).visualizer({
-            filename: 'dist/stats.html',
-            gzipSize: true,
-            brotliSize: true,
-            template: 'treemap',
-          }),
-        )
-        .catch(() => null)
+          .then((mod) =>
+            (mod as { visualizer: (options: Record<string, unknown>) => unknown }).visualizer({
+              filename: 'dist/stats.html',
+              gzipSize: true,
+              brotliSize: true,
+              template: 'treemap',
+            }),
+          )
+          .catch(() => null)
       : null
   ) as PluginOption
 
@@ -37,6 +38,27 @@ export default defineConfig(async ({ mode }) => {
       react(),
       criticalCss(),
       analyzePlugin,
+      {
+        name: 'gemini-backend-api',
+        apply: 'serve',
+        configureServer(server) {
+          server.middlewares.use('/api/gemini/generate', async (req, res, next) => {
+            if (req.method !== 'POST') {
+              return next()
+            }
+
+            await withErrorHandling(handleGenerate, req, res)
+          })
+
+          server.middlewares.use('/api/gemini/embed', async (req, res, next) => {
+            if (req.method !== 'POST') {
+              return next()
+            }
+
+            await withErrorHandling(handleEmbed, req, res)
+          })
+        },
+      },
       {
         name: 'dev-csp-relaxation',
         transformIndexHtml: {
