@@ -36,7 +36,9 @@ export default function SearchResults() {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isSemanticMode, setIsSemanticMode] = useState(false)
   const [semanticResults, setSemanticResults] = useState<SemanticResult[]>([])
+  const [semanticFallbackResults, setSemanticFallbackResults] = useState<SearchResult[]>([])
   const [semanticLoading, setSemanticLoading] = useState(false)
+  const [semanticError, setSemanticError] = useState<string | null>(null)
 
   useEffect(() => {
     setQuery(queryFromUrl)
@@ -84,16 +86,26 @@ export default function SearchResults() {
   useEffect(() => {
     if (!isSemanticMode || debouncedQuery.trim().length < 2) {
       setSemanticResults([])
+      setSemanticFallbackResults([])
+      setSemanticError(null)
       return
     }
     let cancelled = false
     setSemanticLoading(true)
+    setSemanticError(null)
     semanticSearch(debouncedQuery, 15)
       .then((res) => {
-        if (!cancelled) setSemanticResults(res)
+        if (!cancelled) {
+          setSemanticResults(res)
+          setSemanticFallbackResults([])
+        }
       })
       .catch(() => {
-        if (!cancelled) setSemanticResults([])
+        if (!cancelled) {
+          setSemanticResults([])
+          setSemanticFallbackResults(search(debouncedQuery, 50))
+          setSemanticError('AI search is temporarily unavailable. Showing keyword results instead.')
+        }
       })
       .finally(() => {
         if (!cancelled) setSemanticLoading(false)
@@ -150,6 +162,11 @@ export default function SearchResults() {
             </button>
           )}
         </div>
+        {semanticError && (
+          <p role="status" className="search-semantic-error" style={{ marginTop: '0.5rem' }}>
+            {semanticError}
+          </p>
+        )}
       </div>
 
       {isSemanticMode && semanticResults.length > 0 ? (
@@ -175,6 +192,52 @@ export default function SearchResults() {
                   </span>
                 </div>
                 <span className="search-result-card-phase">Phase {result.lesson.phase}</span>
+              </Link>
+            )
+          })}
+        </div>
+      ) : isSemanticMode && semanticFallbackResults.length > 0 ? (
+        <div className="search-results-list">
+          {semanticFallbackResults.map((result) => {
+            const diff =
+              difficultyConfig[result.item.difficulty || 'beginner'] ?? difficultyConfig.beginner!
+
+            return (
+              <Link
+                key={result.item.day}
+                to={`/lesson/${result.item.day}`}
+                className="search-result-card"
+              >
+                <div className="search-result-card-header">
+                  <span className="search-result-card-day">Day {result.item.day}</span>
+                  <h3 className="search-result-card-title">
+                    {highlightText(result.item.title, terms)}
+                  </h3>
+                  <span
+                    className="difficulty-badge"
+                    style={{ color: diff.color, background: diff.bg }}
+                  >
+                    {diff.label}
+                  </span>
+                </div>
+
+                <p className="search-result-card-snippet">
+                  {highlightText(getSearchSnippet(result.item.plainContent, debouncedQuery), terms)}
+                </p>
+
+                <div className="search-result-card-tags">
+                  {(result.item.concepts ?? []).slice(0, 3).map((concept) => (
+                    <span key={concept} className="search-result-tag">
+                      {highlightText(concept, terms)}
+                    </span>
+                  ))}
+                  {(result.item.tags ?? []).slice(0, 3).map((tag) => (
+                    <span key={tag} className="search-result-tag">
+                      {highlightText(tag, terms)}
+                    </span>
+                  ))}
+                </div>
+                <span className="search-result-card-phase">Phase {result.item.phase}</span>
               </Link>
             )
           })}
