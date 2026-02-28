@@ -1,13 +1,9 @@
 /**
  * Parses markdown content to extract exercise definitions.
- * Returns an array of partial exercise objects containing:
- * - title
- * - goal
- * - starterCode
- * - expectedOutput
- * - tags (empty array)
- *
  * The caller is responsible for adding lesson metadata (day, phase, difficulty, lessonTitle).
+ *
+ * @param {string} content - The markdown content to parse.
+ * @returns {Array<{ title: string, goal: string, starterCode: string, expectedOutput: string | undefined, tags: string[] }>} An array of partial exercise objects.
  */
 export function extractExercisesFromContent(content) {
   const exercises = []

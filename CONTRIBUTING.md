@@ -99,6 +99,5 @@ We use **Vitest** for unit testing and **Playwright** for end-to-end testing.
 - **User Documentation**: Located in `README.md`.
 - **Architecture**: See `docs/ARCHITECTURE.md`.
 - **Roadmap**: See `docs/todo.md`.
-- **Content Strategy**: See `docs/content-expansion.md`.
 
 Thank you for contributing!

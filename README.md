@@ -127,7 +127,6 @@ For more details, please see:
 - **[Contributing Guide](CONTRIBUTING.md)**: How to set up and contribute.
 - **[Architecture](docs/ARCHITECTURE.md)**: Technical overview of the project.
 - **[Roadmap](docs/todo.md)**: Upcoming features and improvements.
-- **[Content Strategy](docs/content-expansion.md)**: Plan for curriculum expansion.
 
 ## 🤖 Dependabot Updates
 
