@@ -5,6 +5,7 @@ const STORAGE_KEY = 'ai-assistant-store'
 
 function makeMessage(index: number): ChatMessage {
   return {
+    id: `msg-${index}`,
     role: index % 2 === 0 ? 'user' : 'model',
     text: `message-${index}`,
   }
@@ -12,6 +13,7 @@ function makeMessage(index: number): ChatMessage {
 
 function makeFlashcard(index: number): Flashcard {
   return {
+    id: `card-${index}`,
     front: `front-${index}`,
     back: `back-${index}`,
   }
@@ -133,10 +135,12 @@ describe('aiAssistantStore', () => {
     expect(state.messagesByDay['2025-12-31']).toBeDefined()
     expect(state.messagesByDay['2025-12-31']!).toHaveLength(100)
     expect(state.messagesByDay['2025-12-31']?.[0]?.text).toBe('message-30')
+    expect(state.messagesByDay['2025-12-31']?.[0]?.id).toBe('msg-30')
 
     expect(state.flashcardsByDay['2025-12-31']).toBeDefined()
     expect(state.flashcardsByDay['2025-12-31']!).toHaveLength(50)
     expect(state.flashcardsByDay['2025-12-31']?.[0]?.front).toBe('front-30')
+    expect(state.flashcardsByDay['2025-12-31']?.[0]?.id).toBe('card-30')
     expect(state.hintLevelsByExercise.ex1).toBe(2)
 
     const rawPersisted = window.localStorage.getItem(STORAGE_KEY)
@@ -154,5 +158,37 @@ describe('aiAssistantStore', () => {
     expect(persisted.state.messagesByDay['2025-12-31']).toHaveLength(100)
     expect(persisted.state.flashcardsByDay['2025-12-31']).toHaveLength(50)
     expect(persisted.version).toBe(1)
+  })
+
+  it('assigns stable IDs to new messages and generated flashcards', () => {
+    const store = useAiAssistantStore.getState()
+
+    store.addMessage('2026-03-01', { role: 'user', text: 'no-id-message' })
+    store.setFlashcards('2026-03-01', [{ front: 'Q', back: 'A' }])
+
+    const state = useAiAssistantStore.getState()
+
+    expect(state.messagesByDay['2026-03-01']?.[0]?.id).toMatch(/^msg-/)
+    expect(state.flashcardsByDay['2026-03-01']?.[0]?.id).toMatch(/^card-/)
+  })
+
+  it('keeps IDs stable when clearing chat, regenerating flashcards, and reordering cards', () => {
+    const store = useAiAssistantStore.getState()
+
+    store.addMessage('2026-03-02', makeMessage(1))
+    store.addMessage('2026-03-02', makeMessage(2))
+    store.clearMessages('2026-03-02')
+    store.addMessage('2026-03-02', makeMessage(3))
+
+    const regeneratedCards = [makeFlashcard(100), makeFlashcard(101), makeFlashcard(102)]
+    store.setFlashcards('2026-03-02', regeneratedCards)
+    store.setFlashcards('2026-03-02', [...regeneratedCards].reverse())
+
+    const state = useAiAssistantStore.getState()
+    const chatIds = (state.messagesByDay['2026-03-02'] || []).map((msg) => msg.id)
+    const flashcardIds = (state.flashcardsByDay['2026-03-02'] || []).map((card) => card.id)
+
+    expect(chatIds).toEqual(['msg-3'])
+    expect(flashcardIds).toEqual(['card-102', 'card-101', 'card-100'])
   })
 })
