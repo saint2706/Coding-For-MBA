@@ -618,6 +618,7 @@
   z-index: 99999;
   will-change: transform;
   mix-blend-mode: difference;
+  opacity: 0;
 }
 
 .custom-cursor-ring {
@@ -631,10 +632,17 @@
   pointer-events: none;
   z-index: 99998;
   will-change: transform;
+  opacity: 0;
   transition:
     border-color var(--transition-fast),
     width var(--transition-fast),
-    height var(--transition-fast);
+    height var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.custom-cursor-active .custom-cursor-dot,
+.custom-cursor-active .custom-cursor-ring {
+  opacity: 1;
 }
 
 .custom-cursor-ring--hover {

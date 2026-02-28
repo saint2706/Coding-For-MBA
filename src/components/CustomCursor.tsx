@@ -28,11 +28,15 @@ export default function CustomCursor() {
   const prefersReducedMotion = useReducedMotion()
 
   useEffect(() => {
-    if (prefersReducedMotion || !isFinePointer()) return
-    setEnabled(true)
-
     const mql = window.matchMedia('(pointer: fine)')
-    const onChange = (e: MediaQueryListEvent) => setEnabled(e.matches)
+
+    const updateEnabled = (matches: boolean) => {
+      setEnabled(Boolean(matches && !prefersReducedMotion))
+    }
+
+    updateEnabled(mql.matches)
+
+    const onChange = (e: MediaQueryListEvent) => updateEnabled(e.matches)
     mql.addEventListener('change', onChange)
 
     return () => mql.removeEventListener('change', onChange)
@@ -62,7 +66,11 @@ export default function CustomCursor() {
   }, [])
 
   useEffect(() => {
-    if (!enabled) return
+    if (!enabled) {
+      document.documentElement.classList.remove('custom-cursor-active')
+      return
+    }
+
     document.documentElement.classList.add('custom-cursor-active')
     window.addEventListener('mousemove', handleMouseMove, { passive: true })
     window.addEventListener('mouseover', handleMouseOver, { passive: true })
@@ -76,7 +84,7 @@ export default function CustomCursor() {
     }
   }, [enabled, handleMouseMove, handleMouseOver, handleMouseOut])
 
-  if (!enabled) return null
+  if (!enabled || !isFinePointer()) return null
 
   return (
     <>

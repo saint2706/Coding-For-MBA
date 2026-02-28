@@ -43,6 +43,7 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
   const sidebarDefaultOpen = useUserPreferencesStore((state) => state.sidebarDefaultOpen)
+  const customCursorEnabled = useUserPreferencesStore((state) => state.customCursorEnabled)
   const [sidebarOpen, setSidebarOpen] = useState(sidebarDefaultOpen)
   const location = useLocation()
   const prefersReducedMotion = useReducedMotion()
@@ -109,7 +110,7 @@ export default function App() {
         </main>
         <MobileNav />
         <KeyboardShortcutsOverlay />
-        <CustomCursor />
+        {customCursorEnabled && <CustomCursor />}
       </div>
     </ThemeProvider>
   )
