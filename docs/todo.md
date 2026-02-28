@@ -63,10 +63,10 @@
 
 ### Extras/ Folders
 
-- [ ] Add `extras/` to Phase 2 (sample DataFrames, advanced Pandas notebooks)
-- [ ] Add `extras/` to Phase 5 (PEFT configs, RAG starters)
-- [ ] Add `extras/` to Phase 8 (DDL scripts, sample datasets)
-- [ ] Add `extras/` to Phase 9 (capstone data + solution scaffold)
+- [x] Add `extras/` to Phase 2 (sample DataFrames, advanced Pandas notebooks)
+- [x] Add `extras/` to Phase 5 (PEFT configs, RAG starters)
+- [x] Add `extras/` to Phase 8 (DDL scripts, sample datasets)
+- [x] Add `extras/` to Phase 9 (capstone data + solution scaffold)
 
 ---
 
