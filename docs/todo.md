@@ -10,6 +10,8 @@
 
 ## ✅ Completed
 
+> **Audit update (2026-02-28):** Re-validated items marked complete against current codebase and in-app surfacing. Tasks found partially implemented have been moved back to incomplete with notes.
+
 <details>
 <summary>Click to expand completed items</summary>
 
@@ -95,7 +97,7 @@
 - [x] `Day_130_Cost_Engineering` — query optimisation for $/TB, slot management
 - [x] `Day_131_Platform_Engineering` — Terraform for data infrastructure
 - [x] `Day_132_Capstone_Cloud_Data_Pipeline` — end-to-end cloud pipeline project
-- [x] Phase 11 Overview (300+ lines)
+- [ ] Phase 11 Overview (300+ lines) _(audit: current overview is 135 lines; content exists and is surfaced, but depth target not yet met)_
 
 ### Phase 12 — Analytics Engineering & Data Products (Days 133–140) ✅ Complete
 
@@ -124,8 +126,8 @@
 
 ### AI-Powered Study Assistant
 
-- [x] "Ask about this lesson" — LLM API integration (OpenAI / Gemini)
-- [x] Auto-generate flashcards from lesson markdown
+- [ ] "Ask about this lesson" — LLM API integration (OpenAI / Gemini) _(audit: Gemini implementation exists and is surfaced in `AiStudyPanel`, but OpenAI path is not implemented)_
+- [ ] Auto-generate flashcards from lesson markdown _(audit: generation flow exists, but flashcard cards are mouse-only `div` click targets with no keyboard interaction semantics; accessibility pass still needed)_
 - [x] Smart exercise hint system (3-level progressive hints)
 - [x] Semantic search across all lesson content (embeddings + cosine similarity)
 
