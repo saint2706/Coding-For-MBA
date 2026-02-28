@@ -49,6 +49,15 @@
     transparent 40%
   );
 
+  /* Calm reading surface */
+  --reading-bg-primary: #111a2c;
+  --reading-bg-surface: #162238;
+  --reading-bg-code: #1a253d;
+  --reading-border-subtle: rgba(176, 191, 219, 0.1);
+  --reading-border-card: rgba(176, 191, 219, 0.14);
+  --reading-border-active: rgba(139, 92, 246, 0.26);
+  --reading-accent-glow: rgba(99, 102, 241, 0.1);
+
   /* Shadows */
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4);

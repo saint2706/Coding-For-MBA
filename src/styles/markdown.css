@@ -284,3 +284,53 @@
     font-size: clamp(0.98rem, 0.94rem + 0.28vw, 1.03rem);
   }
 }
+
+.lesson-reading-surface .markdown-body {
+  line-height: 1.92;
+  font-size: clamp(1.02rem, 0.99rem + 0.2vw, 1.1rem);
+}
+
+.lesson-reading-surface .markdown-body p {
+  margin-bottom: 1.2rem;
+  color: color-mix(in srgb, var(--text-primary) 96%, white 4%);
+}
+
+.lesson-reading-surface .markdown-body h2 {
+  margin-top: 2.65rem;
+  border-bottom-color: color-mix(in srgb, var(--border-subtle) 84%, transparent);
+}
+
+.lesson-reading-surface .markdown-body blockquote {
+  border-left-color: color-mix(in srgb, var(--accent-primary) 72%, var(--border-subtle) 28%);
+  background: color-mix(in srgb, var(--accent-primary) 6%, transparent);
+  color: color-mix(in srgb, var(--text-secondary) 94%, white 6%);
+}
+
+.lesson-reading-surface .markdown-body code:not(pre code) {
+  border-color: color-mix(in srgb, var(--border-card) 88%, transparent);
+  color: color-mix(in srgb, var(--accent-tertiary) 88%, var(--text-primary) 12%);
+}
+
+.lesson-reading-surface .markdown-body .code-block-wrapper,
+.lesson-reading-surface .markdown-body .table-wrapper,
+.lesson-reading-surface .markdown-body details {
+  border-color: color-mix(in srgb, var(--border-card) 84%, transparent);
+  box-shadow: none;
+}
+
+.lesson-reading-surface .markdown-body thead th {
+  background: color-mix(in srgb, var(--accent-primary) 5%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--border-card) 88%, transparent);
+}
+
+.lesson-reading-surface .markdown-body tbody tr:hover {
+  background: transparent;
+}
+
+.lesson-reading-surface .markdown-body details summary {
+  background: color-mix(in srgb, var(--accent-primary) 4%, transparent);
+}
+
+.lesson-reading-surface .markdown-body details summary:hover {
+  background: color-mix(in srgb, var(--accent-primary) 6%, transparent);
+}
