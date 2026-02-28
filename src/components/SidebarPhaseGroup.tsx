@@ -6,7 +6,7 @@
  * and progress updates.
  */
 
-import { memo } from 'react'
+import { memo, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { getLessonsByPhase, phaseIcons, type Phase } from '../utils/contentLoader'
@@ -34,7 +34,11 @@ function SidebarPhaseGroup({
   const prefersReducedMotion = useReducedMotion()
   const lessons = getLessonsByPhase(phase.phase)
   const icon = phaseIcons[phase.phase - 1] || '📖'
-  const completedCount = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day))).length
+
+  const completedCount = useMemo(
+    () => lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day))).length,
+    [lessons, completedSet]
+  )
 
   return (
     <div className="phase-group">

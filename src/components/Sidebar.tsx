@@ -5,7 +5,7 @@
  * with progress tracking and hierarchical organization.
  */
 
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases } from '../utils/contentLoader'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
@@ -90,15 +90,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
    *
    * @param phaseNum - The phase number to toggle.
    */
-  const togglePhase = (phaseNum: number) => {
+  const togglePhase = useCallback((phaseNum: number) => {
     setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
-  }
+  }, [])
+
+  const handleClose = useCallback(() => {
+    onClose()
+  }, [onClose])
 
   return (
     <>
       <div
         className={`sidebar-overlay ${isOpen ? 'visible' : ''}`}
-        onClick={onClose}
+        onClick={handleClose}
         aria-hidden="true"
       />
       <aside
@@ -114,7 +118,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             Coding for MBA
             <small>108-Day Curriculum</small>
           </div>
-          <button className="sidebar-close" onClick={onClose} aria-label="Close sidebar">
+          <button className="sidebar-close" onClick={handleClose} aria-label="Close sidebar">
             <svg
               width="20"
               height="20"
@@ -134,7 +138,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             to="/"
             className={`day-link ${location.pathname === '/' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
-            onClick={onClose}
+            onClick={handleClose}
             aria-current={location.pathname === '/' ? 'page' : undefined}
           >
             🏠 Home
@@ -143,7 +147,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             to="/curriculum"
             className={`day-link ${location.pathname === '/curriculum' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
-            onClick={onClose}
+            onClick={handleClose}
             aria-current={location.pathname === '/curriculum' ? 'page' : undefined}
           >
             📋 Full Curriculum
@@ -152,7 +156,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             to="/progress"
             className={`day-link ${location.pathname === '/progress' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
-            onClick={onClose}
+            onClick={handleClose}
             aria-current={location.pathname === '/progress' ? 'page' : undefined}
           >
             📊 Progress
@@ -161,7 +165,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             to="/exercises"
             className={`day-link ${location.pathname === '/exercises' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
-            onClick={onClose}
+            onClick={handleClose}
             aria-current={location.pathname === '/exercises' ? 'page' : undefined}
           >
             🧪 Exercises
@@ -171,7 +175,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             to="/review"
             className={`day-link ${location.pathname === '/review' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
-            onClick={onClose}
+            onClick={handleClose}
             aria-current={location.pathname === '/review' ? 'page' : undefined}
           >
             🧠 Review
@@ -189,7 +193,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               dueCount={dueByPhase[phase.phase] || 0}
               currentPath={location.pathname}
               onToggle={togglePhase}
-              onClose={onClose}
+              onClose={handleClose}
             />
           ))}
         </nav>

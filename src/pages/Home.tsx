@@ -10,7 +10,7 @@
  * - Highlight key features (Python, Data Science, SQL).
  */
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
@@ -156,7 +156,7 @@ export default function Home() {
         </div>
 
         <div className="phases-grid">
-          {phases.map((phase) => {
+          {useMemo(() => phases.map((phase) => {
             const lessons = getLessonsByPhase(phase.phase)
             const diff =
               difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
@@ -195,7 +195,7 @@ export default function Home() {
                 )}
               </Link>
             )
-          })}
+          }), [phases, completedCount])}
         </div>
       </section>
     </div>

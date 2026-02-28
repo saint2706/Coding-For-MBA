@@ -57,12 +57,12 @@ export default function ProgressDashboard() {
   const overallPct =
     totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0
 
-  const handleClearProgress = () => {
+  const handleClearProgress = useCallback(() => {
     if (window.confirm('Are you sure you want to clear all progress? This cannot be undone.')) {
       clearAllProgress()
       forceUpdate()
     }
-  }
+  }, [forceUpdate])
 
   const totalLearningMs = useLearningAnalyticsStore((state) => state.totalLearningMs())
   const thisWeekLearningMs = useLearningAnalyticsStore((state) => state.weekLearningMs())
@@ -78,9 +78,13 @@ export default function ProgressDashboard() {
   const dailyChallenge = useGamificationStore((state) => state.dailyChallenge)
   const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
   const xpToNextMilestone = useGamificationStore((state) => state.xpToNextMilestone)
-  const milestoneProgress = xpToNextMilestone()
-  const earnedBadges = ACHIEVEMENTS.filter((badge) => achievementsUnlocked.includes(badge.id))
-  const challengeLesson = getLesson(dailyChallenge.day)
+
+  const milestoneProgress = useMemo(() => xpToNextMilestone(), [xpToNextMilestone, xpTotal])
+  const earnedBadges = useMemo(
+    () => ACHIEVEMENTS.filter((badge) => achievementsUnlocked.includes(badge.id)),
+    [achievementsUnlocked],
+  )
+  const challengeLesson = useMemo(() => getLesson(dailyChallenge.day), [dailyChallenge.day])
 
   useEffect(() => {
     refreshDailyChallenge()

@@ -9,7 +9,7 @@
  * - Provide quick navigation to any lesson.
  */
 
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
@@ -20,7 +20,7 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
+import { getCompletedLessons, isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import Breadcrumb from '../components/Breadcrumb'
 import ProgressBar from '../components/ProgressBar'
 
@@ -36,6 +36,7 @@ import ProgressBar from '../components/ProgressBar'
 export default function Curriculum() {
   const phases = getAllPhases()
   const prefersReducedMotion = useReducedMotion()
+  const completedLessons = getCompletedLessons()
   const timelineRef = useRef<HTMLDivElement | null>(null)
   const { scrollYProgress } = useScroll({
     target: timelineRef,
@@ -103,7 +104,7 @@ export default function Curriculum() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
       >
-        {phases.map((phase) => {
+        {useMemo(() => phases.map((phase) => {
           const lessons = getLessonsByPhase(phase.phase)
           const diff =
             difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
@@ -155,7 +156,7 @@ export default function Curriculum() {
               </div>
             </motion.div>
           )
-        })}
+        }), [phases, completedLessons.length])}
       </motion.div>
     </div>
   )
