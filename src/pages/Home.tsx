@@ -10,13 +10,15 @@
  * - Highlight key features (Python, Data Science, SQL).
  */
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { buildWebSiteSchema, buildCourseSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
+  getAllLessons,
+  getReadingTime,
   getLessonsByPhase,
   getLesson,
   difficultyConfig,
@@ -31,7 +33,7 @@ import { useGamificationStore } from '../stores/gamificationStore'
  * Home page component displaying the curriculum landing page.
  *
  * Features include:
- * - Hero section with curriculum statistics (108 days, 9 phases, etc.)
+ * - Hero section with curriculum statistics ({stats.totalDays} days, {stats.totalPhases} phases, etc.)
  * - Continue learning card showing last visited lesson
  * - Interactive grid of all learning phases with progress tracking
  * - Quick navigation to start learning or continue progress
@@ -40,6 +42,22 @@ import { useGamificationStore } from '../stores/gamificationStore'
  */
 export default function Home() {
   const phases = getAllPhases()
+  const stats = useMemo(() => {
+    const allLessons = getAllLessons()
+    const allPhases = getAllPhases()
+    const totalDays = allLessons.length
+    const totalPhases = allPhases.length
+
+    // Calculate reading time for hours
+    const totalReadingMins = allLessons.reduce((sum, l) => sum + getReadingTime(l.content), 0)
+    const totalHours = Math.round(totalReadingMins / 60)
+
+    // Calculate unique difficulty levels
+    const uniqueLevels = new Set(allLessons.map((l) => l.difficulty || 'beginner'))
+    const totalLevels = uniqueLevels.size
+
+    return { totalDays, totalPhases, totalHours, totalLevels }
+  }, [])
   const lastVisitedDay = getLastVisited()
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
   const lastVisitedPhase = lastVisitedLesson
@@ -64,7 +82,7 @@ export default function Home() {
     <div className="page-container">
       <SEOHead
         title="Coding for MBA — 108-Day Technical Curriculum"
-        description="A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals."
+        description="A structured {stats.totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals."
         path="/"
         jsonLd={[buildWebSiteSchema(), buildCourseSchema()]}
         breadcrumbs={[{ name: 'Home', url: '/' }]}
@@ -104,31 +122,31 @@ export default function Home() {
           for Your MBA Career
         </h1>
         <p>
-          A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business
-          Intelligence, and Enterprise SQL — designed for business professionals.
+          A structured {stats.totalDays}-day curriculum covering Python, Data Science, Machine
+          Learning, Business Intelligence, and Enterprise SQL — designed for business professionals.
         </p>
         <div className="hero-stats">
           <div className="hero-stat">
             <span className="stat-value">
-              <AnimatedCounter value={108} />
+              <AnimatedCounter value={stats.totalDays} />
             </span>
             <span className="stat-label">Days</span>
           </div>
           <div className="hero-stat">
             <span className="stat-value">
-              <AnimatedCounter value={9} />
+              <AnimatedCounter value={stats.totalPhases} />
             </span>
             <span className="stat-label">Phases</span>
           </div>
           <div className="hero-stat">
             <span className="stat-value">
-              <AnimatedCounter value={100} suffix="+" />
+              <AnimatedCounter value={stats.totalHours} suffix="+" />
             </span>
             <span className="stat-label">Hours</span>
           </div>
           <div className="hero-stat">
             <span className="stat-value">
-              <AnimatedCounter value={4} />
+              <AnimatedCounter value={stats.totalLevels} />
             </span>
             <span className="stat-label">Levels</span>
           </div>
@@ -150,7 +168,8 @@ export default function Home() {
         <div className="section-header">
           <h2>The Learning Path</h2>
           <p>
-            From Python basics to enterprise database architecture — a structured journey through 9
+            From Python basics to enterprise database architecture — a structured journey through{' '}
+            {stats.totalPhases}
             phases.
           </p>
         </div>
