@@ -45,6 +45,8 @@ vi.mock('../../utils/progressTracker', () => ({
 }))
 
 vi.mock('../../utils/contentLoader', () => ({
+  getAllLessons: () => [{ day: 12, phase: 2, difficulty: 'beginner', content: 'hello world' }],
+  getReadingTime: () => 5,
   getAllPhases: () => [
     {
       phase: 2,
