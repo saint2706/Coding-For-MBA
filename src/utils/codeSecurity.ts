@@ -151,22 +151,25 @@ export function validatePythonCode(code: string): ValidationResult {
   }
 
   // 3. Import Deny Patterns (Specific module imports)
-  const importPatterns = [
-    /\bimport\s+js\b/,
-    /\bfrom\s+js\b/,
-    /\bimport\s+pyodide\b/,
-    /\bfrom\s+pyodide\b/,
-    /\bimport\s+micropip\b/,
-    /\bfrom\s+micropip\b/,
-  ]
+  // We need to catch these modules whether they are imported via 'import x', 'from x',
+  // or as part of a comma-separated list like 'import math, js'.
+  const dangerousModules = ['js', 'pyodide', 'micropip']
+  const dangerousModulesStr = dangerousModules.join('|')
 
-  for (const pattern of importPatterns) {
-    if (pattern.test(strippedCode)) {
-      return {
-        valid: false,
-        error:
-          'Security Error: Direct access to internal modules (js, pyodide, micropip) is restricted.',
-      }
+  // Pattern 1: `import ... module ...`
+  // Matches "import", then anything up to the module name, as long as it doesn't cross a newline or semicolon.
+  // We use `\b` to ensure we match the exact module name.
+  const importRegex = new RegExp(`\\bimport\\b[^;\\n]*\\b(${dangerousModulesStr})\\b`)
+
+  // Pattern 2: `from module ...`
+  // Matches "from", then the module name.
+  const fromRegex = new RegExp(`\\bfrom\\b\\s+(${dangerousModulesStr})\\b`)
+
+  if (importRegex.test(strippedCode) || fromRegex.test(strippedCode)) {
+    return {
+      valid: false,
+      error:
+        'Security Error: Direct access to internal modules (js, pyodide, micropip) is restricted.',
     }
   }
 
