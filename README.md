@@ -110,6 +110,7 @@ The frontend no longer calls Google Gemini APIs directly. It now calls backend e
 ### Environment Variables
 
 - `GEMINI_API_KEY` (**server only**): real Gemini key used by backend handlers.
+  - Backward-compatible fallback: `VITE_GEMINI_API_KEY` is also accepted on the server (useful if your GitHub secret is already named this way).
 - `VITE_GEMINI_API_BASE` (optional, frontend): base URL for backend API if it is hosted separately. Leave empty for same-origin (`/api/...`).
 
 ### Local Development
