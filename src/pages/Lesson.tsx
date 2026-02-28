@@ -51,6 +51,7 @@ import { useSwipe } from '../hooks/useSwipe'
 import { toastInfo, toastSuccess } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { useGamificationStore } from '../stores/gamificationStore'
+import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 import {
   triggerSparkle,
   triggerPhaseUnlockConfetti,
@@ -78,10 +79,55 @@ export default function Lesson() {
   const navigate = useNavigate()
   const lesson = getLesson(dayNum!)
   const { prev, next } = getAdjacentLessons(dayNum!)
+  const readingModePreference = useUserPreferencesStore((state) => state.readingMode)
+  const setReadingModePreference = useUserPreferencesStore((state) => state.setReadingMode)
+  const [readingMode, setReadingMode] = useState(readingModePreference)
+  const [isMediumWidth, setIsMediumWidth] = useState(false)
+  const [nearBottom, setNearBottom] = useState(false)
   const [completed, setCompleted] = useState(() =>
     dayNum ? isLessonComplete(dayTokenToProgressId(dayNum)) : false,
   )
   const lastToastAtRef = useRef(0)
+
+  useEffect(() => {
+    setReadingMode(readingModePreference)
+  }, [readingModePreference, dayNum])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const mediaQuery = window.matchMedia('(max-width: 1200px)')
+    const syncWidth = () => setIsMediumWidth(mediaQuery.matches)
+    syncWidth()
+    mediaQuery.addEventListener('change', syncWidth)
+    return () => mediaQuery.removeEventListener('change', syncWidth)
+  }, [])
+
+  useEffect(() => {
+    const updateNearBottom = () => {
+      const maxScrollable = document.documentElement.scrollHeight - window.innerHeight
+      if (maxScrollable <= 0) {
+        setNearBottom(true)
+        return
+      }
+      const scrollRatio = window.scrollY / maxScrollable
+      setNearBottom(scrollRatio > 0.78)
+    }
+    updateNearBottom()
+    window.addEventListener('scroll', updateNearBottom, { passive: true })
+    window.addEventListener('resize', updateNearBottom)
+    return () => {
+      window.removeEventListener('scroll', updateNearBottom)
+      window.removeEventListener('resize', updateNearBottom)
+    }
+  }, [lesson?.day])
+
+  const handleReadingMode = useCallback(
+    (value: boolean) => {
+      setReadingMode(value)
+      setReadingModePreference(value)
+    },
+    [setReadingModePreference],
+  )
 
   // Track last visited lesson
   useEffect(() => {
@@ -117,13 +163,13 @@ export default function Lesson() {
       const afterCompleted = getCompletedLessons()
       const wasPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
-          beforeCompleted.has(dayTokenToProgressId(entry.day)),
-        )
+            beforeCompleted.has(dayTokenToProgressId(entry.day)),
+          )
         : false
       const isPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
-          afterCompleted.includes(dayTokenToProgressId(entry.day)),
-        )
+            afterCompleted.includes(dayTokenToProgressId(entry.day)),
+          )
         : false
 
       if (lesson && !wasPhaseCompleted && isPhaseCompleted) {
@@ -192,9 +238,14 @@ export default function Lesson() {
   const lessonTitle = `Day ${lesson.day}: ${lesson.title}`
   const lessonDescription = `Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 108-day Coding for MBA curriculum.`
   const lessonPath = `/lesson/${lesson.day}`
+  const showTableOfContents = !(readingMode && isMediumWidth)
+  const showSecondaryUi = !readingMode || nearBottom
 
   return (
-    <div className="page-container lesson-with-toc" ref={swipeRef}>
+    <div
+      className={`page-container lesson-with-toc ${readingMode ? 'reading-mode' : ''}`}
+      ref={swipeRef}
+    >
       <SEOHead
         title={lessonTitle}
         description={lessonDescription}
@@ -217,6 +268,17 @@ export default function Lesson() {
       />
       {/* Main content column */}
       <div className="lesson-main-content">
+        {readingMode && (
+          <button
+            type="button"
+            className="reading-mode-exit"
+            onClick={() => handleReadingMode(false)}
+            aria-label="Exit reading mode"
+          >
+            Exit reading mode
+          </button>
+        )}
+
         {/* Breadcrumb */}
         <div className="lesson-header">
           <Breadcrumb
@@ -227,12 +289,15 @@ export default function Lesson() {
             ]}
           />
 
-          <motion.div className="lesson-day-badge" layoutId={`lesson-day-badge-${lesson.day}`}>
+          <motion.div
+            className={`lesson-day-badge ${showSecondaryUi ? '' : 'reading-muted'}`}
+            layoutId={`lesson-day-badge-${lesson.day}`}
+          >
             Day {lesson.day}
           </motion.div>
 
           {/* Meta bar */}
-          <div className="lesson-meta-bar">
+          <div className={`lesson-meta-bar ${showSecondaryUi ? '' : 'reading-muted'}`}>
             <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
               {diff.label}
             </span>
@@ -246,16 +311,20 @@ export default function Lesson() {
               ))}
           </div>
 
-          <button
-            type="button"
-            className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
-            onClick={handleToggleComplete}
-            aria-pressed={completed}
-          >
-            {completed ? '✓ Completed' : '○ Mark as Complete'}
-          </button>
+          {showSecondaryUi && (
+            <>
+              <button
+                type="button"
+                className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
+                onClick={handleToggleComplete}
+                aria-pressed={completed}
+              >
+                {completed ? '✓ Completed' : '○ Mark as Complete'}
+              </button>
 
-          <PrerequisitePills lesson={lesson} />
+              <PrerequisitePills lesson={lesson} />
+            </>
+          )}
         </div>
 
         {/* Markdown content wrapped in semantic article tag */}
@@ -283,20 +352,24 @@ export default function Lesson() {
           )}
         </nav>
 
-        <RelatedLessons lesson={lesson} />
+        <div className={showSecondaryUi ? '' : 'reading-muted'}>
+          <RelatedLessons lesson={lesson} />
+        </div>
 
-        <BackToTop />
+        {!readingMode && <BackToTop />}
       </div>
 
       {/* Table of Contents sidebar */}
-      <TableOfContents content={lesson.content} />
+      {showTableOfContents && <TableOfContents content={lesson.content} />}
 
       {/* AI Study Assistant */}
-      <AiStudyPanel
-        lessonContent={lesson.content}
-        lessonDay={lesson.day}
-        lessonTitle={lesson.title}
-      />
+      {!readingMode && (
+        <AiStudyPanel
+          lessonContent={lesson.content}
+          lessonDay={lesson.day}
+          lessonTitle={lesson.title}
+        />
+      )}
     </div>
   )
 }

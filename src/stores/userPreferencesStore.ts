@@ -25,11 +25,13 @@ export type UserPreferencesStore = {
   fontSize: FontSizePreference
   codeLanguage: CodeLanguagePreference
   density: DensityPreference
+  readingMode: boolean
   setTheme: (theme: ThemePreference) => void
   setSidebarDefaultOpen: (open: boolean) => void
   setFontSize: (size: FontSizePreference) => void
   setCodeLanguage: (language: CodeLanguagePreference) => void
   setDensity: (density: DensityPreference) => void
+  setReadingMode: (readingMode: boolean) => void
 }
 
 const STORAGE_KEY = 'coding-for-mba-user-preferences'
@@ -88,15 +90,17 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
       fontSize: 'md',
       codeLanguage: 'python',
       density: 'comfortable',
+      readingMode: false,
       setTheme: (theme) => set({ theme }),
       setSidebarDefaultOpen: (sidebarDefaultOpen) => set({ sidebarDefaultOpen }),
       setFontSize: (fontSize) => set({ fontSize }),
       setCodeLanguage: (codeLanguage) => set({ codeLanguage }),
       setDensity: (density) => set({ density }),
+      setReadingMode: (readingMode) => set({ readingMode }),
     }),
     {
       name: STORAGE_KEY,
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({
         theme: state.theme,
@@ -104,6 +108,7 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
         fontSize: state.fontSize,
         codeLanguage: state.codeLanguage,
         density: state.density,
+        readingMode: state.readingMode,
       }),
       migrate: (persistedState) => {
         const raw = (persistedState || {}) as Record<string, unknown>
@@ -114,6 +119,7 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
           fontSize: normalizeFontSize(raw.fontSize),
           codeLanguage: normalizeCodeLanguage(raw.codeLanguage),
           density: normalizeDensity(raw.density),
+          readingMode: typeof raw.readingMode === 'boolean' ? raw.readingMode : false,
         }
       },
     },
@@ -122,3 +128,4 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
 
 export const selectThemePreference = (state: UserPreferencesStore) => state.theme
 export const selectSidebarDefaultOpen = (state: UserPreferencesStore) => state.sidebarDefaultOpen
+export const selectReadingMode = (state: UserPreferencesStore) => state.readingMode

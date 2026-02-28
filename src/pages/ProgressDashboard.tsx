@@ -92,11 +92,13 @@ export default function ProgressDashboard() {
     fontSize,
     codeLanguage,
     density,
+    readingMode,
     setTheme,
     setSidebarDefaultOpen,
     setFontSize,
     setCodeLanguage,
     setDensity,
+    setReadingMode,
   } = useUserPreferencesStore()
 
   return (
@@ -348,6 +350,23 @@ export default function ProgressDashboard() {
               Open sidebar on new pages
             </span>
             <small id="sidebar-default-help">You can still toggle the sidebar anytime.</small>
+          </label>
+
+          <label className="preferences-field preferences-toggle" htmlFor="reading-mode-default">
+            Reading mode
+            <span className="preferences-toggle-row">
+              <input
+                id="reading-mode-default"
+                type="checkbox"
+                checked={readingMode}
+                onChange={(event) => setReadingMode(event.target.checked)}
+                aria-describedby="reading-mode-help"
+              />
+              Start lessons in reading mode
+            </span>
+            <small id="reading-mode-help">
+              Focus on lesson text with reduced interface chrome.
+            </small>
           </label>
         </div>
       </section>
