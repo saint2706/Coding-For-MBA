@@ -152,6 +152,58 @@ It is a test.
     expect(check?.textContent).toContain('What is it?')
   })
 
+  it('parses exercise headings with variant spacing and nested formatting', () => {
+    const content = `
+###   Exercise 2 : **Revenue** *Forecasting*
+**Goal**: Practice parsing headings
+Use the provided helper in your answer.
+
+\`\`\`python
+print('starter')
+\`\`\`
+
+**Expected Output**:
+\`\`\`text
+starter
+\`\`\`
+    `
+
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const widget = container.querySelector('[data-testid="exercise-widget"]')
+    expect(widget).toBeTruthy()
+    expect(widget?.getAttribute('data-title')).toBe('Revenue Forecasting')
+    expect(widget?.textContent).toContain('Practice parsing headings')
+  })
+
+  it('parses mastery questions with nested heading formatting and details answers', () => {
+    const content = `
+### Question 2 : **Cash** *Flow* Check
+What does this print?
+\`\`\`python
+print(5 + 5)
+\`\`\`
+<details>
+<summary><strong>Answer</strong></summary>
+It prints:
+\`\`\`text
+10
+\`\`\`
+</details>
+    `
+
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const check = container.querySelector('[data-testid="mastery-check"]')
+    expect(check).toBeTruthy()
+    expect(check?.getAttribute('data-title')).toBe('Cash Flow Check')
+    expect(check?.textContent).toContain('What does this print?')
+  })
+
   it('sanitizes unsafe HTML', () => {
     const content = '<script>alert("xss")</script>'
     act(() => {

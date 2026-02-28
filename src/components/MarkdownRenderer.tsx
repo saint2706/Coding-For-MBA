@@ -14,8 +14,11 @@
 import { useState, memo, JSX, useMemo, type ComponentProps } from 'react'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize, { type Options as RehypeSanitizeOptions } from 'rehype-sanitize'
+import { unified } from 'unified'
+import type { Content, Heading, Html, Nodes, Paragraph, Root, Strong } from 'mdast'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import CodePlayground from './CodePlayground'
@@ -261,6 +264,13 @@ interface InteractiveBlock {
   data: ParsedExercise | ParsedMasteryQuestion
 }
 
+interface MarkdownNodeWithPosition {
+  position?: {
+    start?: { offset?: number }
+    end?: { offset?: number }
+  }
+}
+
 function extractCodeBlock(text: string): { code: string; remaining: string } {
   const codeMatch = text.match(/```(?:python|py)?\s*\n([\s\S]*?)```/)
   if (codeMatch) {
@@ -272,48 +282,190 @@ function extractCodeBlock(text: string): { code: string; remaining: string } {
   return { code: '', remaining: text }
 }
 
-/** Parse exercise and mastery sections so they can render as interactive widgets. */
-function findInteractiveBlocks(content: string): InteractiveBlock[] {
-  const blocks: InteractiveBlock[] = []
+function getNodeStartOffset(node: MarkdownNodeWithPosition): number | null {
+  return node.position?.start?.offset ?? null
+}
 
-  const exerciseRegex =
-    /### Exercise \d+:\s*(.+?)\n([\s\S]*?)(?=\n### Exercise \d+:|\n## |\n---\s*\n## |$)/g
-  let match
-  while ((match = exerciseRegex.exec(content)) !== null) {
-    const title = match[1]!.trim()
-    const body = match[2]!
-    const goalMatch = body.match(/\*\*Goal\*\*:\s*(.+)/)
-    const goal = goalMatch ? goalMatch[1]!.trim() : ''
-    const codeBlocks: string[] = []
-    const codeRegex = /```(?:python|py)\s*\n([\s\S]*?)```/g
-    let codeMatch
-    while ((codeMatch = codeRegex.exec(body)) !== null) {
-      codeBlocks.push(codeMatch[1]!.trim())
-    }
-    const expectedMatch = body.match(
-      /\*\*Expected Output[:\s]*\*\*[\s\S]*?```(?:text|)\s*\n([\s\S]*?)```/,
-    )
-    const expectedOutput = expectedMatch ? expectedMatch[1]!.trim() : ''
-    const starterCode = codeBlocks[0] || ''
-    const goalEnd = goalMatch ? body.indexOf(goalMatch[0]) + goalMatch[0].length : 0
-    const firstCodeStart = body.indexOf('```')
-    const instructions = firstCodeStart > goalEnd ? body.slice(goalEnd, firstCodeStart).trim() : ''
+function getNodeEndOffset(node: MarkdownNodeWithPosition): number | null {
+  return node.position?.end?.offset ?? null
+}
 
-    blocks.push({
-      type: 'exercise',
-      startIndex: match.index,
-      endIndex: match.index + match[0].length,
-      data: { title, goal, instructions, starterCode, expectedOutput, solution: starterCode },
-    })
+function getInlineNodeText(node: Nodes): string {
+  if (node.type === 'text' || node.type === 'inlineCode') {
+    return node.value
   }
 
-  const questionRegex =
-    /### Question (\d+):\s*(.+?)\n([\s\S]*?)<details>\s*\n<summary>.*?<\/summary>\s*\n([\s\S]*?)<\/details>/g
-  while ((match = questionRegex.exec(content)) !== null) {
-    const questionNumber = parseInt(match[1]!, 10)
-    const title = match[2]!.trim()
-    const questionBody = match[3]!.trim()
-    const answerBody = match[4]!.trim()
+  if ('children' in node && Array.isArray(node.children)) {
+    return node.children.map((child) => getInlineNodeText(child as Nodes)).join('')
+  }
+
+  return ''
+}
+
+function getHeadingText(node: Heading): string {
+  return node.children
+    .map((child) => getInlineNodeText(child as Nodes))
+    .join('')
+    .trim()
+}
+
+function isLabeledParagraph(node: Content, label: string): boolean {
+  if (node.type !== 'paragraph') return false
+  const first = node.children[0]
+  if (!first || first.type !== 'strong') return false
+
+  const strongText = (first as Strong).children
+    .map((child) => getInlineNodeText(child as Nodes))
+    .join('')
+    .trim()
+    .replace(/:$/, '')
+
+  return strongText.toLowerCase() === label.toLowerCase()
+}
+
+function extractLabeledTextFromParagraph(node: Content, label: string): string {
+  if (!isLabeledParagraph(node, label)) return ''
+
+  const children = (node as Paragraph).children
+
+  const rest = children
+    .slice(1)
+    .map((child) => getInlineNodeText(child as Nodes))
+    .join('')
+    .trim()
+
+  return rest.replace(/^:\s*/, '').trim()
+}
+
+/** Parse exercise and mastery sections so they can render as interactive widgets. */
+function findInteractiveBlocks(content: string): InteractiveBlock[] {
+  const tree = unified().use(remarkParse).use(remarkGfm).parse(content) as Root
+  const topLevelNodes = tree.children
+  const blocks: InteractiveBlock[] = []
+
+  for (let i = 0; i < topLevelNodes.length; i++) {
+    const node = topLevelNodes[i]
+    if (!node || node.type !== 'heading' || node.depth !== 3) continue
+
+    const headingText = getHeadingText(node)
+    const exerciseMatch = headingText.match(/^Exercise\s+(\d+)\s*:\s*(.+)$/i)
+    const questionMatch = headingText.match(/^Question\s+(\d+)\s*:\s*(.+)$/i)
+    if (!exerciseMatch && !questionMatch) continue
+
+    const startIndex = getNodeStartOffset(node)
+    if (startIndex === null) continue
+
+    let boundaryIndex = topLevelNodes.length
+    for (let j = i + 1; j < topLevelNodes.length; j++) {
+      const candidate = topLevelNodes[j]
+      if (!candidate) continue
+      if (candidate.type === 'heading' && candidate.depth === 2) {
+        boundaryIndex = j
+        break
+      }
+
+      if (candidate.type === 'heading' && candidate.depth === 3) {
+        const candidateText = getHeadingText(candidate)
+        if (/^Exercise\s+\d+\s*:/i.test(candidateText)) {
+          boundaryIndex = j
+          break
+        }
+      }
+    }
+
+    const boundaryNode = topLevelNodes[boundaryIndex]
+    const endIndex = boundaryNode
+      ? (getNodeStartOffset(boundaryNode) ?? content.length)
+      : content.length
+    const sectionNodes = topLevelNodes.slice(i + 1, boundaryIndex)
+
+    if (exerciseMatch) {
+      const title = exerciseMatch[2]?.trim() || ''
+      let goal = ''
+      let starterCode = ''
+      let expectedOutput = ''
+      let instructions = ''
+      let goalNodeIndex = -1
+      let firstCodeNodeIndex = -1
+
+      for (let k = 0; k < sectionNodes.length; k++) {
+        const sectionNode = sectionNodes[k]
+        if (!sectionNode) continue
+
+        if (!goal) {
+          goal = extractLabeledTextFromParagraph(sectionNode, 'Goal')
+          if (goal) goalNodeIndex = k
+        }
+
+        if (sectionNode.type === 'code' && !starterCode) {
+          if (sectionNode.lang === 'python' || sectionNode.lang === 'py') {
+            starterCode = sectionNode.value.trim()
+            firstCodeNodeIndex = k
+          }
+        }
+
+        if (!expectedOutput && k > 0) {
+          const prev = sectionNodes[k - 1]
+          const hasExpectedLabel = !!prev && isLabeledParagraph(prev, 'Expected Output')
+          if (hasExpectedLabel && sectionNode.type === 'code') {
+            expectedOutput = sectionNode.value.trim()
+          }
+        }
+      }
+
+      if (firstCodeNodeIndex > goalNodeIndex) {
+        const instructionNodes = sectionNodes.slice(goalNodeIndex + 1, firstCodeNodeIndex)
+        const instructionParts: string[] = []
+        for (const instructionNode of instructionNodes) {
+          const nodeStart = getNodeStartOffset(instructionNode)
+          const nodeEnd = getNodeEndOffset(instructionNode)
+          if (nodeStart === null || nodeEnd === null) continue
+          const chunk = content.slice(nodeStart, nodeEnd).trim()
+          if (chunk) instructionParts.push(chunk)
+        }
+        instructions = instructionParts.join('\n\n').trim()
+      }
+
+      blocks.push({
+        type: 'exercise',
+        startIndex,
+        endIndex,
+        data: { title, goal, instructions, starterCode, expectedOutput, solution: starterCode },
+      })
+      continue
+    }
+
+    const questionNumber = parseInt(questionMatch?.[1] || '', 10)
+    if (Number.isNaN(questionNumber)) continue
+
+    const title = questionMatch?.[2]?.trim() || ''
+    const detailsNodeIndex = sectionNodes.findIndex(
+      (sectionNode) => sectionNode?.type === 'html' && /<details[\s>]/i.test(sectionNode.value),
+    )
+
+    const questionNodes =
+      detailsNodeIndex >= 0 ? sectionNodes.slice(0, detailsNodeIndex) : sectionNodes
+    const detailsNode = detailsNodeIndex >= 0 ? (sectionNodes[detailsNodeIndex] as Html) : null
+
+    let questionBody = ''
+    if (questionNodes.length > 0) {
+      const firstQuestionNode = questionNodes[0]
+      const lastQuestionNode = questionNodes[questionNodes.length - 1]
+      if (firstQuestionNode && lastQuestionNode) {
+        const start = getNodeStartOffset(firstQuestionNode)
+        const end = getNodeEndOffset(lastQuestionNode)
+        if (start !== null && end !== null) {
+          questionBody = content.slice(start, end).trim()
+        }
+      }
+    }
+
+    const detailsValue = detailsNode?.value || ''
+    const answerBody = detailsValue
+      .replace(/^[\s\S]*?<summary>[\s\S]*?<\/summary>/i, '')
+      .replace(/<\/details>\s*$/i, '')
+      .trim()
+
     const { code: codeSnippet, remaining: questionText } = extractCodeBlock(questionBody)
     const answerText = answerBody
       .replace(/```[\s\S]*?```/g, (codeBlock) => {
@@ -324,8 +476,8 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
 
     blocks.push({
       type: 'mastery',
-      startIndex: match.index,
-      endIndex: match.index + match[0].length,
+      startIndex,
+      endIndex,
       data: { questionNumber, title, questionText, codeSnippet, answer: answerText },
     })
   }
