@@ -213,6 +213,7 @@ export interface Exercise {
   title: string
   goal: string
   starterCode: string
+  expectedOutput?: string
   tags: readonly string[]
 }
 
@@ -236,8 +237,8 @@ function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
     title: ex.title,
     goal: ex.goal,
     starterCode: ex.starterCode,
-    tags: lesson.tags || [],
     expectedOutput: ex.expectedOutput,
+    tags: ex.tags.length > 0 ? ex.tags : (lesson.tags ?? []),
   }))
 }
 
