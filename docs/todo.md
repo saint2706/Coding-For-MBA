@@ -77,9 +77,9 @@
 > Phase already implemented. Audit & polish pass needed.
 
 - [x] Verify all 12 day files meet the content depth standard (500+ words, 3+ exercises, 5 Q&A)
-- [ ] Add `quiz.json` to each Phase 10 day
+- [x] Add `quiz.json` to each Phase 10 day
 - [x] Phase 10 Overview polish — ensure ROI table and expert track are present
-- [ ] Add `extras/` with LLM starter notebooks and prompt library
+- [x] Add `extras/` with LLM starter notebooks and prompt library
 
 ### Phase 11 — Cloud Data Engineering (Days 121–132) ✅ Complete
 
