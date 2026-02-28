@@ -245,4 +245,30 @@ It prints:
     expect(glossaryTerm?.textContent).toBe('function')
     expect(glossaryTerm?.getAttribute('data-definition')).toBeTruthy()
   })
+
+  it('renders glossary tooltips identically for repeated mixed-case terms', () => {
+    const content = 'Function function VARIABLE variable'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const glossaryTerms = container.querySelectorAll('.glossary-term')
+    expect(glossaryTerms).toHaveLength(2)
+    expect(glossaryTerms[0]?.textContent).toBe('Function')
+    expect(glossaryTerms[1]?.textContent).toBe('VARIABLE')
+    expect(glossaryTerms[0]?.getAttribute('data-definition')).toBeTruthy()
+    expect(glossaryTerms[1]?.getAttribute('data-definition')).toBeTruthy()
+    expect(container.querySelector('p')?.textContent).toBe('Function function VARIABLE variable')
+  })
+
+  it('renders the same tooltip markup for glossary terms in running text', () => {
+    const content = 'A function takes an argument and another function.'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    expect(container.querySelector('p')?.innerHTML).toBe(
+      'A <span class="glossary-term" data-definition="A reusable block of code that performs a specific task.">function</span> takes an <span class="glossary-term" data-definition="A value passed to a function when it is called.">argument</span> and another function.',
+    )
+  })
 })
