@@ -108,6 +108,13 @@ export function parseNormalizedMarkdown(normalized) {
   return { frontmatter, content }
 }
 
+/**
+ * Parses markdown frontmatter and content from a raw markdown string.
+ * Normalizes line endings internally before parsing.
+ *
+ * @param {string} raw - The raw markdown content.
+ * @returns {{ frontmatter: Record<string, any>, content: string }} An object containing the parsed frontmatter fields and the remaining markdown content.
+ */
 export function parseMarkdown(raw) {
   return parseNormalizedMarkdown(normalizeMarkdownLineEndings(raw))
 }
