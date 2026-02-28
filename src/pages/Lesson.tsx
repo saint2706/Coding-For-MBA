@@ -56,6 +56,7 @@ import {
   triggerPhaseUnlockConfetti,
   triggerCurriculumFireworks,
 } from '../utils/confetti'
+import AiStudyPanel from '../components/AiStudyPanel'
 
 /**
  * Lesson page component displaying a single day's lesson.
@@ -116,13 +117,13 @@ export default function Lesson() {
       const afterCompleted = getCompletedLessons()
       const wasPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
-            beforeCompleted.has(dayTokenToProgressId(entry.day)),
-          )
+          beforeCompleted.has(dayTokenToProgressId(entry.day)),
+        )
         : false
       const isPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
-            afterCompleted.includes(dayTokenToProgressId(entry.day)),
-          )
+          afterCompleted.includes(dayTokenToProgressId(entry.day)),
+        )
         : false
 
       if (lesson && !wasPhaseCompleted && isPhaseCompleted) {
@@ -289,6 +290,13 @@ export default function Lesson() {
 
       {/* Table of Contents sidebar */}
       <TableOfContents content={lesson.content} />
+
+      {/* AI Study Assistant */}
+      <AiStudyPanel
+        lessonContent={lesson.content}
+        lessonDay={lesson.day}
+        lessonTitle={lesson.title}
+      />
     </div>
   )
 }

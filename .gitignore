@@ -38,5 +38,9 @@ playwright-report/
 test-results/
 actionlint
 
+# Environment variables
+.env
+.env.*
+
 # Coverage
 coverage/

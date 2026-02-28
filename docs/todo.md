@@ -124,10 +124,10 @@
 
 ### AI-Powered Study Assistant
 
-- [ ] "Ask about this lesson" — LLM API integration (OpenAI / Gemini)
-- [ ] Auto-generate flashcards from lesson markdown
-- [ ] Smart exercise hint system (3-level progressive hints)
-- [ ] Semantic search across all lesson content (embeddings + cosine similarity)
+- [x] "Ask about this lesson" — LLM API integration (OpenAI / Gemini)
+- [x] Auto-generate flashcards from lesson markdown
+- [x] Smart exercise hint system (3-level progressive hints)
+- [x] Semantic search across all lesson content (embeddings + cosine similarity)
 
 ### Structured Quiz JSON Integration
 

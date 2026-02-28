@@ -20,15 +20,15 @@ export default defineConfig(async ({ mode }) => {
   const analyzePlugin: PluginOption = (
     mode === 'analyze'
       ? await import('rollup-plugin-visualizer' as string)
-          .then((mod) =>
-            (mod as { visualizer: (options: Record<string, unknown>) => unknown }).visualizer({
-              filename: 'dist/stats.html',
-              gzipSize: true,
-              brotliSize: true,
-              template: 'treemap',
-            }),
-          )
-          .catch(() => null)
+        .then((mod) =>
+          (mod as { visualizer: (options: Record<string, unknown>) => unknown }).visualizer({
+            filename: 'dist/stats.html',
+            gzipSize: true,
+            brotliSize: true,
+            template: 'treemap',
+          }),
+        )
+        .catch(() => null)
       : null
   ) as PluginOption
 
@@ -142,6 +142,15 @@ export default defineConfig(async ({ mode }) => {
             }
             if (normalId.includes('node_modules/zustand')) {
               return 'zustand'
+            }
+            // AI assistant utilities
+            if (
+              normalId.includes('src/utils/geminiClient') ||
+              normalId.includes('src/utils/semanticSearch') ||
+              normalId.includes('src/stores/aiAssistantStore') ||
+              normalId.includes('src/components/AiStudyPanel')
+            ) {
+              return 'ai-assistant'
             }
             // Split lesson content files into per-phase chunks
             if (normalId.includes('/content/lessons/')) {
