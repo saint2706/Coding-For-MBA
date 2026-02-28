@@ -231,7 +231,7 @@ export default function Lesson() {
 
   return (
     <div
-      className={`page-container lesson-with-toc ${readingMode ? 'reading-mode' : ''}`}
+      className={`page-container lesson-with-toc lesson-reading-surface ${readingMode ? 'reading-mode' : ''}`}
       ref={swipeRef}
     >
       <SEOHead
