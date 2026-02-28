@@ -93,12 +93,14 @@ export default function ProgressDashboard() {
     codeLanguage,
     density,
     readingMode,
+    customCursorEnabled,
     setTheme,
     setSidebarDefaultOpen,
     setFontSize,
     setCodeLanguage,
     setDensity,
     setReadingMode,
+    setCustomCursorEnabled,
   } = useUserPreferencesStore()
 
   return (
@@ -366,6 +368,23 @@ export default function ProgressDashboard() {
             </span>
             <small id="reading-mode-help">
               Focus on lesson text with reduced interface chrome.
+            </small>
+          </label>
+
+          <label className="preferences-field preferences-toggle" htmlFor="custom-cursor-enabled">
+            Custom cursor
+            <span className="preferences-toggle-row">
+              <input
+                id="custom-cursor-enabled"
+                type="checkbox"
+                checked={customCursorEnabled}
+                onChange={(event) => setCustomCursorEnabled(event.target.checked)}
+                aria-describedby="custom-cursor-help"
+              />
+              Enable enhanced pointer effects on desktop
+            </span>
+            <small id="custom-cursor-help">
+              Disabled by default for a calmer reading experience.
             </small>
           </label>
         </div>
