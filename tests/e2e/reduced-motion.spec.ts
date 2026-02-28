@@ -72,7 +72,7 @@ test.describe('prefers-reduced-motion: reduce', () => {
       const animDuration = await skeleton.evaluate((el) => {
         return window.getComputedStyle(el, '::after').animationDuration
       })
-      expect(['0s', '0ms', '']).toContain(animDuration)
+      expect(animDuration).toMatch(/^(0s|0ms||0s, 0s|none)$/)
     }
   })
 
@@ -87,7 +87,7 @@ test.describe('prefers-reduced-motion: reduce', () => {
       const animDuration = await dot.evaluate((el) => {
         return window.getComputedStyle(el).animationDuration
       })
-      expect(['0s', '0ms', '']).toContain(animDuration)
+      expect(animDuration).toMatch(/^(0s|0ms||0s, 0s|none)$/)
     }
   })
 

@@ -127,7 +127,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .skeleton::after {
-    animation: none;
+    animation: none !important;
   }
 }
 
@@ -693,6 +693,6 @@
 @media (prefers-reduced-motion: reduce) {
   .empty-state-line,
   .empty-state-dot {
-    animation: none;
+    animation: none !important;
   }
 }
