@@ -148,8 +148,8 @@ _Italic_
     expect(requestIdleCallback).toHaveBeenCalled()
   })
 
-  it('runs search function', () => {
+  it('runs search function before chunks are processed', () => {
     const results = search('python')
-    expect(results.length).toBeGreaterThan(0)
+    expect(results).toEqual([])
   })
 })

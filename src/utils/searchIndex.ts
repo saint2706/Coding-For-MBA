@@ -33,6 +33,13 @@ export interface SearchResult {
   score?: number
 }
 
+export interface SearchIndexStatus {
+  isReady: boolean
+  isIndexing: boolean
+  processedCount: number
+  totalCount: number
+}
+
 const TITLE_WEIGHT = 8
 const CONCEPT_WEIGHT = 4
 const TAG_WEIGHT = 3
@@ -139,19 +146,55 @@ export function createSearchEngine(lessons = getAllLessons()): Fuse<SearchDocume
 }
 
 let cachedEngine: Fuse<SearchDocument> | null = null
+let partialEngine: Fuse<SearchDocument> | null = null
 const processedDocs: SearchDocument[] = []
 let indexingComplete = false
 let isIndexing = false
 let currentIndex = 0
+let allLessonsCache: readonly Lesson[] | null = null
+const statusListeners = new Set<(status: SearchIndexStatus) => void>()
+
+function getAllLessonsCached(): readonly Lesson[] {
+  if (!allLessonsCache) {
+    allLessonsCache = getAllLessons()
+  }
+  return allLessonsCache
+}
+
+function emitStatus() {
+  const status = getSearchIndexStatus()
+  statusListeners.forEach((listener) => listener(status))
+}
+
+export function getSearchIndexStatus(): SearchIndexStatus {
+  const lessons = getAllLessonsCached()
+  return {
+    isReady: indexingComplete,
+    isIndexing,
+    processedCount: processedDocs.length,
+    totalCount: lessons.length,
+  }
+}
+
+export function subscribeSearchIndexStatus(
+  listener: (status: SearchIndexStatus) => void,
+): () => void {
+  statusListeners.add(listener)
+  listener(getSearchIndexStatus())
+  return () => {
+    statusListeners.delete(listener)
+  }
+}
 
 function processChunk() {
   if (indexingComplete || cachedEngine) {
     indexingComplete = true
     isIndexing = false
+    emitStatus()
     return
   }
 
-  const allLessons = getAllLessons()
+  const allLessons = getAllLessonsCached()
   const startTime = performance.now()
   const CHUNK_TIME_LIMIT = 12 // ms
 
@@ -162,6 +205,9 @@ function processChunk() {
     }
     currentIndex++
   }
+
+  partialEngine = new Fuse(processedDocs, FUSE_OPTIONS)
+  emitStatus()
 
   if (currentIndex < allLessons.length) {
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
@@ -175,15 +221,18 @@ function processChunk() {
     }
   } else {
     // Finished
-    cachedEngine = new Fuse(processedDocs, FUSE_OPTIONS)
+    cachedEngine = partialEngine
+    partialEngine = null
     indexingComplete = true
     isIndexing = false
+    emitStatus()
   }
 }
 
 export function startBackgroundIndexing(): void {
   if (isIndexing || indexingComplete || cachedEngine) return
   isIndexing = true
+  emitStatus()
 
   if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
     ;(
@@ -196,29 +245,19 @@ export function startBackgroundIndexing(): void {
   }
 }
 
-function getEngine(): Fuse<SearchDocument> {
+function getEngine(): Fuse<SearchDocument> | null {
   if (cachedEngine) return cachedEngine
-
-  // If background indexing is in progress or not started, force finish it
-  const allLessons = getAllLessons()
-  while (currentIndex < allLessons.length) {
-    const lesson = allLessons[currentIndex]
-    if (lesson) {
-      processedDocs.push(toDocument(lesson))
-    }
-    currentIndex++
+  if (!isIndexing) {
+    startBackgroundIndexing()
   }
-
-  cachedEngine = new Fuse(processedDocs, FUSE_OPTIONS)
-  indexingComplete = true
-  isIndexing = false
-
-  return cachedEngine
+  return partialEngine
 }
 
 export function search(query: string, limit = 20): SearchResult[] {
   if (!query.trim()) return []
-  const rawResults = getEngine().search(query, { limit: Math.max(limit * 2, 20) })
+  const engine = getEngine()
+  if (!engine) return []
+  const rawResults = engine.search(query, { limit: Math.max(limit * 2, 20) })
 
   return rawResults
     .map((result) => ({

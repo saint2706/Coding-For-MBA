@@ -7,7 +7,13 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getSearchSnippet, search, type SearchResult } from '../utils/searchIndex'
+import {
+  getSearchSnippet,
+  getSearchIndexStatus,
+  search,
+  subscribeSearchIndexStatus,
+  type SearchResult,
+} from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
 import { useDebounce } from '../hooks/useDebounce'
 
@@ -45,6 +51,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
   const debouncedQuery = useDebounce(query, 300, shouldResetImmediately)
   const [activeIndex, setActiveIndex] = useState(0)
+  const [indexStatus, setIndexStatus] = useState(getSearchIndexStatus)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
@@ -74,6 +81,10 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
   /**
    * Scrolls active result item into view when selection changes.
    */
+  useEffect(() => {
+    return subscribeSearchIndexStatus(setIndexStatus)
+  }, [])
+
   useEffect(() => {
     const list = listRef.current
     if (!list) return
@@ -220,7 +231,15 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
           </div>
         )}
 
-        {debouncedQuery.trim().length >= 2 && results.length === 0 && (
+        {debouncedQuery.trim().length >= 2 && results.length === 0 && !indexStatus.isReady && (
+          <div className="search-empty">
+            <p>
+              Indexing lessons… ({indexStatus.processedCount}/{indexStatus.totalCount})
+            </p>
+          </div>
+        )}
+
+        {debouncedQuery.trim().length >= 2 && results.length === 0 && indexStatus.isReady && (
           <div className="search-empty">
             <svg
               className="search-empty-icon"

@@ -17,7 +17,10 @@ import { Toaster } from 'react-hot-toast'
 import App from './App'
 import { TOAST_DEFAULT_OPTIONS } from './utils/toast'
 import ErrorBoundary from './components/ErrorBoundary'
+import { preloadSearchIndex } from './utils/searchIndex'
 import './styles/index.css'
+
+preloadSearchIndex()
 
 /**
  * Renders the React application into the DOM.
