@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi, afterEach } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 const lessons = [
   {
@@ -29,10 +29,10 @@ vi.mock('../contentLoader', () => ({
 
 let search: (query: string, limit?: number) => unknown[]
 let preloadSearchIndex: () => void
+let getSearchIndexStatus: () => { isReady: boolean; processedCount: number; totalCount: number }
 
 beforeEach(async () => {
   vi.resetModules()
-  // Mock requestIdleCallback if it doesn't exist (Vitest env usually has window but maybe not RIC)
   if (!window.requestIdleCallback) {
     window.requestIdleCallback = vi.fn((cb) => {
       const id = setTimeout(cb, 1)
@@ -43,6 +43,7 @@ beforeEach(async () => {
   const mod = await import('../searchIndex')
   search = mod.search
   preloadSearchIndex = mod.preloadSearchIndex
+  getSearchIndexStatus = mod.getSearchIndexStatus
 })
 
 afterEach(() => {
@@ -55,23 +56,32 @@ describe('searchIndex', () => {
     expect(search('   ')).toEqual([])
   })
 
-  it('finds and ranks likely results by relevance (synchronous fallback)', () => {
-    // Calling search() immediately forces the index to build synchronously
+  it('returns empty before any docs are processed and then returns partial results', async () => {
+    expect(search('python')).toEqual([])
+
+    await new Promise((resolve) => setTimeout(resolve, 5))
+
     const results = search('python')
     expect(results.length).toBeGreaterThan(0)
     expect((results[0] as { item: { day: string } }).item.day).toBe('11')
   })
 
-  it('respects result limit', () => {
+  it('respects result limit', async () => {
+    preloadSearchIndex()
+    await new Promise((resolve) => setTimeout(resolve, 5))
+
     const results = search('11B', 1)
     expect(results.length).toBe(1)
   })
 
-  it('supports background preloading via preloadSearchIndex', async () => {
-    // Start background indexing
+  it('supports background preloading via preloadSearchIndex and reports readiness progress', async () => {
     preloadSearchIndex()
+    await new Promise((resolve) => setTimeout(resolve, 5))
 
-    // Even if background indexing is "in progress", search() should force finish it and return results
+    const status = getSearchIndexStatus()
+    expect(status.totalCount).toBe(2)
+    expect(status.processedCount).toBeGreaterThan(0)
+
     const results = search('sql')
     expect(results.length).toBeGreaterThan(0)
     expect((results[0] as { item: { title: string } }).item.title).toContain('SQL')

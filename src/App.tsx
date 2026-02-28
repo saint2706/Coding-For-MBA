@@ -21,7 +21,6 @@ import MobileNav from './components/MobileNav'
 import KeyboardShortcutsOverlay from './components/KeyboardShortcutsOverlay'
 import { PageSkeleton } from './components/Skeleton'
 import { ThemeProvider } from './context/ThemeProvider'
-import { preloadSearchIndex } from './utils/searchIndex'
 import { hydrateProgressStore } from './utils/progressTracker'
 import { hydrateQuizStore } from './stores/quizStore'
 import { useUserPreferencesStore } from './stores/userPreferencesStore'
@@ -51,7 +50,6 @@ export default function App() {
   useLearningAnalytics(location.pathname)
 
   useEffect(() => {
-    preloadSearchIndex()
     hydrateProgressStore()
     hydrateQuizStore()
     hydrateGamificationStore()
