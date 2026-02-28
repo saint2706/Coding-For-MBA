@@ -190,6 +190,12 @@ export interface Flashcard {
   back: string
 }
 
+const FLASHCARD_COUNT = 8
+const FLASHCARD_FRONT_MAX_LENGTH = 160
+const FLASHCARD_BACK_MAX_LENGTH = 400
+const FLASHCARD_RETRY_ERROR_MESSAGE =
+  'We could not generate valid flashcards this time. Please try again.'
+
 export function isGeminiAvailable(): boolean {
   const now = Date.now()
   const base = getGeminiApiBase()
@@ -306,13 +312,36 @@ export async function generateFlashcards(lessonContent: string): Promise<Flashca
 
   try {
     const parsed = JSON.parse(cleaned) as unknown
-    if (!Array.isArray(parsed)) throw new Error('Not an array')
-    return parsed.map((card: { front?: string; back?: string }) => ({
-      front: card.front || 'No question',
-      back: card.back || 'No answer',
-    }))
+    if (!Array.isArray(parsed) || parsed.length !== FLASHCARD_COUNT) {
+      throw new Error('Invalid flashcard count')
+    }
+
+    return parsed.map((card) => {
+      if (typeof card !== 'object' || card === null || Array.isArray(card)) {
+        throw new Error('Invalid flashcard item type')
+      }
+
+      const { front, back } = card as { front?: unknown; back?: unknown }
+      if (typeof front !== 'string' || typeof back !== 'string') {
+        throw new Error('Invalid flashcard field type')
+      }
+
+      const trimmedFront = front.trim()
+      const trimmedBack = back.trim()
+
+      if (
+        trimmedFront.length === 0 ||
+        trimmedBack.length === 0 ||
+        trimmedFront.length > FLASHCARD_FRONT_MAX_LENGTH ||
+        trimmedBack.length > FLASHCARD_BACK_MAX_LENGTH
+      ) {
+        throw new Error('Invalid flashcard field value')
+      }
+
+      return { front: trimmedFront, back: trimmedBack }
+    })
   } catch {
-    throw new Error('Failed to parse flashcards. Please try again.')
+    throw new Error(FLASHCARD_RETRY_ERROR_MESSAGE)
   }
 }
 
