@@ -10,7 +10,7 @@
  * - Hide if insufficient headings exist.
  */
 
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, useId, type MouseEvent } from 'react'
 import { parseHeadings } from '../utils/toc'
 
 interface TableOfContentsProps {
@@ -20,6 +20,9 @@ interface TableOfContentsProps {
 export default function TableOfContents({ content }: TableOfContentsProps) {
   const headings = useMemo(() => parseHeadings(content), [content])
   const [activeId, setActiveId] = useState<string>('')
+  const [isCompact, setIsCompact] = useState(false)
+  const [isCompactOpen, setIsCompactOpen] = useState(false)
+  const tocListId = useId()
 
   /**
    * Sets up IntersectionObserver to track which heading is currently visible.
@@ -47,27 +50,79 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     return () => observer.disconnect()
   }, [headings])
 
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const mediaQuery = window.matchMedia('(max-width: 1200px)')
+    const syncCompact = () => {
+      const nextCompactState = mediaQuery.matches
+      setIsCompact(nextCompactState)
+
+      if (!nextCompactState) {
+        setIsCompactOpen(false)
+      }
+    }
+
+    syncCompact()
+    mediaQuery.addEventListener('change', syncCompact)
+
+    return () => mediaQuery.removeEventListener('change', syncCompact)
+  }, [])
+
+  useEffect(() => {
+    if (!isCompactOpen) return
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsCompactOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [isCompactOpen])
+
+  const handleHeadingClick = (event: MouseEvent<HTMLAnchorElement>, headingId: string) => {
+    event.preventDefault()
+    const el = document.getElementById(headingId)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      el.focus({ preventScroll: true })
+      setActiveId(headingId)
+      setIsCompactOpen(false)
+    }
+  }
+
   if (headings.length < 2) return null
 
   return (
-    <aside className="toc" aria-label="Table of contents">
+    <aside className={`toc ${isCompact ? 'toc-compact' : ''}`} aria-label="Table of contents">
       <div className="toc-title">On this page</div>
-      <nav>
-        <ul className="toc-list">
+      {isCompact && (
+        <button
+          type="button"
+          className="toc-toggle"
+          aria-expanded={isCompactOpen}
+          aria-controls={tocListId}
+          onClick={() => setIsCompactOpen((prev) => !prev)}
+        >
+          <span>Jump to section</span>
+          <span aria-hidden="true" className={`toc-toggle-chevron ${isCompactOpen ? 'open' : ''}`}>
+            ▾
+          </span>
+        </button>
+      )}
+      <nav id={tocListId} className={isCompact ? `toc-panel ${isCompactOpen ? 'open' : ''}` : ''}>
+        <ul
+          className="toc-list"
+          onKeyDown={(event) => event.key === 'Escape' && setIsCompactOpen(false)}
+        >
           {headings.map((h) => (
             <li key={h.id} className={h.level === 3 ? 'toc-sub' : ''}>
               <a
                 href={`#${h.id}`}
                 className={`toc-link ${activeId === h.id ? 'active' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  const el = document.getElementById(h.id)
-                  if (el) {
-                    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                    el.focus({ preventScroll: true })
-                    setActiveId(h.id)
-                  }
-                }}
+                onClick={(event) => handleHeadingClick(event, h.id)}
               >
                 {h.text}
               </a>

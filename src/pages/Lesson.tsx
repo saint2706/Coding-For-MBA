@@ -82,7 +82,6 @@ export default function Lesson() {
   const readingModePreference = useUserPreferencesStore((state) => state.readingMode)
   const setReadingModePreference = useUserPreferencesStore((state) => state.setReadingMode)
   const [readingMode, setReadingMode] = useState(readingModePreference)
-  const [isMediumWidth, setIsMediumWidth] = useState(false)
   const [nearBottom, setNearBottom] = useState(false)
   const [completed, setCompleted] = useState(() =>
     dayNum ? isLessonComplete(dayTokenToProgressId(dayNum)) : false,
@@ -92,16 +91,6 @@ export default function Lesson() {
   useEffect(() => {
     setReadingMode(readingModePreference)
   }, [readingModePreference, dayNum])
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return
-    const mediaQuery = window.matchMedia('(max-width: 1200px)')
-    const syncWidth = () => setIsMediumWidth(mediaQuery.matches)
-    syncWidth()
-    mediaQuery.addEventListener('change', syncWidth)
-    return () => mediaQuery.removeEventListener('change', syncWidth)
-  }, [])
-
   useEffect(() => {
     const updateNearBottom = () => {
       const maxScrollable = document.documentElement.scrollHeight - window.innerHeight
@@ -238,7 +227,6 @@ export default function Lesson() {
   const lessonTitle = `Day ${lesson.day}: ${lesson.title}`
   const lessonDescription = `Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 108-day Coding for MBA curriculum.`
   const lessonPath = `/lesson/${lesson.day}`
-  const showTableOfContents = !(readingMode && isMediumWidth)
   const showSecondaryUi = !readingMode || nearBottom
 
   return (
@@ -360,7 +348,7 @@ export default function Lesson() {
       </div>
 
       {/* Table of Contents sidebar */}
-      {showTableOfContents && <TableOfContents content={lesson.content} />}
+      <TableOfContents content={lesson.content} />
 
       {/* AI Study Assistant */}
       {!readingMode && (

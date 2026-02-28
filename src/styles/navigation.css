@@ -99,7 +99,8 @@
 
 .toc-link {
   display: block;
-  padding: 0.25rem 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 0.625rem;
   color: var(--text-muted);
   text-decoration: none;
   border-left: 2px solid transparent;
@@ -110,6 +111,7 @@
   line-height: 1.4;
   word-wrap: break-word;
   overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .toc-link:hover {
@@ -212,8 +214,67 @@
     grid-template-columns: 1fr;
   }
 
-  .reading-mode .toc {
-    display: none;
+  .toc {
+    position: sticky;
+    bottom: 1rem;
+    top: auto;
+    width: 100%;
+    max-height: none;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    z-index: 30;
+  }
+
+  .toc-title {
+    margin-bottom: 0.5rem;
+  }
+
+  .toc-toggle {
+    width: 100%;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 0.875rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-card);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .toc-toggle-chevron {
+    transition: transform var(--transition-fast);
+  }
+
+  .toc-toggle-chevron.open {
+    transform: rotate(180deg);
+  }
+
+  .toc-panel {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      max-height var(--transition-base),
+      opacity var(--transition-base),
+      margin-top var(--transition-base);
+  }
+
+  .toc-panel.open {
+    max-height: min(50vh, 420px);
+    opacity: 1;
+    overflow-y: auto;
+    margin-top: 0.625rem;
+  }
+
+  .toc-panel .toc-list li {
+    margin-bottom: 0.125rem;
+  }
+
+  .toc-panel .toc-link {
+    padding-block: 0.625rem;
   }
 }
 
