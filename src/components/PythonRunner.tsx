@@ -113,6 +113,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
       <div className={`python-runner ${compact ? 'python-runner--compact' : ''}`}>
         <div className="python-runner__controls">
           <button
+            type="button"
             className="python-runner__btn"
             onClick={handleRun}
             disabled={isLoading}
@@ -155,6 +156,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
 
           {running && (
             <button
+              type="button"
               className="python-runner__btn python-runner__btn--cancel"
               onClick={cancelRun}
               aria-label="Cancel current Python execution"

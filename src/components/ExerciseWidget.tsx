@@ -232,6 +232,7 @@ export default function ExerciseWidget({
       {solution && (
         <div className="exercise-widget__solution">
           <button
+            type="button"
             className="exercise-widget__solution-btn"
             onClick={handleToggleSolution}
             aria-expanded={showSolution}
@@ -273,6 +274,7 @@ export default function ExerciseWidget({
                       }}
                     >
                       <button
+                        type="button"
                         className={`code-block-copy ${isConfirmingSolution ? 'confirm-destructive' : ''}`}
                         onClick={handleTrySolution}
                         aria-label={

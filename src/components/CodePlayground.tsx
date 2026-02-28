@@ -225,8 +225,9 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
         <div className="code-playground__toolbar">
           <span className="code-playground__label">🐍 Python Playground</span>
           <div className="code-playground__actions">
-            <CopyButton text={code} className="code-playground__btn" showEmoji={true} />
+            <CopyButton text={code} className="code-playground__btn" showEmoji={true} ariaLabel="Copy code" />
             <button
+              type="button"
               className={`code-playground__btn code-playground__btn--reset ${isConfirmingReset ? 'code-playground__btn--confirm' : ''}`}
               onClick={handleResetClick}
               aria-label={

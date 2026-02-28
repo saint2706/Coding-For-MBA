@@ -246,6 +246,7 @@ export default function Lesson() {
           </div>
 
           <button
+            type="button"
             className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
             onClick={handleToggleComplete}
             aria-pressed={completed}
