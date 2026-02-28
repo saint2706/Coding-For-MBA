@@ -24,7 +24,12 @@ import {
   search,
   type SearchResult,
 } from '../utils/searchIndex'
-import { semanticSearch, type SemanticResult } from '../utils/semanticSearch'
+import {
+  getSemanticIndexingStatus,
+  semanticSearch,
+  subscribeSemanticIndexing,
+  type SemanticResult,
+} from '../utils/semanticSearch'
 import { isGeminiAvailable } from '../utils/geminiClient'
 
 export default function SearchResults() {
@@ -37,6 +42,7 @@ export default function SearchResults() {
   const [isSemanticMode, setIsSemanticMode] = useState(false)
   const [semanticResults, setSemanticResults] = useState<SemanticResult[]>([])
   const [semanticLoading, setSemanticLoading] = useState(false)
+  const [indexingStatus, setIndexingStatus] = useState(getSemanticIndexingStatus)
 
   useEffect(() => {
     setQuery(queryFromUrl)
@@ -67,6 +73,14 @@ export default function SearchResults() {
     return () => window.removeEventListener('keydown', handler)
   }, [navigate])
 
+  useEffect(() => {
+    const unsubscribe = subscribeSemanticIndexing(() => {
+      setIndexingStatus(getSemanticIndexingStatus())
+    })
+    setIndexingStatus(getSemanticIndexingStatus())
+    return unsubscribe
+  }, [])
+
   const results: SearchResult[] = useMemo(() => {
     if (debouncedQuery.trim().length < 2) return []
     return search(debouncedQuery, 50)
@@ -88,7 +102,9 @@ export default function SearchResults() {
     }
     let cancelled = false
     setSemanticLoading(true)
-    semanticSearch(debouncedQuery, 15)
+    semanticSearch(debouncedQuery, 15, (progressResults) => {
+      if (!cancelled) setSemanticResults(progressResults)
+    })
       .then((res) => {
         if (!cancelled) setSemanticResults(res)
       })
@@ -135,7 +151,9 @@ export default function SearchResults() {
             <p className="search-page-summary">
               {isSemanticMode
                 ? semanticLoading
-                  ? 'Searching with AI...'
+                  ? indexingStatus.indexedLessons > 0
+                    ? `Showing best current matches (${indexingStatus.indexedLessons}/${indexingStatus.totalLessons} lessons indexed, improving results...)`
+                    : 'Searching with AI...'
                   : `${semanticResults.length} semantic result${semanticResults.length !== 1 ? 's' : ''} for \u201c${query}\u201d`
                 : `${results.length} result${results.length !== 1 ? 's' : ''} for \u201c${query}\u201d`}
             </p>
