@@ -146,20 +146,65 @@ export function validateEmbedPayload(payload) {
 export function parseJsonBody(req) {
   return new Promise((resolve, reject) => {
     let body = ''
-    req.on('data', (chunk) => {
+    let done = false
+
+    const cleanup = () => {
+      req.off('data', onData)
+      req.off('end', onEnd)
+      req.off('error', onError)
+    }
+
+    const resolveOnce = (value) => {
+      if (done) {
+        return
+      }
+      done = true
+      cleanup()
+      resolve(value)
+    }
+
+    const rejectOnce = (error) => {
+      if (done) {
+        return
+      }
+      done = true
+      cleanup()
+      reject(error)
+    }
+
+    const onData = (chunk) => {
+      if (done) {
+        return
+      }
+
       body += chunk
       if (body.length > 100_000) {
-        reject(new Error('Payload too large'))
+        cleanup()
+        if (typeof req.destroy === 'function' && !req.destroyed) {
+          req.destroy()
+        }
+        rejectOnce(new Error('Payload too large'))
       }
-    })
-    req.on('end', () => {
+    }
+
+    const onEnd = () => {
+      if (done) {
+        return
+      }
       try {
-        resolve(body ? JSON.parse(body) : {})
+        resolveOnce(body ? JSON.parse(body) : {})
       } catch {
-        reject(new Error('Invalid JSON payload'))
+        rejectOnce(new Error('Invalid JSON payload'))
       }
-    })
-    req.on('error', reject)
+    }
+
+    const onError = (error) => {
+      rejectOnce(error)
+    }
+
+    req.on('data', onData)
+    req.on('end', onEnd)
+    req.on('error', onError)
   })
 }
 
