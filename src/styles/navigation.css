@@ -44,7 +44,7 @@
 /* --- Lesson-with-TOC grid layout --- */
 .lesson-with-toc {
   display: grid;
-  grid-template-columns: minmax(0, var(--content-max-width)) 260px;
+  grid-template-columns: minmax(0, min(var(--content-max-width), 76ch)) 260px;
   gap: 2rem;
   align-items: start;
 }
@@ -207,14 +207,13 @@
   font-size: 0.75rem;
 }
 
-/* Hide ToC on small screens */
 @media (max-width: 1200px) {
-  .toc {
-    display: none;
-  }
-
   .lesson-with-toc {
     grid-template-columns: 1fr;
+  }
+
+  .reading-mode .toc {
+    display: none;
   }
 }
 
