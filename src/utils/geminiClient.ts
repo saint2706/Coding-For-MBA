@@ -11,6 +11,142 @@ const GEMINI_API_BASE = (import.meta.env.VITE_GEMINI_API_BASE as string | undefi
 const GENERATE_URL = `${GEMINI_API_BASE}/api/gemini/generate`
 const EMBED_URL = `${GEMINI_API_BASE}/api/gemini/embed`
 
+const GEMINI_TIMEOUT_MS = clampNumber(
+  Number(import.meta.env.VITE_GEMINI_TIMEOUT_MS),
+  15_000,
+  10_000,
+  20_000,
+)
+const GEMINI_MAX_RETRIES = clampNumber(Number(import.meta.env.VITE_GEMINI_MAX_RETRIES), 3, 0, 5)
+const GEMINI_RETRY_BASE_DELAY_MS = clampNumber(
+  Number(import.meta.env.VITE_GEMINI_RETRY_BASE_DELAY_MS),
+  500,
+  100,
+  2_000,
+)
+const GEMINI_RETRY_MAX_DELAY_MS = 4_000
+
+const GEMINI_ERROR_MESSAGES = {
+  timeout: 'Request timed out. Please try again.',
+  rateLimit: 'Rate limit reached. Please wait a moment and try again.',
+  serverUnavailable: 'Server unavailable. Please try again shortly.',
+  invalidResponse: 'Invalid response from AI service. Please try again.',
+} as const
+
+type GeminiErrorCode = keyof typeof GEMINI_ERROR_MESSAGES
+
+class GeminiClientError extends Error {
+  code: GeminiErrorCode
+
+  constructor(code: GeminiErrorCode) {
+    super(GEMINI_ERROR_MESSAGES[code])
+    this.name = 'GeminiClientError'
+    this.code = code
+  }
+}
+
+function clampNumber(value: number, fallback: number, min: number, max: number): number {
+  if (!Number.isFinite(value)) return fallback
+  return Math.min(Math.max(value, min), max)
+}
+
+function mapHttpStatusToError(status: number): GeminiClientError {
+  if (status === 429) return new GeminiClientError('rateLimit')
+  if (status >= 500) return new GeminiClientError('serverUnavailable')
+  return new GeminiClientError('invalidResponse')
+}
+
+function isRetryableStatus(status: number): boolean {
+  return status === 429 || status >= 500
+}
+
+function isNetworkError(error: unknown): boolean {
+  return error instanceof TypeError
+}
+
+function isTimeoutError(error: unknown): boolean {
+  return error instanceof GeminiClientError && error.code === 'timeout'
+}
+
+function shouldRetry(error: unknown): boolean {
+  if (isTimeoutError(error) || isNetworkError(error)) return true
+  if (error instanceof GeminiClientError) {
+    return error.code === 'rateLimit' || error.code === 'serverUnavailable'
+  }
+  return false
+}
+
+async function sleep(ms: number): Promise<void> {
+  await new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function fetchWithTimeout(url: string, init: RequestInit): Promise<Response> {
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS)
+
+  try {
+    return await fetch(url, { ...init, signal: controller.signal })
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      throw new GeminiClientError('timeout')
+    }
+    throw error
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
+
+async function postGemini<T>(url: string, payload: Record<string, unknown>): Promise<T> {
+  let lastError: Error = new GeminiClientError('serverUnavailable')
+
+  for (let attempt = 0; attempt <= GEMINI_MAX_RETRIES; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        const mappedError = mapHttpStatusToError(response.status)
+        if (isRetryableStatus(response.status) && attempt < GEMINI_MAX_RETRIES) {
+          const delay = Math.min(
+            GEMINI_RETRY_BASE_DELAY_MS * 2 ** attempt,
+            GEMINI_RETRY_MAX_DELAY_MS,
+          )
+          await sleep(delay)
+          continue
+        }
+        throw mappedError
+      }
+
+      try {
+        return (await response.json()) as T
+      } catch {
+        throw new GeminiClientError('invalidResponse')
+      }
+    } catch (error) {
+      const mappedError =
+        error instanceof GeminiClientError
+          ? error
+          : isNetworkError(error)
+            ? new GeminiClientError('serverUnavailable')
+            : new GeminiClientError('invalidResponse')
+
+      lastError = mappedError
+
+      if (!shouldRetry(error) || attempt >= GEMINI_MAX_RETRIES) {
+        throw mappedError
+      }
+
+      const delay = Math.min(GEMINI_RETRY_BASE_DELAY_MS * 2 ** attempt, GEMINI_RETRY_MAX_DELAY_MS)
+      await sleep(delay)
+    }
+  }
+
+  throw lastError
+}
+
 export interface ChatMessage {
   role: 'user' | 'model'
   text: string
@@ -30,25 +166,14 @@ async function callGemini(
   userMessage: string,
   history: ChatMessage[] = [],
 ): Promise<string> {
-  const response = await fetch(GENERATE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      systemInstruction,
-      userMessage,
-      history,
-    }),
+  const data = await postGemini<{ text?: string }>(GENERATE_URL, {
+    systemInstruction,
+    userMessage,
+    history,
   })
 
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}))
-    const message = (error as { error?: string }).error || response.statusText
-    throw new Error(`Gemini API error: ${message}`)
-  }
-
-  const data = (await response.json()) as { text?: string }
   const text = data.text
-  if (!text) throw new Error('No response from Gemini')
+  if (!text) throw new GeminiClientError('invalidResponse')
   return text
 }
 
@@ -144,20 +269,8 @@ export async function getExerciseHint(
 // ─── Feature 4: Text Embeddings ──────────────────────────────────────────────
 
 export async function embedText(text: string): Promise<number[]> {
-  const response = await fetch(EMBED_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      text,
-    }),
-  })
-
-  if (!response.ok) {
-    throw new Error(`Embedding API error: ${response.statusText}`)
-  }
-
-  const data = (await response.json()) as { embedding?: number[] }
+  const data = await postGemini<{ embedding?: number[] }>(EMBED_URL, { text })
   const values = data.embedding
-  if (!values || values.length === 0) throw new Error('No embedding returned')
+  if (!values || values.length === 0) throw new GeminiClientError('invalidResponse')
   return values
 }
