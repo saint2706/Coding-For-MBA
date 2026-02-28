@@ -48,3 +48,8 @@
 ## 2025-06-12 - CSP Hardening
 **Vulnerability:** Missing `upgrade-insecure-requests` in Content Security Policy could allow mixed content issues if the site is served over HTTPS but requests HTTP resources.
 **Prevention:** Added `upgrade-insecure-requests` to the CSP meta tag to force all requests to HTTPS.
+
+## 2025-06-15 - Regex Bypass via Multiple Imports
+**Vulnerability:** The previous regex checks for internal module imports (like `\bimport\s+js\b`) could be bypassed by importing multiple modules in a single statement (e.g., `import math, js`), allowing dangerous module execution.
+**Learning:** Simple import regexes must account for comma-separated module lists and other valid Python import syntaxes.
+**Prevention:** Replaced literal regexes with a broader `\bimport\b[^;\n]*\b(js|pyodide|micropip)\b` and `\bfrom\b\s+(js|pyodide|micropip)\b` pattern to securely catch all occurrences of restricted modules in import statements.

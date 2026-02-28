@@ -41,4 +41,41 @@ describe('validatePythonCode - Bypass Attempts', () => {
     expect(validatePythonCode('input = 1').valid).toBe(false)
     expect(validatePythonCode('def input(): pass').valid).toBe(false)
   })
+
+  it('should block import math, js', () => {
+    expect(validatePythonCode('import math, js').valid).toBe(false)
+  })
+
+  it('should block from builtins import *', () => {
+    expect(validatePythonCode('from builtins import *').valid).toBe(false)
+  })
+
+  it('should block import math, builtins', () => {
+    expect(validatePythonCode('import math, builtins').valid).toBe(false)
+  })
+
+  it('should block from js import eval', () => {
+    expect(validatePythonCode('from js import eval').valid).toBe(false)
+  })
+
+  it('should block import js.something', () => {
+    expect(validatePythonCode('import js.something').valid).toBe(false)
+  })
+
+  it('should block import js, math', () => {
+    expect(validatePythonCode('import js, math').valid).toBe(false)
+  })
+
+  it('should allow benign word that contains js', () => {
+    expect(validatePythonCode('import json').valid).toBe(true)
+    expect(validatePythonCode('from json import dumps').valid).toBe(true)
+  })
+
+  it('should allow variable named js if not imported', () => {
+    expect(validatePythonCode('js = 5').valid).toBe(true)
+  })
+
+  it('should not block from js import if js is a variable', () => {
+    expect(validatePythonCode('from some_module import json').valid).toBe(true)
+  })
 })
