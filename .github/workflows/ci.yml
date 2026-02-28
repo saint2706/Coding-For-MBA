@@ -24,11 +24,8 @@ jobs:
       - name: Bootstrap Node workspace
         uses: ./.github/actions/node-bootstrap
 
-      - name: Lint
-        run: npm run lint:ci
-
       - name: Typecheck
-        run: npm run typecheck
+        run: npm run lint:ci
 
       - name: Validate content
         run: npm run validate-content
