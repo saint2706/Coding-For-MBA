@@ -163,6 +163,9 @@ function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3') {
 
 // Use global flag 'g' to iterate over matches without string slicing
 const glossaryRegex = new RegExp(getGlossaryRegex().source, 'gi')
+const glossaryDefinitionsByLowerTerm = Object.fromEntries(
+  Object.entries(glossaryTerms).map(([term, definition]) => [term.toLowerCase(), definition]),
+)
 
 /** Wrap only the first occurrence of each glossary term in a text node. */
 function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
@@ -190,8 +193,7 @@ function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
       parts.push(match[0])
     } else {
       matched.add(termLower)
-      const defKey = Object.keys(glossaryTerms).find((k) => k.toLowerCase() === termLower)
-      const definition = defKey ? glossaryTerms[defKey] : undefined
+      const definition = glossaryDefinitionsByLowerTerm[termLower]
 
       if (definition) {
         parts.push(
