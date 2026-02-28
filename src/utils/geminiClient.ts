@@ -7,9 +7,7 @@
  * @module utils/geminiClient
  */
 
-const GEMINI_API_BASE = (import.meta.env.VITE_GEMINI_API_BASE as string | undefined) || ''
-const GENERATE_URL = `${GEMINI_API_BASE}/api/gemini/generate`
-const EMBED_URL = `${GEMINI_API_BASE}/api/gemini/embed`
+const GEMINI_HEALTH_PATH = '/api/gemini/health'
 
 const GEMINI_TIMEOUT_MS = clampNumber(
   Number(import.meta.env.VITE_GEMINI_TIMEOUT_MS),
@@ -25,6 +23,19 @@ const GEMINI_RETRY_BASE_DELAY_MS = clampNumber(
   2_000,
 )
 const GEMINI_RETRY_MAX_DELAY_MS = 4_000
+const GEMINI_AVAILABILITY_CACHE_TTL_MS = 30_000
+const GEMINI_AVAILABILITY_PROBE_TIMEOUT_MS = 1_500
+
+interface GeminiAvailabilityCache {
+  value: boolean
+  expiresAt: number
+  inFlightProbe?: Promise<boolean>
+}
+
+const geminiAvailabilityCache: GeminiAvailabilityCache = {
+  value: false,
+  expiresAt: 0,
+}
 
 const GEMINI_ERROR_MESSAGES = {
   timeout: 'Request timed out. Please try again.',
@@ -48,6 +59,28 @@ class GeminiClientError extends Error {
 function clampNumber(value: number, fallback: number, min: number, max: number): number {
   if (!Number.isFinite(value)) return fallback
   return Math.min(Math.max(value, min), max)
+}
+
+function getGeminiApiBase(): string {
+  const apiBase = ((import.meta.env.VITE_GEMINI_API_BASE as string | undefined) || '').trim()
+  if (!apiBase) return ''
+
+  try {
+    const parsed = new URL(apiBase)
+    return parsed.origin + parsed.pathname.replace(/\/$/, '')
+  } catch {
+    return ''
+  }
+}
+
+function joinBaseAndPath(base: string, path: string): string {
+  const normalizedBase = base.replace(/\/$/, '')
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  return `${normalizedBase}${normalizedPath}`
+}
+
+function getGeminiUrl(path: string): string {
+  return joinBaseAndPath(getGeminiApiBase(), path)
 }
 
 function mapHttpStatusToError(status: number): GeminiClientError {
@@ -158,7 +191,54 @@ export interface Flashcard {
 }
 
 export function isGeminiAvailable(): boolean {
+  const now = Date.now()
+  const base = getGeminiApiBase()
+  if (!base) return false
+  if (geminiAvailabilityCache.expiresAt > now) {
+    return geminiAvailabilityCache.value
+  }
   return true
+}
+
+export async function checkGeminiAvailability(forceProbe = false): Promise<boolean> {
+  const now = Date.now()
+  const base = getGeminiApiBase()
+
+  if (!base) {
+    geminiAvailabilityCache.value = false
+    geminiAvailabilityCache.expiresAt = now + GEMINI_AVAILABILITY_CACHE_TTL_MS
+    return false
+  }
+
+  if (!forceProbe && geminiAvailabilityCache.expiresAt > now) {
+    return geminiAvailabilityCache.value
+  }
+
+  if (!forceProbe && geminiAvailabilityCache.inFlightProbe) {
+    return geminiAvailabilityCache.inFlightProbe
+  }
+
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), GEMINI_AVAILABILITY_PROBE_TIMEOUT_MS)
+
+  const probePromise = fetch(getGeminiUrl(GEMINI_HEALTH_PATH), {
+    method: 'GET',
+    signal: controller.signal,
+  })
+    .then((response) => response.ok)
+    .catch(() => false)
+    .finally(() => {
+      clearTimeout(timeoutId)
+      geminiAvailabilityCache.inFlightProbe = undefined
+    })
+
+  geminiAvailabilityCache.inFlightProbe = probePromise
+
+  const isHealthy = await probePromise
+  geminiAvailabilityCache.value = isHealthy
+  geminiAvailabilityCache.expiresAt = Date.now() + GEMINI_AVAILABILITY_CACHE_TTL_MS
+
+  return isHealthy
 }
 
 async function callGemini(
@@ -166,7 +246,7 @@ async function callGemini(
   userMessage: string,
   history: ChatMessage[] = [],
 ): Promise<string> {
-  const data = await postGemini<{ text?: string }>(GENERATE_URL, {
+  const data = await postGemini<{ text?: string }>(getGeminiUrl('/api/gemini/generate'), {
     systemInstruction,
     userMessage,
     history,
@@ -269,7 +349,9 @@ export async function getExerciseHint(
 // ─── Feature 4: Text Embeddings ──────────────────────────────────────────────
 
 export async function embedText(text: string): Promise<number[]> {
-  const data = await postGemini<{ embedding?: number[] }>(EMBED_URL, { text })
+  const data = await postGemini<{ embedding?: number[] }>(getGeminiUrl('/api/gemini/embed'), {
+    text,
+  })
   const values = data.embedding
   if (!values || values.length === 0) throw new GeminiClientError('invalidResponse')
   return values
