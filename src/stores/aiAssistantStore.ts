@@ -11,6 +11,43 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { ChatMessage, Flashcard } from '../utils/geminiClient'
 
+const MAX_MESSAGES_PER_DAY = 100
+const MAX_FLASHCARDS_PER_DAY = 50
+const MAX_DAYS_RETAINED = 30
+
+type DayBuckets<T> = Record<string, T[]>
+
+function pruneDayBuckets<T>(
+  buckets: DayBuckets<T>,
+  maxItemsPerDay: number,
+  maxDaysRetained: number,
+): DayBuckets<T> {
+  const retainedDays = Object.keys(buckets)
+    .sort((a, b) => b.localeCompare(a))
+    .slice(0, maxDaysRetained)
+
+  return retainedDays.reduce<DayBuckets<T>>((acc, day) => {
+    const dayItems = buckets[day] || []
+    acc[day] = dayItems.slice(-maxItemsPerDay)
+    return acc
+  }, {})
+}
+
+function prunePersistedState(state: Pick<AiAssistantState, 'messagesByDay' | 'flashcardsByDay'>) {
+  return {
+    messagesByDay: pruneDayBuckets(
+      state.messagesByDay,
+      MAX_MESSAGES_PER_DAY,
+      MAX_DAYS_RETAINED,
+    ),
+    flashcardsByDay: pruneDayBuckets(
+      state.flashcardsByDay,
+      MAX_FLASHCARDS_PER_DAY,
+      MAX_DAYS_RETAINED,
+    ),
+  }
+}
+
 interface AiAssistantState {
     isOpen: boolean
     isLoading: boolean
@@ -49,12 +86,20 @@ export const useAiAssistantStore = create<AiAssistantState>()(
             setActiveTab: (tab) => set({ activeTab: tab }),
 
             addMessage: (day, message) =>
-                set((s) => ({
-                    messagesByDay: {
+                set((s) => {
+                    const nextMessagesByDay = {
                         ...s.messagesByDay,
                         [day]: [...(s.messagesByDay[day] || []), message],
-                    },
-                })),
+                    }
+
+                    return {
+                        messagesByDay: pruneDayBuckets(
+                            nextMessagesByDay,
+                            MAX_MESSAGES_PER_DAY,
+                            MAX_DAYS_RETAINED,
+                        ),
+                    }
+                }),
 
             clearMessages: (day) =>
                 set((s) => ({
@@ -62,9 +107,16 @@ export const useAiAssistantStore = create<AiAssistantState>()(
                 })),
 
             setFlashcards: (day, cards) =>
-                set((s) => ({
-                    flashcardsByDay: { ...s.flashcardsByDay, [day]: cards },
-                })),
+                set((s) => {
+                    const nextFlashcardsByDay = { ...s.flashcardsByDay, [day]: cards }
+                    return {
+                        flashcardsByDay: pruneDayBuckets(
+                            nextFlashcardsByDay,
+                            MAX_FLASHCARDS_PER_DAY,
+                            MAX_DAYS_RETAINED,
+                        ),
+                    }
+                }),
 
             getHintLevel: (exerciseId) => get().hintLevelsByExercise[exerciseId] || 0,
 
@@ -84,9 +136,22 @@ export const useAiAssistantStore = create<AiAssistantState>()(
         }),
         {
             name: 'ai-assistant-store',
+            version: 1,
+            migrate: (persistedState) => {
+                const raw = (persistedState || {}) as Partial<AiAssistantState>
+                const pruned = prunePersistedState({
+                    messagesByDay: raw.messagesByDay || {},
+                    flashcardsByDay: raw.flashcardsByDay || {},
+                })
+
+                return {
+                    ...raw,
+                    ...pruned,
+                    hintLevelsByExercise: raw.hintLevelsByExercise || {},
+                }
+            },
             partialize: (state) => ({
-                messagesByDay: state.messagesByDay,
-                flashcardsByDay: state.flashcardsByDay,
+                ...prunePersistedState(state),
                 hintLevelsByExercise: state.hintLevelsByExercise,
             }),
         },
