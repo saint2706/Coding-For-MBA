@@ -1,11 +1,9 @@
 ---
 phase: 12
 title: "Analytics Engineering & Data Products"
-description: "Master the business side of data: semantic layers, self-serve analytics, data mesh, product analytics, A/B testing, and data monetization."
-duration: "8 days"
-difficulty: "intermediate-advanced"
-totalDays: 8
-dayRange: "133-140"
+days: [133, 134, 135, 136, 137, 138, 139, 140]
+totalDuration: 480
+difficulty: "advanced"
 tags:
   - analytics-engineering
   - data-products

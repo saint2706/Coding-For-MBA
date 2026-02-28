@@ -1,11 +1,9 @@
 ---
 phase: 11
 title: "Cloud Data Engineering"
-description: "Master cloud infrastructure, data lakes, warehouses, orchestration, streaming, and production pipeline operations."
-duration: "12 days"
-difficulty: "intermediate-advanced"
-totalDays: 12
-dayRange: "121-132"
+days: [121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132]
+totalDuration: 720
+difficulty: "advanced"
 tags:
   - cloud
   - aws
