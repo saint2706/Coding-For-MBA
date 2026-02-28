@@ -1,0 +1,70 @@
+{
+    "day": 116,
+    "questions": [
+        {
+            "id": "d116q01",
+            "type": "multiple_choice",
+            "question": "Why do LLM output tokens typically cost 3-4x more than input tokens?",
+            "options": [
+                "Output tokens use a different, more expensive model",
+                "Generation is autoregressive — each output token requires a full forward pass",
+                "Output tokens are stored in a more expensive database",
+                "Output tokens consume more network bandwidth"
+            ],
+            "answer": 1,
+            "explanation": "Input tokens are processed in parallel (a single forward pass), while output tokens are generated sequentially — each token requires its own forward pass. This per-token computation makes generation significantly more expensive."
+        },
+        {
+            "id": "d116q02",
+            "type": "multiple_choice",
+            "question": "What is semantic caching in the context of LLM operations?",
+            "options": [
+                "Caching model weights in GPU memory for faster inference",
+                "Storing previous LLM responses and returning them when a semantically similar query is received",
+                "Caching vector embeddings for faster retrieval",
+                "Pre-computing prompts to reduce latency"
+            ],
+            "answer": 1,
+            "explanation": "Semantic caching stores query-response pairs and uses embedding similarity to match new queries against cached ones. If a new query is semantically similar to a cached query (e.g., cosine similarity > 0.95), the cached response is returned — avoiding an API call entirely."
+        },
+        {
+            "id": "d116q03",
+            "type": "multiple_choice",
+            "question": "What is model routing for cost optimization?",
+            "options": [
+                "Distributing traffic across multiple cloud regions",
+                "Directing simple queries to cheap models and complex queries to expensive models",
+                "Switching between different API providers based on availability",
+                "Routing requests to the nearest data center"
+            ],
+            "answer": 1,
+            "explanation": "Model routing classifies incoming queries by complexity and routes simple tasks (classification, extraction) to cheap models (GPT-4o mini) and complex tasks (multi-step reasoning) to powerful models (GPT-4o). This can reduce costs by 10-16x."
+        },
+        {
+            "id": "d116q04",
+            "type": "multiple_choice",
+            "question": "What does LangSmith tracing help with in LLM operations?",
+            "options": [
+                "Automatically fixing bugs in LLM outputs",
+                "Debugging chains, tracking costs, and detecting regressions across LLM pipeline runs",
+                "Training new models on production data",
+                "Generating test cases for LLM applications"
+            ],
+            "answer": 1,
+            "explanation": "LangSmith provides end-to-end tracing of LLM pipeline runs — showing each step's input, output, latency, and token usage. This enables cost attribution (which steps are expensive?), debugging (where did it go wrong?), and regression detection (is quality degrading?)."
+        },
+        {
+            "id": "d116q05",
+            "type": "multiple_choice",
+            "question": "What is prompt compression and how much can it typically reduce costs?",
+            "options": [
+                "Removing all whitespace from prompts; reduces costs by 5%",
+                "Removing redundant context and instructions while preserving meaning; reduces tokens by 30-70%",
+                "Converting prompts to a binary format; reduces costs by 90%",
+                "Using shorter variable names in code prompts; reduces costs by 10%"
+            ],
+            "answer": 1,
+            "explanation": "Prompt compression removes redundant instructions, context, and formatting while preserving the semantic content the model needs. Techniques include removing verbose system prompts, summarizing repeated context, and using concise formatting — typically achieving 30-70% token reduction with zero quality loss."
+        }
+    ]
+}

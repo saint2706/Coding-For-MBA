@@ -1,0 +1,70 @@
+{
+    "day": 111,
+    "questions": [
+        {
+            "id": "d111q01",
+            "type": "multiple_choice",
+            "question": "What is the LCEL (LangChain Expression Language) composition pattern?",
+            "options": [
+                "A SQL-like query language for vector databases",
+                "A pipe-based chain pattern: prompt | llm | parser",
+                "A configuration file format for LLM deployments",
+                "A Python decorator pattern for async functions"
+            ],
+            "answer": 1,
+            "explanation": "LCEL uses a pipe (|) operator to compose chains: prompt | llm | parser. Each component processes the output of the previous one, creating readable, modular pipelines for LLM applications."
+        },
+        {
+            "id": "d111q02",
+            "type": "multiple_choice",
+            "question": "What is the primary purpose of a text splitter in LangChain?",
+            "options": [
+                "To split a single LLM response into multiple outputs",
+                "To divide large documents into smaller chunks that fit within the LLM's context window",
+                "To separate code from natural language in mixed documents",
+                "To split training data for fine-tuning"
+            ],
+            "answer": 1,
+            "explanation": "Text splitters divide large documents into smaller, overlapping chunks that fit within an LLM's context window. Proper chunking is critical for RAG systems — chunks must be small enough for embedding but large enough to preserve meaning."
+        },
+        {
+            "id": "d111q03",
+            "type": "multiple_choice",
+            "question": "How does LlamaIndex differ from LangChain in its primary use case?",
+            "options": [
+                "LlamaIndex is for Python only; LangChain supports JavaScript too",
+                "LlamaIndex specializes in building persistent queryable knowledge bases; LangChain is a general orchestration framework",
+                "LlamaIndex only works with open-source models",
+                "LlamaIndex is faster but less accurate"
+            ],
+            "answer": 1,
+            "explanation": "LlamaIndex excels at indexing and querying large document collections — it's purpose-built for knowledge base applications. LangChain is a broader orchestration framework for chains, agents, and tools. Many production systems use both together."
+        },
+        {
+            "id": "d111q04",
+            "type": "multiple_choice",
+            "question": "What is the purpose of conversation memory in LangChain?",
+            "options": [
+                "To cache API responses for cost savings",
+                "To maintain context across multiple turns in a conversation",
+                "To store model weights locally for faster inference",
+                "To log conversations for compliance"
+            ],
+            "answer": 1,
+            "explanation": "Conversation memory maintains context across chat turns. Without it, each LLM call is stateless. Strategies include sliding window (keep last N messages), summary buffer (compress older messages), and token buffer (trim to a token limit)."
+        },
+        {
+            "id": "d111q05",
+            "type": "multiple_choice",
+            "question": "What does RunnableParallel enable in LangChain?",
+            "options": [
+                "Running the same prompt on multiple LLMs simultaneously for comparison",
+                "Executing multiple independent chain branches concurrently in a single pipeline",
+                "Training multiple LoRA adapters in parallel",
+                "Distributing inference across multiple GPUs"
+            ],
+            "answer": 1,
+            "explanation": "RunnableParallel runs multiple independent chain branches concurrently. For example, you can simultaneously extract entities, generate a summary, and classify sentiment from the same document — combining results at the end."
+        }
+    ]
+}

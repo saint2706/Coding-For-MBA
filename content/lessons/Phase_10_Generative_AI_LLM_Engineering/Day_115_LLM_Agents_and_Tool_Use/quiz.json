@@ -1,0 +1,70 @@
+{
+    "day": 115,
+    "questions": [
+        {
+            "id": "d115q01",
+            "type": "multiple_choice",
+            "question": "What is the ReAct (Reason + Act) pattern in LLM agents?",
+            "options": [
+                "A JavaScript framework for building LLM interfaces",
+                "A loop where the model reasons about the task, acts by calling a tool, observes the result, then reasons again",
+                "A training methodology for reinforcement learning",
+                "A prompt template for chain-of-thought reasoning"
+            ],
+            "answer": 1,
+            "explanation": "ReAct interleaves reasoning and action: the model thinks about what to do (Reason), calls an external tool (Act), reads the tool's output (Observe), then decides the next step (Reason again). This cycle continues until the task is complete."
+        },
+        {
+            "id": "d115q02",
+            "type": "multiple_choice",
+            "question": "What is OpenAI function calling used for?",
+            "options": [
+                "Calling Python functions during model training",
+                "Allowing the model to express a structured intent to call an external tool, which the application then executes",
+                "Running serverless functions on OpenAI's infrastructure",
+                "Defining custom activation functions in neural networks"
+            ],
+            "answer": 1,
+            "explanation": "Function calling lets you describe available tools via JSON schemas. The model decides when and how to call them, returning a structured JSON payload. Your application code then executes the actual function and feeds the result back to the model."
+        },
+        {
+            "id": "d115q03",
+            "type": "multiple_choice",
+            "question": "Why is setting max_iterations critical for LLM agents?",
+            "options": [
+                "It limits the number of training epochs",
+                "It prevents infinite loops that can burn through API budget when the agent can't find an answer",
+                "It controls the quality of the agent's reasoning",
+                "It limits the context window size"
+            ],
+            "answer": 1,
+            "explanation": "Without max_iterations, an agent can enter an infinite loop — repeatedly calling the same tool when results are ambiguous. A limit of 5-10 iterations prevents runaway costs. Add self-evaluation after each step: 'Do I have enough information to answer?'"
+        },
+        {
+            "id": "d115q04",
+            "type": "multiple_choice",
+            "question": "What is multi-agent orchestration?",
+            "options": [
+                "Running multiple copies of the same model for load balancing",
+                "Using specialized agents (data, analysis, writing) that collaborate on complex tasks",
+                "Training multiple models simultaneously on the same dataset",
+                "Deploying agents across multiple cloud regions"
+            ],
+            "answer": 1,
+            "explanation": "Multi-agent orchestration uses specialist agents for different sub-tasks — e.g., a data agent for SQL queries, an analysis agent for interpretation, and a writing agent for reports. An orchestrator routes tasks to the right specialist."
+        },
+        {
+            "id": "d115q05",
+            "type": "multiple_choice",
+            "question": "What is a HITL (Human-in-the-Loop) approval gate in agent systems?",
+            "options": [
+                "A UI component for users to see agent reasoning",
+                "A checkpoint requiring human approval before the agent performs irreversible actions",
+                "A training step where humans label agent outputs",
+                "A monitoring dashboard for agent performance"
+            ],
+            "answer": 1,
+            "explanation": "HITL gates pause the agent before high-risk actions (e.g., sending emails, executing database writes, transferring money) and require a human to approve. This prevents catastrophic errors while still allowing automation of safe actions."
+        }
+    ]
+}
