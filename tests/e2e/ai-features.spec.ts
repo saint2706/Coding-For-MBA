@@ -1,51 +1,188 @@
 import { test, expect } from '@playwright/test'
 
-test.describe('AI features', () => {
-  test('AI Study Assistant panel is accessible from a lesson', async ({ page }) => {
-    // Only run this test if we are actually testing AI features
-    // In playwright, the easiest way to test it without real API calls is just checking the UI presence
-    // However, if VITE_GEMINI_API_BASE is not set in dev, it defaults to off.
+const MOCK_AI_REPLY = {
+  text: 'Python is a high-level programming language used for data science and automation.',
+}
+const MOCK_FLASHCARDS = {
+  text: JSON.stringify(
+    Array.from({ length: 8 }, (_, i) => ({
+      front: `Question ${i + 1}: What is concept ${i + 1}?`,
+      back: `Answer ${i + 1}: Concept ${i + 1} is an important building block in Python programming.`,
+    })),
+  ),
+}
 
-    // We navigate to lesson 1
+test.describe('AI Study Assistant — desktop and mobile', () => {
+  test.beforeEach(async ({ page }) => {
+    // Mock health check so AI availability is detected
+    await page.route('**/api/gemini/health', (route) =>
+      route.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }),
+    )
+    // Mock text generation endpoint
+    await page.route('**/api/gemini/generate', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(MOCK_AI_REPLY),
+      }),
+    )
+    // Mock embed endpoint
+    await page.route('**/api/gemini/embed', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ embedding: new Array(768).fill(0.1) }),
+      }),
+    )
+  })
+
+  test('AI FAB is visible on a lesson page', async ({ page }) => {
     await page.goto('/#/lesson/1')
+    await page.waitForLoadState('networkidle')
 
-    // Since we can't easily set the Vite environment variables mid-test without restarting Vite
-    // We will conditionally run this test or we assume the VITE_GEMINI_API_BASE was injected correctly for E2E
-    // The prompt says "verify that AI features are visible and accessible on the website".
-    // Let's check for the button:
     const aiButton = page.getByRole('button', { name: 'Open AI Study Assistant' })
+    await expect(aiButton).toBeVisible({ timeout: 8000 })
+  })
 
-    // Check if the button is in the DOM (it might be hidden if not configured, but wait for it)
-    // If we run `npm run dev` with VITE_GEMINI_API_BASE set, it should appear
-    await expect(aiButton)
-      .toBeVisible({ timeout: 15000 })
-      .catch(() => {
-        // If not configured, we gracefully skip instead of failing the test locally
-        // OR we just wait for it. In CI it will be configured via secrets.
-      })
+  test('AI panel opens, shows tabs, and closes', async ({ page }) => {
+    await page.goto('/#/lesson/1')
+    await page.waitForLoadState('networkidle')
 
-    if (await aiButton.isVisible()) {
-      await aiButton.click()
+    const aiButton = page.getByRole('button', { name: 'Open AI Study Assistant' })
+    await expect(aiButton).toBeVisible({ timeout: 8000 })
+    await aiButton.click()
 
-      // Verify the panel is visible
-      const aiPanel = page.locator('.ai-panel')
-      await expect(aiPanel).toBeVisible()
+    const panel = page.locator('.ai-panel')
+    await expect(panel).toBeVisible()
 
-      // Verify chat input is focused or visible
-      const aiInput = page.getByPlaceholder(
-        /Ask a question about this lesson...|Type your message.../,
-      )
-      await expect(aiInput).toBeVisible()
+    // Both tabs should be present
+    await expect(page.locator('.ai-panel-tab', { hasText: '💬 Chat' })).toBeVisible()
+    await expect(page.locator('.ai-panel-tab', { hasText: '🃏 Flashcards' })).toBeVisible()
 
-      // Close the panel
-      const closeButton = page.getByRole('button', { name: 'Close AI Assistant' })
-      await expect(closeButton).toBeVisible()
-      await closeButton.click()
+    // Chat input should be accessible
+    await expect(page.getByPlaceholder('Ask about this lesson...')).toBeVisible()
 
-      // Verify it's closed
-      await expect(aiPanel).toBeHidden()
-    } else {
-      console.log('Skipping AI test because VITE_GEMINI_API_BASE was not configured.')
+    // Close button works
+    await page.getByRole('button', { name: 'Close' }).click()
+    await expect(panel).not.toBeVisible()
+  })
+
+  test('AI chat — quick actions trigger a response', async ({ page }) => {
+    await page.goto('/#/lesson/1')
+    await page.waitForLoadState('networkidle')
+
+    await page.getByRole('button', { name: 'Open AI Study Assistant' }).click()
+    const panel = page.locator('.ai-panel')
+    await expect(panel).toBeVisible()
+
+    // Quick actions should appear when no messages yet
+    const summariseBtn = page.locator('.ai-quick-action', { hasText: '📝 Summarise' })
+    await expect(summariseBtn).toBeVisible()
+    await summariseBtn.click()
+
+    // User message and model reply should appear
+    await expect(page.locator('.ai-message.user')).toBeVisible({ timeout: 5000 })
+    await expect(page.locator('.ai-message.model')).toContainText('Python', { timeout: 8000 })
+  })
+
+  test('AI chat — manual input sends message and gets reply', async ({ page }) => {
+    await page.goto('/#/lesson/1')
+    await page.waitForLoadState('networkidle')
+
+    await page.getByRole('button', { name: 'Open AI Study Assistant' }).click()
+    const input = page.getByPlaceholder('Ask about this lesson...')
+    await expect(input).toBeVisible()
+
+    await input.fill('What is Python used for?')
+    await page.getByRole('button', { name: 'Send' }).click()
+
+    await expect(page.locator('.ai-message.user')).toContainText('What is Python used for?')
+    await expect(page.locator('.ai-message.model')).toBeVisible({ timeout: 8000 })
+
+    // Clear chat history link should appear
+    await expect(page.getByText('Clear chat history')).toBeVisible()
+  })
+
+  test('AI flashcards tab — generate and flip cards', async ({ page }) => {
+    // Override generate to return flashcard JSON
+    await page.route('**/api/gemini/generate', (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(MOCK_FLASHCARDS),
+      }),
+    )
+
+    await page.goto('/#/lesson/1')
+    await page.waitForLoadState('networkidle')
+
+    await page.getByRole('button', { name: 'Open AI Study Assistant' }).click()
+
+    // Switch to flashcards tab
+    await page.locator('.ai-panel-tab', { hasText: '🃏 Flashcards' }).click()
+    await expect(page.locator('.ai-flashcard-generate')).toBeVisible()
+
+    // Generate flashcards
+    await page.locator('.ai-flashcard-generate').click()
+    await expect(page.locator('.ai-flashcard').first()).toBeVisible({ timeout: 8000 })
+
+    // All 8 cards should appear
+    await expect(page.locator('.ai-flashcard')).toHaveCount(8)
+
+    // Click a card to flip it (reveal answer)
+    const firstCard = page.locator('.ai-flashcard').first()
+    await expect(firstCard).toHaveClass(/collapsed/)
+    await firstCard.click()
+    await expect(firstCard).not.toHaveClass(/collapsed/)
+  })
+
+  test('AI page (dashboard) is accessible via nav', async ({ page }) => {
+    await page.goto('/#/')
+    await page.waitForLoadState('networkidle')
+
+    // Navigate to AI page
+    await page.goto('/#/ai')
+    await expect(page.getByText('Your AI Study')).toBeVisible()
+    await expect(page.getByText('What AI Can Do For You')).toBeVisible()
+    await expect(page.getByText('Start a Lesson with AI')).toBeVisible()
+  })
+
+  test('on mobile: AI FAB sits above the bottom nav bar', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'mobile-only test')
+
+    await page.goto('/#/lesson/1')
+    await page.waitForLoadState('networkidle')
+
+    const aiButton = page.getByRole('button', { name: 'Open AI Study Assistant' })
+    await expect(aiButton).toBeVisible({ timeout: 8000 })
+
+    const fabBox = await aiButton.boundingBox()
+    const mobileNav = page.locator('nav[aria-label="Mobile navigation"]')
+    const navBox = await mobileNav.boundingBox()
+
+    if (fabBox && navBox) {
+      // FAB bottom edge must be above the top of mobile nav
+      expect(fabBox.y + fabBox.height).toBeLessThanOrEqual(navBox.y + 4)
+    }
+  })
+
+  test('on mobile: AI panel appears above the bottom nav bar', async ({ page, isMobile }) => {
+    test.skip(!isMobile, 'mobile-only test')
+
+    await page.goto('/#/lesson/1')
+    await page.waitForLoadState('networkidle')
+
+    await page.getByRole('button', { name: 'Open AI Study Assistant' }).click()
+    const panel = page.locator('.ai-panel')
+    await expect(panel).toBeVisible()
+
+    const panelBox = await panel.boundingBox()
+    const mobileNav = page.locator('nav[aria-label="Mobile navigation"]')
+    const navBox = await mobileNav.boundingBox()
+
+    if (panelBox && navBox) {
+      // Panel bottom edge must not overlap mobile nav (panel bottom ≤ nav top)
+      expect(panelBox.y + panelBox.height).toBeLessThanOrEqual(navBox.y + 4)
     }
   })
 })

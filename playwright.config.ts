@@ -27,6 +27,12 @@ export default defineConfig({
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
+    env: {
+      // Enables AI features in the browser so e2e tests can verify them.
+      // All /api/gemini/* requests are intercepted by page.route() mocks in the
+      // ai-features spec — no real Gemini backend is required.
+      VITE_GEMINI_API_BASE: 'http://127.0.0.1:4173',
+    },
   },
   projects: [
     {

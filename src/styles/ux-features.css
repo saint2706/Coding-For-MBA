@@ -38,6 +38,15 @@
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.08);
   --shadow-glow: 0 0 20px rgba(8, 181, 212, 0.08);
+
+  /* Reading surface — light theme overrides */
+  --reading-bg-primary: #f0f6f6;
+  --reading-bg-surface: #f8fbfb;
+  --reading-bg-code: #f2f7f7;
+  --reading-border-subtle: rgba(8, 40, 50, 0.08);
+  --reading-border-card: rgba(8, 40, 50, 0.12);
+  --reading-border-active: rgba(8, 181, 212, 0.4);
+  --reading-accent-glow: rgba(8, 181, 212, 0.08);
 }
 
 /* ---------- Theme Toggle Button ---------- */

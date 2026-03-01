@@ -226,8 +226,9 @@
     z-index: 30;
   }
 
-  .toc-title {
-    margin-bottom: 0.5rem;
+  /* Hide redundant title when the toggle button is shown */
+  .toc-compact .toc-title {
+    display: none;
   }
 
   .toc-toggle {
@@ -280,13 +281,21 @@
   }
 }
 
+@media (max-width: 768px) {
+  /* On mobile where bottom nav is visible, push the sticky ToC up above it */
+  .toc {
+    bottom: calc(64px + 1rem);
+  }
+
+  /* Back-to-top button above mobile nav */
+  .back-to-top {
+    bottom: calc(64px + 1rem);
+    right: 1.25rem;
+  }
+}
+
 @media (max-width: 640px) {
   .not-found-phases {
     grid-template-columns: 1fr;
-  }
-
-  .back-to-top {
-    bottom: 1.25rem;
-    right: 1.25rem;
   }
 }
