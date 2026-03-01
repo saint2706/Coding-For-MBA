@@ -144,3 +144,101 @@ The new MobileNav item respects the existing `.mobile-nav-item` class for consis
 - [x] Add per-lesson AI usage history widget to AiDashboard
 - [x] Implement curriculum roadmap view (stitch `curriculum_roadmap.html`)
 - [x] Explore Mobile Dashboard redesign (stitch `mobile_dashboard.html`) for ProgressDashboard page
+
+---
+
+## Dependency Audit — 2026-03-01
+
+### `@google/generative-ai` — Not needed
+
+The `@google/generative-ai` SDK is **not installed and not referenced** anywhere in this codebase.
+The Gemini integration in `src/utils/geminiClient.ts` and `api/gemini/_shared.js` calls the
+Gemini REST API directly via `fetch()`, using either a backend proxy (`VITE_GEMINI_API_BASE`) or
+direct browser requests with `VITE_GEMINI_API_KEY`. The SDK adds ~250 KB to the bundle with no
+benefit over the existing custom fetch wrapper. **Do not add it.**
+
+### `npm audit` — 0 vulnerabilities
+
+All production and dev dependencies are clean as of this audit date.
+
+### Outdated packages (patch-level, non-breaking)
+
+| Package | Installed | Latest | Priority |
+|---|---|---|---|
+| `@types/node` | 25.3.1 | 25.3.3 | low — type-only |
+| `lint-staged` | 16.2.7 | 16.3.0 | low — dev-only |
+| `react-syntax-highlighter` | 16.1.0 | 16.1.1 | low — patch fix |
+
+These will be auto-updated by the Dependabot weekly run (Thursdays 13:00 IST).
+
+---
+
+## Recommended New Packages — Features to Unlock
+
+### 1. `idb` ^8.x — IndexedDB wrapper (semantic-search cache)
+
+**What it unlocks:** The semantic search embedding cache (`src/utils/semanticSearch.ts`) currently
+stores all lesson embeddings in `localStorage`, which is capped at ~5 MB and is synchronous
+(blocks the main thread on reads/writes). `idb` wraps the IndexedDB API with a Promise-based
+interface, providing async, non-blocking storage with a limit of 50–250 MB — enough for the full
+curriculum embedding corpus and offline-first reading.
+
+**Install:** `npm install idb`
+
+### 2. `dexie` ^4.x — IndexedDB ORM (alternative to `idb`)
+
+**What it unlocks:** Same as `idb` but with a higher-level ORM query API. Easier to extend for
+caching lesson markdown content for full offline-mode support (PWA upgrade path).
+
+**Install:** `npm install dexie`
+
+### 3. `date-fns` ^4.x — Lightweight date utilities
+
+**What it unlocks:** The learning analytics store, review scheduler, and progress tracker all do
+manual date arithmetic (ms-level epoch math, `toLocaleDateString`, `new Date(...)` juggling).
+`date-fns` is ~13 KB tree-shakeable and replaces ad-hoc date logic with well-tested helpers like
+`formatDistanceToNow`, `isToday`, `addDays`, `differenceInCalendarDays`.
+
+**Install:** `npm install date-fns`
+
+### 4. `nanoid` ^5.x — Nano ID generator
+
+**What it unlocks:** AI chat messages and flashcards carry an optional `id?: string` field.
+Currently IDs default to a `role-text` template string, which is not stable when messages contain
+special characters. `nanoid` generates URL-safe, collision-resistant 21-character IDs with a
+tiny ~130 B footprint, replacing the fragile template patterns in `AiStudyPanel.tsx`.
+
+**Install:** `npm install nanoid`
+
+### 5. `jspdf` + `jspdf-autotable` — PDF export
+
+**What it unlocks:** A "Download Progress Certificate" / "Export Study Report" feature on the
+`ProgressDashboard` page. Students can generate a PDF summary of completed lessons, streak, and
+AI study time — shareable for professional portfolios.
+
+**Install:** `npm install jspdf jspdf-autotable`
+
+### 6. `react-resizable-panels` ^2.x — Resizable split-pane layout
+
+**What it unlocks:** The `PythonRunner` / `CodePlayground` components show code and output
+stacked vertically. A draggable split pane would let users resize the editor vs. output areas,
+significantly improving the coding exercise UX.
+
+**Install:** `npm install react-resizable-panels`
+
+### 7. `@xyflow/react` ^12.x — Interactive node graph (React Flow)
+
+**What it unlocks:** The `ConceptGraph` component currently uses raw D3 force simulation.
+React Flow provides a polished interactive node-and-edge canvas out of the box with zoom, pan,
+node drag, and edge routing — enabling a richer curriculum roadmap / concept dependency graph.
+Evaluate bundle impact before adding; D3 stays for other visualisations.
+
+**Install:** `npm install @xyflow/react`
+
+---
+
+## Automation — Weekly Surge Deployment
+
+`deploy-surge.yml` updated to add a weekly `schedule` trigger (Sundays 02:00 UTC) so
+`coding-for-mba.surge.sh` is automatically refreshed every week even without a release.
+Manual `workflow_dispatch` and `release: published` triggers are preserved.
