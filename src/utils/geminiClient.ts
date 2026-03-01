@@ -37,6 +37,7 @@ const GEMINI_ERROR_MESSAGES = {
   rateLimit: 'Rate limit reached. Please wait a moment and try again.',
   serverUnavailable: 'Server unavailable. Please try again shortly.',
   invalidResponse: 'Invalid response from AI service. Please try again.',
+  apiKeyInvalid: 'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
 } as const
 
 type GeminiErrorCode = keyof typeof GEMINI_ERROR_MESSAGES
@@ -110,13 +111,23 @@ export async function checkGeminiAvailability(): Promise<boolean> {
   return available
 }
 
+function classifyError(error: unknown): GeminiClientError {
+  if (error instanceof GeminiClientError) return error
+  const status = (error as { status?: number }).status
+  if (status === 400 || status === 401 || status === 403) {
+    return new GeminiClientError('apiKeyInvalid')
+  }
+  if (status === 429) return new GeminiClientError('rateLimit')
+  return new GeminiClientError('serverUnavailable')
+}
+
 async function callGemini(
   systemInstruction: string,
   userMessage: string,
   history: ChatMessage[] = [],
 ): Promise<string> {
   const genAI = getGenerativeAI()
-  if (!genAI) throw new GeminiClientError('serverUnavailable')
+  if (!genAI) throw new GeminiClientError('apiKeyInvalid')
 
   const model = genAI.getGenerativeModel({ model: GEMINI_GENERATE_MODEL })
 
@@ -139,8 +150,7 @@ async function callGemini(
     if (!text) throw new GeminiClientError('invalidResponse')
     return text
   } catch (error) {
-    if (error instanceof GeminiClientError) throw error
-    throw new GeminiClientError('serverUnavailable')
+    throw classifyError(error)
   }
 }
 
@@ -260,7 +270,7 @@ export async function getExerciseHint(
 
 export async function embedText(text: string): Promise<number[]> {
   const genAI = getGenerativeAI()
-  if (!genAI) throw new GeminiClientError('serverUnavailable')
+  if (!genAI) throw new GeminiClientError('apiKeyInvalid')
 
   const model = genAI.getGenerativeModel({ model: GEMINI_EMBED_MODEL })
 
@@ -273,7 +283,6 @@ export async function embedText(text: string): Promise<number[]> {
     if (!values || values.length === 0) throw new GeminiClientError('invalidResponse')
     return values
   } catch (error) {
-    if (error instanceof GeminiClientError) throw error
-    throw new GeminiClientError('serverUnavailable')
+    throw classifyError(error)
   }
 }
