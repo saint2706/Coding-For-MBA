@@ -100,46 +100,43 @@ scripts/               # Build and validation scripts
 - The index is built on the client and cached after initial load, so it works offline once assets are cached.
 
 
-## 🤖 Gemini Backend Setup
+## 🤖 AI Study Assistant Setup
 
-The frontend no longer calls Google Gemini APIs directly. It now calls backend endpoints:
+The AI Study Assistant uses the Google Gemini API directly from the browser.
 
-- `POST /api/gemini/generate`
-- `POST /api/gemini/embed`
+### Getting a Gemini API Key
+
+1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Sign in with your Google account.
+3. Click **Create API key** and copy it.
 
 ### Environment Variables
 
-- `GEMINI_API_KEY` (**server only**): real Gemini key used by backend handlers.
-  - Backward-compatible fallback: `VITE_GEMINI_API_KEY` is also accepted on the server (useful if your GitHub secret is already named this way).
-- `VITE_GEMINI_API_BASE` (optional, frontend): base URL for backend API if it is hosted separately. Leave empty for same-origin (`/api/...`).
+- `VITE_GEMINI_API_KEY` (**required**): your Gemini API key. This is baked into the browser bundle at build time by Vite.
 
 ### Local Development
 
-1. Create `.env.local` in the project root with:
+1. Copy `.env.example` to `.env.local`:
 
    ```bash
-   GEMINI_API_KEY=your_real_gemini_key
-   # Optional when API is on another origin
-   # VITE_GEMINI_API_BASE=http://localhost:3000
+   cp .env.example .env.local
    ```
 
-2. Start Vite as usual:
+2. Paste your key into `.env.local`:
+
+   ```bash
+   VITE_GEMINI_API_KEY=your_gemini_key_here
+   ```
+
+3. Start Vite as usual:
 
    ```bash
    npm run dev
    ```
 
-3. In development, `vite.config.ts` mounts local backend middleware for `/api/gemini/*`.
+### GitHub Pages Deployment
 
-### Security Controls
-
-- Gemini key is never exposed to browser bundles.
-- Backend validates request shape and max input sizes.
-- Backend applies per-IP/per-user in-memory rate limits before calling Gemini.
-- `x-forwarded-for` is used only when requests come from IPs listed in `GEMINI_TRUSTED_PROXIES` (reverse proxy/load balancer).
-- `x-user-id` is ignored unless set by authenticated middleware (`req.auth.userId`) or accompanied by a valid `x-user-id-signature` HMAC generated with `GEMINI_USER_ID_SIGNING_SECRET`.
-- When no trusted user identity is available, rate limiting falls back to socket IP plus optional middleware session ID.
-- Backend returns minimal fields only (`text` for generation, `embedding` for embeddings).
+Add `VITE_GEMINI_API_KEY` as a [repository secret](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) named exactly `VITE_GEMINI_API_KEY`. The deploy workflow passes this secret to `npm run build` so it is embedded in the production bundle.
 
 ## 📜 Available Scripts
 
