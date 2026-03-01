@@ -32,10 +32,12 @@
   justify-content: center;
   background: var(--gradient-hero);
   border-radius: var(--radius-sm);
-  font-weight: 800;
-  font-size: 1rem;
   color: white;
   flex-shrink: 0;
+}
+
+.sidebar-logo .material-symbols-outlined {
+  font-size: 22px;
 }
 
 .sidebar-title {
