@@ -170,7 +170,8 @@ export default defineConfig(async ({ mode }) => {
               normalId.includes('src/utils/geminiClient') ||
               normalId.includes('src/utils/semanticSearch') ||
               normalId.includes('src/stores/aiAssistantStore') ||
-              normalId.includes('src/components/AiStudyPanel')
+              normalId.includes('src/components/AiStudyPanel') ||
+              normalId.includes('src/pages/AiDashboard')
             ) {
               return 'ai-assistant'
             }

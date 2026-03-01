@@ -2,25 +2,25 @@
 
 /* ---------- Light Theme ---------- */
 :root[data-theme='light'] {
-  --bg-primary: #f7f8fc;
-  --bg-secondary: #eff3f8;
+  --bg-primary: #f5f8f8;
+  --bg-secondary: #edf2f2;
   --bg-card: #ffffff;
-  --bg-card-hover: #f3f6fb;
+  --bg-card-hover: #f0f6f6;
   --bg-surface: #ffffff;
-  --bg-code: #f4f6fa;
+  --bg-code: #f2f7f7;
 
-  --text-primary: #243248;
-  --text-secondary: #455a78;
-  --text-muted: #7284a0;
-  --text-heading: #111b2d;
+  --text-primary: #1a2e30;
+  --text-secondary: #374f52;
+  --text-muted: #637e82;
+  --text-heading: #0d2224;
 
   --accent-primary: #08b5d4;
   --accent-secondary: #7c3aed;
   --accent-tertiary: #0694ad;
   --accent-glow: rgba(8, 181, 212, 0.12);
 
-  --border-subtle: rgba(124, 144, 175, 0.2);
-  --border-card: rgba(124, 144, 175, 0.25);
+  --border-subtle: rgba(8, 40, 50, 0.1);
+  --border-card: rgba(8, 40, 50, 0.14);
   --border-active: rgba(8, 181, 212, 0.5);
 
   --gradient-hero: linear-gradient(135deg, #08b5d4 0%, #0694ad 40%, #22d3ee 100%);
