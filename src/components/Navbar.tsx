@@ -104,7 +104,7 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
           </svg>
         </button>
         <Link to="/" className="navbar-brand" {...createRoutePrefetchHandlers('/')}>
-          <div className="brand-icon">M</div>
+          <div className="brand-icon"><span className="material-symbols-outlined">terminal</span></div>
           <span>Coding for MBA</span>
         </Link>
       </div>

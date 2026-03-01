@@ -40,9 +40,11 @@
   justify-content: center;
   background: var(--gradient-hero);
   border-radius: var(--radius-sm);
-  font-weight: 800;
-  font-size: 0.875rem;
   color: white;
+}
+
+.brand-icon .material-symbols-outlined {
+  font-size: 20px;
 }
 
 .navbar-links {
