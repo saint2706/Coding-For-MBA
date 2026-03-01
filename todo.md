@@ -149,13 +149,12 @@ The new MobileNav item respects the existing `.mobile-nav-item` class for consis
 
 ## Dependency Audit — 2026-03-01
 
-### `@google/generative-ai` — Not needed
+### `@google/generative-ai` — Required
 
-The `@google/generative-ai` SDK is **not installed and not referenced** anywhere in this codebase.
-The Gemini integration in `src/utils/geminiClient.ts` and `api/gemini/_shared.js` calls the
-Gemini REST API directly via `fetch()`, using either a backend proxy (`VITE_GEMINI_API_BASE`) or
-direct browser requests with `VITE_GEMINI_API_KEY`. The SDK adds ~250 KB to the bundle with no
-benefit over the existing custom fetch wrapper. **Do not add it.**
+The `@google/generative-ai` SDK **must be installed** and is the only supported way to call the
+Gemini API from the browser. `src/utils/geminiClient.ts` uses `GoogleGenerativeAI` from this SDK
+for all text generation and embedding calls. There is no server-side proxy — all requests are made
+directly from the browser using `VITE_GEMINI_API_KEY`. **Do not remove it.**
 
 ### `npm audit` — 0 vulnerabilities
 
