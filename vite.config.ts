@@ -14,7 +14,6 @@
 import { defineConfig, type HtmlTagDescriptor, type PluginOption, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import criticalCss from './scripts/vite-plugin-critical-css'
-import { handleEmbed, handleGenerate, withErrorHandling } from './api/gemini/_shared.js'
 
 // https://vite.dev/config/
 export default defineConfig(async ({ mode }) => {
@@ -38,59 +37,6 @@ export default defineConfig(async ({ mode }) => {
       react(),
       criticalCss(),
       analyzePlugin,
-      {
-        name: 'gemini-backend-api',
-        apply: 'serve',
-        configureServer(server) {
-          server.middlewares.use('/api/gemini/health', (req, res, next) => {
-            if (req.method !== 'GET') {
-              return next()
-            }
-
-            res.statusCode = 200
-            res.setHeader('Content-Type', 'application/json')
-            res.end(JSON.stringify({ status: 'ok' }))
-          })
-
-          server.middlewares.use('/api/gemini/generate', async (req, res, next) => {
-            if (req.method !== 'POST') {
-              return next()
-            }
-
-            await withErrorHandling(handleGenerate, req, res)
-          })
-
-          server.middlewares.use('/api/gemini/embed', async (req, res, next) => {
-            if (req.method !== 'POST') {
-              return next()
-            }
-
-            await withErrorHandling(handleEmbed, req, res)
-          })
-        },
-      },
-      {
-        name: 'inject-api-base-csp',
-        apply: 'build',
-        transformIndexHtml: {
-          order: 'pre',
-          handler(html: string): string {
-            const apiBase = (process.env.VITE_GEMINI_API_BASE ?? '').trim()
-            if (!apiBase) return html
-
-            // Only inject HTTPS origins (reject HTTP to prevent CSP downgrade)
-            const originMatch = apiBase.match(/^(https:\/\/[^/]+)/)
-            if (!originMatch) return html
-            const origin = originMatch[1]
-
-            // Only inject if origin is not already present in the connect-src directive
-            const connectSrcMatch = html.match(/connect-src ([^;]+)/)
-            if (connectSrcMatch && connectSrcMatch[1].includes(origin)) return html
-
-            return html.replace(/connect-src ([^;]+)/, `connect-src $1 ${origin}`)
-          },
-        },
-      },
       {
         name: 'dev-csp-relaxation',
         transformIndexHtml: {

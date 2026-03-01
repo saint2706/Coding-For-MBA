@@ -1,20 +1,18 @@
 /**
  * Gemini API Client
  *
- * Thin wrapper around backend Gemini endpoints for the AI Study Assistant.
- * Keeps Gemini API keys on the server side.
+ * Wrapper around the Google Generative AI SDK for the AI Study Assistant.
+ * Uses VITE_GEMINI_API_KEY for direct browser-to-Gemini API access.
  *
  * @module utils/geminiClient
  */
 
-const GEMINI_HEALTH_PATH = '/api/gemini/health'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const GEMINI_DIRECT_GENERATE_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent'
-const GEMINI_DIRECT_EMBED_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent'
-// Maximum characters sent to the embedding model in direct mode (mirrors backend truncation)
-const GEMINI_EMBED_DIRECT_MAX_CHARS = 2_048
+const GEMINI_GENERATE_MODEL = 'gemini-flash-latest'
+const GEMINI_EMBED_MODEL = 'text-embedding-004'
+// Maximum characters sent to the embedding model to stay within token limits
+const GEMINI_EMBED_MAX_CHARS = 2_048
 
 const GEMINI_TIMEOUT_MS = clampNumber(
   Number(import.meta.env.VITE_GEMINI_TIMEOUT_MS),
@@ -22,21 +20,11 @@ const GEMINI_TIMEOUT_MS = clampNumber(
   10_000,
   20_000,
 )
-const GEMINI_MAX_RETRIES = clampNumber(Number(import.meta.env.VITE_GEMINI_MAX_RETRIES), 3, 0, 5)
-const GEMINI_RETRY_BASE_DELAY_MS = clampNumber(
-  Number(import.meta.env.VITE_GEMINI_RETRY_BASE_DELAY_MS),
-  500,
-  100,
-  2_000,
-)
-const GEMINI_RETRY_MAX_DELAY_MS = 4_000
 const GEMINI_AVAILABILITY_CACHE_TTL_MS = 30_000
-const GEMINI_AVAILABILITY_PROBE_TIMEOUT_MS = 1_500
 
 interface GeminiAvailabilityCache {
   value: boolean
   expiresAt: number
-  inFlightProbe?: Promise<boolean>
 }
 
 const geminiAvailabilityCache: GeminiAvailabilityCache = {
@@ -68,131 +56,22 @@ function clampNumber(value: number, fallback: number, min: number, max: number):
   return Math.min(Math.max(value, min), max)
 }
 
-function getGeminiApiBase(): string {
-  const apiBase = ((import.meta.env.VITE_GEMINI_API_BASE as string | undefined) || '').trim()
-  if (!apiBase) return ''
-
-  try {
-    const parsed = new URL(apiBase)
-    return parsed.origin + parsed.pathname.replace(/\/$/, '')
-  } catch {
-    return ''
-  }
-}
-
 function getGeminiApiKey(): string {
   return ((import.meta.env.VITE_GEMINI_API_KEY as string | undefined) || '').trim()
 }
 
-function joinBaseAndPath(base: string, path: string): string {
-  const normalizedBase = base.replace(/\/$/, '')
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`
-  return `${normalizedBase}${normalizedPath}`
+function getGenerativeAI(): GoogleGenerativeAI | null {
+  const apiKey = getGeminiApiKey()
+  if (!apiKey) return null
+  return new GoogleGenerativeAI(apiKey)
 }
 
-function getGeminiUrl(path: string): string {
-  return joinBaseAndPath(getGeminiApiBase(), path)
-}
-
-function mapHttpStatusToError(status: number): GeminiClientError {
-  if (status === 429) return new GeminiClientError('rateLimit')
-  if (status >= 500) return new GeminiClientError('serverUnavailable')
-  return new GeminiClientError('invalidResponse')
-}
-
-function isRetryableStatus(status: number): boolean {
-  return status === 429 || status >= 500
-}
-
-function isNetworkError(error: unknown): boolean {
-  return error instanceof TypeError
-}
-
-function isTimeoutError(error: unknown): boolean {
-  return error instanceof GeminiClientError && error.code === 'timeout'
-}
-
-function shouldRetry(error: unknown): boolean {
-  if (isTimeoutError(error) || isNetworkError(error)) return true
-  if (error instanceof GeminiClientError) {
-    return error.code === 'rateLimit' || error.code === 'serverUnavailable'
-  }
-  return false
-}
-
-async function sleep(ms: number): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-async function fetchWithTimeout(url: string, init: RequestInit): Promise<Response> {
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS)
-
-  try {
-    return await fetch(url, { ...init, signal: controller.signal })
-  } catch (error) {
-    if (error instanceof DOMException && error.name === 'AbortError') {
-      throw new GeminiClientError('timeout')
-    }
-    throw error
-  } finally {
-    clearTimeout(timeoutId)
-  }
-}
-
-async function postGemini<T>(
-  url: string,
-  payload: Record<string, unknown>,
-  extraHeaders?: Record<string, string>,
-): Promise<T> {
-  let lastError: Error = new GeminiClientError('serverUnavailable')
-
-  for (let attempt = 0; attempt <= GEMINI_MAX_RETRIES; attempt += 1) {
-    try {
-      const response = await fetchWithTimeout(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...extraHeaders },
-        body: JSON.stringify(payload),
-      })
-
-      if (!response.ok) {
-        const mappedError = mapHttpStatusToError(response.status)
-        if (isRetryableStatus(response.status) && attempt < GEMINI_MAX_RETRIES) {
-          const delay = Math.min(
-            GEMINI_RETRY_BASE_DELAY_MS * 2 ** attempt,
-            GEMINI_RETRY_MAX_DELAY_MS,
-          )
-          await sleep(delay)
-          continue
-        }
-        throw mappedError
-      }
-
-      try {
-        return (await response.json()) as T
-      } catch {
-        throw new GeminiClientError('invalidResponse')
-      }
-    } catch (error) {
-      const mappedError =
-        error instanceof GeminiClientError
-          ? error
-          : isNetworkError(error)
-            ? new GeminiClientError('serverUnavailable')
-            : new GeminiClientError('invalidResponse')
-
-      lastError = mappedError
-
-      if (!shouldRetry(error) || attempt >= GEMINI_MAX_RETRIES) {
-        throw mappedError
-      }
-
-      const delay = Math.min(GEMINI_RETRY_BASE_DELAY_MS * 2 ** attempt, GEMINI_RETRY_MAX_DELAY_MS)
-      await sleep(delay)
-    }
-  }
-
-  throw lastError
+async function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => reject(new GeminiClientError('timeout')), ms)
+  })
+  return Promise.race([promise.finally(() => clearTimeout(timeoutId)), timeoutPromise])
 }
 
 export interface ChatMessage {
@@ -215,67 +94,20 @@ const FLASHCARD_RETRY_ERROR_MESSAGE =
 
 export function isGeminiAvailable(): boolean {
   const now = Date.now()
-  const base = getGeminiApiBase()
   const apiKey = getGeminiApiKey()
-
-  if (!base && !apiKey) return false
-
-  // Direct key mode: always available when key is present (no health probe needed)
-  if (!base && apiKey) return true
-
+  if (!apiKey) return false
   if (geminiAvailabilityCache.expiresAt > now) {
     return geminiAvailabilityCache.value
   }
   return true
 }
 
-export async function checkGeminiAvailability(forceProbe = false): Promise<boolean> {
+export async function checkGeminiAvailability(): Promise<boolean> {
   const now = Date.now()
-  const base = getGeminiApiBase()
-  const apiKey = getGeminiApiKey()
-
-  if (!base && !apiKey) {
-    geminiAvailabilityCache.value = false
-    geminiAvailabilityCache.expiresAt = now + GEMINI_AVAILABILITY_CACHE_TTL_MS
-    return false
-  }
-
-  // Direct key mode: no backend health probe needed
-  if (!base && apiKey) {
-    geminiAvailabilityCache.value = true
-    geminiAvailabilityCache.expiresAt = now + GEMINI_AVAILABILITY_CACHE_TTL_MS
-    return true
-  }
-
-  if (!forceProbe && geminiAvailabilityCache.expiresAt > now) {
-    return geminiAvailabilityCache.value
-  }
-
-  if (!forceProbe && geminiAvailabilityCache.inFlightProbe) {
-    return geminiAvailabilityCache.inFlightProbe
-  }
-
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), GEMINI_AVAILABILITY_PROBE_TIMEOUT_MS)
-
-  const probePromise = fetch(getGeminiUrl(GEMINI_HEALTH_PATH), {
-    method: 'GET',
-    signal: controller.signal,
-  })
-    .then((response) => response.ok)
-    .catch(() => false)
-    .finally(() => {
-      clearTimeout(timeoutId)
-      geminiAvailabilityCache.inFlightProbe = undefined
-    })
-
-  geminiAvailabilityCache.inFlightProbe = probePromise
-
-  const isHealthy = await probePromise
-  geminiAvailabilityCache.value = isHealthy
-  geminiAvailabilityCache.expiresAt = Date.now() + GEMINI_AVAILABILITY_CACHE_TTL_MS
-
-  return isHealthy
+  const available = !!getGeminiApiKey()
+  geminiAvailabilityCache.value = available
+  geminiAvailabilityCache.expiresAt = now + GEMINI_AVAILABILITY_CACHE_TTL_MS
+  return available
 }
 
 async function callGemini(
@@ -283,47 +115,33 @@ async function callGemini(
   userMessage: string,
   history: ChatMessage[] = [],
 ): Promise<string> {
-  const base = getGeminiApiBase()
+  const genAI = getGenerativeAI()
+  if (!genAI) throw new GeminiClientError('serverUnavailable')
 
-  if (base) {
-    const data = await postGemini<{ text?: string }>(getGeminiUrl('/api/gemini/generate'), {
+  const model = genAI.getGenerativeModel({ model: GEMINI_GENERATE_MODEL })
+
+  try {
+    const chat = model.startChat({
       systemInstruction,
-      userMessage,
-      history,
-    })
-    const text = data.text
-    if (!text) throw new GeminiClientError('invalidResponse')
-    return text
-  }
-
-  // Direct Gemini REST API mode (no backend proxy configured)
-  const apiKey = getGeminiApiKey()
-  if (!apiKey) throw new GeminiClientError('serverUnavailable')
-
-  const contents = [
-    ...history.map((msg) => ({ role: msg.role, parts: [{ text: msg.text }] })),
-    { role: 'user', parts: [{ text: userMessage }] },
-  ]
-
-  const data = await postGemini<{
-    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
-  }>(
-    GEMINI_DIRECT_GENERATE_URL,
-    {
-      system_instruction: { parts: [{ text: systemInstruction }] },
-      contents,
+      history: history.map((msg) => ({
+        role: msg.role,
+        parts: [{ text: msg.text }],
+      })),
       generationConfig: {
         temperature: 0.7,
         maxOutputTokens: 2048,
         topP: 0.95,
       },
-    },
-    { 'x-goog-api-key': apiKey },
-  )
+    })
 
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text
-  if (!text) throw new GeminiClientError('invalidResponse')
-  return text
+    const result = await withTimeout(chat.sendMessage(userMessage), GEMINI_TIMEOUT_MS)
+    const text = result.response.text()
+    if (!text) throw new GeminiClientError('invalidResponse')
+    return text
+  } catch (error) {
+    if (error instanceof GeminiClientError) throw error
+    throw new GeminiClientError('serverUnavailable')
+  }
 }
 
 function truncateContent(content: string, maxChars = 12_000): string {
@@ -441,30 +259,21 @@ export async function getExerciseHint(
 // ─── Feature 4: Text Embeddings ──────────────────────────────────────────────
 
 export async function embedText(text: string): Promise<number[]> {
-  const base = getGeminiApiBase()
+  const genAI = getGenerativeAI()
+  if (!genAI) throw new GeminiClientError('serverUnavailable')
 
-  if (base) {
-    const data = await postGemini<{ embedding?: number[] }>(getGeminiUrl('/api/gemini/embed'), {
-      text,
-    })
-    const values = data.embedding
+  const model = genAI.getGenerativeModel({ model: GEMINI_EMBED_MODEL })
+
+  try {
+    const result = await withTimeout(
+      model.embedContent(text.slice(0, GEMINI_EMBED_MAX_CHARS)),
+      GEMINI_TIMEOUT_MS,
+    )
+    const values = result.embedding?.values
     if (!values || values.length === 0) throw new GeminiClientError('invalidResponse')
     return values
+  } catch (error) {
+    if (error instanceof GeminiClientError) throw error
+    throw new GeminiClientError('serverUnavailable')
   }
-
-  // Direct Gemini REST API mode (no backend proxy configured)
-  const apiKey = getGeminiApiKey()
-  if (!apiKey) throw new GeminiClientError('serverUnavailable')
-
-  const data = await postGemini<{ embedding?: { values?: number[] } }>(
-    GEMINI_DIRECT_EMBED_URL,
-    {
-      content: { parts: [{ text: text.slice(0, GEMINI_EMBED_DIRECT_MAX_CHARS) }] },
-    },
-    { 'x-goog-api-key': apiKey },
-  )
-
-  const values = data.embedding?.values
-  if (!values || values.length === 0) throw new GeminiClientError('invalidResponse')
-  return values
 }
