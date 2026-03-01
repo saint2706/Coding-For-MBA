@@ -282,9 +282,9 @@
 }
 
 @media (max-width: 768px) {
-  /* On mobile where bottom nav is visible, push the sticky ToC up above it */
+  /* Hide ToC on mobile — screen real estate is too limited */
   .toc {
-    bottom: calc(64px + 1rem);
+    display: none;
   }
 
   /* Back-to-top button above mobile nav */
