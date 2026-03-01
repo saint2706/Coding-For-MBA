@@ -32,7 +32,7 @@ describe('geminiClient error classification', () => {
     vi.stubEnv('VITE_GEMINI_API_KEY', '')
 
     await expect(askAboutLesson('content', 'question')).rejects.toThrow(
-      'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
+      'Invalid API key. Get a free key at aistudio.google.com and set it as VITE_GEMINI_API_KEY.',
     )
   })
 
@@ -41,7 +41,7 @@ describe('geminiClient error classification', () => {
     mockSendMessage.mockRejectedValue(sdkError(403))
 
     await expect(askAboutLesson('content', 'question')).rejects.toThrow(
-      'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
+      'Invalid API key. Get a free key at aistudio.google.com and set it as VITE_GEMINI_API_KEY.',
     )
   })
 
@@ -50,7 +50,7 @@ describe('geminiClient error classification', () => {
     mockSendMessage.mockRejectedValue(sdkError(401))
 
     await expect(askAboutLesson('content', 'question')).rejects.toThrow(
-      'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
+      'Invalid API key. Get a free key at aistudio.google.com and set it as VITE_GEMINI_API_KEY.',
     )
   })
 
@@ -59,7 +59,7 @@ describe('geminiClient error classification', () => {
     mockSendMessage.mockRejectedValue(sdkError(400))
 
     await expect(askAboutLesson('content', 'question')).rejects.toThrow(
-      'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
+      'Invalid API key. Get a free key at aistudio.google.com and set it as VITE_GEMINI_API_KEY.',
     )
   })
 
@@ -85,7 +85,7 @@ describe('geminiClient error classification', () => {
     vi.stubEnv('VITE_GEMINI_API_KEY', '')
 
     await expect(embedText('some text')).rejects.toThrow(
-      'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
+      'Invalid API key. Get a free key at aistudio.google.com and set it as VITE_GEMINI_API_KEY.',
     )
   })
 
@@ -94,7 +94,7 @@ describe('geminiClient error classification', () => {
     mockEmbedContent.mockRejectedValue(sdkError(403))
 
     await expect(embedText('some text')).rejects.toThrow(
-      'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
+      'Invalid API key. Get a free key at aistudio.google.com and set it as VITE_GEMINI_API_KEY.',
     )
   })
 

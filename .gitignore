@@ -41,6 +41,7 @@ actionlint
 # Environment variables
 .env
 .env.*
+!.env.example
 
 # Coverage
 coverage/

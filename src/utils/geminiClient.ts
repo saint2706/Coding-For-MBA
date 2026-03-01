@@ -37,7 +37,8 @@ const GEMINI_ERROR_MESSAGES = {
   rateLimit: 'Rate limit reached. Please wait a moment and try again.',
   serverUnavailable: 'Server unavailable. Please try again shortly.',
   invalidResponse: 'Invalid response from AI service. Please try again.',
-  apiKeyInvalid: 'Invalid API key. Please check your VITE_GEMINI_API_KEY configuration.',
+  apiKeyInvalid:
+    'Invalid API key. Get a free key at aistudio.google.com and set it as VITE_GEMINI_API_KEY.',
 } as const
 
 type GeminiErrorCode = keyof typeof GEMINI_ERROR_MESSAGES
