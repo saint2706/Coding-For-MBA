@@ -3,7 +3,7 @@ import crypto from 'node:crypto'
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY
 
 const GENERATE_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent'
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent'
 const EMBED_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent'
 

@@ -9,6 +9,13 @@
 
 const GEMINI_HEALTH_PATH = '/api/gemini/health'
 
+const GEMINI_DIRECT_GENERATE_URL =
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent'
+const GEMINI_DIRECT_EMBED_URL =
+  'https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent'
+// Maximum characters sent to the embedding model in direct mode (mirrors backend truncation)
+const GEMINI_EMBED_DIRECT_MAX_CHARS = 2_048
+
 const GEMINI_TIMEOUT_MS = clampNumber(
   Number(import.meta.env.VITE_GEMINI_TIMEOUT_MS),
   15_000,
@@ -73,6 +80,10 @@ function getGeminiApiBase(): string {
   }
 }
 
+function getGeminiApiKey(): string {
+  return ((import.meta.env.VITE_GEMINI_API_KEY as string | undefined) || '').trim()
+}
+
 function joinBaseAndPath(base: string, path: string): string {
   const normalizedBase = base.replace(/\/$/, '')
   const normalizedPath = path.startsWith('/') ? path : `/${path}`
@@ -129,14 +140,18 @@ async function fetchWithTimeout(url: string, init: RequestInit): Promise<Respons
   }
 }
 
-async function postGemini<T>(url: string, payload: Record<string, unknown>): Promise<T> {
+async function postGemini<T>(
+  url: string,
+  payload: Record<string, unknown>,
+  extraHeaders?: Record<string, string>,
+): Promise<T> {
   let lastError: Error = new GeminiClientError('serverUnavailable')
 
   for (let attempt = 0; attempt <= GEMINI_MAX_RETRIES; attempt += 1) {
     try {
       const response = await fetchWithTimeout(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...extraHeaders },
         body: JSON.stringify(payload),
       })
 
@@ -201,7 +216,13 @@ const FLASHCARD_RETRY_ERROR_MESSAGE =
 export function isGeminiAvailable(): boolean {
   const now = Date.now()
   const base = getGeminiApiBase()
-  if (!base) return false
+  const apiKey = getGeminiApiKey()
+
+  if (!base && !apiKey) return false
+
+  // Direct key mode: always available when key is present (no health probe needed)
+  if (!base && apiKey) return true
+
   if (geminiAvailabilityCache.expiresAt > now) {
     return geminiAvailabilityCache.value
   }
@@ -211,11 +232,19 @@ export function isGeminiAvailable(): boolean {
 export async function checkGeminiAvailability(forceProbe = false): Promise<boolean> {
   const now = Date.now()
   const base = getGeminiApiBase()
+  const apiKey = getGeminiApiKey()
 
-  if (!base) {
+  if (!base && !apiKey) {
     geminiAvailabilityCache.value = false
     geminiAvailabilityCache.expiresAt = now + GEMINI_AVAILABILITY_CACHE_TTL_MS
     return false
+  }
+
+  // Direct key mode: no backend health probe needed
+  if (!base && apiKey) {
+    geminiAvailabilityCache.value = true
+    geminiAvailabilityCache.expiresAt = now + GEMINI_AVAILABILITY_CACHE_TTL_MS
+    return true
   }
 
   if (!forceProbe && geminiAvailabilityCache.expiresAt > now) {
@@ -254,13 +283,45 @@ async function callGemini(
   userMessage: string,
   history: ChatMessage[] = [],
 ): Promise<string> {
-  const data = await postGemini<{ text?: string }>(getGeminiUrl('/api/gemini/generate'), {
-    systemInstruction,
-    userMessage,
-    history,
-  })
+  const base = getGeminiApiBase()
 
-  const text = data.text
+  if (base) {
+    const data = await postGemini<{ text?: string }>(getGeminiUrl('/api/gemini/generate'), {
+      systemInstruction,
+      userMessage,
+      history,
+    })
+    const text = data.text
+    if (!text) throw new GeminiClientError('invalidResponse')
+    return text
+  }
+
+  // Direct Gemini REST API mode (no backend proxy configured)
+  const apiKey = getGeminiApiKey()
+  if (!apiKey) throw new GeminiClientError('serverUnavailable')
+
+  const contents = [
+    ...history.map((msg) => ({ role: msg.role, parts: [{ text: msg.text }] })),
+    { role: 'user', parts: [{ text: userMessage }] },
+  ]
+
+  const data = await postGemini<{
+    candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
+  }>(
+    GEMINI_DIRECT_GENERATE_URL,
+    {
+      system_instruction: { parts: [{ text: systemInstruction }] },
+      contents,
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 2048,
+        topP: 0.95,
+      },
+    },
+    { 'x-goog-api-key': apiKey },
+  )
+
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text
   if (!text) throw new GeminiClientError('invalidResponse')
   return text
 }
@@ -380,10 +441,30 @@ export async function getExerciseHint(
 // ─── Feature 4: Text Embeddings ──────────────────────────────────────────────
 
 export async function embedText(text: string): Promise<number[]> {
-  const data = await postGemini<{ embedding?: number[] }>(getGeminiUrl('/api/gemini/embed'), {
-    text,
-  })
-  const values = data.embedding
+  const base = getGeminiApiBase()
+
+  if (base) {
+    const data = await postGemini<{ embedding?: number[] }>(getGeminiUrl('/api/gemini/embed'), {
+      text,
+    })
+    const values = data.embedding
+    if (!values || values.length === 0) throw new GeminiClientError('invalidResponse')
+    return values
+  }
+
+  // Direct Gemini REST API mode (no backend proxy configured)
+  const apiKey = getGeminiApiKey()
+  if (!apiKey) throw new GeminiClientError('serverUnavailable')
+
+  const data = await postGemini<{ embedding?: { values?: number[] } }>(
+    GEMINI_DIRECT_EMBED_URL,
+    {
+      content: { parts: [{ text: text.slice(0, GEMINI_EMBED_DIRECT_MAX_CHARS) }] },
+    },
+    { 'x-goog-api-key': apiKey },
+  )
+
+  const values = data.embedding?.values
   if (!values || values.length === 0) throw new GeminiClientError('invalidResponse')
   return values
 }
