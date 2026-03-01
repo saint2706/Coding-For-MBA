@@ -33,7 +33,6 @@ jobs:
       - name: Test with coverage threshold
         env:
           VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
-          VITE_GEMINI_API_BASE: ${{ secrets.VITE_GEMINI_API_BASE }}
         run: |
           mkdir -p test-results coverage
           npm run test:coverage -- \

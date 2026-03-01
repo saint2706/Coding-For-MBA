@@ -1,67 +1,61 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { generateFlashcards } from '../geminiClient'
 
-async function loadGeminiClient() {
-  vi.resetModules()
-  return import('../geminiClient')
-}
+const mockSendMessage = vi.fn()
 
-function mockGenerateResponse(text: string): Response {
-  return {
-    ok: true,
-    json: async () => ({ text }),
-  } as Response
-}
+vi.mock('@google/generative-ai', () => ({
+  GoogleGenerativeAI: class {
+    getGenerativeModel() {
+      return {
+        startChat: () => ({ sendMessage: mockSendMessage }),
+        embedContent: vi.fn(),
+      }
+    }
+  },
+}))
 
 describe('generateFlashcards schema validation', () => {
   afterEach(() => {
-    vi.restoreAllMocks()
     vi.unstubAllEnvs()
+    mockSendMessage.mockReset()
   })
 
   it('returns a retry-friendly error for malformed JSON', async () => {
-    vi.stubEnv('VITE_GEMINI_API_BASE', 'https://api.example.com')
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(mockGenerateResponse('not json'))
+    vi.stubEnv('VITE_GEMINI_API_KEY', 'test-api-key')
+    mockSendMessage.mockResolvedValue({ response: { text: () => 'not json' } })
 
-    const geminiClient = await loadGeminiClient()
-
-    await expect(geminiClient.generateFlashcards('Lesson body')).rejects.toThrow(
+    await expect(generateFlashcards('Lesson body')).rejects.toThrow(
       'We could not generate valid flashcards this time. Please try again.',
     )
   })
 
   it('returns a retry-friendly error when flashcard count is not exactly 8', async () => {
-    vi.stubEnv('VITE_GEMINI_API_BASE', 'https://api.example.com')
+    vi.stubEnv('VITE_GEMINI_API_KEY', 'test-api-key')
     const sevenCards = Array.from({ length: 7 }, (_, index) => ({
       front: `Question ${index + 1}`,
       back: `Answer ${index + 1}`,
     }))
+    mockSendMessage.mockResolvedValue({
+      response: { text: () => JSON.stringify(sevenCards) },
+    })
 
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      mockGenerateResponse(JSON.stringify(sevenCards)),
-    )
-
-    const geminiClient = await loadGeminiClient()
-
-    await expect(geminiClient.generateFlashcards('Lesson body')).rejects.toThrow(
+    await expect(generateFlashcards('Lesson body')).rejects.toThrow(
       'We could not generate valid flashcards this time. Please try again.',
     )
   })
 
   it('returns a retry-friendly error when card fields are invalid', async () => {
-    vi.stubEnv('VITE_GEMINI_API_BASE', 'https://api.example.com')
+    vi.stubEnv('VITE_GEMINI_API_KEY', 'test-api-key')
     const cardsWithInvalidField = Array.from({ length: 8 }, (_, index) => ({
       front: `Question ${index + 1}`,
       back: `Answer ${index + 1}`,
     }))
     cardsWithInvalidField[3] = { front: '   ', back: 'Valid answer' }
+    mockSendMessage.mockResolvedValue({
+      response: { text: () => JSON.stringify(cardsWithInvalidField) },
+    })
 
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
-      mockGenerateResponse(JSON.stringify(cardsWithInvalidField)),
-    )
-
-    const geminiClient = await loadGeminiClient()
-
-    await expect(geminiClient.generateFlashcards('Lesson body')).rejects.toThrow(
+    await expect(generateFlashcards('Lesson body')).rejects.toThrow(
       'We could not generate valid flashcards this time. Please try again.',
     )
   })
