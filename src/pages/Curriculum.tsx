@@ -46,6 +46,13 @@ export default function Curriculum() {
   const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
   const completedCount = getCompletedCount()
   const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
+  const completedPhasesCount = phases.filter((p) => {
+    const lessons = getLessonsByPhase(p.phase)
+    return (
+      lessons.length > 0 &&
+      getCompletedForPhase(lessons.map((l) => l.day)).length === lessons.length
+    )
+  }).length
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -121,19 +128,12 @@ export default function Curriculum() {
             <div
               className="curriculum-stat-bar-fill curriculum-stat-bar-fill--blue"
               style={{
-                width: `${Math.round((phases.filter((p) => getCompletedForPhase(getLessonsByPhase(p.phase).map((l) => l.day)).length === getLessonsByPhase(p.phase).length && getLessonsByPhase(p.phase).length > 0).length / phases.length) * 100)}%`,
+                width: `${phases.length > 0 ? Math.round((completedPhasesCount / phases.length) * 100) : 0}%`,
               }}
             />
           </div>
           <p className="curriculum-stat-note">
-            {
-              phases.filter(
-                (p) =>
-                  getCompletedForPhase(getLessonsByPhase(p.phase).map((l) => l.day)).length ===
-                    getLessonsByPhase(p.phase).length && getLessonsByPhase(p.phase).length > 0,
-              ).length
-            }{' '}
-            of {phases.length} complete
+            {completedPhasesCount} of {phases.length} complete
           </p>
         </div>
         <div className="curriculum-stat-card glass-card">

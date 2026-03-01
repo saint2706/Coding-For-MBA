@@ -68,6 +68,13 @@ export default function Home() {
   const lastVisitedPhase = lastVisitedLesson
     ? phases.find((phase) => phase.phase === lastVisitedLesson.phase)
     : null
+  const lastVisitedPhasePct = lastVisitedPhase
+    ? Math.round(
+        (getCompletedForPhase(getLessonsByPhase(lastVisitedPhase.phase).map((l) => l.day)).length /
+          Math.max(1, getLessonsByPhase(lastVisitedPhase.phase).length)) *
+          100,
+      )
+    : 0
   const completedCount = getCompletedCount()
   const streakDays = useMemo(() => getStreakDays(), [completedCount])
   const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
@@ -163,18 +170,14 @@ export default function Home() {
               <div className="hero-float-card-progress-row">
                 <span>Progress</span>
                 <span style={{ color: 'var(--accent-primary)' }}>
-                  {lastVisitedPhase
-                    ? `${Math.round((getCompletedForPhase(getLessonsByPhase(lastVisitedPhase.phase).map((l) => l.day)).length / Math.max(1, getLessonsByPhase(lastVisitedPhase.phase).length)) * 100)}%`
-                    : `Day ${lastVisitedLesson.day}`}
+                  {lastVisitedPhase ? `${lastVisitedPhasePct}%` : `Day ${lastVisitedLesson.day}`}
                 </span>
               </div>
               <div className="hero-float-card-bar">
                 <div
                   className="hero-float-card-bar-fill"
                   style={{
-                    width: lastVisitedPhase
-                      ? `${Math.round((getCompletedForPhase(getLessonsByPhase(lastVisitedPhase.phase).map((l) => l.day)).length / Math.max(1, getLessonsByPhase(lastVisitedPhase.phase).length)) * 100)}%`
-                      : '0%',
+                    width: lastVisitedPhase ? `${lastVisitedPhasePct}%` : '0%',
                   }}
                 />
               </div>
