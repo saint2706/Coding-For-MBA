@@ -119,7 +119,7 @@ export default function ProgressDashboard() {
 
       <div className="section-header" style={{ marginBottom: '2rem' }}>
         <h2>Your Progress</h2>
-        <p>Track your journey through the 108-day curriculum.</p>
+        <p>Track your journey through the {totalLessons}-day curriculum.</p>
       </div>
 
       {completedLessons.length === 0 && (
@@ -131,6 +131,34 @@ export default function ProgressDashboard() {
           <p>Your journey begins here — complete your first lesson to see progress!</p>
         </div>
       )}
+
+      {/* Mobile glassmorphism stat cards grid */}
+      <div className="progress-mobile-stats-grid">
+        <div className="progress-mobile-stat-card glass-card">
+          <span className="progress-mobile-stat-icon">📊</span>
+          <p className="progress-mobile-stat-value">
+            <AnimatedCounter value={overallPct} suffix="%" />
+          </p>
+          <p className="progress-mobile-stat-label">Completed</p>
+        </div>
+        <div className="progress-mobile-stat-card glass-card">
+          <span className="progress-mobile-stat-icon">🔥</span>
+          <p className="progress-mobile-stat-value">
+            <AnimatedCounter value={completionStreak} />
+          </p>
+          <p className="progress-mobile-stat-label">Day Streak</p>
+        </div>
+        <div className="progress-mobile-stat-card glass-card">
+          <span className="progress-mobile-stat-icon">⏱️</span>
+          <p className="progress-mobile-stat-value">{formatDuration(totalLearningMs)}</p>
+          <p className="progress-mobile-stat-label">Study Time</p>
+        </div>
+        <div className="progress-mobile-stat-card glass-card">
+          <span className="progress-mobile-stat-icon">⭐</span>
+          <p className="progress-mobile-stat-value">{xpTotal}</p>
+          <p className="progress-mobile-stat-label">Total XP</p>
+        </div>
+      </div>
 
       {/* Overall Stats */}
       <div className="progress-stats-card">

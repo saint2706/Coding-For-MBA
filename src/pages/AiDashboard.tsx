@@ -11,6 +11,8 @@ import { motion, useReducedMotion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { getAllLessons, getLesson } from '../utils/contentLoader'
 import { getLastVisited } from '../utils/progressTracker'
+import { useAiAssistantStore } from '../stores/aiAssistantStore'
+import { compareDayTokens } from '../utils/dayToken'
 
 const AI_FEATURES = [
   {
@@ -61,6 +63,25 @@ export default function AiDashboard() {
   const quickLessons = QUICK_START_LESSONS.map((day) => getLesson(day)).filter(
     (l): l is NonNullable<ReturnType<typeof getLesson>> => l != null,
   )
+
+  const messagesByDay = useAiAssistantStore((state) => state.messagesByDay)
+  const flashcardsByDay = useAiAssistantStore((state) => state.flashcardsByDay)
+
+  // Build per-lesson AI usage history (lessons with any messages or flashcards)
+  const aiHistory = Object.keys({ ...messagesByDay, ...flashcardsByDay })
+    .map((dayKey) => {
+      const day = Number(dayKey)
+      const lesson = getLesson(day)
+      const msgCount = (messagesByDay[dayKey] || []).filter((m) => m.role === 'user').length
+      const cardCount = (flashcardsByDay[dayKey] || []).length
+      return lesson ? { lesson, msgCount, cardCount } : null
+    })
+    .filter(
+      (entry): entry is NonNullable<typeof entry> =>
+        entry !== null && (entry.msgCount > 0 || entry.cardCount > 0),
+    )
+    .sort((a, b) => compareDayTokens(b.lesson.day, a.lesson.day))
+    .slice(0, 8)
 
   const containerVariants = {
     hidden: {},
@@ -350,6 +371,100 @@ export default function AiDashboard() {
           ))}
         </div>
       </section>
+
+      {/* AI Usage History */}
+      {aiHistory.length > 0 && (
+        <section style={{ marginTop: '3rem' }}>
+          <h2
+            style={{
+              fontSize: '1.625rem',
+              fontWeight: 700,
+              color: 'var(--text-heading)',
+              marginBottom: '0.5rem',
+            }}
+          >
+            Recent AI Sessions
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>
+            Lessons where you've used the AI Study Assistant.
+          </p>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+              gap: '0.875rem',
+            }}
+          >
+            {aiHistory.map(({ lesson, msgCount, cardCount }) => (
+              <Link
+                key={lesson.day}
+                to={`/lesson/${lesson.day}`}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column' as const,
+                  gap: '0.5rem',
+                  padding: '1.125rem 1.25rem',
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--border-card)',
+                  borderRadius: 'var(--radius-md)',
+                  color: 'var(--text-primary)',
+                  textDecoration: 'none',
+                  transition: 'border-color var(--transition-fast)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = 'rgba(8,181,212,0.4)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--border-card)'
+                }}
+              >
+                <span
+                  style={{
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    color: 'var(--accent-tertiary)',
+                    textTransform: 'uppercase' as const,
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  Day {lesson.day}
+                </span>
+                <span
+                  style={{
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                    color: 'var(--text-heading)',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {lesson.title}
+                </span>
+                <div
+                  style={{
+                    marginTop: 'auto',
+                    paddingTop: '0.5rem',
+                    display: 'flex',
+                    gap: '0.75rem',
+                    fontSize: '0.8125rem',
+                    color: 'var(--text-muted)',
+                  }}
+                >
+                  {msgCount > 0 && (
+                    <span>
+                      💬 {msgCount} {msgCount === 1 ? 'question' : 'questions'}
+                    </span>
+                  )}
+                  {cardCount > 0 && (
+                    <span>
+                      🃏 {cardCount} {cardCount === 1 ? 'flashcard' : 'flashcards'}
+                    </span>
+                  )}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Stats */}
       <section
