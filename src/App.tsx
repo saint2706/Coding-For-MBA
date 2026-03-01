@@ -39,6 +39,7 @@ const NotebookViewer = lazy(() => import('./pages/NotebookViewer'))
 const ConceptGraphPage = lazy(() => import('./pages/ConceptGraphPage'))
 const ContentStats = lazy(() => import('./pages/ContentStats'))
 const Review = lazy(() => import('./pages/Review'))
+const AiDashboard = lazy(() => import('./pages/AiDashboard'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
 export default function App() {
@@ -103,6 +104,7 @@ export default function App() {
                     <Route path="/concepts" element={<ConceptGraphPage />} />
                     <Route path="/stats" element={<ContentStats />} />
                     <Route path="/review" element={<Review />} />
+                    <Route path="/ai" element={<AiDashboard />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </motion.div>

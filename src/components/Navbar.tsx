@@ -186,6 +186,19 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
         >
           Search
         </Link>
+        <Link
+          to="/ai"
+          className={location.pathname === '/ai' ? 'active' : ''}
+          aria-current={location.pathname === '/ai' ? 'page' : undefined}
+          style={
+            location.pathname !== '/ai'
+              ? { color: 'var(--accent-tertiary)', fontWeight: 600 }
+              : undefined
+          }
+          {...createRoutePrefetchHandlers('/ai')}
+        >
+          ✨ AI Study
+        </Link>
         <a
           href="https://github.com/saint2706/Coding-For-MBA"
           target="_blank"

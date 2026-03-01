@@ -12,10 +12,10 @@
 /* --- Custom Properties --- */
 :root {
   /* Background */
-  --bg-primary: #0d1517;
-  --bg-secondary: #102022;
+  --bg-primary: #102022;
+  --bg-secondary: #0f2023;
   --bg-card: #162a2d;
-  --bg-card-hover: #1b3437;
+  --bg-card-hover: #1d363a;
   --bg-surface: #132628;
   --bg-code: #1a2e30;
 
