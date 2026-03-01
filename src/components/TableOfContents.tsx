@@ -104,6 +104,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
           className="toc-toggle"
           aria-expanded={isCompactOpen}
           aria-controls={tocListId}
+          title={isCompactOpen ? 'Collapse table of contents' : 'Expand table of contents'}
           onClick={() => setIsCompactOpen((prev) => !prev)}
         >
           <span>Jump to section</span>
