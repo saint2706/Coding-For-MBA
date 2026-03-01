@@ -135,12 +135,12 @@ The new MobileNav item respects the existing `.mobile-nav-item` class for consis
 
 ## Remaining Enhancements
 
-- [ ] Add Material Symbols icon font for richer iconography (as used in stitch designs)
-- [ ] Implement hero "continue learning" card with floating glassmorphism cards (stitch landing_page.html)
-- [ ] Add stats grid (140 days / 12 phases / 25+ projects / 5k+ peers) to Home hero
-- [ ] Implement stitch sidebar design variant with streak badge and phase accordion
-- [ ] Add glassmorphism card style to phase cards on Curriculum page
-- [ ] Add AI availability status badge (live/unavailable) to Navbar AI link
-- [ ] Add per-lesson AI usage history widget to AiDashboard
-- [ ] Implement curriculum roadmap view (stitch `curriculum_roadmap.html`)
-- [ ] Explore Mobile Dashboard redesign (stitch `mobile_dashboard.html`) for ProgressDashboard page
+- [x] Add Material Symbols icon font for richer iconography (as used in stitch designs)
+- [x] Implement hero "continue learning" card with floating glassmorphism cards (stitch landing_page.html)
+- [x] Add stats grid (140 days / 12 phases / 25+ projects / 5k+ peers) to Home hero
+- [x] Implement stitch sidebar design variant with streak badge and phase accordion
+- [x] Add glassmorphism card style to phase cards on Curriculum page
+- [x] Add AI availability status badge (live/unavailable) to Navbar AI link
+- [x] Add per-lesson AI usage history widget to AiDashboard
+- [x] Implement curriculum roadmap view (stitch `curriculum_roadmap.html`)
+- [x] Explore Mobile Dashboard redesign (stitch `mobile_dashboard.html`) for ProgressDashboard page

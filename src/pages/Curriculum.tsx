@@ -20,7 +20,7 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
+import { isLessonComplete, getCompletedForPhase, getCompletedCount } from '../utils/progressTracker'
 import Breadcrumb from '../components/Breadcrumb'
 import ProgressBar from '../components/ProgressBar'
 
@@ -42,6 +42,10 @@ export default function Curriculum() {
     offset: ['start 80%', 'end 30%'],
   })
   const timelineScaleY = useTransform(scrollYProgress, [0, 1], [0.1, 1])
+
+  const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
+  const completedCount = getCompletedCount()
+  const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -86,12 +90,66 @@ export default function Curriculum() {
         jsonLd={[itemListSchema]}
       />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Curriculum' }]} />
-      <div className="section-header" style={{ marginBottom: '2.5rem' }}>
+      <div className="section-header" style={{ marginBottom: '1.5rem' }}>
         <h2>Full Curriculum Roadmap</h2>
         <p>
-          108 days of structured learning across 9 phases — from Python foundations to enterprise
-          SQL.
+          {totalLessons} days of structured learning across {phases.length} phases — from Python
+          foundations to enterprise SQL.
         </p>
+      </div>
+
+      {/* Curriculum stat cards */}
+      <div className="curriculum-stats-row">
+        <div className="curriculum-stat-card glass-card">
+          <span className="curriculum-stat-icon">📅</span>
+          <div>
+            <p className="curriculum-stat-value">{totalLessons}</p>
+            <p className="curriculum-stat-label">Total Days</p>
+          </div>
+          <div className="curriculum-stat-bar">
+            <div className="curriculum-stat-bar-fill" style={{ width: `${overallPct}%` }} />
+          </div>
+          <p className="curriculum-stat-note">{overallPct}% Completed</p>
+        </div>
+        <div className="curriculum-stat-card glass-card">
+          <span className="curriculum-stat-icon">📚</span>
+          <div>
+            <p className="curriculum-stat-value">{phases.length}</p>
+            <p className="curriculum-stat-label">Phases</p>
+          </div>
+          <div className="curriculum-stat-bar">
+            <div
+              className="curriculum-stat-bar-fill curriculum-stat-bar-fill--blue"
+              style={{
+                width: `${Math.round((phases.filter((p) => getCompletedForPhase(getLessonsByPhase(p.phase).map((l) => l.day)).length === getLessonsByPhase(p.phase).length && getLessonsByPhase(p.phase).length > 0).length / phases.length) * 100)}%`,
+              }}
+            />
+          </div>
+          <p className="curriculum-stat-note">
+            {
+              phases.filter(
+                (p) =>
+                  getCompletedForPhase(getLessonsByPhase(p.phase).map((l) => l.day)).length ===
+                    getLessonsByPhase(p.phase).length && getLessonsByPhase(p.phase).length > 0,
+              ).length
+            }{' '}
+            of {phases.length} complete
+          </p>
+        </div>
+        <div className="curriculum-stat-card glass-card">
+          <span className="curriculum-stat-icon">⏱️</span>
+          <div>
+            <p className="curriculum-stat-value">{completedCount}</p>
+            <p className="curriculum-stat-label">Lessons Done</p>
+          </div>
+          <div className="curriculum-stat-bar">
+            <div
+              className="curriculum-stat-bar-fill curriculum-stat-bar-fill--purple"
+              style={{ width: `${overallPct}%` }}
+            />
+          </div>
+          <p className="curriculum-stat-note">{totalLessons - completedCount} remaining</p>
+        </div>
       </div>
 
       <motion.div
@@ -108,10 +166,13 @@ export default function Curriculum() {
           const diff =
             difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
           const icon = phaseIcons[phase.phase - 1] || '📖'
+          const completedInPhase = getCompletedForPhase(lessons.map((l) => l.day))
+          const isPhaseComplete = completedInPhase.length === lessons.length && lessons.length > 0
+          const isPhaseStarted = completedInPhase.length > 0
 
           return (
             <motion.div
-              className="curriculum-phase glass-card"
+              className={`curriculum-phase glass-card ${isPhaseComplete ? 'curriculum-phase--complete' : ''}`}
               key={phase.phase}
               variants={phaseVariants}
               transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}
@@ -121,19 +182,29 @@ export default function Curriculum() {
                 <h3>
                   Phase {phase.phase}: {phase.title}
                 </h3>
+                {isPhaseComplete ? (
+                  <span className="curriculum-phase-status curriculum-phase-status--done">
+                    ✓ Done
+                  </span>
+                ) : isPhaseStarted ? (
+                  <span className="curriculum-phase-status curriculum-phase-status--active">
+                    Active
+                  </span>
+                ) : null}
                 <span
                   className="difficulty-badge"
-                  style={{ color: diff.color, background: diff.bg, marginLeft: 'auto' }}
+                  style={{
+                    color: diff.color,
+                    background: diff.bg,
+                    marginLeft: isPhaseComplete || isPhaseStarted ? '0' : 'auto',
+                  }}
                 >
                   {diff.label}
                 </span>
               </Link>
 
               <div style={{ marginBottom: '0.75rem', paddingRight: '1rem' }}>
-                <ProgressBar
-                  completed={getCompletedForPhase(lessons.map((l) => l.day)).length}
-                  total={lessons.length}
-                />
+                <ProgressBar completed={completedInPhase.length} total={lessons.length} />
               </div>
 
               <div className="curriculum-days">

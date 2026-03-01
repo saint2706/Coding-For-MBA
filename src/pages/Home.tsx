@@ -24,7 +24,12 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import { getLastVisited, getCompletedForPhase, getCompletedCount } from '../utils/progressTracker'
+import {
+  getLastVisited,
+  getCompletedForPhase,
+  getCompletedCount,
+  getStreakDays,
+} from '../utils/progressTracker'
 import ProgressBar from '../components/ProgressBar'
 import AnimatedCounter from '../components/AnimatedCounter'
 import { useGamificationStore } from '../stores/gamificationStore'
@@ -64,6 +69,7 @@ export default function Home() {
     ? phases.find((phase) => phase.phase === lastVisitedLesson.phase)
     : null
   const completedCount = getCompletedCount()
+  const streakDays = useMemo(() => getStreakDays(), [completedCount])
   const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
   const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
@@ -88,8 +94,141 @@ export default function Home() {
         breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
       {/* Hero */}
-      <motion.section className="hero glass-card" style={{ y: heroY }}>
-        <div className="hero-badge">📚 Self-Study Curriculum</div>
+      <motion.section className="hero glass-card hero-with-cards" style={{ y: heroY }}>
+        <div className="hero-content-col">
+          <div className="hero-badge">📚 Self-Study Curriculum</div>
+          <h1>
+            Master <span className="gradient-text">Technical Skills</span>
+            <br />
+            for Your MBA Career
+          </h1>
+          <p>
+            A structured {stats.totalDays}-day curriculum covering Python, Data Science, Machine
+            Learning, Business Intelligence, and Enterprise SQL — designed for business
+            professionals.
+          </p>
+          <div className="hero-stats">
+            <div className="hero-stat">
+              <span className="stat-value">
+                <AnimatedCounter value={stats.totalDays} />
+              </span>
+              <span className="stat-label">Days</span>
+            </div>
+            <div className="hero-stat">
+              <span className="stat-value">
+                <AnimatedCounter value={stats.totalPhases} />
+              </span>
+              <span className="stat-label">Phases</span>
+            </div>
+            <div className="hero-stat">
+              <span className="stat-value">
+                <AnimatedCounter value={stats.totalHours} suffix="+" />
+              </span>
+              <span className="stat-label">Hours</span>
+            </div>
+            <div className="hero-stat">
+              <span className="stat-value">
+                <AnimatedCounter value={stats.totalLevels} />
+              </span>
+              <span className="stat-label">Levels</span>
+            </div>
+          </div>
+          <div className="hero-cta">
+            <Link to="/lesson/1">Start Learning →</Link>
+          </div>
+          {completedCount > 0 && (
+            <div className="hero-continue">
+              <Link to="/progress">
+                📊 {completedCount}/{totalLessons} Complete
+              </Link>
+            </div>
+          )}
+        </div>
+
+        <div className="hero-cards-col" aria-hidden="true">
+          {lastVisitedLesson ? (
+            <div className="hero-float-card">
+              <div className="hero-float-card-header">
+                <div className="hero-float-card-icon">📖</div>
+                <div>
+                  <p className="hero-float-card-eyebrow">
+                    {lastVisitedPhase ? `Phase ${lastVisitedPhase.phase}` : 'Continue'}
+                  </p>
+                  <p className="hero-float-card-title">
+                    {lastVisitedPhase ? lastVisitedPhase.title : lastVisitedLesson.title}
+                  </p>
+                </div>
+                <span className="hero-float-card-badge">Active</span>
+              </div>
+              <div className="hero-float-card-progress-row">
+                <span>Progress</span>
+                <span style={{ color: 'var(--accent-primary)' }}>
+                  {lastVisitedPhase
+                    ? `${Math.round((getCompletedForPhase(getLessonsByPhase(lastVisitedPhase.phase).map((l) => l.day)).length / Math.max(1, getLessonsByPhase(lastVisitedPhase.phase).length)) * 100)}%`
+                    : `Day ${lastVisitedLesson.day}`}
+                </span>
+              </div>
+              <div className="hero-float-card-bar">
+                <div
+                  className="hero-float-card-bar-fill"
+                  style={{
+                    width: lastVisitedPhase
+                      ? `${Math.round((getCompletedForPhase(getLessonsByPhase(lastVisitedPhase.phase).map((l) => l.day)).length / Math.max(1, getLessonsByPhase(lastVisitedPhase.phase).length)) * 100)}%`
+                      : '0%',
+                  }}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="hero-float-card">
+              <div className="hero-float-card-header">
+                <div className="hero-float-card-icon">💻</div>
+                <div>
+                  <p className="hero-float-card-eyebrow">Phase 1</p>
+                  <p className="hero-float-card-title">Programming Foundations</p>
+                </div>
+                <span className="hero-float-card-badge">Start</span>
+              </div>
+              <div className="hero-float-card-progress-row">
+                <span>Progress</span>
+                <span style={{ color: 'var(--accent-primary)' }}>0%</span>
+              </div>
+              <div className="hero-float-card-bar">
+                <div className="hero-float-card-bar-fill" style={{ width: '0%' }} />
+              </div>
+            </div>
+          )}
+          <div className="hero-float-card hero-float-card--behind">
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                marginBottom: '0.75rem',
+              }}
+            >
+              <span style={{ fontSize: '1.25rem' }}>🔥</span>
+              <p style={{ fontWeight: 700, color: 'var(--text-heading)', margin: 0 }}>
+                Daily Streak
+              </p>
+            </div>
+            <p
+              style={{
+                fontSize: '2rem',
+                fontWeight: 800,
+                color: 'var(--text-heading)',
+                lineHeight: 1,
+              }}
+            >
+              {streakDays}
+            </p>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+              Days
+            </p>
+          </div>
+        </div>
+
+        {/* Inline continue banners below hero content (always visible) */}
         {lastVisitedLesson && (
           <article className="continue-banner glass-card" aria-label="Continue learning">
             <p className="continue-banner-title">Continue learning</p>
@@ -116,52 +255,37 @@ export default function Home() {
             </Link>
           </article>
         )}
-        <h1>
-          Master <span className="gradient-text">Technical Skills</span>
-          <br />
-          for Your MBA Career
-        </h1>
-        <p>
-          A structured {stats.totalDays}-day curriculum covering Python, Data Science, Machine
-          Learning, Business Intelligence, and Enterprise SQL — designed for business professionals.
-        </p>
-        <div className="hero-stats">
-          <div className="hero-stat">
-            <span className="stat-value">
-              <AnimatedCounter value={stats.totalDays} />
-            </span>
-            <span className="stat-label">Days</span>
-          </div>
-          <div className="hero-stat">
-            <span className="stat-value">
-              <AnimatedCounter value={stats.totalPhases} />
-            </span>
-            <span className="stat-label">Phases</span>
-          </div>
-          <div className="hero-stat">
-            <span className="stat-value">
-              <AnimatedCounter value={stats.totalHours} suffix="+" />
-            </span>
-            <span className="stat-label">Hours</span>
-          </div>
-          <div className="hero-stat">
-            <span className="stat-value">
-              <AnimatedCounter value={stats.totalLevels} />
-            </span>
-            <span className="stat-label">Levels</span>
-          </div>
-        </div>
-        <div className="hero-cta">
-          <Link to="/lesson/1">Start Learning →</Link>
-        </div>
-        {completedCount > 0 && (
-          <div className="hero-continue">
-            <Link to="/progress">
-              📊 {completedCount}/{totalLessons} Complete
-            </Link>
-          </div>
-        )}
       </motion.section>
+
+      {/* Stats Bar */}
+      <div className="home-stats-bar">
+        <div className="home-stats-bar-item">
+          <p className="home-stats-bar-label">Total Duration</p>
+          <p className="home-stats-bar-value">
+            <AnimatedCounter value={stats.totalDays} />
+            <span className="home-stats-bar-unit">Days</span>
+          </p>
+        </div>
+        <div className="home-stats-bar-item">
+          <p className="home-stats-bar-label">Curriculum</p>
+          <p className="home-stats-bar-value">
+            <AnimatedCounter value={stats.totalPhases} />
+            <span className="home-stats-bar-unit">Phases</span>
+          </p>
+        </div>
+        <div className="home-stats-bar-item">
+          <p className="home-stats-bar-label">Hands-on</p>
+          <p className="home-stats-bar-value">
+            25+<span className="home-stats-bar-unit">Projects</span>
+          </p>
+        </div>
+        <div className="home-stats-bar-item">
+          <p className="home-stats-bar-label">Community</p>
+          <p className="home-stats-bar-value">
+            5k+<span className="home-stats-bar-unit">Peers</span>
+          </p>
+        </div>
+      </div>
 
       {/* Phases Grid */}
       <section>

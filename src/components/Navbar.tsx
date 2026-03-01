@@ -16,6 +16,7 @@ import { useTheme } from '../context/useTheme'
 import { toastInfo } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
+import { checkGeminiAvailability, isGeminiAvailable } from '../utils/geminiClient'
 
 interface NavbarProps {
   onToggleSidebar: () => void
@@ -28,6 +29,11 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const lastSearchToastAtRef = useRef(0)
+  const [aiAvailable, setAiAvailable] = useState(() => isGeminiAvailable())
+
+  useEffect(() => {
+    checkGeminiAvailability().then(setAiAvailable)
+  }, [])
 
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
@@ -192,12 +198,31 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
           aria-current={location.pathname === '/ai' ? 'page' : undefined}
           style={
             location.pathname !== '/ai'
-              ? { color: 'var(--accent-tertiary)', fontWeight: 600 }
-              : undefined
+              ? {
+                  color: 'var(--accent-tertiary)',
+                  fontWeight: 600,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.375rem',
+                }
+              : { display: 'inline-flex', alignItems: 'center', gap: '0.375rem' }
           }
           {...createRoutePrefetchHandlers('/ai')}
         >
           ✨ AI Study
+          <span
+            className="ai-status-badge"
+            title={aiAvailable ? 'AI is live' : 'AI unavailable'}
+            style={{
+              display: 'inline-block',
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              background: aiAvailable ? '#22c55e' : 'var(--text-muted)',
+              boxShadow: aiAvailable ? '0 0 6px rgba(34,197,94,0.7)' : 'none',
+              flexShrink: 0,
+            }}
+          />
         </Link>
         <a
           href="https://github.com/saint2706/Coding-For-MBA"

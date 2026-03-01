@@ -1,5 +1,55 @@
 /* ===== PROGRESS SYSTEM ===== */
 
+/* Mobile glassmorphism stats grid (visible on all screen sizes) */
+.progress-mobile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .progress-mobile-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.progress-mobile-stat-card {
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-base);
+}
+
+.progress-mobile-stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.progress-mobile-stat-icon {
+  font-size: 1.25rem;
+}
+
+.progress-mobile-stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-heading);
+  line-height: 1.1;
+  margin: 0;
+}
+
+.progress-mobile-stat-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
 /* Progress Bar */
 .progress-bar-wrapper {
   display: flex;
