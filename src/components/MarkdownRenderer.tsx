@@ -488,17 +488,15 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
   return blocks
 }
 
-function createMarkdownComponents(): Components {
-  return {
-    code: CodeComponent,
-    table: TableComponent,
-    img: ImageComponent,
-    a: LinkComponent,
-    h1: createHeadingComponent('h1'),
-    h2: createHeadingComponent('h2'),
-    h3: createHeadingComponent('h3'),
-    p: ParagraphWithGlossary,
-  }
+const markdownComponents: Components = {
+  code: CodeComponent,
+  table: TableComponent,
+  img: ImageComponent,
+  a: LinkComponent,
+  h1: createHeadingComponent('h1'),
+  h2: createHeadingComponent('h2'),
+  h3: createHeadingComponent('h3'),
+  p: ParagraphWithGlossary,
 }
 
 const lessonSanitizerSchema: RehypeSanitizeOptions = {
@@ -576,7 +574,6 @@ const remarkPlugins = [remarkGfm]
 
 function InteractiveContent({ content }: { content: string }) {
   const blocks = useMemo(() => findInteractiveBlocks(content), [content])
-  const markdownComponents = useMemo(() => createMarkdownComponents(), [])
 
   if (blocks.length === 0) {
     return (
