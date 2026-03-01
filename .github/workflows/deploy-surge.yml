@@ -31,8 +31,7 @@ jobs:
         run: npm run build
         env:
           VITE_BASE_PATH: /
-          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
-          VITE_GEMINI_API_BASE: ${{ secrets.VITE_GEMINI_API_BASE }}
+          VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Install Surge
         run: npm install --global surge
