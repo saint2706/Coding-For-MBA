@@ -114,7 +114,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             Coding for MBA
             <small>108-Day Curriculum</small>
           </div>
-          <button type="button" className="sidebar-close" onClick={onClose} aria-label="Close sidebar">
+          <button
+            type="button"
+            className="sidebar-close"
+            onClick={onClose}
+            aria-label="Close sidebar"
+          >
             <svg
               width="20"
               height="20"

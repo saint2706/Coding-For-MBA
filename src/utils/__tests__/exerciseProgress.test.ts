@@ -30,7 +30,9 @@ describe('exerciseProgress', () => {
     const result = markExerciseComplete(day, 'ex2', totalForDay)
 
     expect(result).toBe(true)
-    const celebrations = JSON.parse(localStorage.getItem('coding-for-mba-exercise-day-celebration') || '{}')
+    const celebrations = JSON.parse(
+      localStorage.getItem('coding-for-mba-exercise-day-celebration') || '{}',
+    )
     expect(celebrations['1']).toContain('done')
   })
 
@@ -49,9 +51,12 @@ describe('exerciseProgress', () => {
 
   it('should handle existing progress correctly', () => {
     const day = 1
-    localStorage.setItem('coding-for-mba-exercise-progress', JSON.stringify({
-      '1': ['ex1']
-    }))
+    localStorage.setItem(
+      'coding-for-mba-exercise-progress',
+      JSON.stringify({
+        '1': ['ex1'],
+      }),
+    )
 
     const result = markExerciseComplete(day, 'ex2', 2)
 

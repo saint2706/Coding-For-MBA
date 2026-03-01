@@ -309,4 +309,26 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+
+  describe('Unicode Homoglyph Bypass Protection', () => {
+    it('should block FULLWIDTH LATIN SMALL LETTER E', () => {
+      // ｅval (U+FF45)
+      expect(validatePythonCode("ｅval('1+1')").valid).toBe(false)
+    })
+
+    it('should block MATHEMATICAL SANS-SERIF BOLD SMALL E', () => {
+      // 𝗲val (U+1D5EE)
+      expect(validatePythonCode("𝗲val('1+1')").valid).toBe(false)
+    })
+
+    it('should block mix of fullwidth characters in imports', () => {
+      // ｉｍｐｏｒｔ ｏｓ
+      expect(validatePythonCode('ｉｍｐｏｒｔ ｏｓ').valid).toBe(false)
+    })
+
+    it('should block mathematical monospace characters in global access', () => {
+      // 𝚐𝚕𝚘𝚋𝚊𝚕𝚜()
+      expect(validatePythonCode('𝚐𝚕𝚘𝚋𝚊𝚕𝚜()').valid).toBe(false)
+    })
+  })
 })

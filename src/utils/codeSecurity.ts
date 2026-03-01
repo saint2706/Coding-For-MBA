@@ -82,8 +82,12 @@ export function stripPythonCommentsAndStrings(code: string): string {
 export function validatePythonCode(code: string): ValidationResult {
   if (!code) return { valid: true }
 
+  // Normalize Unicode characters to prevent bypasses using homoglyphs
+  // e.g. ｅval() -> eval()
+  const unicodeNormalizedCode = code.normalize('NFKC')
+
   // Normalize code to handle line continuations
-  const normalizedCode = code.replace(/\\(\r\n|\r|\n)/g, '')
+  const normalizedCode = unicodeNormalizedCode.replace(/\\(\r\n|\r|\n)/g, '')
 
   // Strip safe strings and comments to focus on logic
   const strippedCode = stripPythonCommentsAndStrings(normalizedCode)

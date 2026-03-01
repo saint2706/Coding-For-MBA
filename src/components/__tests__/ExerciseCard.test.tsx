@@ -56,7 +56,7 @@ describe('ExerciseCard', () => {
     goal: 'Learn variables',
     starterCode: 'print("Hello")',
     tags: ['python', 'variables'],
-    expectedOutput: ''
+    expectedOutput: '',
   }
 
   const renderCard = (exercise = mockExercise) => {
@@ -64,7 +64,7 @@ describe('ExerciseCard', () => {
       root.render(
         <MemoryRouter>
           <ExerciseCard exercise={exercise} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
   }
