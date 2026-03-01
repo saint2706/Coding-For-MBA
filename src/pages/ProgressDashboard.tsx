@@ -64,12 +64,25 @@ export default function ProgressDashboard() {
     }
   }
 
-  const totalLearningMs = useLearningAnalyticsStore((state) => state.totalLearningMs())
-  const thisWeekLearningMs = useLearningAnalyticsStore((state) => state.weekLearningMs())
-  const todayLearningMs = useLearningAnalyticsStore((state) => state.todayLearningMs())
-  const studyStreak = useLearningAnalyticsStore((state) => state.studyStreakDays(5))
+  const timeByDate = useLearningAnalyticsStore((state) => state.timeByDate)
+  const totalLearningMs = useMemo(
+    () => useLearningAnalyticsStore.getState().totalLearningMs(),
+    [timeByDate],
+  )
+  const thisWeekLearningMs = useMemo(
+    () => useLearningAnalyticsStore.getState().weekLearningMs(),
+    [timeByDate],
+  )
+  const todayLearningMs = useMemo(
+    () => useLearningAnalyticsStore.getState().todayLearningMs(),
+    [timeByDate],
+  )
+  const studyStreak = useMemo(
+    () => useLearningAnalyticsStore.getState().studyStreakDays(5),
+    [timeByDate],
+  )
   const completionStreak = useMemo(() => getStreakDays(), [completedLessons.length])
-  const last7Days = useLearningAnalyticsStore((state) => state.getLast7Days())
+  const last7Days = useMemo(() => useLearningAnalyticsStore.getState().getLast7Days(), [timeByDate])
 
   const chartMax = Math.max(1, ...last7Days.map((item) => item.ms))
 

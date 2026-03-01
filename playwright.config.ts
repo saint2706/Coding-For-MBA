@@ -27,6 +27,9 @@ export default defineConfig({
     url: 'http://127.0.0.1:4173',
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
+    env: {
+      VITE_GEMINI_API_BASE: 'http://127.0.0.1:4173',
+    },
   },
   projects: [
     {

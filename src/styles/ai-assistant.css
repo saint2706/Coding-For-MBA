@@ -559,19 +559,29 @@
 
 /* ─── Responsive ───────────────────────────────────────────────────────────── */
 
+@media (max-width: 768px) {
+  /* AI FAB sits above the mobile bottom nav */
+  .ai-fab {
+    bottom: calc(64px + 1rem);
+    right: 1rem;
+  }
+}
+
 @media (max-width: 640px) {
   .ai-panel {
-    bottom: 0;
+    bottom: 64px; /* above the mobile nav bar */
     right: 0;
     width: 100vw;
-    max-height: 75vh;
+    max-height: min(75vh, calc(100dvh - 64px - 56px));
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 
-  .ai-fab {
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.65rem 1rem;
-    font-size: 0.82rem;
+  /* Ensure panel overlay and panel are on top of mobile nav */
+  .ai-panel-overlay {
+    z-index: 1040;
+  }
+
+  .ai-panel {
+    z-index: 1050;
   }
 }
