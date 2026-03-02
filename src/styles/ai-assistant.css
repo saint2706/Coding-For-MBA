@@ -31,7 +31,7 @@
   background: var(--bg-card-hover);
   box-shadow:
     var(--shadow-elevated),
-    0 0 60px rgba(8, 181, 212, 0.25);
+    0 0 60px rgba(67, 97, 238, 0.25);
 }
 
 .ai-fab:active {
@@ -71,7 +71,7 @@
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow:
     var(--shadow-elevated),
-    0 0 80px rgba(8, 181, 212, 0.12);
+    0 0 80px rgba(67, 97, 238, 0.12);
   overflow: hidden;
 }
 
@@ -389,7 +389,7 @@
 
 .ai-flashcard:hover {
   border-color: var(--border-active);
-  box-shadow: 0 0 20px rgba(8, 181, 212, 0.08);
+  box-shadow: 0 0 20px rgba(67, 97, 238, 0.08);
 }
 
 .ai-flashcard-front {
@@ -534,7 +534,7 @@
 }
 
 .semantic-search-toggle.active {
-  background: rgba(8, 181, 212, 0.12);
+  background: rgba(67, 97, 238, 0.12);
   border-color: var(--accent-primary);
   color: var(--accent-tertiary);
 }

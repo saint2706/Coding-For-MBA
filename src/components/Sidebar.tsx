@@ -108,7 +108,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       >
         <div className="sidebar-header">
           <div className="sidebar-logo" aria-hidden="true">
-            <span className="material-symbols-outlined">terminal</span>
+            <span>🎓</span>
           </div>
           <div className="sidebar-title">
             Coding for MBA

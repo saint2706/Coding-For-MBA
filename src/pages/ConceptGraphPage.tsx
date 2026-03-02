@@ -20,9 +20,9 @@ import { useDebounce } from '../hooks/useDebounce'
  * Each phase is assigned a distinct color for easy visual identification.
  */
 const PHASE_COLORS = [
-  '#08b5d4',
-  '#0694ad',
-  '#06b6d4',
+  '#4cc9f0',
+  '#4895ef',
+  '#4361ee',
   '#f59e0b',
   '#ef4444',
   '#10b981',

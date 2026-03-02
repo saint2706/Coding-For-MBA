@@ -30,10 +30,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--gradient-hero);
+  background: linear-gradient(135deg, #595cff, #c6f8ff);
   border-radius: var(--radius-sm);
   color: white;
   flex-shrink: 0;
+  font-size: 20px;
 }
 
 .sidebar-logo .material-symbols-outlined {
@@ -100,12 +101,12 @@
 
 .phase-toggle:hover {
   color: var(--text-primary);
-  background: rgba(8, 181, 212, 0.04);
+  background: rgba(67, 97, 238, 0.04);
 }
 
 .phase-toggle.active {
   color: var(--text-heading);
-  background: rgba(8, 181, 212, 0.06);
+  background: rgba(67, 97, 238, 0.06);
 }
 
 .phase-toggle-icon {
@@ -155,12 +156,12 @@
 
 .day-link:hover {
   color: var(--text-primary);
-  background: rgba(8, 181, 212, 0.04);
+  background: rgba(67, 97, 238, 0.04);
 }
 
 .day-link.active {
   color: var(--accent-tertiary);
-  background: rgba(8, 181, 212, 0.08);
+  background: rgba(67, 97, 238, 0.08);
   border-left-color: var(--accent-primary);
 }
 

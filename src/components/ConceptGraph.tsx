@@ -16,9 +16,9 @@ import { dayTokenFromReference } from '../utils/dayToken'
  * Color palette for phase differentiation in the graph.
  */
 const PHASE_COLORS = [
-  '#22d3ee', // Phase 1 – soft cyan
-  '#08b5d4', // Phase 2 – teal
-  '#22d3ee', // Phase 3 – cyan
+  '#4cc9f0', // Phase 1 – cyan
+  '#4895ef', // Phase 2 – light blue
+  '#4361ee', // Phase 3 – blue
   '#fbbf24', // Phase 4 – amber
   '#f87171', // Phase 5 – soft red
   '#34d399', // Phase 6 – emerald
