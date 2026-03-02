@@ -7,7 +7,7 @@
  * @module components/AiStudyPanel
  */
 
-import { useState, useRef, useEffect, useCallback, type FormEvent } from 'react'
+import { useState, useRef, useEffect, useCallback, type FormEvent, type KeyboardEvent } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useAiAssistantStore } from '../stores/aiAssistantStore'
 import {
@@ -164,6 +164,13 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
       }
       return next
     })
+  }
+
+  const handleFlashcardKeyDown = (e: KeyboardEvent<HTMLDivElement>, cardId: string) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      toggleFlashcard(cardId)
+    }
   }
 
   if (!isAiAvailable) return null
@@ -340,15 +347,23 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                     </div>
                   ) : (
                     <>
-                      <p className="ai-flashcard-hint">Click a card to reveal the answer</p>
+                      <p className="ai-flashcard-hint">
+                        Click or press Enter/Space to reveal the answer
+                      </p>
                       {flashcards.map((card) => {
                         const cardId = card.id || `${card.front}-${card.back}`
+
+                        const isFlipped = flippedCards.has(cardId)
 
                         return (
                           <div
                             key={cardId}
-                            className={`ai-flashcard ${!flippedCards.has(cardId) ? 'collapsed' : ''}`}
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={isFlipped}
+                            className={`ai-flashcard ${!isFlipped ? 'collapsed' : ''}`}
                             onClick={() => toggleFlashcard(cardId)}
+                            onKeyDown={(e) => handleFlashcardKeyDown(e, cardId)}
                           >
                             <div className="ai-flashcard-front">{card.front}</div>
                             <div className="ai-flashcard-back">{card.back}</div>

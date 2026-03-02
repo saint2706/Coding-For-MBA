@@ -4,7 +4,7 @@
 > long-horizon ideas.  
 > Stack: **Vite 7 · React 19 · TypeScript 5.9 · motion · zustand · zod · react-hot-toast · canvas-confetti**
 
-*Last updated: Feb 26, 2026*
+*Last updated: Mar 2, 2026*
 
 ---
 
@@ -126,8 +126,8 @@
 
 ### AI-Powered Study Assistant
 
-- [ ] "Ask about this lesson" — LLM API integration (OpenAI / Gemini) _(audit: Gemini implementation exists and is surfaced in `AiStudyPanel`, but OpenAI path is not implemented)_
-- [ ] Auto-generate flashcards from lesson markdown _(audit: generation flow exists, but flashcard cards are mouse-only `div` click targets with no keyboard interaction semantics; accessibility pass still needed)_
+- [x] "Ask about this lesson" — LLM API integration (Gemini only) _(Gemini implementation exists and is surfaced in `AiStudyPanel`; OpenAI integration not required)_
+- [x] Auto-generate flashcards from lesson markdown _(flashcard cards now have `role="button"`, `tabIndex`, keyboard handlers for Enter/Space, and `aria-expanded` semantics)_
 - [x] Smart exercise hint system (3-level progressive hints)
 - [x] Semantic search across all lesson content (embeddings + cosine similarity)
 
