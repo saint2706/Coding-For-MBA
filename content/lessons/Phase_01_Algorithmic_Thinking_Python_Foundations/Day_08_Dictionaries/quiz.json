@@ -1,0 +1,70 @@
+{
+    "day": 8,
+    "questions": [
+        {
+            "id": "d08q01",
+            "type": "multiple_choice",
+            "question": "What is the safest way to retrieve a value from a dictionary when the key might not exist?",
+            "options": [
+                "my_dict[key]",
+                "my_dict.fetch(key, default)",
+                "my_dict.get(key, default)",
+                "my_dict.find(key)"
+            ],
+            "answer": 2,
+            "explanation": "`.get(key, default)` returns the value if the key exists, or the default value if it does not — without raising an error. `my_dict[key]` raises a `KeyError` when the key is missing, which can crash your program."
+        },
+        {
+            "id": "d08q02",
+            "type": "multiple_choice",
+            "question": "What does iterating with `for key, value in my_dict.items():` do?",
+            "options": [
+                "Iterates over keys only",
+                "Iterates over values only",
+                "Iterates over key-value pairs as tuples",
+                "Creates a copy of the dictionary"
+            ],
+            "answer": 2,
+            "explanation": "`.items()` returns a view of `(key, value)` pairs. Using tuple unpacking in the loop header (`key, value`) gives you both the key and value on each iteration — the most Pythonic way to work with dictionaries."
+        },
+        {
+            "id": "d08q03",
+            "type": "multiple_choice",
+            "question": "Which one-liner converts the loop below to a dictionary comprehension?\n```python\nresult = {}\nfor x in range(5):\n    result[x] = x * 10\n```",
+            "options": [
+                "result = [x: x*10 for x in range(5)]",
+                "result = {x: x*10 for x in range(5)}",
+                "result = {x, x*10 for x in range(5)}",
+                "result = dict(x=x*10 for x in range(5))"
+            ],
+            "answer": 1,
+            "explanation": "Dictionary comprehensions use curly braces with a `key: value` expression: `{key_expr: value_expr for item in iterable}`. This produces `{0: 0, 1: 10, 2: 20, 3: 30, 4: 40}`."
+        },
+        {
+            "id": "d08q04",
+            "type": "multiple_choice",
+            "question": "A sales dashboard stores monthly revenue: `sales = {'Jan': 120000, 'Feb': 135000}`. What is `sales['Mar']`?",
+            "options": [
+                "None",
+                "0",
+                "KeyError: 'Mar'",
+                "The average of Jan and Feb"
+            ],
+            "answer": 2,
+            "explanation": "Accessing a missing key with square brackets raises a `KeyError`. Use `sales.get('Mar', 0)` to return 0 (or any default) when the key is absent, making your code resilient to missing data."
+        },
+        {
+            "id": "d08q05",
+            "type": "multiple_choice",
+            "question": "What does `len({'a': 1, 'b': 2, 'c': 3})` return?",
+            "options": [
+                "6 (counts both keys and values)",
+                "3 (counts the number of key-value pairs)",
+                "1 (dictionaries have no meaningful length)",
+                "TypeError"
+            ],
+            "answer": 1,
+            "explanation": "`len()` on a dictionary returns the number of key-value pairs (entries). A dictionary with 3 keys returns 3, regardless of the values stored."
+        }
+    ]
+}

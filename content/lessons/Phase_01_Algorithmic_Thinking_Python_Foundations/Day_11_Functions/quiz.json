@@ -1,0 +1,70 @@
+{
+    "day": 11,
+    "questions": [
+        {
+            "id": "d11q01",
+            "type": "multiple_choice",
+            "question": "What is the 'mutable default argument' trap in Python?",
+            "options": [
+                "Passing a list to a function modifies the original list",
+                "A mutable object (like a list) used as a default argument is created once and shared across all calls",
+                "Default arguments cannot be mutable types",
+                "Functions with default arguments run slower"
+            ],
+            "answer": 1,
+            "explanation": "Default argument values are evaluated once when the function is defined. If the default is a mutable object like `[]`, all calls that use the default share the same object. Fix: use `None` as default and create the object inside the function body."
+        },
+        {
+            "id": "d11q02",
+            "type": "multiple_choice",
+            "question": "What does `**kwargs` allow in a function definition?",
+            "options": [
+                "A fixed number of positional arguments",
+                "An arbitrary number of keyword arguments collected into a dictionary",
+                "A required keyword-only argument",
+                "Automatic type checking of arguments"
+            ],
+            "answer": 1,
+            "explanation": "`**kwargs` collects any extra keyword arguments into a dictionary. `def report(**kwargs): print(kwargs)` called as `report(q1=100, q2=120)` receives `{'q1': 100, 'q2': 120}`. Useful when the set of named parameters is dynamic."
+        },
+        {
+            "id": "d11q03",
+            "type": "multiple_choice",
+            "question": "What is a pure function?",
+            "options": [
+                "A function that takes no arguments",
+                "A function with no return statement",
+                "A function that always returns the same output for the same input and has no side effects",
+                "A function defined inside another function"
+            ],
+            "answer": 2,
+            "explanation": "A pure function produces a deterministic result based only on its inputs and does not modify external state (no global variable changes, no I/O). Pure functions are easier to test, reason about, and parallelize — a key principle of functional programming."
+        },
+        {
+            "id": "d11q04",
+            "type": "multiple_choice",
+            "question": "What is the output of the following code?\n```python\ndef double(x):\n    return x * 2\n\nresult = double(double(3))\nprint(result)\n```",
+            "options": [
+                "6",
+                "9",
+                "12",
+                "Error"
+            ],
+            "answer": 2,
+            "explanation": "`double(3)` returns `6`. Then `double(6)` returns `12`. Function composition — passing the result of one call as the argument to another — is a fundamental programming pattern."
+        },
+        {
+            "id": "d11q05",
+            "type": "multiple_choice",
+            "question": "What is a lambda function?",
+            "options": [
+                "A function that runs asynchronously",
+                "A shorthand for a small, anonymous single-expression function",
+                "A recursive function",
+                "A function that takes no return value"
+            ],
+            "answer": 1,
+            "explanation": "Lambda functions are anonymous, inline functions: `lambda x: x * 2` is equivalent to a one-line `def`. They are commonly used with `sorted()`, `map()`, and `filter()` — e.g., `sorted(employees, key=lambda e: e['salary'])`."
+        }
+    ]
+}

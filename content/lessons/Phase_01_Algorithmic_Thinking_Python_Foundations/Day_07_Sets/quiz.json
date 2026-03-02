@@ -1,0 +1,70 @@
+{
+    "day": 7,
+    "questions": [
+        {
+            "id": "d07q01",
+            "type": "multiple_choice",
+            "question": "What is `len({3, 1, 4, 1, 5, 9, 2, 6, 5, 3})`?",
+            "options": [
+                "10",
+                "9",
+                "7",
+                "8"
+            ],
+            "answer": 2,
+            "explanation": "Sets automatically remove duplicates. The unique elements are {1, 2, 3, 4, 5, 6, 9} — seven distinct values. Sets are unordered, so the display order is not guaranteed."
+        },
+        {
+            "id": "d07q02",
+            "type": "multiple_choice",
+            "question": "Given `a = {1, 2, 3, 4}` and `b = {3, 4, 5, 6}`, what does `a & b` return?",
+            "options": [
+                "{1, 2, 3, 4, 5, 6}",
+                "{3, 4}",
+                "{1, 2}",
+                "{1, 2, 5, 6}"
+            ],
+            "answer": 1,
+            "explanation": "The `&` operator (or `.intersection()`) returns elements that exist in BOTH sets. Only 3 and 4 appear in both `a` and `b`, so the result is `{3, 4}`."
+        },
+        {
+            "id": "d07q03",
+            "type": "multiple_choice",
+            "question": "How do you create an empty set in Python?",
+            "options": [
+                "empty = {}",
+                "empty = set()",
+                "empty = []",
+                "empty = {()}"
+            ],
+            "answer": 1,
+            "explanation": "`{}` creates an empty **dictionary**, not a set. To create an empty set you must use `set()`. This is a common gotcha: `type({})` returns `<class 'dict'>`, while `type(set())` returns `<class 'set'>`."
+        },
+        {
+            "id": "d07q04",
+            "type": "multiple_choice",
+            "question": "A marketing team has two customer lists from different campaigns. Which set operation finds customers who appear in EITHER list but NOT both (i.e., were reached by only one campaign)?",
+            "options": [
+                "Intersection (a & b)",
+                "Union (a | b)",
+                "Symmetric difference (a ^ b)",
+                "Difference (a - b)"
+            ],
+            "answer": 2,
+            "explanation": "Symmetric difference (`^` or `.symmetric_difference()`) returns elements that are in one set or the other, but NOT in both. This identifies customers who were uniquely reached by exactly one campaign."
+        },
+        {
+            "id": "d07q05",
+            "type": "multiple_choice",
+            "question": "Which of the following can be stored in a Python set?",
+            "options": [
+                "A list [1, 2, 3]",
+                "A dictionary {'key': 'value'}",
+                "A tuple (1, 2, 3)",
+                "Another set {1, 2}"
+            ],
+            "answer": 2,
+            "explanation": "Set elements must be **hashable** (immutable). Tuples of hashable elements are hashable and can be stored in a set. Lists, dicts, and sets are mutable and unhashable, so they cannot be stored as set elements — you would get a `TypeError`."
+        }
+    ]
+}

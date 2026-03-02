@@ -1,0 +1,70 @@
+{
+    "day": 2,
+    "questions": [
+        {
+            "id": "d02q01",
+            "type": "multiple_choice",
+            "question": "What are the data types of `a = 42`, `b = 42.0`, `c = '42'`, and `d = True`?",
+            "options": [
+                "int, int, str, bool",
+                "int, float, str, bool",
+                "float, float, str, int",
+                "int, float, int, str"
+            ],
+            "answer": 1,
+            "explanation": "`42` is an `int`, `42.0` is a `float` (the decimal point makes it a float), `'42'` is a `str` (text in quotes), and `True` is a `bool`. Python treats 42 and 42.0 as different types even though they represent the same mathematical value."
+        },
+        {
+            "id": "d02q02",
+            "type": "multiple_choice",
+            "question": "What does the built-in function `len()` return when called on a string?",
+            "options": [
+                "The memory address of the string",
+                "The number of characters in the string",
+                "The number of words in the string",
+                "The string converted to a list"
+            ],
+            "answer": 1,
+            "explanation": "`len()` returns the count of items in a sequence. For a string, it counts every character including spaces: `len('Hello World')` returns 11."
+        },
+        {
+            "id": "d02q03",
+            "type": "multiple_choice",
+            "question": "Which of the following is NOT a valid Python variable name?",
+            "options": [
+                "monthly_revenue",
+                "_private_var",
+                "2nd_quarter",
+                "totalCost"
+            ],
+            "answer": 2,
+            "explanation": "Variable names cannot begin with a digit. `2nd_quarter` starts with '2', making it a `SyntaxError`. Valid names start with a letter or underscore, followed by letters, digits, or underscores."
+        },
+        {
+            "id": "d02q04",
+            "type": "multiple_choice",
+            "question": "What does `int('42.7')` return?",
+            "options": [
+                "42",
+                "43",
+                "42.7",
+                "ValueError"
+            ],
+            "answer": 3,
+            "explanation": "`int()` cannot directly parse a string that contains a decimal point. It raises `ValueError: invalid literal for int() with base 10: '42.7'`. To convert '42.7' to an integer, use `int(float('42.7'))` which gives 42."
+        },
+        {
+            "id": "d02q05",
+            "type": "multiple_choice",
+            "question": "A business analyst stores employee count as `employees = 250`. Later the company downsizes, so they write `employees = 200`. What happens to the original value 250?",
+            "options": [
+                "It is stored in a backup variable automatically",
+                "It raises a reassignment error",
+                "The variable now holds 200; the old value 250 is discarded",
+                "Both values are stored and `employees` becomes a list [250, 200]"
+            ],
+            "answer": 2,
+            "explanation": "Python variables are simply labels pointing to values. Reassigning `employees = 200` makes the label point to the new value 200. The old value 250 is no longer referenced and will be garbage-collected. No error is raised — reassignment is perfectly valid."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 9,
+    "questions": [
+        {
+            "id": "d09q01",
+            "type": "multiple_choice",
+            "question": "What does the following code print?\n```python\nx = 5\nif x > 3 and x < 10:\n    print('A')\nelse:\n    print('B')\n```",
+            "options": [
+                "B",
+                "A",
+                "AB",
+                "Error"
+            ],
+            "answer": 1,
+            "explanation": "Both conditions are true: `5 > 3` is `True` and `5 < 10` is `True`. With `and`, both sides must be `True` for the block to execute. The output is `'A'`."
+        },
+        {
+            "id": "d09q02",
+            "type": "multiple_choice",
+            "question": "In an `if / elif / elif / else` chain, how many branches can execute for a single run?",
+            "options": [
+                "All branches that evaluate to True",
+                "Exactly one branch — the first one whose condition is True, or else if none match",
+                "All branches always execute",
+                "Only the last matching branch"
+            ],
+            "answer": 1,
+            "explanation": "Python evaluates conditions top-to-bottom and executes the FIRST branch that is True, then skips the rest. If no condition is True, the `else` block runs (if present). This is different from running multiple independent `if` statements."
+        },
+        {
+            "id": "d09q03",
+            "type": "multiple_choice",
+            "question": "Which values are considered 'falsy' in Python?",
+            "options": [
+                "Only False and None",
+                "False, None, 0, 0.0, empty string '', empty list [], empty dict {}",
+                "Only False, 0, and None",
+                "Every value except True"
+            ],
+            "answer": 1,
+            "explanation": "Python treats `False`, `None`, numeric zero (`0`, `0.0`), empty sequences (`''`, `[]`, `()`), and empty mappings (`{}`, `set()`) as falsy in a boolean context. Everything else is truthy. This lets you write idiomatic checks like `if my_list:` instead of `if len(my_list) > 0:`."
+        },
+        {
+            "id": "d09q04",
+            "type": "multiple_choice",
+            "question": "What is the ternary (one-line conditional) expression equivalent to:\n```python\nif revenue > 100000:\n    status = 'high'\nelse:\n    status = 'low'\n```",
+            "options": [
+                "status = 'high' if revenue > 100000 else 'low'",
+                "status = if revenue > 100000 'high' else 'low'",
+                "status = ('high', 'low')[revenue <= 100000]",
+                "status = revenue > 100000 ? 'high' : 'low'"
+            ],
+            "answer": 0,
+            "explanation": "Python's conditional expression syntax is `value_if_true if condition else value_if_false`. It evaluates to the left value when the condition is True and the right value when False. The `?:` syntax from C/Java does not exist in Python."
+        },
+        {
+            "id": "d09q05",
+            "type": "multiple_choice",
+            "question": "A loan approval system uses: `if income >= 50000 and credit_score >= 700 and debt_ratio < 0.4`. Which of the following applicants qualifies?",
+            "options": [
+                "income=45000, credit_score=750, debt_ratio=0.3",
+                "income=60000, credit_score=680, debt_ratio=0.35",
+                "income=55000, credit_score=710, debt_ratio=0.38",
+                "income=52000, credit_score=705, debt_ratio=0.42"
+            ],
+            "answer": 2,
+            "explanation": "All three conditions must be True with `and`. Option C: `55000 >= 50000` ✓, `710 >= 700` ✓, `0.38 < 0.4` ✓. Options A (income too low), B (credit score too low), and D (debt ratio too high) each fail at least one condition."
+        }
+    ]
+}

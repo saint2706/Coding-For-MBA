@@ -1,0 +1,70 @@
+{
+    "day": 4,
+    "questions": [
+        {
+            "id": "d04q01",
+            "type": "multiple_choice",
+            "question": "What does `'Business'[2:5]` return?",
+            "options": [
+                "'Bus'",
+                "'sin'",
+                "'usi'",
+                "'ines'"
+            ],
+            "answer": 1,
+            "explanation": "String slicing `[start:end]` includes the character at `start` and excludes `end`. 'Business' has indices B=0, u=1, s=2, i=3, n=4, e=5, s=6, s=7. Indices 2, 3, 4 are 's', 'i', 'n' → `'sin'`."
+        },
+        {
+            "id": "d04q02",
+            "type": "multiple_choice",
+            "question": "Which f-string correctly inserts the variable `name` and `score` into a message?",
+            "options": [
+                "\"Score for {name} is {score}\"",
+                "f\"Score for {name} is {score}\"",
+                "f'Score for (name) is (score)'",
+                "\"Score for \" + name + \" is \" + score"
+            ],
+            "answer": 1,
+            "explanation": "F-strings are prefixed with `f` or `F` and use curly braces `{}` to embed expressions. They are the recommended way to format strings in Python 3.6+. The string literal without `f` prefix does NOT interpolate variables — it prints them literally."
+        },
+        {
+            "id": "d04q03",
+            "type": "multiple_choice",
+            "question": "What is the output of `'  Hello, World!  '.strip().lower()`?",
+            "options": [
+                "'  hello, world!  '",
+                "'Hello, World!'",
+                "'hello, world!'",
+                "'hello,world!'"
+            ],
+            "answer": 2,
+            "explanation": "`.strip()` removes leading and trailing whitespace → `'Hello, World!'`. Then `.lower()` converts all characters to lowercase → `'hello, world!'`. Method chaining applies methods left to right on the result of the previous method."
+        },
+        {
+            "id": "d04q04",
+            "type": "multiple_choice",
+            "question": "Why are strings described as 'immutable' in Python?",
+            "options": [
+                "They cannot contain numbers",
+                "Once created, individual characters cannot be changed in place",
+                "They cannot be passed to functions",
+                "They lose their value when reassigned"
+            ],
+            "answer": 1,
+            "explanation": "Strings are immutable — you cannot do `my_string[0] = 'X'`. Operations like `.upper()` and `.replace()` return NEW strings rather than modifying the original. This is why `name = name.upper()` reassigns the variable to a new string."
+        },
+        {
+            "id": "d04q05",
+            "type": "multiple_choice",
+            "question": "A data pipeline receives a customer name as `' john doe '`. Which one-liner produces `'John Doe'`?",
+            "options": [
+                "name.upper()",
+                "name.strip().title()",
+                "name.capitalize()",
+                "name.strip().upper()"
+            ],
+            "answer": 1,
+            "explanation": "`.strip()` removes surrounding whitespace → `'john doe'`. `.title()` capitalizes the first letter of each word → `'John Doe'`. `.capitalize()` only capitalizes the very first character of the entire string, giving `'John doe'`."
+        }
+    ]
+}
