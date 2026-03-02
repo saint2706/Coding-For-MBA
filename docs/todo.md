@@ -181,18 +181,20 @@ Each lesson day needs a `quiz.json` sidecar for the app's quiz engine:
 - [x] `05_sql_data_warehouse/` — Phase 8–9 full DDL + ETL
 - [x] `06_llm_data_assistant/` — Phase 10 RAG / agent demo
 
-### MBA Case Studies (`content/case-studies/`)
+### MBA Case Studies (`content/case-studies/`) ✅ Complete
 
-- [ ] 01 — Retail Customer Churn (Logistic Regression, XGBoost) — Phase 4–5
-- [ ] 02 — Finance Fraud Detection (Anomaly Detection, GNN) — Phase 5
-- [ ] 03 — Healthcare Patient Risk (Ensemble, Probabilistic) — Phase 5
-- [ ] 04 — E-Commerce Recommendations (Collaborative Filtering) — Phase 5
-- [ ] 05 — Marketing Campaign Attribution (A/B Testing, Causal Inference) — Phase 6
-- [ ] 06 — Operations Demand Forecasting (Time Series, ARIMA, Prophet) — Phase 5
-- [ ] 07 — HR Attrition Prediction (Classification, SHAP) — Phase 4–5
-- [ ] 08 — SaaS Growth Analytics (Cohorts, Product Analytics) — Phase 7
-- [ ] 09 — Supply Chain Inventory (LP, Simulation) — Phase 4
-- [ ] 10 — Banking Credit Scoring (Scorecard, Fairness) — Phase 6
+Each case study includes a comprehensive README.md with hand-holding walkthrough (step-by-step guidance with checkpoints), a starter.py scaffold, and a data_generator.py for synthetic data.
+
+- [x] 01 — Retail Customer Churn (Logistic Regression, XGBoost) — Phase 4–5
+- [x] 02 — Finance Fraud Detection (Anomaly Detection, GNN) — Phase 5
+- [x] 03 — Healthcare Patient Risk (Ensemble, Probabilistic) — Phase 5
+- [x] 04 — E-Commerce Recommendations (Collaborative Filtering) — Phase 5
+- [x] 05 — Marketing Campaign Attribution (A/B Testing, Causal Inference) — Phase 6
+- [x] 06 — Operations Demand Forecasting (Time Series, ARIMA, Prophet) — Phase 5
+- [x] 07 — HR Attrition Prediction (Classification, SHAP) — Phase 4–5
+- [x] 08 — SaaS Growth Analytics (Cohorts, Product Analytics) — Phase 7
+- [x] 09 — Supply Chain Inventory (LP, Simulation) — Phase 4
+- [x] 10 — Banking Credit Scoring (Scorecard, Fairness) — Phase 6
 
 ### Collaborative Features
 
