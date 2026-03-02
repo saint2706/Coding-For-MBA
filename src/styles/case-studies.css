@@ -1,0 +1,131 @@
+/* ===== Case Studies & Projects Page ===== */
+
+/* --- Tab Bar --- */
+.cs-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 0;
+}
+
+.cs-tab {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+  margin-bottom: -1px;
+}
+
+.cs-tab:hover {
+  color: var(--text-primary);
+}
+
+.cs-tab--active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+}
+
+/* --- Card Grid --- */
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* --- Individual Card --- */
+.cs-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  transition: all var(--transition-base);
+}
+
+.cs-card:hover {
+  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+  box-shadow: var(--shadow-card);
+}
+
+.cs-card__header {
+  flex: 1;
+}
+
+.cs-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+.cs-card__title {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-heading);
+  line-height: 1.35;
+}
+
+.cs-card__phases {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.cs-card__footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.cs-card__expand-btn {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-family: var(--font-body);
+  color: var(--accent-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.cs-card__expand-btn:hover {
+  color: var(--accent-tertiary);
+}
+
+.cs-card__content {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .cs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cs-tabs {
+    gap: 0;
+  }
+
+  .cs-tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.8125rem;
+  }
+}

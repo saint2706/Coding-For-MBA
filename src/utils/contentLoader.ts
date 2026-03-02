@@ -602,6 +602,94 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
 
 export { difficultyConfig, phaseIcons }
 
+/** Shared shape for a case study or capstone project entry. */
+export interface ProjectLike {
+  slug: string
+  title: string
+  difficulty: string
+  estimatedTime: string
+  phasesCovered: string
+  content: string
+  path: string
+}
+
+/** A case study entry parsed from a case-studies README. */
+export type CaseStudy = ProjectLike
+
+/** A project entry parsed from a projects README. */
+export type Project = ProjectLike
+
+const caseStudyFiles = import.meta.glob('/content/case-studies/**/README.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>
+
+const projectFiles = import.meta.glob('/content/projects/**/README.md', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>
+
+function parseProjectLikeEntry(
+  path: string,
+  raw: string,
+): {
+  title: string
+  difficulty: string
+  estimatedTime: string
+  phasesCovered: string
+  slug: string
+} {
+  const titleMatch = raw.match(/^#\s+(.+)$/m)
+  const title = titleMatch?.[1]?.trim() ?? 'Untitled'
+
+  const difficultyMatch = raw.match(/\*\*Difficulty\*\*:\s*(.+)/)
+  const difficulty = difficultyMatch?.[1]?.trim() ?? 'Intermediate'
+
+  const timeMatch = raw.match(/\*\*Estimated time\*\*:\s*(.+)/)
+  const estimatedTime = timeMatch?.[1]?.trim() ?? ''
+
+  const phasesMatch = raw.match(/\*\*Phases covered\*\*:\s*(.+)/)
+  const phasesCovered = phasesMatch?.[1]?.trim() ?? ''
+
+  const segments = path.split('/')
+  const slug = segments[segments.length - 2] || path
+
+  return { title, difficulty, estimatedTime, phasesCovered, slug }
+}
+
+let immutableCaseStudies: readonly Readonly<CaseStudy>[] | null = null
+let immutableProjects: readonly Readonly<Project>[] | null = null
+
+/** Return all case studies sorted by slug. */
+export function getAllCaseStudies(): readonly Readonly<CaseStudy>[] {
+  if (!immutableCaseStudies) {
+    const parsed = Object.entries(caseStudyFiles)
+      .map(([path, raw]) => {
+        const meta = parseProjectLikeEntry(path, raw)
+        return Object.freeze({ ...meta, content: raw, path })
+      })
+      .sort((a, b) => a.slug.localeCompare(b.slug))
+    immutableCaseStudies = Object.freeze(parsed)
+  }
+  return immutableCaseStudies
+}
+
+/** Return all projects sorted by slug. */
+export function getAllProjects(): readonly Readonly<Project>[] {
+  if (!immutableProjects) {
+    const parsed = Object.entries(projectFiles)
+      .map(([path, raw]) => {
+        const meta = parseProjectLikeEntry(path, raw)
+        return Object.freeze({ ...meta, content: raw, path })
+      })
+      .sort((a, b) => a.slug.localeCompare(b.slug))
+    immutableProjects = Object.freeze(parsed)
+  }
+  return immutableProjects
+}
+
 let immutableExtrasByPhase: Record<number, readonly Readonly<ExtraFile>[]> | null = null
 
 function parseExtras(): Record<number, ExtraFile[]> {
