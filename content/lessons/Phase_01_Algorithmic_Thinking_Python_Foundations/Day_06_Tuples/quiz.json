@@ -1,0 +1,70 @@
+{
+    "day": 6,
+    "questions": [
+        {
+            "id": "d06q01",
+            "type": "multiple_choice",
+            "question": "Which of the following creates a tuple containing exactly one element (the number 42)?",
+            "options": [
+                "x = (42)",
+                "x = [42]",
+                "x = (42,)",
+                "x = tuple(42)"
+            ],
+            "answer": 2,
+            "explanation": "`(42)` is just the number 42 in parentheses — Python interprets it as a grouped expression. The trailing comma `(42,)` is what makes it a tuple. `tuple(42)` raises a TypeError because `tuple()` expects an iterable."
+        },
+        {
+            "id": "d06q02",
+            "type": "multiple_choice",
+            "question": "What happens when you try to run `point = (10, 20); point[0] = 15`?",
+            "options": [
+                "point becomes (15, 20)",
+                "TypeError: 'tuple' object does not support item assignment",
+                "ValueError: immutable assignment",
+                "The change is silently ignored"
+            ],
+            "answer": 1,
+            "explanation": "Tuples are immutable — once created, their elements cannot be changed, added, or removed. This immutability makes tuples useful for data that must remain constant, like GPS coordinates or database row keys."
+        },
+        {
+            "id": "d06q03",
+            "type": "multiple_choice",
+            "question": "What is 'tuple unpacking'?",
+            "options": [
+                "Converting a tuple to a list",
+                "Assigning each element of a tuple to a separate variable in one statement",
+                "Removing elements from a tuple",
+                "Sorting the contents of a tuple"
+            ],
+            "answer": 1,
+            "explanation": "Tuple unpacking lets you assign tuple elements to variables in one line: `x, y, z = (10, 20, 30)`. This is widely used in Python, for example when a function returns multiple values or when iterating over a list of tuples."
+        },
+        {
+            "id": "d06q04",
+            "type": "multiple_choice",
+            "question": "When should you prefer a tuple over a list?",
+            "options": [
+                "When you need to frequently add or remove items",
+                "When the data represents a fixed, ordered record that should not change",
+                "When you need to sort the data",
+                "When you need to store only numeric values"
+            ],
+            "answer": 1,
+            "explanation": "Tuples are ideal for fixed collections of related data — e.g., `(employee_id, name, salary)` or RGB colours `(255, 0, 128)`. Their immutability prevents accidental modification and allows them to be used as dictionary keys or set elements."
+        },
+        {
+            "id": "d06q05",
+            "type": "multiple_choice",
+            "question": "What does the following code print?\n```python\nquarterly = (120_000, 135_000, 142_000, 118_000)\nprint(sum(quarterly))\n```",
+            "options": [
+                "TypeError (tuples do not support sum)",
+                "515000",
+                "(120000, 135000, 142000, 118000)",
+                "4"
+            ],
+            "answer": 1,
+            "explanation": "`sum()` works on any iterable of numbers, including tuples. 120000 + 135000 + 142000 + 118000 = 515000. The underscore in `120_000` is a readability separator — Python ignores it."
+        }
+    ]
+}

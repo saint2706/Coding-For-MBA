@@ -1,0 +1,70 @@
+{
+    "day": 12,
+    "questions": [
+        {
+            "id": "d12q01",
+            "type": "multiple_choice",
+            "question": "What is the list comprehension equivalent of:\n```python\nresult = []\nfor x in range(10):\n    result.append(x**2)\n```",
+            "options": [
+                "result = (x**2 for x in range(10))",
+                "result = [x**2 for x in range(10)]",
+                "result = {x: x**2 for x in range(10)}",
+                "result = [range(10)**2]"
+            ],
+            "answer": 1,
+            "explanation": "A list comprehension `[expression for item in iterable]` is enclosed in square brackets. Option A creates a generator (not a list). Option C creates a dictionary. The correct list comprehension is `[x**2 for x in range(10)]`."
+        },
+        {
+            "id": "d12q02",
+            "type": "multiple_choice",
+            "question": "Which list comprehension produces all even numbers from 1 to 20, squared?",
+            "options": [
+                "[x**2 for x in range(1, 21)]",
+                "[x**2 for x in range(1, 21) if x % 2 == 0]",
+                "[x for x in range(1, 21) if x**2 % 2 == 0]",
+                "[x**2 if x % 2 == 0 for x in range(1, 21)]"
+            ],
+            "answer": 1,
+            "explanation": "A filter is added with `if condition` at the end: `[x**2 for x in range(1, 21) if x % 2 == 0]`. This iterates 1–20, keeps only even numbers (`x % 2 == 0`), then squares them — giving `[4, 16, 36, ..., 400]`."
+        },
+        {
+            "id": "d12q03",
+            "type": "multiple_choice",
+            "question": "What does `(x**2 for x in range(5))` create?",
+            "options": [
+                "A list [0, 1, 4, 9, 16]",
+                "A tuple (0, 1, 4, 9, 16)",
+                "A generator expression that yields values lazily",
+                "A set {0, 1, 4, 9, 16}"
+            ],
+            "answer": 2,
+            "explanation": "Round parentheses around a comprehension-style expression create a **generator expression**, not a tuple. Generator expressions yield values on demand, using O(1) memory. Wrap with `list()` to materialise all values: `list(x**2 for x in range(5))`."
+        },
+        {
+            "id": "d12q04",
+            "type": "multiple_choice",
+            "question": "A data analyst has `transactions = [('Alice', 120), ('Bob', -30), ('Alice', 45), ('Bob', 90)]`. Which comprehension builds a dictionary of totals per person?",
+            "options": [
+                "{name: amt for name, amt in transactions}",
+                "{name: sum(a for n, a in transactions if n == name) for name, _ in transactions}",
+                "[name: sum for name, amt in transactions]",
+                "dict(transactions)"
+            ],
+            "answer": 1,
+            "explanation": "Option B uses a nested comprehension: the outer iterates unique names (with repeated names handled by dict overwriting), and the inner sums all amounts for each name. Option A would only keep the last transaction per name. `dict(transactions)` also only keeps the last value per key."
+        },
+        {
+            "id": "d12q05",
+            "type": "multiple_choice",
+            "question": "When should you avoid using a list comprehension and prefer a regular `for` loop?",
+            "options": [
+                "When iterating over a list of numbers",
+                "When the logic is complex enough that the one-liner becomes hard to read",
+                "When you need the result as a list",
+                "When the list contains strings"
+            ],
+            "answer": 1,
+            "explanation": "List comprehensions should be readable at a glance. When the expression or filter becomes complex — especially with multiple nested loops or side effects — a regular `for` loop with clear variable names and comments is more maintainable. The Zen of Python: 'Readability counts.'"
+        }
+    ]
+}

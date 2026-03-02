@@ -1,0 +1,70 @@
+{
+    "day": "11C",
+    "questions": [
+        {
+            "id": "d11cq01",
+            "type": "multiple_choice",
+            "question": "When reading a Python traceback, where should you start?",
+            "options": [
+                "The top line — the first file mentioned",
+                "The bottom line — the exception type and message",
+                "The middle — any line mentioning your own file",
+                "The longest line in the traceback"
+            ],
+            "answer": 1,
+            "explanation": "Always start at the bottom of a traceback: it tells you the exception class and the specific message (e.g., `KeyError: 'region'`). Once you know what went wrong, scan upward to find the line in YOUR code that caused it."
+        },
+        {
+            "id": "d11cq02",
+            "type": "multiple_choice",
+            "question": "Which error type is raised when you try to access a dictionary key that does not exist?",
+            "options": [
+                "IndexError",
+                "AttributeError",
+                "KeyError",
+                "ValueError"
+            ],
+            "answer": 2,
+            "explanation": "`KeyError` is raised when you access a dictionary with a key that is not present: `my_dict['missing_key']`. Use `.get()` to avoid this, or wrap the access in a `try/except KeyError` block."
+        },
+        {
+            "id": "d11cq03",
+            "type": "multiple_choice",
+            "question": "What is the correct order of the five-step debugging workflow?",
+            "options": [
+                "Fix → Reproduce → Isolate → Inspect State → Verify",
+                "Reproduce → Isolate → Inspect State → Fix → Verify",
+                "Inspect State → Reproduce → Fix → Isolate → Verify",
+                "Isolate → Reproduce → Verify → Inspect State → Fix"
+            ],
+            "answer": 1,
+            "explanation": "The systematic workflow is: 1) Reproduce the bug reliably, 2) Isolate the failing code section, 3) Inspect state (variables, types, values), 4) Apply a fix, 5) Verify the fix works and did not break anything else."
+        },
+        {
+            "id": "d11cq04",
+            "type": "multiple_choice",
+            "question": "What does `breakpoint()` do in Python 3.7+?",
+            "options": [
+                "Raises a BreakpointError to stop execution",
+                "Pauses program execution and opens the interactive `pdb` debugger",
+                "Deletes all variables defined so far",
+                "Prints all local variables and exits"
+            ],
+            "answer": 1,
+            "explanation": "`breakpoint()` is a built-in shortcut that pauses execution and drops into the `pdb` interactive debugger. From there you can inspect variables (`p var`), step through code (`n`), continue (`c`), and quit (`q`)."
+        },
+        {
+            "id": "d11cq05",
+            "type": "multiple_choice",
+            "question": "Why should you prefer `logging` over `print()` statements for debugging in production code?",
+            "options": [
+                "Logging is faster than print",
+                "Logging supports severity levels, can be easily enabled/disabled, and writes to files without changing code",
+                "Print statements are not supported in Python 3",
+                "Logging automatically fixes bugs"
+            ],
+            "answer": 1,
+            "explanation": "The `logging` module lets you attach severity levels (`DEBUG`, `INFO`, `WARNING`, `ERROR`), filter output by level, redirect to files, and disable debug logs in production — all without touching your code. `print()` has none of these features and clutters production output."
+        }
+    ]
+}

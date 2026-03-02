@@ -1,0 +1,70 @@
+{
+    "day": "11B",
+    "questions": [
+        {
+            "id": "d11bq01",
+            "type": "multiple_choice",
+            "question": "What are the three roles of `iter()`, `next()`, and `StopIteration` in Python's iterator protocol?",
+            "options": [
+                "`iter()` sorts, `next()` filters, `StopIteration` resets the iterator",
+                "`iter()` returns an iterator object, `next()` pulls the next item, `StopIteration` signals the end",
+                "`iter()` counts elements, `next()` skips to the last item, `StopIteration` raises an error permanently",
+                "`iter()` creates a list, `next()` appends to it, `StopIteration` converts it to a tuple"
+            ],
+            "answer": 1,
+            "explanation": "`iter(obj)` returns an iterator (an object with a `__next__` method). `next(it)` retrieves the next value. When no items remain, `StopIteration` is raised, signalling the `for` loop or comprehension to stop."
+        },
+        {
+            "id": "d11bq02",
+            "type": "multiple_choice",
+            "question": "What is the primary memory advantage of a generator over a list?",
+            "options": [
+                "Generators are always faster to iterate",
+                "Generators produce values one at a time on demand, so they do not hold the full sequence in memory",
+                "Generators can store more data types than lists",
+                "Generators are automatically cached to disk"
+            ],
+            "answer": 1,
+            "explanation": "A list materialises all elements in memory at once. A generator yields values lazily — only computing each item when `next()` is called. This makes generators ideal for large datasets like reading millions of log records without running out of RAM."
+        },
+        {
+            "id": "d11bq03",
+            "type": "multiple_choice",
+            "question": "What keyword turns a regular function into a generator function?",
+            "options": [
+                "return",
+                "async",
+                "yield",
+                "iter"
+            ],
+            "answer": 2,
+            "explanation": "Any function containing a `yield` statement is a generator function. Calling it returns a generator object. Each `yield` suspends the function, saves its state, and delivers a value. The function resumes from where it paused on the next `next()` call."
+        },
+        {
+            "id": "d11bq04",
+            "type": "multiple_choice",
+            "question": "What does `yield from sub_generator` do?",
+            "options": [
+                "Creates a copy of sub_generator",
+                "Converts sub_generator into a list",
+                "Delegates iteration to sub_generator, transparently forwarding each of its yielded values",
+                "Runs sub_generator in a separate thread"
+            ],
+            "answer": 2,
+            "explanation": "`yield from` delegates to another iterable or generator, yielding each of its values in turn. It is equivalent to a `for item in sub_generator: yield item` loop but more efficient and supports two-way communication via `.send()`."
+        },
+        {
+            "id": "d11bq05",
+            "type": "multiple_choice",
+            "question": "A data pipeline processes 10 million transaction records from a CSV. Which approach is most memory-efficient?",
+            "options": [
+                "Read all rows into a list with `list(csv_reader)`, then process the list",
+                "Use a generator that yields one parsed row at a time",
+                "Load the CSV into a dictionary",
+                "Split the CSV into 1000 smaller files first"
+            ],
+            "answer": 1,
+            "explanation": "Loading 10 million rows into a list could consume gigabytes of RAM. A generator that reads and yields one row at a time keeps memory usage constant regardless of file size — only one row exists in memory at each step."
+        }
+    ]
+}

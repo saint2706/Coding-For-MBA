@@ -1,0 +1,70 @@
+{
+    "day": 10,
+    "questions": [
+        {
+            "id": "d10q01",
+            "type": "multiple_choice",
+            "question": "What does `list(range(3, 8, 2))` produce?",
+            "options": [
+                "[3, 4, 5, 6, 7]",
+                "[3, 5, 7]",
+                "[3, 5, 7, 9]",
+                "[2, 4, 6]"
+            ],
+            "answer": 1,
+            "explanation": "`range(start, stop, step)` generates numbers starting at `start`, stepping by `step`, up to (but not including) `stop`. Starting at 3 with step 2: 3, 5, 7. The next value (9) is ≥ 8 so it is excluded."
+        },
+        {
+            "id": "d10q02",
+            "type": "multiple_choice",
+            "question": "What is the output of the following code?\n```python\nfor i in range(5):\n    if i == 3:\n        break\n    print(i)\n```",
+            "options": [
+                "0 1 2 3 4",
+                "0 1 2",
+                "0 1 2 3",
+                "3 4"
+            ],
+            "answer": 1,
+            "explanation": "`break` immediately exits the loop. When `i == 3`, the loop terminates before executing `print(i)`. So only 0, 1, and 2 are printed."
+        },
+        {
+            "id": "d10q03",
+            "type": "multiple_choice",
+            "question": "What does `enumerate(['a', 'b', 'c'])` allow you to do?",
+            "options": [
+                "Count the number of elements in the list",
+                "Iterate over the list and get both the index and value at each step",
+                "Convert the list to a numbered dictionary",
+                "Sort the list by alphabetical order"
+            ],
+            "answer": 1,
+            "explanation": "`enumerate()` yields `(index, value)` pairs. `for i, val in enumerate(['a', 'b', 'c'])` gives `(0, 'a')`, `(1, 'b')`, `(2, 'c')`. This is the idiomatic way to track position while iterating — avoid using `range(len(list))`."
+        },
+        {
+            "id": "d10q04",
+            "type": "multiple_choice",
+            "question": "When should you use a `while` loop instead of a `for` loop?",
+            "options": [
+                "When iterating over a list",
+                "When you need to loop until a condition changes, and the number of iterations is unknown in advance",
+                "When you need to loop exactly 10 times",
+                "When you want to use `enumerate`"
+            ],
+            "answer": 1,
+            "explanation": "`for` loops are best when the number of iterations is known (e.g., looping over a list or range). `while` loops are best when you loop until a condition changes — e.g., polling a data stream until a target is reached, or retrying until success."
+        },
+        {
+            "id": "d10q05",
+            "type": "multiple_choice",
+            "question": "A financial analyst needs to pair monthly revenue with monthly costs:\n```python\nrevenue = [100, 120, 140]\ncosts   = [80,  90,  95]\n```\nWhich Python construct iterates both lists together?",
+            "options": [
+                "for r, c in enumerate(revenue, costs):",
+                "for r, c in zip(revenue, costs):",
+                "for i in range(revenue, costs):",
+                "for r, c in merge(revenue, costs):"
+            ],
+            "answer": 1,
+            "explanation": "`zip()` pairs elements from multiple iterables by position: `zip([100, 120], [80, 90])` yields `(100, 80)` then `(120, 90)`. It is the idiomatic way to iterate two or more lists in parallel."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 1,
+    "questions": [
+        {
+            "id": "d01q01",
+            "type": "multiple_choice",
+            "question": "What is a variable in Python?",
+            "options": [
+                "A loop that repeats code",
+                "A labeled container that stores a value in memory",
+                "A function that returns a result",
+                "A module imported from a library"
+            ],
+            "answer": 1,
+            "explanation": "A variable is a named storage location in memory. When you write `revenue = 50000`, Python reserves space in memory, stores the value 50000, and associates the label 'revenue' with it."
+        },
+        {
+            "id": "d01q02",
+            "type": "multiple_choice",
+            "question": "What is the output of `print(10 + 5 * 2)`?",
+            "options": [
+                "30",
+                "20",
+                "100",
+                "Error"
+            ],
+            "answer": 1,
+            "explanation": "Python follows PEMDAS order of operations. Multiplication is evaluated before addition: 5 * 2 = 10, then 10 + 10 = 20."
+        },
+        {
+            "id": "d01q03",
+            "type": "multiple_choice",
+            "question": "Which symbol is used for exponentiation (powers) in Python?",
+            "options": [
+                "^",
+                "**",
+                "^^",
+                "pow"
+            ],
+            "answer": 1,
+            "explanation": "Python uses `**` for exponentiation. For example, `2**10` evaluates to 1024. The `^` symbol is the bitwise XOR operator, not exponentiation."
+        },
+        {
+            "id": "d01q04",
+            "type": "multiple_choice",
+            "question": "What does the `print()` function do in Python?",
+            "options": [
+                "Saves output to a file",
+                "Sends data to a printer device",
+                "Displays information to the screen (standard output)",
+                "Stores a value in a variable"
+            ],
+            "answer": 2,
+            "explanation": "`print()` writes its argument(s) to standard output — the screen. It is Python's primary way to show results, debug values, or communicate with the user."
+        },
+        {
+            "id": "d01q05",
+            "type": "multiple_choice",
+            "question": "What will `print('Revenue: ' + str(45000))` output?",
+            "options": [
+                "TypeError: can only concatenate str to str",
+                "Revenue: 45000",
+                "Revenue: '45000'",
+                "45000Revenue: "
+            ],
+            "answer": 1,
+            "explanation": "`str(45000)` converts the integer 45000 to the string '45000', making concatenation with `'Revenue: '` valid. The result is the string 'Revenue: 45000'."
+        }
+    ]
+}

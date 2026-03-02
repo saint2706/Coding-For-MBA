@@ -1,0 +1,70 @@
+{
+    "day": 5,
+    "questions": [
+        {
+            "id": "d05q01",
+            "type": "multiple_choice",
+            "question": "What does `[10, 20, 30, 40, 50][1:4]` return?",
+            "options": [
+                "[10, 20, 30]",
+                "[20, 30, 40]",
+                "[20, 30, 40, 50]",
+                "[10, 20, 30, 40]"
+            ],
+            "answer": 1,
+            "explanation": "List slicing `[start:end]` includes the element at index `start` and excludes `end`. Indices 1, 2, 3 hold the values 20, 30, 40. Index 4 (value 50) is excluded."
+        },
+        {
+            "id": "d05q02",
+            "type": "multiple_choice",
+            "question": "What is the output of the following code?\n```python\na = [1, 2, 3]\nb = a\nb.append(4)\nprint(a)\n```",
+            "options": [
+                "[1, 2, 3]",
+                "[1, 2, 3, 4]",
+                "[4]",
+                "Error"
+            ],
+            "answer": 1,
+            "explanation": "`b = a` does NOT copy the list — both `a` and `b` point to the same list object in memory. When `b.append(4)` modifies the list, `a` sees the change too. To create an independent copy use `b = a.copy()` or `b = a[:]`."
+        },
+        {
+            "id": "d05q03",
+            "type": "multiple_choice",
+            "question": "Which method adds a single element to the END of a list?",
+            "options": [
+                ".insert()",
+                ".extend()",
+                ".append()",
+                ".add()"
+            ],
+            "answer": 2,
+            "explanation": "`.append(item)` adds one item to the end of the list. `.extend(iterable)` adds all elements of an iterable. `.insert(index, item)` adds an item at a specific position. Lists have no `.add()` method (that belongs to sets)."
+        },
+        {
+            "id": "d05q04",
+            "type": "multiple_choice",
+            "question": "What does `sorted([3, 1, 4, 1, 5, 9])` return?",
+            "options": [
+                "[3, 1, 4, 1, 5, 9] (unchanged, sorted() modifies in place)",
+                "[1, 1, 3, 4, 5, 9]",
+                "[9, 5, 4, 3, 1, 1]",
+                "None"
+            ],
+            "answer": 1,
+            "explanation": "`sorted()` returns a NEW sorted list and does not modify the original. To sort a list in place, use `.sort()`. Note the difference: `sorted(my_list)` vs `my_list.sort()`."
+        },
+        {
+            "id": "d05q05",
+            "type": "multiple_choice",
+            "question": "A data analyst has `prices = [10.5, 22.0, 8.75]`. Which expression gives the highest price?",
+            "options": [
+                "prices.top()",
+                "prices[-1]",
+                "max(prices)",
+                "prices.sort()[0]"
+            ],
+            "answer": 2,
+            "explanation": "`max(prices)` returns the largest element without modifying the list. `prices[-1]` gives the last element (22.0 here, but only because the list happens to end there). `prices.sort()[0]` would fail because `.sort()` returns `None`."
+        }
+    ]
+}

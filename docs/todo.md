@@ -155,6 +155,23 @@ Each lesson day needs a `quiz.json` sidecar for the app's quiz engine:
 - [ ] App: `QuizEngine` component reads `quiz.json`, replaces markdown mastery-check section
 - [ ] App: wrong-answer analytics surfaced in the spaced-repetition store
 
+#### Phase 1 quiz.json — completed (2026-03-02)
+
+- [x] `Day_01_Introduction` — quiz.json (5 questions: print, arithmetic, exponentiation, print(), type conversion)
+- [x] `Day_02_Variables_Builtin_Functions` — quiz.json (5 questions: data types, len(), naming rules, int(), reassignment)
+- [x] `Day_03_Operators` — quiz.json (5 questions: PEMDAS, modulo, !=, +=, logical and)
+- [x] `Day_04_Strings` — quiz.json (5 questions: slicing, f-strings, strip/lower, immutability, title())
+- [x] `Day_05_Lists` — quiz.json (5 questions: slicing, aliasing, append(), sorted(), max())
+- [x] `Day_06_Tuples` — quiz.json (5 questions: single-element tuple, immutability, unpacking, use cases, sum())
+- [x] `Day_07_Sets` — quiz.json (5 questions: uniqueness, intersection, empty set, symmetric difference, hashability)
+- [x] `Day_08_Dictionaries` — quiz.json (5 questions: get(), items(), comprehension, KeyError, len())
+- [x] `Day_09_Conditionals` — quiz.json (5 questions: and logic, elif, falsy values, ternary, business scenario)
+- [x] `Day_10_Loops` — quiz.json (5 questions: range(), break, enumerate(), while vs for, zip())
+- [x] `Day_11_Functions` — quiz.json (5 questions: mutable default, **kwargs, pure functions, composition, lambda)
+- [x] `Day_11B_Generators_Iterators` — quiz.json (5 questions: iterator protocol, memory advantage, yield, yield from, pipeline)
+- [x] `Day_11C_Debugging_Workflows` — quiz.json (5 questions: traceback reading, KeyError, debug workflow, breakpoint(), logging)
+- [x] `Day_12_List_Comprehension` — quiz.json (5 questions: basic, filter, generator expr, nested, readability)
+
 ### Capstone Project Scaffolds (`content/projects/`)
 
 - [ ] `01_python_data_pipeline/` — Phase 1–2 skills showcase

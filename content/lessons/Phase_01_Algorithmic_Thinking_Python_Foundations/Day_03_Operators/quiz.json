@@ -1,0 +1,70 @@
+{
+    "day": 3,
+    "questions": [
+        {
+            "id": "d03q01",
+            "type": "multiple_choice",
+            "question": "What does `2 + 3 * 4 ** 2` evaluate to?",
+            "options": [
+                "100",
+                "50",
+                "196",
+                "400"
+            ],
+            "answer": 1,
+            "explanation": "Python evaluates in PEMDAS order: exponents first (`4**2 = 16`), then multiplication (`3*16 = 48`), then addition (`2+48 = 50`)."
+        },
+        {
+            "id": "d03q02",
+            "type": "multiple_choice",
+            "question": "What is the result of `17 % 5` in Python?",
+            "options": [
+                "3.4",
+                "3",
+                "2",
+                "0"
+            ],
+            "answer": 2,
+            "explanation": "The `%` operator returns the remainder of integer division. `17 // 5 = 3` remainder `2`. In business contexts, `%` is useful to check if something is divisible (e.g., `total_items % batch_size`) or to cycle through values."
+        },
+        {
+            "id": "d03q03",
+            "type": "multiple_choice",
+            "question": "Which comparison operator checks that two values are NOT equal?",
+            "options": [
+                "<>",
+                "!=",
+                "!==",
+                "not ="
+            ],
+            "answer": 1,
+            "explanation": "Python uses `!=` for 'not equal'. For example, `status != 'closed'` returns `True` when status is anything other than 'closed'. The `<>` operator existed in Python 2 but was removed in Python 3."
+        },
+        {
+            "id": "d03q04",
+            "type": "multiple_choice",
+            "question": "After running `x = 10` then `x += 3`, what is the value of `x`?",
+            "options": [
+                "10",
+                "3",
+                "13",
+                "30"
+            ],
+            "answer": 2,
+            "explanation": "`x += 3` is shorthand for `x = x + 3`. Starting with x = 10, we get x = 10 + 3 = 13. Augmented assignment operators (`+=`, `-=`, `*=`, `/=`) modify a variable in place."
+        },
+        {
+            "id": "d03q05",
+            "type": "multiple_choice",
+            "question": "What does `(5 > 3) and (10 < 8)` evaluate to?",
+            "options": [
+                "True",
+                "False",
+                "None",
+                "Error"
+            ],
+            "answer": 1,
+            "explanation": "`5 > 3` is `True` and `10 < 8` is `False`. With `and`, both sides must be `True` for the whole expression to be `True`. Since one side is `False`, the result is `False`."
+        }
+    ]
+}
