@@ -12,6 +12,8 @@
 /* --- Custom Properties --- */
 :root {
   /* Palette: #f72585 #b5179e #7209b7 #560bad #480ca8 #3a0ca3 #3f37c9 #4361ee #4895ef #4cc9f0 */
+  /* Accent: #4361ee (primary), #3f37c9 (secondary), #4895ef (tertiary) */
+  /* Gradient hero uses: #f72585, #7209b7, #4361ee, #4cc9f0 */
 
   /* Background */
   --bg-primary: #0a0a1a;
@@ -64,6 +66,9 @@
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4);
   --shadow-glow: 0 0 40px rgba(67, 97, 238, 0.15);
+
+  /* Logo */
+  --gradient-logo: linear-gradient(135deg, #595cff, #c6f8ff);
 
   /* Layout */
   --sidebar-width: 300px;

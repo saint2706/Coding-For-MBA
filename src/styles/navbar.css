@@ -38,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #595cff, #c6f8ff);
+  background: var(--gradient-logo);
   border-radius: var(--radius-sm);
   color: white;
   font-size: 18px;
