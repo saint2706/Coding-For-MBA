@@ -178,6 +178,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </Link>
 
           <Link
+            to="/case-studies"
+            className={`day-link ${location.pathname === '/case-studies' ? 'active' : ''}`}
+            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
+            onClick={onClose}
+            aria-current={location.pathname === '/case-studies' ? 'page' : undefined}
+          >
+            📂 Case Studies &amp; Projects
+          </Link>
+
+          <Link
             to="/review"
             className={`day-link ${location.pathname === '/review' ? 'active' : ''}`}
             style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
