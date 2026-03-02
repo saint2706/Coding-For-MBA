@@ -233,7 +233,7 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--accent-tertiary);
-  background: rgba(8, 181, 212, 0.04);
+  background: rgba(67, 97, 238, 0.04);
   border-bottom: 1px solid var(--border-subtle);
 }
 
@@ -250,10 +250,10 @@
 /* --- Exercise Widget --- */
 .exercise-widget {
   margin: 1rem 0;
-  border: 1px solid rgba(8, 181, 212, 0.15);
+  border: 1px solid rgba(67, 97, 238, 0.15);
   border-radius: var(--radius-md);
   overflow: hidden;
-  background: rgba(8, 181, 212, 0.03);
+  background: rgba(67, 97, 238, 0.03);
 }
 
 .exercise-widget__header {
@@ -261,8 +261,8 @@
   align-items: center;
   gap: 0.4rem;
   padding: 0.5rem 0.75rem;
-  background: rgba(8, 181, 212, 0.06);
-  border-bottom: 1px solid rgba(8, 181, 212, 0.08);
+  background: rgba(67, 97, 238, 0.06);
+  border-bottom: 1px solid rgba(67, 97, 238, 0.08);
 }
 
 .exercise-widget__icon {

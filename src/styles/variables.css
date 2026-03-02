@@ -11,57 +11,64 @@
 
 /* --- Custom Properties --- */
 :root {
+  /* Palette: #f72585 #b5179e #7209b7 #560bad #480ca8 #3a0ca3 #3f37c9 #4361ee #4895ef #4cc9f0 */
+  /* Accent: #4361ee (primary), #3f37c9 (secondary), #4895ef (tertiary) */
+  /* Gradient hero uses: #f72585, #7209b7, #4361ee, #4cc9f0 */
+
   /* Background */
-  --bg-primary: #102022;
-  --bg-secondary: #0f2023;
-  --bg-card: #162a2d;
-  --bg-card-hover: #1d363a;
-  --bg-surface: #132628;
-  --bg-code: #1a2e30;
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #0c0c20;
+  --bg-card: #12122a;
+  --bg-card-hover: #1a1a36;
+  --bg-surface: #0f0f24;
+  --bg-code: #111128;
 
   /* Text */
-  --text-primary: #e2eff2;
-  --text-secondary: #9bb6bb;
-  --text-muted: #6d8a8f;
-  --text-heading: #f0f9fa;
+  --text-primary: #e2e2f0;
+  --text-secondary: #9b9bc0;
+  --text-muted: #6d6d8f;
+  --text-heading: #f0f0fa;
 
   /* Accent */
-  --accent-primary: #08b5d4;
-  --accent-secondary: #0694ad;
-  --accent-tertiary: #22d3ee;
-  --accent-glow: rgba(8, 181, 212, 0.25);
+  --accent-primary: #4361ee;
+  --accent-secondary: #3f37c9;
+  --accent-tertiary: #4895ef;
+  --accent-glow: rgba(67, 97, 238, 0.25);
 
   /* Borders */
-  --border-subtle: rgba(176, 191, 219, 0.12);
-  --border-card: rgba(176, 191, 219, 0.18);
-  --border-active: rgba(8, 181, 212, 0.4);
+  --border-subtle: rgba(150, 160, 210, 0.12);
+  --border-card: rgba(150, 160, 210, 0.18);
+  --border-active: rgba(67, 97, 238, 0.4);
 
   /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #08b5d4 0%, #0694ad 40%, #22d3ee 100%);
+  --gradient-hero: linear-gradient(135deg, #f72585 0%, #7209b7 35%, #4361ee 70%, #4cc9f0 100%);
   --gradient-card: linear-gradient(
     145deg,
-    rgba(8, 181, 212, 0.08) 0%,
-    rgba(6, 182, 212, 0.04) 100%
+    rgba(67, 97, 238, 0.08) 0%,
+    rgba(63, 55, 201, 0.04) 100%
   );
   --gradient-glow: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(8, 181, 212, 0.06),
+    rgba(67, 97, 238, 0.06),
     transparent 40%
   );
 
   /* Calm reading surface */
-  --reading-bg-primary: #0f1c1e;
-  --reading-bg-surface: #142628;
-  --reading-bg-code: #182c2e;
-  --reading-border-subtle: rgba(176, 191, 219, 0.1);
-  --reading-border-card: rgba(176, 191, 219, 0.14);
-  --reading-border-active: rgba(6, 182, 212, 0.26);
-  --reading-accent-glow: rgba(8, 181, 212, 0.1);
+  --reading-bg-primary: #090918;
+  --reading-bg-surface: #0f0f24;
+  --reading-bg-code: #12122a;
+  --reading-border-subtle: rgba(150, 160, 210, 0.1);
+  --reading-border-card: rgba(150, 160, 210, 0.14);
+  --reading-border-active: rgba(67, 97, 238, 0.26);
+  --reading-accent-glow: rgba(67, 97, 238, 0.1);
 
   /* Shadows */
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 40px rgba(8, 181, 212, 0.15);
+  --shadow-glow: 0 0 40px rgba(67, 97, 238, 0.15);
+
+  /* Logo */
+  --gradient-logo: linear-gradient(135deg, #595cff, #c6f8ff);
 
   /* Layout */
   --sidebar-width: 300px;
