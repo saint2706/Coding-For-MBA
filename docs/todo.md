@@ -174,12 +174,12 @@ Each lesson day needs a `quiz.json` sidecar for the app's quiz engine:
 
 ### Capstone Project Scaffolds (`content/projects/`)
 
-- [ ] `01_python_data_pipeline/` — Phase 1–2 skills showcase
-- [ ] `02_web_dashboard/` — Phase 3 Flask/Streamlit project
-- [ ] `03_ml_churn_predictor/` — Phase 4–5 end-to-end ML model
-- [ ] `04_bi_analytics_suite/` — Phase 6–7 Tableau/Power BI + SQL
-- [ ] `05_sql_data_warehouse/` — Phase 8–9 full DDL + ETL
-- [ ] `06_llm_data_assistant/` — Phase 10 RAG / agent demo
+- [x] `01_python_data_pipeline/` — Phase 1–2 skills showcase
+- [x] `02_web_dashboard/` — Phase 3 Flask/Streamlit project
+- [x] `03_ml_churn_predictor/` — Phase 4–5 end-to-end ML model
+- [x] `04_bi_analytics_suite/` — Phase 6–7 Tableau/Power BI + SQL
+- [x] `05_sql_data_warehouse/` — Phase 8–9 full DDL + ETL
+- [x] `06_llm_data_assistant/` — Phase 10 RAG / agent demo
 
 ### MBA Case Studies (`content/case-studies/`)
 
