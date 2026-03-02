@@ -53,3 +53,4 @@
 **Vulnerability:** The previous regex checks for internal module imports (like `\bimport\s+js\b`) could be bypassed by importing multiple modules in a single statement (e.g., `import math, js`), allowing dangerous module execution.
 **Learning:** Simple import regexes must account for comma-separated module lists and other valid Python import syntaxes.
 **Prevention:** Replaced literal regexes with a broader `\bimport\b[^;\n]*\b(js|pyodide|micropip)\b` and `\bfrom\b\s+(js|pyodide|micropip)\b` pattern to securely catch all occurrences of restricted modules in import statements.
+- Added `__class__`, `__base__`, and `__dict__` to the list of `globalKeywords` inside `validatePythonCode` to prevent Python Sandbox Escapes using Dunder Method Reflection/Object Instantiation (e.g. `().__class__.__base__.__dict__["__subclasses__"]`).

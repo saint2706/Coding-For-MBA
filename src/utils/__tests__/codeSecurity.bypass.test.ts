@@ -78,4 +78,11 @@ describe('validatePythonCode - Bypass Attempts', () => {
   it('should not block from js import if js is a variable', () => {
     expect(validatePythonCode('from some_module import json').valid).toBe(true)
   })
+
+  it('should block sandbox escape via dunder dict reflection', () => {
+    expect(validatePythonCode('().__class__.__base__.__dict__["__subclasses__"]()').valid).toBe(false)
+    expect(validatePythonCode('c = __class__').valid).toBe(false)
+    expect(validatePythonCode('b = __base__').valid).toBe(false)
+    expect(validatePythonCode('d = __dict__').valid).toBe(false)
+  })
 })

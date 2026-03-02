@@ -141,6 +141,9 @@ export function validatePythonCode(code: string): ValidationResult {
     '__closure__',
     '__loader__',
     '__spec__',
+    '__class__',
+    '__base__',
+    '__dict__',
   ]
   const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
   if (globalRegex.test(strippedCode)) {
