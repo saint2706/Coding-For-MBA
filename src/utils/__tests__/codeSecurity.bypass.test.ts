@@ -85,4 +85,21 @@ describe('validatePythonCode - Bypass Attempts', () => {
     expect(validatePythonCode('b = __base__').valid).toBe(false)
     expect(validatePythonCode('d = __dict__').valid).toBe(false)
   })
+
+  it('should block sandbox escape via frame and traceback attributes', () => {
+    const tracebackEscape = `
+try:
+    1/0
+except Exception as e:
+    tb = e.__traceback__
+    f = tb.tb_frame
+    g = f.f_globals
+    b = g["__builtins__"]
+    b["__import__"]("os").system("echo exploited")
+`
+    expect(validatePythonCode(tracebackEscape).valid).toBe(false)
+    expect(validatePythonCode('x = f_back').valid).toBe(false)
+    expect(validatePythonCode('y = f_builtins').valid).toBe(false)
+    expect(validatePythonCode('z = f_code').valid).toBe(false)
+  })
 })
