@@ -30,7 +30,7 @@ import {
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
-import { useUserPreferencesStore } from '../stores/userPreferencesStore'
+import { useUserPreferencesStore, type ColorPalette } from '../stores/userPreferencesStore'
 import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
 import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
 import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
@@ -100,14 +100,14 @@ export default function ProgressDashboard() {
   }, [refreshDailyChallenge])
 
   const {
-    theme,
+    palette,
     sidebarDefaultOpen,
     fontSize,
     codeLanguage,
     density,
     readingMode,
     customCursorEnabled,
-    setTheme,
+    setPalette,
     setSidebarDefaultOpen,
     setFontSize,
     setCodeLanguage,
@@ -326,19 +326,72 @@ export default function ProgressDashboard() {
         </div>
 
         <div className="preferences-grid">
-          <label className="preferences-field" htmlFor="theme-preference">
-            Theme
-            <select
-              id="theme-preference"
-              value={theme}
-              onChange={(event) => setTheme(event.target.value as 'light' | 'dark' | 'system')}
-              aria-label="Theme preference"
-            >
-              <option value="system">System</option>
-              <option value="dark">Dark</option>
-              <option value="light">Light</option>
-            </select>
-          </label>
+          <div className="preferences-field preferences-field--palette">
+            Color palette
+            <div className="palette-grid" role="radiogroup" aria-label="Color palette">
+              {(
+                [
+                  {
+                    id: 'peach-sorbet',
+                    label: 'Peach Sorbet',
+                    swatches: ['#f08080', '#f4978e', '#f8ad9d', '#fbc4ab', '#ffdab9'],
+                  },
+                  {
+                    id: 'gradient-blues',
+                    label: 'Gradient Blues',
+                    swatches: ['#7400b8', '#5e60ce', '#48bfe3', '#72efdd', '#80ffdb'],
+                  },
+                  {
+                    id: 'neon-party',
+                    label: 'Neon Party',
+                    swatches: ['#00ccff', '#00ffcc', '#ffff00', '#ff00cc', '#cc00ff'],
+                  },
+                  {
+                    id: 'deep-ocean-blue',
+                    label: 'Deep Ocean Blue',
+                    swatches: ['#006466', '#0b525b', '#212f45', '#312244', '#4d194d'],
+                  },
+                  {
+                    id: 'pastel-dreamland',
+                    label: 'Pastel Dreamland',
+                    swatches: ['#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff'],
+                  },
+                  {
+                    id: 'golden-summer-fields',
+                    label: 'Golden Summer Fields',
+                    swatches: ['#ccd5ae', '#e9edc9', '#fefae0', '#faedcd', '#d4a373'],
+                  },
+                  {
+                    id: 'light-steel',
+                    label: 'Light Steel',
+                    swatches: ['#f8f9fa', '#ced4da', '#adb5bd', '#6c757d', '#212529'],
+                  },
+                ] as { id: ColorPalette; label: string; swatches: string[] }[]
+              ).map(({ id, label, swatches }) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="radio"
+                  aria-checked={palette === id}
+                  className={`palette-swatch-btn${palette === id ? ' palette-swatch-btn--active' : ''}`}
+                  onClick={() => setPalette(id)}
+                  title={label}
+                  aria-label={label}
+                >
+                  <span className="palette-swatch-strip" aria-hidden="true">
+                    {swatches.map((color) => (
+                      <span
+                        key={color}
+                        className="palette-swatch-color"
+                        style={{ background: color }}
+                      />
+                    ))}
+                  </span>
+                  <span className="palette-swatch-name">{label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           <label className="preferences-field" htmlFor="font-size-preference">
             Font size

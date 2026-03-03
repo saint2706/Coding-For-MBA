@@ -4,7 +4,7 @@
  * Manages global user settings and UI customization.
  *
  * Key Responsibilities:
- * - Store theme preferences (light/dark/system).
+ * - Store color palette preference.
  * - Manage editor font size and density settings.
  * - Set default code languages (Python vs SQL).
  * - Persist settings to localStorage.
@@ -14,20 +14,27 @@ import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
 import { getStoredString } from '../utils/safeStorage'
 
-export type ThemePreference = 'light' | 'dark' | 'system'
+export type ColorPalette =
+  | 'peach-sorbet'
+  | 'gradient-blues'
+  | 'neon-party'
+  | 'deep-ocean-blue'
+  | 'pastel-dreamland'
+  | 'golden-summer-fields'
+  | 'light-steel'
 export type FontSizePreference = 'sm' | 'md' | 'lg'
 export type CodeLanguagePreference = 'python' | 'sql'
 export type DensityPreference = 'comfortable' | 'compact'
 
 export type UserPreferencesStore = {
-  theme: ThemePreference
+  palette: ColorPalette
   sidebarDefaultOpen: boolean
   fontSize: FontSizePreference
   codeLanguage: CodeLanguagePreference
   density: DensityPreference
   readingMode: boolean
   customCursorEnabled: boolean
-  setTheme: (theme: ThemePreference) => void
+  setPalette: (palette: ColorPalette) => void
   setSidebarDefaultOpen: (open: boolean) => void
   setFontSize: (size: FontSizePreference) => void
   setCodeLanguage: (language: CodeLanguagePreference) => void
@@ -63,8 +70,18 @@ const safeStorage: StateStorage = {
   },
 }
 
-function normalizeTheme(value: unknown): ThemePreference {
-  return value === 'light' || value === 'dark' || value === 'system' ? value : 'system'
+const VALID_PALETTES: ColorPalette[] = [
+  'peach-sorbet',
+  'gradient-blues',
+  'neon-party',
+  'deep-ocean-blue',
+  'pastel-dreamland',
+  'golden-summer-fields',
+  'light-steel',
+]
+
+function normalizePalette(value: unknown): ColorPalette {
+  return VALID_PALETTES.includes(value as ColorPalette) ? (value as ColorPalette) : 'gradient-blues'
 }
 
 function normalizeFontSize(value: unknown): FontSizePreference {
@@ -79,22 +96,23 @@ function normalizeDensity(value: unknown): DensityPreference {
   return value === 'comfortable' || value === 'compact' ? value : 'comfortable'
 }
 
-function getLegacyThemePreference(): ThemePreference {
+function getLegacyPalette(): ColorPalette {
   const legacyTheme = getStoredString(LEGACY_THEME_KEY)
-  return legacyTheme === 'light' || legacyTheme === 'dark' ? legacyTheme : 'system'
+  // Map legacy dark/system → gradient-blues, light → light-steel
+  return legacyTheme === 'light' ? 'light-steel' : 'gradient-blues'
 }
 
 export const useUserPreferencesStore = create<UserPreferencesStore>()(
   persist(
     (set) => ({
-      theme: getLegacyThemePreference(),
+      palette: getLegacyPalette(),
       sidebarDefaultOpen: false,
       fontSize: 'md',
       codeLanguage: 'python',
       density: 'comfortable',
       readingMode: false,
       customCursorEnabled: false,
-      setTheme: (theme) => set({ theme }),
+      setPalette: (palette) => set({ palette }),
       setSidebarDefaultOpen: (sidebarDefaultOpen) => set({ sidebarDefaultOpen }),
       setFontSize: (fontSize) => set({ fontSize }),
       setCodeLanguage: (codeLanguage) => set({ codeLanguage }),
@@ -104,10 +122,10 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
     }),
     {
       name: STORAGE_KEY,
-      version: 3,
+      version: 4,
       storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({
-        theme: state.theme,
+        palette: state.palette,
         sidebarDefaultOpen: state.sidebarDefaultOpen,
         fontSize: state.fontSize,
         codeLanguage: state.codeLanguage,
@@ -117,8 +135,15 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
       }),
       migrate: (persistedState) => {
         const raw = (persistedState || {}) as Record<string, unknown>
+        // Migrate legacy `theme` field to `palette`
+        const legacyPalette =
+          raw.theme === 'light'
+            ? 'light-steel'
+            : raw.theme === 'dark' || raw.theme === 'system'
+              ? 'gradient-blues'
+              : null
         return {
-          theme: normalizeTheme(raw.theme),
+          palette: normalizePalette(raw.palette ?? legacyPalette),
           sidebarDefaultOpen:
             typeof raw.sidebarDefaultOpen === 'boolean' ? raw.sidebarDefaultOpen : false,
           fontSize: normalizeFontSize(raw.fontSize),
@@ -133,6 +158,6 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
   ),
 )
 
-export const selectThemePreference = (state: UserPreferencesStore) => state.theme
+export const selectPalette = (state: UserPreferencesStore) => state.palette
 export const selectSidebarDefaultOpen = (state: UserPreferencesStore) => state.sidebarDefaultOpen
 export const selectReadingMode = (state: UserPreferencesStore) => state.readingMode

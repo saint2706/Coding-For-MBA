@@ -6,13 +6,12 @@
  * Key Responsibilities:
  * - Display brand identity and hamburger menu toggle.
  * - Provide a global search input with keyboard shortcut `/`.
- * - Show primary navigation links and theme toggle.
+ * - Show primary navigation links.
  * - Link to the external GitHub repository.
  */
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useTheme } from '../context/useTheme'
 import { toastInfo } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
@@ -25,7 +24,6 @@ interface NavbarProps {
 export default function Navbar({ onToggleSidebar }: NavbarProps) {
   const location = useLocation()
   const navigate = useNavigate()
-  const { theme, toggleTheme } = useTheme()
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const lastSearchToastAtRef = useRef(0)
@@ -74,12 +72,6 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
   const handleClear = () => {
     setQuery('')
     inputRef.current?.focus()
-  }
-
-  const handleThemeToggle = () => {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark'
-    toggleTheme()
-    toastInfo(`Switched to ${nextTheme} mode`)
   }
 
   return (
@@ -138,40 +130,6 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
             <span className="navbar-search-shortcut">/</span>
           )}
         </form>
-        <button
-          type="button"
-          className="theme-toggle"
-          onClick={handleThemeToggle}
-          aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-        >
-          {theme === 'dark' ? (
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              width="20"
-              height="20"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="5" />
-              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
-            </svg>
-          ) : (
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              width="20"
-              height="20"
-              aria-hidden="true"
-            >
-              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-            </svg>
-          )}
-        </button>
         <Link
           to="/"
           className={location.pathname === '/' ? 'active' : ''}

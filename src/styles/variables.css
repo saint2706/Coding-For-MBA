@@ -10,12 +10,10 @@
 }
 
 /* --- Custom Properties --- */
+/* These serve as a fallback when no data-palette attribute is set.
+   Each [data-palette] block below overrides these values. */
 :root {
-  /* Palette: #f72585 #b5179e #7209b7 #560bad #480ca8 #3a0ca3 #3f37c9 #4361ee #4895ef #4cc9f0 */
-  /* Accent: #4361ee (primary), #3f37c9 (secondary), #4895ef (tertiary) */
-  /* Gradient hero uses: #f72585, #7209b7, #4361ee, #4cc9f0 */
-
-  /* Background */
+  /* Default palette: Gradient Blues (dark purple-to-cyan) */
   --bg-primary: #0a0a1a;
   --bg-secondary: #0c0c20;
   --bg-card: #12122a;
@@ -30,26 +28,26 @@
   --text-heading: #f0f0fa;
 
   /* Accent */
-  --accent-primary: #4361ee;
-  --accent-secondary: #3f37c9;
-  --accent-tertiary: #4895ef;
-  --accent-glow: rgba(67, 97, 238, 0.25);
+  --accent-primary: #5e60ce;
+  --accent-secondary: #6930c3;
+  --accent-tertiary: #48bfe3;
+  --accent-glow: rgba(94, 96, 206, 0.25);
 
   /* Borders */
   --border-subtle: rgba(150, 160, 210, 0.12);
   --border-card: rgba(150, 160, 210, 0.18);
-  --border-active: rgba(67, 97, 238, 0.4);
+  --border-active: rgba(94, 96, 206, 0.4);
 
   /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #f72585 0%, #7209b7 35%, #4361ee 70%, #4cc9f0 100%);
+  --gradient-hero: linear-gradient(135deg, #7400b8 0%, #5e60ce 40%, #48bfe3 70%, #80ffdb 100%);
   --gradient-card: linear-gradient(
     145deg,
-    rgba(67, 97, 238, 0.08) 0%,
-    rgba(63, 55, 201, 0.04) 100%
+    rgba(94, 96, 206, 0.08) 0%,
+    rgba(105, 48, 195, 0.04) 100%
   );
   --gradient-glow: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(67, 97, 238, 0.06),
+    rgba(94, 96, 206, 0.06),
     transparent 40%
   );
 
@@ -59,16 +57,16 @@
   --reading-bg-code: #12122a;
   --reading-border-subtle: rgba(150, 160, 210, 0.1);
   --reading-border-card: rgba(150, 160, 210, 0.14);
-  --reading-border-active: rgba(67, 97, 238, 0.26);
-  --reading-accent-glow: rgba(67, 97, 238, 0.1);
+  --reading-border-active: rgba(94, 96, 206, 0.26);
+  --reading-accent-glow: rgba(94, 96, 206, 0.1);
 
   /* Shadows */
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
   --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 40px rgba(67, 97, 238, 0.15);
+  --shadow-glow: 0 0 40px rgba(94, 96, 206, 0.15);
 
   /* Logo */
-  --gradient-logo: linear-gradient(135deg, #595cff, #c6f8ff);
+  --gradient-logo: linear-gradient(135deg, #6930c3, #80ffdb);
 
   /* Layout */
   --sidebar-width: 300px;
@@ -93,4 +91,310 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   --app-font-size: 1rem;
   --density-scale: 1;
+}
+
+/* ===== COLOR PALETTES ===== */
+
+/* --- 1. Peach Sorbet (light) --- */
+/* Palette: #f08080 #f4978e #f8ad9d #fbc4ab #ffdab9 */
+[data-palette='peach-sorbet'] {
+  --bg-primary: #fff8f5;
+  --bg-secondary: #fff0ea;
+  --bg-card: #ffeee6;
+  --bg-card-hover: #ffe4d9;
+  --bg-surface: #fff5f0;
+  --bg-code: #fde8df;
+  --text-primary: #4a2520;
+  --text-secondary: #7a4a40;
+  --text-muted: #a07060;
+  --text-heading: #2d1510;
+  --accent-primary: #f08080;
+  --accent-secondary: #f4978e;
+  --accent-tertiary: #fbc4ab;
+  --accent-glow: rgba(240, 128, 128, 0.25);
+  --border-subtle: rgba(240, 128, 128, 0.18);
+  --border-card: rgba(240, 128, 128, 0.24);
+  --border-active: rgba(240, 128, 128, 0.5);
+  --gradient-hero: linear-gradient(135deg, #f08080 0%, #f4978e 35%, #f8ad9d 65%, #ffdab9 100%);
+  --gradient-card: linear-gradient(
+    145deg,
+    rgba(240, 128, 128, 0.06) 0%,
+    rgba(244, 151, 142, 0.03) 100%
+  );
+  --gradient-glow: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(240, 128, 128, 0.04),
+    transparent 40%
+  );
+  --shadow-card: 0 1px 3px rgba(180, 80, 60, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(180, 80, 60, 0.12);
+  --shadow-glow: 0 0 20px rgba(240, 128, 128, 0.12);
+  --gradient-logo: linear-gradient(135deg, #f08080, #ffdab9);
+  --reading-bg-primary: #fff3ee;
+  --reading-bg-surface: #fff8f5;
+  --reading-bg-code: #fde8df;
+  --reading-border-subtle: rgba(240, 128, 128, 0.12);
+  --reading-border-card: rgba(240, 128, 128, 0.18);
+  --reading-border-active: rgba(240, 128, 128, 0.42);
+  --reading-accent-glow: rgba(240, 128, 128, 0.08);
+}
+
+/* --- 2. Gradient Blues (dark) --- */
+/* Palette: #7400b8 #6930c3 #5e60ce #5390d9 #4ea8de #48bfe3 #56cfe1 #64dfdf #72efdd #80ffdb */
+[data-palette='gradient-blues'] {
+  --bg-primary: #0a0a1a;
+  --bg-secondary: #0c0c20;
+  --bg-card: #12122a;
+  --bg-card-hover: #1a1a36;
+  --bg-surface: #0f0f24;
+  --bg-code: #111128;
+  --text-primary: #e2e2f0;
+  --text-secondary: #9b9bc0;
+  --text-muted: #6d6d8f;
+  --text-heading: #f0f0fa;
+  --accent-primary: #5e60ce;
+  --accent-secondary: #6930c3;
+  --accent-tertiary: #48bfe3;
+  --accent-glow: rgba(94, 96, 206, 0.25);
+  --border-subtle: rgba(150, 160, 210, 0.12);
+  --border-card: rgba(150, 160, 210, 0.18);
+  --border-active: rgba(94, 96, 206, 0.4);
+  --gradient-hero: linear-gradient(135deg, #7400b8 0%, #5e60ce 40%, #48bfe3 70%, #80ffdb 100%);
+  --gradient-card: linear-gradient(
+    145deg,
+    rgba(94, 96, 206, 0.08) 0%,
+    rgba(105, 48, 195, 0.04) 100%
+  );
+  --gradient-glow: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(94, 96, 206, 0.06),
+    transparent 40%
+  );
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(94, 96, 206, 0.15);
+  --gradient-logo: linear-gradient(135deg, #6930c3, #80ffdb);
+  --reading-bg-primary: #090918;
+  --reading-bg-surface: #0f0f24;
+  --reading-bg-code: #12122a;
+  --reading-border-subtle: rgba(150, 160, 210, 0.1);
+  --reading-border-card: rgba(150, 160, 210, 0.14);
+  --reading-border-active: rgba(94, 96, 206, 0.26);
+  --reading-accent-glow: rgba(94, 96, 206, 0.1);
+}
+
+/* --- 3. Neon Party (dark) --- */
+/* Palette: #00ccff #00ffcc #ffff00 #ff00cc #cc00ff */
+[data-palette='neon-party'] {
+  --bg-primary: #050510;
+  --bg-secondary: #070715;
+  --bg-card: #0c0c1e;
+  --bg-card-hover: #121228;
+  --bg-surface: #080818;
+  --bg-code: #0a0a1c;
+  --text-primary: #e0e0f8;
+  --text-secondary: #9090c0;
+  --text-muted: #5050a0;
+  --text-heading: #f0f0ff;
+  --accent-primary: #00ccff;
+  --accent-secondary: #cc00ff;
+  --accent-tertiary: #00ffcc;
+  --accent-glow: rgba(0, 204, 255, 0.3);
+  --border-subtle: rgba(0, 204, 255, 0.15);
+  --border-card: rgba(0, 204, 255, 0.2);
+  --border-active: rgba(0, 204, 255, 0.5);
+  --gradient-hero: linear-gradient(135deg, #cc00ff 0%, #00ccff 35%, #00ffcc 65%, #ffff00 100%);
+  --gradient-card: linear-gradient(
+    145deg,
+    rgba(0, 204, 255, 0.08) 0%,
+    rgba(204, 0, 255, 0.04) 100%
+  );
+  --gradient-glow: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 204, 255, 0.07),
+    transparent 40%
+  );
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px rgba(0, 204, 255, 0.2);
+  --gradient-logo: linear-gradient(135deg, #cc00ff, #00ccff);
+  --reading-bg-primary: #030308;
+  --reading-bg-surface: #080818;
+  --reading-bg-code: #0c0c1e;
+  --reading-border-subtle: rgba(0, 204, 255, 0.1);
+  --reading-border-card: rgba(0, 204, 255, 0.15);
+  --reading-border-active: rgba(0, 204, 255, 0.35);
+  --reading-accent-glow: rgba(0, 204, 255, 0.1);
+}
+
+/* --- 4. Deep Ocean Blue (dark) --- */
+/* Palette: #006466 #065a60 #0b525b #144552 #1b3a4b #212f45 #272640 #312244 #3e1f47 #4d194d */
+[data-palette='deep-ocean-blue'] {
+  --bg-primary: #060e18;
+  --bg-secondary: #091320;
+  --bg-card: #0f1e2e;
+  --bg-card-hover: #162638;
+  --bg-surface: #0c1825;
+  --bg-code: #0a1520;
+  --text-primary: #c8e6e8;
+  --text-secondary: #7ab0b5;
+  --text-muted: #4a7880;
+  --text-heading: #e0f0f2;
+  --accent-primary: #006466;
+  --accent-secondary: #0b525b;
+  --accent-tertiary: #48bfe3;
+  --accent-glow: rgba(0, 100, 102, 0.3);
+  --border-subtle: rgba(100, 180, 185, 0.12);
+  --border-card: rgba(100, 180, 185, 0.18);
+  --border-active: rgba(0, 100, 102, 0.45);
+  --gradient-hero: linear-gradient(135deg, #006466 0%, #1b3a4b 40%, #272640 70%, #4d194d 100%);
+  --gradient-card: linear-gradient(145deg, rgba(0, 100, 102, 0.1) 0%, rgba(39, 38, 64, 0.05) 100%);
+  --gradient-glow: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(0, 100, 102, 0.07),
+    transparent 40%
+  );
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 40px rgba(0, 100, 102, 0.2);
+  --gradient-logo: linear-gradient(135deg, #006466, #4d194d);
+  --reading-bg-primary: #04090f;
+  --reading-bg-surface: #0c1825;
+  --reading-bg-code: #0f1e2e;
+  --reading-border-subtle: rgba(100, 180, 185, 0.1);
+  --reading-border-card: rgba(100, 180, 185, 0.14);
+  --reading-border-active: rgba(0, 100, 102, 0.3);
+  --reading-accent-glow: rgba(0, 100, 102, 0.1);
+}
+
+/* --- 5. Pastel Dreamland (light) --- */
+/* Palette: #cdb4db #ffc8dd #ffafcc #bde0fe #a2d2ff */
+[data-palette='pastel-dreamland'] {
+  --bg-primary: #faf7fd;
+  --bg-secondary: #f4effa;
+  --bg-card: #ede5f7;
+  --bg-card-hover: #e4d9f2;
+  --bg-surface: #f8f3fc;
+  --bg-code: #f0eaf8;
+  --text-primary: #3d2356;
+  --text-secondary: #6a3e8c;
+  --text-muted: #9a70b8;
+  --text-heading: #280e3e;
+  --accent-primary: #9b72cf;
+  --accent-secondary: #e8789e;
+  --accent-tertiary: #6aade8;
+  --accent-glow: rgba(155, 114, 207, 0.28);
+  --border-subtle: rgba(155, 114, 207, 0.18);
+  --border-card: rgba(155, 114, 207, 0.25);
+  --border-active: rgba(155, 114, 207, 0.5);
+  --gradient-hero: linear-gradient(135deg, #cdb4db 0%, #ffc8dd 35%, #ffafcc 60%, #a2d2ff 100%);
+  --gradient-card: linear-gradient(
+    145deg,
+    rgba(155, 114, 207, 0.06) 0%,
+    rgba(232, 120, 158, 0.03) 100%
+  );
+  --gradient-glow: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(155, 114, 207, 0.04),
+    transparent 40%
+  );
+  --shadow-card: 0 1px 3px rgba(100, 50, 150, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(100, 50, 150, 0.1);
+  --shadow-glow: 0 0 20px rgba(155, 114, 207, 0.15);
+  --gradient-logo: linear-gradient(135deg, #cdb4db, #a2d2ff);
+  --reading-bg-primary: #f5f0fa;
+  --reading-bg-surface: #faf7fd;
+  --reading-bg-code: #f0eaf8;
+  --reading-border-subtle: rgba(155, 114, 207, 0.14);
+  --reading-border-card: rgba(155, 114, 207, 0.2);
+  --reading-border-active: rgba(155, 114, 207, 0.44);
+  --reading-accent-glow: rgba(155, 114, 207, 0.08);
+}
+
+/* --- 6. Golden Summer Fields (light) --- */
+/* Palette: #ccd5ae #e9edc9 #fefae0 #faedcd #d4a373 */
+[data-palette='golden-summer-fields'] {
+  --bg-primary: #fefae0;
+  --bg-secondary: #faf5d0;
+  --bg-card: #faedcd;
+  --bg-card-hover: #f5e5b8;
+  --bg-surface: #fdf8e8;
+  --bg-code: #f5eccc;
+  --text-primary: #3b2f10;
+  --text-secondary: #6a5020;
+  --text-muted: #9a7838;
+  --text-heading: #261e08;
+  --accent-primary: #b8853a;
+  --accent-secondary: #8a6828;
+  --accent-tertiary: #7a9048;
+  --accent-glow: rgba(184, 133, 58, 0.28);
+  --border-subtle: rgba(180, 140, 80, 0.18);
+  --border-card: rgba(180, 140, 80, 0.26);
+  --border-active: rgba(184, 133, 58, 0.5);
+  --gradient-hero: linear-gradient(135deg, #d4a373 0%, #e9edc9 35%, #fefae0 65%, #ccd5ae 100%);
+  --gradient-card: linear-gradient(
+    145deg,
+    rgba(212, 163, 115, 0.07) 0%,
+    rgba(204, 213, 174, 0.04) 100%
+  );
+  --gradient-glow: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(212, 163, 115, 0.04),
+    transparent 40%
+  );
+  --shadow-card: 0 1px 3px rgba(100, 70, 20, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(100, 70, 20, 0.1);
+  --shadow-glow: 0 0 20px rgba(212, 163, 115, 0.12);
+  --gradient-logo: linear-gradient(135deg, #d4a373, #ccd5ae);
+  --reading-bg-primary: #fdf7d8;
+  --reading-bg-surface: #fefae0;
+  --reading-bg-code: #f5eccc;
+  --reading-border-subtle: rgba(180, 140, 80, 0.14);
+  --reading-border-card: rgba(180, 140, 80, 0.2);
+  --reading-border-active: rgba(184, 133, 58, 0.44);
+  --reading-accent-glow: rgba(212, 163, 115, 0.08);
+}
+
+/* --- 7. Light Steel (light) --- */
+/* Palette: #f8f9fa #e9ecef #dee2e6 #ced4da #adb5bd #6c757d #495057 #343a40 #212529 */
+[data-palette='light-steel'] {
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #e9ecef;
+  --bg-card: #ffffff;
+  --bg-card-hover: #dee2e6;
+  --bg-surface: #f4f5f7;
+  --bg-code: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --text-heading: #0d1117;
+  --accent-primary: #495057;
+  --accent-secondary: #343a40;
+  --accent-tertiary: #6c757d;
+  --accent-glow: rgba(73, 80, 87, 0.2);
+  --border-subtle: rgba(73, 80, 87, 0.12);
+  --border-card: rgba(73, 80, 87, 0.18);
+  --border-active: rgba(73, 80, 87, 0.42);
+  --gradient-hero: linear-gradient(135deg, #495057 0%, #6c757d 35%, #adb5bd 65%, #dee2e6 100%);
+  --gradient-card: linear-gradient(
+    145deg,
+    rgba(73, 80, 87, 0.05) 0%,
+    rgba(108, 117, 125, 0.03) 100%
+  );
+  --gradient-glow: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(73, 80, 87, 0.03),
+    transparent 40%
+  );
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 20px rgba(73, 80, 87, 0.1);
+  --gradient-logo: linear-gradient(135deg, #495057, #adb5bd);
+  --reading-bg-primary: #f0f1f3;
+  --reading-bg-surface: #f8f9fa;
+  --reading-bg-code: #e9ecef;
+  --reading-border-subtle: rgba(73, 80, 87, 0.1);
+  --reading-border-card: rgba(73, 80, 87, 0.15);
+  --reading-border-active: rgba(73, 80, 87, 0.36);
+  --reading-accent-glow: rgba(73, 80, 87, 0.06);
 }

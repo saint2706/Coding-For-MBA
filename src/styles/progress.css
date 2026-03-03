@@ -354,6 +354,62 @@
   gap: calc(1rem * var(--density-scale));
 }
 
+.preferences-field--palette {
+  grid-column: 1 / -1;
+}
+
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.palette-swatch-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  background: var(--bg-surface);
+  border: 2px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  text-align: left;
+}
+
+.palette-swatch-btn:hover {
+  border-color: var(--accent-primary);
+}
+
+.palette-swatch-btn--active {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.palette-swatch-strip {
+  display: flex;
+  height: 18px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  width: 100%;
+}
+
+.palette-swatch-color {
+  flex: 1;
+}
+
+.palette-swatch-name {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .preferences-field {
   display: flex;
   flex-direction: column;

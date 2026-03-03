@@ -1,10 +1,10 @@
 /**
- * Theme Access Hook
+ * Palette Access Hook
  *
  * Provides a simplified interface for consuming the `ThemeContext`.
  *
  * Key Responsibilities:
- * - Return the current theme and toggle function.
+ * - Return the current color palette and setter function.
  * - Abstract `useContext` usage.
  */
 
@@ -12,16 +12,16 @@ import { useContext } from 'react'
 import { ThemeContext } from './ThemeContext'
 
 /**
- * Custom hook to access the theme context.
+ * Custom hook to access the palette context.
  *
  * Must be used within a ThemeProvider component tree.
  *
- * @returns Theme context value with current theme and toggle function
+ * @returns Palette context value with current palette and setter
  *
  * @example
  * ```tsx
- * const { theme, toggleTheme } = useTheme()
- * return <button onClick={toggleTheme}>Current: {theme}</button>
+ * const { palette, setPalette } = useTheme()
+ * return <button onClick={() => setPalette('neon-party')}>Current: {palette}</button>
  * ```
  */
 export function useTheme() {
