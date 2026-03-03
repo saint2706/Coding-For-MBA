@@ -556,8 +556,15 @@ export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly Immut
 }
 
 /** Return top related lessons ranked by shared tags/concepts and phase proximity. */
+let relatedLessonsCache: Record<string, readonly ImmutableLesson[]> = {}
+
 export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly ImmutableLesson[] {
   initializeContent()
+  const cacheKey = `${lesson.day}-${count}`
+  if (relatedLessonsCache[cacheKey]) {
+    return relatedLessonsCache[cacheKey]!
+  }
+
   const prereqs = new Set(
     ((lesson.prerequisites as readonly unknown[]) || [])
       .map((entry) => dayTokenFromReference(entry))
@@ -588,7 +595,7 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
     .sort((a, b) => b.score - a.score)
     .slice(0, count)
 
-  return Object.freeze(
+  const result = Object.freeze(
     scored.map((s) =>
       Object.freeze({
         ...s.lesson,
@@ -598,6 +605,9 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
       }),
     ),
   )
+
+  relatedLessonsCache[cacheKey] = result
+  return result
 }
 
 export { difficultyConfig, phaseIcons }

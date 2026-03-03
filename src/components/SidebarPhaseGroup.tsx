@@ -139,4 +139,38 @@ function SidebarPhaseGroup({
   )
 }
 
-export default memo(SidebarPhaseGroup)
+function propsAreEqual(
+  prevProps: Readonly<SidebarPhaseGroupProps>,
+  nextProps: Readonly<SidebarPhaseGroupProps>,
+): boolean {
+  if (prevProps.isActive !== nextProps.isActive) return false
+  if (prevProps.dueCount !== nextProps.dueCount) return false
+  if (prevProps.phase.phase !== nextProps.phase.phase) return false
+
+  // Only re-render if currentPath changes to/from a lesson in THIS phase
+  // Optimization: check if either the old path or the new path is relevant to this phase
+  const isRelevantPath = (path: string) =>
+    path === `/phase/${nextProps.phase.phase}` ||
+    path.startsWith('/lesson/') && getLessonsByPhase(nextProps.phase.phase).some(l => path === `/lesson/${l.day}`)
+
+  if (prevProps.currentPath !== nextProps.currentPath) {
+    if (isRelevantPath(prevProps.currentPath) || isRelevantPath(nextProps.currentPath)) {
+      return false
+    }
+  }
+
+  // Check if completion status of ANY lesson IN THIS PHASE changed
+  if (prevProps.completedSet !== nextProps.completedSet) {
+    const lessons = getLessonsByPhase(nextProps.phase.phase)
+    for (const lesson of lessons) {
+      const id = dayTokenToProgressId(lesson.day)
+      if (prevProps.completedSet.has(id) !== nextProps.completedSet.has(id)) {
+        return false
+      }
+    }
+  }
+
+  return true
+}
+
+export default memo(SidebarPhaseGroup, propsAreEqual)

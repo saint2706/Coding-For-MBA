@@ -143,10 +143,10 @@ _Italic_
     const docs = createSearchDocuments(lessons)
     const [titleDoc, tagDoc, conceptDoc] = docs
 
-    const query = 'python variables'
-    const titleBoost = computeRankingBoost(titleDoc!, query)
-    const conceptBoost = computeRankingBoost(conceptDoc!, query)
-    const tagBoost = computeRankingBoost(tagDoc!, query)
+    const terms = ['python', 'variables']
+    const titleBoost = computeRankingBoost(titleDoc!, terms)
+    const conceptBoost = computeRankingBoost(conceptDoc!, terms)
+    const tagBoost = computeRankingBoost(tagDoc!, terms)
 
     expect(titleBoost).toBeGreaterThan(conceptBoost)
     expect(conceptBoost).toBeGreaterThan(tagBoost)
