@@ -144,6 +144,12 @@ export function validatePythonCode(code: string): ValidationResult {
     '__class__',
     '__base__',
     '__dict__',
+    '__traceback__',
+    'tb_frame',
+    'f_globals',
+    'f_back',
+    'f_builtins',
+    'f_code',
   ]
   const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
   if (globalRegex.test(strippedCode)) {

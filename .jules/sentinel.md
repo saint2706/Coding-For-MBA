@@ -54,3 +54,9 @@
 **Learning:** Simple import regexes must account for comma-separated module lists and other valid Python import syntaxes.
 **Prevention:** Replaced literal regexes with a broader `\bimport\b[^;\n]*\b(js|pyodide|micropip)\b` and `\bfrom\b\s+(js|pyodide|micropip)\b` pattern to securely catch all occurrences of restricted modules in import statements.
 - Added `__class__`, `__base__`, and `__dict__` to the list of `globalKeywords` inside `validatePythonCode` to prevent Python Sandbox Escapes using Dunder Method Reflection/Object Instantiation (e.g. `().__class__.__base__.__dict__["__subclasses__"]`).
+
+## 2025-06-20 - Pyodide Sandbox Escape via Traceback Frames
+**Vulnerability:** A vulnerability existed where an attacker could use an exception's `__traceback__` property to traverse frame objects (`tb_frame`, `f_globals`, `f_builtins`), ultimately gaining access to the blocked `__builtins__` dictionary. For example: `e.__traceback__.tb_frame.f_globals["__builtins__"]`. Since string literals are stripped prior to the keyword validation in `validatePythonCode`, the keyword `__builtins__` was hidden in the string index, bypassing the blocklist.
+**Learning:** Pyodide's JavaScript/Python boundary and execution environment expose raw traceback objects on exceptions. Frame objects contain a full reference back to global and builtin namespaces. Blocking the entry points like `globals()` is insufficient if those same namespaces can be reflected through raised exceptions.
+**Prevention:**
+- Added `__traceback__`, `tb_frame`, `f_globals`, `f_back`, `f_builtins`, and `f_code` to the `globalKeywords` strict deny list in `validatePythonCode`. This effectively blocks exception-based traceback traversal and prevents retrieving frame locals/globals to execute arbitrary code.
