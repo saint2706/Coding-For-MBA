@@ -181,6 +181,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
       <AnimatePresence>
         {!isOpen && (
           <motion.button
+            type="button"
             className="ai-fab"
             onClick={toggle}
             initial={{ scale: 0, opacity: 0 }}
@@ -218,7 +219,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                 <h3>
                   <span>✨</span> AI Study Assistant
                 </h3>
-                <button className="ai-panel-close" onClick={close} aria-label="Close">
+                <button type="button" className="ai-panel-close" onClick={close} aria-label="Close">
                   ✕
                 </button>
               </div>
@@ -226,12 +227,14 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
               {/* Tabs */}
               <div className="ai-panel-tabs">
                 <button
+                  type="button"
                   className={`ai-panel-tab ${activeTab === 'chat' ? 'active' : ''}`}
                   onClick={() => setActiveTab('chat')}
                 >
                   💬 Chat
                 </button>
                 <button
+                  type="button"
                   className={`ai-panel-tab ${activeTab === 'flashcards' ? 'active' : ''}`}
                   onClick={() => setActiveTab('flashcards')}
                 >
@@ -247,6 +250,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                       {QUICK_ACTIONS.map((action) => (
                         <button
                           key={action.label}
+                          type="button"
                           className="ai-quick-action"
                           onClick={() => handleSubmit(action.prompt)}
                           disabled={isLoading}
@@ -313,6 +317,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                   {messages.length > 0 && (
                     <div style={{ textAlign: 'center', padding: '0.3rem' }}>
                       <button
+                        type="button"
                         onClick={() => clearMessages(dayKey)}
                         style={{
                           background: 'none',
@@ -338,6 +343,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                       <span className="ai-empty-icon">🃏</span>
                       <p>Generate flashcards from this lesson to test your knowledge.</p>
                       <button
+                        type="button"
                         className="ai-quick-action ai-flashcard-generate"
                         onClick={handleGenerateFlashcards}
                         disabled={isLoading}
@@ -371,6 +377,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                         )
                       })}
                       <button
+                        type="button"
                         className="ai-quick-action ai-flashcard-generate"
                         onClick={handleGenerateFlashcards}
                         disabled={isLoading}
