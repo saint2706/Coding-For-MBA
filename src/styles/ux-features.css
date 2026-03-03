@@ -1,76 +1,5 @@
 /* ===== UX Enhancement Styles ===== */
 
-/* ---------- Light Theme ---------- */
-:root[data-theme='light'] {
-  --bg-primary: #f5f5fa;
-  --bg-secondary: #ededf5;
-  --bg-card: #ffffff;
-  --bg-card-hover: #f0f0f8;
-  --bg-surface: #ffffff;
-  --bg-code: #f2f2f9;
-
-  --text-primary: #1a1a30;
-  --text-secondary: #37374f;
-  --text-muted: #63637e;
-  --text-heading: #0d0d24;
-
-  --accent-primary: #4361ee;
-  --accent-secondary: #3f37c9;
-  --accent-tertiary: #4895ef;
-  --accent-glow: rgba(67, 97, 238, 0.12);
-
-  --border-subtle: rgba(10, 10, 50, 0.1);
-  --border-card: rgba(10, 10, 50, 0.14);
-  --border-active: rgba(67, 97, 238, 0.5);
-
-  --gradient-hero: linear-gradient(135deg, #f72585 0%, #7209b7 35%, #4361ee 70%, #4cc9f0 100%);
-  --gradient-card: linear-gradient(
-    145deg,
-    rgba(67, 97, 238, 0.04) 0%,
-    rgba(63, 55, 201, 0.02) 100%
-  );
-  --gradient-glow: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(67, 97, 238, 0.03),
-    transparent 40%
-  );
-
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-elevated: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-glow: 0 0 20px rgba(67, 97, 238, 0.08);
-
-  /* Reading surface — light theme overrides */
-  --reading-bg-primary: #f0f0f8;
-  --reading-bg-surface: #f8f8fc;
-  --reading-bg-code: #f2f2f9;
-  --reading-border-subtle: rgba(10, 10, 50, 0.08);
-  --reading-border-card: rgba(10, 10, 50, 0.12);
-  --reading-border-active: rgba(67, 97, 238, 0.4);
-  --reading-accent-glow: rgba(67, 97, 238, 0.08);
-}
-
-/* ---------- Theme Toggle Button ---------- */
-.theme-toggle {
-  background: none;
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius-md);
-  padding: 6px 8px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 1.2rem;
-  line-height: 1;
-  transition: var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.theme-toggle:hover {
-  background: var(--bg-card);
-  color: var(--accent-primary);
-  border-color: var(--accent-primary);
-}
-
 /* ---------- Skeleton Shimmer ---------- */
 .skeleton {
   position: relative;
@@ -149,7 +78,7 @@
 }
 
 @media (prefers-reduced-transparency: no-preference) {
-  :root:not([data-theme='light']) .glass-card {
+  [data-palette-type='dark'] .glass-card {
     background: color-mix(in srgb, var(--bg-card) 72%, transparent);
     backdrop-filter: blur(12px) saturate(120%);
     -webkit-backdrop-filter: blur(12px) saturate(120%);

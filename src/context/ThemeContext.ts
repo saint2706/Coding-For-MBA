@@ -1,35 +1,31 @@
 /**
- * Theme Context Definition
+ * Palette Context Definition
  *
- * Defines the React Context for managing application theming (light/dark mode).
+ * Defines the React Context for managing the active color palette.
  *
  * Key Responsibilities:
- * - Define the shape of the theme context (theme state, toggle function).
+ * - Define the shape of the palette context (current palette, setter).
  * - Create the context with safe default values.
  */
 
 import { createContext } from 'react'
+import { ColorPalette } from '../stores/userPreferencesStore'
 
 /**
- * Available theme options.
- */
-export type Theme = 'dark' | 'light'
-
-/**
- * Shape of the theme context value.
+ * Shape of the palette context value.
  */
 export interface ThemeContextType {
-  /** Current active theme */
-  theme: Theme
-  /** Function to toggle between dark and light themes */
-  toggleTheme: () => void
+  /** Current active color palette */
+  palette: ColorPalette
+  /** Function to change the active color palette */
+  setPalette: (palette: ColorPalette) => void
 }
 
 /**
- * React context for theme state management.
- * Provides default values (dark theme with no-op toggle).
+ * React context for palette state management.
+ * Provides default values (gradient-blues palette with no-op setter).
  */
 export const ThemeContext = createContext<ThemeContextType>({
-  theme: 'dark',
-  toggleTheme: () => {},
+  palette: 'gradient-blues',
+  setPalette: () => {},
 })

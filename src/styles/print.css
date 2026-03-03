@@ -22,8 +22,7 @@
 
   /* Reset backgrounds and colours for print */
   :root,
-  :root[data-theme='dark'],
-  :root[data-theme='light'] {
+  [data-palette] {
     --bg-primary: #fff !important;
     --bg-secondary: #fff !important;
     --bg-card: #fff !important;

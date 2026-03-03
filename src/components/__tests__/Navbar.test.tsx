@@ -4,15 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { MemoryRouter } from 'react-router-dom'
 import Navbar from '../Navbar'
 
-const toggleThemeMock = vi.fn()
 const toastInfoMock = vi.fn()
-
-vi.mock('../../context/useTheme', () => ({
-  useTheme: () => ({
-    theme: 'light',
-    toggleTheme: toggleThemeMock,
-  }),
-}))
 
 vi.mock('../../utils/toast', () => ({
   toastInfo: (message: string) => toastInfoMock(message),
@@ -23,7 +15,6 @@ describe('Navbar', () => {
   let root: ReturnType<typeof createRoot>
 
   beforeEach(() => {
-    toggleThemeMock.mockClear()
     toastInfoMock.mockClear()
     container = document.createElement('div')
     document.body.appendChild(container)
@@ -37,7 +28,7 @@ describe('Navbar', () => {
     document.body.removeChild(container)
   })
 
-  it('invokes toast helper after clicking theme toggle', async () => {
+  it('renders brand link and navigation links', async () => {
     await act(async () => {
       root.render(
         <MemoryRouter initialEntries={['/']}>
@@ -46,15 +37,10 @@ describe('Navbar', () => {
       )
     })
 
-    const themeToggle = container.querySelector('.theme-toggle') as HTMLButtonElement
-    expect(themeToggle).not.toBeNull()
+    const brandLink = container.querySelector('.navbar-brand')
+    expect(brandLink).not.toBeNull()
 
-    await act(async () => {
-      themeToggle.click()
-    })
-
-    expect(toggleThemeMock).toHaveBeenCalledTimes(1)
-    expect(toastInfoMock).toHaveBeenCalledWith('Switched to dark mode')
+    expect(container.querySelector('.theme-toggle')).toBeNull()
   })
 
   it('shows and handles clear button when typing in search', async () => {
