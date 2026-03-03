@@ -16,6 +16,7 @@ import SEOHead from '../components/SEOHead'
 import Breadcrumb from '../components/Breadcrumb'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import { getAllCaseStudies, getAllProjects, difficultyConfig } from '../utils/contentLoader'
+import { buildCollectionPageSchema } from '../utils/seoSchemas'
 
 type Tab = 'case-studies' | 'projects'
 
@@ -51,6 +52,17 @@ export default function CaseStudies() {
     setExpandedSlug((prev) => (prev === slug ? null : slug))
   }
 
+  const collectionSchema = buildCollectionPageSchema(
+    'Case Studies & Projects',
+    'Explore real-world case studies and capstone projects covering ML, data science, BI, and SQL — designed to build your MBA portfolio.',
+    '/case-studies',
+    [...caseStudies, ...projects].slice(0, 20).map((item) => ({
+      name: item.title,
+      description: item.phasesCovered || item.difficulty,
+      url: `/case-studies`,
+    })),
+  )
+
   return (
     <div className="page-container">
       <SEOHead
@@ -61,6 +73,7 @@ export default function CaseStudies() {
           { name: 'Home', url: '/' },
           { name: 'Case Studies & Projects', url: '/case-studies' },
         ]}
+        jsonLd={[collectionSchema]}
       />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Case Studies & Projects' }]} />
 
