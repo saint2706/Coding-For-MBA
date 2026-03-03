@@ -33,6 +33,10 @@ import ProgressBar from '../components/ProgressBar'
  *
  * @returns The rendered curriculum roadmap page
  */
+import { useMemo } from 'react'
+
+import { useProgressStore } from '../stores/progressStore'
+
 export default function Curriculum() {
   const phases = getAllPhases()
   const prefersReducedMotion = useReducedMotion()
@@ -43,16 +47,33 @@ export default function Curriculum() {
   })
   const timelineScaleY = useTransform(scrollYProgress, [0, 1], [0.1, 1])
 
-  const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
+  const completedLessons = useProgressStore((state) => state.completedLessons)
+
+  const phasesData = useMemo(() => {
+    return phases.map((phase) => {
+      const lessons = getLessonsByPhase(phase.phase)
+      const completedInPhase = getCompletedForPhase(lessons.map((l) => l.day))
+      const isPhaseComplete = completedInPhase.length === lessons.length && lessons.length > 0
+      const isPhaseStarted = completedInPhase.length > 0
+      const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+      const icon = phaseIcons[phase.phase - 1] || '📖'
+
+      return {
+        ...phase,
+        lessons,
+        completedInPhase,
+        isPhaseComplete,
+        isPhaseStarted,
+        diff,
+        icon,
+      }
+    })
+  }, [phases, completedLessons])
+
+  const totalLessons = phasesData.reduce((sum, p) => sum + p.lessons.length, 0)
   const completedCount = getCompletedCount()
   const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
-  const completedPhasesCount = phases.filter((p) => {
-    const lessons = getLessonsByPhase(p.phase)
-    return (
-      lessons.length > 0 &&
-      getCompletedForPhase(lessons.map((l) => l.day)).length === lessons.length
-    )
-  }).length
+  const completedPhasesCount = phasesData.filter((p) => p.isPhaseComplete).length
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -76,11 +97,11 @@ export default function Curriculum() {
   const itemListSchema = buildItemListSchema(
     'Full Curriculum Roadmap',
     'Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL.',
-    phases.map((phase) => ({
+    phasesData.map((phase) => ({
       name: `Phase ${phase.phase}: ${phase.title}`,
       url: `/phase/${phase.phase}`,
       position: phase.phase,
-      description: `Phase ${phase.phase} covers ${getLessonsByPhase(phase.phase).length} lessons on ${phase.title}.`,
+      description: `Phase ${phase.phase} covers ${phase.lessons.length} lessons on ${phase.title}.`,
     })),
   )
 
@@ -161,32 +182,24 @@ export default function Curriculum() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
       >
-        {phases.map((phase) => {
-          const lessons = getLessonsByPhase(phase.phase)
-          const diff =
-            difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-          const icon = phaseIcons[phase.phase - 1] || '📖'
-          const completedInPhase = getCompletedForPhase(lessons.map((l) => l.day))
-          const isPhaseComplete = completedInPhase.length === lessons.length && lessons.length > 0
-          const isPhaseStarted = completedInPhase.length > 0
-
+        {phasesData.map((phase) => {
           return (
             <motion.div
-              className={`curriculum-phase glass-card ${isPhaseComplete ? 'curriculum-phase--complete' : ''}`}
+              className={`curriculum-phase glass-card ${phase.isPhaseComplete ? 'curriculum-phase--complete' : ''}`}
               key={phase.phase}
               variants={phaseVariants}
               transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}
             >
               <Link to={`/phase/${phase.phase}`} className="curriculum-phase-header">
-                <span style={{ fontSize: '1.25rem' }}>{icon}</span>
+                <span style={{ fontSize: '1.25rem' }}>{phase.icon}</span>
                 <h3>
                   Phase {phase.phase}: {phase.title}
                 </h3>
-                {isPhaseComplete ? (
+                {phase.isPhaseComplete ? (
                   <span className="curriculum-phase-status curriculum-phase-status--done">
                     ✓ Done
                   </span>
-                ) : isPhaseStarted ? (
+                ) : phase.isPhaseStarted ? (
                   <span className="curriculum-phase-status curriculum-phase-status--active">
                     Active
                   </span>
@@ -194,21 +207,21 @@ export default function Curriculum() {
                 <span
                   className="difficulty-badge"
                   style={{
-                    color: diff.color,
-                    background: diff.bg,
-                    marginLeft: isPhaseComplete || isPhaseStarted ? '0' : 'auto',
+                    color: phase.diff.color,
+                    background: phase.diff.bg,
+                    marginLeft: phase.isPhaseComplete || phase.isPhaseStarted ? '0' : 'auto',
                   }}
                 >
-                  {diff.label}
+                  {phase.diff.label}
                 </span>
               </Link>
 
               <div style={{ marginBottom: '0.75rem', paddingRight: '1rem' }}>
-                <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+                <ProgressBar completed={phase.completedInPhase.length} total={phase.lessons.length} />
               </div>
 
               <div className="curriculum-days">
-                {lessons.map((lesson) => (
+                {phase.lessons.map((lesson) => (
                   <Link
                     to={`/lesson/${lesson.day}`}
                     className="curriculum-day-link"

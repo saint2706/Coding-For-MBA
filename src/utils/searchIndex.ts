@@ -135,8 +135,7 @@ function scoreField(text: string | undefined, terms: readonly string[], weight: 
   return terms.reduce((acc, term) => (text.includes(term) ? acc + weight : acc), 0)
 }
 
-export function computeRankingBoost(doc: SearchDocument, query: string): number {
-  const terms = normalizeQuery(query)
+export function computeRankingBoost(doc: SearchDocument, terms: readonly string[]): number {
   return (
     scoreField(doc.titleLower, terms, TITLE_WEIGHT) +
     scoreField(doc.conceptsLower, terms, CONCEPT_WEIGHT) +
@@ -269,10 +268,12 @@ export function search(query: string, limit = 20): SearchResult[] {
   if (!engine) return []
   const rawResults = engine.search(query, { limit: Math.max(limit * 2, 20) })
 
+  const terms = normalizeQuery(query)
+
   return rawResults
     .map((result) => ({
       item: result.item,
-      score: (result.score ?? 1) - computeRankingBoost(result.item, query) / 100,
+      score: (result.score ?? 1) - computeRankingBoost(result.item, terms) / 100,
     }))
     .sort((a, b) => (a.score ?? 1) - (b.score ?? 1))
     .slice(0, limit)
