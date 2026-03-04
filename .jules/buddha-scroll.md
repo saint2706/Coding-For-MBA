@@ -27,5 +27,14 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 -   [x] **[GEO] Structured Data**: Replaced `LearningResource` with `['LearningResource', 'TechArticle']` in `buildLessonSchema` and added `headline` property to ensure rich snippet readiness.
 -   [x] **[PERF] LCP Optimization**: Refactored `MarkdownRenderer` to respect `fetchpriority="high"`, stripping standard lazy-loading when present to prevent LCP penalties.
 
+
+### [Date: Current] - Site Architecture Optimization for AI Manifest
+
+**Priority Areas:**
+1.  **GEO (Intelligence)**: Updating `llms.txt` for AI crawlers.
+
+**Changes:**
+-   [x] **[GEO] Site Architecture**: Updated `scripts/generate-llms-txt.js` to output a clean, concise `# Site Architecture` section, making the manifest highly optimized for AI agents without breaking existing routes.
+
 ---
 *May the Lighthouse score be 100 and the Googlebot find peace in our structure.*

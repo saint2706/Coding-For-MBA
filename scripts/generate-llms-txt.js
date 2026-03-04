@@ -93,14 +93,16 @@ let content = `# Coding for MBA
 
 > A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.
 
-## Site Architecture
+# Site Architecture
 
-- [Home](${BASE_URL}/#/): The landing page with curriculum overview.
-- [Curriculum](${BASE_URL}/#/curriculum): Full list of all phases and lessons.
-- [Interactive Exercises](${BASE_URL}/#/exercises): Hands-on coding practice.
-- [Concepts Graph](${BASE_URL}/#/concepts): Visual knowledge graph of key topics.
-- [Review](${BASE_URL}/#/review): Spaced repetition flashcards.
-- [Stats](${BASE_URL}/#/stats): Progress tracking and analytics.
+- ${BASE_URL}/#/: The landing page with curriculum overview
+- ${BASE_URL}/#/curriculum: Full list of all phases and lessons
+- ${BASE_URL}/#/exercises: Hands-on coding practice
+- ${BASE_URL}/#/concepts: Visual knowledge graph of key topics
+- ${BASE_URL}/#/review: Spaced repetition flashcards
+- ${BASE_URL}/#/stats: Progress tracking and analytics
+- ${BASE_URL}/#/progress: Your Progress dashboard
+- ${BASE_URL}/#/search: Search lessons
 
 ## Key Concepts
 

@@ -2,14 +2,16 @@
 
 > A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.
 
-## Site Architecture
+# Site Architecture
 
-- [Home](https://saint2706.github.io/Coding-For-MBA/#/): The landing page with curriculum overview.
-- [Curriculum](https://saint2706.github.io/Coding-For-MBA/#/curriculum): Full list of all phases and lessons.
-- [Interactive Exercises](https://saint2706.github.io/Coding-For-MBA/#/exercises): Hands-on coding practice.
-- [Concepts Graph](https://saint2706.github.io/Coding-For-MBA/#/concepts): Visual knowledge graph of key topics.
-- [Review](https://saint2706.github.io/Coding-For-MBA/#/review): Spaced repetition flashcards.
-- [Stats](https://saint2706.github.io/Coding-For-MBA/#/stats): Progress tracking and analytics.
+- https://saint2706.github.io/Coding-For-MBA/#/: The landing page with curriculum overview
+- https://saint2706.github.io/Coding-For-MBA/#/curriculum: Full list of all phases and lessons
+- https://saint2706.github.io/Coding-For-MBA/#/exercises: Hands-on coding practice
+- https://saint2706.github.io/Coding-For-MBA/#/concepts: Visual knowledge graph of key topics
+- https://saint2706.github.io/Coding-For-MBA/#/review: Spaced repetition flashcards
+- https://saint2706.github.io/Coding-For-MBA/#/stats: Progress tracking and analytics
+- https://saint2706.github.io/Coding-For-MBA/#/progress: Your Progress dashboard
+- https://saint2706.github.io/Coding-For-MBA/#/search: Search lessons
 
 ## Key Concepts
 
