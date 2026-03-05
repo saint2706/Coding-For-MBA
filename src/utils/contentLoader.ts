@@ -137,32 +137,58 @@ function initializeContent() {
   immutableLessonByDay = new Map(immutableLessons.map((lesson) => [lesson.day, lesson]))
 }
 
-/** Return all phases sorted by phase number. */
+/**
+ * Return all phases sorted by phase number.
+ * Ensures that the content is initialized before returning.
+ *
+ * @returns {readonly ImmutablePhase[]} A read-only array of all phase objects.
+ */
 export function getAllPhases(): readonly ImmutablePhase[] {
   initializeContent()
   return immutablePhases!
 }
 
-/** Return a phase by number. */
+/**
+ * Retrieves a specific phase by its phase number.
+ *
+ * @param {string | number} phaseNum - The numeric identifier of the phase.
+ * @returns {ImmutablePhase | undefined} The corresponding phase object or undefined if not found.
+ */
 export function getPhase(phaseNum: string | number): ImmutablePhase | undefined {
   initializeContent()
   return immutablePhases!.find((p) => p.phase === Number(phaseNum))
 }
 
-/** Return all lessons sorted by day number. */
+/**
+ * Retrieves all lessons sorted chronologically by day token.
+ * Ensures the lazy-loaded content cache is fully populated.
+ *
+ * @returns {readonly ImmutableLesson[]} A read-only array of all lesson objects.
+ */
 export function getAllLessons(): readonly ImmutableLesson[] {
   initializeContent()
   return immutableLessons!
 }
 
-/** Return a lesson by day number. */
+/**
+ * Retrieves a specific lesson by its day token or number.
+ * Normalizes the input to handle both numeric ("1") and suffix ("36B") formats.
+ *
+ * @param {string | number} dayNum - The day token or number of the lesson.
+ * @returns {ImmutableLesson | undefined} The corresponding lesson object or undefined if not found.
+ */
 export function getLesson(dayNum: string | number): ImmutableLesson | undefined {
   initializeContent()
   const dayToken = normalizeDayToken(dayNum)
   return immutableLessonByDay!.get(dayToken)
 }
 
-/** Return all lessons in a phase. */
+/**
+ * Retrieves lessons associated with a specific phase, sorted chronologically.
+ *
+ * @param {string | number} phaseNum - The numeric identifier of the phase.
+ * @returns {readonly ImmutableLesson[]} A read-only array of lesson objects for the given phase.
+ */
 export function getLessonsByPhase(phaseNum: string | number): readonly ImmutableLesson[] {
   initializeContent()
   if (!immutableLessonsByPhase) {
@@ -480,6 +506,15 @@ type ParseNotebookEntryOptions = {
   attachParseError?: boolean
 }
 
+/**
+ * Parses a raw JSON string representing a Jupyter notebook.
+ * Extracts basic metadata and structural information.
+ *
+ * @param {string} path - The relative file path to the notebook file.
+ * @param {string} raw - The raw JSON string of the notebook.
+ * @param {ParseNotebookEntryOptions} [options={}] - Options for parsing.
+ * @returns {Notebook} The parsed notebook object.
+ */
 export function parseNotebookEntry(
   path: string,
   raw: string,
@@ -515,7 +550,12 @@ export function parseNotebookEntry(
 
 let immutableNotebooks: readonly ImmutableNotebook[] | null = null
 
-/** Return all parsed notebooks sorted by phase number. */
+/**
+ * Retrieves all valid parsed Jupyter notebooks available in the project.
+ * Uses lazy loading to delay instantiation until the first request.
+ *
+ * @returns {readonly ImmutableNotebook[]} A read-only array of available notebook objects.
+ */
 export function getAllNotebooks(): readonly ImmutableNotebook[] {
   if (!immutableNotebooks) {
     const notebooks = parseNotebooks()
@@ -544,7 +584,13 @@ export function getReadingTime(content: string): number {
   return Math.max(1, Math.round(words / 200))
 }
 
-/** Resolve prerequisite day references into lesson objects. */
+/**
+ * Retrieves the required prerequisite lessons for a given lesson based on frontmatter fields.
+ * Validates cross-reference strings against available day tokens.
+ *
+ * @param {Readonly<Lesson>} lesson - The target lesson object to find prerequisites for.
+ * @returns {readonly ImmutableLesson[]} A read-only array of prerequisite lesson objects.
+ */
 export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly ImmutableLesson[] {
   initializeContent()
   const prereqs = lesson.prerequisites as readonly unknown[] | undefined
@@ -558,6 +604,14 @@ export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly Immut
 /** Return top related lessons ranked by shared tags/concepts and phase proximity. */
 let relatedLessonsCache: Record<string, readonly ImmutableLesson[]> = {}
 
+/**
+ * Retrieves a list of related lessons for a given lesson based on shared tags.
+ * Results are sorted by the number of matching tags, descending.
+ *
+ * @param {Readonly<Lesson>} lesson - The target lesson object to find related content for.
+ * @param {number} [count=4] - The maximum number of related lessons to return.
+ * @returns {readonly ImmutableLesson[]} A read-only array of related lesson objects, up to the specified count limit.
+ */
 export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly ImmutableLesson[] {
   initializeContent()
   const cacheKey = `${lesson.day}-${count}`
@@ -672,7 +726,12 @@ function parseProjectLikeEntry(
 let immutableCaseStudies: readonly Readonly<CaseStudy>[] | null = null
 let immutableProjects: readonly Readonly<Project>[] | null = null
 
-/** Return all case studies sorted by slug. */
+/**
+ * Retrieves all valid parsed case studies available in the project.
+ * Uses lazy loading to delay instantiation until the first request.
+ *
+ * @returns {readonly Readonly<CaseStudy>[]} A read-only array of available case study objects.
+ */
 export function getAllCaseStudies(): readonly Readonly<CaseStudy>[] {
   if (!immutableCaseStudies) {
     const parsed = Object.entries(caseStudyFiles)
@@ -686,7 +745,12 @@ export function getAllCaseStudies(): readonly Readonly<CaseStudy>[] {
   return immutableCaseStudies
 }
 
-/** Return all projects sorted by slug. */
+/**
+ * Retrieves all valid parsed capstone projects available in the project.
+ * Uses lazy loading to delay instantiation until the first request.
+ *
+ * @returns {readonly Readonly<Project>[]} A read-only array of available project objects.
+ */
 export function getAllProjects(): readonly Readonly<Project>[] {
   if (!immutableProjects) {
     const parsed = Object.entries(projectFiles)
@@ -720,7 +784,12 @@ function parseExtras(): Record<number, ExtraFile[]> {
   return byPhase
 }
 
-/** Return all extras files for a given phase. */
+/**
+ * Retrieves all extra files (projects, case studies, notebooks) associated with a specific phase.
+ *
+ * @param {string | number} phaseNum - The numeric identifier of the phase.
+ * @returns {readonly Readonly<ExtraFile>[]} A read-only array of extra files for the phase.
+ */
 export function getExtrasForPhase(phaseNum: string | number): readonly Readonly<ExtraFile>[] {
   if (!immutableExtrasByPhase) {
     const parsed = parseExtras()
