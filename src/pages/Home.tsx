@@ -95,7 +95,7 @@ export default function Home() {
     <div className="page-container">
       <SEOHead
         title="Coding for MBA — 108-Day Technical Curriculum"
-        description="A structured {stats.totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals."
+        description={`A structured ${stats.totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.`}
         path="/"
         jsonLd={[buildWebSiteSchema(), buildCourseSchema()]}
         breadcrumbs={[{ name: 'Home', url: '/' }]}
