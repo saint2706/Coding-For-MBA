@@ -82,8 +82,9 @@ export function stripPythonCommentsAndStrings(code: string): string {
 export function validatePythonCode(code: string): ValidationResult {
   if (!code) return { valid: true }
 
-  // Normalize code to handle line continuations
-  const normalizedCode = code.replace(/\\(\r\n|\r|\n)/g, '')
+  // Normalize code to NFKC (matching Python's internal identifier normalization)
+  // and handle line continuations
+  const normalizedCode = code.normalize('NFKC').replace(/\\(\r\n|\r|\n)/g, '')
 
   // Strip safe strings and comments to focus on logic
   const strippedCode = stripPythonCommentsAndStrings(normalizedCode)
@@ -147,9 +148,13 @@ export function validatePythonCode(code: string): ValidationResult {
     '__traceback__',
     'tb_frame',
     'f_globals',
+    'f_locals',
     'f_back',
     'f_builtins',
     'f_code',
+    'gi_frame',
+    'cr_frame',
+    'ag_frame',
   ]
   const globalRegex = new RegExp(`\\b(${globalKeywords.join('|')})\\b`)
   if (globalRegex.test(strippedCode)) {
