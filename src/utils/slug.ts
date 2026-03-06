@@ -29,6 +29,12 @@ function normalizeForSlug(value: string): string {
     .replace(/[\s-]+/g, '-')
 }
 
+/**
+ * Removes common inline Markdown formatting from a string.
+ *
+ * @param value - The input markdown string.
+ * @returns The plain text string without formatting.
+ */
 export function stripMarkdownInlineFormatting(value: string): string {
   return value
     .replace(/\s+#+\s*$/, '')
@@ -42,6 +48,12 @@ export function stripMarkdownInlineFormatting(value: string): string {
     .trim()
 }
 
+/**
+ * Recursively extracts plain text from a React node tree.
+ *
+ * @param node - The React node to extract text from.
+ * @returns The concatenated plain text string.
+ */
 export function extractTextFromReactNode(node: ReactNode): string {
   if (node == null || typeof node === 'boolean') return ''
   if (typeof node === 'string' || typeof node === 'number') return String(node)
@@ -52,6 +64,11 @@ export function extractTextFromReactNode(node: ReactNode): string {
   return ''
 }
 
+/**
+ * Creates a stateful slug generator that ensures unique slugs.
+ *
+ * @returns An object with a `slug` method.
+ */
 export function createSlugger() {
   const counts = new Map<string, number>()
 
