@@ -135,11 +135,22 @@ export function buildLessonSchema(
 ): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
-    '@type': ['LearningResource', 'TechArticle'],
+    '@type': ['LearningResource', 'TechArticle', 'Article'],
     name: title,
     headline: title,
     description,
     url: buildCanonicalUrl(path),
+    author: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
+    },
+    image: `${SITE_URL}/og-image.png`,
     isPartOf: {
       '@type': 'Course',
       name: 'Coding for MBA — 108-Day Technical Curriculum',

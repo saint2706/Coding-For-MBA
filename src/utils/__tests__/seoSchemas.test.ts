@@ -168,7 +168,7 @@ describe('seoSchemas', () => {
 
       // Assert
       expect(schema['@context']).toBe('https://schema.org');
-      expect(schema['@type']).toEqual(['LearningResource', 'TechArticle']);
+      expect(schema['@type']).toEqual(['LearningResource', 'TechArticle', 'Article']);
       expect(schema.name).toBe('Test Lesson');
       expect(schema.headline).toBe('Test Lesson');
       expect(schema.description).toBe('Lesson Desc');
