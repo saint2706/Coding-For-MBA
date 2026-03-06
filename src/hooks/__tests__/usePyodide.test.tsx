@@ -227,14 +227,12 @@ describe('usePyodide', () => {
     // Simulate runPythonAsync taking longer than timeout
     const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
     if (window._pyodideInstance) {
-      window._pyodideInstance.runPythonAsync = vi
-        .fn()
-        .mockImplementation(
-          () =>
-            new Promise((_, reject) => {
-              setTimeout(() => reject(new Error('Late python failure')), 100)
-            }),
-        )
+      window._pyodideInstance.runPythonAsync = vi.fn().mockImplementation(
+        () =>
+          new Promise((_, reject) => {
+            setTimeout(() => reject(new Error('Late python failure')), 100)
+          }),
+      )
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

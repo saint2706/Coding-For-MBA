@@ -217,7 +217,10 @@ export default function Curriculum() {
               </Link>
 
               <div style={{ marginBottom: '0.75rem', paddingRight: '1rem' }}>
-                <ProgressBar completed={phase.completedInPhase.length} total={phase.lessons.length} />
+                <ProgressBar
+                  completed={phase.completedInPhase.length}
+                  total={phase.lessons.length}
+                />
               </div>
 
               <div className="curriculum-days">

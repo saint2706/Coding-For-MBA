@@ -151,7 +151,8 @@ function propsAreEqual(
   // Optimization: check if either the old path or the new path is relevant to this phase
   const isRelevantPath = (path: string) =>
     path === `/phase/${nextProps.phase.phase}` ||
-    path.startsWith('/lesson/') && getLessonsByPhase(nextProps.phase.phase).some(l => path === `/lesson/${l.day}`)
+    (path.startsWith('/lesson/') &&
+      getLessonsByPhase(nextProps.phase.phase).some((l) => path === `/lesson/${l.day}`))
 
   if (prevProps.currentPath !== nextProps.currentPath) {
     if (isRelevantPath(prevProps.currentPath) || isRelevantPath(nextProps.currentPath)) {

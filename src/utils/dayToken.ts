@@ -16,8 +16,14 @@
 
 import * as core from './dayToken-core.js'
 
+/**
+ * A standard representation of a curriculum day token (e.g., "1", "36B").
+ */
 export type DayToken = string
 
+/**
+ * Represents the parsed components of a day token for sorting and processing.
+ */
 export interface ParsedDayToken {
   token: DayToken
   number: number

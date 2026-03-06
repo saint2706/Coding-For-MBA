@@ -95,8 +95,8 @@ describe('safeStorage', () => {
     })
 
     it('should return fallback if parsed JSON is null', () => {
-       localStorage.setItem('testKey', JSON.stringify(null))
-       expect(getStoredJson('testKey', { a: 0 })).toEqual({ a: 0 })
+      localStorage.setItem('testKey', JSON.stringify(null))
+      expect(getStoredJson('testKey', { a: 0 })).toEqual({ a: 0 })
     })
   })
 

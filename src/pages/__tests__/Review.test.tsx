@@ -137,11 +137,7 @@ describe('Review Page', () => {
       window.dispatchEvent(new KeyboardEvent('keydown', { key: '3', bubbles: true }))
     })
 
-    expect(reviewTracker.rateReviewCard).toHaveBeenCalledWith(
-      mockCard.id,
-      'good',
-      expect.any(Date),
-    )
+    expect(reviewTracker.rateReviewCard).toHaveBeenCalledWith(mockCard.id, 'good', expect.any(Date))
   })
 
   it('does not rate card before reveal', async () => {

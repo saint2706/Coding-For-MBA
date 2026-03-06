@@ -7,12 +7,7 @@ import ProgressBar from '../ProgressBar'
 vi.mock('motion/react', () => ({
   motion: {
     div: ({ children, className, ...props }: any) => {
-      const {
-        initial: _initial,
-        animate: _animate,
-        transition: _transition,
-        ...safeProps
-      } = props
+      const { initial: _initial, animate: _animate, transition: _transition, ...safeProps } = props
       void _initial
       void _animate
       void _transition
