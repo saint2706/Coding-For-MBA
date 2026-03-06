@@ -7,3 +7,4 @@ This file tracks the status and completion of documentation tasks to ensure alig
 - **[2026-03-01]** Added missing JSDoc/TSDoc comments to exported functions:
   - `src/utils/dayToken.ts`
   - `src/utils/progressTracker.ts`
+  - `src/utils/slug.ts`
