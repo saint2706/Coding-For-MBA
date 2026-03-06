@@ -10,14 +10,39 @@
  * - Hide if insufficient headings exist.
  */
 
-import { useMemo, useState, useEffect, useId, type MouseEvent } from 'react'
+import { useMemo, useState, useEffect, useId, memo, type MouseEvent } from 'react'
 import { parseHeadings } from '../utils/toc'
+
+interface TocItemProps {
+  id: string
+  text: string
+  level: number
+  isActive: boolean
+  onClick: (event: MouseEvent<HTMLAnchorElement>, headingId: string) => void
+}
+
+const TocItem = memo(
+  ({ id, text, level, isActive, onClick }: TocItemProps) => {
+    return (
+      <li className={level === 3 ? 'toc-sub' : ''}>
+        <a
+          href={`#${id}`}
+          className={`toc-link ${isActive ? 'active' : ''}`}
+          onClick={(event) => onClick(event, id)}
+        >
+          {text}
+        </a>
+      </li>
+    )
+  },
+  (prevProps, nextProps) => prevProps.isActive === nextProps.isActive
+)
 
 interface TableOfContentsProps {
   content: string
 }
 
-export default function TableOfContents({ content }: TableOfContentsProps) {
+const TableOfContents = memo(function TableOfContents({ content }: TableOfContentsProps) {
   const headings = useMemo(() => parseHeadings(content), [content])
   const [activeId, setActiveId] = useState<string>('')
   const [isCompact, setIsCompact] = useState(false)
@@ -118,18 +143,19 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
           onKeyDown={(event) => event.key === 'Escape' && setIsCompactOpen(false)}
         >
           {headings.map((h) => (
-            <li key={h.id} className={h.level === 3 ? 'toc-sub' : ''}>
-              <a
-                href={`#${h.id}`}
-                className={`toc-link ${activeId === h.id ? 'active' : ''}`}
-                onClick={(event) => handleHeadingClick(event, h.id)}
-              >
-                {h.text}
-              </a>
-            </li>
+            <TocItem
+              key={h.id}
+              id={h.id}
+              text={h.text}
+              level={h.level}
+              isActive={activeId === h.id}
+              onClick={handleHeadingClick}
+            />
           ))}
         </ul>
       </nav>
     </aside>
   )
-}
+})
+
+export default TableOfContents
