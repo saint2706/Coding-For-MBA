@@ -192,9 +192,9 @@ export default function Curriculum() {
             >
               <Link to={`/phase/${phase.phase}`} className="curriculum-phase-header">
                 <span style={{ fontSize: '1.25rem' }}>{phase.icon}</span>
-                <h3>
+                <h2>
                   Phase {phase.phase}: {phase.title}
-                </h3>
+                </h2>
                 {phase.isPhaseComplete ? (
                   <span className="curriculum-phase-status curriculum-phase-status--done">
                     ✓ Done

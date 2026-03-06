@@ -36,5 +36,16 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 **Changes:**
 -   [x] **[GEO] Site Architecture**: Updated `scripts/generate-llms-txt.js` to output a clean, concise `# Site Architecture` section, making the manifest highly optimized for AI agents without breaking existing routes.
 
+### [Date: Current] - Advanced GEO and Semantic HTML Fixes
+
+**Priority Areas:**
+1.  **SEO (Visibility)**: Semantic HTML hierarchy.
+2.  **GEO (Intelligence)**: Expanding Article JSON-LD schema.
+
+**Changes:**
+-   [x] **[SEO] Semantic HTML**: Fixed `<h3>` tag rendering inside `Curriculum.tsx` phase headers to an `<h2>` to maintain strict h1-h6 hierarchy and prevent skip-level headings.
+-   [x] **[GEO] Structured Data**: Added `Article` to the schema types in `buildLessonSchema` within `seoSchemas.ts`. Also added `author`, `publisher`, and `image` fallback properties to improve rich snippet visibility.
+-   [x] **[PERF] Image CLS**: Provided fallback `alt="Course image"` text in the `MarkdownRenderer.tsx` ImageComponent.
+
 ---
 *May the Lighthouse score be 100 and the Googlebot find peace in our structure.*
