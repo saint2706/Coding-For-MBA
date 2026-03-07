@@ -68,6 +68,10 @@ vi.mock('../../components/SEOHead', () => ({ default: () => null }))
 vi.mock('../../components/MarkdownRenderer', () => ({ default: () => null }))
 vi.mock('../../components/Breadcrumb', () => ({ default: () => null }))
 vi.mock('../../components/BackToTop', () => ({ default: () => null }))
+vi.mock('../../components/AiStudyPanel', () => ({
+  default: () => null,
+  __esModule: true,
+}))
 vi.mock('../../components/TableOfContents', () => ({ default: () => null }))
 vi.mock('../../components/ReadingTime', () => ({ default: () => null }))
 vi.mock('../../components/PrerequisitePills', () => ({ default: () => null }))
