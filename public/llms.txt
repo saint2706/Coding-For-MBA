@@ -23,372 +23,360 @@
 
 ## Curriculum Structure
 
-### [Phase 1: Algorithmic Thinking & Python Foundations](https://saint2706.github.io/Coding-For-MBA/#/phase/1)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/1: Phase 1 - Algorithmic Thinking & Python Foundations
 
-**Lessons:**
-- [Day 1: Introduction to Python](https://saint2706.github.io/Coding-For-MBA/#/lesson/1)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/1: Day 1 - Introduction to Python
   - Concepts: print statements, basic arithmetic, script execution, REPL environment
-- [Day 2: Variables & Built-in Functions](https://saint2706.github.io/Coding-For-MBA/#/lesson/2)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/2: Day 2 - Variables & Built-in Functions
   - Concepts: variable assignment, data types (int, float, str, bool), type conversion, built-in functions
-- [Day 3: Operators](https://saint2706.github.io/Coding-For-MBA/#/lesson/3)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/3: Day 3 - Operators
   - Concepts: arithmetic operators, comparison operators, logical operators, assignment operators, operator precedence
-- [Day 4: Strings](https://saint2706.github.io/Coding-For-MBA/#/lesson/4)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/4: Day 4 - Strings
   - Concepts: string creation and concatenation, string methods, string formatting (f-strings), string indexing and slicing
-- [Day 5: Lists](https://saint2706.github.io/Coding-For-MBA/#/lesson/5)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/5: Day 5 - Lists
   - Concepts: list creation, indexing and slicing, list methods (append, remove, sort), list iteration
-- [Day 6: Tuples](https://saint2706.github.io/Coding-For-MBA/#/lesson/6)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/6: Day 6 - Tuples
   - Concepts: tuple creation, immutability, tuple unpacking, when to use tuples vs lists
-- [Day 7: Sets](https://saint2706.github.io/Coding-For-MBA/#/lesson/7)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/7: Day 7 - Sets
   - Concepts: set creation, uniqueness constraint, set operations (union, intersection, difference), membership testing
-- [Day 8: Dictionaries](https://saint2706.github.io/Coding-For-MBA/#/lesson/8)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/8: Day 8 - Dictionaries
   - Concepts: dictionary creation, key-value pairs, dictionary methods, nested dictionaries
-- [Day 9: Conditionals](https://saint2706.github.io/Coding-For-MBA/#/lesson/9)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/9: Day 9 - Conditionals
   - Concepts: if statements, elif chains, nested conditionals, ternary expressions
-- [Day 10: Loops](https://saint2706.github.io/Coding-For-MBA/#/lesson/10)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/10: Day 10 - Loops
   - Concepts: for loops, while loops, break and continue, enumerate and range
-- [Day 11B: Generators & Iterators](https://saint2706.github.io/Coding-For-MBA/#/lesson/11B)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/11B: Day 11B - Generators & Iterators
   - Concepts: iterator protocol, generator functions and yield, yield from composition, itertools workflows
-- [Day 11C: Debugging Workflows](https://saint2706.github.io/Coding-For-MBA/#/lesson/11C)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/11C: Day 11C - Debugging Workflows
   - Concepts: debugging lifecycle, traceback interpretation, breakpoint and pdb commands, logging levels and context, verification and regression safety
-- [Day 11: Functions](https://saint2706.github.io/Coding-For-MBA/#/lesson/11)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/11: Day 11 - Functions
   - Concepts: function definition, parameters and arguments, return values, scope and namespace
-- [Day 12: List Comprehensions](https://saint2706.github.io/Coding-For-MBA/#/lesson/12)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/12: Day 12 - List Comprehensions
   - Concepts: basic list comprehension, conditional comprehensions, nested comprehensions, dict and set comprehensions
 
-### [Phase 2: Functions, Modularity & Data Wrangling](https://saint2706.github.io/Coding-For-MBA/#/phase/2)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/2: Phase 2 - Functions, Modularity & Data Wrangling
 
-**Lessons:**
-- [Day 13: Higher-Order Functions](https://saint2706.github.io/Coding-For-MBA/#/lesson/13)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/13: Day 13 - Higher-Order Functions
   - Concepts: functions as first-class objects, map, filter, reduce, lambda functions, closures
-- [Day 14: Modules & Packages](https://saint2706.github.io/Coding-For-MBA/#/lesson/14)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/14: Day 14 - Modules & Packages
   - Concepts: importing modules, creating custom modules, package structure, the __name__ variable
-- [Day 15: Exception Handling](https://saint2706.github.io/Coding-For-MBA/#/lesson/15)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/15: Day 15 - Exception Handling
   - Concepts: try-except blocks, exception types, raising exceptions, custom exceptions
-- [Day 16: File Handling](https://saint2706.github.io/Coding-For-MBA/#/lesson/16)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/16: Day 16 - File Handling
   - Concepts: reading and writing files, context managers, CSV and JSON handling, file paths
-- [Day 17: Regular Expressions](https://saint2706.github.io/Coding-For-MBA/#/lesson/17)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/17: Day 17 - Regular Expressions
   - Concepts: regex syntax, match, search, findall, groups and captures, substitution
-- [Day 18: Classes and Objects](https://saint2706.github.io/Coding-For-MBA/#/lesson/18)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/18: Day 18 - Classes and Objects
   - Concepts: class definition, instance methods, attributes and properties, inheritance basics
-- [Day 19: Date and Time](https://saint2706.github.io/Coding-For-MBA/#/lesson/19)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/19: Day 19 - Date and Time
   - Concepts: date and time objects, formatting and parsing, timedelta arithmetic, timezone handling
-- [Day 20: Python Package Manager](https://saint2706.github.io/Coding-For-MBA/#/lesson/20)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/20: Day 20 - Python Package Manager
   - Concepts: pip install, requirements.txt, package versions, PyPI
-- [Day 21: Virtual Environments](https://saint2706.github.io/Coding-For-MBA/#/lesson/21)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/21: Day 21 - Virtual Environments
   - Concepts: creating virtual environments, activating and deactivating, project isolation, python version management
-- [Day 22: NumPy Fundamentals](https://saint2706.github.io/Coding-For-MBA/#/lesson/22)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/22: Day 22 - NumPy Fundamentals
   - Concepts: ndarray creation, array operations, broadcasting, indexing and slicing
-- [Day 23: Pandas Essentials](https://saint2706.github.io/Coding-For-MBA/#/lesson/23)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/23: Day 23 - Pandas Essentials
   - Concepts: Series and DataFrame, data loading, selection and filtering
-- [Day 24B: Exploratory Data Analysis (EDA)](https://saint2706.github.io/Coding-For-MBA/#/lesson/24B)
-- [Day 24C: Data Cleaning Playbook](https://saint2706.github.io/Coding-For-MBA/#/lesson/24C)
-- [Day 24D: Phase 2 Mini Capstone: Modular Data Pipeline](https://saint2706.github.io/Coding-For-MBA/#/lesson/24D)
-- [Day 24: Advanced Pandas](https://saint2706.github.io/Coding-For-MBA/#/lesson/24)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24B: Day 24B - Exploratory Data Analysis (EDA)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24C: Day 24C - Data Cleaning Playbook
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24D: Day 24D - Phase 2 Mini Capstone: Modular Data Pipeline
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24: Day 24 - Advanced Pandas
   - Concepts: groupby operations, merging DataFrames, pivot tables, time series
 
-### [Phase 3: Data Engineering & Web Development](https://saint2706.github.io/Coding-For-MBA/#/phase/3)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/3: Phase 3 - Data Engineering & Web Development
 
-**Lessons:**
-- [Day 25: Data Cleaning](https://saint2706.github.io/Coding-For-MBA/#/lesson/25)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/25: Day 25 - Data Cleaning
   - Concepts: handling missing data, type conversion, deduplication, string normalization, outlier detection
-- [Day 26: Statistics for Business](https://saint2706.github.io/Coding-For-MBA/#/lesson/26)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/26: Day 26 - Statistics for Business
   - Concepts: descriptive statistics, distributions, correlation, percentiles, hypothesis testing basics
-- [Day 27: Data Visualization](https://saint2706.github.io/Coding-For-MBA/#/lesson/27)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/27: Day 27 - Data Visualization
   - Concepts: chart types, matplotlib basics, plot customization, choosing visualizations, storytelling with data
-- [Day 28: Advanced Visualization](https://saint2706.github.io/Coding-For-MBA/#/lesson/28)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/28: Day 28 - Advanced Visualization
   - Concepts: seaborn plots, statistical visualization, heatmaps, pair plots, publication-quality graphics
-- [Day 29: Interactive Visualization](https://saint2706.github.io/Coding-For-MBA/#/lesson/29)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/29: Day 29 - Interactive Visualization
   - Concepts: Plotly basics, interactive charts, hover data, animations
-- [Day 30: Web Scraping](https://saint2706.github.io/Coding-For-MBA/#/lesson/30)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/30: Day 30 - Web Scraping
   - Concepts: HTTP requests, HTML parsing, CSS selectors, ethical scraping
-- [Day 31: Databases with SQL](https://saint2706.github.io/Coding-For-MBA/#/lesson/31)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/31: Day 31 - Databases with SQL
   - Concepts: relational databases, SQL queries, CRUD operations, joins
-- [Day 32: Other Databases](https://saint2706.github.io/Coding-For-MBA/#/lesson/32)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/32: Day 32 - Other Databases
   - Concepts: NoSQL databases, document stores, when to use what
-- [Day 33: APIs](https://saint2706.github.io/Coding-For-MBA/#/lesson/33)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/33: Day 33 - APIs
   - Concepts: REST APIs, HTTP methods, JSON parsing, authentication
-- [Day 34: Building an API](https://saint2706.github.io/Coding-For-MBA/#/lesson/34)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/34: Day 34 - Building an API
   - Concepts: REST endpoints, HTTP methods, request validation, Pydantic
-- [Day 35: Flask Web Framework](https://saint2706.github.io/Coding-For-MBA/#/lesson/35)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/35: Day 35 - Flask Web Framework
   - Concepts: web applications, templates, routing, forms
-- [Day 36B: Docker Fundamentals](https://saint2706.github.io/Coding-For-MBA/#/lesson/36B)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/36B: Day 36B - Docker Fundamentals
   - Concepts: containers vs virtual machines, Dockerfile, docker-compose, image layers, environment reproducibility
-- [Day 36C: Async Python and FastAPI](https://saint2706.github.io/Coding-For-MBA/#/lesson/36C)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/36C: Day 36C - Async Python and FastAPI
   - Concepts: event loop, await and coroutines, cooperative multitasking, async API handlers, throughput vs latency
-- [Day 36: Case Study: ETL Pipeline](https://saint2706.github.io/Coding-For-MBA/#/lesson/36)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/36: Day 36 - Case Study: ETL Pipeline
   - Concepts: ETL pipelines, data integration, automation, end-to-end projects
 
-### [Phase 4: Mathematical Foundations & ML Fundamentals](https://saint2706.github.io/Coding-For-MBA/#/phase/4)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/4: Phase 4 - Mathematical Foundations & ML Fundamentals
 
-**Lessons:**
-- [Day 37B: Probability & Statistics for ML](https://saint2706.github.io/Coding-For-MBA/#/lesson/37B)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/37B: Day 37B - Probability & Statistics for ML
   - Concepts: probability distributions, Bayes' theorem, conditional probability, Central Limit Theorem, hypothesis testing
-- [Day 37C: Sklearn Pipelines & ColumnTransformer](https://saint2706.github.io/Coding-For-MBA/#/lesson/37C)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/37C: Day 37C - Sklearn Pipelines & ColumnTransformer
   - Concepts: sklearn Pipeline, ColumnTransformer, custom transformers, cross-validation with pipelines, preventing data leakage
-- [Day 37: Python Review & ML Prep](https://saint2706.github.io/Coding-For-MBA/#/lesson/37)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/37: Day 37 - Python Review & ML Prep
   - Concepts: NumPy array operations, Pandas data manipulation, visualization fundamentals, ML mindset preparation
-- [Day 38: Linear Algebra for ML](https://saint2706.github.io/Coding-For-MBA/#/lesson/38)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/38: Day 38 - Linear Algebra for ML
   - Concepts: vectors and vector operations, matrices and matrix multiplication, dot products and similarity, transformations and projections
-- [Day 39: Calculus for ML](https://saint2706.github.io/Coding-For-MBA/#/lesson/39)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/39: Day 39 - Calculus for ML
   - Concepts: derivatives and rate of change, partial derivatives, gradients and direction, gradient descent optimization, learning rate dynamics
-- [Day 40: Introduction to Machine Learning](https://saint2706.github.io/Coding-For-MBA/#/lesson/40)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/40: Day 40 - Introduction to Machine Learning
   - Concepts: supervised vs unsupervised learning, train-test split, model evaluation, overfitting and underfitting, cross-validation
-- [Day 41: Supervised Learning: Regression](https://saint2706.github.io/Coding-For-MBA/#/lesson/41)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/41: Day 41 - Supervised Learning: Regression
   - Concepts: linear regression, polynomial regression, regularization (Ridge, Lasso), feature scaling, regression metrics
-- [Day 42: Supervised Learning: Classification Part 1](https://saint2706.github.io/Coding-For-MBA/#/lesson/42)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/42: Day 42 - Supervised Learning: Classification Part 1
   - Concepts: binary classification, logistic regression, confusion matrix, precision, recall, F1, ROC curves and AUC
-- [Day 43: Supervised Learning: Classification Part 2](https://saint2706.github.io/Coding-For-MBA/#/lesson/43)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/43: Day 43 - Supervised Learning: Classification Part 2
   - Concepts: decision trees, random forests, feature importance, hyperparameter tuning, cross-validation
-- [Day 44: Unsupervised Learning](https://saint2706.github.io/Coding-For-MBA/#/lesson/44)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/44: Day 44 - Unsupervised Learning
   - Concepts: K-Means clustering, elbow method, PCA dimensionality reduction, silhouette score, anomaly detection
-- [Day 45: Feature Engineering and Evaluation](https://saint2706.github.io/Coding-For-MBA/#/lesson/45)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/45: Day 45 - Feature Engineering and Evaluation
   - Concepts: feature creation, encoding categorical variables, cross-validation strategies, data leakage prevention
-- [Day 46: Introduction to Neural Networks](https://saint2706.github.io/Coding-For-MBA/#/lesson/46)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/46: Day 46 - Introduction to Neural Networks
   - Concepts: neurons and layers, activation functions, forward propagation, backpropagation, loss functions
-- [Day 47: Convolutional Neural Networks](https://saint2706.github.io/Coding-For-MBA/#/lesson/47)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/47: Day 47 - Convolutional Neural Networks
   - Concepts: convolution operation, pooling layers, feature maps, image classification
-- [Day 48: Recurrent Neural Networks](https://saint2706.github.io/Coding-For-MBA/#/lesson/48)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/48: Day 48 - Recurrent Neural Networks
   - Concepts: recurrent connections, LSTM and GRU cells, sequence modeling, vanishing gradients
 
-### [Phase 5: Advanced ML & Deep Learning](https://saint2706.github.io/Coding-For-MBA/#/phase/5)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/5: Phase 5 - Advanced ML & Deep Learning
 
-**Lessons:**
-- [Day 49: Natural Language Processing](https://saint2706.github.io/Coding-For-MBA/#/lesson/49)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/49: Day 49 - Natural Language Processing
   - Concepts: text preprocessing, tokenization and vectorization, word embeddings, sentiment analysis, named entity recognition
-- [Day 50: MLOps Fundamentals](https://saint2706.github.io/Coding-For-MBA/#/lesson/50)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/50: Day 50 - MLOps Fundamentals
   - Concepts: experiment tracking, model versioning, model deployment, monitoring and drift detection, CI/CD for ML
-- [Day 51: Regularized Models](https://saint2706.github.io/Coding-For-MBA/#/lesson/51)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/51: Day 51 - Regularized Models
   - Concepts: L1 and L2 regularization, Ridge regression, Lasso regression, ElasticNet, regularization path
-- [Day 52: Ensemble Methods](https://saint2706.github.io/Coding-For-MBA/#/lesson/52)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/52: Day 52 - Ensemble Methods
   - Concepts: bagging and boosting, Random Forest, Gradient Boosting, XGBoost and LightGBM, ensemble stacking
-- [Day 53: Model Tuning & Feature Selection](https://saint2706.github.io/Coding-For-MBA/#/lesson/53)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/53: Day 53 - Model Tuning & Feature Selection
   - Concepts: grid search and random search, Bayesian optimization, feature importance, recursive feature elimination, dimensionality reduction
-- [Day 54: Probabilistic Modeling](https://saint2706.github.io/Coding-For-MBA/#/lesson/54)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/54: Day 54 - Probabilistic Modeling
   - Concepts: Naive Bayes classifiers, probability calibration, Bayesian inference, uncertainty quantification, Gaussian processes
-- [Day 55: Advanced Unsupervised Learning](https://saint2706.github.io/Coding-For-MBA/#/lesson/55)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/55: Day 55 - Advanced Unsupervised Learning
   - Concepts: density-based clustering (DBSCAN, HDBSCAN), anomaly detection (Isolation Forest, One-Class SVM), autoencoders for compression, manifold learning (t-SNE, UMAP), clustering evaluation metrics
-- [Day 56: Time Series & Forecasting](https://saint2706.github.io/Coding-For-MBA/#/lesson/56)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/56: Day 56 - Time Series & Forecasting
   - Concepts: stationarity and differencing, ARIMA and SARIMAX models, Prophet for business forecasting, LSTM for sequence prediction, forecast evaluation metrics
-- [Day 57: Recommender Systems](https://saint2706.github.io/Coding-For-MBA/#/lesson/57)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/57: Day 57 - Recommender Systems
   - Concepts: collaborative filtering (user-based, item-based), content-based filtering, matrix factorization (SVD, ALS), hybrid recommendation systems, cold start problem solutions
-- [Day 58: Transformers & Attention](https://saint2706.github.io/Coding-For-MBA/#/lesson/58)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/58: Day 58 - Transformers & Attention
   - Concepts: self-attention mechanism, transformer architecture, BERT and GPT models, transfer learning with pretrained models, fine-tuning strategies
-- [Day 59: Generative Models](https://saint2706.github.io/Coding-For-MBA/#/lesson/59)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/59: Day 59 - Generative Models
   - Concepts: Generative Adversarial Networks (GANs), Variational Autoencoders (VAEs), diffusion models, image generation, generative model evaluation
-- [Day 60B: LLM Fine-Tuning & Parameter-Efficient Fine-Tuning (PEFT)](https://saint2706.github.io/Coding-For-MBA/#/lesson/60B)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/60B: Day 60B - LLM Fine-Tuning & Parameter-Efficient Fine-Tuning (PEFT)
   - Concepts: full fine-tuning vs PEFT, LoRA: Low-Rank Adaptation, QLoRA: quantized LoRA, parameter efficiency, Hugging Face PEFT library
-- [Day 60C: Retrieval-Augmented Generation (RAG) & Vector Databases](https://saint2706.github.io/Coding-For-MBA/#/lesson/60C)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/60C: Day 60C - Retrieval-Augmented Generation (RAG) & Vector Databases
   - Concepts: semantic search and embeddings, vector databases (ChromaDB, Pinecone, pgvector), RAG pipeline architecture, retrieval strategies
-- [Day 60: Graph & Geometric Learning](https://saint2706.github.io/Coding-For-MBA/#/lesson/60)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/60: Day 60 - Graph & Geometric Learning
   - Concepts: graph neural networks (GNNs), node embeddings and representation learning, graph convolutional networks (GCNs), message passing frameworks, graph-level predictions
 
-### [Phase 6: Cutting-Edge ML](https://saint2706.github.io/Coding-For-MBA/#/phase/6)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/6: Phase 6 - Cutting-Edge ML
 
-**Lessons:**
-- [Day 61: Reinforcement & Offline Learning](https://saint2706.github.io/Coding-For-MBA/#/lesson/61)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/61: Day 61 - Reinforcement & Offline Learning
   - Concepts: reward mechanisms, exploration vs exploitation, Q-learning, offline reinforcement learning
-- [Day 62: Model Interpretability & Fairness](https://saint2706.github.io/Coding-For-MBA/#/lesson/62)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/62: Day 62 - Model Interpretability & Fairness
   - Concepts: black box models, SHAP values, LIME, algorithmic bias, disparate impact
-- [Day 63: Causal Inference & Uplift](https://saint2706.github.io/Coding-For-MBA/#/lesson/63)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/63: Day 63 - Causal Inference & Uplift
   - Concepts: correlation vs causation, confounders, Simpson's paradox, uplift modeling, counterfactuals
-- [Day 64: Modern NLP Pipelines](https://saint2706.github.io/Coding-For-MBA/#/lesson/64)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/64: Day 64 - Modern NLP Pipelines
   - Concepts: transformers (BERT/GPT), transfer learning, tokenization vs embeddings, named entity recognition (NER), hugging face pipeline
-- [Day 65: MLOps Pipelines & CI](https://saint2706.github.io/Coding-For-MBA/#/lesson/65)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/65: Day 65 - MLOps Pipelines & CI
   - Concepts: MLOps vs DevOps, reproducibility, experiment tracking (MLflow), feature stores, data validation
-- [Day 66: Model Deployment & Serving](https://saint2706.github.io/Coding-For-MBA/#/lesson/66)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/66: Day 66 - Model Deployment & Serving
   - Concepts: REST APIs, containerization (Docker), batch vs real-time, serverless inference, canary deployment
-- [Day 67: Model Monitoring & Reliability](https://saint2706.github.io/Coding-For-MBA/#/lesson/67)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/67: Day 67 - Model Monitoring & Reliability
   - Concepts: data drift vs concept drift, silent failure, monitoring metrics, alerting strategies, fallback mechanisms
-- [Day 68: AI Agents & Tool Use](https://saint2706.github.io/Coding-For-MBA/#/lesson/68)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/68: Day 68 - AI Agents & Tool Use
   - Concepts: ReAct pattern (Reason + Act), function calling, agent loops, tool orchestration, multi-step reasoning
-- [Day 69: Responsible AI in Practice](https://saint2706.github.io/Coding-For-MBA/#/lesson/69)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/69: Day 69 - Responsible AI in Practice
   - Concepts: demographic parity, equalized odds, model cards, red-teaming, bias audit
-- [Day 70: LLM Fine-Tuning & PEFT](https://saint2706.github.io/Coding-For-MBA/#/lesson/70)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/70: Day 70 - LLM Fine-Tuning & PEFT
   - Concepts: parameter-efficient fine-tuning (PEFT), LoRA (Low-Rank Adaptation), QLoRA (Quantized LoRA), adapter layers, instruction tuning
-- [Day 71: RAG & Vector Databases](https://saint2706.github.io/Coding-For-MBA/#/lesson/71)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/71: Day 71 - RAG & Vector Databases
   - Concepts: retrieval-augmented generation (RAG), text embeddings, vector search (ANN), semantic similarity, chunking strategies
-- [Day 72: Multimodal AI](https://saint2706.github.io/Coding-For-MBA/#/lesson/72)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/72: Day 72 - Multimodal AI
   - Concepts: vision-language models (VLMs), image embeddings, document understanding, cross-modal retrieval, multimodal RAG
 
-### [Phase 7: BI Analytics, Governance & Modern Data Stack](https://saint2706.github.io/Coding-For-MBA/#/phase/7)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/7: Phase 7 - BI Analytics, Governance & Modern Data Stack
 
-**Lessons:**
-- [Day 68: BI Analyst Foundations](https://saint2706.github.io/Coding-For-MBA/#/lesson/68)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/68: Day 68 - BI Analyst Foundations
   - Concepts: descriptive analytics, the 'why' vs 'what', single source of truth, dashboard design, ETL basics
-- [Day 69: BI Strategy & Stakeholders](https://saint2706.github.io/Coding-For-MBA/#/lesson/69)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/69: Day 69 - BI Strategy & Stakeholders
   - Concepts: translating business questions, vanity metrics vs actionable metrics, The 5 Whys, Saying No to data requests
-- [Day 70: BI Metrics & Data Literacy](https://saint2706.github.io/Coding-For-MBA/#/lesson/70)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/70: Day 70 - BI Metrics & Data Literacy
   - Concepts: lagging vs leading indicators, cohort analysis, LTV/CAC ratio, stickiness (DAU/MAU), Goodhart's Law
-- [Day 71: BI Data Landscape](https://saint2706.github.io/Coding-For-MBA/#/lesson/71)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/71: Day 71 - BI Data Landscape
   - Concepts: OLTP vs OLAP, Row vs Columnar Storage, Data Lake vs Warehouse, The Modern Data Stack
-- [Day 72: BI Data Formats & Ingestion](https://saint2706.github.io/Coding-For-MBA/#/lesson/72)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/72: Day 72 - BI Data Formats & Ingestion
   - Concepts: JSON vs CSV vs Parquet, Row vs Columnar Formats, REST API Pagination, Batch vs Streaming Ingestion
-- [Day 73: BI SQL & Advanced Databases](https://saint2706.github.io/Coding-For-MBA/#/lesson/73)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/73: Day 73 - BI SQL & Advanced Databases
   - Concepts: Window Functions (RANK, LEAD, LAG), Common Table Expressions (CTEs), Query Optimization (Indexing, Execution Plans), Analytical SQL Patterns
-- [Day 74: BI Data Preparation & Tools](https://saint2706.github.io/Coding-For-MBA/#/lesson/74)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/74: Day 74 - BI Data Preparation & Tools
   - Concepts: Extract Transform Load (ETL), Unpivoting Data (Wide to Long), Merging vs Appending, Handling Nulls and Errors
-- [Day 75: BI Visualization & Dashboard Principles](https://saint2706.github.io/Coding-For-MBA/#/lesson/75)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/75: Day 75 - BI Visualization & Dashboard Principles
   - Concepts: Data-Ink Ratio, The 5-Second Rule, BANs (Big Angry Numbers), Pre-Attentive Processing
-- [Day 76: BI Platforms & Automation](https://saint2706.github.io/Coding-For-MBA/#/lesson/76)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/76: Day 76 - BI Platforms & Automation
   - Concepts: The Semantic Layer, Import vs Direct Query, Headless BI, DAX vs Tabular vs LookML
-- [Day 77: BI Domain Analytics & Value](https://saint2706.github.io/Coding-For-MBA/#/lesson/77)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/77: Day 77 - BI Domain Analytics & Value
   - Concepts: The Funnel (AARRR), Churn & Retention, MRR/ARR, Inventory Turn
-- [Day 78: BI Experimentation & Predictive](https://saint2706.github.io/Coding-For-MBA/#/lesson/78)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/78: Day 78 - BI Experimentation & Predictive
   - Concepts: The Null Hypothesis, Sample Size & P-Values, Forecasting in BI Tools, Correlation vs Causation (Recap)
-- [Day 79: BI Storytelling & Influence](https://saint2706.github.io/Coding-For-MBA/#/lesson/79)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/79: Day 79 - BI Storytelling & Influence
   - Concepts: The Narrative Arc (Setup, Conflict, Resolution), The 'So What?' Test, Managing Up, Effective Slide Design
-- [Day 80: BI Data Quality & Governance](https://saint2706.github.io/Coding-For-MBA/#/lesson/80)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/80: Day 80 - BI Data Quality & Governance
   - Concepts: The 6 Dimensions of Data Quality, Data Stewardship (Owners vs Custodians), Data Lineage (Source to Target), The Data Catalog
-- [Day 81: BI Architecture & Data Modeling](https://saint2706.github.io/Coding-For-MBA/#/lesson/81)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/81: Day 81 - BI Architecture & Data Modeling
   - Concepts: Fact Tables vs. Dimension Tables, Star Schema vs. Snowflake Schema, One Big Table (OBT), Normalization (3NF)
-- [Day 82: BI ETL & Pipeline Automation](https://saint2706.github.io/Coding-For-MBA/#/lesson/82)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/82: Day 82 - BI ETL & Pipeline Automation
   - Concepts: Extract, Transform, Load (ETL) vs. ELT, Idempotency (Run it twice safely), Dependency Management (DAGs), Backfilling History
-- [Day 83: BI Cloud & Modern Data Stack](https://saint2706.github.io/Coding-For-MBA/#/lesson/83)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/83: Day 83 - BI Cloud & Modern Data Stack
   - Concepts: Separation of Compute & Storage, Reverse ETL (Census/Hightouch), The Modern Data Stack (Fivetran-dbt-Snowflake), FinOps (Managing Cloud Bills)
-- [Day 84C: Reverse ETL & Semantic Layer](https://saint2706.github.io/Coding-For-MBA/#/lesson/84C)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/84C: Day 84C - Reverse ETL & Semantic Layer
   - Concepts: Reverse ETL concept and tools, Semantic / metrics layer, dbt Metrics, Cube.js, operational analytics
-- [Day 84: BI Career & Capstone](https://saint2706.github.io/Coding-For-MBA/#/lesson/84)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/84: Day 84 - BI Career & Capstone
   - Concepts: The Impact Resume (Action -> Metric), The Full-Stack Portfolio, The Analytics Capstone Project, Continuous Learning Path
-- [Day 85: dbt Fundamentals](https://saint2706.github.io/Coding-For-MBA/#/lesson/85)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/85: Day 85 - dbt Fundamentals
   - Concepts: dbt models and refs, sources and freshness, dbt tests, Jinja templating in SQL, lineage and documentation
 
-### [Phase 8: SQL Mastery & Database Architecture](https://saint2706.github.io/Coding-For-MBA/#/phase/8)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/8: Phase 8 - SQL Mastery & Database Architecture
 
-**Lessons:**
-- [Day 85: Advanced SQL Patterns](https://saint2706.github.io/Coding-For-MBA/#/lesson/85)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/85: Day 85 - Advanced SQL Patterns
   - Concepts: Recursive CTEs (Hierarchies), JSON Parsing in SQL, Lateral Joins (Cross Apply), Array Aggregates
-- [Day 86: Cloud Architecture & Optimization](https://saint2706.github.io/Coding-For-MBA/#/lesson/86)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/86: Day 86 - Cloud Architecture & Optimization
   - Concepts: Partitioning vs Clustering, Materialized Views (Auto-Refresh), Query Execution Plans (Cloud), Slot Contention
-- [Day 87: Technical Data Governance & Security](https://saint2706.github.io/Coding-For-MBA/#/lesson/87)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/87: Day 87 - Technical Data Governance & Security
   - Concepts: Row Level Security (RLS) Implementation, Dynamic Data Masking (PII), Right to be Forgotten (GDPR Delete), Role Based Access Control (RBAC)
-- [Day 88: Capstone Part 1: Design & Architecture](https://saint2706.github.io/Coding-For-MBA/#/lesson/88)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/88: Day 88 - Capstone Part 1: Design & Architecture
   - Concepts: The Technical Design Doc (TDD), Choosing the Right Database (SQL vs NoSQL vs Columnar), Designing for Scale (Sharding Strategy), Governance Policies
-- [Day 89: Capstone Part 2: Implementation](https://saint2706.github.io/Coding-For-MBA/#/lesson/89)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/89: Day 89 - Capstone Part 2: Implementation
   - Concepts: Translating ERD to DDL (Create Tables), Loading Data (ETL Script), Index Tuning (Explain Analyze), Stress Testing
-- [Day 90: Technical Interview WorkShop](https://saint2706.github.io/Coding-For-MBA/#/lesson/90)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/90: Day 90 - Technical Interview WorkShop
   - Concepts: The System Design Interview (Designing Twitter), SQL Whiteboarding (Live Coding), Behavioral Questions (The Amazon LP), Negotiation 101
-- [Day 91: Relational Database Internals](https://saint2706.github.io/Coding-For-MBA/#/lesson/91)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/91: Day 91 - Relational Database Internals
   - Concepts: ACID Compliance (Deep Dive), MVCC (Multi-Version Concurrency Control), Write-Ahead Logging (WAL), Deadlocks and Transaction Isolation
-- [Day 92: Advanced DDL & Schema](https://saint2706.github.io/Coding-For-MBA/#/lesson/92)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/92: Day 92 - Advanced DDL & Schema
   - Concepts: Declarative Partitioning (Range/List/Hash), Exclusion Constraints (The 'No Overlap' Rule), Stored Procedures vs Functions, Triggers (Audit Logs)
-- [Day 93: Advanced DML & Upserts](https://saint2706.github.io/Coding-For-MBA/#/lesson/93)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/93: Day 93 - Advanced DML & Upserts
   - Concepts: The Upsert (INSERT ON CONFLICT), Bulk Loading (COPY vs INSERT), Modifying CTEs (RETURNING clause), Savepoints in Transactions
-- [Day 94: Advanced DQL & Optimization](https://saint2706.github.io/Coding-For-MBA/#/lesson/94)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/94: Day 94 - Advanced DQL & Optimization
   - Concepts: The Query Optimizer (Cost Based), Scan Types (Seq, Index, Bitmap Heap), Index-Only Scans (Covering Index), CTE Optimization (Materialized vs Not)
-- [Day 95: Advanced Joins & Algorithms](https://saint2706.github.io/Coding-For-MBA/#/lesson/95)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/95: Day 95 - Advanced Joins & Algorithms
   - Concepts: Join Algorithms (Nested Loop, Hash, Merge), Skewed Joins (The NULL Problem), Cross Join (Data Generation), Self Join (Hierarchies)
-- [Day 96C: Streaming SQL Fundamentals](https://saint2706.github.io/Coding-For-MBA/#/lesson/96C)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/96C: Day 96C - Streaming SQL Fundamentals
   - Concepts: Apache Kafka architecture, ksqlDB stream processing, tumbling and hopping windows, real-time aggregations, streaming vs batch trade-offs
-- [Day 96: Advanced Subqueries](https://saint2706.github.io/Coding-For-MBA/#/lesson/96)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/96: Day 96 - Advanced Subqueries
   - Concepts: Correlated vs Uncorrelated (Performance Impact), EXISTS vs IN (The NULL Trap), Subquery Unnesting (Optimizer Magic), Scalar Subqueries in SELECT
-- [Day 97: NoSQL Deep Dive](https://saint2706.github.io/Coding-For-MBA/#/lesson/97)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/97: Day 97 - NoSQL Deep Dive
   - Concepts: document stores, key-value stores, column-family databases, CAP theorem, eventual consistency
 
-### [Phase 9: Enterprise SQL Performance Engineering](https://saint2706.github.io/Coding-For-MBA/#/phase/9)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/9: Phase 9 - Enterprise SQL Performance Engineering
 
-**Lessons:**
-- [Day 97: Materialized Views & Caching](https://saint2706.github.io/Coding-For-MBA/#/lesson/97)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/97: Day 97 - Materialized Views & Caching
   - Concepts: Standard vs Materialized Views, Refresh Strategies (Concurrent vs Blocking), Dependencies and Staleness, View Indexing
-- [Day 98: Advanced Indexing (GIN, GiST, BRIN)](https://saint2706.github.io/Coding-For-MBA/#/lesson/98)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/98: Day 98 - Advanced Indexing (GIN, GiST, BRIN)
   - Concepts: Beyond B-Trees (Non-Scalar Data), GIN (Inverted Indexes for JSON/Arrays), GiST (Spatial/Range Search), BRIN (Block Range for Big Data)
-- [Day 99: Distributed Transactions & Concurrency](https://saint2706.github.io/Coding-For-MBA/#/lesson/99)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/99: Day 99 - Distributed Transactions & Concurrency
   - Concepts: Two-Phase Commit (2PC / XA), CAP Theorem (Consistency vs Availability), Sagas Pattern (Compensating Transactions), Distributed Deadlocks
-- [Day 100: Advanced Stored Procedures](https://saint2706.github.io/Coding-For-MBA/#/lesson/100)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/100: Day 100 - Advanced Stored Procedures
   - Concepts: PL/pgSQL Control Structures (Loops, If), Exception Handling (Try/Catch in SQL), Dynamic SQL (EXECUTE format), Security Definer vs Invoker
-- [Day 101: Triggers & Event-Driven SQL](https://saint2706.github.io/Coding-For-MBA/#/lesson/101)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/101: Day 101 - Triggers & Event-Driven SQL
   - Concepts: BEFORE vs AFTER Triggers, Row vs Statement Level, Audit Logging Pattern (Hstore/JSONB), Real-Time Events (NOTIFY / LISTEN)
-- [Day 102: Advanced CTEs & Recursion](https://saint2706.github.io/Coding-For-MBA/#/lesson/102)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/102: Day 102 - Advanced CTEs & Recursion
   - Concepts: Recursive CTE Syntax (Anchor vs Recursive Member), Traversing Trees (Org Charts), Graph Traversal (Shortest Path), Cycle Detection
-- [Day 103: Pivoting & Crosstabs](https://saint2706.github.io/Coding-For-MBA/#/lesson/103)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/103: Day 103 - Pivoting & Crosstabs
   - Concepts: Row to Column Transformation (Pivot), CASE WHEN Aggregation, Postgres FILTER Clause, Tablefunc (Crosstab)
-- [Day 104: Database Design & Normalization](https://saint2706.github.io/Coding-For-MBA/#/lesson/104)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/104: Day 104 - Database Design & Normalization
   - Concepts: Normal Forms (1NF, 2NF, 3NF), The Anomalies (Update, Insertion, Deletion), Strategic Denormalization (Star Schema), Surrogate vs Natural Keys
-- [Day 105: JSON & NoSQL in SQL](https://saint2706.github.io/Coding-For-MBA/#/lesson/105)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/105: Day 105 - JSON & NoSQL in SQL
   - Concepts: JSONB vs JSON (Binary vs Text), Querying JSON (->, ->>, @>), Indexing JSON (GIN), Hybrid Multi-Model Databases
-- [Day 106: XML & Complex Data Types](https://saint2706.github.io/Coding-For-MBA/#/lesson/106)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/106: Day 106 - XML & Complex Data Types
   - Concepts: Querying XML (xpath), Arrays in SQL (Slicing, Unnesting), ENUM Types (Static Dropdowns), Composite Types (Structs)
-- [Day 107: Enterprise Security: RLS & Encryption](https://saint2706.github.io/Coding-For-MBA/#/lesson/107)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/107: Day 107 - Enterprise Security: RLS & Encryption
   - Concepts: Row Level Security (RLS), Column Encryption (pgcrypto), Role Based Access Control (RBAC), SQL Injection Prevention
-- [Day 108C: Cloud-Native SQL: BigQuery ML, Snowflake Cortex & Redshift ML](https://saint2706.github.io/Coding-For-MBA/#/lesson/108C)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/108C: Day 108C - Cloud-Native SQL: BigQuery ML, Snowflake Cortex & Redshift ML
   - Concepts: BigQuery ML (BQML), Snowflake Cortex AI functions, Redshift ML, cloud warehouse cost optimization, ML via SQL
-- [Day 108: Performance Tuning & Optimization](https://saint2706.github.io/Coding-For-MBA/#/lesson/108)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/108: Day 108 - Performance Tuning & Optimization
   - Concepts: EXPLAIN ANALYZE Interpretation, Configuration Tuning (shared_buffers, work_mem), VACUUM and Bloat Management, Query Plan Forcing (pg_hint_plan)
-- [Day 109: Curriculum Grand Finale Capstone](https://saint2706.github.io/Coding-For-MBA/#/lesson/109)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/109: Day 109 - Curriculum Grand Finale Capstone
   - Concepts: end-to-end data pipeline, raw data → insight → prediction, portfolio project, full-stack data skills
 
-### [Phase 10: Generative AI & LLM Engineering](https://saint2706.github.io/Coding-For-MBA/#/phase/10)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/10: Phase 10 - Generative AI & LLM Engineering
 
-**Lessons:**
-- [Day 109: LLM Landscape — GPT-4o, Gemini, Claude, Llama](https://saint2706.github.io/Coding-For-MBA/#/lesson/109)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/109: Day 109 - LLM Landscape — GPT-4o, Gemini, Claude, Llama
   - Concepts: large language models (LLMs), transformer architecture, open vs closed source models, model benchmarking, context windows
-- [Day 110: Prompt Engineering Mastery](https://saint2706.github.io/Coding-For-MBA/#/lesson/110)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/110: Day 110 - Prompt Engineering Mastery
   - Concepts: zero-shot prompting, few-shot prompting, chain-of-thought (CoT), structured output / JSON mode, system prompts, prompt injection defenses
-- [Day 111: LangChain & LlamaIndex — Document Loaders, Chains, Memory](https://saint2706.github.io/Coding-For-MBA/#/lesson/111)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/111: Day 111 - LangChain & LlamaIndex — Document Loaders, Chains, Memory
   - Concepts: LangChain LCEL (LangChain Expression Language), document loaders, text splitters, conversation memory, LlamaIndex query engine
-- [Day 112: RAG Pipelines — Embeddings, Vector Stores, Retrieval](https://saint2706.github.io/Coding-For-MBA/#/lesson/112)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/112: Day 112 - RAG Pipelines — Embeddings, Vector Stores, Retrieval
   - Concepts: retrieval-augmented generation (RAG), text embeddings, vector similarity (cosine), dense retrieval, hybrid search (BM25 + dense), reranking
-- [Day 113: Fine-Tuning LLMs — LoRA, QLoRA, Unsloth](https://saint2706.github.io/Coding-For-MBA/#/lesson/113)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/113: Day 113 - Fine-Tuning LLMs — LoRA, QLoRA, Unsloth
   - Concepts: supervised fine-tuning (SFT), LoRA (Low-Rank Adaptation), QLoRA (Quantized LoRA), Unsloth (2x faster training), instruction dataset format, RLHF overview
-- [Day 114: Evaluation & Guardrails — RAGAS, TruLens, Guardrails AI](https://saint2706.github.io/Coding-For-MBA/#/lesson/114)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/114: Day 114 - Evaluation & Guardrails — RAGAS, TruLens, Guardrails AI
   - Concepts: RAG evaluation metrics (faithfulness, relevancy, recall), LLM-as-a-judge, guardrail rails, output validation, toxicity detection
-- [Day 115: LLM Agents & Tool Use — ReAct, Function Calling, Multi-Agent](https://saint2706.github.io/Coding-For-MBA/#/lesson/115)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/115: Day 115 - LLM Agents & Tool Use — ReAct, Function Calling, Multi-Agent
   - Concepts: ReAct (Reasoning + Acting), OpenAI function calling, tool / function schema, agentic loops, multi-agent orchestration
-- [Day 116: LLM Ops & Cost Management — Token Optimization, Caching, Tracing](https://saint2706.github.io/Coding-For-MBA/#/lesson/116)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/116: Day 116 - LLM Ops & Cost Management — Token Optimization, Caching, Tracing
   - Concepts: token budgeting, prompt compression, semantic caching, LLM tracing, model routing
-- [Day 117: Multimodal AI — Vision-Language Models, GPT-4V, Gemini Vision](https://saint2706.github.io/Coding-For-MBA/#/lesson/117)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/117: Day 117 - Multimodal AI — Vision-Language Models, GPT-4V, Gemini Vision
   - Concepts: vision-language models (VLMs), image understanding, document intelligence, base64 image encoding, structured data extraction from images
-- [Day 118: AI Product Design — Product Thinking for LLM Features](https://saint2706.github.io/Coding-For-MBA/#/lesson/118)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/118: Day 118 - AI Product Design — Product Thinking for LLM Features
   - Concepts: AI product fit, user trust and AI transparency, failure mode design, AI feature framing, confidence communication
-- [Day 119: AI Ethics in Practice — Bias Audits, Red-Teaming, Responsible Deployment](https://saint2706.github.io/Coding-For-MBA/#/lesson/119)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/119: Day 119 - AI Ethics in Practice — Bias Audits, Red-Teaming, Responsible Deployment
   - Concepts: demographic parity and equalized odds, dataset bias, model bias audit, red-teaming LLMs, AI transparency and disclosure
-- [Day 120: Capstone: Build an AI-Powered Data Assistant](https://saint2706.github.io/Coding-For-MBA/#/lesson/120)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/120: Day 120 - Capstone: Build an AI-Powered Data Assistant
   - Concepts: end-to-end LLM application, RAG + agents + evaluation, production-ready deployment, responsible AI principles
 
-### [Phase 11: Cloud Data Engineering](https://saint2706.github.io/Coding-For-MBA/#/phase/11)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/11: Phase 11 - Cloud Data Engineering
 
-**Lessons:**
-- [Day 121: Cloud Fundamentals — AWS, GCP, Azure](https://saint2706.github.io/Coding-For-MBA/#/lesson/121)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/121: Day 121 - Cloud Fundamentals — AWS, GCP, Azure
   - Concepts: cloud computing models (IaaS, PaaS, SaaS), shared responsibility model, IAM (Identity and Access Management), regions and availability zones, cloud cost management
-- [Day 122: Object Storage — S3, GCS, Delta Lake, Iceberg](https://saint2706.github.io/Coding-For-MBA/#/lesson/122)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/122: Day 122 - Object Storage — S3, GCS, Delta Lake, Iceberg
   - Concepts: object storage vs block storage, data lake architecture, open table formats (Delta Lake, Iceberg), partitioning strategies, lifecycle policies
-- [Day 123: Cloud Data Warehouses — BigQuery, Snowflake, Redshift](https://saint2706.github.io/Coding-For-MBA/#/lesson/123)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/123: Day 123 - Cloud Data Warehouses — BigQuery, Snowflake, Redshift
   - Concepts: columnar storage, massively parallel processing (MPP), compute-storage separation, slots vs virtual warehouses, materialized views
-- [Day 124: dbt at Scale — Incremental Models, Snapshots, Advanced Patterns](https://saint2706.github.io/Coding-For-MBA/#/lesson/124)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/124: Day 124 - dbt at Scale — Incremental Models, Snapshots, Advanced Patterns
   - Concepts: incremental models, dbt snapshots (SCD Type 2), Jinja macros and packages, dbt tests and contracts, model governance
-- [Day 125: Orchestration — Apache Airflow, Prefect, Dagster](https://saint2706.github.io/Coding-For-MBA/#/lesson/125)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/125: Day 125 - Orchestration — Apache Airflow, Prefect, Dagster
   - Concepts: directed acyclic graphs (DAGs), task dependencies and scheduling, idempotency in data pipelines, retry strategies and alerting, orchestrator selection
-- [Day 126: Streaming Pipelines — Kafka, Pub/Sub, Kinesis](https://saint2706.github.io/Coding-For-MBA/#/lesson/126)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/126: Day 126 - Streaming Pipelines — Kafka, Pub/Sub, Kinesis
   - Concepts: event-driven architecture, topics, partitions, and consumer groups, exactly-once vs at-least-once delivery, stream processing patterns, windowing (tumbling, sliding, session)
-- [Day 127: Lakehouse Architecture — Databricks, Unity Catalog, Delta Live Tables](https://saint2706.github.io/Coding-For-MBA/#/lesson/127)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/127: Day 127 - Lakehouse Architecture — Databricks, Unity Catalog, Delta Live Tables
   - Concepts: lakehouse paradigm, Unity Catalog for data governance, Delta Live Tables for declarative ETL, medallion architecture at scale, photon engine optimization
-- [Day 128: Data Contracts and Quality — Great Expectations, Soda, SLAs](https://saint2706.github.io/Coding-For-MBA/#/lesson/128)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/128: Day 128 - Data Contracts and Quality — Great Expectations, Soda, SLAs
   - Concepts: data contracts between producers and consumers, expectation suites and validation, data SLAs and SLOs, schema validation and profiling, anomaly detection on data
-- [Day 129: Cloud Security and Compliance — VPC, Encryption, PII](https://saint2706.github.io/Coding-For-MBA/#/lesson/129)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/129: Day 129 - Cloud Security and Compliance — VPC, Encryption, PII
   - Concepts: network security (VPC, subnets, security groups), encryption at rest and in transit, PII detection and masking, compliance frameworks (GDPR, HIPAA, SOC 2), secrets management
-- [Day 130: Cost Engineering — FinOps for Data Platforms](https://saint2706.github.io/Coding-For-MBA/#/lesson/130)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/130: Day 130 - Cost Engineering — FinOps for Data Platforms
   - Concepts: FinOps principles and culture, cost attribution and tagging, reserved vs on-demand vs spot, query cost optimization, storage tiering
-- [Day 131: Platform Engineering — Terraform, IaC, Self-Serve Infrastructure](https://saint2706.github.io/Coding-For-MBA/#/lesson/131)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/131: Day 131 - Platform Engineering — Terraform, IaC, Self-Serve Infrastructure
   - Concepts: Infrastructure as Code (IaC), Terraform resources and state, CI/CD for data pipelines, self-serve data infrastructure, GitOps for data platforms
-- [Day 132: Capstone — Cloud Data Pipeline End-to-End](https://saint2706.github.io/Coding-For-MBA/#/lesson/132)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/132: Day 132 - Capstone — Cloud Data Pipeline End-to-End
   - Concepts: end-to-end pipeline architecture, medallion architecture implementation, orchestrated ETL with quality gates, cost monitoring and optimization, production deployment checklist
 
-### [Phase 12: Analytics Engineering & Data Products](https://saint2706.github.io/Coding-For-MBA/#/phase/12)
+- https://saint2706.github.io/Coding-For-MBA/#/phase/12: Phase 12 - Analytics Engineering & Data Products
 
-**Lessons:**
-- [Day 133: The Analytics Engineer Role — Beyond the Data Analyst](https://saint2706.github.io/Coding-For-MBA/#/lesson/133)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/133: Day 133 - The Analytics Engineer Role — Beyond the Data Analyst
   - Concepts: analytics engineer vs data analyst vs data scientist vs data engineer, the analytics engineering workflow, dbt as the analytics engineer's tool, data team structures, career progression paths
-- [Day 134: Semantic and Metrics Layers — Define Once, Use Everywhere](https://saint2706.github.io/Coding-For-MBA/#/lesson/134)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/134: Day 134 - Semantic and Metrics Layers — Define Once, Use Everywhere
   - Concepts: semantic layer architecture, metric definitions and governance, dbt Semantic Layer and MetricFlow, Cube.js for headless BI, LookML for Looker
-- [Day 135: Self-Serve Analytics — Empowering Stakeholders Without Chaos](https://saint2706.github.io/Coding-For-MBA/#/lesson/135)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/135: Day 135 - Self-Serve Analytics — Empowering Stakeholders Without Chaos
   - Concepts: self-serve analytics spectrum, guardrails vs gatekeeping, data catalogs and discovery, no-code/low-code analytics tools, measuring self-serve adoption
-- [Day 136: Data Mesh Principles — Domain Ownership and Federated Governance](https://saint2706.github.io/Coding-For-MBA/#/lesson/136)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/136: Day 136 - Data Mesh Principles — Domain Ownership and Federated Governance
   - Concepts: four principles of data mesh, domain-oriented ownership, data as a product, self-serve data platform, federated computational governance
-- [Day 137: Product Analytics Deep Dive — Retention, Funnels, Cohorts](https://saint2706.github.io/Coding-For-MBA/#/lesson/137)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/137: Day 137 - Product Analytics Deep Dive — Retention, Funnels, Cohorts
   - Concepts: product analytics frameworks, retention curves and cohort analysis, funnel analysis and conversion optimization, engagement metrics (DAU/MAU, stickiness), product-led growth metrics
-- [Day 138: A/B Testing at Scale — Statistical Rigor and Experimentation Platforms](https://saint2706.github.io/Coding-For-MBA/#/lesson/138)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/138: Day 138 - A/B Testing at Scale — Statistical Rigor and Experimentation Platforms
   - Concepts: hypothesis testing and p-values, sample size calculation and power, multiple testing correction, experimentation platforms, sequential testing and peeking
-- [Day 139: Data Products and Monetization — Building Revenue from Data](https://saint2706.github.io/Coding-For-MBA/#/lesson/139)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/139: Day 139 - Data Products and Monetization — Building Revenue from Data
   - Concepts: types of data products, data monetization strategies, embedded analytics, data-as-a-service, pricing models for data products
-- [Day 140: Capstone — Design and Pitch a Data Product](https://saint2706.github.io/Coding-For-MBA/#/lesson/140)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/140: Day 140 - Capstone — Design and Pitch a Data Product
   - Concepts: end-to-end data product design, business case development, technical architecture for data products, go-to-market strategy, stakeholder presentation
 

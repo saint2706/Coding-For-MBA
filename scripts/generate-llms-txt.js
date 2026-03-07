@@ -118,18 +118,17 @@ let content = `# Coding for MBA
 
 // Add Phases
 for (const phase of phases) {
-  content += `### [Phase ${phase.phase}: ${phase.title}](${BASE_URL}/#/phase/${phase.phase})\n`
+  content += `- ${BASE_URL}/#/phase/${phase.phase}: Phase ${phase.phase} - ${phase.title}\n`
   if (phase.description) {
-    content += `> ${phase.description}\n`
+    content += `  - ${phase.description}\n`
   }
   content += '\n'
 
   // Add Lessons for this phase
   const phaseLessons = lessons.filter((l) => l.phase === phase.phase)
   if (phaseLessons.length > 0) {
-    content += `**Lessons:**\n`
     for (const lesson of phaseLessons) {
-      content += `- [Day ${lesson.day}: ${lesson.title}](${BASE_URL}/#/lesson/${lesson.day})\n`
+      content += `- ${BASE_URL}/#/lesson/${lesson.day}: Day ${lesson.day} - ${lesson.title}\n`
       if (lesson.concepts && lesson.concepts.length > 0) {
         content += `  - Concepts: ${lesson.concepts.join(', ')}\n`
       }
