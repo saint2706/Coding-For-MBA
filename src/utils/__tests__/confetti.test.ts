@@ -55,7 +55,7 @@ describe('confetti', () => {
       expect(confetti).toHaveBeenCalled()
     })
 
-     it('should not throw and not call if window is undefined', () => {
+    it('should not throw and not call if window is undefined', () => {
       // @ts-ignore
       delete global.window
 
@@ -65,14 +65,14 @@ describe('confetti', () => {
   })
 
   describe('trigger methods', () => {
-      beforeEach(() => {
-        // ensure motion is not reduced
-        const matchMediaMock = vi.fn().mockReturnValue({ matches: false })
-        Object.defineProperty(global, 'window', {
-            value: { matchMedia: matchMediaMock },
-            writable: true,
-        })
+    beforeEach(() => {
+      // ensure motion is not reduced
+      const matchMediaMock = vi.fn().mockReturnValue({ matches: false })
+      Object.defineProperty(global, 'window', {
+        value: { matchMedia: matchMediaMock },
+        writable: true,
       })
+    })
 
     it('triggerSparkle should call confetti with correct options', () => {
       confettiModule.triggerSparkle()
@@ -80,7 +80,7 @@ describe('confetti', () => {
         expect.objectContaining({
           particleCount: 24,
           spread: 55,
-        })
+        }),
       )
     })
 
@@ -90,7 +90,7 @@ describe('confetti', () => {
         expect.objectContaining({
           particleCount: 120,
           spread: 85,
-        })
+        }),
       )
     })
 
@@ -100,7 +100,7 @@ describe('confetti', () => {
         expect.objectContaining({
           particleCount: 140,
           spread: 95,
-        })
+        }),
       )
     })
 
@@ -110,58 +110,58 @@ describe('confetti', () => {
         expect.objectContaining({
           particleCount: 180,
           spread: 110,
-        })
+        }),
       )
     })
   })
 
   describe('triggerCurriculumFireworks', () => {
-      beforeEach(() => {
-        vi.useFakeTimers()
+    beforeEach(() => {
+      vi.useFakeTimers()
+    })
+    afterEach(() => {
+      vi.useRealTimers()
+    })
+
+    it('should not start interval if window is undefined', () => {
+      // @ts-ignore
+      delete global.window
+
+      confettiModule.triggerCurriculumFireworks()
+      expect(confetti).not.toHaveBeenCalled()
+    })
+
+    it('should not start interval if motion is reduced', () => {
+      const matchMediaMock = vi.fn().mockReturnValue({ matches: true })
+      Object.defineProperty(global, 'window', {
+        value: { matchMedia: matchMediaMock, setInterval: vi.fn(), clearInterval: vi.fn() },
+        writable: true,
       })
-      afterEach(() => {
-        vi.useRealTimers()
+      confettiModule.triggerCurriculumFireworks()
+      expect(confetti).not.toHaveBeenCalled()
+      expect(global.window.setInterval).not.toHaveBeenCalled()
+    })
+
+    it('should schedule and clear intervals correctly', () => {
+      const matchMediaMock = vi.fn().mockReturnValue({ matches: false })
+      Object.defineProperty(global, 'window', {
+        value: {
+          matchMedia: matchMediaMock,
+          setInterval: vi.fn((cb) => setInterval(cb, 250)),
+          clearInterval: vi.fn((id) => clearInterval(id)),
+        },
+        writable: true,
       })
 
-      it('should not start interval if window is undefined', () => {
-        // @ts-ignore
-        delete global.window
+      confettiModule.triggerCurriculumFireworks()
 
-        confettiModule.triggerCurriculumFireworks()
-        expect(confetti).not.toHaveBeenCalled()
-      })
+      expect(global.window.setInterval).toHaveBeenCalled()
 
-      it('should not start interval if motion is reduced', () => {
-         const matchMediaMock = vi.fn().mockReturnValue({ matches: true })
-        Object.defineProperty(global, 'window', {
-            value: { matchMedia: matchMediaMock, setInterval: vi.fn(), clearInterval: vi.fn() },
-            writable: true,
-        })
-        confettiModule.triggerCurriculumFireworks()
-        expect(confetti).not.toHaveBeenCalled()
-        expect(global.window.setInterval).not.toHaveBeenCalled()
-      })
+      // Fast-forward past duration (1800ms) + 1 interval tick
+      vi.advanceTimersByTime(2000)
 
-      it('should schedule and clear intervals correctly', () => {
-        const matchMediaMock = vi.fn().mockReturnValue({ matches: false })
-        Object.defineProperty(global, 'window', {
-            value: {
-                matchMedia: matchMediaMock,
-                setInterval: vi.fn((cb) => setInterval(cb, 250)),
-                clearInterval: vi.fn((id) => clearInterval(id))
-            },
-            writable: true,
-        })
-
-        confettiModule.triggerCurriculumFireworks()
-
-        expect(global.window.setInterval).toHaveBeenCalled()
-
-        // Fast-forward past duration (1800ms) + 1 interval tick
-        vi.advanceTimersByTime(2000)
-
-        expect(global.window.clearInterval).toHaveBeenCalled()
-        expect(confetti).toHaveBeenCalled() // should be called multiple times during interval
-      })
+      expect(global.window.clearInterval).toHaveBeenCalled()
+      expect(confetti).toHaveBeenCalled() // should be called multiple times during interval
+    })
   })
 })

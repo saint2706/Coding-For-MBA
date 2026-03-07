@@ -80,7 +80,9 @@ describe('validatePythonCode - Bypass Attempts', () => {
   })
 
   it('should block sandbox escape via dunder dict reflection', () => {
-    expect(validatePythonCode('().__class__.__base__.__dict__["__subclasses__"]()').valid).toBe(false)
+    expect(validatePythonCode('().__class__.__base__.__dict__["__subclasses__"]()').valid).toBe(
+      false,
+    )
     expect(validatePythonCode('c = __class__').valid).toBe(false)
     expect(validatePythonCode('b = __base__').valid).toBe(false)
     expect(validatePythonCode('d = __dict__').valid).toBe(false)

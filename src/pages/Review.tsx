@@ -161,8 +161,8 @@ export default function Review() {
               </div>
               <p className="review-keyboard-hint">
                 <small>
-                  Shortcuts: <kbd>1</kbd> Again · <kbd>2</kbd> Hard · <kbd>3</kbd> Good · <kbd>4</kbd>{' '}
-                  Easy
+                  Shortcuts: <kbd>1</kbd> Again · <kbd>2</kbd> Hard · <kbd>3</kbd> Good ·{' '}
+                  <kbd>4</kbd> Easy
                 </small>
               </p>
             </>

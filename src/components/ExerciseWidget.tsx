@@ -252,15 +252,14 @@ export default function ExerciseWidget({
               {[1, 2, 3].map((level) => (
                 <span
                   key={level}
-                  className={`exercise-hint-dot ${useAiAssistantStore.getState().getHintLevel(exerciseId) >= level ? 'filled' : ''
-                    }`}
+                  className={`exercise-hint-dot ${
+                    useAiAssistantStore.getState().getHintLevel(exerciseId) >= level ? 'filled' : ''
+                  }`}
                 />
               ))}
             </span>
           </button>
-          {hintContent && (
-            <div className="exercise-hint-content">{hintContent}</div>
-          )}
+          {hintContent && <div className="exercise-hint-content">{hintContent}</div>}
         </div>
       )}
 
