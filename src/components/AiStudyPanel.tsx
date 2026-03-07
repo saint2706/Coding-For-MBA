@@ -225,26 +225,30 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
               </div>
 
               {/* Tabs */}
-              <div className="ai-panel-tabs">
+              <div className="ai-panel-tabs" role="tablist">
                 <button
                   type="button"
+                  role="tab"
                   className={`ai-panel-tab ${activeTab === 'chat' ? 'active' : ''}`}
                   onClick={() => setActiveTab('chat')}
+                  aria-selected={activeTab === 'chat'}
                 >
-                  💬 Chat
+                  <span aria-hidden="true">💬</span> Chat
                 </button>
                 <button
                   type="button"
+                  role="tab"
                   className={`ai-panel-tab ${activeTab === 'flashcards' ? 'active' : ''}`}
                   onClick={() => setActiveTab('flashcards')}
+                  aria-selected={activeTab === 'flashcards'}
                 >
-                  🃏 Flashcards
+                  <span aria-hidden="true">🃏</span> Flashcards
                 </button>
               </div>
 
               {/* Chat Tab */}
               {activeTab === 'chat' && (
-                <>
+                <div role="tabpanel" aria-label="Chat panel">
                   {messages.length === 0 && (
                     <div className="ai-quick-actions">
                       {QUICK_ACTIONS.map((action) => (
@@ -332,12 +336,12 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
                       </button>
                     </div>
                   )}
-                </>
+                </div>
               )}
 
               {/* Flashcards Tab */}
               {activeTab === 'flashcards' && (
-                <div className="ai-flashcards">
+                <div className="ai-flashcards" role="tabpanel" aria-label="Flashcards panel">
                   {flashcards.length === 0 ? (
                     <div className="ai-empty-state">
                       <span className="ai-empty-icon">🃏</span>

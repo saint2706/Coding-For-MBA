@@ -129,6 +129,7 @@ const TableOfContents = memo(function TableOfContents({ content }: TableOfConten
           className="toc-toggle"
           aria-expanded={isCompactOpen}
           aria-controls={tocListId}
+          aria-label={isCompactOpen ? 'Close table of contents' : 'Open table of contents'}
           onClick={() => setIsCompactOpen((prev) => !prev)}
         >
           <span>Jump to section</span>
