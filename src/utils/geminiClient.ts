@@ -94,6 +94,12 @@ const FLASHCARD_BACK_MAX_LENGTH = 400
 const FLASHCARD_RETRY_ERROR_MESSAGE =
   'We could not generate valid flashcards this time. Please try again.'
 
+/**
+ * Synchronously checks if the Gemini API is believed to be available based on presence of API key
+ * and a cached availability flag. Note: this does not make a network request.
+ *
+ * @returns {boolean} True if Gemini API key exists and the API is not known to be unavailable.
+ */
 export function isGeminiAvailable(): boolean {
   const now = Date.now()
   const apiKey = getGeminiApiKey()
@@ -104,6 +110,12 @@ export function isGeminiAvailable(): boolean {
   return true
 }
 
+/**
+ * Asynchronously checks if the Gemini API is available.
+ * This is effectively a thin wrapper around `isGeminiAvailable` but returns a Promise.
+ *
+ * @returns {Promise<boolean>} Resolves to true if the Gemini API key exists.
+ */
 export async function checkGeminiAvailability(): Promise<boolean> {
   const now = Date.now()
   const available = !!getGeminiApiKey()
@@ -173,6 +185,15 @@ Rules:
 - Keep answers focused and under 300 words unless complexity demands more.
 - Use bullet points for multi-part answers.`
 
+/**
+ * Asks a question about a lesson using the Gemini API.
+ * The lesson content is injected as context into the prompt.
+ *
+ * @param {string} lessonContent - The markdown content of the lesson for context.
+ * @param {string} question - The user's question about the lesson.
+ * @param {ChatMessage[]} [history=[]] - Previous messages in the conversation.
+ * @returns {Promise<string>} The AI's response to the question.
+ */
 export async function askAboutLesson(
   lessonContent: string,
   question: string,
@@ -196,6 +217,13 @@ Rules:
 
 Format: [{"front": "question", "back": "answer"}, ...]`
 
+/**
+ * Uses Gemini API to automatically generate study flashcards based on lesson content.
+ * Flashcards cover definitions, conceptual questions, code output, and comparisons.
+ *
+ * @param {string} lessonContent - The markdown content of the lesson to generate flashcards from.
+ * @returns {Promise<Flashcard[]>} An array of flashcards parsed from the AI response.
+ */
 export async function generateFlashcards(lessonContent: string): Promise<Flashcard[]> {
   const system = `${FLASHCARD_SYSTEM}\n\n--- LESSON CONTENT ---\n${truncateContent(lessonContent)}\n--- END LESSON ---`
   const raw = await callGemini(system, 'Generate 8 flashcards from this lesson.')
@@ -256,6 +284,16 @@ const HINT_SYSTEMS: Record<1 | 2 | 3, string> = {
 - Include which specific methods to use.`,
 }
 
+/**
+ * Uses Gemini API to get progressive hints for an interactive coding exercise.
+ * Hints range from general conceptual guidance to specific code skeletons based on the level.
+ *
+ * @param {string} exerciseTitle - The title of the coding exercise.
+ * @param {string} exerciseGoal - The goal/instructions of the exercise.
+ * @param {string} starterCode - The initial starter code provided to the user.
+ * @param {1 | 2 | 3} level - The requested hint level (1=conceptual, 2=detailed, 3=skeleton).
+ * @returns {Promise<string>} The AI's generated hint response.
+ */
 export async function getExerciseHint(
   exerciseTitle: string,
   exerciseGoal: string,
@@ -269,6 +307,13 @@ export async function getExerciseHint(
 
 // ─── Feature 4: Text Embeddings ──────────────────────────────────────────────
 
+/**
+ * Uses Gemini API to generate text embeddings for semantic search.
+ * Text embeddings allow for conceptual matching rather than strict keyword matching.
+ *
+ * @param {string} text - The input text to generate an embedding for.
+ * @returns {Promise<number[]>} The generated text embedding vector.
+ */
 export async function embedText(text: string): Promise<number[]> {
   const genAI = getGenerativeAI()
   if (!genAI) throw new GeminiClientError('apiKeyInvalid')

@@ -135,6 +135,14 @@ function scoreField(text: string | undefined, terms: readonly string[], weight: 
   return terms.reduce((acc, term) => (text.includes(term) ? acc + weight : acc), 0)
 }
 
+/**
+ * Calculates a ranking boost score for a search document based on query term occurrences.
+ * Weighted fields (title, concepts, tags, phase, day, body) contribute to the final boost.
+ *
+ * @param {SearchDocument} doc - The search document to evaluate.
+ * @param {readonly string[]} terms - The normalized search query terms.
+ * @returns {number} The calculated ranking boost score.
+ */
 export function computeRankingBoost(doc: SearchDocument, terms: readonly string[]): number {
   return (
     scoreField(doc.titleLower, terms, TITLE_WEIGHT) +
@@ -146,10 +154,23 @@ export function computeRankingBoost(doc: SearchDocument, terms: readonly string[
   )
 }
 
+/**
+ * Creates search-optimized documents from an array of lessons.
+ * Converts markdown content into plain text and extracts metadata for indexing.
+ *
+ * @param {readonly Lesson[]} lessons - An array of lessons to index.
+ * @returns {SearchDocument[]} An array of generated search documents.
+ */
 export function createSearchDocuments(lessons: readonly Lesson[]): SearchDocument[] {
   return lessons.map(toDocument)
 }
 
+/**
+ * Initializes a new Fuse.js search engine instance.
+ *
+ * @param {readonly Lesson[]} [lessons=getAllLessons()] - An array of lessons to populate the index.
+ * @returns {Fuse<SearchDocument>} The initialized Fuse.js search engine.
+ */
 export function createSearchEngine(lessons = getAllLessons()): Fuse<SearchDocument> {
   return new Fuse(createSearchDocuments(lessons), FUSE_OPTIONS)
 }
@@ -175,6 +196,11 @@ function emitStatus() {
   statusListeners.forEach((listener) => listener(status))
 }
 
+/**
+ * Retrieves the current status of the background search indexing process.
+ *
+ * @returns {SearchIndexStatus} The current indexing status object.
+ */
 export function getSearchIndexStatus(): SearchIndexStatus {
   const lessons = getAllLessonsCached()
   return {
@@ -185,6 +211,12 @@ export function getSearchIndexStatus(): SearchIndexStatus {
   }
 }
 
+/**
+ * Subscribes a listener to receive real-time search indexing status updates.
+ *
+ * @param {(status: SearchIndexStatus) => void} listener - The callback function to invoke with status updates.
+ * @returns {() => void} A cleanup function to unsubscribe the listener.
+ */
 export function subscribeSearchIndexStatus(
   listener: (status: SearchIndexStatus) => void,
 ): () => void {
@@ -238,6 +270,11 @@ function processChunk() {
   }
 }
 
+/**
+ * Initiates background processing to build the search index.
+ * It chunks document processing during browser idle time to avoid freezing the UI.
+ * Once complete, the cached engine is available for fast searching.
+ */
 export function startBackgroundIndexing(): void {
   if (isIndexing || indexingComplete || cachedEngine) return
   isIndexing = true
@@ -262,6 +299,14 @@ function getEngine(): Fuse<SearchDocument> | null {
   return partialEngine
 }
 
+/**
+ * Executes a full-text search against the curriculum index.
+ * Automatically triggers background indexing if not already started.
+ *
+ * @param {string} query - The search term or phrase.
+ * @param {number} [limit=20] - The maximum number of results to return.
+ * @returns {SearchResult[]} An array of search results, sorted by relevance score.
+ */
 export function search(query: string, limit = 20): SearchResult[] {
   if (!query.trim()) return []
   const engine = getEngine()
@@ -279,10 +324,26 @@ export function search(query: string, limit = 20): SearchResult[] {
     .slice(0, limit)
 }
 
+/**
+ * Extracts and normalizes individual unique terms from a search query.
+ * Useful for highlighting matched terms in UI components.
+ *
+ * @param {string} query - The raw search query.
+ * @returns {string[]} An array of normalized query terms.
+ */
 export function extractMatchedTerms(query: string): string[] {
   return Array.from(new Set(normalizeQuery(query)))
 }
 
+/**
+ * Generates a context-aware snippet from document text based on a search query.
+ * Attempts to extract a substring containing the first matched term, centered if possible.
+ *
+ * @param {string} content - The plain text document content.
+ * @param {string} query - The original search query.
+ * @param {number} [maxLength=180] - The maximum length of the generated snippet.
+ * @returns {string} The text snippet, optionally truncated with ellipses.
+ */
 export function getSearchSnippet(content: string, query: string, maxLength = 180): string {
   const plain = content.trim()
   if (!plain) return ''
@@ -304,6 +365,10 @@ export function getSearchSnippet(content: string, query: string, maxLength = 180
   return `${start > 0 ? '…' : ''}${snippet}${end < plain.length ? '…' : ''}`
 }
 
+/**
+ * Safely triggers the background preloading of the search index.
+ * Designed to be called on idle, deferring the heavy work of parsing documents.
+ */
 export function preloadSearchIndex(): void {
   try {
     startBackgroundIndexing()
