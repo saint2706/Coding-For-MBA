@@ -247,7 +247,8 @@ export default function ExerciseWidget({
             }}
             disabled={hintLoading || useAiAssistantStore.getState().getHintLevel(exerciseId) >= 3}
           >
-            💡 {hintLoading ? 'Thinking...' : 'Get Hint'}
+            <span aria-hidden="true">💡 </span>
+            {hintLoading ? 'Thinking...' : 'Get Hint'}
             <span className="exercise-hint-dots">
               {[1, 2, 3].map((level) => (
                 <span
