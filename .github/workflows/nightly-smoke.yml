@@ -21,9 +21,8 @@ permissions:
   issues: write
 
 jobs:
-  smoke:
+  validate-content:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -34,11 +33,40 @@ jobs:
       - name: Validate content
         run: npm run validate-content
 
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap Node workspace
+        uses: ./.github/actions/node-bootstrap
+
       - name: Typecheck
         run: npm run typecheck
 
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap Node workspace
+        uses: ./.github/actions/node-bootstrap
+
       - name: Unit tests
         run: npm test
+
+  smoke:
+    needs: [validate-content, typecheck, unit-test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap Node workspace
+        uses: ./.github/actions/node-bootstrap
 
       - name: Install Playwright Chromium
         if: ${{ github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true' }}

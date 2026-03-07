@@ -35,14 +35,8 @@ jobs:
 
       # For this Vite + TypeScript project we run an explicit build instead of autobuild
       # so CodeQL analyzes the same graph used by CI releases.
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
+      - name: Bootstrap Node workspace
+        uses: ./.github/actions/node-bootstrap
 
       - name: Build project
         run: npm run build

@@ -14,9 +14,8 @@ permissions:
   contents: read
 
 jobs:
-  ci:
+  typecheck:
     runs-on: ubuntu-latest
-
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -27,8 +26,26 @@ jobs:
       - name: Typecheck
         run: npm run lint:ci
 
+  validate-content:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap Node workspace
+        uses: ./.github/actions/node-bootstrap
+
       - name: Validate content
         run: npm run validate-content
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Bootstrap Node workspace
+        uses: ./.github/actions/node-bootstrap
 
       - name: Test with coverage threshold
         env:
