@@ -375,6 +375,12 @@ export function getAllExercises(): readonly ImmutableExercise[] {
   return immutableExercises
 }
 
+/**
+ * Retrieves all review card seeds from the lessons.
+ * Seeds are used to initialize the spaced repetition review system.
+ *
+ * @returns {readonly ImmutableReviewCardSeed[]} An immutable array of review card seeds extracted from all lessons.
+ */
 export function getAllReviewCardSeeds(): readonly ImmutableReviewCardSeed[] {
   initializeContent()
   if (!immutableReviewCards) {

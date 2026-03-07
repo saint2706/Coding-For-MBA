@@ -17,6 +17,13 @@ interface TocEntry {
   level: number
 }
 
+/**
+ * Parses markdown content to extract H2 and H3 headings for a Table of Contents.
+ * Ignores headings inside code blocks and generates unique URL-safe anchor IDs.
+ *
+ * @param {string} content - The markdown text to parse.
+ * @returns {TocEntry[]} An array of extracted headings with their text, level, and anchor ID.
+ */
 export function parseHeadings(content: string): TocEntry[] {
   const entries: TocEntry[] = []
   const lines = content.split('\n')

@@ -113,6 +113,12 @@ function notifyIndexingListeners(): void {
   indexingListeners.forEach((listener) => listener())
 }
 
+/**
+ * Subscribes a listener to semantic indexing status changes.
+ *
+ * @param {() => void} listener - The callback to execute when status changes.
+ * @returns {() => void} A function to unsubscribe the listener.
+ */
 export function subscribeSemanticIndexing(listener: () => void): () => void {
   indexingListeners.add(listener)
   return () => {
@@ -169,6 +175,11 @@ function buildHybridResults(
     .slice(0, limit)
 }
 
+/**
+ * Retrieves the current state and progress of background semantic indexing.
+ *
+ * @returns {SemanticIndexingStatus} An object describing the indexing status and progress.
+ */
 export function getSemanticIndexingStatus(): SemanticIndexingStatus {
   const cache = loadCache()
   const totalLessons = getAllLessons().length
@@ -225,6 +236,15 @@ function ensureBackgroundIndexing(
   return indexingPromise
 }
 
+/**
+ * Executes a hybrid semantic and lexical search against the lesson curriculum.
+ * Triggers background semantic indexing if not already complete.
+ *
+ * @param {string} query - The search query.
+ * @param {number} [limit=15] - Maximum number of results to return.
+ * @param {(results: SemanticResult[]) => void} [onProgress] - Optional callback to receive partial results while indexing.
+ * @returns {Promise<SemanticResult[]>} Resolves to an array of search results ordered by score.
+ */
 export async function semanticSearch(
   query: string,
   limit = 15,
@@ -253,11 +273,20 @@ export async function semanticSearch(
   return enrichedResults
 }
 
+/**
+ * Clears the local storage cache of document embeddings.
+ * Forces the system to re-index all documents on the next search.
+ */
 export function clearEmbeddingCache(): void {
   localStorage.removeItem(CACHE_KEY)
   notifyIndexingListeners()
 }
 
+/**
+ * Returns the number of cached text embeddings currently stored.
+ *
+ * @returns {number} The count of cached embeddings.
+ */
 export function getEmbeddingCacheSize(): number {
   const cache = loadCache()
   return Object.keys(cache.embeddings).length
