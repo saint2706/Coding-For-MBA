@@ -17,6 +17,10 @@ export interface ShortcutDefinition {
   scope: ShortcutScope
 }
 
+/**
+ * Array of predefined keyboard shortcut definitions used across the application.
+ * Defines the keys, descriptive action, and operational scope for each shortcut.
+ */
 export const SHORTCUTS = [
   {
     keys: '?',
@@ -75,6 +79,13 @@ export const SHORTCUTS = [
   },
 ] as const satisfies readonly ShortcutDefinition[]
 
+/**
+ * Determines whether the given event target is an editable element (like an input or textarea),
+ * to prevent global keyboard shortcuts from firing while the user is typing.
+ *
+ * @param {EventTarget | null} target - The DOM element to check.
+ * @returns {boolean} True if the target is an editable element, false otherwise.
+ */
 export const isTypingInEditableElement = (target: EventTarget | null): boolean => {
   if (!(target instanceof HTMLElement)) {
     return false

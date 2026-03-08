@@ -280,7 +280,7 @@ const HINT_SYSTEMS: Record<1 | 2 | 3, string> = {
 
   3: `You are a coding tutor. Give a LEVEL 3 hint (near-solution).
 - Provide a code skeleton with key parts replaced by comments.
-- Show the structure but leave the core logic as TODO.
+- Show the structure but leave the core logic as 'To Do'.
 - Include which specific methods to use.`,
 }
 
