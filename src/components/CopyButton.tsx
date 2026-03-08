@@ -66,7 +66,7 @@ export default function CopyButton({
       type="button"
       className={className}
       onClick={handleCopy}
-      aria-label={label}
+      aria-label={copied ? 'Code copied to clipboard' : label}
       title={label}
     >
       {copied ? '✓ Copied' : showEmoji ? '📋 Copy' : 'Copy'}

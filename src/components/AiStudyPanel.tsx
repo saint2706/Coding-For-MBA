@@ -206,6 +206,7 @@ export default function AiStudyPanel({ lessonContent, lessonDay, lessonTitle }: 
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={close}
+              role="presentation"
             />
             <motion.div
               className="ai-panel"

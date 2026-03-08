@@ -1,10 +1,15 @@
-# UX and Accessibility Improvements Log
+# Picasso UX/Accessibility Learnings
 
-## 2024-03-07: Component ARIA Label Audit
-* **Goal**: Improve screen reader navigation by ensuring all icon-only or state-toggling buttons have descriptive, dynamic labels.
-* **Changes**:
-  * `TableOfContents.tsx`: Added dynamic `aria-label` to the compact mode toggle button depending on `isCompactOpen`.
-  * `ExerciseWidget.tsx`: Added `aria-hidden="true"` to the decorative lightbulb emoji in the hint button to prevent screen readers from reading "lightbulb Get Hint", allowing the dynamic text to stand alone.
-  * `SidebarPhaseGroup.tsx`: Added explicit `aria-label` to the phase toggle button including the phase number and title.
-  * `AiStudyPanel.tsx`: Refactored custom tab buttons to use correct `role="tablist"`, `role="tab"`, `role="tabpanel"`, and `aria-selected` attributes. Hid decorative emojis inside tabs with `aria-hidden="true"`.
-* **Impact**: Improved navigation for keyboard and screen reader users, satisfying WCAG guidelines for interactive elements without disrupting visual design.
+## Discovery and Prioritization
+* **CopyButton**: Identified that static `aria-label`s on buttons with dynamic states ("Copy" -> "Copied") prevent screen readers from announcing state changes.
+* **SidebarPhaseGroup**: Identified that putting a static `aria-label` on a button with rich internal `sr-only` content (like "5 of 10 completed") overrides the detailed internal text, reducing accessibility context.
+* **AiStudyPanel**: Identified that modal background overlays with `onClick` handlers need `role="presentation"` or `aria-hidden="true"` so screen readers don't misinterpret them as interactive content, while still allowing pointer users to click them to close the modal.
+
+## Implementations
+* **Dynamic ARIA Labels**: Always tie `aria-label` to the component's state if the text intent changes (e.g., `aria-label={copied ? 'Code copied to clipboard' : label}`).
+* **Avoid ARIA Overrides**: Do not use `aria-label` when a button already contains detailed visible or `sr-only` text that perfectly describes its function and state. Let the screen reader read the DOM content.
+* **Presentation Roles**: Applied `role="presentation"` to `div` elements that act as click-to-close backdrops for modals to satisfy accessibility guidelines without adding redundant keyboard handlers to decorative elements.
+
+## Verification
+* Verified changes via visual UI tests (Playwright) and unit tests (`npm run test`).
+* Ensured no linting or build regressions were introduced.
