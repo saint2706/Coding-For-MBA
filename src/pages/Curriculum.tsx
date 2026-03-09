@@ -20,7 +20,8 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import { isLessonComplete, getCompletedForPhase, getCompletedCount } from '../utils/progressTracker'
+import { isLessonComplete, getCompletedCount } from '../utils/progressTracker'
+import { dayTokenToProgressId } from '../utils/dayToken'
 import Breadcrumb from '../components/Breadcrumb'
 import ProgressBar from '../components/ProgressBar'
 
@@ -50,9 +51,10 @@ export default function Curriculum() {
   const completedLessons = useProgressStore((state) => state.completedLessons)
 
   const phasesData = useMemo(() => {
+    const completedSet = new Set(completedLessons)
     return phases.map((phase) => {
       const lessons = getLessonsByPhase(phase.phase)
-      const completedInPhase = getCompletedForPhase(lessons.map((l) => l.day))
+      const completedInPhase = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day)))
       const isPhaseComplete = completedInPhase.length === lessons.length && lessons.length > 0
       const isPhaseStarted = completedInPhase.length > 0
       const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
@@ -70,10 +72,10 @@ export default function Curriculum() {
     })
   }, [phases, completedLessons])
 
-  const totalLessons = phasesData.reduce((sum, p) => sum + p.lessons.length, 0)
+  const totalLessons = useMemo(() => phasesData.reduce((sum, p) => sum + p.lessons.length, 0), [phasesData])
   const completedCount = getCompletedCount()
-  const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
-  const completedPhasesCount = phasesData.filter((p) => p.isPhaseComplete).length
+  const overallPct = useMemo(() => totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0, [totalLessons, completedCount])
+  const completedPhasesCount = useMemo(() => phasesData.filter((p) => p.isPhaseComplete).length, [phasesData])
 
   const containerVariants = {
     hidden: { opacity: 0 },
