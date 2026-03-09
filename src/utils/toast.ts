@@ -10,6 +10,9 @@
 
 import { toast, type DefaultToastOptions, type ToastOptions } from 'react-hot-toast'
 
+/**
+ * Default styling and configuration options for application-wide toast notifications.
+ */
 export const TOAST_DEFAULT_OPTIONS: DefaultToastOptions = {
   duration: 3500,
   style: {
@@ -31,11 +34,32 @@ export const TOAST_DEFAULT_OPTIONS: DefaultToastOptions = {
   },
 }
 
+/**
+ * Displays a success toast notification.
+ *
+ * @param {string} message - The message to display.
+ * @param {ToastOptions} [options] - Optional custom toast configuration.
+ * @returns {string} The ID of the generated toast.
+ */
 export const toastSuccess = (message: string, options?: ToastOptions): string =>
   toast.success(message, options)
 
+/**
+ * Displays an error toast notification.
+ *
+ * @param {string} message - The error message to display.
+ * @param {ToastOptions} [options] - Optional custom toast configuration.
+ * @returns {string} The ID of the generated toast.
+ */
 export const toastError = (message: string, options?: ToastOptions): string =>
   toast.error(message, options)
 
+/**
+ * Displays an informational (default) toast notification.
+ *
+ * @param {string} message - The info message to display.
+ * @param {ToastOptions} [options] - Optional custom toast configuration.
+ * @returns {string} The ID of the generated toast.
+ */
 export const toastInfo = (message: string, options?: ToastOptions): string =>
   toast(message, options)
