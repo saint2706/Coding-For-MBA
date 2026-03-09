@@ -11,8 +11,7 @@
 
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { getAllLessons, getAllPhases, phaseIcons } from '../utils/contentLoader'
-import { getReadingTime } from '../utils/contentLoader'
+import { getAllLessons, getAllPhases, phaseIcons, getReadingTime } from '../utils/contentLoader'
 import SEOHead from '../components/SEOHead'
 import AnimatedCounter from '../components/AnimatedCounter'
 

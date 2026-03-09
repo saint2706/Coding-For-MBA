@@ -11,8 +11,7 @@
  * - Preload the index during browser idle time.
  */
 
-import Fuse from 'fuse.js'
-import type { IFuseOptions } from 'fuse.js'
+import Fuse, { type IFuseOptions } from 'fuse.js'
 import { getAllLessons, type Lesson } from './contentLoader'
 import { parseDayToken } from './dayToken'
 
