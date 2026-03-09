@@ -1,15 +1,5 @@
 import { expect, test, type Page } from '@playwright/test'
 
-const PALETTES = [
-  'peach-sorbet',
-  'gradient-blues',
-  'neon-party',
-  'deep-ocean-blue',
-  'pastel-dreamland',
-  'golden-summer-fields',
-  'light-steel',
-] as const
-
 async function prepareDeterministicPage(page: Page): Promise<void> {
   await page.addInitScript(() => {
     window.localStorage.clear()
@@ -153,7 +143,7 @@ test.describe('accessibility and responsive layout', () => {
             if (element.closest('.table-wrapper, .code-block-wrapper, pre, code')) return false
 
             const rect = element.getBoundingClientRect()
-            return rect.left < viewport - 1 && rect.right > viewport + 1
+            return rect.right > viewport + 1 && rect.left < viewport + 1
           })
           .map((element) => ({
             tag: element.tagName.toLowerCase(),

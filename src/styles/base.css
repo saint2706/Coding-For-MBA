@@ -2,7 +2,6 @@
 html {
   scroll-behavior: smooth;
   font-size: var(--app-font-size, 1rem);
-  overflow-x: clip;
 }
 
 body {
