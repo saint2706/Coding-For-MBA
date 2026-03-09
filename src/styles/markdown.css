@@ -101,11 +101,14 @@
   border: 1px solid var(--border-card);
   border-radius: 4px;
   color: var(--accent-tertiary);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Code blocks */
 .markdown-body .code-block-wrapper {
   margin: 1.25rem 0;
+  max-width: 100%;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-card);
@@ -149,6 +152,7 @@
 
 .markdown-body pre {
   margin: 0 !important;
+  max-width: 100%;
   padding: 1rem !important;
   background: transparent !important;
   border: none !important;
@@ -166,6 +170,7 @@
 .markdown-body .table-wrapper {
   overflow-x: auto;
   margin: 1.25rem 0;
+  max-width: 100%;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-card);
 }

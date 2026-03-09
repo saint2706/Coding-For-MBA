@@ -73,7 +73,7 @@
   --navbar-height: 64px;
   --content-max-width: 900px;
   --reading-max-width: 74ch;
-  --page-padding: 2rem;
+  --page-padding: clamp(0.875rem, 2.8vw, 2rem);
 
   /* Radius */
   --radius-sm: 6px;
@@ -91,6 +91,8 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
   --app-font-size: 1rem;
   --density-scale: 1;
+  --text-on-accent: #0a1020;
+  --text-on-brand: #ffffff;
 }
 
 /* ===== COLOR PALETTES ===== */
@@ -106,11 +108,11 @@
   --bg-code: #fde8df;
   --text-primary: #4a2520;
   --text-secondary: #7a4a40;
-  --text-muted: #a07060;
+  --text-muted: #8b5f54;
   --text-heading: #2d1510;
-  --accent-primary: #f08080;
-  --accent-secondary: #f4978e;
-  --accent-tertiary: #fbc4ab;
+  --accent-primary: #9e4c49;
+  --accent-secondary: #b05f55;
+  --accent-tertiary: #a54f3a;
   --accent-glow: rgba(240, 128, 128, 0.25);
   --border-subtle: rgba(240, 128, 128, 0.18);
   --border-card: rgba(240, 128, 128, 0.24);
@@ -137,6 +139,8 @@
   --reading-border-card: rgba(240, 128, 128, 0.18);
   --reading-border-active: rgba(240, 128, 128, 0.42);
   --reading-accent-glow: rgba(240, 128, 128, 0.08);
+  --text-on-accent: #ffffff;
+  --text-on-brand: #2d1510;
 }
 
 /* --- 2. Gradient Blues (dark) --- */
@@ -150,9 +154,9 @@
   --bg-code: #111128;
   --text-primary: #e2e2f0;
   --text-secondary: #9b9bc0;
-  --text-muted: #6d6d8f;
+  --text-muted: #7e7ea3;
   --text-heading: #f0f0fa;
-  --accent-primary: #5e60ce;
+  --accent-primary: #7b80eb;
   --accent-secondary: #6930c3;
   --accent-tertiary: #48bfe3;
   --accent-glow: rgba(94, 96, 206, 0.25);
@@ -181,6 +185,7 @@
   --reading-border-card: rgba(150, 160, 210, 0.14);
   --reading-border-active: rgba(94, 96, 206, 0.26);
   --reading-accent-glow: rgba(94, 96, 206, 0.1);
+  --text-on-accent: #0a1020;
 }
 
 /* --- 3. Neon Party (dark) --- */
@@ -194,7 +199,7 @@
   --bg-code: #0a0a1c;
   --text-primary: #e0e0f8;
   --text-secondary: #9090c0;
-  --text-muted: #5050a0;
+  --text-muted: #7676be;
   --text-heading: #f0f0ff;
   --accent-primary: #00ccff;
   --accent-secondary: #cc00ff;
@@ -225,6 +230,7 @@
   --reading-border-card: rgba(0, 204, 255, 0.15);
   --reading-border-active: rgba(0, 204, 255, 0.35);
   --reading-accent-glow: rgba(0, 204, 255, 0.1);
+  --text-on-accent: #04111a;
 }
 
 /* --- 4. Deep Ocean Blue (dark) --- */
@@ -238,10 +244,10 @@
   --bg-code: #0a1520;
   --text-primary: #c8e6e8;
   --text-secondary: #7ab0b5;
-  --text-muted: #4a7880;
+  --text-muted: #6c9aa1;
   --text-heading: #e0f0f2;
-  --accent-primary: #006466;
-  --accent-secondary: #0b525b;
+  --accent-primary: #42b7b3;
+  --accent-secondary: #3d949b;
   --accent-tertiary: #48bfe3;
   --accent-glow: rgba(0, 100, 102, 0.3);
   --border-subtle: rgba(100, 180, 185, 0.12);
@@ -265,6 +271,7 @@
   --reading-border-card: rgba(100, 180, 185, 0.14);
   --reading-border-active: rgba(0, 100, 102, 0.3);
   --reading-accent-glow: rgba(0, 100, 102, 0.1);
+  --text-on-accent: #031217;
 }
 
 /* --- 5. Pastel Dreamland (light) --- */
@@ -278,11 +285,11 @@
   --bg-code: #f0eaf8;
   --text-primary: #3d2356;
   --text-secondary: #6a3e8c;
-  --text-muted: #9a70b8;
+  --text-muted: #7d5b9a;
   --text-heading: #280e3e;
-  --accent-primary: #9b72cf;
-  --accent-secondary: #e8789e;
-  --accent-tertiary: #6aade8;
+  --accent-primary: #6c4aa3;
+  --accent-secondary: #8b4d6a;
+  --accent-tertiary: #4b6f9f;
   --accent-glow: rgba(155, 114, 207, 0.28);
   --border-subtle: rgba(155, 114, 207, 0.18);
   --border-card: rgba(155, 114, 207, 0.25);
@@ -309,6 +316,8 @@
   --reading-border-card: rgba(155, 114, 207, 0.2);
   --reading-border-active: rgba(155, 114, 207, 0.44);
   --reading-accent-glow: rgba(155, 114, 207, 0.08);
+  --text-on-accent: #ffffff;
+  --text-on-brand: #280e3e;
 }
 
 /* --- 6. Golden Summer Fields (light) --- */
@@ -322,11 +331,11 @@
   --bg-code: #f5eccc;
   --text-primary: #3b2f10;
   --text-secondary: #6a5020;
-  --text-muted: #9a7838;
+  --text-muted: #86662e;
   --text-heading: #261e08;
-  --accent-primary: #b8853a;
-  --accent-secondary: #8a6828;
-  --accent-tertiary: #7a9048;
+  --accent-primary: #7f5b22;
+  --accent-secondary: #654a1c;
+  --accent-tertiary: #5d6f36;
   --accent-glow: rgba(184, 133, 58, 0.28);
   --border-subtle: rgba(180, 140, 80, 0.18);
   --border-card: rgba(180, 140, 80, 0.26);
@@ -353,6 +362,8 @@
   --reading-border-card: rgba(180, 140, 80, 0.2);
   --reading-border-active: rgba(184, 133, 58, 0.44);
   --reading-accent-glow: rgba(212, 163, 115, 0.08);
+  --text-on-accent: #ffffff;
+  --text-on-brand: #261e08;
 }
 
 /* --- 7. Light Steel (light) --- */
@@ -366,11 +377,11 @@
   --bg-code: #e9ecef;
   --text-primary: #212529;
   --text-secondary: #495057;
-  --text-muted: #6c757d;
+  --text-muted: #5f6670;
   --text-heading: #0d1117;
   --accent-primary: #495057;
   --accent-secondary: #343a40;
-  --accent-tertiary: #6c757d;
+  --accent-tertiary: #5f6670;
   --accent-glow: rgba(73, 80, 87, 0.2);
   --border-subtle: rgba(73, 80, 87, 0.12);
   --border-card: rgba(73, 80, 87, 0.18);
@@ -397,4 +408,6 @@
   --reading-border-card: rgba(73, 80, 87, 0.15);
   --reading-border-active: rgba(73, 80, 87, 0.36);
   --reading-accent-glow: rgba(73, 80, 87, 0.06);
+  --text-on-accent: #ffffff;
+  --text-on-brand: #0d1117;
 }
