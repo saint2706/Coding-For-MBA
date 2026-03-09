@@ -49,3 +49,12 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 ---
 *May the Lighthouse score be 100 and the Googlebot find peace in our structure.*
+
+### [Date: Current] - JSON-LD Structured Data XSS Prevention
+
+**Priority Areas:**
+1.  **GEO (Intelligence)**: Securely injecting JSON-LD schema into the `<head>`.
+2.  **Security**: Preventing XSS vulnerabilities from literal `<` evaluation in script tags.
+
+**Changes:**
+-   [x] **[GEO][SEO] Structured Data XSS Fix**: Fixed the `.replace(/</g, '\\u003c')` call inside `src/components/SEOHead.tsx` to `.replace(/</g, '\\\\u003c')`. This ensures that `\u003c` is properly output in the serialized JS string, satisfying React's `dangerouslySetInnerHTML` escaping requirements without breaking JSON parsers.
