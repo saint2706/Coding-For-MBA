@@ -253,4 +253,7 @@ export function clearReviewState(): void {
   removeStoredValue(REVIEW_STORAGE_KEY)
 }
 
+/**
+ * Storage key for persisting review state in localStorage.
+ */
 export const reviewStorageKey = REVIEW_STORAGE_KEY
