@@ -3,15 +3,19 @@ import { act } from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import MarkdownRenderer from '../MarkdownRenderer'
 
-const syntaxHighlighterMock = vi.fn(({ children, wrapLongLines, codeTagProps }: any) => (
-  <div
-    className="syntax-highlighter"
-    data-wrap-long-lines={String(Boolean(wrapLongLines))}
-    data-white-space={codeTagProps?.style?.whiteSpace ?? ''}
-  >
-    {children}
-  </div>
-))
+const syntaxHighlighterMock = vi.fn(
+  ({ children, wrapLongLines, codeTagProps, customStyle }: any) => (
+    <div
+      className="syntax-highlighter"
+      data-wrap-long-lines={String(Boolean(wrapLongLines))}
+      data-white-space={codeTagProps?.style?.whiteSpace ?? ''}
+      data-overflow-wrap={codeTagProps?.style?.overflowWrap ?? ''}
+      data-overflow-x={customStyle?.overflowX ?? ''}
+    >
+      {children}
+    </div>
+  ),
+)
 
 // Mock Child Components
 vi.mock('../CodePlayground', () => ({
@@ -54,6 +58,7 @@ describe('MarkdownRenderer', () => {
   let root: Root
 
   beforeEach(() => {
+    syntaxHighlighterMock.mockClear()
     container = document.createElement('div')
     document.body.appendChild(container)
     root = createRoot(container)
@@ -98,6 +103,24 @@ describe('MarkdownRenderer', () => {
     const syntaxHighlighter = container.querySelector('.syntax-highlighter')
     expect(syntaxHighlighter?.getAttribute('data-wrap-long-lines')).toBe('true')
     expect(syntaxHighlighter?.getAttribute('data-white-space')).toBe('pre-wrap')
+    expect(syntaxHighlighter?.getAttribute('data-overflow-wrap')).toBe('anywhere')
+    expect(syntaxHighlighter?.getAttribute('data-overflow-x')).toBe('visible')
+  })
+
+  it('applies wrapping props for unbroken long tokens to avoid horizontal scrolling', () => {
+    const longToken = 'https://example.com/' + 'averylongsegment'.repeat(30)
+    const content = `\`\`\`python\n${longToken}\n\`\`\``
+
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const [highlighterProps] = syntaxHighlighterMock.mock.calls.at(-1) ?? []
+    expect(highlighterProps).toBeTruthy()
+    expect(highlighterProps.wrapLongLines).toBe(true)
+    expect(highlighterProps.codeTagProps?.style?.whiteSpace).toBe('pre-wrap')
+    expect(highlighterProps.codeTagProps?.style?.overflowWrap).toBe('anywhere')
+    expect(highlighterProps.customStyle?.overflowX).toBe('visible')
   })
 
   it('renders "Try It" button for Python code blocks', () => {
