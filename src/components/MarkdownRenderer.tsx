@@ -87,7 +87,10 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
           background: 'transparent',
           fontSize: '0.8125rem',
           lineHeight: '1.65',
-          overflowX: 'visible',
+          overflowX: 'hidden',
+          whiteSpace: 'pre-wrap',
+          overflowWrap: 'anywhere',
+          wordBreak: 'break-word',
         }}
         tabIndex={0}
         codeTagProps={{
@@ -95,6 +98,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
             fontFamily: 'var(--font-mono)',
             whiteSpace: 'pre-wrap',
             overflowWrap: 'anywhere',
+            wordBreak: 'break-word',
           },
         }}
       >
