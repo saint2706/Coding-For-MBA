@@ -23,7 +23,6 @@ import {
 import {
   getCompletedLessons,
   getStreakDays,
-  isLessonComplete,
   clearAllProgress,
 } from '../utils/progressTracker'
 import { dayTokenToProgressId } from '../utils/dayToken'
@@ -506,7 +505,7 @@ export default function ProgressDashboard() {
               </div>
               <div className="heatmap-cells">
                 {lessons.map((lesson) => {
-                  const done = isLessonComplete(lesson.day)
+                  const done = completedSet.has(dayTokenToProgressId(lesson.day))
                   return (
                     <Link
                       to={`/lesson/${lesson.day}`}

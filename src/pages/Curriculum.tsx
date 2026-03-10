@@ -20,7 +20,7 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import { isLessonComplete, getCompletedCount } from '../utils/progressTracker'
+import { getCompletedCount } from '../utils/progressTracker'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import Breadcrumb from '../components/Breadcrumb'
 import ProgressBar from '../components/ProgressBar'
@@ -48,9 +48,9 @@ export default function Curriculum() {
   const timelineScaleY = useTransform(scrollYProgress, [0, 1], [0.1, 1])
 
   const completedLessons = useProgressStore((state) => state.completedLessons)
+  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
   const phasesData = useMemo(() => {
-    const completedSet = new Set(completedLessons)
     return phases.map((phase) => {
       const lessons = getLessonsByPhase(phase.phase)
       const completedInPhase = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day)))
@@ -69,7 +69,7 @@ export default function Curriculum() {
         icon,
       }
     })
-  }, [phases, completedLessons])
+  }, [phases, completedSet])
 
   const totalLessons = useMemo(() => phasesData.reduce((sum, p) => sum + p.lessons.length, 0), [phasesData])
   const completedCount = getCompletedCount()
@@ -233,7 +233,7 @@ export default function Curriculum() {
                   >
                     <span className="day-num">Day {lesson.day}</span>
                     <span>{lesson.title}</span>
-                    {isLessonComplete(lesson.day) && (
+                    {completedSet.has(dayTokenToProgressId(lesson.day)) && (
                       <span className="day-link-check" aria-label="Completed">
                         ✓
                       </span>
