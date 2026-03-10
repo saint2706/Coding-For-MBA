@@ -1,13 +1,5 @@
 /**
  * Search Results Page
- *
- * Displays search results from the client-side Fuse.js index.
- *
- * Key Responsibilities:
- * - Read query from URL search params.
- * - Execute search and render paginated results.
- * - Highlight matched terms in titles and snippets.
- * - Provide a dedicated search input for refining queries.
  */
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
@@ -24,13 +16,6 @@ import {
   search,
   type SearchResult,
 } from '../utils/searchIndex'
-import {
-  getSemanticIndexingStatus,
-  semanticSearch,
-  subscribeSemanticIndexing,
-  type SemanticResult,
-} from '../utils/semanticSearch'
-import { isGeminiAvailable } from '../utils/geminiClient'
 
 export default function SearchResults() {
   const [searchParams] = useSearchParams()
@@ -39,10 +24,6 @@ export default function SearchResults() {
   const [query, setQuery] = useState(queryFromUrl)
   const debouncedQuery = useDebounce(query, 250, (value) => value.trim() === '')
   const inputRef = useRef<HTMLInputElement>(null)
-  const [isSemanticMode, setIsSemanticMode] = useState(false)
-  const [semanticResults, setSemanticResults] = useState<SemanticResult[]>([])
-  const [semanticLoading, setSemanticLoading] = useState(false)
-  const [indexingStatus, setIndexingStatus] = useState(getSemanticIndexingStatus)
 
   useEffect(() => {
     setQuery(queryFromUrl)
@@ -73,14 +54,6 @@ export default function SearchResults() {
     return () => window.removeEventListener('keydown', handler)
   }, [navigate])
 
-  useEffect(() => {
-    const unsubscribe = subscribeSemanticIndexing(() => {
-      setIndexingStatus(getSemanticIndexingStatus())
-    })
-    setIndexingStatus(getSemanticIndexingStatus())
-    return unsubscribe
-  }, [])
-
   const results: SearchResult[] = useMemo(() => {
     if (debouncedQuery.trim().length < 2) return []
     return search(debouncedQuery, 50)
@@ -93,31 +66,6 @@ export default function SearchResults() {
     const trimmed = query.trim()
     navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search')
   }
-
-  // Semantic search effect
-  useEffect(() => {
-    if (!isSemanticMode || debouncedQuery.trim().length < 2) {
-      setSemanticResults([])
-      return
-    }
-    let cancelled = false
-    setSemanticLoading(true)
-    semanticSearch(debouncedQuery, 15, (progressResults) => {
-      if (!cancelled) setSemanticResults(progressResults)
-    })
-      .then((res) => {
-        if (!cancelled) setSemanticResults(res)
-      })
-      .catch(() => {
-        if (!cancelled) setSemanticResults([])
-      })
-      .finally(() => {
-        if (!cancelled) setSemanticLoading(false)
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [isSemanticMode, debouncedQuery])
 
   return (
     <div className="page-container">
@@ -149,55 +97,13 @@ export default function SearchResults() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginTop: '0.5rem' }}>
           {query && (
             <p className="search-page-summary">
-              {isSemanticMode
-                ? semanticLoading
-                  ? indexingStatus.indexedLessons > 0
-                    ? `Showing best current matches (${indexingStatus.indexedLessons}/${indexingStatus.totalLessons} lessons indexed, improving results...)`
-                    : 'Searching with AI...'
-                  : `${semanticResults.length} semantic result${semanticResults.length !== 1 ? 's' : ''} for \u201c${query}\u201d`
-                : `${results.length} result${results.length !== 1 ? 's' : ''} for \u201c${query}\u201d`}
+              {`${results.length} result${results.length !== 1 ? 's' : ''} for “${query}”`}
             </p>
-          )}
-          {isGeminiAvailable() && (
-            <button
-              className={`semantic-search-toggle ${isSemanticMode ? 'active' : ''}`}
-              onClick={() => setIsSemanticMode((prev) => !prev)}
-              type="button"
-            >
-              \u2728 {isSemanticMode ? 'AI Search ON' : 'AI Search'}
-            </button>
           )}
         </div>
       </div>
 
-      {isSemanticMode && semanticResults.length > 0 ? (
-        <div className="search-results-list">
-          {semanticResults.map((result) => {
-            const diff =
-              difficultyConfig[result.lesson.difficulty || 'beginner'] ?? difficultyConfig.beginner!
-            return (
-              <Link
-                key={result.lesson.day}
-                to={`/lesson/${result.lesson.day}`}
-                className="search-result-card"
-              >
-                <div className="search-result-card-header">
-                  <span className="search-result-card-day">Day {result.lesson.day}</span>
-                  <h3 className="search-result-card-title">{result.lesson.title}</h3>
-                  <span className="semantic-score">{(result.score * 100).toFixed(0)}%</span>
-                  <span
-                    className="difficulty-badge"
-                    style={{ color: diff.color, background: diff.bg }}
-                  >
-                    {diff.label}
-                  </span>
-                </div>
-                <span className="search-result-card-phase">Phase {result.lesson.phase}</span>
-              </Link>
-            )
-          })}
-        </div>
-      ) : !isSemanticMode && results.length > 0 ? (
+      {results.length > 0 ? (
         <div className="search-results-list">
           {results.map((result) => {
             const diff =

@@ -124,13 +124,6 @@
 
 ## 🟢 Priority 3 — App Features
 
-### AI-Powered Study Assistant
-
-- [x] "Ask about this lesson" — LLM API integration (Gemini only) _(Gemini implementation exists and is surfaced in `AiStudyPanel`; OpenAI integration not required)_
-- [x] Auto-generate flashcards from lesson markdown _(flashcard cards now have `role="button"`, `tabIndex`, keyboard handlers for Enter/Space, and `aria-expanded` semantics)_
-- [x] Smart exercise hint system (3-level progressive hints)
-- [x] Semantic search across all lesson content (embeddings + cosine similarity)
-
 ### Structured Quiz JSON Integration
 
 Each lesson day needs a `quiz.json` sidecar for the app's quiz engine:

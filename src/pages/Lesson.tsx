@@ -8,7 +8,7 @@
  * @module pages/Lesson
  */
 
-import { useEffect, useState, useCallback, useMemo, useRef, lazy, Suspense } from 'react'
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
@@ -57,8 +57,6 @@ import {
   triggerPhaseUnlockConfetti,
   triggerCurriculumFireworks,
 } from '../utils/confetti'
-
-const AiStudyPanel = lazy(() => import('../components/AiStudyPanel'))
 
 /**
  * Lesson page component displaying a single day's lesson.
@@ -357,17 +355,6 @@ export default function Lesson() {
 
       {/* Table of Contents sidebar */}
       <TableOfContents content={lesson.content} />
-
-      {/* AI Study Assistant */}
-      {!readingMode && (
-        <Suspense fallback={null}>
-          <AiStudyPanel
-            lessonContent={lesson.content}
-            lessonDay={lesson.day}
-            lessonTitle={lesson.title}
-          />
-        </Suspense>
-      )}
     </div>
   )
 }

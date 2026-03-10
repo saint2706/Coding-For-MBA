@@ -1,128 +1,148 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/Coding-For-MBA/manifest.json" />
+    <link rel="canonical" href="https://saint2706.github.io/Coding-For-MBA/" />
+    <meta name="author" content="Coding for MBA" />
+    <meta name="robots" content="index, follow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://saint2706.github.io; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net https://pypi.org https://files.pythonhosted.org; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self';"
+    />
+    <meta
+      name="description"
+      content="A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals."
+    />
+    <meta name="theme-color" content="#4361ee" />
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="manifest" href="/Coding-For-MBA/manifest.json" />
-  <link rel="alternate" type="text/markdown" href="/Coding-For-MBA/llms.txt" title="AI Context" />
-  <link rel="canonical" href="https://saint2706.github.io/Coding-For-MBA/" />
-  <meta name="author" content="Coding for MBA" />
-  <meta name="robots" content="index, follow" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block" />
-  <meta http-equiv="Content-Security-Policy"
-    content="upgrade-insecure-requests; default-src 'self'; script-src 'self' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https://saint2706.github.io; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://cdn.jsdelivr.net https://pypi.org https://files.pythonhosted.org https://generativelanguage.googleapis.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self';" />
-  <meta name="description"
-    content="A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals." />
-  <meta name="theme-color" content="#4361ee" />
+    <!-- Minimal critical CSS for first paint of the home route -->
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
 
-  <!-- Minimal critical CSS for first paint of the home route -->
-  <style>
-    :root {
-      color-scheme: light dark;
-    }
+      body {
+        margin: 0;
+        font-family:
+          Inter,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        background: #0a0a1a;
+        color: #e2e2f0;
+      }
 
-    body {
-      margin: 0;
-      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #0a0a1a;
-      color: #e2e2f0;
-    }
+      #root {
+        min-height: 100vh;
+      }
 
-    #root {
-      min-height: 100vh;
-    }
+      .page-container {
+        width: min(1200px, 100% - 2rem);
+        margin: 0 auto;
+        padding: 1rem 0 2rem;
+      }
 
-    .page-container {
-      width: min(1200px, 100% - 2rem);
-      margin: 0 auto;
-      padding: 1rem 0 2rem;
-    }
+      .hero {
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, rgba(67, 97, 238, 0.08), rgba(63, 55, 201, 0.08));
+      }
 
-    .hero {
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, rgba(67, 97, 238, 0.08), rgba(63, 55, 201, 0.08));
-    }
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(1.8rem, 3.8vw, 3rem);
+        line-height: 1.15;
+      }
 
-    .hero h1 {
-      margin: 0;
-      font-size: clamp(1.8rem, 3.8vw, 3rem);
-      line-height: 1.15;
-    }
+      .hero p {
+        margin: 0.9rem 0 0;
+        max-width: 65ch;
+      }
+    </style>
 
-    .hero p {
-      margin: 0.9rem 0 0;
-      max-width: 65ch;
-    }
-  </style>
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Coding for MBA — 108-Day Technical Curriculum" />
+    <meta
+      property="og:description"
+      content="Master Python, Data Science, ML, BI, and SQL with a structured 108-day curriculum designed for business professionals."
+    />
+    <meta property="og:image" content="https://saint2706.github.io/Coding-For-MBA/og-image.png" />
+    <meta property="og:url" content="https://saint2706.github.io/Coding-For-MBA/" />
+    <meta property="og:site_name" content="Coding for MBA" />
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Coding for MBA — 108-Day Technical Curriculum" />
-  <meta property="og:description"
-    content="Master Python, Data Science, ML, BI, and SQL with a structured 108-day curriculum designed for business professionals." />
-  <meta property="og:image" content="https://saint2706.github.io/Coding-For-MBA/og-image.png" />
-  <meta property="og:url" content="https://saint2706.github.io/Coding-For-MBA/" />
-  <meta property="og:site_name" content="Coding for MBA" />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Coding for MBA — 108-Day Technical Curriculum" />
+    <meta
+      name="twitter:description"
+      content="Master Python, Data Science, ML, BI, and SQL with a structured 108-day curriculum designed for business professionals."
+    />
+    <meta name="twitter:image" content="https://saint2706.github.io/Coding-For-MBA/og-image.png" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Coding for MBA — 108-Day Technical Curriculum" />
-  <meta name="twitter:description"
-    content="Master Python, Data Science, ML, BI, and SQL with a structured 108-day curriculum designed for business professionals." />
-  <meta name="twitter:image" content="https://saint2706.github.io/Coding-For-MBA/og-image.png" />
+    <title>Coding for MBA — 108-Day Technical Curriculum</title>
 
-  <title>Coding for MBA — 108-Day Technical Curriculum</title>
-
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Coding for MBA",
-      "url": "https://saint2706.github.io/Coding-For-MBA/",
-      "description": "A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://saint2706.github.io/Coding-For-MBA/#/search?q={search_term_string}"
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Coding for MBA",
+        "url": "https://saint2706.github.io/Coding-For-MBA/",
+        "description": "A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://saint2706.github.io/Coding-For-MBA/#/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Coding for MBA — 108-Day Technical Curriculum",
+        "description": "Master Python, Data Science, ML, BI, and SQL with a structured 108-day curriculum designed for business professionals.",
+        "url": "https://saint2706.github.io/Coding-For-MBA/",
+        "provider": {
+          "@type": "Organization",
+          "name": "Coding for MBA"
         },
-        "query-input": "required name=search_term_string"
+        "educationalLevel": "Professional",
+        "teaches": [
+          "Python Programming",
+          "Data Science",
+          "Machine Learning",
+          "Business Intelligence",
+          "SQL",
+          "Data Engineering"
+        ],
+        "timeRequired": "P108D",
+        "hasCourseInstance": {
+          "@type": "CourseInstance",
+          "courseMode": "Online",
+          "courseWorkload": "PT100H"
+        }
       }
-    }
     </script>
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Course",
-      "name": "Coding for MBA — 108-Day Technical Curriculum",
-      "description": "Master Python, Data Science, ML, BI, and SQL with a structured 108-day curriculum designed for business professionals.",
-      "url": "https://saint2706.github.io/Coding-For-MBA/",
-      "provider": {
-        "@type": "Organization",
-        "name": "Coding for MBA"
-      },
-      "educationalLevel": "Professional",
-      "teaches": ["Python Programming", "Data Science", "Machine Learning", "Business Intelligence", "SQL", "Data Engineering"],
-      "timeRequired": "P108D",
-      "hasCourseInstance": {
-        "@type": "CourseInstance",
-        "courseMode": "Online",
-        "courseWorkload": "PT100H"
-      }
-    }
-    </script>
-</head>
+  </head>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
-
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
