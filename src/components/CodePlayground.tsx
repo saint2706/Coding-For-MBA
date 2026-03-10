@@ -253,6 +253,7 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
               style={highlightTheme}
               language="python"
               PreTag="div"
+              wrapLongLines
               customStyle={{
                 margin: 0,
                 padding: '0.6rem 0.75rem',
@@ -260,9 +261,18 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
                 fontSize: '0.875rem',
                 lineHeight: '1.6',
                 fontFamily: 'var(--font-mono)',
+                whiteSpace: 'pre-wrap',
+                overflowWrap: 'anywhere',
+                wordBreak: 'break-word',
+                overflowX: 'hidden',
               }}
               codeTagProps={{
-                style: { fontFamily: 'var(--font-mono)' },
+                style: {
+                  fontFamily: 'var(--font-mono)',
+                  whiteSpace: 'pre-wrap',
+                  overflowWrap: 'anywhere',
+                  wordBreak: 'break-word',
+                },
               }}
             >
               {deferredCode + '\n'}

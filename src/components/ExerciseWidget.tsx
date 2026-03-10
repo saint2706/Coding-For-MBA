@@ -300,6 +300,7 @@ export default function ExerciseWidget({
                       style={solutionTheme}
                       language="python"
                       PreTag="div"
+                      wrapLongLines
                       customStyle={{
                         margin: 0,
                         padding: '0.75rem',
@@ -307,10 +308,17 @@ export default function ExerciseWidget({
                         fontSize: '0.8125rem',
                         lineHeight: '1.65',
                         borderRadius: 'var(--radius-sm)',
+                        whiteSpace: 'pre-wrap',
+                        overflowWrap: 'anywhere',
+                        wordBreak: 'break-word',
+                        overflowX: 'hidden',
                       }}
                       codeTagProps={{
                         style: {
                           fontFamily: 'var(--font-mono)',
+                          whiteSpace: 'pre-wrap',
+                          overflowWrap: 'anywhere',
+                          wordBreak: 'break-word',
                         },
                       }}
                     >

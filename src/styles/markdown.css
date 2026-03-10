@@ -106,6 +106,32 @@
 }
 
 /* Code blocks */
+
+.markdown-body pre {
+  margin: 1.25rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-card);
+  background: var(--bg-code);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.markdown-body pre code {
+  white-space: inherit;
+  overflow-wrap: inherit;
+  word-break: inherit;
+}
+
+.markdown-body pre code * {
+  white-space: inherit;
+  overflow-wrap: inherit;
+  word-break: inherit;
+}
+
 .markdown-body .code-block--wrapped {
   margin: 1.25rem 0;
   max-width: 100%;
@@ -167,7 +193,26 @@
   font-size: 0.875rem !important;
   line-height: 1.75 !important;
   white-space: inherit !important;
-  overflow-wrap: inherit;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+.markdown-body .code-block--wrapped pre code * {
+  white-space: inherit !important;
+  overflow-wrap: inherit !important;
+  word-break: inherit !important;
+}
+
+.markdown-body .code-block--wrapped code[class*='language-'] {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+.markdown-body .code-block--wrapped code[class*='language-'] * {
+  white-space: inherit !important;
+  overflow-wrap: inherit !important;
+  word-break: inherit !important;
 }
 
 @media (max-width: 640px) {
