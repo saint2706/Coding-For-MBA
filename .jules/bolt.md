@@ -1,6 +1,2 @@
-# Performance Log
-
-## ⚡ Bolt Optimizations
-
-- Extracted `react-markdown` components (`markdownComponents`) in `src/components/MarkdownRenderer.tsx` from an inline `useMemo` block to a static object outside the component scope to avoid recreating the component dictionary configuration object on every render cycle, slightly reducing render overhead.
-- Extracted `TocItem` in `src/components/TableOfContents.tsx` and wrapped both the list items and the main `TableOfContents` container in `React.memo`. This optimization prevents O(N) re-renders of all Table of Contents links whenever the active heading ID changes on scroll, reducing main thread blocking time during scroll events and improving perceived scroll performance.
+- Wrapped `totalLessons` and `overallPct` calculations in `useMemo` blocks within `ProgressDashboard.tsx`, `Curriculum.tsx`, and `Home.tsx` to prevent unnecessary recalculation on every render.
+- Replaced `getCompletedForPhase` usage inside `.map()` iterations across multiple views with a single memoized `Set` lookup (`completedSet`), converting repetitive `O(N * M)` array operations into constant-time `O(N)` lookups and significantly reducing memory allocation during render cycles.

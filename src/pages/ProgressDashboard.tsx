@@ -24,9 +24,9 @@ import {
   getCompletedLessons,
   getStreakDays,
   isLessonComplete,
-  getCompletedForPhase,
   clearAllProgress,
 } from '../utils/progressTracker'
+import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
@@ -53,7 +53,12 @@ export default function ProgressDashboard() {
   const forceUpdate = useCallback(() => setTick((t) => t + 1), [])
 
   const completedLessons = getCompletedLessons()
-  const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
+  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+
+  const totalLessons = useMemo(
+    () => phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0),
+    [phases]
+  )
   const overallPct =
     totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0
 
@@ -529,8 +534,7 @@ export default function ProgressDashboard() {
       <div className="progress-phases-list">
         {phases.map((phase) => {
           const lessons = getLessonsByPhase(phase.phase)
-          const lessonDays = lessons.map((l) => l.day)
-          const completedInPhase = getCompletedForPhase(lessonDays)
+          const completedInPhase = lessons.filter(l => completedSet.has(dayTokenToProgressId(l.day)))
           const icon = phaseIcons[phase.phase - 1] || '📖'
           const diff =
             difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!

@@ -26,10 +26,11 @@ import {
 } from '../utils/contentLoader'
 import {
   getLastVisited,
-  getCompletedForPhase,
+  getCompletedLessons,
   getCompletedCount,
   getStreakDays,
 } from '../utils/progressTracker'
+import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import AnimatedCounter from '../components/AnimatedCounter'
 import { useGamificationStore } from '../stores/gamificationStore'
@@ -68,16 +69,22 @@ export default function Home() {
   const lastVisitedPhase = lastVisitedLesson
     ? phases.find((phase) => phase.phase === lastVisitedLesson.phase)
     : null
+  const completedLessons = getCompletedLessons()
+  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+
   const lastVisitedPhasePct = lastVisitedPhase
     ? Math.round(
-        (getCompletedForPhase(getLessonsByPhase(lastVisitedPhase.phase).map((l) => l.day)).length /
+        (getLessonsByPhase(lastVisitedPhase.phase).filter(l => completedSet.has(dayTokenToProgressId(l.day))).length /
           Math.max(1, getLessonsByPhase(lastVisitedPhase.phase).length)) *
           100,
       )
     : 0
   const completedCount = getCompletedCount()
   const streakDays = useMemo(() => getStreakDays(), [completedCount])
-  const totalLessons = phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0)
+  const totalLessons = useMemo(
+    () => phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0),
+    [phases]
+  )
   const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, prefersReducedMotion ? 0 : -50])
@@ -308,8 +315,7 @@ export default function Home() {
               difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
             const icon = phaseIcons[phase.phase - 1] || '📖'
             const hours = Math.round((phase.totalDuration || 0) / 60)
-            const lessonDays = lessons.map((l) => l.day)
-            const completedInPhase = getCompletedForPhase(lessonDays)
+            const completedInPhase = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day)))
 
             return (
               <Link

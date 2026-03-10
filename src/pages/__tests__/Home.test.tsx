@@ -42,6 +42,7 @@ vi.mock('../../utils/progressTracker', () => ({
   getLastVisited: mockGetLastVisited,
   getCompletedCount: mockGetCompletedCount,
   getCompletedForPhase: () => [],
+  getCompletedLessons: () => [],
   getStreakDays: () => 0,
 }))
 
