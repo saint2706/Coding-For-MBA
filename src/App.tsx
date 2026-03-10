@@ -9,7 +9,7 @@
  * - Initialize global providers (Theme, etc.).
  */
 
-import { useState, useEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useLayoutEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SkipToContent from './components/SkipToContent'
@@ -50,31 +50,10 @@ export default function App() {
 
   const isLesson = location.pathname.startsWith('/lesson/')
 
-  useEffect(() => {
-    const hydrateStores = () => {
-      hydrateProgressStore()
-      hydrateQuizStore()
-      hydrateGamificationStore()
-    }
-
-    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-      const idleId = (
-        window as Window & {
-          requestIdleCallback: (callback: () => void, options?: { timeout: number }) => number
-        }
-      ).requestIdleCallback(hydrateStores, { timeout: 1500 })
-
-      return () => {
-        ;(
-          window as Window & {
-            cancelIdleCallback?: (id: number) => void
-          }
-        ).cancelIdleCallback?.(idleId)
-      }
-    }
-
-    const timeoutId = globalThis.setTimeout(hydrateStores, 0)
-    return () => globalThis.clearTimeout(timeoutId)
+  useLayoutEffect(() => {
+    hydrateProgressStore()
+    hydrateQuizStore()
+    hydrateGamificationStore()
   }, [])
 
   useEffect(() => {
