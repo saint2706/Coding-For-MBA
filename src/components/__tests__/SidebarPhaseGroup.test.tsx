@@ -9,9 +9,9 @@ import * as contentLoader from '../../utils/contentLoader'
 vi.mock('../../utils/contentLoader', async () => {
   const actual = await vi.importActual('../../utils/contentLoader')
   return {
-    ...actual as any,
+    ...(actual as any),
     getLessonsByPhase: vi.fn(),
-    phaseIcons: ['📖', '🚀', '🧠']
+    phaseIcons: ['📖', '🚀', '🧠'],
   }
 })
 
@@ -26,7 +26,7 @@ describe('SidebarPhaseGroup', () => {
 
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
       { day: '01', title: 'Lesson 1', phase: 1 },
-      { day: '02', title: 'Lesson 2', phase: 1 }
+      { day: '02', title: 'Lesson 2', phase: 1 },
     ] as any)
   })
 
@@ -45,7 +45,7 @@ describe('SidebarPhaseGroup', () => {
     dueCount: 0,
     currentPath: '/',
     onToggle: vi.fn(),
-    onClose: vi.fn()
+    onClose: vi.fn(),
   }
 
   it('renders a collapsed phase group by default', () => {
@@ -53,7 +53,7 @@ describe('SidebarPhaseGroup', () => {
       root?.render(
         <MemoryRouter>
           <SidebarPhaseGroup {...defaultProps} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -73,7 +73,7 @@ describe('SidebarPhaseGroup', () => {
       root?.render(
         <MemoryRouter>
           <SidebarPhaseGroup {...defaultProps} isActive={true} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -96,7 +96,7 @@ describe('SidebarPhaseGroup', () => {
             completedSet={new Set([1])} // Day 01
             dueCount={3}
           />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -110,7 +110,7 @@ describe('SidebarPhaseGroup', () => {
       root?.render(
         <MemoryRouter>
           <SidebarPhaseGroup {...defaultProps} onToggle={onToggleMock} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -126,12 +126,8 @@ describe('SidebarPhaseGroup', () => {
     act(() => {
       root?.render(
         <MemoryRouter>
-          <SidebarPhaseGroup
-            {...defaultProps}
-            isActive={true}
-            currentPath="/lesson/01"
-          />
-        </MemoryRouter>
+          <SidebarPhaseGroup {...defaultProps} isActive={true} currentPath="/lesson/01" />
+        </MemoryRouter>,
       )
     })
 

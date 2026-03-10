@@ -29,10 +29,10 @@ function getMap(key: string): DayExerciseMap {
  * Marks a specific exercise as complete for a given day.
  * Checks if all exercises for the day are done to potentially trigger a celebration.
  *
- * @param day - The day number of the exercise.
- * @param exerciseId - The unique ID of the completed exercise.
- * @param totalForDay - The total number of exercises available for that day.
- * @returns True if this completion completes the day (and it hasn't been celebrated yet), false otherwise.
+ * @param {number} day - The day number of the exercise.
+ * @param {string} exerciseId - The unique ID of the completed exercise.
+ * @param {number} totalForDay - The total number of exercises available for that day.
+ * @returns {boolean} True if this completion completes the day (and it hasn't been celebrated yet), false otherwise.
  */
 export function markExerciseComplete(
   day: number,

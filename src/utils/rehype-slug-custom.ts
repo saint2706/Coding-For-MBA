@@ -14,7 +14,7 @@ function toString(node: any): string {
  * A rehype plugin to add custom slugs to heading elements.
  * Iterates over 'h1', 'h2', and 'h3' tags in the AST and assigns a slugified `id` property.
  *
- * @returns A transformer function for the rehype AST.
+ * @returns {(tree: Root) => void} A transformer function for the rehype AST.
  */
 export function rehypeSlugCustom() {
   return (tree: Root) => {

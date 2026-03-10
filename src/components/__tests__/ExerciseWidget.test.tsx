@@ -234,7 +234,10 @@ describe('ExerciseWidget', () => {
     // 3. Click "Hide Solution"
     await act(async () => {
       showButton.click()
-      await new Promise((resolve) => setTimeout(resolve, 260))
+    })
+
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 350))
     })
 
     // Button text should change back

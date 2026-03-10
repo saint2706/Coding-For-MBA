@@ -34,7 +34,7 @@ const prefetchedRoutes = new Set<string>()
  * Trigger a prefetch for the code chunk associated with a route path.
  * Safe to call multiple times; will only load once.
  *
- * @param path - The route path to prefetch (e.g., '/lesson/1').
+ * @param {string} path - The route path to prefetch (e.g., '/lesson/1').
  */
 export function prefetchRoute(path: string) {
   if (prefetchedRoutes.has(path)) {
@@ -54,7 +54,8 @@ export function prefetchRoute(path: string) {
  * Creates event handlers for prefetching on hover, focus, or touch.
  * Spread these props onto a Link or Button element.
  *
- * @param path - The target route path.
+ * @param {string} path - The target route path.
+ * @returns {{onMouseEnter: () => void, onFocus: () => void, onTouchStart: () => void}} The event handlers.
  */
 export function createRoutePrefetchHandlers(path: string) {
   return {

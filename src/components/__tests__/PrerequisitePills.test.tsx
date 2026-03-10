@@ -39,14 +39,14 @@ describe('PrerequisitePills', () => {
 
   it('renders prerequisite links', () => {
     vi.mocked(contentLoader.getPrerequisiteLessons).mockReturnValue([
-      { day: '01', title: 'Lesson 1' } as any
+      { day: '01', title: 'Lesson 1' } as any,
     ])
 
     act(() => {
       root?.render(
         <MemoryRouter>
           <PrerequisitePills lesson={{ day: '02' } as any} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 

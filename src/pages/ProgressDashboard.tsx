@@ -57,7 +57,7 @@ export default function ProgressDashboard() {
 
   const totalLessons = useMemo(
     () => phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0),
-    [phases]
+    [phases],
   )
   const overallPct =
     totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0
@@ -534,7 +534,9 @@ export default function ProgressDashboard() {
       <div className="progress-phases-list">
         {phases.map((phase) => {
           const lessons = getLessonsByPhase(phase.phase)
-          const completedInPhase = lessons.filter(l => completedSet.has(dayTokenToProgressId(l.day)))
+          const completedInPhase = lessons.filter((l) =>
+            completedSet.has(dayTokenToProgressId(l.day)),
+          )
           const icon = phaseIcons[phase.phase - 1] || '📖'
           const diff =
             difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!

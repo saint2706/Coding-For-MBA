@@ -71,10 +71,19 @@ export default function Curriculum() {
     })
   }, [phases, completedLessons])
 
-  const totalLessons = useMemo(() => phasesData.reduce((sum, p) => sum + p.lessons.length, 0), [phasesData])
+  const totalLessons = useMemo(
+    () => phasesData.reduce((sum, p) => sum + p.lessons.length, 0),
+    [phasesData],
+  )
   const completedCount = getCompletedCount()
-  const overallPct = useMemo(() => totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0, [totalLessons, completedCount])
-  const completedPhasesCount = useMemo(() => phasesData.filter((p) => p.isPhaseComplete).length, [phasesData])
+  const overallPct = useMemo(
+    () => (totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0),
+    [totalLessons, completedCount],
+  )
+  const completedPhasesCount = useMemo(
+    () => phasesData.filter((p) => p.isPhaseComplete).length,
+    [phasesData],
+  )
 
   const containerVariants = {
     hidden: { opacity: 0 },
