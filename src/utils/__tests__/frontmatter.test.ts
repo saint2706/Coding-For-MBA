@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { parseMarkdown, normalizeMarkdownLineEndings, parseNormalizedMarkdown } from '../frontmatter'
+import {
+  parseMarkdown,
+  normalizeMarkdownLineEndings,
+  parseNormalizedMarkdown,
+} from '../frontmatter'
 import {
   parseMarkdown as parseMarkdownCore,
   normalizeMarkdownLineEndings as normalizeMarkdownLineEndingsCore,
@@ -23,21 +27,27 @@ describe('frontmatter parser parity', () => {
     expect(Object.getPrototypeOf(appResult.frontmatter)).toBeNull()
   })
 
-  it.each(samples)('normalizeMarkdownLineEndings returns identical output across app and core for sample %#', (raw) => {
-    const appResult = normalizeMarkdownLineEndings(raw)
-    const coreResult = normalizeMarkdownLineEndingsCore(raw)
+  it.each(samples)(
+    'normalizeMarkdownLineEndings returns identical output across app and core for sample %#',
+    (raw) => {
+      const appResult = normalizeMarkdownLineEndings(raw)
+      const coreResult = normalizeMarkdownLineEndingsCore(raw)
 
-    expect(coreResult).toEqual(appResult)
-  })
+      expect(coreResult).toEqual(appResult)
+    },
+  )
 
-  it.each(samples)('parseNormalizedMarkdown returns identical output across app and core for sample %#', (raw) => {
-    // Normalizing first to strictly test parseNormalizedMarkdown.
-    const normalizedRaw = normalizeMarkdownLineEndings(raw)
+  it.each(samples)(
+    'parseNormalizedMarkdown returns identical output across app and core for sample %#',
+    (raw) => {
+      // Normalizing first to strictly test parseNormalizedMarkdown.
+      const normalizedRaw = normalizeMarkdownLineEndings(raw)
 
-    const appResult = parseNormalizedMarkdown(normalizedRaw)
-    const coreResult = parseNormalizedMarkdownCore(normalizedRaw)
+      const appResult = parseNormalizedMarkdown(normalizedRaw)
+      const coreResult = parseNormalizedMarkdownCore(normalizedRaw)
 
-    expect(coreResult).toEqual(appResult)
-    expect(Object.getPrototypeOf(appResult.frontmatter)).toBeNull()
-  })
+      expect(coreResult).toEqual(appResult)
+      expect(Object.getPrototypeOf(appResult.frontmatter)).toBeNull()
+    },
+  )
 })

@@ -35,7 +35,7 @@ const TocItem = memo(
       </li>
     )
   },
-  (prevProps, nextProps) => prevProps.isActive === nextProps.isActive
+  (prevProps, nextProps) => prevProps.isActive === nextProps.isActive,
 )
 
 interface TableOfContentsProps {

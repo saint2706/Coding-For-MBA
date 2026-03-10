@@ -15,6 +15,11 @@ interface IllustrationProps {
   className?: string
 }
 
+/**
+ * Renders an illustration indicating an empty search result.
+ * @param props - Component props containing optional className
+ * @returns SVG element representing the search empty state
+ */
 export function SearchEmptyIllustration({ className = '' }: IllustrationProps) {
   const reducedMotion = !!useReducedMotion()
   return (
@@ -62,6 +67,11 @@ export function SearchEmptyIllustration({ className = '' }: IllustrationProps) {
   )
 }
 
+/**
+ * Renders an illustration indicating no exercises are available.
+ * @param props - Component props containing optional className
+ * @returns SVG element representing the exercises empty state
+ */
 export function ExercisesEmptyIllustration({ className = '' }: IllustrationProps) {
   const reducedMotion = !!useReducedMotion()
   return (
@@ -124,6 +134,11 @@ export function ExercisesEmptyIllustration({ className = '' }: IllustrationProps
   )
 }
 
+/**
+ * Renders an illustration indicating a fresh start or empty history.
+ * @param props - Component props containing optional className
+ * @returns SVG element representing the fresh start state
+ */
 export function FreshStartIllustration({ className = '' }: IllustrationProps) {
   const reducedMotion = !!useReducedMotion()
   return (
