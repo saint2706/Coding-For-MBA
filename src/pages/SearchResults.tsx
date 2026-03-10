@@ -14,6 +14,7 @@ import {
   extractMatchedTerms,
   getSearchSnippet,
   search,
+  startBackgroundIndexing,
   type SearchResult,
 } from '../utils/searchIndex'
 
@@ -60,6 +61,10 @@ export default function SearchResults() {
   }, [debouncedQuery])
 
   const terms = useMemo(() => extractMatchedTerms(debouncedQuery), [debouncedQuery])
+
+  useEffect(() => {
+    startBackgroundIndexing()
+  }, [])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
