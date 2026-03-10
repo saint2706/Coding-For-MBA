@@ -21,3 +21,6 @@ Allow: /
 
 # === Sitemap ===
 Sitemap: https://saint2706.github.io/Coding-For-MBA/sitemap.xml
+
+# === LLM Manifest ===
+Allow: /llms.txt

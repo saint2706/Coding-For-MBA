@@ -58,3 +58,13 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 -   [x] **[GEO][SEO] Structured Data XSS Fix**: Fixed the `.replace(/</g, '\\u003c')` call inside `src/components/SEOHead.tsx` to `.replace(/</g, '\\\\u003c')`. This ensures that `\u003c` is properly output in the serialized JS string, satisfying React's `dangerouslySetInnerHTML` escaping requirements without breaking JSON parsers.
+
+### [Date: Current] - LCP and JSON-LD Integrity
+
+**Priority Areas:**
+1.  **Speed (Velocity)**: LCP element lazy-loading prevention.
+2.  **GEO (Intelligence)**: Correcting JSON-LD script escaping logic.
+
+**Changes:**
+-   [x] **[PERF] LCP Optimization**: Extracted `fetchpriority` and `fetchPriority` in `ImageComponent` inside `src/components/MarkdownRenderer.tsx` and removed them from the remaining spread `props` to prevent `loading="lazy"` overrides.
+-   [x] **[GEO] Structured Data**: Reverted incorrect double escaping in `dangerouslySetInnerHTML` for JSON-LD schemas inside `src/components/SEOHead.tsx` to ensure `\u003c` evaluates properly in the JS context.

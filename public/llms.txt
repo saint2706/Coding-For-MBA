@@ -1,0 +1,181 @@
+# Site Architecture
+- https://saint2706.github.io/Coding-For-MBA/#/: Home page
+- https://saint2706.github.io/Coding-For-MBA/#/curriculum: Curriculum overview
+- https://saint2706.github.io/Coding-For-MBA/#/exercises: Practice exercises
+- https://saint2706.github.io/Coding-For-MBA/#/progress: Learning progress
+- https://saint2706.github.io/Coding-For-MBA/#/concepts: Concept graph
+- https://saint2706.github.io/Coding-For-MBA/#/stats: Learning statistics
+- https://saint2706.github.io/Coding-For-MBA/#/phase/1: Algorithmic Thinking & Python Foundations
+- https://saint2706.github.io/Coding-For-MBA/#/phase/2: Functions, Modularity & Data Wrangling
+- https://saint2706.github.io/Coding-For-MBA/#/phase/3: Data Engineering & Web Development
+- https://saint2706.github.io/Coding-For-MBA/#/phase/4: Mathematical Foundations & ML Fundamentals
+- https://saint2706.github.io/Coding-For-MBA/#/phase/5: Advanced ML & Deep Learning
+- https://saint2706.github.io/Coding-For-MBA/#/phase/6: Cutting-Edge ML
+- https://saint2706.github.io/Coding-For-MBA/#/phase/7: BI Analytics, Governance & Modern Data Stack
+- https://saint2706.github.io/Coding-For-MBA/#/phase/8: SQL Mastery & Database Architecture
+- https://saint2706.github.io/Coding-For-MBA/#/phase/9: Enterprise SQL Performance Engineering
+- https://saint2706.github.io/Coding-For-MBA/#/phase/10: Generative AI & LLM Engineering
+- https://saint2706.github.io/Coding-For-MBA/#/phase/11: Cloud Data Engineering
+- https://saint2706.github.io/Coding-For-MBA/#/phase/12: Analytics Engineering & Data Products
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/1: Introduction to Python
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/2: Variables & Built-in Functions
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/3: Operators
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/4: Strings
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/5: Lists
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/6: Tuples
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/7: Sets
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/8: Dictionaries
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/9: Conditionals
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/10: Loops
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/11B: Generators & Iterators
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/11C: Debugging Workflows
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/11: Functions
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/12: List Comprehensions
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/13: Higher-Order Functions
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/14: Modules & Packages
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/15: Exception Handling
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/16: File Handling
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/17: Regular Expressions
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/18: Classes and Objects
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/19: Date and Time
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/20: Python Package Manager
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/21: Virtual Environments
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/22: NumPy Fundamentals
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/23: Pandas Essentials
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24B: Exploratory Data Analysis (EDA)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24C: Data Cleaning Playbook
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24D: Phase 2 Mini Capstone: Modular Data Pipeline
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/24: Advanced Pandas
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/25: Data Cleaning
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/26: Statistics for Business
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/27: Data Visualization
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/28: Advanced Visualization
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/29: Interactive Visualization
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/30: Web Scraping
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/31: Databases with SQL
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/32: Other Databases
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/33: APIs
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/34: Building an API
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/35: Flask Web Framework
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/36B: Docker Fundamentals
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/36C: Async Python and FastAPI
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/36: Case Study: ETL Pipeline
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/37B: Probability & Statistics for ML
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/37C: Sklearn Pipelines & ColumnTransformer
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/37: Python Review & ML Prep
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/38: Linear Algebra for ML
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/39: Calculus for ML
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/40: Introduction to Machine Learning
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/41: Supervised Learning: Regression
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/42: Supervised Learning: Classification Part 1
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/43: Supervised Learning: Classification Part 2
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/44: Unsupervised Learning
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/45: Feature Engineering and Evaluation
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/46: Introduction to Neural Networks
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/47: Convolutional Neural Networks
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/48: Recurrent Neural Networks
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/49: Natural Language Processing
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/50: MLOps Fundamentals
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/51: Regularized Models
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/52: Ensemble Methods
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/53: Model Tuning & Feature Selection
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/54: Probabilistic Modeling
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/55: Advanced Unsupervised Learning
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/56: Time Series & Forecasting
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/57: Recommender Systems
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/58: Transformers & Attention
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/59: Generative Models
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/60B: LLM Fine-Tuning & Parameter-Efficient Fine-Tuning (PEFT)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/60C: Retrieval-Augmented Generation (RAG) & Vector Databases
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/60: Graph & Geometric Learning
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/61: Reinforcement & Offline Learning
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/62: Model Interpretability & Fairness
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/63: Causal Inference & Uplift
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/64: Modern NLP Pipelines
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/65: MLOps Pipelines & CI
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/66: Model Deployment & Serving
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/67: Model Monitoring & Reliability
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/68: AI Agents & Tool Use
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/68: BI Analyst Foundations
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/69: Responsible AI in Practice
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/69: BI Strategy & Stakeholders
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/70: LLM Fine-Tuning & PEFT
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/70: BI Metrics & Data Literacy
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/71: RAG & Vector Databases
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/71: BI Data Landscape
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/72: Multimodal AI
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/72: BI Data Formats & Ingestion
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/73: BI SQL & Advanced Databases
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/74: BI Data Preparation & Tools
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/75: BI Visualization & Dashboard Principles
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/76: BI Platforms & Automation
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/77: BI Domain Analytics & Value
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/78: BI Experimentation & Predictive
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/79: BI Storytelling & Influence
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/80: BI Data Quality & Governance
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/81: BI Architecture & Data Modeling
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/82: BI ETL & Pipeline Automation
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/83: BI Cloud & Modern Data Stack
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/84C: Reverse ETL & Semantic Layer
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/84: BI Career & Capstone
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/85: dbt Fundamentals
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/85: Advanced SQL Patterns
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/86: Cloud Architecture & Optimization
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/87: Technical Data Governance & Security
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/88: Capstone Part 1: Design & Architecture
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/89: Capstone Part 2: Implementation
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/90: Technical Interview WorkShop
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/91: Relational Database Internals
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/92: Advanced DDL & Schema
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/93: Advanced DML & Upserts
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/94: Advanced DQL & Optimization
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/95: Advanced Joins & Algorithms
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/96C: Streaming SQL Fundamentals
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/96: Advanced Subqueries
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/97: NoSQL Deep Dive
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/97: Materialized Views & Caching
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/98: Advanced Indexing (GIN, GiST, BRIN)
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/99: Distributed Transactions & Concurrency
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/100: Advanced Stored Procedures
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/101: Triggers & Event-Driven SQL
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/102: Advanced CTEs & Recursion
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/103: Pivoting & Crosstabs
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/104: Database Design & Normalization
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/105: JSON & NoSQL in SQL
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/106: XML & Complex Data Types
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/107: Enterprise Security: RLS & Encryption
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/108C: Cloud-Native SQL: BigQuery ML, Snowflake Cortex & Redshift ML
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/108: Performance Tuning & Optimization
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/109: Curriculum Grand Finale Capstone
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/109: LLM Landscape — GPT-4o, Gemini, Claude, Llama
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/110: Prompt Engineering Mastery
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/111: LangChain & LlamaIndex — Document Loaders, Chains, Memory
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/112: RAG Pipelines — Embeddings, Vector Stores, Retrieval
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/113: Fine-Tuning LLMs — LoRA, QLoRA, Unsloth
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/114: Evaluation & Guardrails — RAGAS, TruLens, Guardrails AI
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/115: LLM Agents & Tool Use — ReAct, Function Calling, Multi-Agent
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/116: LLM Ops & Cost Management — Token Optimization, Caching, Tracing
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/117: Multimodal AI — Vision-Language Models, GPT-4V, Gemini Vision
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/118: AI Product Design — Product Thinking for LLM Features
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/119: AI Ethics in Practice — Bias Audits, Red-Teaming, Responsible Deployment
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/120: Capstone: Build an AI-Powered Data Assistant
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/121: Cloud Fundamentals — AWS, GCP, Azure
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/122: Object Storage — S3, GCS, Delta Lake, Iceberg
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/123: Cloud Data Warehouses — BigQuery, Snowflake, Redshift
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/124: dbt at Scale — Incremental Models, Snapshots, Advanced Patterns
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/125: Orchestration — Apache Airflow, Prefect, Dagster
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/126: Streaming Pipelines — Kafka, Pub/Sub, Kinesis
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/127: Lakehouse Architecture — Databricks, Unity Catalog, Delta Live Tables
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/128: Data Contracts and Quality — Great Expectations, Soda, SLAs
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/129: Cloud Security and Compliance — VPC, Encryption, PII
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/130: Cost Engineering — FinOps for Data Platforms
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/131: Platform Engineering — Terraform, IaC, Self-Serve Infrastructure
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/132: Capstone — Cloud Data Pipeline End-to-End
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/133: The Analytics Engineer Role — Beyond the Data Analyst
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/134: Semantic and Metrics Layers — Define Once, Use Everywhere
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/135: Self-Serve Analytics — Empowering Stakeholders Without Chaos
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/136: Data Mesh Principles — Domain Ownership and Federated Governance
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/137: Product Analytics Deep Dive — Retention, Funnels, Cohorts
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/138: A/B Testing at Scale — Statistical Rigor and Experimentation Platforms
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/139: Data Products and Monetization — Building Revenue from Data
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/140: Capstone — Design and Pitch a Data Product
