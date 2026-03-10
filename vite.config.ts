@@ -143,16 +143,6 @@ export default defineConfig(async ({ mode }) => {
             if (normalId.includes('node_modules/zustand')) {
               return 'zustand'
             }
-            // AI assistant utilities
-            if (
-              normalId.includes('src/utils/geminiClient') ||
-              normalId.includes('src/utils/semanticSearch') ||
-              normalId.includes('src/stores/aiAssistantStore') ||
-              normalId.includes('src/components/AiStudyPanel') ||
-              normalId.includes('src/pages/AiDashboard')
-            ) {
-              return 'ai-assistant'
-            }
             // Split lesson content files into per-phase chunks
             if (normalId.includes('/content/lessons/')) {
               const phaseMatch = normalId.match(/Phase_(\d+)/)

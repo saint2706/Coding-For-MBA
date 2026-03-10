@@ -33,8 +33,6 @@ import { triggerDayExercisesCompleteConfetti } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
 import { useQuizStore } from '../stores/quizStore'
 import { useGamificationStore } from '../stores/gamificationStore'
-import { useAiAssistantStore } from '../stores/aiAssistantStore'
-import { getExerciseHint, isGeminiAvailable } from '../utils/geminiClient'
 
 /**
  * Custom syntax highlighting theme for solution code display.
@@ -80,8 +78,6 @@ export default function ExerciseWidget({
   const [hasRevealed, setHasRevealed] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState(false)
   const [isConfirmingSolution, setIsConfirmingSolution] = useState(false)
-  const [hintContent, setHintContent] = useState<string | null>(null)
-  const [hintLoading, setHintLoading] = useState(false)
   const solutionId = useId()
   const playgroundRef = useRef<CodePlaygroundHandle>(null)
   const confirmTimeoutRef = useRef<number | null>(null)
@@ -218,51 +214,6 @@ export default function ExerciseWidget({
         onExpectedOutputMatched={handleExerciseMatch}
         onSubmissionEvaluated={handleSubmissionEvaluated}
       />
-
-      {/* AI Hints */}
-      {isGeminiAvailable() && (
-        <div className="exercise-widget__hints">
-          <button
-            type="button"
-            className="exercise-hint-btn"
-            onClick={async () => {
-              const store = useAiAssistantStore.getState()
-              const currentLevel = store.getHintLevel(exerciseId)
-              if (currentLevel >= 3 || hintLoading) return
-              const nextLevel = store.incrementHintLevel(exerciseId) as 1 | 2 | 3
-              setHintLoading(true)
-              try {
-                const hint = await getExerciseHint(
-                  title,
-                  goal || 'Complete the exercise',
-                  starterCode,
-                  nextLevel,
-                )
-                setHintContent(hint)
-              } catch {
-                setHintContent('Unable to get hint. Please try again.')
-              } finally {
-                setHintLoading(false)
-              }
-            }}
-            disabled={hintLoading || useAiAssistantStore.getState().getHintLevel(exerciseId) >= 3}
-          >
-            <span aria-hidden="true">💡 </span>
-            {hintLoading ? 'Thinking...' : 'Get Hint'}
-            <span className="exercise-hint-dots">
-              {[1, 2, 3].map((level) => (
-                <span
-                  key={level}
-                  className={`exercise-hint-dot ${
-                    useAiAssistantStore.getState().getHintLevel(exerciseId) >= level ? 'filled' : ''
-                  }`}
-                />
-              ))}
-            </span>
-          </button>
-          {hintContent && <div className="exercise-hint-content">{hintContent}</div>}
-        </div>
-      )}
 
       {quizStats && (
         <div className="exercise-widget__quiz-stats">

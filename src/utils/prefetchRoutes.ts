@@ -26,7 +26,6 @@ const routePrefetchers: Array<{ match: (path: string) => boolean; load: () => Pr
     { match: (path) => path === '/concepts', load: () => import('../pages/ConceptGraphPage') },
     { match: (path) => path === '/stats', load: () => import('../pages/ContentStats') },
     { match: (path) => path === '/review', load: () => import('../pages/Review') },
-    { match: (path) => path === '/ai', load: () => import('../pages/AiDashboard') },
   ]
 
 const prefetchedRoutes = new Set<string>()

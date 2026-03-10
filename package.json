@@ -6,8 +6,8 @@
   "homepage": "https://saint2706.github.io/Coding-For-MBA",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/generate-sitemap.js && node scripts/generate-llms-txt.js && tsc -b && vite build",
-    "analyze": "node scripts/generate-sitemap.js && node scripts/generate-llms-txt.js && tsc -b && vite build --mode analyze",
+    "build": "node scripts/generate-sitemap.js && tsc -b && vite build",
+    "analyze": "node scripts/generate-sitemap.js && tsc -b && vite build --mode analyze",
     "analyze:report": "node scripts/analyze-bundle.js",
     "lint": "npm run typecheck",
     "typecheck": "tsc -b",
@@ -30,7 +30,6 @@
   },
   "dependencies": {
     "@dr.pogodin/react-helmet": "^3.1.0",
-    "@google/generative-ai": "^0.24.1",
     "canvas-confetti": "^1.9.3",
     "d3": "^7.9.0",
     "fuse.js": "^7.1.0",

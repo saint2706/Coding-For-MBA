@@ -100,50 +100,12 @@ scripts/               # Build and validation scripts
 - The index is built on the client and cached after initial load, so it works offline once assets are cached.
 
 
-## 🤖 AI Study Assistant Setup
-
-The AI Study Assistant uses the Google Gemini API directly from the browser.
-
-### Getting a Gemini API Key
-
-1. Visit [Google AI Studio](https://aistudio.google.com/app/apikey).
-2. Sign in with your Google account.
-3. Click **Create API key** and copy it.
-
-### Environment Variables
-
-- `VITE_GEMINI_API_KEY` (**required**): your Gemini API key. This is baked into the browser bundle at build time by Vite.
-
-### Local Development
-
-1. Copy `.env.example` to `.env.local`:
-
-   ```bash
-   cp .env.example .env.local
-   ```
-
-2. Paste your key into `.env.local`:
-
-   ```bash
-   VITE_GEMINI_API_KEY=your_gemini_key_here
-   ```
-
-3. Start Vite as usual:
-
-   ```bash
-   npm run dev
-   ```
-
-### GitHub Pages Deployment
-
-Add `VITE_GEMINI_API_KEY` as a [repository secret](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions) named exactly `VITE_GEMINI_API_KEY`. The deploy workflow passes this secret to `npm run build` so it is embedded in the production bundle.
-
 ## 📜 Available Scripts
 
 | Script | Description |
 | ------ | ----------- |
 | `npm run dev` | Start Vite dev server |
-| `npm run build` | Production build (includes sitemap, llms.txt, typecheck) |
+| `npm run build` | Production build (includes sitemap, typecheck) |
 | `npm run analyze` | Build + generate `dist/stats.html` bundle report |
 | `npm run lint` | Run TypeScript compiler check (alias for `typecheck`) |
 | `npm run typecheck` | Run TypeScript compiler check |
