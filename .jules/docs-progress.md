@@ -1,16 +1,10 @@
-# Documentation Progress Log
+# Docs Progress Log
 
-This file tracks the status and completion of documentation tasks to ensure alignment with project standards and maintain code/documentation parity.
-
-## Completed Tasks
-
-- **[2026-03-07]** Added missing JSDoc/TSDoc comments to exported functions:
-  - `src/utils/contentLoader.ts`
-  - `src/utils/geminiClient.ts`
-  - `src/utils/searchIndex.ts`
-  - `src/utils/semanticSearch.ts`
-  - `src/utils/toc.ts`
-- **[2026-03-01]** Added missing JSDoc/TSDoc comments to exported functions:
-  - `src/utils/dayToken.ts`
-  - `src/utils/progressTracker.ts`
-  - `src/utils/slug.ts`
+- **[2026-03-XX] JSDoc Improvements in Utilities**
+  - Added missing typed JSDoc comments to `src/utils/safeStorage.ts`
+  - Added missing typed JSDoc comments to `src/utils/prefetchRoutes.ts`
+  - Added missing typed JSDoc comments to `src/utils/slug.ts`
+  - Added missing typed JSDoc comments to `src/utils/rehype-slug-custom.ts`
+  - Added missing typed JSDoc comments to `src/utils/exerciseProgress.ts`
+  - Reviewed and confirmed all other exported functions in `src/utils/` had correct JSDoc comments.
+  - Ran format and lint to ensure everything complies with coding standards.

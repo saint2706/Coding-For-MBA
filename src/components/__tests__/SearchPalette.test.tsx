@@ -9,7 +9,7 @@ import * as searchIndex from '../../utils/searchIndex'
 vi.mock('../../utils/searchIndex', async () => {
   const actual = await vi.importActual('../../utils/searchIndex')
   return {
-    ...actual as any,
+    ...(actual as any),
     getSearchSnippet: vi.fn((content) => 'Snippet of ' + content),
     getSearchIndexStatus: vi.fn(() => ({ isReady: true, processedCount: 10, totalCount: 10 })),
     search: vi.fn(),
@@ -20,24 +20,24 @@ vi.mock('../../utils/searchIndex', async () => {
 vi.mock('../../utils/contentLoader', async () => {
   const actual = await vi.importActual('../../utils/contentLoader')
   return {
-    ...actual as any,
+    ...(actual as any),
     difficultyConfig: {
-      beginner: { label: 'Beginner', color: '#000', bg: '#fff' }
-    }
+      beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
+    },
   }
 })
 
 // Proper mock for useDebounce that executes callbacks
 vi.mock('../../hooks/useDebounce', () => ({
   // Just return the value immediately to skip debouncing in tests
-  useDebounce: (val: string) => val
+  useDebounce: (val: string) => val,
 }))
 
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom')
   return {
-    ...actual as any,
+    ...(actual as any),
     useNavigate: () => mockNavigate,
   }
 })
@@ -65,7 +65,7 @@ describe('SearchPalette', () => {
       root?.render(
         <MemoryRouter>
           <SearchPalette isOpen={false} onClose={vi.fn()} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
     expect(container.innerHTML).toBe('')
@@ -76,7 +76,7 @@ describe('SearchPalette', () => {
       root?.render(
         <MemoryRouter>
           <SearchPalette isOpen={true} onClose={vi.fn()} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
     const input = container.querySelector('.search-input')
@@ -86,15 +86,22 @@ describe('SearchPalette', () => {
   it('shows results for a valid query', () => {
     vi.mocked(searchIndex.search).mockReturnValue([
       {
-        item: { day: '01', title: 'Test Lesson', content: 'content', plainContent: 'plain', difficulty: 'beginner', tags: ['test'] }
-      }
+        item: {
+          day: '01',
+          title: 'Test Lesson',
+          content: 'content',
+          plainContent: 'plain',
+          difficulty: 'beginner',
+          tags: ['test'],
+        },
+      },
     ] as any)
 
     act(() => {
       root?.render(
         <MemoryRouter>
           <SearchPalette isOpen={true} onClose={vi.fn()} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 

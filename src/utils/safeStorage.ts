@@ -13,8 +13,9 @@
 /**
  * Gets a raw string value from localStorage with a fallback.
  *
- * @param key - localStorage key
- * @param fallback - value returned when storage is unavailable or key is missing
+ * @param {string} key - localStorage key
+ * @param {string | null} fallback - value returned when storage is unavailable or key is missing
+ * @returns {string | null} The retrieved string or the fallback value.
  */
 export function getStoredString(key: string, fallback: string | null = null): string | null {
   try {
@@ -28,9 +29,11 @@ export function getStoredString(key: string, fallback: string | null = null): st
 /**
  * Gets and parses JSON from localStorage with a typed fallback.
  *
- * @param key - localStorage key
- * @param fallback - value returned when storage is unavailable/invalid
- * @param validate - optional runtime validator for parsed data
+ * @template T
+ * @param {string} key - localStorage key
+ * @param {T} fallback - value returned when storage is unavailable/invalid
+ * @param {(value: unknown) => value is T} [validate] - optional runtime validator for parsed data
+ * @returns {T} The parsed object or the fallback value.
  */
 export function getStoredJson<T>(
   key: string,
@@ -52,7 +55,9 @@ export function getStoredJson<T>(
 /**
  * Writes a string value to localStorage.
  *
- * @returns true when write succeeds, false when blocked/unavailable
+ * @param {string} key - localStorage key
+ * @param {string} value - value to store
+ * @returns {boolean} true when write succeeds, false when blocked/unavailable
  */
 export function setStoredString(key: string, value: string): boolean {
   try {
@@ -66,7 +71,8 @@ export function setStoredString(key: string, value: string): boolean {
 /**
  * Removes a key from localStorage.
  *
- * @returns true when remove succeeds, false when blocked/unavailable
+ * @param {string} key - localStorage key
+ * @returns {boolean} true when remove succeeds, false when blocked/unavailable
  */
 export function removeStoredValue(key: string): boolean {
   try {

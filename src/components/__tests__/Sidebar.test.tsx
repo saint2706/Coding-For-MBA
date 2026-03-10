@@ -10,7 +10,7 @@ import * as reviewTracker from '../../utils/reviewTracker'
 vi.mock('../../utils/contentLoader', async () => {
   const actual = await vi.importActual('../../utils/contentLoader')
   return {
-    ...actual as any,
+    ...(actual as any),
     getAllPhases: vi.fn(),
     getLessonsByPhase: vi.fn(),
     phaseIcons: ['A', 'B'],
@@ -38,11 +38,11 @@ describe('Sidebar', () => {
     root = createRoot(container)
 
     vi.mocked(contentLoader.getAllPhases).mockReturnValue([
-      { phase: 1, title: 'Phase 1', days: ['01', '02'] }
+      { phase: 1, title: 'Phase 1', days: ['01', '02'] },
     ] as any)
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
       { day: '01', title: 'Lesson 1', phase: 1 },
-      { day: '02', title: 'Lesson 2', phase: 1 }
+      { day: '02', title: 'Lesson 2', phase: 1 },
     ] as any)
     vi.mocked(reviewTracker.getReviewDueCountByPhase).mockReturnValue({})
   })
@@ -60,7 +60,7 @@ describe('Sidebar', () => {
       root?.render(
         <MemoryRouter initialEntries={['/']}>
           <Sidebar isOpen={true} onClose={vi.fn()} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -77,7 +77,7 @@ describe('Sidebar', () => {
       root?.render(
         <MemoryRouter initialEntries={['/']}>
           <Sidebar isOpen={true} onClose={onCloseMock} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -95,7 +95,7 @@ describe('Sidebar', () => {
       root?.render(
         <MemoryRouter initialEntries={['/']}>
           <Sidebar isOpen={true} onClose={onCloseMock} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 

@@ -7,7 +7,7 @@ import * as motionReact from 'motion/react'
 vi.mock('motion/react', () => ({
   animate: vi.fn(),
   useInView: vi.fn(),
-  useReducedMotion: vi.fn()
+  useReducedMotion: vi.fn(),
 }))
 
 describe('AnimatedCounter', () => {

@@ -15,7 +15,7 @@ describe('TableOfContents Component', () => {
     // Mock matchMedia
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
-      value: vi.fn().mockImplementation(query => ({
+      value: vi.fn().mockImplementation((query) => ({
         matches: false,
         media: query,
         onchange: null,
@@ -97,7 +97,10 @@ Content
       link?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
-    expect(targetElement.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start' })
+    expect(targetElement.scrollIntoView).toHaveBeenCalledWith({
+      behavior: 'smooth',
+      block: 'start',
+    })
     expect(targetElement.focus).toHaveBeenCalledWith({ preventScroll: true })
 
     document.body.removeChild(targetElement)

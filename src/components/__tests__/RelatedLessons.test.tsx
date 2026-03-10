@@ -8,8 +8,8 @@ import * as contentLoader from '../../utils/contentLoader'
 vi.mock('../../utils/contentLoader', () => ({
   getRelatedLessons: vi.fn(),
   difficultyConfig: {
-    beginner: { label: 'Beginner', color: '#000', bg: '#fff' }
-  }
+    beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
+  },
 }))
 
 describe('RelatedLessons', () => {
@@ -43,14 +43,14 @@ describe('RelatedLessons', () => {
   it('renders a grid of related lessons', () => {
     vi.mocked(contentLoader.getRelatedLessons).mockReturnValue([
       { day: '01', title: 'Lesson 1', phase: 1, difficulty: 'beginner', tags: ['a', 'b'] } as any,
-      { day: '03', title: 'Lesson 3', phase: 2, tags: ['b', 'c'] } as any
+      { day: '03', title: 'Lesson 3', phase: 2, tags: ['b', 'c'] } as any,
     ])
 
     act(() => {
       root?.render(
         <MemoryRouter>
           <RelatedLessons lesson={{ day: '02', tags: ['b', 'd'] } as any} />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 

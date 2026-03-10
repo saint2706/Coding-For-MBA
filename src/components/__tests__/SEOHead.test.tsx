@@ -5,7 +5,7 @@ import { HelmetProvider } from '@dr.pogodin/react-helmet'
 import SEOHead from '../SEOHead'
 
 vi.mock('../../utils/seoSchemas', () => ({
-  buildCanonicalUrl: (path: string) => 'https://example.com' + (path || '')
+  buildCanonicalUrl: (path: string) => 'https://example.com' + (path || ''),
 }))
 
 describe('SEOHead', () => {
@@ -30,7 +30,7 @@ describe('SEOHead', () => {
       root?.render(
         <HelmetProvider>
           <SEOHead title="Test Page" path="/test" />
-        </HelmetProvider>
+        </HelmetProvider>,
       )
     })
     // Helmet side effects are hard to reliably test purely in JSDOM via document.head sometimes
@@ -46,11 +46,9 @@ describe('SEOHead', () => {
           <SEOHead
             title="JSON-LD Test"
             jsonLd={[customSchema]}
-            breadcrumbs={[
-              { name: 'Home', url: '/' }
-            ]}
+            breadcrumbs={[{ name: 'Home', url: '/' }]}
           />
-        </HelmetProvider>
+        </HelmetProvider>,
       )
     })
     expect(true).toBe(true)

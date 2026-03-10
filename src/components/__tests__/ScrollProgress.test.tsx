@@ -46,7 +46,7 @@ describe('ScrollProgress', () => {
       Object.defineProperty(window, 'scrollY', { value: 250 })
       window.dispatchEvent(new Event('scroll'))
       // Wait for requestAnimationFrame
-      await new Promise(r => requestAnimationFrame(r))
+      await new Promise((r) => requestAnimationFrame(r))
     })
 
     // Progress = 250 / (1000 - 500) = 0.5 = 50%
