@@ -1,7 +1,17 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import React, { act } from 'react'
+import { act } from 'react'
 import { createRoot, Root } from 'react-dom/client'
 import MarkdownRenderer from '../MarkdownRenderer'
+
+const syntaxHighlighterMock = vi.fn(({ children, wrapLongLines, codeTagProps }: any) => (
+  <div
+    className="syntax-highlighter"
+    data-wrap-long-lines={String(Boolean(wrapLongLines))}
+    data-white-space={codeTagProps?.style?.whiteSpace ?? ''}
+  >
+    {children}
+  </div>
+))
 
 // Mock Child Components
 vi.mock('../CodePlayground', () => ({
@@ -27,9 +37,7 @@ vi.mock('../MasteryCheck', () => ({
 }))
 
 vi.mock('../../utils/prism', () => ({
-  default: ({ children }: { children: React.ReactNode }) => (
-    <div className="syntax-highlighter">{children}</div>
-  ),
+  default: (props: any) => syntaxHighlighterMock(props),
 }))
 
 vi.mock('react-syntax-highlighter/dist/esm/styles/prism', () => ({
@@ -78,6 +86,18 @@ describe('MarkdownRenderer', () => {
     expect(codeBlock).toBeTruthy()
     expect(codeBlock?.querySelector('.code-block-lang')?.textContent).toBe('python')
     expect(codeBlock?.querySelector('.syntax-highlighter')?.textContent).toBe('print("hello")')
+  })
+
+  it('enables long-line wrapping for fenced code blocks', () => {
+    const content =
+      '```python\nprint("a very long line that should wrap instead of scrolling horizontally")\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const syntaxHighlighter = container.querySelector('.syntax-highlighter')
+    expect(syntaxHighlighter?.getAttribute('data-wrap-long-lines')).toBe('true')
+    expect(syntaxHighlighter?.getAttribute('data-white-space')).toBe('pre-wrap')
   })
 
   it('renders "Try It" button for Python code blocks', () => {
