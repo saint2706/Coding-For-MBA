@@ -1,5 +1,5 @@
 name: Node bootstrap
-description: Checkout repository, configure Node.js with npm cache, and install dependencies.
+description: Configure Node.js with npm cache and install dependencies.
 inputs:
   node-version:
     description: Node.js version to install.
@@ -9,9 +9,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
