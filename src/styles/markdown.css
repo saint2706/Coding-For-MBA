@@ -170,6 +170,22 @@
   overflow-wrap: inherit;
 }
 
+@media (max-width: 640px) {
+  .markdown-body .code-block-wrapper pre {
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .markdown-body .code-block-wrapper pre code {
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    font-size: 0.8125rem !important;
+    line-height: 1.6 !important;
+  }
+}
+
 /* Tables */
 .markdown-body .table-wrapper {
   overflow-x: auto;
