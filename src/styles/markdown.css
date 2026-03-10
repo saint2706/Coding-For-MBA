@@ -157,13 +157,19 @@
   background: transparent !important;
   border: none !important;
   border-radius: 0 !important;
-  overflow-x: auto;
+  overflow-x: visible;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .markdown-body pre code {
   font-family: var(--font-mono) !important;
   font-size: 0.875rem !important;
   line-height: 1.75 !important;
+  white-space: inherit !important;
+  overflow-wrap: inherit;
+  word-break: inherit;
 }
 
 /* Tables */

@@ -80,17 +80,22 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
         style={customTheme}
         language={lang}
         PreTag="div"
+        wrapLongLines
         customStyle={{
           margin: 0,
           padding: '1rem',
           background: 'transparent',
           fontSize: '0.8125rem',
           lineHeight: '1.65',
+          overflowX: 'visible',
         }}
         tabIndex={0}
         codeTagProps={{
           style: {
             fontFamily: 'var(--font-mono)',
+            whiteSpace: 'pre-wrap',
+            overflowWrap: 'anywhere',
+            wordBreak: 'break-word',
           },
         }}
       >
