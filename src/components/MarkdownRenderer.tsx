@@ -59,7 +59,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
   }
 
   return (
-    <div className="code-block-wrapper">
+    <div className="code-block-wrapper code-block--wrapped">
       <div className="code-block-header">
         <span className="code-block-lang">{lang}</span>
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
