@@ -10,7 +10,7 @@
  * - Highlight key features (Python, Data Science, SQL).
  */
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
@@ -54,16 +54,13 @@ export default function Home() {
     const totalDays = allLessons.length
     const totalPhases = allPhases.length
 
-    // Calculate reading time for hours
-    const totalReadingMins = allLessons.reduce((sum, l) => sum + getReadingTime(l.content), 0)
-    const totalHours = Math.round(totalReadingMins / 60)
-
     // Calculate unique difficulty levels
     const uniqueLevels = new Set(allLessons.map((l) => l.difficulty || 'beginner'))
     const totalLevels = uniqueLevels.size
 
-    return { totalDays, totalPhases, totalHours, totalLevels }
+    return { totalDays, totalPhases, totalLevels }
   }, [])
+  const [totalHours, setTotalHours] = useState<number | null>(null)
   const lastVisitedDay = getLastVisited()
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
   const lastVisitedPhase = lastVisitedLesson
@@ -72,10 +69,13 @@ export default function Home() {
   const completedLessons = getCompletedLessons()
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
+  const lastVisitedPhaseLessons = lastVisitedPhase ? getLessonsByPhase(lastVisitedPhase.phase) : []
   const lastVisitedPhasePct = lastVisitedPhase
     ? Math.round(
-        (getLessonsByPhase(lastVisitedPhase.phase).filter(l => completedSet.has(dayTokenToProgressId(l.day))).length /
-          Math.max(1, getLessonsByPhase(lastVisitedPhase.phase).length)) *
+        (lastVisitedPhaseLessons.filter((lesson) =>
+          completedSet.has(dayTokenToProgressId(lesson.day)),
+        ).length /
+          Math.max(1, lastVisitedPhaseLessons.length)) *
           100,
       )
     : 0
@@ -83,7 +83,7 @@ export default function Home() {
   const streakDays = useMemo(() => getStreakDays(), [completedCount])
   const totalLessons = useMemo(
     () => phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0),
-    [phases]
+    [phases],
   )
   const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
@@ -95,6 +95,34 @@ export default function Home() {
   useEffect(() => {
     refreshDailyChallenge()
   }, [refreshDailyChallenge])
+
+  useEffect(() => {
+    const calculateTotalHours = () => {
+      const allLessons = getAllLessons()
+      const totalReadingMins = allLessons.reduce(
+        (sum, lesson) => sum + getReadingTime(lesson.content),
+        0,
+      )
+      setTotalHours(Math.round(totalReadingMins / 60))
+    }
+
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleId = (
+        window as Window & {
+          requestIdleCallback: (callback: () => void, options?: { timeout: number }) => number
+        }
+      ).requestIdleCallback(calculateTotalHours, { timeout: 2000 })
+
+      return () => {
+        ;(window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(
+          idleId,
+        )
+      }
+    }
+
+    const timeoutId = globalThis.setTimeout(calculateTotalHours, 0)
+    return () => globalThis.clearTimeout(timeoutId)
+  }, [])
 
   const challengeLesson = getLesson(dailyChallenge.day)
 
@@ -136,7 +164,7 @@ export default function Home() {
             </div>
             <div className="hero-stat">
               <span className="stat-value">
-                <AnimatedCounter value={stats.totalHours} suffix="+" />
+                <AnimatedCounter value={totalHours ?? 0} suffix="+" />
               </span>
               <span className="stat-label">Hours</span>
             </div>
@@ -315,7 +343,9 @@ export default function Home() {
               difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
             const icon = phaseIcons[phase.phase - 1] || '📖'
             const hours = Math.round((phase.totalDuration || 0) / 60)
-            const completedInPhase = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day)))
+            const completedInPhase = lessons.filter((l) =>
+              completedSet.has(dayTokenToProgressId(l.day)),
+            )
 
             return (
               <Link

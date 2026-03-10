@@ -52,3 +52,13 @@ CHROME_PATH=/root/.cache/ms-playwright/chromium-1208/chrome-linux64/chrome npx l
   --url=http://127.0.0.1:4173/Coding-For-MBA/#/search \
   --settings.chromeFlags='--no-sandbox --disable-dev-shm-usage'
 ```
+
+## Follow-up optimizations applied
+- Deferred app store hydration (`progress`, `quiz`, `gamification`) to idle time in `App`.
+- Removed route-transition motion wrappers from `App` runtime path.
+- Lazy-loaded non-critical chrome components (`Sidebar`, `MobileNav`, keyboard shortcuts overlay, custom cursor`) so they no longer inflate the initial app chunk.
+- Deferred expensive `totalHours` aggregation on Home to idle time, reducing synchronous render work.
+
+## Follow-up results
+- `dist/assets/index-*.js` dropped from ~590 kB to ~576 kB (gzip ~159.6 kB → ~155.9 kB) after component lazy-loading.
+- Lighthouse single-run measurements continue to vary significantly under CI-like throttling; use multi-run median for reliable regression tracking.
