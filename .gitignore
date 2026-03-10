@@ -17,6 +17,11 @@ dist-ssr
 *.tsbuildinfo
 public/sitemap.xml
 
+# Agent skills should be committed
+!.agents/
+!.agents/skills/
+!.agents/skills/**
+
 # Lock files (project uses npm)
 pnpm-lock.yaml
 yarn.lock
