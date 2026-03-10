@@ -106,7 +106,7 @@
 }
 
 /* Code blocks */
-.markdown-body .code-block-wrapper {
+.markdown-body .code-block--wrapped {
   margin: 1.25rem 0;
   max-width: 100%;
   border-radius: var(--radius-md);
@@ -150,7 +150,7 @@
   border-color: var(--border-active);
 }
 
-.markdown-body pre {
+.markdown-body .code-block--wrapped pre {
   margin: 0 !important;
   max-width: 100%;
   padding: 1rem !important;
@@ -162,7 +162,7 @@
   overflow-wrap: anywhere;
 }
 
-.markdown-body pre code {
+.markdown-body .code-block--wrapped pre code {
   font-family: var(--font-mono) !important;
   font-size: 0.875rem !important;
   line-height: 1.75 !important;
@@ -171,13 +171,13 @@
 }
 
 @media (max-width: 640px) {
-  .markdown-body .code-block-wrapper pre {
+  .markdown-body .code-block--wrapped pre {
     white-space: pre-wrap !important;
     overflow-wrap: anywhere !important;
     word-break: break-word !important;
   }
 
-  .markdown-body .code-block-wrapper pre code {
+  .markdown-body .code-block--wrapped pre code {
     white-space: pre-wrap !important;
     overflow-wrap: anywhere !important;
     word-break: break-word !important;
@@ -341,7 +341,7 @@
   color: color-mix(in srgb, var(--accent-tertiary) 88%, var(--text-primary) 12%);
 }
 
-.lesson-reading-surface .markdown-body .code-block-wrapper,
+.lesson-reading-surface .markdown-body .code-block--wrapped,
 .lesson-reading-surface .markdown-body .table-wrapper,
 .lesson-reading-surface .markdown-body details {
   border-color: color-mix(in srgb, var(--border-card) 84%, transparent);
