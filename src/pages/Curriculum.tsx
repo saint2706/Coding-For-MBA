@@ -9,7 +9,7 @@
  * - Provide quick navigation to any lesson.
  */
 
-import { useRef } from 'react'
+import { useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
@@ -34,7 +34,6 @@ import ProgressBar from '../components/ProgressBar'
  *
  * @returns The rendered curriculum roadmap page
  */
-import { useMemo } from 'react'
 
 import { useProgressStore } from '../stores/progressStore'
 
