@@ -140,7 +140,7 @@ test.describe('accessibility and responsive layout', () => {
             const style = window.getComputedStyle(element)
             if (style.display === 'none' || style.visibility === 'hidden') return false
             if (element.closest('.sidebar') && !element.closest('.sidebar.open')) return false
-            if (element.closest('.table-wrapper, .code-block-wrapper, pre, code')) return false
+            if (element.closest('.table-wrapper')) return false
 
             const rect = element.getBoundingClientRect()
             return rect.right > viewport + 1 && rect.left < viewport + 1
@@ -157,6 +157,38 @@ test.describe('accessibility and responsive layout', () => {
         overflowOffenders,
         `${route.url} should not visibly overflow on a narrow viewport`,
       ).toEqual([])
+
+      if (route.url === '/#/lesson/1') {
+        const codeBlockOverflow = await page.evaluate(() => {
+          const viewport = window.innerWidth
+
+          return Array.from(document.querySelectorAll<HTMLElement>('.code-block-wrapper'))
+            .filter((element) => {
+              const rect = element.getBoundingClientRect()
+              return rect.width > viewport + 1 || rect.right > viewport + 1 || rect.left < -1
+            })
+            .map((element) => ({
+              tag: element.tagName.toLowerCase(),
+              className: typeof element.className === 'string' ? element.className : '',
+              text: (element.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 80),
+            }))
+            .slice(0, 10)
+        })
+
+        expect(
+          codeBlockOverflow,
+          'Lesson 1 code blocks should fit within the viewport width',
+        ).toEqual([])
+
+        const hasHorizontalPageScroll = await page.evaluate(
+          () => document.documentElement.scrollWidth > window.innerWidth + 1,
+        )
+
+        expect(
+          hasHorizontalPageScroll,
+          'Lesson 1 should not introduce horizontal page scrolling',
+        ).toBe(false)
+      }
     }
   })
 })
