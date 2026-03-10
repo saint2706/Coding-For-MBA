@@ -95,7 +95,6 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
             fontFamily: 'var(--font-mono)',
             whiteSpace: 'pre-wrap',
             overflowWrap: 'anywhere',
-            wordBreak: 'break-word',
           },
         }}
       >

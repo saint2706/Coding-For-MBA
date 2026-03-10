@@ -160,7 +160,6 @@
   overflow-x: visible;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  word-break: break-word;
 }
 
 .markdown-body pre code {
@@ -169,7 +168,6 @@
   line-height: 1.75 !important;
   white-space: inherit !important;
   overflow-wrap: inherit;
-  word-break: inherit;
 }
 
 /* Tables */
