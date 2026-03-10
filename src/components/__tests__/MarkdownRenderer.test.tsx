@@ -104,7 +104,7 @@ describe('MarkdownRenderer', () => {
     expect(syntaxHighlighter?.getAttribute('data-wrap-long-lines')).toBe('true')
     expect(syntaxHighlighter?.getAttribute('data-white-space')).toBe('pre-wrap')
     expect(syntaxHighlighter?.getAttribute('data-overflow-wrap')).toBe('anywhere')
-    expect(syntaxHighlighter?.getAttribute('data-overflow-x')).toBe('visible')
+    expect(syntaxHighlighter?.getAttribute('data-overflow-x')).toBe('hidden')
   })
 
   it('applies wrapping props for unbroken long tokens to avoid horizontal scrolling', () => {
@@ -120,7 +120,7 @@ describe('MarkdownRenderer', () => {
     expect(highlighterProps.wrapLongLines).toBe(true)
     expect(highlighterProps.codeTagProps?.style?.whiteSpace).toBe('pre-wrap')
     expect(highlighterProps.codeTagProps?.style?.overflowWrap).toBe('anywhere')
-    expect(highlighterProps.customStyle?.overflowX).toBe('visible')
+    expect(highlighterProps.customStyle?.overflowX).toBe('hidden')
   })
 
   it('renders "Try It" button for Python code blocks', () => {
