@@ -40,7 +40,7 @@
   justify-content: center;
   background: var(--gradient-logo);
   border-radius: var(--radius-sm);
-  color: white;
+  color: var(--text-on-brand);
   font-size: 18px;
 }
 
