@@ -160,6 +160,11 @@ function streakDaysForThreshold(
   return streak
 }
 
+/**
+ * Formats a duration in milliseconds to a human-readable string (e.g., "1h 30m" or "45m").
+ * @param {number} ms - The duration in milliseconds.
+ * @returns {string} The formatted duration string.
+ */
 export function formatDuration(ms: number): string {
   if (!Number.isFinite(ms) || ms <= 0) return '0m'
 

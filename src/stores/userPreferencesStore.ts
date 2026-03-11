@@ -158,6 +158,21 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
   ),
 )
 
+/**
+ * Selector for the palette preference.
+ * @param {UserPreferencesStore} state - The user preferences state.
+ * @returns {string} The selected palette.
+ */
 export const selectPalette = (state: UserPreferencesStore) => state.palette
+/**
+ * Selector for the sidebar default open preference.
+ * @param {UserPreferencesStore} state - The user preferences state.
+ * @returns {boolean} Whether the sidebar is default open.
+ */
 export const selectSidebarDefaultOpen = (state: UserPreferencesStore) => state.sidebarDefaultOpen
+/**
+ * Selector for the reading mode preference.
+ * @param {UserPreferencesStore} state - The user preferences state.
+ * @returns {boolean} Whether reading mode is enabled.
+ */
 export const selectReadingMode = (state: UserPreferencesStore) => state.readingMode

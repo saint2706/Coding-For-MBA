@@ -341,6 +341,10 @@ export const useGamificationStore = create<GamificationStore>()(
   ),
 )
 
+/**
+ * Hydrates the gamification store from persistent storage.
+ * @returns {void}
+ */
 export function hydrateGamificationStore(): void {
   useGamificationStore.getState().hydrate()
 }
