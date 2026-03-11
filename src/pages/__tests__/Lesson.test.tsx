@@ -65,7 +65,7 @@ vi.mock('../../utils/toast', () => ({
 }))
 
 vi.mock('../../components/SEOHead', () => ({ default: () => null }))
-vi.mock('../../components/MarkdownRenderer', () => ({ default: () => null }))
+vi.mock('../../components/MarkdownRenderer', () => ({ default: () => null, findInteractiveBlocks: () => [] }))
 vi.mock('../../components/Breadcrumb', () => ({ default: () => null }))
 vi.mock('../../components/BackToTop', () => ({ default: () => null }))
 vi.mock('../../components/TableOfContents', () => ({ default: () => null }))

@@ -68,3 +68,7 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 **Changes:**
 -   [x] **[PERF] LCP Optimization**: Extracted `fetchpriority` and `fetchPriority` in `ImageComponent` inside `src/components/MarkdownRenderer.tsx` and removed them from the remaining spread `props` to prevent `loading="lazy"` overrides.
 -   [x] **[GEO] Structured Data**: Reverted incorrect double escaping in `dangerouslySetInnerHTML` for JSON-LD schemas inside `src/components/SEOHead.tsx` to ensure `\u003c` evaluates properly in the JS context.
+
+## Changes Implemented - Mastery Check GEO
+- Added `FAQPage` schema to `src/utils/seoSchemas.ts`.
+- Integrated `FAQPage` schema into mastery checks to improve GEO discoverability of Q&As.

@@ -25,7 +25,7 @@ import SEOHead from '../components/SEOHead'
  * - Manage keyboard shortcuts (ArrowLeft/Right).
  */
 
-import { buildLessonSchema } from '../utils/seoSchemas'
+import { buildLessonSchema, buildFAQSchema } from '../utils/seoSchemas'
 import { dayTokenToProgressId, parseDayToken } from '../utils/dayToken'
 import {
   getLesson,
@@ -40,7 +40,7 @@ import {
   setLastVisited,
   getCompletedLessons,
 } from '../utils/progressTracker'
-import MarkdownRenderer from '../components/MarkdownRenderer'
+import MarkdownRenderer, { findInteractiveBlocks } from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import TableOfContents from '../components/TableOfContents'
@@ -235,6 +235,29 @@ export default function Lesson() {
   const lessonPath = `/lesson/${lesson.day}`
   const showSecondaryUi = !readingMode || nearBottom
 
+  // Aggregate Mastery Questions for FAQPage Schema
+  const interactiveBlocks = useMemo(() => findInteractiveBlocks(lesson.content), [lesson.content])
+  const masteryQuestions = interactiveBlocks
+    .filter((block) => block.type === 'mastery')
+    .map((block) => ({
+      question: (block.data as any).questionText,
+      answer: (block.data as any).answer,
+    }))
+
+  const jsonLdSchemas: Record<string, unknown>[] = [
+    buildLessonSchema(
+      lessonTitle,
+      lessonDescription,
+      lessonPath,
+      parseDayToken(lesson.day)?.number || 0,
+      lesson.phase,
+    ),
+  ]
+
+  if (masteryQuestions.length > 0) {
+    jsonLdSchemas.push(buildFAQSchema(masteryQuestions))
+  }
+
   return (
     <div
       className={`page-container lesson-with-toc lesson-reading-surface ${readingMode ? 'reading-mode' : ''}`}
@@ -245,15 +268,7 @@ export default function Lesson() {
         description={lessonDescription}
         path={lessonPath}
         ogType="article"
-        jsonLd={[
-          buildLessonSchema(
-            lessonTitle,
-            lessonDescription,
-            lessonPath,
-            parseDayToken(lesson.day)?.number || 0,
-            lesson.phase,
-          ),
-        ]}
+        jsonLd={jsonLdSchemas}
         breadcrumbs={[
           { name: 'Home', url: '/' },
           { name: `Phase ${lesson.phase}`, url: `/phase/${lesson.phase}` },
