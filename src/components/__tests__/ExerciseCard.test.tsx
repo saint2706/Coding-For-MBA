@@ -101,8 +101,7 @@ describe('ExerciseCard', () => {
   })
 
   it('handles missing goal gracefully', () => {
-    const noGoalExercise = { ...mockExercise, goal: undefined }
-    // @ts-ignore
+    const noGoalExercise = { ...mockExercise, goal: undefined as unknown as string }
     renderCard(noGoalExercise)
 
     expect(container?.textContent).not.toContain('Learn variables')

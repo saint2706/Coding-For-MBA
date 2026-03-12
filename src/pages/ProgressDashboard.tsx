@@ -20,11 +20,7 @@ import {
   phaseIcons,
   difficultyConfig,
 } from '../utils/contentLoader'
-import {
-  getCompletedLessons,
-  getStreakDays,
-  clearAllProgress,
-} from '../utils/progressTracker'
+import { getCompletedLessons, getStreakDays, clearAllProgress } from '../utils/progressTracker'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'

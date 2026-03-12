@@ -19,3 +19,8 @@
 - **Fixed:** Removed duplicate import of `fuse.js` in `src/utils/searchIndex.ts`.
 - **Fixed:** Removed duplicate import of `ReviewCard` in `src/pages/__tests__/Review.test.tsx`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 4
+- **Fixed:** Changed React DOM property `fetchpriority` to `fetchPriority` in `src/components/MarkdownRenderer.tsx` which was causing console warnings in tests.
+- **Fixed:** Removed leftover `// @ts-ignore` in `src/components/__tests__/ExerciseCard.test.tsx` and properly casted `undefined` to fix a type warning.
+- **Verified:** Build, lint, and tests pass.
