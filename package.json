@@ -29,7 +29,7 @@
     "typecheck:staged": "node -e \"require('child_process').spawnSync('npm',['run','typecheck'],{stdio:'inherit',shell:true})\""
   },
   "dependencies": {
-    "@dr.pogodin/react-helmet": "^3.1.0",
+    "@dr.pogodin/react-helmet": "^3.1.1",
     "canvas-confetti": "^1.9.3",
     "d3": "^7.9.0",
     "fuse.js": "^7.1.0",
