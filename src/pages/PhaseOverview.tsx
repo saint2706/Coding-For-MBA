@@ -11,6 +11,7 @@
 
 import { useParams, Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
+import { useMemo } from 'react'
 import SEOHead from '../components/SEOHead'
 import {
   getPhase,
@@ -19,10 +20,11 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import { isLessonComplete, getCompletedForPhase } from '../utils/progressTracker'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import ProgressBar from '../components/ProgressBar'
+import { useProgressStore } from '../stores/progressStore'
+import { dayTokenToProgressId } from '../utils/dayToken'
 
 /**
  * Phase overview page component.
@@ -42,6 +44,9 @@ export default function PhaseOverview() {
   const lessons = getLessonsByPhase(phaseNum!)
   const prefersReducedMotion = useReducedMotion()
 
+  const completedLessons = useProgressStore((state) => state.completedLessons)
+  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+
   if (!phase) {
     return (
       <div className="page-container">
@@ -60,9 +65,11 @@ export default function PhaseOverview() {
   const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
   const icon = phaseIcons[phase.phase - 1] || '📖'
   const hours = Math.round((phase.totalDuration || 0) / 60)
-  const lessonDays = lessons.map((l) => l.day)
-  const completedInPhase = getCompletedForPhase(lessonDays)
   const notebook = getNotebook(phaseNum!)
+
+  const completedInPhaseCount = useMemo(() => {
+    return lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day))).length
+  }, [lessons, completedSet])
 
   const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
   const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 108-day Coding for MBA curriculum.`
@@ -112,7 +119,7 @@ export default function PhaseOverview() {
           </div>
         </div>
         <div style={{ marginTop: '1rem' }}>
-          <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+          <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
         </div>
       </div>
 
@@ -140,7 +147,7 @@ export default function PhaseOverview() {
                 <h4>{lesson.title}</h4>
                 {lesson.duration && <span>⏱ {lesson.duration} min</span>}
               </div>
-              {isLessonComplete(lesson.day) && (
+              {completedSet.has(dayTokenToProgressId(lesson.day)) && (
                 <span className="day-link-check" aria-label="Completed">
                   ✓
                 </span>
