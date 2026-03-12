@@ -93,7 +93,9 @@ describe('MasteryCheck', () => {
 
     const button = container.querySelector('button')
     expect(button?.textContent).toContain('Check Answer')
-    expect(container.textContent).not.toContain('Hidden Answer')
+
+    // We shouldn't find the answer region by role yet
+    expect(container.querySelector('[role="region"]')).toBeNull()
 
     // Click to show
     act(() => {

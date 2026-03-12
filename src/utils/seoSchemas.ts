@@ -124,6 +124,53 @@ export function buildCourseSchema(): Record<string, unknown> {
 }
 
 /**
+ * Build an FAQPage JSON-LD schema for Q&A sections (like Mastery Checks).
+ */
+export function buildFAQSchema(
+  questions: { question: string; answer: string }[],
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: questions.map((q) => ({
+      '@type': 'Question',
+      name: q.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: q.answer,
+      },
+    })),
+  }
+}
+
+/**
+ * Build a Product JSON-LD schema.
+ */
+export function buildProductSchema(
+  name: string,
+  description: string,
+  image?: string,
+): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name,
+    description,
+    image: image || `${SITE_URL}/og-image.png`,
+    brand: {
+      '@type': 'Brand',
+      name: SITE_NAME,
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0.00',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+    },
+  }
+}
+
+/**
  * Build an Article/LearningResource JSON-LD schema for a lesson page.
  */
 export function buildLessonSchema(

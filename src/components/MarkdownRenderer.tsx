@@ -701,4 +701,5 @@ function MarkdownRenderer({ content }: MarkdownRendererProps) {
   )
 }
 
+export { findInteractiveBlocks, type ParsedMasteryQuestion, type ParsedExercise }
 export default memo(MarkdownRenderer)
