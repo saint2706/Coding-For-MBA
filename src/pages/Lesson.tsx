@@ -156,6 +156,8 @@ export default function Lesson() {
       }
 
       const afterCompleted = getCompletedLessons()
+      // ⚡ Bolt: Convert array to Set for O(1) lookups during phase completion check, eliminating O(N*M) bottleneck
+      const afterCompletedSet = new Set(afterCompleted)
       const wasPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
             beforeCompleted.has(dayTokenToProgressId(entry.day)),
@@ -163,7 +165,7 @@ export default function Lesson() {
         : false
       const isPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
-            afterCompleted.includes(dayTokenToProgressId(entry.day)),
+            afterCompletedSet.has(dayTokenToProgressId(entry.day)),
           )
         : false
 
