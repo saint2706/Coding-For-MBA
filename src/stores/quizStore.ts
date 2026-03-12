@@ -192,6 +192,10 @@ export const useQuizStore = create<QuizStore>()(
   ),
 )
 
+/**
+ * Hydrates the quiz store from persistent storage.
+ * @returns {void}
+ */
 export function hydrateQuizStore(): void {
   useQuizStore.getState().hydrate()
 }
