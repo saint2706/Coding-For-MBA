@@ -61,3 +61,11 @@
 **Prevention:**
 - Added `__traceback__`, `tb_frame`, `f_globals`, `f_back`, `f_builtins`, and `f_code` to the `globalKeywords` strict deny list in `validatePythonCode`. This effectively blocks exception-based traceback traversal and prevents retrieving frame locals/globals to execute arbitrary code.
 - Fixed XSS vulnerability in JSON-LD structured data generation. When using `dangerouslySetInnerHTML` to inject JSON inside a `<script>` tag, replacing `<` with `\u003c` prevents arbitrary execution of script tags. Crucially, exactly two backslashes (`'\\u003c'`) must be used in the JS string so it is rendered correctly as `\u003c`. Using four backslashes (`'\\\\u003c'`) evaluates to the string `\\u003c` rather than escaping the `<` character properly.
+
+## 2025-06-25 - Core Infrastructure Security Audit
+**Vulnerability:** No new vulnerabilities found. A comprehensive audit of `SEOHead.tsx`, `codeSecurity.ts`, `MarkdownRenderer.tsx`, and `index.html` was conducted to ensure they meet strict security standards.
+**Learning:** React's `dangerouslySetInnerHTML` combined with proper JSON-LD escaping (`replace(/</g, '\\u003c')`), Pyodide string/comment stripping combined with Dunder Method blacklisting (`__class__`, `__subclasses__`), and strict Content Security Policy (`script-src 'self' 'unsafe-eval'`) together provide a defense-in-depth architecture.
+**Prevention:**
+- Confirmed that Pyodide string literal validation accurately protects execution contexts without breaking Python f-string logic.
+- Confirmed `rehype-sanitize` prevents XSS within raw HTML embedded in Markdown.
+- Validated `Content-Security-Policy` successfully restricts external connections to trusted CDNs and APIs (`connect-src`), mitigating client-side SSRF.
