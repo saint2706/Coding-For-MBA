@@ -2,6 +2,28 @@ import { describe, it, expect } from 'vitest'
 import { getSecureLinkAttributes, normalizeAndValidateHref } from '../linkSafety'
 
 describe('getSecureLinkAttributes', () => {
+  it('should preserve external links that are mailto:', () => {
+    // mailto: is considered safe but isExternal might evaluate to false since it's not http/https
+    // wait, url.protocol === 'mailto:' means isExternal = false
+    const result = getSecureLinkAttributes('mailto:test@example.com')
+    expect(result).toEqual({
+      href: 'mailto:test@example.com',
+      target: undefined,
+      rel: undefined,
+    })
+  })
+
+  it('should return null if href is null or not a string', () => {
+    expect(getSecureLinkAttributes(null)).toBeNull()
+    // @ts-expect-error
+    expect(getSecureLinkAttributes(123)).toBeNull()
+  })
+
+  it('should return null if href is an empty string', () => {
+    expect(getSecureLinkAttributes('')).toBeNull()
+    expect(getSecureLinkAttributes('   ')).toBeNull()
+  })
+
   it('should handle safe external links', () => {
     const result = getSecureLinkAttributes('https://example.com')
     expect(result).toEqual({
@@ -69,9 +91,64 @@ describe('getSecureLinkAttributes', () => {
     const result = getSecureLinkAttributes('https://example.com', { rel: 'noopener' })
     expect(result?.rel).toBe('noopener noreferrer')
   })
+
+  it('should not duplicate noreferrer if it already exists', () => {
+    const result = getSecureLinkAttributes('https://example.com', { rel: 'noreferrer' })
+    expect(result?.rel).toBe('noreferrer noopener')
+  })
 })
 
 describe('normalizeAndValidateHref', () => {
+  it('rejects unparseable URLs with valid scheme', () => {
+    // A string starting with a scheme but throwing in new URL()
+    // It's hard to make new URL() throw if it has a valid scheme.
+    // e.g. "http://[::1]" might throw if IPv6 is malformed.
+    expect(normalizeAndValidateHref('http://[1:2:3:4:5:6:7:8:9]')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
+  it('rejects protocol-relative URLs (starting with //)', () => {
+    expect(normalizeAndValidateHref('//example.com')).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
+  it('allows relative path starting with ./', () => {
+    expect(normalizeAndValidateHref('./relative/path')).toEqual({
+      normalizedHref: './relative/path',
+      isExternal: false,
+      isSafe: true,
+    })
+  })
+
+  it('allows relative path starting with ../', () => {
+    expect(normalizeAndValidateHref('../relative/path')).toEqual({
+      normalizedHref: '../relative/path',
+      isExternal: false,
+      isSafe: true,
+    })
+  })
+
+  it('rejects non-string inputs', () => {
+    expect(normalizeAndValidateHref(null)).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+
+    // @ts-expect-error testing invalid input
+    expect(normalizeAndValidateHref(123)).toEqual({
+      normalizedHref: null,
+      isExternal: false,
+      isSafe: false,
+    })
+  })
+
   it('rejects javascript URLs', () => {
     expect(normalizeAndValidateHref('javascript:alert(1)')).toEqual({
       normalizedHref: null,
