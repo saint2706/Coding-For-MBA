@@ -72,3 +72,11 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 ## Changes Implemented - Mastery Check GEO
 - Added `FAQPage` schema to `src/utils/seoSchemas.ts`.
 - Integrated `FAQPage` schema into mastery checks to improve GEO discoverability of Q&As.
+
+### [Date: Current] - Static Route Descriptions for AI Manifest
+
+**Priority Areas:**
+1.  **GEO (Intelligence)**: Updating `llms.txt` descriptions for static pages to improve AI contextual understanding.
+
+**Changes:**
+-   [x] **[GEO] Site Architecture**: Updated `scripts/generate-llms-txt.js` to provide explicit AI-readable descriptions for static pages (e.g. Home, Curriculum, Exercises) in the generated `public/llms.txt`.
