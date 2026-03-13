@@ -1,5 +1,11 @@
 # Docs Progress Log
 
+- **[2026-03-13] Markdown Links & Link Checker configuration**
+  - Replaced broken dummy email links `mailto:company.com` and `mailto:a@a.com` with `example.com` standards.
+  - Replaced broken external Markdown links with working URLs (e.g. `https://hightouch.com/blog/reverse-etl`).
+  - Created an `mlc_config.json` configuration file to ignore websites that return false positives (403 or 0 codes) from anti-bot mechanisms.
+  - Successfully passed `markdown-link-check` script, `npm run lint`, and tests.
+
 - **[2026-03-XX] JSDoc Improvements in Utilities**
   - Added missing typed JSDoc comments to `src/utils/safeStorage.ts`
   - Added missing typed JSDoc comments to `src/utils/prefetchRoutes.ts`

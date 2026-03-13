@@ -105,9 +105,9 @@ Stop checking data manually. Write tests.
 
 | ID   | Name  | Email   | State    |
 | :--- | :---- | :------ | :------- |
-| 1    | Alice | <a@a.com> | NY       |
+| 1    | Alice | <a@example.com> | NY       |
 | 2    | Bob   |         | New York |
-| 1    | Alice | <a@a.com> | NY       |
+| 1    | Alice | <a@example.com> | NY       |
 
 **Audit**:
 

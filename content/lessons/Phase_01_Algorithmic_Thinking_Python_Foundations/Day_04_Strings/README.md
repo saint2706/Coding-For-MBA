@@ -34,7 +34,7 @@ outcomes:
 **Think about the data you handle every day:**
 
 - Customer names: "Sarah Chen"
-- Email addresses: "<sarah@company.com>"
+- Email addresses: "<sarah@example.com>"
 - Product descriptions: "Premium wireless headphones with 24-hour battery"
 - Status updates: "Order shipped - ETA 3 days"
 
@@ -197,9 +197,9 @@ When simple methods aren't enough:
 ```python
 import re
 
-text = "Contact us at support@company.com or sales@company.com"
+text = "Contact us at support@example.com or sales@example.com"
 emails = re.findall(r"\b[\w.-]+@[\w.-]+\.\w+\b", text)
-print(emails)  # ['support@company.com', 'sales@company.com']
+print(emails)  # ['support@example.com', 'sales@example.com']
 ```
 
 ### Unicode and Encoding (Real-World Headaches)
@@ -247,10 +247,10 @@ first_clean = first_name.lower().strip()
 last_clean = last_name.lower().replace("'", "").strip()
 
 # Generate email
-email = f"{first_clean}.{last_clean}@company.com"
+email = f"{first_clean}.{last_clean}@example.com"
 display = f"{first_name} {last_name} ({department})"
 
-print("Email:", email)  # sarah.oconnor@company.com
+print("Email:", email)  # sarah.oconnor@example.com
 print("Display:", display)  # Sarah O'Connor (Marketing)
 ```
 
