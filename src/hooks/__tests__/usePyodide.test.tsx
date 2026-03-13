@@ -94,7 +94,7 @@ describe('usePyodide', () => {
   })
 
   it('runs python code successfully and captures output', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let hookResult: any
 
     function TestComponent() {
@@ -108,7 +108,7 @@ describe('usePyodide', () => {
       }
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let result: any
     await act(async () => {
       result = await hookResult.runPython('print_hello')
@@ -119,7 +119,7 @@ describe('usePyodide', () => {
   })
 
   it('handles python errors gracefully', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let hookResult: any
 
     function TestComponent() {
@@ -133,7 +133,7 @@ describe('usePyodide', () => {
       }
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let result: any
     await act(async () => {
       result = await hookResult.runPython('raise_error')
@@ -144,7 +144,7 @@ describe('usePyodide', () => {
   })
 
   it('truncates output when it exceeds the limit', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let hookResult: any
 
     function TestComponent() {
@@ -159,7 +159,7 @@ describe('usePyodide', () => {
     })
 
     // Trigger runPython
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let result: any
     await act(async () => {
       result = await hookResult.runPython('print_large')
@@ -174,7 +174,7 @@ describe('usePyodide', () => {
   })
 
   it('returns the return value if no stdout', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let hookResult: any
 
     function TestComponent() {
@@ -188,7 +188,7 @@ describe('usePyodide', () => {
       }
     })
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let result: any
     await act(async () => {
       result = await hookResult.runPython('return_value')
@@ -198,7 +198,7 @@ describe('usePyodide', () => {
   })
 
   it('handles timeout', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let hookResult: any
 
     function TestComponent() {
@@ -235,7 +235,7 @@ describe('usePyodide', () => {
       )
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let result: any
     await act(async () => {
       // Small timeout
@@ -262,7 +262,7 @@ describe('usePyodide', () => {
   })
 
   it('handles abort signal', async () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let hookResult: any
 
     function TestComponent() {
@@ -292,7 +292,7 @@ describe('usePyodide', () => {
 
     const controller = new AbortController()
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     let resultPromise: Promise<any>
 
     // Start execution

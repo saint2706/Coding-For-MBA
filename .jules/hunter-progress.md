@@ -24,3 +24,10 @@
 - **Fixed:** Changed React DOM property `fetchpriority` to `fetchPriority` in `src/components/MarkdownRenderer.tsx` which was causing console warnings in tests.
 - **Fixed:** Removed leftover `// @ts-ignore` in `src/components/__tests__/ExerciseCard.test.tsx` and properly casted `undefined` to fix a type warning.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 5
+- **Fixed:** Removed leftover `// @ts-ignore` and updated typecasts in `src/utils/__tests__/confetti.test.ts`.
+- **Fixed:** Removed leftover `// @ts-ignore` in `src/utils/__tests__/contentSchemas.test.ts`.
+- **Fixed:** Removed leftover `eslint-disable-next-line @typescript-eslint/no-explicit-any` from `src/components/__tests__/ExerciseWidget.test.tsx` and `src/hooks/__tests__/usePyodide.test.tsx`.
+- **Fixed:** Removed leftover `// eslint-disable-next-line no-control-regex` from `src/pages/NotebookViewer.tsx`.
+- **Verified:** Build, lint, and tests pass.

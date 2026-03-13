@@ -79,7 +79,6 @@ function mergeCells(cells: readonly NotebookCell[]): MergedBlock[] {
 
 // --- Output rendering ---
 
-// eslint-disable-next-line no-control-regex
 const ANSI_REGEX = /\u001b\[[0-9;]*m/g
 
 /**

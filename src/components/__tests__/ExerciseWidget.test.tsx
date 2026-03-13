@@ -19,12 +19,12 @@ vi.mock('react-syntax-highlighter/dist/esm/styles/prism', () => ({
 }))
 
 // Mock CodePlayground to capture props
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 let capturedCodePlaygroundProps: any
 const mockSetCode = vi.fn()
 
 vi.mock('../CodePlayground', () => ({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   default: React.forwardRef((props: any, ref: any) => {
     capturedCodePlaygroundProps = props
     React.useImperativeHandle(ref, () => ({
@@ -66,7 +66,7 @@ const mockGetRecentAttempts = vi.fn().mockReturnValue([])
 vi.mock('../../stores/quizStore', () => ({
   useQuizStore: Object.assign(
     // Hook implementation
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     (selector: any) => {
       // Mock state for selector
       const state = {
