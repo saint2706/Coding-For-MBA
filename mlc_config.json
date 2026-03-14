@@ -1,0 +1,20 @@
+{
+  "ignorePatterns": [
+    {"pattern": "^https://leetcode\\.com/"},
+    {"pattern": "^https://pandas\\.pydata\\.org/"},
+    {"pattern": "^https://platform\\.openai\\.com/"},
+    {"pattern": "^https://chat\\.lmsys\\.org/"},
+    {"pattern": "^https://aif360\\.mybluemix\\.net/"},
+    {"pattern": "^http://quotes\\.toscrape\\.com/"},
+    {"pattern": "^https://developer\\.mozilla\\.org/"},
+    {"pattern": "^https://a16z\\.com/"},
+    {"pattern": "^https://www\\.nngroup\\.com/"},
+    {"pattern": "^https://austinhenley\\.com/"},
+    {"pattern": "^https://realpython\\.com/"},
+    {"pattern": "^https://azure\\.microsoft\\.com/"},
+    {"pattern": "^https://python\\.useinstructor\\.com/"},
+    {"pattern": "^https://restfulapi\\.net/"},
+    {"pattern": "^https://www\\.dataengineeringweekly\\.com/"},
+    {"pattern": "^https://jsonplaceholder\\.typicode\\.com/"}
+  ]
+}

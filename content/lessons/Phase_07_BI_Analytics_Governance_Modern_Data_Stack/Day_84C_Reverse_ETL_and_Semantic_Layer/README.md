@@ -353,7 +353,7 @@ It hides SQL complexity behind queryable abstractions. A business user can ask "
 
 - 📖 [dbt Semantic Layer Docs](https://docs.getdbt.com/docs/use-dbt-semantic-layer/dbt-semantic-layer)
 - 📖 [Cube.js Introduction](https://cube.dev/docs/product/introduction)
-- 📖 [Hightouch: What is Reverse ETL](https://hightouch.com/blog/what-is-reverse-etl)
+- 📖 [Hightouch: What is Reverse ETL](https://hightouch.com/blog/reverse-etl)
 - 🏢 **Airbnb Engineering**: "Minerva: The Serving Layer of Airbnb's Data Platform"
 - 🔧 [Census Docs](https://docs.getcensus.com/)
 
