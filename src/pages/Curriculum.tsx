@@ -139,7 +139,7 @@ export default function Curriculum() {
       {/* Curriculum stat cards */}
       <div className="curriculum-stats-row">
         <div className="curriculum-stat-card glass-card">
-          <span className="curriculum-stat-icon">📅</span>
+          <span className="curriculum-stat-icon" aria-hidden="true">📅</span>
           <div>
             <p className="curriculum-stat-value">{totalLessons}</p>
             <p className="curriculum-stat-label">Total Days</p>
@@ -150,7 +150,7 @@ export default function Curriculum() {
           <p className="curriculum-stat-note">{overallPct}% Completed</p>
         </div>
         <div className="curriculum-stat-card glass-card">
-          <span className="curriculum-stat-icon">📚</span>
+          <span className="curriculum-stat-icon" aria-hidden="true">📚</span>
           <div>
             <p className="curriculum-stat-value">{phases.length}</p>
             <p className="curriculum-stat-label">Phases</p>
@@ -168,7 +168,7 @@ export default function Curriculum() {
           </p>
         </div>
         <div className="curriculum-stat-card glass-card">
-          <span className="curriculum-stat-icon">⏱️</span>
+          <span className="curriculum-stat-icon" aria-hidden="true">⏱️</span>
           <div>
             <p className="curriculum-stat-value">{completedCount}</p>
             <p className="curriculum-stat-label">Lessons Done</p>

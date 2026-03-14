@@ -148,26 +148,26 @@ export default function ProgressDashboard() {
       {/* Mobile glassmorphism stat cards grid */}
       <div className="progress-mobile-stats-grid">
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">📊</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">📊</span>
           <p className="progress-mobile-stat-value">
             <AnimatedCounter value={overallPct} suffix="%" />
           </p>
           <p className="progress-mobile-stat-label">Completed</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">🔥</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">🔥</span>
           <p className="progress-mobile-stat-value">
             <AnimatedCounter value={completionStreak} />
           </p>
           <p className="progress-mobile-stat-label">Day Streak</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">⏱️</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">⏱️</span>
           <p className="progress-mobile-stat-value">{formatDuration(totalLearningMs)}</p>
           <p className="progress-mobile-stat-label">Study Time</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">⭐</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">⭐</span>
           <p className="progress-mobile-stat-value">{xpTotal}</p>
           <p className="progress-mobile-stat-label">Total XP</p>
         </div>
