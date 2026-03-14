@@ -40,7 +40,7 @@ import {
   setLastVisited,
   getCompletedLessons,
 } from '../utils/progressTracker'
-import MarkdownRenderer, { findInteractiveBlocks } from '../components/MarkdownRenderer'
+import MarkdownRenderer, { findInteractiveBlocks, type ParsedMasteryQuestion } from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import TableOfContents from '../components/TableOfContents'
@@ -241,10 +241,13 @@ export default function Lesson() {
   const interactiveBlocks = useMemo(() => findInteractiveBlocks(lesson.content), [lesson.content])
   const masteryQuestions = interactiveBlocks
     .filter((block) => block.type === 'mastery')
-    .map((block) => ({
-      question: (block.data as any).questionText,
-      answer: (block.data as any).answer,
-    }))
+    .map((block) => {
+      const data = block.data as ParsedMasteryQuestion
+      return {
+        question: data.questionText,
+        answer: data.answer,
+      }
+    })
 
   const jsonLdSchemas: Record<string, unknown>[] = [
     buildLessonSchema(

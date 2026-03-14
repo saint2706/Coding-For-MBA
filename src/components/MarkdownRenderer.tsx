@@ -137,7 +137,7 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
 const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
   // Respect fetchpriority for LCP (Hero) optimization
   // If fetchpriority="high", we should not lazy load.
-  const { fetchpriority, fetchPriority, loading: _loading, ...rest } = props as any
+  const { fetchpriority, fetchPriority, loading: _loading, ...rest } = props as JSX.IntrinsicElements['img'] & { fetchpriority?: 'high' | 'low' | 'auto'; fetchPriority?: 'high' | 'low' | 'auto' }
 
   const isHighPriority = fetchpriority === 'high' || fetchPriority === 'high'
 
