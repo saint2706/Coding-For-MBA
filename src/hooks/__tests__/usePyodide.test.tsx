@@ -94,7 +94,6 @@ describe('usePyodide', () => {
   })
 
   it('runs python code successfully and captures output', async () => {
-
     let hookResult: any
 
     function TestComponent() {
@@ -107,7 +106,6 @@ describe('usePyodide', () => {
         root.render(<TestComponent />)
       }
     })
-
 
     let result: any
     await act(async () => {
@@ -119,7 +117,6 @@ describe('usePyodide', () => {
   })
 
   it('handles python errors gracefully', async () => {
-
     let hookResult: any
 
     function TestComponent() {
@@ -133,7 +130,6 @@ describe('usePyodide', () => {
       }
     })
 
-
     let result: any
     await act(async () => {
       result = await hookResult.runPython('raise_error')
@@ -144,7 +140,6 @@ describe('usePyodide', () => {
   })
 
   it('truncates output when it exceeds the limit', async () => {
-
     let hookResult: any
 
     function TestComponent() {
@@ -174,7 +169,6 @@ describe('usePyodide', () => {
   })
 
   it('returns the return value if no stdout', async () => {
-
     let hookResult: any
 
     function TestComponent() {
@@ -188,7 +182,6 @@ describe('usePyodide', () => {
       }
     })
 
-
     let result: any
     await act(async () => {
       result = await hookResult.runPython('return_value')
@@ -198,7 +191,6 @@ describe('usePyodide', () => {
   })
 
   it('handles timeout', async () => {
-
     let hookResult: any
 
     function TestComponent() {
@@ -235,7 +227,6 @@ describe('usePyodide', () => {
       )
     }
 
-
     let result: any
     await act(async () => {
       // Small timeout
@@ -262,7 +253,6 @@ describe('usePyodide', () => {
   })
 
   it('handles abort signal', async () => {
-
     let hookResult: any
 
     function TestComponent() {
@@ -291,7 +281,6 @@ describe('usePyodide', () => {
     }
 
     const controller = new AbortController()
-
 
     let resultPromise: Promise<any>
 

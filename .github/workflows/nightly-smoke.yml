@@ -23,6 +23,7 @@ permissions:
 jobs:
   validate-content:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -35,6 +36,7 @@ jobs:
 
   typecheck:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -42,11 +44,15 @@ jobs:
       - name: Bootstrap Node workspace
         uses: ./.github/actions/node-bootstrap
 
+      - name: Check formatting
+        run: npm run format:check
+
       - name: Typecheck
         run: npm run typecheck
 
   unit-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -60,6 +66,7 @@ jobs:
   smoke:
     needs: [validate-content, typecheck, unit-test]
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Check out repository
