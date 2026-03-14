@@ -131,7 +131,7 @@ export default function ProgressDashboard() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Progress' }]} />
 
       <div className="section-header" style={{ marginBottom: '2rem' }}>
-        <h2>Your Progress</h2>
+        <h1>Your Progress</h1>
         <p>Track your journey through the {totalLessons}-day curriculum.</p>
       </div>
 

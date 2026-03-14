@@ -129,7 +129,7 @@ export default function Curriculum() {
       />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Curriculum' }]} />
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-        <h2>Full Curriculum Roadmap</h2>
+        <h1>Full Curriculum Roadmap</h1>
         <p>
           {totalLessons} days of structured learning across {phases.length} phases — from Python
           foundations to enterprise SQL.
