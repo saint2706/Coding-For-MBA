@@ -92,7 +92,13 @@ export default function ProgressDashboard() {
   const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
   const xpToNextMilestone = useGamificationStore((state) => state.xpToNextMilestone)
   const milestoneProgress = xpToNextMilestone()
-  const earnedBadges = ACHIEVEMENTS.filter((badge) => achievementsUnlocked.includes(badge.id))
+
+  // ⚡ Bolt: Convert achievementsUnlocked to a Set to optimize O(N*M) lookups to O(N + M) during render.
+  const earnedBadges = useMemo(() => {
+    const unlockedSet = new Set(achievementsUnlocked)
+    return ACHIEVEMENTS.filter((badge) => unlockedSet.has(badge.id))
+  }, [achievementsUnlocked])
+
   const challengeLesson = getLesson(dailyChallenge.day)
 
   useEffect(() => {
