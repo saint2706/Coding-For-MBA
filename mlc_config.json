@@ -15,6 +15,9 @@
     {"pattern": "^https://python\\.useinstructor\\.com/"},
     {"pattern": "^https://restfulapi\\.net/"},
     {"pattern": "^https://www\\.dataengineeringweekly\\.com/"},
-    {"pattern": "^https://jsonplaceholder\\.typicode\\.com/"}
+    {"pattern": "^https://jsonplaceholder\\.typicode\\.com/"},
+    {"pattern": "^https://feature-engine\\.readthedocs\\.io/"},
+    {"pattern": "^https://joblib\\.readthedocs\\.io/"},
+    {"pattern": "^https://reddit\\.com/r/localllama"}
   ]
 }
