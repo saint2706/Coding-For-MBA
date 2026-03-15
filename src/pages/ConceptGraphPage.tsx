@@ -119,6 +119,7 @@ export default function ConceptGraphPage() {
               style={activePhase === i + 1 ? { background: 'rgba(255,255,255,0.1)' } : undefined}
               aria-pressed={activePhase === i + 1}
               title={`Phase ${i + 1}: ${name}`}
+              aria-label={`Filter by Phase ${i + 1}: ${name}`}
             >
               <span className="legend-dot" style={{ background: PHASE_COLORS[i] }} />P{i + 1}
             </button>
