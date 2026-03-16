@@ -81,10 +81,7 @@ export default function Home() {
     : 0
   const completedCount = getCompletedCount()
   const streakDays = useMemo(() => getStreakDays(), [completedCount])
-  const totalLessons = useMemo(
-    () => phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0),
-    [phases],
-  )
+  const totalLessons = useMemo(() => getAllLessons().length, [])
   const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, prefersReducedMotion ? 0 : -50])

@@ -17,6 +17,7 @@ import {
   getAllPhases,
   getLessonsByPhase,
   getLesson,
+  getAllLessons,
   phaseIcons,
   difficultyConfig,
 } from '../utils/contentLoader'
@@ -50,10 +51,7 @@ export default function ProgressDashboard() {
   const completedLessons = getCompletedLessons()
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
-  const totalLessons = useMemo(
-    () => phases.reduce((sum, p) => sum + getLessonsByPhase(p.phase).length, 0),
-    [phases],
-  )
+  const totalLessons = useMemo(() => getAllLessons().length, [])
   const overallPct =
     totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0
 

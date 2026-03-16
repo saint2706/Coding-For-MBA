@@ -41,6 +41,7 @@ vi.mock('../../utils/contentLoader', () => ({
   getAdjacentLessons: () => ({ prev: null, next: null }),
   getAllPhases: () => [{ phase: 1 }, { phase: 2 }],
   getLessonsByPhase: (phase: number) => (phase === 1 ? [{ day: '1B' }] : [{ day: '2' }]),
+  getAllLessons: () => [{ day: '1B' }, { day: '2' }],
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
   },

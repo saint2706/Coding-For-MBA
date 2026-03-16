@@ -9,7 +9,7 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { getLessonsByPhase, phaseIcons, type Phase } from '../utils/contentLoader'
+import { getLessonsByPhase, getLesson, phaseIcons, type Phase } from '../utils/contentLoader'
 import { dayTokenToProgressId } from '../utils/dayToken'
 
 interface SidebarPhaseGroupProps {
@@ -149,10 +149,17 @@ function propsAreEqual(
 
   // Only re-render if currentPath changes to/from a lesson in THIS phase
   // Optimization: check if either the old path or the new path is relevant to this phase
-  const isRelevantPath = (path: string) =>
-    path === `/phase/${nextProps.phase.phase}` ||
-    (path.startsWith('/lesson/') &&
-      getLessonsByPhase(nextProps.phase.phase).some((l) => path === `/lesson/${l.day}`))
+  const isRelevantPath = (path: string) => {
+    if (path === `/phase/${nextProps.phase.phase}`) return true
+    if (path.startsWith('/lesson/')) {
+      const match = path.match(/\/lesson\/(.+)/)
+      if (match && match[1]) {
+        const lesson = getLesson(match[1])
+        return lesson?.phase === nextProps.phase.phase
+      }
+    }
+    return false
+  }
 
   if (prevProps.currentPath !== nextProps.currentPath) {
     if (isRelevantPath(prevProps.currentPath) || isRelevantPath(nextProps.currentPath)) {
