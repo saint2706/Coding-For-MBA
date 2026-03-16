@@ -40,13 +40,13 @@ describe('prefetchRoutes', () => {
       // Act
       expect(() => prefetchRoute('/does-not-exist')).not.toThrow()
       // Give a little time for any promises to settle
-      await new Promise(r => setTimeout(r, 0))
+      await new Promise((r) => setTimeout(r, 0))
     })
 
     it('should prefetch a valid home route ("/")', async () => {
       // Act
       prefetchRoute('/')
-      await new Promise(r => setTimeout(r, 0))
+      await new Promise((r) => setTimeout(r, 0))
       // Can't easily assert the dynamic import was called without intercepting it at the module bundler level,
       // but we can ensure it doesn't throw.
       expect(true).toBe(true)
@@ -55,7 +55,7 @@ describe('prefetchRoutes', () => {
     it('should not throw when prefetching the same route multiple times', async () => {
       prefetchRoute('/curriculum')
       prefetchRoute('/curriculum')
-      await new Promise(r => setTimeout(r, 0))
+      await new Promise((r) => setTimeout(r, 0))
       expect(true).toBe(true)
     })
 
@@ -63,7 +63,7 @@ describe('prefetchRoutes', () => {
       prefetchRoute('/phase/1')
       prefetchRoute('/lesson/2')
       prefetchRoute('/solutions/3')
-      await new Promise(r => setTimeout(r, 0))
+      await new Promise((r) => setTimeout(r, 0))
       expect(true).toBe(true)
     })
 
@@ -74,7 +74,7 @@ describe('prefetchRoutes', () => {
       prefetchRoute('/concepts')
       prefetchRoute('/stats')
       prefetchRoute('/review')
-      await new Promise(r => setTimeout(r, 0))
+      await new Promise((r) => setTimeout(r, 0))
       expect(true).toBe(true)
     })
   })

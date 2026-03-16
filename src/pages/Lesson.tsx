@@ -41,7 +41,10 @@ import {
   setLastVisited,
   getCompletedLessons,
 } from '../utils/progressTracker'
-import MarkdownRenderer, { findInteractiveBlocks, type ParsedMasteryQuestion } from '../components/MarkdownRenderer'
+import MarkdownRenderer, {
+  findInteractiveBlocks,
+  type ParsedMasteryQuestion,
+} from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import TableOfContents from '../components/TableOfContents'
