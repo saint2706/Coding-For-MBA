@@ -116,7 +116,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
           {reviewStreak > 0 && (
             <span className="sidebar-streak-badge" title={`${reviewStreak}-day review streak`}>
-              🔥 {reviewStreak}
+              <span aria-hidden="true">🔥</span> {reviewStreak}
             </span>
           )}
           <button

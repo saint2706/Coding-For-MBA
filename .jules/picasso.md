@@ -16,3 +16,8 @@
 ## Verification
 * Verified changes via visual UI tests (Playwright) and unit tests (`npm run test`).
 * Ensured no linting or build regressions were introduced.
+
+### Decorative Emojis Accessibility
+* **Observation**: Found many places (CopyButton, Sidebar streak, ProgressDashboard stats, Curriculum stats) where emojis were placed next to text strings or inside descriptive wrappers but not explicitly hidden from screen readers.
+* **Fix**: Wrapped these emojis in `<span aria-hidden="true">` to prevent screen readers from redundantly calling out "Chart showing upward trend" when the label says "Completed".
+* **Rule**: When an emoji is purely decorative and its meaning is already conveyed via text or an `aria-label`, always hide it using `aria-hidden="true"`.
