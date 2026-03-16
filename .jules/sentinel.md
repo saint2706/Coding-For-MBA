@@ -69,3 +69,7 @@
 - Confirmed that Pyodide string literal validation accurately protects execution contexts without breaking Python f-string logic.
 - Confirmed `rehype-sanitize` prevents XSS within raw HTML embedded in Markdown.
 - Validated `Content-Security-Policy` successfully restricts external connections to trusted CDNs and APIs (`connect-src`), mitigating client-side SSRF.
+
+## 2026-03-15 - CSP Hardening for Iframes
+**Vulnerability:** The application was not explicitly restricting the use of iframes, potentially allowing malicious content to be embedded or Clickjacking vectors if external content is embedded.
+**Prevention:** Hardened the Content-Security-Policy by adding `frame-src 'none'` and `child-src 'none'` to the `index.html` meta tag, strictly disallowing any iframe embedding within the application.
