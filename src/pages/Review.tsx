@@ -119,7 +119,7 @@ export default function Review() {
             </span>
             <span>{currentCard.sourceType}</span>
           </div>
-          <h3>{currentCard.prompt}</h3>
+          <h2>{currentCard.prompt}</h2>
           <p className="review-card-lesson">From: {currentCard.lessonTitle}</p>
 
           {showAnswer ? (

@@ -93,3 +93,12 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 - Updated `scripts/generate-llms-txt.js` to extract and incorporate the `description` frontmatter field for phases and individual lessons.
 - Added descriptive fallback strings where descriptions are omitted.
 - Provides explicit sentences in `llms.txt` helping AI crawlers index and understand the routing structure effectively, fulfilling "Vector Friendliness".
+
+### [Date: Current] - Deep Semantic HTML Hierarchy Refactoring
+
+**Priority Areas:**
+1.  **SEO (Visibility)**: Perfect semantic HTML hierarchy and no skipped levels.
+2.  **GEO (Intelligence)**: Ensured headings map gracefully to AI chunking outlines.
+
+**Changes:**
+-   [x] **[SEO] Semantic HTML Fixes**: Fixed heading tag hierarchy on `CaseStudies.tsx`, `Review.tsx`, `SearchResults.tsx`, `Exercises.tsx`, and `PhaseOverview.tsx` to prevent skip-level headings (e.g. going from `<h1>` directly to `<h3>` or `<h4>`).

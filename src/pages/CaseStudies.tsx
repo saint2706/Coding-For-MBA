@@ -165,7 +165,7 @@ export default function CaseStudies() {
                   </span>
                   {item.estimatedTime && <span className="meta-pill">⏱ {item.estimatedTime}</span>}
                 </div>
-                <h3 className="cs-card__title">{item.title}</h3>
+                <h2 className="cs-card__title">{item.title}</h2>
                 {item.phasesCovered && <p className="cs-card__phases">{item.phasesCovered}</p>}
               </div>
 
