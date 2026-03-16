@@ -116,7 +116,7 @@ export default function Exercises() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Exercises' }]} />
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-        <h2>🧪 Exercise Browser</h2>
+        <h1>🧪 Exercise Browser</h1>
         <p>
           {exercises.length} exercises across {phases.length} phases — filter by topic, difficulty,
           or search.

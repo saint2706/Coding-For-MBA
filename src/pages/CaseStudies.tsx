@@ -78,7 +78,7 @@ export default function CaseStudies() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Case Studies & Projects' }]} />
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-        <h2>📂 Case Studies &amp; Projects</h2>
+        <h1>📂 Case Studies &amp; Projects</h1>
         <p>
           {caseStudies.length} case studies · {projects.length} capstone projects — apply your
           skills to real-world business problems.
