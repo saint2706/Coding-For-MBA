@@ -92,7 +92,13 @@ export default function ProgressDashboard() {
   const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
   const xpToNextMilestone = useGamificationStore((state) => state.xpToNextMilestone)
   const milestoneProgress = xpToNextMilestone()
-  const earnedBadges = ACHIEVEMENTS.filter((badge) => achievementsUnlocked.includes(badge.id))
+
+  // ⚡ Bolt: Convert achievementsUnlocked to a Set to optimize O(N*M) lookups to O(N + M) during render.
+  const earnedBadges = useMemo(() => {
+    const unlockedSet = new Set(achievementsUnlocked)
+    return ACHIEVEMENTS.filter((badge) => unlockedSet.has(badge.id))
+  }, [achievementsUnlocked])
+
   const challengeLesson = getLesson(dailyChallenge.day)
 
   useEffect(() => {
@@ -131,7 +137,7 @@ export default function ProgressDashboard() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Progress' }]} />
 
       <div className="section-header" style={{ marginBottom: '2rem' }}>
-        <h2>Your Progress</h2>
+        <h1>Your Progress</h1>
         <p>Track your journey through the {totalLessons}-day curriculum.</p>
       </div>
 
@@ -148,26 +154,26 @@ export default function ProgressDashboard() {
       {/* Mobile glassmorphism stat cards grid */}
       <div className="progress-mobile-stats-grid">
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">📊</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">📊</span>
           <p className="progress-mobile-stat-value">
             <AnimatedCounter value={overallPct} suffix="%" />
           </p>
           <p className="progress-mobile-stat-label">Completed</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">🔥</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">🔥</span>
           <p className="progress-mobile-stat-value">
             <AnimatedCounter value={completionStreak} />
           </p>
           <p className="progress-mobile-stat-label">Day Streak</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">⏱️</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">⏱️</span>
           <p className="progress-mobile-stat-value">{formatDuration(totalLearningMs)}</p>
           <p className="progress-mobile-stat-label">Study Time</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon">⭐</span>
+          <span className="progress-mobile-stat-icon" aria-hidden="true">⭐</span>
           <p className="progress-mobile-stat-value">{xpTotal}</p>
           <p className="progress-mobile-stat-label">Total XP</p>
         </div>

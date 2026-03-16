@@ -129,7 +129,7 @@ export default function Curriculum() {
       />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Curriculum' }]} />
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-        <h2>Full Curriculum Roadmap</h2>
+        <h1>Full Curriculum Roadmap</h1>
         <p>
           {totalLessons} days of structured learning across {phases.length} phases — from Python
           foundations to enterprise SQL.
@@ -139,7 +139,7 @@ export default function Curriculum() {
       {/* Curriculum stat cards */}
       <div className="curriculum-stats-row">
         <div className="curriculum-stat-card glass-card">
-          <span className="curriculum-stat-icon">📅</span>
+          <span className="curriculum-stat-icon" aria-hidden="true">📅</span>
           <div>
             <p className="curriculum-stat-value">{totalLessons}</p>
             <p className="curriculum-stat-label">Total Days</p>
@@ -150,7 +150,7 @@ export default function Curriculum() {
           <p className="curriculum-stat-note">{overallPct}% Completed</p>
         </div>
         <div className="curriculum-stat-card glass-card">
-          <span className="curriculum-stat-icon">📚</span>
+          <span className="curriculum-stat-icon" aria-hidden="true">📚</span>
           <div>
             <p className="curriculum-stat-value">{phases.length}</p>
             <p className="curriculum-stat-label">Phases</p>
@@ -168,7 +168,7 @@ export default function Curriculum() {
           </p>
         </div>
         <div className="curriculum-stat-card glass-card">
-          <span className="curriculum-stat-icon">⏱️</span>
+          <span className="curriculum-stat-icon" aria-hidden="true">⏱️</span>
           <div>
             <p className="curriculum-stat-value">{completedCount}</p>
             <p className="curriculum-stat-label">Lessons Done</p>

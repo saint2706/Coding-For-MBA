@@ -101,7 +101,7 @@ export default function Review() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Review' }]} />
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-        <h2>Spaced Repetition Review</h2>
+        <h1>Spaced Repetition Review</h1>
         <p>
           Due cards: {dueCards.length} · Streak: {streak} day(s)
         </p>

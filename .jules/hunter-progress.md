@@ -31,3 +31,9 @@
 - **Fixed:** Removed leftover `eslint-disable-next-line @typescript-eslint/no-explicit-any` from `src/components/__tests__/ExerciseWidget.test.tsx` and `src/hooks/__tests__/usePyodide.test.tsx`.
 - **Fixed:** Removed leftover `// eslint-disable-next-line no-control-regex` from `src/pages/NotebookViewer.tsx`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 6
+- **Fixed:** Removed `as any` type casting in `src/components/MarkdownRenderer.tsx` and used appropriate type definition.
+- **Fixed:** Removed `as any` type casting in `src/pages/Lesson.tsx` and imported `ParsedMasteryQuestion` type definition from `MarkdownRenderer.tsx`.
+- **Fixed:** Replaced `// @ts-ignore` with `// @ts-expect-error` in `src/utils/__tests__/contentSchemas.test.ts`.
+- **Verified:** Build, lint, and tests pass.

@@ -73,6 +73,14 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 - Added `FAQPage` schema to `src/utils/seoSchemas.ts`.
 - Integrated `FAQPage` schema into mastery checks to improve GEO discoverability of Q&As.
 
+### [Date: Current] - Semantic HTML Fixes
+
+**Priority Areas:**
+1.  **SEO (Visibility)**: Strict semantic HTML hierarchy.
+
+**Changes:**
+-   [x] **[SEO] Semantic HTML Fixes**: Converted top-level `<h2>` tags to `<h1>` across multiple pages (`Curriculum.tsx`, `ProgressDashboard.tsx`, `Exercises.tsx`, `Review.tsx`, `CaseStudies.tsx`) to ensure strict `h1`-`h6` hierarchy. This improves screen reader accessibility and helps search engines properly understand the page outline.
+
 ### [Date: Current] - Static Route Descriptions for AI Manifest
 
 **Priority Areas:**
@@ -80,3 +88,8 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 -   [x] **[GEO] Site Architecture**: Updated `scripts/generate-llms-txt.js` to provide explicit AI-readable descriptions for static pages (e.g. Home, Curriculum, Exercises) in the generated `public/llms.txt`.
+
+## Enhanced llms.txt generation for better GEO context
+- Updated `scripts/generate-llms-txt.js` to extract and incorporate the `description` frontmatter field for phases and individual lessons.
+- Added descriptive fallback strings where descriptions are omitted.
+- Provides explicit sentences in `llms.txt` helping AI crawlers index and understand the routing structure effectively, fulfilling "Vector Friendliness".

@@ -3,6 +3,7 @@
 > A structured 108-day interactive learning platform covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for business professionals.
 
 [![Deploy](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml)
+[![CI](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-7-646cff?logo=vite)](https://vite.dev/)

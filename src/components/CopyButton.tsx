@@ -69,7 +69,17 @@ export default function CopyButton({
       aria-label={copied ? 'Code copied to clipboard' : label}
       title={label}
     >
-      {copied ? '✓ Copied' : showEmoji ? '📋 Copy' : 'Copy'}
+      {copied ? (
+        <>
+          <span aria-hidden="true">✓</span> Copied
+        </>
+      ) : showEmoji ? (
+        <>
+          <span aria-hidden="true">📋</span> Copy
+        </>
+      ) : (
+        'Copy'
+      )}
       <span className="sr-only" aria-live="polite" aria-atomic="true">
         {copied ? 'Code copied to clipboard' : ''}
       </span>

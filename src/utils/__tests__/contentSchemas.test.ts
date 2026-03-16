@@ -1,4 +1,4 @@
-// @ts-ignore JS module without bundled type declarations
+// @ts-expect-error JS module without bundled type declarations
 import * as contentSchemas from '../../../scripts/content-schemas.js'
 
 const {
