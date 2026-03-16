@@ -1,6 +1,6 @@
 # Coding for MBA
 
-> A structured 108-day interactive learning platform covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for business professionals.
+> A structured 140-day interactive learning platform covering Python, Data Science, Machine Learning, Business Intelligence, Enterprise SQL, Generative AI, Cloud Data Engineering, and Analytics Engineering — designed for business professionals.
 
 [![Deploy](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml)
 [![CI](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml)
@@ -36,6 +36,9 @@
 | 7 | BI & Analytics | 73–84 |
 | 8 | SQL Mastery | 85–96 |
 | 9 | Enterprise SQL | 97–108 |
+| 10 | Generative AI & LLM Engineering | 109–120 |
+| 11 | Cloud Data Engineering | 121–132 |
+| 12 | Analytics Engineering & Data Products | 133–140 |
 
 ## 🛠️ Tech Stack
 
@@ -84,7 +87,7 @@ src/
 ├── stores/            # Zustand state stores
 ├── App.tsx
 └── main.tsx
-content/lessons/       # 108 lesson markdown files
+content/lessons/       # 140 lesson markdown files
 docs/                  # Documentation (Roadmap, Architecture)
 scripts/               # Build and validation scripts
 ```

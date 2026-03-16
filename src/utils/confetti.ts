@@ -34,6 +34,8 @@ function safeConfetti(options: confetti.Options): void {
 /**
  * Triggers a small, subtle sparkle effect.
  * Useful for minor achievements or interactions.
+ *
+ * @returns {void}
  */
 export function triggerSparkle(): void {
   safeConfetti({
@@ -47,6 +49,8 @@ export function triggerSparkle(): void {
 
 /**
  * Triggers a medium-sized burst for acing a quiz.
+ *
+ * @returns {void}
  */
 export function triggerQuizAcedConfetti(): void {
   safeConfetti({
@@ -59,6 +63,8 @@ export function triggerQuizAcedConfetti(): void {
 
 /**
  * Triggers a large burst for completing all daily exercises.
+ *
+ * @returns {void}
  */
 export function triggerDayExercisesCompleteConfetti(): void {
   safeConfetti({
@@ -71,6 +77,8 @@ export function triggerDayExercisesCompleteConfetti(): void {
 
 /**
  * Triggers a major celebration effect for unlocking a new phase.
+ *
+ * @returns {void}
  */
 export function triggerPhaseUnlockConfetti(): void {
   safeConfetti({
@@ -84,6 +92,8 @@ export function triggerPhaseUnlockConfetti(): void {
 /**
  * Triggers an extended fireworks-style animation sequence.
  * Used for major curriculum milestones or completion.
+ *
+ * @returns {void}
  */
 export function triggerCurriculumFireworks(): void {
   if (typeof window === 'undefined' || prefersReducedMotion()) return
