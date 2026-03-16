@@ -47,14 +47,15 @@ for (const file of phaseFiles) {
   if (fm.phase) {
     phases.push({
       phase: Number(fm.phase),
-      title: fm.title || `Phase ${fm.phase}`
+      title: fm.title || `Phase ${fm.phase}`,
+      description: fm.description || `Phase ${fm.phase} covering ${fm.title || 'various topics'}.`
     })
   }
 }
 phases.sort((a, b) => a.phase - b.phase)
 
 for (const p of phases) {
-  lines.push(`- ${BASE_URL}/#/phase/${p.phase}: ${p.title}`)
+  lines.push(`- ${BASE_URL}/#/phase/${p.phase}: ${p.title} - ${p.description}`)
 }
 
 // Lesson pages
@@ -70,14 +71,15 @@ for (const file of lessonFiles) {
     lessons.push({
       dayStr: dayStr,
       dayNum: dayNum,
-      title: fm.title || `Day ${dayStr}`
+      title: fm.title || `Day ${dayStr}`,
+      description: fm.description || `Lesson covering ${fm.title || `Day ${dayStr}`}.`
     })
   }
 }
 lessons.sort((a, b) => a.dayNum - b.dayNum)
 
 for (const l of lessons) {
-  lines.push(`- ${BASE_URL}/#/lesson/${l.dayStr}: ${l.title}`)
+  lines.push(`- ${BASE_URL}/#/lesson/${l.dayStr}: ${l.title} - ${l.description}`)
 }
 
 const llmsTxt = lines.join('\n') + '\n'
