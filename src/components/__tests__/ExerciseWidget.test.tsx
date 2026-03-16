@@ -24,7 +24,6 @@ let capturedCodePlaygroundProps: any
 const mockSetCode = vi.fn()
 
 vi.mock('../CodePlayground', () => ({
-
   default: React.forwardRef((props: any, ref: any) => {
     capturedCodePlaygroundProps = props
     React.useImperativeHandle(ref, () => ({
