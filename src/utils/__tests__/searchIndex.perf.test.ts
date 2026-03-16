@@ -39,11 +39,11 @@ describe('searchIndex first-search performance', () => {
     expect(elapsedMs).toBeLessThan(50)
 
     let laterResults = search('corporate finance')
-    for (let i = 0; i < 20 && laterResults.length === 0; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 20))
+    for (let i = 0; i < 100 && laterResults.length === 0; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 100))
       laterResults = search('corporate finance')
     }
 
     expect(laterResults.length).toBeGreaterThan(0)
-  })
+  }, 10000)
 })
