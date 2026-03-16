@@ -16,6 +16,7 @@
 ## Verification
 * Verified changes via visual UI tests (Playwright) and unit tests (`npm run test`).
 * Ensured no linting or build regressions were introduced.
+\n- Added `aria-label` to phase filter buttons in `ConceptGraphPage.tsx` because they only display 'P1', 'P2' etc. which lacks context for screen reader users. The `aria-label` now explicitly states 'Filter by Phase X: [Phase Name]'.
 
 ### Decorative Emojis Accessibility
 * **Observation**: Found many places (CopyButton, Sidebar streak, ProgressDashboard stats, Curriculum stats) where emojis were placed next to text strings or inside descriptive wrappers but not explicitly hidden from screen readers.
