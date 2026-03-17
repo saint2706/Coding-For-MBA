@@ -122,9 +122,9 @@ export default function SearchResults() {
               >
                 <div className="search-result-card-header">
                   <span className="search-result-card-day">Day {result.item.day}</span>
-                  <h3 className="search-result-card-title">
+                  <h2 className="search-result-card-title">
                     {highlightText(result.item.title, terms)}
-                  </h3>
+                  </h2>
                   <span
                     className="difficulty-badge"
                     style={{ color: diff.color, background: diff.bg }}

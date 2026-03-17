@@ -125,7 +125,7 @@ export default function Exercises() {
 
       {/* Solution Notebooks Banner */}
       <div className="exercises-notebooks">
-        <h3 className="exercises-notebooks__title">📓 Phase Solution Notebooks</h3>
+        <h2 className="exercises-notebooks__title">📓 Phase Solution Notebooks</h2>
         <div className="exercises-notebooks__grid">
           {phases.map((p) => {
             const icon = phaseIcons[p - 1] || '📖'
@@ -141,7 +141,7 @@ export default function Exercises() {
 
       {lowScoringTopics.length > 0 && (
         <div className="exercises-low-scoring">
-          <h3>📉 Spaced Repetition Focus</h3>
+          <h2>📉 Spaced Repetition Focus</h2>
           <p>Revisit these lower-scoring quiz topics to improve retention:</p>
           <ul>
             {lowScoringTopics.map((topic) => (

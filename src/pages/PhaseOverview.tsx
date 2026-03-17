@@ -144,7 +144,7 @@ export default function PhaseOverview() {
                 {lesson.day}
               </motion.div>
               <div className="day-card-info">
-                <h4>{lesson.title}</h4>
+                <h3>{lesson.title}</h3>
                 {lesson.duration && <span>⏱ {lesson.duration} min</span>}
               </div>
               {completedSet.has(dayTokenToProgressId(lesson.day)) && (
