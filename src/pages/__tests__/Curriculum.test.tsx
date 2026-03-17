@@ -69,7 +69,7 @@ describe('Curriculum', () => {
         phase: 1,
         title: 'Foundations',
         description: 'desc',
-        days: [] as any,
+        days: [],
         objectives: [] as string[],
         content: '',
         path: '',
@@ -78,7 +78,7 @@ describe('Curriculum', () => {
         phase: 2,
         title: 'Data',
         description: 'desc',
-        days: [] as any,
+        days: [],
         objectives: [] as string[],
         content: '',
         path: '',
@@ -87,9 +87,9 @@ describe('Curriculum', () => {
 
     vi.mocked(contentLoader.getLessonsByPhase).mockImplementation((phase) => {
       if (phase === 1) {
-        return [{ day: '1', title: 'Intro', phase: 1, content: '', path: '' }] as any
+        return [{ day: '1', title: 'Intro', phase: 1, content: '', path: '' }] as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
       }
-      return [{ day: '2', title: 'Advanced', phase: 2, content: '', path: '' }] as any
+      return [{ day: '2', title: 'Advanced', phase: 2, content: '', path: '' }] as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
     })
 
     vi.mocked(useProgressStore).mockImplementation((selector: any) => {
