@@ -102,8 +102,22 @@ describe('PhaseOverview', () => {
     })
 
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
-      { day: '1', title: 'Intro to Python', duration: 15, phase: 1, content: '', path: '' } as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>[number],
-      { day: '2', title: 'Variables', duration: 20, phase: 1, content: '', path: '' } as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>[number],
+      {
+        day: '1',
+        title: 'Intro to Python',
+        duration: 15,
+        phase: 1,
+        content: '',
+        path: '',
+      } as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>[number],
+      {
+        day: '2',
+        title: 'Variables',
+        duration: 20,
+        phase: 1,
+        content: '',
+        path: '',
+      } as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>[number],
     ])
 
     vi.mocked(contentLoader.getNotebook).mockReturnValue({
