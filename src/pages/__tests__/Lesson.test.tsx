@@ -3,11 +3,7 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import Lesson from '../Lesson'
 
-const {
-  mockSetLastVisited,
-  mockToastSuccess,
-  mockToastInfo,
-} = vi.hoisted(() => ({
+const { mockSetLastVisited, mockToastSuccess, mockToastInfo } = vi.hoisted(() => ({
   mockSetLastVisited: vi.fn(),
   mockToastSuccess: vi.fn(),
   mockToastInfo: vi.fn(),
@@ -56,7 +52,7 @@ vi.mock('../../stores/progressStore', () => ({
         completedLessons: mockGetCompletedLessons(),
         toggleLessonComplete: mockToggleLessonComplete,
       }),
-    }
+    },
   ),
 }))
 

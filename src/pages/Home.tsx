@@ -24,11 +24,7 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import {
-  getLastVisited,
-  getCompletedCount,
-  getStreakDays,
-} from '../utils/progressTracker'
+import { getLastVisited, getCompletedCount, getStreakDays } from '../utils/progressTracker'
 import { useProgressStore } from '../stores/progressStore'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'

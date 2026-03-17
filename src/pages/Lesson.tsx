@@ -35,9 +35,7 @@ import {
   getLessonsByPhase,
   getAllLessons,
 } from '../utils/contentLoader'
-import {
-  setLastVisited,
-} from '../utils/progressTracker'
+import { setLastVisited } from '../utils/progressTracker'
 import MarkdownRenderer, {
   findInteractiveBlocks,
   type ParsedMasteryQuestion,
