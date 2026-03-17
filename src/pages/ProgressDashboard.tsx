@@ -10,7 +10,7 @@
  * - Show detailed progress per phase.
  */
 
-import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import {
@@ -21,7 +21,7 @@ import {
   phaseIcons,
   difficultyConfig,
 } from '../utils/contentLoader'
-import { getCompletedLessons, getStreakDays, clearAllProgress } from '../utils/progressTracker'
+import { getStreakDays } from '../utils/progressTracker'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
@@ -30,6 +30,7 @@ import { useUserPreferencesStore, type ColorPalette } from '../stores/userPrefer
 import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
 import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
 import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
+import { useProgressStore } from '../stores/progressStore'
 
 /**
  * Progress dashboard page component.
@@ -45,10 +46,8 @@ import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
  */
 export default function ProgressDashboard() {
   const phases = getAllPhases()
-  const [, setTick] = useState(0)
-  const forceUpdate = useCallback(() => setTick((t) => t + 1), [])
 
-  const completedLessons = getCompletedLessons()
+  const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
   const totalLessons = useMemo(() => getAllLessons().length, [])
@@ -57,8 +56,7 @@ export default function ProgressDashboard() {
 
   const handleClearProgress = () => {
     if (window.confirm('Are you sure you want to clear all progress? This cannot be undone.')) {
-      clearAllProgress()
-      forceUpdate()
+      useProgressStore.getState().clearAllProgress()
     }
   }
 

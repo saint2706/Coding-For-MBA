@@ -4,20 +4,17 @@ import { createRoot } from 'react-dom/client'
 import Lesson from '../Lesson'
 
 const {
-  mockToggleLessonComplete,
-  mockIsLessonComplete,
   mockSetLastVisited,
   mockToastSuccess,
   mockToastInfo,
-  mockGetCompletedLessons,
 } = vi.hoisted(() => ({
-  mockToggleLessonComplete: vi.fn(),
-  mockIsLessonComplete: vi.fn(() => false),
   mockSetLastVisited: vi.fn(),
   mockToastSuccess: vi.fn(),
   mockToastInfo: vi.fn(),
-  mockGetCompletedLessons: vi.fn(() => []),
 }))
+
+const mockToggleLessonComplete = vi.fn()
+const mockGetCompletedLessons = vi.fn(() => [])
 
 vi.mock('react-router-dom', () => ({
   useParams: () => ({ dayNum: '1B' }),
@@ -48,10 +45,19 @@ vi.mock('../../utils/contentLoader', () => ({
 }))
 
 vi.mock('../../utils/progressTracker', () => ({
-  isLessonComplete: mockIsLessonComplete,
-  toggleLessonComplete: mockToggleLessonComplete,
   setLastVisited: mockSetLastVisited,
-  getCompletedLessons: mockGetCompletedLessons,
+}))
+
+vi.mock('../../stores/progressStore', () => ({
+  useProgressStore: Object.assign(
+    (selector: any) => selector({ completedLessons: mockGetCompletedLessons() }),
+    {
+      getState: () => ({
+        completedLessons: mockGetCompletedLessons(),
+        toggleLessonComplete: mockToggleLessonComplete,
+      }),
+    }
+  ),
 }))
 
 vi.mock('../../utils/confetti', () => ({
@@ -91,7 +97,7 @@ vi.mock('../../stores/gamificationStore', () => ({
 describe('Lesson completion toasts', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockIsLessonComplete.mockReturnValue(false)
+    mockGetCompletedLessons.mockReturnValue([])
   })
 
   it('shows completion/incomplete toasts and debounces rapid duplicate clicks', async () => {
