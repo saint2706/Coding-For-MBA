@@ -33,6 +33,7 @@ import {
   difficultyConfig,
   getAllPhases,
   getLessonsByPhase,
+  getAllLessons,
 } from '../utils/contentLoader'
 import {
   isLessonComplete,
@@ -180,10 +181,7 @@ export default function Lesson() {
         }
       }
 
-      const totalLessonCount = getAllPhases().reduce(
-        (sum, phase) => sum + getLessonsByPhase(phase.phase).length,
-        0,
-      )
+      const totalLessonCount = getAllLessons().length
       if (afterCompleted.length === totalLessonCount) {
         triggerCurriculumFireworks()
         toastSuccess('🎓 Curriculum complete! Incredible work.')
