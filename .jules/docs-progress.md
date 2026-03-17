@@ -23,3 +23,7 @@
   - Created a Python script `/home/jules/self_created_tools/check_jsdoc4.py` to identify missing JSDoc comments for exported functions and arrow functions across `src/stores/`.
 - Updated README.md and CONTRIBUTING.md to reflect the new 140-day curriculum (incorporating Phases 10-12).
 - Updated TSDoc tags for exported functions in `src/utils/codeSecurity.ts` and `src/utils/confetti.ts` for better clarity and API completeness.
+
+- **[2026-03-17] Markdown Links & Link Checker configuration**
+  - Updated `mlc_config.json` configuration file to ignore more websites that return false positives (403 or 0 codes) from anti-bot mechanisms: `machinelearningmastery.com`, `docs.scipy.org`, `pgtune.leopard.in.ua`.
+  - Successfully passed `markdown-link-check` script.
