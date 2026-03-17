@@ -37,7 +37,7 @@ Please take a moment to review this guide to ensure a smooth contribution proces
   - `components/`: Reusable UI components.
   - `utils/`: Core logic (content loading, Pyodide integration, state).
   - `stores/`: Zustand state stores.
-- `content/lessons/`: Markdown content for the 108-day curriculum.
+- `content/lessons/`: Markdown content for the 140-day curriculum.
 - `docs/`: Documentation files (Roadmap, Architecture).
 - `scripts/`: Build and validation scripts.
 - `tests/`: E2E tests (Playwright).

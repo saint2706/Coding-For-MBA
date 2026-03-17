@@ -21,3 +21,5 @@
   - Added missing typed JSDoc comments to `src/stores/quizStore.ts`
   - Added missing typed JSDoc comments to `src/stores/userPreferencesStore.ts`
   - Created a Python script `/home/jules/self_created_tools/check_jsdoc4.py` to identify missing JSDoc comments for exported functions and arrow functions across `src/stores/`.
+- Updated README.md and CONTRIBUTING.md to reflect the new 140-day curriculum (incorporating Phases 10-12).
+- Updated TSDoc tags for exported functions in `src/utils/codeSecurity.ts` and `src/utils/confetti.ts` for better clarity and API completeness.

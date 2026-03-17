@@ -33,8 +33,8 @@ export interface ValidationResult {
  * 3. Comments (# ...):
  *    - Removed entirely as they are not executable.
  *
- * @param code - The Python code to process
- * @returns The code with SAFE strings and comments removed
+ * @param {string} code - The Python code to process
+ * @returns {string} The code with SAFE strings and comments removed
  */
 export function stripPythonCommentsAndStrings(code: string): string {
   let stripped = code
@@ -76,8 +76,8 @@ export function stripPythonCommentsAndStrings(code: string): string {
  * Note: This validation runs on code STRIPPED of safe strings and comments.
  * f-strings are preserved to catch hidden execution.
  *
- * @param code - The Python code to validate
- * @returns Validation result
+ * @param {string} code - The Python code to validate
+ * @returns {ValidationResult} Validation result
  */
 export function validatePythonCode(code: string): ValidationResult {
   if (!code) return { valid: true }
