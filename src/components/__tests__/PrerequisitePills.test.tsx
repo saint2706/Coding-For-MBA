@@ -33,8 +33,16 @@ describe('PrerequisitePills', () => {
     act(() => {
       root?.render(
         <PrerequisitePills
-          lesson={{ day: '02', title: '', phase: 1, content: '', path: '' } as unknown as Readonly<contentLoader.Lesson>}
-        />
+          lesson={
+            {
+              day: '02',
+              title: '',
+              phase: 1,
+              content: '',
+              path: '',
+            } as unknown as Readonly<contentLoader.Lesson>
+          }
+        />,
       )
     })
 
@@ -43,14 +51,28 @@ describe('PrerequisitePills', () => {
 
   it('renders prerequisite links', () => {
     vi.mocked(contentLoader.getPrerequisiteLessons).mockReturnValue([
-      { day: '01', title: 'Lesson 1', phase: 1, content: '', path: '' } as unknown as Readonly<contentLoader.Lesson>,
+      {
+        day: '01',
+        title: 'Lesson 1',
+        phase: 1,
+        content: '',
+        path: '',
+      } as unknown as Readonly<contentLoader.Lesson>,
     ])
 
     act(() => {
       root?.render(
         <MemoryRouter>
           <PrerequisitePills
-            lesson={{ day: '02', title: '', phase: 1, content: '', path: '' } as unknown as Readonly<contentLoader.Lesson>}
+            lesson={
+              {
+                day: '02',
+                title: '',
+                phase: 1,
+                content: '',
+                path: '',
+              } as unknown as Readonly<contentLoader.Lesson>
+            }
           />
         </MemoryRouter>,
       )
