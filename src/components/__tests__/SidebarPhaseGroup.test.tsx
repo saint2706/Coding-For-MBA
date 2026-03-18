@@ -9,7 +9,7 @@ import * as contentLoader from '../../utils/contentLoader'
 vi.mock('../../utils/contentLoader', async () => {
   const actual = await vi.importActual('../../utils/contentLoader')
   return {
-    ...(actual as any),
+    ...(actual as typeof contentLoader),
     getLessonsByPhase: vi.fn(),
     phaseIcons: ['📖', '🚀', '🧠'],
   }
@@ -25,9 +25,9 @@ describe('SidebarPhaseGroup', () => {
     root = createRoot(container)
 
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
-      { day: '01', title: 'Lesson 1', phase: 1 },
-      { day: '02', title: 'Lesson 2', phase: 1 },
-    ] as any)
+      { day: '01', title: 'Lesson 1', phase: 1, content: '', path: '' },
+      { day: '02', title: 'Lesson 2', phase: 1, content: '', path: '' },
+    ] as unknown as ReadonlyArray<Readonly<contentLoader.Lesson>>)
   })
 
   afterEach(() => {

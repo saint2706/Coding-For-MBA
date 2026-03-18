@@ -34,7 +34,11 @@ describe('RelatedLessons', () => {
     vi.mocked(contentLoader.getRelatedLessons).mockReturnValue([])
 
     act(() => {
-      root?.render(<RelatedLessons lesson={{ day: '02', tags: [] } as any} />)
+      root?.render(
+        <RelatedLessons
+          lesson={{ day: '02', title: '', phase: 1, content: '', path: '', tags: [] } as unknown as Readonly<contentLoader.Lesson>}
+        />
+      )
     })
 
     expect(container.innerHTML).toBe('')
@@ -42,14 +46,16 @@ describe('RelatedLessons', () => {
 
   it('renders a grid of related lessons', () => {
     vi.mocked(contentLoader.getRelatedLessons).mockReturnValue([
-      { day: '01', title: 'Lesson 1', phase: 1, difficulty: 'beginner', tags: ['a', 'b'] } as any,
-      { day: '03', title: 'Lesson 3', phase: 2, tags: ['b', 'c'] } as any,
+      { day: '01', title: 'Lesson 1', phase: 1, content: '', path: '', difficulty: 'beginner', tags: ['a', 'b'] } as unknown as Readonly<contentLoader.Lesson>,
+      { day: '03', title: 'Lesson 3', phase: 2, content: '', path: '', tags: ['b', 'c'] } as unknown as Readonly<contentLoader.Lesson>,
     ])
 
     act(() => {
       root?.render(
         <MemoryRouter>
-          <RelatedLessons lesson={{ day: '02', tags: ['b', 'd'] } as any} />
+          <RelatedLessons
+            lesson={{ day: '02', title: '', phase: 1, content: '', path: '', tags: ['b', 'd'] } as unknown as Readonly<contentLoader.Lesson>}
+          />
         </MemoryRouter>,
       )
     })

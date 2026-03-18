@@ -31,7 +31,11 @@ describe('PrerequisitePills', () => {
     vi.mocked(contentLoader.getPrerequisiteLessons).mockReturnValue([])
 
     act(() => {
-      root?.render(<PrerequisitePills lesson={{ day: '02' } as any} />)
+      root?.render(
+        <PrerequisitePills
+          lesson={{ day: '02', title: '', phase: 1, content: '', path: '' } as unknown as Readonly<contentLoader.Lesson>}
+        />
+      )
     })
 
     expect(container.innerHTML).toBe('')
@@ -39,13 +43,15 @@ describe('PrerequisitePills', () => {
 
   it('renders prerequisite links', () => {
     vi.mocked(contentLoader.getPrerequisiteLessons).mockReturnValue([
-      { day: '01', title: 'Lesson 1' } as any,
+      { day: '01', title: 'Lesson 1', phase: 1, content: '', path: '' } as unknown as Readonly<contentLoader.Lesson>,
     ])
 
     act(() => {
       root?.render(
         <MemoryRouter>
-          <PrerequisitePills lesson={{ day: '02' } as any} />
+          <PrerequisitePills
+            lesson={{ day: '02', title: '', phase: 1, content: '', path: '' } as unknown as Readonly<contentLoader.Lesson>}
+          />
         </MemoryRouter>,
       )
     })
