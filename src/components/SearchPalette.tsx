@@ -185,6 +185,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
             onKeyDown={handleKeyDown}
             aria-label="Search"
             aria-autocomplete="list"
+            aria-expanded={results.length > 0}
             aria-controls="search-results"
             aria-activedescendant={results.length > 0 ? `search-result-${activeIndex}` : undefined}
           />

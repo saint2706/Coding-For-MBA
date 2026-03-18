@@ -102,6 +102,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         aria-hidden="true"
       />
       <aside
+        id="app-sidebar"
         className={`sidebar ${isOpen ? 'open' : ''}`}
         role="navigation"
         aria-label="Lesson navigation"

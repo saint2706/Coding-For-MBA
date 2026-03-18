@@ -18,9 +18,10 @@ import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
 interface NavbarProps {
   onToggleSidebar: () => void
+  sidebarOpen: boolean
 }
 
-export default function Navbar({ onToggleSidebar }: NavbarProps) {
+export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
@@ -76,6 +77,8 @@ export default function Navbar({ onToggleSidebar }: NavbarProps) {
           onClick={onToggleSidebar}
           aria-label="Toggle sidebar menu"
           title="Toggle sidebar"
+          aria-expanded={sidebarOpen}
+          aria-controls="app-sidebar"
         >
           <svg
             viewBox="0 0 24 24"

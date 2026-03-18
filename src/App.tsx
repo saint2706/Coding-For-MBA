@@ -76,7 +76,7 @@ export default function App() {
         <Suspense fallback={null}>
           <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         </Suspense>
-        <Navbar onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
+        <Navbar sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
         <main className="main-content" id="main-content" tabIndex={-1}>
           <Suspense fallback={<PageSkeleton />}>
             <Routes location={location}>
