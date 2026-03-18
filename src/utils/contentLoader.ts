@@ -208,7 +208,12 @@ export function getLessonsByPhase(phaseNum: string | number): readonly Immutable
   return immutableLessonsByPhase[Number(phaseNum)] || []
 }
 
-/** Return previous and next lessons around the given day. */
+/**
+ * Return previous and next lessons around the given day.
+ *
+ * @param {string | number} dayNum - The day token or number of the lesson.
+ * @returns {{ prev: ImmutableLesson | null; next: ImmutableLesson | null }} An object containing the previous and next lessons.
+ */
 export function getAdjacentLessons(dayNum: string | number): {
   prev: ImmutableLesson | null
   next: ImmutableLesson | null
@@ -365,7 +370,11 @@ let immutableLessonsByPhase: Record<number, readonly ImmutableLesson[]> | null =
 let immutableExercises: readonly ImmutableExercise[] | null = null
 let immutableReviewCards: readonly ImmutableReviewCardSeed[] | null = null
 
-/** Return all parsed exercises across lessons. */
+/**
+ * Return all parsed exercises across lessons.
+ *
+ * @returns {readonly ImmutableExercise[]} A read-only array of all parsed exercises.
+ */
 export function getAllExercises(): readonly ImmutableExercise[] {
   initializeContent()
   if (!immutableExercises) {
@@ -570,12 +579,22 @@ export function getAllNotebooks(): readonly ImmutableNotebook[] {
   return immutableNotebooks
 }
 
-/** Return a notebook by phase number. */
+/**
+ * Return a notebook by phase number.
+ *
+ * @param {string | number} phaseNum - The numeric identifier of the phase.
+ * @returns {ImmutableNotebook | undefined} The corresponding notebook object or undefined if not found.
+ */
 export function getNotebook(phaseNum: string | number): ImmutableNotebook | undefined {
   return getAllNotebooks().find((n) => n.phase === Number(phaseNum))
 }
 
-/** Estimate reading time in minutes after removing markdown syntax noise. */
+/**
+ * Estimate reading time in minutes after removing markdown syntax noise.
+ *
+ * @param {string} content - The markdown content to calculate reading time for.
+ * @returns {number} The estimated reading time in minutes.
+ */
 export function getReadingTime(content: string): number {
   const stripped = content
     .replace(/```[\s\S]*?```/g, '')

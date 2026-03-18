@@ -15,14 +15,23 @@ const SITE_NAME = 'Coding for MBA'
 const DEFAULT_DESCRIPTION =
   'A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.'
 
-/** Build a full canonical URL from a hash path */
+/**
+ * Build a full canonical URL from a hash path.
+ *
+ * @param {string} [path] - The optional hash path.
+ * @returns {string} The full canonical URL.
+ */
 export function buildCanonicalUrl(path?: string): string {
   if (!path) return SITE_URL
   const cleanPath = path.startsWith('/') ? path : `/${path}`
   return `${SITE_URL}/#${cleanPath}`
 }
 
-/** Build the WebSite JSON-LD schema (typically for the home page) */
+/**
+ * Build the WebSite JSON-LD schema (typically for the home page).
+ *
+ * @returns {Record<string, unknown>} The WebSite JSON-LD schema.
+ */
 export function buildWebSiteSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
@@ -91,7 +100,11 @@ export function buildCollectionPageSchema(
   }
 }
 
-/** Build a Course JSON-LD schema for the curriculum */
+/**
+ * Build a Course JSON-LD schema for the curriculum.
+ *
+ * @returns {Record<string, unknown>} The Course JSON-LD schema.
+ */
 export function buildCourseSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
