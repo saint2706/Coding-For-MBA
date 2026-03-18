@@ -18,6 +18,9 @@
     {"pattern": "^https://jsonplaceholder\\.typicode\\.com/"},
     {"pattern": "^https://feature-engine\\.readthedocs\\.io/"},
     {"pattern": "^https://joblib\\.readthedocs\\.io/"},
-    {"pattern": "^https://reddit\\.com/r/localllama"}
+    {"pattern": "^https://reddit\\.com/r/localllama"},
+    {"pattern": "^https://machinelearningmastery\\.com/"},
+    {"pattern": "^https://docs\\.scipy\\.org/"},
+    {"pattern": "^https://pgtune\\.leopard\\.in\\.ua/"}
   ]
 }
