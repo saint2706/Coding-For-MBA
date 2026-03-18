@@ -24,12 +24,8 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import {
-  getLastVisited,
-  getCompletedLessons,
-  getCompletedCount,
-  getStreakDays,
-} from '../utils/progressTracker'
+import { getLastVisited, getCompletedCount, getStreakDays } from '../utils/progressTracker'
+import { useProgressStore } from '../stores/progressStore'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import AnimatedCounter from '../components/AnimatedCounter'
@@ -66,7 +62,7 @@ export default function Home() {
   const lastVisitedPhase = lastVisitedLesson
     ? phases.find((phase) => phase.phase === lastVisitedLesson.phase)
     : null
-  const completedLessons = getCompletedLessons()
+  const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
   const lastVisitedPhaseLessons = lastVisitedPhase ? getLessonsByPhase(lastVisitedPhase.phase) : []

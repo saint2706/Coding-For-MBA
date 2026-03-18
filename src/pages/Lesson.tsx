@@ -35,12 +35,7 @@ import {
   getLessonsByPhase,
   getAllLessons,
 } from '../utils/contentLoader'
-import {
-  isLessonComplete,
-  toggleLessonComplete,
-  setLastVisited,
-  getCompletedLessons,
-} from '../utils/progressTracker'
+import { setLastVisited } from '../utils/progressTracker'
 import MarkdownRenderer, {
   findInteractiveBlocks,
   type ParsedMasteryQuestion,
@@ -55,6 +50,7 @@ import { useSwipe } from '../hooks/useSwipe'
 import { toastInfo, toastSuccess } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { useGamificationStore } from '../stores/gamificationStore'
+import { useProgressStore } from '../stores/progressStore'
 import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 import {
   triggerSparkle,
@@ -86,9 +82,10 @@ export default function Lesson() {
   const setReadingModePreference = useUserPreferencesStore((state) => state.setReadingMode)
   const [readingMode, setReadingMode] = useState(readingModePreference)
   const [nearBottom, setNearBottom] = useState(false)
-  const [completed, setCompleted] = useState(() =>
-    dayNum ? isLessonComplete(dayTokenToProgressId(dayNum)) : false,
-  )
+
+  const completedLessons = useProgressStore((state) => state.completedLessons)
+  const completed = dayNum ? completedLessons.includes(dayTokenToProgressId(dayNum)) : false
+
   const lastToastAtRef = useRef(0)
 
   useEffect(() => {
@@ -135,16 +132,10 @@ export default function Lesson() {
     }
   }, [lesson])
 
-  // Sync completed state when navigating between lessons
-  useEffect(() => {
-    setCompleted(dayNum ? isLessonComplete(dayTokenToProgressId(dayNum)) : false)
-  }, [dayNum])
-
   const handleToggleComplete = useCallback(() => {
     const day = dayNum ? dayTokenToProgressId(dayNum) : Number.NaN
-    const beforeCompleted = new Set(getCompletedLessons())
-    const nowComplete = toggleLessonComplete(day)
-    setCompleted(nowComplete)
+    const beforeCompleted = new Set(useProgressStore.getState().completedLessons)
+    const nowComplete = useProgressStore.getState().toggleLessonComplete(day)
 
     const now = Date.now()
     if (now - lastToastAtRef.current < 400) {
@@ -159,7 +150,7 @@ export default function Lesson() {
         useGamificationStore.getState().awardLessonCompletion(day)
       }
 
-      const afterCompleted = getCompletedLessons()
+      const afterCompleted = useProgressStore.getState().completedLessons
       // ⚡ Bolt: Convert array to Set for O(1) lookups during phase completion check, eliminating O(N*M) bottleneck
       const afterCompletedSet = new Set(afterCompleted)
       const wasPhaseCompleted = lesson
