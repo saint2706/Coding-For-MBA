@@ -52,7 +52,7 @@ describe('ContentStats', () => {
         phase: 1,
         title: 'Python Foundations',
         description: 'desc',
-        days: ['1', '2'] as any,
+        days: ['1', '2'],
         objectives: [] as string[],
         content: '',
         path: '',
@@ -68,7 +68,8 @@ describe('ContentStats', () => {
         tags: ['python', 'basics'],
         concepts: ['variables', 'types'],
         content: 'This is a test lesson with some words.', // 8 words
-      } as any,
+        path: '',
+      },
       {
         day: '2',
         title: 'Advanced',
@@ -77,7 +78,8 @@ describe('ContentStats', () => {
         tags: ['python', 'data'],
         concepts: ['variables', 'loops'],
         content: 'Another lesson with more words here.', // 6 words
-      } as any,
+        path: '',
+      },
     ])
 
     vi.mocked(contentLoader.getReadingTime).mockImplementation((content) => {

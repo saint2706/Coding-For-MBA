@@ -37,3 +37,11 @@
 - **Fixed:** Removed `as any` type casting in `src/pages/Lesson.tsx` and imported `ParsedMasteryQuestion` type definition from `MarkdownRenderer.tsx`.
 - **Fixed:** Replaced `// @ts-ignore` with `// @ts-expect-error` in `src/utils/__tests__/contentSchemas.test.ts`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 7
+- **Fixed:** Removed leftover `as any` type casting in `src/pages/__tests__/ContentStats.test.tsx` by adding missing properties to the object.
+- **Fixed:** Removed leftover `as any` type casting in `src/pages/__tests__/NotFound.test.tsx` by using an empty array.
+- **Fixed:** Removed leftover `as any` type casting in `src/pages/__tests__/Curriculum.test.tsx` and correctly typed mock implementations.
+- **Fixed:** Removed leftover `as any` type casting in `src/pages/__tests__/Exercises.test.tsx` by adding missing `starterCode`.
+- **Fixed:** Removed leftover `as any` type casting in `src/pages/__tests__/PhaseOverview.test.tsx` by ensuring mocked objects returned complete structures.
+- **Verified:** Build, lint, and tests pass.

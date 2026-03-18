@@ -68,6 +68,7 @@ describe('Exercises', () => {
         goal: 'Learn math',
         lessonTitle: 'Math',
         tags: ['math'],
+        starterCode: '',
       },
       {
         day: '2',
@@ -77,10 +78,11 @@ describe('Exercises', () => {
         goal: 'Learn pandas',
         lessonTitle: 'Data',
         tags: ['data'],
+        starterCode: '',
       },
-    ] as any)
+    ])
 
-    vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] }] as any)
+    vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] }])
 
     vi.mocked(useQuizStore).mockImplementation((selector: any) =>
       selector({ getLowScoringTopics: () => [] }),

@@ -98,16 +98,32 @@ describe('PhaseOverview', () => {
       difficulty: 'beginner',
       totalDuration: 120, // 2 hours
       content: 'Phase 1 markdown content',
-    } as any)
+      path: '',
+    })
 
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
-      { day: '1', title: 'Intro to Python', duration: 15, phase: 1 } as any,
-      { day: '2', title: 'Variables', duration: 20, phase: 1 } as any,
+      {
+        day: '1',
+        title: 'Intro to Python',
+        duration: 15,
+        phase: 1,
+        content: '',
+        path: '',
+      } as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>[number],
+      {
+        day: '2',
+        title: 'Variables',
+        duration: 20,
+        phase: 1,
+        content: '',
+        path: '',
+      } as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>[number],
     ])
 
     vi.mocked(contentLoader.getNotebook).mockReturnValue({
+      phase: 1,
       cells: [{ cell_type: 'code', source: ['print(1)'] }],
-    } as any)
+    })
 
     vi.mocked(useProgressStore).mockImplementation((selector: any) =>
       selector({ completedLessons: [1] }),
