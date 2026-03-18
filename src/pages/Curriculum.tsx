@@ -13,7 +13,7 @@ import { useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
-import { buildItemListSchema } from '../utils/seoSchemas'
+import { buildItemListSchema, buildProductSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
   getLessonsByPhase,
@@ -125,7 +125,13 @@ export default function Curriculum() {
           { name: 'Home', url: '/' },
           { name: 'Curriculum', url: '/curriculum' },
         ]}
-        jsonLd={[itemListSchema]}
+        jsonLd={[
+          itemListSchema,
+          buildProductSchema(
+            'Coding for MBA',
+            'A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.',
+          ),
+        ]}
       />
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Curriculum' }]} />
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>

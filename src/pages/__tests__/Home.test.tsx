@@ -30,6 +30,7 @@ vi.mock('motion/react', () => ({
 vi.mock('../../utils/seoSchemas', () => ({
   buildWebSiteSchema: () => ({}),
   buildCourseSchema: () => ({}),
+  buildProductSchema: () => ({}),
 }))
 
 vi.mock('../../components/SEOHead', () => ({ default: () => null }))

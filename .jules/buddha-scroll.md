@@ -102,3 +102,6 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 -   [x] **[SEO] Semantic HTML Fixes**: Fixed heading tag hierarchy on `CaseStudies.tsx`, `Review.tsx`, `SearchResults.tsx`, `Exercises.tsx`, and `PhaseOverview.tsx` to prevent skip-level headings (e.g. going from `<h1>` directly to `<h3>` or `<h4>`).
+## 🧘 Buddha: Added Product Schema & Updated llms.txt [SEO][GEO]
+- Added `buildProductSchema` JSON-LD to `src/pages/Home.tsx` and `src/pages/Curriculum.tsx` to enrich structured data for search engines.
+- Ran `node scripts/generate-llms-txt.js` to ensure the `llms.txt` manifest includes the latest content, ensuring GEO compatibility.

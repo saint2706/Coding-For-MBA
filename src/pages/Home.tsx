@@ -14,7 +14,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
-import { buildWebSiteSchema, buildCourseSchema } from '../utils/seoSchemas'
+import { buildWebSiteSchema, buildCourseSchema, buildProductSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
   getAllLessons,
@@ -129,7 +129,14 @@ export default function Home() {
         title="Coding for MBA — 108-Day Technical Curriculum"
         description={`A structured ${stats.totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.`}
         path="/"
-        jsonLd={[buildWebSiteSchema(), buildCourseSchema()]}
+        jsonLd={[
+          buildWebSiteSchema(),
+          buildCourseSchema(),
+          buildProductSchema(
+            'Coding for MBA',
+            'A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.',
+          ),
+        ]}
         breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
       {/* Hero */}
