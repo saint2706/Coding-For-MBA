@@ -18,7 +18,7 @@ import { buildWebSiteSchema, buildCourseSchema, buildProductSchema } from '../ut
 import {
   getAllPhases,
   getAllLessons,
-  getReadingTime,
+  getTotalReadingTime,
   getLessonsByPhase,
   getLesson,
   difficultyConfig,
@@ -91,11 +91,8 @@ export default function Home() {
 
   useEffect(() => {
     const calculateTotalHours = () => {
-      const allLessons = getAllLessons()
-      const totalReadingMins = allLessons.reduce(
-        (sum, lesson) => sum + getReadingTime(lesson.content),
-        0,
-      )
+      // ⚡ Bolt: Use O(1) cached value instead of O(N) recalculation via reduce with expensive regex parsing
+      const totalReadingMins = getTotalReadingTime()
       setTotalHours(Math.round(totalReadingMins / 60))
     }
 

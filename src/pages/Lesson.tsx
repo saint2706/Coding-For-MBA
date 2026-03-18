@@ -31,7 +31,7 @@ import {
   getLesson,
   getAdjacentLessons,
   difficultyConfig,
-  getAllPhases,
+  getPhase,
   getLessonsByPhase,
   getAllLessons,
 } from '../utils/contentLoader'
@@ -165,7 +165,8 @@ export default function Lesson() {
         : false
 
       if (lesson && !wasPhaseCompleted && isPhaseCompleted) {
-        const hasNextPhase = getAllPhases().some((phase) => phase.phase === lesson.phase + 1)
+        // ⚡ Bolt: Convert O(N) phase iteration to an O(1) hash map lookup
+        const hasNextPhase = !!getPhase(lesson.phase + 1)
         if (hasNextPhase) {
           triggerPhaseUnlockConfetti()
           toastSuccess(`Phase ${lesson.phase + 1} unlocked!`)

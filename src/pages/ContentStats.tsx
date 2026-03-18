@@ -11,7 +11,7 @@
 
 import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { getAllLessons, getAllPhases, phaseIcons, getReadingTime } from '../utils/contentLoader'
+import { getAllLessons, getAllPhases, phaseIcons, getReadingTime, getTotalReadingTime } from '../utils/contentLoader'
 import SEOHead from '../components/SEOHead'
 import AnimatedCounter from '../components/AnimatedCounter'
 
@@ -50,7 +50,8 @@ export default function ContentStats() {
 
     // Total word count
     const totalWords = lessonMetrics.reduce((sum, l) => sum + l.wordCount, 0)
-    const totalReadingMins = lessonMetrics.reduce((sum, l) => sum + l.readingTime, 0)
+    // ⚡ Bolt: Use O(1) cached total instead of recalculating via array reduce
+    const totalReadingMins = getTotalReadingTime()
 
     // Difficulty breakdown
     const difficultyMap: Record<string, number> = {}

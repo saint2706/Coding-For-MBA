@@ -4,3 +4,5 @@
 
 - Optimized `Lesson.tsx` handleToggleComplete method by converting the `afterCompleted` array into a `Set` before running `.every()` with `.has()`, effectively converting an O(N*M) time complexity bottleneck to O(M + N).
 - Optimized `ProgressDashboard.tsx` earned badges rendering by replacing an O(N*M) `filter(...).includes(...)` operation with an O(N+M) `Set` lookup mechanism via `useMemo`.
+- Implemented `getTotalReadingTime` caching in `contentLoader.ts` to avoid repetitive O(N) array reductions via `getAllLessons().reduce` coupled with expensive regex evaluation on every render in `Home.tsx` and `ContentStats.tsx`.
+- Replaced `getAllPhases().some(...)` lookup in `Lesson.tsx` with an O(1) `!!getPhase(...)` check to avoid iterating over all phases during completion checks.
