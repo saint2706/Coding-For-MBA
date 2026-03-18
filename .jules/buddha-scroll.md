@@ -105,3 +105,7 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 ## 🧘 Buddha: Added Product Schema & Updated llms.txt [SEO][GEO]
 - Added `buildProductSchema` JSON-LD to `src/pages/Home.tsx` and `src/pages/Curriculum.tsx` to enrich structured data for search engines.
 - Ran `node scripts/generate-llms-txt.js` to ensure the `llms.txt` manifest includes the latest content, ensuring GEO compatibility.
+
+## 🧘 Buddha: Semantic HTML Hierarchy Refactoring [SEO][GEO]
+- Fixed semantic heading hierarchy in `src/components/ExerciseWidget.tsx`, `src/components/MasteryCheck.tsx`, and `src/components/ExerciseCard.tsx` by changing `<h4>` to `<h3>` to prevent skipped heading levels.
+- Regenerated `llms.txt` using `node scripts/generate-llms-txt.js` to ensure latest context is available for AI crawlers.

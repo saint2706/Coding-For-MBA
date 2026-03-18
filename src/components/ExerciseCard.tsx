@@ -32,7 +32,7 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
           {diff.label}
         </span>
       </div>
-      <h4 className="exercise-card__title">{exercise.title}</h4>
+      <h3 className="exercise-card__title">{exercise.title}</h3>
       {exercise.goal && <p className="exercise-card__goal">{exercise.goal}</p>}
       <div className="exercise-card__footer">
         <Link to={`/lesson/${exercise.day}`} className="exercise-card__link">

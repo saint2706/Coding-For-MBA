@@ -190,7 +190,7 @@ export default function ExerciseWidget({
         <span className="exercise-widget__icon" aria-hidden="true">
           🧪
         </span>
-        <h4 className="exercise-widget__title">{title}</h4>
+        <h3 className="exercise-widget__title">{title}</h3>
       </div>
 
       {goal && (
