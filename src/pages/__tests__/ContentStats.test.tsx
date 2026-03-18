@@ -22,7 +22,6 @@ vi.mock('../../utils/contentLoader', () => ({
   getAllLessons: vi.fn(),
   getAllPhases: vi.fn(),
   getReadingTime: vi.fn(),
-  getTotalReadingTime: vi.fn(),
   phaseIcons: ['📊', '🐍'],
 }))
 
@@ -86,7 +85,6 @@ describe('ContentStats', () => {
     vi.mocked(contentLoader.getReadingTime).mockImplementation((content) => {
       return content.length > 30 ? 5 : 2
     })
-    vi.mocked(contentLoader.getTotalReadingTime).mockReturnValue(7)
 
     act(() => {
       root.render(

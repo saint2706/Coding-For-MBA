@@ -33,6 +33,7 @@ vi.mock('../../utils/contentLoader', () => ({
   }),
   getAdjacentLessons: () => ({ prev: null, next: null }),
   getAllPhases: () => [{ phase: 1 }, { phase: 2 }],
+  getPhase: (phaseNum: number) => [{ phase: 1 }, { phase: 2 }].find((p) => p.phase === phaseNum),
   getLessonsByPhase: (phase: number) => (phase === 1 ? [{ day: '1B' }] : [{ day: '2' }]),
   getAllLessons: () => [{ day: '1B' }, { day: '2' }],
   difficultyConfig: {

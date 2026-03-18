@@ -6,3 +6,5 @@
 - Optimized `ProgressDashboard.tsx` earned badges rendering by replacing an O(N*M) `filter(...).includes(...)` operation with an O(N+M) `Set` lookup mechanism via `useMemo`.
 - Implemented `getTotalReadingTime` caching in `contentLoader.ts` to avoid repetitive O(N) array reductions via `getAllLessons().reduce` coupled with expensive regex evaluation on every render in `Home.tsx` and `ContentStats.tsx`.
 - Replaced `getAllPhases().some(...)` lookup in `Lesson.tsx` with an O(1) `!!getPhase(...)` check to avoid iterating over all phases during completion checks.
+- Removed unnecessary optimization of `lessonMetrics.reduce` in `ContentStats.tsx` because `readingTime` is already pre-calculated in the array, making the global cache lookup an invalid regression.
+- Correctly mocked `getTotalReadingTime` and `getPhase` in `Home.test.tsx` and `Lesson.test.tsx` respectively.
