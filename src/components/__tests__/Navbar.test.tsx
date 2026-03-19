@@ -32,7 +32,7 @@ describe('Navbar', () => {
     await act(async () => {
       root.render(
         <MemoryRouter initialEntries={['/']}>
-          <Navbar onToggleSidebar={() => {}} />
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
         </MemoryRouter>,
       )
     })
@@ -47,7 +47,7 @@ describe('Navbar', () => {
     await act(async () => {
       root.render(
         <MemoryRouter initialEntries={['/']}>
-          <Navbar onToggleSidebar={() => {}} />
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
         </MemoryRouter>,
       )
     })
