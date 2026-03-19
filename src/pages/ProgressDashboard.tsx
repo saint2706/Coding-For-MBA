@@ -108,6 +108,7 @@ export default function ProgressDashboard() {
     codeLanguage,
     density,
     readingMode,
+    readingComfortTheme,
     customCursorEnabled,
     setPalette,
     setSidebarDefaultOpen,
@@ -115,6 +116,7 @@ export default function ProgressDashboard() {
     setCodeLanguage,
     setDensity,
     setReadingMode,
+    setReadingComfortTheme,
     setCustomCursorEnabled,
   } = useUserPreferencesStore()
 
@@ -472,6 +474,26 @@ export default function ProgressDashboard() {
             </span>
             <small id="reading-mode-help">
               Focus on lesson text with reduced interface chrome.
+            </small>
+          </label>
+
+          <label
+            className="preferences-field preferences-toggle"
+            htmlFor="reading-comfort-theme-default"
+          >
+            Reading comfort theme
+            <span className="preferences-toggle-row">
+              <input
+                id="reading-comfort-theme-default"
+                type="checkbox"
+                checked={readingComfortTheme}
+                onChange={(event) => setReadingComfortTheme(event.target.checked)}
+                aria-describedby="reading-comfort-theme-help"
+              />
+              Apply the softer reading palette in reading mode
+            </span>
+            <small id="reading-comfort-theme-help">
+              Keeps your selected palette for the rest of the app.
             </small>
           </label>
 

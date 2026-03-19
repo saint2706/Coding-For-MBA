@@ -161,26 +161,24 @@ img {
 }
 
 .lesson-reading-surface {
-  --bg-primary: var(--reading-bg-primary);
-  --bg-surface: var(--reading-bg-surface);
-  --bg-card: color-mix(in srgb, var(--reading-bg-surface) 94%, #1f2d49 6%);
-  --bg-card-hover: color-mix(in srgb, var(--reading-bg-surface) 90%, #243452 10%);
-  --bg-code: var(--reading-bg-code);
-  --border-subtle: var(--reading-border-subtle);
-  --border-card: var(--reading-border-card);
-  --border-active: var(--reading-border-active);
-  --accent-glow: var(--reading-accent-glow);
-  --gradient-card: linear-gradient(
-    145deg,
-    rgba(67, 97, 238, 0.03) 0%,
-    rgba(63, 55, 201, 0.02) 100%
-  );
+  --bg-primary: var(--reading-theme-bg-primary);
+  --bg-surface: var(--reading-theme-bg-surface);
+  --bg-card: var(--reading-theme-bg-card);
+  --bg-card-hover: var(--reading-theme-bg-card-hover);
+  --bg-code: var(--reading-theme-bg-code);
+  --accent-primary: var(--reading-theme-accent-primary);
+  --accent-secondary: var(--reading-theme-accent-secondary);
+  --accent-tertiary: var(--reading-theme-accent-tertiary);
+  --border-subtle: var(--reading-theme-border-subtle);
+  --border-card: var(--reading-theme-border-card);
+  --border-active: var(--reading-theme-border-active);
+  --accent-glow: var(--reading-theme-accent-glow);
+  --gradient-card: none;
   --gradient-glow: none;
   --shadow-card: 0 3px 18px rgba(0, 0, 0, 0.22);
   --shadow-glow: none;
 }
 
 .lesson-reading-surface.page-container {
-  background:
-    radial-gradient(circle at 18% -18%, rgba(67, 97, 238, 0.06), transparent 45%), transparent;
+  background: var(--bg-primary);
 }

@@ -33,6 +33,7 @@ export type UserPreferencesStore = {
   codeLanguage: CodeLanguagePreference
   density: DensityPreference
   readingMode: boolean
+  readingComfortTheme: boolean
   customCursorEnabled: boolean
   setPalette: (palette: ColorPalette) => void
   setSidebarDefaultOpen: (open: boolean) => void
@@ -40,6 +41,7 @@ export type UserPreferencesStore = {
   setCodeLanguage: (language: CodeLanguagePreference) => void
   setDensity: (density: DensityPreference) => void
   setReadingMode: (readingMode: boolean) => void
+  setReadingComfortTheme: (readingComfortTheme: boolean) => void
   setCustomCursorEnabled: (customCursorEnabled: boolean) => void
 }
 
@@ -111,6 +113,7 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
       codeLanguage: 'python',
       density: 'comfortable',
       readingMode: false,
+      readingComfortTheme: true,
       customCursorEnabled: false,
       setPalette: (palette) => set({ palette }),
       setSidebarDefaultOpen: (sidebarDefaultOpen) => set({ sidebarDefaultOpen }),
@@ -118,11 +121,12 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
       setCodeLanguage: (codeLanguage) => set({ codeLanguage }),
       setDensity: (density) => set({ density }),
       setReadingMode: (readingMode) => set({ readingMode }),
+      setReadingComfortTheme: (readingComfortTheme) => set({ readingComfortTheme }),
       setCustomCursorEnabled: (customCursorEnabled) => set({ customCursorEnabled }),
     }),
     {
       name: STORAGE_KEY,
-      version: 4,
+      version: 5,
       storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({
         palette: state.palette,
@@ -131,6 +135,7 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
         codeLanguage: state.codeLanguage,
         density: state.density,
         readingMode: state.readingMode,
+        readingComfortTheme: state.readingComfortTheme,
         customCursorEnabled: state.customCursorEnabled,
       }),
       migrate: (persistedState) => {
@@ -150,6 +155,8 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
           codeLanguage: normalizeCodeLanguage(raw.codeLanguage),
           density: normalizeDensity(raw.density),
           readingMode: typeof raw.readingMode === 'boolean' ? raw.readingMode : false,
+          readingComfortTheme:
+            typeof raw.readingComfortTheme === 'boolean' ? raw.readingComfortTheme : true,
           customCursorEnabled:
             typeof raw.customCursorEnabled === 'boolean' ? raw.customCursorEnabled : false,
         }
@@ -176,3 +183,9 @@ export const selectSidebarDefaultOpen = (state: UserPreferencesStore) => state.s
  * @returns {boolean} Whether reading mode is enabled.
  */
 export const selectReadingMode = (state: UserPreferencesStore) => state.readingMode
+/**
+ * Selector for the reading comfort theme preference.
+ * @param {UserPreferencesStore} state - The user preferences state.
+ * @returns {boolean} Whether the reading comfort theme is enabled.
+ */
+export const selectReadingComfortTheme = (state: UserPreferencesStore) => state.readingComfortTheme

@@ -11,6 +11,9 @@ describe('userPreferencesStore', () => {
       fontSize: 'md',
       codeLanguage: 'python',
       density: 'comfortable',
+      readingMode: false,
+      readingComfortTheme: true,
+      customCursorEnabled: false,
     })
   })
 
@@ -22,6 +25,9 @@ describe('userPreferencesStore', () => {
     expect(state.fontSize).toBe('md')
     expect(state.codeLanguage).toBe('python')
     expect(state.density).toBe('comfortable')
+    expect(state.readingMode).toBe(false)
+    expect(state.readingComfortTheme).toBe(true)
+    expect(state.customCursorEnabled).toBe(false)
   })
 
   it('updates each preference via actions', () => {
@@ -32,6 +38,9 @@ describe('userPreferencesStore', () => {
     store.setFontSize('lg')
     store.setCodeLanguage('sql')
     store.setDensity('compact')
+    store.setReadingMode(true)
+    store.setReadingComfortTheme(false)
+    store.setCustomCursorEnabled(true)
 
     const updated = useUserPreferencesStore.getState()
 
@@ -41,6 +50,9 @@ describe('userPreferencesStore', () => {
       fontSize: 'lg',
       codeLanguage: 'sql',
       density: 'compact',
+      readingMode: true,
+      readingComfortTheme: false,
+      customCursorEnabled: true,
     })
   })
 
@@ -84,6 +96,7 @@ describe('userPreferencesStore', () => {
     expect(state.density).toBe('comfortable')
     // For boolean, it might default to false if not boolean
     expect(state.sidebarDefaultOpen).toBe(false)
+    expect(state.readingComfortTheme).toBe(true)
   })
 
   it('migrates from legacy theme field to palette', async () => {
