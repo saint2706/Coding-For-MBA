@@ -8,7 +8,9 @@ import * as reviewTracker from '../../utils/reviewTracker'
 
 // Mock dependencies
 vi.mock('../../utils/contentLoader', async () => {
-  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>('../../utils/contentLoader')
+  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>(
+    '../../utils/contentLoader',
+  )
   return {
     ...actual,
     getAllPhases: vi.fn(),

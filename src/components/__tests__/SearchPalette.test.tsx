@@ -18,7 +18,9 @@ vi.mock('../../utils/searchIndex', async () => {
 })
 
 vi.mock('../../utils/contentLoader', async () => {
-  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>('../../utils/contentLoader')
+  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>(
+    '../../utils/contentLoader',
+  )
   return {
     ...actual,
     difficultyConfig: {
