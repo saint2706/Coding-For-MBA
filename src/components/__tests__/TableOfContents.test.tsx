@@ -33,7 +33,7 @@ describe('TableOfContents Component', () => {
       unobserve() {}
       disconnect() {}
     }
-    window.IntersectionObserver = MockIntersectionObserver as any
+    window.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver
   })
 
   afterEach(() => {

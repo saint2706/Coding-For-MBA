@@ -45,3 +45,10 @@
 - **Fixed:** Removed leftover `as any` type casting in `src/pages/__tests__/Exercises.test.tsx` by adding missing `starterCode`.
 - **Fixed:** Removed leftover `as any` type casting in `src/pages/__tests__/PhaseOverview.test.tsx` by ensuring mocked objects returned complete structures.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 8
+- **Fixed:** Removed `as any` type casts from mock `Lesson` objects in `src/components/__tests__/PrerequisitePills.test.tsx` by fully populating the data.
+- **Fixed:** Removed `as any` type casts from mock `Lesson` objects in `src/components/__tests__/RelatedLessons.test.tsx` by fully populating the data.
+- **Fixed:** Removed `as any` type casts from mock module and return array in `src/components/__tests__/SidebarPhaseGroup.test.tsx` by properly typing mock and adding missing properties.
+- **Fixed:** Replaced `as any` cast on mocked `IntersectionObserver` with `as unknown as typeof IntersectionObserver` in `src/components/__tests__/TableOfContents.test.tsx`.
+- **Verified:** Build, lint, and tests pass.
