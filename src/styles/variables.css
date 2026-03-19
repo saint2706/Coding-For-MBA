@@ -51,14 +51,19 @@
     transparent 40%
   );
 
-  /* Calm reading surface */
-  --reading-bg-primary: #090918;
-  --reading-bg-surface: #0f0f24;
-  --reading-bg-code: #12122a;
-  --reading-border-subtle: rgba(150, 160, 210, 0.1);
-  --reading-border-card: rgba(150, 160, 210, 0.14);
-  --reading-border-active: rgba(94, 96, 206, 0.26);
-  --reading-accent-glow: rgba(94, 96, 206, 0.1);
+  /* Reading-first palette (low-chroma, softer contrast) */
+  --reading-theme-bg-primary: color-mix(in srgb, var(--bg-primary) 90%, #121826 10%);
+  --reading-theme-bg-surface: color-mix(in srgb, var(--bg-surface) 92%, #141b2d 8%);
+  --reading-theme-bg-card: color-mix(in srgb, var(--bg-card) 94%, #1a2338 6%);
+  --reading-theme-bg-card-hover: color-mix(in srgb, var(--bg-card-hover) 95%, #202a44 5%);
+  --reading-theme-bg-code: color-mix(in srgb, var(--bg-code) 94%, #151d30 6%);
+  --reading-theme-accent-primary: color-mix(in srgb, var(--accent-primary) 58%, #a9b8d4 42%);
+  --reading-theme-accent-secondary: color-mix(in srgb, var(--accent-secondary) 52%, #9ca9c8 48%);
+  --reading-theme-accent-tertiary: color-mix(in srgb, var(--accent-tertiary) 56%, #a7bdd5 44%);
+  --reading-theme-border-subtle: color-mix(in srgb, var(--border-subtle) 85%, #7f8aa0 15%);
+  --reading-theme-border-card: color-mix(in srgb, var(--border-card) 85%, #7f8aa0 15%);
+  --reading-theme-border-active: color-mix(in srgb, var(--border-active) 72%, #95a2bf 28%);
+  --reading-theme-accent-glow: color-mix(in srgb, var(--accent-glow) 45%, transparent);
 
   /* Shadows */
   --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);

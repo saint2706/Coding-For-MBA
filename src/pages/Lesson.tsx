@@ -79,6 +79,7 @@ export default function Lesson() {
   const lesson = getLesson(dayNum!)
   const { prev, next } = getAdjacentLessons(dayNum!)
   const readingModePreference = useUserPreferencesStore((state) => state.readingMode)
+  const readingComfortTheme = useUserPreferencesStore((state) => state.readingComfortTheme)
   const setReadingModePreference = useUserPreferencesStore((state) => state.setReadingMode)
   const [readingMode, setReadingMode] = useState(readingModePreference)
   const [nearBottom, setNearBottom] = useState(false)
@@ -258,7 +259,7 @@ export default function Lesson() {
 
   return (
     <div
-      className={`page-container lesson-with-toc lesson-reading-surface ${readingMode ? 'reading-mode' : ''}`}
+      className={`page-container lesson-with-toc ${readingMode && readingComfortTheme ? 'lesson-reading-surface' : ''} ${readingMode ? 'reading-mode' : ''}`}
       ref={swipeRef}
     >
       <SEOHead
