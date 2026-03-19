@@ -52,3 +52,8 @@
 - **Fixed:** Removed `as any` type casts from mock module and return array in `src/components/__tests__/SidebarPhaseGroup.test.tsx` by properly typing mock and adding missing properties.
 - **Fixed:** Replaced `as any` cast on mocked `IntersectionObserver` with `as unknown as typeof IntersectionObserver` in `src/components/__tests__/TableOfContents.test.tsx`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 9
+- **Fixed:** Replaced `as any` cast on mock imports and `TouchEvent` in `src/components/__tests__/SearchPalette.test.tsx`, `src/components/__tests__/Sidebar.test.tsx`, `src/components/__tests__/AnimatedCounter.test.tsx`, and `src/hooks/__tests__/useSwipe.test.tsx`.
+- **Fixed:** Used `Object.defineProperty` on the mocked `window` objects in `src/components/__tests__/BackToTop.test.tsx` instead of `as any`.
+- **Verified:** Build, lint, and tests pass.

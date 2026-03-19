@@ -56,7 +56,7 @@ describe('useSwipe', () => {
 
     const eventOptions = type === 'touchstart' ? { touches: [touch] } : { changedTouches: [touch] }
 
-    const event = new TouchEvent(type, eventOptions as any)
+    const event = new TouchEvent(type, eventOptions as unknown as TouchEventInit)
     element.dispatchEvent(event)
   }
 
