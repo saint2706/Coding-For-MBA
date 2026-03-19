@@ -92,7 +92,7 @@ export default function Exercises() {
 
   const collectionSchema = buildCollectionPageSchema(
     'Exercises Browser',
-    'Browse and filter all exercises across the 108-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises.',
+    'Browse and filter all exercises across the 140-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises.',
     '/exercises',
     exercises.slice(0, 10).map((ex) => ({
       name: ex.title,
@@ -105,7 +105,7 @@ export default function Exercises() {
     <div className="page-container">
       <SEOHead
         title="Exercises"
-        description="Browse and filter all exercises across the 108-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises."
+        description="Browse and filter all exercises across the 140-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises."
         path="/exercises"
         breadcrumbs={[
           { name: 'Home', url: '/' },

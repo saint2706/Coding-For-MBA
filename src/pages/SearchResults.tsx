@@ -76,7 +76,7 @@ export default function SearchResults() {
     <div className="page-container">
       <SEOHead
         title={query ? `Search: ${query}` : 'Search'}
-        description="Search the 108-day Coding for MBA curriculum by title, concepts, tags, phase, or content."
+        description="Search the 140-day Coding for MBA curriculum by title, concepts, tags, phase, or content."
         path="/search"
         noIndex
       />

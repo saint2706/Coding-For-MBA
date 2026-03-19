@@ -32,8 +32,8 @@ function findFiles(dir, filename) {
 const lines = ['# Site Architecture']
 
 // Static pages
-lines.push(`- ${BASE_URL}/#/: Home page - Main landing page covering the 108-day Python, Data Science, and SQL curriculum.`)
-lines.push(`- ${BASE_URL}/#/curriculum: Curriculum overview - Browse the complete 108-day curriculum roadmap across 9 phases.`)
+lines.push(`- ${BASE_URL}/#/: Home page - Main landing page covering the 140-day Python, Data Science, and SQL curriculum.`)
+lines.push(`- ${BASE_URL}/#/curriculum: Curriculum overview - Browse the complete 140-day curriculum roadmap across 9 phases.`)
 lines.push(`- ${BASE_URL}/#/exercises: Practice exercises - Hands-on coding exercises and challenges.`)
 lines.push(`- ${BASE_URL}/#/progress: Learning progress - Track your curriculum completion and daily streaks.`)
 lines.push(`- ${BASE_URL}/#/concepts: Concept graph - Visual map of interrelated technical concepts.`)

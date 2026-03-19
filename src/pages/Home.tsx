@@ -119,7 +119,7 @@ export default function Home() {
   return (
     <div className="page-container">
       <SEOHead
-        title="Coding for MBA — 108-Day Technical Curriculum"
+        title="Coding for MBA — 140-Day Technical Curriculum"
         description={`A structured ${stats.totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.`}
         path="/"
         jsonLd={[
@@ -127,7 +127,7 @@ export default function Home() {
           buildCourseSchema(),
           buildProductSchema(
             'Coding for MBA',
-            'A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.',
+            'A structured 140-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.',
           ),
         ]}
         breadcrumbs={[{ name: 'Home', url: '/' }]}

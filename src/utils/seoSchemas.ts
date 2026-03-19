@@ -13,7 +13,7 @@
 const SITE_URL = 'https://saint2706.github.io/Coding-For-MBA'
 const SITE_NAME = 'Coding for MBA'
 const DEFAULT_DESCRIPTION =
-  'A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.'
+  'A structured 140-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.'
 
 /**
  * Build a full canonical URL from a hash path.
@@ -109,7 +109,7 @@ export function buildCourseSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'Course',
-    name: 'Coding for MBA — 108-Day Technical Curriculum',
+    name: 'Coding for MBA — 140-Day Technical Curriculum',
     description: DEFAULT_DESCRIPTION,
     url: `${SITE_URL}/`,
     provider: {
@@ -117,7 +117,7 @@ export function buildCourseSchema(): Record<string, unknown> {
       name: SITE_NAME,
       url: `${SITE_URL}/`,
     },
-    numberOfCredits: 108,
+    numberOfCredits: 140,
     educationalLevel: 'Professional',
     teaches: [
       'Python Programming',
@@ -213,7 +213,7 @@ export function buildLessonSchema(
     image: `${SITE_URL}/og-image.png`,
     isPartOf: {
       '@type': 'Course',
-      name: 'Coding for MBA — 108-Day Technical Curriculum',
+      name: 'Coding for MBA — 140-Day Technical Curriculum',
       url: `${SITE_URL}/`,
     },
     position: day,

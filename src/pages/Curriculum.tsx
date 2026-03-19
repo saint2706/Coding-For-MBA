@@ -106,7 +106,7 @@ export default function Curriculum() {
 
   const itemListSchema = buildItemListSchema(
     'Full Curriculum Roadmap',
-    'Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL.',
+    'Browse the complete 140-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL.',
     phasesData.map((phase) => ({
       name: `Phase ${phase.phase}: ${phase.title}`,
       url: `/phase/${phase.phase}`,
@@ -119,7 +119,7 @@ export default function Curriculum() {
     <div className="page-container">
       <SEOHead
         title="Full Curriculum Roadmap"
-        description="Browse the complete 108-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL."
+        description="Browse the complete 140-day curriculum roadmap across 9 phases — from Python foundations to enterprise SQL."
         path="/curriculum"
         breadcrumbs={[
           { name: 'Home', url: '/' },
@@ -129,7 +129,7 @@ export default function Curriculum() {
           itemListSchema,
           buildProductSchema(
             'Coding for MBA',
-            'A structured 108-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.',
+            'A structured 140-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.',
           ),
         ]}
       />
