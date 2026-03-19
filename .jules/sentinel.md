@@ -73,3 +73,8 @@
 ## 2026-03-15 - CSP Hardening for Iframes
 **Vulnerability:** The application was not explicitly restricting the use of iframes, potentially allowing malicious content to be embedded or Clickjacking vectors if external content is embedded.
 **Prevention:** Hardened the Content-Security-Policy by adding `frame-src 'none'` and `child-src 'none'` to the `index.html` meta tag, strictly disallowing any iframe embedding within the application.
+
+## 2026-03-18 - Supply Chain Hardening
+**Vulnerability:** The devDependency `@lhci/cli` contained a transitive dependency (`tmp@<=0.2.3`) susceptible to an arbitrary temporary file / directory write via symbolic link (`dir` parameter) - GHSA-52f5-9888-hmc6.
+**Learning:** Development tools and CLI runners can introduce supply chain risks via outdated transitive dependencies, especially when unmaintained.
+**Prevention:** Used `overrides` in `package.json` to force the resolution of `tmp` to a secure version (`^0.2.4`) to patch the vulnerability without breaking the Lighthouse CI workflow.
