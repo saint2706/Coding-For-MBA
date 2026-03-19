@@ -21,25 +21,60 @@
       "sourceType": "github",
       "computedHash": "0e161c4a4f3a3f5bd6949a1ebc833fd61d29f35a4fed307567a8114d003a95fc"
     },
+    "api-patterns": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "48f9d87a6e5aae730b2c70012e9a1f46b868e17cdd42697b6ac88c5e56fe6cec"
+    },
+    "app-builder": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "0d3baf51aef44965a91873005f13c92c75150be35a04e10bb90fa6accbc6ac7e"
+    },
+    "architecture": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "b1353789802977897b7fec1dab2e7bb218f74c4f029d26562118ec2aa650685d"
+    },
     "audit-website": {
       "source": "squirrelscan/skills",
       "sourceType": "github",
       "computedHash": "2c060290f90340e8bb6009502ec936b8ebb3ff889332a43e24bf210528ebba9f"
     },
-    "brainstorming": {
-      "source": "obra/superpowers",
+    "bash-linux": {
+      "source": "vudovn/antigravity-kit",
       "sourceType": "github",
-      "computedHash": "8e99026256fdd857520640b72e0181221ae02bcba16bdb9d644191c1b1b3b9e4"
+      "computedHash": "c76e92617607948866ae823a4c88148ea0035b0c245d291d889462e4147dfa99"
+    },
+    "behavioral-modes": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "53d6efca7e493d72b2c4fc3957fb9a428691136ed0de3be0083ff4d70e39422a"
+    },
+    "brainstorming": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "b7e0f98c642d474406f1ebe1e38572b653a453007c2e92f1c5199efa581e8a43"
     },
     "changelog-maintenance": {
       "source": "supercent-io/skills-template",
       "sourceType": "github",
       "computedHash": "1700614a8a35135a4b7fa466797b224a76a7a34e7a70497ecee4c69ecadc12e3"
     },
+    "clean-code": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "3554f62f58a36cb29748f44e82b7facbd500d4637cc0f2092df4dfff8192338d"
+    },
     "code-refactoring": {
       "source": "supercent-io/skills-template",
       "sourceType": "github",
       "computedHash": "18da189464fd9a53133a1372599369ac4b7f3a9da653a907762e20e89cdb2102"
+    },
+    "code-review-checklist": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "e38105a283f7d55b5d990a1981b5aaaaab1fe2a166a4a2959b77fa43113ecc5f"
     },
     "content-strategy": {
       "source": "coreyhaines31/marketingskills",
@@ -51,6 +86,11 @@
       "sourceType": "github",
       "computedHash": "2e83eda2221e97166172a0798e9b0379e34080595e107e2fc0cf580e9b3bbf7b"
     },
+    "database-design": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "c441de2beac978d466fec3347600ea3a6415db28f19c4d7677c951cbc41f4686"
+    },
     "debugging": {
       "source": "supercent-io/skills-template",
       "sourceType": "github",
@@ -60,6 +100,16 @@
       "source": "supercent-io/skills-template",
       "sourceType": "github",
       "computedHash": "6a1fe3ca9bd90c6f25a716e40c4e28f230ddbb94811d689fb206a84eaa26d917"
+    },
+    "deployment-procedures": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "b94fa7884814a2cc02aeae37cf9c457c8e31915b35ac9b8744c4711b0bc3e45c"
+    },
+    "documentation-templates": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "472ac45ce6e28c89b4561ac686cf4a383fbbc78d9587697e5f9d972b061591e1"
     },
     "executing-plans": {
       "source": "obra/superpowers",
@@ -77,9 +127,19 @@
       "computedHash": "6412eb4eb3b91595ebab937f0c69501240e7ba761b3d82510b5cf506ec5c7adc"
     },
     "frontend-design": {
-      "source": "anthropics/skills",
+      "source": "vudovn/antigravity-kit",
       "sourceType": "github",
-      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+      "computedHash": "a96704c64a0f8850d44454f95ea1238a75ebac909cb055614c641f903e297f3a"
+    },
+    "game-development": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "1e379386d78fca7ed1c0fb735114da2848ca2caf17290373eebd6ebf1d3657cc"
+    },
+    "geo-fundamentals": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "461ca2b3c68536067c4fd9423ff4428687d3764a6a89cac59af19bae2e816894"
     },
     "git-commit": {
       "source": "github/awesome-copilot",
@@ -91,6 +151,36 @@
       "sourceType": "github",
       "computedHash": "a8f2d356cee50a0c64eeded9762de58d5227ba3a47b91cdd9889ba84dff9d020"
     },
+    "i18n-localization": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "66da9c3f527c18a87003543882c76ebe5bd179e692fc9bc859752bf6e1a2f1f6"
+    },
+    "intelligent-routing": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "1d31ea695a7ffe03cb7c997f3c39049c3a8b1bcad782f8bde8978806905188cd"
+    },
+    "mcp-builder": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "3cd47dde80f124505716860f1302e58d7eacf6063603eb569ef0e39ff29d76d2"
+    },
+    "mobile-design": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "27e338f7267fed0ce198852af954f79ce6746b9c94e4e530e581e19e568b8ba0"
+    },
+    "nodejs-best-practices": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "52d0a8813848bb7df01ba851e9ca0c8d853db46daa07f575a6b5efa7ff1d8a0d"
+    },
+    "parallel-agents": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "69b29cf1e4d9116b8abc9a8e4eca2c20f060df51dd27fb9198dc3b75cca6c1aa"
+    },
     "parallel-task": {
       "source": "am-will/codex-skills",
       "sourceType": "github",
@@ -101,30 +191,65 @@
       "sourceType": "github",
       "computedHash": "5cbae5d5e98c89e02b18cb43d9f7b9175fd95cf3957b2eaafb0f5a32b53205b1"
     },
+    "performance-profiling": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "16778a4d4301b45c3f6f8c89e3d87123499d1b55b99b13ae917bb9a97c71d359"
+    },
     "plan-harder": {
       "source": "am-will/codex-skills",
       "sourceType": "github",
       "computedHash": "a5a22b3a135f349474a4a482992c264e5c6f8bdaa614517522420d334a810a12"
+    },
+    "plan-writing": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "b066c80938930371c25dec46bf608817dce7e2c6e1a902f1c8e8d893e6226fcc"
     },
     "planner": {
       "source": "am-will/codex-skills",
       "sourceType": "github",
       "computedHash": "ab1d97975dcf20cebe27960f1b0abd7e2db16fa31261aebe29342eca33076f91"
     },
+    "powershell-windows": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "4a4ca14a3de5bfdc6e7ba40cf0c1d493c12f6543907edea178e2bf0eb9d1a503"
+    },
     "programmatic-seo": {
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
       "computedHash": "40b8fe29a6c9cb0606e6fa77aff227cf275e3808adf66e5ef69e02dcf60a7303"
+    },
+    "python-patterns": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "fd36d08898a4790a34eab0a8c269ac939bd7f30c6b9234a61cb2a62cbb73de73"
     },
     "python-performance-optimization": {
       "source": "wshobson/agents",
       "sourceType": "github",
       "computedHash": "2a11c79dcd94b5424261b44247ab03a8365cbe62f05f9b52500211db8fda98f9"
     },
+    "react-best-practices": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "bd96e30429ff20b3bdb8e5ece7543c2526b83511286d22f22056c62cb2d58b74"
+    },
+    "red-team-tactics": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "36b1a8be5830994502d0d92959230a012a598aab2ba36adabcfafe31c4d3177a"
+    },
     "responsive-design": {
       "source": "supercent-io/skills-template",
       "sourceType": "github",
       "computedHash": "f9378e731deb2b131442973c55fcc9d5e80f5515c55200a8c86f63bb97410b37"
+    },
+    "rust-pro": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "71e0f64f7b6f7893f759161798833e98b6a2e9772d77942b5314f6ba783db205"
     },
     "security-best-practices": {
       "source": "supercent-io/skills-template",
@@ -135,6 +260,16 @@
       "source": "coreyhaines31/marketingskills",
       "sourceType": "github",
       "computedHash": "ec3109d213dde1747614ad1112ef0e498e04b24e464538968e156dfbfadb2121"
+    },
+    "seo-fundamentals": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "4cb8fd4b5cd8daad44314d13de0206d1cf80f365107f5ef662ebbd5a64cf2c3f"
+    },
+    "server-management": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "2dba122ff030813d134fe02b14754b259ac1e852be3c155498fc7dad9e997935"
     },
     "shadcn-ui": {
       "source": "giuseppe-trisciuoglio/developer-kit",
@@ -147,9 +282,19 @@
       "computedHash": "85ffbc05cf88939ba3ff643a315928185af16181470349dfbaad2880047c9900"
     },
     "systematic-debugging": {
-      "source": "obra/superpowers",
+      "source": "vudovn/antigravity-kit",
       "sourceType": "github",
-      "computedHash": "72e9ab72627e4fd8ed26a582e82309a98ecdc4f6e1c99418430ac05682c9e91d"
+      "computedHash": "8a33368b3e74181d9c164ae8c494f53b75df62745d9853760a9856ab41150f99"
+    },
+    "tailwind-patterns": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "f1d8fc8850ee31be541fa04fb7b9ac9f7214fe8239306664f2d5a319d4da9677"
+    },
+    "tdd-workflow": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "5c33b5e16ea1058ba1fff0d8380605f68872477f9e3a281e0e349aeca090b009"
     },
     "technical-writing": {
       "source": "supercent-io/skills-template",
@@ -160,6 +305,11 @@
       "source": "obra/superpowers",
       "sourceType": "github",
       "computedHash": "126f1ebf6ccd414f42544f6e83d8cc5adb089e1108eaffb7c400701e37eecd9f"
+    },
+    "testing-patterns": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "37d50f90ff322e07dd3dfb84b86023a99c76a966247fff1731b58d4deab7d15a"
     },
     "theme-factory": {
       "source": "anthropics/skills",
@@ -191,20 +341,25 @@
       "sourceType": "github",
       "computedHash": "0293c251e4d6ff4818e8d2faed2a92f98d8d73c2f4819bd754faf93ca134d6fe"
     },
+    "vulnerability-scanner": {
+      "source": "vudovn/antigravity-kit",
+      "sourceType": "github",
+      "computedHash": "e384cd9ef99334cd10d26777028e7c93b74fcc74cf2cb457e4b7e3dcdcb2bedf"
+    },
     "web-accessibility": {
       "source": "supercent-io/skills-template",
       "sourceType": "github",
       "computedHash": "1e0a30c11fc1524b36124c278642204597e137d927a46cc6262753c174af5a81"
     },
     "web-design-guidelines": {
-      "source": "vercel-labs/agent-skills",
+      "source": "vudovn/antigravity-kit",
       "sourceType": "github",
-      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+      "computedHash": "97ff58dd9f1e45eebcf75aceb6ba19566ecc0f82652bc5d9071edabb450b9c10"
     },
     "webapp-testing": {
-      "source": "anthropics/skills",
+      "source": "vudovn/antigravity-kit",
       "sourceType": "github",
-      "computedHash": "cf8e5916d474886bd67b09691247f43f331523008b7d366064bc607ab42d6302"
+      "computedHash": "e90364dfd68c5045129810998ef4b9e395c68290659fa7c307ed8a2e5f7c1153"
     },
     "workflow-automation": {
       "source": "supercent-io/skills-template",
