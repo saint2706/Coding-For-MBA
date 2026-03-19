@@ -86,10 +86,27 @@
   --radius-lg: 16px;
   --radius-xl: 24px;
 
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Motion */
+  --motion-duration-instant: 0ms;
+  --motion-duration-fast: 150ms;
+  --motion-duration-standard: 250ms;
+  --motion-duration-slow: 400ms;
+  --motion-duration-skeleton: 1400ms;
+  --motion-duration-view-transition: 200ms;
+  --motion-duration-card-entrance: 500ms;
+  --motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-easing-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-duration-active-fast: var(--motion-duration-fast);
+  --motion-duration-active-standard: var(--motion-duration-standard);
+  --motion-duration-active-slow: var(--motion-duration-slow);
+  --motion-duration-active-skeleton: var(--motion-duration-skeleton);
+  --motion-duration-active-view-transition: var(--motion-duration-view-transition);
+  --motion-duration-active-card-entrance: var(--motion-duration-card-entrance);
+
+  /* Backward-compatible transition aliases */
+  --transition-fast: var(--motion-duration-fast) var(--motion-easing-standard);
+  --transition-base: var(--motion-duration-standard) var(--motion-easing-standard);
+  --transition-slow: var(--motion-duration-slow) var(--motion-easing-standard);
 
   /* Typography */
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -415,4 +432,15 @@
   --reading-accent-glow: rgba(73, 80, 87, 0.06);
   --text-on-accent: #ffffff;
   --text-on-brand: #0d1117;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-active-fast: var(--motion-duration-instant);
+    --motion-duration-active-standard: var(--motion-duration-instant);
+    --motion-duration-active-slow: var(--motion-duration-instant);
+    --motion-duration-active-skeleton: var(--motion-duration-instant);
+    --motion-duration-active-view-transition: var(--motion-duration-instant);
+    --motion-duration-active-card-entrance: var(--motion-duration-instant);
+  }
 }

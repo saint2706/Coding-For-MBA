@@ -20,7 +20,7 @@
     transparent 72%
   );
   transform: translateX(-130%);
-  animation: skeletonShimmer 1.4s infinite;
+  animation: skeletonShimmer var(--motion-duration-active-skeleton) infinite;
 }
 
 .skeleton-text {
@@ -67,6 +67,16 @@
   .skeleton::after {
     animation: none !important;
   }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+
+  .stats-bar-fill,
+  .stats-phase-card {
+    transition: none !important;
+  }
 }
 
 /* ---------- Glassmorphism Utility ---------- */
@@ -101,6 +111,13 @@
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-primary) 24%, transparent);
   }
 
+  .reading-mode a:hover,
+  .reading-mode button:hover,
+  .reading-mode .interactive:hover {
+    box-shadow: none;
+    transform: none;
+  }
+
   a:focus-visible,
   button:focus-visible,
   .interactive:focus-visible {
@@ -129,7 +146,7 @@
 .scroll-progress-bar {
   height: 100%;
   background: var(--accent-primary);
-  transition: width 50ms linear;
+  transition: width var(--motion-duration-active-fast) linear;
   border-radius: 0 2px 2px 0;
 }
 
@@ -161,7 +178,8 @@
   font-size: 0.65rem;
   color: var(--text-muted);
   text-decoration: none;
-  transition: var(--transition-fast);
+  transition-duration: var(--motion-duration-active-fast);
+  transition-timing-function: var(--motion-easing-standard);
   flex: 1;
 }
 
@@ -188,11 +206,11 @@
 
 /* ---------- Page Transitions (View Transitions API) ---------- */
 ::view-transition-old(root) {
-  animation: fade-out 200ms ease-out;
+  animation: fade-out var(--motion-duration-active-view-transition) ease-out;
 }
 
 ::view-transition-new(root) {
-  animation: fade-in 200ms ease-in;
+  animation: fade-in var(--motion-duration-active-view-transition) ease-in;
 }
 
 @keyframes fade-out {
@@ -319,7 +337,7 @@
 .stats-bar-fill {
   height: 100%;
   border-radius: var(--radius-sm);
-  transition: width 600ms ease-out;
+  transition: width var(--motion-duration-active-slow) ease-out;
 }
 
 .stats-bar-beginner {
@@ -359,7 +377,8 @@
   border-radius: var(--radius-md);
   padding: 1rem;
   text-decoration: none;
-  transition: var(--transition-fast);
+  transition-duration: var(--motion-duration-active-fast);
+  transition-timing-function: var(--motion-easing-standard);
 }
 
 .stats-phase-card:hover {
@@ -583,9 +602,9 @@
   opacity: 0;
   transition:
     border-color var(--transition-fast),
-    width var(--transition-fast),
-    height var(--transition-fast),
-    opacity var(--transition-fast);
+    width var(--motion-duration-active-fast),
+    height var(--motion-duration-active-fast),
+    opacity var(--motion-duration-active-fast);
 }
 
 .custom-cursor-active .custom-cursor-dot,

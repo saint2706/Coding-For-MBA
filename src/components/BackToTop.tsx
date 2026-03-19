@@ -40,7 +40,7 @@ export default function BackToTop() {
    * Smoothly scrolls the window back to the top of the page.
    */
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' })
   }
 
   return (

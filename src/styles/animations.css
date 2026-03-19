@@ -13,11 +13,11 @@
 }
 
 .animate-in {
-  animation: fadeInUp 0.5s ease-out forwards;
+  animation: fadeInUp var(--motion-duration-active-card-entrance) ease-out forwards;
 }
 
 .phase-card {
-  animation: fadeInUp 0.4s ease-out backwards;
+  animation: fadeInUp var(--motion-duration-active-standard) ease-out backwards;
 }
 
 .phase-card:nth-child(1) {
@@ -62,9 +62,15 @@
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .animate-in,
+  .phase-card {
+    animation: none !important;
+  }
+
+  .phase-card {
+    animation-delay: 0s !important;
   }
 }
