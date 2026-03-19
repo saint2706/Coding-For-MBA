@@ -564,6 +564,24 @@ export function parseNotebookEntry(
 }
 
 let immutableNotebooks: readonly ImmutableNotebook[] | null = null
+let totalReadingTimeCache: number | null = null
+
+/**
+ * Retrieves the total estimated reading time (in minutes) for all lessons.
+ * The value is computed once and cached to optimize render performance.
+ *
+ * @returns {number} The total reading time across the curriculum.
+ */
+export function getTotalReadingTime(): number {
+  if (totalReadingTimeCache === null) {
+    const allLessons = getAllLessons()
+    totalReadingTimeCache = allLessons.reduce(
+      (sum, lesson) => sum + getReadingTime(lesson.content),
+      0,
+    )
+  }
+  return totalReadingTimeCache
+}
 
 /**
  * Retrieves all valid parsed Jupyter notebooks available in the project.
