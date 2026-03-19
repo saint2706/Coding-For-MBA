@@ -26,6 +26,7 @@ public/sitemap.xml
 .adal/
 .agent/
 .augment/
+.claude/
 .codebuddy/
 .commandcode/
 .continue/
