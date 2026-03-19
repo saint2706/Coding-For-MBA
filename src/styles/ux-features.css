@@ -652,3 +652,27 @@
     animation: none !important;
   }
 }
+
+/* --- Error Boundary --- */
+.error-actions {
+  display: flex;
+  gap: var(--spacing-md, 1rem);
+  margin-top: var(--spacing-xl, 1.5rem);
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.action-btn:hover,
+.action-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.1);
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}

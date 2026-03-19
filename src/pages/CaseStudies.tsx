@@ -88,9 +88,11 @@ export default function CaseStudies() {
       {/* Tabs */}
       <div className="cs-tabs" role="tablist" aria-label="Content type">
         <button
+          id="tab-case-studies"
           type="button"
           role="tab"
           aria-selected={activeTab === 'case-studies'}
+          aria-controls="panel-case-studies"
           className={`cs-tab ${activeTab === 'case-studies' ? 'cs-tab--active' : ''}`}
           onClick={() => {
             setActiveTab('case-studies')
@@ -100,9 +102,11 @@ export default function CaseStudies() {
           🏢 Case Studies ({caseStudies.length})
         </button>
         <button
+          id="tab-projects"
           type="button"
           role="tab"
           aria-selected={activeTab === 'projects'}
+          aria-controls="panel-projects"
           className={`cs-tab ${activeTab === 'projects' ? 'cs-tab--active' : ''}`}
           onClick={() => {
             setActiveTab('projects')
@@ -136,7 +140,13 @@ export default function CaseStudies() {
       </p>
 
       {/* Cards */}
-      <motion.div className="cs-grid" layout>
+      <motion.div
+        className="cs-grid"
+        layout
+        role="tabpanel"
+        id={activeTab === 'case-studies' ? 'panel-case-studies' : 'panel-projects'}
+        aria-labelledby={activeTab === 'case-studies' ? 'tab-case-studies' : 'tab-projects'}
+      >
         {filtered.map((item) => {
           const normDiff = normalizeDifficulty(item.difficulty)
           const diff = difficultyConfig[normDiff] ?? {

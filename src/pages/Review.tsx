@@ -154,6 +154,7 @@ export default function Review() {
                     className={`review-action-btn review-${rating}`}
                     onClick={() => handleRate(rating)}
                     title={`Shortcut: ${index + 1}`}
+                    aria-keyshortcuts={`${index + 1}`}
                   >
                     {getRatingLabel(rating)}
                   </button>

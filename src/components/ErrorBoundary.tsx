@@ -47,11 +47,11 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
         <main className="main-content" role="alert" aria-live="assertive">
           <h1>Something went wrong</h1>
           <p>We hit an unexpected issue while loading this page.</p>
-          <div>
-            <button type="button" onClick={this.handleRetry}>
+          <div className="error-actions">
+            <button type="button" className="action-btn" onClick={this.handleRetry}>
               Try again
             </button>
-            <button type="button" onClick={this.handleReload}>
+            <button type="button" className="action-btn" onClick={this.handleReload}>
               Reload page
             </button>
           </div>

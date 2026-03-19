@@ -22,3 +22,12 @@
 * **Observation**: Found many places (CopyButton, Sidebar streak, ProgressDashboard stats, Curriculum stats) where emojis were placed next to text strings or inside descriptive wrappers but not explicitly hidden from screen readers.
 * **Fix**: Wrapped these emojis in `<span aria-hidden="true">` to prevent screen readers from redundantly calling out "Chart showing upward trend" when the label says "Completed".
 * **Rule**: When an emoji is purely decorative and its meaning is already conveyed via text or an `aria-label`, always hide it using `aria-hidden="true"`.
+
+### Error Boundary Styling
+Learned that using domain-specific CSS classes (like `review-answer-btn`) inside global components like `ErrorBoundary` creates technical debt and unnecessary coupling. It's better to use explicit generalized button classes (`action-btn`) and avoid hard-coded inline styles for layout spacing.
+
+### Accessible Tabs
+When implementing custom Tab components, `aria-controls` on the tab triggers must point to the `id` of the `role="tabpanel"` container, and the tabpanel must be labeled by the tab trigger's `id` using `aria-labelledby`.
+
+### Accessible Spaced Repetition Buttons
+Added `aria-keyshortcuts` to the rating buttons in spaced repetition workflows to programmatically inform screen readers of available keyboard bindings (e.g., `aria-keyshortcuts="1"`).
