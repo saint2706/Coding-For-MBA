@@ -22,6 +22,37 @@ public/sitemap.xml
 !.agents/skills/
 !.agents/skills/**
 
+# Agent tool symlink directories created by npx skills CLI (runtime symlinks, not tracked)
+.adal/
+.agent/
+.augment/
+.codebuddy/
+.commandcode/
+.continue/
+.cortex/
+.crush/
+.factory/
+.goose/
+.iflow/
+.junie/
+.kilocode/
+.kiro/
+.kode/
+.mcpjam/
+.mux/
+.neovate/
+.openhands/
+.pi/
+.pochi/
+.qoder/
+.qwen/
+.roo/
+.trae/
+.vibe/
+.windsurf/
+.zencoder/
+/skills/
+
 # Lock files (project uses npm)
 pnpm-lock.yaml
 yarn.lock
