@@ -37,7 +37,7 @@ export default function MasteryCheck({
     <div className={`mastery-check ${revealed ? 'mastery-check--revealed' : ''}`}>
       <div className="mastery-check__header">
         <span className="mastery-check__badge">Q{questionNumber}</span>
-        <h4 className="mastery-check__title">{title}</h4>
+        <h3 className="mastery-check__title">{title}</h3>
       </div>
 
       <div className="mastery-check__question">
