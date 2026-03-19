@@ -27,3 +27,7 @@
 - **[2026-03-17] Markdown Links & Link Checker configuration**
   - Updated `mlc_config.json` configuration file to ignore more websites that return false positives (403 or 0 codes) from anti-bot mechanisms: `machinelearningmastery.com`, `docs.scipy.org`, `pgtune.leopard.in.ua`.
   - Successfully passed `markdown-link-check` script.
+- **[2026-03-18] Added missing JSDoc comments to utilities**
+  - Added full JSDoc comments (`@param`, `@returns`) to `src/utils/seoSchemas.ts` for `buildCanonicalUrl`, `buildWebSiteSchema`, and `buildCourseSchema`.
+  - Added full JSDoc comments (`@param`, `@returns`) to `src/utils/contentLoader.ts` for `getAdjacentLessons`, `getAllExercises`, `getNotebook`, and `getReadingTime`.
+  - Verified that all exported functions within `src/utils/` are fully documented via automated script check.
