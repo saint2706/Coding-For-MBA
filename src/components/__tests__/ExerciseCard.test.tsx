@@ -6,6 +6,7 @@ import ExerciseCard from '../ExerciseCard'
 
 // Mock motion to avoid animation issues
 vi.mock('motion/react', () => ({
+  useReducedMotion: () => false,
   motion: {
     div: ({ children, className, ...props }: any) => {
       const {

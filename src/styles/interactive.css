@@ -22,7 +22,7 @@
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--motion-duration-active-fast) var(--motion-easing-standard);
 }
 
 .python-runner__btn:hover:not(:disabled) {
@@ -155,7 +155,7 @@
   border: 1px solid var(--border-subtle);
   border-radius: 4px;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--motion-duration-active-fast) var(--motion-easing-standard);
 }
 
 .code-playground__btn:hover {
@@ -329,7 +329,7 @@
   border: 1px solid rgba(167, 139, 250, 0.15);
   border-radius: 4px;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--motion-duration-active-fast) var(--motion-easing-standard);
 }
 
 .exercise-widget__solution-btn:hover {
@@ -348,7 +348,7 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   background: rgba(245, 158, 11, 0.02);
-  transition: border-color var(--transition-base);
+  transition: border-color var(--motion-duration-active-standard) var(--motion-easing-standard);
 }
 
 .mastery-check--revealed {
@@ -416,7 +416,7 @@
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--motion-duration-active-fast) var(--motion-easing-standard);
 }
 
 .mastery-check__check-btn:hover {
@@ -433,7 +433,7 @@
 
 .mastery-check__answer {
   border-top: 1px solid rgba(34, 197, 94, 0.1);
-  animation: fadeSlideIn 0.2s ease-out;
+  animation: fadeSlideIn var(--motion-duration-active-fast) ease-out;
 }
 
 .mastery-check__answer-label {
@@ -469,7 +469,7 @@
   border: 1px solid rgba(34, 197, 94, 0.2);
   border-radius: 4px;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: all var(--motion-duration-active-fast) var(--motion-easing-standard);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -481,7 +481,7 @@
 
 .code-block-inline-playground {
   border-top: 1px solid var(--border-subtle);
-  animation: fadeSlideIn 0.2s ease-out;
+  animation: fadeSlideIn var(--motion-duration-active-fast) ease-out;
 }
 
 .code-block-inline-playground .code-playground {
@@ -509,5 +509,21 @@
     flex-direction: column;
     gap: 0.3rem;
     align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mastery-check__answer,
+  .code-block-inline-playground {
+    animation: none !important;
+  }
+
+  .python-runner__btn,
+  .code-playground__btn,
+  .exercise-widget__solution-btn,
+  .mastery-check,
+  .mastery-check__check-btn,
+  .code-block-try-btn {
+    transition: none !important;
   }
 }
