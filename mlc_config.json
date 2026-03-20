@@ -21,6 +21,8 @@
     {"pattern": "^https://reddit\\.com/r/localllama"},
     {"pattern": "^https://machinelearningmastery\\.com/"},
     {"pattern": "^https://docs\\.scipy\\.org/"},
-    {"pattern": "^https://pgtune\\.leopard\\.in\\.ua/"}
+    {"pattern": "^https://pgtune\\.leopard\\.in\\.ua/"},
+    {"pattern": "^https://python\\.langchain\\.com/"},
+    {"pattern": "^https://docs\\.trychroma\\.com/"}
   ]
 }
