@@ -40,7 +40,7 @@ describe('MobileNav', () => {
     render(
       <MemoryRouter>
         <MobileNav />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     // Check if the navigation container is rendered
@@ -65,7 +65,7 @@ describe('MobileNav', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <MobileNav />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const homeLink = screen.getByText('Home').closest('a')
@@ -87,7 +87,7 @@ describe('MobileNav', () => {
     render(
       <MemoryRouter initialEntries={['/curriculum']}>
         <MobileNav />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const learnLink = screen.getByText('Learn').closest('a')
@@ -106,7 +106,7 @@ describe('MobileNav', () => {
     render(
       <MemoryRouter initialEntries={['/progress']}>
         <MobileNav />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const progressLink = screen.getByText('Progress').closest('a')
@@ -125,7 +125,7 @@ describe('MobileNav', () => {
     render(
       <MemoryRouter initialEntries={['/concepts']}>
         <MobileNav />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const exploreLink = screen.getByText('Explore').closest('a')
@@ -144,7 +144,7 @@ describe('MobileNav', () => {
     render(
       <MemoryRouter initialEntries={['/lesson/1']}>
         <MobileNav />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const exploreLink = screen.getByText('Explore').closest('a')
@@ -163,7 +163,7 @@ describe('MobileNav', () => {
     render(
       <MemoryRouter>
         <MobileNav />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const homeLink = screen.getByText('Home').closest('a')
