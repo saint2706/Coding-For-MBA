@@ -78,3 +78,12 @@
 **Vulnerability:** The devDependency `@lhci/cli` contained a transitive dependency (`tmp@<=0.2.3`) susceptible to an arbitrary temporary file / directory write via symbolic link (`dir` parameter) - GHSA-52f5-9888-hmc6.
 **Learning:** Development tools and CLI runners can introduce supply chain risks via outdated transitive dependencies, especially when unmaintained.
 **Prevention:** Used `overrides` in `package.json` to force the resolution of `tmp` to a secure version (`^0.2.4`) to patch the vulnerability without breaking the Lighthouse CI workflow.
+
+## 2026-03-19 - Vulnerability Scanner False Positives Audit
+**Vulnerability:** A static security scan reported 30 high/critical issues across the codebase, including Code Injection (`exec()`, `eval()`) and XSS (`innerHTML`).
+**Learning:** Naive regex-based security scanners often flag safe, standard language features as critical vulnerabilities. Specifically:
+1. `RegExp.prototype.exec()` in JS was flagged as arbitrary code execution.
+2. String literals (e.g. `'eval("print(1)")'`) and comments in test/security files checking *against* Python code injection were flagged as active `eval` usage.
+3. Test environment DOM resets (`document.body.innerHTML = ''` in Vitest JSDOM) were flagged as XSS.
+4. Intentionally exposed API keys for mock API tests were flagged as secrets.
+**Prevention:** Manual audit confirmed 100% false positive rate. No code changes required. Documented findings to prevent future "security theater" refactoring of perfectly safe regex parsing and test utilities.
