@@ -16,6 +16,7 @@ import SEOHead from '../components/SEOHead'
 import { buildItemListSchema, buildProductSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
+  getAllLessons,
   getLessonsByPhase,
   difficultyConfig,
   phaseIcons,
@@ -71,10 +72,7 @@ export default function Curriculum() {
     })
   }, [phases, completedSet])
 
-  const totalLessons = useMemo(
-    () => phasesData.reduce((sum, p) => sum + p.lessons.length, 0),
-    [phasesData],
-  )
+  const totalLessons = useMemo(() => getAllLessons().length, [])
   const completedCount = getCompletedCount()
   const overallPct = useMemo(
     () => (totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0),
