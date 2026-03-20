@@ -43,7 +43,7 @@ describe('BackToTop', () => {
 
     // Simulate scroll and wait for requestAnimationFrame to execute
     await act(async () => {
-      ;(window as any).scrollY = 500
+      Object.defineProperty(window, 'scrollY', { value: 500, configurable: true })
       window.dispatchEvent(new Event('scroll'))
       await new Promise((resolve) => requestAnimationFrame(resolve))
     })
@@ -61,7 +61,7 @@ describe('BackToTop', () => {
 
     // Scroll down to make it visible
     await act(async () => {
-      ;(window as any).scrollY = 500
+      Object.defineProperty(window, 'scrollY', { value: 500, configurable: true })
       window.dispatchEvent(new Event('scroll'))
       await new Promise((resolve) => requestAnimationFrame(resolve))
     })

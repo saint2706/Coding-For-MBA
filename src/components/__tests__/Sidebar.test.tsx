@@ -8,9 +8,11 @@ import * as reviewTracker from '../../utils/reviewTracker'
 
 // Mock dependencies
 vi.mock('../../utils/contentLoader', async () => {
-  const actual = await vi.importActual('../../utils/contentLoader')
+  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>(
+    '../../utils/contentLoader',
+  )
   return {
-    ...(actual as any),
+    ...actual,
     getAllPhases: vi.fn(),
     getLessonsByPhase: vi.fn(),
     phaseIcons: ['A', 'B'],
@@ -39,11 +41,11 @@ describe('Sidebar', () => {
 
     vi.mocked(contentLoader.getAllPhases).mockReturnValue([
       { phase: 1, title: 'Phase 1', days: ['01', '02'] },
-    ] as any)
+    ] as unknown as ReturnType<typeof contentLoader.getAllPhases>)
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
       { day: '01', title: 'Lesson 1', phase: 1 },
       { day: '02', title: 'Lesson 2', phase: 1 },
-    ] as any)
+    ] as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>)
     vi.mocked(reviewTracker.getReviewDueCountByPhase).mockReturnValue({})
   })
 
@@ -112,7 +114,7 @@ describe('Sidebar', () => {
 
     vi.mocked(reviewTracker.getReviewDueCountByPhase).mockReturnValue({
       1: 5,
-    } as any)
+    } as unknown as Record<number, number>)
 
     act(() => {
       root?.render(

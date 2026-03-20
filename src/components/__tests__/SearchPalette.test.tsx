@@ -9,7 +9,7 @@ import * as searchIndex from '../../utils/searchIndex'
 vi.mock('../../utils/searchIndex', async () => {
   const actual = await vi.importActual('../../utils/searchIndex')
   return {
-    ...(actual as any),
+    ...(actual as typeof searchIndex),
     getSearchSnippet: vi.fn((content) => 'Snippet of ' + content),
     getSearchIndexStatus: vi.fn(() => ({ isReady: true, processedCount: 10, totalCount: 10 })),
     search: vi.fn(),
@@ -18,9 +18,11 @@ vi.mock('../../utils/searchIndex', async () => {
 })
 
 vi.mock('../../utils/contentLoader', async () => {
-  const actual = await vi.importActual('../../utils/contentLoader')
+  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>(
+    '../../utils/contentLoader',
+  )
   return {
-    ...(actual as any),
+    ...actual,
     difficultyConfig: {
       beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
     },
@@ -35,9 +37,9 @@ vi.mock('../../hooks/useDebounce', () => ({
 
 const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom')
+  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom')
   return {
-    ...(actual as any),
+    ...actual,
     useNavigate: () => mockNavigate,
   }
 })
@@ -95,7 +97,7 @@ describe('SearchPalette', () => {
           tags: ['test'],
         },
       },
-    ] as any)
+    ] as unknown as ReturnType<typeof searchIndex.search>)
 
     act(() => {
       root?.render(
