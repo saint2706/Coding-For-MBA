@@ -113,7 +113,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
           <div className="sidebar-title">
             Coding for MBA
-            <small>108-Day Curriculum</small>
+            <small>140-Day Curriculum</small>
           </div>
           {reviewStreak > 0 && (
             <span className="sidebar-streak-badge" title={`${reviewStreak}-day review streak`}>

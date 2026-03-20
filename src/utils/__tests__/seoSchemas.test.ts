@@ -144,9 +144,9 @@ describe('seoSchemas', () => {
       // Assert
       expect(schema['@context']).toBe('https://schema.org')
       expect(schema['@type']).toBe('Course')
-      expect(schema.name).toBe('Coding for MBA — 108-Day Technical Curriculum')
+      expect(schema.name).toBe('Coding for MBA — 140-Day Technical Curriculum')
       expect(schema.url).toBe(`${SITE_URL}/`)
-      expect(schema.numberOfCredits).toBe(108)
+      expect(schema.numberOfCredits).toBe(140)
 
       const provider = schema.provider as any
       expect(provider['@type']).toBe('Organization')
@@ -179,7 +179,7 @@ describe('seoSchemas', () => {
 
       const isPartOf = schema.isPartOf as any
       expect(isPartOf['@type']).toBe('Course')
-      expect(isPartOf.name).toBe('Coding for MBA — 108-Day Technical Curriculum')
+      expect(isPartOf.name).toBe('Coding for MBA — 140-Day Technical Curriculum')
 
       const about = schema.about as any
       expect(about['@type']).toBe('Thing')

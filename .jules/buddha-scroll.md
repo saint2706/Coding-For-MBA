@@ -109,3 +109,6 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 ## 🧘 Buddha: Semantic HTML Hierarchy Refactoring [SEO][GEO]
 - Fixed semantic heading hierarchy in `src/components/ExerciseWidget.tsx`, `src/components/MasteryCheck.tsx`, and `src/components/ExerciseCard.tsx` by changing `<h4>` to `<h3>` to prevent skipped heading levels.
 - Regenerated `llms.txt` using `node scripts/generate-llms-txt.js` to ensure latest context is available for AI crawlers.
+
+- Updated all curriculum references from 108-day to 140-day across SEO metadata, llms.txt, and UI components to accurately reflect the correct curriculum duration.
+- Fixed JSON-LD stringification encoding in SEOHead.tsx to securely escape HTML tags.

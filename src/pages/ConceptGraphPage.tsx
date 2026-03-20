@@ -82,7 +82,7 @@ export default function ConceptGraphPage() {
     <div className="concept-graph-page">
       <SEOHead
         title="Concept Dependency Graph"
-        description="Interactive visualization of lesson dependencies and concept relationships across the 108-day curriculum."
+        description="Interactive visualization of lesson dependencies and concept relationships across the 140-day curriculum."
         path="/concepts"
         breadcrumbs={[
           { name: 'Home', url: '/' },

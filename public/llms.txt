@@ -1,6 +1,6 @@
 # Site Architecture
-- https://saint2706.github.io/Coding-For-MBA/#/: Home page - Main landing page covering the 108-day Python, Data Science, and SQL curriculum.
-- https://saint2706.github.io/Coding-For-MBA/#/curriculum: Curriculum overview - Browse the complete 108-day curriculum roadmap across 9 phases.
+- https://saint2706.github.io/Coding-For-MBA/#/: Home page - Main landing page covering the 140-day Python, Data Science, and SQL curriculum.
+- https://saint2706.github.io/Coding-For-MBA/#/curriculum: Curriculum overview - Browse the complete 140-day curriculum roadmap across 9 phases.
 - https://saint2706.github.io/Coding-For-MBA/#/exercises: Practice exercises - Hands-on coding exercises and challenges.
 - https://saint2706.github.io/Coding-For-MBA/#/progress: Learning progress - Track your curriculum completion and daily streaks.
 - https://saint2706.github.io/Coding-For-MBA/#/concepts: Concept graph - Visual map of interrelated technical concepts.

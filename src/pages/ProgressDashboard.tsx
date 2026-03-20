@@ -124,7 +124,7 @@ export default function ProgressDashboard() {
     <div className="page-container">
       <SEOHead
         title="Your Progress"
-        description="Track your progress through the 108-day Coding for MBA curriculum. View completion statistics, lesson heatmap, and per-phase breakdowns."
+        description="Track your progress through the 140-day Coding for MBA curriculum. View completion statistics, lesson heatmap, and per-phase breakdowns."
         path="/progress"
         breadcrumbs={[
           { name: 'Home', url: '/' },
