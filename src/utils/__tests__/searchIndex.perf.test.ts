@@ -22,7 +22,7 @@ describe('searchIndex first-search performance', () => {
       window.requestIdleCallback = vi.fn((cb) => {
         const id = setTimeout(cb, 1)
         return Number(id)
-      }) as any
+      }) as unknown as typeof window.requestIdleCallback
     }
   })
 

@@ -56,7 +56,7 @@ describe('confetti', () => {
     })
 
     it('should not throw and not call if window is undefined', () => {
-      delete (global as any).window
+      delete (global as unknown as { window?: Window }).window
 
       confettiModule.triggerSparkle()
       expect(confetti).not.toHaveBeenCalled()
@@ -123,7 +123,7 @@ describe('confetti', () => {
     })
 
     it('should not start interval if window is undefined', () => {
-      delete (global as any).window
+      delete (global as unknown as { window?: Window }).window
 
       confettiModule.triggerCurriculumFireworks()
       expect(confetti).not.toHaveBeenCalled()
