@@ -31,3 +31,7 @@
   - Added full JSDoc comments (`@param`, `@returns`) to `src/utils/seoSchemas.ts` for `buildCanonicalUrl`, `buildWebSiteSchema`, and `buildCourseSchema`.
   - Added full JSDoc comments (`@param`, `@returns`) to `src/utils/contentLoader.ts` for `getAdjacentLessons`, `getAllExercises`, `getNotebook`, and `getReadingTime`.
   - Verified that all exported functions within `src/utils/` are fully documented via automated script check.
+
+- **[2026-03-20] Markdown Links & Link Checker configuration**
+  - Updated `mlc_config.json` configuration file to ignore `keras.io` and `developers.google.com/machine-learning/crash-course` which return false positives (403 or 0 codes) from anti-bot mechanisms.
+  - Successfully passed `markdown-link-check` script.

@@ -23,6 +23,8 @@
     {"pattern": "^https://docs\\.scipy\\.org/"},
     {"pattern": "^https://pgtune\\.leopard\\.in\\.ua/"},
     {"pattern": "^https://python\\.langchain\\.com/"},
-    {"pattern": "^https://docs\\.trychroma\\.com/"}
+    {"pattern": "^https://docs\\.trychroma\\.com/"},
+    {"pattern": "^https://keras\\.io/"},
+    {"pattern": "^https://developers\\.google\\.com/machine-learning/crash-course"}
   ]
 }
