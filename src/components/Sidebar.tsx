@@ -125,6 +125,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             className="sidebar-close"
             onClick={onClose}
             aria-label="Close sidebar"
+            aria-expanded={isOpen}
+            aria-controls="app-sidebar"
           >
             <svg
               width="20"
