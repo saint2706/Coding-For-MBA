@@ -57,3 +57,10 @@
 - **Fixed:** Replaced `as any` cast on mock imports and `TouchEvent` in `src/components/__tests__/SearchPalette.test.tsx`, `src/components/__tests__/Sidebar.test.tsx`, `src/components/__tests__/AnimatedCounter.test.tsx`, and `src/hooks/__tests__/useSwipe.test.tsx`.
 - **Fixed:** Used `Object.defineProperty` on the mocked `window` objects in `src/components/__tests__/BackToTop.test.tsx` instead of `as any`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 10
+- **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/searchIndex.perf.test.ts` by using `as unknown as typeof window.requestIdleCallback`.
+- **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/confetti.test.ts` by using `as unknown as { window?: Window }`.
+- **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/seoSchemas.test.ts` by using `as Record<string, unknown>[]` and `as Record<string, unknown>`.
+- **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/searchIndex.test.ts` by using `as unknown as typeof window.requestIdleCallback`.
+- **Verified:** Build, lint, and tests pass.

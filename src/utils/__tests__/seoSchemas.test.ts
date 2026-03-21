@@ -78,7 +78,7 @@ describe('seoSchemas', () => {
       expect(schema.url).toBe(`${SITE_URL}/#/curriculum`)
       expect(schema.numberOfItems).toBe(2)
 
-      const elements = schema.itemListElement as any[]
+      const elements = schema.itemListElement as Record<string, unknown>[]
       expect(elements).toHaveLength(2)
 
       expect(elements[0]).toMatchObject({
@@ -117,7 +117,7 @@ describe('seoSchemas', () => {
       expect(schema.description).toBe('My Collection')
       expect(schema.url).toBe(`${SITE_URL}/#/collection`)
 
-      const hasPart = schema.hasPart as any[]
+      const hasPart = schema.hasPart as Record<string, unknown>[]
       expect(hasPart).toHaveLength(2)
 
       expect(hasPart[0]).toMatchObject({
@@ -148,14 +148,14 @@ describe('seoSchemas', () => {
       expect(schema.url).toBe(`${SITE_URL}/`)
       expect(schema.numberOfCredits).toBe(140)
 
-      const provider = schema.provider as any
+      const provider = schema.provider as Record<string, unknown>
       expect(provider['@type']).toBe('Organization')
       expect(provider.name).toBe('Coding for MBA')
 
       expect(schema.teaches).toBeInstanceOf(Array)
       expect((schema.teaches as string[]).includes('Python Programming')).toBe(true)
 
-      const instance = schema.hasCourseInstance as any
+      const instance = schema.hasCourseInstance as Record<string, unknown>
       expect(instance['@type']).toBe('CourseInstance')
       expect(instance.courseMode).toBe('Online')
     })
@@ -177,11 +177,11 @@ describe('seoSchemas', () => {
       expect(schema.educationalLevel).toBe('Professional')
       expect(schema.learningResourceType).toBe('Lesson')
 
-      const isPartOf = schema.isPartOf as any
+      const isPartOf = schema.isPartOf as Record<string, unknown>
       expect(isPartOf['@type']).toBe('Course')
       expect(isPartOf.name).toBe('Coding for MBA — 140-Day Technical Curriculum')
 
-      const about = schema.about as any
+      const about = schema.about as Record<string, unknown>
       expect(about['@type']).toBe('Thing')
       expect(about.name).toBe('Phase 2 - Day 5')
     })

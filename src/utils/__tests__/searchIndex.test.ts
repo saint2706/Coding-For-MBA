@@ -37,7 +37,7 @@ beforeEach(async () => {
     window.requestIdleCallback = vi.fn((cb) => {
       const id = setTimeout(cb, 1)
       return Number(id)
-    }) as any
+    }) as unknown as typeof window.requestIdleCallback
   }
 
   const mod = await import('../searchIndex')
