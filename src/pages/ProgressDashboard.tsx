@@ -38,7 +38,7 @@ import { useProgressStore } from '../stores/progressStore'
  * Displays comprehensive progress tracking including:
  * - Overall completion statistics (percentage, completed count, remaining)
  * - Visual progress bar for entire curriculum
- * - Lesson heatmap showing all 108 days with completion status
+ * - Lesson heatmap showing all 140 days with completion status
  * - Per-phase progress breakdown with links to each phase
  * - Option to clear all progress (with confirmation)
  *

@@ -127,7 +127,7 @@ export function buildCourseSchema(): Record<string, unknown> {
       'SQL',
       'Data Engineering',
     ],
-    timeRequired: 'P108D',
+    timeRequired: 'P140D',
     hasCourseInstance: {
       '@type': 'CourseInstance',
       courseMode: 'Online',

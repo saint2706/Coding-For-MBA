@@ -112,3 +112,4 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 - Updated all curriculum references from 108-day to 140-day across SEO metadata, llms.txt, and UI components to accurately reflect the correct curriculum duration.
 - Fixed JSON-LD stringification encoding in SEOHead.tsx to securely escape HTML tags.
+- 2024-03-20: Updated hardcoded references from '108-day' to '140-day' in index.html, utils/seoSchemas.ts, and ProgressDashboard.tsx. Verified sitemap generation, llms.txt generation, JSON-LD escaping, and test suites.
