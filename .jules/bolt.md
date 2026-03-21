@@ -8,3 +8,4 @@
 - Replaced `getAllPhases().some(...)` lookup in `Lesson.tsx` with an O(1) `!!getPhase(...)` check to avoid iterating over all phases during completion checks.
 - Removed unnecessary optimization of `lessonMetrics.reduce` in `ContentStats.tsx` because `readingTime` is already pre-calculated in the array, making the global cache lookup an invalid regression.
 - Correctly mocked `getTotalReadingTime` and `getPhase` in `Home.test.tsx` and `Lesson.test.tsx` respectively.
+- Optimized Curriculum.tsx and ContentStats.tsx to use O(1) properties (getAllLessons().length and getTotalReadingTime()) instead of recalculating during renders. Reduced layout shift risks and main thread blocking.

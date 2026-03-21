@@ -12,6 +12,7 @@ vi.mock('../../components/SEOHead', () => ({
 
 vi.mock('../../utils/contentLoader', () => ({
   getAllPhases: vi.fn(),
+  getAllLessons: vi.fn(() => []),
   getLessonsByPhase: vi.fn(),
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
@@ -64,6 +65,11 @@ describe('Curriculum', () => {
   })
 
   it('renders the curriculum page correctly with phases and lessons', () => {
+    vi.mocked(contentLoader.getAllLessons).mockReturnValue([
+      { day: '1', title: 'Intro', phase: 1, content: '', path: '' } as any,
+      { day: '2', title: 'Advanced', phase: 2, content: '', path: '' } as any,
+    ])
+
     vi.mocked(contentLoader.getAllPhases).mockReturnValue([
       {
         phase: 1,
