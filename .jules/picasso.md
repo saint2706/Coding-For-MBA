@@ -22,3 +22,10 @@
 * **Observation**: Found many places (CopyButton, Sidebar streak, ProgressDashboard stats, Curriculum stats) where emojis were placed next to text strings or inside descriptive wrappers but not explicitly hidden from screen readers.
 * **Fix**: Wrapped these emojis in `<span aria-hidden="true">` to prevent screen readers from redundantly calling out "Chart showing upward trend" when the label says "Completed".
 * **Rule**: When an emoji is purely decorative and its meaning is already conveyed via text or an `aria-label`, always hide it using `aria-hidden="true"`.
+
+### Sidebar Close Button Accessibility
+**Date:** $(date +%Y-%m-%d)
+**Goal:** Enhance keyboard and screen reader accessibility for the sidebar close button.
+**Changes Made:**
+- Added `aria-expanded={isOpen}` and `aria-controls="app-sidebar"` to the close button in `src/components/Sidebar.tsx`.
+**Learning:** To maintain strict screen reader accessibility for collapsible UI regions (like sidebars or menus), always apply `aria-expanded={isOpen}` and `aria-controls="target-id"` to their respective toggle or close buttons.
