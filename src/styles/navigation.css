@@ -41,6 +41,11 @@
   color: var(--accent-tertiary);
 }
 
+.back-to-top:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-primary);
+}
+
 /* --- Lesson-with-TOC grid layout --- */
 .lesson-with-toc {
   display: grid;
@@ -245,6 +250,11 @@
     font-size: 0.875rem;
     font-weight: 600;
     cursor: pointer;
+  }
+
+  .toc-toggle:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--accent-primary);
   }
 
   .toc-toggle-chevron {
