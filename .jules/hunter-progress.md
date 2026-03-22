@@ -64,3 +64,12 @@
 - **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/seoSchemas.test.ts` by using `as Record<string, unknown>[]` and `as Record<string, unknown>`.
 - **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/searchIndex.test.ts` by using `as unknown as typeof window.requestIdleCallback`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 11
+- **Fixed:** Removed `as any` type casting in `src/pages/__tests__/SearchResults.test.tsx` by providing all necessary fields for the mocked `searchIndex.search` results.
+- **Fixed:** Removed `as any` type casting in `src/pages/__tests__/Curriculum.test.tsx` by using `as unknown as contentLoader.Lesson`.
+- **Fixed:** Removed `as any` type casting in `src/pages/__tests__/NotebookViewer.test.tsx` by using `as unknown as contentLoader.Phase` and `as unknown as contentLoader.Notebook`.
+- **Fixed:** Removed `as any` type casting in `src/pages/__tests__/Exercises.test.tsx` by using `as unknown as contentLoader.Exercise[]` and `as unknown as contentLoader.Notebook`.
+- **Fixed:** Removed `as any` type casting in `src/pages/__tests__/CaseStudies.test.tsx` by using `as unknown as contentLoader.CaseStudy[]` and `as unknown as contentLoader.Project[]`.
+- **Fixed:** Removed `as any` type casting in `src/pages/__tests__/ProgressDashboard.test.tsx` by using proper `as unknown as Type` casts for `Phase[]`, `Lesson[]`, and `typeof useUserPreferencesStore`.
+- **Verified:** Build, lint, and tests pass.

@@ -35,7 +35,7 @@ describe('NotebookViewer', () => {
   beforeEach(() => {
     vi.mocked(contentLoader.getPhase).mockReturnValue({
       title: 'Phase 1 Title',
-    } as any)
+    } as unknown as contentLoader.Phase)
   })
 
   afterEach(() => {
@@ -58,7 +58,7 @@ describe('NotebookViewer', () => {
   })
 
   it('renders empty state when notebook has no cells', () => {
-    vi.mocked(contentLoader.getNotebook).mockReturnValue({ cells: [] } as any)
+    vi.mocked(contentLoader.getNotebook).mockReturnValue({ cells: [] } as unknown as contentLoader.Notebook)
 
     render(
       <MemoryRouter initialEntries={['/solutions/1']}>
@@ -91,7 +91,7 @@ describe('NotebookViewer', () => {
           outputs: [{ output_type: 'error', ename: 'NameError', evalue: 'name is not defined' }],
         },
       ],
-    } as any)
+    } as unknown as contentLoader.Notebook)
 
     render(
       <MemoryRouter initialEntries={['/solutions/1']}>
@@ -126,7 +126,7 @@ describe('NotebookViewer', () => {
           ],
         },
       ],
-    } as any)
+    } as unknown as contentLoader.Notebook)
 
     render(
       <MemoryRouter initialEntries={['/solutions/1']}>
@@ -157,7 +157,7 @@ describe('NotebookViewer', () => {
           ],
         },
       ],
-    } as any)
+    } as unknown as contentLoader.Notebook)
 
     render(
       <MemoryRouter initialEntries={['/solutions/1']}>

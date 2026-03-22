@@ -75,15 +75,15 @@ describe('ProgressDashboard', () => {
   beforeEach(() => {
     vi.mocked(contentLoader.getAllPhases).mockReturnValue([
       { phase: 1, title: 'Phase 1', difficulty: 'beginner' },
-    ] as any)
+    ] as unknown as contentLoader.Phase[])
     vi.mocked(contentLoader.getAllLessons).mockReturnValue([
       { day: '1', title: 'Lesson 1' },
       { day: '2', title: 'Lesson 2' },
-    ] as any)
+    ] as unknown as contentLoader.Lesson[])
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
       { day: '1', title: 'Lesson 1' },
-    ] as any)
-    vi.mocked(contentLoader.getLesson).mockReturnValue({ day: '1', title: 'Lesson 1' } as any)
+    ] as unknown as contentLoader.Lesson[])
+    vi.mocked(contentLoader.getLesson).mockReturnValue({ day: '1', title: 'Lesson 1' } as unknown as contentLoader.Lesson)
 
     // Progress store mock
     vi.mocked(useProgressStore).mockImplementation((selector: any) => {
@@ -148,7 +148,7 @@ describe('ProgressDashboard', () => {
       setReadingMode: vi.fn(),
       setReadingComfortTheme: vi.fn(),
       setCustomCursorEnabled: vi.fn(),
-    } as any)
+    } as unknown as typeof useUserPreferencesStore)
   })
 
   afterEach(() => {

@@ -66,8 +66,8 @@ describe('Curriculum', () => {
 
   it('renders the curriculum page correctly with phases and lessons', () => {
     vi.mocked(contentLoader.getAllLessons).mockReturnValue([
-      { day: '1', title: 'Intro', phase: 1, content: '', path: '' } as any,
-      { day: '2', title: 'Advanced', phase: 2, content: '', path: '' } as any,
+      { day: '1', title: 'Intro', phase: 1, content: '', path: '' } as unknown as contentLoader.Lesson,
+      { day: '2', title: 'Advanced', phase: 2, content: '', path: '' } as unknown as contentLoader.Lesson,
     ])
 
     vi.mocked(contentLoader.getAllPhases).mockReturnValue([

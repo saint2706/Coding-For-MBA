@@ -63,9 +63,9 @@ describe('Exercises', () => {
         tags: ['data', 'pandas'],
         starterCode: '',
       },
-    ] as any)
+    ] as unknown as contentLoader.Exercise[])
 
-    vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] } as any])
+    vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] } as unknown as contentLoader.Notebook])
 
     vi.mocked(useQuizStore).mockImplementation((selector: any) =>
       selector({ getLowScoringTopics: () => ['pandas'] }),

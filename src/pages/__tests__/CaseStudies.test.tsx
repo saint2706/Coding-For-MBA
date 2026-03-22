@@ -50,7 +50,7 @@ describe('CaseStudies', () => {
         estimatedTime: '2 hours',
         content: 'Content 2',
       },
-    ] as any)
+    ] as unknown as contentLoader.CaseStudy[])
 
     vi.mocked(contentLoader.getAllProjects).mockReturnValue([
       {
@@ -61,7 +61,7 @@ describe('CaseStudies', () => {
         estimatedTime: '3 hours',
         content: 'Content 3',
       },
-    ] as any)
+    ] as unknown as contentLoader.Project[])
   })
 
   afterEach(() => {
