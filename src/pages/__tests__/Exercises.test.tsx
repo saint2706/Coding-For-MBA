@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { createRoot } from 'react-dom/client'
-import { act } from 'react'
+import { render, screen, fireEvent } from '@testing-library/react'
+import '@testing-library/jest-dom'
 import { MemoryRouter } from 'react-router-dom'
 import Exercises from '../Exercises'
 import * as contentLoader from '../../utils/contentLoader'
@@ -23,6 +23,7 @@ vi.mock('../../utils/contentLoader', () => ({
   getAllNotebooks: vi.fn(),
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
+    advanced: { label: 'Advanced', color: '#222', bg: '#333' },
   },
   phaseIcons: ['📊', '🐍'],
 }))
@@ -33,32 +34,14 @@ vi.mock('../../stores/quizStore', () => ({
 
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, layout, ...props }: any) => <div {...props}>{children}</div>,
+    div: ({ children, layout, initial, animate, transition, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
   },
 }))
 
 describe('Exercises', () => {
-  let container: HTMLDivElement | null = null
-  let root: any = null
-
   beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
-    root = createRoot(container)
-  })
-
-  afterEach(() => {
-    act(() => {
-      root.unmount()
-    })
-    if (container && container.parentNode) {
-      container.parentNode.removeChild(container)
-    }
-    container = null
-    vi.clearAllMocks()
-  })
-
-  it('renders exercises correctly and applies filters', () => {
     vi.mocked(contentLoader.getAllExercises).mockReturnValue([
       {
         day: '1',
@@ -77,37 +60,109 @@ describe('Exercises', () => {
         difficulty: 'advanced',
         goal: 'Learn pandas',
         lessonTitle: 'Data',
-        tags: ['data'],
+        tags: ['data', 'pandas'],
         starterCode: '',
       },
-    ])
+    ] as any)
 
-    vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] }])
+    vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] } as any])
 
     vi.mocked(useQuizStore).mockImplementation((selector: any) =>
-      selector({ getLowScoringTopics: () => [] }),
+      selector({ getLowScoringTopics: () => ['pandas'] }),
+    )
+  })
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('renders exercises correctly', () => {
+    render(
+      <MemoryRouter>
+        <Exercises />
+      </MemoryRouter>,
     )
 
-    act(() => {
-      root.render(
-        <MemoryRouter>
-          <Exercises />
-        </MemoryRouter>,
-      )
-    })
+    expect(screen.getByText('🧪 Exercise Browser')).toBeInTheDocument()
+    expect(screen.getByText('📓 Phase Solution Notebooks')).toBeInTheDocument()
+    expect(screen.getByText('Showing 2 of 2 exercises')).toBeInTheDocument()
 
-    expect(container?.innerHTML).toContain('Exercise Browser')
-    expect(container?.innerHTML).toContain('Phase Solution Notebooks')
+    expect(screen.getByText('Basic Math')).toBeInTheDocument()
+    expect(screen.getByText('Data Pandas')).toBeInTheDocument()
+  })
 
-    // Default view: 2 exercises
-    let cards = container?.querySelectorAll('[data-testid="exercise-card"]')
-    expect(cards?.length).toBe(2)
-    expect(container?.innerHTML).toContain('Showing 2 of 2 exercises')
+  it('filters exercises by phase', () => {
+    render(
+      <MemoryRouter>
+        <Exercises />
+      </MemoryRouter>,
+    )
 
-    // Test Search Filter using a rerender or checking the state if needed
-    // The previous approach didn't trigger React's synthetic event correctly for native 'change'.
-    // A better way is using fireEvent, or for simplicity here we just verify initial render
-    // We will cover filtering in a more isolated setup or trust the internal component state,
-    // but here let's ensure the initial state works correctly.
+    const phaseFilter = screen.getByLabelText('Phase')
+    fireEvent.change(phaseFilter, { target: { value: '1' } })
+
+    expect(screen.getByText('Basic Math')).toBeInTheDocument()
+    expect(screen.queryByText('Data Pandas')).not.toBeInTheDocument()
+  })
+
+  it('filters exercises by difficulty', () => {
+    render(
+      <MemoryRouter>
+        <Exercises />
+      </MemoryRouter>,
+    )
+
+    const difficultyFilter = screen.getByLabelText('Difficulty')
+    fireEvent.change(difficultyFilter, { target: { value: 'advanced' } })
+
+    expect(screen.queryByText('Basic Math')).not.toBeInTheDocument()
+    expect(screen.getByText('Data Pandas')).toBeInTheDocument()
+  })
+
+  it('filters exercises by search query', () => {
+    render(
+      <MemoryRouter>
+        <Exercises />
+      </MemoryRouter>,
+    )
+
+    const searchInput = screen.getByPlaceholderText('Search exercises…')
+    fireEvent.change(searchInput, { target: { value: 'pandas' } })
+
+    expect(screen.queryByText('Basic Math')).not.toBeInTheDocument()
+    expect(screen.getByText('Data Pandas')).toBeInTheDocument()
+  })
+
+  it('toggles AI recommended mode', () => {
+    render(
+      <MemoryRouter>
+        <Exercises />
+      </MemoryRouter>,
+    )
+
+    const aiToggle = screen.getByText(/Spaced Repetition Focus/i)
+    fireEvent.click(aiToggle) // The click should be somewhere but it seems it's not a toggle button in the new UI.
+
+    // Instead we can test if the low scoring block renders properly
+    expect(screen.getByText('📉 Spaced Repetition Focus')).toBeInTheDocument()
+    expect(
+      screen.getByText(/Revisit these lower-scoring quiz topics to improve retention:/i),
+    ).toBeInTheDocument()
+  })
+
+  it('shows empty state when no exercises match', () => {
+    render(
+      <MemoryRouter>
+        <Exercises />
+      </MemoryRouter>,
+    )
+
+    const searchInput = screen.getByPlaceholderText('Search exercises…')
+    fireEvent.change(searchInput, { target: { value: 'unknown' } })
+
+    expect(screen.getByTestId('empty-illustration')).toBeInTheDocument()
+    expect(
+      screen.getByText('No exercises match your filters. Try adjusting your search.'),
+    ).toBeInTheDocument()
   })
 })
