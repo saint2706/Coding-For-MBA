@@ -89,6 +89,20 @@ export default function Home() {
     refreshDailyChallenge()
   }, [refreshDailyChallenge])
 
+  // ⚡ Bolt: Memoize phase computation for the grid to avoid O(N*M) calculation on every render
+  const phaseCardsData = useMemo(() => {
+    return phases.map((phase) => {
+      const lessons = getLessonsByPhase(phase.phase)
+      const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+      const icon = phaseIcons[phase.phase - 1] || '📖'
+      const hours = Math.round((phase.totalDuration || 0) / 60)
+      const completedInPhase = lessons.filter((l) =>
+        completedSet.has(dayTokenToProgressId(l.day)),
+      )
+      return { phase, diff, icon, hours, completedInPhase, totalLessons: lessons.length }
+    })
+  }, [phases, completedSet])
+
   useEffect(() => {
     const calculateTotalHours = () => {
       // ⚡ Bolt: Use O(1) cached value instead of O(N) recalculation via reduce with expensive regex parsing
@@ -334,16 +348,7 @@ export default function Home() {
         </div>
 
         <div className="phases-grid">
-          {phases.map((phase) => {
-            const lessons = getLessonsByPhase(phase.phase)
-            const diff =
-              difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-            const icon = phaseIcons[phase.phase - 1] || '📖'
-            const hours = Math.round((phase.totalDuration || 0) / 60)
-            const completedInPhase = lessons.filter((l) =>
-              completedSet.has(dayTokenToProgressId(l.day)),
-            )
-
+          {phaseCardsData.map(({ phase, diff, icon, hours, completedInPhase, totalLessons }) => {
             return (
               <Link
                 to={`/phase/${phase.phase}`}
@@ -364,12 +369,12 @@ export default function Home() {
                   >
                     {diff.label}
                   </span>
-                  <span className="meta-pill">📅 {lessons.length} Days</span>
+                  <span className="meta-pill">📅 {totalLessons} Days</span>
                   {hours > 0 && <span className="meta-pill">⏱ {hours}h</span>}
                 </div>
                 {completedInPhase.length > 0 && (
                   <div className="phase-card-progress">
-                    <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+                    <ProgressBar completed={completedInPhase.length} total={totalLessons} />
                   </div>
                 )}
               </Link>

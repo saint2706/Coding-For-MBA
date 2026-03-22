@@ -9,3 +9,5 @@
 - Removed unnecessary optimization of `lessonMetrics.reduce` in `ContentStats.tsx` because `readingTime` is already pre-calculated in the array, making the global cache lookup an invalid regression.
 - Correctly mocked `getTotalReadingTime` and `getPhase` in `Home.test.tsx` and `Lesson.test.tsx` respectively.
 - Optimized Curriculum.tsx and ContentStats.tsx to use O(1) properties (getAllLessons().length and getTotalReadingTime()) instead of recalculating during renders. Reduced layout shift risks and main thread blocking.
+- Refactored `resolveChallengeCandidates` in `gamificationStore.ts` to map over `getAllLessons()` instead of using an O(N) `getAllPhases().flatMap` iteration.
+- Wrapped `phases.map()` in `ProgressDashboard.tsx` and `Home.tsx` into `useMemo` hooks returning `phaseProgressData` and `phaseCardsData` respectively, preventing O(N*M) calculation cycles (like `completedSet.has()`) from firing on every component re-render.

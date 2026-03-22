@@ -221,8 +221,8 @@ export default function Exercises() {
 
       {/* Exercise Grid */}
       <motion.div className="exercises-grid" layout>
-        {filtered.map((ex, idx) => (
-          <ExerciseCard key={`${ex.day}-${idx}`} exercise={ex} />
+        {filtered.map((ex) => (
+          <ExerciseCard key={`${ex.day}-${ex.title}`} exercise={ex} />
         ))}
       </motion.div>
 

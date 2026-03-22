@@ -13,7 +13,7 @@
 
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
-import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
+import { getAllLessons } from '../utils/contentLoader'
 import { useProgressStore } from './progressStore'
 import { triggerSparkle } from '../utils/confetti'
 import { toastSuccess } from '../utils/toast'
@@ -169,11 +169,10 @@ function resolveChallengeCandidates(): number[] {
     return Array.from({ length: lastVisited }, (_, i) => i + 1)
   }
 
-  return getAllPhases().flatMap((phase) =>
-    getLessonsByPhase(phase.phase)
-      .map((lesson) => dayTokenToProgressId(lesson.day))
-      .filter((day) => Number.isInteger(day) && day > 0),
-  )
+  // ⚡ Bolt: Use getAllLessons() directly instead of O(N*M) nested mapping over phases
+  return getAllLessons()
+    .map((lesson) => dayTokenToProgressId(lesson.day))
+    .filter((day) => Number.isInteger(day) && day > 0)
 }
 
 function maybeCelebrateAchievement(id: AchievementId): void {

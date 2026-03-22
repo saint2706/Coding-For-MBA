@@ -97,6 +97,20 @@ export default function ProgressDashboard() {
 
   const challengeLesson = getLesson(dailyChallenge.day)
 
+  // ⚡ Bolt: Memoize phase arrays so O(N*M) calculation doesn't happen on every render (e.g. from typing/toggling)
+  const phaseProgressData = useMemo(() => {
+    return phases.map((phase) => {
+      const lessons = getLessonsByPhase(phase.phase)
+      const completedInPhase = lessons.filter((l) =>
+        completedSet.has(dayTokenToProgressId(l.day)),
+      )
+      const icon = phaseIcons[phase.phase - 1] || '📖'
+      const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+
+      return { phase, lessons, completedInPhase, icon, diff }
+    })
+  }, [phases, completedSet])
+
   useEffect(() => {
     refreshDailyChallenge()
   }, [refreshDailyChallenge])
@@ -523,9 +537,10 @@ export default function ProgressDashboard() {
       </div>
 
       <div className="progress-heatmap">
-        {phases.map((phase) => {
-          const lessons = getLessonsByPhase(phase.phase)
-          const icon = phaseIcons[phase.phase - 1] || '📖'
+        {phaseProgressData.map(({ phase, lessons, icon, completedInPhase }) => {
+          // Pre-compute completed set for O(1) inside loop
+          const completedDayTokens = new Set(completedInPhase.map((l) => l.day))
+
           return (
             <div className="heatmap-phase" key={phase.phase}>
               <div className="heatmap-phase-label">
@@ -533,7 +548,7 @@ export default function ProgressDashboard() {
               </div>
               <div className="heatmap-cells">
                 {lessons.map((lesson) => {
-                  const done = completedSet.has(dayTokenToProgressId(lesson.day))
+                  const done = completedDayTokens.has(lesson.day)
                   return (
                     <Link
                       to={`/lesson/${lesson.day}`}
@@ -559,15 +574,7 @@ export default function ProgressDashboard() {
       </div>
 
       <div className="progress-phases-list">
-        {phases.map((phase) => {
-          const lessons = getLessonsByPhase(phase.phase)
-          const completedInPhase = lessons.filter((l) =>
-            completedSet.has(dayTokenToProgressId(l.day)),
-          )
-          const icon = phaseIcons[phase.phase - 1] || '📖'
-          const diff =
-            difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-
+        {phaseProgressData.map(({ phase, lessons, completedInPhase, icon, diff }) => {
           return (
             <Link to={`/phase/${phase.phase}`} className="progress-phase-row" key={phase.phase}>
               <div className="progress-phase-info">
