@@ -58,7 +58,9 @@ describe('NotebookViewer', () => {
   })
 
   it('renders empty state when notebook has no cells', () => {
-    vi.mocked(contentLoader.getNotebook).mockReturnValue({ cells: [] } as unknown as contentLoader.Notebook)
+    vi.mocked(contentLoader.getNotebook).mockReturnValue({
+      cells: [],
+    } as unknown as contentLoader.Notebook)
 
     render(
       <MemoryRouter initialEntries={['/solutions/1']}>

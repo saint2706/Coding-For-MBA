@@ -83,7 +83,10 @@ describe('ProgressDashboard', () => {
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
       { day: '1', title: 'Lesson 1' },
     ] as unknown as contentLoader.Lesson[])
-    vi.mocked(contentLoader.getLesson).mockReturnValue({ day: '1', title: 'Lesson 1' } as unknown as contentLoader.Lesson)
+    vi.mocked(contentLoader.getLesson).mockReturnValue({
+      day: '1',
+      title: 'Lesson 1',
+    } as unknown as contentLoader.Lesson)
 
     // Progress store mock
     vi.mocked(useProgressStore).mockImplementation((selector: any) => {
