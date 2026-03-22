@@ -35,9 +35,10 @@ interface SidebarProps {
  * - Mobile overlay with click-outside to close
  * - Phase-level progress counters
  *
- * @param isOpen - Controls sidebar visibility on mobile.
- * @param onClose - Function to close the sidebar.
- * @returns A navigation sidebar with phase accordion.
+ * @param {SidebarProps} props - The component properties.
+ * @param {boolean} props.isOpen - Controls sidebar visibility on mobile.
+ * @param {() => void} props.onClose - Function to close the sidebar.
+ * @returns {React.ReactElement} A navigation sidebar with phase accordion.
  */
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()

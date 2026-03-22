@@ -35,3 +35,8 @@
 - **[2026-03-20] Markdown Links & Link Checker configuration**
   - Updated `mlc_config.json` configuration file to ignore `keras.io` and `developers.google.com/machine-learning/crash-course` which return false positives (403 or 0 codes) from anti-bot mechanisms.
   - Successfully passed `markdown-link-check` script.
+
+- **[2026-03-22] JSDoc Improvements**
+  - Added missing typed JSDoc comments and `@returns` tags to `src/components/CopyButton.tsx`, `src/components/ExerciseWidget.tsx`, `src/components/MarkdownRenderer.tsx`, and `src/components/Sidebar.tsx`.
+  - Added missing typed JSDoc comments and `@returns` tags to `src/utils/prism.ts` and `src/utils/curriculumConfig.ts`.
+  - All modified components and utilities now meet documentation standards.

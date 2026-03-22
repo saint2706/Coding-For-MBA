@@ -22,6 +22,16 @@ interface CopyButtonProps {
   ariaLabel?: string
 }
 
+/**
+ * Renders a button that copies the provided text to the clipboard when clicked.
+ *
+ * @param {CopyButtonProps} props - The component properties.
+ * @param {string} props.text - The text content to be copied.
+ * @param {string} [props.className='code-block-copy'] - Optional custom class names.
+ * @param {boolean} [props.showEmoji=false] - Whether to display a clipboard emoji icon.
+ * @param {string} [props.ariaLabel] - Optional aria-label for accessibility.
+ * @returns {React.ReactElement} The rendered button component.
+ */
 export default function CopyButton({
   text,
   className = 'code-block-copy',

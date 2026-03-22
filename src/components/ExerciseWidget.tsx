@@ -66,6 +66,18 @@ interface ExerciseWidgetProps {
   solution?: string
 }
 
+/**
+ * Renders an interactive exercise widget for practicing Python code.
+ *
+ * @param {ExerciseWidgetProps} props - The component properties.
+ * @param {string} props.title - Exercise title (must be unique within the day).
+ * @param {string} [props.goal] - Brief goal statement explaining what to achieve.
+ * @param {string} [props.instructions] - Detailed step-by-step instructions.
+ * @param {string} props.starterCode - Initial code populated in the editor.
+ * @param {string} [props.expectedOutput] - The exact output string the user code should produce to pass.
+ * @param {string} [props.solution] - Complete solution code for reference.
+ * @returns {React.ReactElement} The rendered exercise widget component.
+ */
 export default function ExerciseWidget({
   title,
   goal,
