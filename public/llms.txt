@@ -5,6 +5,9 @@
 - https://saint2706.github.io/Coding-For-MBA/#/progress: Learning progress - Track your curriculum completion and daily streaks.
 - https://saint2706.github.io/Coding-For-MBA/#/concepts: Concept graph - Visual map of interrelated technical concepts.
 - https://saint2706.github.io/Coding-For-MBA/#/stats: Learning statistics - Detailed analytics on learning duration and performance.
+- https://saint2706.github.io/Coding-For-MBA/#/search: Search - Search the curriculum for lessons, concepts, and topics.
+- https://saint2706.github.io/Coding-For-MBA/#/review: Spaced Repetition Review - Review concepts using flashcards with spaced repetition.
+- https://saint2706.github.io/Coding-For-MBA/#/case-studies: Case Studies - Real-world business case studies and applications.
 - https://saint2706.github.io/Coding-For-MBA/#/phase/1: Algorithmic Thinking & Python Foundations - Phase 1 covering Algorithmic Thinking & Python Foundations.
 - https://saint2706.github.io/Coding-For-MBA/#/phase/2: Functions, Modularity & Data Wrangling - Phase 2 covering Functions, Modularity & Data Wrangling.
 - https://saint2706.github.io/Coding-For-MBA/#/phase/3: Data Engineering & Web Development - Phase 3 covering Data Engineering & Web Development.

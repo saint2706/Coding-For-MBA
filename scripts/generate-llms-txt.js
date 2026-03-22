@@ -38,6 +38,9 @@ lines.push(`- ${BASE_URL}/#/exercises: Practice exercises - Hands-on coding exer
 lines.push(`- ${BASE_URL}/#/progress: Learning progress - Track your curriculum completion and daily streaks.`)
 lines.push(`- ${BASE_URL}/#/concepts: Concept graph - Visual map of interrelated technical concepts.`)
 lines.push(`- ${BASE_URL}/#/stats: Learning statistics - Detailed analytics on learning duration and performance.`)
+lines.push(`- ${BASE_URL}/#/search: Search - Search the curriculum for lessons, concepts, and topics.`)
+lines.push(`- ${BASE_URL}/#/review: Spaced Repetition Review - Review concepts using flashcards with spaced repetition.`)
+lines.push(`- ${BASE_URL}/#/case-studies: Case Studies - Real-world business case studies and applications.`)
 
 // Phase overviews
 const phaseFiles = findFiles(LESSONS_DIR, 'Phase_Overview.md')
