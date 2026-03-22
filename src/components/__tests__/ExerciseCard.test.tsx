@@ -49,6 +49,7 @@ describe('ExerciseCard', () => {
   })
 
   const mockExercise = {
+    id: '1',
     day: '1',
     phase: 1,
     difficulty: 'beginner',
