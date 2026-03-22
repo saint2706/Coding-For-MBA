@@ -29,4 +29,4 @@ Object.defineProperty(window, 'localStorage', {
 ;(globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
 
 // Mock HTMLElement.prototype.scrollIntoView
-window.HTMLElement.prototype.scrollIntoView = function() {};
+window.HTMLElement.prototype.scrollIntoView = function () {}
