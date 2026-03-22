@@ -68,7 +68,9 @@ describe('Exercises', () => {
     vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] } as any])
 
     vi.mocked(useQuizStore).mockImplementation((selector: any) =>
-      selector({ getLowScoringTopics: () => ['pandas'] }),
+      selector({
+        getLowScoringTopics: () => [{ quizId: 'q1', topic: 'pandas', accuracy: 50, incorrect: 2 }],
+      }),
     )
   })
 
