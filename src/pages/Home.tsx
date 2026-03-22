@@ -96,9 +96,7 @@ export default function Home() {
       const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
       const icon = phaseIcons[phase.phase - 1] || '📖'
       const hours = Math.round((phase.totalDuration || 0) / 60)
-      const completedInPhase = lessons.filter((l) =>
-        completedSet.has(dayTokenToProgressId(l.day)),
-      )
+      const completedInPhase = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day)))
       return { phase, diff, icon, hours, completedInPhase, totalLessons: lessons.length }
     })
   }, [phases, completedSet])
