@@ -39,13 +39,19 @@ vi.mock('../../components/AnimatedCounter', () => ({
 }))
 vi.mock('../../components/ProgressBar', () => ({ default: () => null }))
 
-vi.mock('../../utils/progressTracker', () => ({
-  getLastVisited: mockGetLastVisited,
-  getCompletedCount: mockGetCompletedCount,
-  getCompletedForPhase: () => [],
-  getCompletedLessons: () => [],
-  getStreakDays: () => 0,
-}))
+vi.mock('../../stores/progressStore', () => {
+  const storeFn = (selector: any) =>
+    selector({
+      lastVisitedLesson: mockGetLastVisited(),
+      completedLessons: Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
+      streakDays: () => 0,
+    })
+  storeFn.getState = () => ({
+    completedLessons: Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
+    lastVisitedLesson: mockGetLastVisited(),
+  })
+  return { useProgressStore: storeFn }
+})
 
 vi.mock('../../utils/contentLoader', () => ({
   getAllLessons: () => [{ day: 12, phase: 2, difficulty: 'beginner', content: 'hello world' }],
