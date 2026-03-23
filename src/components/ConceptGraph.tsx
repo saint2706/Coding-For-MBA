@@ -123,7 +123,8 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     const edges: GraphEdge[] = []
     const edgeSet = new Set<string>()
     for (const l of lessons) {
-      const prereqs = ((l.prerequisites as unknown[]) || [])
+      const prerequisites = (l.prerequisites || []) as string[]
+      const prereqs = prerequisites
         .map((entry) => dayTokenFromReference(entry))
         .filter((entry): entry is string => Boolean(entry))
       for (const p of prereqs) {

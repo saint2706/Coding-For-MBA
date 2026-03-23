@@ -105,13 +105,15 @@ function initializeContent() {
         : undefined
 
       return {
+        title: frontmatter.title || 'Untitled',
+        phase: frontmatter.phase || 0,
         ...frontmatter,
         day,
         daySortKey: parsedDay?.sortKey || day,
         prerequisites,
         content,
         path,
-      } as unknown as Lesson
+      } as Lesson
     })
     .sort((a, b) => compareDayTokens(a.day, b.day))
 
