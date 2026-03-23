@@ -366,7 +366,12 @@ function extractLabeledTextFromParagraph(node: Content, label: string): string {
   return rest.replace(/^:\s*/, '').trim()
 }
 
-/** Parse exercise and mastery sections so they can render as interactive widgets. */
+/**
+ * Parse exercise and mastery sections so they can render as interactive widgets.
+ *
+ * @param {string} content - The raw markdown content to be parsed.
+ * @returns {InteractiveBlock[]} An array of objects representing parsed blocks (text, exercises, or mastery checks).
+ */
 function findInteractiveBlocks(content: string): InteractiveBlock[] {
   const tree = unified().use(remarkParse).use(remarkGfm).parse(content) as Root
   const topLevelNodes = tree.children
@@ -692,6 +697,10 @@ interface MarkdownRendererProps {
 /**
  * Render lesson markdown with safe HTML, custom code blocks, glossary tooltips,
  * and interactive exercise/mastery widgets.
+ *
+ * @param {MarkdownRendererProps} props - The component properties.
+ * @param {string} props.content - The raw markdown content string to be rendered.
+ * @returns {React.ReactElement} The rendered markdown content wrapped in a responsive container.
  */
 function MarkdownRenderer({ content }: MarkdownRendererProps) {
   if (!content) {

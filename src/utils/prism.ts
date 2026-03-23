@@ -24,4 +24,11 @@ SyntaxHighlighter.registerLanguage('markdown', markdown)
 SyntaxHighlighter.registerLanguage('typescript', typescript)
 SyntaxHighlighter.registerLanguage('javascript', javascript)
 
+/**
+ * A configured instance of `react-syntax-highlighter` using PrismLight.
+ * This exported component has language definitions for python, bash, json,
+ * markdown, typescript, and javascript pre-registered to minimize bundle size.
+ *
+ * @type {React.ComponentType}
+ */
 export default SyntaxHighlighter

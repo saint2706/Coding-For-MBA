@@ -28,6 +28,8 @@ export type PhaseIcons = z.infer<typeof phaseIconsSchema>
 /**
  * Configuration mapping for lesson difficulty levels, providing labels and associated UI styling colors.
  * Validated against `difficultyConfigSchema`.
+ *
+ * @type {DifficultyConfig}
  */
 export const difficultyConfig: DifficultyConfig = difficultyConfigSchema.parse({
   beginner: { label: 'Beginner', color: '#22c55e', bg: 'rgba(34,197,94,0.12)' },
@@ -39,6 +41,8 @@ export const difficultyConfig: DifficultyConfig = difficultyConfigSchema.parse({
 /**
  * Ordered array of icons representing the 9 curriculum phases.
  * Validated against `phaseIconsSchema`.
+ *
+ * @type {PhaseIcons}
  */
 export const phaseIcons: PhaseIcons = phaseIconsSchema.parse([
   '🐍',
