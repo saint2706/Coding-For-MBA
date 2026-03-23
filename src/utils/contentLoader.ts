@@ -237,6 +237,7 @@ export function getAdjacentLessons(dayNum: string | number): {
 
 /** Exercise parsed from lesson markdown. */
 export interface Exercise {
+  id: string
   day: DayToken
   lessonTitle: string
   phase: number
@@ -258,21 +259,6 @@ export interface ReviewCardSeed {
   answer: string
 }
 
-/** Parse exercise sections from a lesson markdown body. */
-function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
-  return extractExercises(lesson.content).map((ex) => ({
-    day: lesson.day,
-    phase: lesson.phase,
-    difficulty: lesson.difficulty || 'beginner',
-    lessonTitle: lesson.title,
-    title: ex.title,
-    goal: ex.goal,
-    starterCode: ex.starterCode,
-    expectedOutput: ex.expectedOutput,
-    tags: ex.tags.length > 0 ? ex.tags : (lesson.tags ?? []),
-  }))
-}
-
 function normalizeIdPart(value: string): string {
   return value
     .toLowerCase()
@@ -285,6 +271,23 @@ function getLessonIdPrefix(lesson: Lesson): string {
   const segments = lesson.path.split('/')
   const lessonDir = segments[segments.length - 2] || `day-${lesson.day}`
   return `p${lesson.phase}-d${lesson.day}-${normalizeIdPart(lessonDir)}`
+}
+
+/** Parse exercise sections from a lesson markdown body. */
+function extractExercisesFromLesson(lesson: Lesson): Exercise[] {
+  const lessonIdPrefix = getLessonIdPrefix(lesson)
+  return extractExercises(lesson.content).map((ex, index) => ({
+    id: `${lessonIdPrefix}-exercise-${index + 1}-${normalizeIdPart(ex.title)}`,
+    day: lesson.day,
+    phase: lesson.phase,
+    difficulty: lesson.difficulty || 'beginner',
+    lessonTitle: lesson.title,
+    title: ex.title,
+    goal: ex.goal,
+    starterCode: ex.starterCode,
+    expectedOutput: ex.expectedOutput,
+    tags: ex.tags.length > 0 ? ex.tags : (lesson.tags ?? []),
+  }))
 }
 
 function extractHeadingsFromLessonContent(content: string): string[] {

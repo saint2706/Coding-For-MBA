@@ -44,6 +44,7 @@ describe('Exercises', () => {
   beforeEach(() => {
     vi.mocked(contentLoader.getAllExercises).mockReturnValue([
       {
+        id: '1',
         day: '1',
         title: 'Basic Math',
         phase: 1,
@@ -54,6 +55,7 @@ describe('Exercises', () => {
         starterCode: '',
       },
       {
+        id: '2',
         day: '2',
         title: 'Data Pandas',
         phase: 2,
@@ -68,7 +70,9 @@ describe('Exercises', () => {
     vi.mocked(contentLoader.getAllNotebooks).mockReturnValue([{ phase: 1, cells: [] } as any])
 
     vi.mocked(useQuizStore).mockImplementation((selector: any) =>
-      selector({ getLowScoringTopics: () => ['pandas'] }),
+      selector({
+        getLowScoringTopics: () => [{ quizId: 'q1', topic: 'pandas', accuracy: 50, incorrect: 2 }],
+      }),
     )
   })
 
