@@ -83,14 +83,23 @@ describe('SearchResults', () => {
           title: 'Python Basics',
           difficulty: 'beginner',
           phase: 1,
+          content: 'Raw markdown content',
+          path: '/phase-01/day-01',
           plainContent: 'Content about python',
+          dayText: 'Day 1',
+          phaseText: 'Phase 1',
+          titleLower: 'python basics',
+          conceptsLower: 'loops',
+          tagsLower: 'programming',
+          phaseTextLower: 'phase 1',
+          dayTextLower: 'day 1',
+          plainContentLower: 'content about python',
           concepts: ['loops'],
           tags: ['programming'],
         },
         score: 1,
-        matches: [],
       },
-    ] as any)
+    ])
     vi.mocked(searchIndex.extractMatchedTerms).mockReturnValue(['python'])
 
     render(
