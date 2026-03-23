@@ -97,7 +97,7 @@
 - [x] `Day_130_Cost_Engineering` — query optimisation for $/TB, slot management
 - [x] `Day_131_Platform_Engineering` — Terraform for data infrastructure
 - [x] `Day_132_Capstone_Cloud_Data_Pipeline` — end-to-end cloud pipeline project
-- [ ] Phase 11 Overview (300+ lines) _(audit: current overview is 135 lines; content exists and is surfaced, but depth target not yet met)_
+- [x] Phase 11 Overview (300+ lines) — expanded to 513 lines with day-by-day journey, 3-tier skills matrix, 6 pitfalls, 5 exam questions, scenario walkthroughs, and expert track
 
 ### Phase 12 — Analytics Engineering & Data Products (Days 133–140) ✅ Complete
 
