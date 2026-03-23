@@ -119,6 +119,11 @@ function normalizeAttempts(value: unknown): QuizAttempt[] {
     .slice(-MAX_ATTEMPTS)
 }
 
+/**
+ * Hook for accessing the quiz store state.
+ *
+ * @returns {QuizStore} The state of the quiz store.
+ */
 export const useQuizStore = create<QuizStore>()(
   persist(
     (set, get) => ({

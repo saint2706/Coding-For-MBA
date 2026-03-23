@@ -177,6 +177,11 @@ export function formatDuration(ms: number): string {
   return `${hours}h ${minutes}m`
 }
 
+/**
+ * Hook for accessing the learning analytics store state.
+ *
+ * @returns {LearningAnalyticsStore} The state of the learning analytics store.
+ */
 export const useLearningAnalyticsStore = create<LearningAnalyticsStore>()(
   persist(
     (set, get) => ({

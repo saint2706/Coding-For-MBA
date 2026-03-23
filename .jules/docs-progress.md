@@ -40,3 +40,11 @@
   - Added missing typed JSDoc comments and `@returns` tags to `src/components/CopyButton.tsx`, `src/components/ExerciseWidget.tsx`, `src/components/MarkdownRenderer.tsx`, and `src/components/Sidebar.tsx`.
   - Added missing typed JSDoc comments and `@returns` tags to `src/utils/prism.ts` and `src/utils/curriculumConfig.ts`.
   - All modified components and utilities now meet documentation standards.
+
+- **[2026-03-24] JSDoc Improvements in Stores**
+  - Added missing typed JSDoc comments to `src/stores/gamificationStore.ts` for `useGamificationStore` and `ACHIEVEMENTS`.
+  - Added missing typed JSDoc comments to `src/stores/quizStore.ts` for `useQuizStore`.
+  - Added missing typed JSDoc comments to `src/stores/progressStore.ts` for `useProgressStore`.
+  - Added missing typed JSDoc comments to `src/stores/learningAnalyticsStore.ts` for `useLearningAnalyticsStore`.
+  - Added missing typed JSDoc comments to `src/stores/userPreferencesStore.ts` for `useUserPreferencesStore`.
+  - Verified no missing JSDoc comments in `src/stores/` using automated script.

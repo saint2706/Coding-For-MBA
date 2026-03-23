@@ -173,6 +173,11 @@ function normalizePersistedState(
   }
 }
 
+/**
+ * Hook for accessing the progress store state.
+ *
+ * @returns {ProgressStore} The state of the progress store.
+ */
 export const useProgressStore = create<ProgressStore>()(
   persist(
     (set, get) => ({
