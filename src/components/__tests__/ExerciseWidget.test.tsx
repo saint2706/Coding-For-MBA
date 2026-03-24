@@ -20,11 +20,11 @@ vi.mock('react-syntax-highlighter/dist/esm/styles/prism', () => ({
 
 // Mock CodePlayground to capture props
 
-let capturedCodePlaygroundProps: any
+let capturedCodePlaygroundProps: Record<string, unknown> | null = null
 const mockSetCode = vi.fn()
 
 vi.mock('../CodePlayground', () => ({
-  default: React.forwardRef((props: any, ref: any) => {
+  default: React.forwardRef((props: Record<string, unknown>, ref: React.ForwardedRef<unknown>) => {
     capturedCodePlaygroundProps = props
     React.useImperativeHandle(ref, () => ({
       setCode: mockSetCode,
@@ -66,7 +66,7 @@ vi.mock('../../stores/quizStore', () => ({
   useQuizStore: Object.assign(
     // Hook implementation
 
-    (selector: any) => {
+    (selector: (state: Record<string, unknown>) => unknown) => {
       // Mock state for selector
       const state = {
         getQuizStats: mockGetQuizStats,
@@ -111,7 +111,7 @@ describe('ExerciseWidget', () => {
     container = document.createElement('div')
     document.body.appendChild(container)
     root = createRoot(container)
-    capturedCodePlaygroundProps = undefined
+    capturedCodePlaygroundProps = null
     vi.clearAllMocks()
   })
 
@@ -164,7 +164,11 @@ describe('ExerciseWidget', () => {
     }
 
     await act(async () => {
-      capturedCodePlaygroundProps.onSubmissionEvaluated(result)
+      ;(
+        capturedCodePlaygroundProps as unknown as {
+          onSubmissionEvaluated: (res: typeof result) => void
+        }
+      )?.onSubmissionEvaluated(result)
     })
 
     expect(mockRecordAttempt).toHaveBeenCalledWith(
@@ -188,7 +192,9 @@ describe('ExerciseWidget', () => {
     })
 
     await act(async () => {
-      capturedCodePlaygroundProps.onExpectedOutputMatched()
+      ;(
+        capturedCodePlaygroundProps as unknown as { onExpectedOutputMatched: () => void }
+      )?.onExpectedOutputMatched()
     })
 
     expect(mockAwardExerciseCompletion).toHaveBeenCalled()

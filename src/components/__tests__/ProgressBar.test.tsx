@@ -6,7 +6,11 @@ import ProgressBar from '../ProgressBar'
 // Mock motion to avoid animation issues in tests
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, className, ...props }: any) => {
+    div: ({
+      children,
+      className,
+      ...props
+    }: Record<string, unknown> & { children?: React.ReactNode; className?: string }) => {
       const { initial: _initial, animate: _animate, transition: _transition, ...safeProps } = props
       void _initial
       void _animate
@@ -24,7 +28,7 @@ vi.mock('motion/react', () => ({
 
 describe('ProgressBar', () => {
   let container: HTMLDivElement | null = null
-  let root: any = null
+  let root: ReturnType<typeof createRoot> | null = null
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -34,7 +38,7 @@ describe('ProgressBar', () => {
 
   afterEach(() => {
     act(() => {
-      root.unmount()
+      root?.unmount()
     })
     container?.remove()
     container = null
@@ -42,7 +46,7 @@ describe('ProgressBar', () => {
 
   it('renders correctly with given progress', () => {
     act(() => {
-      root.render(<ProgressBar completed={5} total={10} />)
+      root?.render(<ProgressBar completed={5} total={10} />)
     })
 
     const progressBar = container?.querySelector('[role="progressbar"]')
@@ -57,7 +61,7 @@ describe('ProgressBar', () => {
 
   it('renders correctly with 0 total', () => {
     act(() => {
-      root.render(<ProgressBar completed={0} total={0} />)
+      root?.render(<ProgressBar completed={0} total={0} />)
     })
 
     const progressBar = container?.querySelector('[role="progressbar"]')
@@ -67,14 +71,14 @@ describe('ProgressBar', () => {
 
   it('renders correctly with singular lesson label', () => {
     act(() => {
-      root.render(<ProgressBar completed={1} total={1} />)
+      root?.render(<ProgressBar completed={1} total={1} />)
     })
     expect(container?.textContent).toContain('1/1 lesson')
   })
 
   it('hides label when showLabel is false', () => {
     act(() => {
-      root.render(<ProgressBar completed={5} total={10} showLabel={false} />)
+      root?.render(<ProgressBar completed={5} total={10} showLabel={false} />)
     })
 
     expect(container?.textContent).not.toContain('lessons')
@@ -82,13 +86,13 @@ describe('ProgressBar', () => {
 
   it('calculates percentage correctly', () => {
     act(() => {
-      root.render(<ProgressBar completed={1} total={3} />)
+      root?.render(<ProgressBar completed={5} total={3} />)
     })
     const progressBar = container?.querySelector('[role="progressbar"]')
     expect(progressBar?.getAttribute('aria-valuenow')).toBe('33')
 
     act(() => {
-      root.render(<ProgressBar completed={2} total={3} />)
+      root?.render(<ProgressBar completed={2} total={3} />)
     })
     expect(progressBar?.getAttribute('aria-valuenow')).toBe('67')
   })

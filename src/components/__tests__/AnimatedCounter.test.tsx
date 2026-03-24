@@ -58,8 +58,10 @@ describe('AnimatedCounter', () => {
 
     let updateCallback: (val: number) => void = () => {}
 
-    vi.mocked(motionReact.animate).mockImplementation((_from, _to, options: any) => {
-      updateCallback = options.onUpdate
+    vi.mocked(motionReact.animate).mockImplementation((_from, _to, options: unknown) => {
+      if (options && typeof (options as { onUpdate?: unknown }).onUpdate === 'function') {
+        updateCallback = (options as { onUpdate: (val: number) => void }).onUpdate
+      }
       return { stop: vi.fn() } as unknown as ReturnType<typeof motionReact.animate>
     })
 
