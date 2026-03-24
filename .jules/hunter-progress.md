@@ -73,3 +73,8 @@
 - **Fixed:** Removed `as any` type casting in `src/pages/__tests__/CaseStudies.test.tsx` by using `as unknown as contentLoader.CaseStudy[]` and `as unknown as contentLoader.Project[]`.
 - **Fixed:** Removed `as any` type casting in `src/pages/__tests__/ProgressDashboard.test.tsx` by using proper `as unknown as Type` casts for `Phase[]`, `Lesson[]`, and `typeof useUserPreferencesStore`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 12
+- **Fixed:** Replaced `as unknown as Lesson` cast with `as Lesson` and default fallback initializations in `src/utils/contentLoader.ts`.
+- **Fixed:** Replaced `as unknown[]` cast with `as string[]` type assertion in `src/components/ConceptGraph.tsx`.
+- **Verified:** Build, lint, and tests pass.
