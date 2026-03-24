@@ -38,6 +38,9 @@ export type AchievementMeta = {
   icon: string
 }
 
+/**
+ * A static list of all available achievements in the gamification system.
+ */
 export const ACHIEVEMENTS: AchievementMeta[] = [
   {
     id: 'first-lesson',
@@ -184,6 +187,11 @@ function maybeCelebrateAchievement(id: AchievementId): void {
   toastSuccess(`${meta.icon} Badge unlocked: ${meta.label}`)
 }
 
+/**
+ * Hook for accessing the gamification store state.
+ *
+ * @returns {GamificationStore} The state of the gamification store.
+ */
 export const useGamificationStore = create<GamificationStore>()(
   persist(
     (set, get) => ({

@@ -97,6 +97,11 @@ function getLegacyPalette(): ColorPalette {
   return legacyTheme === 'light' ? 'light-steel' : 'gradient-blues'
 }
 
+/**
+ * Hook for accessing the user preferences store state.
+ *
+ * @returns {UserPreferencesStore} The state of the user preferences store.
+ */
 export const useUserPreferencesStore = create<UserPreferencesStore>()(
   persist(
     (set) => ({
