@@ -17,9 +17,9 @@ import {
   getAllPhases,
   getLessonsByPhase,
   getLesson,
-  getAllLessons,
   phaseIcons,
   difficultyConfig,
+  getCurriculumMetadata,
 } from '../utils/contentLoader'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
@@ -45,11 +45,11 @@ import { useProgressStore } from '../stores/progressStore'
  */
 export default function ProgressDashboard() {
   const phases = getAllPhases()
+  const { totalDays: totalLessons } = getCurriculumMetadata()
 
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
-  const totalLessons = useMemo(() => getAllLessons().length, [])
   const overallPct =
     totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0
 

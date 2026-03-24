@@ -17,12 +17,12 @@ import SEOHead from '../components/SEOHead'
 import { buildWebSiteSchema, buildCourseSchema, buildProductSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
-  getAllLessons,
   getTotalReadingTime,
   getLessonsByPhase,
   getLesson,
   difficultyConfig,
   phaseIcons,
+  getCurriculumMetadata,
 } from '../utils/contentLoader'
 import { useProgressStore } from '../stores/progressStore'
 import { dayTokenToProgressId } from '../utils/dayToken'
@@ -43,18 +43,7 @@ import { useGamificationStore } from '../stores/gamificationStore'
  */
 export default function Home() {
   const phases = getAllPhases()
-  const stats = useMemo(() => {
-    const allLessons = getAllLessons()
-    const allPhases = getAllPhases()
-    const totalDays = allLessons.length
-    const totalPhases = allPhases.length
-
-    // Calculate unique difficulty levels
-    const uniqueLevels = new Set(allLessons.map((l) => l.difficulty || 'beginner'))
-    const totalLevels = uniqueLevels.size
-
-    return { totalDays, totalPhases, totalLevels }
-  }, [])
+  const stats = getCurriculumMetadata()
   const [totalHours, setTotalHours] = useState<number | null>(null)
   const lastVisitedDay = useProgressStore((state) => state.lastVisitedLesson)
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
@@ -76,7 +65,7 @@ export default function Home() {
     : 0
   const completedCount = completedLessons.length
   const streakDays = useProgressStore((state) => state.streakDays())
-  const totalLessons = useMemo(() => getAllLessons().length, [])
+  const totalLessons = stats.totalDays
   const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()
   const heroY = useTransform(scrollYProgress, [0, 0.35], [0, prefersReducedMotion ? 0 : -50])

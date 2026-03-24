@@ -9,9 +9,8 @@
  * - Display key totals (Total Lessons, Total Exercises, Total Reading Time).
  */
 
-import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { getAllLessons, getAllPhases, phaseIcons, getReadingTime } from '../utils/contentLoader'
+import { phaseIcons, getContentStats } from '../utils/contentLoader'
 import SEOHead from '../components/SEOHead'
 import AnimatedCounter from '../components/AnimatedCounter'
 
@@ -25,84 +24,12 @@ import AnimatedCounter from '../components/AnimatedCounter'
  * - Tag cloud visualization of most common tags
  * - Top concepts list showing frequently covered topics
  *
- * All statistics are computed dynamically from lesson content.
+ * All statistics are computed statically once via contentLoader.
  *
  * @returns The rendered content statistics page
  */
 export default function ContentStats() {
-  const stats = useMemo(() => {
-    const lessons = getAllLessons()
-    const phases = getAllPhases()
-
-    const getWordCount = (markdown: string) => {
-      const plainText = markdown.replace(/```[\s\S]*?```/g, '').replace(/[#*_>`()!-]/g, '')
-      return plainText.split(/\s+/).filter(Boolean).length
-    }
-
-    const lessonMetrics = lessons.map((l) => ({
-      phase: l.phase,
-      difficulty: (l.difficulty as string) || 'unknown',
-      tags: ((l.tags as string[]) || []).map((t) => t.trim()).filter(Boolean),
-      concepts: ((l.concepts as string[]) || []).map((c) => c.trim()).filter(Boolean),
-      wordCount: getWordCount(l.content),
-      readingTime: getReadingTime(l.content),
-    }))
-
-    // Total word count
-    const totalWords = lessonMetrics.reduce((sum, l) => sum + l.wordCount, 0)
-    const totalReadingMins = lessonMetrics.reduce((sum, l) => sum + l.readingTime, 0)
-
-    // Difficulty breakdown
-    const difficultyMap: Record<string, number> = {}
-    for (const l of lessonMetrics) {
-      difficultyMap[l.difficulty] = (difficultyMap[l.difficulty] || 0) + 1
-    }
-
-    // Tag cloud
-    const tagMap: Record<string, number> = {}
-    for (const l of lessonMetrics) {
-      for (const t of l.tags) {
-        tagMap[t] = (tagMap[t] || 0) + 1
-      }
-    }
-    const tagCloud = Object.entries(tagMap)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 40)
-
-    // Phase stats
-    const phaseStats = phases.map((p) => {
-      const phaseLessons = lessonMetrics.filter((l) => l.phase === p.phase)
-      return {
-        phase: p.phase,
-        title: p.title,
-        lessonCount: phaseLessons.length,
-        totalWords: phaseLessons.reduce((sum, l) => sum + l.wordCount, 0),
-        totalReadingTime: phaseLessons.reduce((sum, l) => sum + l.readingTime, 0),
-      }
-    })
-
-    // Concept stats
-    const conceptMap: Record<string, number> = {}
-    for (const l of lessonMetrics) {
-      for (const c of l.concepts) {
-        conceptMap[c] = (conceptMap[c] || 0) + 1
-      }
-    }
-    const topConcepts = Object.entries(conceptMap)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 20)
-
-    return {
-      lessonCount: lessons.length,
-      phaseCount: phases.length,
-      totalWords,
-      totalReadingMins,
-      difficultyMap,
-      tagCloud,
-      phaseStats,
-      topConcepts,
-    }
-  }, [])
+  const stats = getContentStats()
 
   const maxTagCount = stats.tagCloud[0]?.[1] || 1
 

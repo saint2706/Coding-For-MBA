@@ -54,7 +54,7 @@ vi.mock('../../stores/progressStore', () => {
 })
 
 vi.mock('../../utils/contentLoader', () => ({
-  getAllLessons: () => [{ day: 12, phase: 2, difficulty: 'beginner', content: 'hello world' }],
+  getCurriculumMetadata: () => ({ totalDays: 1, totalPhases: 1, totalLevels: 1 }),
   getReadingTime: () => 5,
   getTotalReadingTime: () => 5,
   getAllPhases: () => [
