@@ -86,7 +86,7 @@ describe('ProgressBar', () => {
 
   it('calculates percentage correctly', () => {
     act(() => {
-      root?.render(<ProgressBar completed={5} total={3} />)
+      root?.render(<ProgressBar completed={1} total={3} />)
     })
     const progressBar = container?.querySelector('[role="progressbar"]')
     expect(progressBar?.getAttribute('aria-valuenow')).toBe('33')
