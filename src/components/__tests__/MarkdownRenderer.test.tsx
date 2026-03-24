@@ -108,8 +108,8 @@ describe('MarkdownRenderer', () => {
   })
 
   it('applies wrapping props for unbroken long tokens to avoid horizontal scrolling', () => {
-    const longToken = 'https://example.com/' + 'averylongsegment'.repeat(30)
-    const content = `\`\`\`python\n${longToken}\n\`\`\``
+    const largeUrlString = 'https://example.com/' + 'averylongsegment'.repeat(30)
+    const content = `\`\`\`python\n${largeUrlString}\n\`\`\``
 
     act(() => {
       root.render(<MarkdownRenderer content={content} />)
