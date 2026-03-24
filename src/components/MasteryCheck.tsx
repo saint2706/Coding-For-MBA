@@ -11,6 +11,7 @@
 
 import { useState, useId } from 'react'
 import CodePlayground from './CodePlayground'
+import { buildFAQSchema } from '../utils/seoSchemas'
 
 interface MasteryCheckProps {
   questionNumber: number
@@ -32,9 +33,16 @@ export default function MasteryCheck({
 
   // Check if the answer contains Python code (look for code blocks)
   const hasRunnableCode = codeSnippet && codeSnippet.trim().length > 0
+  const faqSchema = buildFAQSchema([{ question: title, answer: answer }])
 
   return (
     <div className={`mastery-check ${revealed ? 'mastery-check--revealed' : ''}`}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c'),
+        }}
+      />
       <div className="mastery-check__header">
         <span className="mastery-check__badge">Q{questionNumber}</span>
         <h3 className="mastery-check__title">{title}</h3>
