@@ -24,7 +24,6 @@ import {
   difficultyConfig,
   phaseIcons,
 } from '../utils/contentLoader'
-import { getLastVisited, getCompletedCount, getStreakDays } from '../utils/progressTracker'
 import { useProgressStore } from '../stores/progressStore'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
@@ -57,7 +56,7 @@ export default function Home() {
     return { totalDays, totalPhases, totalLevels }
   }, [])
   const [totalHours, setTotalHours] = useState<number | null>(null)
-  const lastVisitedDay = getLastVisited()
+  const lastVisitedDay = useProgressStore((state) => state.lastVisitedLesson)
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
   const lastVisitedPhase = lastVisitedLesson
     ? phases.find((phase) => phase.phase === lastVisitedLesson.phase)
@@ -75,8 +74,8 @@ export default function Home() {
           100,
       )
     : 0
-  const completedCount = getCompletedCount()
-  const streakDays = useMemo(() => getStreakDays(), [completedCount])
+  const completedCount = completedLessons.length
+  const streakDays = useProgressStore((state) => state.streakDays())
   const totalLessons = useMemo(() => getAllLessons().length, [])
   const prefersReducedMotion = useReducedMotion()
   const { scrollYProgress } = useScroll()

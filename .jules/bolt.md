@@ -9,3 +9,4 @@
 - Removed unnecessary optimization of `lessonMetrics.reduce` in `ContentStats.tsx` because `readingTime` is already pre-calculated in the array, making the global cache lookup an invalid regression.
 - Correctly mocked `getTotalReadingTime` and `getPhase` in `Home.test.tsx` and `Lesson.test.tsx` respectively.
 - Optimized Curriculum.tsx and ContentStats.tsx to use O(1) properties (getAllLessons().length and getTotalReadingTime()) instead of recalculating during renders. Reduced layout shift risks and main thread blocking.
+- Refactored legacy Zustand procedural facades (getCompletedCount, getLastVisited, getStreakDays) in Home.tsx, Curriculum.tsx, and ProgressDashboard.tsx directly into reactive store selectors (useProgressStore) to ensure O(1) reads and prevent redundant UI synchronizations.

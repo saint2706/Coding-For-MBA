@@ -21,7 +21,6 @@ import {
   phaseIcons,
   difficultyConfig,
 } from '../utils/contentLoader'
-import { getStreakDays } from '../utils/progressTracker'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
@@ -77,7 +76,7 @@ export default function ProgressDashboard() {
     () => useLearningAnalyticsStore.getState().studyStreakDays(5),
     [timeByDate],
   )
-  const completionStreak = useMemo(() => getStreakDays(), [completedLessons.length])
+  const completionStreak = useProgressStore((state) => state.streakDays())
   const last7Days = useMemo(() => useLearningAnalyticsStore.getState().getLast7Days(), [timeByDate])
 
   const chartMax = Math.max(1, ...last7Days.map((item) => item.ms))

@@ -93,6 +93,7 @@ describe('ProgressDashboard', () => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],
+          streakDays: () => 3,
         })
       }
       return {
@@ -200,6 +201,7 @@ describe('ProgressDashboard', () => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: [],
+          streakDays: () => 0,
         })
       }
       return {
@@ -222,6 +224,7 @@ describe('ProgressDashboard', () => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],
+          streakDays: () => 3,
         })
       }
       return {
