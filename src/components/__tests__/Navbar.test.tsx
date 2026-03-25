@@ -82,4 +82,140 @@ describe('Navbar', () => {
     expect(input.value).toBe('')
     expect(document.activeElement).toBe(input)
   })
+
+  it('submits search form with query', async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={['/']}>
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
+        </MemoryRouter>,
+      )
+    })
+
+    const input = container.querySelector('input[type="search"]') as HTMLInputElement
+    const form = container.querySelector('.navbar-search-form') as HTMLFormElement
+
+    await act(async () => {
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value',
+      )?.set
+      nativeInputValueSetter?.call(input, 'test query')
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+
+    await act(async () => {
+      form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+    })
+  })
+
+  it('submits search form without query', async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={['/']}>
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
+        </MemoryRouter>,
+      )
+    })
+
+    const form = container.querySelector('.navbar-search-form') as HTMLFormElement
+    await act(async () => {
+      form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
+    })
+  })
+
+  it('focuses search input when / is pressed', async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={['/']}>
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
+        </MemoryRouter>,
+      )
+    })
+
+    const input = container.querySelector('input[type="search"]') as HTMLInputElement
+
+    await act(async () => {
+      const event = new KeyboardEvent('keydown', { key: '/', bubbles: true })
+      window.dispatchEvent(event)
+    })
+
+    expect(document.activeElement).toBe(input)
+    expect(toastInfoMock).toHaveBeenCalledWith(
+      'Search opened. Type a query and press Enter. Press Esc to close.',
+    )
+  })
+
+  it('skips / shortcut when in editable element', async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={['/']}>
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
+          <input type="text" id="test-input" />
+        </MemoryRouter>,
+      )
+    })
+
+    const testInput = container.querySelector('#test-input') as HTMLInputElement
+    testInput.focus()
+
+    await act(async () => {
+      const event = new KeyboardEvent('keydown', { key: '/', bubbles: true })
+      testInput.dispatchEvent(event)
+    })
+
+    expect(document.activeElement).toBe(testInput)
+  })
+
+  it('skips / shortcut on /search page', async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={['/search']}>
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
+        </MemoryRouter>,
+      )
+    })
+
+    const input = container.querySelector('input[type="search"]') as HTMLInputElement
+    input.blur()
+
+    await act(async () => {
+      const event = new KeyboardEvent('keydown', { key: '/', bubbles: true })
+      window.dispatchEvent(event)
+    })
+
+    expect(document.activeElement).not.toBe(input)
+  })
+
+  it('clears and closes search when Escape is pressed while focused', async () => {
+    await act(async () => {
+      root.render(
+        <MemoryRouter initialEntries={['/']}>
+          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
+        </MemoryRouter>,
+      )
+    })
+
+    const input = container.querySelector('input[type="search"]') as HTMLInputElement
+    input.focus()
+
+    await act(async () => {
+      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+        window.HTMLInputElement.prototype,
+        'value',
+      )?.set
+      nativeInputValueSetter?.call(input, 'test query')
+      input.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+
+    expect(input.value).toBe('test query')
+
+    await act(async () => {
+      const event = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })
+      window.dispatchEvent(event)
+    })
+
+    expect(input.value).toBe('')
+    expect(toastInfoMock).toHaveBeenCalledWith('Search closed. Press / to reopen quickly.')
+  })
 })
