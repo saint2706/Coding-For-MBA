@@ -78,3 +78,11 @@
 - **Fixed:** Replaced `as unknown as Lesson` cast with `as Lesson` and default fallback initializations in `src/utils/contentLoader.ts`.
 - **Fixed:** Replaced `as unknown[]` cast with `as string[]` type assertion in `src/components/ConceptGraph.tsx`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 13
+- **Fixed:** Replaced `as any` type casting with proper `Record<string, unknown>` and `unknown` types in `src/components/__tests__/ExerciseWidget.test.tsx` to improve type safety and fix strict type errors.
+- **Fixed:** Replaced `as any` type casting with proper type structure in `src/components/__tests__/ExerciseCard.test.tsx` for `motion.div` mock.
+- **Fixed:** Replaced `as any` type casting with proper type structure in `src/components/__tests__/AnimatedCounter.test.tsx` for `motion.animate` mock options.
+- **Fixed:** Replaced `as any` type casting with proper type assertions in `src/components/__tests__/MarkdownRenderer.test.tsx` for syntax highlighter props mock.
+- **Fixed:** Replaced `as any` type casting with proper type structure in `src/components/__tests__/ProgressBar.test.tsx` for `motion.div` mock and `root` handling.
+- **Verified:** Build, lint, and tests pass.

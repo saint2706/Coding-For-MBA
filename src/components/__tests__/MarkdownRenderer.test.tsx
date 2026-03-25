@@ -4,17 +4,23 @@ import { createRoot, Root } from 'react-dom/client'
 import MarkdownRenderer from '../MarkdownRenderer'
 
 const syntaxHighlighterMock = vi.fn(
-  ({ children, wrapLongLines, codeTagProps, customStyle }: any) => (
-    <div
-      className="syntax-highlighter"
-      data-wrap-long-lines={String(Boolean(wrapLongLines))}
-      data-white-space={codeTagProps?.style?.whiteSpace ?? ''}
-      data-overflow-wrap={codeTagProps?.style?.overflowWrap ?? ''}
-      data-overflow-x={customStyle?.overflowX ?? ''}
-    >
-      {children}
-    </div>
-  ),
+  ({ children, wrapLongLines, codeTagProps, customStyle }: Record<string, unknown>) => {
+    const safeCodeTagProps = codeTagProps as
+      | { style?: { whiteSpace?: string; overflowWrap?: string } }
+      | undefined
+    const safeCustomStyle = customStyle as { overflowX?: string } | undefined
+    return (
+      <div
+        className="syntax-highlighter"
+        data-wrap-long-lines={String(Boolean(wrapLongLines))}
+        data-white-space={safeCodeTagProps?.style?.whiteSpace ?? ''}
+        data-overflow-wrap={safeCodeTagProps?.style?.overflowWrap ?? ''}
+        data-overflow-x={safeCustomStyle?.overflowX ?? ''}
+      >
+        {children as React.ReactNode}
+      </div>
+    )
+  },
 )
 
 // Mock Child Components
@@ -25,23 +31,23 @@ vi.mock('../CodePlayground', () => ({
 }))
 
 vi.mock('../ExerciseWidget', () => ({
-  default: (props: any) => (
-    <div data-testid="exercise-widget" data-title={props.title}>
-      {props.goal}
+  default: (props: Record<string, unknown>) => (
+    <div data-testid="exercise-widget" data-title={props.title as string}>
+      {props.goal as React.ReactNode}
     </div>
   ),
 }))
 
 vi.mock('../MasteryCheck', () => ({
-  default: (props: any) => (
-    <div data-testid="mastery-check" data-title={props.title}>
-      {props.questionText}
+  default: (props: Record<string, unknown>) => (
+    <div data-testid="mastery-check" data-title={props.title as string}>
+      {props.questionText as React.ReactNode}
     </div>
   ),
 }))
 
 vi.mock('../../utils/prism', () => ({
-  default: (props: any) => syntaxHighlighterMock(props),
+  default: (props: Record<string, unknown>) => syntaxHighlighterMock(props),
 }))
 
 vi.mock('react-syntax-highlighter/dist/esm/styles/prism', () => ({
@@ -115,12 +121,19 @@ describe('MarkdownRenderer', () => {
       root.render(<MarkdownRenderer content={content} />)
     })
 
-    const [highlighterProps] = syntaxHighlighterMock.mock.calls.at(-1) ?? []
+    const [highlighterPropsRaw] = syntaxHighlighterMock.mock.calls.at(-1) ?? []
+    const highlighterProps = highlighterPropsRaw as
+      | {
+          wrapLongLines?: boolean
+          codeTagProps?: { style?: { whiteSpace?: string; overflowWrap?: string } }
+          customStyle?: { overflowX?: string }
+        }
+      | undefined
     expect(highlighterProps).toBeTruthy()
-    expect(highlighterProps.wrapLongLines).toBe(true)
-    expect(highlighterProps.codeTagProps?.style?.whiteSpace).toBe('pre-wrap')
-    expect(highlighterProps.codeTagProps?.style?.overflowWrap).toBe('anywhere')
-    expect(highlighterProps.customStyle?.overflowX).toBe('hidden')
+    expect(highlighterProps?.wrapLongLines).toBe(true)
+    expect(highlighterProps?.codeTagProps?.style?.whiteSpace).toBe('pre-wrap')
+    expect(highlighterProps?.codeTagProps?.style?.overflowWrap).toBe('anywhere')
+    expect(highlighterProps?.customStyle?.overflowX).toBe('hidden')
   })
 
   it('renders "Try It" button for Python code blocks', () => {

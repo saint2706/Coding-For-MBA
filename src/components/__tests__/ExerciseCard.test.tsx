@@ -8,7 +8,11 @@ import ExerciseCard from '../ExerciseCard'
 vi.mock('motion/react', () => ({
   useReducedMotion: () => false,
   motion: {
-    div: ({ children, className, ...props }: any) => {
+    div: ({
+      children,
+      className,
+      ...props
+    }: Record<string, unknown> & { children?: React.ReactNode; className?: string }) => {
       const {
         layout: _layout,
         whileHover: _whileHover,
@@ -32,7 +36,7 @@ vi.mock('motion/react', () => ({
 
 describe('ExerciseCard', () => {
   let container: HTMLDivElement | null = null
-  let root: any = null
+  let root: ReturnType<typeof createRoot> | null = null
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -42,7 +46,7 @@ describe('ExerciseCard', () => {
 
   afterEach(() => {
     act(() => {
-      root.unmount()
+      root?.unmount()
     })
     container?.remove()
     container = null
@@ -63,7 +67,7 @@ describe('ExerciseCard', () => {
 
   const renderCard = (exercise = mockExercise) => {
     act(() => {
-      root.render(
+      root?.render(
         <MemoryRouter>
           <ExerciseCard exercise={exercise} />
         </MemoryRouter>,
