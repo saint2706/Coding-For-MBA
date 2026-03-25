@@ -119,6 +119,72 @@ export default function ProgressDashboard() {
     setCustomCursorEnabled,
   } = useUserPreferencesStore()
 
+  const renderedHeatmapPhases = useMemo(
+    () =>
+      phases.map((phase) => {
+        const lessons = getLessonsByPhase(phase.phase)
+        const icon = phaseIcons[phase.phase - 1] || '📖'
+        return (
+          <div className="heatmap-phase" key={phase.phase}>
+            <div className="heatmap-phase-label">
+              <span>{icon}</span> P{phase.phase}
+            </div>
+            <div className="heatmap-cells">
+              {lessons.map((lesson) => {
+                const done = completedSet.has(dayTokenToProgressId(lesson.day))
+                return (
+                  <Link
+                    to={`/lesson/${lesson.day}`}
+                    className={`heatmap-cell ${done ? 'done' : ''}`}
+                    key={lesson.day}
+                    title={`Day ${lesson.day}: ${lesson.title}${done ? ' ✓' : ''}`}
+                  >
+                    <span className="sr-only">
+                      Day {lesson.day}: {lesson.title} {done ? '(completed)' : '(not completed)'}
+                    </span>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )
+      }),
+    [phases, completedSet],
+  )
+
+  const renderedProgressPhases = useMemo(
+    () =>
+      phases.map((phase) => {
+        const lessons = getLessonsByPhase(phase.phase)
+        const completedInPhase = lessons.filter((l) =>
+          completedSet.has(dayTokenToProgressId(l.day)),
+        )
+        const icon = phaseIcons[phase.phase - 1] || '📖'
+        const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+
+        return (
+          <Link to={`/phase/${phase.phase}`} className="progress-phase-row" key={phase.phase}>
+            <div className="progress-phase-info">
+              <span className="progress-phase-icon">{icon}</span>
+              <div>
+                <span className="progress-phase-name">
+                  Phase {phase.phase}: {phase.title}
+                </span>
+                <span
+                  className="difficulty-badge"
+                  style={{ color: diff.color, background: diff.bg, marginLeft: '0.5rem' }}
+                >
+                  {diff.label}
+                </span>
+              </div>
+            </div>
+            <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+          </Link>
+        )
+      }),
+    [phases, completedSet],
+  )
+
   return (
     <div className="page-container">
       <SEOHead
@@ -522,34 +588,7 @@ export default function ProgressDashboard() {
       </div>
 
       <div className="progress-heatmap">
-        {phases.map((phase) => {
-          const lessons = getLessonsByPhase(phase.phase)
-          const icon = phaseIcons[phase.phase - 1] || '📖'
-          return (
-            <div className="heatmap-phase" key={phase.phase}>
-              <div className="heatmap-phase-label">
-                <span>{icon}</span> P{phase.phase}
-              </div>
-              <div className="heatmap-cells">
-                {lessons.map((lesson) => {
-                  const done = completedSet.has(dayTokenToProgressId(lesson.day))
-                  return (
-                    <Link
-                      to={`/lesson/${lesson.day}`}
-                      className={`heatmap-cell ${done ? 'done' : ''}`}
-                      key={lesson.day}
-                      title={`Day ${lesson.day}: ${lesson.title}${done ? ' ✓' : ''}`}
-                    >
-                      <span className="sr-only">
-                        Day {lesson.day}: {lesson.title} {done ? '(completed)' : '(not completed)'}
-                      </span>
-                    </Link>
-                  )
-                })}
-              </div>
-            </div>
-          )
-        })}
+        {renderedHeatmapPhases}
       </div>
 
       {/* Per-Phase Progress */}
@@ -558,35 +597,7 @@ export default function ProgressDashboard() {
       </div>
 
       <div className="progress-phases-list">
-        {phases.map((phase) => {
-          const lessons = getLessonsByPhase(phase.phase)
-          const completedInPhase = lessons.filter((l) =>
-            completedSet.has(dayTokenToProgressId(l.day)),
-          )
-          const icon = phaseIcons[phase.phase - 1] || '📖'
-          const diff =
-            difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-
-          return (
-            <Link to={`/phase/${phase.phase}`} className="progress-phase-row" key={phase.phase}>
-              <div className="progress-phase-info">
-                <span className="progress-phase-icon">{icon}</span>
-                <div>
-                  <span className="progress-phase-name">
-                    Phase {phase.phase}: {phase.title}
-                  </span>
-                  <span
-                    className="difficulty-badge"
-                    style={{ color: diff.color, background: diff.bg, marginLeft: '0.5rem' }}
-                  >
-                    {diff.label}
-                  </span>
-                </div>
-              </div>
-              <ProgressBar completed={completedInPhase.length} total={lessons.length} />
-            </Link>
-          )
-        })}
+        {renderedProgressPhases}
       </div>
 
       {/* Clear progress */}

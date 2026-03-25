@@ -7,9 +7,9 @@
 
 import { useState, useMemo, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { getAllPhases } from '../utils/contentLoader'
+import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
-import { normalizeDayToken } from '../utils/dayToken'
+import { normalizeDayToken, dayTokenToProgressId } from '../utils/dayToken'
 import { useProgressStore } from '../stores/progressStore'
 import SidebarPhaseGroup from './SidebarPhaseGroup'
 
@@ -64,6 +64,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   // Reactive progress tracking
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+
+  const completedIdsByPhase = useMemo(() => {
+    const idsByPhase: Record<number, string> = {}
+    for (const phase of phases) {
+      const lessons = getLessonsByPhase(phase.phase)
+      idsByPhase[phase.phase] = lessons
+        .map((l) => dayTokenToProgressId(l.day))
+        .filter((id) => completedSet.has(id))
+        .join(',')
+    }
+    return idsByPhase
+  }, [phases, completedSet])
 
   // Determines currently open phase: manual toggle takes precedence over auto-derived.
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
@@ -210,6 +222,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               phase={phase}
               isActive={openPhase === phase.phase}
               completedSet={completedSet}
+              completedIdsJoined={completedIdsByPhase[phase.phase] ?? ''}
               dueCount={dueByPhase[phase.phase] || 0}
               currentPath={location.pathname}
               onToggle={togglePhase}

@@ -42,6 +42,7 @@ describe('SidebarPhaseGroup', () => {
     phase: { phase: 1, title: 'Foundations', days: ['01', '02'], content: '', path: '' },
     isActive: false,
     completedSet: new Set<number>(),
+    completedIdsJoined: '',
     dueCount: 0,
     currentPath: '/',
     onToggle: vi.fn(),
@@ -94,6 +95,7 @@ describe('SidebarPhaseGroup', () => {
           <SidebarPhaseGroup
             {...defaultProps}
             completedSet={new Set([1])} // Day 01
+            completedIdsJoined="1"
             dueCount={3}
           />
         </MemoryRouter>,
