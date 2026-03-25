@@ -42,7 +42,7 @@ vi.mock('../../utils/contentLoader', () => ({
   getAllPhases: vi.fn(),
   getLessonsByPhase: vi.fn(),
   getLesson: vi.fn(),
-  getAllLessons: vi.fn(),
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 0, totalPhases: 0, totalLevels: 0 })),
   phaseIcons: ['📊'],
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
@@ -76,10 +76,11 @@ describe('ProgressDashboard', () => {
     vi.mocked(contentLoader.getAllPhases).mockReturnValue([
       { phase: 1, title: 'Phase 1', difficulty: 'beginner' },
     ] as unknown as contentLoader.Phase[])
-    vi.mocked(contentLoader.getAllLessons).mockReturnValue([
-      { day: '1', title: 'Lesson 1' },
-      { day: '2', title: 'Lesson 2' },
-    ] as unknown as contentLoader.Lesson[])
+    vi.mocked(contentLoader.getCurriculumMetadata).mockReturnValue({
+      totalDays: 2,
+      totalPhases: 1,
+      totalLevels: 1,
+    })
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
       { day: '1', title: 'Lesson 1' },
     ] as unknown as contentLoader.Lesson[])

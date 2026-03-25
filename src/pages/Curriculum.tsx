@@ -16,10 +16,10 @@ import SEOHead from '../components/SEOHead'
 import { buildItemListSchema, buildProductSchema } from '../utils/seoSchemas'
 import {
   getAllPhases,
-  getAllLessons,
   getLessonsByPhase,
   difficultyConfig,
   phaseIcons,
+  getCurriculumMetadata,
 } from '../utils/contentLoader'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import Breadcrumb from '../components/Breadcrumb'
@@ -71,7 +71,7 @@ export default function Curriculum() {
     })
   }, [phases, completedSet])
 
-  const totalLessons = useMemo(() => getAllLessons().length, [])
+  const { totalDays: totalLessons } = getCurriculumMetadata()
   const completedCount = completedLessons.length
   const overallPct = useMemo(
     () => (totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0),

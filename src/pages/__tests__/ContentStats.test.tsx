@@ -19,9 +19,7 @@ vi.mock('../../components/AnimatedCounter', () => ({
 }))
 
 vi.mock('../../utils/contentLoader', () => ({
-  getAllLessons: vi.fn(),
-  getAllPhases: vi.fn(),
-  getReadingTime: vi.fn(),
+  getContentStats: vi.fn(),
   phaseIcons: ['📊', '🐍'],
 }))
 
@@ -47,43 +45,31 @@ describe('ContentStats', () => {
   })
 
   it('renders content statistics correctly', () => {
-    vi.mocked(contentLoader.getAllPhases).mockReturnValue([
-      {
-        phase: 1,
-        title: 'Python Foundations',
-        description: 'desc',
-        days: ['1', '2'],
-        objectives: [] as string[],
-        content: '',
-        path: '',
-      },
-    ])
-
-    vi.mocked(contentLoader.getAllLessons).mockReturnValue([
-      {
-        day: '1',
-        title: 'Intro',
-        phase: 1,
-        difficulty: 'beginner',
-        tags: ['python', 'basics'],
-        concepts: ['variables', 'types'],
-        content: 'This is a test lesson with some words.', // 8 words
-        path: '',
-      },
-      {
-        day: '2',
-        title: 'Advanced',
-        phase: 1,
-        difficulty: 'advanced',
-        tags: ['python', 'data'],
-        concepts: ['variables', 'loops'],
-        content: 'Another lesson with more words here.', // 6 words
-        path: '',
-      },
-    ])
-
-    vi.mocked(contentLoader.getReadingTime).mockImplementation((content) => {
-      return content.length > 30 ? 5 : 2
+    vi.mocked(contentLoader.getContentStats).mockReturnValue({
+      lessonCount: 2,
+      phaseCount: 1,
+      totalWords: 14,
+      totalReadingMins: 7,
+      difficultyMap: { beginner: 1, advanced: 1 },
+      tagCloud: [
+        ['python', 2],
+        ['basics', 1],
+        ['data', 1],
+      ],
+      phaseStats: [
+        {
+          phase: 1,
+          title: 'Python Foundations',
+          lessonCount: 2,
+          totalWords: 14,
+          totalReadingTime: 7,
+        },
+      ],
+      topConcepts: [
+        ['variables', 2],
+        ['types', 1],
+        ['loops', 1],
+      ],
     })
 
     act(() => {

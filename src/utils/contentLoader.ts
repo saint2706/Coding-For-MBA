@@ -588,6 +588,135 @@ export function getTotalReadingTime(): number {
   return totalReadingTimeCache
 }
 
+let curriculumMetadataCache: {
+  totalDays: number
+  totalPhases: number
+  totalLevels: number
+} | null = null
+
+/**
+ * Retrieves cached curriculum metadata.
+ *
+ * @returns {{ totalDays: number; totalPhases: number; totalLevels: number }} The total number of days, phases, and difficulty levels.
+ */
+export function getCurriculumMetadata(): {
+  totalDays: number
+  totalPhases: number
+  totalLevels: number
+} {
+  if (curriculumMetadataCache === null) {
+    const allLessons = getAllLessons()
+    const allPhases = getAllPhases()
+    const totalDays = allLessons.length
+    const totalPhases = allPhases.length
+
+    // Calculate unique difficulty levels
+    const uniqueLevels = new Set(allLessons.map((l) => l.difficulty || 'beginner'))
+    const totalLevels = uniqueLevels.size
+
+    curriculumMetadataCache = { totalDays, totalPhases, totalLevels }
+  }
+  return curriculumMetadataCache
+}
+
+let contentStatsCache: {
+  lessonCount: number
+  phaseCount: number
+  totalWords: number
+  totalReadingMins: number
+  difficultyMap: Record<string, number>
+  tagCloud: [string, number][]
+  phaseStats: {
+    phase: number
+    title: string
+    lessonCount: number
+    totalWords: number
+    totalReadingTime: number
+  }[]
+  topConcepts: [string, number][]
+} | null = null
+
+/**
+ * Retrieves comprehensive content statistics for the curriculum.
+ * The statistics are computed once and cached to avoid O(N) recalculations on render.
+ */
+export function getContentStats() {
+  if (contentStatsCache === null) {
+    const lessons = getAllLessons()
+    const phases = getAllPhases()
+
+    const getWordCount = (markdown: string) => {
+      const plainText = markdown.replace(/```[\s\S]*?```/g, '').replace(/[#*_>`()!-]/g, '')
+      return plainText.split(/\s+/).filter(Boolean).length
+    }
+
+    const lessonMetrics = lessons.map((l) => ({
+      phase: l.phase,
+      difficulty: (l.difficulty as string) || 'unknown',
+      tags: ((l.tags as string[]) || []).map((t) => t.trim()).filter(Boolean),
+      concepts: ((l.concepts as string[]) || []).map((c) => c.trim()).filter(Boolean),
+      wordCount: getWordCount(l.content),
+      readingTime: getReadingTime(l.content),
+    }))
+
+    // Total word count
+    const totalWords = lessonMetrics.reduce((sum, l) => sum + l.wordCount, 0)
+    const totalReadingMins = lessonMetrics.reduce((sum, l) => sum + l.readingTime, 0)
+
+    // Difficulty breakdown
+    const difficultyMap: Record<string, number> = {}
+    for (const l of lessonMetrics) {
+      difficultyMap[l.difficulty] = (difficultyMap[l.difficulty] || 0) + 1
+    }
+
+    // Tag cloud
+    const tagMap: Record<string, number> = {}
+    for (const l of lessonMetrics) {
+      for (const t of l.tags) {
+        tagMap[t] = (tagMap[t] || 0) + 1
+      }
+    }
+    const tagCloud = Object.entries(tagMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 40)
+
+    // Phase stats
+    const phaseStats = phases.map((p) => {
+      const phaseLessons = lessonMetrics.filter((l) => l.phase === p.phase)
+      return {
+        phase: p.phase,
+        title: p.title,
+        lessonCount: phaseLessons.length,
+        totalWords: phaseLessons.reduce((sum, l) => sum + l.wordCount, 0),
+        totalReadingTime: phaseLessons.reduce((sum, l) => sum + l.readingTime, 0),
+      }
+    })
+
+    // Concept stats
+    const conceptMap: Record<string, number> = {}
+    for (const l of lessonMetrics) {
+      for (const c of l.concepts) {
+        conceptMap[c] = (conceptMap[c] || 0) + 1
+      }
+    }
+    const topConcepts = Object.entries(conceptMap)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 20)
+
+    contentStatsCache = {
+      lessonCount: lessons.length,
+      phaseCount: phases.length,
+      totalWords,
+      totalReadingMins,
+      difficultyMap,
+      tagCloud,
+      phaseStats,
+      topConcepts,
+    }
+  }
+  return contentStatsCache
+}
+
 /**
  * Retrieves all valid parsed Jupyter notebooks available in the project.
  * Uses lazy loading to delay instantiation until the first request.
