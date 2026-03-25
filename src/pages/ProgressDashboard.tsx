@@ -587,18 +587,14 @@ export default function ProgressDashboard() {
         <p>Each cell represents a lesson. Completed lessons are highlighted.</p>
       </div>
 
-      <div className="progress-heatmap">
-        {renderedHeatmapPhases}
-      </div>
+      <div className="progress-heatmap">{renderedHeatmapPhases}</div>
 
       {/* Per-Phase Progress */}
       <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
         <h2>Progress by Phase</h2>
       </div>
 
-      <div className="progress-phases-list">
-        {renderedProgressPhases}
-      </div>
+      <div className="progress-phases-list">{renderedProgressPhases}</div>
 
       {/* Clear progress */}
       <div style={{ marginTop: '3rem', textAlign: 'center' }}>
