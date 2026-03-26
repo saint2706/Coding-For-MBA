@@ -39,8 +39,8 @@ export default function MasteryCheck({
     <div className={`mastery-check ${revealed ? 'mastery-check--revealed' : ''}`}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ /* nosec */
-          __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c'),
+        dangerouslySetInnerHTML={{
+          /* nosec */ __html: JSON.stringify(faqSchema).replace(/</g, '\\u003c'),
         }}
       />
       <div className="mastery-check__header">
