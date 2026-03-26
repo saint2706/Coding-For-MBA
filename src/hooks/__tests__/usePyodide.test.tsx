@@ -94,7 +94,7 @@ describe('usePyodide', () => {
   })
 
   it('runs python code successfully and captures output', async () => {
-    let hookResult: any
+    let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
       hookResult = usePyodide()
@@ -107,17 +107,17 @@ describe('usePyodide', () => {
       }
     })
 
-    let result: any
+    let result: { output: string; error: string | null } | undefined
     await act(async () => {
-      result = await hookResult.runPython('print_hello')
+      result = await hookResult!.runPython('print_hello')
     })
 
-    expect(result.output).toBe('Hello World')
-    expect(result.error).toBeNull()
+    expect(result!.output).toBe('Hello World')
+    expect(result!.error).toBeNull()
   })
 
   it('handles python errors gracefully', async () => {
-    let hookResult: any
+    let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
       hookResult = usePyodide()
@@ -130,17 +130,17 @@ describe('usePyodide', () => {
       }
     })
 
-    let result: any
+    let result: { output: string; error: string | null } | undefined
     await act(async () => {
-      result = await hookResult.runPython('raise_error')
+      result = await hookResult!.runPython('raise_error')
     })
 
-    expect(result.error).toBe('Python Error')
-    expect(result.output).toBe('')
+    expect(result!.error).toBe('Python Error')
+    expect(result!.output).toBe('')
   })
 
   it('truncates output when it exceeds the limit', async () => {
-    let hookResult: any
+    let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
       hookResult = usePyodide()
@@ -155,21 +155,21 @@ describe('usePyodide', () => {
 
     // Trigger runPython
 
-    let result: any
+    let result: { output: string; error: string | null } | undefined
     await act(async () => {
-      result = await hookResult.runPython('print_large')
+      result = await hookResult!.runPython('print_large')
     })
 
     // Expect output to be truncated
     // 30000 'a' + '\n' + 30000 'b' + '\n' = 60002 chars
     // Limit is 50000 (assumed)
     // Check if output contains truncation message
-    expect(result.output).toContain('[Output truncated due to size limit]')
-    expect(result.output.length).toBeLessThan(60000)
+    expect(result!.output).toContain('[Output truncated due to size limit]')
+    expect(result!.output.length).toBeLessThan(60000)
   })
 
   it('returns the return value if no stdout', async () => {
-    let hookResult: any
+    let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
       hookResult = usePyodide()
@@ -182,16 +182,16 @@ describe('usePyodide', () => {
       }
     })
 
-    let result: any
+    let result: { output: string; error: string | null } | undefined
     await act(async () => {
-      result = await hookResult.runPython('return_value')
+      result = await hookResult!.runPython('return_value')
     })
 
-    expect(result.output).toBe('Returned Value')
+    expect(result!.output).toBe('Returned Value')
   })
 
   it('handles timeout', async () => {
-    let hookResult: any
+    let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
       hookResult = usePyodide()
@@ -227,13 +227,13 @@ describe('usePyodide', () => {
       )
     }
 
-    let result: any
+    let result: { output: string; error: string | null } | undefined
     await act(async () => {
       // Small timeout
-      result = await hookResult.runPython('sleep', { timeoutMs: 10 })
+      result = await hookResult!.runPython('sleep', { timeoutMs: 10 })
     })
 
-    expect(result).toEqual({
+    expect(result!).toEqual({
       output: '',
       error: 'Python execution timed out after 10ms.',
     })
@@ -253,7 +253,7 @@ describe('usePyodide', () => {
   })
 
   it('handles abort signal', async () => {
-    let hookResult: any
+    let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
       hookResult = usePyodide()
@@ -282,10 +282,10 @@ describe('usePyodide', () => {
 
     const controller = new AbortController()
 
-    let resultPromise: Promise<any>
+    let resultPromise: Promise<{ output: string; error: string | null }>
 
     // Start execution
-    resultPromise = hookResult.runPython('sleep', { signal: controller.signal })
+    resultPromise = hookResult!.runPython('sleep', { signal: controller.signal })
 
     // Abort immediately
     controller.abort()
