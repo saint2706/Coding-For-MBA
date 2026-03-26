@@ -33,7 +33,7 @@ import {
   difficultyConfig,
   getPhase,
   getLessonsByPhase,
-  getAllLessons,
+  getCurriculumMetadata,
 } from '../utils/contentLoader'
 import { setLastVisited } from '../utils/progressTracker'
 import MarkdownRenderer, {
@@ -174,7 +174,7 @@ export default function Lesson() {
         }
       }
 
-      const totalLessonCount = getAllLessons().length
+      const totalLessonCount = getCurriculumMetadata().totalDays
       if (afterCompleted.length === totalLessonCount) {
         triggerCurriculumFireworks()
         toastSuccess('🎓 Curriculum complete! Incredible work.')

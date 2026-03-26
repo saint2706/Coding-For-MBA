@@ -16,6 +16,7 @@ interface SidebarPhaseGroupProps {
   phase: Phase
   isActive: boolean
   completedSet: Set<number>
+  completedIdsJoined: string
   dueCount: number
   currentPath: string
   onToggle: (phaseNum: number) => void
@@ -26,6 +27,7 @@ function SidebarPhaseGroup({
   phase,
   isActive,
   completedSet,
+  completedIdsJoined,
   dueCount,
   currentPath,
   onToggle,
@@ -34,7 +36,7 @@ function SidebarPhaseGroup({
   const prefersReducedMotion = useReducedMotion()
   const lessons = getLessonsByPhase(phase.phase)
   const icon = phaseIcons[phase.phase - 1] || '📖'
-  const completedCount = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day))).length
+  const completedCount = completedIdsJoined ? completedIdsJoined.split(',').length : 0
 
   return (
     <div className="phase-group">
@@ -168,14 +170,8 @@ function propsAreEqual(
   }
 
   // Check if completion status of ANY lesson IN THIS PHASE changed
-  if (prevProps.completedSet !== nextProps.completedSet) {
-    const lessons = getLessonsByPhase(nextProps.phase.phase)
-    for (const lesson of lessons) {
-      const id = dayTokenToProgressId(lesson.day)
-      if (prevProps.completedSet.has(id) !== nextProps.completedSet.has(id)) {
-        return false
-      }
-    }
+  if (prevProps.completedIdsJoined !== nextProps.completedIdsJoined) {
+    return false
   }
 
   return true

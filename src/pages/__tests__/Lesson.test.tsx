@@ -35,6 +35,7 @@ vi.mock('../../utils/contentLoader', () => ({
   getAllPhases: () => [{ phase: 1 }, { phase: 2 }],
   getPhase: (phaseNum: number) => [{ phase: 1 }, { phase: 2 }].find((p) => p.phase === phaseNum),
   getLessonsByPhase: (phase: number) => (phase === 1 ? [{ day: '1B' }] : [{ day: '2' }]),
+  getCurriculumMetadata: () => ({ totalDays: 2, totalPhases: 2, totalLevels: 1 }),
   getAllLessons: () => [{ day: '1B' }, { day: '2' }],
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
