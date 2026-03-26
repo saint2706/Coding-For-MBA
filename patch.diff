@@ -1,0 +1,48 @@
+--- src/components/__tests__/Navbar.test.tsx
++++ src/components/__tests__/Navbar.test.tsx
+@@ -79,4 +79,44 @@
+     expect(input.value).toBe('')
+     expect(document.activeElement).toBe(input)
+   })
++
++  it('submits search form with query', async () => {
++    await act(async () => {
++      root.render(
++        <MemoryRouter initialEntries={['/']}>
++          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
++        </MemoryRouter>,
++      )
++    })
++
++    const input = container.querySelector('input[type="search"]') as HTMLInputElement
++    const form = container.querySelector('.navbar-search-form') as HTMLFormElement
++
++    await act(async () => {
++      const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
++        window.HTMLInputElement.prototype,
++        'value',
++      )?.set
++      nativeInputValueSetter?.call(input, 'test query')
++      input.dispatchEvent(new Event('input', { bubbles: true }))
++    })
++
++    await act(async () => {
++      form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
++    })
++  })
++
++  it('submits search form without query', async () => {
++    await act(async () => {
++      root.render(
++        <MemoryRouter initialEntries={['/']}>
++          <Navbar sidebarOpen={false} onToggleSidebar={() => {}} />
++        </MemoryRouter>,
++      )
++    })
++
++    const form = container.querySelector('.navbar-search-form') as HTMLFormElement
++    await act(async () => {
++      form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }))
++    })
++  })
+ })
