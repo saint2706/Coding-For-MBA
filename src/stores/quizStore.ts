@@ -172,8 +172,8 @@ export const useQuizStore = create<QuizStore>()(
         const raw = (persistedState || {}) as Record<string, unknown>
         if (Array.isArray(raw.attempts)) {
           const validAttempts = raw.attempts.filter((attempt) => {
-             const parsed = QuizAttemptSchema.safeParse(attempt)
-             return parsed.success
+            const parsed = QuizAttemptSchema.safeParse(attempt)
+            return parsed.success
           }) as QuizAttempt[]
           return {
             attempts: validAttempts.slice(-MAX_ATTEMPTS),
