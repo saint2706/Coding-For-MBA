@@ -15,7 +15,6 @@ import { dayTokenToProgressId } from '../utils/dayToken'
 interface SidebarPhaseGroupProps {
   phase: Phase
   isActive: boolean
-  completedSet: Set<number>
   completedIdsJoined: string
   dueCount: number
   currentPath: string
@@ -26,7 +25,6 @@ interface SidebarPhaseGroupProps {
 function SidebarPhaseGroup({
   phase,
   isActive,
-  completedSet,
   completedIdsJoined,
   dueCount,
   currentPath,
@@ -37,6 +35,10 @@ function SidebarPhaseGroup({
   const lessons = getLessonsByPhase(phase.phase)
   const icon = phaseIcons[phase.phase - 1] || '📖'
   const completedCount = completedIdsJoined ? completedIdsJoined.split(',').length : 0
+
+  // Reconstruct the Set from the primitive string prop to allow O(1) lookups during render
+  // without breaking React.memo props equality checks from the parent.
+  const completedSet = new Set(completedIdsJoined ? completedIdsJoined.split(',').map(Number) : [])
 
   return (
     <div className="phase-group">

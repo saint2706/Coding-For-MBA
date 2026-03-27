@@ -10,3 +10,4 @@
 - Correctly mocked `getTotalReadingTime` and `getPhase` in `Home.test.tsx` and `Lesson.test.tsx` respectively.
 - Optimized Curriculum.tsx and ContentStats.tsx to use O(1) properties (getAllLessons().length and getTotalReadingTime()) instead of recalculating during renders. Reduced layout shift risks and main thread blocking.
 - Refactored legacy Zustand procedural facades (getCompletedCount, getLastVisited, getStreakDays) in Home.tsx, Curriculum.tsx, and ProgressDashboard.tsx directly into reactive store selectors (useProgressStore) to ensure O(1) reads and prevent redundant UI synchronizations.
+>> 2026-03-27 19:24:41 UTC - Optimized SidebarPhaseGroup.tsx to avoid passing Set objects as props, resolving React.memo equality breakdown and preventing global re-renders on individual lesson completion state changes. Reconstructed the Set locally during render using O(1) strings.
