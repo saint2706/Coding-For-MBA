@@ -104,10 +104,6 @@ function computeStats(attempts: QuizAttempt[], quizId: string): QuizStats | null
   }
 }
 
-const PersistedStateSchema = z.object({
-  attempts: z.array(QuizAttemptSchema).catch([]),
-})
-
 /**
  * Hook for accessing the quiz store state.
  *
