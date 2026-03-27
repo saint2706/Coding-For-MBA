@@ -40,7 +40,13 @@ vi.mock('../../components/AnimatedCounter', () => ({
 vi.mock('../../components/ProgressBar', () => ({ default: () => null }))
 
 vi.mock('../../stores/progressStore', () => {
-  const storeFn = (selector: any) =>
+  const storeFn = (
+    selector: (state: {
+      lastVisitedLesson: string | null
+      completedLessons: number[]
+      streakDays: () => number
+    }) => unknown,
+  ) =>
     selector({
       lastVisitedLesson: mockGetLastVisited(),
       completedLessons: Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),

@@ -34,7 +34,15 @@ vi.mock('../../utils/dayToken', () => ({
 
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, whileInView, initial, viewport, variants, transition, ...props }: any) => (
+    div: ({
+      children,
+      whileInView,
+      initial,
+      viewport,
+      variants,
+      transition,
+      ...props
+    }: Record<string, unknown> & { children?: React.ReactNode }) => (
       <div {...props}>{children}</div>
     ),
   },
@@ -45,7 +53,7 @@ vi.mock('motion/react', () => ({
 
 describe('Curriculum', () => {
   let container: HTMLDivElement | null = null
-  let root: any = null
+  let root: ReturnType<typeof createRoot> | null = null
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -55,7 +63,7 @@ describe('Curriculum', () => {
 
   afterEach(() => {
     act(() => {
-      root.unmount()
+      root!.unmount()
     })
     if (container && container.parentNode) {
       container.parentNode.removeChild(container)
@@ -103,12 +111,14 @@ describe('Curriculum', () => {
       ] as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>
     })
 
-    vi.mocked(useProgressStore).mockImplementation((selector: any) => {
+    vi.mocked(useProgressStore).mockImplementation(((
+      selector: (state: { completedLessons: number[] }) => unknown,
+    ) => {
       return selector({ completedLessons: [1] }) // numeric id as returned by mock
-    })
+    }) as unknown as typeof useProgressStore)
 
     act(() => {
-      root.render(
+      root!.render(
         <MemoryRouter>
           <Curriculum />
         </MemoryRouter>,

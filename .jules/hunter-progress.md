@@ -86,3 +86,9 @@
 - **Fixed:** Replaced `as any` type casting with proper type assertions in `src/components/__tests__/MarkdownRenderer.test.tsx` for syntax highlighter props mock.
 - **Fixed:** Replaced `as any` type casting with proper type structure in `src/components/__tests__/ProgressBar.test.tsx` for `motion.div` mock and `root` handling.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 14
+- **Fixed:** Replaced `as any` type casting with proper type signature in `src/pages/__tests__/Home.test.tsx` for mocked Zustand selector.
+- **Fixed:** Replaced `as any` type casting with proper type assertions in `src/pages/__tests__/Curriculum.test.tsx` for mocked `motion.div`, `root`, and mocked Zustand selector.
+- **Fixed:** Replaced `any` variable typings in `src/hooks/__tests__/usePyodide.test.tsx` with `ReturnType<typeof usePyodide>`, appropriate Promise structures, and strict types.
+- **Verified:** Build, lint, and tests pass.
