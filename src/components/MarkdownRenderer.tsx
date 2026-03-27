@@ -177,7 +177,7 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
   )
 }
 
-function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3') {
+function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
   return ({ children, ...props }: JSX.IntrinsicElements['h1'] & ExtraProps) => {
     // The 'id' prop is now provided by rehype-slug-custom plugin
     return (
@@ -528,6 +528,9 @@ const markdownComponents: Components = {
   h1: createHeadingComponent('h1'),
   h2: createHeadingComponent('h2'),
   h3: createHeadingComponent('h3'),
+  h4: createHeadingComponent('h4'),
+  h5: createHeadingComponent('h5'),
+  h6: createHeadingComponent('h6'),
   p: ParagraphWithGlossary,
 }
 
