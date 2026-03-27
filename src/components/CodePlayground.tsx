@@ -242,7 +242,15 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
               }
               title={isConfirmingReset ? 'Click again to confirm reset' : 'Reset code to original'}
             >
-              {isConfirmingReset ? '⚠️ Confirm?' : '↺ Reset'}
+              {isConfirmingReset ? (
+                <>
+                  <span aria-hidden="true">⚠️</span> Confirm?
+                </>
+              ) : (
+                <>
+                  <span aria-hidden="true">↺</span> Reset
+                </>
+              )}
             </button>
           </div>
         </div>
