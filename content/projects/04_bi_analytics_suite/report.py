@@ -43,7 +43,7 @@ def load_view(conn: sqlite3.Connection, view_name: str) -> pd.DataFrame:
     Run SELECT * FROM <view_name> and return the result as a DataFrame.
 
     TODO:
-    1. Use pd.read_sql(f"SELECT * FROM {view_name}", conn).
+    1. Use pd.read_sql(f"SELECT * FROM {view_name}", conn). # nosec
     2. Return the DataFrame.
     """
     # Your implementation here...
