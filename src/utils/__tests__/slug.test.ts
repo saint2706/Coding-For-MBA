@@ -27,4 +27,21 @@ describe('slug utilities', () => {
     expect(slugger.slug('Profit Growth ROI')).toBe('profit-growth-roi-1')
     expect(slugger.slug('PROFIT growth roi')).toBe('profit-growth-roi-2')
   })
+
+  it('handles empty strings and default fallback', () => {
+    const slugger = createSlugger()
+    expect(slugger.slug('')).toBe('section')
+    expect(slugger.slug('')).toBe('section-1')
+  })
+
+  it('handles empty React nodes', () => {
+    expect(extractTextFromReactNode(null)).toBe('')
+    expect(extractTextFromReactNode(true)).toBe('')
+    expect(extractTextFromReactNode(false)).toBe('')
+    expect(extractTextFromReactNode(createElement('div', {}))).toBe('')
+  })
+
+  it('handles arbitrary objects gracefully', () => {
+    expect(extractTextFromReactNode({} as any)).toBe('')
+  })
 })

@@ -160,4 +160,13 @@ describe('CopyButton', () => {
     expect(consoleSpy).toHaveBeenCalledWith('Failed to copy text to clipboard', expect.any(Error))
     consoleSpy.mockRestore()
   })
+
+  it('renders emoji when showEmoji is true', () => {
+    act(() => {
+      root?.render(<CopyButton text="some code" showEmoji />)
+    })
+
+    const button = container.querySelector('button')
+    expect(button?.textContent).toContain('📋 Copy')
+  })
 })

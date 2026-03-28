@@ -4,9 +4,24 @@ import {
   dayTokenFromReference,
   dayTokenToProgressId,
   normalizeDayToken,
+  parseDayToken,
+  extractDayToken,
 } from '../dayToken'
 
 describe('dayToken utilities', () => {
+  it('normalizes invalid day tokens deterministically', () => {
+    expect(normalizeDayToken(null as any)).toBe('')
+    expect(normalizeDayToken(undefined as any)).toBe('')
+    expect(normalizeDayToken('')).toBe('')
+    expect(normalizeDayToken('invalid')).toBe('INVALID')
+  })
+
+  it('compares invalid day tokens deterministically', () => {
+    expect(compareDayTokens('invalidA', 'invalidA')).toBe(0)
+    expect(compareDayTokens('invalidA', 'invalidB')).toBe(-1)
+    expect(compareDayTokens('invalidB', 'invalidA')).toBe(1)
+  })
+
   it('normalizes and sorts alphanumeric day tokens deterministically', () => {
     const tokens = ['36C', '36', '36b', '37', '35']
     const sorted = [...tokens].sort(compareDayTokens)
@@ -34,5 +49,43 @@ describe('dayToken utilities', () => {
     expect(dayTokenToProgressId('36')).toBe(36)
     expect(dayTokenToProgressId('36B')).toBeGreaterThan(dayTokenToProgressId('36A'))
     expect(dayTokenToProgressId('36C')).toBeGreaterThan(dayTokenToProgressId('36B'))
+  })
+
+  it('parses day tokens correctly', () => {
+    expect(parseDayToken('36B')).toEqual({
+      token: '36B',
+      number: 36,
+      suffix: 'B',
+      sortKey: '00036:B',
+    })
+    expect(parseDayToken('invalid')).toBeNull()
+  })
+
+  it('extracts day tokens correctly', () => {
+    expect(extractDayToken('36B')).toBe('36B')
+    expect(extractDayToken(36)).toBe('36')
+    expect(extractDayToken(null)).toBeNull()
+    expect(extractDayToken('invalid')).toBeNull()
+  })
+
+  it('dayTokenFromPath returns null for invalid paths', () => {
+    expect(dayTokenFromPath('/some/random/path')).toBeNull()
+  })
+
+  it('dayTokenFromReference returns null for invalid references', () => {
+    expect(dayTokenFromReference('invalid reference')).toBeNull()
+    expect(dayTokenFromReference(null)).toBeNull()
+    expect(dayTokenFromReference({})).toBeNull()
+  })
+
+  it('dayTokenToProgressId handles invalid tokens and cache', () => {
+    expect(dayTokenToProgressId('invalid')).toBeNaN()
+    expect(dayTokenToProgressId('invalid')).toBeNaN() // check cache
+
+    expect(dayTokenToProgressId('36B')).toBe(360002)
+    expect(dayTokenToProgressId('36B')).toBe(360002) // check cache
+
+    expect(dayTokenToProgressId('36')).toBe(36)
+    expect(dayTokenToProgressId('36')).toBe(36) // check cache
   })
 })
