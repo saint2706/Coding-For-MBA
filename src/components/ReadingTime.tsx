@@ -10,6 +10,15 @@
 
 import { getReadingTime } from '../utils/contentLoader'
 
+/**
+ * Reading Time Indicator Component
+ *
+ * Calculates and displays the estimated reading time for a lesson.
+ *
+ * @param {Object} props - The component props.
+ * @param {string} props.content - The raw markdown content of the lesson.
+ * @returns {JSX.Element} A badge displaying the estimated reading time.
+ */
 export default function ReadingTime({ content }: { content: string }) {
   const minutes = getReadingTime(content)
   return (

@@ -10,6 +10,14 @@
 
 import type { MouseEvent } from 'react'
 
+/**
+ * Skip to Content Link Component
+ *
+ * Hidden link for accessibility, allowing keyboard users to bypass navigation.
+ * Programmatically moves focus to the main content area when clicked.
+ *
+ * @returns {JSX.Element} The anchor link element.
+ */
 export default function SkipToContent() {
   const handleSkipToContent = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault()

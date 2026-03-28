@@ -20,6 +20,18 @@ interface SkeletonProps {
   count?: number
 }
 
+/**
+ * Skeleton Loader Component
+ *
+ * Displays animated placeholders for content while data is fetching.
+ *
+ * @param {SkeletonProps} props - The component props.
+ * @param {'text' | 'heading' | 'card' | 'block'} [props.variant='text'] - Visual style variant.
+ * @param {string} [props.width] - Optional custom width (CSS string).
+ * @param {string} [props.height] - Optional custom height (CSS string).
+ * @param {number} [props.count=1] - Number of skeleton elements to render.
+ * @returns {JSX.Element} The rendered skeleton items.
+ */
 export default function Skeleton({ variant = 'text', width, height, count = 1 }: SkeletonProps) {
   const items = Array.from({ length: count }, (_, i) => i)
 

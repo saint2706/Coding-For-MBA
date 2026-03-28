@@ -18,6 +18,17 @@ interface ProgressBarProps {
   showLabel?: boolean
 }
 
+/**
+ * Progress Bar Component
+ *
+ * Visual indicator of lesson completion status.
+ *
+ * @param {ProgressBarProps} props - The component props.
+ * @param {number} props.completed - Number of completed lessons.
+ * @param {number} props.total - Total number of lessons.
+ * @param {boolean} [props.showLabel=true] - Whether to show the numeric completion label.
+ * @returns {JSX.Element} The visual progress bar widget.
+ */
 export default function ProgressBar({ completed, total, showLabel = true }: ProgressBarProps) {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0
   const prefersReducedMotion = useReducedMotion()

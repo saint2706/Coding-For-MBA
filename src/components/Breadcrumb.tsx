@@ -20,6 +20,15 @@ interface BreadcrumbProps {
   items: BreadcrumbItem[]
 }
 
+/**
+ * Breadcrumb Navigation Component
+ *
+ * Renders a trail of links to help users navigate back up the site hierarchy.
+ *
+ * @param {BreadcrumbProps} props - The component props.
+ * @param {Array<{label: string, path: string}>} props.items - The list of breadcrumb items.
+ * @returns {JSX.Element} The breadcrumb navigation bar.
+ */
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
     <nav aria-label="Breadcrumb">

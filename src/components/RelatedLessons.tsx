@@ -12,6 +12,15 @@
 import { Link } from 'react-router-dom'
 import { Lesson, getRelatedLessons, difficultyConfig } from '../utils/contentLoader'
 
+/**
+ * Related Lessons Component
+ *
+ * Suggests relevant content based on the current lesson's tags and concepts.
+ *
+ * @param {Object} props - The component props.
+ * @param {Lesson} props.lesson - The current lesson to find related content for.
+ * @returns {JSX.Element | null} A grid of related lesson cards, or null if none exist.
+ */
 export default function RelatedLessons({ lesson }: { lesson: Lesson }) {
   const related = getRelatedLessons(lesson, 4)
 

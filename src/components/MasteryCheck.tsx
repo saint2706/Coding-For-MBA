@@ -21,6 +21,19 @@ interface MasteryCheckProps {
   answer: string
 }
 
+/**
+ * Mastery Check Component
+ *
+ * A self-assessment widget embedded in lessons to test understanding.
+ *
+ * @param {MasteryCheckProps} props - The component props.
+ * @param {number} props.questionNumber - The question sequence number.
+ * @param {string} props.title - The title of the mastery check.
+ * @param {string} props.questionText - The main question description text.
+ * @param {string} [props.codeSnippet] - Optional runnable code snippet for the question.
+ * @param {string} props.answer - The answer explanation.
+ * @returns {JSX.Element} The interactive mastery check widget.
+ */
 export default function MasteryCheck({
   questionNumber,
   title,
