@@ -42,6 +42,6 @@ describe('slug utilities', () => {
   })
 
   it('handles arbitrary objects gracefully', () => {
-    expect(extractTextFromReactNode({} as any)).toBe('')
+    expect(extractTextFromReactNode({} as unknown as React.ReactNode)).toBe('')
   })
 })

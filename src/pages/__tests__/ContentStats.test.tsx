@@ -25,7 +25,7 @@ vi.mock('../../utils/contentLoader', () => ({
 
 describe('ContentStats', () => {
   let container: HTMLDivElement | null = null
-  let root: any = null
+  let root: ReturnType<typeof createRoot> | null = null
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -35,7 +35,7 @@ describe('ContentStats', () => {
 
   afterEach(() => {
     act(() => {
-      root.unmount()
+      root!.unmount()
     })
     if (container && container.parentNode) {
       container.parentNode.removeChild(container)
@@ -73,7 +73,7 @@ describe('ContentStats', () => {
     })
 
     act(() => {
-      root.render(
+      root!.render(
         <MemoryRouter>
           <ContentStats />
         </MemoryRouter>,

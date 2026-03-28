@@ -16,7 +16,7 @@ vi.mock('../../utils/contentLoader', () => ({
 
 describe('NotFound', () => {
   let container: HTMLDivElement | null = null
-  let root: any = null
+  let root: ReturnType<typeof createRoot> | null = null
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -26,7 +26,7 @@ describe('NotFound', () => {
 
   afterEach(() => {
     act(() => {
-      root.unmount()
+      root!.unmount()
     })
     if (container && container.parentNode) {
       container.parentNode.removeChild(container)
@@ -58,7 +58,7 @@ describe('NotFound', () => {
     ])
 
     act(() => {
-      root.render(
+      root!.render(
         <MemoryRouter>
           <NotFound />
         </MemoryRouter>,
