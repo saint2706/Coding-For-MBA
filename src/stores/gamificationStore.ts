@@ -13,6 +13,7 @@
 
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
+import { z } from 'zod'
 import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
 import { useProgressStore } from './progressStore'
 import { triggerSparkle } from '../utils/confetti'
@@ -128,6 +129,36 @@ type DailyChallenge = {
   day: number
   dateKey: string
 }
+
+const LeaderboardEntrySchema = z.object({
+  name: z.string(),
+  xp: z.number(),
+  updatedAt: z.string(),
+})
+
+const DailyChallengeSchema = z.object({
+  day: z.number(),
+  dateKey: z.string(),
+})
+
+const PersistedGamificationSchema = z.object({
+  xpTotal: z.number().catch(0),
+  xpByDay: z
+    .record(z.string(), z.number())
+    .transform((data) => {
+      return Object.fromEntries(Object.entries(data).map(([key, val]) => [Number(key), val]))
+    })
+    .catch({}),
+  achievementsUnlocked: z.array(z.string()).catch([]),
+  dailyChallenge: DailyChallengeSchema.catch({ day: 1, dateKey: '' }),
+  leaderboard: z
+    .array(LeaderboardEntrySchema)
+    .catch([{ name: 'You', xp: 0, updatedAt: new Date(0).toISOString() }]),
+  perfectQuizIds: z.array(z.string()).catch([]),
+  lessonXpAwardedDays: z.array(z.number()).catch([]),
+  completedExerciseIds: z.array(z.string()).catch([]),
+  lessonsCompletedByDate: z.record(z.string(), z.number()).catch({}),
+})
 
 type GamificationStore = {
   xpTotal: number
@@ -339,6 +370,23 @@ export const useGamificationStore = create<GamificationStore>()(
         completedExerciseIds: state.completedExerciseIds,
         lessonsCompletedByDate: state.lessonsCompletedByDate,
       }),
+      migrate: (persistedState) => {
+        const parsed = PersistedGamificationSchema.safeParse(persistedState || {})
+        if (parsed.success) {
+          return parsed.data
+        }
+        return {
+          xpTotal: 0,
+          xpByDay: {},
+          achievementsUnlocked: [],
+          dailyChallenge: { day: 1, dateKey: '' },
+          leaderboard: [{ name: 'You', xp: 0, updatedAt: new Date(0).toISOString() }],
+          perfectQuizIds: [],
+          lessonXpAwardedDays: [],
+          completedExerciseIds: [],
+          lessonsCompletedByDate: {},
+        }
+      },
       skipHydration: true,
       onRehydrateStorage: () => (state) => {
         if (!state) return

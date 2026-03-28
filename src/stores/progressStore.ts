@@ -12,6 +12,7 @@
 
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
+import { z } from 'zod'
 import { getStoredString, removeStoredValue } from '../utils/safeStorage'
 import { dayTokenToProgressId } from '../utils/dayToken'
 
@@ -52,11 +53,11 @@ type PhaseProgress = {
   percent: number
 }
 
-type PersistedProgressShape = {
-  completedLessons?: unknown
-  lastVisitedLesson?: unknown
-  completionDates?: unknown
-}
+const PersistedProgressSchema = z.object({
+  completedLessons: z.array(z.unknown()).catch([]),
+  lastVisitedLesson: z.unknown().nullable().catch(null),
+  completionDates: z.unknown().catch({}),
+})
 
 type ProgressStore = {
   completedLessons: number[]
@@ -156,20 +157,29 @@ function normalizePersistedState(
     }
   }
 
-  const maybeState = (state || {}) as PersistedProgressShape
-  const completedLessons = parseValidDays(maybeState.completedLessons)
-  const lastVisitedRaw = maybeState.lastVisitedLesson
-  const lastVisitedLesson =
-    Number.isInteger(lastVisitedRaw) && Number(lastVisitedRaw) > 0
-      ? Number(lastVisitedRaw)
-      : mergeLegacyLastVisited(null)
+  const parsed = PersistedProgressSchema.safeParse(state || {})
 
-  const completionDates = parseValidCompletionDates(maybeState.completionDates)
+  if (parsed.success) {
+    const completedLessons = parseValidDays(parsed.data.completedLessons)
+    const lastVisitedRaw = parsed.data.lastVisitedLesson
+    const lastVisitedLesson =
+      Number.isInteger(lastVisitedRaw) && Number(lastVisitedRaw) > 0
+        ? Number(lastVisitedRaw)
+        : mergeLegacyLastVisited(null)
+
+    const completionDates = parseValidCompletionDates(parsed.data.completionDates)
+
+    return {
+      completedLessons,
+      lastVisitedLesson,
+      completionDates,
+    }
+  }
 
   return {
-    completedLessons,
-    lastVisitedLesson,
-    completionDates,
+    completedLessons: [],
+    lastVisitedLesson: mergeLegacyLastVisited(null),
+    completionDates: {},
   }
 }
 

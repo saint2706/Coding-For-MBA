@@ -12,16 +12,19 @@
 
 import { create } from 'zustand'
 import { StateStorage, createJSONStorage, persist } from 'zustand/middleware'
+import { z } from 'zod'
 
-type QuizAttempt = {
-  id: string
-  quizId: string
-  topic: string
-  attemptedAt: string
-  correct: boolean
-  output?: string
-  error?: string
-}
+const QuizAttemptSchema = z.object({
+  id: z.string(),
+  quizId: z.string(),
+  topic: z.string(),
+  attemptedAt: z.string(),
+  correct: z.boolean(),
+  output: z.string().optional(),
+  error: z.string().optional(),
+})
+
+export type QuizAttempt = z.infer<typeof QuizAttemptSchema>
 
 type QuizStats = {
   quizId: string
@@ -101,24 +104,6 @@ function computeStats(attempts: QuizAttempt[], quizId: string): QuizStats | null
   }
 }
 
-function normalizeAttempts(value: unknown): QuizAttempt[] {
-  if (!Array.isArray(value)) return []
-
-  return value
-    .filter((item): item is QuizAttempt => {
-      if (!item || typeof item !== 'object') return false
-      const maybe = item as Partial<QuizAttempt>
-      return (
-        typeof maybe.id === 'string' &&
-        typeof maybe.quizId === 'string' &&
-        typeof maybe.topic === 'string' &&
-        typeof maybe.attemptedAt === 'string' &&
-        typeof maybe.correct === 'boolean'
-      )
-    })
-    .slice(-MAX_ATTEMPTS)
-}
-
 /**
  * Hook for accessing the quiz store state.
  *
@@ -184,9 +169,19 @@ export const useQuizStore = create<QuizStore>()(
       storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({ attempts: state.attempts }),
       migrate: (persistedState) => {
-        const raw = (persistedState || {}) as { attempts?: unknown }
+        const raw = (persistedState || {}) as Record<string, unknown>
+        if (Array.isArray(raw.attempts)) {
+          const validAttempts = raw.attempts.filter((attempt) => {
+            const parsed = QuizAttemptSchema.safeParse(attempt)
+            return parsed.success
+          }) as QuizAttempt[]
+          return {
+            attempts: validAttempts.slice(-MAX_ATTEMPTS),
+          }
+        }
+
         return {
-          attempts: normalizeAttempts(raw.attempts),
+          attempts: [],
         }
       },
       skipHydration: true,

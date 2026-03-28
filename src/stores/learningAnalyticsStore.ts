@@ -13,6 +13,7 @@
 
 import { create } from 'zustand'
 import { createJSONStorage, persist, StateStorage } from 'zustand/middleware'
+import { z } from 'zod'
 
 const STORAGE_KEY = 'coding-for-mba-learning-analytics'
 const DAY_IN_MS = 24 * 60 * 60 * 1000
@@ -46,11 +47,11 @@ const safeStorage: StateStorage = {
   },
 }
 
-type PersistedLearningAnalytics = {
-  timeByLessonDay?: unknown
-  timeByDate?: unknown
-  visitsByLessonDay?: unknown
-}
+const PersistedAnalyticsSchema = z.object({
+  timeByLessonDay: z.record(z.string(), z.number()).catch({}),
+  timeByDate: z.record(z.string(), z.number()).catch({}),
+  visitsByLessonDay: z.record(z.string(), z.number()).catch({}),
+})
 
 export type LearningAnalyticsStore = {
   timeByLessonDay: Record<number, number>
@@ -99,12 +100,26 @@ function parsePositiveRecord(value: unknown, integerKeys = false): Record<string
 function normalizePersistedState(
   state: unknown,
 ): Pick<LearningAnalyticsStore, 'timeByLessonDay' | 'timeByDate' | 'visitsByLessonDay'> {
-  const maybe = (state || {}) as PersistedLearningAnalytics
+  const parsed = PersistedAnalyticsSchema.safeParse(state || {})
+
+  if (parsed.success) {
+    return {
+      timeByLessonDay: parsePositiveRecord(parsed.data.timeByLessonDay, true) as Record<
+        number,
+        number
+      >,
+      timeByDate: parsePositiveRecord(parsed.data.timeByDate),
+      visitsByLessonDay: parsePositiveRecord(parsed.data.visitsByLessonDay, true) as Record<
+        number,
+        number
+      >,
+    }
+  }
 
   return {
-    timeByLessonDay: parsePositiveRecord(maybe.timeByLessonDay, true) as Record<number, number>,
-    timeByDate: parsePositiveRecord(maybe.timeByDate),
-    visitsByLessonDay: parsePositiveRecord(maybe.visitsByLessonDay, true) as Record<number, number>,
+    timeByLessonDay: {},
+    timeByDate: {},
+    visitsByLessonDay: {},
   }
 }
 

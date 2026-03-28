@@ -92,3 +92,10 @@
 **Vulnerability:** A static security scan reported a high severity secret exposure in `src/components/__tests__/MarkdownRenderer.test.tsx`.
 **Learning:** Naive regex-based security scanners looking for tokens will flag literal combinations of variable names with large strings. In this case, `const longToken = 'https://example.com/' + 'averylongsegment'.repeat(30)` triggered a false positive secret match due to the string size combined with the "token" keyword in the variable name.
 **Prevention:** Renamed the variable `longToken` to `largeUrlString` to prevent false positive detections by the security scanner, maintaining clean scan results.
+
+## 2026-03-27 - Local Storage Hydration Validation
+**Vulnerability:** The application was trusting raw data from `localStorage` without validating the object schemas. If an attacker/user modified the values in `localStorage` (tampering/corruption), it could crash the application on load, lead to unexpected behavior, or theoretically allow DOM XSS if tampered state strings are rendered unescaped.
+**Learning:** Persisted client-side state is untrusted input. It must be strictly validated on rehydration (using robust schema validation like Zod), just as API payloads are validated.
+**Prevention:**
+- Added strict `Zod` schema validation to the `migrate` methods of `useQuizStore`, `useProgressStore`, `useGamificationStore`, and `useLearningAnalyticsStore`.
+- This ensures any modified or corrupted local storage JSON is discarded or sanitized back to default/safe values before it enters the Zustand stores.
