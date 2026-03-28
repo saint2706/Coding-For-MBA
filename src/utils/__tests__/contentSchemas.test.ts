@@ -6,7 +6,12 @@ const {
   exerciseSchema,
   lessonFrontmatterSchema,
   phaseOverviewFrontmatterSchema,
-} = contentSchemas
+} = contentSchemas as unknown as {
+  difficultyLevelSchema: any
+  exerciseSchema: any
+  lessonFrontmatterSchema: any
+  phaseOverviewFrontmatterSchema: any
+}
 
 describe('content zod schemas', () => {
   it('accepts valid lesson frontmatter fixture', () => {

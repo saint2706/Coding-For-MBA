@@ -92,3 +92,8 @@
 - **Fixed:** Replaced `as any` type casting with proper type assertions in `src/pages/__tests__/Curriculum.test.tsx` for mocked `motion.div`, `root`, and mocked Zustand selector.
 - **Fixed:** Replaced `any` variable typings in `src/hooks/__tests__/usePyodide.test.tsx` with `ReturnType<typeof usePyodide>`, appropriate Promise structures, and strict types.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 15
+- **Fixed:** Replaced `// @ts-expect-error` comments in `src/utils/__tests__/linkSafety.test.ts` with `as unknown as string` type assertions for invalid inputs.
+- **Fixed:** Replaced `as any` cast on JS module import in `src/utils/__tests__/contentSchemas.test.ts` with `as unknown as { ... }` type assertion.
+- **Verified:** Build, lint, and tests pass.
