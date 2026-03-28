@@ -53,3 +53,4 @@
   - Audited exported functions across `src/utils/`, `src/hooks/`, `src/stores/`, and `src/components/`. Verified that all currently exported API surfaces and React components have rigorous, complete JSDoc annotations.
   - Analyzed `README.md`, `CONTRIBUTING.md`, and all documents in the `docs/` directory. No broken internal or external links were detected.
   - No documentation debt was found in the codebase. Project documentation is clean, accurate, and completely synchronized with the source code.
+>> Added missing @param and @returns tags to JSDoc comments for SEO schema builder functions in src/utils/seoSchemas.ts

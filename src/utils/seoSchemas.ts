@@ -53,6 +53,11 @@ export function buildWebSiteSchema(): Record<string, unknown> {
 /**
  * Build an ItemList schema to describe a list of phases or lessons.
  * Useful for the Curriculum Overview page.
+ *
+ * @param {string} name - The name of the item list.
+ * @param {string} description - The description of the item list.
+ * @param {Array<{ name: string; url: string; position: number; description?: string }>} items - The list of items to include.
+ * @returns {Record<string, unknown>} The ItemList JSON-LD schema.
  */
 export function buildItemListSchema(
   name: string,
@@ -78,6 +83,12 @@ export function buildItemListSchema(
 
 /**
  * Build a CollectionPage schema for the Exercises page.
+ *
+ * @param {string} name - The name of the collection page.
+ * @param {string} description - The description of the collection page.
+ * @param {string} path - The relative path of the collection page.
+ * @param {Array<{ name: string; url: string; description?: string }>} hasPart - The parts belonging to the collection.
+ * @returns {Record<string, unknown>} The CollectionPage JSON-LD schema.
  */
 export function buildCollectionPageSchema(
   name: string,
@@ -138,6 +149,9 @@ export function buildCourseSchema(): Record<string, unknown> {
 
 /**
  * Build an FAQPage JSON-LD schema for Q&A sections (like Mastery Checks).
+ *
+ * @param {Array<{ question: string; answer: string }>} questions - An array of question and answer pairs.
+ * @returns {Record<string, unknown>} The FAQPage JSON-LD schema.
  */
 export function buildFAQSchema(
   questions: { question: string; answer: string }[],
@@ -158,6 +172,11 @@ export function buildFAQSchema(
 
 /**
  * Build a Product JSON-LD schema.
+ *
+ * @param {string} name - The name of the product.
+ * @param {string} description - The description of the product.
+ * @param {string} [image] - An optional image URL for the product.
+ * @returns {Record<string, unknown>} The Product JSON-LD schema.
  */
 export function buildProductSchema(
   name: string,
@@ -185,6 +204,13 @@ export function buildProductSchema(
 
 /**
  * Build an Article/LearningResource JSON-LD schema for a lesson page.
+ *
+ * @param {string} title - The title of the lesson.
+ * @param {string} description - The description of the lesson.
+ * @param {string} path - The relative path of the lesson page.
+ * @param {number} day - The day number of the lesson.
+ * @param {number} phase - The phase number of the lesson.
+ * @returns {Record<string, unknown>} The Article/LearningResource JSON-LD schema.
  */
 export function buildLessonSchema(
   title: string,
