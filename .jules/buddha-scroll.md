@@ -118,3 +118,14 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 - Added `Search`, `Review`, and `Case Studies` static routes to `scripts/generate-llms-txt.js` to improve GEO discoverability.
 - Updated `package.json` to automatically run `node scripts/generate-llms-txt.js` during the `build` and `analyze` steps.
 - Regenerated `llms.txt` successfully with the new routes.
+
+### [Date: Current] - Deep Semantic Refactor and CLS Optimization
+**Priority Areas:**
+1.  **Speed (Velocity)**: Font Hydration (CLS).
+2.  **SEO (Visibility)**: Strict Semantic HTML Mapping.
+3.  **GEO (Intelligence)**: Proper markdown structure extraction.
+
+**Changes:**
+-   [x] **[PERF] Font CLS Optimization**: Updated `index.html` Google Fonts external stylesheets to use `&display=swap` instead of `&display=block` to prevent Cumulative Layout Shift (CLS) during text hydration.
+-   [x] **[SEO] Semantic HTML mapping**: Added explicit `<h4-h6>` heading mappings to `MarkdownRenderer.tsx` custom components mapping object to handle deeper heading levels generated from content, ensuring hierarchical integrity.
+-   [x] **[QA] Visual Verification**: Setup Playwright tests to execute E2E visual smoke tests to verify visual integrity of the app against local development server (`verify.py`, `verify_lesson.py`).
