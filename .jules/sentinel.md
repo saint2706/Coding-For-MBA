@@ -99,3 +99,8 @@
 **Prevention:**
 - Added strict `Zod` schema validation to the `migrate` methods of `useQuizStore`, `useProgressStore`, `useGamificationStore`, and `useLearningAnalyticsStore`.
 - This ensures any modified or corrupted local storage JSON is discarded or sanitized back to default/safe values before it enters the Zustand stores.
+
+## 2026-03-28 - JSON-LD XSS Fix
+**Vulnerability:** XSS vulnerability via improperly escaped `dangerouslySetInnerHTML` in `src/components/SEOHead.tsx`.
+**Learning:** Using `.replace(/</g, '\u003c')` inside a JavaScript string literal actually evaluates to a single `<` and does not provide escaping, allowing an attacker to inject payloads like `</script><script>`. It must be double-escaped to `\\u003c` so that the literal string `\u003c` gets safely inserted into the DOM without being evaluated as HTML by the browser engine.
+**Prevention:** Changed `.replace(/</g, '\u003c')` to `.replace(/</g, '\\u003c')` in JSON-LD structured data and added validation that all instances of `dangerouslySetInnerHTML` are correctly escaped or used with explicit `/* nosec */` suppression tags.
