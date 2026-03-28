@@ -129,3 +129,8 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 -   [x] **[PERF] Font CLS Optimization**: Updated `index.html` Google Fonts external stylesheets to use `&display=swap` instead of `&display=block` to prevent Cumulative Layout Shift (CLS) during text hydration.
 -   [x] **[SEO] Semantic HTML mapping**: Added explicit `<h4-h6>` heading mappings to `MarkdownRenderer.tsx` custom components mapping object to handle deeper heading levels generated from content, ensuring hierarchical integrity.
 -   [x] **[QA] Visual Verification**: Setup Playwright tests to execute E2E visual smoke tests to verify visual integrity of the app against local development server (`verify.py`, `verify_lesson.py`).
+
+## 🧘 Buddha: Fixed Build & Enhanced Sidebar Semantics [SEO][PERF]
+
+- Ran `npm install` to resolve missing `tsc` dependency, allowing `npm run build` to succeed with no errors.
+- Enhanced `src/components/Sidebar.tsx` by converting the `.sidebar-title` from a `<div>` to an `<h2>`. This provides a clearer document outline, improving accessibility (A11Y) for screen readers and semantic indexing (GEO) for AI agents.
