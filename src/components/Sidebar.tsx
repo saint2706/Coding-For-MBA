@@ -221,7 +221,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               key={phase.phase}
               phase={phase}
               isActive={openPhase === phase.phase}
-              completedSet={completedSet}
               completedIdsJoined={completedIdsByPhase[phase.phase] ?? ''}
               dueCount={dueByPhase[phase.phase] || 0}
               currentPath={location.pathname}

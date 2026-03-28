@@ -41,7 +41,6 @@ describe('SidebarPhaseGroup', () => {
   const defaultProps = {
     phase: { phase: 1, title: 'Foundations', days: ['01', '02'], content: '', path: '' },
     isActive: false,
-    completedSet: new Set<number>(),
     completedIdsJoined: '',
     dueCount: 0,
     currentPath: '/',
@@ -92,12 +91,7 @@ describe('SidebarPhaseGroup', () => {
     act(() => {
       root?.render(
         <MemoryRouter>
-          <SidebarPhaseGroup
-            {...defaultProps}
-            completedSet={new Set([1])} // Day 01
-            completedIdsJoined="1"
-            dueCount={3}
-          />
+          <SidebarPhaseGroup {...defaultProps} completedIdsJoined="1" dueCount={3} />
         </MemoryRouter>,
       )
     })
