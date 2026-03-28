@@ -6,7 +6,7 @@
  * how lessons connect through prerequisites and shared concepts.
  */
 
-import { useRef, useEffect, useCallback, useState } from 'react'
+import { useRef, useEffect, useCallback, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as d3 from 'd3'
 import { getAllLessons, phaseIcons } from '../utils/contentLoader'
@@ -95,21 +95,10 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
     node: GraphNode
   } | null>(null)
 
-  /**
-   * Builds and initializes the D3 force-directed graph on component mount.
-   * Sets up nodes, edges, forces, and interaction handlers.
-   */
-  useEffect(() => {
-    const container = containerRef.current
-    const svg = svgRef.current
-    if (!container || !svg) return
-
-    const width = container.clientWidth
-    const height = container.clientHeight || 600
-
+  // Memoize nodes to preserve D3 x/y coordinates across re-renders
+  const graphData = useMemo(() => {
     const lessons = getAllLessons()
 
-    // Build nodes & edges
     const nodes: GraphNode[] = lessons.map((l) => ({
       id: String(l.day),
       label: `D${l.day}`,
@@ -135,6 +124,23 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
         }
       }
     }
+
+    return { nodes, edges }
+  }, [])
+
+  /**
+   * Builds and initializes the D3 force-directed graph on component mount.
+   * Sets up nodes, edges, forces, and interaction handlers.
+   */
+  useEffect(() => {
+    const container = containerRef.current
+    const svg = svgRef.current
+    if (!container || !svg) return
+
+    const width = container.clientWidth
+    const height = container.clientHeight || 600
+
+    const { nodes, edges } = graphData
 
     // Phase cluster centres (arranged radially)
     const phases = [...new Set(nodes.map((n) => n.phase))].sort((a, b) => a - b)
@@ -260,11 +266,11 @@ export default function ConceptGraph({ search = '', highlightPhase = null }: Con
 
     // Force simulation
     const simulation = d3
-      .forceSimulation<GraphNode>(nodes)
+      .forceSimulation<GraphNode>([...nodes])
       .force(
         'link',
         d3
-          .forceLink<GraphNode, GraphEdge>(edges)
+          .forceLink<GraphNode, GraphEdge>([...edges])
           .id((d) => d.id)
           .distance(60)
           .strength(0.3),
