@@ -250,11 +250,19 @@ export default function ExerciseWidget({
             aria-expanded={showSolution}
             aria-controls={solutionId}
           >
-            {showSolution
-              ? '🔽 Hide Solution'
-              : hasSubmitted
-                ? '💡 Show Solution (Review Mode)'
-                : '💡 Show Solution'}
+            {showSolution ? (
+              <>
+                <span aria-hidden="true">🔽</span> Hide Solution
+              </>
+            ) : hasSubmitted ? (
+              <>
+                <span aria-hidden="true">💡</span> Show Solution (Review Mode)
+              </>
+            ) : (
+              <>
+                <span aria-hidden="true">💡</span> Show Solution
+              </>
+            )}
           </button>
           <AnimatePresence initial={false}>
             {showSolution && (
@@ -304,7 +312,15 @@ export default function ExerciseWidget({
                             : {}),
                         }}
                       >
-                        {isConfirmingSolution ? '⚠️ Confirm?' : '🚀 Try Solution'}
+                        {isConfirmingSolution ? (
+                          <>
+                            <span aria-hidden="true">⚠️</span> Confirm?
+                          </>
+                        ) : (
+                          <>
+                            <span aria-hidden="true">🚀</span> Try Solution
+                          </>
+                        )}
                       </button>
                       <CopyButton text={solution} className="code-block-copy" showEmoji={true} />
                     </div>

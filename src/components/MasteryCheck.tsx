@@ -65,7 +65,15 @@ export default function MasteryCheck({
         aria-expanded={revealed}
         {...(revealed && { 'aria-controls': answerId })}
       >
-        {revealed ? '🔽 Hide Answer' : '✅ Check Answer'}
+        {revealed ? (
+          <>
+            <span aria-hidden="true">🔽</span> Hide Answer
+          </>
+        ) : (
+          <>
+            <span aria-hidden="true">✅</span> Check Answer
+          </>
+        )}
       </button>
 
       {revealed && (
