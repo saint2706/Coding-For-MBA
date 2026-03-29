@@ -108,7 +108,7 @@ function SidebarPhaseGroup({
                 onClick={onClose}
                 aria-current={currentPath === `/phase/${phase.phase}` ? 'page' : undefined}
               >
-                📄 Phase Overview
+                <span aria-hidden="true">📄</span> Phase Overview
               </Link>
             </motion.div>
             {lessons.map((lesson, index) => (

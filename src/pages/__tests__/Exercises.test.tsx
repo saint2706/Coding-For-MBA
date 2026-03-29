@@ -89,8 +89,8 @@ describe('Exercises', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('🧪 Exercise Browser')).toBeInTheDocument()
-    expect(screen.getByText('📓 Phase Solution Notebooks')).toBeInTheDocument()
+    expect(screen.getByText('Exercise Browser')).toBeInTheDocument()
+    expect(screen.getByText('Phase Solution Notebooks')).toBeInTheDocument()
     expect(screen.getByText('Showing 2 of 2 exercises')).toBeInTheDocument()
 
     expect(screen.getByText('Basic Math')).toBeInTheDocument()
@@ -150,7 +150,7 @@ describe('Exercises', () => {
     fireEvent.click(aiToggle) // The click should be somewhere but it seems it's not a toggle button in the new UI.
 
     // Instead we can test if the low scoring block renders properly
-    expect(screen.getByText('📉 Spaced Repetition Focus')).toBeInTheDocument()
+    expect(screen.getByText('Spaced Repetition Focus')).toBeInTheDocument()
     expect(
       screen.getByText(/Revisit these lower-scoring quiz topics to improve retention:/i),
     ).toBeInTheDocument()
