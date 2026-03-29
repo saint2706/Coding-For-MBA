@@ -7,10 +7,30 @@ const {
   lessonFrontmatterSchema,
   phaseOverviewFrontmatterSchema,
 } = contentSchemas as unknown as {
-  difficultyLevelSchema: { safeParse: (data: unknown) => { success: boolean; error?: { issues: Array<{ path: Array<string | number> }> } } }
-  exerciseSchema: { safeParse: (data: unknown) => { success: boolean; error?: { issues: Array<{ path: Array<string | number> }> } } }
-  lessonFrontmatterSchema: { safeParse: (data: unknown) => { success: boolean; error?: { issues: Array<{ path: Array<string | number> }> } } }
-  phaseOverviewFrontmatterSchema: { safeParse: (data: unknown) => { success: boolean; error?: { issues: Array<{ path: Array<string | number> }> } } }
+  difficultyLevelSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
+  exerciseSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
+  lessonFrontmatterSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
+  phaseOverviewFrontmatterSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
 }
 
 describe('content zod schemas', () => {
