@@ -301,3 +301,93 @@ describe('gamificationStore', () => {
     }
   })
 })
+
+describe('gamificationStore persisted storage edge cases', () => {
+  it('covers partialize function', () => {
+    const partialize = useGamificationStore.persist.getOptions().partialize!
+    const state = useGamificationStore.getState()
+    const partial = partialize(state)
+
+    expect(partial).toHaveProperty('xpTotal')
+    expect(partial).toHaveProperty('xpByDay')
+    expect(partial).toHaveProperty('achievementsUnlocked')
+    expect(partial).toHaveProperty('dailyChallenge')
+    expect(partial).toHaveProperty('leaderboard')
+    expect(partial).toHaveProperty('perfectQuizIds')
+    expect(partial).toHaveProperty('lessonXpAwardedDays')
+    expect(partial).toHaveProperty('completedExerciseIds')
+    expect(partial).toHaveProperty('lessonsCompletedByDate')
+  })
+
+  it('covers migrate function failure block', () => {
+    const migrate = useGamificationStore.persist.getOptions().migrate!
+    const parsed = migrate({ xpTotal: 'not a number' }, 1) as any
+    expect(parsed.xpTotal).toBe(0)
+  })
+})
+
+it('covers safe storage catch blocks', () => {
+  // In order to hit the catch blocks, we can mock localStorage to throw
+  const originalLocalStorage = global.localStorage
+  Object.defineProperty(global, 'localStorage', {
+    value: {
+      getItem: () => {
+        throw new Error('Simulated get error')
+      },
+      setItem: () => {
+        throw new Error('Simulated set error')
+      },
+      removeItem: () => {
+        throw new Error('Simulated remove error')
+      },
+    },
+    writable: true,
+    configurable: true,
+  })
+
+  const storage = useGamificationStore.persist.getOptions().storage!
+  expect(storage.getItem('test')).toBe(null) // Should catch and return null
+  expect(() => storage.setItem('test', 'value' as any)).not.toThrow() // Should ignore
+  expect(() => storage.removeItem('test')).not.toThrow() // Should ignore
+
+  // Restore localStorage
+  Object.defineProperty(global, 'localStorage', { value: originalLocalStorage })
+})
+
+it('covers migrate success and Zod transform', () => {
+  const migrate = useGamificationStore.persist.getOptions().migrate!
+  // to hit 149 we need xpByDay populated
+  const validState = {
+    xpTotal: 100,
+    xpByDay: { '2023': 50 },
+    achievementsUnlocked: ['xp-50'],
+    dailyChallenge: { day: 1, dateKey: '2023-01-01' },
+    leaderboard: [{ name: 'You', xp: 100, updatedAt: new Date().toISOString() }],
+    perfectQuizIds: [],
+    lessonXpAwardedDays: [],
+    completedExerciseIds: [],
+    lessonsCompletedByDate: {},
+  }
+
+  // Line 378 is return defaultValue when parsing fails but Zod with catches won't fail normally.
+  // However, if we pass null or undefined, Zod might succeed but return defaults via catch.
+  const result1 = migrate(validState, 1) as any
+  expect(result1.xpTotal).toBe(100)
+
+  const result2 = migrate(null, 1) as any
+  expect(result2.xpTotal).toBe(0)
+})
+
+it('covers migrate failure block (line 378)', () => {
+  // We need to force parsed.success = false
+  // Zod's safeParse won't fail if all properties use `.catch()`.
+  // Wait, are there any properties without catch?
+  // Let's look at PersistedGamificationSchema
+  // It's possible to fail safeParse if we mock safeParse or if we pass something that Zod root level rejects (like not an object).
+  const migrate = useGamificationStore.persist.getOptions().migrate!
+
+  // Pass a primitive that is not an object, which might fail z.object() even if fields have catch,
+  // actually z.object().safeParse("string") will fail because it's not an object!
+  const result3 = migrate('this is a string, not an object', 1) as any
+  expect(result3.xpTotal).toBe(0) // Should hit line 378 and return defaults
+})
