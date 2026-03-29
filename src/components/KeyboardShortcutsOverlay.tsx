@@ -15,6 +15,14 @@ import { SHORTCUTS, isTypingInEditableElement, type ShortcutDefinition } from '.
 const focusableSelector =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
+/**
+ * Keyboard Shortcuts Overlay Component
+ *
+ * A modal dialog displaying all available keyboard shortcuts.
+ * Handled via a global keydown event listener.
+ *
+ * @returns {JSX.Element | null} The overlay modal, or null if closed.
+ */
 export default function KeyboardShortcutsOverlay() {
   const [isOpen, setIsOpen] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)

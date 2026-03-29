@@ -21,6 +21,14 @@ type ErrorBoundaryState = {
   hasError: boolean
 }
 
+/**
+ * Error Boundary Component
+ *
+ * Catches JavaScript errors anywhere in the child component tree, logs those errors,
+ * and displays a fallback UI instead of the component tree that crashed.
+ *
+ * @extends {Component<ErrorBoundaryProps, ErrorBoundaryState>}
+ */
 export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false }
 

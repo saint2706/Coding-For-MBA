@@ -13,6 +13,14 @@
 import { useState, useEffect } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 
+/**
+ * Back to Top Component
+ *
+ * Renders a floating button that smoothly scrolls the window back to the top.
+ * Becomes visible only after the user has scrolled down a certain distance.
+ *
+ * @returns {JSX.Element | null} The back to top button, or null if not visible.
+ */
 export default function BackToTop() {
   const [visible, setVisible] = useState(false)
   const prefersReducedMotion = useReducedMotion()

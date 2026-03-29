@@ -21,6 +21,16 @@ interface NavbarProps {
   sidebarOpen: boolean
 }
 
+/**
+ * Top Navigation Bar Component
+ *
+ * The primary desktop navigation header.
+ *
+ * @param {NavbarProps} props - The component props.
+ * @param {function} props.onToggleSidebar - Function to toggle the sidebar menu.
+ * @param {boolean} props.sidebarOpen - State indicating if the sidebar is open.
+ * @returns {JSX.Element} The navbar element.
+ */
 export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
   const location = useLocation()
   const navigate = useNavigate()

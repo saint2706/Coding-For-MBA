@@ -84,7 +84,30 @@ We use **Vitest** for unit testing and **Playwright** for end-to-end testing.
 
 - **Prettier**: We enforce code formatting with Prettier. Run `npm run format` before committing.
 - **TypeScript**: We use strict TypeScript configuration. Ensure `npm run typecheck` passes.
-- **JSDoc**: Please add JSDoc comments to exported functions and components, describing their purpose, parameters, and return values.
+
+### JSDoc Requirements
+
+To ensure generated documentation and intellisense features work properly, all exported functions and React components **must** have a JSDoc block immediately preceding the `export` keyword.
+
+- Use standard `/** ... */` syntax.
+- Include a descriptive summary of what the function/component does.
+- Document all parameters using `@param`.
+- Document the return value using `@returns`.
+- Avoid placing imports between the JSDoc block and the `export` statement.
+
+Example:
+```typescript
+/**
+ * Calculates the total price including tax.
+ *
+ * @param {number} subtotal - The subtotal amount.
+ * @param {number} taxRate - The tax rate (e.g., 0.2 for 20%).
+ * @returns {number} The total price.
+ */
+export function calculateTotal(subtotal: number, taxRate: number): number {
+  return subtotal * (1 + taxRate);
+}
+```
 
 ## 📝 Pull Request Process
 

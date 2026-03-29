@@ -59,6 +59,24 @@ function buildBreadcrumbSchema(items: BreadcrumbItem[]): Record<string, unknown>
   }
 }
 
+/**
+ * SEO Head Component
+ *
+ * Manages per-page meta tags for Search Engine Optimization and Social Sharing.
+ *
+ * @param {SEOHeadProps} props - The component props.
+ * @param {string} props.title - Page title.
+ * @param {string} [props.description] - Meta description for the page.
+ * @param {string} [props.path] - Canonical path.
+ * @param {string} [props.ogType] - Open Graph type.
+ * @param {string} [props.image] - Custom OG image URL.
+ * @param {Record<string, unknown>[]} [props.jsonLd] - JSON-LD structured data objects to inject.
+ * @param {Array<{name: string, url: string}>} [props.breadcrumbs] - Breadcrumb items for BreadcrumbList schema.
+ * @param {boolean} [props.noIndex] - Whether to add noindex meta tag.
+ * @param {string} [props.articlePublished] - Article-specific: published date.
+ * @param {string} [props.articleModified] - Article-specific: modified date.
+ * @returns {JSX.Element} The helmet element containing SEO meta tags.
+ */
 export default function SEOHead({
   title,
   description = DEFAULT_DESCRIPTION,

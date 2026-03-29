@@ -12,6 +12,15 @@
 import { Link } from 'react-router-dom'
 import { Lesson, getPrerequisiteLessons } from '../utils/contentLoader'
 
+/**
+ * Prerequisite Links Component
+ *
+ * Displays a list of lesson dependencies as navigation pills.
+ *
+ * @param {Object} props - The component props.
+ * @param {Lesson} props.lesson - The current lesson to find prerequisites for.
+ * @returns {JSX.Element | null} A container with prerequisite pills, or null if none exist.
+ */
 export default function PrerequisitePills({ lesson }: { lesson: Lesson }) {
   const prereqs = getPrerequisiteLessons(lesson)
 

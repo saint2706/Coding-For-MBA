@@ -24,6 +24,19 @@ interface AnimatedCounterProps {
   format?: (value: number) => string
 }
 
+/**
+ * Animated Counter Component
+ *
+ * Renders a numerical value that animates from 0 to the target number when it comes into view.
+ * Respects user's reduced motion preferences by skipping animation.
+ *
+ * @param {AnimatedCounterProps} props - The component props.
+ * @param {number} props.value - The target number to count up to.
+ * @param {string} [props.suffix] - Optional string to append after the number.
+ * @param {number} [props.duration] - Duration of the animation in seconds.
+ * @param {function} [props.format] - Optional formatter function for the displayed number.
+ * @returns {JSX.Element} The animated counter component.
+ */
 export default function AnimatedCounter({
   value,
   suffix = '',

@@ -16,6 +16,16 @@ interface ScrollProgressProps {
   isLesson?: boolean
 }
 
+/**
+ * Scroll Progress Indicator Component
+ *
+ * A horizontal bar fixed to the top of the viewport indicating reading progress.
+ *
+ * @param {ScrollProgressProps} props - The component props.
+ * @param {string} [props.targetSelector] - Optional CSS selector for the scrollable container.
+ * @param {boolean} [props.isLesson] - Indicates if the progress bar is used in a lesson context.
+ * @returns {JSX.Element} The scroll progress bar widget.
+ */
 export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgressProps) {
   const [progress, setProgress] = useState(0)
 

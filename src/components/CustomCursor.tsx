@@ -20,6 +20,14 @@ function isFinePointer(): boolean {
   return window.matchMedia('(pointer: fine)').matches
 }
 
+/**
+ * Custom Cursor Component
+ *
+ * Renders a stylized cursor using a dot and a trailing ring.
+ * Disables itself automatically if the device does not support fine pointing.
+ *
+ * @returns {JSX.Element | null} The custom cursor DOM elements, or null on touch devices.
+ */
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
