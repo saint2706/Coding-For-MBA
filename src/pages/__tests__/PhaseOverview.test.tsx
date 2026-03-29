@@ -50,7 +50,7 @@ vi.mock('motion/react', () => ({
 
 describe('PhaseOverview', () => {
   let container: HTMLDivElement | null = null
-  let root: any = null
+  let root: ReturnType<typeof createRoot> | null = null
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -60,7 +60,7 @@ describe('PhaseOverview', () => {
 
   afterEach(() => {
     act(() => {
-      root.unmount()
+      root!.unmount()
     })
     if (container && container.parentNode) {
       container.parentNode.removeChild(container)
@@ -77,7 +77,7 @@ describe('PhaseOverview', () => {
     )
 
     act(() => {
-      root.render(
+      root!.render(
         <MemoryRouter initialEntries={['/phase/99']}>
           <Routes>
             <Route path="/phase/:phaseNum" element={<PhaseOverview />} />
@@ -130,7 +130,7 @@ describe('PhaseOverview', () => {
     )
 
     act(() => {
-      root.render(
+      root!.render(
         <MemoryRouter initialEntries={['/phase/1']}>
           <Routes>
             <Route path="/phase/:phaseNum" element={<PhaseOverview />} />

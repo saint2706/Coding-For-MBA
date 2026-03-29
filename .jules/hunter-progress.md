@@ -97,3 +97,8 @@
 - **Fixed:** Replaced `// @ts-expect-error` comments in `src/utils/__tests__/linkSafety.test.ts` with `as unknown as string` type assertions for invalid inputs.
 - **Fixed:** Replaced `as any` cast on JS module import in `src/utils/__tests__/contentSchemas.test.ts` with `as unknown as { ... }` type assertion.
 - **Verified:** Build, lint, and tests pass.
+## Session 16
+- **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/slug.test.ts` by using `as unknown as React.ReactNode`.
+- **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/dayToken.test.ts` by using `as unknown as string`.
+- **Fixed:** Removed leftover `as any` type casting for `root` variable in `src/pages/__tests__/ContentStats.test.tsx`, `src/pages/__tests__/NotFound.test.tsx`, and `src/pages/__tests__/PhaseOverview.test.tsx` by typing it correctly as `ReturnType<typeof createRoot> | null`.
+- **Verified:** Build, lint, and tests pass.
