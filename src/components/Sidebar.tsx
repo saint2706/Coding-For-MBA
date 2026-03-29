@@ -124,10 +124,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           <div className="sidebar-logo" aria-hidden="true">
             <span>🎓</span>
           </div>
-          <div className="sidebar-title">
+          <h2 className="sidebar-title">
             Coding for MBA
             <small>140-Day Curriculum</small>
-          </div>
+          </h2>
           {reviewStreak > 0 && (
             <span className="sidebar-streak-badge" title={`${reviewStreak}-day review streak`}>
               <span aria-hidden="true">🔥</span> {reviewStreak}
