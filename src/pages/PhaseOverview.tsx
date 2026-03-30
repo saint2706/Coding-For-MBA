@@ -68,7 +68,15 @@ export default function PhaseOverview() {
   const notebook = getNotebook(phaseNum!)
 
   const completedInPhaseCount = useMemo(() => {
-    return lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day))).length
+    let count = 0
+    if (lessons) {
+      for (let i = 0; i < lessons.length; i++) {
+        if (completedSet.has(dayTokenToProgressId(lessons[i]!.day))) {
+          count++
+        }
+      }
+    }
+    return count
   }, [lessons, completedSet])
 
   const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
@@ -128,33 +136,36 @@ export default function PhaseOverview() {
         <h2>Lessons in This Phase</h2>
       </div>
       <div className="phase-lessons-grid">
-        {lessons.map((lesson, index) => (
-          <motion.div
-            key={lesson.day}
-            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.35 }}
-            transition={{
-              duration: prefersReducedMotion ? 0 : 0.26,
-              delay: prefersReducedMotion ? 0 : index * 0.03,
-            }}
-          >
-            <Link to={`/lesson/${lesson.day}`} className="day-card">
-              <motion.div className="day-card-num" layoutId={`lesson-day-badge-${lesson.day}`}>
-                {lesson.day}
-              </motion.div>
-              <div className="day-card-info">
-                <h3>{lesson.title}</h3>
-                {lesson.duration && <span>⏱ {lesson.duration} min</span>}
-              </div>
-              {completedSet.has(dayTokenToProgressId(lesson.day)) && (
-                <span className="day-link-check" aria-label="Completed">
-                  ✓
-                </span>
-              )}
-            </Link>
-          </motion.div>
-        ))}
+        {lessons.map((lesson, index) => {
+          const isDone = completedSet.has(dayTokenToProgressId(lesson.day))
+          return (
+            <motion.div
+              key={lesson.day}
+              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.35 }}
+              transition={{
+                duration: prefersReducedMotion ? 0 : 0.26,
+                delay: prefersReducedMotion ? 0 : index * 0.03,
+              }}
+            >
+              <Link to={`/lesson/${lesson.day}`} className="day-card">
+                <motion.div className="day-card-num" layoutId={`lesson-day-badge-${lesson.day}`}>
+                  {lesson.day}
+                </motion.div>
+                <div className="day-card-info">
+                  <h3>{lesson.title}</h3>
+                  {lesson.duration && <span>⏱ {lesson.duration} min</span>}
+                </div>
+                {isDone && (
+                  <span className="day-link-check" aria-label="Completed">
+                    ✓
+                  </span>
+                )}
+              </Link>
+            </motion.div>
+          )
+        })}
       </div>
 
       {/* Solution Notebook Link */}

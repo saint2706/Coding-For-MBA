@@ -156,9 +156,14 @@ export default function ProgressDashboard() {
     () =>
       phases.map((phase) => {
         const lessons = getLessonsByPhase(phase.phase)
-        const completedInPhase = lessons.filter((l) =>
-          completedSet.has(dayTokenToProgressId(l.day)),
-        )
+        let completedInPhaseCount = 0
+        if (lessons) {
+          for (let i = 0; i < lessons.length; i++) {
+            if (completedSet.has(dayTokenToProgressId(lessons[i]!.day))) {
+              completedInPhaseCount++
+            }
+          }
+        }
         const icon = phaseIcons[phase.phase - 1] || '📖'
         const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
 
@@ -178,7 +183,7 @@ export default function ProgressDashboard() {
                 </span>
               </div>
             </div>
-            <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+            <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
           </Link>
         )
       }),

@@ -84,6 +84,7 @@ let phases: Phase[] | null = null
 let immutableLessons: readonly ImmutableLesson[] | null = null
 let immutablePhases: readonly ImmutablePhase[] | null = null
 let immutableLessonByDay: Map<DayToken, ImmutableLesson> | null = null
+let immutableLessonsByPhase: Record<number, readonly ImmutableLesson[]> | null = null
 
 function initializeContent() {
   if (lessons && phases) return
@@ -137,6 +138,19 @@ function initializeContent() {
   immutableLessons = Object.freeze(lessons.map(freezeLesson))
   immutablePhases = Object.freeze(phases.map(freezePhase))
   immutableLessonByDay = new Map(immutableLessons.map((lesson) => [lesson.day, lesson]))
+
+  const byPhase: Record<number, Lesson[]> = {}
+  for (const lesson of immutableLessons!) {
+    const p = lesson.phase
+    if (!byPhase[p]) byPhase[p] = []
+    byPhase[p].push(lesson as Lesson)
+  }
+
+  const frozenByPhase: Record<number, readonly ImmutableLesson[]> = {}
+  for (const [p, list] of Object.entries(byPhase)) {
+    frozenByPhase[Number(p)] = Object.freeze(list)
+  }
+  immutableLessonsByPhase = frozenByPhase
 }
 
 /**
@@ -193,21 +207,7 @@ export function getLesson(dayNum: string | number): ImmutableLesson | undefined 
  */
 export function getLessonsByPhase(phaseNum: string | number): readonly ImmutableLesson[] {
   initializeContent()
-  if (!immutableLessonsByPhase) {
-    const byPhase: Record<number, Lesson[]> = {}
-    for (const lesson of immutableLessons!) {
-      const p = lesson.phase
-      if (!byPhase[p]) byPhase[p] = []
-      byPhase[p].push(lesson as Lesson)
-    }
-
-    const frozenByPhase: Record<number, readonly ImmutableLesson[]> = {}
-    for (const [p, list] of Object.entries(byPhase)) {
-      frozenByPhase[Number(p)] = Object.freeze(list)
-    }
-    immutableLessonsByPhase = frozenByPhase
-  }
-  return immutableLessonsByPhase[Number(phaseNum)] || []
+  return immutableLessonsByPhase![Number(phaseNum)] || []
 }
 
 /**
@@ -371,7 +371,6 @@ function buildReviewCardsFromLesson(lesson: Lesson): ReviewCardSeed[] {
   return cards
 }
 
-let immutableLessonsByPhase: Record<number, readonly ImmutableLesson[]> | null = null
 let immutableExercises: readonly ImmutableExercise[] | null = null
 let immutableReviewCards: readonly ImmutableReviewCardSeed[] | null = null
 
