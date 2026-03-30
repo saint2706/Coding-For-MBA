@@ -18,6 +18,14 @@ import {
   type SearchResult,
 } from '../utils/searchIndex'
 
+/**
+ * Search results page component.
+ *
+ * Provides a search interface for finding lessons and content across the curriculum.
+ * Features a debounced search input, keyboard shortcuts, and highlights matched terms.
+ *
+ * @returns The rendered search results page.
+ */
 export default function SearchResults() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()

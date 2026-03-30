@@ -40,6 +40,11 @@ const MobileNav = lazy(() => import('./components/MobileNav'))
 const KeyboardShortcutsOverlay = lazy(() => import('./components/KeyboardShortcutsOverlay'))
 const CustomCursor = lazy(() => import('./components/CustomCursor'))
 
+/**
+ * Main application component that sets up routing, layout, and global context providers.
+ *
+ * @returns The main application element tree.
+ */
 export default function App() {
   const sidebarDefaultOpen = useUserPreferencesStore((state) => state.sidebarDefaultOpen)
   const customCursorEnabled = useUserPreferencesStore((state) => state.customCursorEnabled)

@@ -22,6 +22,16 @@ function getPaletteType(palette: ColorPalette): 'dark' | 'light' {
   return DARK_PALETTES.includes(palette) ? 'dark' : 'light'
 }
 
+/**
+ * Theme Provider component.
+ *
+ * Wraps the application to provide theme context and injects CSS variables
+ * for palette, font size, and density settings based on user preferences.
+ *
+ * @param props - The component props.
+ * @param props.children - The child components to render.
+ * @returns The theme provider element tree.
+ */
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const palette = useUserPreferencesStore((state) => state.palette)
   const setPalette = useUserPreferencesStore((state) => state.setPalette)
