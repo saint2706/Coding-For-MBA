@@ -42,6 +42,14 @@ import { extractExercisesFromContent } from '../src/utils/exercise-extractor-cor
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
 
+/**
+ * Recursively searches a directory for `README.md` and `Phase_Overview.md` files.
+ * Ignores the 'extras' directory.
+ *
+ * @param {string} dir - The directory to search within.
+ * @param {string} [lessonsDir=LESSONS_DIR] - The root lessons directory to use for relative path checks.
+ * @returns {string[]} An array of absolute file paths to the found markdown files.
+ */
 export function findReadmes(dir, lessonsDir = LESSONS_DIR) {
   const results = []
   if (!fs.existsSync(dir)) return results
@@ -110,10 +118,25 @@ function getPhaseRoot(filePath, lessonsDir) {
   return relative.split(path.sep)[0]
 }
 
+/**
+ * Validates the content of a single lesson or phase markdown file.
+ * This function is useful for linting content on the fly, e.g. in tests.
+ *
+ * @param {string} rawContent - The raw markdown content to validate.
+ * @param {string} [fileName='README.md'] - The file name, used to determine the correct validation schema.
+ * @returns {string[]} An array of validation error messages. Empty if valid.
+ */
 export function validateLessonContent(rawContent, fileName = 'README.md') {
   return parseAndValidateMarkdown(rawContent, fileName).fileErrors
 }
 
+/**
+ * Executes the main validation pipeline for all curriculum files.
+ * Validates frontmatter, extracts exercises, and cross-checks phase metadata against the filesystem.
+ *
+ * @param {string} [lessonsDir=LESSONS_DIR] - The root directory of the curriculum to validate.
+ * @returns {number} An exit code: 0 if all validations pass, 1 if any file fails.
+ */
 export function runValidation(lessonsDir = LESSONS_DIR) {
   const files = findReadmes(lessonsDir, lessonsDir).sort()
   const totalFiles = files.length
