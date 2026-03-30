@@ -4,7 +4,6 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi, beforeEach } from 'vitest'
 import ErrorBoundary from '../ErrorBoundary'
 import { toastError } from '../../utils/toast'
-import React from 'react'
 
 vi.mock('../../utils/toast', () => ({
   toastError: vi.fn(),
@@ -23,15 +22,18 @@ describe('ErrorBoundary', () => {
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => undefined)
     originalLocation = window.location
-    // @ts-ignore
-    delete window.location
-    // @ts-ignore
-    window.location = { ...originalLocation, reload: vi.fn() }
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: { ...originalLocation, reload: vi.fn() },
+    })
   })
 
   afterEach(() => {
     vi.restoreAllMocks()
-    window.location = originalLocation
+    Object.defineProperty(window, 'location', {
+      configurable: true,
+      value: originalLocation,
+    })
   })
 
   it('renders fallback UI and emits a safe toast message when a child throws', () => {
