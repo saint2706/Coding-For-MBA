@@ -121,3 +121,142 @@ describe('progressStore selectors', () => {
     })
   })
 })
+
+it('covers storage catch blocks', () => {
+  const originalLocalStorage = global.localStorage
+  Object.defineProperty(global, 'localStorage', {
+    value: {
+      getItem: () => {
+        throw new Error('Simulated get error')
+      },
+      setItem: () => {
+        throw new Error('Simulated set error')
+      },
+      removeItem: () => {
+        throw new Error('Simulated remove error')
+      },
+    },
+    writable: true,
+    configurable: true,
+  })
+
+  const storage = useProgressStore.persist.getOptions().storage!
+  expect(storage.getItem('test')).toBe(null)
+  expect(() => storage.setItem('test', 'value' as any)).not.toThrow()
+  expect(() => storage.removeItem('test')).not.toThrow()
+
+  Object.defineProperty(global, 'localStorage', { value: originalLocalStorage })
+})
+
+it('covers migrate legacy paths', () => {
+  const migrate = useProgressStore.persist.getOptions().migrate!
+
+  // Simulate legacy string array
+  const migrated1 = migrate(['1', '2'], 1) as any
+  expect(migrated1.completedLessons).toEqual([])
+
+  // Simulate parsing failure where state is not an object or array
+  const migrated2 = migrate('not valid', 1) as any
+  expect(migrated2.completedLessons).toEqual([])
+})
+
+it('covers hydration edge cases and hydrate method', () => {
+  // 199-200: hydrate method
+  const rehydrateSpy = vi.spyOn(useProgressStore.persist, 'rehydrate').mockResolvedValue(undefined)
+  useProgressStore.setState({ hasHydrated: false })
+  useProgressStore.getState().hydrate()
+  expect(rehydrateSpy).toHaveBeenCalled()
+
+  rehydrateSpy.mockClear()
+  useProgressStore.setState({ hasHydrated: true })
+  useProgressStore.getState().hydrate()
+  expect(rehydrateSpy).not.toHaveBeenCalled()
+
+  // 283-286: onRehydrateStorage
+  const options = useProgressStore.persist.getOptions()
+  const onRehydrate = options.onRehydrateStorage?.(useProgressStore.getState())
+
+  if (onRehydrate) {
+    onRehydrate(undefined)
+
+    useProgressStore.setState({ hasHydrated: false })
+    onRehydrate(useProgressStore.getState())
+    expect(useProgressStore.getState().hasHydrated).toBe(true)
+  }
+})
+
+it('covers parsing valid days and mergeLegacyLastVisited (line 143-146)', () => {
+  // mergeLegacyLastVisited accesses localStorage LAST_VISITED_KEY
+  const originalLocalStorage = global.localStorage
+  const mockGetItem = vi.fn().mockReturnValue('42')
+
+  Object.defineProperty(global, 'localStorage', {
+    value: {
+      getItem: mockGetItem,
+      setItem: () => {},
+      removeItem: () => {},
+    },
+    writable: true,
+    configurable: true,
+  })
+
+  const migrate = useProgressStore.persist.getOptions().migrate!
+
+  // Pass object with no lastVisitedLesson so it falls back to mergeLegacyLastVisited
+  const migrated = migrate(
+    {
+      completedLessons: ['1'],
+      completionDates: {},
+    },
+    1,
+  ) as any
+
+  expect(migrated.lastVisitedLesson).toBe(42)
+
+  // Restore
+  Object.defineProperty(global, 'localStorage', { value: originalLocalStorage })
+})
+
+it('covers marking lesson complete that is already complete (207)', () => {
+  useProgressStore.setState({ completedLessons: [1, 2] })
+  useProgressStore.getState().markLessonComplete(2) // already complete
+  expect(useProgressStore.getState().completedLessons).toEqual([1, 2])
+})
+
+it('covers migrate parsing bad lastVisitedLesson', () => {
+  const migrate = useProgressStore.persist.getOptions().migrate!
+  // Give it a bad lastVisitedLesson to hit branch 166
+  const migrated = migrate(
+    {
+      completedLessons: [],
+      completionDates: {},
+      lastVisitedLesson: -5, // negative is caught
+    },
+    1,
+  ) as any
+  expect(migrated.lastVisitedLesson).toBe(null) // assuming legacy doesn't have it
+})
+
+it('covers parsing bad lastVisited legacy values', () => {
+  const originalLocalStorage = global.localStorage
+  const mockGetItem = vi.fn().mockReturnValue('-1')
+
+  Object.defineProperty(global, 'localStorage', {
+    value: { getItem: mockGetItem },
+    writable: true,
+    configurable: true,
+  })
+
+  const migrate = useProgressStore.persist.getOptions().migrate!
+  const migrated = migrate({ completedLessons: [] }, 1) as any
+  expect(migrated.lastVisitedLesson).toBe(null) // Hits line 144
+
+  Object.defineProperty(global, 'localStorage', { value: originalLocalStorage })
+})
+
+it('covers returning default from migrate if parse fails completely', () => {
+  const migrate = useProgressStore.persist.getOptions().migrate!
+  // safeParse fails when value is not an object or completely malformed
+  const result = migrate('this is a string, not an object', 1) as any
+  expect(result.completedLessons).toEqual([]) // Hits line 160 fallback logic
+})
