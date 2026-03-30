@@ -134,3 +134,14 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 - Ran `npm install` to resolve missing `tsc` dependency, allowing `npm run build` to succeed with no errors.
 - Enhanced `src/components/Sidebar.tsx` by converting the `.sidebar-title` from a `<div>` to an `<h2>`. This provides a clearer document outline, improving accessibility (A11Y) for screen readers and semantic indexing (GEO) for AI agents.
+
+### [Date: Current] - Build and Dependency Verification
+
+**Priority Areas:**
+1.  **Speed (Velocity)**: Build and pipeline integrity.
+2.  **SEO (Visibility)**: Perfect HTML structure and valid SEO schemas.
+
+**Changes:**
+-   [x] **[PERF] Build Fix**: Installed missing dependencies via `npm install` to resolve the `tsc: not found` error, ensuring `npm run build` and `npm run analyze` pass without errors or warnings.
+-   [x] **[GEO] Schema Validation**: Verified that all JSON-LD structured data is properly encoded to prevent XSS without corrupting the schemas (using the single backslash `\u003c` approach).
+-   [x] **[SEO] Core Web Vitals**: Verified LCP elements are not lazy-loaded (`fetchpriority="high"`) and HTML heading hierarchy (h1-h6) is strictly maintained across all pages.
