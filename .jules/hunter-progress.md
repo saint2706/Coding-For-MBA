@@ -105,3 +105,7 @@
 ## Session 17
 - **Fixed:** Removed `as any` type casting in `src/utils/__tests__/contentSchemas.test.ts` by adding proper interface types for the destructured variables.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 18
+- **Fixed:** Replaced `as any` type casting with proper type assertions (`as unknown as ReturnType<typeof ...getState>` and `import('zustand/middleware').StorageValue<unknown>`) in `src/stores/__tests__/userPreferencesStore.test.ts`, `src/stores/__tests__/gamificationStore.test.ts`, `src/stores/__tests__/learningAnalyticsStore.test.ts`, and `src/stores/__tests__/progressStore.test.ts`.
+- **Verified:** Build, lint, and tests pass.

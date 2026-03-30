@@ -142,7 +142,9 @@ it('covers storage catch blocks', () => {
 
   const storage = useProgressStore.persist.getOptions().storage!
   expect(storage.getItem('test')).toBe(null)
-  expect(() => storage.setItem('test', 'value' as any)).not.toThrow()
+  expect(() =>
+    storage.setItem('test', 'value' as unknown as import('zustand/middleware').StorageValue<unknown>),
+  ).not.toThrow()
   expect(() => storage.removeItem('test')).not.toThrow()
 
   Object.defineProperty(global, 'localStorage', { value: originalLocalStorage })
@@ -152,11 +154,15 @@ it('covers migrate legacy paths', () => {
   const migrate = useProgressStore.persist.getOptions().migrate!
 
   // Simulate legacy string array
-  const migrated1 = migrate(['1', '2'], 1) as any
+  const migrated1 = migrate(['1', '2'], 1) as unknown as ReturnType<
+    typeof useProgressStore.getState
+  >
   expect(migrated1.completedLessons).toEqual([])
 
   // Simulate parsing failure where state is not an object or array
-  const migrated2 = migrate('not valid', 1) as any
+  const migrated2 = migrate('not valid', 1) as unknown as ReturnType<
+    typeof useProgressStore.getState
+  >
   expect(migrated2.completedLessons).toEqual([])
 })
 
@@ -209,7 +215,7 @@ it('covers parsing valid days and mergeLegacyLastVisited (line 143-146)', () => 
       completionDates: {},
     },
     1,
-  ) as any
+  ) as unknown as ReturnType<typeof useProgressStore.getState>
 
   expect(migrated.lastVisitedLesson).toBe(42)
 
@@ -233,7 +239,7 @@ it('covers migrate parsing bad lastVisitedLesson', () => {
       lastVisitedLesson: -5, // negative is caught
     },
     1,
-  ) as any
+  ) as unknown as ReturnType<typeof useProgressStore.getState>
   expect(migrated.lastVisitedLesson).toBe(null) // assuming legacy doesn't have it
 })
 
@@ -248,7 +254,9 @@ it('covers parsing bad lastVisited legacy values', () => {
   })
 
   const migrate = useProgressStore.persist.getOptions().migrate!
-  const migrated = migrate({ completedLessons: [] }, 1) as any
+  const migrated = migrate({ completedLessons: [] }, 1) as unknown as ReturnType<
+    typeof useProgressStore.getState
+  >
   expect(migrated.lastVisitedLesson).toBe(null) // Hits line 144
 
   Object.defineProperty(global, 'localStorage', { value: originalLocalStorage })
@@ -257,6 +265,8 @@ it('covers parsing bad lastVisited legacy values', () => {
 it('covers returning default from migrate if parse fails completely', () => {
   const migrate = useProgressStore.persist.getOptions().migrate!
   // safeParse fails when value is not an object or completely malformed
-  const result = migrate('this is a string, not an object', 1) as any
+  const result = migrate('this is a string, not an object', 1) as unknown as ReturnType<
+    typeof useProgressStore.getState
+  >
   expect(result.completedLessons).toEqual([]) // Hits line 160 fallback logic
 })
