@@ -165,7 +165,8 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          GitHub <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span>
+          GitHub <span aria-hidden="true">↗</span>
+          <span className="sr-only"> (opens in a new tab)</span>
         </a>
       </div>
     </nav>
