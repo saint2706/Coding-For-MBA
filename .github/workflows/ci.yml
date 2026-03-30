@@ -24,7 +24,7 @@ jobs:
         node-version: [20.x, 22.x]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Bootstrap Node workspace
         uses: ./.github/actions/node-bootstrap
@@ -47,7 +47,7 @@ jobs:
         node-version: [20.x, 22.x]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Bootstrap Node workspace
         uses: ./.github/actions/node-bootstrap
@@ -67,7 +67,7 @@ jobs:
         node-version: [20.x, 22.x]
     steps:
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Bootstrap Node workspace
         uses: ./.github/actions/node-bootstrap
@@ -91,7 +91,7 @@ jobs:
 
       - name: Upload unit test results
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: unit-test-results-${{ matrix.os }}-node-${{ matrix.node-version }}
           path: test-results/vitest-junit.xml
@@ -100,7 +100,7 @@ jobs:
 
       - name: Upload coverage reports
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-report-${{ matrix.os }}-node-${{ matrix.node-version }}
           path: |
