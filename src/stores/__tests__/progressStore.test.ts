@@ -143,7 +143,10 @@ it('covers storage catch blocks', () => {
   const storage = useProgressStore.persist.getOptions().storage!
   expect(storage.getItem('test')).toBe(null)
   expect(() =>
-    storage.setItem('test', 'value' as unknown as import('zustand/middleware').StorageValue<unknown>),
+    storage.setItem(
+      'test',
+      'value' as unknown as import('zustand/middleware').StorageValue<unknown>,
+    ),
   ).not.toThrow()
   expect(() => storage.removeItem('test')).not.toThrow()
 

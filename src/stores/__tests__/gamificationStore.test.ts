@@ -350,7 +350,10 @@ it('covers safe storage catch blocks', () => {
   const storage = useGamificationStore.persist.getOptions().storage!
   expect(storage.getItem('test')).toBe(null) // Should catch and return null
   expect(() =>
-    storage.setItem('test', 'value' as unknown as import('zustand/middleware').StorageValue<unknown>),
+    storage.setItem(
+      'test',
+      'value' as unknown as import('zustand/middleware').StorageValue<unknown>,
+    ),
   ).not.toThrow() // Should ignore
   expect(() => storage.removeItem('test')).not.toThrow() // Should ignore
 

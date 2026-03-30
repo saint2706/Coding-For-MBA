@@ -164,7 +164,10 @@ it('covers storage catch blocks', () => {
   const storage = useUserPreferencesStore.persist.getOptions().storage!
   expect(storage.getItem('test')).toBe(null)
   expect(() =>
-    storage.setItem('test', 'value' as unknown as import('zustand/middleware').StorageValue<unknown>),
+    storage.setItem(
+      'test',
+      'value' as unknown as import('zustand/middleware').StorageValue<unknown>,
+    ),
   ).not.toThrow()
   expect(() => storage.removeItem('test')).not.toThrow()
 
@@ -185,12 +188,18 @@ it('covers migrate legacy paths and fallback on complete parse failure', () => {
 
   // Test legacy themes
   expect(
-    (migrate({ theme: 'light' }, 1) as unknown as ReturnType<typeof useUserPreferencesStore.getState>)
-      .palette,
+    (
+      migrate({ theme: 'light' }, 1) as unknown as ReturnType<
+        typeof useUserPreferencesStore.getState
+      >
+    ).palette,
   ).toBe('light-steel')
   expect(
-    (migrate({ theme: 'dark' }, 1) as unknown as ReturnType<typeof useUserPreferencesStore.getState>)
-      .palette,
+    (
+      migrate({ theme: 'dark' }, 1) as unknown as ReturnType<
+        typeof useUserPreferencesStore.getState
+      >
+    ).palette,
   ).toBe('gradient-blues')
   expect(
     (

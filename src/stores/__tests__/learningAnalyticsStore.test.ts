@@ -90,7 +90,10 @@ it('covers store setup and missing coverage (migrate, partialize, hydration, err
   const storage = options.storage!
   expect(storage.getItem('test')).toBe(null) // Should catch and return null
   expect(() =>
-    storage.setItem('test', 'value' as unknown as import('zustand/middleware').StorageValue<unknown>),
+    storage.setItem(
+      'test',
+      'value' as unknown as import('zustand/middleware').StorageValue<unknown>,
+    ),
   ).not.toThrow() // Should ignore
   expect(() => storage.removeItem('test')).not.toThrow() // Should ignore
 
@@ -116,9 +119,10 @@ it('covers store setup and missing coverage (migrate, partialize, hydration, err
   expect(partial).toHaveProperty('visitsByLessonDay')
 
   // 4. migrate (314) and normalizePersistedState logic
-  const migratedState = options.migrate!({ timeByLessonDay: 'invalid' }, 1) as unknown as ReturnType<
-    typeof useLearningAnalyticsStore.getState
-  >
+  const migratedState = options.migrate!(
+    { timeByLessonDay: 'invalid' },
+    1,
+  ) as unknown as ReturnType<typeof useLearningAnalyticsStore.getState>
   expect(migratedState.timeByLessonDay).toEqual({})
 
   // 5. todayLearningMs (286)
@@ -180,9 +184,8 @@ it('covers parsing missing states or values from migrate', () => {
 it('covers returning default from normalize if parse fails (line 119)', () => {
   const normalize = useLearningAnalyticsStore.persist.getOptions().migrate!
   // Since Zod has catch everywhere, the only way parsed.success is false is if we pass a completely malformed object structure like a string
-  const normalized = normalize(
-    'completely invalid',
-    1,
-  ) as unknown as ReturnType<typeof useLearningAnalyticsStore.getState>
+  const normalized = normalize('completely invalid', 1) as unknown as ReturnType<
+    typeof useLearningAnalyticsStore.getState
+  >
   expect(normalized.timeByLessonDay).toEqual({})
 })
