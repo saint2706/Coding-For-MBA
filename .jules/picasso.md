@@ -29,3 +29,4 @@
 **Changes Made:**
 - Added `aria-expanded={isOpen}` and `aria-controls="app-sidebar"` to the close button in `src/components/Sidebar.tsx`.
 **Learning:** To maintain strict screen reader accessibility for collapsible UI regions (like sidebars or menus), always apply `aria-expanded={isOpen}` and `aria-controls="target-id"` to their respective toggle or close buttons.
+Added aria-hidden='true' wrapper to decorative emojis across navigation and heading elements (Sidebar, SidebarPhaseGroup, Exercises) to prevent screen readers from reading them out verbatim.

@@ -116,7 +116,9 @@ export default function Exercises() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Exercises' }]} />
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-        <h1>🧪 Exercise Browser</h1>
+        <h1>
+          <span aria-hidden="true">🧪</span> Exercise Browser
+        </h1>
         <p>
           {exercises.length} exercises across {phases.length} phases — filter by topic, difficulty,
           or search.
@@ -125,14 +127,16 @@ export default function Exercises() {
 
       {/* Solution Notebooks Banner */}
       <div className="exercises-notebooks">
-        <h2 className="exercises-notebooks__title">📓 Phase Solution Notebooks</h2>
+        <h2 className="exercises-notebooks__title">
+          <span aria-hidden="true">📓</span> Phase Solution Notebooks
+        </h2>
         <div className="exercises-notebooks__grid">
           {phases.map((p) => {
             const icon = phaseIcons[p - 1] || '📖'
             const hasNotebook = notebookPhases.has(p)
             return hasNotebook ? (
               <Link key={p} to={`/solutions/${p}`} className="exercises-notebook-link">
-                <span>{icon}</span> Phase {p} Solutions
+                <span aria-hidden="true">{icon}</span> Phase {p} Solutions
               </Link>
             ) : null
           })}
@@ -141,7 +145,9 @@ export default function Exercises() {
 
       {lowScoringTopics.length > 0 && (
         <div className="exercises-low-scoring">
-          <h2>📉 Spaced Repetition Focus</h2>
+          <h2>
+            <span aria-hidden="true">📉</span> Spaced Repetition Focus
+          </h2>
           <p>Revisit these lower-scoring quiz topics to improve retention:</p>
           <ul>
             {lowScoringTopics.map((topic) => (

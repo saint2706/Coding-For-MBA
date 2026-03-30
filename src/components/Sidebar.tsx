@@ -163,7 +163,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={onClose}
             aria-current={location.pathname === '/' ? 'page' : undefined}
           >
-            🏠 Home
+            <span aria-hidden="true">🏠</span> Home
           </Link>
           <Link
             to="/curriculum"
@@ -172,7 +172,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={onClose}
             aria-current={location.pathname === '/curriculum' ? 'page' : undefined}
           >
-            📋 Full Curriculum
+            <span aria-hidden="true">📋</span> Full Curriculum
           </Link>
           <Link
             to="/progress"
@@ -181,7 +181,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={onClose}
             aria-current={location.pathname === '/progress' ? 'page' : undefined}
           >
-            📊 Progress
+            <span aria-hidden="true">📊</span> Progress
           </Link>
           <Link
             to="/exercises"
@@ -190,7 +190,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={onClose}
             aria-current={location.pathname === '/exercises' ? 'page' : undefined}
           >
-            🧪 Exercises
+            <span aria-hidden="true">🧪</span> Exercises
           </Link>
 
           <Link
@@ -200,7 +200,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={onClose}
             aria-current={location.pathname === '/case-studies' ? 'page' : undefined}
           >
-            📂 Case Studies &amp; Projects
+            <span aria-hidden="true">📂</span> Case Studies &amp; Projects
           </Link>
 
           <Link
@@ -210,7 +210,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             onClick={onClose}
             aria-current={location.pathname === '/review' ? 'page' : undefined}
           >
-            🧠 Review
+            <span aria-hidden="true">🧠</span> Review
           </Link>
           <div className="sidebar-review-stats">
             <small>Review streak: {reviewStreak} day(s)</small>
