@@ -107,7 +107,7 @@ export default defineConfig(async ({ mode }) => {
               return 'syntax-highlighter'
             }
             if (normalId.includes('node_modules/react-dom/')) {
-              return 'react-dom'
+              return 'react-vendor'
             }
             if (
               normalId.includes('node_modules/react/') ||
