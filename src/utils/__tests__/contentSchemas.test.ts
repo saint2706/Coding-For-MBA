@@ -7,10 +7,30 @@ const {
   lessonFrontmatterSchema,
   phaseOverviewFrontmatterSchema,
 } = contentSchemas as unknown as {
-  difficultyLevelSchema: any
-  exerciseSchema: any
-  lessonFrontmatterSchema: any
-  phaseOverviewFrontmatterSchema: any
+  difficultyLevelSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
+  exerciseSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
+  lessonFrontmatterSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
+  phaseOverviewFrontmatterSchema: {
+    safeParse: (data: unknown) => {
+      success: boolean
+      error?: { issues: Array<{ path: Array<string | number> }> }
+    }
+  }
 }
 
 describe('content zod schemas', () => {
@@ -44,7 +64,7 @@ describe('content zod schemas', () => {
 
     if (result.success) throw new Error('Expected invalid lesson fixture to fail')
     expect(
-      result.error.issues.map((issue: { path: Array<string | number> }) => issue.path.join('.')),
+      result.error?.issues.map((issue: { path: Array<string | number> }) => issue.path.join('.')),
     ).toEqual(expect.arrayContaining(['day', 'title', 'difficulty', 'duration', 'tags.1']))
   })
 

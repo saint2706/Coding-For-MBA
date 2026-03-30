@@ -102,3 +102,6 @@
 - **Fixed:** Removed leftover `as any` type casting in `src/utils/__tests__/dayToken.test.ts` by using `as unknown as string`.
 - **Fixed:** Removed leftover `as any` type casting for `root` variable in `src/pages/__tests__/ContentStats.test.tsx`, `src/pages/__tests__/NotFound.test.tsx`, and `src/pages/__tests__/PhaseOverview.test.tsx` by typing it correctly as `ReturnType<typeof createRoot> | null`.
 - **Verified:** Build, lint, and tests pass.
+## Session 17
+- **Fixed:** Removed `as any` type casting in `src/utils/__tests__/contentSchemas.test.ts` by adding proper interface types for the destructured variables.
+- **Verified:** Build, lint, and tests pass.
