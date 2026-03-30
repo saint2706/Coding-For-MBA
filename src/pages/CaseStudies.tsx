@@ -97,7 +97,7 @@ export default function CaseStudies() {
             setExpandedSlug(null)
           }}
         >
-          🏢 Case Studies ({caseStudies.length})
+          <span aria-hidden="true">🏢</span> Case Studies ({caseStudies.length})
         </button>
         <button
           type="button"
@@ -109,7 +109,7 @@ export default function CaseStudies() {
             setExpandedSlug(null)
           }}
         >
-          🔨 Projects ({projects.length})
+          <span aria-hidden="true">🔨</span> Projects ({projects.length})
         </button>
       </div>
 

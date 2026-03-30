@@ -24,9 +24,17 @@
 * **Rule**: When an emoji is purely decorative and its meaning is already conveyed via text or an `aria-label`, always hide it using `aria-hidden="true"`.
 
 ### Sidebar Close Button Accessibility
-**Date:** $(date +%Y-%m-%d)
+**Date:** 2024-05-20
 **Goal:** Enhance keyboard and screen reader accessibility for the sidebar close button.
 **Changes Made:**
 - Added `aria-expanded={isOpen}` and `aria-controls="app-sidebar"` to the close button in `src/components/Sidebar.tsx`.
 **Learning:** To maintain strict screen reader accessibility for collapsible UI regions (like sidebars or menus), always apply `aria-expanded={isOpen}` and `aria-controls="target-id"` to their respective toggle or close buttons.
 Added aria-hidden='true' wrapper to decorative emojis across navigation and heading elements (Sidebar, SidebarPhaseGroup, Exercises) to prevent screen readers from reading them out verbatim.
+
+### Fixed Missing Accessible Wrapping
+**Date:** 2024-05-20
+**Goal:** Enhance screen reader accessibility for decorative emojis inside CaseStudies, Navbar, and Sidebar.
+**Changes Made:**
+- Added `<span aria-hidden="true">` to `↗` in `Navbar.tsx`.
+- Added `<span aria-hidden="true">` to `🏢` and `🔨` in `CaseStudies.tsx` tab buttons.
+**Learning:** Always use `<span aria-hidden="true">` around decorative emojis to prevent screen readers from redundantly reading out their unicode representations (e.g. "building", "hammer") which distracts from the core button text.
