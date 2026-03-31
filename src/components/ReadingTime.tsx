@@ -26,7 +26,7 @@ export default function ReadingTime({ content }: { content: string }) {
       className="meta-pill reading-time"
       title={`Estimated reading time: ${minutes} minute${minutes !== 1 ? 's' : ''}`}
     >
-      📖 {minutes} min read
+      <span aria-hidden="true">📖</span> {minutes} min read
     </span>
   )
 }

@@ -38,3 +38,4 @@ Added aria-hidden='true' wrapper to decorative emojis across navigation and head
 - Added `<span aria-hidden="true">` to `↗` in `Navbar.tsx`.
 - Added `<span aria-hidden="true">` to `🏢` and `🔨` in `CaseStudies.tsx` tab buttons.
 **Learning:** Always use `<span aria-hidden="true">` around decorative emojis to prevent screen readers from redundantly reading out their unicode representations (e.g. "building", "hammer") which distracts from the core button text.
+Learned that missing aria labels for decorative emojis in React can be fixed by wrapping them with <span aria-hidden='true'></span> and fixing text assertions in React Testing Library using getByRole instead of getByText

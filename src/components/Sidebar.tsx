@@ -122,7 +122,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       >
         <div className="sidebar-header">
           <div className="sidebar-logo" aria-hidden="true">
-            <span>🎓</span>
+            <span aria-hidden="true">🎓</span>
           </div>
           <h2 className="sidebar-title">
             Coding for MBA

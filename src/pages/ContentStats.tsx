@@ -44,7 +44,9 @@ export default function ContentStats() {
           { name: 'Content Stats', url: '/stats' },
         ]}
       />
-      <h1>📊 Content Statistics</h1>
+      <h1>
+        <span aria-hidden="true">📊</span> Content Statistics
+      </h1>
       <p className="stats-subtitle">
         An overview of the entire curriculum's content, structure, and coverage.
       </p>

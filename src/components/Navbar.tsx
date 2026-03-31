@@ -103,7 +103,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
         </button>
         <Link to="/" className="navbar-brand" {...createRoutePrefetchHandlers('/')}>
           <div className="brand-icon">
-            <span role="img" aria-label="Graduation cap">
+            <span role="img" aria-label="Graduation cap" aria-hidden="true">
               🎓
             </span>
           </div>

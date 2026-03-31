@@ -121,8 +121,14 @@ export default function PhaseOverview() {
               <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
                 {diff.label}
               </span>
-              <span className="meta-pill">📅 {lessons.length} Days</span>
-              {hours > 0 && <span className="meta-pill">⏱ {hours} hours</span>}
+              <span className="meta-pill">
+                <span aria-hidden="true">📅</span> {lessons.length} Days
+              </span>
+              {hours > 0 && (
+                <span className="meta-pill">
+                  <span aria-hidden="true">⏱</span> {hours} hours
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -155,7 +161,11 @@ export default function PhaseOverview() {
                 </motion.div>
                 <div className="day-card-info">
                   <h3>{lesson.title}</h3>
-                  {lesson.duration && <span>⏱ {lesson.duration} min</span>}
+                  {lesson.duration && (
+                    <span>
+                      <span aria-hidden="true">⏱</span> {lesson.duration} min
+                    </span>
+                  )}
                 </div>
                 {isDone && (
                   <span className="day-link-check" aria-label="Completed">
@@ -171,7 +181,9 @@ export default function PhaseOverview() {
       {/* Solution Notebook Link */}
       {notebook && notebook.cells.length > 0 && (
         <div className="section-header" style={{ marginTop: '2rem' }}>
-          <h2>📓 Solutions Notebook</h2>
+          <h2>
+            <span aria-hidden="true">📓</span> Solutions Notebook
+          </h2>
           <p>Complete solutions with explanations — run them in your browser.</p>
           <Link
             to={`/solutions/${phase.phase}`}

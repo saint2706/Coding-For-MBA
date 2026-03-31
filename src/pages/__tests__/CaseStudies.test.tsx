@@ -75,7 +75,8 @@ describe('CaseStudies', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('📂 Case Studies & Projects')).toBeInTheDocument()
+    const heading = screen.getByRole('heading', { level: 1 })
+    expect(heading.textContent).toContain('📂 Case Studies & Projects')
     expect(screen.getByText('Case Study 1')).toBeInTheDocument()
     expect(screen.getByText('Case Study 2')).toBeInTheDocument()
     expect(screen.queryByText('Project 1')).not.toBeInTheDocument()
