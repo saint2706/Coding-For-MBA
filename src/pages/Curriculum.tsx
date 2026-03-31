@@ -51,7 +51,10 @@ export default function Curriculum() {
   const phasesData = useMemo(() => {
     return phases.map((phase) => {
       const lessons = getLessonsByPhase(phase.phase)
-      const completedInPhase = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day)))
+      const completedInPhase = lessons.filter((l) => {
+        // Cache progress ID check if possible, or just look up
+        return completedSet.has(dayTokenToProgressId(l.day))
+      })
       const isPhaseComplete = completedInPhase.length === lessons.length && lessons.length > 0
       const isPhaseStarted = completedInPhase.length > 0
       const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
@@ -241,21 +244,24 @@ export default function Curriculum() {
               </div>
 
               <div className="curriculum-days">
-                {phase.lessons.map((lesson) => (
-                  <Link
-                    to={`/lesson/${lesson.day}`}
-                    className="curriculum-day-link"
-                    key={lesson.day}
-                  >
-                    <span className="day-num">Day {lesson.day}</span>
-                    <span>{lesson.title}</span>
-                    {completedSet.has(dayTokenToProgressId(lesson.day)) && (
-                      <span className="day-link-check" aria-label="Completed">
-                        ✓
-                      </span>
-                    )}
-                  </Link>
-                ))}
+                {phase.lessons.map((lesson) => {
+                  const isDone = completedSet.has(dayTokenToProgressId(lesson.day))
+                  return (
+                    <Link
+                      to={`/lesson/${lesson.day}`}
+                      className="curriculum-day-link"
+                      key={lesson.day}
+                    >
+                      <span className="day-num">Day {lesson.day}</span>
+                      <span>{lesson.title}</span>
+                      {isDone && (
+                        <span className="day-link-check" aria-label="Completed">
+                          ✓
+                        </span>
+                      )}
+                    </Link>
+                  )
+                })}
               </div>
             </motion.div>
           )

@@ -53,16 +53,17 @@ export default function Home() {
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
-  const lastVisitedPhaseLessons = lastVisitedPhase ? getLessonsByPhase(lastVisitedPhase.phase) : []
-  const lastVisitedPhasePct = lastVisitedPhase
-    ? Math.round(
-        (lastVisitedPhaseLessons.filter((lesson) =>
-          completedSet.has(dayTokenToProgressId(lesson.day)),
-        ).length /
-          Math.max(1, lastVisitedPhaseLessons.length)) *
-          100,
-      )
-    : 0
+  const { lastVisitedPhasePct } = useMemo(() => {
+    const lessons = lastVisitedPhase ? getLessonsByPhase(lastVisitedPhase.phase) : []
+    const pct = lastVisitedPhase
+      ? Math.round(
+          (lessons.filter((lesson) => completedSet.has(dayTokenToProgressId(lesson.day))).length /
+            Math.max(1, lessons.length)) *
+            100,
+        )
+      : 0
+    return { lastVisitedPhasePct: pct }
+  }, [lastVisitedPhase, completedSet])
   const completedCount = completedLessons.length
   const streakDays = useProgressStore((state) => state.streakDays())
   const totalLessons = stats.totalDays
@@ -328,9 +329,9 @@ export default function Home() {
               difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
             const icon = phaseIcons[phase.phase - 1] || '📖'
             const hours = Math.round((phase.totalDuration || 0) / 60)
-            const completedInPhase = lessons.filter((l) =>
+            const completedInPhaseCount = lessons.filter((l) =>
               completedSet.has(dayTokenToProgressId(l.day)),
-            )
+            ).length
 
             return (
               <Link
@@ -355,9 +356,9 @@ export default function Home() {
                   <span className="meta-pill">📅 {lessons.length} Days</span>
                   {hours > 0 && <span className="meta-pill">⏱ {hours}h</span>}
                 </div>
-                {completedInPhase.length > 0 && (
+                {completedInPhaseCount > 0 && (
                   <div className="phase-card-progress">
-                    <ProgressBar completed={completedInPhase.length} total={lessons.length} />
+                    <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
                   </div>
                 )}
               </Link>
