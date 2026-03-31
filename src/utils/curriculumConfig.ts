@@ -21,6 +21,10 @@ const difficultyInfoSchema = z.object({
 const difficultyConfigSchema = z.record(z.string().min(1), difficultyInfoSchema)
 const phaseIconsSchema = z.array(z.string().min(1)).length(9)
 
+/**
+ * Visual styling information mapped to a specific difficulty level.
+ * Defines the label text, foreground color, and background color.
+ */
 export type DifficultyInfo = z.infer<typeof difficultyInfoSchema>
 export type DifficultyConfig = z.infer<typeof difficultyConfigSchema>
 export type PhaseIcons = z.infer<typeof phaseIconsSchema>

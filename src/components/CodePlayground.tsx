@@ -313,4 +313,18 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
 
 CodePlayground.displayName = 'CodePlayground'
 
+/**
+ * Interactive Python code editor and playground.
+ *
+ * Provides a rich code editing experience with syntax highlighting,
+ * auto-resizing, reset functionality, and integrated Python execution.
+ *
+ * @param {CodePlaygroundProps} props - The component props.
+ * @param {string} props.initialCode - Initial Python code to populate the editor.
+ * @param {string} [props.expectedOutput] - Optional expected output to show users.
+ * @param {() => void} [props.onExpectedOutputMatched] - Callback fired when output strictly matches `expectedOutput`.
+ * @param {(result: SubmissionResult) => void} [props.onSubmissionEvaluated] - Callback fired with the full execution result.
+ * @param {React.Ref<CodePlaygroundHandle>} ref - React ref for imperative access.
+ * @returns {JSX.Element} The rendered CodePlayground component.
+ */
 export default CodePlayground

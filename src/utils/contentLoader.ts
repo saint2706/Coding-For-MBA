@@ -251,6 +251,10 @@ export interface Exercise {
   tags: readonly string[]
 }
 
+/**
+ * Initial data used to create a spaced-repetition review card.
+ * Extracts a prompt and answer from a lesson's concepts, headings, or exercises.
+ */
 export interface ReviewCardSeed {
   id: string
   day: DayToken

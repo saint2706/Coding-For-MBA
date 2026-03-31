@@ -186,4 +186,17 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
 
 PythonRunner.displayName = 'PythonRunner'
 
+/**
+ * Python Runner Component
+ *
+ * Manages the execution lifecycle of Python code via Pyodide.
+ * Handles loading states, security validation, execution timeouts, and result display.
+ *
+ * @param {PythonRunnerProps} props - The component props.
+ * @param {string} props.code - The Python source code to execute.
+ * @param {boolean} [props.compact=false] - Whether to render in a compact layout.
+ * @param {(result: { output: string | null; error: string | null }) => void} [props.onExecutionComplete] - Callback fired when execution finishes.
+ * @param {React.Ref<PythonRunnerHandle>} ref - React ref for imperative access.
+ * @returns {JSX.Element} The rendered PythonRunner component.
+ */
 export default PythonRunner

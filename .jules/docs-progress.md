@@ -61,3 +61,19 @@
 - **Completed:** Updated `CONTRIBUTING.md` to explicitly state the JSDoc requirements for exported functions and React components.
 - **Verified:** Ensured `npm run test`, `npm run format`, and `npm run lint` all passed after making these changes.
 >> Added missing JSDoc comments to App.tsx, SearchResults.tsx, Curriculum.tsx, and ThemeProvider.tsx to ensure documentation accuracy and completeness.
+
+## JSDoc Audit & Completion
+
+Added complete and well-formatted JSDoc to the following exported components, functions, stores, and types:
+- `src/components/CodePlayground.tsx`: Documented the `CodePlayground` component and its props.
+- `src/components/PythonRunner.tsx`: Documented the `PythonRunner` component and its props.
+- `src/components/TableOfContents.tsx`: Documented the `TableOfContents` component and its purpose.
+- `src/stores/gamificationStore.ts`: Added JSDoc for `AchievementId` and `AchievementMeta`.
+- `src/stores/learningAnalyticsStore.ts`: Added JSDoc for `LearningAnalyticsStore`.
+- `src/stores/quizStore.ts`: Added JSDoc for `QuizAttempt`.
+- `src/stores/userPreferencesStore.ts`: Added JSDoc for `ColorPalette`.
+- `src/utils/contentLoader.ts`: Added JSDoc for `ReviewCardSeed`.
+- `src/utils/curriculumConfig.ts`: Added JSDoc for `DifficultyInfo`.
+- `src/utils/frontmatter-core.d.ts`: Added JSDoc for `ParsedMarkdown`.
+- `src/utils/linkSafety.ts`: Added JSDoc for `LinkProps`.
+- `src/utils/searchIndex.ts`: Added JSDoc for `SearchResult` and `SearchIndexStatus`.

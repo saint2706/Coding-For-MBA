@@ -27,11 +27,17 @@ export interface SearchDocument extends Lesson {
   plainContentLower: string
 }
 
+/**
+ * Wraps a matched document and its ranking score.
+ */
 export interface SearchResult {
   item: SearchDocument
   score?: number
 }
 
+/**
+ * Background search indexing status.
+ */
 export interface SearchIndexStatus {
   isReady: boolean
   isIndexing: boolean
