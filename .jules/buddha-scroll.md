@@ -146,3 +146,11 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 -   [x] **[GEO] Schema Validation**: Verified that all JSON-LD structured data is properly encoded to prevent XSS without corrupting the schemas (using the single backslash `\u003c` approach).
 -   [x] **[SEO] Core Web Vitals**: Verified LCP elements are not lazy-loaded (`fetchpriority="high"`) and HTML heading hierarchy (h1-h6) is strictly maintained across all pages.
 >> Fixed JSON-LD structure data script tag escaping issue by replacing `\\u003c` with `\u003c` to avoid breaking the schema and satisfy the Buddha persona.
+
+### [Date: Current] - Pinned TypeScript to stable 5.x
+
+**Priority Areas:**
+1.  **Speed (Velocity)**: Build reliability and integrity.
+
+**Changes:**
+-   [x] **[PERF] Build Fix**: Installed and pinned `typescript` to a stable `^5.7.3` version using `npm install typescript@5.x --save-dev` to fix the `tsc: not found` errors and ensure `npm run build` passes flawlessly without generating unresolved future versions like 5.9.x that cause pipeline failures.
