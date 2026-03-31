@@ -109,3 +109,10 @@
 ## Session 18
 - **Fixed:** Replaced `as any` type casting with proper type assertions (`as unknown as ReturnType<typeof ...getState>` and `import('zustand/middleware').StorageValue<unknown>`) in `src/stores/__tests__/userPreferencesStore.test.ts`, `src/stores/__tests__/gamificationStore.test.ts`, `src/stores/__tests__/learningAnalyticsStore.test.ts`, and `src/stores/__tests__/progressStore.test.ts`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 19
+- **Fixed:** Replaced `any` type casting with proper type assertions `(selector: (state: { completedLessons: string[] }) => unknown)` for `useProgressStore` selector mock in `src/pages/__tests__/Lesson.test.tsx`.
+- **Fixed:** Replaced `any` type casting with proper props types for component mocks (`MarkdownRenderer` with `{ content: string }`, `CodePlayground` with `{ initialCode: string }`) in `src/pages/__tests__/NotebookViewer.test.tsx`.
+- **Fixed:** Replaced `any` type casting with proper props type `{ value: number; suffix?: string }` for `AnimatedCounter` mock in `src/pages/__tests__/ContentStats.test.tsx`.
+- **Fixed:** Replaced `any` type casting with proper props types for component mocks (`MarkdownRenderer` with `{ content: string }`, `motion.div` with `React.ComponentProps<'div'>`) in `src/pages/__tests__/CaseStudies.test.tsx`.
+- **Verified:** Build, lint, and tests pass.

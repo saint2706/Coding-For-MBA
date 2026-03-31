@@ -10,7 +10,7 @@ vi.mock('../../components/SEOHead', () => ({
 }))
 
 vi.mock('../../components/MarkdownRenderer', () => ({
-  default: ({ content }: any) => <div data-testid="markdown-renderer">{content}</div>,
+  default: ({ content }: { content: string }) => <div data-testid="markdown-renderer">{content}</div>,
 }))
 
 vi.mock('../../utils/contentLoader', () => ({
@@ -25,7 +25,14 @@ vi.mock('../../utils/contentLoader', () => ({
 
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, layout, initial, animate, transition, ...props }: any) => (
+    div: ({
+      children,
+      layout,
+      initial,
+      animate,
+      transition,
+      ...props
+    }: React.ComponentProps<'div'> & { layout?: boolean; initial?: unknown; animate?: unknown; transition?: unknown }) => (
       <div {...props}>{children}</div>
     ),
   },
