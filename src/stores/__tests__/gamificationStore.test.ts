@@ -321,7 +321,9 @@ describe('gamificationStore persisted storage edge cases', () => {
 
   it('covers migrate function failure block', () => {
     const migrate = useGamificationStore.persist.getOptions().migrate!
-    const parsed = migrate({ xpTotal: 'not a number' }, 1) as any
+    const parsed = migrate({ xpTotal: 'not a number' }, 1) as unknown as ReturnType<
+      typeof useGamificationStore.getState
+    >
     expect(parsed.xpTotal).toBe(0)
   })
 })
@@ -347,7 +349,12 @@ it('covers safe storage catch blocks', () => {
 
   const storage = useGamificationStore.persist.getOptions().storage!
   expect(storage.getItem('test')).toBe(null) // Should catch and return null
-  expect(() => storage.setItem('test', 'value' as any)).not.toThrow() // Should ignore
+  expect(() =>
+    storage.setItem(
+      'test',
+      'value' as unknown as import('zustand/middleware').StorageValue<unknown>,
+    ),
+  ).not.toThrow() // Should ignore
   expect(() => storage.removeItem('test')).not.toThrow() // Should ignore
 
   // Restore localStorage
@@ -371,10 +378,12 @@ it('covers migrate success and Zod transform', () => {
 
   // Line 378 is return defaultValue when parsing fails but Zod with catches won't fail normally.
   // However, if we pass null or undefined, Zod might succeed but return defaults via catch.
-  const result1 = migrate(validState, 1) as any
+  const result1 = migrate(validState, 1) as unknown as ReturnType<
+    typeof useGamificationStore.getState
+  >
   expect(result1.xpTotal).toBe(100)
 
-  const result2 = migrate(null, 1) as any
+  const result2 = migrate(null, 1) as unknown as ReturnType<typeof useGamificationStore.getState>
   expect(result2.xpTotal).toBe(0)
 })
 
@@ -388,6 +397,8 @@ it('covers migrate failure block (line 378)', () => {
 
   // Pass a primitive that is not an object, which might fail z.object() even if fields have catch,
   // actually z.object().safeParse("string") will fail because it's not an object!
-  const result3 = migrate('this is a string, not an object', 1) as any
+  const result3 = migrate('this is a string, not an object', 1) as unknown as ReturnType<
+    typeof useGamificationStore.getState
+  >
   expect(result3.xpTotal).toBe(0) // Should hit line 378 and return defaults
 })

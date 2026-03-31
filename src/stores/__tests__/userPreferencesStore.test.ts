@@ -163,7 +163,12 @@ it('covers storage catch blocks', () => {
 
   const storage = useUserPreferencesStore.persist.getOptions().storage!
   expect(storage.getItem('test')).toBe(null)
-  expect(() => storage.setItem('test', 'value' as any)).not.toThrow()
+  expect(() =>
+    storage.setItem(
+      'test',
+      'value' as unknown as import('zustand/middleware').StorageValue<unknown>,
+    ),
+  ).not.toThrow()
   expect(() => storage.removeItem('test')).not.toThrow()
 
   Object.defineProperty(global, 'localStorage', { value: originalLocalStorage })
@@ -172,7 +177,9 @@ it('covers storage catch blocks', () => {
 it('covers migrate failure block (line 160)', () => {
   const migrate = useUserPreferencesStore.persist.getOptions().migrate!
   // safeParse fails when value is not an object or completely malformed
-  const result = migrate('this is a string, not an object', 1) as any
+  const result = migrate('this is a string, not an object', 1) as unknown as ReturnType<
+    typeof useUserPreferencesStore.getState
+  >
   expect(result.palette).toBe('gradient-blues') // default fallback
 })
 
@@ -180,9 +187,27 @@ it('covers migrate legacy paths and fallback on complete parse failure', () => {
   const migrate = useUserPreferencesStore.persist.getOptions().migrate!
 
   // Test legacy themes
-  expect((migrate({ theme: 'light' }, 1) as any).palette).toBe('light-steel')
-  expect((migrate({ theme: 'dark' }, 1) as any).palette).toBe('gradient-blues')
-  expect((migrate({ theme: 'system' }, 1) as any).palette).toBe('gradient-blues')
+  expect(
+    (
+      migrate({ theme: 'light' }, 1) as unknown as ReturnType<
+        typeof useUserPreferencesStore.getState
+      >
+    ).palette,
+  ).toBe('light-steel')
+  expect(
+    (
+      migrate({ theme: 'dark' }, 1) as unknown as ReturnType<
+        typeof useUserPreferencesStore.getState
+      >
+    ).palette,
+  ).toBe('gradient-blues')
+  expect(
+    (
+      migrate({ theme: 'system' }, 1) as unknown as ReturnType<
+        typeof useUserPreferencesStore.getState
+      >
+    ).palette,
+  ).toBe('gradient-blues')
 
   // To trigger the final fallback, we need to pass something that fails Zod's safeParse.
   // However, if the schema is just z.object() and we pass an object, it succeeds.
