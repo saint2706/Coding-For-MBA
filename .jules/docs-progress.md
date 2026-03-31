@@ -60,3 +60,4 @@
 - **Completed:** Checked for broken links across `.md` files; no broken user-facing links were found.
 - **Completed:** Updated `CONTRIBUTING.md` to explicitly state the JSDoc requirements for exported functions and React components.
 - **Verified:** Ensured `npm run test`, `npm run format`, and `npm run lint` all passed after making these changes.
+>> Added missing JSDoc comments to App.tsx, SearchResults.tsx, Curriculum.tsx, and ThemeProvider.tsx to ensure documentation accuracy and completeness.

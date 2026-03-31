@@ -24,6 +24,7 @@ import {
 import { dayTokenToProgressId } from '../utils/dayToken'
 import Breadcrumb from '../components/Breadcrumb'
 import ProgressBar from '../components/ProgressBar'
+import { useProgressStore } from '../stores/progressStore'
 
 /**
  * Curriculum roadmap page component.
@@ -34,9 +35,6 @@ import ProgressBar from '../components/ProgressBar'
  *
  * @returns The rendered curriculum roadmap page
  */
-
-import { useProgressStore } from '../stores/progressStore'
-
 export default function Curriculum() {
   const phases = getAllPhases()
   const prefersReducedMotion = useReducedMotion()
