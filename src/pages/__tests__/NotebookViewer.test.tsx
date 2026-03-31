@@ -14,11 +14,15 @@ vi.mock('../../components/Breadcrumb', () => ({
 }))
 
 vi.mock('../../components/MarkdownRenderer', () => ({
-  default: ({ content }: { content: string }) => <div data-testid="markdown-renderer">{content}</div>,
+  default: ({ content }: { content: string }) => (
+    <div data-testid="markdown-renderer">{content}</div>
+  ),
 }))
 
 vi.mock('../../components/CodePlayground', () => ({
-  default: ({ initialCode }: { initialCode: string }) => <div data-testid="code-playground">{initialCode}</div>,
+  default: ({ initialCode }: { initialCode: string }) => (
+    <div data-testid="code-playground">{initialCode}</div>
+  ),
 }))
 
 vi.mock('../../components/BackToTop', () => ({
