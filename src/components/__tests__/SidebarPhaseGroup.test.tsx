@@ -25,9 +25,9 @@ describe('SidebarPhaseGroup', () => {
     root = createRoot(container)
 
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
-      { day: '01', title: 'Lesson 1', phase: 1, content: '', path: '' },
-      { day: '02', title: 'Lesson 2', phase: 1, content: '', path: '' },
-    ] as unknown as ReadonlyArray<Readonly<contentLoader.Lesson>>)
+      { day: '01', title: 'Lesson 1', phase: 1, content: '', path: '', difficulty: 'beginner', tags: [], concepts: [] },
+      { day: '02', title: 'Lesson 2', phase: 1, content: '', path: '', difficulty: 'beginner', tags: [], concepts: [] },
+    ])
   })
 
   afterEach(() => {

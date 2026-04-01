@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, useLocation } from 'react-router-dom'
+import { MemoryRouter, useLocation, type Location } from 'react-router-dom'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import '@testing-library/jest-dom/vitest'
 import MobileNav from '../MobileNav'
@@ -35,7 +35,7 @@ describe('MobileNav', () => {
       hash: '',
       state: null,
       key: 'default',
-    } as unknown as ReturnType<typeof useLocation>)
+    } as Location)
 
     render(
       <MemoryRouter>
@@ -60,7 +60,7 @@ describe('MobileNav', () => {
       hash: '',
       state: null,
       key: 'default',
-    } as unknown as ReturnType<typeof useLocation>)
+    } as Location)
 
     render(
       <MemoryRouter initialEntries={['/']}>
@@ -82,7 +82,7 @@ describe('MobileNav', () => {
       hash: '',
       state: null,
       key: 'default',
-    } as unknown as ReturnType<typeof useLocation>)
+    } as Location)
 
     render(
       <MemoryRouter initialEntries={['/curriculum']}>
@@ -101,7 +101,7 @@ describe('MobileNav', () => {
       hash: '',
       state: null,
       key: 'default',
-    } as unknown as ReturnType<typeof useLocation>)
+    } as Location)
 
     render(
       <MemoryRouter initialEntries={['/progress']}>
@@ -120,7 +120,7 @@ describe('MobileNav', () => {
       hash: '',
       state: null,
       key: 'default',
-    } as unknown as ReturnType<typeof useLocation>)
+    } as Location)
 
     render(
       <MemoryRouter initialEntries={['/concepts']}>
@@ -139,7 +139,7 @@ describe('MobileNav', () => {
       hash: '',
       state: null,
       key: 'default',
-    } as unknown as ReturnType<typeof useLocation>)
+    } as Location)
 
     render(
       <MemoryRouter initialEntries={['/lesson/1']}>
@@ -158,7 +158,7 @@ describe('MobileNav', () => {
       hash: '',
       state: null,
       key: 'default',
-    } as unknown as ReturnType<typeof useLocation>)
+    } as Location)
 
     render(
       <MemoryRouter>
