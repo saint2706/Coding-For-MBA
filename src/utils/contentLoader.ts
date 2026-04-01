@@ -42,7 +42,9 @@ export interface Lesson {
   [key: string]: unknown
 }
 
-/** Phase metadata and overview markdown content. */
+/**
+ * Phase metadata and overview markdown content.
+ */
 export interface Phase {
   phase: number
   title: string
@@ -54,7 +56,9 @@ export interface Phase {
   [key: string]: unknown
 }
 
-/** A bonus file from a phase's extras/ folder. */
+/**
+ * A bonus file from a phase's extras/ folder.
+ */
 export interface ExtraFile {
   phase: number
   filename: string
@@ -237,7 +241,9 @@ export function getAdjacentLessons(dayNum: string | number): {
   }
 }
 
-/** Exercise parsed from lesson markdown. */
+/**
+ * Exercise parsed from lesson markdown.
+ */
 export interface Exercise {
   id: string
   day: DayToken
@@ -407,7 +413,9 @@ export function getAllReviewCardSeeds(): readonly ImmutableReviewCardSeed[] {
   return immutableReviewCards
 }
 
-/** Jupyter notebook cell shape used by imported phase notebooks. */
+/**
+ * Jupyter notebook cell shape used by imported phase notebooks.
+ */
 export interface NotebookCell {
   cell_type: 'code' | 'markdown' | 'raw'
   source: readonly string[]
@@ -422,7 +430,9 @@ export interface NotebookCell {
   execution_count?: number | null
 }
 
-/** Parsed notebook metadata for a phase solution file. */
+/**
+ * Parsed notebook metadata for a phase solution file.
+ */
 export interface Notebook {
   phase: number
   cells: readonly NotebookCell[]
@@ -844,6 +854,10 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
   return result
 }
 
+/**
+ * UI configuration objects exported for external components
+ * to map phase numbers to icons and difficulty tags to colors.
+ */
 export { difficultyConfig, phaseIcons }
 
 /** Shared shape for a case study or capstone project entry. */
@@ -857,10 +871,14 @@ export interface ProjectLike {
   path: string
 }
 
-/** A case study entry parsed from a case-studies README. */
+/**
+ * A case study entry parsed from a case-studies README.
+ */
 export type CaseStudy = ProjectLike
 
-/** A project entry parsed from a projects README. */
+/**
+ * A project entry parsed from a projects README.
+ */
 export type Project = ProjectLike
 
 const caseStudyFiles = import.meta.glob('/content/case-studies/**/README.md', {

@@ -179,4 +179,11 @@ function propsAreEqual(
   return true
 }
 
+/**
+ * Renders an accordion group of lessons for a specific phase in the sidebar curriculum.
+ * Memoized to prevent re-rendering when navigation occurs outside of the current phase.
+ *
+ * @param {SidebarPhaseGroupProps} props - The component props.
+ * @returns {JSX.Element} The phase group accordion block.
+ */
 export default memo(SidebarPhaseGroup, propsAreEqual)

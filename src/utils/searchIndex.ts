@@ -15,6 +15,10 @@ import Fuse, { type IFuseOptions } from 'fuse.js'
 import { getAllLessons, type Lesson } from './contentLoader'
 import { parseDayToken } from './dayToken'
 
+/**
+ * Represents a document in the search index, extending a standard Lesson
+ * with additional pre-computed string fields optimized for searching and indexing.
+ */
 export interface SearchDocument extends Lesson {
   plainContent: string
   dayText: string

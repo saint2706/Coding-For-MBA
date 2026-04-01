@@ -1,3 +1,7 @@
+/**
+ * Represents structured frontmatter data extracted from a markdown document.
+ * Values can be strings, numbers, booleans, or arrays of strings/numbers.
+ */
 export interface Frontmatter {
   [key: string]: string | number | boolean | (string | number)[]
 }

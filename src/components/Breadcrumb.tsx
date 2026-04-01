@@ -11,6 +11,9 @@
 
 import { Link } from 'react-router-dom'
 
+/**
+ * Represents a single item in the breadcrumb navigation.
+ */
 export interface BreadcrumbItem {
   label: string
   to?: string
