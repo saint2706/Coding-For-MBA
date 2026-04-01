@@ -37,7 +37,7 @@ vi.mock('react-router-dom', async () => {
 beforeEach(() => {
   Object.defineProperty(window, 'matchMedia', {
     writable: true,
-    value: vi.fn().mockImplementation(query => ({
+    value: vi.fn().mockImplementation((query) => ({
       matches: false,
       media: query,
       onchange: null,
@@ -47,34 +47,34 @@ beforeEach(() => {
       removeEventListener: vi.fn(),
       dispatchEvent: vi.fn(),
     })),
-  });
+  })
 
   Object.defineProperty(HTMLDivElement.prototype, 'clientWidth', {
     configurable: true,
-    value: 800
-  });
+    value: 800,
+  })
 
   Object.defineProperty(HTMLDivElement.prototype, 'clientHeight', {
     configurable: true,
-    value: 600
-  });
+    value: 600,
+  })
 
   // Mock SVGElement attributes used by d3 zoom
   // SVGSVGElement is missing properties in jsdom
   Object.defineProperty(SVGSVGElement.prototype, 'viewBox', {
     configurable: true,
-    get: () => ({ baseVal: { width: 800, height: 600, x: 0, y: 0 } })
-  });
+    get: () => ({ baseVal: { width: 800, height: 600, x: 0, y: 0 } }),
+  })
 
   Object.defineProperty(SVGSVGElement.prototype, 'width', {
     configurable: true,
-    get: () => ({ baseVal: { value: 800 } })
-  });
+    get: () => ({ baseVal: { value: 800 } }),
+  })
 
   Object.defineProperty(SVGSVGElement.prototype, 'height', {
     configurable: true,
-    get: () => ({ baseVal: { value: 600 } })
-  });
+    get: () => ({ baseVal: { value: 600 } }),
+  })
 })
 
 describe('ConceptGraph', () => {
@@ -90,8 +90,24 @@ describe('ConceptGraph', () => {
 
     vi.mocked(contentLoader.getAllLessons).mockReturnValue([
       { day: 1, title: 'Lesson 1', phase: 1, content: '', path: '', concepts: ['react', 'state'] },
-      { day: 2, title: 'Lesson 2', phase: 1, content: '', path: '', concepts: ['props'], prerequisites: ['D1'] },
-      { day: 3, title: 'Lesson 3', phase: 2, content: '', path: '', concepts: ['hooks'], prerequisites: ['D1', 'D2'] },
+      {
+        day: 2,
+        title: 'Lesson 2',
+        phase: 1,
+        content: '',
+        path: '',
+        concepts: ['props'],
+        prerequisites: ['D1'],
+      },
+      {
+        day: 3,
+        title: 'Lesson 3',
+        phase: 2,
+        content: '',
+        path: '',
+        concepts: ['hooks'],
+        prerequisites: ['D1', 'D2'],
+      },
     ] as unknown as ReadonlyArray<Readonly<contentLoader.Lesson>>)
   })
 
@@ -114,7 +130,9 @@ describe('ConceptGraph', () => {
     const svg = container.querySelector('svg')
     expect(svg).toBeTruthy()
     expect(svg?.getAttribute('role')).toBe('img')
-    expect(svg?.getAttribute('aria-label')).toBe('Concept dependency graph showing lesson relationships')
+    expect(svg?.getAttribute('aria-label')).toBe(
+      'Concept dependency graph showing lesson relationships',
+    )
   })
 
   it('filters nodes based on search query matching concept', () => {
@@ -129,8 +147,8 @@ describe('ConceptGraph', () => {
     const nodes = container.querySelectorAll('.graph-node')
     expect(nodes.length).toBe(3)
 
-    const day1Node = Array.from(nodes).find(n => n.textContent?.includes('D1'))
-    const day2Node = Array.from(nodes).find(n => n.textContent?.includes('D2'))
+    const day1Node = Array.from(nodes).find((n) => n.textContent?.includes('D1'))
+    const day2Node = Array.from(nodes).find((n) => n.textContent?.includes('D2'))
 
     expect(day1Node?.getAttribute('opacity')).toBe('1')
     expect(day2Node?.getAttribute('opacity')).toBe('0.08')
@@ -146,8 +164,8 @@ describe('ConceptGraph', () => {
     })
 
     const nodes = container.querySelectorAll('.graph-node')
-    const day1Node = Array.from(nodes).find(n => n.textContent?.includes('D1'))
-    const day3Node = Array.from(nodes).find(n => n.textContent?.includes('D3'))
+    const day1Node = Array.from(nodes).find((n) => n.textContent?.includes('D1'))
+    const day3Node = Array.from(nodes).find((n) => n.textContent?.includes('D3'))
 
     expect(day1Node?.getAttribute('opacity')).toBe('0.08') // Phase 1
     expect(day3Node?.getAttribute('opacity')).toBe('1') // Phase 2
@@ -176,7 +194,9 @@ describe('ConceptGraph', () => {
       )
     })
 
-    const day1Node = Array.from(container.querySelectorAll('.graph-node')).find(n => n.textContent?.includes('D1'))
+    const day1Node = Array.from(container.querySelectorAll('.graph-node')).find((n) =>
+      n.textContent?.includes('D1'),
+    )
     expect(day1Node).toBeTruthy()
 
     act(() => {
@@ -189,7 +209,17 @@ describe('ConceptGraph', () => {
   })
 
   it('shows and hides tooltip on mouse interactions', () => {
-    const mockRect = { left: 100, top: 100, width: 800, height: 600, right: 900, bottom: 700, x: 100, y: 100, toJSON: () => {} };
+    const mockRect = {
+      left: 100,
+      top: 100,
+      width: 800,
+      height: 600,
+      right: 900,
+      bottom: 700,
+      x: 100,
+      y: 100,
+      toJSON: () => {},
+    }
 
     act(() => {
       root!.render(
@@ -199,10 +229,12 @@ describe('ConceptGraph', () => {
       )
     })
 
-    const renderedContainer = container.querySelector('.concept-graph-container') as HTMLDivElement;
-    renderedContainer.getBoundingClientRect = vi.fn(() => mockRect);
+    const renderedContainer = container.querySelector('.concept-graph-container') as HTMLDivElement
+    renderedContainer.getBoundingClientRect = vi.fn(() => mockRect)
 
-    const day1Node = Array.from(container.querySelectorAll('.graph-node')).find(n => n.textContent?.includes('D1'))
+    const day1Node = Array.from(container.querySelectorAll('.graph-node')).find((n) =>
+      n.textContent?.includes('D1'),
+    )
 
     act(() => {
       const mouseEvent = new MouseEvent('mousemove', { bubbles: true, clientX: 150, clientY: 150 })
@@ -233,7 +265,17 @@ describe('ConceptGraph', () => {
   })
 
   it('hides tooltip if mouse moves off a node', () => {
-    const mockRect = { left: 100, top: 100, width: 800, height: 600, right: 900, bottom: 700, x: 100, y: 100, toJSON: () => {} };
+    const mockRect = {
+      left: 100,
+      top: 100,
+      width: 800,
+      height: 600,
+      right: 900,
+      bottom: 700,
+      x: 100,
+      y: 100,
+      toJSON: () => {},
+    }
 
     act(() => {
       root!.render(
@@ -243,10 +285,12 @@ describe('ConceptGraph', () => {
       )
     })
 
-    const renderedContainer = container.querySelector('.concept-graph-container') as HTMLDivElement;
-    renderedContainer.getBoundingClientRect = vi.fn(() => mockRect);
+    const renderedContainer = container.querySelector('.concept-graph-container') as HTMLDivElement
+    renderedContainer.getBoundingClientRect = vi.fn(() => mockRect)
 
-    const day1Node = Array.from(container.querySelectorAll('.graph-node')).find(n => n.textContent?.includes('D1'))
+    const day1Node = Array.from(container.querySelectorAll('.graph-node')).find((n) =>
+      n.textContent?.includes('D1'),
+    )
 
     // Show tooltip first
     act(() => {
