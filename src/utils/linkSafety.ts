@@ -69,6 +69,9 @@ export const normalizeAndValidateHref = (href?: string | null) => {
   }
 }
 
+/**
+ * Common HTML anchor element attributes used alongside a validated href.
+ */
 export interface LinkProps {
   target?: string
   rel?: string

@@ -29,6 +29,9 @@ const FontSizePreferenceSchema = z.enum(['sm', 'md', 'lg'])
 const CodeLanguagePreferenceSchema = z.enum(['python', 'sql'])
 const DensityPreferenceSchema = z.enum(['comfortable', 'compact'])
 
+/**
+ * Available color palette themes for the user interface.
+ */
 export type ColorPalette = z.infer<typeof ColorPaletteSchema>
 export type FontSizePreference = z.infer<typeof FontSizePreferenceSchema>
 export type CodeLanguagePreference = z.infer<typeof CodeLanguagePreferenceSchema>

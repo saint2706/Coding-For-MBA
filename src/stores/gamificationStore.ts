@@ -22,6 +22,9 @@ import { dayTokenToProgressId } from '../utils/dayToken'
 
 const STORAGE_KEY = 'coding-for-mba-gamification'
 
+/**
+ * Represents the unique identifier for a gamification achievement.
+ */
 export type AchievementId =
   | 'first-lesson'
   | 'streak-7'
@@ -32,6 +35,10 @@ export type AchievementId =
   | 'xp-150'
   | 'xp-300'
 
+/**
+ * Metadata object defining a gamification achievement, including
+ * its ID, label, description, and visual icon.
+ */
 export type AchievementMeta = {
   id: AchievementId
   label: string

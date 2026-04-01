@@ -159,4 +159,14 @@ const TableOfContents = memo(function TableOfContents({ content }: TableOfConten
   )
 })
 
+/**
+ * Dynamically generated sidebar navigation for lesson headings.
+ *
+ * Parses H2 and H3 headings from the provided markdown content,
+ * tracks scroll position to highlight the active section, and enables smooth scrolling.
+ *
+ * @param {TableOfContentsProps} props - The component props.
+ * @param {string} props.content - The markdown content to parse headings from.
+ * @returns {JSX.Element | null} The rendered table of contents, or null if insufficient headings exist.
+ */
 export default TableOfContents

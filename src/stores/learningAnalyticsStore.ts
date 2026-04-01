@@ -53,6 +53,12 @@ const PersistedAnalyticsSchema = z.object({
   visitsByLessonDay: z.record(z.string(), z.number()).catch({}),
 })
 
+/**
+ * State and actions for the Learning Analytics Store.
+ *
+ * Tracks active learning sessions, visits, streaks, and
+ * time spent per lesson and per day.
+ */
 export type LearningAnalyticsStore = {
   timeByLessonDay: Record<number, number>
   timeByDate: Record<string, number>

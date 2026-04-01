@@ -2,6 +2,10 @@ export interface Frontmatter {
   [key: string]: string | number | boolean | (string | number)[]
 }
 
+/**
+ * Result of parsing markdown content, separating the structured frontmatter
+ * from the raw markdown body.
+ */
 export interface ParsedMarkdown {
   frontmatter: Frontmatter
   content: string

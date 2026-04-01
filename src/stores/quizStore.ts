@@ -24,6 +24,11 @@ const QuizAttemptSchema = z.object({
   error: z.string().optional(),
 })
 
+/**
+ * Represents a single attempt at answering a quiz question.
+ * Records whether the attempt was correct, and optionally captures
+ * code execution output or errors.
+ */
 export type QuizAttempt = z.infer<typeof QuizAttemptSchema>
 
 type QuizStats = {
