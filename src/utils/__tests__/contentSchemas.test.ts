@@ -35,9 +35,9 @@ describe('content zod schemas', () => {
     expect(result.success).toBe(false)
 
     if (result.success) throw new Error('Expected invalid lesson fixture to fail')
-    expect(
-      result.error?.issues.map((issue) => issue.path.join('.')),
-    ).toEqual(expect.arrayContaining(['day', 'title', 'difficulty', 'duration', 'tags.1']))
+    expect(result.error?.issues.map((issue) => issue.path.join('.'))).toEqual(
+      expect.arrayContaining(['day', 'title', 'difficulty', 'duration', 'tags.1']),
+    )
   })
 
   it('accepts valid phase overview fixture and rejects empty day list', () => {
