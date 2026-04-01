@@ -10,7 +10,7 @@ vi.mock('../../components/SEOHead', () => ({
 }))
 
 vi.mock('../../components/AnimatedCounter', () => ({
-  default: ({ value, suffix }: any) => (
+  default: ({ value, suffix }: { value: number; suffix?: string }) => (
     <span data-testid="counter">
       {value}
       {suffix || ''}

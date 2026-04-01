@@ -48,7 +48,8 @@ vi.mock('../../utils/progressTracker', () => ({
 
 vi.mock('../../stores/progressStore', () => ({
   useProgressStore: Object.assign(
-    (selector: any) => selector({ completedLessons: mockGetCompletedLessons() }),
+    (selector: (state: { completedLessons: string[] }) => unknown) =>
+      selector({ completedLessons: mockGetCompletedLessons() }),
     {
       getState: () => ({
         completedLessons: mockGetCompletedLessons(),
