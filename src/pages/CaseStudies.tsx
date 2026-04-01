@@ -78,7 +78,9 @@ export default function CaseStudies() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Case Studies & Projects' }]} />
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
-        <h1>📂 Case Studies &amp; Projects</h1>
+        <h1>
+          <span aria-hidden="true">📂</span> Case Studies &amp; Projects
+        </h1>
         <p>
           {caseStudies.length} case studies · {projects.length} capstone projects — apply your
           skills to real-world business problems.
@@ -163,7 +165,11 @@ export default function CaseStudies() {
                   >
                     {diff.label}
                   </span>
-                  {item.estimatedTime && <span className="meta-pill">⏱ {item.estimatedTime}</span>}
+                  {item.estimatedTime && (
+                    <span className="meta-pill">
+                      <span aria-hidden="true">⏱</span> {item.estimatedTime}
+                    </span>
+                  )}
                 </div>
                 <h2 className="cs-card__title">{item.title}</h2>
                 {item.phasesCovered && <p className="cs-card__phases">{item.phasesCovered}</p>}

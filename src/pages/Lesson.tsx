@@ -309,7 +309,11 @@ export default function Lesson() {
             <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
               {diff.label}
             </span>
-            {lesson.duration && <span className="meta-pill">⏱ {lesson.duration} min</span>}
+            {lesson.duration && (
+              <span className="meta-pill">
+                <span aria-hidden="true">⏱</span> {lesson.duration} min
+              </span>
+            )}
             <ReadingTime content={lesson.content} />
             {lesson.tags &&
               lesson.tags.map((tag) => (

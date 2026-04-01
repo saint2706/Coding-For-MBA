@@ -124,7 +124,9 @@ export default function Home() {
       {/* Hero */}
       <motion.section className="hero glass-card hero-with-cards" style={{ y: heroY }}>
         <div className="hero-content-col">
-          <div className="hero-badge">📚 Self-Study Curriculum</div>
+          <div className="hero-badge">
+            <span aria-hidden="true">📚</span> Self-Study Curriculum
+          </div>
           <h1>
             Master <span className="gradient-text">Technical Skills</span>
             <br />
@@ -177,7 +179,9 @@ export default function Home() {
           {lastVisitedLesson ? (
             <div className="hero-float-card">
               <div className="hero-float-card-header">
-                <div className="hero-float-card-icon">📖</div>
+                <div className="hero-float-card-icon" aria-hidden="true">
+                  📖
+                </div>
                 <div>
                   <p className="hero-float-card-eyebrow">
                     {lastVisitedPhase ? `Phase ${lastVisitedPhase.phase}` : 'Continue'}
@@ -206,7 +210,9 @@ export default function Home() {
           ) : (
             <div className="hero-float-card">
               <div className="hero-float-card-header">
-                <div className="hero-float-card-icon">💻</div>
+                <div className="hero-float-card-icon" aria-hidden="true">
+                  💻
+                </div>
                 <div>
                   <p className="hero-float-card-eyebrow">Phase 1</p>
                   <p className="hero-float-card-title">Programming Foundations</p>
@@ -231,7 +237,9 @@ export default function Home() {
                 marginBottom: '0.75rem',
               }}
             >
-              <span style={{ fontSize: '1.25rem' }}>🔥</span>
+              <span aria-hidden="true" style={{ fontSize: '1.25rem' }}>
+                🔥
+              </span>
               <p style={{ fontWeight: 700, color: 'var(--text-heading)', margin: 0 }}>
                 Daily Streak
               </p>
@@ -353,8 +361,14 @@ export default function Home() {
                   >
                     {diff.label}
                   </span>
-                  <span className="meta-pill">📅 {lessons.length} Days</span>
-                  {hours > 0 && <span className="meta-pill">⏱ {hours}h</span>}
+                  <span className="meta-pill">
+                    <span aria-hidden="true">📅</span> {lessons.length} Days
+                  </span>
+                  {hours > 0 && (
+                    <span className="meta-pill">
+                      <span aria-hidden="true">⏱</span> {hours}h
+                    </span>
+                  )}
                 </div>
                 {completedInPhaseCount > 0 && (
                   <div className="phase-card-progress">
