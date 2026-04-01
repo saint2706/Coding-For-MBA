@@ -104,3 +104,10 @@
 **Vulnerability:** XSS vulnerability via improperly escaped `dangerouslySetInnerHTML` in `src/components/SEOHead.tsx`.
 **Learning:** Using `.replace(/</g, '\u003c')` inside a JavaScript string literal actually evaluates to a single `<` and does not provide escaping, allowing an attacker to inject payloads like `</script><script>`. It must be double-escaped to `\\u003c` so that the literal string `\u003c` gets safely inserted into the DOM without being evaluated as HTML by the browser engine.
 **Prevention:** Changed `.replace(/</g, '\u003c')` to `.replace(/</g, '\\u003c')` in JSON-LD structured data and added validation that all instances of `dangerouslySetInnerHTML` are correctly escaped or used with explicit `/* nosec */` suppression tags.
+
+## Security Audit Tue Mar 31 19:17:15 UTC 2026
+
+- Verified XSS mitigations in JSON-LD. Confirmed that double-escaping \u003c is properly implemented.
+- Scanned for hardcoded secrets (API keys, passwords, tokens); no instances found.
+- Code execution environments handle sandboxing robustly (Pyodide validation prevents sandbox escape via dunder methods and eval variants).
+- Local storage operations utilize safe parsers and Zod schemas to prevent prototype pollution or invalid state injection.
