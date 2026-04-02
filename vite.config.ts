@@ -106,11 +106,11 @@ export default defineConfig(async ({ mode }) => {
             ) {
               return 'syntax-highlighter'
             }
-            if (normalId.includes('node_modules/react-dom/')) {
-              return 'react-dom'
-            }
+            // ⚡ Bolt: Bundle react-dom with react to prevent runtime ESM initialization errors
+            // and reduce redundant network requests for highly coupled core libraries.
             if (
               normalId.includes('node_modules/react/') ||
+              normalId.includes('node_modules/react-dom/') ||
               normalId.includes('node_modules/react-router') ||
               normalId.includes('node_modules/scheduler/')
             ) {
