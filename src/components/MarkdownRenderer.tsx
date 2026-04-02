@@ -188,8 +188,9 @@ function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
   }
 }
 
-// Use global flag 'g' to iterate over matches without string slicing
-const glossaryRegex = new RegExp(getGlossaryRegex().source, 'gi')
+// ⚡ Bolt: Removed 'g' flag and global RegExp instance to prevent stateful RegExp.lastIndex race conditions
+// during React Concurrent Mode rendering. Replaced with stateless Array.from(matchAll()).
+const glossaryRegexSource = getGlossaryRegex().source
 const glossaryDefinitionsByLowerTerm = Object.fromEntries(
   Object.entries(glossaryTerms).map(([term, definition]) => [term.toLowerCase(), definition]),
 )
@@ -199,13 +200,13 @@ function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
   const parts: (string | JSX.Element)[] = []
   const matched = new Set<string>()
   let lastIndex = 0
-  let match
   let keyIdx = 0
 
-  // Reset lastIndex for the shared regex instance
-  glossaryRegex.lastIndex = 0
+  // Create a new RegExp instance per call to ensure pure, deterministic rendering.
+  const regex = new RegExp(glossaryRegexSource, 'gi')
+  const matches = Array.from(text.matchAll(regex))
 
-  while ((match = glossaryRegex.exec(text)) !== null) {
+  for (const match of matches) {
     const termLower = match[1]!.toLowerCase()
     const matchStart = match.index
     const matchEnd = match.index + match[0].length
