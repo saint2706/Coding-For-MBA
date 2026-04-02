@@ -33,10 +33,24 @@ const DensityPreferenceSchema = z.enum(['comfortable', 'compact'])
  * Available color palette themes for the user interface.
  */
 export type ColorPalette = z.infer<typeof ColorPaletteSchema>
+/**
+ * Editor font size preference.
+ */
 export type FontSizePreference = z.infer<typeof FontSizePreferenceSchema>
+
+/**
+ * Default programming language preference for code examples.
+ */
 export type CodeLanguagePreference = z.infer<typeof CodeLanguagePreferenceSchema>
+
+/**
+ * UI layout density preference.
+ */
 export type DensityPreference = z.infer<typeof DensityPreferenceSchema>
 
+/**
+ * Zustand store state shape for user UI preferences.
+ */
 export type UserPreferencesStore = {
   palette: ColorPalette
   sidebarDefaultOpen: boolean

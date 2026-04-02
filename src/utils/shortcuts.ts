@@ -9,8 +9,14 @@
  * - Provide a utility to detect if a user is typing in an input field.
  */
 
+/**
+ * Defines the logical scope in which a keyboard shortcut is active.
+ */
 export type ShortcutScope = 'Global' | 'Search' | 'Lesson' | 'Review'
 
+/**
+ * Represents a predefined keyboard shortcut mapping.
+ */
 export interface ShortcutDefinition {
   keys: string
   description: string

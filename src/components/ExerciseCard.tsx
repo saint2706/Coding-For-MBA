@@ -46,4 +46,12 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
   )
 }
 
+/**
+ * Renders a single exercise item in the exercises list.
+ * Memoized to prevent re-rendering when list filters change but the item itself remains the same.
+ *
+ * @param {ExerciseCardProps} props - The component props.
+ * @param {Exercise} props.exercise - The exercise data to render.
+ * @returns {JSX.Element} The exercise card component.
+ */
 export default memo(ExerciseCard)

@@ -1,5 +1,9 @@
 import { extractExercisesFromContent, ExtractedExercise } from './exercise-extractor-core.js'
 
+/**
+ * Type representing an extracted exercise from raw markdown.
+ * Lacks overarching lesson metadata.
+ */
 export type { ExtractedExercise }
 
 /**

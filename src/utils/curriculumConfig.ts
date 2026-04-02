@@ -26,7 +26,16 @@ const phaseIconsSchema = z.array(z.string().min(1)).length(9)
  * Defines the label text, foreground color, and background color.
  */
 export type DifficultyInfo = z.infer<typeof difficultyInfoSchema>
+
+/**
+ * Record mapping string keys to DifficultyInfo schemas, defining visual styles
+ * for different difficulty levels.
+ */
 export type DifficultyConfig = z.infer<typeof difficultyConfigSchema>
+
+/**
+ * Ordered array of strings used as icons representing different curriculum phases.
+ */
 export type PhaseIcons = z.infer<typeof phaseIconsSchema>
 
 /**

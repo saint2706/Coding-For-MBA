@@ -721,5 +721,17 @@ function MarkdownRenderer({ content }: MarkdownRendererProps) {
   )
 }
 
+/**
+ * Interactive block utilities and types for parsing mastery questions and exercises.
+ */
 export { findInteractiveBlocks, type ParsedMasteryQuestion, type ParsedExercise }
+
+/**
+ * Render lesson markdown with safe HTML, custom code blocks, glossary tooltips,
+ * and interactive exercise/mastery widgets. Memoized to prevent unnecessary re-renders.
+ *
+ * @param {MarkdownRendererProps} props - The component properties.
+ * @param {string} props.content - The raw markdown content string to be rendered.
+ * @returns {React.ReactElement} The rendered markdown content wrapped in a responsive container.
+ */
 export default memo(MarkdownRenderer)

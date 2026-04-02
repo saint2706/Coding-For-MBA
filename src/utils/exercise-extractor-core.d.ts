@@ -1,3 +1,7 @@
+/**
+ * Represents the structure of an exercise extracted from markdown content.
+ * Lacks overarching lesson metadata.
+ */
 export interface ExtractedExercise {
   title: string
   goal: string
