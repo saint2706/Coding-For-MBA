@@ -128,7 +128,7 @@ export default function KeyboardShortcutsOverlay() {
           <h2 id="keyboard-shortcuts-title">Keyboard shortcuts</h2>
           <button
             type="button"
-            className="shortcut-overlay-close"
+            className="shortcut-overlay-close focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             data-shortcuts-close
             onClick={() => setIsOpen(false)}
             aria-label="Close keyboard shortcuts"
