@@ -153,7 +153,8 @@ const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
     <img
       loading={isHighPriority ? 'eager' : 'lazy'}
       decoding="async"
-      fetchPriority={isHighPriority ? 'high' : undefined}
+      // Using lowercase fetchpriority for exact DOM output, with TS definition in vite-env.d.ts
+      fetchpriority={isHighPriority ? 'high' : undefined}
       alt={rest.alt || 'Course image'}
       {...rest}
     />

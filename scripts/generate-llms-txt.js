@@ -32,15 +32,15 @@ function findFiles(dir, filename) {
 const lines = ['# Site Architecture']
 
 // Static pages
-lines.push(`- ${BASE_URL}/#/: Home page - The primary landing page introducing the comprehensive 140-day MBA technical curriculum covering Python, Data Science, Machine Learning, and Enterprise SQL.`)
-lines.push(`- ${BASE_URL}/#/curriculum: Curriculum overview - A complete architectural roadmap and timeline of all 9 learning phases, from basic programming to advanced data products.`)
-lines.push(`- ${BASE_URL}/#/exercises: Practice exercises - A centralized repository of interactive, hands-on coding exercises to test Python and SQL proficiency.`)
-lines.push(`- ${BASE_URL}/#/progress: Learning progress - A personalized dashboard to track completed lessons, daily learning streaks, and overall curriculum completion metrics.`)
-lines.push(`- ${BASE_URL}/#/concepts: Concept graph - An interactive, visual knowledge graph demonstrating the interconnected relationships between various technical concepts taught in the course.`)
-lines.push(`- ${BASE_URL}/#/stats: Learning statistics - Detailed quantitative analytics regarding the curriculum, including total reading time, lesson counts, and historical performance data.`)
-lines.push(`- ${BASE_URL}/#/search: Search - A full-text semantic search interface to quickly find specific lessons, topics, or definitions within the curriculum.`)
-lines.push(`- ${BASE_URL}/#/review: Spaced Repetition Review - An intelligent flashcard system utilizing spaced repetition to reinforce memory retention of key technical terms and concepts.`)
-lines.push(`- ${BASE_URL}/#/case-studies: Case Studies - In-depth, real-world business case studies applying data engineering and machine learning principles to practical enterprise problems.`)
+lines.push(`- ${BASE_URL}/#/: Home page - The primary landing page introducing the comprehensive 140-day MBA technical curriculum covering Python, Data Science, Machine Learning, and Enterprise SQL. User Intent: Provide a broad overview and entry point to the course.`)
+lines.push(`- ${BASE_URL}/#/curriculum: Curriculum overview - A complete architectural roadmap and timeline of all 9 learning phases, from basic programming to advanced data products. User Intent: See the full structure and timeline of what is taught.`)
+lines.push(`- ${BASE_URL}/#/exercises: Practice exercises - A centralized repository of interactive, hands-on coding exercises to test Python and SQL proficiency. User Intent: Practice coding skills directly in the browser.`)
+lines.push(`- ${BASE_URL}/#/progress: Learning progress - A personalized dashboard to track completed lessons, daily learning streaks, and overall curriculum completion metrics. User Intent: Monitor personal learning advancement and gamification stats.`)
+lines.push(`- ${BASE_URL}/#/concepts: Concept graph - An interactive, visual knowledge graph demonstrating the interconnected relationships between various technical concepts taught in the course. User Intent: Visualize how different concepts connect and build upon each other.`)
+lines.push(`- ${BASE_URL}/#/stats: Learning statistics - Detailed quantitative analytics regarding the curriculum, including total reading time, lesson counts, and historical performance data. User Intent: View aggregate metrics about the curriculum content.`)
+lines.push(`- ${BASE_URL}/#/search: Search - A full-text semantic search interface to quickly find specific lessons, topics, or definitions within the curriculum. User Intent: Quickly look up specific terms, concepts, or lessons.`)
+lines.push(`- ${BASE_URL}/#/review: Spaced Repetition Review - An intelligent flashcard system utilizing spaced repetition to reinforce memory retention of key technical terms and concepts. User Intent: Reinforce memory of key concepts through active recall.`)
+lines.push(`- ${BASE_URL}/#/case-studies: Case Studies - In-depth, real-world business case studies applying data engineering and machine learning principles to practical enterprise problems. User Intent: See real-world business applications of the technical skills learned.`)
 
 // Phase overviews
 const phaseFiles = findFiles(LESSONS_DIR, 'Phase_Overview.md')

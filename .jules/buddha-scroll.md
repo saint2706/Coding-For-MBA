@@ -146,3 +146,12 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 -   [x] **[GEO] Schema Validation**: Verified that all JSON-LD structured data is properly encoded to prevent XSS without corrupting the schemas (using the single backslash `\u003c` approach).
 -   [x] **[SEO] Core Web Vitals**: Verified LCP elements are not lazy-loaded (`fetchpriority="high"`) and HTML heading hierarchy (h1-h6) is strictly maintained across all pages.
 >> Fixed JSON-LD structure data script tag escaping issue by replacing `\\u003c` with `\u003c` to avoid breaking the schema and satisfy the Buddha persona.
+
+### [Date: Current] - Deep Semantic Refactor and AI Content Discovery
+**Priority Areas:**
+1.  **GEO (Intelligence)**: Updating `llms.txt` descriptions for static pages to include "User Intent" explanations.
+2.  **Speed (Velocity)**: LCP element lazy-loading prevention (`fetchpriority="high"` case-sensitivity).
+
+**Changes:**
+-   [x] **[GEO] Site Architecture**: Updated `scripts/generate-llms-txt.js` to provide explicit AI-readable descriptions for static pages (e.g. Home, Curriculum, Exercises) detailing "User Intent" in the generated `public/llms.txt`.
+-   [x] **[PERF] LCP Optimization**: Refactored `MarkdownRenderer` to respect lowercase `fetchpriority="high"` attribute natively required by browsers, resolving case-sensitivity issues while keeping others lazy-loaded.
