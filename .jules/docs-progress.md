@@ -78,3 +78,16 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 - `src/utils/linkSafety.ts`: Added JSDoc for `LinkProps`.
 - `src/utils/searchIndex.ts`: Added JSDoc for `SearchResult` and `SearchIndexStatus`.
 - **Completed:** Added missing JSDoc comments to Breadcrumb.tsx, ExerciseCard.tsx, MarkdownRenderer.tsx, SidebarPhaseGroup.tsx, userPreferencesStore.ts, contentLoader.ts, curriculumConfig.ts, exercise-extractor-core.d.ts, exerciseExtractor.ts, frontmatter-core.d.ts, searchIndex.ts, and shortcuts.ts to ensure documentation accuracy and completeness.
+
+- **[2026-03-26] General Audit & Package Configuration**
+  - Updated `package.json` to strictly pin TypeScript to `5.6.3` to prevent `tsc: not found` errors during `npm run lint`.
+  - Conducted full documentation audit across the repository. Verified that all JSDoc annotations, standard README files, and markdown links are accurate and present.
+  - Verified no placeholder text or broken links remain.
+  - Successfully passed tests, builds, and linting checks locally.
+
+- **[2026-03-27] Documentation Audit & Verification**
+  - Conducted a comprehensive audit of all exported functions, constants, classes, and components across `src/` to ensure JSDoc completeness.
+  - Confirmed 100% compliance with JSDoc requirements, including complex React components and arrow functions.
+  - Executed `markdown-link-check` across the repository to verify all links in `.md` files; no broken user-facing links found.
+  - Verified that placeholder `TODO:` tags do not exist in production documentation, maintaining strict boundaries.
+  - Ensured `npm run format`, `npm run lint`, `npm run test`, and `npm run build` pass without warnings or errors.
