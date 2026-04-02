@@ -116,3 +116,10 @@
 - **Fixed:** Replaced `any` type casting with proper props type `{ value: number; suffix?: string }` for `AnimatedCounter` mock in `src/pages/__tests__/ContentStats.test.tsx`.
 - **Fixed:** Replaced `any` type casting with proper props types for component mocks (`MarkdownRenderer` with `{ content: string }`, `motion.div` with `React.ComponentProps<'div'>`) in `src/pages/__tests__/CaseStudies.test.tsx`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 20
+- **Fixed:** Removed `// @ts-expect-error` and `as unknown` type casting in `src/utils/__tests__/contentSchemas.test.ts` by creating `scripts/content-schemas.d.ts` and correctly typing Zod schema imports.
+- **Fixed:** Removed `as unknown` type casting in `src/components/__tests__/SidebarPhaseGroup.test.tsx` by providing completely mocked `Lesson` objects.
+- **Fixed:** Removed `as unknown` type casting in `src/components/__tests__/ExerciseCard.test.tsx` by properly omitting the mocked `goal` string property.
+- **Fixed:** Removed `as unknown` type casting in `src/components/__tests__/MobileNav.test.tsx` by explicitly importing and using the `Location` type for `useLocation` mock returns.
+- **Verified:** Build, lint, and tests pass.
