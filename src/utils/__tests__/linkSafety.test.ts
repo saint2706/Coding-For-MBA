@@ -15,7 +15,8 @@ describe('getSecureLinkAttributes', () => {
 
   it('should return null if href is null or not a string', () => {
     expect(getSecureLinkAttributes(null)).toBeNull()
-    expect(getSecureLinkAttributes(123 as unknown as string)).toBeNull()
+    // @ts-expect-error testing invalid input
+    expect(getSecureLinkAttributes(123)).toBeNull()
   })
 
   it('should return null if href is an empty string', () => {
@@ -140,7 +141,8 @@ describe('normalizeAndValidateHref', () => {
       isSafe: false,
     })
 
-    expect(normalizeAndValidateHref(123 as unknown as string)).toEqual({
+    // @ts-expect-error testing invalid input
+    expect(normalizeAndValidateHref(123)).toEqual({
       normalizedHref: null,
       isExternal: false,
       isSafe: false,

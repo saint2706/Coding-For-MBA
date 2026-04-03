@@ -42,6 +42,7 @@ describe('slug utilities', () => {
   })
 
   it('handles arbitrary objects gracefully', () => {
-    expect(extractTextFromReactNode({} as unknown as React.ReactNode)).toBe('')
+    // @ts-expect-error testing invalid input
+    expect(extractTextFromReactNode({})).toBe('')
   })
 })
