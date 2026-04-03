@@ -35,9 +35,9 @@ describe('MarkdownRenderer Images', () => {
     expect(img?.getAttribute('decoding')).toBe('async')
   })
 
-  it('allows fetchpriority attribute on images when using HTML syntax', async () => {
-    // We use raw HTML because standard markdown doesn't support fetchpriority
-    const content = '<img src="https://example.com/hero.png" alt="Hero" fetchpriority="high" />'
+  it('allows fetchPriority attribute on images when using HTML syntax', async () => {
+    // We use raw HTML because standard markdown doesn't support fetchPriority
+    const content = '<img src="https://example.com/hero.png" alt="Hero" fetchPriority="high" />'
 
     await act(async () => {
       const root = createRoot(container!)
@@ -52,6 +52,6 @@ describe('MarkdownRenderer Images', () => {
     // loading='lazy' is added by ImageComponent default, but last prop wins if passed?
     // Wait, ImageComponent receives props from rehype-raw -> react-markdown.
     // Let's see what happens.
-    expect(img?.getAttribute('fetchpriority')).toBe('high')
+    expect(img?.getAttribute('fetchPriority')).toBe('high')
   })
 })
