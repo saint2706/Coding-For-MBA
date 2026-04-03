@@ -21,6 +21,7 @@ import { hydrateQuizStore } from './stores/quizStore'
 import { useUserPreferencesStore } from './stores/userPreferencesStore'
 import { useLearningAnalytics } from './hooks/useLearningAnalytics'
 import { hydrateGamificationStore } from './stores/gamificationStore'
+import { preloadSearchIndex } from './utils/searchIndex'
 
 const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
@@ -59,6 +60,11 @@ export default function App() {
     hydrateProgressStore()
     hydrateQuizStore()
     hydrateGamificationStore()
+  }, [])
+
+  useEffect(() => {
+    // ⚡ Bolt: Preload search index in background to eliminate input delay when user starts a search
+    preloadSearchIndex()
   }, [])
 
   useEffect(() => {
