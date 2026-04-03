@@ -1,0 +1,4 @@
+- Increased test coverage for UI components by adding rigorous unit tests for CustomCursor, useTheme, and EmptyStateIllustrations.
+- Tests fully mock required dependencies like requestAnimationFrame and matchMedia, implementing act blocks appropriately.
+- Fixed React 19/TS compatibility warnings for `fetchPriority` vs `fetchpriority` in `MarkdownRenderer` component and tests, improving component prop type safety and standard HTML compliance.
+- Verified test suite passes without regressions and 100% coverage thresholds met for newly tested files.

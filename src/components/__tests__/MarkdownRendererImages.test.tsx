@@ -52,6 +52,6 @@ describe('MarkdownRenderer Images', () => {
     // loading='lazy' is added by ImageComponent default, but last prop wins if passed?
     // Wait, ImageComponent receives props from rehype-raw -> react-markdown.
     // Let's see what happens.
-    expect(img?.getAttribute('fetchPriority')).toBe('high')
+    expect(img?.getAttribute('fetchpriority') || img?.getAttribute('fetchPriority')).toBe('high')
   })
 })
