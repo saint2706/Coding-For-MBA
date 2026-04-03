@@ -29,7 +29,7 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
     >
       <div className="exercise-card__header">
         <span className="exercise-card__phase">
-          {icon} Phase {exercise.phase}
+          <span aria-hidden="true">{icon}</span> Phase {exercise.phase}
         </span>
         <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
           {diff.label}
