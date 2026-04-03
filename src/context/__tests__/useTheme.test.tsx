@@ -14,9 +14,7 @@ describe('useTheme', () => {
     }
 
     const wrapper = ({ children }: { children: React.ReactNode }) => (
-      <ThemeContext.Provider value={mockContextValue}>
-        {children}
-      </ThemeContext.Provider>
+      <ThemeContext.Provider value={mockContextValue}>{children}</ThemeContext.Provider>
     )
 
     const { result } = renderHook(() => useTheme(), { wrapper })

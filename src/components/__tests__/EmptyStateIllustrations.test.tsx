@@ -8,7 +8,7 @@ import {
 
 const mockUseReducedMotion = vi.fn()
 vi.mock('motion/react', () => ({
-  useReducedMotion: () => mockUseReducedMotion()
+  useReducedMotion: () => mockUseReducedMotion(),
 }))
 
 describe('EmptyStateIllustrations', () => {

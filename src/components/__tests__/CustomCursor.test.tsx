@@ -3,7 +3,7 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import CustomCursor from '../CustomCursor'
 
 vi.mock('motion/react', () => ({
-  useReducedMotion: vi.fn().mockReturnValue(false)
+  useReducedMotion: vi.fn().mockReturnValue(false),
 }))
 
 describe('CustomCursor', () => {
