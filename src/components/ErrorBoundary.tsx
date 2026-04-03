@@ -28,6 +28,7 @@ type ErrorBoundaryState = {
  * and displays a fallback UI instead of the component tree that crashed.
  *
  * @extends {Component<ErrorBoundaryProps, ErrorBoundaryState>}
+ * @returns {ReactNode} The fallback UI if an error is caught, otherwise the component's children.
  */
 export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false }

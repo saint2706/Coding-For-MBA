@@ -17,8 +17,9 @@ import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
  * - Provide quick access to primary app sections (Home, Learn, Progress, Explore).
  * - Highlight active route state.
  * - Hide on desktop viewports via CSS media queries.
+ *
+ * @returns {React.ReactElement} The rendered mobile navigation bar.
  */
-
 export default function MobileNav() {
   const location = useLocation()
   const isLesson = location.pathname.startsWith('/lesson/')
