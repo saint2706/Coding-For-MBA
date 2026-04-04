@@ -35,8 +35,9 @@ function getRatingLabel(rating: ReviewRating): string {
  * - Display cards one by one (Front -> Reveal -> Rate).
  * - Handle user ratings (Again/Hard/Good/Easy) to update schedules.
  * - Show daily streak and total due count.
+ *
+ * @returns {JSX.Element} The rendered review page.
  */
-
 export default function Review() {
   const [now, setNow] = useState(() => new Date())
   const [showAnswer, setShowAnswer] = useState(false)

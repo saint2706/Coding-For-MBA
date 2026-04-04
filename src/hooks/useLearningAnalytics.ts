@@ -19,7 +19,8 @@ let activeSubscribers = 0
  * Tracks engagement time for a specific route.
  * Handles visibility changes (pausing/resuming) and cleanup automatically.
  *
- * @param route - The identifier for the current route/page (e.g., "Lesson 1").
+ * @param {string} route - The identifier for the current route/page (e.g., "Lesson 1").
+ * @returns {void}
  */
 export function useLearningAnalytics(route: string): void {
   useEffect(() => {

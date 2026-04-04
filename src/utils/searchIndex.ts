@@ -283,6 +283,8 @@ function processChunk() {
  * Initiates background processing to build the search index.
  * It chunks document processing during browser idle time to avoid freezing the UI.
  * Once complete, the cached engine is available for fast searching.
+ *
+ * @returns {void}
  */
 export function startBackgroundIndexing(): void {
   if (isIndexing || indexingComplete || cachedEngine) return
@@ -377,6 +379,8 @@ export function getSearchSnippet(content: string, query: string, maxLength = 180
 /**
  * Safely triggers the background preloading of the search index.
  * Designed to be called on idle, deferring the heavy work of parsing documents.
+ *
+ * @returns {void}
  */
 export function preloadSearchIndex(): void {
   try {

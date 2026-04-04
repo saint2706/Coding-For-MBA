@@ -247,6 +247,8 @@ export function getReviewStreak(now = new Date()): number {
 
 /**
  * Clears all review state from localStorage and cache.
+ *
+ * @returns {void}
  */
 export function clearReviewState(): void {
   reviewStateCache = null

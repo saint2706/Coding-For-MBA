@@ -35,6 +35,7 @@ const prefetchedRoutes = new Set<string>()
  * Safe to call multiple times; will only load once.
  *
  * @param {string} path - The route path to prefetch (e.g., '/lesson/1').
+ * @returns {void}
  */
 export function prefetchRoute(path: string) {
   if (prefetchedRoutes.has(path)) {

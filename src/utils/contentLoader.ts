@@ -652,6 +652,8 @@ let contentStatsCache: {
 /**
  * Retrieves comprehensive content statistics for the curriculum.
  * The statistics are computed once and cached to avoid O(N) recalculations on render.
+ *
+ * @returns {ContentStats} Comprehensive statistics about the curriculum content.
  */
 export function getContentStats() {
   if (contentStatsCache === null) {
