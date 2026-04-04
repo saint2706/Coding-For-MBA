@@ -43,7 +43,14 @@ vi.mock('motion/react', () => ({
       transition,
       layoutId,
       ...props
-    }: any) => <div {...props}>{children}</div>,
+    }: React.ComponentProps<'div'> & {
+      whileInView?: unknown
+      initial?: unknown
+      viewport?: unknown
+      variants?: unknown
+      transition?: unknown
+      layoutId?: unknown
+    }) => <div {...props}>{children}</div>,
   },
   useReducedMotion: vi.fn().mockReturnValue(true),
 }))
@@ -72,8 +79,8 @@ describe('PhaseOverview', () => {
   it('renders phase not found when phase does not exist', () => {
     vi.mocked(contentLoader.getPhase).mockReturnValue(undefined)
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([])
-    vi.mocked(useProgressStore).mockImplementation((selector: any) =>
-      selector({ completedLessons: [] }),
+    vi.mocked(useProgressStore).mockImplementation((selector) =>
+      selector({ completedLessons: [] } as unknown as ReturnType<typeof useProgressStore.getState>),
     )
 
     act(() => {
@@ -125,8 +132,8 @@ describe('PhaseOverview', () => {
       cells: [{ cell_type: 'code', source: ['print(1)'] }],
     })
 
-    vi.mocked(useProgressStore).mockImplementation((selector: any) =>
-      selector({ completedLessons: [1] }),
+    vi.mocked(useProgressStore).mockImplementation((selector) =>
+      selector({ completedLessons: [1] } as unknown as ReturnType<typeof useProgressStore.getState>),
     )
 
     act(() => {

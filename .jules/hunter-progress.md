@@ -129,3 +129,8 @@
 - **Fixed:** Replaced `as unknown as React.ReactNode` type assertion in `src/utils/__tests__/slug.test.ts` with `// @ts-expect-error` to properly test invalid objects.
 - **Fixed:** Corrected casing of `fetchpriority` to `fetchPriority` on `<img />` elements in `src/components/MarkdownRenderer.tsx` to fix React DOM warnings in tests.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 22
+- **Fixed:** Replaced `as any` type casts and loosely typed mocks with explicit types and proper assertions in `src/pages/__tests__/Exercises.test.tsx` (for `ExerciseCard`, `motion.div`, and `useQuizStore`).
+- **Fixed:** Replaced `as any` type casts and loosely typed mocks with explicit types and proper assertions in `src/pages/__tests__/PhaseOverview.test.tsx` (for `motion.div` and `useProgressStore`).
+- **Verified:** Build, lint, and tests pass.
