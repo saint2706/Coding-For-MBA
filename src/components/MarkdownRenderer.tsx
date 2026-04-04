@@ -135,25 +135,27 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
 }
 
 const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
-  // Respect fetchpriority for LCP (Hero) optimization
+  // Respect fetchPriority for LCP (Hero) optimization
   // If fetchpriority="high", we should not lazy load.
+
+  // Intercept the lowercase 'fetchpriority' from the underlying props,
+  // as it is passed by the HTML parser, so it doesn't leak to the DOM via ...rest
   const {
-    fetchpriority,
     fetchPriority,
+    fetchpriority: lowercaseFetchPriority,
     loading: _loading,
     ...rest
   } = props as JSX.IntrinsicElements['img'] & {
-    fetchpriority?: 'high' | 'low' | 'auto'
     fetchPriority?: 'high' | 'low' | 'auto'
+    fetchpriority?: 'high' | 'low' | 'auto'
   }
 
-  const isHighPriority = fetchpriority === 'high' || fetchPriority === 'high'
+  const isHighPriority = lowercaseFetchPriority === 'high' || fetchPriority === 'high'
 
   return (
     <img
       loading={isHighPriority ? 'eager' : 'lazy'}
       decoding="async"
-      // Using lowercase fetchpriority for exact DOM output, with TS definition in vite-env.d.ts
       fetchPriority={isHighPriority ? 'high' : undefined}
       alt={rest.alt || 'Course image'}
       {...rest}
