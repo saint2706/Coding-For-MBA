@@ -28,6 +28,7 @@ export default function MobileNav() {
       <NavLink
         to="/"
         className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
+        aria-label="Home"
         {...createRoutePrefetchHandlers('/')}
       >
         <svg
@@ -44,6 +45,7 @@ export default function MobileNav() {
       <NavLink
         to="/curriculum"
         className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
+        aria-label="Learn"
         {...createRoutePrefetchHandlers('/curriculum')}
       >
         <svg
@@ -61,6 +63,7 @@ export default function MobileNav() {
       <NavLink
         to="/progress"
         className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
+        aria-label="Progress"
         {...createRoutePrefetchHandlers('/progress')}
       >
         <svg
@@ -77,6 +80,7 @@ export default function MobileNav() {
       <NavLink
         to="/concepts"
         className={({ isActive }) => `mobile-nav-item ${isActive || isLesson ? 'active' : ''}`}
+        aria-label="Explore"
         {...createRoutePrefetchHandlers('/concepts')}
       >
         <svg
