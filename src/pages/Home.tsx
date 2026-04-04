@@ -53,6 +53,9 @@ export default function Home() {
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
+  // ⚡ Bolt: Extracted phases map into a top-level useMemo to prevent O(N) array filtering
+  // inside the render cycle. This resolves a performance bottleneck while avoiding
+  // React Rules of Hooks violations.
   const renderedPhases = useMemo(
     () =>
       phases.map((phase) => {
@@ -374,9 +377,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="phases-grid">
-          {renderedPhases}
-        </div>
+        <div className="phases-grid">{renderedPhases}</div>
       </section>
     </div>
   )

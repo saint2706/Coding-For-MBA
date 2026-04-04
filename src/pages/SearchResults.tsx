@@ -80,18 +80,22 @@ export default function SearchResults() {
     navigate(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : '/search')
   }
 
+  // ⚡ Bolt: Memoize the rendered search results to prevent recreating expensive JSX elements
+  // on every keystroke when the debounced query has not yet triggered a new search.
   const renderedResults = useMemo(() => {
     return results.map((result) => {
       const diff =
         difficultyConfig[result.item.difficulty || 'beginner'] ?? difficultyConfig.beginner!
 
       return (
-        <Link key={result.item.day} to={`/lesson/${result.item.day}`} className="search-result-card">
+        <Link
+          key={result.item.day}
+          to={`/lesson/${result.item.day}`}
+          className="search-result-card"
+        >
           <div className="search-result-card-header">
             <span className="search-result-card-day">Day {result.item.day}</span>
-            <h2 className="search-result-card-title">
-              {highlightText(result.item.title, terms)}
-            </h2>
+            <h2 className="search-result-card-title">{highlightText(result.item.title, terms)}</h2>
             <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
               {diff.label}
             </span>
@@ -156,9 +160,7 @@ export default function SearchResults() {
       </div>
 
       {results.length > 0 ? (
-        <div className="search-results-list">
-          {renderedResults}
-        </div>
+        <div className="search-results-list">{renderedResults}</div>
       ) : debouncedQuery.trim().length >= 2 ? (
         <div className="search-empty-page glass-card">
           <SearchEmptyIllustration />
