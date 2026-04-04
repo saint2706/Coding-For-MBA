@@ -61,6 +61,7 @@ vi.mock('../stores/userPreferencesStore', () => ({
 }))
 vi.mock('../hooks/useLearningAnalytics', () => ({ useLearningAnalytics: vi.fn() }))
 vi.mock('../stores/gamificationStore', () => ({ hydrateGamificationStore: vi.fn() }))
+vi.mock('../utils/searchIndex', () => ({ preloadSearchIndex: vi.fn() }))
 
 describe('App', () => {
   beforeEach(() => {
