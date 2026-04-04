@@ -134,3 +134,7 @@
 - **Fixed:** Replaced `as any` type casts and loosely typed mocks with explicit types and proper assertions in `src/pages/__tests__/Exercises.test.tsx` (for `ExerciseCard`, `motion.div`, and `useQuizStore`).
 - **Fixed:** Replaced `as any` type casts and loosely typed mocks with explicit types and proper assertions in `src/pages/__tests__/PhaseOverview.test.tsx` (for `motion.div` and `useProgressStore`).
 - **Verified:** Build, lint, and tests pass.
+
+## Session 23
+- **Fixed:** Resolved CI formatting pipeline failure (`npm run format:check`) by running `npm run format` locally using Prettier to properly align the strict TypeScript definitions introduced in the test files (`src/pages/__tests__/Exercises.test.tsx` and `src/pages/__tests__/PhaseOverview.test.tsx`).
+- **Verified:** `npm run format:check`, lint, tests, and build pass successfully without errors.

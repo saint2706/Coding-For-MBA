@@ -133,7 +133,9 @@ describe('PhaseOverview', () => {
     })
 
     vi.mocked(useProgressStore).mockImplementation((selector) =>
-      selector({ completedLessons: [1] } as unknown as ReturnType<typeof useProgressStore.getState>),
+      selector({ completedLessons: [1] } as unknown as ReturnType<
+        typeof useProgressStore.getState
+      >),
     )
 
     act(() => {

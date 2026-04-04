@@ -11,7 +11,9 @@ vi.mock('../../components/SEOHead', () => ({
 }))
 
 vi.mock('../../components/ExerciseCard', () => ({
-  default: ({ exercise }: { exercise: { title: string } }) => <div data-testid="exercise-card">{exercise.title}</div>,
+  default: ({ exercise }: { exercise: { title: string } }) => (
+    <div data-testid="exercise-card">{exercise.title}</div>
+  ),
 }))
 
 vi.mock('../../components/EmptyStateIllustrations', () => ({
@@ -34,9 +36,19 @@ vi.mock('../../stores/quizStore', () => ({
 
 vi.mock('motion/react', () => ({
   motion: {
-    div: ({ children, layout, initial, animate, transition, ...props }: React.ComponentProps<'div'> & { layout?: unknown; initial?: unknown; animate?: unknown; transition?: unknown }) => (
-      <div {...props}>{children}</div>
-    ),
+    div: ({
+      children,
+      layout,
+      initial,
+      animate,
+      transition,
+      ...props
+    }: React.ComponentProps<'div'> & {
+      layout?: unknown
+      initial?: unknown
+      animate?: unknown
+      transition?: unknown
+    }) => <div {...props}>{children}</div>,
   },
 }))
 
@@ -71,11 +83,10 @@ describe('Exercises', () => {
       { phase: 1, cells: [] } as unknown as contentLoader.Notebook,
     ])
 
-    vi.mocked(useQuizStore).mockImplementation(
-      (selector) =>
-        selector({
-          getLowScoringTopics: () => [{ quizId: 'q1', topic: 'pandas', accuracy: 50, incorrect: 2 }],
-        } as unknown as ReturnType<typeof useQuizStore.getState>),
+    vi.mocked(useQuizStore).mockImplementation((selector) =>
+      selector({
+        getLowScoringTopics: () => [{ quizId: 'q1', topic: 'pandas', accuracy: 50, incorrect: 2 }],
+      } as unknown as ReturnType<typeof useQuizStore.getState>),
     )
   })
 
