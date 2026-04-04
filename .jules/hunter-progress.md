@@ -123,3 +123,9 @@
 - **Fixed:** Removed `as unknown` type casting in `src/components/__tests__/ExerciseCard.test.tsx` by properly omitting the mocked `goal` string property.
 - **Fixed:** Removed `as unknown` type casting in `src/components/__tests__/MobileNav.test.tsx` by explicitly importing and using the `Location` type for `useLocation` mock returns.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 21
+- **Fixed:** Replaced `as unknown as string` type assertions in `src/utils/__tests__/dayToken.test.ts` and `src/utils/__tests__/linkSafety.test.ts` with `// @ts-expect-error` to properly test invalid inputs.
+- **Fixed:** Replaced `as unknown as React.ReactNode` type assertion in `src/utils/__tests__/slug.test.ts` with `// @ts-expect-error` to properly test invalid objects.
+- **Fixed:** Corrected casing of `fetchpriority` to `fetchPriority` on `<img />` elements in `src/components/MarkdownRenderer.tsx` to fix React DOM warnings in tests.
+- **Verified:** Build, lint, and tests pass.

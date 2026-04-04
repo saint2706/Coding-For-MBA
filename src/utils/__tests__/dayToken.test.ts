@@ -10,8 +10,10 @@ import {
 
 describe('dayToken utilities', () => {
   it('normalizes invalid day tokens deterministically', () => {
-    expect(normalizeDayToken(null as unknown as string)).toBe('')
-    expect(normalizeDayToken(undefined as unknown as string)).toBe('')
+    // @ts-expect-error testing invalid input
+    expect(normalizeDayToken(null)).toBe('')
+    // @ts-expect-error testing invalid input
+    expect(normalizeDayToken(undefined)).toBe('')
     expect(normalizeDayToken('')).toBe('')
     expect(normalizeDayToken('invalid')).toBe('INVALID')
   })
