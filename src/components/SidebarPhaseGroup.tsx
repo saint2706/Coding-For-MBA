@@ -48,6 +48,7 @@ function SidebarPhaseGroup({
         onClick={() => onToggle(phase.phase)}
         aria-expanded={isActive}
         aria-controls={`phase-${phase.phase}-days`}
+        aria-label={`Toggle phase ${phase.phase}`}
       >
         <span className="phase-toggle-icon" aria-hidden="true">
           {icon}

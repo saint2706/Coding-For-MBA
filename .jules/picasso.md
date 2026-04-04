@@ -41,3 +41,4 @@ Added aria-hidden='true' wrapper to decorative emojis across navigation and head
 Learned that missing aria labels for decorative emojis in React can be fixed by wrapping them with <span aria-hidden='true'></span> and fixing text assertions in React Testing Library using getByRole instead of getByText
 - Added `aria-hidden='true'` to the decorative phase icon in `ExerciseCard.tsx`.
 - Added `focus-visible` utility classes to the close button in `KeyboardShortcutsOverlay.tsx` to improve keyboard navigation.
+>> Added aria-labels to SidebarPhaseGroup and ExerciseWidget toggle buttons to improve accessibility for screen readers.
