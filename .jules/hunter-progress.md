@@ -138,3 +138,7 @@
 ## Session 23
 - **Fixed:** Resolved CI formatting pipeline failure (`npm run format:check`) by running `npm run format` locally using Prettier to properly align the strict TypeScript definitions introduced in the test files (`src/pages/__tests__/Exercises.test.tsx` and `src/pages/__tests__/PhaseOverview.test.tsx`).
 - **Verified:** `npm run format:check`, lint, tests, and build pass successfully without errors.
+
+## Session 24
+- **Fixed:** Resolved `TypeError: activeLink.scrollIntoView is not a function` in `src/components/__tests__/SidebarPerf.test.tsx` by globally mocking `window.HTMLElement.prototype.scrollIntoView = vi.fn()` within the `src/test/setup.ts` JSDOM environment config.
+- **Verified:** Build, lint, and tests pass successfully without unhandled exceptions.
