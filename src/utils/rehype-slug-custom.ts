@@ -2,10 +2,11 @@ import { visit } from 'unist-util-visit'
 import { createSlugger } from './slug'
 import type { Element, Root } from 'hast'
 
-function toString(node: any): string {
-  if (typeof node.value === 'string') return node.value
-  if (Array.isArray(node.children)) {
-    return node.children.map(toString).join('')
+function toString(node: unknown): string {
+  const n = node as { value?: string; children?: unknown[] }
+  if (typeof n.value === 'string') return n.value
+  if (Array.isArray(n.children)) {
+    return n.children.map(toString).join('')
   }
   return ''
 }

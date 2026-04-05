@@ -16,7 +16,7 @@ vi.mock('../../stores/learningAnalyticsStore', () => {
 describe('useLearningAnalytics', () => {
   let container: HTMLDivElement | null = null
   let root: ReturnType<typeof createRoot> | null = null
-  let mockStoreState: any
+  let mockStoreState: Partial<ReturnType<typeof useLearningAnalyticsStore.getState>>
 
   beforeEach(() => {
     container = document.createElement('div')
@@ -31,7 +31,7 @@ describe('useLearningAnalytics', () => {
       stopTracking: vi.fn(),
     }
 
-    vi.mocked(useLearningAnalyticsStore.getState).mockReturnValue(mockStoreState)
+    vi.mocked(useLearningAnalyticsStore.getState).mockReturnValue(mockStoreState as ReturnType<typeof useLearningAnalyticsStore.getState>)
   })
 
   afterEach(() => {

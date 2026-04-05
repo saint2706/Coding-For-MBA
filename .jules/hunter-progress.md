@@ -142,3 +142,10 @@
 ## Session 24
 - **Fixed:** Resolved `TypeError: activeLink.scrollIntoView is not a function` in `src/components/__tests__/SidebarPerf.test.tsx` by globally mocking `window.HTMLElement.prototype.scrollIntoView = vi.fn()` within the `src/test/setup.ts` JSDOM environment config.
 - **Verified:** Build, lint, and tests pass successfully without unhandled exceptions.
+
+## Session 25
+- **Fixed:** Removed `any` type in `src/components/__tests__/SidebarPerf.test.tsx` by updating Zustand store mock typing.
+- **Fixed:** Removed `any` type in `src/components/__tests__/Sidebar.test.tsx` by updating Zustand store mock typing.
+- **Fixed:** Removed `any` type in `src/hooks/__tests__/useLearningAnalytics.test.tsx` by updating mock state type to `Partial<ReturnType<typeof useLearningAnalyticsStore.getState>>`.
+- **Fixed:** Removed `any` type in `src/utils/rehype-slug-custom.ts` by correctly casting the recursive node element.
+- **Verified:** Build, lint, and tests pass successfully without unhandled exceptions.
