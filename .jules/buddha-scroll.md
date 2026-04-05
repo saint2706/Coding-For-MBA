@@ -155,3 +155,8 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 **Changes:**
 -   [x] **[GEO] Site Architecture**: Updated `scripts/generate-llms-txt.js` to provide explicit AI-readable descriptions for static pages (e.g. Home, Curriculum, Exercises) detailing "User Intent" in the generated `public/llms.txt`.
 -   [x] **[PERF] LCP Optimization**: Refactored `MarkdownRenderer` to respect lowercase `fetchpriority="high"` attribute natively required by browsers, resolving case-sensitivity issues while keeping others lazy-loaded.
+
+### [Date: Current] - Advanced GEO and Core Web Vitals Harmonization
+
+**Changes:**
+-   [x] **[PERF] LCP Optimization**: Removed lowercase `fetchpriority` from `ImgHTMLAttributes` and intercepted it in `MarkdownRenderer` to avoid React console warnings while successfully translating it to `fetchPriority` for eager loading. This prevents React DOM warnings while still allowing LCP eager loading.
