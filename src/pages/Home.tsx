@@ -53,6 +53,53 @@ export default function Home() {
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
+  // ⚡ Bolt: Extracted phases map into a top-level useMemo to prevent O(N) array filtering
+  // inside the render cycle. This resolves a performance bottleneck while avoiding
+  // React Rules of Hooks violations.
+  const renderedPhases = useMemo(
+    () =>
+      phases.map((phase) => {
+        const lessons = getLessonsByPhase(phase.phase)
+        const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+        const icon = phaseIcons[phase.phase - 1] || '📖'
+        const hours = Math.round((phase.totalDuration || 0) / 60)
+        const completedInPhaseCount = lessons.filter((l) =>
+          completedSet.has(dayTokenToProgressId(l.day)),
+        ).length
+
+        return (
+          <Link to={`/phase/${phase.phase}`} className="phase-card glass-card" key={phase.phase}>
+            <div className="phase-card-header">
+              <div className="phase-card-icon">{icon}</div>
+              <div className="phase-card-title">
+                <div className="phase-num">Phase {phase.phase}</div>
+                <h3>{phase.title}</h3>
+              </div>
+            </div>
+            <div className="phase-card-meta">
+              <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
+                {diff.label}
+              </span>
+              <span className="meta-pill">
+                <span aria-hidden="true">📅</span> {lessons.length} Days
+              </span>
+              {hours > 0 && (
+                <span className="meta-pill">
+                  <span aria-hidden="true">⏱</span> {hours}h
+                </span>
+              )}
+            </div>
+            {completedInPhaseCount > 0 && (
+              <div className="phase-card-progress">
+                <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
+              </div>
+            )}
+          </Link>
+        )
+      }),
+    [phases, completedSet],
+  )
+
   const { lastVisitedPhasePct } = useMemo(() => {
     const lessons = lastVisitedPhase ? getLessonsByPhase(lastVisitedPhase.phase) : []
     const pct = lastVisitedPhase
@@ -330,55 +377,7 @@ export default function Home() {
           </p>
         </div>
 
-        <div className="phases-grid">
-          {phases.map((phase) => {
-            const lessons = getLessonsByPhase(phase.phase)
-            const diff =
-              difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-            const icon = phaseIcons[phase.phase - 1] || '📖'
-            const hours = Math.round((phase.totalDuration || 0) / 60)
-            const completedInPhaseCount = lessons.filter((l) =>
-              completedSet.has(dayTokenToProgressId(l.day)),
-            ).length
-
-            return (
-              <Link
-                to={`/phase/${phase.phase}`}
-                className="phase-card glass-card"
-                key={phase.phase}
-              >
-                <div className="phase-card-header">
-                  <div className="phase-card-icon">{icon}</div>
-                  <div className="phase-card-title">
-                    <div className="phase-num">Phase {phase.phase}</div>
-                    <h3>{phase.title}</h3>
-                  </div>
-                </div>
-                <div className="phase-card-meta">
-                  <span
-                    className="difficulty-badge"
-                    style={{ color: diff.color, background: diff.bg }}
-                  >
-                    {diff.label}
-                  </span>
-                  <span className="meta-pill">
-                    <span aria-hidden="true">📅</span> {lessons.length} Days
-                  </span>
-                  {hours > 0 && (
-                    <span className="meta-pill">
-                      <span aria-hidden="true">⏱</span> {hours}h
-                    </span>
-                  )}
-                </div>
-                {completedInPhaseCount > 0 && (
-                  <div className="phase-card-progress">
-                    <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
-                  </div>
-                )}
-              </Link>
-            )
-          })}
-        </div>
+        <div className="phases-grid">{renderedPhases}</div>
       </section>
     </div>
   )
