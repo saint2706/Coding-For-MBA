@@ -1,3 +1,5 @@
+import { vi } from 'vitest'
+
 // Mock localStorage for JSDOM
 const store: Record<string, string> = {}
 
@@ -21,6 +23,9 @@ Object.defineProperty(window, 'scrollTo', {
   value: () => {},
   writable: true,
 })
+
+// Mock Element.prototype.scrollIntoView
+window.HTMLElement.prototype.scrollIntoView = vi.fn()
 
 Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
