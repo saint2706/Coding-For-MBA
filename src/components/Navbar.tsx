@@ -121,6 +121,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             aria-label="Search lessons"
+            aria-keyshortcuts="/"
           />
           {query ? (
             <button
