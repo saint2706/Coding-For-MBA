@@ -31,7 +31,9 @@ describe('useLearningAnalytics', () => {
       stopTracking: vi.fn(),
     }
 
-    vi.mocked(useLearningAnalyticsStore.getState).mockReturnValue(mockStoreState as ReturnType<typeof useLearningAnalyticsStore.getState>)
+    vi.mocked(useLearningAnalyticsStore.getState).mockReturnValue(
+      mockStoreState as ReturnType<typeof useLearningAnalyticsStore.getState>,
+    )
   })
 
   afterEach(() => {
