@@ -9,7 +9,7 @@ vi.mock('../../stores/userPreferencesStore', async () => {
   const actual = await vi.importActual('../../stores/userPreferencesStore')
   return {
     ...actual,
-    useUserPreferencesStore: vi.fn()
+    useUserPreferencesStore: vi.fn(),
   }
 })
 
@@ -22,7 +22,7 @@ describe('ThemeProvider', () => {
       setPalette: mockSetPalette,
       fontSize: 'md',
       density: 'comfortable',
-      ...overrides
+      ...overrides,
     }
 
     vi.mocked(userPreferencesStore.useUserPreferencesStore).mockImplementation((selector: any) => {
@@ -52,7 +52,7 @@ describe('ThemeProvider', () => {
     render(
       <ThemeProvider>
         <div data-testid="child-element">Child Content</div>
-      </ThemeProvider>
+      </ThemeProvider>,
     )
 
     expect(screen.getByTestId('child-element')).toBeDefined()
@@ -78,7 +78,7 @@ describe('ThemeProvider', () => {
     render(
       <ThemeProvider>
         <ContextConsumer />
-      </ThemeProvider>
+      </ThemeProvider>,
     )
 
     expect(contextValue.palette).toBe('neon-party')
@@ -91,7 +91,11 @@ describe('ThemeProvider', () => {
     it('applies dark palette type for dark palettes', () => {
       setupMockStore({ palette: 'neon-party' }) // neon-party is a dark palette
 
-      render(<ThemeProvider><div /></ThemeProvider>)
+      render(
+        <ThemeProvider>
+          <div />
+        </ThemeProvider>,
+      )
 
       expect(document.documentElement.getAttribute('data-palette')).toBe('neon-party')
       expect(document.documentElement.getAttribute('data-palette-type')).toBe('dark')
@@ -100,7 +104,11 @@ describe('ThemeProvider', () => {
     it('applies light palette type for light palettes', () => {
       setupMockStore({ palette: 'minimalist-monochrome' }) // minimalist-monochrome is light
 
-      render(<ThemeProvider><div /></ThemeProvider>)
+      render(
+        <ThemeProvider>
+          <div />
+        </ThemeProvider>,
+      )
 
       expect(document.documentElement.getAttribute('data-palette')).toBe('minimalist-monochrome')
       expect(document.documentElement.getAttribute('data-palette-type')).toBe('light')
@@ -111,7 +119,11 @@ describe('ThemeProvider', () => {
     it('applies default (md/comfortable) values correctly', () => {
       setupMockStore({ fontSize: 'md', density: 'comfortable' })
 
-      render(<ThemeProvider><div /></ThemeProvider>)
+      render(
+        <ThemeProvider>
+          <div />
+        </ThemeProvider>,
+      )
 
       expect(document.documentElement.style.getPropertyValue('--app-font-size')).toBe('1rem')
       expect(document.documentElement.style.getPropertyValue('--density-scale')).toBe('1')
@@ -122,7 +134,11 @@ describe('ThemeProvider', () => {
     it('applies small font size correctly', () => {
       setupMockStore({ fontSize: 'sm' })
 
-      render(<ThemeProvider><div /></ThemeProvider>)
+      render(
+        <ThemeProvider>
+          <div />
+        </ThemeProvider>,
+      )
 
       expect(document.documentElement.style.getPropertyValue('--app-font-size')).toBe('0.9375rem')
       expect(document.documentElement.dataset.fontSize).toBe('sm')
@@ -131,7 +147,11 @@ describe('ThemeProvider', () => {
     it('applies large font size correctly', () => {
       setupMockStore({ fontSize: 'lg' })
 
-      render(<ThemeProvider><div /></ThemeProvider>)
+      render(
+        <ThemeProvider>
+          <div />
+        </ThemeProvider>,
+      )
 
       expect(document.documentElement.style.getPropertyValue('--app-font-size')).toBe('1.0625rem')
       expect(document.documentElement.dataset.fontSize).toBe('lg')
@@ -140,7 +160,11 @@ describe('ThemeProvider', () => {
     it('applies compact density correctly', () => {
       setupMockStore({ density: 'compact' })
 
-      render(<ThemeProvider><div /></ThemeProvider>)
+      render(
+        <ThemeProvider>
+          <div />
+        </ThemeProvider>,
+      )
 
       expect(document.documentElement.style.getPropertyValue('--density-scale')).toBe('0.88')
       expect(document.documentElement.dataset.density).toBe('compact')
