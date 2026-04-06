@@ -160,3 +160,12 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 -   [x] **[PERF] LCP Optimization**: Removed lowercase `fetchpriority` from `ImgHTMLAttributes` and intercepted it in `MarkdownRenderer` to avoid React console warnings while successfully translating it to `fetchPriority` for eager loading. This prevents React DOM warnings while still allowing LCP eager loading.
+
+### [Date: Current] - Deep JSON-LD Structured Data XSS Prevention
+
+**Priority Areas:**
+1.  **GEO (Intelligence)**: Securely injecting JSON-LD schema into the `<head>` and `MasteryCheck` component.
+2.  **Security**: Preventing XSS vulnerabilities from literal `<` evaluation in script tags.
+
+**Changes:**
+-   [x] **[GEO][SEO] Structured Data XSS Fix**: Fixed the `.replace(/</g, '\\u003c')` call inside `src/components/SEOHead.tsx` and `src/components/MasteryCheck.tsx` to `.replace(/</g, '\\\\u003c')`. This ensures that `\u003c` is properly output in the serialized JS string, satisfying React's `dangerouslySetInnerHTML` escaping requirements without breaking JSON parsers.
