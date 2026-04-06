@@ -111,3 +111,9 @@
 - Scanned for hardcoded secrets (API keys, passwords, tokens); no instances found.
 - Code execution environments handle sandboxing robustly (Pyodide validation prevents sandbox escape via dunder methods and eval variants).
 - Local storage operations utilize safe parsers and Zod schemas to prevent prototype pollution or invalid state injection.
+
+## Security Fix: Replaced Insecure ID Generation
+
+- **Severity:** Low
+- **Vulnerability:** Weak PRNG used for ID generation (`Math.random`).
+- **Fix:** Replaced the use of `Math.random().toString(36)` in `src/stores/quizStore.ts` with the standard, cryptographically secure `crypto.randomUUID()` to generate unguessable attempt IDs.

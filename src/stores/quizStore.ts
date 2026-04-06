@@ -85,7 +85,7 @@ function asIsoString(value?: Date): string {
 }
 
 function createAttemptId(quizId: string, attemptedAt: string): string {
-  return `${quizId}:${attemptedAt}:${Math.random().toString(36).slice(2, 8)}`
+  return `${quizId}:${attemptedAt}:${crypto.randomUUID().slice(0, 8)}`
 }
 
 function computeStats(attempts: QuizAttempt[], quizId: string): QuizStats | null {
