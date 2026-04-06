@@ -20,7 +20,7 @@ function findMissingJSDoc(dir) {
   return files;
 }
 
-const allFiles = [...findMissingJSDoc('src/utils'), ...findMissingJSDoc('src/components')];
+const allFiles = findMissingJSDoc('src');
 
 const missing = [];
 

@@ -78,3 +78,8 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 - `src/utils/linkSafety.ts`: Added JSDoc for `LinkProps`.
 - `src/utils/searchIndex.ts`: Added JSDoc for `SearchResult` and `SearchIndexStatus`.
 - **Completed:** Added missing JSDoc comments to Breadcrumb.tsx, ExerciseCard.tsx, MarkdownRenderer.tsx, SidebarPhaseGroup.tsx, userPreferencesStore.ts, contentLoader.ts, curriculumConfig.ts, exercise-extractor-core.d.ts, exerciseExtractor.ts, frontmatter-core.d.ts, searchIndex.ts, and shortcuts.ts to ensure documentation accuracy and completeness.
+- Audited README and verified What's Inside section is up to date (up to Phase 12).
+- Checked for broken internal links. No broken links found outside node_modules.
+- Verified no missing JSDoc comments for exported functions and components in `src/` folder.
+- Checked docs/todo.md against README.md, everything looks accurate.
+- Ensured build passes (no errors or warnings).
