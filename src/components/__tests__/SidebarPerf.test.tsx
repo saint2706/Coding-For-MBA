@@ -13,9 +13,13 @@ vi.mock('../../utils/contentLoader', () => ({
 }))
 
 // Mock store
-const useProgressStoreMock = vi.fn((selector) => selector({ completedLessons: [] }))
+const useProgressStoreMock = vi.fn((selector) =>
+  selector({ completedLessons: [] } as unknown as ReturnType<
+    typeof import('../../stores/progressStore').useProgressStore.getState
+  >),
+)
 vi.mock('../../stores/progressStore', () => ({
-  useProgressStore: (selector: any) => useProgressStoreMock(selector),
+  useProgressStore: (selector: (state: unknown) => unknown) => useProgressStoreMock(selector),
 }))
 
 vi.mock('../../utils/reviewTracker', () => ({
