@@ -25,9 +25,17 @@ describe('ThemeProvider', () => {
       ...overrides,
     }
 
-    vi.mocked(userPreferencesStore.useUserPreferencesStore).mockImplementation((selector: any) => {
-      return selector(defaultState)
-    })
+    vi.mocked(userPreferencesStore.useUserPreferencesStore).mockImplementation(((
+      selector?: (state: any) => any,
+    ) => {
+      if (selector)
+        return selector(
+          defaultState as unknown as ReturnType<
+            typeof userPreferencesStore.useUserPreferencesStore.getState
+          >,
+        )
+      return defaultState
+    }) as typeof userPreferencesStore.useUserPreferencesStore)
   }
 
   beforeEach(() => {
@@ -62,7 +70,7 @@ describe('ThemeProvider', () => {
   it('provides the correct context values', () => {
     setupMockStore({ palette: 'neon-party' })
 
-    let contextValue: any
+    let contextValue: React.ContextType<typeof ThemeContext> | undefined
 
     const ContextConsumer = () => {
       return (
@@ -81,9 +89,9 @@ describe('ThemeProvider', () => {
       </ThemeProvider>,
     )
 
-    expect(contextValue.palette).toBe('neon-party')
+    expect(contextValue?.palette).toBe('neon-party')
 
-    contextValue.setPalette('deep-ocean-blue')
+    contextValue?.setPalette('deep-ocean-blue')
     expect(mockSetPalette).toHaveBeenCalledWith('deep-ocean-blue')
   })
 

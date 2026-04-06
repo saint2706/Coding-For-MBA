@@ -149,3 +149,10 @@
 - **Fixed:** Removed `any` type in `src/hooks/__tests__/useLearningAnalytics.test.tsx` by updating mock state type to `Partial<ReturnType<typeof useLearningAnalyticsStore.getState>>`.
 - **Fixed:** Removed `any` type in `src/utils/rehype-slug-custom.ts` by correctly casting the recursive node element.
 - **Verified:** Build, lint, and tests pass successfully without unhandled exceptions.
+
+## Session 26
+- **Fixed:** Removed `any` type in `src/__tests__/App.test.tsx` by using proper function typing for the `unmountApp` mock.
+- **Fixed:** Removed `any` type in `src/pages/__tests__/ConceptGraphPage.test.tsx` by explicitly typing the mock component props for `search` and `highlightPhase`.
+- **Fixed:** Removed `any` type in `src/pages/__tests__/ProgressDashboard.test.tsx` by fully typing mock component props and adding appropriate cast structures for Zustand store mocks.
+- **Fixed:** Removed `any` type in `src/context/__tests__/ThemeProvider.test.tsx` by properly casting the mocked context consumer variable as `React.ContextType<typeof ThemeContext> | undefined` and correctly typing the Zustand store mock.
+- **Verified:** Build, lint, formatting, and tests pass successfully without unhandled exceptions.
