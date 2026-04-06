@@ -56,10 +56,18 @@ export default class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBo
           <h1>Something went wrong</h1>
           <p>We hit an unexpected issue while loading this page.</p>
           <div>
-            <button type="button" onClick={this.handleRetry}>
+            <button
+              type="button"
+              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              onClick={this.handleRetry}
+            >
               Try again
             </button>
-            <button type="button" onClick={this.handleReload}>
+            <button
+              type="button"
+              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              onClick={this.handleReload}
+            >
               Reload page
             </button>
           </div>
