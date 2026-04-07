@@ -66,7 +66,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
           {isPython && (
             <button
               type="button"
-              className="code-block-try-btn"
+              className="code-block-try-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               onClick={() => setShowPlayground((p) => !p)}
               aria-label={showPlayground ? 'Close playground' : 'Try this code'}
             >
