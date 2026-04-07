@@ -20,3 +20,4 @@
    - **Problem**: `findInteractiveBlocks(lesson.content)` was being called twice on the `Lesson` page. Once to extract mastery questions for JSON-LD SEO schemas, and again inside `MarkdownRenderer` to render the interactive widgets.
    - **Solution**: Updated `MarkdownRenderer` to accept a `precomputedBlocks?: InteractiveBlock[]` prop. In `src/pages/Lesson.tsx`, passed the already computed `interactiveBlocks` to the `<MarkdownRenderer />` component.
    - **Metrics**: Reduces main thread blocking time during initial lesson render by eliminating a redundant markdown AST parsing operation via `remark-parse`.
+>> 2026-04-07 19:34:59 UTC - ⚡ Bolt | Optimized PhaseOverview lessons rendering | Wrapped lessons.map(...) in useMemo to prevent recreating complex DOM nodes on every re-render, reducing main thread blocking time.
