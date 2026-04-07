@@ -26,7 +26,10 @@ export function parseDayToken(
  * @param b - The second day token.
  * @returns A negative number if a < b, positive if a > b, or 0 if equal.
  */
-export function compareDayTokens(a: string | number | undefined | null, b: string | number | undefined | null): number
+export function compareDayTokens(
+  a: string | number | undefined | null,
+  b: string | number | undefined | null,
+): number
 
 /**
  * Extracts a normalized day token from a given file path.
