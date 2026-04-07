@@ -117,3 +117,5 @@
 - **Severity:** Low
 - **Vulnerability:** Weak PRNG used for ID generation (`Math.random`).
 - **Fix:** Replaced the use of `Math.random().toString(36)` in `src/stores/quizStore.ts` with the standard, cryptographically secure `crypto.randomUUID()` to generate unguessable attempt IDs.
+>> * Fixed Vite vulnerabilities (Path Traversal, Arbitrary File Read) by running `npm audit fix`.
+>> * Fixed JSON-LD structured data over-escaping in `src/components/MasteryCheck.tsx` and `src/components/SEOHead.tsx` by replacing `.replace(/</g, '\\\\u003c')` with exactly `.replace(/</g, '\u003c')` to prevent literal backslashes from breaking search engine JSON parsing.

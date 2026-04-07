@@ -129,7 +129,7 @@ export default function SEOHead({
           key={`jsonld-${i}`}
           type="application/ld+json"
           /* nosec */ dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schema).replace(/</g, '\\\\u003c'),
+            __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
           }}
         />
       ))}
