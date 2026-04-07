@@ -79,6 +79,7 @@ export default function PhaseOverview() {
     return count
   }, [lessons, completedSet])
 
+  // Memoize lesson blocks to prevent heavy recreation of Framer Motion elements on unrelated re-renders
   const renderedLessons = useMemo(
     () =>
       lessons.map((lesson, index) => {
@@ -115,7 +116,7 @@ export default function PhaseOverview() {
           </motion.div>
         )
       }),
-    [lessons, completedSet, prefersReducedMotion]
+    [lessons, completedSet, prefersReducedMotion],
   )
 
   const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
@@ -180,9 +181,7 @@ export default function PhaseOverview() {
       <div className="section-header">
         <h2>Lessons in This Phase</h2>
       </div>
-      <div className="phase-lessons-grid">
-        {renderedLessons}
-      </div>
+      <div className="phase-lessons-grid">{renderedLessons}</div>
 
       {/* Solution Notebook Link */}
       {notebook && notebook.cells.length > 0 && (
