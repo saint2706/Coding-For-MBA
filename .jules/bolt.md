@@ -16,3 +16,7 @@
 - Resolved a critical React rendering race condition in `MarkdownRenderer.tsx` by replacing the globally shared, stateful `glossaryRegex` (which mutated `lastIndex`) with a stateless, deterministic `Array.from(text.matchAll(new RegExp(...)))` implementation. This prevents unpredictable UI bugs and missing glossary tooltips during Concurrent Mode renders while maintaining excellent V8 execution performance.
 >> 2026-04-04 19:28:06 UTC - ⚡ Bolt | Optimized SearchResults.tsx List Rendering | Wrapped results.map(...) in useMemo to prevent recreating complex DOM nodes on every re-render (e.g. keystrokes).
 >> 2026-04-04 19:28:06 UTC - ⚡ Bolt | Optimized Home.tsx Phase Cards Rendering | Extracted phases.map(...) into a top-level useMemo hook to prevent O(N) array filtering operations from running unnecessarily on every component render.
+>> 2024-04-XX - ⚡ Bolt: Avoid duplicate markdown parsing for interactive blocks
+   - **Problem**: `findInteractiveBlocks(lesson.content)` was being called twice on the `Lesson` page. Once to extract mastery questions for JSON-LD SEO schemas, and again inside `MarkdownRenderer` to render the interactive widgets.
+   - **Solution**: Updated `MarkdownRenderer` to accept a `precomputedBlocks?: InteractiveBlock[]` prop. In `src/pages/Lesson.tsx`, passed the already computed `interactiveBlocks` to the `<MarkdownRenderer />` component.
+   - **Metrics**: Reduces main thread blocking time during initial lesson render by eliminating a redundant markdown AST parsing operation via `remark-parse`.

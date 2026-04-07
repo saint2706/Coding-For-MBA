@@ -341,7 +341,7 @@ export default function Lesson() {
 
         {/* Markdown content wrapped in semantic article tag */}
         <article>
-          <MarkdownRenderer content={lesson.content} />
+          <MarkdownRenderer content={lesson.content} precomputedBlocks={interactiveBlocks} />
         </article>
 
         {/* Prev/Next navigation */}

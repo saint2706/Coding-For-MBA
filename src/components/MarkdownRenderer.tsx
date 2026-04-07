@@ -290,7 +290,7 @@ interface ParsedMasteryQuestion {
   answer: string
 }
 
-interface InteractiveBlock {
+export interface InteractiveBlock {
   type: 'exercise' | 'mastery'
   startIndex: number
   endIndex: number
@@ -611,8 +611,17 @@ const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlu
 
 const remarkPlugins = [remarkGfm]
 
-function InteractiveContent({ content }: { content: string }) {
-  const blocks = useMemo(() => findInteractiveBlocks(content), [content])
+function InteractiveContent({
+  content,
+  precomputedBlocks,
+}: {
+  content: string
+  precomputedBlocks?: InteractiveBlock[]
+}) {
+  const blocks = useMemo(
+    () => precomputedBlocks || findInteractiveBlocks(content),
+    [content, precomputedBlocks],
+  )
 
   if (blocks.length === 0) {
     return (
@@ -699,6 +708,7 @@ function InteractiveContent({ content }: { content: string }) {
 
 interface MarkdownRendererProps {
   content: string
+  precomputedBlocks?: InteractiveBlock[]
 }
 
 /**
@@ -709,7 +719,7 @@ interface MarkdownRendererProps {
  * @param {string} props.content - The raw markdown content string to be rendered.
  * @returns {React.ReactElement} The rendered markdown content wrapped in a responsive container.
  */
-function MarkdownRenderer({ content }: MarkdownRendererProps) {
+function MarkdownRenderer({ content, precomputedBlocks }: MarkdownRendererProps) {
   if (!content) {
     return (
       <div className="markdown-body">
@@ -720,7 +730,7 @@ function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
   return (
     <div className="markdown-body">
-      <InteractiveContent content={content} />
+      <InteractiveContent content={content} precomputedBlocks={precomputedBlocks} />
     </div>
   )
 }
