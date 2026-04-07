@@ -184,7 +184,7 @@ describe('App', () => {
   it('resets sidebar state on location change based on user preference', async () => {
     mockSidebarDefaultOpen = false
 
-    let unmountApp: any
+    let unmountApp: () => void = () => {}
 
     await act(async () => {
       const { unmount } = render(

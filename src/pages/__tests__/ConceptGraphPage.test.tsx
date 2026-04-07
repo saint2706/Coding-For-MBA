@@ -9,7 +9,7 @@ vi.mock('../../components/SEOHead', () => ({
 }))
 
 vi.mock('../../components/ConceptGraph', () => ({
-  default: ({ search, highlightPhase }: any) => (
+  default: ({ search, highlightPhase }: { search: string; highlightPhase: string | null }) => (
     <div data-testid="concept-graph">
       Search: {search}, Phase: {highlightPhase}
     </div>

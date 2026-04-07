@@ -18,7 +18,7 @@ vi.mock('../../components/Breadcrumb', () => ({
 }))
 
 vi.mock('../../components/ProgressBar', () => ({
-  default: ({ completed, total }: any) => (
+  default: ({ completed, total }: { completed: number; total: number }) => (
     <div data-testid="progress-bar">
       {completed}/{total}
     </div>
@@ -26,7 +26,7 @@ vi.mock('../../components/ProgressBar', () => ({
 }))
 
 vi.mock('../../components/AnimatedCounter', () => ({
-  default: ({ value, suffix = '' }: any) => (
+  default: ({ value, suffix = '' }: { value: number; suffix?: string }) => (
     <span data-testid="animated-counter">
       {value}
       {suffix}
@@ -90,30 +90,30 @@ describe('ProgressDashboard', () => {
     } as unknown as contentLoader.Lesson)
 
     // Progress store mock
-    vi.mocked(useProgressStore).mockImplementation((selector: any) => {
+    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: any) => any) => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],
           streakDays: () => 3,
-        })
+        } as unknown as ReturnType<typeof useProgressStore.getState>)
       }
       return {
         getState: () => ({ clearAllProgress: vi.fn() }),
       }
-    })
+    }) as typeof useProgressStore)
     Object.assign(useProgressStore, {
       getState: () => ({ clearAllProgress: vi.fn() }),
     })
 
     // Analytics store mock
-    vi.mocked(useLearningAnalyticsStore).mockImplementation((selector: any) => {
+    vi.mocked(useLearningAnalyticsStore).mockImplementation(((selector?: (state: any) => any) => {
       if (typeof selector === 'function') {
         return selector({
           timeByDate: {},
-        })
+        } as unknown as ReturnType<typeof useLearningAnalyticsStore.getState>)
       }
       return {}
-    })
+    }) as typeof useLearningAnalyticsStore)
     Object.assign(useLearningAnalyticsStore, {
       getState: () => ({
         totalLearningMs: () => 1000,
@@ -125,15 +125,17 @@ describe('ProgressDashboard', () => {
     })
 
     // Gamification store mock
-    vi.mocked(useGamificationStore).mockImplementation((selector: any) => {
-      return selector({
-        xpTotal: 100,
-        achievementsUnlocked: ['badge1'],
-        dailyChallenge: { day: '1' },
-        refreshDailyChallenge: vi.fn(),
-        xpToNextMilestone: () => ({ percent: 50, next: 200 }),
-      })
-    })
+    vi.mocked(useGamificationStore).mockImplementation(((selector?: (state: any) => any) => {
+      if (typeof selector === 'function') {
+        return selector({
+          xpTotal: 100,
+          achievementsUnlocked: ['badge1'],
+          dailyChallenge: { day: '1' },
+          refreshDailyChallenge: vi.fn(),
+          xpToNextMilestone: () => ({ percent: 50, next: 200 }),
+        } as unknown as ReturnType<typeof useGamificationStore.getState>)
+      }
+    }) as typeof useGamificationStore)
 
     // Preferences store mock
     vi.mocked(useUserPreferencesStore).mockReturnValue({
@@ -198,17 +200,17 @@ describe('ProgressDashboard', () => {
   })
 
   it('renders empty state when no lessons completed', () => {
-    vi.mocked(useProgressStore).mockImplementation((selector: any) => {
+    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: any) => any) => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: [],
           streakDays: () => 0,
-        })
+        } as unknown as ReturnType<typeof useProgressStore.getState>)
       }
       return {
         getState: () => ({ clearAllProgress: vi.fn() }),
       }
-    })
+    }) as typeof useProgressStore)
 
     render(
       <MemoryRouter>
@@ -221,17 +223,17 @@ describe('ProgressDashboard', () => {
 
   it('prompts confirmation when clearing progress', () => {
     const clearAllProgressMock = vi.fn()
-    vi.mocked(useProgressStore).mockImplementation((selector: any) => {
+    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: any) => any) => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],
           streakDays: () => 3,
-        })
+        } as unknown as ReturnType<typeof useProgressStore.getState>)
       }
       return {
         getState: () => ({ clearAllProgress: clearAllProgressMock }),
       }
-    })
+    }) as typeof useProgressStore)
     Object.assign(useProgressStore, {
       getState: () => ({ clearAllProgress: clearAllProgressMock }),
     })
