@@ -75,7 +75,7 @@ describe('PythonRunner', () => {
     mockRunPython.mockResolvedValue({ output: 'hello\n', error: null })
     const onComplete = vi.fn()
     const { getByRole, findByText } = render(
-      <PythonRunner code="print('hello')" onExecutionComplete={onComplete} />
+      <PythonRunner code="print('hello')" onExecutionComplete={onComplete} />,
     )
     const runBtn = getByRole('button', { name: /Run Python code/i })
 
@@ -90,7 +90,7 @@ describe('PythonRunner', () => {
     mockRunPython.mockResolvedValue({ output: null, error: 'SyntaxError: invalid syntax' })
     const onComplete = vi.fn()
     const { getByRole, findByText } = render(
-      <PythonRunner code="print('hello" onExecutionComplete={onComplete} />
+      <PythonRunner code="print('hello" onExecutionComplete={onComplete} />,
     )
     const runBtn = getByRole('button', { name: /Run Python code/i })
 
@@ -117,7 +117,7 @@ describe('PythonRunner', () => {
 
     // Run button should be enabled again after cancel
     await waitFor(() => {
-        expect(getByRole('button', { name: /Run Python code/i }).hasAttribute('disabled')).toBe(false)
+      expect(getByRole('button', { name: /Run Python code/i }).hasAttribute('disabled')).toBe(false)
     })
   })
 
@@ -127,7 +127,7 @@ describe('PythonRunner', () => {
     const { findByText } = render(<PythonRunner ref={ref} code="print('ref')" />)
 
     act(() => {
-        ref.current?.run()
+      ref.current?.run()
     })
 
     const output = await findByText('ref output')
@@ -140,19 +140,19 @@ describe('PythonRunner', () => {
     const { getByRole } = render(<PythonRunner ref={ref} code="while True: pass" />)
 
     act(() => {
-        ref.current?.run()
+      ref.current?.run()
     })
 
     await waitFor(() => {
-        expect(getByRole('button', { name: /Executing Python code.../i })).toBeDefined()
+      expect(getByRole('button', { name: /Executing Python code.../i })).toBeDefined()
     })
 
     act(() => {
-        ref.current?.cancel()
+      ref.current?.cancel()
     })
 
     await waitFor(() => {
-        expect(getByRole('button', { name: /Run Python code/i }).hasAttribute('disabled')).toBe(false)
+      expect(getByRole('button', { name: /Run Python code/i }).hasAttribute('disabled')).toBe(false)
     })
   })
 
@@ -168,7 +168,7 @@ describe('PythonRunner', () => {
   })
 
   it('renders compact class when compact prop is true', () => {
-      const { container } = render(<PythonRunner code="x = 1" compact={true} />)
-      expect((container.firstChild as HTMLElement).className).toContain('python-runner--compact')
+    const { container } = render(<PythonRunner code="x = 1" compact={true} />)
+    expect((container.firstChild as HTMLElement).className).toContain('python-runner--compact')
   })
 })

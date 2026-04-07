@@ -10,7 +10,12 @@ vi.mock('../../utils/searchIndex', async () => {
   return {
     ...(actual as typeof searchIndex),
     getSearchSnippet: vi.fn((content) => 'Snippet of ' + content),
-    getSearchIndexStatus: vi.fn(() => ({ isReady: true, isIndexing: false, processedCount: 10, totalCount: 10 })),
+    getSearchIndexStatus: vi.fn(() => ({
+      isReady: true,
+      isIndexing: false,
+      processedCount: 10,
+      totalCount: 10,
+    })),
     search: vi.fn(),
     subscribeSearchIndexStatus: vi.fn(() => () => {}),
   }
@@ -56,7 +61,7 @@ describe('SearchPalette', () => {
     const { container } = render(
       <MemoryRouter>
         <SearchPalette isOpen={false} onClose={vi.fn()} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
     expect(container.innerHTML).toBe('')
   })
@@ -65,7 +70,7 @@ describe('SearchPalette', () => {
     const { getByRole } = render(
       <MemoryRouter>
         <SearchPalette isOpen={true} onClose={vi.fn()} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
     expect(getByRole('textbox', { name: /Search/i })).toBeDefined()
   })
@@ -87,7 +92,7 @@ describe('SearchPalette', () => {
     const { getByRole, getByText } = render(
       <MemoryRouter>
         <SearchPalette isOpen={true} onClose={vi.fn()} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const input = getByRole('textbox', { name: /Search/i })
@@ -114,7 +119,7 @@ describe('SearchPalette', () => {
     const { getByRole, getAllByRole } = render(
       <MemoryRouter>
         <SearchPalette isOpen={true} onClose={onClose} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const input = getByRole('textbox', { name: /Search/i })
@@ -160,13 +165,18 @@ describe('SearchPalette', () => {
   })
 
   it('displays indexing message when not ready', () => {
-    vi.mocked(searchIndex.getSearchIndexStatus).mockReturnValue({ isReady: false, isIndexing: true, processedCount: 5, totalCount: 10 })
+    vi.mocked(searchIndex.getSearchIndexStatus).mockReturnValue({
+      isReady: false,
+      isIndexing: true,
+      processedCount: 5,
+      totalCount: 10,
+    })
     vi.mocked(searchIndex.search).mockReturnValue([])
 
     const { getByRole, getByText } = render(
       <MemoryRouter>
         <SearchPalette isOpen={true} onClose={vi.fn()} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const input = getByRole('textbox', { name: /Search/i })
@@ -179,13 +189,18 @@ describe('SearchPalette', () => {
   })
 
   it('displays empty results message', () => {
-    vi.mocked(searchIndex.getSearchIndexStatus).mockReturnValue({ isReady: true, isIndexing: false, processedCount: 10, totalCount: 10 })
+    vi.mocked(searchIndex.getSearchIndexStatus).mockReturnValue({
+      isReady: true,
+      isIndexing: false,
+      processedCount: 10,
+      totalCount: 10,
+    })
     vi.mocked(searchIndex.search).mockReturnValue([])
 
     const { getByRole, getByText } = render(
       <MemoryRouter>
         <SearchPalette isOpen={true} onClose={vi.fn()} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const input = getByRole('textbox', { name: /Search/i })
@@ -212,7 +227,7 @@ describe('SearchPalette', () => {
     const { getByRole, getByText } = render(
       <MemoryRouter>
         <SearchPalette isOpen={true} onClose={onClose} />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     const input = getByRole('textbox', { name: /Search/i })

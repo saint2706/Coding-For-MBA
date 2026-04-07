@@ -82,7 +82,7 @@ describe('CustomCursor', () => {
       <>
         <button id="interactive-btn">Click me</button>
         <CustomCursor />
-      </>
+      </>,
     )
 
     const btn = document.getElementById('interactive-btn')
