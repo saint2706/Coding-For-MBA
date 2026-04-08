@@ -156,3 +156,8 @@
 - **Fixed:** Removed `any` type in `src/pages/__tests__/ProgressDashboard.test.tsx` by fully typing mock component props and adding appropriate cast structures for Zustand store mocks.
 - **Fixed:** Removed `any` type in `src/context/__tests__/ThemeProvider.test.tsx` by properly casting the mocked context consumer variable as `React.ContextType<typeof ThemeContext> | undefined` and correctly typing the Zustand store mock.
 - **Verified:** Build, lint, formatting, and tests pass successfully without unhandled exceptions.
+
+## Session 27
+- **Fixed:** Removed duplicate import of `ReviewCard` in `src/pages/__tests__/Review.test.tsx`.
+- **Fixed:** Replaced `any` types with stricter types (`unknown`) in `src/utils/dayToken-core.js`, `src/utils/dayToken-core.d.ts`, and `src/utils/frontmatter-core.js`.
+- **Verified:** Build, lint, and tests pass successfully without unhandled exceptions.

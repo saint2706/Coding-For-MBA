@@ -7,7 +7,7 @@ const progressIdCache = new Map()
  * Normalizes a raw day token input into a standard format.
  * Strips whitespace, forces uppercase suffix, and defaults numeric part to '0'.
  *
- * @param {any} value - The raw day token input (string or number).
+ * @param {string | number | undefined | null} value - The raw day token input (string or number).
  * @returns {string} The normalized day token (e.g., "1", "36B").
  */
 export function normalizeDayToken(value) {
@@ -26,7 +26,7 @@ export function normalizeDayToken(value) {
  * Parses a day token into its constituent numeric and suffix parts.
  * Uses a module-level Map cache to avoid redundant regex operations.
  *
- * @param {any} value - The raw day token input.
+ * @param {string | number | undefined | null} value - The raw day token input.
  * @returns {{ token: string, number: number, suffix: string, sortKey: string } | null} The parsed token object, or null if invalid.
  */
 export function parseDayToken(value) {
@@ -58,8 +58,8 @@ export function parseDayToken(value) {
  * Compares two day tokens for sorting purposes.
  * Sorts primarily by day number, then by suffix alphabetically.
  *
- * @param {any} a - The first day token.
- * @param {any} b - The second day token.
+ * @param {string | number | undefined | null} a - The first day token.
+ * @param {string | number | undefined | null} b - The second day token.
  * @returns {number} A negative number if a < b, positive if a > b, or 0 if equal.
  */
 export function compareDayTokens(a, b) {
@@ -94,7 +94,7 @@ export function dayTokenFromPath(path) {
  * Safely extracts and normalizes a day token from a string or number value.
  * Useful for extracting tokens from markdown frontmatter.
  *
- * @param {any} value - The value to extract from.
+ * @param {unknown} value - The value to extract from.
  * @returns {string | null} The normalized day token, or null if invalid.
  */
 export function extractDayToken(value) {
@@ -107,7 +107,7 @@ export function extractDayToken(value) {
  * Extracts a normalized day token from a cross-reference string.
  * Handles explicit tokens (e.g., "36B") or prefixed references (e.g., "Day 36B").
  *
- * @param {any} value - The reference string or number.
+ * @param {unknown} value - The reference string or number.
  * @returns {string | null} The normalized day token, or null if not found.
  */
 export function dayTokenFromReference(value) {
@@ -125,7 +125,7 @@ export function dayTokenFromReference(value) {
  * Converts a day token into a unique numeric progress ID.
  * Numeric parts are multiplied by 10000; alphabetic suffixes are converted to a numeric offset.
  *
- * @param {any} value - The day token input.
+ * @param {string | number | undefined | null} value - The day token input.
  * @returns {number} The numeric progress ID, or NaN if invalid.
  */
 export function dayTokenToProgressId(value) {

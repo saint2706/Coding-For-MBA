@@ -37,7 +37,7 @@ export function normalizeMarkdownLineEndings(raw) {
  * Blocks unsafe keys like `__proto__`.
  *
  * @param {string} normalized - The markdown content with normalized line endings.
- * @returns {{ frontmatter: Record<string, any>, content: string }} An object containing the parsed frontmatter fields and the remaining markdown content.
+ * @returns {{ frontmatter: Record<string, unknown>, content: string }} An object containing the parsed frontmatter fields and the remaining markdown content.
  */
 export function parseNormalizedMarkdown(normalized) {
   if (!normalized.startsWith(FRONTMATTER_START_DELIMITER)) {
@@ -113,7 +113,7 @@ export function parseNormalizedMarkdown(normalized) {
  * Normalizes line endings internally before parsing.
  *
  * @param {string} raw - The raw markdown content.
- * @returns {{ frontmatter: Record<string, any>, content: string }} An object containing the parsed frontmatter fields and the remaining markdown content.
+ * @returns {{ frontmatter: Record<string, unknown>, content: string }} An object containing the parsed frontmatter fields and the remaining markdown content.
  */
 export function parseMarkdown(raw) {
   return parseNormalizedMarkdown(normalizeMarkdownLineEndings(raw))

@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import { MemoryRouter } from 'react-router-dom'
 import Review from '../Review'
 import * as reviewTracker from '../../utils/reviewTracker'
-import type { ReviewCard } from '../../utils/reviewTracker'
 
 // Mock dependencies
 vi.mock('../../utils/reviewTracker', () => ({
@@ -20,7 +19,7 @@ describe('Review Page', () => {
   let container: HTMLDivElement
   let root: ReturnType<typeof createRoot>
 
-  const mockCard: ReviewCard = {
+  const mockCard: reviewTracker.ReviewCard = {
     id: 'test-card-1',
     state: {
       repetitions: 0,
