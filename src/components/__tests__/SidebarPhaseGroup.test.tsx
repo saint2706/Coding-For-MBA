@@ -11,6 +11,7 @@ vi.mock('../../utils/contentLoader', async () => {
   return {
     ...(actual as typeof contentLoader),
     getLessonsByPhase: vi.fn(),
+    getLesson: vi.fn(),
     phaseIcons: ['📖', '🚀', '🧠'],
   }
 })
@@ -148,5 +149,158 @@ describe('SidebarPhaseGroup', () => {
     const activeLinks = container.querySelectorAll('.day-link.active')
     expect(activeLinks.length).toBe(1)
     expect(activeLinks[0]!.textContent).toContain('Day 01: Lesson 1')
+  })
+
+  describe('propsAreEqual optimization', () => {
+    // We cannot directly import the unnamed `propsAreEqual` function
+    // since it's an internal part of the memoized default export,
+    // but we can test its behavior by changing props and ensuring re-renders are optimized
+    // or by importing the actual component and testing rendering behavior.
+    // However, since React.memo wrapper is the default export, we will test the logic directly
+    // by mocking a re-render. To ensure branch coverage, we will trigger renders with specific prop combinations.
+
+    it('re-renders when isActive changes', () => {
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} isActive={false} />
+          </MemoryRouter>
+        )
+      })
+
+      const beforeExpanded = container.querySelector('.phase-toggle')?.getAttribute('aria-expanded')
+
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      const afterExpanded = container.querySelector('.phase-toggle')?.getAttribute('aria-expanded')
+      expect(beforeExpanded).toBe('false')
+      expect(afterExpanded).toBe('true')
+    })
+
+    it('re-renders when dueCount changes', () => {
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} dueCount={0} />
+          </MemoryRouter>
+        )
+      })
+
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} dueCount={1} />
+          </MemoryRouter>
+        )
+      })
+
+      const progress = container.querySelector('.phase-toggle-progress')
+      expect(progress?.textContent).toContain('0/2 · 🧠 1')
+    })
+
+    it('re-renders when phase changes', () => {
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} phase={{...defaultProps.phase, phase: 2, title: 'Phase 2'}} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.textContent).toContain('Phase 2: Phase 2')
+    })
+
+    it('re-renders when completedIdsJoined changes for lessons in this phase', () => {
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} completedIdsJoined="" isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.querySelectorAll('.day-link-check').length).toBe(0)
+
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} completedIdsJoined="1" isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.querySelectorAll('.day-link-check').length).toBe(1)
+    })
+
+    it('handles currentPath changes correctly', () => {
+      // Mock getLesson to return phase 1 for "01" and phase 2 for "03"
+      vi.mocked(contentLoader.getLesson).mockImplementation((day: string | number) => {
+        if (day === '01') return { phase: 1 } as any
+        if (day === '03') return { phase: 2 } as any
+        return undefined
+      })
+
+      // Initial render with path outside the phase
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/03" isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.querySelector('.day-link.active')).toBeNull()
+
+      // Change to a path inside the phase
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/01" isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.querySelector('.day-link.active')?.textContent).toContain('Day 01')
+
+      // Change to phase overview inside the phase
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/phase/1" isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.querySelector('.day-link.active')?.textContent).toContain('Phase Overview')
+
+      // Change path to another lesson outside the phase (should not trigger active class)
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/03" isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.querySelector('.day-link.active')).toBeNull()
+
+      // Test the `isRelevantPath` edge case for a null getLesson result
+      vi.mocked(contentLoader.getLesson).mockReturnValue(undefined)
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/unknown" isActive={true} />
+          </MemoryRouter>
+        )
+      })
+
+      expect(container.querySelector('.day-link.active')).toBeNull()
+    })
   })
 })

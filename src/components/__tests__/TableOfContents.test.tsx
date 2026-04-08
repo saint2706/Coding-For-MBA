@@ -105,4 +105,110 @@ Content
 
     document.body.removeChild(targetElement)
   })
+
+  it('updates compact state on window resize and handles toggle/escape', () => {
+    const content = `
+## Section 1
+## Section 2
+    `
+    // Re-mock matchMedia to simulate small screen
+    let resizeCallback: any
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: vi.fn().mockImplementation((query) => ({
+        matches: true, // true means small screen (max-width: 1200px)
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn((event, cb) => {
+          resizeCallback = cb
+        }),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+      })),
+    })
+
+    act(() => {
+      root?.render(<TableOfContents content={content} />)
+    })
+
+    // Should be in compact mode, toggle button should exist
+    let toggleBtn = container.querySelector('.toc-toggle')
+    expect(toggleBtn).toBeTruthy()
+    expect(toggleBtn?.getAttribute('aria-expanded')).toBe('false')
+
+    // Click toggle to open
+    act(() => {
+      toggleBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(toggleBtn?.getAttribute('aria-expanded')).toBe('true')
+    expect(container.querySelector('.toc-panel.open')).toBeTruthy()
+
+    // Press Escape to close
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    })
+
+    expect(toggleBtn?.getAttribute('aria-expanded')).toBe('false')
+
+    // Or press escape on the list
+    act(() => {
+      toggleBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+    expect(toggleBtn?.getAttribute('aria-expanded')).toBe('true')
+
+    act(() => {
+      container.querySelector('.toc-list')?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    })
+    expect(toggleBtn?.getAttribute('aria-expanded')).toBe('false')
+
+  })
+
+  it('updates active id when intersection observer fires', () => {
+    const content = `
+## Section 1
+## Section 2
+    `
+    let intersectionCallback: any
+
+    class MockIntersectionObserver {
+      constructor(callback: any) {
+        intersectionCallback = callback
+      }
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    }
+    window.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver
+
+    // need elements for intersection to observe
+    const s1 = document.createElement('h2')
+    s1.id = 'section-1'
+    document.body.appendChild(s1)
+
+    const s2 = document.createElement('h2')
+    s2.id = 'section-2'
+    document.body.appendChild(s2)
+
+    act(() => {
+      root?.render(<TableOfContents content={content} />)
+    })
+
+    // Simulate s2 intersecting
+    act(() => {
+      intersectionCallback([
+        { isIntersecting: false, target: s1 },
+        { isIntersecting: true, target: s2 }
+      ])
+    })
+
+    const links = container.querySelectorAll('.toc-link')
+    expect(links[0].className).not.toContain('active')
+    expect(links[1].className).toContain('active')
+
+    document.body.removeChild(s1)
+    document.body.removeChild(s2)
+  })
 })

@@ -14,6 +14,13 @@ import {
   getReadingTime,
   getRelatedLessons,
   parseNotebookEntry,
+  getPhase,
+  getContentStats,
+  getTotalReadingTime,
+  getCurriculumMetadata,
+  getAllCaseStudies,
+  getAllProjects,
+  getExtrasForPhase
 } from '../contentLoader'
 
 describe('contentLoader', () => {
@@ -220,5 +227,58 @@ test words repeated `.repeat(120)
 
     const freshExerciseWithTags = getAllExercises().find((exercise) => exercise.tags.length > 0)
     expect(freshExerciseWithTags?.tags).toEqual(exerciseWithTags?.tags)
+  })
+
+  it('retrieves a phase by number', () => {
+    const phase = getPhase(1)
+    expect(phase).toBeDefined()
+    expect(phase?.phase).toBe(1)
+
+    expect(getPhase('9999')).toBeUndefined()
+  })
+
+  it('calculates total reading time', () => {
+    const totalTime = getTotalReadingTime()
+    expect(totalTime).toBeGreaterThan(0)
+    expect(typeof totalTime).toBe('number')
+  })
+
+  it('generates curriculum metadata', () => {
+    const metadata = getCurriculumMetadata()
+    expect(metadata).toHaveProperty('totalDays')
+    expect(metadata).toHaveProperty('totalPhases')
+    expect(metadata).toHaveProperty('totalLevels')
+    expect(metadata.totalDays).toBeGreaterThan(0)
+  })
+
+  it('generates content stats', () => {
+    const stats = getContentStats()
+    expect(stats).toBeDefined()
+    expect(stats.lessonCount).toBeGreaterThan(0)
+    expect(stats.phaseCount).toBeGreaterThan(0)
+    expect(stats.totalWords).toBeGreaterThan(0)
+    expect(stats.totalReadingMins).toBeGreaterThan(0)
+    expect(stats.difficultyMap).toBeDefined()
+    expect(stats.tagCloud).toBeDefined()
+    expect(stats.phaseStats).toBeDefined()
+    expect(stats.topConcepts).toBeDefined()
+  })
+
+  it('loads case studies', () => {
+    const caseStudies = getAllCaseStudies()
+    expect(Array.isArray(caseStudies)).toBe(true)
+  })
+
+  it('loads projects', () => {
+    const projects = getAllProjects()
+    expect(Array.isArray(projects)).toBe(true)
+  })
+
+  it('loads extra files for a phase', () => {
+    const extras = getExtrasForPhase(1)
+    expect(Array.isArray(extras)).toBe(true)
+
+    const invalidExtras = getExtrasForPhase(9999)
+    expect(invalidExtras).toEqual([])
   })
 })
