@@ -15,20 +15,24 @@ Please take a moment to review this guide to ensure a smooth contribution proces
 ### Setup
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/saint2706/Coding-For-MBA.git
    cd Coding-For-MBA
    ```
 
 2. **Install dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Start the development server**:
+
    ```bash
    npm run dev
    ```
+
    The app will be available at `http://localhost:5173/` (or another port if 5173 is busy).
 
 ## 📁 Project Structure
@@ -45,6 +49,7 @@ Please take a moment to review this guide to ensure a smooth contribution proces
 ## 🛠️ Development Workflow
 
 1. **Create a new branch** for your feature or fix:
+
    ```bash
    git checkout -b feature/my-new-feature
    # or
@@ -67,17 +72,23 @@ Please take a moment to review this guide to ensure a smooth contribution proces
 We use **Vitest** for unit testing and **Playwright** for end-to-end testing.
 
 - **Run unit tests**:
+
    ```bash
    npm test
    ```
+
 - **Run unit tests in watch mode**:
+
    ```bash
    npm run test:watch
    ```
+
 - **Run E2E tests**:
+
    ```bash
    npm run test:e2e
    ```
+
    *Note: E2E tests require the dev server to be running or built.*
 
 ## 🎨 Code Style
@@ -96,6 +107,7 @@ To ensure generated documentation and intellisense features work properly, all e
 - Avoid placing imports between the JSDoc block and the `export` statement.
 
 Example:
+
 ```typescript
 /**
  * Calculates the total price including tax.

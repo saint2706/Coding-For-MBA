@@ -103,7 +103,6 @@ scripts/               # Build and validation scripts
 - Ranking prioritizes **title > concepts > tags > body** and returns highlighted snippets.
 - The index is built on the client and cached after initial load, so it works offline once assets are cached.
 
-
 ## 📜 Available Scripts
 
 | Script | Description |

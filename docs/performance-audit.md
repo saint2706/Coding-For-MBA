@@ -1,6 +1,7 @@
 # Performance Audit (2026-03-10)
 
 ## Scope
+
 - Production build artifact review (`vite build` output).
 - Lighthouse CI runs against primary routes:
   - `/#/`
@@ -20,6 +21,7 @@
 | `/#/search` | 0.55 | 0.99 | 1.00 | 8.8s | 9.1s | 150ms |
 
 ## Key findings
+
 1. **Homepage main-thread blocking is the largest issue.**
    - Root route has very high total blocking time relative to other pages.
 2. **Large JavaScript payload remains the dominant bottleneck.**
@@ -28,12 +30,14 @@
    - Proactive search indexing competes with initial paint and interaction work.
 
 ## Changes made in this audit
+
 - Removed eager search-index preloading from app startup.
 - Moved search indexing kickoff to the Search page mount lifecycle.
 
 This keeps search warm-up behavior, but only when users actually visit search.
 
 ## Recommended next optimizations
+
 1. **Split heavy route boot logic from Home route** to reduce root-route TBT.
 2. **Load markdown/renderer dependencies on demand only** where rich content is needed.
 3. **Defer non-critical third-party JS** (e.g., analytics/visual effects) until post-interaction.
@@ -41,6 +45,7 @@ This keeps search warm-up behavior, but only when users actually visit search.
 5. **Run Lighthouse with 3+ iterations and median reporting** for more stable regressions tracking.
 
 ## How to rerun
+
 ```bash
 npm run build
 npm run preview -- --host 0.0.0.0 --port 4173
@@ -54,11 +59,13 @@ CHROME_PATH=/root/.cache/ms-playwright/chromium-1208/chrome-linux64/chrome npx l
 ```
 
 ## Follow-up optimizations applied
+
 - Deferred app store hydration (`progress`, `quiz`, `gamification`) to idle time in `App`.
 - Removed route-transition motion wrappers from `App` runtime path.
 - Lazy-loaded non-critical chrome components (`Sidebar`, `MobileNav`, keyboard shortcuts overlay, custom cursor`) so they no longer inflate the initial app chunk.
 - Deferred expensive `totalHours` aggregation on Home to idle time, reducing synchronous render work.
 
 ## Follow-up results
+
 - `dist/assets/index-*.js` dropped from ~590 kB to ~576 kB (gzip ~159.6 kB → ~155.9 kB) after component lazy-loading.
 - Lighthouse single-run measurements continue to vary significantly under CI-like throttling; use multi-run median for reliable regression tracking.
