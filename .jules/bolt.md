@@ -21,3 +21,8 @@
    - **Solution**: Updated `MarkdownRenderer` to accept a `precomputedBlocks?: InteractiveBlock[]` prop. In `src/pages/Lesson.tsx`, passed the already computed `interactiveBlocks` to the `<MarkdownRenderer />` component.
    - **Metrics**: Reduces main thread blocking time during initial lesson render by eliminating a redundant markdown AST parsing operation via `remark-parse`.
 >> 2026-04-07 19:34:59 UTC - ⚡ Bolt | Optimized PhaseOverview lessons rendering | Wrapped lessons.map(...) in useMemo to prevent recreating complex DOM nodes on every re-render, reducing main thread blocking time.
+
+## ⚡ Bolt: MarkdownRenderer Code Splitting Optimization
+- **Problem**: `MarkdownRenderer.tsx` statically imported `CodePlayground`, `ExerciseWidget`, and `MasteryCheck`. These components include large dependencies (like Pyodide logic) and increased the initial bundle size and parse time for the main markdown rendering chunk, even if a user wasn't interacting with the code playgrounds immediately.
+- **Solution**: Implemented `React.lazy` and `Suspense` for `CodePlayground`, `ExerciseWidget`, and `MasteryCheck`.
+- **Metrics/Impact**: The bundle analysis (`npm run analyze`) confirmed that the `MarkdownRenderer` chunk size decreased significantly (from ~35.6kB to ~20.3kB), and `CodePlayground`, `ExerciseWidget`, and `MasteryCheck` are now split into their own separate network chunks. This reduces the LCP and TBT on lesson pages as heavy interactive code components are only loaded when they are needed.
