@@ -79,6 +79,46 @@ export default function PhaseOverview() {
     return count
   }, [lessons, completedSet])
 
+  // Memoize lesson blocks to prevent heavy recreation of Framer Motion elements on unrelated re-renders
+  const renderedLessons = useMemo(
+    () =>
+      lessons.map((lesson, index) => {
+        const isDone = completedSet.has(dayTokenToProgressId(lesson.day))
+        return (
+          <motion.div
+            key={lesson.day}
+            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{
+              duration: prefersReducedMotion ? 0 : 0.26,
+              delay: prefersReducedMotion ? 0 : index * 0.03,
+            }}
+          >
+            <Link to={`/lesson/${lesson.day}`} className="day-card">
+              <motion.div className="day-card-num" layoutId={`lesson-day-badge-${lesson.day}`}>
+                {lesson.day}
+              </motion.div>
+              <div className="day-card-info">
+                <h3>{lesson.title}</h3>
+                {lesson.duration && (
+                  <span>
+                    <span aria-hidden="true">⏱</span> {lesson.duration} min
+                  </span>
+                )}
+              </div>
+              {isDone && (
+                <span className="day-link-check" aria-label="Completed">
+                  ✓
+                </span>
+              )}
+            </Link>
+          </motion.div>
+        )
+      }),
+    [lessons, completedSet, prefersReducedMotion],
+  )
+
   const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
   const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 140-day Coding for MBA curriculum.`
   const phasePath = `/phase/${phase.phase}`
@@ -141,42 +181,7 @@ export default function PhaseOverview() {
       <div className="section-header">
         <h2>Lessons in This Phase</h2>
       </div>
-      <div className="phase-lessons-grid">
-        {lessons.map((lesson, index) => {
-          const isDone = completedSet.has(dayTokenToProgressId(lesson.day))
-          return (
-            <motion.div
-              key={lesson.day}
-              initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{
-                duration: prefersReducedMotion ? 0 : 0.26,
-                delay: prefersReducedMotion ? 0 : index * 0.03,
-              }}
-            >
-              <Link to={`/lesson/${lesson.day}`} className="day-card">
-                <motion.div className="day-card-num" layoutId={`lesson-day-badge-${lesson.day}`}>
-                  {lesson.day}
-                </motion.div>
-                <div className="day-card-info">
-                  <h3>{lesson.title}</h3>
-                  {lesson.duration && (
-                    <span>
-                      <span aria-hidden="true">⏱</span> {lesson.duration} min
-                    </span>
-                  )}
-                </div>
-                {isDone && (
-                  <span className="day-link-check" aria-label="Completed">
-                    ✓
-                  </span>
-                )}
-              </Link>
-            </motion.div>
-          )
-        })}
-      </div>
+      <div className="phase-lessons-grid">{renderedLessons}</div>
 
       {/* Solution Notebook Link */}
       {notebook && notebook.cells.length > 0 && (
