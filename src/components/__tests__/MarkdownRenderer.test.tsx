@@ -1,7 +1,27 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { act } from 'react'
+import { waitFor } from '@testing-library/react'
 import { createRoot, Root } from 'react-dom/client'
 import MarkdownRenderer from '../MarkdownRenderer'
+
+
+vi.mock('../CodePlayground', () => ({
+  default: function MockCodePlayground(props: any) {
+    return <div data-testid="code-playground">{props.initialCode}</div>
+  }
+}))
+
+vi.mock('../ExerciseWidget', () => ({
+  default: function MockExerciseWidget(props: any) {
+    return <div data-testid="exercise-widget" data-title={props.title}>{props.goal}</div>
+  }
+}))
+
+vi.mock('../MasteryCheck', () => ({
+  default: function MockMasteryCheck(props: any) {
+    return <div data-testid="mastery-check" data-title={props.title}>{props.questionText}</div>
+  }
+}))
 
 const syntaxHighlighterMock = vi.fn(
   ({ children, wrapLongLines, codeTagProps, customStyle }: Record<string, unknown>) => {
@@ -136,7 +156,7 @@ describe('MarkdownRenderer', () => {
     expect(highlighterProps?.customStyle?.overflowX).toBe('hidden')
   })
 
-  it('renders "Try It" button for Python code blocks', () => {
+  it('renders "Try It" button for Python code blocks', async () => {
     const content = '```python\nprint("hello")\n```'
     act(() => {
       root.render(<MarkdownRenderer content={content} />)
@@ -151,8 +171,11 @@ describe('MarkdownRenderer', () => {
       tryBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
+    await waitFor(() => {
+      const playground = container.querySelector('[data-testid="code-playground"]')
+      expect(playground).toBeTruthy()
+    })
     const playground = container.querySelector('[data-testid="code-playground"]')
-    expect(playground).toBeTruthy()
     expect(playground?.textContent).toBe('print("hello")')
   })
 
@@ -166,7 +189,7 @@ describe('MarkdownRenderer', () => {
     expect(tryBtn).toBeNull()
   })
 
-  it('renders ExerciseWidget for exercise blocks', () => {
+  it('renders ExerciseWidget for exercise blocks', async () => {
     const content = `
 ### Exercise 1: Test Exercise
 **Goal**: Test Goal
@@ -182,13 +205,16 @@ output
       root.render(<MarkdownRenderer content={content} />)
     })
 
+    await waitFor(() => {
+      const widget = container.querySelector('[data-testid="exercise-widget"]')
+      expect(widget).toBeTruthy()
+    })
     const widget = container.querySelector('[data-testid="exercise-widget"]')
-    expect(widget).toBeTruthy()
     expect(widget?.getAttribute('data-title')).toBe('Test Exercise')
     expect(widget?.textContent).toBe('Test Goal')
   })
 
-  it('renders MasteryCheck for mastery blocks', () => {
+  it('renders MasteryCheck for mastery blocks', async () => {
     const content = `
 ### Question 1: Test Question
 What is it?
@@ -201,8 +227,11 @@ It is a test.
       root.render(<MarkdownRenderer content={content} />)
     })
 
+    await waitFor(() => {
+      const check = container.querySelector('[data-testid="mastery-check"]')
+      expect(check).toBeTruthy()
+    })
     const check = container.querySelector('[data-testid="mastery-check"]')
-    expect(check).toBeTruthy()
     expect(check?.getAttribute('data-title')).toBe('Test Question')
     expect(check?.textContent).toContain('What is it?')
   })

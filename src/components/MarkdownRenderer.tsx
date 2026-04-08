@@ -11,7 +11,7 @@
  * - Render code blocks with syntax highlighting and copy buttons.
  */
 
-import { useState, memo, JSX, useMemo, type ComponentProps } from 'react'
+import { useState, memo, JSX, useMemo, type ComponentProps, lazy, Suspense } from 'react'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkParse from 'remark-parse'
@@ -21,11 +21,12 @@ import { unified } from 'unified'
 import type { Content, Heading, Html, Nodes, Paragraph, Root, Strong } from 'mdast'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
-import CodePlayground from './CodePlayground'
-import ExerciseWidget from './ExerciseWidget'
-import MasteryCheck from './MasteryCheck'
 import CopyButton from './CopyButton'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
+
+const CodePlayground = lazy(() => import('./CodePlayground'))
+const ExerciseWidget = lazy(() => import('./ExerciseWidget'))
+const MasteryCheck = lazy(() => import('./MasteryCheck'))
 import { getSecureLinkAttributes } from '../utils/linkSafety'
 import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
 
@@ -106,7 +107,9 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
       </SyntaxHighlighter>
       {showPlayground && (
         <div className="code-block-inline-playground">
-          <CodePlayground initialCode={code} />
+          <Suspense fallback={<div style={{ padding: '1rem', color: 'var(--text-muted)' }}>Loading Pyodide environment...</div>}>
+            <CodePlayground initialCode={code} />
+          </Suspense>
         </div>
       )}
     </div>
@@ -660,27 +663,29 @@ function InteractiveContent({
     if (block.type === 'exercise') {
       const ex = block.data as ParsedExercise
       segments.push(
-        <ExerciseWidget
-          key={`ex-${i}`}
-          title={ex.title}
-          goal={ex.goal}
-          instructions={ex.instructions}
-          starterCode={ex.starterCode}
-          expectedOutput={ex.expectedOutput}
-          solution={ex.solution}
-        />,
+        <Suspense key={`ex-${i}`} fallback={<div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading exercise...</div>}>
+          <ExerciseWidget
+            title={ex.title}
+            goal={ex.goal}
+            instructions={ex.instructions}
+            starterCode={ex.starterCode}
+            expectedOutput={ex.expectedOutput}
+            solution={ex.solution}
+          />
+        </Suspense>,
       )
     } else if (block.type === 'mastery') {
       const mq = block.data as ParsedMasteryQuestion
       segments.push(
-        <MasteryCheck
-          key={`mq-${i}`}
-          questionNumber={mq.questionNumber}
-          title={mq.title}
-          questionText={mq.questionText}
-          codeSnippet={mq.codeSnippet}
-          answer={mq.answer}
-        />,
+        <Suspense key={`mq-${i}`} fallback={<div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading mastery check...</div>}>
+          <MasteryCheck
+            questionNumber={mq.questionNumber}
+            title={mq.title}
+            questionText={mq.questionText}
+            codeSnippet={mq.codeSnippet}
+            answer={mq.answer}
+          />
+        </Suspense>,
       )
     }
 
