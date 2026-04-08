@@ -114,7 +114,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
         <div className="python-runner__controls">
           <button
             type="button"
-            className="python-runner__btn"
+            className="python-runner__btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             onClick={handleRun}
             disabled={isLoading}
             aria-label={
@@ -157,7 +157,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
           {running && (
             <button
               type="button"
-              className="python-runner__btn python-runner__btn--cancel"
+              className="python-runner__btn python-runner__btn--cancel focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               onClick={cancelRun}
               aria-label="Cancel current Python execution"
               title="Cancel execution"

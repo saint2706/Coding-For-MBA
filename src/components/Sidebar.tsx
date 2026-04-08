@@ -135,7 +135,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           )}
           <button
             type="button"
-            className="sidebar-close"
+            className="sidebar-close focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             onClick={onClose}
             aria-label="Close sidebar"
             aria-expanded={isOpen}

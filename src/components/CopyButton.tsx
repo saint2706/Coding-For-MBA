@@ -74,7 +74,7 @@ export default function CopyButton({
   return (
     <button
       type="button"
-      className={className}
+      className={`${className} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`}
       onClick={handleCopy}
       aria-label={copied ? 'Code copied to clipboard' : label}
       title={label}

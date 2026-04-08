@@ -83,7 +83,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button
           type="button"
-          className="navbar-hamburger"
+          className="navbar-hamburger focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           onClick={onToggleSidebar}
           aria-label="Toggle sidebar menu"
           title="Toggle sidebar"
@@ -126,7 +126,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
           {query ? (
             <button
               type="button"
-              className="navbar-search-clear"
+              className="navbar-search-clear focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               onClick={handleClear}
               aria-label="Clear search"
               title="Clear search"

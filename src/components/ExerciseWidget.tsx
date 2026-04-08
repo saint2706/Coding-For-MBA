@@ -245,7 +245,7 @@ export default function ExerciseWidget({
         <div className="exercise-widget__solution">
           <button
             type="button"
-            className="exercise-widget__solution-btn"
+            className="exercise-widget__solution-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             onClick={handleToggleSolution}
             aria-expanded={showSolution}
             aria-controls={solutionId}
@@ -296,7 +296,7 @@ export default function ExerciseWidget({
                     >
                       <button
                         type="button"
-                        className={`code-block-copy ${isConfirmingSolution ? 'confirm-destructive' : ''}`}
+                        className={`code-block-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isConfirmingSolution ? 'confirm-destructive' : ''}`}
                         onClick={handleTrySolution}
                         aria-label={
                           isConfirmingSolution

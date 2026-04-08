@@ -233,7 +233,7 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
             />
             <button
               type="button"
-              className={`code-playground__btn code-playground__btn--reset ${isConfirmingReset ? 'code-playground__btn--confirm' : ''}`}
+              className={`code-playground__btn code-playground__btn--reset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isConfirmingReset ? 'code-playground__btn--confirm' : ''}`}
               onClick={handleResetClick}
               aria-label={
                 isConfirmingReset
