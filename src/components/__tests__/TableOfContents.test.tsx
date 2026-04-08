@@ -6,11 +6,16 @@ import TableOfContents from '../TableOfContents'
 describe('TableOfContents Component', () => {
   let container: HTMLDivElement
   let root: ReturnType<typeof createRoot> | undefined
+  let originalMatchMedia: typeof window.matchMedia
+  let originalIntersectionObserver: typeof window.IntersectionObserver
 
   beforeEach(() => {
     container = document.createElement('div')
     document.body.appendChild(container)
     root = createRoot(container)
+
+    originalMatchMedia = window.matchMedia
+    originalIntersectionObserver = window.IntersectionObserver
 
     // Mock matchMedia
     Object.defineProperty(window, 'matchMedia', {
@@ -41,6 +46,10 @@ describe('TableOfContents Component', () => {
       root?.unmount()
     })
     document.body.removeChild(container)
+
+    // Restore globals
+    window.matchMedia = originalMatchMedia
+    window.IntersectionObserver = originalIntersectionObserver
     vi.restoreAllMocks()
   })
 
@@ -160,10 +169,11 @@ Content
     expect(toggleBtn?.getAttribute('aria-expanded')).toBe('true')
 
     act(() => {
-      container.querySelector('.toc-list')?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+      container
+        .querySelector('.toc-list')
+        ?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
     })
     expect(toggleBtn?.getAttribute('aria-expanded')).toBe('false')
-
   })
 
   it('updates active id when intersection observer fires', () => {
@@ -200,7 +210,7 @@ Content
     act(() => {
       intersectionCallback([
         { isIntersecting: false, target: s1 },
-        { isIntersecting: true, target: s2 }
+        { isIntersecting: true, target: s2 },
       ])
     })
 

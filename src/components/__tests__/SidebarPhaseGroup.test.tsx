@@ -164,7 +164,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} isActive={false} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -174,7 +174,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -188,7 +188,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} dueCount={0} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -196,7 +196,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} dueCount={1} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -208,8 +208,11 @@ describe('SidebarPhaseGroup', () => {
       act(() => {
         root?.render(
           <MemoryRouter>
-            <SidebarPhaseGroup {...defaultProps} phase={{...defaultProps.phase, phase: 2, title: 'Phase 2'}} />
-          </MemoryRouter>
+            <SidebarPhaseGroup
+              {...defaultProps}
+              phase={{ ...defaultProps.phase, phase: 2, title: 'Phase 2' }}
+            />
+          </MemoryRouter>,
         )
       })
 
@@ -221,7 +224,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} completedIdsJoined="" isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -231,7 +234,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} completedIdsJoined="1" isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -251,7 +254,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/03" isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -262,7 +265,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/01" isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -273,7 +276,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} currentPath="/phase/1" isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -284,7 +287,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/03" isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 
@@ -296,7 +299,7 @@ describe('SidebarPhaseGroup', () => {
         root?.render(
           <MemoryRouter>
             <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/unknown" isActive={true} />
-          </MemoryRouter>
+          </MemoryRouter>,
         )
       })
 

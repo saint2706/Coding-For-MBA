@@ -20,7 +20,7 @@ import {
   getCurriculumMetadata,
   getAllCaseStudies,
   getAllProjects,
-  getExtrasForPhase
+  getExtrasForPhase,
 } from '../contentLoader'
 
 describe('contentLoader', () => {
