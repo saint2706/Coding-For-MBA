@@ -3,7 +3,11 @@ import { toast } from 'react-hot-toast'
 import { toastSuccess, toastError, toastInfo, TOAST_DEFAULT_OPTIONS } from '../toast'
 
 vi.mock('react-hot-toast', () => {
-  const toastMock: any = vi.fn()
+  const toastMock = vi.fn() as unknown as {
+    (message: string, options?: import('react-hot-toast').ToastOptions): string
+    success: import('vitest').Mock
+    error: import('vitest').Mock
+  }
   toastMock.success = vi.fn()
   toastMock.error = vi.fn()
   return {

@@ -161,3 +161,9 @@
 - **Fixed:** Removed duplicate import of `ReviewCard` in `src/pages/__tests__/Review.test.tsx`.
 - **Fixed:** Replaced `any` types with stricter types (`unknown`) in `src/utils/dayToken-core.js`, `src/utils/dayToken-core.d.ts`, and `src/utils/frontmatter-core.js`.
 - **Verified:** Build, lint, and tests pass successfully without unhandled exceptions.
+
+## Session 28
+- **Fixed:** Replaced `any` type casting in `src/utils/__tests__/toast.test.ts` by explicitly casting `toastMock` to `unknown` and then an inline type matching the `react-hot-toast` signature and Vitest mock fields.
+- **Fixed:** Replaced `any` types in `src/components/__tests__/PythonRunner.test.tsx` by using `ReturnType<typeof vi.fn>` for the run handler and accurately typing `usePyodide` return mocks as `unknown` to `ReturnType`.
+- **Fixed:** Replaced `any` type casting in `src/utils/__tests__/seoSchemas.test.ts` by casting `potentialAction` and its nested `target` property to `Record<string, unknown>`.
+- **Verified:** Build, formatting, lint, and tests pass successfully without unhandled exceptions.
