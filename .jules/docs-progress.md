@@ -89,3 +89,4 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Checked all markdown files for broken links and found zero internal/external broken links.
   - Validated that the curriculum's Markdown content matches `docs/` and `README.md` perfectly.
   - Ensured `npm run build` and `npm run lint` pass cleanly without any build or lint errors.
+>> Fixed markdown formatting issues in docs/ARCHITECTURE.md, docs/performance-audit.md, README.md, and CONTRIBUTING.md.
