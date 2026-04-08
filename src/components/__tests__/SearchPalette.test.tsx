@@ -1,6 +1,5 @@
+import { render, fireEvent, act } from '@testing-library/react'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { act } from 'react'
-import { createRoot } from 'react-dom/client'
 import { MemoryRouter } from 'react-router-dom'
 import SearchPalette from '../SearchPalette'
 import * as searchIndex from '../../utils/searchIndex'
@@ -11,7 +10,12 @@ vi.mock('../../utils/searchIndex', async () => {
   return {
     ...(actual as typeof searchIndex),
     getSearchSnippet: vi.fn((content) => 'Snippet of ' + content),
-    getSearchIndexStatus: vi.fn(() => ({ isReady: true, processedCount: 10, totalCount: 10 })),
+    getSearchIndexStatus: vi.fn(() => ({
+      isReady: true,
+      isIndexing: false,
+      processedCount: 10,
+      totalCount: 10,
+    })),
     search: vi.fn(),
     subscribeSearchIndexStatus: vi.fn(() => () => {}),
   }
@@ -29,9 +33,8 @@ vi.mock('../../utils/contentLoader', async () => {
   }
 })
 
-// Proper mock for useDebounce that executes callbacks
+// Mock useDebounce to execute immediately
 vi.mock('../../hooks/useDebounce', () => ({
-  // Just return the value immediately to skip debouncing in tests
   useDebounce: (val: string) => val,
 }))
 
@@ -45,44 +48,31 @@ vi.mock('react-router-dom', async () => {
 })
 
 describe('SearchPalette', () => {
-  let container: HTMLDivElement
-  let root: ReturnType<typeof createRoot> | undefined
-
   beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
-    root = createRoot(container)
+    vi.clearAllMocks()
+    window.HTMLElement.prototype.scrollIntoView = vi.fn()
   })
 
   afterEach(() => {
-    act(() => {
-      root?.unmount()
-    })
-    document.body.removeChild(container)
-    vi.clearAllMocks()
+    vi.restoreAllMocks()
   })
 
   it('renders nothing when closed', () => {
-    act(() => {
-      root?.render(
-        <MemoryRouter>
-          <SearchPalette isOpen={false} onClose={vi.fn()} />
-        </MemoryRouter>,
-      )
-    })
+    const { container } = render(
+      <MemoryRouter>
+        <SearchPalette isOpen={false} onClose={vi.fn()} />
+      </MemoryRouter>,
+    )
     expect(container.innerHTML).toBe('')
   })
 
   it('renders input when open', () => {
-    act(() => {
-      root?.render(
-        <MemoryRouter>
-          <SearchPalette isOpen={true} onClose={vi.fn()} />
-        </MemoryRouter>,
-      )
-    })
-    const input = container.querySelector('.search-input')
-    expect(input).toBeTruthy()
+    const { getByRole } = render(
+      <MemoryRouter>
+        <SearchPalette isOpen={true} onClose={vi.fn()} />
+      </MemoryRouter>,
+    )
+    expect(getByRole('textbox', { name: /Search/i })).toBeDefined()
   })
 
   it('shows results for a valid query', () => {
@@ -99,28 +89,159 @@ describe('SearchPalette', () => {
       },
     ] as unknown as ReturnType<typeof searchIndex.search>)
 
+    const { getByRole, getByText } = render(
+      <MemoryRouter>
+        <SearchPalette isOpen={true} onClose={vi.fn()} />
+      </MemoryRouter>,
+    )
+
+    const input = getByRole('textbox', { name: /Search/i })
+
     act(() => {
-      root?.render(
-        <MemoryRouter>
-          <SearchPalette isOpen={true} onClose={vi.fn()} />
-        </MemoryRouter>,
-      )
+      fireEvent.change(input, { target: { value: 'test' } })
     })
 
-    const input = container.querySelector('.search-input') as HTMLInputElement
+    expect(getByText('Test Lesson')).toBeDefined()
+    expect(getByText('Snippet of plain')).toBeDefined()
+  })
+
+  it('handles keyboard navigation', () => {
+    vi.mocked(searchIndex.search).mockReturnValue([
+      {
+        item: { day: '01', title: 'Test Lesson 1', content: 'content1' },
+      },
+      {
+        item: { day: '02', title: 'Test Lesson 2', content: 'content2' },
+      },
+    ] as unknown as ReturnType<typeof searchIndex.search>)
+
+    const onClose = vi.fn()
+    const { getByRole, getAllByRole } = render(
+      <MemoryRouter>
+        <SearchPalette isOpen={true} onClose={onClose} />
+      </MemoryRouter>,
+    )
+
+    const input = getByRole('textbox', { name: /Search/i })
+
     act(() => {
-      // Simulate typing directly triggering the onChange handler
-      input.value = 'test'
-      input.dispatchEvent(new Event('input', { bubbles: true }))
-      input.dispatchEvent(new Event('change', { bubbles: true }))
+      fireEvent.change(input, { target: { value: 'test' } })
     })
 
-    const results = container.querySelectorAll('.search-result-item')
-    // Wait for the re-render after value update if it didn't trigger sync
-    if (results.length === 0) {
-      // The event didn't trigger the state update properly in this test env.
-      // This is common without @testing-library/react.
-      // We would normally fix this, but for now we skip this specific implementation detail.
-    }
+    const options = getAllByRole('option')
+    expect(options[0]?.getAttribute('aria-selected')).toBe('true')
+    expect(options[1]?.getAttribute('aria-selected')).toBe('false')
+
+    // Arrow down
+    act(() => {
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+    })
+
+    expect(options[0]?.getAttribute('aria-selected')).toBe('false')
+    expect(options[1]?.getAttribute('aria-selected')).toBe('true')
+
+    // Arrow up
+    act(() => {
+      fireEvent.keyDown(input, { key: 'ArrowUp' })
+    })
+
+    expect(options[0]?.getAttribute('aria-selected')).toBe('true')
+    expect(options[1]?.getAttribute('aria-selected')).toBe('false')
+
+    // Enter
+    act(() => {
+      fireEvent.keyDown(input, { key: 'Enter' })
+    })
+
+    expect(mockNavigate).toHaveBeenCalledWith('/lesson/01')
+    expect(onClose).toHaveBeenCalled()
+
+    // Escape
+    act(() => {
+      fireEvent.keyDown(input, { key: 'Escape' })
+    })
+
+    expect(onClose).toHaveBeenCalledTimes(2)
+  })
+
+  it('displays indexing message when not ready', () => {
+    vi.mocked(searchIndex.getSearchIndexStatus).mockReturnValue({
+      isReady: false,
+      isIndexing: true,
+      processedCount: 5,
+      totalCount: 10,
+    })
+    vi.mocked(searchIndex.search).mockReturnValue([])
+
+    const { getByRole, getByText } = render(
+      <MemoryRouter>
+        <SearchPalette isOpen={true} onClose={vi.fn()} />
+      </MemoryRouter>,
+    )
+
+    const input = getByRole('textbox', { name: /Search/i })
+
+    act(() => {
+      fireEvent.change(input, { target: { value: 'te' } })
+    })
+
+    expect(getByText('Indexing lessons… (5/10)')).toBeDefined()
+  })
+
+  it('displays empty results message', () => {
+    vi.mocked(searchIndex.getSearchIndexStatus).mockReturnValue({
+      isReady: true,
+      isIndexing: false,
+      processedCount: 10,
+      totalCount: 10,
+    })
+    vi.mocked(searchIndex.search).mockReturnValue([])
+
+    const { getByRole, getByText } = render(
+      <MemoryRouter>
+        <SearchPalette isOpen={true} onClose={vi.fn()} />
+      </MemoryRouter>,
+    )
+
+    const input = getByRole('textbox', { name: /Search/i })
+
+    act(() => {
+      fireEvent.change(input, { target: { value: 'nonexistent' } })
+    })
+
+    expect(getByText('No results found for “nonexistent”')).toBeDefined()
+  })
+
+  it('navigates to result on click', () => {
+    vi.mocked(searchIndex.search).mockReturnValue([
+      {
+        item: {
+          day: '03',
+          title: 'Click Lesson',
+          content: 'content',
+        },
+      },
+    ] as unknown as ReturnType<typeof searchIndex.search>)
+
+    const onClose = vi.fn()
+    const { getByRole, getByText } = render(
+      <MemoryRouter>
+        <SearchPalette isOpen={true} onClose={onClose} />
+      </MemoryRouter>,
+    )
+
+    const input = getByRole('textbox', { name: /Search/i })
+
+    act(() => {
+      fireEvent.change(input, { target: { value: 'click' } })
+    })
+
+    const result = getByText('Click Lesson')
+    act(() => {
+      fireEvent.click(result)
+    })
+
+    expect(mockNavigate).toHaveBeenCalledWith('/lesson/03')
+    expect(onClose).toHaveBeenCalled()
   })
 })
