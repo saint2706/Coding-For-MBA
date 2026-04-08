@@ -323,7 +323,12 @@ export default function ExerciseWidget({
                           </>
                         )}
                       </button>
-                      <CopyButton text={solution} className="code-block-copy" showEmoji={true} />
+                      <CopyButton
+                        text={solution}
+                        className="code-block-copy"
+                        showEmoji={true}
+                        ariaLabel="Copy solution code to clipboard"
+                      />
                     </div>
                     <SyntaxHighlighter
                       style={solutionTheme}
