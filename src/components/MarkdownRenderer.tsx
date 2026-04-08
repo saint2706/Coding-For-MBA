@@ -23,12 +23,12 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import CopyButton from './CopyButton'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
+import { getSecureLinkAttributes } from '../utils/linkSafety'
+import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
 
 const CodePlayground = lazy(() => import('./CodePlayground'))
 const ExerciseWidget = lazy(() => import('./ExerciseWidget'))
 const MasteryCheck = lazy(() => import('./MasteryCheck'))
-import { getSecureLinkAttributes } from '../utils/linkSafety'
-import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
 
 const customTheme = {
   ...oneDark,
@@ -107,7 +107,13 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
       </SyntaxHighlighter>
       {showPlayground && (
         <div className="code-block-inline-playground">
-          <Suspense fallback={<div style={{ padding: '1rem', color: 'var(--text-muted)' }}>Loading Pyodide environment...</div>}>
+          <Suspense
+            fallback={
+              <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                Loading Pyodide environment...
+              </div>
+            }
+          >
             <CodePlayground initialCode={code} />
           </Suspense>
         </div>
@@ -663,7 +669,14 @@ function InteractiveContent({
     if (block.type === 'exercise') {
       const ex = block.data as ParsedExercise
       segments.push(
-        <Suspense key={`ex-${i}`} fallback={<div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading exercise...</div>}>
+        <Suspense
+          key={`ex-${i}`}
+          fallback={
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+              Loading exercise...
+            </div>
+          }
+        >
           <ExerciseWidget
             title={ex.title}
             goal={ex.goal}
@@ -677,7 +690,14 @@ function InteractiveContent({
     } else if (block.type === 'mastery') {
       const mq = block.data as ParsedMasteryQuestion
       segments.push(
-        <Suspense key={`mq-${i}`} fallback={<div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Loading mastery check...</div>}>
+        <Suspense
+          key={`mq-${i}`}
+          fallback={
+            <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
+              Loading mastery check...
+            </div>
+          }
+        >
           <MasteryCheck
             questionNumber={mq.questionNumber}
             title={mq.title}

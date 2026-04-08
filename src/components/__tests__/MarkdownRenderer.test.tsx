@@ -4,23 +4,30 @@ import { waitFor } from '@testing-library/react'
 import { createRoot, Root } from 'react-dom/client'
 import MarkdownRenderer from '../MarkdownRenderer'
 
-
 vi.mock('../CodePlayground', () => ({
   default: function MockCodePlayground(props: any) {
     return <div data-testid="code-playground">{props.initialCode}</div>
-  }
+  },
 }))
 
 vi.mock('../ExerciseWidget', () => ({
   default: function MockExerciseWidget(props: any) {
-    return <div data-testid="exercise-widget" data-title={props.title}>{props.goal}</div>
-  }
+    return (
+      <div data-testid="exercise-widget" data-title={props.title}>
+        {props.goal}
+      </div>
+    )
+  },
 }))
 
 vi.mock('../MasteryCheck', () => ({
   default: function MockMasteryCheck(props: any) {
-    return <div data-testid="mastery-check" data-title={props.title}>{props.questionText}</div>
-  }
+    return (
+      <div data-testid="mastery-check" data-title={props.title}>
+        {props.questionText}
+      </div>
+    )
+  },
 }))
 
 const syntaxHighlighterMock = vi.fn(
