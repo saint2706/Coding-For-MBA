@@ -161,3 +161,9 @@
 - **Fixed:** Removed duplicate import of `ReviewCard` in `src/pages/__tests__/Review.test.tsx`.
 - **Fixed:** Replaced `any` types with stricter types (`unknown`) in `src/utils/dayToken-core.js`, `src/utils/dayToken-core.d.ts`, and `src/utils/frontmatter-core.js`.
 - **Verified:** Build, lint, and tests pass successfully without unhandled exceptions.
+## Session 28
+- **Fixed:** Replaced `(state: any) => any` with `(state: unknown) => unknown` in `src/context/__tests__/ThemeProvider.test.tsx` and removed implicit parameters in `src/pages/__tests__/ProgressDashboard.test.tsx`.
+- **Fixed:** Replaced `as any` type casting with proper type assertions (`as unknown as ReturnType<typeof contentLoader.getLesson>` and `as unknown as ReturnType<typeof usePyodideHook.usePyodide>`) in `src/components/__tests__/SidebarPhaseGroup.test.tsx` and `src/components/__tests__/PythonRunner.test.tsx`.
+- **Fixed:** Replaced `let mockRunPython: any`, `let resizeCallback: any`, `let intersectionCallback: any`, and `constructor(callback: any)` with explicitly correct types in `src/components/__tests__/PythonRunner.test.tsx` and `src/components/__tests__/TableOfContents.test.tsx`.
+- **Fixed:** Replaced `(props: any)` with `(props: { isLesson?: boolean })` in `src/__tests__/App.test.tsx` mock.
+- **Verified:** Build, lint, and tests pass successfully without any type errors.

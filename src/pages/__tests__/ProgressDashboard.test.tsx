@@ -90,7 +90,7 @@ describe('ProgressDashboard', () => {
     } as unknown as contentLoader.Lesson)
 
     // Progress store mock
-    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: any) => any) => {
+    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: ReturnType<typeof useProgressStore.getState>) => unknown) => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],
@@ -106,7 +106,7 @@ describe('ProgressDashboard', () => {
     })
 
     // Analytics store mock
-    vi.mocked(useLearningAnalyticsStore).mockImplementation(((selector?: (state: any) => any) => {
+    vi.mocked(useLearningAnalyticsStore).mockImplementation(((selector?: (state: ReturnType<typeof useLearningAnalyticsStore.getState>) => unknown) => {
       if (typeof selector === 'function') {
         return selector({
           timeByDate: {},
@@ -125,7 +125,7 @@ describe('ProgressDashboard', () => {
     })
 
     // Gamification store mock
-    vi.mocked(useGamificationStore).mockImplementation(((selector?: (state: any) => any) => {
+    vi.mocked(useGamificationStore).mockImplementation(((selector?: (state: ReturnType<typeof useGamificationStore.getState>) => unknown) => {
       if (typeof selector === 'function') {
         return selector({
           xpTotal: 100,
@@ -200,7 +200,7 @@ describe('ProgressDashboard', () => {
   })
 
   it('renders empty state when no lessons completed', () => {
-    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: any) => any) => {
+    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: ReturnType<typeof useProgressStore.getState>) => unknown) => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: [],
@@ -223,7 +223,7 @@ describe('ProgressDashboard', () => {
 
   it('prompts confirmation when clearing progress', () => {
     const clearAllProgressMock = vi.fn()
-    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: any) => any) => {
+    vi.mocked(useProgressStore).mockImplementation(((selector?: (state: ReturnType<typeof useProgressStore.getState>) => unknown) => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],

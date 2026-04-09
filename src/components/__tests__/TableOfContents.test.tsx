@@ -121,7 +121,7 @@ Content
 ## Section 2
     `
     // Re-mock matchMedia to simulate small screen
-    let resizeCallback: any
+    let resizeCallback: (e: MediaQueryListEvent) => void
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: vi.fn().mockImplementation((query) => ({
@@ -181,10 +181,10 @@ Content
 ## Section 1
 ## Section 2
     `
-    let intersectionCallback: any
+    let intersectionCallback: (entries: { isIntersecting: boolean; target: Element }[]) => void
 
     class MockIntersectionObserver {
-      constructor(callback: any) {
+      constructor(callback: (entries: { isIntersecting: boolean; target: Element }[]) => void) {
         intersectionCallback = callback
       }
       observe() {}
