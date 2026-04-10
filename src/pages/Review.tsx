@@ -132,7 +132,7 @@ export default function Review() {
             <>
               <button
                 type="button"
-                className="review-answer-btn"
+                className="review-answer-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                 onClick={() => setShowAnswer(true)}
               >
                 Show Answer
@@ -152,7 +152,7 @@ export default function Review() {
                   <button
                     key={rating}
                     type="button"
-                    className={`review-action-btn review-${rating}`}
+                    className={`review-action-btn review-${rating} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`}
                     onClick={() => handleRate(rating)}
                     title={`Shortcut: ${index + 1}`}
                   >

@@ -455,7 +455,7 @@ export default function ProgressDashboard() {
                   type="button"
                   role="radio"
                   aria-checked={palette === id}
-                  className={`palette-swatch-btn${palette === id ? ' palette-swatch-btn--active' : ''}`}
+                  className={`palette-swatch-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2${palette === id ? ' palette-swatch-btn--active' : ''}`}
                   onClick={() => setPalette(id)}
                   title={label}
                   aria-label={label}
@@ -603,7 +603,11 @@ export default function ProgressDashboard() {
 
       {/* Clear progress */}
       <div style={{ marginTop: '3rem', textAlign: 'center' }}>
-        <button type="button" className="progress-clear-btn" onClick={handleClearProgress}>
+        <button
+          type="button"
+          className="progress-clear-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          onClick={handleClearProgress}
+        >
           Clear All Progress
         </button>
       </div>

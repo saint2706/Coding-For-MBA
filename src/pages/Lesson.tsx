@@ -279,7 +279,7 @@ export default function Lesson() {
         {readingMode && (
           <button
             type="button"
-            className="reading-mode-exit"
+            className="reading-mode-exit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             onClick={() => handleReadingMode(false)}
             aria-label="Exit reading mode"
           >
@@ -327,7 +327,7 @@ export default function Lesson() {
             <>
               <button
                 type="button"
-                className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
+                className={`lesson-complete-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${completed ? 'completed' : ''}`}
                 onClick={handleToggleComplete}
                 aria-pressed={completed}
               >
