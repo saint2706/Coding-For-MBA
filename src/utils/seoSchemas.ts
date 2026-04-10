@@ -39,6 +39,7 @@ export function buildWebSiteSchema(): Record<string, unknown> {
     name: SITE_NAME,
     url: `${SITE_URL}/`,
     description: DEFAULT_DESCRIPTION,
+    image: `${SITE_URL}/og-image.png`,
     potentialAction: {
       '@type': 'SearchAction',
       target: {
