@@ -5,26 +5,26 @@ import { createRoot, Root } from 'react-dom/client'
 import MarkdownRenderer from '../MarkdownRenderer'
 
 vi.mock('../CodePlayground', () => ({
-  default: function MockCodePlayground(props: any) {
-    return <div data-testid="code-playground">{props.initialCode}</div>
+  default: function MockCodePlayground(props: Record<string, unknown>) {
+    return <div data-testid="code-playground">{props.initialCode as React.ReactNode}</div>
   },
 }))
 
 vi.mock('../ExerciseWidget', () => ({
-  default: function MockExerciseWidget(props: any) {
+  default: function MockExerciseWidget(props: Record<string, unknown>) {
     return (
-      <div data-testid="exercise-widget" data-title={props.title}>
-        {props.goal}
+      <div data-testid="exercise-widget" data-title={props.title as string}>
+        {props.goal as React.ReactNode}
       </div>
     )
   },
 }))
 
 vi.mock('../MasteryCheck', () => ({
-  default: function MockMasteryCheck(props: any) {
+  default: function MockMasteryCheck(props: Record<string, unknown>) {
     return (
-      <div data-testid="mastery-check" data-title={props.title}>
-        {props.questionText}
+      <div data-testid="mastery-check" data-title={props.title as string}>
+        {props.questionText as React.ReactNode}
       </div>
     )
   },

@@ -51,10 +51,12 @@ describe('seoSchemas', () => {
         description: expect.any(String),
       })
 
-      const potentialAction = schema.potentialAction as Record<string, any>
+      const potentialAction = schema.potentialAction as Record<string, unknown>
       expect(potentialAction).toBeDefined()
       expect(potentialAction['@type']).toBe('SearchAction')
-      expect(potentialAction.target.urlTemplate).toBe(`${SITE_URL}/#/search?q={search_term_string}`)
+      expect((potentialAction.target as Record<string, unknown>).urlTemplate).toBe(
+        `${SITE_URL}/#/search?q={search_term_string}`,
+      )
       expect(potentialAction['query-input']).toBe('required name=search_term_string')
     })
   })

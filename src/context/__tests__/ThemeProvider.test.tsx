@@ -26,7 +26,7 @@ describe('ThemeProvider', () => {
     }
 
     vi.mocked(userPreferencesStore.useUserPreferencesStore).mockImplementation(((
-      selector?: (state: any) => any,
+      selector?: (state: unknown) => unknown,
     ) => {
       if (selector)
         return selector(
