@@ -14,7 +14,7 @@ vi.mock('../../utils/codeSecurity', () => ({
 }))
 
 describe('PythonRunner', () => {
-  let mockRunPython: any
+  let mockRunPython: ReturnType<typeof vi.fn>
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -26,7 +26,7 @@ describe('PythonRunner', () => {
       ensureLoaded: vi.fn(),
       isReady: true,
       loadPyodide: vi.fn(),
-    } as any)
+    } as unknown as ReturnType<typeof usePyodideHook.usePyodide>)
     vi.mocked(codeSecurity.validatePythonCode).mockReturnValue({ valid: true, error: undefined })
   })
 
@@ -49,7 +49,7 @@ describe('PythonRunner', () => {
       ensureLoaded: vi.fn(),
       isReady: false,
       loadPyodide: vi.fn(),
-    } as any)
+    } as unknown as ReturnType<typeof usePyodideHook.usePyodide>)
     const { getByRole } = render(<PythonRunner code="print('hello')" />)
     const runBtn = getByRole('button', { name: /Loading Python environment.../i })
     expect(runBtn).toBeDefined()

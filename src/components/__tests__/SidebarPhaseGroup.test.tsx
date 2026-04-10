@@ -244,8 +244,10 @@ describe('SidebarPhaseGroup', () => {
     it('handles currentPath changes correctly', () => {
       // Mock getLesson to return phase 1 for "01" and phase 2 for "03"
       vi.mocked(contentLoader.getLesson).mockImplementation((day: string | number) => {
-        if (day === '01') return { phase: 1 } as any
-        if (day === '03') return { phase: 2 } as any
+        if (day === '01')
+          return { phase: 1 } as unknown as ReturnType<typeof contentLoader.getLesson>
+        if (day === '03')
+          return { phase: 2 } as unknown as ReturnType<typeof contentLoader.getLesson>
         return undefined
       })
 

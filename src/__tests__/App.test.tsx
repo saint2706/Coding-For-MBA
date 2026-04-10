@@ -18,7 +18,7 @@ vi.mock('../components/SkipToContent', () => ({
   default: () => <div data-testid="skip-to-content">SkipToContent</div>,
 }))
 vi.mock('../components/ScrollProgress', () => ({
-  default: (props: any) => (
+  default: (props: { isLesson?: boolean }) => (
     <div data-testid="scroll-progress" data-is-lesson={props.isLesson ? 'true' : 'false'}>
       ScrollProgress
     </div>
