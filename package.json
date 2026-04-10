@@ -32,7 +32,7 @@
     "@dr.pogodin/react-helmet": "^3.1.1",
     "canvas-confetti": "^1.9.3",
     "d3": "^7.9.0",
-    "fuse.js": "^7.1.0",
+    "fuse.js": "^7.3.0",
     "motion": "^12.38.0",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
