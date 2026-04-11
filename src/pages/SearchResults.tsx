@@ -146,7 +146,10 @@ export default function SearchResults() {
             placeholder="Search title, concepts, tags, phase, day, and content..."
             aria-label="Search lessons"
           />
-          <button type="submit" className="search-page-submit">
+          <button
+            type="submit"
+            className="search-page-submit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          >
             Search
           </button>
         </form>

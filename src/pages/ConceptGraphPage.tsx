@@ -114,7 +114,7 @@ export default function ConceptGraphPage() {
             <button
               type="button"
               key={i}
-              className="legend-item"
+              className="legend-item focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-primary)]"
               onClick={() => handlePhaseClick(i + 1)}
               style={activePhase === i + 1 ? { background: 'rgba(255,255,255,0.1)' } : undefined}
               aria-pressed={activePhase === i + 1}

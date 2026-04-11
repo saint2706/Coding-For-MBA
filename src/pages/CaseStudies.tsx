@@ -93,7 +93,7 @@ export default function CaseStudies() {
           type="button"
           role="tab"
           aria-selected={activeTab === 'case-studies'}
-          className={`cs-tab ${activeTab === 'case-studies' ? 'cs-tab--active' : ''}`}
+          className={`cs-tab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${activeTab === 'case-studies' ? 'cs-tab--active' : ''}`}
           onClick={() => {
             setActiveTab('case-studies')
             setExpandedSlug(null)
@@ -105,7 +105,7 @@ export default function CaseStudies() {
           type="button"
           role="tab"
           aria-selected={activeTab === 'projects'}
-          className={`cs-tab ${activeTab === 'projects' ? 'cs-tab--active' : ''}`}
+          className={`cs-tab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${activeTab === 'projects' ? 'cs-tab--active' : ''}`}
           onClick={() => {
             setActiveTab('projects')
             setExpandedSlug(null)
@@ -178,7 +178,7 @@ export default function CaseStudies() {
               <div className="cs-card__footer">
                 <button
                   type="button"
-                  className="cs-card__expand-btn"
+                  className="cs-card__expand-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                   aria-expanded={isExpanded}
                   onClick={() => toggleExpand(item.slug)}
                 >
