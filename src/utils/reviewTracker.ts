@@ -77,7 +77,7 @@ if (typeof window !== 'undefined' && typeof window.addEventListener === 'functio
  * @returns True if value is a valid SchedulingState
  */
 function isSchedulingState(value: unknown): value is SchedulingState {
-  if (!value || typeof value !== 'object') return false
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
   const state = value as Record<string, unknown>
   return (
     typeof state.repetitions === 'number' &&
@@ -95,11 +95,11 @@ function isSchedulingState(value: unknown): value is SchedulingState {
  * @returns True if value is a valid ReviewStateV2
  */
 function isReviewStateV2(value: unknown): value is ReviewStateV2 {
-  if (!value || typeof value !== 'object') return false
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false
   const payload = value as Record<string, unknown>
   if (payload.version !== 2 || !Array.isArray(payload.cards)) return false
   return payload.cards.every((entry) => {
-    if (!entry || typeof entry !== 'object') return false
+    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) return false
     const card = entry as Record<string, unknown>
     return typeof card.id === 'string' && isSchedulingState(card.state)
   })

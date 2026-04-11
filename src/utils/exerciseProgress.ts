@@ -10,6 +10,7 @@
  * - Provide a transactional update mechanism for marking exercises as done.
  */
 
+import { z } from 'zod'
 import { getStoredJson, setStoredString } from './safeStorage'
 
 const EXERCISE_PROGRESS_KEY = 'coding-for-mba-exercise-progress'
@@ -17,11 +18,13 @@ const EXERCISE_DAY_CELEBRATION_KEY = 'coding-for-mba-exercise-day-celebration'
 
 type DayExerciseMap = Record<string, string[]>
 
+const DayExerciseMapSchema = z.record(z.string(), z.array(z.string()))
+
 function getMap(key: string): DayExerciseMap {
   return getStoredJson<DayExerciseMap>(
     key,
     {},
-    (value): value is DayExerciseMap => typeof value === 'object' && value !== null,
+    (value): value is DayExerciseMap => DayExerciseMapSchema.safeParse(value).success,
   )
 }
 
