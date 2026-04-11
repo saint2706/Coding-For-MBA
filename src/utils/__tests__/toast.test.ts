@@ -3,9 +3,10 @@ import { toast } from 'react-hot-toast'
 import { toastSuccess, toastError, toastInfo, TOAST_DEFAULT_OPTIONS } from '../toast'
 
 vi.mock('react-hot-toast', () => {
-  const toastMock: any = vi.fn()
-  toastMock.success = vi.fn()
-  toastMock.error = vi.fn()
+  const toastMock = Object.assign(vi.fn(), {
+    success: vi.fn(),
+    error: vi.fn(),
+  })
   return {
     toast: toastMock,
   }

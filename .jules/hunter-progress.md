@@ -167,3 +167,10 @@
 - **Fixed:** Replaced `let mockRunPython: any`, `let resizeCallback: any`, `let intersectionCallback: any`, and `constructor(callback: any)` with explicitly correct types in `src/components/__tests__/PythonRunner.test.tsx` and `src/components/__tests__/TableOfContents.test.tsx`.
 - **Fixed:** Replaced `(props: any)` with `(props: { isLesson?: boolean })` in `src/__tests__/App.test.tsx` mock.
 - **Verified:** Build, lint, and tests pass successfully without any type errors.
+
+## Session 29
+- **Fixed:** Replaced `as any` type casting with proper type assertions (`as Record<string, unknown>`) in `src/utils/__tests__/seoSchemas.test.ts`.
+- **Fixed:** Replaced `(state: any) => any` with `(state: unknown) => unknown` in `src/context/__tests__/ThemeProvider.test.tsx` to fix strict typing.
+- **Fixed:** Replaced `props: any` with `props: Record<string, unknown>` in `src/components/__tests__/MarkdownRenderer.test.tsx` for various component mocks.
+- **Fixed:** Replaced `toastMock: any = vi.fn()` with a properly structured object using `Object.assign` in `src/utils/__tests__/toast.test.ts`.
+- **Verified:** Build, lint, and tests pass successfully without any type errors.
