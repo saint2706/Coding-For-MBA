@@ -63,6 +63,22 @@ vi.mock('../hooks/useLearningAnalytics', () => ({ useLearningAnalytics: vi.fn() 
 vi.mock('../stores/gamificationStore', () => ({ hydrateGamificationStore: vi.fn() }))
 vi.mock('../utils/searchIndex', () => ({ preloadSearchIndex: vi.fn() }))
 
+vi.mock('../pages/Home', () => ({ default: () => <div data-testid="page-home">Home</div> }))
+vi.mock('../pages/Lesson', () => ({ default: () => <div data-testid="page-lesson">Lesson</div> }))
+vi.mock('../pages/PhaseOverview', () => ({ default: () => <div data-testid="page-phase">PhaseOverview</div> }))
+vi.mock('../pages/Curriculum', () => ({ default: () => <div data-testid="page-curriculum">Curriculum</div> }))
+vi.mock('../pages/SearchResults', () => ({ default: () => <div data-testid="page-search">SearchResults</div> }))
+vi.mock('../pages/ProgressDashboard', () => ({ default: () => <div data-testid="page-progress">ProgressDashboard</div> }))
+vi.mock('../pages/Exercises', () => ({ default: () => <div data-testid="page-exercises">Exercises</div> }))
+vi.mock('../pages/NotebookViewer', () => ({ default: () => <div data-testid="page-solutions">NotebookViewer</div> }))
+vi.mock('../pages/ConceptGraphPage', () => ({ default: () => <div data-testid="page-concepts">ConceptGraphPage</div> }))
+vi.mock('../pages/ContentStats', () => ({ default: () => <div data-testid="page-stats">ContentStats</div> }))
+vi.mock('../pages/Review', () => ({ default: () => <div data-testid="page-review">Review</div> }))
+vi.mock('../pages/CaseStudies', () => ({ default: () => <div data-testid="page-cases">CaseStudies</div> }))
+vi.mock('../pages/NotFound', () => ({ default: () => <div data-testid="page-notfound">NotFound</div> }))
+
+
+
 describe('App', () => {
   beforeEach(() => {
     vi.clearAllMocks()
