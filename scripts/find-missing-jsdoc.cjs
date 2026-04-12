@@ -29,7 +29,7 @@ for (const file of allFiles) {
   const lines = content.split('\n');
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
-    if (line.match(/^export (function|const) [A-Za-z0-9_]+/)) {
+    if (line.match(/^export (function|const|interface|type) [A-Za-z0-9_]+/)) {
       if (i === 0 || !lines[i-1].includes('*/')) {
         missing.push(`${file}:${i+1}:${line}`);
       }

@@ -52,7 +52,7 @@ export default function Skeleton({ variant = 'text', width, height, count = 1 }:
  * Displays a comprehensive page skeleton with heading, metadata pills,
  * content blocks, and text lines to match typical page layout.
  *
- * @returns A full-page loading skeleton
+ * @returns {JSX.Element} A full-page loading skeleton
  */
 export function PageSkeleton() {
   return (

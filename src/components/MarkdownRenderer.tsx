@@ -299,6 +299,14 @@ interface ParsedMasteryQuestion {
   answer: string
 }
 
+/**
+ * Represents an interactive block (exercise or mastery check) extracted from Markdown content.
+ * @interface InteractiveBlock
+ * @property {'exercise' | 'mastery'} type - The type of the interactive block
+ * @property {number} startIndex - The starting character index in the raw Markdown string
+ * @property {number} endIndex - The ending character index in the raw Markdown string
+ * @property {ParsedExercise | ParsedMasteryQuestion} data - The parsed data associated with the block
+ */
 export interface InteractiveBlock {
   type: 'exercise' | 'mastery'
   startIndex: number

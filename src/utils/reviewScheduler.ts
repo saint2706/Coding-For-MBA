@@ -10,6 +10,10 @@
  * - Provide pure functions for state transitions (no side effects).
  */
 
+/**
+ * Represents the rating given by the user for a review card.
+ * @type {'again' | 'hard' | 'good' | 'easy'} ReviewRating
+ */
 export type ReviewRating = 'again' | 'hard' | 'good' | 'easy'
 
 /**

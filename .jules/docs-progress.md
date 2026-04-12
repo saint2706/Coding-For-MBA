@@ -90,3 +90,6 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Validated that the curriculum's Markdown content matches `docs/` and `README.md` perfectly.
   - Ensured `npm run build` and `npm run lint` pass cleanly without any build or lint errors.
 >> Fixed markdown formatting issues in docs/ARCHITECTURE.md, docs/performance-audit.md, README.md, and CONTRIBUTING.md.
+- [x] Added missing JSDoc comments to `src/components/Skeleton.tsx`, `src/components/CodePlayground.tsx`, `src/components/MarkdownRenderer.tsx`, `src/utils/codeSecurity.ts`, and `src/utils/reviewScheduler.ts`.
+- [x] Formatted markdown files with markdownlint.
+- [x] Verified markdown files with markdown-link-check.
