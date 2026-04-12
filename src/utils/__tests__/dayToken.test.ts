@@ -22,6 +22,10 @@ describe('dayToken utilities', () => {
     expect(compareDayTokens('invalidA', 'invalidA')).toBe(0)
     expect(compareDayTokens('invalidA', 'invalidB')).toBe(-1)
     expect(compareDayTokens('invalidB', 'invalidA')).toBe(1)
+
+    // Testing case where one is valid and another is invalid
+    expect(compareDayTokens('1', 'invalid')).toBe(-1) // '1' < 'INVALID'
+    expect(compareDayTokens('invalid', '1')).toBe(1)  // 'INVALID' > '1'
   })
 
   it('normalizes and sorts alphanumeric day tokens deterministically', () => {
@@ -78,6 +82,7 @@ describe('dayToken utilities', () => {
     expect(dayTokenFromReference('invalid reference')).toBeNull()
     expect(dayTokenFromReference(null)).toBeNull()
     expect(dayTokenFromReference({})).toBeNull()
+    expect(dayTokenFromReference('Day invalid')).toBeNull()
   })
 
   it('dayTokenToProgressId handles invalid tokens and cache', () => {
