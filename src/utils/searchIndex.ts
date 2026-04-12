@@ -141,7 +141,13 @@ function normalizeQuery(query: string): string[] {
 
 function scoreField(text: string | undefined, terms: readonly string[], weight: number) {
   if (!text || terms.length === 0) return 0
-  return terms.reduce((acc, term) => (text.includes(term) ? acc + weight : acc), 0)
+  let score = 0
+  for (let i = 0; i < terms.length; i++) {
+    if (text.includes(terms[i]!)) {
+      score += weight
+    }
+  }
+  return score
 }
 
 /**

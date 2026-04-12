@@ -288,7 +288,16 @@ export const useLearningAnalyticsStore = create<LearningAnalyticsStore>()(
           isPaused: false,
         })
       },
-      totalLearningMs: () => Object.values(get().timeByDate).reduce((sum, value) => sum + value, 0),
+      totalLearningMs: () => {
+        const timeByDate = get().timeByDate
+        let sum = 0
+        for (const key in timeByDate) {
+          if (Object.prototype.hasOwnProperty.call(timeByDate, key)) {
+            sum += timeByDate[key] || 0
+          }
+        }
+        return sum
+      },
       todayLearningMs: (now = new Date()) => get().timeByDate[asDayKey(now)] || 0,
       weekLearningMs: (now = new Date()) =>
         get()
