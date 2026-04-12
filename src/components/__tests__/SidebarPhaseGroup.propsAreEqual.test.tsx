@@ -4,7 +4,9 @@ import * as contentLoader from '../../utils/contentLoader'
 
 // Mock getLesson so that propsAreEqual can use it
 vi.mock('../../utils/contentLoader', async () => {
-  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>('../../utils/contentLoader')
+  const actual = await vi.importActual<typeof import('../../utils/contentLoader')>(
+    '../../utils/contentLoader',
+  )
   return {
     ...actual,
     getLesson: vi.fn(),
@@ -45,9 +47,7 @@ describe('SidebarPhaseGroup propsAreEqual optimization', () => {
 
   describe('handles currentPath changes correctly', () => {
     it('re-renders if new path is phase overview for this phase', () => {
-      expect(
-        propsAreEqual(defaultProps, { ...defaultProps, currentPath: '/phase/1' }),
-      ).toBe(false)
+      expect(propsAreEqual(defaultProps, { ...defaultProps, currentPath: '/phase/1' })).toBe(false)
     })
 
     it('re-renders if old path is phase overview for this phase', () => {
@@ -60,14 +60,18 @@ describe('SidebarPhaseGroup propsAreEqual optimization', () => {
     })
 
     it('re-renders if new path is a lesson in this phase', () => {
-      vi.mocked(contentLoader.getLesson).mockReturnValueOnce({ phase: 1 } as unknown as ReturnType<typeof contentLoader.getLesson>)
-      expect(
-        propsAreEqual(defaultProps, { ...defaultProps, currentPath: '/lesson/01' }),
-      ).toBe(false)
+      vi.mocked(contentLoader.getLesson).mockReturnValueOnce({ phase: 1 } as unknown as ReturnType<
+        typeof contentLoader.getLesson
+      >)
+      expect(propsAreEqual(defaultProps, { ...defaultProps, currentPath: '/lesson/01' })).toBe(
+        false,
+      )
     })
 
     it('re-renders if old path is a lesson in this phase', () => {
-      vi.mocked(contentLoader.getLesson).mockReturnValueOnce({ phase: 1 } as unknown as ReturnType<typeof contentLoader.getLesson>)
+      vi.mocked(contentLoader.getLesson).mockReturnValueOnce({ phase: 1 } as unknown as ReturnType<
+        typeof contentLoader.getLesson
+      >)
       expect(
         propsAreEqual(
           { ...defaultProps, currentPath: '/lesson/01' },
@@ -77,7 +81,9 @@ describe('SidebarPhaseGroup propsAreEqual optimization', () => {
     })
 
     it('does not re-render if path changes between two unrelated paths', () => {
-      vi.mocked(contentLoader.getLesson).mockReturnValue({ phase: 2 } as unknown as ReturnType<typeof contentLoader.getLesson>)
+      vi.mocked(contentLoader.getLesson).mockReturnValue({ phase: 2 } as unknown as ReturnType<
+        typeof contentLoader.getLesson
+      >)
       expect(
         propsAreEqual(
           { ...defaultProps, currentPath: '/lesson/03' },
@@ -97,9 +103,9 @@ describe('SidebarPhaseGroup propsAreEqual optimization', () => {
 
     it('handles null getLesson result gracefully', () => {
       vi.mocked(contentLoader.getLesson).mockReturnValueOnce(undefined)
-      expect(
-        propsAreEqual(defaultProps, { ...defaultProps, currentPath: '/lesson/unknown' }),
-      ).toBe(true)
+      expect(propsAreEqual(defaultProps, { ...defaultProps, currentPath: '/lesson/unknown' })).toBe(
+        true,
+      )
     })
 
     it('handles identical currentPath properly', () => {

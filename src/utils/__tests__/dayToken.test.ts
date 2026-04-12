@@ -25,7 +25,7 @@ describe('dayToken utilities', () => {
 
     // Testing case where one is valid and another is invalid
     expect(compareDayTokens('1', 'invalid')).toBe(-1) // '1' < 'INVALID'
-    expect(compareDayTokens('invalid', '1')).toBe(1)  // 'INVALID' > '1'
+    expect(compareDayTokens('invalid', '1')).toBe(1) // 'INVALID' > '1'
   })
 
   it('normalizes and sorts alphanumeric day tokens deterministically', () => {
