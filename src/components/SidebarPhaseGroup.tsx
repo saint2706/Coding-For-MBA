@@ -187,4 +187,5 @@ function propsAreEqual(
  * @param {SidebarPhaseGroupProps} props - The component props.
  * @returns {JSX.Element} The phase group accordion block.
  */
+export { propsAreEqual }
 export default memo(SidebarPhaseGroup, propsAreEqual)
