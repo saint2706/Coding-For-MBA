@@ -196,7 +196,10 @@ function toDayKey(input: Date): string {
 
 function randomFrom<T>(items: T[]): T | null {
   if (!items.length) return null
-  const index = Math.floor(Math.random() * items.length)
+  const array = new Uint32Array(1)
+  // Ensure array[0] is defined, fallback to 0 if something is wrong
+  crypto.getRandomValues(array)
+  const index = (array[0] || 0) % items.length
   return items[index] ?? null
 }
 

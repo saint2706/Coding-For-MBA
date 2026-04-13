@@ -45,6 +45,14 @@ export function getStoredJson<T>(
 
   try {
     const parsed: unknown = JSON.parse(raw)
+    if (
+      typeof fallback === 'object' &&
+      fallback !== null &&
+      !Array.isArray(fallback) &&
+      Array.isArray(parsed)
+    ) {
+      return fallback
+    }
     if (validate && !validate(parsed)) return fallback
     return (parsed as T) ?? fallback
   } catch {
