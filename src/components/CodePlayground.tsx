@@ -41,6 +41,7 @@ const highlightTheme = {
 
 /**
  * Handle interface for accessing CodePlayground methods imperatively.
+ * @interface CodePlaygroundHandle
  */
 export interface CodePlaygroundHandle {
   /** Trigger code execution */
@@ -53,6 +54,11 @@ export interface CodePlaygroundHandle {
 
 /**
  * Result of a code submission evaluation.
+ * @interface SubmissionResult
+ * @property {boolean} correct - Whether the submission passed validation
+ * @property {string | null} output - The standard output from the execution
+ * @property {string | null} error - Any error message from the execution
+ * @property {Date} attemptedAt - The timestamp of the attempt
  */
 export interface SubmissionResult {
   correct: boolean

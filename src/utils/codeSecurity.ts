@@ -10,6 +10,12 @@
  * - Normalize code to prevent regex bypass attempts.
  */
 
+/**
+ * Result of the code security validation check.
+ * @interface ValidationResult
+ * @property {boolean} valid - Whether the code is safe to execute
+ * @property {string} [error] - The error message if the validation failed
+ */
 export interface ValidationResult {
   valid: boolean
   error?: string
