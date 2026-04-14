@@ -123,27 +123,29 @@ export default function Review() {
           <h2>{currentCard.prompt}</h2>
           <p className="review-card-lesson">From: {currentCard.lessonTitle}</p>
 
-          {showAnswer ? (
-            <div className="review-answer">
-              <strong>Answer guide:</strong>
-              <p>{currentCard.answer}</p>
-            </div>
-          ) : (
-            <>
-              <button
-                type="button"
-                className="review-answer-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-                onClick={() => setShowAnswer(true)}
-              >
-                Show Answer
-              </button>
-              <p className="review-keyboard-hint">
-                <small>
-                  Press <kbd>Space</kbd> or <kbd>Enter</kbd> to reveal
-                </small>
-              </p>
-            </>
-          )}
+          <div aria-live="polite">
+            {showAnswer ? (
+              <div className="review-answer">
+                <strong>Answer guide:</strong>
+                <p>{currentCard.answer}</p>
+              </div>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  className="review-answer-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  onClick={() => setShowAnswer(true)}
+                >
+                  Show Answer
+                </button>
+                <p className="review-keyboard-hint">
+                  <small>
+                    Press <kbd>Space</kbd> or <kbd>Enter</kbd> to reveal
+                  </small>
+                </p>
+              </>
+            )}
+          </div>
 
           {showAnswer && (
             <>

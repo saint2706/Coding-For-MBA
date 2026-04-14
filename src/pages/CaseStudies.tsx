@@ -92,6 +92,7 @@ export default function CaseStudies() {
         <button
           type="button"
           role="tab"
+          aria-controls="cs-panel"
           aria-selected={activeTab === 'case-studies'}
           className={`cs-tab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${activeTab === 'case-studies' ? 'cs-tab--active' : ''}`}
           onClick={() => {
@@ -104,6 +105,7 @@ export default function CaseStudies() {
         <button
           type="button"
           role="tab"
+          aria-controls="cs-panel"
           aria-selected={activeTab === 'projects'}
           className={`cs-tab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${activeTab === 'projects' ? 'cs-tab--active' : ''}`}
           onClick={() => {
@@ -138,7 +140,7 @@ export default function CaseStudies() {
       </p>
 
       {/* Cards */}
-      <motion.div className="cs-grid" layout>
+      <motion.div id="cs-panel" role="tabpanel" className="cs-grid" layout>
         {filtered.map((item) => {
           const normDiff = normalizeDifficulty(item.difficulty)
           const diff = difficultyConfig[normDiff] ?? {
@@ -180,14 +182,17 @@ export default function CaseStudies() {
                   type="button"
                   className="cs-card__expand-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                   aria-expanded={isExpanded}
+                  aria-controls={`cs-content-${item.slug}`}
                   onClick={() => toggleExpand(item.slug)}
                 >
-                  {isExpanded ? '▲ Hide details' : '▼ View details'}
+                  <span aria-hidden="true">{isExpanded ? '▲' : '▼'}</span>{' '}
+                  {isExpanded ? 'Hide details' : 'View details'}
                 </button>
               </div>
 
               {isExpanded && (
                 <motion.div
+                  id={`cs-content-${item.slug}`}
                   className="cs-card__content"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
