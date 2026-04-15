@@ -89,7 +89,7 @@ function asDayKey(date: Date): string {
 }
 
 function parsePositiveRecord(value: unknown, integerKeys = false): Record<string, number> {
-  if (!value || typeof value !== 'object') return {}
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
 
   return Object.entries(value as Record<string, unknown>).reduce<Record<string, number>>(
     (acc, [key, raw]) => {
