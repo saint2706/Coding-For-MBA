@@ -144,6 +144,12 @@ function SidebarPhaseGroup({
   )
 }
 
+/**
+ * Custom props comparison function for memoizing SidebarPhaseGroup.
+ * @param {SidebarPhaseGroupProps} prevProps - Previous props.
+ * @param {SidebarPhaseGroupProps} nextProps - Next props.
+ * @returns {boolean} True if props are equal, false otherwise.
+ */
 function propsAreEqual(
   prevProps: Readonly<SidebarPhaseGroupProps>,
   nextProps: Readonly<SidebarPhaseGroupProps>,

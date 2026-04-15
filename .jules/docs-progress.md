@@ -93,3 +93,5 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 - [x] Added missing JSDoc comments to `src/components/Skeleton.tsx`, `src/components/CodePlayground.tsx`, `src/components/MarkdownRenderer.tsx`, `src/utils/codeSecurity.ts`, and `src/utils/reviewScheduler.ts`.
 - [x] Formatted markdown files with markdownlint.
 - [x] Verified markdown files with markdown-link-check.
+- Fixed missing JSDocs issue by removing blank lines between export blocks and JSDocs, and added missing JSDoc blocks where necessary.
+- Ran markdown link checking.
