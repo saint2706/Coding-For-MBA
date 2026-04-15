@@ -46,3 +46,11 @@ Learned that missing aria labels for decorative emojis in React can be fixed by 
 >> 2026-04-07 - Added standard focus-visible styles to interactive button elements across the application to improve keyboard accessibility.
 * **ExerciseWidget**: Added an explicit `ariaLabel` to the `CopyButton` to improve context for screen reader users when copying solutions.
 - Added focus-visible accessibility classes to all custom interactive elements (buttons) across pages.
+
+## Case Studies Page
+- Added aria-controls to link the Case Studies and Projects tabs to the main cs-panel tab panel grid.
+- Linked the detailed view Expand/Collapse button to its content motion.div using aria-controls.
+- Replaced text-based arrows with aria-hidden spans on the expand button so screen readers don't read "Black up-pointing triangle".
+
+## Review Page
+- Wrapped the answer reveal section in an aria-live="polite" region so screen readers announce it when revealed.
