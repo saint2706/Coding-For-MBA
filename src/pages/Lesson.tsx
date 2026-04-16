@@ -330,6 +330,7 @@ export default function Lesson() {
                 className={`lesson-complete-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${completed ? 'completed' : ''}`}
                 onClick={handleToggleComplete}
                 aria-pressed={completed}
+                aria-label={completed ? 'Mark lesson as incomplete' : 'Mark lesson as complete'}
               >
                 {completed ? '✓ Completed' : '○ Mark as Complete'}
               </button>

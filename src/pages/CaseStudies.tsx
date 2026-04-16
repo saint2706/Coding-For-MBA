@@ -182,6 +182,7 @@ export default function CaseStudies() {
                   type="button"
                   className="cs-card__expand-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                   aria-expanded={isExpanded}
+                  aria-label={isExpanded ? 'Hide details' : 'View details'}
                   aria-controls={`cs-content-${item.slug}`}
                   onClick={() => toggleExpand(item.slug)}
                 >
