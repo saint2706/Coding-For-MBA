@@ -16,6 +16,8 @@ function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+const regexCache = new Map<string, RegExp>()
+
 /**
  * Highlights occurrences of search terms within a text string.
  *
@@ -34,7 +36,17 @@ export function highlightText(text: string, terms: string | readonly string[]): 
   const ordered = Array.from(new Set(normalized)).sort((a, b) => b.length - a.length)
 
   const pattern = ordered.map(escapeRegExp).join('|')
-  const regex = new RegExp(`(${pattern})`, 'gi')
+
+  let regex = regexCache.get(pattern)
+  if (!regex) {
+    regex = new RegExp(`(${pattern})`, 'gi')
+    // Keep cache size manageable to prevent memory leaks
+    if (regexCache.size > 100) {
+      regexCache.clear()
+    }
+    regexCache.set(pattern, regex)
+  }
+
   const parts = text.split(regex)
 
   return parts.map((part, index) =>

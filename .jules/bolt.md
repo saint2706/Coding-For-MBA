@@ -27,3 +27,5 @@
 - **Solution**: Implemented `React.lazy` and `Suspense` for `CodePlayground`, `ExerciseWidget`, and `MasteryCheck`.
 - **Metrics/Impact**: The bundle analysis (`npm run analyze`) confirmed that the `MarkdownRenderer` chunk size decreased significantly (from ~35.6kB to ~20.3kB), and `CodePlayground`, `ExerciseWidget`, and `MasteryCheck` are now split into their own separate network chunks. This reduces the LCP and TBT on lesson pages as heavy interactive code components are only loaded when they are needed.
 - 2026-04-12 UTC - ⚡ Bolt | Micro-optimized computeRankingBoost score accumulation loop and totalLearningMs reducer to prevent V8 closure allocations from causing main-thread stuttering during active user sessions. Tested via npm run analyze:report and Vitest.
+
+- **highlightText**: Memoized the `RegExp` in `searchHighlight.tsx` to prevent redundant compilations on every search render, improving overall performance for search result rendering.
