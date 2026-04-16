@@ -171,3 +171,11 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 -   [x] **[GEO][SEO] Structured Data XSS Fix**: Fixed the `.replace(/</g, '\\u003c')` call inside `src/components/SEOHead.tsx` and `src/components/MasteryCheck.tsx` to `.replace(/</g, '\\\\u003c')`. This ensures that `\u003c` is properly output in the serialized JS string, satisfying React's `dangerouslySetInnerHTML` escaping requirements without breaking JSON parsers.
 - Added image to WebSite schema
 - [GEO] Fixed JSON-LD escaping in SEOHead and MasteryCheck.
+
+### [Date: 2026-04-16] - Semantic HTML Optimization
+
+**Priority Areas:**
+1.  **SEO (Visibility)**: Semantic HTML hierarchy.
+
+**Changes:**
+-   [x] **[SEO] Semantic HTML Fixes**: Converted `<h3>` tags to `<h2>` in `src/pages/Home.tsx` inside the phase cards to prevent skipped heading levels and maintain strict semantic HTML hierarchy.
