@@ -40,7 +40,6 @@ import { useQuizStore } from '../stores/quizStore'
  *
  * @returns The rendered exercises page
  */
-
 export default function Exercises() {
   const exercises = getAllExercises()
   const notebooks = getAllNotebooks()
