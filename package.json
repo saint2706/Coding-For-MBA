@@ -67,7 +67,7 @@
     "@vitest/coverage-v8": "^4.1.4",
     "beasties": "^0.4.2",
     "gh-pages": "^6.3.0",
-    "globals": "^17.4.0",
+    "globals": "^17.5.0",
     "husky": "^9.1.7",
     "jsdom": "^29.0.2",
     "lint-staged": "^16.4.0",
