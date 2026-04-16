@@ -92,7 +92,7 @@ function parseValidDays(value: unknown): number[] {
 }
 
 function parseValidCompletionDates(value: unknown): Record<number, string> {
-  if (!value || typeof value !== 'object') return {}
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return {}
 
   const entries = Object.entries(value as Record<string, unknown>)
   return entries.reduce<Record<number, string>>((acc, [rawDay, date]) => {
