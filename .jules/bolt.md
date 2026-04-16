@@ -29,3 +29,5 @@
 - 2026-04-12 UTC - ⚡ Bolt | Micro-optimized computeRankingBoost score accumulation loop and totalLearningMs reducer to prevent V8 closure allocations from causing main-thread stuttering during active user sessions. Tested via npm run analyze:report and Vitest.
 
 - **highlightText**: Memoized the `RegExp` in `searchHighlight.tsx` to prevent redundant compilations on every search render, improving overall performance for search result rendering.
+- Used `requestIdleCallback` with a fallback to `setTimeout` to defer heavy operations like `preloadSearchIndex` during initial render, lowering main thread blocking and improving interaction times.
+- Ran project test suite and LHCI checks, validating improvements while addressing specific Chrome interstitial issues that occur in sandbox environments.
