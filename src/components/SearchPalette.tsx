@@ -147,10 +147,53 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
    * @param result - Search result to extract snippet from
    * @returns Formatted text snippet with ellipses
    */
-  function getSnippet(result: SearchResult): string {
-    const plain = result.item.plainContent || result.item.content
-    return getSearchSnippet(plain, debouncedQuery, 120)
-  }
+  const getSnippet = useCallback(
+    (result: SearchResult): string => {
+      const plain = result.item.plainContent || result.item.content
+      return getSearchSnippet(plain, debouncedQuery, 120)
+    },
+    [debouncedQuery],
+  )
+
+  // ⚡ Bolt: Memoize the search results mapping to prevent recalculation
+  // on every keystroke when debouncedQuery hasn't updated yet.
+  const renderedResults = useMemo(() => {
+    return results.map((result, index) => {
+      const diff =
+        difficultyConfig[result.item.difficulty || 'beginner'] || difficultyConfig.beginner!
+      return (
+        <div
+          key={result.item.day}
+          id={`search-result-${index}`}
+          className={`search-result-item ${index === activeIndex ? 'active' : ''}`}
+          onClick={() => navigateToResult(result)}
+          role="option"
+          aria-selected={index === activeIndex}
+        >
+          <div className="search-result-header">
+            <span className="search-result-day">Day {result.item.day}</span>
+            <span className="search-result-title">{result.item.title}</span>
+            <span
+              className="search-result-badge"
+              style={{ color: diff.color, background: diff.bg }}
+            >
+              {diff.label}
+            </span>
+          </div>
+          <div className="search-result-snippet">{getSnippet(result)}</div>
+          {result.item.tags && result.item.tags.length > 0 && (
+            <div className="search-result-tags">
+              {result.item.tags.slice(0, 4).map((tag) => (
+                <span key={tag} className="search-result-tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      )
+    })
+  }, [results, activeIndex, navigateToResult, getSnippet])
 
   if (!isOpen) return null
 
@@ -213,41 +256,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
         {results.length > 0 && (
           <div className="search-results" id="search-results" ref={listRef} role="listbox">
-            {results.map((result, index) => {
-              const diff =
-                difficultyConfig[result.item.difficulty || 'beginner'] || difficultyConfig.beginner!
-              return (
-                <div
-                  key={result.item.day}
-                  id={`search-result-${index}`}
-                  className={`search-result-item ${index === activeIndex ? 'active' : ''}`}
-                  onClick={() => navigateToResult(result)}
-                  role="option"
-                  aria-selected={index === activeIndex}
-                >
-                  <div className="search-result-header">
-                    <span className="search-result-day">Day {result.item.day}</span>
-                    <span className="search-result-title">{result.item.title}</span>
-                    <span
-                      className="search-result-badge"
-                      style={{ color: diff.color, background: diff.bg }}
-                    >
-                      {diff.label}
-                    </span>
-                  </div>
-                  <div className="search-result-snippet">{getSnippet(result)}</div>
-                  {result.item.tags && result.item.tags.length > 0 && (
-                    <div className="search-result-tags">
-                      {result.item.tags.slice(0, 4).map((tag) => (
-                        <span key={tag} className="search-result-tag">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )
-            })}
+            {renderedResults}
           </div>
         )}
 
