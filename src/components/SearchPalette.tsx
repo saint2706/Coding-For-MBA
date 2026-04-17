@@ -173,7 +173,10 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
           <div className="search-result-header">
             <span className="search-result-day">Day {result.item.day}</span>
             <span className="search-result-title">{result.item.title}</span>
-            <span className="search-result-badge" style={{ color: diff.color, background: diff.bg }}>
+            <span
+              className="search-result-badge"
+              style={{ color: diff.color, background: diff.bg }}
+            >
               {diff.label}
             </span>
           </div>
