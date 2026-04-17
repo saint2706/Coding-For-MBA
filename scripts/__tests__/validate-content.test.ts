@@ -23,15 +23,14 @@ describe('validate-content', () => {
 
     it('should find README.md files and ignore extras', () => {
       vi.spyOn(fs, 'existsSync').mockImplementation((pathStr: string | fs.PathLike | URL) => {
-        if (typeof pathStr === 'string' && pathStr.includes('test-dir')) return true
-        // Allow path string formatting by `path.join` to work on Windows CI.
-        if (typeof pathStr === 'string' && pathStr.includes('test-dir'.replace('/', '\\'))) return true
+        const p = pathStr.toString().replace(/\\/g, '/')
+        if (p.includes('/test-dir')) return true
         return false
       })
 
       vi.spyOn(fs, 'readdirSync').mockImplementation((pathStr: fs.PathLike, options?: { withFileTypes?: boolean }) => {
-        const p = pathStr as string
-        if (p === '/test-dir' && options?.withFileTypes) {
+        const p = pathStr.toString().replace(/\\/g, '/')
+        if (p.endsWith('/test-dir') && options?.withFileTypes) {
            return [
              { name: 'README.md', isDirectory: () => false },
              { name: 'Phase_Overview.md', isDirectory: () => false },
@@ -39,12 +38,12 @@ describe('validate-content', () => {
              { name: 'phase1', isDirectory: () => true }
            ] as unknown as fs.Dirent[]
         }
-        if (p === '/test-dir/phase1' && options?.withFileTypes) {
+        if (p.endsWith('/test-dir/phase1') && options?.withFileTypes) {
            return [
              { name: 'README.md', isDirectory: () => false }
            ] as unknown as fs.Dirent[]
         }
-        if (p === '/test-dir/extras' && options?.withFileTypes) {
+        if (p.endsWith('/test-dir/extras') && options?.withFileTypes) {
            return [
              { name: 'README.md', isDirectory: () => false }
            ] as unknown as fs.Dirent[]
@@ -53,12 +52,15 @@ describe('validate-content', () => {
       })
 
       const files = findReadmes('/test-dir', '/other-dir')
-      // normalize separators for checking contains, so it runs on Windows natively.
-      const sep = path.sep;
-      expect(files).toContain(`/test-dir${sep}README.md`)
-      expect(files).toContain(`/test-dir${sep}Phase_Overview.md`)
-      expect(files).toContain(`/test-dir${sep}phase1${sep}README.md`)
-      expect(files).not.toContain(`/test-dir${sep}extras${sep}README.md`)
+
+      // Because findReadmes uses path.join internally, the returned strings
+      // will have OS-specific separators. So let's map them to posix internally for test assertions
+      const normalizedFiles = files.map(f => f.replace(/\\/g, '/'))
+
+      expect(normalizedFiles).toContain('/test-dir/README.md')
+      expect(normalizedFiles).toContain('/test-dir/Phase_Overview.md')
+      expect(normalizedFiles).toContain('/test-dir/phase1/README.md')
+      expect(normalizedFiles).not.toContain('/test-dir/extras/README.md')
     })
   })
 
@@ -128,13 +130,13 @@ This is a sample phase body with enough content to pass validation checks becaus
     it('should return 1 when validation fails', () => {
       vi.spyOn(fs, 'existsSync').mockReturnValue(true)
       vi.spyOn(fs, 'readdirSync').mockImplementation((pathStr: fs.PathLike, options?: { withFileTypes?: boolean }) => {
-        const p = pathStr as string
-        if (p === '/test-dir' && options?.withFileTypes) {
+        const p = pathStr.toString().replace(/\\/g, '/')
+        if (p.endsWith('/test-dir') && options?.withFileTypes) {
            return [
              { name: 'phase1', isDirectory: () => true }
            ] as unknown as fs.Dirent[]
         }
-        if (p === '/test-dir/phase1' && options?.withFileTypes) {
+        if (p.endsWith('/test-dir/phase1') && options?.withFileTypes) {
            return [
              { name: 'README.md', isDirectory: () => false }
            ] as unknown as fs.Dirent[]
@@ -150,13 +152,13 @@ This is a sample phase body with enough content to pass validation checks becaus
     it('should return 0 when validation passes with Phase Overview', () => {
       vi.spyOn(fs, 'existsSync').mockReturnValue(true)
       vi.spyOn(fs, 'readdirSync').mockImplementation((pathStr: fs.PathLike, options?: { withFileTypes?: boolean }) => {
-        const p = pathStr as string
-        if (p === '/test-dir' && options?.withFileTypes) {
+        const p = pathStr.toString().replace(/\\/g, '/')
+        if (p.endsWith('/test-dir') && options?.withFileTypes) {
            return [
              { name: 'phase1', isDirectory: () => true }
            ] as unknown as fs.Dirent[]
         }
-        if (p === '/test-dir/phase1' && options?.withFileTypes) {
+        if (p.endsWith('/test-dir/phase1') && options?.withFileTypes) {
            return [
              { name: 'README.md', isDirectory: () => false }
            ] as unknown as fs.Dirent[]
