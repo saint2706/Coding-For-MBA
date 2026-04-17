@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import path from 'node:path'
 import fs from 'node:fs'
 import {
   findReadmes,
@@ -23,6 +24,8 @@ describe('validate-content', () => {
     it('should find README.md files and ignore extras', () => {
       vi.spyOn(fs, 'existsSync').mockImplementation((pathStr: string | fs.PathLike | URL) => {
         if (typeof pathStr === 'string' && pathStr.includes('test-dir')) return true
+        // Allow path string formatting by `path.join` to work on Windows CI.
+        if (typeof pathStr === 'string' && pathStr.includes('test-dir'.replace('/', '\\'))) return true
         return false
       })
 
@@ -50,10 +53,12 @@ describe('validate-content', () => {
       })
 
       const files = findReadmes('/test-dir', '/other-dir')
-      expect(files).toContain('/test-dir/README.md')
-      expect(files).toContain('/test-dir/Phase_Overview.md')
-      expect(files).toContain('/test-dir/phase1/README.md')
-      expect(files).not.toContain('/test-dir/extras/README.md')
+      // normalize separators for checking contains, so it runs on Windows natively.
+      const sep = path.sep;
+      expect(files).toContain(`/test-dir${sep}README.md`)
+      expect(files).toContain(`/test-dir${sep}Phase_Overview.md`)
+      expect(files).toContain(`/test-dir${sep}phase1${sep}README.md`)
+      expect(files).not.toContain(`/test-dir${sep}extras${sep}README.md`)
     })
   })
 
