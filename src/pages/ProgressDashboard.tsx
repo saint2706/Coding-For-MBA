@@ -607,6 +607,7 @@ export default function ProgressDashboard() {
           type="button"
           className="progress-clear-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           onClick={handleClearProgress}
+          aria-label="Clear all progress"
         >
           Clear All Progress
         </button>

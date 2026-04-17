@@ -76,6 +76,7 @@ export default function MasteryCheck({
         className={`mastery-check__check-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${revealed ? 'mastery-check__check-btn--revealed' : ''}`}
         onClick={() => setRevealed((r) => !r)}
         aria-expanded={revealed}
+        aria-label={revealed ? 'Hide Answer' : 'Show Answer'}
         {...(revealed && { 'aria-controls': answerId })}
       >
         {revealed ? (
