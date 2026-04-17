@@ -64,7 +64,11 @@ export default function App() {
 
   useEffect(() => {
     // ⚡ Bolt: Preload search index in background to eliminate input delay when user starts a search
-    preloadSearchIndex()
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      window.requestIdleCallback(() => preloadSearchIndex(), { timeout: 2000 })
+    } else {
+      setTimeout(() => preloadSearchIndex(), 500)
+    }
   }, [])
 
   useEffect(() => {
