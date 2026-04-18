@@ -179,3 +179,12 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 -   [x] **[SEO] Semantic HTML Fixes**: Converted `<h3>` tags to `<h2>` in `src/pages/Home.tsx` inside the phase cards to prevent skipped heading levels and maintain strict semantic HTML hierarchy.
+### [Date: Current] - LCP and Semantic HTML Optimization
+
+**Priority Areas:**
+1.  **Speed (Velocity)**: LCP element lazy-loading prevention.
+2.  **SEO (Visibility)**: Semantic HTML hierarchy.
+
+**Changes:**
+-   [x] **[PERF] LCP Optimization**: Verified that `fetchPriority` and lowercase `fetchpriority` are properly extracted and used to set `loading="eager"` in `MarkdownRenderer.tsx`.
+-   [x] **[SEO] Semantic HTML Fixes**: Added an `<h1>` tag with class `sr-only` to the `Lesson.tsx` page to ensure strict semantic HTML hierarchy.
