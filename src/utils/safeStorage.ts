@@ -49,8 +49,14 @@ export function getStoredJson<T>(
       typeof fallback === 'object' &&
       fallback !== null &&
       !Array.isArray(fallback) &&
-      Array.isArray(parsed)
+      (typeof parsed !== 'object' || Array.isArray(parsed) || parsed === null)
     ) {
+      return fallback
+    }
+    if (Array.isArray(fallback) && !Array.isArray(parsed)) {
+      return fallback
+    }
+    if (typeof fallback !== 'object' && typeof parsed !== typeof fallback) {
       return fallback
     }
     if (validate && !validate(parsed)) return fallback
