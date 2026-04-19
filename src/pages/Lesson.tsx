@@ -289,6 +289,7 @@ export default function Lesson() {
 
         {/* Breadcrumb */}
         <div className="lesson-header">
+          <h1 className="sr-only">{lessonTitle}</h1>
           <Breadcrumb
             items={[
               { label: 'Home', to: '/' },
