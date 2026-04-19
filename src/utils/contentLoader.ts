@@ -559,6 +559,9 @@ export function parseNotebookEntry(
 
   try {
     const nb = JSON.parse(raw) as { cells?: NotebookCell[] }
+    if (typeof nb !== 'object' || nb === null || Array.isArray(nb)) {
+      throw new Error('Invalid notebook JSON structure.')
+    }
     return { phase, cells: nb.cells || [] }
   } catch (error) {
     console.warn(
