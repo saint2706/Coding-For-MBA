@@ -100,6 +100,12 @@ export default function Exercises() {
     })),
   )
 
+  const renderedExercises = useMemo(() => {
+    return filtered.map((ex) => (
+      <ExerciseCard key={`${ex.day}-${ex.id}`} exercise={ex} />
+    ))
+  }, [filtered])
+
   return (
     <div className="page-container">
       <SEOHead
@@ -226,9 +232,7 @@ export default function Exercises() {
 
       {/* Exercise Grid */}
       <motion.div className="exercises-grid" layout>
-        {filtered.map((ex) => (
-          <ExerciseCard key={`${ex.day}-${ex.id}`} exercise={ex} />
-        ))}
+        {renderedExercises}
       </motion.div>
 
       {filtered.length === 0 && (

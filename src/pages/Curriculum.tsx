@@ -113,6 +113,71 @@ export default function Curriculum() {
     })),
   )
 
+  const renderedPhases = useMemo(() => {
+    return phasesData.map((phase) => {
+      return (
+        <motion.div
+          className={`curriculum-phase glass-card ${phase.isPhaseComplete ? 'curriculum-phase--complete' : ''}`}
+          key={phase.phase}
+          variants={phaseVariants}
+          transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}
+        >
+          <Link to={`/phase/${phase.phase}`} className="curriculum-phase-header">
+            <span style={{ fontSize: '1.25rem' }}>{phase.icon}</span>
+            <h2>
+              Phase {phase.phase}: {phase.title}
+            </h2>
+            {phase.isPhaseComplete ? (
+              <span className="curriculum-phase-status curriculum-phase-status--done">✓ Done</span>
+            ) : phase.isPhaseStarted ? (
+              <span className="curriculum-phase-status curriculum-phase-status--active">
+                Active
+              </span>
+            ) : null}
+            <span
+              className="difficulty-badge"
+              style={{
+                color: phase.diff.color,
+                background: phase.diff.bg,
+                marginLeft: phase.isPhaseComplete || phase.isPhaseStarted ? '0' : 'auto',
+              }}
+            >
+              {phase.diff.label}
+            </span>
+          </Link>
+
+          <div style={{ marginBottom: '0.75rem', paddingRight: '1rem' }}>
+            <ProgressBar
+              completed={phase.completedInPhase.length}
+              total={phase.lessons.length}
+            />
+          </div>
+
+          <div className="curriculum-days">
+            {phase.lessons.map((lesson) => {
+              const isDone = completedSet.has(dayTokenToProgressId(lesson.day))
+              return (
+                <Link
+                  to={`/lesson/${lesson.day}`}
+                  className="curriculum-day-link"
+                  key={lesson.day}
+                >
+                  <span className="day-num">Day {lesson.day}</span>
+                  <span>{lesson.title}</span>
+                  {isDone && (
+                    <span className="day-link-check" aria-label="Completed">
+                      ✓
+                    </span>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+        </motion.div>
+      )
+    })
+  }, [phasesData, completedSet, prefersReducedMotion])
+
   return (
     <div className="page-container">
       <SEOHead
@@ -202,70 +267,7 @@ export default function Curriculum() {
         whileInView="visible"
         viewport={{ once: true, amount: 0.15 }}
       >
-        {phasesData.map((phase) => {
-          return (
-            <motion.div
-              className={`curriculum-phase glass-card ${phase.isPhaseComplete ? 'curriculum-phase--complete' : ''}`}
-              key={phase.phase}
-              variants={phaseVariants}
-              transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}
-            >
-              <Link to={`/phase/${phase.phase}`} className="curriculum-phase-header">
-                <span style={{ fontSize: '1.25rem' }}>{phase.icon}</span>
-                <h2>
-                  Phase {phase.phase}: {phase.title}
-                </h2>
-                {phase.isPhaseComplete ? (
-                  <span className="curriculum-phase-status curriculum-phase-status--done">
-                    ✓ Done
-                  </span>
-                ) : phase.isPhaseStarted ? (
-                  <span className="curriculum-phase-status curriculum-phase-status--active">
-                    Active
-                  </span>
-                ) : null}
-                <span
-                  className="difficulty-badge"
-                  style={{
-                    color: phase.diff.color,
-                    background: phase.diff.bg,
-                    marginLeft: phase.isPhaseComplete || phase.isPhaseStarted ? '0' : 'auto',
-                  }}
-                >
-                  {phase.diff.label}
-                </span>
-              </Link>
-
-              <div style={{ marginBottom: '0.75rem', paddingRight: '1rem' }}>
-                <ProgressBar
-                  completed={phase.completedInPhase.length}
-                  total={phase.lessons.length}
-                />
-              </div>
-
-              <div className="curriculum-days">
-                {phase.lessons.map((lesson) => {
-                  const isDone = completedSet.has(dayTokenToProgressId(lesson.day))
-                  return (
-                    <Link
-                      to={`/lesson/${lesson.day}`}
-                      className="curriculum-day-link"
-                      key={lesson.day}
-                    >
-                      <span className="day-num">Day {lesson.day}</span>
-                      <span>{lesson.title}</span>
-                      {isDone && (
-                        <span className="day-link-check" aria-label="Completed">
-                          ✓
-                        </span>
-                      )}
-                    </Link>
-                  )
-                })}
-              </div>
-            </motion.div>
-          )
-        })}
+        {renderedPhases}
       </motion.div>
     </div>
   )
