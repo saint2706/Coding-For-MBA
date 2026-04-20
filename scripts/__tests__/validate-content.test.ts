@@ -111,7 +111,7 @@ This is a sample phase body with enough content to pass validation checks becaus
   })
 
   describe('runValidation', () => {
-    let consoleLogSpy: any;
+    let consoleLogSpy: ReturnType<typeof vi.spyOn>;
 
     beforeEach(() => {
       consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
