@@ -119,9 +119,9 @@
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/81: BI Architecture & Data Modeling - Lesson covering BI Architecture & Data Modeling.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/82: BI ETL & Pipeline Automation - Lesson covering BI ETL & Pipeline Automation.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/83: BI Cloud & Modern Data Stack - Lesson covering BI Cloud & Modern Data Stack.
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/84B: dbt Fundamentals - Lesson covering dbt Fundamentals.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/84C: Reverse ETL & Semantic Layer - Lesson covering Reverse ETL & Semantic Layer.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/84: BI Career & Capstone - Lesson covering BI Career & Capstone.
-- https://saint2706.github.io/Coding-For-MBA/#/lesson/85: dbt Fundamentals - Lesson covering dbt Fundamentals.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/85: Advanced SQL Patterns - Lesson covering Advanced SQL Patterns.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/86: Cloud Architecture & Optimization - Lesson covering Cloud Architecture & Optimization.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/87: Technical Data Governance & Security - Lesson covering Technical Data Governance & Security.
@@ -133,9 +133,9 @@
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/93: Advanced DML & Upserts - Lesson covering Advanced DML & Upserts.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/94: Advanced DQL & Optimization - Lesson covering Advanced DQL & Optimization.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/95: Advanced Joins & Algorithms - Lesson covering Advanced Joins & Algorithms.
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/96B: NoSQL Deep Dive - Lesson covering NoSQL Deep Dive.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/96C: Streaming SQL Fundamentals - Lesson covering Streaming SQL Fundamentals.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/96: Advanced Subqueries - Lesson covering Advanced Subqueries.
-- https://saint2706.github.io/Coding-For-MBA/#/lesson/97: NoSQL Deep Dive - Lesson covering NoSQL Deep Dive.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/97: Materialized Views & Caching - Lesson covering Materialized Views & Caching.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/98: Advanced Indexing (GIN, GiST, BRIN) - Lesson covering Advanced Indexing (GIN, GiST, BRIN).
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/99: Distributed Transactions & Concurrency - Lesson covering Distributed Transactions & Concurrency.
@@ -147,9 +147,9 @@
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/105: JSON & NoSQL in SQL - Lesson covering JSON & NoSQL in SQL.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/106: XML & Complex Data Types - Lesson covering XML & Complex Data Types.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/107: Enterprise Security: RLS & Encryption - Lesson covering Enterprise Security: RLS & Encryption.
+- https://saint2706.github.io/Coding-For-MBA/#/lesson/108B: Curriculum Grand Finale Capstone - Lesson covering Curriculum Grand Finale Capstone.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/108C: Cloud-Native SQL: BigQuery ML, Snowflake Cortex & Redshift ML - Lesson covering Cloud-Native SQL: BigQuery ML, Snowflake Cortex & Redshift ML.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/108: Performance Tuning & Optimization - Lesson covering Performance Tuning & Optimization.
-- https://saint2706.github.io/Coding-For-MBA/#/lesson/109: Curriculum Grand Finale Capstone - Lesson covering Curriculum Grand Finale Capstone.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/109: LLM Landscape — GPT-4o, Gemini, Claude, Llama - Lesson covering LLM Landscape — GPT-4o, Gemini, Claude, Llama.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/110: Prompt Engineering Mastery - Lesson covering Prompt Engineering Mastery.
 - https://saint2706.github.io/Coding-For-MBA/#/lesson/111: LangChain & LlamaIndex — Document Loaders, Chains, Memory - Lesson covering LangChain & LlamaIndex — Document Loaders, Chains, Memory.

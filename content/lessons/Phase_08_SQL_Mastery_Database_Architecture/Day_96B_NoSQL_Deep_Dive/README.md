@@ -1,5 +1,5 @@
 ---
-day: 97
+day: 96B
 title: "NoSQL Deep Dive"
 phase: 8
 phaseTitle: "SQL Mastery & Database Architecture"
