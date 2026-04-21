@@ -1,0 +1,1 @@
+- Pinned stable valid plugin action versions (e.g., actions/checkout@v4, github/codeql-action@v3) in all Github Action workflows (.github/workflows/*) fixing broken builds from v6/v7 non-existent tags
