@@ -165,7 +165,7 @@ const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
     <img
       loading={isHighPriority ? 'eager' : 'lazy'}
       decoding="async"
-      fetchPriority={isHighPriority ? 'high' : undefined}
+      fetchPriority={isHighPriority ? 'high' : 'auto'}
       alt={rest.alt || 'Course image'}
       {...rest}
     />
