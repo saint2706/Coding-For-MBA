@@ -1,5 +1,5 @@
 ---
-day: 109
+day: 108B
 title: "Curriculum Grand Finale Capstone"
 phase: 9
 phaseTitle: "Enterprise SQL & Performance Engineering"

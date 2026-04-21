@@ -188,3 +188,6 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 **Changes:**
 -   [x] **[PERF] LCP Optimization**: Verified that `fetchPriority` and lowercase `fetchpriority` are properly extracted and used to set `loading="eager"` in `MarkdownRenderer.tsx`.
 -   [x] **[SEO] Semantic HTML Fixes**: Added an `<h1>` tag with class `sr-only` to the `Lesson.tsx` page to ensure strict semantic HTML hierarchy.
+## SEO & GEO Optimization
+- Fixed duplicate day values in `llms.txt` generation by changing day IDs from 85 to 84B, 97 to 96B, and 109 to 108B to fix root issues without dropping content.
+- Kept JSON-LD schema generation secure by properly escaping dangerous `<` inside JSON LD.

@@ -1,5 +1,5 @@
 ---
-day: 85
+day: 84B
 title: "dbt Fundamentals"
 phase: 7
 phaseTitle: "BI Analytics, Governance & Modern Data Stack"
