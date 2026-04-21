@@ -174,3 +174,7 @@
 - **Fixed:** Replaced `props: any` with `props: Record<string, unknown>` in `src/components/__tests__/MarkdownRenderer.test.tsx` for various component mocks.
 - **Fixed:** Replaced `toastMock: any = vi.fn()` with a properly structured object using `Object.assign` in `src/utils/__tests__/toast.test.ts`.
 - **Verified:** Build, lint, and tests pass successfully without any type errors.
+
+## Session 30
+- **Fixed:** Replaced `let consoleLogSpy: any;` with `let consoleLogSpy: ReturnType<typeof vi.spyOn>;` in `scripts/__tests__/validate-content.test.ts` to fix strict typing.
+- **Verified:** Build, lint, and tests pass successfully without any type errors.
