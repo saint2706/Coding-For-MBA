@@ -191,3 +191,12 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 ## SEO & GEO Optimization
 - Fixed duplicate day values in `llms.txt` generation by changing day IDs from 85 to 84B, 97 to 96B, and 109 to 108B to fix root issues without dropping content.
 - Kept JSON-LD schema generation secure by properly escaping dangerous `<` inside JSON LD.
+
+### [Date: 2026-04-22] - JSON-LD Escaping Fix
+
+**Priority Areas:**
+1.  **GEO (Intelligence)**: Securely injecting JSON-LD schema into the `<head>` and `MasteryCheck` component.
+2.  **Security**: Preventing XSS vulnerabilities from literal `<` evaluation in script tags.
+
+**Changes:**
+-   [x] **[GEO][SEO] Structured Data XSS Fix**: Reverted the incorrect `\u003c` inside `dangerouslySetInnerHTML` string interpolation back to `<` in `src/components/SEOHead.tsx` and `src/components/MasteryCheck.tsx`. This ensures that the generated JSON correctly decodes the `<` character to prevent XSS while maintaining valid data structure.
