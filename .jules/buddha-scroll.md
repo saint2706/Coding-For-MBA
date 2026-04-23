@@ -191,3 +191,4 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 ## SEO & GEO Optimization
 - Fixed duplicate day values in `llms.txt` generation by changing day IDs from 85 to 84B, 97 to 96B, and 109 to 108B to fix root issues without dropping content.
 - Kept JSON-LD schema generation secure by properly escaping dangerous `<` inside JSON LD.
+- [x] 🧘 Buddha: [PERF] Fix Hero image LCP lazy loading by updating fetchpriority in MarkdownRenderer.tsx
