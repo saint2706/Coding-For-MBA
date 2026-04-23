@@ -275,7 +275,7 @@ describe('Sidebar', () => {
     })
 
     const links = Array.from(container.querySelectorAll('.day-link'))
-    const hrefs = links.map(l => l.getAttribute('href'))
+    const hrefs = links.map((l) => l.getAttribute('href'))
 
     expect(hrefs).toContain('/')
     expect(hrefs).toContain('/curriculum')
@@ -300,7 +300,10 @@ describe('Sidebar', () => {
     let activeLink = container.querySelector('.day-link.active')
     expect(activeLink?.getAttribute('href')).toBe('/progress')
 
-    act(() => { root?.unmount(); root = createRoot(container); })
+    act(() => {
+      root?.unmount()
+      root = createRoot(container)
+    })
     act(() => {
       root?.render(
         <MemoryRouter initialEntries={['/exercises']}>
@@ -311,7 +314,10 @@ describe('Sidebar', () => {
     activeLink = container.querySelector('.day-link.active')
     expect(activeLink?.getAttribute('href')).toBe('/exercises')
 
-    act(() => { root?.unmount(); root = createRoot(container); })
+    act(() => {
+      root?.unmount()
+      root = createRoot(container)
+    })
     act(() => {
       root?.render(
         <MemoryRouter initialEntries={['/case-studies']}>
@@ -322,7 +328,10 @@ describe('Sidebar', () => {
     activeLink = container.querySelector('.day-link.active')
     expect(activeLink?.getAttribute('href')).toBe('/case-studies')
 
-    act(() => { root?.unmount(); root = createRoot(container); })
+    act(() => {
+      root?.unmount()
+      root = createRoot(container)
+    })
     act(() => {
       root?.render(
         <MemoryRouter initialEntries={['/review']}>
