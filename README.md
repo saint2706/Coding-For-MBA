@@ -52,6 +52,8 @@
 
 ## 🚀 Getting Started
 
+> **Note:** Ensure you have Node.js 18+ installed before running this command.
+
 ```bash
 # Clone the repo
 git clone https://github.com/saint2706/Coding-For-MBA.git

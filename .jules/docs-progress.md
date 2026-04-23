@@ -95,3 +95,5 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 - [x] Verified markdown files with markdown-link-check.
 - Fixed missing JSDocs issue by removing blank lines between export blocks and JSDocs, and added missing JSDoc blocks where necessary.
 - Ran markdown link checking.
+- **[2026-04-21] Added Setup Instructions**
+  - Added missing Node.js prerequisite note to README.md.
