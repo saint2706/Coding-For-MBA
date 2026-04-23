@@ -192,3 +192,13 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 - Fixed duplicate day values in `llms.txt` generation by changing day IDs from 85 to 84B, 97 to 96B, and 109 to 108B to fix root issues without dropping content.
 - Kept JSON-LD schema generation secure by properly escaping dangerous `<` inside JSON LD.
 - [x] 🧘 Buddha: [PERF] Fix Hero image LCP lazy loading by updating fetchpriority in MarkdownRenderer.tsx
+
+### [Date: 2026-04-23] - SEO and Performance Validation
+
+**Priority Areas:**
+1. **Speed (Velocity)**: LCP element optimization logic correction.
+2. **SEO (Visibility)**: Validating semantic HTML structure.
+
+**Changes:**
+- [x] **[PERF] LCP Optimization**: Replaced `fetchPriority='auto'` with `fetchPriority={undefined}` in `MarkdownRenderer.tsx` to prevent React hydration errors or DOM mismatches for non-high priority images, strictly honoring the LCP priority parameter.
+- [x] **[SEO] Semantic HTML Fixes**: Repaired heading mapping in `Home.tsx` to correctly wrap `phase.title` using `<h3>` instead of `<h2>` within the Phase card components, preserving the semantic page outline underneath the main 'The Learning Path' `<h2>`.
