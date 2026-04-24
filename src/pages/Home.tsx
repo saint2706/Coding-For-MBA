@@ -73,7 +73,7 @@ export default function Home() {
               <div className="phase-card-icon">{icon}</div>
               <div className="phase-card-title">
                 <div className="phase-num">Phase {phase.phase}</div>
-                <h2>{phase.title}</h2>
+                <h3>{phase.title}</h3>
               </div>
             </div>
             <div className="phase-card-meta">
