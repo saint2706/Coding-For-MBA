@@ -1,0 +1,70 @@
+{
+    "day": "24B",
+    "questions": [
+        {
+            "id": "d24bq01",
+            "type": "multiple_choice",
+            "question": "In an EDA workflow, what should you establish BEFORE writing any code or creating plots?",
+            "options": [
+                "The color scheme for the final presentation",
+                "The business decision the analysis will inform and the primary KPI",
+                "The number of rows in the dataset",
+                "Which visualization library to use"
+            ],
+            "answer": 1,
+            "explanation": "EDA should be driven by business questions, not data exploration for its own sake. Defining the decision context and primary KPI first ensures your analysis focuses on what matters and prevents drawing conclusions that don't inform any decision."
+        },
+        {
+            "id": "d24bq02",
+            "type": "multiple_choice",
+            "question": "What is the key difference between univariate and bivariate analysis?",
+            "options": [
+                "Univariate uses one dataset; bivariate uses two datasets",
+                "Univariate examines one variable at a time; bivariate examines relationships between two variables",
+                "Univariate is for numerical data; bivariate is for categorical data",
+                "There is no meaningful difference"
+            ],
+            "answer": 1,
+            "explanation": "Univariate analysis describes the distribution of a single variable (mean, median, histogram). Bivariate analysis examines the relationship or correlation between two variables (scatter plots, grouped comparisons). Both are necessary for thorough EDA."
+        },
+        {
+            "id": "d24bq03",
+            "type": "multiple_choice",
+            "question": "When exploring missing data, why is it important to understand WHY values are missing?",
+            "options": [
+                "Missing data always means the dataset is corrupt and unusable",
+                "The missingness pattern determines whether dropping, imputing, or flagging is the right strategy",
+                "Missing values must always be filled with the column mean",
+                "Missing values only matter for numerical columns"
+            ],
+            "answer": 1,
+            "explanation": "Missing data can be random (safe to impute), systematic (e.g., a field only applies to certain customers—dropping is wrong), or indicative of a data pipeline issue. Choosing the wrong strategy introduces bias or removes valid signal."
+        },
+        {
+            "id": "d24bq04",
+            "type": "multiple_choice",
+            "question": "A high correlation between two variables in your dataset means:",
+            "options": [
+                "One variable causes the other",
+                "They are linearly related, but this does not establish causation",
+                "You should remove one variable from the analysis",
+                "The data is reliable and has no quality issues"
+            ],
+            "answer": 1,
+            "explanation": "Correlation measures linear association, not causation. Confounding variables, coincidence (spurious correlation), or reverse causation can produce high correlation without a causal relationship. Always investigate the mechanism before drawing causal conclusions."
+        },
+        {
+            "id": "d24bq05",
+            "type": "multiple_choice",
+            "question": "Which chart type is best for answering the question 'Which region had the highest revenue?'",
+            "options": [
+                "Line chart",
+                "Histogram",
+                "Bar chart sorted by revenue",
+                "Scatter plot"
+            ],
+            "answer": 2,
+            "explanation": "Bar charts are ideal for comparing discrete categories (regions) side by side. Sorting by value makes ranking immediately visible. Line charts imply continuous time-based change; histograms show distributions; scatter plots show relationships between two continuous variables."
+        }
+    ]
+}

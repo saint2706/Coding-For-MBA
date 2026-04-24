@@ -1,0 +1,70 @@
+{
+    "day": 15,
+    "questions": [
+        {
+            "id": "d15q01",
+            "type": "multiple_choice",
+            "question": "What is wrong with this exception handling code?\n```python\ntry:\n    value = int('abc')\nexcept Exception:\n    print('Error')\nexcept ValueError:\n    print('Bad value')\n```",
+            "options": [
+                "Nothing is wrong; both handlers will run",
+                "`Exception` catches everything first, so `ValueError` is never reached",
+                "`ValueError` must come before all other exceptions",
+                "You cannot have more than one `except` clause"
+            ],
+            "answer": 1,
+            "explanation": "Python checks `except` clauses in order. Since `Exception` is a base class that catches all exceptions, the `ValueError` clause is unreachable. Specific exceptions must always come before general ones."
+        },
+        {
+            "id": "d15q02",
+            "type": "multiple_choice",
+            "question": "What does the `finally` block do?",
+            "options": [
+                "Runs only if no exception occurred",
+                "Runs only if an exception occurred",
+                "Always runs, whether or not an exception occurred",
+                "Re-raises the exception to the caller"
+            ],
+            "answer": 2,
+            "explanation": "`finally` always executes—after try, after except, and even after a `return` statement. It is designed for cleanup code (closing files, releasing locks) that must run regardless of what happened."
+        },
+        {
+            "id": "d15q03",
+            "type": "multiple_choice",
+            "question": "When does the `else` clause in a try-except block run?",
+            "options": [
+                "When an exception is caught by an `except` clause",
+                "When no exception occurred in the `try` block",
+                "Always, before `finally`",
+                "Only when a `ValueError` is raised"
+            ],
+            "answer": 1,
+            "explanation": "The `else` clause runs only when the `try` block completes without raising any exception. It is useful for code that should execute only on success, separate from the cleanup in `finally`."
+        },
+        {
+            "id": "d15q04",
+            "type": "multiple_choice",
+            "question": "How do you catch an exception and re-raise it after logging?",
+            "options": [
+                "`except Error: raise Error()`",
+                "`except Error as e: raise e.again()`",
+                "`except Error as e: logger.error(e); raise`",
+                "`except Error: continue`"
+            ],
+            "answer": 2,
+            "explanation": "A bare `raise` inside an `except` block re-raises the currently handled exception unchanged. This lets you log the error for observability while still propagating the exception to the caller."
+        },
+        {
+            "id": "d15q05",
+            "type": "multiple_choice",
+            "question": "What is the correct way to define a custom exception class?",
+            "options": [
+                "`class MyError: pass`",
+                "`class MyError(Exception): pass`",
+                "`class MyError extends Exception: pass`",
+                "`def MyError(Exception): pass`"
+            ],
+            "answer": 1,
+            "explanation": "Custom exceptions must inherit from `Exception` (or a subclass). This ensures they work with all standard exception-handling mechanisms like `try/except`, `raise`, and `isinstance()` checks."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": "24D",
+    "questions": [
+        {
+            "id": "d24dq01",
+            "type": "multiple_choice",
+            "question": "What is the main benefit of organizing an analytics project as a Python package rather than a single script?",
+            "options": [
+                "Packages run significantly faster than scripts",
+                "Packages separate concerns into reusable modules with clean interfaces that others can import and test",
+                "Packages automatically handle all data cleaning",
+                "Packages are required for any project over 100 lines of code"
+            ],
+            "answer": 1,
+            "explanation": "A well-structured package separates ingestion, cleaning, and aggregation into distinct modules. Each module can be tested independently, reused across projects, and extended without modifying others—a foundation for maintainable analytics workflows."
+        },
+        {
+            "id": "d24dq02",
+            "type": "multiple_choice",
+            "question": "In a modular data pipeline with stages ingestion → cleaning → aggregation, why should each stage receive data as a parameter rather than reading files directly?",
+            "options": [
+                "File reading is too slow to do more than once",
+                "Accepting data as a parameter makes each stage independently testable and reusable with different inputs",
+                "Python functions cannot read files",
+                "It reduces the number of imports needed"
+            ],
+            "answer": 1,
+            "explanation": "Functions that accept data as parameters can be unit-tested with synthetic inputs without touching the filesystem. They can also be reused with different sources (CSV, database, API) without modification—a key principle of modular design."
+        },
+        {
+            "id": "d24dq03",
+            "type": "multiple_choice",
+            "question": "Where should exception handling be placed in a data pipeline?",
+            "options": [
+                "Only at the very start before any data is loaded",
+                "Around all code—every line should be in a try/except block",
+                "At boundary points where external failures are likely: file I/O, type conversion, and external API calls",
+                "Exception handling should be avoided in pipelines for performance"
+            ],
+            "answer": 2,
+            "explanation": "Exception handling is most valuable at system boundaries: reading files (FileNotFoundError), parsing data (ValueError, KeyError), and network calls. Wrapping every internal line adds noise without benefit—internal logic should use assertions or fail fast instead."
+        },
+        {
+            "id": "d24dq04",
+            "type": "multiple_choice",
+            "question": "What does `logging.info('Pipeline started')` provide compared to `print('Pipeline started')`?",
+            "options": [
+                "Logging is faster and uses less memory",
+                "Logging adds timestamps, severity levels, and can be configured to write to files or external services without changing code",
+                "Logging messages appear in color in the terminal",
+                "There is no practical difference"
+            ],
+            "answer": 1,
+            "explanation": "The `logging` module provides structured output with timestamp, level (DEBUG/INFO/WARNING/ERROR), and module name. Log output can be routed to files, monitoring services, or suppressed—all without changing the calling code. `print()` always writes to stdout with no metadata."
+        },
+        {
+            "id": "d24dq05",
+            "type": "multiple_choice",
+            "question": "A pipeline produces correct output on your machine but fails on a colleague's machine with an `ImportError`. What is the most likely cause and fix?",
+            "options": [
+                "The code has a syntax error that only appears on some systems",
+                "A required package is installed in your environment but not in theirs; fix by sharing a `requirements.txt` and using a virtual environment",
+                "The colleague's Python is too old for any code to work",
+                "The data files are in different folders"
+            ],
+            "answer": 1,
+            "explanation": "An `ImportError` means a package is not installed in the colleague's environment. The solution is a `requirements.txt` pinning all dependencies and a virtual environment workflow (`python -m venv venv && pip install -r requirements.txt`) to ensure identical environments."
+        }
+    ]
+}

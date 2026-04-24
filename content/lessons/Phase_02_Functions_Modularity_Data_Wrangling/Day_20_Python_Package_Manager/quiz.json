@@ -1,0 +1,70 @@
+{
+    "day": 20,
+    "questions": [
+        {
+            "id": "d20q01",
+            "type": "multiple_choice",
+            "question": "What does the version specifier `pandas>=1.5,<2.0` mean?",
+            "options": [
+                "Install exactly pandas 1.5 or 2.0",
+                "Install any pandas version between 1.5 and 2.0, inclusive",
+                "Install pandas 1.5 or newer, but not version 2.0 or higher",
+                "Install the latest version of pandas"
+            ],
+            "answer": 2,
+            "explanation": "`>=1.5` means 1.5.0 or newer; `<2.0` means anything below 2.0.0. Together they allow versions like 1.5.0, 1.5.3, and 1.9.9, but exclude 2.0.0 and above. This is a common pattern for avoiding breaking changes in major versions."
+        },
+        {
+            "id": "d20q02",
+            "type": "multiple_choice",
+            "question": "What is the purpose of running `pip freeze > requirements.txt`?",
+            "options": [
+                "It installs all packages listed in requirements.txt",
+                "It exports exact versions of all installed packages for reproducible environments",
+                "It removes all packages not in requirements.txt",
+                "It checks for outdated packages"
+            ],
+            "answer": 1,
+            "explanation": "`pip freeze` outputs all installed packages with their exact versions. Redirecting to `requirements.txt` saves this snapshot so teammates or deployment servers can recreate the identical environment with `pip install -r requirements.txt`."
+        },
+        {
+            "id": "d20q03",
+            "type": "multiple_choice",
+            "question": "How do you install all packages listed in a `requirements.txt` file?",
+            "options": [
+                "`pip install requirements.txt`",
+                "`pip load -f requirements.txt`",
+                "`pip install -r requirements.txt`",
+                "`pip sync requirements.txt`"
+            ],
+            "answer": 2,
+            "explanation": "The `-r` flag tells pip to read from a requirements file: `pip install -r requirements.txt`. This installs each listed package at the specified version, ensuring reproducibility across environments."
+        },
+        {
+            "id": "d20q04",
+            "type": "multiple_choice",
+            "question": "In semantic versioning `MAJOR.MINOR.PATCH`, what does a MAJOR version bump indicate?",
+            "options": [
+                "A bug fix that doesn't affect functionality",
+                "A new feature that is backward compatible",
+                "A breaking change that is not backward compatible",
+                "A security patch"
+            ],
+            "answer": 2,
+            "explanation": "Semantic versioning uses: PATCH (bug fixes), MINOR (new backward-compatible features), MAJOR (breaking changes). When a package bumps its major version (e.g., 1.x → 2.0), your existing code may break and require updates."
+        },
+        {
+            "id": "d20q05",
+            "type": "multiple_choice",
+            "question": "How do you upgrade an already-installed package to its latest version?",
+            "options": [
+                "`pip refresh requests`",
+                "`pip install --upgrade requests`",
+                "`pip update requests`",
+                "`pip reinstall requests`"
+            ],
+            "answer": 1,
+            "explanation": "`pip install --upgrade requests` (or `pip install -U requests`) fetches and installs the latest compatible version, replacing the currently installed one. Without `--upgrade`, pip skips packages that are already installed."
+        }
+    ]
+}

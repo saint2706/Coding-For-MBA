@@ -1,0 +1,70 @@
+{
+    "day": 17,
+    "questions": [
+        {
+            "id": "d17q01",
+            "type": "multiple_choice",
+            "question": "What does `re.findall(r'\\d+', 'abc 42 def 7 ghi')` return?",
+            "options": [
+                "['abc', 'def', 'ghi']",
+                "['42', '7']",
+                "['4', '2', '7']",
+                "'42'"
+            ],
+            "answer": 1,
+            "explanation": "`\\d` matches a single digit; `\\d+` matches one or more digits. `findall()` returns all non-overlapping matches as a list of strings. '42' and '7' are the digit sequences found."
+        },
+        {
+            "id": "d17q02",
+            "type": "multiple_choice",
+            "question": "What is the difference between `re.match()` and `re.search()`?",
+            "options": [
+                "`re.match()` returns all matches; `re.search()` returns only the first",
+                "`re.match()` only checks the beginning of the string; `re.search()` scans the entire string",
+                "`re.search()` only checks the beginning; `re.match()` scans everything",
+                "They are identical in behavior"
+            ],
+            "answer": 1,
+            "explanation": "`re.match()` only attempts to match at the very start of the string. `re.search()` scans through the entire string looking for any location where the pattern matches. For most use cases, `re.search()` is more flexible."
+        },
+        {
+            "id": "d17q03",
+            "type": "multiple_choice",
+            "question": "What does the pattern `r'(\\w+)@(\\w+)'` capture when matched against `'user@example'`?",
+            "options": [
+                "One group: `'user@example'`",
+                "Two groups: `'user'` and `'example'`",
+                "The full string with the `@` symbol",
+                "Nothing; `@` is not a word character"
+            ],
+            "answer": 1,
+            "explanation": "Parentheses create capturing groups. `(\\w+)` captures one or more word characters. `match.group(1)` returns `'user'` and `match.group(2)` returns `'example'`. The `@` is matched but not captured."
+        },
+        {
+            "id": "d17q04",
+            "type": "multiple_choice",
+            "question": "What is the difference between `.*` and `.*?` in a regex pattern?",
+            "options": [
+                "`.*` matches zero characters; `.*?` matches one or more",
+                "`.*` is greedy (matches as much as possible); `.*?` is non-greedy (matches as little as possible)",
+                "`.*?` is greedy; `.*` is non-greedy",
+                "They produce identical results"
+            ],
+            "answer": 1,
+            "explanation": "By default, quantifiers like `*` and `+` are greedy—they consume as many characters as possible. Adding `?` makes them non-greedy (lazy), matching the minimum. For example, `'<.*>'` on `'<a><b>'` matches the whole string, but `'<.*?>'` matches `'<a>'` and `'<b>'` separately."
+        },
+        {
+            "id": "d17q05",
+            "type": "multiple_choice",
+            "question": "What does `re.sub(r'(\\d{3})-(\\d{4})', r'(\\1) \\2', '555-1234')` return?",
+            "options": [
+                "'(\\1) \\2'",
+                "'(555) 1234'",
+                "'5551234'",
+                "Error: invalid substitution"
+            ],
+            "answer": 1,
+            "explanation": "`re.sub()` replaces the match with the replacement string, where `\\1` and `\\2` refer to the first and second captured groups. Group 1 captures `'555'` and group 2 captures `'1234'`, producing `'(555) 1234'`."
+        }
+    ]
+}

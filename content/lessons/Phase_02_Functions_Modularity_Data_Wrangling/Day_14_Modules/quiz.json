@@ -1,0 +1,70 @@
+{
+    "day": 14,
+    "questions": [
+        {
+            "id": "d14q01",
+            "type": "multiple_choice",
+            "question": "What is the difference between `import math` and `from math import sqrt`?",
+            "options": [
+                "They are identical; both let you call `sqrt()` directly",
+                "`import math` requires `math.sqrt()`, while `from math import sqrt` lets you call `sqrt()` directly",
+                "`from math import sqrt` imports the entire math module",
+                "`import math` only works with the standard library"
+            ],
+            "answer": 1,
+            "explanation": "`import math` imports the module object, requiring `math.sqrt()`. `from math import sqrt` brings `sqrt` into the current namespace so you can call it directly as `sqrt()`."
+        },
+        {
+            "id": "d14q02",
+            "type": "multiple_choice",
+            "question": "When does `if __name__ == '__main__':` evaluate to True?",
+            "options": [
+                "Always, whenever the file is loaded",
+                "Only when the file is imported by another module",
+                "Only when the file is run directly as a script",
+                "Only inside package `__init__.py` files"
+            ],
+            "answer": 2,
+            "explanation": "Python sets `__name__` to `'__main__'` only when a file is executed directly (e.g., `python myfile.py`). When imported, `__name__` is the module name, so the block is skipped."
+        },
+        {
+            "id": "d14q03",
+            "type": "multiple_choice",
+            "question": "What makes a directory a Python package?",
+            "options": [
+                "The directory name must end in `.pkg`",
+                "The directory must contain a `setup.py` file",
+                "The directory must contain an `__init__.py` file",
+                "The directory must be listed in `sys.path`"
+            ],
+            "answer": 2,
+            "explanation": "A directory becomes a Python package when it contains an `__init__.py` file (even an empty one). This file signals to Python that the directory should be treated as a package, enabling `from package import module` syntax."
+        },
+        {
+            "id": "d14q04",
+            "type": "multiple_choice",
+            "question": "Given this structure, how do you import `helper` from `main.py`?\n```\nproject/\n├── utils/\n│   ├── __init__.py\n│   └── helper.py\n└── main.py\n```",
+            "options": [
+                "`import helper`",
+                "`from utils import helper`",
+                "`import utils.helper.py`",
+                "`from . import helper`"
+            ],
+            "answer": 1,
+            "explanation": "From `main.py`, the package `utils` is a subdirectory. `from utils import helper` or `from utils.helper import specific_function` are the correct absolute import forms."
+        },
+        {
+            "id": "d14q05",
+            "type": "multiple_choice",
+            "question": "Which standard library module would you use to parse a JSON string received from an API?",
+            "options": [
+                "`os`",
+                "`json`",
+                "`csv`",
+                "`re`"
+            ],
+            "answer": 1,
+            "explanation": "The `json` module provides `json.loads()` to parse a JSON string into a Python dict/list, and `json.load()` to read from a file. It is the standard tool for JSON encoding and decoding."
+        }
+    ]
+}
