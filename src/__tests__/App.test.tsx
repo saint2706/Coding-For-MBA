@@ -251,7 +251,61 @@ describe('App', () => {
     // Should reset to default which is closed
     expect(document.body).not.toHaveClass('sidebar-open')
   })
-})
+
+  it('calls requestIdleCallback to preload search index on mount if available', async () => {
+    const requestIdleCallbackSpy = vi.fn();
+    vi.stubGlobal('requestIdleCallback', requestIdleCallbackSpy);
+
+    try {
+      await act(async () => {
+        render(
+          <MemoryRouter initialEntries={['/']}>
+            <App />
+          </MemoryRouter>
+        );
+      });
+
+      expect(requestIdleCallbackSpy).toHaveBeenCalled();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('calls setTimeout to preload search index on mount if requestIdleCallback not available', async () => {
+    // Save original requestIdleCallback if it exists
+    const originalRequestIdleCallback = window.requestIdleCallback;
+
+    try {
+      // Remove requestIdleCallback to simulate it not being available
+      delete (window as any).requestIdleCallback;
+
+      vi.useFakeTimers();
+      const setTimeoutSpy = vi.spyOn(window, 'setTimeout');
+
+      await act(async () => {
+        render(
+          <MemoryRouter initialEntries={['/']}>
+            <App />
+          </MemoryRouter>
+        );
+      });
+
+      act(() => {
+        vi.runAllTimers();
+      });
+
+      // Check if setTimeout was called
+      expect(setTimeoutSpy).toHaveBeenCalled();
+    } finally {
+      // Restore
+      if (originalRequestIdleCallback) {
+        window.requestIdleCallback = originalRequestIdleCallback;
+      }
+      vi.restoreAllMocks();
+      vi.useRealTimers();
+    }
+  });
+});
 
 describe('App custom cursor', () => {
   it('does not render CustomCursor when disabled in preferences', async () => {
