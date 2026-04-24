@@ -1,0 +1,70 @@
+{
+    "day": 19,
+    "questions": [
+        {
+            "id": "d19q01",
+            "type": "multiple_choice",
+            "question": "How do you get today's date (without time) in Python?",
+            "options": [
+                "`datetime.now()`",
+                "`date.today()`",
+                "`datetime.today().date()`",
+                "Both B and C are correct"
+            ],
+            "answer": 3,
+            "explanation": "Both `date.today()` (from `datetime` module) and `datetime.today().date()` return the current date as a `date` object. `datetime.now()` returns a datetime including time. Import with `from datetime import date, datetime`."
+        },
+        {
+            "id": "d19q02",
+            "type": "multiple_choice",
+            "question": "What does `dt.strftime('%Y-%m-%d')` produce for January 15, 2024?",
+            "options": [
+                "'January-15-2024'",
+                "'2024-01-15'",
+                "'15-01-2024'",
+                "'24-01-15'"
+            ],
+            "answer": 1,
+            "explanation": "`%Y` is the 4-digit year (2024), `%m` is the zero-padded month (01), and `%d` is the zero-padded day (15). `strftime` formats a datetime object into a string using format codes."
+        },
+        {
+            "id": "d19q03",
+            "type": "multiple_choice",
+            "question": "How do you calculate the date 30 days from today?",
+            "options": [
+                "`date.today() + 30`",
+                "`date.today().add(days=30)`",
+                "`date.today() + timedelta(days=30)`",
+                "`date.today() + date(days=30)`"
+            ],
+            "answer": 2,
+            "explanation": "`timedelta` represents a duration. Adding `timedelta(days=30)` to a date or datetime object performs date arithmetic correctly, handling month boundaries and leap years automatically."
+        },
+        {
+            "id": "d19q04",
+            "type": "multiple_choice",
+            "question": "Which function parses the string `'2024-06-15'` into a datetime object?",
+            "options": [
+                "`datetime.strftime('2024-06-15', '%Y-%m-%d')`",
+                "`datetime.strptime('2024-06-15', '%Y-%m-%d')`",
+                "`datetime.parse('2024-06-15')`",
+                "`date.fromstring('2024-06-15')`"
+            ],
+            "answer": 1,
+            "explanation": "`strptime` (parse time) converts a string to a datetime using a format pattern. `strftime` (format time) does the opposite—converts a datetime to a string. A mnemonic: `strptime` = string **p**arse time."
+        },
+        {
+            "id": "d19q05",
+            "type": "multiple_choice",
+            "question": "What is the correct way to find the number of days between two dates?",
+            "options": [
+                "`date2.days - date1.days`",
+                "`(date2 - date1).days`",
+                "`timedelta(date2, date1).days`",
+                "`date2.subtract(date1)`"
+            ],
+            "answer": 1,
+            "explanation": "Subtracting two `date` or `datetime` objects returns a `timedelta` object. The `.days` attribute of the timedelta gives the number of whole days between them. If date2 > date1, the result is positive."
+        }
+    ]
+}

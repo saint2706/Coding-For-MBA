@@ -1,0 +1,70 @@
+{
+    "day": "24C",
+    "questions": [
+        {
+            "id": "d24cq01",
+            "type": "multiple_choice",
+            "question": "What is the first step in a repeatable data cleaning workflow?",
+            "options": [
+                "Drop all rows with missing values",
+                "Profile the dataset: check shape, dtypes, null counts, and value distributions",
+                "Rename all columns to lowercase",
+                "Convert all columns to strings for uniformity"
+            ],
+            "answer": 1,
+            "explanation": "Profiling before cleaning gives you a baseline audit—shape, dtypes, null rates, and value distributions—so you understand what problems exist and can make informed decisions about how to address them rather than applying blanket rules."
+        },
+        {
+            "id": "d24cq02",
+            "type": "multiple_choice",
+            "question": "When should you DROP rows with missing values rather than imputing them?",
+            "options": [
+                "Always—missing data is invalid data",
+                "When the missing rate is very low and missingness appears random",
+                "When the column is categorical",
+                "When you need to reduce the dataset size"
+            ],
+            "answer": 1,
+            "explanation": "Dropping rows is appropriate when the missing rate is very low (e.g., < 1%) and the missingness appears random (MCAR), so the remaining data is still representative. If data is systematically missing, dropping rows introduces selection bias."
+        },
+        {
+            "id": "d24cq03",
+            "type": "multiple_choice",
+            "question": "How do you identify duplicate rows in a Pandas DataFrame?",
+            "options": [
+                "`df.count_duplicates()`",
+                "`df.duplicated()` returns a boolean Series; `.sum()` gives the count",
+                "`df.unique()`",
+                "`df[df.index.duplicated()]`"
+            ],
+            "answer": 1,
+            "explanation": "`df.duplicated()` returns a boolean Series where True marks rows that are duplicates of an earlier row. `.sum()` counts them. To remove duplicates, use `df.drop_duplicates()`. You can specify `subset=['col1', 'col2']` to check specific columns."
+        },
+        {
+            "id": "d24cq04",
+            "type": "multiple_choice",
+            "question": "Why should you add validation assertions after each cleaning step?",
+            "options": [
+                "Assertions slow down the code and document what was done",
+                "Assertions catch regressions early—if a later step re-introduces a problem, the assertion fails immediately",
+                "Assertions are required by the Pandas API",
+                "Assertions automatically fix data quality issues"
+            ],
+            "answer": 1,
+            "explanation": "Validation assertions (e.g., `assert df['id'].is_unique`) act as automated checkpoints. If subsequent steps re-introduce nulls or duplicates, the assertion fails immediately with a clear message, preventing silent data quality regressions."
+        },
+        {
+            "id": "d24cq05",
+            "type": "multiple_choice",
+            "question": "What is type coercion in data cleaning, and why does it matter?",
+            "options": [
+                "Renaming columns to follow a naming convention",
+                "Converting columns to their correct data types (e.g., string dates to datetime, text numbers to int/float)",
+                "Removing special characters from string columns",
+                "Sorting the DataFrame by a specific column"
+            ],
+            "answer": 1,
+            "explanation": "Raw data often stores numbers and dates as strings. Type coercion converts them to the proper types so operations work correctly—e.g., date arithmetic requires datetime types, and numeric aggregations require int/float. Wrong types cause silent calculation errors."
+        }
+    ]
+}

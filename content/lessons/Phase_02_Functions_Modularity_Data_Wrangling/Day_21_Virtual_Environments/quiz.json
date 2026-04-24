@@ -1,0 +1,70 @@
+{
+    "day": 21,
+    "questions": [
+        {
+            "id": "d21q01",
+            "type": "multiple_choice",
+            "question": "What problem do virtual environments solve?",
+            "options": [
+                "They speed up Python script execution",
+                "They allow each project to have its own isolated package versions, preventing conflicts",
+                "They enable Python code to run on different operating systems",
+                "They automatically update packages to the latest version"
+            ],
+            "answer": 1,
+            "explanation": "Without virtual environments, all projects share one global Python installation. If Project A needs Django 3.2 and Project B needs Django 4.2, they conflict. Virtual environments give each project its own isolated site-packages directory."
+        },
+        {
+            "id": "d21q02",
+            "type": "multiple_choice",
+            "question": "What command creates a new virtual environment named `venv`?",
+            "options": [
+                "`pip create venv`",
+                "`virtualenv create venv`",
+                "`python -m venv venv`",
+                "`python --virtualenv venv`"
+            ],
+            "answer": 2,
+            "explanation": "`python -m venv venv` runs the built-in `venv` module (available since Python 3.3) to create a new virtual environment in the `venv` directory. The second `venv` is just the folder name—you can use any name."
+        },
+        {
+            "id": "d21q03",
+            "type": "multiple_choice",
+            "question": "Should you commit the `venv/` folder to git?",
+            "options": [
+                "Yes, so teammates can use the same environment without reinstalling",
+                "No—it is large, platform-specific, and reproducible from `requirements.txt`",
+                "Only if the project uses Python 3.10 or newer",
+                "Yes, but only the `lib/` subdirectory"
+            ],
+            "answer": 1,
+            "explanation": "The `venv/` directory can be hundreds of megabytes, contains platform-specific binaries that won't work on other operating systems, and can be recreated from `requirements.txt`. Always add it to `.gitignore`."
+        },
+        {
+            "id": "d21q04",
+            "type": "multiple_choice",
+            "question": "How can you verify that a virtual environment is currently active?",
+            "options": [
+                "Run `python --check-venv`",
+                "The terminal prompt shows `(venv)` prefix, and `which python` points inside the venv directory",
+                "The `pip list` command shows zero packages",
+                "Python runs twice as fast"
+            ],
+            "answer": 1,
+            "explanation": "When a venv is activated, the shell prepends its name to your prompt (e.g., `(venv)`). You can also run `which python` (macOS/Linux) or `where python` (Windows)—it should show a path inside the venv folder."
+        },
+        {
+            "id": "d21q05",
+            "type": "multiple_choice",
+            "question": "What is the correct workflow for a new team member setting up a project?",
+            "options": [
+                "Copy the `venv/` folder from the team lead",
+                "Run `pip install` for each package individually from memory",
+                "Create a new venv, activate it, then run `pip install -r requirements.txt`",
+                "Install packages globally with `sudo pip install`"
+            ],
+            "answer": 2,
+            "explanation": "The standard onboarding workflow: (1) clone the repo, (2) create a fresh venv with `python -m venv venv`, (3) activate it, (4) install dependencies with `pip install -r requirements.txt`. This ensures an identical, isolated environment."
+        }
+    ]
+}

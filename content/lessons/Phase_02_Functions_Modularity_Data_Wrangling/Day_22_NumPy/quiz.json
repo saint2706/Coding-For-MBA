@@ -1,0 +1,70 @@
+{
+    "day": 22,
+    "questions": [
+        {
+            "id": "d22q01",
+            "type": "multiple_choice",
+            "question": "What does `np.arange(0, 10, 2)` produce?",
+            "options": [
+                "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]",
+                "[0, 2, 4, 6, 8]",
+                "[2, 4, 6, 8, 10]",
+                "[0, 2, 4, 6, 8, 10]"
+            ],
+            "answer": 1,
+            "explanation": "`np.arange(start, stop, step)` generates values from `start` up to (but not including) `stop` with the given `step`. So `arange(0, 10, 2)` gives [0, 2, 4, 6, 8]—stop (10) is excluded."
+        },
+        {
+            "id": "d22q02",
+            "type": "multiple_choice",
+            "question": "Given a 2D array with shape (3, 4), what does `np.sum(arr, axis=0)` return?",
+            "options": [
+                "A scalar (sum of all elements)",
+                "An array of shape (3,)—one sum per row",
+                "An array of shape (4,)—one sum per column",
+                "An array of shape (3, 4)—no reduction"
+            ],
+            "answer": 2,
+            "explanation": "`axis=0` collapses along the row dimension (down the columns). For a (3, 4) array, summing along axis=0 produces 4 column sums, resulting in shape (4,). `axis=1` would produce 3 row sums with shape (3,)."
+        },
+        {
+            "id": "d22q03",
+            "type": "multiple_choice",
+            "question": "What does `arr[arr > 5]` do for `arr = np.array([3, 6, 1, 8, 4, 9])`?",
+            "options": [
+                "Returns the indices where arr > 5",
+                "Returns [6, 8, 9]",
+                "Returns a boolean array [False, True, False, True, False, True]",
+                "Raises an IndexError"
+            ],
+            "answer": 1,
+            "explanation": "When a boolean array is used as an index, NumPy returns the elements where the condition is True. `arr > 5` creates [False, True, False, True, False, True], and `arr[...]` returns the matching values: [6, 8, 9]."
+        },
+        {
+            "id": "d22q04",
+            "type": "multiple_choice",
+            "question": "What is NumPy broadcasting?",
+            "options": [
+                "Sending array data over a network",
+                "Automatically expanding arrays of different shapes to work together in operations",
+                "Printing array values to the console",
+                "Converting arrays between data types"
+            ],
+            "answer": 1,
+            "explanation": "Broadcasting allows NumPy to perform element-wise operations on arrays of different shapes by virtually expanding the smaller array. For example, adding a scalar to an array applies the scalar to every element without creating a new array."
+        },
+        {
+            "id": "d22q05",
+            "type": "multiple_choice",
+            "question": "Why are NumPy operations typically much faster than equivalent Python list operations?",
+            "options": [
+                "NumPy skips error checking for speed",
+                "NumPy operations run in optimized compiled C code with homogeneous typed arrays",
+                "NumPy uses multiple CPU cores by default",
+                "Python lists use more memory than NumPy arrays"
+            ],
+            "answer": 1,
+            "explanation": "NumPy stores data in contiguous typed memory blocks and delegates operations to highly optimized C (and often BLAS/LAPACK) code. Python loops have interpreter overhead for every iteration; NumPy vectorized operations avoid this by operating at the C level."
+        }
+    ]
+}

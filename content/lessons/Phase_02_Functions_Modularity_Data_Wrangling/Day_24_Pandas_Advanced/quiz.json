@@ -1,0 +1,70 @@
+{
+    "day": 24,
+    "questions": [
+        {
+            "id": "d24q01",
+            "type": "multiple_choice",
+            "question": "What is the difference between `groupby().agg()` and `groupby().transform()`?",
+            "options": [
+                "`agg()` returns the same number of rows as the input; `transform()` reduces to one row per group",
+                "`agg()` reduces to one row per group; `transform()` returns the same number of rows as the input",
+                "They are identical in behavior",
+                "`transform()` only works with numeric columns"
+            ],
+            "answer": 1,
+            "explanation": "`agg()` produces a summary with one row per group (reducing). `transform()` broadcasts the aggregated result back to every original row, keeping the same shape. Use `transform` when you want to add a group-level summary as a new column."
+        },
+        {
+            "id": "d24q02",
+            "type": "multiple_choice",
+            "question": "What does `pd.merge(orders, customers, on='customer_id', how='left')` do?",
+            "options": [
+                "Returns only rows where `customer_id` exists in both DataFrames",
+                "Returns all rows from `orders`, with matching columns from `customers` (NaN if no match)",
+                "Returns all rows from `customers`, with matching columns from `orders`",
+                "Returns all rows from both DataFrames including unmatched rows"
+            ],
+            "answer": 1,
+            "explanation": "A left join keeps all rows from the left DataFrame (`orders`) and fills in matching data from the right (`customers`). If a `customer_id` in orders has no match in customers, the customer columns will be NaN."
+        },
+        {
+            "id": "d24q03",
+            "type": "multiple_choice",
+            "question": "What does `pd.pivot_table(df, values='revenue', index='region', columns='month', aggfunc='sum')` produce?",
+            "options": [
+                "A sorted DataFrame ordered by revenue",
+                "A 2D table with regions as rows, months as columns, and summed revenue as values",
+                "A single column of total revenue per region",
+                "A long-format table with one row per region-month combination"
+            ],
+            "answer": 1,
+            "explanation": "A pivot table reshapes data from long to wide format. `index` becomes the row labels, `columns` becomes the column headers, and `values` are aggregated by `aggfunc`. The result is a cross-tabulation—similar to a spreadsheet pivot table."
+        },
+        {
+            "id": "d24q04",
+            "type": "multiple_choice",
+            "question": "Given a DatetimeIndex, what does `.resample('M').sum()` do?",
+            "options": [
+                "Sums every M rows (every 1000 rows)",
+                "Groups data by month and sums values within each month",
+                "Resets the index to monthly integers",
+                "Multiplies all values by M (a constant)"
+            ],
+            "answer": 1,
+            "explanation": "`resample()` groups time-series data into regular time intervals. `'M'` means month-end frequency. `.sum()` then aggregates all rows in each month. This is the time-series equivalent of `groupby()`."
+        },
+        {
+            "id": "d24q05",
+            "type": "multiple_choice",
+            "question": "Which method fills missing values in a column with the column's mean?",
+            "options": [
+                "`df['col'].replace(NaN, df['col'].mean())`",
+                "`df['col'].fillna(df['col'].mean())`",
+                "`df['col'].dropna(fill=df['col'].mean())`",
+                "`df['col'].impute('mean')`"
+            ],
+            "answer": 1,
+            "explanation": "`fillna()` replaces NaN values with the specified value. Passing `df['col'].mean()` as the argument fills each NaN with the column average. Other common options include `fillna(0)`, `fillna(method='ffill')` (forward fill), and `fillna(method='bfill')` (backward fill)."
+        }
+    ]
+}

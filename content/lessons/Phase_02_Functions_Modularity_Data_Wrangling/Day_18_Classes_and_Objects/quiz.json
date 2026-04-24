@@ -1,0 +1,70 @@
+{
+    "day": 18,
+    "questions": [
+        {
+            "id": "d18q01",
+            "type": "multiple_choice",
+            "question": "What is the purpose of the `__init__` method in a Python class?",
+            "options": [
+                "It is called when the class is imported",
+                "It initializes instance attributes when a new object is created",
+                "It defines class-level attributes shared by all instances",
+                "It is the only method that can accept arguments"
+            ],
+            "answer": 1,
+            "explanation": "`__init__` is the constructor—it runs automatically when you create a new instance with `MyClass()`. It sets up instance-specific attributes so each object starts with the correct initial state."
+        },
+        {
+            "id": "d18q02",
+            "type": "multiple_choice",
+            "question": "What is the difference between class attributes and instance attributes?",
+            "options": [
+                "Class attributes are defined inside `__init__`; instance attributes are defined outside",
+                "Class attributes are shared by all instances; instance attributes are unique to each object",
+                "Instance attributes use `self`; class attributes use `cls`",
+                "There is no difference—they both store the same data"
+            ],
+            "answer": 1,
+            "explanation": "Class attributes are defined directly in the class body and shared by all instances (e.g., `species = 'Canis'`). Instance attributes are set via `self` in methods and are unique to each object (e.g., `self.name = name`)."
+        },
+        {
+            "id": "d18q03",
+            "type": "multiple_choice",
+            "question": "Why would you use `@property` instead of a regular attribute?",
+            "options": [
+                "Properties are faster than regular attributes",
+                "Properties allow you to add validation, compute derived values, or make attributes read-only",
+                "Properties can only be used with private attributes",
+                "Properties are required for any attribute starting with an underscore"
+            ],
+            "answer": 1,
+            "explanation": "`@property` lets you control attribute access with getter/setter logic without changing how callers use the attribute. Common uses: validating values on assignment, computing values from other attributes, and creating read-only attributes."
+        },
+        {
+            "id": "d18q04",
+            "type": "multiple_choice",
+            "question": "Why must `self` be the first parameter of instance methods?",
+            "options": [
+                "It is a Python keyword required for syntax",
+                "It refers to the specific instance calling the method, allowing access to instance attributes",
+                "It prevents name conflicts with global variables",
+                "It automatically initializes all attributes"
+            ],
+            "answer": 1,
+            "explanation": "`self` is a reference to the instance on which the method was called. Python passes it automatically—`obj.method()` is equivalent to `MyClass.method(obj)`. Without `self`, instance methods cannot access or modify instance attributes."
+        },
+        {
+            "id": "d18q05",
+            "type": "multiple_choice",
+            "question": "What does `__str__` define for a class?",
+            "options": [
+                "The string used as the class name",
+                "The human-readable string representation returned by `print()` and `str()`",
+                "The internal memory address of the object",
+                "The list of all attributes on the object"
+            ],
+            "answer": 1,
+            "explanation": "`__str__` is the dunder method that controls what `print(obj)` and `str(obj)` display. It should return a human-readable description. `__repr__` is for developer/debug strings. If `__str__` is not defined, Python falls back to `__repr__`."
+        }
+    ]
+}

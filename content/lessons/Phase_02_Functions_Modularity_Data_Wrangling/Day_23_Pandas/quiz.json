@@ -1,0 +1,70 @@
+{
+    "day": 23,
+    "questions": [
+        {
+            "id": "d23q01",
+            "type": "multiple_choice",
+            "question": "How do you select multiple columns (`name` and `salary`) from a DataFrame `df`?",
+            "options": [
+                "`df['name', 'salary']`",
+                "`df[['name', 'salary']]`",
+                "`df.select('name', 'salary')`",
+                "`df.columns(['name', 'salary'])`"
+            ],
+            "answer": 1,
+            "explanation": "Selecting multiple columns requires a list inside the square brackets: `df[['name', 'salary']]`. The double brackets pass a Python list to the indexer, returning a DataFrame. Single brackets `df['name']` return a Series."
+        },
+        {
+            "id": "d23q02",
+            "type": "multiple_choice",
+            "question": "How do you filter a DataFrame to rows where `department == 'Sales'` AND `salary > 70000`?",
+            "options": [
+                "`df[df['department'] == 'Sales' and df['salary'] > 70000]`",
+                "`df.filter(department='Sales', salary=70000)`",
+                "`df[(df['department'] == 'Sales') & (df['salary'] > 70000)]`",
+                "`df.where(department='Sales').where(salary > 70000)`"
+            ],
+            "answer": 2,
+            "explanation": "Pandas uses `&` (bitwise AND) and `|` (bitwise OR) for combining boolean conditions—not Python's `and`/`or`. Each condition must be wrapped in parentheses to ensure correct operator precedence."
+        },
+        {
+            "id": "d23q03",
+            "type": "multiple_choice",
+            "question": "What is the difference between `.loc` and `.iloc`?",
+            "options": [
+                "`.loc` is for rows only; `.iloc` is for columns only",
+                "`.loc` selects by label (index names and column names); `.iloc` selects by integer position",
+                "`.loc` is faster; `.iloc` is more flexible",
+                "`.iloc` selects by label; `.loc` selects by position"
+            ],
+            "answer": 1,
+            "explanation": "`.loc[row_label, col_label]` uses the actual index and column names. `.iloc[row_int, col_int]` uses zero-based integer positions. When the index is the default (0, 1, 2, ...), they coincide, but with custom string indexes they differ."
+        },
+        {
+            "id": "d23q04",
+            "type": "multiple_choice",
+            "question": "What does `df['salary'].mean()` return?",
+            "options": [
+                "A new DataFrame column with the mean value repeated",
+                "The arithmetic mean (average) of all values in the `salary` column",
+                "The median salary",
+                "The index of the row with the highest salary"
+            ],
+            "answer": 1,
+            "explanation": "`.mean()` is an aggregation method that computes the arithmetic average of a Series. For the salary column, it sums all salaries and divides by the number of rows (excluding NaN values by default)."
+        },
+        {
+            "id": "d23q05",
+            "type": "multiple_choice",
+            "question": "What does `pd.read_csv('data.csv')` return?",
+            "options": [
+                "A Python list of rows",
+                "A dictionary of column names to lists",
+                "A Pandas DataFrame with columns inferred from the CSV header",
+                "A NumPy array"
+            ],
+            "answer": 2,
+            "explanation": "`pd.read_csv()` reads a CSV file and returns a DataFrame—a 2D labeled data structure where the first row (by default) becomes column names. It handles type inference, missing values, and many parsing options."
+        }
+    ]
+}

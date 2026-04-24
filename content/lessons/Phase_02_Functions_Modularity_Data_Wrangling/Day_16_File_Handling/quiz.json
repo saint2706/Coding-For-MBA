@@ -1,0 +1,70 @@
+{
+    "day": 16,
+    "questions": [
+        {
+            "id": "d16q01",
+            "type": "multiple_choice",
+            "question": "Why should you use `with open('file.txt') as f:` instead of `f = open('file.txt')`?",
+            "options": [
+                "The `with` statement reads files faster",
+                "The `with` statement automatically closes the file even if an exception occurs",
+                "The `with` statement only works with text files",
+                "The `with` statement allows reading and writing simultaneously"
+            ],
+            "answer": 1,
+            "explanation": "The `with` statement is a context manager that guarantees the file is closed when the block exits, even if an exception is raised. Without it, forgetting `f.close()` can leak file handles and cause resource exhaustion."
+        },
+        {
+            "id": "d16q02",
+            "type": "multiple_choice",
+            "question": "What is the difference between file modes `'w'` and `'a'`?",
+            "options": [
+                "`'w'` appends to the file; `'a'` overwrites it",
+                "`'w'` creates or truncates the file; `'a'` creates or appends to the end",
+                "Both modes do the same thing",
+                "`'a'` stands for 'all' and reads the entire file"
+            ],
+            "answer": 1,
+            "explanation": "`'w'` (write) truncates an existing file to zero length before writing, so previous content is lost. `'a'` (append) seeks to the end of the file, preserving existing content. Use `'a'` for log files."
+        },
+        {
+            "id": "d16q03",
+            "type": "multiple_choice",
+            "question": "Which function reads a JSON file into a Python dictionary?",
+            "options": [
+                "`json.loads(file_path)`",
+                "`json.read(file_path)`",
+                "`json.load(file_object)`",
+                "`json.parse(file_object)`"
+            ],
+            "answer": 2,
+            "explanation": "`json.load(f)` reads from an open file object. `json.loads(string)` parses a JSON string. The `s` suffix means 'string'. Always open the file first, then pass the file object to `json.load()`."
+        },
+        {
+            "id": "d16q04",
+            "type": "multiple_choice",
+            "question": "How do you build the path `data/2024/sales.csv` using `pathlib`?",
+            "options": [
+                "`Path('data' + '2024' + 'sales.csv')`",
+                "`Path('data') / '2024' / 'sales.csv'`",
+                "`Path.join('data', '2024', 'sales.csv')`",
+                "`Path.concat(['data', '2024', 'sales.csv'])`"
+            ],
+            "answer": 1,
+            "explanation": "`pathlib.Path` overloads the `/` operator for path construction: `Path('data') / '2024' / 'sales.csv'`. This is cross-platform safe—it uses the correct separator for the operating system."
+        },
+        {
+            "id": "d16q05",
+            "type": "multiple_choice",
+            "question": "When reading a large file, which approach is most memory-efficient?",
+            "options": [
+                "`content = open('huge.txt').read()`",
+                "`lines = open('huge.txt').readlines()`",
+                "Iterating line by line with `for line in f:`",
+                "Using `f.read(1)` in a while loop"
+            ],
+            "answer": 2,
+            "explanation": "Iterating over a file object (`for line in f:`) reads one line at a time without loading the entire file into memory. `.read()` and `.readlines()` load everything at once, which can exhaust memory for very large files."
+        }
+    ]
+}
