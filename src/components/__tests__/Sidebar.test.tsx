@@ -207,7 +207,7 @@ describe('Sidebar', () => {
     expect(activeBtn).toBeNull()
   })
 
-  it('renders streak badge when streak is > 0', () => {
+  it('shows the streak count inside the review tree item when streak is > 0', () => {
     vi.mocked(reviewTracker.getReviewStreak).mockReturnValueOnce(5)
 
     act(() => {
@@ -218,9 +218,9 @@ describe('Sidebar', () => {
       )
     })
 
-    const badge = container.querySelector('.sidebar-streak-badge')
-    expect(badge).not.toBeNull()
-    expect(badge?.textContent).toContain('5')
+    const reviewLink = container.querySelector('a[href="/review"]')
+    expect(reviewLink).not.toBeNull()
+    expect(reviewLink?.textContent).toContain('5d')
   })
 
   it('scrolls active link into view', () => {
@@ -274,7 +274,7 @@ describe('Sidebar', () => {
       )
     })
 
-    const links = Array.from(container.querySelectorAll('.day-link'))
+    const links = Array.from(container.querySelectorAll('.tree-item'))
     const hrefs = links.map((l) => l.getAttribute('href'))
 
     expect(hrefs).toContain('/')
@@ -285,7 +285,7 @@ describe('Sidebar', () => {
     expect(hrefs).toContain('/review')
 
     // The active link should be curriculum
-    const activeLink = container.querySelector('.day-link.active')
+    const activeLink = container.querySelector('.tree-item.active')
     expect(activeLink?.getAttribute('href')).toBe('/curriculum')
   })
 
@@ -297,7 +297,7 @@ describe('Sidebar', () => {
         </MemoryRouter>,
       )
     })
-    let activeLink = container.querySelector('.day-link.active')
+    let activeLink = container.querySelector('.tree-item.active')
     expect(activeLink?.getAttribute('href')).toBe('/progress')
 
     act(() => {
@@ -311,7 +311,7 @@ describe('Sidebar', () => {
         </MemoryRouter>,
       )
     })
-    activeLink = container.querySelector('.day-link.active')
+    activeLink = container.querySelector('.tree-item.active')
     expect(activeLink?.getAttribute('href')).toBe('/exercises')
 
     act(() => {
@@ -325,7 +325,7 @@ describe('Sidebar', () => {
         </MemoryRouter>,
       )
     })
-    activeLink = container.querySelector('.day-link.active')
+    activeLink = container.querySelector('.tree-item.active')
     expect(activeLink?.getAttribute('href')).toBe('/case-studies')
 
     act(() => {
@@ -339,7 +339,7 @@ describe('Sidebar', () => {
         </MemoryRouter>,
       )
     })
-    activeLink = container.querySelector('.day-link.active')
+    activeLink = container.querySelector('.tree-item.active')
     expect(activeLink?.getAttribute('href')).toBe('/review')
   })
 

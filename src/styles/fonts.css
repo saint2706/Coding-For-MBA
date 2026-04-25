@@ -1,0 +1,7 @@
+/* Fonts — Fraunces (variable serif) and JetBrains Mono (variable mono).
+   Two typefaces only. No Inter, no Roboto, no system sans.
+   Fraunces does double duty (display + body) via opsz + SOFT axes.
+   JetBrains Mono is elevated to a primary UI voice for chrome, tickers, numerals. */
+
+@import '@fontsource-variable/fraunces/index.css';
+@import '@fontsource-variable/jetbrains-mono/wght.css';

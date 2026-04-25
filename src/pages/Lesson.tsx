@@ -10,8 +10,8 @@
 
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { motion } from 'motion/react'
 import SEOHead from '../components/SEOHead'
+import EditorialLessonHeader from '../components/EditorialLessonHeader'
 /**
  * Lesson Page
  *
@@ -43,7 +43,6 @@ import MarkdownRenderer, {
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import TableOfContents from '../components/TableOfContents'
-import ReadingTime from '../components/ReadingTime'
 import PrerequisitePills from '../components/PrerequisitePills'
 import RelatedLessons from '../components/RelatedLessons'
 import { useSwipe } from '../hooks/useSwipe'
@@ -287,9 +286,7 @@ export default function Lesson() {
           </button>
         )}
 
-        {/* Breadcrumb */}
-        <div className="lesson-header">
-          <h1 className="sr-only">{lessonTitle}</h1>
+        <div className={`lesson-header ${showSecondaryUi ? '' : 'reading-muted'}`}>
           <Breadcrumb
             items={[
               { label: 'Home', to: '/' },
@@ -297,47 +294,46 @@ export default function Lesson() {
               { label: `Day ${lesson.day}` },
             ]}
           />
-
-          <motion.div
-            className={`lesson-day-badge ${showSecondaryUi ? '' : 'reading-muted'}`}
-            layoutId={`lesson-day-badge-${lesson.day}`}
-          >
-            Day {lesson.day}
-          </motion.div>
-
-          {/* Meta bar */}
-          <div className={`lesson-meta-bar ${showSecondaryUi ? '' : 'reading-muted'}`}>
-            <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
-              {diff.label}
-            </span>
-            {lesson.duration && (
-              <span className="meta-pill">
-                <span aria-hidden="true">⏱</span> {lesson.duration} min
-              </span>
-            )}
-            <ReadingTime content={lesson.content} />
-            {lesson.tags &&
-              lesson.tags.map((tag) => (
-                <span className="lesson-tag" key={tag}>
-                  {tag}
-                </span>
-              ))}
-          </div>
+          <EditorialLessonHeader
+            day={String(lesson.day)}
+            title={lesson.title}
+            phaseNum={lesson.phase}
+            phaseTitle={getPhase(lesson.phase)?.title}
+            difficulty={diff.label}
+            difficultyColor={diff.color}
+            difficultyBg={diff.bg}
+            durationMin={lesson.duration}
+            description={typeof lesson.description === 'string' ? lesson.description : undefined}
+            content={lesson.content}
+          />
 
           {showSecondaryUi && (
-            <>
+            <div className="lesson-header-controls">
               <button
                 type="button"
-                className={`lesson-complete-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${completed ? 'completed' : ''}`}
+                className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
                 onClick={handleToggleComplete}
                 aria-pressed={completed}
                 aria-label={completed ? 'Mark lesson as incomplete' : 'Mark lesson as complete'}
               >
-                {completed ? '✓ Completed' : '○ Mark as Complete'}
+                <span className="lesson-complete-glyph" aria-hidden="true">
+                  {completed ? '✓' : '○'}
+                </span>
+                {completed ? 'Completed' : 'Mark complete'}
               </button>
 
+              {lesson.tags && lesson.tags.length > 0 && (
+                <div className="lesson-tags-row">
+                  {lesson.tags.map((tag) => (
+                    <span className="lesson-tag" key={tag}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
               <PrerequisitePills lesson={lesson} />
-            </>
+            </div>
           )}
         </div>
 

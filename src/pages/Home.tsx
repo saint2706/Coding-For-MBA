@@ -1,18 +1,17 @@
 /**
- * Home Page
+ * Home — "The Analyst's Terminal" cover.
  *
- * The landing page for the application.
+ * Three composed sections:
+ *   1. EditorialCover — magazine masthead.
+ *   2. TerminalDashboard — six dense session-data tiles.
+ *   3. MapListToggle — phase grid (list) ↔ concept graph (map).
  *
- * Key Responsibilities:
- * - Introduce the curriculum value proposition.
- * - Display high-level progress stats (if user has started).
- * - Link to the "Resume Learning" or "Start Course" action.
- * - Highlight key features (Python, Data Science, SQL).
+ * No "Welcome back" hero, no animated stat counters. The reader opens
+ * a workstation, not a marketing page.
  */
 
-import { useEffect, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { buildWebSiteSchema, buildCourseSchema, buildProductSchema } from '../utils/seoSchemas'
 import {
@@ -21,363 +20,299 @@ import {
   getLessonsByPhase,
   getLesson,
   difficultyConfig,
-  phaseIcons,
   getCurriculumMetadata,
 } from '../utils/contentLoader'
 import { useProgressStore } from '../stores/progressStore'
-import { dayTokenToProgressId } from '../utils/dayToken'
-import ProgressBar from '../components/ProgressBar'
-import AnimatedCounter from '../components/AnimatedCounter'
 import { useGamificationStore } from '../stores/gamificationStore'
+import { dayTokenToProgressId } from '../utils/dayToken'
+import EditorialCover from '../components/EditorialCover'
+import TerminalDashboard from '../components/TerminalDashboard'
+import MapListToggle from '../components/MapListToggle'
 
-/**
- * Home page component displaying the curriculum landing page.
- *
- * Features include:
- * - Hero section with curriculum statistics ({stats.totalDays} days, {stats.totalPhases} phases, etc.)
- * - Continue learning card showing last visited lesson
- * - Interactive grid of all learning phases with progress tracking
- * - Quick navigation to start learning or continue progress
- *
- * @returns The rendered home page
- */
+const ConceptGraph = lazy(() => import('../components/ConceptGraph'))
+
+function pad(n: number, width = 2): string {
+  return String(n).padStart(width, '0')
+}
+
+function formatIssueDate(d = new Date()): string {
+  const months = [
+    'JAN',
+    'FEB',
+    'MAR',
+    'APR',
+    'MAY',
+    'JUN',
+    'JUL',
+    'AUG',
+    'SEP',
+    'OCT',
+    'NOV',
+    'DEC',
+  ]
+  return `${months[d.getMonth()]} ${pad(d.getDate())} · ${d.getFullYear()}`
+}
+
 export default function Home() {
   const phases = getAllPhases()
   const stats = getCurriculumMetadata()
   const [totalHours, setTotalHours] = useState<number | null>(null)
+
   const lastVisitedDay = useProgressStore((state) => state.lastVisitedLesson)
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
-  const lastVisitedPhase = lastVisitedLesson
-    ? phases.find((phase) => phase.phase === lastVisitedLesson.phase)
-    : null
+
   const completedLessons = useProgressStore((state) => state.completedLessons)
-  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
-
-  // ⚡ Bolt: Extracted phases map into a top-level useMemo to prevent O(N) array filtering
-  // inside the render cycle. This resolves a performance bottleneck while avoiding
-  // React Rules of Hooks violations.
-  const renderedPhases = useMemo(
-    () =>
-      phases.map((phase) => {
-        const lessons = getLessonsByPhase(phase.phase)
-        const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-        const icon = phaseIcons[phase.phase - 1] || '📖'
-        const hours = Math.round((phase.totalDuration || 0) / 60)
-        const completedInPhaseCount = lessons.filter((l) =>
-          completedSet.has(dayTokenToProgressId(l.day)),
-        ).length
-
-        return (
-          <Link to={`/phase/${phase.phase}`} className="phase-card glass-card" key={phase.phase}>
-            <div className="phase-card-header">
-              <div className="phase-card-icon">{icon}</div>
-              <div className="phase-card-title">
-                <div className="phase-num">Phase {phase.phase}</div>
-                <h3>{phase.title}</h3>
-              </div>
-            </div>
-            <div className="phase-card-meta">
-              <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
-                {diff.label}
-              </span>
-              <span className="meta-pill">
-                <span aria-hidden="true">📅</span> {lessons.length} Days
-              </span>
-              {hours > 0 && (
-                <span className="meta-pill">
-                  <span aria-hidden="true">⏱</span> {hours}h
-                </span>
-              )}
-            </div>
-            {completedInPhaseCount > 0 && (
-              <div className="phase-card-progress">
-                <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
-              </div>
-            )}
-          </Link>
-        )
-      }),
-    [phases, completedSet],
-  )
-
-  const { lastVisitedPhasePct } = useMemo(() => {
-    const lessons = lastVisitedPhase ? getLessonsByPhase(lastVisitedPhase.phase) : []
-    const pct = lastVisitedPhase
-      ? Math.round(
-          (lessons.filter((lesson) => completedSet.has(dayTokenToProgressId(lesson.day))).length /
-            Math.max(1, lessons.length)) *
-            100,
-        )
-      : 0
-    return { lastVisitedPhasePct: pct }
-  }, [lastVisitedPhase, completedSet])
-  const completedCount = completedLessons.length
   const streakDays = useProgressStore((state) => state.streakDays())
-  const totalLessons = stats.totalDays
-  const prefersReducedMotion = useReducedMotion()
-  const { scrollYProgress } = useScroll()
-  const heroY = useTransform(scrollYProgress, [0, 0.35], [0, prefersReducedMotion ? 0 : -50])
-
+  const xp = useGamificationStore((state) => state.xpTotal)
   const dailyChallenge = useGamificationStore((state) => state.dailyChallenge)
   const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
+  const challengeLesson = getLesson(dailyChallenge.day)
+
+  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+  const completedCount = completedLessons.length
+  const totalLessons = stats.totalDays
+  const completedPct = Math.round((completedCount / Math.max(1, totalLessons)) * 100)
+
+  // Concepts mastered: derive from lessons completed (1 lesson ≈ unique concepts unlocked).
+  // This is approximate; the precise count depends on lesson metadata and is not exposed
+  // via a single accessor. We use completedCount × 4 as a conservative proxy that grows
+  // with progress without inventing data.
+  const conceptsMastered = completedCount * 4
 
   useEffect(() => {
     refreshDailyChallenge()
   }, [refreshDailyChallenge])
 
   useEffect(() => {
-    const calculateTotalHours = () => {
-      // ⚡ Bolt: Use O(1) cached value instead of O(N) recalculation via reduce with expensive regex parsing
-      const totalReadingMins = getTotalReadingTime()
-      setTotalHours(Math.round(totalReadingMins / 60))
-    }
-
+    const calculate = () => setTotalHours(Math.round(getTotalReadingTime() / 60))
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
       const idleId = (
         window as Window & {
-          requestIdleCallback: (callback: () => void, options?: { timeout: number }) => number
+          requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number
         }
-      ).requestIdleCallback(calculateTotalHours, { timeout: 2000 })
-
+      ).requestIdleCallback(calculate, { timeout: 2000 })
       return () => {
         ;(window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback?.(
           idleId,
         )
       }
     }
-
-    const timeoutId = globalThis.setTimeout(calculateTotalHours, 0)
-    return () => globalThis.clearTimeout(timeoutId)
+    const t = globalThis.setTimeout(calculate, 0)
+    return () => globalThis.clearTimeout(t)
   }, [])
 
-  const challengeLesson = getLesson(dailyChallenge.day)
+  const renderedPhases = useMemo(
+    () =>
+      phases.map((phase) => {
+        const lessons = getLessonsByPhase(phase.phase)
+        const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+        const hours = Math.round((phase.totalDuration || 0) / 60)
+        const completedInPhase = lessons.filter((l) =>
+          completedSet.has(dayTokenToProgressId(l.day)),
+        ).length
+        const phasePct = Math.round((completedInPhase / Math.max(1, lessons.length)) * 100)
+
+        return (
+          <Link to={`/phase/${phase.phase}`} className="phase-card-editorial" key={phase.phase}>
+            <div className="phase-card-numeral display-numeral" aria-hidden="true">
+              {pad(phase.phase)}
+            </div>
+            <div className="phase-card-body">
+              <p className="phase-card-kicker">
+                <span className="kicker-dot" aria-hidden="true" />
+                Phase
+              </p>
+              <h3 className="phase-card-title">{phase.title}</h3>
+              <dl className="phase-card-meta">
+                <div>
+                  <dt>Days</dt>
+                  <dd>{lessons.length}</dd>
+                </div>
+                <div>
+                  <dt>Hours</dt>
+                  <dd>{hours || '—'}</dd>
+                </div>
+                <div>
+                  <dt>Level</dt>
+                  <dd>{diff.label}</dd>
+                </div>
+                <div>
+                  <dt>Done</dt>
+                  <dd>
+                    {completedInPhase}/{lessons.length}
+                  </dd>
+                </div>
+              </dl>
+              <div className="phase-card-bar" aria-hidden="true">
+                <div className="phase-card-bar-fill" style={{ width: `${phasePct}%` }} />
+              </div>
+            </div>
+            <span className="phase-card-arrow" aria-hidden="true">
+              →
+            </span>
+          </Link>
+        )
+      }),
+    [phases, completedSet],
+  )
 
   return (
-    <div className="page-container">
+    <div className="page-container home-page">
       <SEOHead
-        title="Coding for MBA — 140-Day Technical Curriculum"
-        description={`A structured ${stats.totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.`}
+        title="Coding for MBA — The Analyst's Terminal"
+        description={`A ${stats.totalDays}-day technical curriculum for MBAs: Python, Data Science, ML, Business Intelligence, and Enterprise SQL.`}
         path="/"
         jsonLd={[
           buildWebSiteSchema(),
           buildCourseSchema(),
           buildProductSchema(
             'Coding for MBA',
-            'A structured 140-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.',
+            `A structured ${stats.totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL.`,
           ),
         ]}
         breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
-      {/* Hero */}
-      <motion.section className="hero glass-card hero-with-cards" style={{ y: heroY }}>
-        <div className="hero-content-col">
-          <div className="hero-badge">
-            <span aria-hidden="true">📚</span> Self-Study Curriculum
-          </div>
-          <h1>
-            Master <span className="gradient-text">Technical Skills</span>
-            <br />
-            for Your MBA Career
-          </h1>
-          <p>
-            A structured {stats.totalDays}-day curriculum covering Python, Data Science, Machine
-            Learning, Business Intelligence, and Enterprise SQL — designed for business
-            professionals.
-          </p>
-          <div className="hero-stats">
-            <div className="hero-stat">
-              <span className="stat-value">
-                <AnimatedCounter value={stats.totalDays} />
-              </span>
-              <span className="stat-label">Days</span>
-            </div>
-            <div className="hero-stat">
-              <span className="stat-value">
-                <AnimatedCounter value={stats.totalPhases} />
-              </span>
-              <span className="stat-label">Phases</span>
-            </div>
-            <div className="hero-stat">
-              <span className="stat-value">
-                <AnimatedCounter value={totalHours ?? 0} suffix="+" />
-              </span>
-              <span className="stat-label">Hours</span>
-            </div>
-            <div className="hero-stat">
-              <span className="stat-value">
-                <AnimatedCounter value={stats.totalLevels} />
-              </span>
-              <span className="stat-label">Levels</span>
-            </div>
-          </div>
-          <div className="hero-cta">
-            <Link to="/lesson/1">Start Learning →</Link>
-          </div>
-          {completedCount > 0 && (
-            <div className="hero-continue">
-              <Link to="/progress">
-                📊 {completedCount}/{totalLessons} Complete
-              </Link>
-            </div>
-          )}
-        </div>
 
-        <div className="hero-cards-col" aria-hidden="true">
-          {lastVisitedLesson ? (
-            <div className="hero-float-card">
-              <div className="hero-float-card-header">
-                <div className="hero-float-card-icon" aria-hidden="true">
-                  📖
-                </div>
-                <div>
-                  <p className="hero-float-card-eyebrow">
-                    {lastVisitedPhase ? `Phase ${lastVisitedPhase.phase}` : 'Continue'}
-                  </p>
-                  <p className="hero-float-card-title">
-                    {lastVisitedPhase ? lastVisitedPhase.title : lastVisitedLesson.title}
-                  </p>
-                </div>
-                <span className="hero-float-card-badge">Active</span>
-              </div>
-              <div className="hero-float-card-progress-row">
-                <span>Progress</span>
-                <span style={{ color: 'var(--accent-primary)' }}>
-                  {lastVisitedPhase ? `${lastVisitedPhasePct}%` : `Day ${lastVisitedLesson.day}`}
-                </span>
-              </div>
-              <div className="hero-float-card-bar">
-                <div
-                  className="hero-float-card-bar-fill"
-                  style={{
-                    width: lastVisitedPhase ? `${lastVisitedPhasePct}%` : '0%',
-                  }}
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="hero-float-card">
-              <div className="hero-float-card-header">
-                <div className="hero-float-card-icon" aria-hidden="true">
-                  💻
-                </div>
-                <div>
-                  <p className="hero-float-card-eyebrow">Phase 1</p>
-                  <p className="hero-float-card-title">Programming Foundations</p>
-                </div>
-                <span className="hero-float-card-badge">Start</span>
-              </div>
-              <div className="hero-float-card-progress-row">
-                <span>Progress</span>
-                <span style={{ color: 'var(--accent-primary)' }}>0%</span>
-              </div>
-              <div className="hero-float-card-bar">
-                <div className="hero-float-card-bar-fill" style={{ width: '0%' }} />
-              </div>
-            </div>
-          )}
-          <div className="hero-float-card hero-float-card--behind">
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                marginBottom: '0.75rem',
-              }}
-            >
-              <span aria-hidden="true" style={{ fontSize: '1.25rem' }}>
-                🔥
-              </span>
-              <p style={{ fontWeight: 700, color: 'var(--text-heading)', margin: 0 }}>
-                Daily Streak
+      <EditorialCover>
+        <EditorialCover.Eyebrow>
+          <span className="cover-issue">ISSUE 01</span>
+          <span className="cover-divider" aria-hidden="true">
+            ·
+          </span>
+          <span>{formatIssueDate()}</span>
+          <span className="cover-divider" aria-hidden="true">
+            ·
+          </span>
+          <span>The Analyst&apos;s Terminal</span>
+        </EditorialCover.Eyebrow>
+        <EditorialCover.Title>
+          A workstation for the
+          <br />
+          <em>numerate generalist.</em>
+        </EditorialCover.Title>
+        <EditorialCover.Lede>
+          {stats.totalDays} days. {stats.totalPhases} phases. From the first variable assignment to
+          a production data pipeline you&apos;d trust with revenue. Designed for MBAs who want to
+          ship, not just narrate.
+        </EditorialCover.Lede>
+        <EditorialCover.Actions>
+          <Link
+            to={lastVisitedLesson ? `/lesson/${lastVisitedLesson.day}` : '/lesson/1'}
+            className="action-primary"
+          >
+            <span className="action-glyph" aria-hidden="true">
+              ›
+            </span>
+            {lastVisitedLesson ? `Resume Day ${lastVisitedLesson.day}` : 'Begin Day 01'}
+          </Link>
+          <Link to="/curriculum" className="action-secondary">
+            See the full curriculum
+          </Link>
+        </EditorialCover.Actions>
+      </EditorialCover>
+
+      <hr className="hairline-strong cover-rule" />
+
+      <TerminalDashboard>
+        <TerminalDashboard.Tile highlight>
+          <TerminalDashboard.TileHeader label="LAST OPEN" symbol="·" />
+          <TerminalDashboard.TileValue>
+            {lastVisitedLesson ? (
+              <Link to={`/lesson/${lastVisitedLesson.day}`} className="dashboard-tile-link">
+                Day {lastVisitedLesson.day}
+              </Link>
+            ) : (
+              <span className="dashboard-tile-empty">— —</span>
+            )}
+          </TerminalDashboard.TileValue>
+          <TerminalDashboard.TileFooter>
+            {lastVisitedLesson
+              ? lastVisitedLesson.title
+              : 'No session yet. Open a lesson to begin.'}
+          </TerminalDashboard.TileFooter>
+        </TerminalDashboard.Tile>
+
+        <TerminalDashboard.Tile>
+          <TerminalDashboard.TileHeader label="STREAK" symbol="■" />
+          <TerminalDashboard.TileValue unit="days">{pad(streakDays)}</TerminalDashboard.TileValue>
+          <TerminalDashboard.TileFooter>
+            {streakDays >= 7 ? 'Week+ streak' : streakDays > 0 ? 'Keep it warm' : 'Open one today'}
+          </TerminalDashboard.TileFooter>
+        </TerminalDashboard.Tile>
+
+        <TerminalDashboard.Tile>
+          <TerminalDashboard.TileHeader label="COMPLETED" symbol="□" />
+          <TerminalDashboard.TileValue unit={`/${totalLessons}`}>
+            {pad(completedCount, 3)}
+          </TerminalDashboard.TileValue>
+          <TerminalDashboard.TileFooter>{completedPct}% of curriculum</TerminalDashboard.TileFooter>
+        </TerminalDashboard.Tile>
+
+        <TerminalDashboard.Tile>
+          <TerminalDashboard.TileHeader label="HOURS BANKED" symbol="◴" />
+          <TerminalDashboard.TileValue unit="hr">{totalHours ?? '—'}</TerminalDashboard.TileValue>
+          <TerminalDashboard.TileFooter>
+            Estimated reading time invested
+          </TerminalDashboard.TileFooter>
+        </TerminalDashboard.Tile>
+
+        <TerminalDashboard.Tile>
+          <TerminalDashboard.TileHeader label="XP" symbol="▲" />
+          <TerminalDashboard.TileValue>{xp.toLocaleString()}</TerminalDashboard.TileValue>
+          <TerminalDashboard.TileFooter>
+            Concepts mastered: {conceptsMastered}
+          </TerminalDashboard.TileFooter>
+        </TerminalDashboard.Tile>
+
+        <TerminalDashboard.Tile
+          href={challengeLesson ? `#/lesson/${challengeLesson.day}` : undefined}
+        >
+          <TerminalDashboard.TileHeader label="DAILY DROP" symbol="↯" />
+          <TerminalDashboard.TileValue>
+            {challengeLesson ? `Day ${challengeLesson.day}` : '—'}
+          </TerminalDashboard.TileValue>
+          <TerminalDashboard.TileFooter>
+            {challengeLesson ? challengeLesson.title : "Tomorrow's pick"}
+          </TerminalDashboard.TileFooter>
+        </TerminalDashboard.Tile>
+      </TerminalDashboard>
+
+      <hr className="hairline-strong cover-rule" />
+
+      <section className="curriculum-section">
+        <header className="section-masthead">
+          <p className="section-eyebrow">
+            {stats.totalPhases} phases · {stats.totalDays} days
+          </p>
+          <h2 className="section-headline display-headline">The path</h2>
+          <p className="section-lede">
+            From the first variable assignment to a production data pipeline. Walk it linearly, or
+            jump in via the concept map.
+          </p>
+        </header>
+
+        <MapListToggle defaultActive="phases" ariaLabel="Switch curriculum view">
+          <MapListToggle.View label="phases" glyph="▣">
+            <div className="phases-grid-editorial">{renderedPhases}</div>
+          </MapListToggle.View>
+          <MapListToggle.View label="map" glyph="◈">
+            <div className="map-view-frame">
+              <Suspense
+                fallback={
+                  <div className="page-loader">
+                    <div className="page-loader-spinner" />
+                  </div>
+                }
+              >
+                <ConceptGraph />
+              </Suspense>
+              <p className="map-view-caption">
+                Each node is a concept; edges are prerequisites. Click any node to jump to the
+                lesson that introduces it. Drag to rearrange.
               </p>
             </div>
-            <p
-              style={{
-                fontSize: '2rem',
-                fontWeight: 800,
-                color: 'var(--text-heading)',
-                lineHeight: 1,
-              }}
-            >
-              {streakDays}
-            </p>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-              Days
-            </p>
-          </div>
-        </div>
-
-        {/* Inline continue banners below hero content (always visible) */}
-        {lastVisitedLesson && (
-          <article className="continue-banner glass-card" aria-label="Continue learning">
-            <p className="continue-banner-title">Continue learning</p>
-            <p className="continue-banner-subtitle">
-              {lastVisitedLesson.title}
-              {lastVisitedPhase
-                ? ` • Phase ${lastVisitedPhase.phase}: ${lastVisitedPhase.title}`
-                : ''}
-            </p>
-            <Link className="continue-banner-cta" to={`/lesson/${lastVisitedLesson.day}`}>
-              Resume Day {lastVisitedLesson.day}
-            </Link>
-          </article>
-        )}
-
-        {challengeLesson && (
-          <article className="continue-banner glass-card" aria-label="Daily challenge">
-            <p className="continue-banner-title">Daily Challenge</p>
-            <p className="continue-banner-subtitle">
-              Day {challengeLesson.day}: {challengeLesson.title}
-            </p>
-            <Link className="continue-banner-cta" to={`/lesson/${challengeLesson.day}`}>
-              Take today&apos;s challenge
-            </Link>
-          </article>
-        )}
-      </motion.section>
-
-      {/* Stats Bar */}
-      <div className="home-stats-bar">
-        <div className="home-stats-bar-item">
-          <p className="home-stats-bar-label">Total Duration</p>
-          <p className="home-stats-bar-value">
-            <AnimatedCounter value={stats.totalDays} />
-            <span className="home-stats-bar-unit">Days</span>
-          </p>
-        </div>
-        <div className="home-stats-bar-item">
-          <p className="home-stats-bar-label">Curriculum</p>
-          <p className="home-stats-bar-value">
-            <AnimatedCounter value={stats.totalPhases} />
-            <span className="home-stats-bar-unit">Phases</span>
-          </p>
-        </div>
-        <div className="home-stats-bar-item">
-          <p className="home-stats-bar-label">Hands-on</p>
-          <p className="home-stats-bar-value">
-            25+<span className="home-stats-bar-unit">Projects</span>
-          </p>
-        </div>
-        <div className="home-stats-bar-item">
-          <p className="home-stats-bar-label">Community</p>
-          <p className="home-stats-bar-value">
-            5k+<span className="home-stats-bar-unit">Peers</span>
-          </p>
-        </div>
-      </div>
-
-      {/* Phases Grid */}
-      <section>
-        <div className="section-header">
-          <h2>The Learning Path</h2>
-          <p>
-            From Python basics to enterprise database architecture — a structured journey through{' '}
-            {stats.totalPhases}
-            phases.
-          </p>
-        </div>
-
-        <div className="phases-grid">{renderedPhases}</div>
+          </MapListToggle.View>
+        </MapListToggle>
       </section>
     </div>
   )

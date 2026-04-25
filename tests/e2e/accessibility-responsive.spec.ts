@@ -87,7 +87,7 @@ test.describe('accessibility and responsive layout', () => {
 
   test('keeps core palette tokens at accessible contrast levels', async ({ page }) => {
     await page.goto('/#/')
-    await expect(page.getByRole('heading', { name: /Master Technical Skills/i })).toBeVisible()
+    await expect(page.getByRole('heading', { name: /workstation/i })).toBeVisible()
 
     const auditResults = await page.evaluate<ThemeAuditResult[]>(contrastAuditScript)
 
@@ -121,7 +121,7 @@ test.describe('accessibility and responsive layout', () => {
 
   test('avoids visible horizontal overflow on narrow screens', async ({ page }) => {
     const routes = [
-      { url: '/#/', heading: /Master Technical Skills/i },
+      { url: '/#/', heading: /workstation/i },
       { url: '/#/search?q=python', heading: /Search lessons/i },
       { url: '/#/lesson/1', heading: /Day 1/i },
     ] as const

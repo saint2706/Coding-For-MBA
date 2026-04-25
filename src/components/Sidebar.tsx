@@ -1,11 +1,12 @@
 /**
- * Sidebar Component
+ * Sidebar — file-tree style curriculum navigation.
  *
- * A collapsible sidebar navigation showing all phases and lessons
- * with progress tracking and hierarchical organization.
+ * VS Code-inspired tree: mono prefixes, indented expand/collapse,
+ * left signal-lime bar marking the active item. No emoji icons —
+ * mono glyphs only (per ui-ux-pro-max: no-emoji-icons).
  */
 
-import { useState, useMemo, useEffect, useRef } from 'react'
+import { useMemo, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
@@ -13,33 +14,35 @@ import { normalizeDayToken, dayTokenToProgressId } from '../utils/dayToken'
 import { useProgressStore } from '../stores/progressStore'
 import SidebarPhaseGroup from './SidebarPhaseGroup'
 
-/**
- * Props for the Sidebar component.
- *
- * @property isOpen - Whether the sidebar is visible (for mobile)
- * @property onClose - Callback to close the sidebar
- */
 interface SidebarProps {
   isOpen: boolean
   onClose: () => void
 }
 
-/**
- * Collapsible sidebar with curriculum navigation.
- *
- * Features:
- * - Hierarchical phase and lesson organization
- * - Automatic expansion of current phase
- * - Progress indicators for completed lessons
- * - Auto-scroll to active lesson
- * - Mobile overlay with click-outside to close
- * - Phase-level progress counters
- *
- * @param {SidebarProps} props - The component properties.
- * @param {boolean} props.isOpen - Controls sidebar visibility on mobile.
- * @param {() => void} props.onClose - Function to close the sidebar.
- * @returns {React.ReactElement} A navigation sidebar with phase accordion.
- */
+interface PrimaryItemProps {
+  to: string
+  active: boolean
+  glyph: string
+  label: string
+  onClick: () => void
+}
+
+function PrimaryItem({ to, active, glyph, label, onClick }: PrimaryItemProps) {
+  return (
+    <Link
+      to={to}
+      className={`tree-item tree-item--primary ${active ? 'active' : ''}`}
+      onClick={onClick}
+      aria-current={active ? 'page' : undefined}
+    >
+      <span className="tree-glyph" aria-hidden="true">
+        {glyph}
+      </span>
+      <span className="tree-label">{label}</span>
+    </Link>
+  )
+}
+
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
   const phases = getAllPhases()
@@ -61,7 +64,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const dueByPhase = useMemo(() => getReviewDueCountByPhase(), [])
   const reviewStreak = useMemo(() => getReviewStreak(), [])
 
-  // Reactive progress tracking
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
@@ -77,19 +79,15 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return idsByPhase
   }, [phases, completedSet])
 
-  // Determines currently open phase: manual toggle takes precedence over auto-derived.
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
 
-  /**
-   * Auto-scrolls sidebar to show the active lesson link.
-   * Triggered when location changes or phase expands.
-   */
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
-    // Wait for phase accordion to expand
     const timer = setTimeout(() => {
-      const activeLink = nav.querySelector('.day-link.active') as HTMLElement | null
+      const activeLink = nav.querySelector(
+        '.day-link.active, .tree-item.active',
+      ) as HTMLElement | null
       if (activeLink) {
         activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
       }
@@ -97,12 +95,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return () => clearTimeout(timer)
   }, [location.pathname])
 
-  /**
-   * Toggles the expansion state of a phase section.
-   * Overrides the auto-derived open phase.
-   *
-   * @param phaseNum - The phase number to toggle.
-   */
   const togglePhase = (phaseNum: number) => {
     setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
   }
@@ -121,29 +113,26 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         aria-label="Lesson navigation"
       >
         <div className="sidebar-header">
-          <div className="sidebar-logo" aria-hidden="true">
-            <span aria-hidden="true">🎓</span>
-          </div>
-          <h2 className="sidebar-title">
-            Coding for MBA
-            <small>140-Day Curriculum</small>
-          </h2>
-          {reviewStreak > 0 && (
-            <span className="sidebar-streak-badge" title={`${reviewStreak}-day review streak`}>
-              <span aria-hidden="true">🔥</span> {reviewStreak}
+          <Link to="/" className="sidebar-brand" onClick={onClose}>
+            <span className="sidebar-brand-mark" aria-hidden="true">
+              C/M
             </span>
-          )}
+            <span className="sidebar-brand-text">
+              <span className="sidebar-brand-name">Coding for MBA</span>
+              <span className="sidebar-brand-meta">v1 · 140-day</span>
+            </span>
+          </Link>
           <button
             type="button"
-            className="sidebar-close focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="sidebar-close"
             onClick={onClose}
             aria-label="Close sidebar"
             aria-expanded={isOpen}
             aria-controls="app-sidebar"
           >
             <svg
-              width="20"
-              height="20"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -156,78 +145,78 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
 
         <nav className="sidebar-nav" ref={navRef}>
-          <Link
-            to="/"
-            className={`day-link ${location.pathname === '/' ? 'active' : ''}`}
-            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
-            onClick={onClose}
-            aria-current={location.pathname === '/' ? 'page' : undefined}
-          >
-            <span aria-hidden="true">🏠</span> Home
-          </Link>
-          <Link
-            to="/curriculum"
-            className={`day-link ${location.pathname === '/curriculum' ? 'active' : ''}`}
-            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
-            onClick={onClose}
-            aria-current={location.pathname === '/curriculum' ? 'page' : undefined}
-          >
-            <span aria-hidden="true">📋</span> Full Curriculum
-          </Link>
-          <Link
-            to="/progress"
-            className={`day-link ${location.pathname === '/progress' ? 'active' : ''}`}
-            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
-            onClick={onClose}
-            aria-current={location.pathname === '/progress' ? 'page' : undefined}
-          >
-            <span aria-hidden="true">📊</span> Progress
-          </Link>
-          <Link
-            to="/exercises"
-            className={`day-link ${location.pathname === '/exercises' ? 'active' : ''}`}
-            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
-            onClick={onClose}
-            aria-current={location.pathname === '/exercises' ? 'page' : undefined}
-          >
-            <span aria-hidden="true">🧪</span> Exercises
-          </Link>
-
-          <Link
-            to="/case-studies"
-            className={`day-link ${location.pathname === '/case-studies' ? 'active' : ''}`}
-            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.75rem' }}
-            onClick={onClose}
-            aria-current={location.pathname === '/case-studies' ? 'page' : undefined}
-          >
-            <span aria-hidden="true">📂</span> Case Studies &amp; Projects
-          </Link>
-
-          <Link
-            to="/review"
-            className={`day-link ${location.pathname === '/review' ? 'active' : ''}`}
-            style={{ paddingLeft: '1.25rem', fontWeight: 600, marginBottom: '0.5rem' }}
-            onClick={onClose}
-            aria-current={location.pathname === '/review' ? 'page' : undefined}
-          >
-            <span aria-hidden="true">🧠</span> Review
-          </Link>
-          <div className="sidebar-review-stats">
-            <small>Review streak: {reviewStreak} day(s)</small>
+          <div className="tree-section">
+            <div className="tree-section-label">workspace</div>
+            <PrimaryItem
+              to="/"
+              active={location.pathname === '/'}
+              glyph="~"
+              label="home"
+              onClick={onClose}
+            />
+            <PrimaryItem
+              to="/curriculum"
+              active={location.pathname === '/curriculum'}
+              glyph="▣"
+              label="curriculum"
+              onClick={onClose}
+            />
+            <PrimaryItem
+              to="/concepts"
+              active={location.pathname === '/concepts'}
+              glyph="◈"
+              label="concept map"
+              onClick={onClose}
+            />
+            <PrimaryItem
+              to="/progress"
+              active={location.pathname === '/progress'}
+              glyph="▤"
+              label="progress"
+              onClick={onClose}
+            />
           </div>
 
-          {phases.map((phase) => (
-            <SidebarPhaseGroup
-              key={phase.phase}
-              phase={phase}
-              isActive={openPhase === phase.phase}
-              completedIdsJoined={completedIdsByPhase[phase.phase] ?? ''}
-              dueCount={dueByPhase[phase.phase] || 0}
-              currentPath={location.pathname}
-              onToggle={togglePhase}
-              onClose={onClose}
+          <div className="tree-section">
+            <div className="tree-section-label">practice</div>
+            <PrimaryItem
+              to="/exercises"
+              active={location.pathname === '/exercises'}
+              glyph="λ"
+              label="exercises"
+              onClick={onClose}
             />
-          ))}
+            <PrimaryItem
+              to="/case-studies"
+              active={location.pathname === '/case-studies'}
+              glyph="▦"
+              label="case studies"
+              onClick={onClose}
+            />
+            <PrimaryItem
+              to="/review"
+              active={location.pathname === '/review'}
+              glyph="?"
+              label={`review${reviewStreak > 0 ? ` · ${reviewStreak}d` : ''}`}
+              onClick={onClose}
+            />
+          </div>
+
+          <div className="tree-section">
+            <div className="tree-section-label">curriculum · {phases.length} phases</div>
+            {phases.map((phase) => (
+              <SidebarPhaseGroup
+                key={phase.phase}
+                phase={phase}
+                isActive={openPhase === phase.phase}
+                completedIdsJoined={completedIdsByPhase[phase.phase] ?? ''}
+                dueCount={dueByPhase[phase.phase] || 0}
+                currentPath={location.pathname}
+                onToggle={togglePhase}
+                onClose={onClose}
+              />
+            ))}
+          </div>
         </nav>
       </aside>
     </>

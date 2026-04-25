@@ -16,6 +16,8 @@ import { z } from 'zod'
 import { getStoredString } from '../utils/safeStorage'
 
 const ColorPaletteSchema = z.enum([
+  'terminal-dark',
+  'bone-light',
   'peach-sorbet',
   'gradient-blues',
   'neon-party',
@@ -98,7 +100,7 @@ const safeStorage: StateStorage = {
 }
 
 const PersistedStateSchema = z.object({
-  palette: ColorPaletteSchema.catch('gradient-blues'),
+  palette: ColorPaletteSchema.catch('terminal-dark'),
   sidebarDefaultOpen: z.boolean().catch(false),
   fontSize: FontSizePreferenceSchema.catch('md'),
   codeLanguage: CodeLanguagePreferenceSchema.catch('python'),
@@ -110,8 +112,7 @@ const PersistedStateSchema = z.object({
 
 function getLegacyPalette(): ColorPalette {
   const legacyTheme = getStoredString(LEGACY_THEME_KEY)
-  // Map legacy dark/system → gradient-blues, light → light-steel
-  return legacyTheme === 'light' ? 'light-steel' : 'gradient-blues'
+  return legacyTheme === 'light' ? 'bone-light' : 'terminal-dark'
 }
 
 /**
@@ -141,7 +142,7 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
     }),
     {
       name: STORAGE_KEY,
-      version: 5,
+      version: 6,
       storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({
         palette: state.palette,
@@ -153,29 +154,32 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
         readingComfortTheme: state.readingComfortTheme,
         customCursorEnabled: state.customCursorEnabled,
       }),
-      migrate: (persistedState) => {
+      migrate: (persistedState, version) => {
         const raw = (persistedState || {}) as Record<string, unknown>
-        // Migrate legacy `theme` field to `palette`
         const legacyPalette =
           raw.theme === 'light'
-            ? 'light-steel'
+            ? 'bone-light'
             : raw.theme === 'dark' || raw.theme === 'system'
-              ? 'gradient-blues'
+              ? 'terminal-dark'
               : undefined
 
-        const dataToParse = {
-          ...raw,
-          palette: raw.palette ?? legacyPalette,
+        // v5→v6: redesign migration. Anyone still on the previous default
+        // (gradient-blues) gets the new default (terminal-dark). Users who
+        // explicitly picked a non-default palette keep their choice.
+        let palette = (raw.palette ?? legacyPalette) as ColorPalette | undefined
+        if (version < 6 && palette === 'gradient-blues') {
+          palette = 'terminal-dark'
         }
+
+        const dataToParse = { ...raw, palette }
 
         const parsed = PersistedStateSchema.safeParse(dataToParse)
         if (parsed.success) {
           return parsed.data
         }
 
-        // Fallback if parsing completely fails (e.g. data is not an object)
         return {
-          palette: 'gradient-blues',
+          palette: 'terminal-dark',
           sidebarDefaultOpen: false,
           fontSize: 'md',
           codeLanguage: 'python',

@@ -1,0 +1,177 @@
+/* ===== SHARED ATOMS — utility classes used across many pages ===== */
+
+/* --- Section header (legacy class, used by ProgressDashboard, Curriculum,
+   NotebookViewer, Exercises, Review, etc.) — restyled editorial. --- */
+
+.section-header {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  max-width: 70ch;
+}
+
+.section-header h1,
+.section-header h2 {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 30,
+    'wght' 380;
+  font-size: clamp(1.875rem, 4vw, 3rem);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.025em;
+  color: var(--text-heading);
+  margin: 0;
+}
+
+.section-header h2 {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: -0.02em;
+}
+
+.section-header p {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-variation-settings:
+    'opsz' 24,
+    'SOFT' 50;
+  font-size: clamp(1rem, 1.2vw, 1.125rem);
+  line-height: var(--leading-snug);
+  color: var(--text-secondary);
+  margin: 0;
+  max-width: 60ch;
+}
+
+/* --- CTA links (used by NotFound, Home test) --- */
+
+.hero-cta-link,
+.continue-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.125rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
+  border: 1px solid var(--accent-primary);
+  transition: background var(--transition-fast);
+  min-height: 44px;
+}
+
+.hero-cta-link:hover,
+.continue-banner-cta:hover {
+  background: var(--signal-300);
+  color: var(--text-on-accent);
+  text-decoration: none;
+}
+
+[data-palette-type='light'] .hero-cta-link,
+[data-palette-type='light'] .continue-banner-cta {
+  background: var(--ink-900);
+  color: var(--bone-50);
+  border-color: var(--ink-900);
+}
+
+[data-palette-type='light'] .hero-cta-link:hover,
+[data-palette-type='light'] .continue-banner-cta:hover {
+  background: var(--ink-700);
+  color: var(--bone-50);
+}
+
+/* --- Continue banner (used by ProgressDashboard) --- */
+
+.continue-banner {
+  display: grid;
+  gap: 0.625rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--surface-paper);
+  border: 1px solid var(--border-card);
+  border-left: 3px solid var(--accent-primary);
+  border-radius: 0;
+  margin: 1rem 0;
+}
+
+.continue-banner-title {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin: 0;
+}
+
+.continue-banner-subtitle {
+  font-family: var(--font-display);
+  font-weight: 460;
+  font-variation-settings:
+    'opsz' 24,
+    'SOFT' 30;
+  font-size: 1.0625rem;
+  letter-spacing: -0.005em;
+  color: var(--text-heading);
+  margin: 0;
+  line-height: var(--leading-tight);
+}
+
+/* --- Difficulty badge (used everywhere) --- */
+
+.difficulty-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* --- Meta pill --- */
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* --- Lesson meta bar (used in PhaseOverview legacy + others) --- */
+
+.lesson-meta-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.625rem;
+}
+
+/* --- Day link check (used by sidebar legacy + others) --- */
+
+.day-link-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  color: var(--accent-primary);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.75rem;
+}

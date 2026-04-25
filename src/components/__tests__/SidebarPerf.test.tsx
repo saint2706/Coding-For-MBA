@@ -79,13 +79,15 @@ describe('Sidebar Performance', () => {
       )
     })
 
-    // Phase toggles should be visible
-    expect(container.textContent).toContain('Phase 1: Phase 1')
-    expect(container.textContent).toContain('Phase 2: Phase 2')
+    // Phase toggles should be visible — title appears in toggle, num is separate
+    const toggles = Array.from(container.querySelectorAll('.phase-toggle'))
+    const titles = toggles.map((t) => t.textContent ?? '')
+    expect(titles.some((t) => t.includes('Phase 1'))).toBe(true)
+    expect(titles.some((t) => t.includes('Phase 2'))).toBe(true)
 
     // Lesson links should NOT be in the DOM
-    const lesson1 = Array.from(container.querySelectorAll('a')).find((el) =>
-      el.textContent?.includes('Day 1: Lesson 1'),
+    const lesson1 = Array.from(container.querySelectorAll('a.day-link')).find((el) =>
+      el.textContent?.includes('Lesson 1'),
     )
     expect(lesson1).toBeUndefined()
   })
@@ -111,14 +113,14 @@ describe('Sidebar Performance', () => {
     })
 
     // Initially lesson 1 is not visible
-    let lesson1 = Array.from(container.querySelectorAll('a')).find((el) =>
-      el.textContent?.includes('Day 1: Lesson 1'),
+    let lesson1 = Array.from(container.querySelectorAll('a.day-link')).find((el) =>
+      el.textContent?.includes('Lesson 1'),
     )
     expect(lesson1).toBeUndefined()
 
     // Find and click the toggle for Phase 1
-    const buttons = Array.from(container.querySelectorAll('button'))
-    const phase1Button = buttons.find((b) => b.textContent?.includes('Phase 1: Phase 1'))
+    const buttons = Array.from(container.querySelectorAll<HTMLButtonElement>('button.phase-toggle'))
+    const phase1Button = buttons.find((b) => b.textContent?.includes('Phase 1'))
 
     expect(phase1Button).toBeDefined()
 
@@ -127,10 +129,10 @@ describe('Sidebar Performance', () => {
     })
 
     // Now lesson 1 should be visible
-    lesson1 = Array.from(container.querySelectorAll('a')).find((el) =>
-      el.textContent?.includes('Day 1: Lesson 1'),
+    lesson1 = Array.from(container.querySelectorAll('a.day-link')).find((el) =>
+      el.textContent?.includes('Lesson 1'),
     )
     expect(lesson1).toBeDefined()
-    expect(lesson1?.textContent).toContain('Day 1: Lesson 1')
+    expect(lesson1?.textContent).toContain('Lesson 1')
   })
 })

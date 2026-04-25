@@ -148,16 +148,19 @@ describe('PhaseOverview', () => {
       )
     })
 
-    expect(container?.innerHTML).toContain('Phase 1: Python Foundations')
+    // Phase title is rendered in the spread; the numeral is separate.
+    expect(container?.querySelector('.phase-spread-numeral')?.textContent).toBe('01')
+    expect(container?.querySelector('.phase-spread-title')?.textContent).toContain(
+      'Python Foundations',
+    )
     expect(container?.innerHTML).toContain('Beginner')
-    expect(container?.innerHTML).toContain('2 hours')
     expect(container?.innerHTML).toContain('Intro to Python')
     expect(container?.innerHTML).toContain('Variables')
     expect(container?.innerHTML).toContain('Phase 1 markdown content')
 
     // Check for solutions notebook link
-    expect(container?.innerHTML).toContain('Solutions Notebook')
-    expect(container?.innerHTML).toContain('View Phase 1 Solutions')
+    expect(container?.innerHTML).toContain('Notebook')
+    expect(container?.innerHTML).toContain('Open Phase 1 solutions')
 
     // Check for completed icon next to day 1
     const completedPhase1 = container?.innerHTML.includes('✓')

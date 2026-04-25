@@ -32,24 +32,31 @@ vi.mock('../../utils/dayToken', () => ({
   dayTokenToProgressId: vi.fn((day) => parseInt(day)),
 }))
 
-vi.mock('motion/react', () => ({
-  motion: {
-    div: ({
-      children,
-      whileInView,
-      initial,
-      viewport,
-      variants,
-      transition,
-      ...props
-    }: Record<string, unknown> & { children?: React.ReactNode }) => (
-      <div {...props}>{children}</div>
-    ),
-  },
-  useReducedMotion: vi.fn().mockReturnValue(true),
-  useScroll: vi.fn().mockReturnValue({ scrollYProgress: { get: () => 0 } }),
-  useTransform: vi.fn().mockReturnValue(1),
-}))
+vi.mock('motion/react', () => {
+  type MotionProps = Record<string, unknown> & { children?: React.ReactNode }
+  const strip = ({
+    whileInView: _w,
+    initial: _i,
+    viewport: _v,
+    variants: _vr,
+    transition: _t,
+    layoutId: _l,
+    animate: _a,
+    exit: _e,
+    ...props
+  }: MotionProps) => props
+  return {
+    motion: {
+      div: ({ children, ...props }: MotionProps) => <div {...strip(props)}>{children}</div>,
+      section: ({ children, ...props }: MotionProps) => (
+        <section {...strip(props)}>{children}</section>
+      ),
+    },
+    useReducedMotion: vi.fn().mockReturnValue(true),
+    useScroll: vi.fn().mockReturnValue({ scrollYProgress: { get: () => 0 } }),
+    useTransform: vi.fn().mockReturnValue(1),
+  }
+})
 
 describe('Curriculum', () => {
   let container: HTMLDivElement | null = null
@@ -125,15 +132,22 @@ describe('Curriculum', () => {
       )
     })
 
-    expect(container?.innerHTML).toContain('Full Curriculum Roadmap')
-    expect(container?.innerHTML).toContain('Phase 1: Foundations')
-    expect(container?.innerHTML).toContain('Phase 2: Data')
+    expect(container?.innerHTML).toContain('Full curriculum')
+    expect(container?.innerHTML).toContain('Foundations')
+    expect(container?.innerHTML).toContain('Data')
     expect(container?.innerHTML).toContain('Day 1')
     expect(container?.innerHTML).toContain('Intro')
     expect(container?.innerHTML).toContain('Day 2')
     expect(container?.innerHTML).toContain('Advanced')
 
-    // Check for completed icon next to day 1
+    // Phase numerals are rendered separately as 01 / 02 in the spread
+    const numerals = Array.from(container?.querySelectorAll('.curriculum-phase-num') ?? []).map(
+      (el) => el.textContent,
+    )
+    expect(numerals).toContain('01')
+    expect(numerals).toContain('02')
+
+    // Check for completed indicator on phase 1
     const completedPhase1 = container?.innerHTML.includes('✓ Done')
     expect(completedPhase1).toBe(true)
   })

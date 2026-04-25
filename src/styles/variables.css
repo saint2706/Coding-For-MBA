@@ -1,4 +1,9 @@
-/* ===== CSS Design System: Coding for MBA ===== */
+/* ===== CSS Design System: Coding for MBA — "The Analyst's Terminal" =====
+   Three-layer token architecture (per design-system skill):
+   Primitive  →  Semantic  →  Component
+   Default palette: terminal-dark. Light alternative: bone-light.
+   Legacy palettes (gradient-blues, neon-party, etc.) are preserved
+   below for backward compatibility with saved user preferences. */
 
 /* --- Reset --- */
 *,
@@ -9,92 +14,130 @@
   padding: 0;
 }
 
-/* --- Custom Properties --- */
-/* These serve as a fallback when no data-palette attribute is set.
-   Each [data-palette] block below overrides these values. */
+/* --- Primitive tokens (raw values; do not consume directly in components) --- */
 :root {
-  /* Default palette: Gradient Blues (dark purple-to-cyan) */
-  --bg-primary: #0a0a1a;
-  --bg-secondary: #0c0c20;
-  --bg-card: #12122a;
-  --bg-card-hover: #1a1a36;
-  --bg-surface: #0f0f24;
-  --bg-code: #111128;
+  /* Ink scale — true near-black through warm charcoal */
+  --ink-50: #f5f5f7;
+  --ink-100: #d4d4dc;
+  --ink-200: #a8a8b4;
+  --ink-300: #6d6d77;
+  --ink-400: #4a4a52;
+  --ink-500: #3a3a42;
+  --ink-600: #26262c;
+  --ink-700: #1b1b20;
+  --ink-800: #131316;
+  --ink-900: #0b0b0c;
+
+  /* Bone scale — warm off-white through deep cream */
+  --bone-50: #faf6ec;
+  --bone-100: #f1ece0;
+  --bone-200: #e8e4d8;
+  --bone-300: #d4cdb8;
+  --bone-400: #b8b09b;
+  --bone-500: #9b9582;
+  --bone-700: #6b6754;
+  --bone-900: #2c2a22;
+
+  /* Signal accent — high-energy lime, used surgically */
+  --signal-300: #e8ff7f;
+  --signal-500: #d4ff3f;
+  --signal-700: #a8cc0f;
+  --signal-900: #586a08;
+
+  /* Status colors */
+  --amber-500: #ffb000; /* warning, alt accent */
+  --ruby-500: #ff4d4d; /* error */
+  --teal-500: #3fbfa0; /* success */
+}
+
+/* --- Semantic tokens — DEFAULT (terminal-dark)
+   Components MUST consume these, not primitives. --- */
+:root {
+  /* Surfaces */
+  --bg-primary: var(--ink-900);
+  --bg-secondary: var(--ink-900);
+  --bg-card: var(--ink-800);
+  --bg-card-hover: var(--ink-700);
+  --bg-surface: var(--ink-800);
+  --bg-code: var(--ink-700);
+  --surface-paper: var(--ink-900);
+  --surface-ink: var(--ink-800);
 
   /* Text */
-  --text-primary: #e2e2f0;
-  --text-secondary: #9b9bc0;
-  --text-muted: #6d6d8f;
-  --text-heading: #f0f0fa;
+  --text-primary: var(--bone-200);
+  --text-secondary: var(--bone-500);
+  --text-muted: var(--bone-700);
+  --text-heading: var(--bone-100);
+  --text-on-accent: var(--ink-900); /* dark ink on signal lime */
+  --text-on-brand: var(--ink-900);
 
-  /* Accent */
-  --accent-primary: #5e60ce;
-  --accent-secondary: #6930c3;
-  --accent-tertiary: #48bfe3;
-  --accent-glow: rgba(94, 96, 206, 0.25);
+  /* Accent — single signal, used surgically */
+  --accent-primary: var(--signal-500);
+  --accent-secondary: var(--signal-300);
+  --accent-tertiary: var(--amber-500);
+  --accent-signal: var(--signal-500);
+  --accent-amber: var(--amber-500);
+  --accent-glow: rgba(212, 255, 63, 0.18);
 
-  /* Borders */
-  --border-subtle: rgba(150, 160, 210, 0.12);
-  --border-card: rgba(150, 160, 210, 0.18);
-  --border-active: rgba(94, 96, 206, 0.4);
+  /* Borders — hairline rules instead of card shadows */
+  --border-subtle: rgba(232, 228, 216, 0.08);
+  --border-card: rgba(232, 228, 216, 0.14);
+  --border-active: rgba(212, 255, 63, 0.45);
+  --rule-hairline: 1px solid var(--border-subtle);
+  --rule-strong: 1px solid var(--border-card);
 
-  /* Gradients */
-  --gradient-hero: linear-gradient(135deg, #7400b8 0%, #5e60ce 40%, #48bfe3 70%, #80ffdb 100%);
-  --gradient-card: linear-gradient(
-    145deg,
-    rgba(94, 96, 206, 0.08) 0%,
-    rgba(105, 48, 195, 0.04) 100%
-  );
-  --gradient-glow: radial-gradient(
-    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(94, 96, 206, 0.06),
-    transparent 40%
-  );
+  /* Gradients — neutralized; only the concept-graph backdrop uses one */
+  --gradient-hero: none;
+  --gradient-card: none;
+  --gradient-glow: none;
+  --gradient-logo: none;
+  --gradient-concept-bg:
+    radial-gradient(ellipse at 30% 20%, rgba(212, 255, 63, 0.06), transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(255, 176, 0, 0.04), transparent 50%);
 
-  /* Reading-first palette (low-chroma, softer contrast) */
-  --reading-theme-bg-primary: color-mix(in srgb, var(--bg-primary) 90%, #121826 10%);
-  --reading-theme-bg-surface: color-mix(in srgb, var(--bg-surface) 92%, #141b2d 8%);
-  --reading-theme-bg-card: color-mix(in srgb, var(--bg-card) 94%, #1a2338 6%);
-  --reading-theme-bg-card-hover: color-mix(in srgb, var(--bg-card-hover) 95%, #202a44 5%);
-  --reading-theme-bg-code: color-mix(in srgb, var(--bg-code) 94%, #151d30 6%);
-  --reading-theme-accent-primary: color-mix(in srgb, var(--accent-primary) 58%, #a9b8d4 42%);
-  --reading-theme-accent-secondary: color-mix(in srgb, var(--accent-secondary) 52%, #9ca9c8 48%);
-  --reading-theme-accent-tertiary: color-mix(in srgb, var(--accent-tertiary) 56%, #a7bdd5 44%);
-  --reading-theme-border-subtle: color-mix(in srgb, var(--border-subtle) 85%, #7f8aa0 15%);
-  --reading-theme-border-card: color-mix(in srgb, var(--border-card) 85%, #7f8aa0 15%);
-  --reading-theme-border-active: color-mix(in srgb, var(--border-active) 72%, #95a2bf 28%);
-  --reading-theme-accent-glow: color-mix(in srgb, var(--accent-glow) 45%, transparent);
+  /* Reading-first palette (slightly warmer ink for longform) */
+  --reading-theme-bg-primary: var(--ink-900);
+  --reading-theme-bg-surface: var(--ink-800);
+  --reading-theme-bg-card: var(--ink-800);
+  --reading-theme-bg-card-hover: var(--ink-700);
+  --reading-theme-bg-code: var(--ink-700);
+  --reading-theme-accent-primary: var(--signal-300);
+  --reading-theme-accent-secondary: var(--bone-300);
+  --reading-theme-accent-tertiary: var(--amber-500);
+  --reading-theme-border-subtle: rgba(232, 228, 216, 0.06);
+  --reading-theme-border-card: rgba(232, 228, 216, 0.1);
+  --reading-theme-border-active: rgba(212, 255, 63, 0.32);
+  --reading-theme-accent-glow: rgba(212, 255, 63, 0.08);
 
-  /* Shadows */
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
-  --shadow-elevated: 0 8px 40px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 0 40px rgba(94, 96, 206, 0.15);
+  /* Shadows — kept minimal; hairlines preferred */
+  --shadow-card: 0 1px 0 0 var(--border-subtle);
+  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 0 1px var(--border-active);
 
-  /* Logo */
-  --gradient-logo: linear-gradient(135deg, #6930c3, #80ffdb);
+  /* Layout — magazine-grade widths */
+  --sidebar-width: 280px;
+  --navbar-height: 72px; /* two-row status bar */
+  --content-max-width: 1180px;
+  --reading-max-width: 68ch;
+  --page-padding: clamp(1rem, 3vw, 2.25rem);
+  --grid-col: minmax(0, 1fr);
+  --grid-gutter: clamp(1rem, 2vw, 2rem);
 
-  /* Layout */
-  --sidebar-width: 300px;
-  --navbar-height: 64px;
-  --content-max-width: 900px;
-  --reading-max-width: 74ch;
-  --page-padding: clamp(0.875rem, 2.8vw, 2rem);
+  /* Radius — minimal; brutalist edges. Most surfaces stay sharp. */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 10px;
 
-  /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-
-  /* Motion */
+  /* Motion — per ui-ux-pro-max guidance: 150–300ms, ease-out enter */
   --motion-duration-instant: 0ms;
   --motion-duration-fast: 150ms;
-  --motion-duration-standard: 250ms;
-  --motion-duration-slow: 400ms;
+  --motion-duration-standard: 220ms;
+  --motion-duration-slow: 360ms;
   --motion-duration-skeleton: 1400ms;
-  --motion-duration-view-transition: 200ms;
-  --motion-duration-card-entrance: 500ms;
-  --motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --motion-duration-view-transition: 180ms;
+  --motion-duration-card-entrance: 420ms;
+  --motion-easing-standard: cubic-bezier(0.32, 0.72, 0, 1); /* Apple-flavored */
   --motion-easing-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
   --motion-duration-active-fast: var(--motion-duration-fast);
   --motion-duration-active-standard: var(--motion-duration-standard);
@@ -102,22 +145,129 @@
   --motion-duration-active-skeleton: var(--motion-duration-skeleton);
   --motion-duration-active-view-transition: var(--motion-duration-view-transition);
   --motion-duration-active-card-entrance: var(--motion-duration-card-entrance);
-
-  /* Backward-compatible transition aliases */
   --transition-fast: var(--motion-duration-fast) var(--motion-easing-standard);
   --transition-base: var(--motion-duration-standard) var(--motion-easing-standard);
   --transition-slow: var(--motion-duration-slow) var(--motion-easing-standard);
 
-  /* Typography */
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  /* Typography — only two families: distinctive serif × terminal mono.
+     No Inter, no Roboto, no Arial. (frontend-design skill: avoid generic AI fonts.) */
+  --font-display:
+    'Fraunces Variable', 'Fraunces', 'Iowan Old Style', 'Source Serif Pro', Georgia, serif;
+  --font-body: var(--font-display);
+  --font-mono:
+    'JetBrains Mono Variable', 'JetBrains Mono', 'IBM Plex Mono', 'Berkeley Mono', ui-monospace,
+    monospace;
+  --font-ui: var(--font-mono); /* UI chrome is mono; signals "workstation" */
   --app-font-size: 1rem;
   --density-scale: 1;
-  --text-on-accent: #0a1020;
-  --text-on-brand: #ffffff;
+  --leading-tight: 1.15;
+  --leading-snug: 1.3;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.7;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em;
+  --tracking-mono: 0.01em;
 }
 
-/* ===== COLOR PALETTES ===== */
+/* ===== COLOR PALETTES =====
+   Default (terminal-dark) is in :root above. Each block below overrides
+   the semantic tokens for an alternate palette. Legacy palettes are
+   preserved for users who already have them saved in localStorage. */
+
+/* --- Terminal Dark — explicit alias of the default :root palette --- */
+[data-palette='terminal-dark'] {
+  --bg-primary: var(--ink-900);
+  --bg-secondary: var(--ink-900);
+  --bg-card: var(--ink-800);
+  --bg-card-hover: var(--ink-700);
+  --bg-surface: var(--ink-800);
+  --bg-code: var(--ink-700);
+  --surface-paper: var(--ink-900);
+  --surface-ink: var(--ink-800);
+  --text-primary: var(--bone-200);
+  --text-secondary: var(--bone-500);
+  --text-muted: var(--bone-700);
+  --text-heading: var(--bone-100);
+  --text-on-accent: var(--ink-900);
+  --text-on-brand: var(--ink-900);
+  --accent-primary: var(--signal-500);
+  --accent-secondary: var(--signal-300);
+  --accent-tertiary: var(--amber-500);
+  --accent-glow: rgba(212, 255, 63, 0.18);
+  --border-subtle: rgba(232, 228, 216, 0.08);
+  --border-card: rgba(232, 228, 216, 0.14);
+  --border-active: rgba(212, 255, 63, 0.45);
+  --gradient-hero: none;
+  --gradient-card: none;
+  --gradient-glow: none;
+  --gradient-logo: none;
+  --shadow-card: 0 1px 0 0 var(--border-subtle);
+  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 0 1px var(--border-active);
+  --reading-bg-primary: var(--ink-900);
+  --reading-bg-surface: var(--ink-800);
+  --reading-bg-code: var(--ink-700);
+  --reading-border-subtle: rgba(232, 228, 216, 0.06);
+  --reading-border-card: rgba(232, 228, 216, 0.1);
+  --reading-border-active: rgba(212, 255, 63, 0.32);
+  --reading-accent-glow: rgba(212, 255, 63, 0.08);
+}
+
+/* --- Bone Light — warm cream paper with ink type --- */
+[data-palette='bone-light'] {
+  --bg-primary: var(--bone-50);
+  --bg-secondary: var(--bone-100);
+  --bg-card: #fbfaf2;
+  --bg-card-hover: var(--bone-100);
+  --bg-surface: var(--bone-50);
+  --bg-code: var(--bone-200);
+  --surface-paper: var(--bone-50);
+  --surface-ink: #fbfaf2;
+  --text-primary: var(--ink-800);
+  --text-secondary: var(--ink-500);
+  --text-muted: var(--ink-400);
+  --text-heading: var(--ink-900);
+  --text-on-accent: var(--ink-900); /* signal lime is dark-only foreground */
+  --text-on-brand: var(--ink-900);
+  --accent-primary: var(--ink-900); /* on light, ink is the primary */
+  --accent-secondary: var(--ink-700);
+  --accent-tertiary: var(--signal-700); /* darker lime as link color */
+  --accent-glow: rgba(11, 11, 12, 0.12);
+  --border-subtle: rgba(11, 11, 12, 0.1);
+  --border-card: rgba(11, 11, 12, 0.16);
+  --border-active: var(--ink-900);
+  --gradient-hero: none;
+  --gradient-card: none;
+  --gradient-glow: none;
+  --gradient-logo: none;
+  --shadow-card: 0 1px 0 0 var(--border-subtle);
+  --shadow-elevated: 0 16px 40px rgba(11, 11, 12, 0.08);
+  --shadow-glow: 0 0 0 1px var(--ink-900);
+  --reading-bg-primary: var(--bone-50);
+  --reading-bg-surface: #fbfaf2;
+  --reading-bg-code: var(--bone-200);
+  --reading-border-subtle: rgba(11, 11, 12, 0.08);
+  --reading-border-card: rgba(11, 11, 12, 0.12);
+  --reading-border-active: var(--ink-900);
+  --reading-accent-glow: rgba(11, 11, 12, 0.04);
+  /* Bone-light overrides the reading-theme tokens so .lesson-reading-surface
+     doesn't fall back to dark values. */
+  --reading-theme-bg-primary: var(--bone-50);
+  --reading-theme-bg-surface: #fbfaf2;
+  --reading-theme-bg-card: #fbfaf2;
+  --reading-theme-bg-card-hover: var(--bone-100);
+  --reading-theme-bg-code: var(--bone-200);
+  --reading-theme-accent-primary: var(--ink-900);
+  --reading-theme-accent-secondary: var(--ink-700);
+  --reading-theme-accent-tertiary: var(--signal-700);
+  --reading-theme-border-subtle: rgba(11, 11, 12, 0.08);
+  --reading-theme-border-card: rgba(11, 11, 12, 0.12);
+  --reading-theme-border-active: var(--ink-900);
+  --reading-theme-accent-glow: rgba(11, 11, 12, 0.04);
+}
+
+/* ===== LEGACY PALETTES (preserved for backward compat) ===== */
 
 /* --- 1. Peach Sorbet (light) --- */
 /* Palette: #f08080 #f4978e #f8ad9d #fbc4ab #ffdab9 */
