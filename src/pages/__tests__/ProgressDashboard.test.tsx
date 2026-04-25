@@ -96,6 +96,7 @@ describe('ProgressDashboard', () => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],
+          completedLessonsCount: () => 1,
           streakDays: () => 3,
         } as unknown as ReturnType<typeof useProgressStore.getState>)
       }
@@ -212,6 +213,7 @@ describe('ProgressDashboard', () => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: [],
+          completedLessonsCount: () => 0,
           streakDays: () => 0,
         } as unknown as ReturnType<typeof useProgressStore.getState>)
       }
@@ -237,6 +239,7 @@ describe('ProgressDashboard', () => {
       if (typeof selector === 'function') {
         return selector({
           completedLessons: ['day-1'],
+          completedLessonsCount: () => 1,
           streakDays: () => 3,
         } as unknown as ReturnType<typeof useProgressStore.getState>)
       }

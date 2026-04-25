@@ -49,9 +49,10 @@ export default function ProgressDashboard() {
 
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+  const completedCount = useProgressStore((state) => state.completedLessonsCount())
 
   const overallPct =
-    totalLessons > 0 ? Math.round((completedLessons.length / totalLessons) * 100) : 0
+    totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
 
   const handleClearProgress = () => {
     if (window.confirm('Are you sure you want to clear all progress? This cannot be undone.')) {
@@ -209,7 +210,7 @@ export default function ProgressDashboard() {
         <p>Track your journey through the {totalLessons}-day curriculum.</p>
       </div>
 
-      {completedLessons.length === 0 && (
+      {completedCount === 0 && (
         <div
           className="exercises-empty glass-card"
           style={{ textAlign: 'center', padding: '2rem' }}
@@ -265,19 +266,19 @@ export default function ProgressDashboard() {
         </div>
         <div className="progress-stat-big">
           <span className="progress-stat-value">
-            <AnimatedCounter value={completedLessons.length} />
+            <AnimatedCounter value={completedCount} />
           </span>
           <span className="progress-stat-label">Lessons Done</span>
         </div>
         <div className="progress-stat-big">
           <span className="progress-stat-value">
-            <AnimatedCounter value={totalLessons - completedLessons.length} />
+            <AnimatedCounter value={totalLessons - completedCount} />
           </span>
           <span className="progress-stat-label">Remaining</span>
         </div>
       </div>
 
-      <ProgressBar completed={completedLessons.length} total={totalLessons} />
+      <ProgressBar completed={completedCount} total={totalLessons} />
 
       <section className="gamification-card" aria-labelledby="gamification-heading">
         <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
