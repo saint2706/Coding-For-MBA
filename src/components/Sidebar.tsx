@@ -146,7 +146,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
         <nav className="sidebar-nav" ref={navRef}>
           <div className="tree-section">
-            <div className="tree-section-label">workspace</div>
+            <h2 className="tree-section-label">workspace</h2>
             <PrimaryItem
               to="/"
               active={location.pathname === '/'}
@@ -178,7 +178,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
 
           <div className="tree-section">
-            <div className="tree-section-label">practice</div>
+            <h2 className="tree-section-label">practice</h2>
             <PrimaryItem
               to="/exercises"
               active={location.pathname === '/exercises'}
@@ -203,7 +203,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </div>
 
           <div className="tree-section">
-            <div className="tree-section-label">curriculum · {phases.length} phases</div>
+            <h2 className="tree-section-label">curriculum · {phases.length} phases</h2>
             {phases.map((phase) => (
               <SidebarPhaseGroup
                 key={phase.phase}
