@@ -102,7 +102,10 @@ describe('App', () => {
     vi.clearAllMocks()
     document.body.className = ''
     mockSidebarDefaultOpen = true
-    vi.stubGlobal('requestIdleCallback', vi.fn((cb) => cb()))
+    vi.stubGlobal(
+      'requestIdleCallback',
+      vi.fn((cb) => cb()),
+    )
   })
 
   it('renders standard layout elements', async () => {
@@ -195,7 +198,7 @@ describe('App', () => {
       render(
         <MemoryRouter initialEntries={['/']}>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
@@ -216,7 +219,7 @@ describe('App', () => {
       render(
         <MemoryRouter initialEntries={['/']}>
           <App />
-        </MemoryRouter>
+        </MemoryRouter>,
       )
     })
 
