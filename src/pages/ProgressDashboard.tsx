@@ -51,8 +51,7 @@ export default function ProgressDashboard() {
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
   const completedCount = useProgressStore((state) => state.completedLessonsCount())
 
-  const overallPct =
-    totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
+  const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0
 
   const handleClearProgress = () => {
     if (window.confirm('Are you sure you want to clear all progress? This cannot be undone.')) {
