@@ -1,0 +1,70 @@
+{
+    "day": 28,
+    "questions": [
+        {
+            "id": "d28q01",
+            "type": "multiple_choice",
+            "question": "What type of chart is best for visualizing the correlation between all pairs of numeric variables in a dataset?",
+            "options": [
+                "Line chart with multiple series",
+                "Heatmap of the correlation matrix",
+                "Grouped bar chart",
+                "Box plot"
+            ],
+            "answer": 1,
+            "explanation": "A heatmap of the correlation matrix displays all pairwise correlations simultaneously using color intensity. It's the standard tool for identifying which variables move together—essential before building regression models or reducing features in analytics projects."
+        },
+        {
+            "id": "d28q02",
+            "type": "multiple_choice",
+            "question": "A seaborn box plot shows a long upper whisker and several dots above it. What does this indicate?",
+            "options": [
+                "The data is normally distributed with high variance",
+                "There are outliers on the high end—values more than 1.5×IQR above Q3",
+                "The median is much higher than the mean",
+                "The dataset has too few data points for a valid box plot"
+            ],
+            "answer": 1,
+            "explanation": "In a box plot, the whiskers extend to 1.5× the IQR beyond the quartiles. Individual dots beyond the whiskers are outliers. A long upper whisker with dots signals right-skewed data with high-end outliers—common in sales data where a few large deals dominate."
+        },
+        {
+            "id": "d28q03",
+            "type": "multiple_choice",
+            "question": "Which seaborn function creates a scatter plot matrix showing pairwise relationships between all numeric columns?",
+            "options": [
+                "sns.heatmap()",
+                "sns.pairplot()",
+                "sns.scattermatrix()",
+                "sns.jointplot()"
+            ],
+            "answer": 1,
+            "explanation": "`sns.pairplot(df)` creates a grid of plots: scatter plots for every pair of numeric columns and histograms on the diagonal. It's a fast way to explore all pairwise relationships in one call—ideal for the early exploratory phase of any data project."
+        },
+        {
+            "id": "d28q04",
+            "type": "multiple_choice",
+            "question": "You have daily sales data for 4 product lines over 3 years. What visualization technique best shows both individual performance and how each product contributes to the total?",
+            "options": [
+                "Four separate line charts",
+                "Stacked area chart",
+                "Single scatter plot with color coding",
+                "Pie chart for each year"
+            ],
+            "answer": 1,
+            "explanation": "A stacked area chart shows individual series stacked on top of each other—you can see each product's trend (the band thickness) and the total (the top line) simultaneously. It's widely used in financial reporting to show category contributions to totals over time."
+        },
+        {
+            "id": "d28q05",
+            "type": "multiple_choice",
+            "question": "What advantage does a violin plot have over a box plot?",
+            "options": [
+                "It shows exact data values for every point",
+                "It reveals the full distribution shape, including multimodality",
+                "It uses less screen space",
+                "It works better for categorical data"
+            ],
+            "answer": 1,
+            "explanation": "A violin plot mirrors a kernel density estimate on both sides, showing the full probability distribution—you can see if data is unimodal, bimodal, or skewed. A box plot only shows quartiles and outliers. If your distribution has two clusters (e.g., two customer segments), a violin plot reveals that; a box plot hides it."
+        }
+    ]
+}

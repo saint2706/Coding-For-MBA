@@ -1,0 +1,70 @@
+{
+    "day": 29,
+    "questions": [
+        {
+            "id": "d29q01",
+            "type": "multiple_choice",
+            "question": "What is the primary advantage of Plotly charts over matplotlib charts for business presentations?",
+            "options": [
+                "Plotly renders charts faster on large datasets",
+                "Plotly charts are interactive—users can hover, zoom, and filter in the browser",
+                "Plotly produces higher-resolution static images",
+                "Plotly requires less code to produce the same charts"
+            ],
+            "answer": 1,
+            "explanation": "Plotly generates HTML-based interactive charts. Stakeholders can hover to see exact values, zoom into date ranges, and toggle series on/off—all without any code. This interactivity makes exploratory discussions far more productive than static images."
+        },
+        {
+            "id": "d29q02",
+            "type": "multiple_choice",
+            "question": "Which Plotly Express function creates an interactive bubble chart where bubble size represents a third variable?",
+            "options": [
+                "px.scatter(df, x='gdp', y='life_exp', size='population')",
+                "px.bubble(df, x='gdp', y='life_exp', z='population')",
+                "px.circle(df, x='gdp', y='life_exp', radius='population')",
+                "px.plot(df, type='bubble', x='gdp', y='life_exp')"
+            ],
+            "answer": 0,
+            "explanation": "`px.scatter()` with the `size` parameter creates a bubble chart. The `size` argument maps a numeric column to bubble area, encoding a third dimension. This pattern is used by analysts to show relationships between GDP, life expectancy, and population simultaneously."
+        },
+        {
+            "id": "d29q03",
+            "type": "multiple_choice",
+            "question": "What does `fig.update_layout(title='Revenue Dashboard', xaxis_title='Month')` do in Plotly?",
+            "options": [
+                "Creates a new figure with the specified title and axis labels",
+                "Updates an existing figure's title and x-axis label in place",
+                "Saves the figure to an HTML file named 'Revenue Dashboard'",
+                "Adds a second plot with the x-axis labeled 'Month'"
+            ],
+            "answer": 1,
+            "explanation": "`fig.update_layout()` modifies properties of an existing Plotly figure object without recreating it. It follows a method-chaining pattern common in Plotly—you build the chart with `px.*`, then refine it with `update_layout()`, `update_traces()`, etc."
+        },
+        {
+            "id": "d29q04",
+            "type": "multiple_choice",
+            "question": "A Plotly choropleth map colors countries based on a numeric value. What data does it require?",
+            "options": [
+                "Latitude and longitude coordinates for every data point",
+                "ISO country codes (or names) and a numeric value to encode as color",
+                "A GeoJSON file with custom drawn boundaries",
+                "A pre-built map image as the chart background"
+            ],
+            "answer": 1,
+            "explanation": "Plotly's built-in choropleth maps require only standard ISO country codes (e.g., 'USA', 'GBR') and a numeric column for the color scale. Plotly handles the geography internally. This makes it easy to create global sales maps from any country-level dataset."
+        },
+        {
+            "id": "d29q05",
+            "type": "multiple_choice",
+            "question": "When would you use `fig.write_html('dashboard.html')` instead of `fig.show()`?",
+            "options": [
+                "When the chart is too large to display in a notebook",
+                "When you want to share an interactive chart with someone who doesn't have Python installed",
+                "When you need a higher-resolution image for printing",
+                "When you want to embed the chart in a pandas DataFrame"
+            ],
+            "answer": 1,
+            "explanation": "`fig.write_html()` exports the chart as a self-contained HTML file with all interactivity intact. Anyone can open it in a browser—no Python, Plotly, or internet connection required. This is the standard way to share Plotly dashboards with non-technical stakeholders."
+        }
+    ]
+}

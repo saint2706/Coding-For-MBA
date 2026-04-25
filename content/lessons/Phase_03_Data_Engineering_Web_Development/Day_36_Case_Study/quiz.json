@@ -1,0 +1,70 @@
+{
+    "day": 36,
+    "questions": [
+        {
+            "id": "d36q01",
+            "type": "multiple_choice",
+            "question": "What do the letters ETL stand for in data engineering?",
+            "options": [
+                "Encode, Transfer, Load",
+                "Extract, Transform, Load",
+                "Execute, Test, Launch",
+                "Export, Transform, Log"
+            ],
+            "answer": 1,
+            "explanation": "ETL is the core data pipeline pattern: Extract data from sources (APIs, databases, files), Transform it (clean, join, aggregate, reshape), and Load it into a destination (data warehouse, database, file). Most data engineering work is building and maintaining ETL pipelines."
+        },
+        {
+            "id": "d36q02",
+            "type": "multiple_choice",
+            "question": "In a data pipeline, why should the Transform step be separated from the Extract step?",
+            "options": [
+                "Because transformation requires a different programming language",
+                "To allow re-running transformations on raw data without re-fetching from the source",
+                "Because databases cannot store untransformed data",
+                "Because Python can only do one operation at a time"
+            ],
+            "answer": 1,
+            "explanation": "Storing raw extracted data before transforming it (the 'raw layer') lets you fix transformation bugs and reprocess data without re-calling the API or re-downloading files. This separation also makes debugging easier—if output is wrong, you can inspect raw data to determine whether the error was in extraction or transformation."
+        },
+        {
+            "id": "d36q03",
+            "type": "multiple_choice",
+            "question": "Which pandas operation is most useful in the Transform step when combining data from multiple source files?",
+            "options": [
+                "df.describe()",
+                "pd.concat() or pd.merge()",
+                "df.plot()",
+                "df.to_csv()"
+            ],
+            "answer": 1,
+            "explanation": "`pd.concat()` stacks DataFrames with the same columns (vertical union), while `pd.merge()` joins DataFrames on shared keys (like SQL JOIN). Both are essential in ETL's Transform step when combining data from multiple sources—e.g., merging sales data with customer data on customer_id."
+        },
+        {
+            "id": "d36q04",
+            "type": "multiple_choice",
+            "question": "A pipeline fails during the Load step after successfully transforming 10,000 rows. What design pattern minimizes the need to reprocess all rows?",
+            "options": [
+                "Rerun the entire pipeline from Extract every time",
+                "Use idempotent loads with checkpointing—track which records were loaded successfully",
+                "Skip the failed rows and proceed with the next batch",
+                "Store all data in memory until the entire pipeline succeeds"
+            ],
+            "answer": 1,
+            "explanation": "Idempotent pipelines produce the same result whether run once or multiple times—using upserts (INSERT OR REPLACE) or tracking watermarks. Checkpointing records progress so a failed run can resume from the last successful point rather than restarting from scratch. This is essential for production data pipelines."
+        },
+        {
+            "id": "d36q05",
+            "type": "multiple_choice",
+            "question": "What is the best way to schedule a Python ETL pipeline to run automatically every day at 6 AM?",
+            "options": [
+                "Use `time.sleep(86400)` in an infinite loop",
+                "Use a scheduler like cron (Linux) or a workflow tool like Airflow or Prefect",
+                "Set a reminder to manually run the script each morning",
+                "Use `threading.Timer` to delay execution by 24 hours"
+            ],
+            "answer": 1,
+            "explanation": "Cron (system scheduler) or workflow orchestrators like Apache Airflow/Prefect handle scheduling, retries, alerting, and dependency management for production pipelines. `time.sleep()` loops are fragile—they fail silently, don't handle retries, and stop if the process restarts."
+        }
+    ]
+}

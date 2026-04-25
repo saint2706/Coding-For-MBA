@@ -1,0 +1,70 @@
+{
+    "day": 25,
+    "questions": [
+        {
+            "id": "d25q01",
+            "type": "multiple_choice",
+            "question": "A customer dataset has 5% of email addresses missing. The missing records are spread randomly across all customer segments. Which strategy is most appropriate?",
+            "options": [
+                "Fill all missing emails with 'unknown@example.com'",
+                "Drop all rows with missing emails since 5% is small",
+                "Leave them as NaN because pandas handles NaN automatically",
+                "Replace missing values with the most common email domain"
+            ],
+            "answer": 1,
+            "explanation": "When only 5% of rows are missing a value and the missingness is random (Missing Completely At Random), dropping those rows is acceptable—you lose very little data while keeping your dataset clean. Filling with fake values would corrupt analysis of email-based features."
+        },
+        {
+            "id": "d25q02",
+            "type": "multiple_choice",
+            "question": "Which pandas method detects missing values and returns a DataFrame of booleans?",
+            "options": [
+                "df.missing()",
+                "df.isnull()",
+                "df.isna_count()",
+                "df.check_nulls()"
+            ],
+            "answer": 1,
+            "explanation": "`df.isnull()` (also aliased as `df.isna()`) returns a boolean DataFrame where `True` marks missing values. Combine with `.sum()` to count nulls per column: `df.isnull().sum()`."
+        },
+        {
+            "id": "d25q03",
+            "type": "multiple_choice",
+            "question": "What does `df.duplicated().sum()` return?",
+            "options": [
+                "The number of columns with duplicate names",
+                "The total number of duplicate rows in the DataFrame",
+                "The sum of all duplicate values across all cells",
+                "A list of row indices that are duplicated"
+            ],
+            "answer": 1,
+            "explanation": "`df.duplicated()` returns a boolean Series where `True` marks rows that are exact duplicates of an earlier row. `.sum()` counts the `True` values, giving you the total number of duplicate rows to investigate or drop."
+        },
+        {
+            "id": "d25q04",
+            "type": "multiple_choice",
+            "question": "A revenue column contains the string '$1,234.56'. Which sequence of operations converts it to a float?",
+            "options": [
+                "df['revenue'].astype(float)",
+                "df['revenue'].str.replace('$', '').str.replace(',', '').astype(float)",
+                "float(df['revenue'])",
+                "df['revenue'].to_numeric()"
+            ],
+            "answer": 1,
+            "explanation": "String-formatted currency must have non-numeric characters stripped before conversion. `str.replace()` removes the `$` and `,`, then `.astype(float)` converts the clean string to a number. Calling `astype(float)` directly on `'$1,234.56'` raises a ValueError."
+        },
+        {
+            "id": "d25q05",
+            "type": "multiple_choice",
+            "question": "You're cleaning a salary column and notice values like 999999 and -1 that are clearly data entry errors. What technique identifies these outliers statistically?",
+            "options": [
+                "Check if any value equals zero",
+                "Use the IQR method: flag values below Q1 - 1.5×IQR or above Q3 + 1.5×IQR",
+                "Remove all values above the mean",
+                "Sort the column and manually inspect the first and last 5 rows"
+            ],
+            "answer": 1,
+            "explanation": "The IQR (Interquartile Range) method is the standard statistical approach for outlier detection. It uses the spread of the middle 50% of data as a reference, making it robust to extreme values. Removing values above the mean is incorrect—half of all valid data falls above the mean."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 26,
+    "questions": [
+        {
+            "id": "d26q01",
+            "type": "multiple_choice",
+            "question": "A dataset of employee salaries has most values between $50k–$80k, but a CEO earns $5M. Which measure of central tendency best represents the typical employee salary?",
+            "options": [
+                "Mean, because it uses all data points",
+                "Median, because it is resistant to extreme outliers",
+                "Mode, because it is the most frequent salary",
+                "Standard deviation, because it captures the spread"
+            ],
+            "answer": 1,
+            "explanation": "The median (middle value when sorted) is robust to outliers. The CEO's $5M salary would pull the mean far above what most employees earn, making it misleading. The median gives a truer picture of the 'typical' salary. This is why median household income is reported, not mean."
+        },
+        {
+            "id": "d26q02",
+            "type": "multiple_choice",
+            "question": "What does a correlation coefficient of -0.85 between advertising spend and customer churn rate indicate?",
+            "options": [
+                "Advertising spend causes churn to decrease",
+                "As advertising spend increases, churn tends to decrease (strong negative relationship)",
+                "The two variables are unrelated",
+                "Churn decreases by 85% for each dollar spent on advertising"
+            ],
+            "answer": 1,
+            "explanation": "A correlation of -0.85 indicates a strong negative linear relationship—when one variable increases, the other tends to decrease. Importantly, correlation does not imply causation. The coefficient is not a percentage; it ranges from -1 (perfect negative) to +1 (perfect positive)."
+        },
+        {
+            "id": "d26q03",
+            "type": "multiple_choice",
+            "question": "Which pandas method computes mean, std, min, max, and percentiles for all numeric columns at once?",
+            "options": [
+                "df.stats()",
+                "df.describe()",
+                "df.summary()",
+                "df.aggregate()"
+            ],
+            "answer": 1,
+            "explanation": "`df.describe()` generates a statistical summary table for numeric columns including count, mean, standard deviation, min, 25th/50th/75th percentiles, and max. It's the fastest way to get a broad statistical overview of your dataset."
+        },
+        {
+            "id": "d26q04",
+            "type": "multiple_choice",
+            "question": "A customer's spend is at the 90th percentile. What does this mean?",
+            "options": [
+                "They spend exactly 90% of the average customer",
+                "They spend more than 90% of all customers",
+                "90% of their purchases are above average",
+                "Their spend score is 90 out of 100"
+            ],
+            "answer": 1,
+            "explanation": "A percentile tells you what fraction of the population falls below a given value. The 90th percentile means this customer spends more than 90% of all customers—they're a high-value customer. Percentiles are widely used in performance reviews, SLAs, and risk assessment."
+        },
+        {
+            "id": "d26q05",
+            "type": "multiple_choice",
+            "question": "What does a high standard deviation in a product's daily sales figures indicate?",
+            "options": [
+                "Sales are consistently high every day",
+                "Sales are consistently low every day",
+                "Sales are highly variable and unpredictable day-to-day",
+                "The product has high profit margins"
+            ],
+            "answer": 2,
+            "explanation": "Standard deviation measures the average distance from the mean. High standard deviation means data points are spread far from the mean—sales swing widely each day. This signals demand volatility, which has implications for inventory planning and forecasting accuracy."
+        }
+    ]
+}

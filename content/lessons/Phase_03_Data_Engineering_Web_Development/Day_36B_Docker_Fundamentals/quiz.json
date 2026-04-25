@@ -1,0 +1,70 @@
+{
+    "day": "36B",
+    "questions": [
+        {
+            "id": "d36Bq01",
+            "type": "multiple_choice",
+            "question": "What problem does Docker primarily solve for Python data applications?",
+            "options": [
+                "It makes Python code run faster by using compiled containers",
+                "It packages the application with all its dependencies so it runs identically on any machine",
+                "It automatically deploys applications to the cloud",
+                "It replaces virtual environments for managing Python packages"
+            ],
+            "answer": 1,
+            "explanation": "\"It works on my machine\" is a classic engineering problem. Docker containers bundle your code, Python version, all packages, and system dependencies into an image that runs identically everywhere—your laptop, a teammate's Windows PC, or a cloud server. This eliminates environment-related bugs."
+        },
+        {
+            "id": "d36Bq02",
+            "type": "multiple_choice",
+            "question": "What is the difference between a Docker image and a Docker container?",
+            "options": [
+                "Images are for Linux; containers are for Windows",
+                "An image is a read-only blueprint; a container is a running instance of that image",
+                "Images store data persistently; containers are temporary caches",
+                "A container is multiple images merged together"
+            ],
+            "answer": 1,
+            "explanation": "A Docker image is a static snapshot—the recipe. A container is a live, running process created from that image. You can run multiple containers from the same image simultaneously, each isolated. This is analogous to a class (image) vs. instance (container) in Python OOP."
+        },
+        {
+            "id": "d36Bq03",
+            "type": "multiple_choice",
+            "question": "In a Dockerfile, what does the `COPY . .` instruction do?",
+            "options": [
+                "Creates a copy of the Docker image",
+                "Copies files from the current host directory into the container's working directory",
+                "Copies files between two containers",
+                "Duplicates the base image layer"
+            ],
+            "answer": 1,
+            "explanation": "`COPY <src> <dest>` copies files from the build context (your local machine) into the image. `COPY . .` copies everything from the current directory (`.`) to the current working directory inside the container (also `.`). This is how your application code gets into the image."
+        },
+        {
+            "id": "d36Bq04",
+            "type": "multiple_choice",
+            "question": "What does `docker run -p 8000:8000 my-api` accomplish?",
+            "options": [
+                "Builds the image and runs it 8000 times",
+                "Starts a container from 'my-api' and maps host port 8000 to container port 8000",
+                "Creates 8000 replicas of the container for load testing",
+                "Runs the container for exactly 8000 seconds"
+            ],
+            "answer": 1,
+            "explanation": "The `-p host_port:container_port` flag publishes a container's port to the host. Without port mapping, the container's network is isolated and unreachable. `-p 8000:8000` makes the API running inside the container accessible at `localhost:8000` on your machine."
+        },
+        {
+            "id": "d36Bq05",
+            "type": "multiple_choice",
+            "question": "Why should you install Python dependencies in the Dockerfile before copying your application code?",
+            "options": [
+                "Dependencies must always be installed first due to Python import rules",
+                "Docker caches each layer—installing dependencies first means the slow step is cached and only re-runs when requirements.txt changes",
+                "It prevents the application code from overwriting installed packages",
+                "Docker requires alphabetical ordering of instructions"
+            ],
+            "answer": 1,
+            "explanation": "Docker builds images layer by layer and caches unchanged layers. If you copy code before installing dependencies, every code change invalidates the dependency layer and triggers a full `pip install`. Copying `requirements.txt` first and installing before copying code means `pip install` only re-runs when dependencies actually change—rebuilds are much faster."
+        }
+    ]
+}

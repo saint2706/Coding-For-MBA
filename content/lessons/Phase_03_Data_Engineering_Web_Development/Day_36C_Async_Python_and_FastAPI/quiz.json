@@ -1,0 +1,70 @@
+{
+    "day": "36C",
+    "questions": [
+        {
+            "id": "d36Cq01",
+            "type": "multiple_choice",
+            "question": "What is the key difference between synchronous and asynchronous Python code?",
+            "options": [
+                "Synchronous code runs faster; asynchronous code is more reliable",
+                "Synchronous code blocks until each operation completes; asynchronous code can pause and resume, allowing other work during waits",
+                "Asynchronous code runs on multiple CPU cores simultaneously",
+                "Synchronous code is for scripts; asynchronous code is only for web servers"
+            ],
+            "answer": 1,
+            "explanation": "In synchronous code, a slow operation (network request, database query) blocks the entire program. With `async/await`, the program can pause at the `await` point and handle other tasks while waiting—dramatically improving throughput when most time is spent waiting for I/O, not computing."
+        },
+        {
+            "id": "d36Cq02",
+            "type": "multiple_choice",
+            "question": "You need to fetch data from 5 different APIs. What is the async advantage over sequential synchronous requests?",
+            "options": [
+                "Async skips slow APIs automatically",
+                "All 5 requests can be sent concurrently—total time is roughly the slowest single request, not the sum of all",
+                "Async requests retry failed APIs automatically",
+                "Async uses less memory than sequential requests"
+            ],
+            "answer": 1,
+            "explanation": "With sequential requests at 1 second each, total time = 5 seconds. With `asyncio.gather()` sending all requests concurrently, total time ≈ 1 second (the slowest one). This concurrency gain makes async Python essential for data pipelines that aggregate from many sources."
+        },
+        {
+            "id": "d36Cq03",
+            "type": "multiple_choice",
+            "question": "What does `await` do when placed before an async function call?",
+            "options": [
+                "It runs the function in a separate thread",
+                "It pauses the current coroutine until the awaited operation completes, yielding control to the event loop",
+                "It retries the function if it raises an exception",
+                "It converts the function's return value to a string"
+            ],
+            "answer": 1,
+            "explanation": "`await` tells the event loop: 'pause this coroutine here and go do other things; resume when this operation finishes.' Without `await`, an async function call returns a coroutine object—it doesn't actually execute. Forgetting `await` is the most common async bug."
+        },
+        {
+            "id": "d36Cq04",
+            "type": "multiple_choice",
+            "question": "In FastAPI, what is the advantage of defining an endpoint with `async def` instead of `def`?",
+            "options": [
+                "`async def` endpoints have automatic retry logic",
+                "FastAPI can handle other requests while an `async def` endpoint awaits I/O, improving concurrency under load",
+                "`async def` endpoints automatically validate request data",
+                "`async def` endpoints are cached automatically"
+            ],
+            "answer": 1,
+            "explanation": "FastAPI runs on an ASGI server (uvicorn). When an `async def` endpoint awaits a database query or external API call, the server handles other incoming requests during that wait. A `def` endpoint is run in a thread pool to avoid blocking. Use `async def` with async database libraries for maximum concurrency."
+        },
+        {
+            "id": "d36Cq05",
+            "type": "multiple_choice",
+            "question": "Which function runs multiple coroutines concurrently and waits for all of them to complete?",
+            "options": [
+                "asyncio.run_all()",
+                "asyncio.gather()",
+                "asyncio.wait_for()",
+                "asyncio.concurrent()"
+            ],
+            "answer": 1,
+            "explanation": "`asyncio.gather(coro1(), coro2(), coro3())` schedules all coroutines to run concurrently and returns their results in order once all complete. It's the standard pattern for fan-out operations like fetching multiple APIs or processing multiple records in parallel."
+        }
+    ]
+}

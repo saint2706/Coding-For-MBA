@@ -1,0 +1,70 @@
+{
+    "day": 30,
+    "questions": [
+        {
+            "id": "d30q01",
+            "type": "multiple_choice",
+            "question": "Which Python library parses HTML and lets you search for elements using CSS selectors or tag names?",
+            "options": [
+                "requests",
+                "BeautifulSoup",
+                "scrapy",
+                "urllib"
+            ],
+            "answer": 1,
+            "explanation": "BeautifulSoup parses HTML/XML and provides a simple API to navigate and search the DOM tree—`soup.find('div', class_='price')` or `soup.select('table.data td')`. The `requests` library fetches the raw HTML; BeautifulSoup then parses it."
+        },
+        {
+            "id": "d30q02",
+            "type": "multiple_choice",
+            "question": "What is the correct order of operations for a basic web scraper?",
+            "options": [
+                "Parse HTML → Fetch URL → Extract data → Save results",
+                "Fetch URL with requests → Parse HTML with BeautifulSoup → Extract data → Save results",
+                "Extract data → Fetch URL → Parse HTML → Save results",
+                "Save results → Fetch URL → Parse HTML → Extract data"
+            ],
+            "answer": 1,
+            "explanation": "Web scraping follows a pipeline: fetch the raw HTML response using `requests.get()`, parse it into a navigable tree with `BeautifulSoup()`, extract the target elements, then store the data. Skipping the parse step means you're working with a raw string, not a structured tree."
+        },
+        {
+            "id": "d30q03",
+            "type": "multiple_choice",
+            "question": "Why should you add `time.sleep(2)` between requests when scraping multiple pages?",
+            "options": [
+                "To give BeautifulSoup time to parse large HTML files",
+                "To avoid overwhelming the server and getting your IP blocked",
+                "To ensure requests are sent in alphabetical URL order",
+                "Because Python can only make one HTTP request per second"
+            ],
+            "answer": 1,
+            "explanation": "Rapid-fire requests can overwhelm servers, trigger rate-limiting, or get your IP banned. Adding a delay between requests mimics human browsing behavior, respects the server's resources, and is part of ethical scraping practice. Many sites also expose this limit in their `robots.txt`."
+        },
+        {
+            "id": "d30q04",
+            "type": "multiple_choice",
+            "question": "What does `soup.find_all('a', href=True)` return?",
+            "options": [
+                "All anchor tags on the page that have an href attribute",
+                "The first anchor tag with any href",
+                "A list of all href URL strings on the page",
+                "All HTML attributes of every anchor tag"
+            ],
+            "answer": 0,
+            "explanation": "`find_all('a', href=True)` returns a list of all `<a>` Tag objects that have an `href` attribute (filtering out anchors without links). To get the URL string from each result, you'd then access `tag['href']` or `tag.get('href')`."
+        },
+        {
+            "id": "d30q05",
+            "type": "multiple_choice",
+            "question": "Before scraping a website, what file should you check to understand the site's scraping rules?",
+            "options": [
+                "/sitemap.xml",
+                "/robots.txt",
+                "/terms.html",
+                "/api/permissions"
+            ],
+            "answer": 1,
+            "explanation": "`robots.txt` (e.g., `https://example.com/robots.txt`) is the standard file where websites declare which paths bots may or may not crawl, and how fast. Violating `robots.txt` can breach the site's terms of service. It's the first thing ethical scrapers check."
+        }
+    ]
+}
