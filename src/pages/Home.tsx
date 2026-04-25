@@ -53,6 +53,12 @@ function formatIssueDate(d = new Date()): string {
   return `${months[d.getMonth()]} ${pad(d.getDate())} · ${d.getFullYear()}`
 }
 
+/**
+ * Home page component serving as the landing page or dashboard.
+ * It displays curriculum phases, user progress, study streaks, and metrics.
+ *
+ * @returns {JSX.Element} The rendered Home page component.
+ */
 export default function Home() {
   const phases = getAllPhases()
   const stats = getCurriculumMetadata()

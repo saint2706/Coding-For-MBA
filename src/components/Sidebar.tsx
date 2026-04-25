@@ -43,6 +43,13 @@ function PrimaryItem({ to, active, glyph, label, onClick }: PrimaryItemProps) {
   )
 }
 
+/**
+ * Sidebar component for navigation, displaying the curriculum phases
+ * and their corresponding lessons in a collapsible tree structure.
+ *
+ * @param {SidebarProps} props - The component props.
+ * @returns {JSX.Element} The rendered sidebar component.
+ */
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
   const phases = getAllPhases()

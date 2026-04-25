@@ -32,6 +32,12 @@ function streakBlocks(streak: number, max = 7): string {
   return '■'.repeat(filled) + '□'.repeat(Math.max(0, max - filled))
 }
 
+/**
+ * Status ticker component displayed at the bottom of the screen,
+ * showing the user's progress, current streak, and total XP.
+ *
+ * @returns {JSX.Element | null} The rendered status ticker or null if on certain paths.
+ */
 export default function StatusTicker() {
   const { pathname } = useLocation()
   const completedCount = useProgressStore((s) => s.completedLessonsCount())

@@ -20,6 +20,13 @@ interface NavbarProps {
   sidebarOpen: boolean
 }
 
+/**
+ * Top navigation bar component containing the brand logo, search functionality,
+ * dark mode toggle, and mobile sidebar toggle.
+ *
+ * @param {NavbarProps} props - The component props.
+ * @returns {JSX.Element} The rendered navigation bar.
+ */
 export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
   const location = useLocation()
   const navigate = useNavigate()
