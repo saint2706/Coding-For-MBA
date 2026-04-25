@@ -9,7 +9,7 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
-import { getLessonsByPhase, getLesson, phaseIcons, type Phase } from '../utils/contentLoader'
+import { getLessonsByPhase, getLesson, type Phase } from '../utils/contentLoader'
 import { dayTokenToProgressId } from '../utils/dayToken'
 
 interface SidebarPhaseGroupProps {
@@ -33,7 +33,7 @@ function SidebarPhaseGroup({
 }: SidebarPhaseGroupProps) {
   const prefersReducedMotion = useReducedMotion()
   const lessons = getLessonsByPhase(phase.phase)
-  const icon = phaseIcons[phase.phase - 1] || '📖'
+  const phaseLabel = String(phase.phase).padStart(2, '0')
   const completedCount = completedIdsJoined ? completedIdsJoined.split(',').length : 0
 
   // Reconstruct the Set from the primitive string prop to allow O(1) lookups during render
@@ -50,34 +50,32 @@ function SidebarPhaseGroup({
         aria-controls={`phase-${phase.phase}-days`}
         aria-label={`Toggle phase ${phase.phase}`}
       >
-        <span className="phase-toggle-icon" aria-hidden="true">
-          {icon}
-        </span>
-        <span className="phase-toggle-label">
-          Phase {phase.phase}: {phase.title}
-        </span>
-        <span className="phase-toggle-progress">
-          <span aria-hidden="true">
-            {completedCount}/{lessons.length} · 🧠 {dueCount}
-          </span>
-          <span className="sr-only">
-            {completedCount} of {lessons.length} completed, {dueCount} reviews due
-          </span>
-        </span>
-        <span className="phase-toggle-arrow">
+        <span className="phase-toggle-arrow" aria-hidden="true">
           <svg
-            width="12"
-            height="12"
+            width="10"
+            height="10"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            aria-hidden="true"
           >
             <path d="M9 18l6-6-6-6" />
           </svg>
+        </span>
+        <span className="phase-toggle-num" aria-hidden="true">
+          {phaseLabel}
+        </span>
+        <span className="phase-toggle-label">{phase.title}</span>
+        <span className="phase-toggle-progress">
+          <span aria-hidden="true">
+            {completedCount}/{lessons.length}
+            {dueCount > 0 && <span className="phase-due">·{dueCount}</span>}
+          </span>
+          <span className="sr-only">
+            {completedCount} of {lessons.length} completed, {dueCount} reviews due
+          </span>
         </span>
       </button>
 
@@ -105,11 +103,14 @@ function SidebarPhaseGroup({
             >
               <Link
                 to={`/phase/${phase.phase}`}
-                className={`day-link ${currentPath === `/phase/${phase.phase}` ? 'active' : ''}`}
+                className={`day-link day-link--overview ${currentPath === `/phase/${phase.phase}` ? 'active' : ''}`}
                 onClick={onClose}
                 aria-current={currentPath === `/phase/${phase.phase}` ? 'page' : undefined}
               >
-                <span aria-hidden="true">📄</span> Phase Overview
+                <span className="day-link-prefix" aria-hidden="true">
+                  ▸
+                </span>
+                <span className="day-link-text">overview</span>
               </Link>
             </motion.div>
             {lessons.map((lesson, index) => (
@@ -128,12 +129,19 @@ function SidebarPhaseGroup({
                   onClick={onClose}
                   aria-current={currentPath === `/lesson/${lesson.day}` ? 'page' : undefined}
                 >
+                  <span
+                    className={`day-link-prefix ${completedSet.has(dayTokenToProgressId(lesson.day)) ? 'completed' : ''}`}
+                    aria-hidden="true"
+                  >
+                    {completedSet.has(dayTokenToProgressId(lesson.day)) ? '✓' : '·'}
+                  </span>
+                  <span className="day-link-num" aria-hidden="true">
+                    {lesson.day}
+                  </span>
+                  <span className="day-link-text">{lesson.title}</span>
                   {completedSet.has(dayTokenToProgressId(lesson.day)) && (
-                    <span className="day-link-check" aria-label="Completed">
-                      ✓
-                    </span>
+                    <span className="sr-only">Completed.</span>
                   )}
-                  Day {lesson.day}: {lesson.title}
                 </Link>
               </motion.div>
             ))}

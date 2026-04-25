@@ -14,6 +14,7 @@ vi.mock('react-router-dom', () => ({
       {children}
     </a>
   ),
+  useNavigate: () => () => undefined,
 }))
 
 vi.mock('motion/react', () => ({
@@ -38,6 +39,18 @@ vi.mock('../../components/AnimatedCounter', () => ({
   default: ({ value }: { value: number }) => <>{value}</>,
 }))
 vi.mock('../../components/ProgressBar', () => ({ default: () => null }))
+vi.mock('../../components/ConceptGraph', () => ({ default: () => null }))
+
+vi.mock('../../stores/gamificationStore', () => {
+  const state = {
+    xpTotal: 0,
+    dailyChallenge: { day: 0, dateKey: '' },
+    refreshDailyChallenge: () => undefined,
+  }
+  const storeFn = (selector: (s: typeof state) => unknown) => selector(state)
+  storeFn.getState = () => state
+  return { useGamificationStore: storeFn }
+})
 
 vi.mock('../../stores/progressStore', () => {
   const storeFn = (
@@ -114,11 +127,11 @@ describe('Home continue banner', () => {
       mountedRoot.render(<Home />)
     })
 
-    expect(container.textContent).toContain('Continue learning')
+    // The new editorial cover surfaces a resume affordance, and the dashboard
+    // LAST OPEN tile carries the lesson title.
     expect(container.textContent).toContain('SQL Basics')
-    expect(container.textContent).toContain('Phase 2: Data Foundations')
 
-    const resumeLink = container.querySelector('.continue-banner-cta') as HTMLAnchorElement
+    const resumeLink = container.querySelector('.action-primary') as HTMLAnchorElement
     expect(resumeLink).not.toBeNull()
     expect(resumeLink.getAttribute('href')).toBe('/lesson/12')
     expect(resumeLink.textContent).toContain('Resume Day 12')

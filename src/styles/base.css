@@ -1,16 +1,21 @@
-/* --- Base Styles --- */
+/* --- Base Styles — "The Analyst's Terminal" --- */
 html {
   scroll-behavior: smooth;
   font-size: var(--app-font-size, 1rem);
+  background: var(--surface-paper);
 }
 
 body {
   font-family: var(--font-body);
-  background:
-    radial-gradient(circle at 20% -10%, rgba(67, 97, 238, 0.14), transparent 38%), var(--bg-primary);
+  font-feature-settings:
+    'ss01' on,
+    'ss02' on,
+    'kern' on,
+    'liga' on; /* Fraunces stylistic alternates */
+  background: var(--surface-paper);
   color: var(--text-primary);
-  line-height: calc(1.75 * var(--density-scale, 1));
-  letter-spacing: 0.005em;
+  line-height: calc(var(--leading-normal) * var(--density-scale, 1));
+  letter-spacing: 0;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -24,13 +29,24 @@ body {
 }
 
 a {
-  color: var(--accent-tertiary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--accent-primary);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition:
+    text-decoration-color var(--transition-fast),
+    color var(--transition-fast);
 }
 
 a:hover {
+  text-decoration-thickness: 2px;
   color: var(--accent-primary);
+}
+
+/* When the accent IS dark (light palette), don't blow away the foreground on hover */
+[data-palette-type='light'] a:hover {
+  color: var(--text-heading);
 }
 
 img {
@@ -39,13 +55,23 @@ img {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--accent-primary) 34%, transparent);
-  color: var(--text-heading);
+  background: var(--accent-primary);
+  color: var(--text-on-accent);
 }
 
 :focus-visible {
-  outline: 2px solid color-mix(in srgb, var(--accent-primary) 68%, white 32%);
+  outline: 2px solid var(--accent-primary);
   outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Tabular numerals on any element with mono or .num class — required for
+   data tiles, tickers, prices, timers (ui-ux-pro-max: number-tabular). */
+.num,
+.font-mono,
+[class*='ticker'],
+[class*='dashboard-tile'] {
+  font-variant-numeric: tabular-nums;
 }
 
 /* --- Accessibility --- */
@@ -55,17 +81,20 @@ img {
   top: -100%;
   left: 1rem;
   z-index: 10000;
-  padding: 0.75rem 1.5rem;
+  padding: 0.625rem 1.25rem;
   background: var(--accent-primary);
   color: var(--text-on-accent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
   font-weight: 600;
-  font-size: 0.875rem;
-  transition: top 0.2s ease;
+  font-size: 0.8125rem;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  transition: top 0.18s ease;
 }
 
 .skip-to-content:focus {
-  top: 1rem;
+  top: 0.75rem;
   color: var(--text-on-accent);
 }
 
@@ -91,9 +120,9 @@ img {
 }
 
 .page-loader-spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid var(--border-card);
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--border-subtle);
   border-top-color: var(--accent-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -105,23 +134,26 @@ img {
   }
 }
 
-/* --- Scrollbar --- */
+/* --- Scrollbar — minimal terminal aesthetic --- */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: var(--border-card);
-  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
+  background-clip: content-box;
 }
 
 /* ===== LAYOUT ===== */
@@ -129,6 +161,7 @@ img {
 .app-layout {
   display: flex;
   min-height: 100vh;
+  background: var(--surface-paper);
 }
 
 .main-content {
@@ -146,14 +179,14 @@ img {
 }
 
 .main-content:focus {
-  outline: 3px solid var(--accent-primary);
-  outline-offset: 4px;
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
 }
 
 .page-container {
   width: min(100%, var(--content-max-width));
   margin: 0 auto;
-  padding: clamp(2rem, 3vw, 2.75rem) var(--page-padding) clamp(3rem, 5vw, 4rem);
+  padding: clamp(2rem, 4vw, 3.5rem) var(--page-padding) clamp(3rem, 6vw, 5rem);
 }
 
 .page-container.lesson-with-toc {
@@ -175,10 +208,82 @@ img {
   --accent-glow: var(--reading-theme-accent-glow);
   --gradient-card: none;
   --gradient-glow: none;
-  --shadow-card: 0 3px 18px rgba(0, 0, 0, 0.22);
+  --shadow-card: 0 1px 0 0 var(--border-subtle);
   --shadow-glow: none;
 }
 
 .lesson-reading-surface.page-container {
   background: var(--bg-primary);
+}
+
+/* ===== UTILITY CLASSES used by new components ===== */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.display-headline {
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 30,
+    'wght' 380;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-heading);
+}
+
+.display-numeral {
+  font-family: var(--font-display);
+  font-weight: 280;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 0,
+    'wght' 280;
+  font-size: clamp(7rem, 14vw, 16rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--text-heading);
+  font-variant-numeric: lining-nums;
+}
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kicker::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--border-subtle);
+  margin: 0;
+}
+
+.hairline-strong {
+  border: 0;
+  border-top: 1px solid var(--border-card);
+  margin: 0;
 }

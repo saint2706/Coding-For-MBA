@@ -16,7 +16,12 @@ import { ThemeContext } from './ThemeContext'
 
 // NOTE: Keep this list in sync with the dark palette definitions in variables.css.
 // Any palette not listed here will be treated as a light palette.
-const DARK_PALETTES: ColorPalette[] = ['gradient-blues', 'neon-party', 'deep-ocean-blue']
+const DARK_PALETTES: ColorPalette[] = [
+  'terminal-dark',
+  'gradient-blues',
+  'neon-party',
+  'deep-ocean-blue',
+]
 
 function getPaletteType(palette: ColorPalette): 'dark' | 'light' {
   return DARK_PALETTES.includes(palette) ? 'dark' : 'light'

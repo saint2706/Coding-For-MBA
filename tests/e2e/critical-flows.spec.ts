@@ -6,7 +6,7 @@ test.describe('critical desktop user flows', () => {
   test('navigation: home → curriculum → lesson → phase', async ({ page }) => {
     await page.goto('/#/')
 
-    await expect(page.getByRole('link', { name: /Start Learning/i }).first()).toBeVisible()
+    await expect(page.getByRole('link', { name: /Begin Day|Resume Day/i }).first()).toBeVisible()
 
     await page.getByRole('link', { name: /^Curriculum$/ }).click()
     await expect(page).toHaveURL(/#\/curriculum$/)
@@ -14,10 +14,8 @@ test.describe('critical desktop user flows', () => {
     await page.locator('.curriculum-phase-header').first().click()
     await expect(page).toHaveURL(/#\/phase\//)
 
-    await page
-      .getByRole('link', { name: /Day\s+\d+:/i })
-      .first()
-      .click()
+    // Lesson rows in the phase roster expose "Day N" + title; click the first one.
+    await page.locator('a.lesson-row').first().click()
     await expect(page).toHaveURL(/#\/lesson\//)
   })
 
@@ -40,7 +38,7 @@ test.describe('critical desktop user flows', () => {
   test('progress tracking persists after reload', async ({ page }) => {
     await page.goto('/#/')
     await page
-      .getByRole('link', { name: /Start Learning/i })
+      .getByRole('link', { name: /Begin Day|Resume Day/i })
       .first()
       .click()
     await expect(page).toHaveURL(/#\/lesson\//)

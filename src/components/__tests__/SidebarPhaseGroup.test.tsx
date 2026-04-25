@@ -79,7 +79,8 @@ describe('SidebarPhaseGroup', () => {
     const button = container.querySelector('.phase-toggle')
     expect(button).toBeTruthy()
     expect(button?.getAttribute('aria-expanded')).toBe('false')
-    expect(container.textContent).toContain('Phase 1: Foundations')
+    expect(container.textContent).toContain('Foundations')
+    expect(container.querySelector('.phase-toggle-num')?.textContent).toBe('01')
     expect(container.textContent).toContain('0/2') // 0 completed out of 2
 
     // Content should not be visible
@@ -101,9 +102,14 @@ describe('SidebarPhaseGroup', () => {
 
     const content = container.querySelector('.phase-days')
     expect(content).toBeTruthy()
-    expect(container.textContent).toContain('Phase Overview')
-    expect(container.textContent).toContain('Day 01: Lesson 1')
-    expect(container.textContent).toContain('Day 02: Lesson 2')
+    expect(container.textContent).toContain('overview')
+    expect(container.textContent).toContain('Lesson 1')
+    expect(container.textContent).toContain('Lesson 2')
+    // The phase-day links carry their day token explicitly
+    const dayLinks = Array.from(container.querySelectorAll('.day-link:not(.day-link--overview)'))
+    expect(dayLinks.length).toBe(2)
+    expect(dayLinks[0]?.querySelector('.day-link-num')?.textContent).toBe('01')
+    expect(dayLinks[1]?.querySelector('.day-link-num')?.textContent).toBe('02')
   })
 
   it('shows correct completed count and due count', () => {
@@ -116,7 +122,8 @@ describe('SidebarPhaseGroup', () => {
     })
 
     const progress = container.querySelector('.phase-toggle-progress')
-    expect(progress?.textContent).toContain('1/2 · 🧠 3')
+    expect(progress?.textContent).toContain('1/2')
+    expect(progress?.textContent).toContain('3') // due count
   })
 
   it('calls onToggle when button is clicked', () => {
@@ -148,7 +155,8 @@ describe('SidebarPhaseGroup', () => {
 
     const activeLinks = container.querySelectorAll('.day-link.active')
     expect(activeLinks.length).toBe(1)
-    expect(activeLinks[0]!.textContent).toContain('Day 01: Lesson 1')
+    expect(activeLinks[0]?.querySelector('.day-link-num')?.textContent).toBe('01')
+    expect(activeLinks[0]?.textContent).toContain('Lesson 1')
   })
 
   describe('propsAreEqual optimization', () => {
@@ -201,7 +209,8 @@ describe('SidebarPhaseGroup', () => {
       })
 
       const progress = container.querySelector('.phase-toggle-progress')
-      expect(progress?.textContent).toContain('0/2 · 🧠 1')
+      expect(progress?.textContent).toContain('0/2')
+      expect(progress?.textContent).toContain('1') // due count
     })
 
     it('re-renders when phase changes', () => {
@@ -216,7 +225,8 @@ describe('SidebarPhaseGroup', () => {
         )
       })
 
-      expect(container.textContent).toContain('Phase 2: Phase 2')
+      expect(container.querySelector('.phase-toggle-num')?.textContent).toBe('02')
+      expect(container.textContent).toContain('Phase 2')
     })
 
     it('re-renders when completedIdsJoined changes for lessons in this phase', () => {
@@ -228,7 +238,7 @@ describe('SidebarPhaseGroup', () => {
         )
       })
 
-      expect(container.querySelectorAll('.day-link-check').length).toBe(0)
+      expect(container.querySelectorAll('.day-link-prefix.completed').length).toBe(0)
 
       act(() => {
         root?.render(
@@ -238,7 +248,7 @@ describe('SidebarPhaseGroup', () => {
         )
       })
 
-      expect(container.querySelectorAll('.day-link-check').length).toBe(1)
+      expect(container.querySelectorAll('.day-link-prefix.completed').length).toBe(1)
     })
 
     it('handles currentPath changes correctly', () => {
@@ -271,7 +281,9 @@ describe('SidebarPhaseGroup', () => {
         )
       })
 
-      expect(container.querySelector('.day-link.active')?.textContent).toContain('Day 01')
+      expect(
+        container.querySelector('.day-link.active')?.querySelector('.day-link-num')?.textContent,
+      ).toBe('01')
 
       // Change to phase overview inside the phase
       act(() => {
@@ -282,7 +294,7 @@ describe('SidebarPhaseGroup', () => {
         )
       })
 
-      expect(container.querySelector('.day-link.active')?.textContent).toContain('Phase Overview')
+      expect(container.querySelector('.day-link.active')?.textContent).toContain('overview')
 
       // Change path to another lesson outside the phase (should not trigger active class)
       act(() => {

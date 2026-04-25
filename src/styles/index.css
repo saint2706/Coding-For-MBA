@@ -1,6 +1,8 @@
 /* Barrel import — load CSS modules in cascade order */
+@import './fonts.css';
 @import './variables.css';
 @import './base.css';
+@import './atoms.css';
 @import './navbar.css';
 @import './sidebar.css';
 @import './search.css';

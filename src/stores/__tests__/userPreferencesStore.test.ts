@@ -90,7 +90,7 @@ describe('userPreferencesStore', () => {
 
     const state = useUserPreferencesStore.getState()
 
-    expect(state.palette).toBe('gradient-blues')
+    expect(state.palette).toBe('terminal-dark')
     expect(state.fontSize).toBe('md')
     expect(state.codeLanguage).toBe('python')
     expect(state.density).toBe('comfortable')
@@ -117,12 +117,12 @@ describe('userPreferencesStore', () => {
     await useUserPreferencesStore.persist.rehydrate()
 
     const state = useUserPreferencesStore.getState()
-    expect(state.palette).toBe('gradient-blues')
+    expect(state.palette).toBe('terminal-dark')
     expect(state.fontSize).toBe('sm')
     expect(state.codeLanguage).toBe('python') // Default
   })
 
-  it('migrates legacy light theme to light-steel palette', async () => {
+  it('migrates legacy light theme to bone-light palette', async () => {
     const legacyState = {
       theme: 'light',
       fontSize: 'md',
@@ -139,7 +139,7 @@ describe('userPreferencesStore', () => {
     await useUserPreferencesStore.persist.rehydrate()
 
     const state = useUserPreferencesStore.getState()
-    expect(state.palette).toBe('light-steel')
+    expect(state.palette).toBe('bone-light')
   })
 })
 
@@ -180,7 +180,7 @@ it('covers migrate failure block (line 160)', () => {
   const result = migrate('this is a string, not an object', 1) as unknown as ReturnType<
     typeof useUserPreferencesStore.getState
   >
-  expect(result.palette).toBe('gradient-blues') // default fallback
+  expect(result.palette).toBe('terminal-dark') // default fallback
 })
 
 it('covers migrate legacy paths and fallback on complete parse failure', () => {
@@ -193,21 +193,21 @@ it('covers migrate legacy paths and fallback on complete parse failure', () => {
         typeof useUserPreferencesStore.getState
       >
     ).palette,
-  ).toBe('light-steel')
+  ).toBe('bone-light')
   expect(
     (
       migrate({ theme: 'dark' }, 1) as unknown as ReturnType<
         typeof useUserPreferencesStore.getState
       >
     ).palette,
-  ).toBe('gradient-blues')
+  ).toBe('terminal-dark')
   expect(
     (
       migrate({ theme: 'system' }, 1) as unknown as ReturnType<
         typeof useUserPreferencesStore.getState
       >
     ).palette,
-  ).toBe('gradient-blues')
+  ).toBe('terminal-dark')
 
   // To trigger the final fallback, we need to pass something that fails Zod's safeParse.
   // However, if the schema is just z.object() and we pass an object, it succeeds.

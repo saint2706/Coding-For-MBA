@@ -62,8 +62,8 @@ test.describe('visual regression', () => {
   })
 
   const pages = [
-    { route: '/#/', heading: /Master Technical Skills/i, name: 'home' },
-    { route: '/#/curriculum', heading: /Full Curriculum Roadmap/i, name: 'curriculum' },
+    { route: '/#/', heading: /workstation/i, name: 'home' },
+    { route: '/#/curriculum', heading: /Full curriculum/i, name: 'curriculum' },
     { route: '/#/lesson/1', heading: /Day 1/i, name: 'lesson-1' },
     {
       route: '/#/progress',

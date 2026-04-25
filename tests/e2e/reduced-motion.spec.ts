@@ -35,7 +35,7 @@ test.describe('prefers-reduced-motion: reduce', () => {
   test('page transition container has zero-duration animation', async ({ page }) => {
     await page.goto('/#/', { waitUntil: 'domcontentloaded' })
     await expect(
-      page.getByRole('heading', { name: /Master Technical Skills/i }).first(),
+      page.getByRole('heading', { name: /workstation/i }).first(),
     ).toBeVisible({
       timeout: 15000,
     })
@@ -43,7 +43,7 @@ test.describe('prefers-reduced-motion: reduce', () => {
     // Navigate to trigger a page transition
     await page.goto('/#/curriculum', { waitUntil: 'domcontentloaded' })
     await expect(
-      page.getByRole('heading', { name: /Full Curriculum Roadmap/i }).first(),
+      page.getByRole('heading', { name: /Full curriculum/i }).first(),
     ).toBeVisible({
       timeout: 15000,
     })
@@ -94,7 +94,7 @@ test.describe('prefers-reduced-motion: reduce', () => {
   test('curriculum phase cards have no transition duration', async ({ page }) => {
     await page.goto('/#/curriculum', { waitUntil: 'domcontentloaded' })
     await expect(
-      page.getByRole('heading', { name: /Full Curriculum Roadmap/i }).first(),
+      page.getByRole('heading', { name: /Full curriculum/i }).first(),
     ).toBeVisible({
       timeout: 15000,
     })

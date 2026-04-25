@@ -1,51 +1,105 @@
-/* ===== MARKDOWN RENDERER ===== */
+/* ===== MARKDOWN RENDERER — editorial longform ===== */
 
 .markdown-body {
-  line-height: 1.85;
+  font-family: var(--font-display);
+  font-weight: 380;
+  font-variation-settings:
+    'opsz' 16,
+    'SOFT' 50,
+    'wght' 380;
+  line-height: var(--leading-relaxed);
   color: var(--text-primary);
   max-width: var(--reading-max-width);
-  font-size: clamp(1rem, 0.97rem + 0.2vw, 1.08rem);
+  font-size: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem);
+  letter-spacing: -0.005em;
 }
 
 .markdown-body > *:first-child {
   margin-top: 0;
 }
 
+/* Drop-cap on the first paragraph after the article opens */
+.markdown-body > p:first-of-type::first-letter {
+  font-family: var(--font-display);
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 0,
+    'wght' 320;
+  font-size: 4.5em;
+  line-height: 0.85;
+  float: left;
+  margin: 0.05em 0.12em 0 -0.04em;
+  color: var(--accent-primary);
+  font-weight: 320;
+}
+
+@media (max-width: 720px) {
+  .markdown-body > p:first-of-type::first-letter {
+    font-size: 3em;
+  }
+}
+
 .markdown-body h1 {
-  font-size: clamp(1.9rem, 1.55rem + 1.2vw, 2.35rem);
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 360;
+  font-variation-settings:
+    'opsz' 144,
+    'SOFT' 30,
+    'wght' 360;
+  font-size: clamp(2rem, 1.6rem + 1.5vw, 2.75rem);
   color: var(--text-heading);
-  margin: 1.2rem 0 1rem;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  margin: 1.5rem 0 1rem;
+  line-height: var(--leading-tight);
+  letter-spacing: -0.025em;
 }
 
 .markdown-body h2 {
-  font-size: clamp(1.35rem, 1.2rem + 0.7vw, 1.72rem);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-weight: 420;
+  font-variation-settings:
+    'opsz' 60,
+    'SOFT' 30,
+    'wght' 420;
+  font-size: clamp(1.4rem, 1.2rem + 0.7vw, 1.875rem);
   color: var(--text-heading);
-  margin: 2.5rem 0 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--border-subtle);
+  margin: 3rem 0 1rem;
+  padding-top: 1rem;
+  padding-bottom: 0;
+  border-top: 1px solid var(--border-card);
+  border-bottom: none;
+  letter-spacing: -0.015em;
+  line-height: var(--leading-tight);
 }
 
 .markdown-body h3 {
-  font-size: clamp(1.18rem, 1.08rem + 0.45vw, 1.35rem);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 460;
+  font-variation-settings:
+    'opsz' 36,
+    'SOFT' 30,
+    'wght' 460;
+  font-size: clamp(1.18rem, 1.08rem + 0.45vw, 1.4rem);
   color: var(--text-heading);
-  margin: 2rem 0 0.75rem;
+  margin: 2.25rem 0 0.75rem;
+  letter-spacing: -0.01em;
+  line-height: var(--leading-tight);
 }
 
 .markdown-body h4 {
+  font-family: var(--font-display);
+  font-weight: 520;
+  font-variation-settings:
+    'opsz' 24,
+    'SOFT' 30,
+    'wght' 520;
   font-size: 1.0625rem;
-  font-weight: 600;
   color: var(--text-heading);
-  margin: 1.5rem 0 0.5rem;
+  margin: 1.75rem 0 0.5rem;
 }
 
 .markdown-body p {
-  margin-bottom: 1.1rem;
-  color: color-mix(in srgb, var(--text-primary) 94%, white 6%);
+  margin-bottom: 1.15rem;
+  color: var(--text-primary);
 }
 
 .markdown-body ul,
@@ -65,44 +119,70 @@
 }
 
 .markdown-body strong {
-  font-weight: 600;
+  font-weight: 700;
+  font-variation-settings:
+    'opsz' 16,
+    'SOFT' 30,
+    'wght' 700;
   color: var(--text-heading);
 }
 
 .markdown-body em {
-  color: var(--text-secondary);
+  font-style: italic;
+  font-variation-settings:
+    'opsz' 16,
+    'SOFT' 100,
+    'wght' 380;
+  color: var(--text-primary);
 }
 
+/* Blockquote — pull quote treatment */
 .markdown-body blockquote {
-  border-left: 3px solid var(--accent-primary);
-  padding: 0.9rem 1.25rem;
-  margin: 1.4rem 0;
-  background: color-mix(in srgb, var(--accent-primary) 9%, transparent);
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
-  color: var(--text-secondary);
+  border: none;
+  border-left: 2px solid var(--accent-primary);
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  margin: 2rem 0 2rem -0.5rem;
+  background: transparent;
+  border-radius: 0;
+  color: var(--text-heading);
+  font-family: var(--font-display);
+  font-variation-settings:
+    'opsz' 36,
+    'SOFT' 100,
+    'wght' 400;
+  font-style: italic;
+  font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
+  line-height: var(--leading-snug);
+  letter-spacing: -0.015em;
 }
 
-.markdown-body blockquote em {
-  color: var(--text-secondary);
+.markdown-body blockquote p {
+  color: inherit;
+  margin-bottom: 0.5rem;
+}
+
+.markdown-body blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 .markdown-body hr {
   border: none;
-  border-top: 1px solid var(--border-subtle);
-  margin: 2rem 0;
+  border-top: 1px solid var(--border-card);
+  margin: 2.5rem 0;
 }
 
 /* Inline code */
 .markdown-body code:not(pre code) {
   font-family: var(--font-mono);
   font-size: 0.85em;
-  padding: 0.15em 0.4em;
+  padding: 0.1em 0.35em;
   background: var(--bg-code);
-  border: 1px solid var(--border-card);
-  border-radius: 4px;
-  color: var(--accent-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
   overflow-wrap: anywhere;
   word-break: break-word;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Code blocks */
@@ -132,48 +212,70 @@
   word-break: inherit;
 }
 
+/* Code block — treated as a labeled "Exhibit" callout */
 .markdown-body .code-block--wrapped {
-  margin: 1.25rem 0;
+  margin: 1.75rem 0;
   max-width: 100%;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   overflow: hidden;
   border: 1px solid var(--border-card);
   background: var(--bg-code);
+  position: relative;
+}
+
+.markdown-body .code-block--wrapped::before {
+  content: 'EXHIBIT';
+  position: absolute;
+  top: -8px;
+  left: 1rem;
+  padding: 0 0.45rem;
+  background: var(--surface-paper);
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  z-index: 1;
 }
 
 .code-block-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.2);
+  padding: 0.625rem 1rem 0.5rem;
+  background: transparent;
   border-bottom: 1px solid var(--border-subtle);
 }
 
 .code-block-lang {
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
-  color: var(--text-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--tracking-wide);
 }
 
 .code-block-copy {
   background: none;
-  border: 1px solid var(--border-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   color: var(--text-muted);
   cursor: pointer;
-  font-size: 0.8125rem;
-  padding: 0.25rem 0.5rem;
-  font-family: var(--font-body);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
   transition: all var(--transition-fast);
 }
 
 .code-block-copy:hover {
-  background: rgba(67, 97, 238, 0.1);
-  color: var(--text-primary);
-  border-color: var(--border-active);
+  background: var(--bg-card-hover);
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
 }
 
 .markdown-body .code-block--wrapped pre {
@@ -231,19 +333,22 @@
   }
 }
 
-/* Tables */
+/* Tables — financial-report aesthetic */
 .markdown-body .table-wrapper {
   overflow-x: auto;
-  margin: 1.25rem 0;
+  margin: 1.5rem 0;
   max-width: 100%;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--border-card);
 }
 
 .markdown-body table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+  letter-spacing: var(--tracking-mono);
 }
 
 .markdown-body thead th,
@@ -252,19 +357,23 @@
 }
 
 .markdown-body thead th {
-  background: rgba(67, 97, 238, 0.08);
-  padding: 0.75rem 1rem;
+  background: var(--surface-ink);
+  padding: 0.65rem 1rem;
   text-align: left;
+  font-family: var(--font-mono);
   font-weight: 600;
-  color: var(--text-heading);
+  font-size: 0.625rem;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-secondary);
   border-bottom: 1px solid var(--border-card);
   white-space: nowrap;
 }
 
 .markdown-body tbody td {
-  padding: 0.625rem 1rem;
+  padding: 0.55rem 1rem;
   border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .markdown-body tbody tr:last-child td {
@@ -272,7 +381,7 @@
 }
 
 .markdown-body tbody tr:hover {
-  background: rgba(67, 97, 238, 0.03);
+  background: var(--bg-card-hover);
 }
 
 /* Details/Summary (collapsible) */

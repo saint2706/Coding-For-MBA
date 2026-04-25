@@ -13,16 +13,9 @@ import { useParams, Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
 import { useMemo } from 'react'
 import SEOHead from '../components/SEOHead'
-import {
-  getPhase,
-  getLessonsByPhase,
-  getNotebook,
-  difficultyConfig,
-  phaseIcons,
-} from '../utils/contentLoader'
+import { getPhase, getLessonsByPhase, getNotebook, difficultyConfig } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
-import ProgressBar from '../components/ProgressBar'
 import { useProgressStore } from '../stores/progressStore'
 import { dayTokenToProgressId } from '../utils/dayToken'
 
@@ -63,7 +56,7 @@ export default function PhaseOverview() {
   }
 
   const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-  const icon = phaseIcons[phase.phase - 1] || '📖'
+  const phaseLabel = String(phase.phase).padStart(2, '0')
   const hours = Math.round((phase.totalDuration || 0) / 60)
   const notebook = getNotebook(phaseNum!)
 
@@ -87,37 +80,42 @@ export default function PhaseOverview() {
         return (
           <motion.div
             key={lesson.day}
-            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+            initial={prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.35 }}
             transition={{
-              duration: prefersReducedMotion ? 0 : 0.26,
-              delay: prefersReducedMotion ? 0 : index * 0.03,
+              duration: prefersReducedMotion ? 0 : 0.22,
+              delay: prefersReducedMotion ? 0 : index * 0.025,
             }}
           >
-            <Link to={`/lesson/${lesson.day}`} className="day-card">
-              <motion.div className="day-card-num" layoutId={`lesson-day-badge-${lesson.day}`}>
-                {lesson.day}
-              </motion.div>
-              <div className="day-card-info">
-                <h3>{lesson.title}</h3>
-                {lesson.duration && (
-                  <span>
-                    <span aria-hidden="true">⏱</span> {lesson.duration} min
-                  </span>
-                )}
-              </div>
-              {isDone && (
-                <span className="day-link-check" aria-label="Completed">
-                  ✓
+            <Link
+              to={`/lesson/${lesson.day}`}
+              className={`lesson-row ${isDone ? 'lesson-row--done' : ''}`}
+            >
+              <span className="lesson-row-marker" aria-hidden="true">
+                {isDone ? '✓' : String(index + 1).padStart(2, '0')}
+              </span>
+              <span className="lesson-row-day" aria-hidden="true">
+                Day {lesson.day}
+              </span>
+              <span className="lesson-row-title">{lesson.title}</span>
+              {lesson.duration && (
+                <span className="lesson-row-duration" aria-hidden="true">
+                  {lesson.duration}m
                 </span>
               )}
+              <span className="lesson-row-arrow" aria-hidden="true">
+                →
+              </span>
+              {isDone && <span className="sr-only">Completed.</span>}
             </Link>
           </motion.div>
         )
       }),
     [lessons, completedSet, prefersReducedMotion],
   )
+
+  const completedPct = Math.round((completedInPhaseCount / Math.max(1, lessons.length)) * 100)
 
   const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
   const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 140-day Coding for MBA curriculum.`
@@ -148,65 +146,76 @@ export default function PhaseOverview() {
           },
         ]}
       />
-      {/* Phase Header */}
-      <div className="phase-header">
-        <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: `Phase ${phase.phase}` }]} />
-        <div className="phase-header-top">
-          <div className="phase-header-icon">{icon}</div>
-          <div>
-            <h1>
-              Phase {phase.phase}: {phase.title}
-            </h1>
-            <div className="lesson-meta-bar" style={{ marginTop: '0.75rem' }}>
-              <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
+      <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: `Phase ${phase.phase}` }]} />
+
+      <header className="phase-spread">
+        <div className="phase-spread-numeral display-numeral" aria-hidden="true">
+          {phaseLabel}
+        </div>
+        <div className="phase-spread-body">
+          <p className="phase-spread-kicker">
+            <span className="kicker-dot" aria-hidden="true" />
+            Phase {phaseLabel} of {String(phase.phase).padStart(2, '0')}
+          </p>
+          <h1 className="phase-spread-title display-headline">{phase.title}</h1>
+          <dl className="phase-spread-meta">
+            <div>
+              <dt>Level</dt>
+              <dd
+                className="phase-spread-difficulty"
+                style={{ color: diff.color, background: diff.bg }}
+              >
                 {diff.label}
-              </span>
-              <span className="meta-pill">
-                <span aria-hidden="true">📅</span> {lessons.length} Days
-              </span>
-              {hours > 0 && (
-                <span className="meta-pill">
-                  <span aria-hidden="true">⏱</span> {hours} hours
-                </span>
-              )}
+              </dd>
             </div>
+            <div>
+              <dt>Days</dt>
+              <dd>{lessons.length}</dd>
+            </div>
+            <div>
+              <dt>Hours</dt>
+              <dd>{hours > 0 ? hours : '—'}</dd>
+            </div>
+            <div>
+              <dt>Done</dt>
+              <dd>
+                {completedInPhaseCount}/{lessons.length} · {completedPct}%
+              </dd>
+            </div>
+          </dl>
+          <div className="phase-spread-bar" aria-hidden="true">
+            <div className="phase-spread-bar-fill" style={{ width: `${completedPct}%` }} />
           </div>
         </div>
-        <div style={{ marginTop: '1rem' }}>
-          <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
-        </div>
-      </div>
+      </header>
 
-      {/* Day Lessons Grid */}
-      <div className="section-header">
-        <h2>Lessons in This Phase</h2>
-      </div>
-      <div className="phase-lessons-grid">{renderedLessons}</div>
+      <hr className="hairline-strong" />
 
-      {/* Solution Notebook Link */}
+      <section className="phase-lessons-section">
+        <header className="section-masthead section-masthead--inline">
+          <p className="section-eyebrow">{lessons.length} lessons</p>
+          <h2 className="section-headline display-headline">The roster</h2>
+        </header>
+        <ol className="phase-lessons-list">{renderedLessons}</ol>
+      </section>
+
       {notebook && notebook.cells.length > 0 && (
-        <div className="section-header" style={{ marginTop: '2rem' }}>
-          <h2>
-            <span aria-hidden="true">📓</span> Solutions Notebook
-          </h2>
-          <p>Complete solutions with explanations — run them in your browser.</p>
-          <Link
-            to={`/solutions/${phase.phase}`}
-            className="exercises-notebook-link"
-            style={{
-              marginTop: '0.75rem',
-              display: 'inline-flex',
-              fontSize: '0.875rem',
-              padding: '0.5rem 1rem',
-            }}
-          >
-            {icon} View Phase {phase.phase} Solutions →
+        <section className="phase-solutions-section">
+          <header className="section-masthead section-masthead--inline">
+            <p className="section-eyebrow">Solutions</p>
+            <h2 className="section-headline display-headline">Notebook</h2>
+            <p className="section-lede">
+              Complete reference solutions with explanations — run them in your browser.
+            </p>
+          </header>
+          <Link to={`/solutions/${phase.phase}`} className="action-secondary">
+            Open Phase {phase.phase} solutions
+            <span aria-hidden="true">→</span>
           </Link>
-        </div>
+        </section>
       )}
 
-      {/* Phase Overview markdown content */}
-      <article style={{ marginTop: '2rem' }}>
+      <article className="phase-overview-article">
         <MarkdownRenderer content={phase.content} />
       </article>
     </div>
