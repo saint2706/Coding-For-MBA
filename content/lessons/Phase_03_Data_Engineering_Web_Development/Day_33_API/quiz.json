@@ -1,0 +1,70 @@
+{
+    "day": 33,
+    "questions": [
+        {
+            "id": "d33q01",
+            "type": "multiple_choice",
+            "question": "What HTTP status code indicates a successful API request that returned data?",
+            "options": [
+                "201",
+                "404",
+                "200",
+                "500"
+            ],
+            "answer": 2,
+            "explanation": "200 OK is the standard success response for GET requests that return data. 201 Created is used after a successful POST that created a resource. 404 means the resource was not found. 500 means the server encountered an error. Learning status code ranges (2xx=success, 4xx=client error, 5xx=server error) is fundamental to debugging API calls."
+        },
+        {
+            "id": "d33q02",
+            "type": "multiple_choice",
+            "question": "Which Python library is the standard for making HTTP requests to REST APIs?",
+            "options": [
+                "urllib",
+                "http.client",
+                "requests",
+                "httpx"
+            ],
+            "answer": 2,
+            "explanation": "`requests` is the de-facto standard for HTTP in Python—it provides a clean, human-friendly API: `requests.get(url)`, `requests.post(url, json=data)`. While `urllib` is built-in and `httpx` supports async, `requests` is what you'll encounter in nearly all data science and analytics code."
+        },
+        {
+            "id": "d33q03",
+            "type": "multiple_choice",
+            "question": "An API returns JSON data. After `response = requests.get(url)`, how do you access the response as a Python dictionary?",
+            "options": [
+                "response.text()",
+                "response.json()",
+                "json.loads(response)",
+                "response.dict()"
+            ],
+            "answer": 1,
+            "explanation": "`response.json()` deserializes the JSON response body into a Python dict or list. It's equivalent to `json.loads(response.text)` but more concise. Always check `response.status_code == 200` before calling `.json()` to avoid parsing error responses."
+        },
+        {
+            "id": "d33q04",
+            "type": "multiple_choice",
+            "question": "An API requires an API key for authentication. How is it most commonly passed in a request?",
+            "options": [
+                "As a query parameter: `?api_key=abc123`",
+                "In the request headers: `{'Authorization': 'Bearer abc123'}` or `{'X-API-Key': 'abc123'}`",
+                "In the request body as JSON",
+                "As part of the domain name: `abc123.api.example.com`"
+            ],
+            "answer": 1,
+            "explanation": "Headers are the standard place for API authentication tokens—they're not logged in server access logs the way URL query parameters are, and they don't appear in browser history. The exact header name varies: `Authorization: Bearer <token>` (OAuth), `X-API-Key: <key>`, or `api-key: <key>` depending on the API."
+        },
+        {
+            "id": "d33q05",
+            "type": "multiple_choice",
+            "question": "What is pagination in REST APIs, and why does it matter?",
+            "options": [
+                "Breaking API documentation into multiple pages for readability",
+                "Limiting responses to a subset of results per request to avoid returning millions of records at once",
+                "Versioning the API so old clients still work",
+                "Caching API responses to reduce server load"
+            ],
+            "answer": 1,
+            "explanation": "Pagination splits large result sets into pages (e.g., 100 records per response). APIs signal next pages via `Link` headers, `next_cursor` fields, or `?page=2` parameters. Without pagination, a single request for all customers could return millions of rows—crashing both the server and your script."
+        }
+    ]
+}

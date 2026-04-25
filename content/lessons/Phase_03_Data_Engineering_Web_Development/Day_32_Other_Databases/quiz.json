@@ -1,0 +1,70 @@
+{
+    "day": 32,
+    "questions": [
+        {
+            "id": "d32q01",
+            "type": "multiple_choice",
+            "question": "A startup needs to store user profiles where each user may have a different set of attributes (some have Twitter handles, others have LinkedIn, others have neither). Which database model is best suited?",
+            "options": [
+                "Relational (SQL) database with a fixed schema",
+                "Document database (MongoDB) with flexible schemas",
+                "Time-series database",
+                "Graph database"
+            ],
+            "answer": 1,
+            "explanation": "Document databases like MongoDB store data as JSON-like documents, allowing each document to have different fields. This schema flexibility is ideal when entities have variable attributes—no ALTER TABLE migrations needed when a new field is added."
+        },
+        {
+            "id": "d32q02",
+            "type": "multiple_choice",
+            "question": "In MongoDB, what is the equivalent of a SQL table?",
+            "options": [
+                "A database",
+                "A collection",
+                "A document",
+                "A field"
+            ],
+            "answer": 1,
+            "explanation": "MongoDB's hierarchy maps to SQL as: Database → Database, Collection → Table, Document → Row, Field → Column. A collection holds documents (JSON-like objects). Unlike SQL tables, collections don't enforce a fixed schema across all documents."
+        },
+        {
+            "id": "d32q03",
+            "type": "multiple_choice",
+            "question": "Redis is primarily used as a cache rather than a primary database. What characteristic makes it fast enough for caching?",
+            "options": [
+                "It compresses data before storing it",
+                "It stores all data in memory (RAM) rather than on disk",
+                "It uses a special query optimizer",
+                "It distributes data across multiple servers automatically"
+            ],
+            "answer": 1,
+            "explanation": "Redis keeps its entire dataset in RAM, making reads and writes microseconds fast—orders of magnitude faster than disk-based databases. This is perfect for caching API responses, session tokens, and leaderboards. The tradeoff is that RAM is expensive and data is lost on restart unless persistence is configured."
+        },
+        {
+            "id": "d32q04",
+            "type": "multiple_choice",
+            "question": "Which scenario is best suited for a graph database like Neo4j?",
+            "options": [
+                "Storing time-series IoT sensor readings",
+                "Tracking social network connections and finding shortest paths between users",
+                "Archiving financial transaction records with ACID compliance",
+                "Storing product catalog data with fixed attributes"
+            ],
+            "answer": 1,
+            "explanation": "Graph databases store entities as nodes and relationships as edges, making relationship traversal extremely efficient. Friend-of-friend queries, fraud detection rings, and recommendation engines ('people you may know') are classic graph database use cases—these queries are prohibitively slow in SQL with self-joins."
+        },
+        {
+            "id": "d32q05",
+            "type": "multiple_choice",
+            "question": "What does the CAP theorem state about distributed databases?",
+            "options": [
+                "A database can be fast, cheap, and reliable simultaneously",
+                "A distributed system can guarantee at most two of: Consistency, Availability, and Partition tolerance",
+                "Databases must choose between SQL and NoSQL",
+                "All databases must support ACID transactions"
+            ],
+            "answer": 1,
+            "explanation": "The CAP theorem proves that during a network partition, a distributed system must choose between Consistency (all nodes see the same data) and Availability (every request gets a response). This is why NoSQL databases like MongoDB favor availability while traditional SQL databases favor consistency."
+        }
+    ]
+}

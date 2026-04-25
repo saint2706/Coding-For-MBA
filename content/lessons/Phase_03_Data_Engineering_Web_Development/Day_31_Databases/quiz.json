@@ -1,0 +1,70 @@
+{
+    "day": 31,
+    "questions": [
+        {
+            "id": "d31q01",
+            "type": "multiple_choice",
+            "question": "Which SQL clause filters rows based on a condition applied to aggregated groups?",
+            "options": [
+                "WHERE",
+                "HAVING",
+                "GROUP BY",
+                "FILTER"
+            ],
+            "answer": 1,
+            "explanation": "`HAVING` filters after aggregation—e.g., `GROUP BY region HAVING SUM(sales) > 100000` returns only regions exceeding $100k. `WHERE` filters individual rows before aggregation. This distinction is critical: `WHERE COUNT(*) > 5` is invalid; `HAVING COUNT(*) > 5` is correct."
+        },
+        {
+            "id": "d31q02",
+            "type": "multiple_choice",
+            "question": "What does a LEFT JOIN return that an INNER JOIN does not?",
+            "options": [
+                "Rows that exist in both tables",
+                "All rows from the left table, even if there is no matching row in the right table",
+                "Duplicate rows from both tables",
+                "Only rows where the join condition is NULL"
+            ],
+            "answer": 1,
+            "explanation": "INNER JOIN returns only rows with matches in both tables. LEFT JOIN returns all rows from the left table plus matched rows from the right—unmatched right-side columns are NULL. Use LEFT JOIN when you want to keep all customers even if some have no orders."
+        },
+        {
+            "id": "d31q03",
+            "type": "multiple_choice",
+            "question": "Which Python module provides a built-in, file-based SQL database that requires no separate server installation?",
+            "options": [
+                "psycopg2",
+                "sqlite3",
+                "sqlalchemy",
+                "pymysql"
+            ],
+            "answer": 1,
+            "explanation": "`sqlite3` is part of Python's standard library and stores the entire database in a single `.db` file—no server setup needed. It's ideal for prototyping, small analytics projects, and learning SQL. For production with concurrent writes, PostgreSQL (via psycopg2) is preferred."
+        },
+        {
+            "id": "d31q04",
+            "type": "multiple_choice",
+            "question": "What is the purpose of `conn.commit()` after executing INSERT, UPDATE, or DELETE statements?",
+            "options": [
+                "It closes the database connection",
+                "It permanently saves the changes to the database file",
+                "It validates that the SQL syntax is correct",
+                "It refreshes the in-memory cache of table data"
+            ],
+            "answer": 1,
+            "explanation": "SQLite (and most SQL databases) use transactions—changes are held in a temporary buffer until you call `commit()`. Without it, changes are lost when the connection closes. This transactional model protects data integrity: if an error occurs mid-operation, you can `rollback()` instead."
+        },
+        {
+            "id": "d31q05",
+            "type": "multiple_choice",
+            "question": "Why should you use parameterized queries (`cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))`) instead of string formatting?",
+            "options": [
+                "Parameterized queries run faster than formatted strings",
+                "They prevent SQL injection attacks by separating code from data",
+                "They allow queries to span multiple database tables",
+                "They automatically format dates and numbers correctly"
+            ],
+            "answer": 1,
+            "explanation": "SQL injection is one of the most common security vulnerabilities. String formatting like `f\"SELECT * FROM users WHERE id = {user_id}\"` allows malicious input to alter the query structure. Parameterized queries pass data as separate parameters—the database driver handles escaping, making injection impossible."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 34,
+    "questions": [
+        {
+            "id": "d34q01",
+            "type": "multiple_choice",
+            "question": "What is the primary advantage of FastAPI over Flask for building APIs?",
+            "options": [
+                "FastAPI supports more HTTP methods than Flask",
+                "FastAPI auto-generates interactive documentation and validates request/response types using Python type hints",
+                "FastAPI is older and more battle-tested",
+                "FastAPI requires less Python knowledge to get started"
+            ],
+            "answer": 1,
+            "explanation": "FastAPI uses Python type hints to automatically validate incoming data and generates Swagger UI documentation at `/docs`—zero extra configuration. Flask requires separate libraries (marshmallow, flasgger) for these features. This makes FastAPI significantly faster to develop with and easier to document."
+        },
+        {
+            "id": "d34q02",
+            "type": "multiple_choice",
+            "question": "In FastAPI, what is a Pydantic model used for?",
+            "options": [
+                "Connecting to a database",
+                "Defining the expected shape and types of request/response data with automatic validation",
+                "Rendering HTML templates",
+                "Handling background tasks"
+            ],
+            "answer": 1,
+            "explanation": "Pydantic models are Python classes that define data schemas with type annotations. FastAPI uses them to automatically validate incoming JSON, convert types, and reject bad requests with helpful error messages—before your business logic even runs. This eliminates dozens of manual validation checks."
+        },
+        {
+            "id": "d34q03",
+            "type": "multiple_choice",
+            "question": "Which decorator registers a function as a GET endpoint at `/products/{product_id}` in FastAPI?",
+            "options": [
+                "@app.route('/products/{product_id}', methods=['GET'])",
+                "@app.get('/products/{product_id}')",
+                "@app.endpoint('/products/{product_id}', 'GET')",
+                "@get('/products/{product_id}')"
+            ],
+            "answer": 1,
+            "explanation": "FastAPI uses HTTP-method-specific decorators: `@app.get()`, `@app.post()`, `@app.put()`, `@app.delete()`. Path parameters in `{curly_braces}` are automatically extracted and passed to the function as arguments. This is cleaner than Flask's `@app.route(methods=['GET'])` syntax."
+        },
+        {
+            "id": "d34q04",
+            "type": "multiple_choice",
+            "question": "What HTTP method should a REST API endpoint use to create a new resource?",
+            "options": [
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH"
+            ],
+            "answer": 1,
+            "explanation": "REST conventions: GET retrieves data (no side effects), POST creates a new resource, PUT replaces an existing resource entirely, PATCH updates specific fields, DELETE removes. Following these conventions makes your API predictable—developers know what to expect without reading documentation."
+        },
+        {
+            "id": "d34q05",
+            "type": "multiple_choice",
+            "question": "What command starts a FastAPI application using uvicorn on port 8000 with auto-reload enabled?",
+            "options": [
+                "python main.py --reload",
+                "uvicorn main:app --reload",
+                "fastapi run main.py --port 8000",
+                "flask run --reload main:app"
+            ],
+            "answer": 1,
+            "explanation": "`uvicorn main:app --reload` starts the ASGI server: `main` is the Python module filename, `app` is the FastAPI instance variable name, and `--reload` restarts the server automatically on code changes. Uvicorn is FastAPI's recommended production server."
+        }
+    ]
+}

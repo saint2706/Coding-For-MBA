@@ -1,0 +1,70 @@
+{
+    "day": 35,
+    "questions": [
+        {
+            "id": "d35q01",
+            "type": "multiple_choice",
+            "question": "What is the difference between Flask and FastAPI in terms of their primary use case?",
+            "options": [
+                "Flask is for Python 2; FastAPI is for Python 3",
+                "Flask excels at full web apps with HTML templates; FastAPI excels at JSON APIs with type validation",
+                "Flask is async-first; FastAPI is synchronous only",
+                "Flask requires a database; FastAPI does not"
+            ],
+            "answer": 1,
+            "explanation": "Flask's built-in Jinja2 templating makes it natural for server-rendered web applications with HTML pages, forms, and sessions. FastAPI is optimized for JSON APIs with automatic validation and OpenAPI docs. Choose Flask when building user-facing web UIs; choose FastAPI when building APIs consumed by other services."
+        },
+        {
+            "id": "d35q02",
+            "type": "multiple_choice",
+            "question": "In a Flask Jinja2 template, which syntax renders a Python variable called `company_name`?",
+            "options": [
+                "{% company_name %}",
+                "{{ company_name }}",
+                "<%= company_name %>",
+                "$(company_name)"
+            ],
+            "answer": 1,
+            "explanation": "Jinja2 uses `{{ variable }}` for rendering values and `{% statement %}` for control flow (if/for). This distinction matters: `{% if user %}` runs logic, `{{ user.name }}` outputs text. Mixing them up is a common beginner mistake."
+        },
+        {
+            "id": "d35q03",
+            "type": "multiple_choice",
+            "question": "A Flask route needs to handle both displaying a form (GET) and processing its submission (POST). How do you configure this?",
+            "options": [
+                "@app.route('/form') and @app.route('/form', methods=['POST']) as two separate functions",
+                "@app.route('/form', methods=['GET', 'POST'])",
+                "@app.route('/form') for GET and @app.submit('/form') for POST",
+                "@app.dual_route('/form', 'GET', 'POST')"
+            ],
+            "answer": 1,
+            "explanation": "Flask routes accept a `methods` list. By default only GET is allowed. Adding `methods=['GET', 'POST']` enables both on the same URL. Inside the function, `if request.method == 'POST':` branches the logic between displaying the form and processing submission."
+        },
+        {
+            "id": "d35q04",
+            "type": "multiple_choice",
+            "question": "What does `return redirect(url_for('dashboard'))` do after a form submission in Flask?",
+            "options": [
+                "Renders the dashboard template directly",
+                "Sends a redirect response to the URL of the 'dashboard' route function",
+                "Calls the dashboard() function and returns its result",
+                "Passes form data to the dashboard route as query parameters"
+            ],
+            "answer": 1,
+            "explanation": "`url_for('dashboard')` generates the URL for the route function named `dashboard`, and `redirect()` sends a 302 response that makes the browser navigate there. This Post/Redirect/Get pattern prevents duplicate form submissions when the user refreshes the page."
+        },
+        {
+            "id": "d35q05",
+            "type": "multiple_choice",
+            "question": "Where does Flask look for HTML template files by default?",
+            "options": [
+                "In the same directory as app.py",
+                "In a folder named `templates/`",
+                "In a folder named `views/`",
+                "In a folder named `static/html/`"
+            ],
+            "answer": 1,
+            "explanation": "Flask uses a `templates/` directory (relative to the application root) for Jinja2 templates. `render_template('dashboard.html')` looks for `templates/dashboard.html`. Static files (CSS, JS, images) go in `static/`. This convention keeps code and content cleanly separated."
+        }
+    ]
+}

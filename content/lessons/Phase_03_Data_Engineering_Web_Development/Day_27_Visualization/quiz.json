@@ -1,0 +1,70 @@
+{
+    "day": 27,
+    "questions": [
+        {
+            "id": "d27q01",
+            "type": "multiple_choice",
+            "question": "You want to show how monthly revenue has changed over the past two years. Which chart type is most appropriate?",
+            "options": [
+                "Bar chart",
+                "Scatter plot",
+                "Line chart",
+                "Pie chart"
+            ],
+            "answer": 2,
+            "explanation": "Line charts are ideal for showing trends over continuous time periods—the connected line makes patterns, growth, and seasonality easy to perceive. Bar charts work better for comparing discrete categories. Scatter plots show relationships between two numeric variables."
+        },
+        {
+            "id": "d27q02",
+            "type": "multiple_choice",
+            "question": "Which matplotlib call saves a chart to a file instead of displaying it interactively?",
+            "options": [
+                "plt.show('report.png')",
+                "plt.savefig('report.png')",
+                "plt.export('report.png')",
+                "plt.write('report.png')"
+            ],
+            "answer": 1,
+            "explanation": "`plt.savefig('filename')` saves the current figure to disk. Call it before `plt.show()`, or the figure will be cleared first. You can specify format via the file extension (.png, .pdf, .svg) and control resolution with the `dpi` parameter."
+        },
+        {
+            "id": "d27q03",
+            "type": "multiple_choice",
+            "question": "What is the purpose of `plt.subplot(2, 3, 4)` in matplotlib?",
+            "options": [
+                "Creates a single plot with 2 rows, 3 columns, and 4 data series",
+                "Selects the 4th panel in a 2-row × 3-column grid of subplots",
+                "Creates 4 subplots arranged in a 2×3 grid",
+                "Sets the figure size to 2×3 inches with 4 subplots"
+            ],
+            "answer": 1,
+            "explanation": "`plt.subplot(rows, cols, index)` selects a specific panel in a subplot grid. `(2, 3, 4)` means: a 2-row by 3-column grid, and activate the 4th panel (top-right position, numbered left-to-right, top-to-bottom). This is how you build multi-panel report dashboards."
+        },
+        {
+            "id": "d27q04",
+            "type": "multiple_choice",
+            "question": "You're comparing sales performance across 5 product categories. Which chart type makes comparison easiest?",
+            "options": [
+                "Line chart",
+                "Pie chart",
+                "Bar chart",
+                "Histogram"
+            ],
+            "answer": 2,
+            "explanation": "Bar charts are optimized for comparing discrete categories—human perception is very accurate at judging bar heights. Pie charts make it hard to compare similar-sized slices. Line charts imply continuity between categories. Histograms show distributions of a single numeric variable."
+        },
+        {
+            "id": "d27q05",
+            "type": "multiple_choice",
+            "question": "What does a histogram show that a bar chart does not?",
+            "options": [
+                "Comparison between multiple categories",
+                "The distribution (shape, spread, skew) of a single numeric variable",
+                "Trends over time",
+                "Relationships between two variables"
+            ],
+            "answer": 1,
+            "explanation": "A histogram bins continuous numeric data and shows frequency per bin, revealing the distribution's shape—whether it's normal, skewed, bimodal, etc. Bar charts compare distinct categories. Knowing the distribution of customer spend or product ratings drives very different business decisions."
+        }
+    ]
+}
