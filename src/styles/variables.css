@@ -313,6 +313,18 @@
   --reading-accent-glow: rgba(240, 128, 128, 0.08);
   --text-on-accent: #ffffff;
   --text-on-brand: #2d1510;
+  --reading-theme-bg-primary: #fff3ee;
+  --reading-theme-bg-surface: #fff8f5;
+  --reading-theme-bg-card: #fff8f5;
+  --reading-theme-bg-card-hover: #ffeee6;
+  --reading-theme-bg-code: #fde8df;
+  --reading-theme-accent-primary: #9e4c49;
+  --reading-theme-accent-secondary: #b05f55;
+  --reading-theme-accent-tertiary: #a54f3a;
+  --reading-theme-border-subtle: rgba(240, 128, 128, 0.12);
+  --reading-theme-border-card: rgba(240, 128, 128, 0.18);
+  --reading-theme-border-active: rgba(240, 128, 128, 0.42);
+  --reading-theme-accent-glow: rgba(240, 128, 128, 0.08);
 }
 
 /* --- 2. Gradient Blues (dark) --- */
@@ -358,6 +370,18 @@
   --reading-border-active: rgba(94, 96, 206, 0.26);
   --reading-accent-glow: rgba(94, 96, 206, 0.1);
   --text-on-accent: #0a1020;
+  --reading-theme-bg-primary: #090918;
+  --reading-theme-bg-surface: #0f0f24;
+  --reading-theme-bg-card: #12122a;
+  --reading-theme-bg-card-hover: #1a1a36;
+  --reading-theme-bg-code: #111128;
+  --reading-theme-accent-primary: #7b80eb;
+  --reading-theme-accent-secondary: #6930c3;
+  --reading-theme-accent-tertiary: #48bfe3;
+  --reading-theme-border-subtle: rgba(150, 160, 210, 0.1);
+  --reading-theme-border-card: rgba(150, 160, 210, 0.14);
+  --reading-theme-border-active: rgba(94, 96, 206, 0.26);
+  --reading-theme-accent-glow: rgba(94, 96, 206, 0.1);
 }
 
 /* --- 3. Neon Party (dark) --- */
@@ -403,6 +427,18 @@
   --reading-border-active: rgba(0, 204, 255, 0.35);
   --reading-accent-glow: rgba(0, 204, 255, 0.1);
   --text-on-accent: #04111a;
+  --reading-theme-bg-primary: #030308;
+  --reading-theme-bg-surface: #080818;
+  --reading-theme-bg-card: #0c0c1e;
+  --reading-theme-bg-card-hover: #121228;
+  --reading-theme-bg-code: #0a0a1c;
+  --reading-theme-accent-primary: #00ccff;
+  --reading-theme-accent-secondary: #cc00ff;
+  --reading-theme-accent-tertiary: #00ffcc;
+  --reading-theme-border-subtle: rgba(0, 204, 255, 0.1);
+  --reading-theme-border-card: rgba(0, 204, 255, 0.15);
+  --reading-theme-border-active: rgba(0, 204, 255, 0.35);
+  --reading-theme-accent-glow: rgba(0, 204, 255, 0.1);
 }
 
 /* --- 4. Deep Ocean Blue (dark) --- */
@@ -444,6 +480,18 @@
   --reading-border-active: rgba(0, 100, 102, 0.3);
   --reading-accent-glow: rgba(0, 100, 102, 0.1);
   --text-on-accent: #031217;
+  --reading-theme-bg-primary: #04090f;
+  --reading-theme-bg-surface: #0c1825;
+  --reading-theme-bg-card: #0f1e2e;
+  --reading-theme-bg-card-hover: #162638;
+  --reading-theme-bg-code: #0a1520;
+  --reading-theme-accent-primary: #42b7b3;
+  --reading-theme-accent-secondary: #3d949b;
+  --reading-theme-accent-tertiary: #48bfe3;
+  --reading-theme-border-subtle: rgba(100, 180, 185, 0.1);
+  --reading-theme-border-card: rgba(100, 180, 185, 0.14);
+  --reading-theme-border-active: rgba(0, 100, 102, 0.3);
+  --reading-theme-accent-glow: rgba(0, 100, 102, 0.1);
 }
 
 /* --- 5. Pastel Dreamland (light) --- */
@@ -490,6 +538,18 @@
   --reading-accent-glow: rgba(155, 114, 207, 0.08);
   --text-on-accent: #ffffff;
   --text-on-brand: #280e3e;
+  --reading-theme-bg-primary: #f5f0fa;
+  --reading-theme-bg-surface: #faf7fd;
+  --reading-theme-bg-card: #faf7fd;
+  --reading-theme-bg-card-hover: #ede5f7;
+  --reading-theme-bg-code: #f0eaf8;
+  --reading-theme-accent-primary: #6c4aa3;
+  --reading-theme-accent-secondary: #8b4d6a;
+  --reading-theme-accent-tertiary: #4b6f9f;
+  --reading-theme-border-subtle: rgba(155, 114, 207, 0.14);
+  --reading-theme-border-card: rgba(155, 114, 207, 0.2);
+  --reading-theme-border-active: rgba(155, 114, 207, 0.44);
+  --reading-theme-accent-glow: rgba(155, 114, 207, 0.08);
 }
 
 /* --- 6. Golden Summer Fields (light) --- */
@@ -536,6 +596,18 @@
   --reading-accent-glow: rgba(212, 163, 115, 0.08);
   --text-on-accent: #ffffff;
   --text-on-brand: #261e08;
+  --reading-theme-bg-primary: #fdf7d8;
+  --reading-theme-bg-surface: #fefae0;
+  --reading-theme-bg-card: #fefae0;
+  --reading-theme-bg-card-hover: #faedcd;
+  --reading-theme-bg-code: #f5eccc;
+  --reading-theme-accent-primary: #7f5b22;
+  --reading-theme-accent-secondary: #654a1c;
+  --reading-theme-accent-tertiary: #5d6f36;
+  --reading-theme-border-subtle: rgba(180, 140, 80, 0.14);
+  --reading-theme-border-card: rgba(180, 140, 80, 0.2);
+  --reading-theme-border-active: rgba(184, 133, 58, 0.44);
+  --reading-theme-accent-glow: rgba(212, 163, 115, 0.08);
 }
 
 /* --- 7. Light Steel (light) --- */
@@ -582,6 +654,18 @@
   --reading-accent-glow: rgba(73, 80, 87, 0.06);
   --text-on-accent: #ffffff;
   --text-on-brand: #0d1117;
+  --reading-theme-bg-primary: #f0f1f3;
+  --reading-theme-bg-surface: #f8f9fa;
+  --reading-theme-bg-card: #f8f9fa;
+  --reading-theme-bg-card-hover: #dee2e6;
+  --reading-theme-bg-code: #e9ecef;
+  --reading-theme-accent-primary: #495057;
+  --reading-theme-accent-secondary: #343a40;
+  --reading-theme-accent-tertiary: #5f6670;
+  --reading-theme-border-subtle: rgba(73, 80, 87, 0.1);
+  --reading-theme-border-card: rgba(73, 80, 87, 0.15);
+  --reading-theme-border-active: rgba(73, 80, 87, 0.36);
+  --reading-theme-accent-glow: rgba(73, 80, 87, 0.06);
 }
 
 @media (prefers-reduced-motion: reduce) {

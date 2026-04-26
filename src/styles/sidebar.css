@@ -88,6 +88,8 @@
   color: var(--text-secondary);
   cursor: pointer;
   padding: 0.4rem;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
   flex-shrink: 0;
@@ -115,7 +117,7 @@
 .tree-section-label {
   padding: 0.625rem 1.125rem 0.4rem;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
