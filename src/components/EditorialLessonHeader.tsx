@@ -22,6 +22,13 @@ interface EditorialLessonHeaderProps {
   content: string
 }
 
+/**
+ * Editorial header component for lesson content displaying metadata like day, title,
+ * phase information, difficulty level, and estimated duration.
+ *
+ * @param {EditorialLessonHeaderProps} props - The component props.
+ * @returns {JSX.Element} The rendered editorial lesson header.
+ */
 export default function EditorialLessonHeader({
   day,
   title,
