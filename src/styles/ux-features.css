@@ -116,7 +116,8 @@
 }
 
 .scroll-progress.lesson-progress .scroll-progress-bar {
-  background: var(--gradient-hero);
+  background-color: var(--accent-primary);
+  background-image: var(--gradient-hero);
 }
 
 /* ---------- Mobile Bottom Nav ---------- */
@@ -139,13 +140,15 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 6px 0;
-  font-size: 0.65rem;
+  padding: 8px 0;
+  font-size: 0.75rem;
   color: var(--text-muted);
   text-decoration: none;
   transition-duration: var(--motion-duration-active-fast);
   transition-timing-function: var(--motion-easing-standard);
   flex: 1;
+  min-height: 44px;
+  justify-content: center;
 }
 
 .mobile-nav-item svg {
@@ -211,10 +214,7 @@
 
 .content-stats-page h1 {
   font-size: 2rem;
-  background: var(--gradient-hero);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent-primary);
   margin-bottom: 0.25rem;
 }
 

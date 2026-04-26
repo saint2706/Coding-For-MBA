@@ -187,7 +187,7 @@
 
 .dashboard-tile-label {
   font-family: var(--font-mono);
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
@@ -334,7 +334,7 @@
   transition:
     color var(--transition-fast),
     background var(--transition-fast);
-  min-height: 36px;
+  min-height: 44px;
 }
 
 .map-list-toggle-btn:hover {
@@ -459,7 +459,7 @@
 }
 
 .phase-card-meta dt {
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;

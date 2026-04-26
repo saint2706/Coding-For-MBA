@@ -231,7 +231,7 @@
   padding: 0 0.45rem;
   background: var(--surface-paper);
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: var(--tracking-wide);
   color: var(--accent-primary);
@@ -362,7 +362,7 @@
   text-align: left;
   font-family: var(--font-mono);
   font-weight: 600;
-  font-size: 0.625rem;
+  font-size: 0.6875rem;
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--text-secondary);

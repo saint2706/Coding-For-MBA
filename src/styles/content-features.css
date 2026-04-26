@@ -16,15 +16,15 @@
   flex-wrap: wrap;
   margin-top: 0.75rem;
   padding: 0.625rem 0.875rem;
-  background: rgba(245, 158, 11, 0.06);
-  border: 1px solid rgba(245, 158, 11, 0.15);
+  background: color-mix(in srgb, var(--amber-500) 6%, transparent);
+  border: 1px solid color-mix(in srgb, var(--amber-500) 15%, transparent);
   border-radius: var(--radius-md);
 }
 
 .prerequisite-label {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: #f59e0b;
+  color: var(--amber-500);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
@@ -35,21 +35,21 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.1875rem 0.625rem;
-  background: rgba(245, 158, 11, 0.1);
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  background: color-mix(in srgb, var(--amber-500) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--amber-500) 20%, transparent);
   border-radius: 100px;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: #fbbf24;
+  color: var(--amber-500);
   text-decoration: none;
   transition: all var(--transition-fast);
   white-space: nowrap;
 }
 
 .prerequisite-pill:hover {
-  background: rgba(245, 158, 11, 0.18);
-  border-color: rgba(245, 158, 11, 0.4);
-  color: #fcd34d;
+  background: color-mix(in srgb, var(--amber-500) 18%, transparent);
+  border-color: color-mix(in srgb, var(--amber-500) 40%, transparent);
+  color: var(--accent-tertiary);
   transform: translateY(-1px);
 }
 
@@ -97,7 +97,7 @@
   border-color: var(--border-active);
   background: var(--bg-card-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-elevated);
 }
 
 .related-lesson-day {
@@ -138,8 +138,8 @@
 .related-tag {
   font-size: 0.8125rem;
   padding: 0.125rem 0.5rem;
-  background: rgba(67, 97, 238, 0.08);
-  border: 1px solid rgba(67, 97, 238, 0.12);
+  background: color-mix(in srgb, var(--accent-primary) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-primary) 12%, transparent);
   border-radius: 100px;
   color: var(--accent-tertiary);
 }
