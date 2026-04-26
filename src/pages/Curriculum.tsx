@@ -70,7 +70,7 @@ export default function Curriculum() {
   }, [phases, completedSet])
 
   const { totalDays: totalLessons } = getCurriculumMetadata()
-  const completedCount = completedLessons.length
+  const completedCount = useProgressStore((state) => state.completedLessonsCount())
   const overallPct = useMemo(
     () => (totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0),
     [totalLessons, completedCount],

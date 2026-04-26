@@ -57,16 +57,19 @@ vi.mock('../../stores/progressStore', () => {
     selector: (state: {
       lastVisitedLesson: string | null
       completedLessons: number[]
+      completedLessonsCount: () => number
       streakDays: () => number
     }) => unknown,
   ) =>
     selector({
       lastVisitedLesson: mockGetLastVisited(),
       completedLessons: Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
+      completedLessonsCount: () => mockGetCompletedCount(),
       streakDays: () => 0,
     })
   storeFn.getState = () => ({
     completedLessons: Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
+    completedLessonsCount: () => mockGetCompletedCount(),
     lastVisitedLesson: mockGetLastVisited(),
   })
   return { useProgressStore: storeFn }

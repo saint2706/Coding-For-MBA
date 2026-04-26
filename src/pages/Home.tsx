@@ -75,7 +75,7 @@ export default function Home() {
   const challengeLesson = getLesson(dailyChallenge.day)
 
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
-  const completedCount = completedLessons.length
+  const completedCount = useProgressStore((state) => state.completedLessonsCount())
   const totalLessons = stats.totalDays
   const completedPct = Math.round((completedCount / Math.max(1, totalLessons)) * 100)
 

@@ -32,3 +32,4 @@
 - Used `requestIdleCallback` with a fallback to `setTimeout` to defer heavy operations like `preloadSearchIndex` during initial render, lowering main thread blocking and improving interaction times.
 - Ran project test suite and LHCI checks, validating improvements while addressing specific Chrome interstitial issues that occur in sandbox environments.
 - ⚡ **SearchPalette Component Memoization:** Wrapped search result map operations within a `useMemo` block inside `SearchPalette.tsx` to prevent expensive re-renders and React node generation on every keystroke until the debounced query is processed. Extracted `getSnippet` into a `useCallback` to prevent breaking the memoization dependencies.
+>> 2026-04-25 19:46:35 UTC - ⚡ Bolt | Optimized Curriculum.tsx, Home.tsx, and ProgressDashboard.tsx by replacing O(N) .length accesses on the completedLessons array with an O(1) completedLessonsCount selector.
