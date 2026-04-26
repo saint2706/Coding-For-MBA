@@ -202,3 +202,12 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 **Changes:**
 - [x] **[PERF] LCP Optimization**: Replaced `fetchPriority='auto'` with `fetchPriority={undefined}` in `MarkdownRenderer.tsx` to prevent React hydration errors or DOM mismatches for non-high priority images, strictly honoring the LCP priority parameter.
 - [x] **[SEO] Semantic HTML Fixes**: Repaired heading mapping in `Home.tsx` to correctly wrap `phase.title` using `<h3>` instead of `<h2>` within the Phase card components, preserving the semantic page outline underneath the main 'The Learning Path' `<h2>`.
+
+### [Date: Current] - Sidebar Semantic HTML Refactoring
+
+**Priority Areas:**
+1.  **SEO (Visibility)**: Semantic HTML hierarchy.
+2.  **GEO (Intelligence)**: Proper markdown structure extraction.
+
+**Changes:**
+-   [x] **[SEO] Semantic HTML Fixes**: Converted `tree-section-label` from `<div>` to `<h2>` in `src/components/Sidebar.tsx` to improve semantic document outline.
