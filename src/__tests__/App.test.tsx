@@ -102,6 +102,10 @@ describe('App', () => {
     vi.clearAllMocks()
     document.body.className = ''
     mockSidebarDefaultOpen = true
+    vi.stubGlobal(
+      'requestIdleCallback',
+      vi.fn((cb) => cb()),
+    )
   })
 
   it('renders standard layout elements', async () => {
@@ -185,6 +189,45 @@ describe('App', () => {
     })
 
     expect(document.body).not.toHaveClass('sidebar-open')
+  })
+
+  it('calls requestIdleCallback for preloadSearchIndex if available', async () => {
+    const { preloadSearchIndex } = await import('../utils/searchIndex')
+
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    expect(window.requestIdleCallback).toHaveBeenCalled()
+    expect(preloadSearchIndex).toHaveBeenCalled()
+
+    vi.unstubAllGlobals()
+  })
+
+  it('calls setTimeout for preloadSearchIndex if requestIdleCallback is not available', async () => {
+    const originalRIC = window.requestIdleCallback
+    // @ts-ignore
+    delete window.requestIdleCallback
+    vi.useFakeTimers()
+    const { preloadSearchIndex } = await import('../utils/searchIndex')
+
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    vi.advanceTimersByTime(500)
+    expect(preloadSearchIndex).toHaveBeenCalled()
+
+    vi.useRealTimers()
+    window.requestIdleCallback = originalRIC
   })
 
   it('renders all routes correctly via Suspense', async () => {
