@@ -123,7 +123,11 @@ describe('PythonRunner', () => {
 
   it('prevents multiple simultaneous executions', async () => {
     let resolveRun: (value: any) => void
-    mockRunPython.mockReturnValue(new Promise(resolve => { resolveRun = resolve }))
+    mockRunPython.mockReturnValue(
+      new Promise((resolve) => {
+        resolveRun = resolve
+      }),
+    )
 
     const { getByRole } = render(<PythonRunner code="print('hello')" />)
     const runBtn = getByRole('button', { name: /Run Python code/i })
@@ -218,7 +222,11 @@ describe('PythonRunner', () => {
 
   it('ignores stale execution results when cancelled', async () => {
     let resolveRun: (value: any) => void
-    mockRunPython.mockReturnValue(new Promise(resolve => { resolveRun = resolve }))
+    mockRunPython.mockReturnValue(
+      new Promise((resolve) => {
+        resolveRun = resolve
+      }),
+    )
 
     const { getByRole, findByRole, queryByText } = render(<PythonRunner code="print('hello')" />)
     const runBtn = getByRole('button', { name: /Run Python code/i })
