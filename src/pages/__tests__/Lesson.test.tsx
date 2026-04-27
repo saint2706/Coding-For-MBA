@@ -99,7 +99,6 @@ describe('Lesson completion toasts', () => {
     mockGetCompletedLessons.mockReturnValue([])
   })
 
-
   it('toggles reading mode via the preferences store and click', async () => {
     // Arrange
     const { useUserPreferencesStore } = await import('../../stores/userPreferencesStore')

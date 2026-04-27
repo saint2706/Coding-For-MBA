@@ -332,7 +332,11 @@ describe('SidebarPhaseGroup', () => {
       act(() => {
         root?.render(
           <MemoryRouter>
-            <SidebarPhaseGroup {...defaultProps} currentPath="/something-unrelated" isActive={true} />
+            <SidebarPhaseGroup
+              {...defaultProps}
+              currentPath="/something-unrelated"
+              isActive={true}
+            />
           </MemoryRouter>,
         )
       })
@@ -345,7 +349,6 @@ describe('SidebarPhaseGroup', () => {
           </MemoryRouter>,
         )
       })
-
     })
   })
 })
