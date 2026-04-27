@@ -9,3 +9,9 @@
 
 - **JSON Parsing & Validation:** When parsing JSON data from untrusted sources (like `localStorage`), it is crucial to explicitly validate the resulting object's shape before attempting to access its properties. `JSON.parse()` can return primitives, arrays, or objects. Relying on implicit assumptions (e.g., `const parsed = JSON.parse(val)` and accessing `parsed.property`) can lead to type errors, application crashes, or even prototype pollution vectors if not carefully handled. Explicit checks like `typeof parsed === 'object' && !Array.isArray(parsed) && parsed !== null` provide critical defensive depth.
 - Fixed JSON-LD XSS vulnerability by properly escaping `<` as a single backslash unicode escape sequence instead of double backslash string.
+## Fixed Critical JSON-LD XSS Vulnerability
+
+- **Severity**: CRITICAL
+- **Vulnerability**: XSS via JSON-LD injection in `dangerouslySetInnerHTML`
+- **Fix**: Replaced single backslash `replace(/</g, <)` with double backslash `replace(/</g, \u003c)` in `src/components/SEOHead.tsx` and `src/components/MasteryCheck.tsx`.
+- **Learning**: In JavaScript string literals, a single backslash followed by `u003c` is evaluated immediately as the literal `<` character by the JS parser, breaking JSON-LD safety and introducing an XSS vector when parsing `dangerouslySetInnerHTML`. Double backslashes (`\\u003c`) properly emit the string `\u003c` ensuring `<` is escaped safely.
