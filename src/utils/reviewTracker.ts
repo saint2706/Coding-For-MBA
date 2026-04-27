@@ -173,7 +173,22 @@ export function getReviewCards(now = new Date()): ReviewCard[] {
  * @returns Array of due review cards
  */
 export function getDueReviewCards(now = new Date()): ReviewCard[] {
-  return getReviewCards(now).filter((card) => isCardDue(card.state.dueAt, now))
+  const stored = loadReviewState()
+  const seeds = getAllReviewCardSeeds()
+  const dueCards: ReviewCard[] = []
+
+  for (let i = 0; i < seeds.length; i++) {
+    const seed = seeds[i]!
+    let state = stored.get(seed.id)
+    if (!state) {
+      state = createInitialSchedulingState(now)
+    }
+    if (isCardDue(state.dueAt, now)) {
+      dueCards.push({ ...seed, state })
+    }
+  }
+
+  return dueCards
 }
 
 /**
@@ -205,9 +220,21 @@ export function rateReviewCard(
  */
 export function getReviewDueCountByPhase(now = new Date()): Record<number, number> {
   const counts: Record<number, number> = {}
-  getDueReviewCards(now).forEach((card) => {
-    counts[card.phase] = (counts[card.phase] || 0) + 1
-  })
+  const stored = loadReviewState()
+  const seeds = getAllReviewCardSeeds()
+
+  for (let i = 0; i < seeds.length; i++) {
+    const seed = seeds[i]!
+    let state = stored.get(seed.id)
+    if (!state) {
+      state = createInitialSchedulingState(now)
+    }
+
+    if (isCardDue(state.dueAt, now)) {
+      counts[seed.phase] = (counts[seed.phase] || 0) + 1
+    }
+  }
+
   return counts
 }
 
@@ -227,12 +254,14 @@ export function getReviewStreak(now = new Date()): number {
     return `${year}-${month}-${day}`
   }
 
-  const reviewedDates = new Set(
-    getReviewCards(now)
-      .map((card) => card.state.lastReviewedAt)
-      .filter((value): value is string => Boolean(value))
-      .map((value) => toLocalDateString(new Date(value))),
-  )
+  const stored = loadReviewState()
+  const reviewedDates = new Set<string>()
+
+  for (const state of stored.values()) {
+    if (state.lastReviewedAt) {
+      reviewedDates.add(toLocalDateString(new Date(state.lastReviewedAt)))
+    }
+  }
 
   let streak = 0
   const cursor = new Date(now)
