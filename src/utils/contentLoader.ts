@@ -663,9 +663,24 @@ export function getContentStats() {
     const lessons = getAllLessons()
     const phases = getAllPhases()
 
+    const getWordCountRe1 = /```[\s\S]*?```/g
+    const getWordCountRe2 = /[#*_>`()!-]/g
     const getWordCount = (markdown: string) => {
-      const plainText = markdown.replace(/```[\s\S]*?```/g, '').replace(/[#*_>`()!-]/g, '')
-      return plainText.split(/\s+/).filter(Boolean).length
+      const plainText = markdown.replace(getWordCountRe1, '').replace(getWordCountRe2, '')
+      let words = 0
+      let inWord = false
+      for (let i = 0; i < plainText.length; i++) {
+        const charCode = plainText.charCodeAt(i)
+        if (charCode === 32 || charCode === 9 || charCode === 10 || charCode === 13) {
+          inWord = false
+        } else {
+          if (!inWord) {
+            words++
+            inWord = true
+          }
+        }
+      }
+      return words
     }
 
     const lessonMetrics = lessons.map((l) => ({
@@ -765,18 +780,50 @@ export function getNotebook(phaseNum: string | number): ImmutableNotebook | unde
  * @param {string} content - The markdown content to calculate reading time for.
  * @returns {number} The estimated reading time in minutes.
  */
+const readingTimeRe1 = /```[\s\S]*?```/g
+const readingTimeRe2 = /`[^`]+`/g
+const readingTimeRe3 = /!\[.*?\]\(.*?\)/g
+const readingTimeRe4 = /\[([^\]]+)\]\(.*?\)/g
+const readingTimeRe5 = /#{1,6}\s/g
+const readingTimeRe6 = /[*_~>|`-]/g
+const readingTimeRe7 = /<[^>]+>/g
+
+const readingTimeCache = new Map<string, number>()
+
 export function getReadingTime(content: string): number {
+  if (readingTimeCache.has(content)) {
+    return readingTimeCache.get(content)!
+  }
+
   const stripped = content
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/`[^`]+`/g, '')
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    .replace(/\[([^\]]+)\]\(.*?\)/g, '$1')
-    .replace(/#{1,6}\s/g, '')
-    .replace(/[*_~>|`-]/g, '')
-    .replace(/<[^>]+>/g, '')
+    .replace(readingTimeRe1, '')
+    .replace(readingTimeRe2, '')
+    .replace(readingTimeRe3, '')
+    .replace(readingTimeRe4, '$1')
+    .replace(readingTimeRe5, '')
+    .replace(readingTimeRe6, '')
+    .replace(readingTimeRe7, '')
     .trim()
-  const words = stripped.split(/\s+/).filter((w) => w.length > 0).length
-  return Math.max(1, Math.round(words / 200))
+
+  let words = 0
+  let inWord = false
+  for (let i = 0; i < stripped.length; i++) {
+    const charCode = stripped.charCodeAt(i)
+    if (charCode === 32 || charCode === 9 || charCode === 10 || charCode === 13) {
+      inWord = false
+    } else {
+      if (!inWord) {
+        words++
+        inWord = true
+      }
+    }
+  }
+
+  const result = Math.max(1, Math.round(words / 200))
+  if (readingTimeCache.size > 1000) readingTimeCache.clear()
+  readingTimeCache.set(content, result)
+
+  return result
 }
 
 /**
