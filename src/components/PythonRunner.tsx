@@ -54,6 +54,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
     const cancelRun = useCallback(() => {
       abortControllerRef.current?.abort()
       abortControllerRef.current = null
+      runIdRef.current += 1
       setRunning(false)
     }, [])
 

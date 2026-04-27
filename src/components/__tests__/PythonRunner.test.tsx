@@ -121,6 +121,54 @@ describe('PythonRunner', () => {
     })
   })
 
+  it('prevents multiple simultaneous executions', async () => {
+    let resolveRun: (value: any) => void
+    mockRunPython.mockReturnValue(
+      new Promise((resolve) => {
+        resolveRun = resolve
+      }),
+    )
+
+    const { getByRole } = render(<PythonRunner code="print('hello')" />)
+    const runBtn = getByRole('button', { name: /Run Python code/i })
+
+    fireEvent.click(runBtn)
+    fireEvent.click(runBtn)
+
+    expect(mockRunPython).toHaveBeenCalledTimes(1)
+    await act(async () => {
+      resolveRun!({ output: 'done', error: null })
+    })
+  })
+
+  it('prevents execution while pyodide is loading', () => {
+    vi.mocked(usePyodideHook.usePyodide).mockReturnValue({
+      loading: true,
+      error: null,
+      runPython: mockRunPython,
+      ensureLoaded: vi.fn(),
+      isReady: false,
+      loadPyodide: vi.fn(),
+    } as unknown as ReturnType<typeof usePyodideHook.usePyodide>)
+
+    const { getByRole } = render(<PythonRunner code="print('hello')" />)
+    const runBtn = getByRole('button', { name: /Loading Python environment.../i })
+
+    fireEvent.click(runBtn)
+    expect(mockRunPython).not.toHaveBeenCalled()
+  })
+
+  it('handles code security rejection with default message', async () => {
+    vi.mocked(codeSecurity.validatePythonCode).mockReturnValue({ valid: false })
+    const { getByRole, findByText } = render(<PythonRunner code="import os" />)
+    const runBtn = getByRole('button', { name: /Run Python code/i })
+
+    fireEvent.click(runBtn)
+
+    const errorMsg = await findByText('Code rejected by security policy.')
+    expect(errorMsg).toBeDefined()
+  })
+
   it('allows imperative execution via ref', async () => {
     mockRunPython.mockResolvedValue({ output: 'ref output', error: null })
     const ref = React.createRef<PythonRunnerHandle>()
@@ -170,5 +218,28 @@ describe('PythonRunner', () => {
   it('renders compact class when compact prop is true', () => {
     const { container } = render(<PythonRunner code="x = 1" compact={true} />)
     expect((container.firstChild as HTMLElement).className).toContain('python-runner--compact')
+  })
+
+  it('ignores stale execution results when cancelled', async () => {
+    let resolveRun: (value: any) => void
+    mockRunPython.mockReturnValue(
+      new Promise((resolve) => {
+        resolveRun = resolve
+      }),
+    )
+
+    const { getByRole, findByRole, queryByText } = render(<PythonRunner code="print('hello')" />)
+    const runBtn = getByRole('button', { name: /Run Python code/i })
+
+    fireEvent.click(runBtn)
+
+    const cancelBtn = await findByRole('button', { name: /Cancel current Python execution/i })
+    fireEvent.click(cancelBtn)
+
+    await act(async () => {
+      resolveRun!({ output: 'stale output', error: null })
+    })
+
+    expect(queryByText('stale output')).toBeNull()
   })
 })
