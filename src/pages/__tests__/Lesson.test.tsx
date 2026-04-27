@@ -99,6 +99,41 @@ describe('Lesson completion toasts', () => {
     mockGetCompletedLessons.mockReturnValue([])
   })
 
+
+  it('toggles reading mode via the preferences store and click', async () => {
+    // Arrange
+    const { useUserPreferencesStore } = await import('../../stores/userPreferencesStore')
+    useUserPreferencesStore.setState({ readingMode: true })
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    await act(async () => {
+      root.render(<Lesson />)
+    })
+
+    const button = container.querySelector('.reading-mode-exit') as HTMLButtonElement
+
+    // Assert button is rendered and present
+    expect(button).toBeTruthy()
+
+    // Act
+    await act(async () => {
+      button.click()
+    })
+
+    // Assert the state is updated (it should become false when exiting)
+    const { readingMode } = useUserPreferencesStore.getState()
+    expect(readingMode).toBe(false)
+
+    // Teardown
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
   it('shows completion/incomplete toasts and debounces rapid duplicate clicks', async () => {
     let currentTime = 1000
     const nowSpy = vi.spyOn(Date, 'now').mockImplementation(() => currentTime)

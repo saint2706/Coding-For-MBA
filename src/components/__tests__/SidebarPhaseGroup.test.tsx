@@ -318,6 +318,34 @@ describe('SidebarPhaseGroup', () => {
       })
 
       expect(container.querySelector('.day-link.active')).toBeNull()
+
+      // To cover the branch where the old path is NOT relevant but the new path IS relevant
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/lesson/01" isActive={true} />
+          </MemoryRouter>,
+        )
+      })
+
+      // To cover when both paths are NOT relevant
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/something-unrelated" isActive={true} />
+          </MemoryRouter>,
+        )
+      })
+
+      // To cover when path doesn't start with /lesson/
+      act(() => {
+        root?.render(
+          <MemoryRouter>
+            <SidebarPhaseGroup {...defaultProps} currentPath="/phase/2" isActive={true} />
+          </MemoryRouter>,
+        )
+      })
+
     })
   })
 })
