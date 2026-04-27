@@ -61,3 +61,4 @@ Learned that missing aria labels for decorative emojis in React can be fixed by 
 **Changes Made:**
 - Added specific `aria-label` attributes to buttons in `ErrorBoundary`, `MasteryCheck`, `CaseStudies`, `ProgressDashboard`, `Review`, and `Lesson` components to provide better context for screen readers, especially where button text changes dynamically or relies on visual cues.
 **Learning:** When adding ARIA labels, ensure they dynamically reflect the current state of the button if its function or text changes (e.g., 'Hide Answer' vs 'Show Answer'). Avoid redundantly placing ARIA labels if the button already has perfectly descriptive static text, though doing so does not actively harm accessibility.
+Added focus-visible outlines to sidebar close, navbar hamburger, and navbar search clear buttons for better keyboard accessibility.
