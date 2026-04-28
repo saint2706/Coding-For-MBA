@@ -1,0 +1,1 @@
+- Reverted non-existent futuristic GitHub Action versions (e.g. actions/cache@v5, actions/upload-pages-artifact@v5) to their latest valid stable major versions (v4, v3) in CI workflows to fix pipeline initialization failures.
