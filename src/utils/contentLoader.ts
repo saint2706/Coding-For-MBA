@@ -664,18 +664,36 @@ export function getContentStats() {
     const phases = getAllPhases()
 
     const getWordCount = (markdown: string) => {
-      const plainText = markdown.replace(/```[\s\S]*?```/g, '').replace(/[#*_>`()!-]/g, '')
-      return plainText.split(/\s+/).filter(Boolean).length
+      const plainText = markdown.replace(CODE_BLOCK_REGEX, '').replace(SIMPLE_FORMATTING_REGEX, '')
+      return countWordsFast(plainText)
     }
 
-    const lessonMetrics = lessons.map((l) => ({
-      phase: l.phase,
-      difficulty: (l.difficulty as string) || 'unknown',
-      tags: ((l.tags as string[]) || []).map((t) => t.trim()).filter(Boolean),
-      concepts: ((l.concepts as string[]) || []).map((c) => c.trim()).filter(Boolean),
-      wordCount: getWordCount(l.content),
-      readingTime: getReadingTime(l.content),
-    }))
+    const lessonMetrics = lessons.map((l) => {
+      const tags: string[] = []
+      if (l.tags) {
+        for (const t of l.tags as string[]) {
+          const trimmed = t.trim()
+          if (trimmed) tags.push(trimmed)
+        }
+      }
+
+      const concepts: string[] = []
+      if (l.concepts) {
+        for (const c of l.concepts as string[]) {
+          const trimmed = c.trim()
+          if (trimmed) concepts.push(trimmed)
+        }
+      }
+
+      return {
+        phase: l.phase,
+        difficulty: (l.difficulty as string) || 'unknown',
+        tags,
+        concepts,
+        wordCount: getWordCount(l.content),
+        readingTime: getReadingTime(l.content),
+      }
+    })
 
     // Total word count
     const totalWords = lessonMetrics.reduce((sum, l) => sum + l.wordCount, 0)
@@ -765,17 +783,45 @@ export function getNotebook(phaseNum: string | number): ImmutableNotebook | unde
  * @param {string} content - The markdown content to calculate reading time for.
  * @returns {number} The estimated reading time in minutes.
  */
+
+const CODE_BLOCK_REGEX = /```[\s\S]*?```/g;
+const INLINE_CODE_REGEX = /`[^`]+`/g;
+const IMAGE_REGEX = /!\[.*?\]\(.*?\)/g;
+const LINK_REGEX = /\[([^\]]+)\]\(.*?\)/g;
+const HEADING_REGEX = /#{1,6}\s/g;
+const FORMATTING_REGEX = /[*_~>|`-]/g;
+const HTML_TAG_REGEX = /<[^>]+>/g;
+const SIMPLE_FORMATTING_REGEX = /[#*_>`()!-]/g;
+
+function countWordsFast(text: string): number {
+  let count = 0;
+  let inWord = false;
+  for (let i = 0; i < text.length; i++) {
+    const code = text.charCodeAt(i);
+    // space (32), tab (9), newline (10), carriage return (13), vt (11), ff (12)
+    if (code === 32 || code === 9 || code === 10 || code === 13 || code === 11 || code === 12) {
+      if (inWord) inWord = false;
+    } else {
+      if (!inWord) {
+        inWord = true;
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
 export function getReadingTime(content: string): number {
   const stripped = content
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/`[^`]+`/g, '')
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    .replace(/\[([^\]]+)\]\(.*?\)/g, '$1')
-    .replace(/#{1,6}\s/g, '')
-    .replace(/[*_~>|`-]/g, '')
-    .replace(/<[^>]+>/g, '')
-    .trim()
-  const words = stripped.split(/\s+/).filter((w) => w.length > 0).length
+    .replace(CODE_BLOCK_REGEX, '')
+    .replace(INLINE_CODE_REGEX, '')
+    .replace(IMAGE_REGEX, '')
+    .replace(LINK_REGEX, '$1')
+    .replace(HEADING_REGEX, '')
+    .replace(FORMATTING_REGEX, '')
+    .replace(HTML_TAG_REGEX, '')
+
+  const words = countWordsFast(stripped)
   return Math.max(1, Math.round(words / 200))
 }
 

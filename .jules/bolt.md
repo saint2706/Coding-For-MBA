@@ -34,3 +34,5 @@
 - ⚡ **SearchPalette Component Memoization:** Wrapped search result map operations within a `useMemo` block inside `SearchPalette.tsx` to prevent expensive re-renders and React node generation on every keystroke until the debounced query is processed. Extracted `getSnippet` into a `useCallback` to prevent breaking the memoization dependencies.
 >> 2026-04-25 19:46:35 UTC - ⚡ Bolt | Optimized Curriculum.tsx, Home.tsx, and ProgressDashboard.tsx by replacing O(N) .length accesses on the completedLessons array with an O(1) completedLessonsCount selector.
 >> 2024-04-26 19:46:35 UTC - ⚡ Bolt | Optimized getDueReviewCards, getReviewStreak, and getReviewDueCountByPhase to prevent O(N) array allocation per card, replacing them with O(R) evaluation logic.
+
+- Optimized content metric calculation (`getReadingTime` / `getWordCount`) in `src/utils/contentLoader.ts` by extracting common regular expressions iteratively and using a fast loop iterator without allocating intermediate Arrays through `.split().filter()`. Refactored tag and concept Array `map().filter()` parsing to direct `for` loops. This prevents main-thread blocking operations caused by high garbage collection.
