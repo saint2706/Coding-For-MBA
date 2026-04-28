@@ -264,6 +264,22 @@ describe('ConceptGraph', () => {
     expect(container.querySelector('.graph-tooltip')).toBeNull()
   })
 
+  it('covers mouse leave on a non-node', () => {
+    act(() => {
+      root!.render(
+        <MemoryRouter>
+          <ConceptGraph />
+        </MemoryRouter>,
+      )
+    })
+    const svg = container.querySelector('svg')
+    act(() => {
+      const mouseEvent = new MouseEvent('mousemove', { bubbles: true, clientX: 300, clientY: 300 })
+      svg!.dispatchEvent(mouseEvent)
+    })
+    expect(container.querySelector('.graph-tooltip')).toBeNull()
+  })
+
   it('hides tooltip if mouse moves off a node', () => {
     const mockRect = {
       left: 100,

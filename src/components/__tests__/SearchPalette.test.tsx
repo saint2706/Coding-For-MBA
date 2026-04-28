@@ -162,6 +162,13 @@ describe('SearchPalette', () => {
     })
 
     expect(onClose).toHaveBeenCalledTimes(2)
+
+    // Default branch keydown
+    act(() => {
+      fireEvent.keyDown(input, { key: 'a' })
+    })
+
+    expect(onClose).toHaveBeenCalledTimes(2) // No extra calls
   })
 
   it('displays indexing message when not ready', () => {
