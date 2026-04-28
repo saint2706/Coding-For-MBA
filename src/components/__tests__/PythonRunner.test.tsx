@@ -122,7 +122,7 @@ describe('PythonRunner', () => {
   })
 
   it('prevents multiple simultaneous executions', async () => {
-    let resolveRun: (value: any) => void
+    let resolveRun: (value: { output: string | null; error: string | null }) => void
     mockRunPython.mockReturnValue(
       new Promise((resolve) => {
         resolveRun = resolve
@@ -221,7 +221,7 @@ describe('PythonRunner', () => {
   })
 
   it('ignores stale execution results when cancelled', async () => {
-    let resolveRun: (value: any) => void
+    let resolveRun: (value: { output: string | null; error: string | null }) => void
     mockRunPython.mockReturnValue(
       new Promise((resolve) => {
         resolveRun = resolve
