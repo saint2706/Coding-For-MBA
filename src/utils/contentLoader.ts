@@ -663,14 +663,37 @@ export function getContentStats() {
     const lessons = getAllLessons()
     const phases = getAllPhases()
 
-    const getWordCountRe1 = /```[\s\S]*?```/g
-    const getWordCountRe2 = /[#*_>`()!-]/g
     const getWordCount = (markdown: string) => {
-      const plainText = markdown.replace(getWordCountRe1, '').replace(getWordCountRe2, '')
       let words = 0
       let inWord = false
-      for (let i = 0; i < plainText.length; i++) {
-        const charCode = plainText.charCodeAt(i)
+      let inCodeBlock = false
+
+      for (let i = 0; i < markdown.length; i++) {
+        const charCode = markdown.charCodeAt(i)
+
+        if (charCode === 96 && markdown.charCodeAt(i + 1) === 96 && markdown.charCodeAt(i + 2) === 96) {
+           inCodeBlock = !inCodeBlock;
+           i += 2;
+           inWord = false;
+           continue;
+        }
+
+        if (inCodeBlock) continue;
+
+        if (
+          charCode === 35 ||
+          charCode === 42 ||
+          charCode === 95 ||
+          charCode === 62 ||
+          charCode === 96 ||
+          charCode === 40 ||
+          charCode === 41 ||
+          charCode === 33 ||
+          charCode === 45
+        ) {
+          continue;
+        }
+
         if (charCode === 32 || charCode === 9 || charCode === 10 || charCode === 13) {
           inWord = false
         } else {
@@ -686,8 +709,16 @@ export function getContentStats() {
     const lessonMetrics = lessons.map((l) => ({
       phase: l.phase,
       difficulty: (l.difficulty as string) || 'unknown',
-      tags: ((l.tags as string[]) || []).map((t) => t.trim()).filter(Boolean),
-      concepts: ((l.concepts as string[]) || []).map((c) => c.trim()).filter(Boolean),
+      tags: ((l.tags as string[]) || []).reduce<string[]>((acc, t) => {
+        const trimmed = t.trim();
+        if (trimmed) acc.push(trimmed);
+        return acc;
+      }, []),
+      concepts: ((l.concepts as string[]) || []).reduce<string[]>((acc, c) => {
+        const trimmed = c.trim();
+        if (trimmed) acc.push(trimmed);
+        return acc;
+      }, []),
       wordCount: getWordCount(l.content),
       readingTime: getReadingTime(l.content),
     }))
@@ -780,13 +811,6 @@ export function getNotebook(phaseNum: string | number): ImmutableNotebook | unde
  * @param {string} content - The markdown content to calculate reading time for.
  * @returns {number} The estimated reading time in minutes.
  */
-const readingTimeRe1 = /```[\s\S]*?```/g
-const readingTimeRe2 = /`[^`]+`/g
-const readingTimeRe3 = /!\[.*?\]\(.*?\)/g
-const readingTimeRe4 = /\[([^\]]+)\]\(.*?\)/g
-const readingTimeRe5 = /#{1,6}\s/g
-const readingTimeRe6 = /[*_~>|`-]/g
-const readingTimeRe7 = /<[^>]+>/g
 
 const readingTimeCache = new Map<string, number>()
 
@@ -795,20 +819,81 @@ export function getReadingTime(content: string): number {
     return readingTimeCache.get(content)!
   }
 
-  const stripped = content
-    .replace(readingTimeRe1, '')
-    .replace(readingTimeRe2, '')
-    .replace(readingTimeRe3, '')
-    .replace(readingTimeRe4, '$1')
-    .replace(readingTimeRe5, '')
-    .replace(readingTimeRe6, '')
-    .replace(readingTimeRe7, '')
-    .trim()
-
   let words = 0
   let inWord = false
-  for (let i = 0; i < stripped.length; i++) {
-    const charCode = stripped.charCodeAt(i)
+  let inCodeBlock = false
+  let inImage = false
+  let inLinkText = false
+
+  for (let i = 0; i < content.length; i++) {
+    const charCode = content.charCodeAt(i)
+
+    // Toggle code blocks ```
+    if (charCode === 96 && content.charCodeAt(i + 1) === 96 && content.charCodeAt(i + 2) === 96) {
+       inCodeBlock = !inCodeBlock;
+       i += 2;
+       inWord = false;
+       continue;
+    }
+
+    if (inCodeBlock) continue;
+
+    // Toggle images ![...]
+    if (charCode === 33 && content.charCodeAt(i+1) === 91) {
+      inImage = true;
+      i++;
+      continue;
+    }
+    if (inImage && charCode === 93) {
+      inImage = false;
+      continue;
+    }
+    if (inImage) continue;
+
+    // Links [...]() - ignore URL part
+    if (charCode === 91 && content.charCodeAt(i-1) !== 33) {
+      inLinkText = true;
+      continue;
+    }
+    if (inLinkText && charCode === 93 && content.charCodeAt(i+1) === 40) {
+      inLinkText = false;
+      // Skip until closing parenthesis
+      let j = i + 2;
+      while (j < content.length && content.charCodeAt(j) !== 41) {
+        j++;
+      }
+      i = j;
+      continue;
+    }
+
+    // Ignore HTML tags
+    if (charCode === 60) {
+      let j = i + 1;
+      let isTag = false;
+      while (j < content.length && j < i + 50) {
+        if (content.charCodeAt(j) === 62) {
+          isTag = true;
+          i = j;
+          break;
+        }
+        j++;
+      }
+      if (isTag) continue;
+    }
+
+    if (
+      charCode === 35 || // #
+      charCode === 42 || // *
+      charCode === 95 || // _
+      charCode === 126 ||// ~
+      charCode === 62 || // >
+      charCode === 124 ||// |
+      charCode === 96 || // `
+      charCode === 45    // -
+    ) {
+      continue;
+    }
+
     if (charCode === 32 || charCode === 9 || charCode === 10 || charCode === 13) {
       inWord = false
     } else {
