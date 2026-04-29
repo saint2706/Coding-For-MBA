@@ -132,13 +132,16 @@ function toDocument(lesson: Lesson): SearchDocument {
 }
 
 function normalizeQuery(query: string): string[] {
-  return query.toLowerCase().split(/\s+/).reduce<string[]>((acc, token) => {
-    const trimmed = token.trim();
-    if (trimmed.length > 1 || /^\d+$/.test(trimmed)) {
-      acc.push(trimmed);
-    }
-    return acc;
-  }, [])
+  return query
+    .toLowerCase()
+    .split(/\s+/)
+    .reduce<string[]>((acc, token) => {
+      const trimmed = token.trim()
+      if (trimmed.length > 1 || /^\d+$/.test(trimmed)) {
+        acc.push(trimmed)
+      }
+      return acc
+    }, [])
 }
 
 function scoreField(text: string | undefined, terms: readonly string[], weight: number) {

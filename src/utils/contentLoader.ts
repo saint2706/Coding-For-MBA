@@ -671,14 +671,18 @@ export function getContentStats() {
       for (let i = 0; i < markdown.length; i++) {
         const charCode = markdown.charCodeAt(i)
 
-        if (charCode === 96 && markdown.charCodeAt(i + 1) === 96 && markdown.charCodeAt(i + 2) === 96) {
-           inCodeBlock = !inCodeBlock;
-           i += 2;
-           inWord = false;
-           continue;
+        if (
+          charCode === 96 &&
+          markdown.charCodeAt(i + 1) === 96 &&
+          markdown.charCodeAt(i + 2) === 96
+        ) {
+          inCodeBlock = !inCodeBlock
+          i += 2
+          inWord = false
+          continue
         }
 
-        if (inCodeBlock) continue;
+        if (inCodeBlock) continue
 
         if (
           charCode === 35 ||
@@ -691,7 +695,7 @@ export function getContentStats() {
           charCode === 33 ||
           charCode === 45
         ) {
-          continue;
+          continue
         }
 
         if (charCode === 32 || charCode === 9 || charCode === 10 || charCode === 13) {
@@ -710,14 +714,14 @@ export function getContentStats() {
       phase: l.phase,
       difficulty: (l.difficulty as string) || 'unknown',
       tags: ((l.tags as string[]) || []).reduce<string[]>((acc, t) => {
-        const trimmed = t.trim();
-        if (trimmed) acc.push(trimmed);
-        return acc;
+        const trimmed = t.trim()
+        if (trimmed) acc.push(trimmed)
+        return acc
       }, []),
       concepts: ((l.concepts as string[]) || []).reduce<string[]>((acc, c) => {
-        const trimmed = c.trim();
-        if (trimmed) acc.push(trimmed);
-        return acc;
+        const trimmed = c.trim()
+        if (trimmed) acc.push(trimmed)
+        return acc
       }, []),
       wordCount: getWordCount(l.content),
       readingTime: getReadingTime(l.content),
@@ -830,68 +834,68 @@ export function getReadingTime(content: string): number {
 
     // Toggle code blocks ```
     if (charCode === 96 && content.charCodeAt(i + 1) === 96 && content.charCodeAt(i + 2) === 96) {
-       inCodeBlock = !inCodeBlock;
-       i += 2;
-       inWord = false;
-       continue;
+      inCodeBlock = !inCodeBlock
+      i += 2
+      inWord = false
+      continue
     }
 
-    if (inCodeBlock) continue;
+    if (inCodeBlock) continue
 
     // Toggle images ![...]
-    if (charCode === 33 && content.charCodeAt(i+1) === 91) {
-      inImage = true;
-      i++;
-      continue;
+    if (charCode === 33 && content.charCodeAt(i + 1) === 91) {
+      inImage = true
+      i++
+      continue
     }
     if (inImage && charCode === 93) {
-      inImage = false;
-      continue;
+      inImage = false
+      continue
     }
-    if (inImage) continue;
+    if (inImage) continue
 
     // Links [...]() - ignore URL part
-    if (charCode === 91 && content.charCodeAt(i-1) !== 33) {
-      inLinkText = true;
-      continue;
+    if (charCode === 91 && content.charCodeAt(i - 1) !== 33) {
+      inLinkText = true
+      continue
     }
-    if (inLinkText && charCode === 93 && content.charCodeAt(i+1) === 40) {
-      inLinkText = false;
+    if (inLinkText && charCode === 93 && content.charCodeAt(i + 1) === 40) {
+      inLinkText = false
       // Skip until closing parenthesis
-      let j = i + 2;
+      let j = i + 2
       while (j < content.length && content.charCodeAt(j) !== 41) {
-        j++;
+        j++
       }
-      i = j;
-      continue;
+      i = j
+      continue
     }
 
     // Ignore HTML tags
     if (charCode === 60) {
-      let j = i + 1;
-      let isTag = false;
+      let j = i + 1
+      let isTag = false
       while (j < content.length && j < i + 50) {
         if (content.charCodeAt(j) === 62) {
-          isTag = true;
-          i = j;
-          break;
+          isTag = true
+          i = j
+          break
         }
-        j++;
+        j++
       }
-      if (isTag) continue;
+      if (isTag) continue
     }
 
     if (
       charCode === 35 || // #
       charCode === 42 || // *
       charCode === 95 || // _
-      charCode === 126 ||// ~
+      charCode === 126 || // ~
       charCode === 62 || // >
-      charCode === 124 ||// |
+      charCode === 124 || // |
       charCode === 96 || // `
-      charCode === 45    // -
+      charCode === 45 // -
     ) {
-      continue;
+      continue
     }
 
     if (charCode === 32 || charCode === 9 || charCode === 10 || charCode === 13) {
