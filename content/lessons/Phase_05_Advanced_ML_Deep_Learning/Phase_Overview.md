@@ -700,7 +700,7 @@ You've completed **Phase 5: Advanced ML & Deep Learning**!
 
 ### Official Documentation
 
-- [Hugging Face Transformers](https://huggingface.co/docs/transformers)
+- [Hugging Face Transformers](https://huggingface.co/docs/transformers/index)
 - [PyTorch Geometric](https://pytorch-geometric.readthedocs.io)
 - [MLflow](https://mlflow.org/docs/latest/index.html)
 - [XGBoost](https://xgboost.readthedocs.io)

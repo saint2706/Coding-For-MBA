@@ -421,7 +421,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - [Unsloth](https://github.com/unslothai/unsloth) — Fast LoRA/QLoRA fine-tuning
 - [instructor](https://github.com/jxnl/instructor) — Structured LLM outputs with Pydantic
 - [LangSmith](https://docs.smith.langchain.com/) — LLM tracing and evaluation
-- [AIF360](https://aif360.mybluemix.net/) — AI Fairness 360
+- [AIF360](https://aif360.res.ibm.com/) — AI Fairness 360
 
 ### Books
 

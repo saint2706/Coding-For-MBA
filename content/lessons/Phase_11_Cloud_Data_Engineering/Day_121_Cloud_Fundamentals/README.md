@@ -314,7 +314,7 @@ On-demand: pay by the hour/second with no commitment, full flexibility. Reserved
 - [AWS Well-Architected Framework](https://aws.amazon.com/architecture/well-architected/) — 6 pillars of cloud architecture
 - [GCP Cloud Architecture Center](https://cloud.google.com/architecture) — Reference architectures for data platforms
 - [FinOps Foundation](https://www.finops.org/) — Cloud financial management best practices
-- [Cloud Comparison Tool](https://cloudoptimizer.com/) — Side-by-side service comparison
+- [Cloud Comparison Tool](https://comparecloud.in/) — Side-by-side service comparison
 
 ---
 

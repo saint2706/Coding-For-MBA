@@ -105,3 +105,8 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Ran validation, linting, tests, and build—all passed successfully.
 - Added JSDoc comments to exported React components (, , , , ) based on  audit.
 - Added JSDoc comments to exported React components based on scripts audit.
+
+## 2026-04-28
+- Checked for missing JSDocs/TSDocs in src/ (none found).
+- Ran markdown-link-check to identify broken links in content/lessons.
+- Fixed several broken links across various markdown files including a16z.com, nngroup.com, austinhenley.com, agi.money, cloudoptimizer.com, realpython.com, aif360.mybluemix.net, huggingface.co, and leetcode.com.

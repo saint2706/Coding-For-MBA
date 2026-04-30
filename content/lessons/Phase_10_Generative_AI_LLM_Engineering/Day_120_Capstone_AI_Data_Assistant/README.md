@@ -715,7 +715,7 @@ Open-ended — key considerations for a strong answer: (1) **Prompt Engineering 
 
 - [Full LangChain RAG Tutorial — Harrison Chase](https://python.langchain.com/docs/tutorials/rag/)
 - [Building Production RAG Applications — LlamaIndex](https://docs.llamaindex.ai/en/stable/optimizing/production_rag/)
-- [Real Python — Building a CLI Chatbot](https://realpython.com/build-a-chatbot-python-cheat-sheet/)
+- [Real Python — Building a CLI Chatbot](https://realpython.com/build-a-python-chatbot/)
 - [Anthropic's Guide to Building Effective Agents](https://www.anthropic.com/research/building-effective-agents)
 
 ---

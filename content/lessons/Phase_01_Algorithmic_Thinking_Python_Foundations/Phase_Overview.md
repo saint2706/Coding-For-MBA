@@ -57,7 +57,7 @@ You learned the art of functions—encapsulating logic into reusable blocks. Com
 
 ### Practice Platforms
 
-- [LeetCode Easy Problems](https://leetcode.com/problemset/?difficulty=EASY) — Algorithm practice
+- [LeetCode Easy Problems](https://leetcode.com/problemset/all/) — Algorithm practice
 - [HackerRank Python Track](https://www.hackerrank.com/domains/python) — Skill certification path
 - [Exercism Python](https://exercism.org/tracks/python) — Mentored code exercises
 

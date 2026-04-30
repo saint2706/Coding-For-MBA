@@ -387,11 +387,11 @@ Feedback from production users serves several purposes: (1) **Model monitoring**
 
 ## Further Reading
 
-- [The State of AI Product Design — a16z](https://a16z.com/ai-product-design/)
-- [Designing with AI in Mind — Nielsen Norman Group](https://www.nngroup.com/articles/ai-thinking-new/)
-- [Boring AI: How to Ship AI Features That Actually Work](https://austinhenley.com/blog/boringai.html)
+- [The State of AI Product Design — a16z](https://a16z.com/2023/11/16/ai-product-design/)
+- [Designing with AI in Mind — Nielsen Norman Group](https://www.nngroup.com/articles/ai-tools-productivity/)
+- [Boring AI: How to Ship AI Features That Actually Work](https://austinhenley.com/blog/designingboringai.html)
 - [Google PAIR — People + AI Research](https://pair.withgoogle.com/guidebook/)
-- [AI UX Patterns Library — Human-AI Interaction Patterns](https://www.agi.money/)
+- [AI UX Patterns Library — Human-AI Interaction Patterns](https://www.shapeofai.com/rules)
 
 ---
 
