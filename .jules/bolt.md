@@ -40,3 +40,4 @@
 ## String Parsing and Array Allocation Optimization
 - Refactored `getWordCount` and `getReadingTime` in `src/utils/contentLoader.ts` to avoid multiple chained `.replace()` calls and intermediate allocations.
 - Replaced chained `.split().map().filter()` calls with a single `.split().reduce()` pass in `src/utils/linkSafety.ts`, `src/utils/searchIndex.ts`, `src/utils/frontmatter-core.js`, and `src/utils/contentLoader.ts` to reduce garbage collection overhead and improve performance.
+- ⚡ Bolt | Optimized `completedInPhase` calculations in `src/pages/Curriculum.tsx` and `src/pages/Home.tsx` by replacing chaining `.filter(...).length` with standard `for` loops and accumulator variables to minimize intermediate array allocations and reduce garbage collection pressure.

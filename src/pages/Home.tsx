@@ -113,9 +113,12 @@ export default function Home() {
         const lessons = getLessonsByPhase(phase.phase)
         const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
         const hours = Math.round((phase.totalDuration || 0) / 60)
-        const completedInPhase = lessons.filter((l) =>
-          completedSet.has(dayTokenToProgressId(l.day)),
-        ).length
+        let completedInPhase = 0
+        for (let i = 0; i < lessons.length; i++) {
+          if (completedSet.has(dayTokenToProgressId(lessons[i]!.day))) {
+            completedInPhase++
+          }
+        }
         const phasePct = Math.round((completedInPhase / Math.max(1, lessons.length)) * 100)
 
         return (
