@@ -67,4 +67,7 @@ const TerminalDashboard = Object.assign(Dashboard, {
   TileFooter,
 })
 
+/**
+ * The combined TerminalDashboard component exposing Tile, TileHeader, TileBody, and TileFooter sub-components.
+ */
 export default TerminalDashboard

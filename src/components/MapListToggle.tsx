@@ -65,4 +65,7 @@ function Toggle({ defaultActive, ariaLabel = 'Switch view', children }: TogglePr
 
 const MapListToggle = Object.assign(Toggle, { View })
 
+/**
+ * The combined MapListToggle component exposing the View sub-component.
+ */
 export default MapListToggle

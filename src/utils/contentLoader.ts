@@ -818,6 +818,11 @@ export function getNotebook(phaseNum: string | number): ImmutableNotebook | unde
 
 const readingTimeCache = new Map<string, number>()
 
+/**
+ * Calculates the estimated reading time for a given markdown content.
+ * @param {string} content - The markdown content to calculate reading time for.
+ * @returns {number} The estimated reading time in minutes.
+ */
 export function getReadingTime(content: string): number {
   if (readingTimeCache.has(content)) {
     return readingTimeCache.get(content)!
