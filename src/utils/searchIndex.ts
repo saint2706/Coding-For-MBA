@@ -135,8 +135,13 @@ function normalizeQuery(query: string): string[] {
   return query
     .toLowerCase()
     .split(/\s+/)
-    .map((token) => token.trim())
-    .filter((token) => token.length > 1 || /^\d+$/.test(token))
+    .reduce<string[]>((acc, token) => {
+      const trimmed = token.trim()
+      if (trimmed.length > 1 || /^\d+$/.test(trimmed)) {
+        acc.push(trimmed)
+      }
+      return acc
+    }, [])
 }
 
 function scoreField(text: string | undefined, terms: readonly string[], weight: number) {

@@ -96,10 +96,12 @@ export const getSecureLinkAttributes = (href?: string | null, props: LinkProps =
 
   if (isExternal) {
     target = '_blank'
-    const parts = (rel || '')
-      .split(/\s+/)
-      .filter(Boolean)
-      .filter((token) => token.toLowerCase() !== 'opener')
+    const parts = (rel || '').split(/\s+/).reduce<string[]>((acc, token) => {
+      if (token && token.toLowerCase() !== 'opener') {
+        acc.push(token)
+      }
+      return acc
+    }, [])
     const lowerParts = new Set(parts.map((token) => token.toLowerCase()))
     if (!lowerParts.has('noopener')) {
       parts.push('noopener')

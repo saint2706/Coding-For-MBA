@@ -36,3 +36,7 @@
 >> 2024-04-26 19:46:35 UTC - ⚡ Bolt | Optimized getDueReviewCards, getReviewStreak, and getReviewDueCountByPhase to prevent O(N) array allocation per card, replacing them with O(R) evaluation logic.
 
 >> 2026-04-27 19:40:31 UTC - ⚡ Bolt | Optimized `getReadingTime` and `getWordCount` in `contentLoader.ts` by replacing multiple chained RegExp `.replace` combined with `.split(/\s+/).filter(...)` array allocations with pre-compiled RegExps and manual character iteration loops to count words. Added an LRU-like bounds-checked `Map` cache for `getReadingTime`. These combined optimizations reduce V8 garbage collection pressure, dramatically improving script evaluation time when parsing hundreds of markdown files during builds and initial client renders.
+
+## String Parsing and Array Allocation Optimization
+- Refactored `getWordCount` and `getReadingTime` in `src/utils/contentLoader.ts` to avoid multiple chained `.replace()` calls and intermediate allocations.
+- Replaced chained `.split().map().filter()` calls with a single `.split().reduce()` pass in `src/utils/linkSafety.ts`, `src/utils/searchIndex.ts`, `src/utils/frontmatter-core.js`, and `src/utils/contentLoader.ts` to reduce garbage collection overhead and improve performance.

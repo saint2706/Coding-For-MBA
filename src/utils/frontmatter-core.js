@@ -95,10 +95,11 @@ export function parseNormalizedMarkdown(normalized) {
       const inlineValues = inlineArray[1]
       if (inlineValues === undefined) continue
 
-      frontmatter[currentKey] = inlineValues
-        .split(',')
-        .map((segment) => segment.trim().replace(/^["']|["']$/g, ''))
-        .map((segment) => (isNaN(Number(segment)) ? segment : Number(segment)))
+      frontmatter[currentKey] = inlineValues.split(',').reduce((acc, segment) => {
+        const trimmed = segment.trim().replace(/^["']|["']$/g, '');
+        acc.push(isNaN(Number(trimmed)) ? trimmed : Number(trimmed));
+        return acc;
+      }, [])
       continue
     }
 
