@@ -64,3 +64,7 @@ Learned that missing aria labels for decorative emojis in React can be fixed by 
 Added focus-visible outlines to sidebar close, navbar hamburger, and navbar search clear buttons for better keyboard accessibility.
 
 - Added role="presentation" to the sidebar overlay to prevent screen readers from interpreting the click background layer incorrectly.
+
+## Focus-Visible for Map List Toggle
+- Added `focus-visible` styles to the `.map-list-toggle-btn` class in `src/styles/home.css`.
+- Ensures proper keyboard accessibility and visible focus indication for the toggle segmented control used to switch between lists and map views.
