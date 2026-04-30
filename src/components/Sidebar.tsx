@@ -112,6 +112,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         className={`sidebar-overlay ${isOpen ? 'visible' : ''}`}
         onClick={onClose}
         aria-hidden="true"
+        role="presentation"
       />
       <aside
         id="app-sidebar"
