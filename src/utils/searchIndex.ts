@@ -374,10 +374,17 @@ export function getSearchSnippet(content: string, query: string, maxLength = 180
   if (terms.length === 0) return plain.slice(0, maxLength)
 
   const lower = plain.toLowerCase()
-  const firstMatch = terms
-    .map((term) => lower.indexOf(term))
-    .filter((idx) => idx >= 0)
-    .sort((a, b) => a - b)[0]
+  let firstMatch: number | undefined = undefined
+  for (let i = 0; i < terms.length; i++) {
+    const term = terms[i]
+    if (term === undefined) continue
+    const idx = lower.indexOf(term)
+    if (idx >= 0) {
+      if (firstMatch === undefined || idx < firstMatch) {
+        firstMatch = idx
+      }
+    }
+  }
 
   if (firstMatch === undefined) return `${plain.slice(0, maxLength).trim()}…`
 

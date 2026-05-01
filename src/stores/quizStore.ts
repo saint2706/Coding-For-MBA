@@ -93,7 +93,11 @@ function computeStats(attempts: QuizAttempt[], quizId: string): QuizStats | null
   if (!records.length) return null
 
   const attemptsCount = records.length
-  const correct = records.filter((attempt) => attempt.correct).length
+  let correct = 0
+  for (let i = 0; i < records.length; i++) {
+    const record = records[i]
+    if (record && record.correct) correct++
+  }
   const incorrect = attemptsCount - correct
   const topic = records[records.length - 1]?.topic ?? quizId
   const lastAttemptAt = records[records.length - 1]?.attemptedAt ?? new Date(0).toISOString()
@@ -145,18 +149,25 @@ export const useQuizStore = create<QuizStore>()(
       getQuizStats: (quizId) => computeStats(get().attempts, quizId),
       getMostMissedQuestions: (limit = 5) => {
         const grouped = new Set(get().attempts.map((attempt) => attempt.quizId))
-        return [...grouped]
-          .map((quizId) => get().getQuizStats(quizId))
-          .filter((stats): stats is QuizStats => Boolean(stats))
+        const result: QuizStats[] = []
+        for (const quizId of grouped) {
+          const stats = get().getQuizStats(quizId)
+          if (stats) result.push(stats)
+        }
+        return result
           .sort((a, b) => b.incorrect - a.incorrect || a.accuracy - b.accuracy)
           .slice(0, limit)
       },
       getLowScoringTopics: (threshold = 60, minAttempts = 2) => {
         const grouped = new Set(get().attempts.map((attempt) => attempt.quizId))
-        return [...grouped]
-          .map((quizId) => get().getQuizStats(quizId))
-          .filter((stats): stats is QuizStats => Boolean(stats))
-          .filter((stats) => stats.attempts >= minAttempts && stats.accuracy < threshold)
+        const result: QuizStats[] = []
+        for (const quizId of grouped) {
+          const stats = get().getQuizStats(quizId)
+          if (stats && stats.attempts >= minAttempts && stats.accuracy < threshold) {
+            result.push(stats)
+          }
+        }
+        return result
           .sort((a, b) => a.accuracy - b.accuracy || b.incorrect - a.incorrect)
       },
       getRecentAttempts: (quizId, limit = 5) =>

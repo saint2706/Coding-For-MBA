@@ -213,11 +213,22 @@ function resolveChallengeCandidates(): number[] {
     return Array.from({ length: lastVisited }, (_, i) => i + 1)
   }
 
-  return getAllPhases().flatMap((phase) =>
-    getLessonsByPhase(phase.phase)
-      .map((lesson) => dayTokenToProgressId(lesson.day))
-      .filter((day) => Number.isInteger(day) && day > 0),
-  )
+  const result: number[] = []
+  const phases = getAllPhases()
+  for (let i = 0; i < phases.length; i++) {
+    const phase = phases[i]
+    if (!phase) continue
+    const lessons = getLessonsByPhase(phase.phase)
+    for (let j = 0; j < lessons.length; j++) {
+      const lesson = lessons[j]
+      if (!lesson) continue
+      const dayId = dayTokenToProgressId(lesson.day)
+      if (Number.isInteger(dayId) && dayId > 0) {
+        result.push(dayId)
+      }
+    }
+  }
+  return result
 }
 
 function maybeCelebrateAchievement(id: AchievementId): void {

@@ -256,9 +256,16 @@ export const useProgressStore = create<ProgressStore>()(
       },
       getCompletedForPhase: (phaseLessonDays) => {
         const completed = new Set(get().completedLessons)
-        return phaseLessonDays
-          .map((day) => dayTokenToProgressId(day))
-          .filter((day) => completed.has(day))
+        const result: number[] = []
+        for (let i = 0; i < phaseLessonDays.length; i++) {
+          const day = phaseLessonDays[i]
+          if (day === undefined) continue
+          const dayId = dayTokenToProgressId(day)
+          if (completed.has(dayId)) {
+            result.push(dayId)
+          }
+        }
+        return result
       },
       completedLessonsCount: () => get().completedLessons.length,
       phaseProgress: (phaseLessonDays) => {

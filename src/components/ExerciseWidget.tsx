@@ -103,8 +103,15 @@ export default function ExerciseWidget({
 
   const totalExercisesForDay = useMemo(() => {
     if (!lessonDay) return 0
-    return getAllExercises().filter((exercise) => normalizeDayToken(exercise.day) === lessonDay)
-      .length
+    let count = 0
+    const exercises = getAllExercises()
+    for (let i = 0; i < exercises.length; i++) {
+      const ex = exercises[i]
+      if (ex && normalizeDayToken(ex.day) === lessonDay) {
+        count++
+      }
+    }
+    return count
   }, [lessonDay])
 
   const exerciseId = useMemo(() => {
