@@ -55,4 +55,7 @@ const EditorialCover = Object.assign(Cover, {
   Actions,
 })
 
+/**
+ * The combined EditorialCover component exposing sub-components.
+ */
 export default EditorialCover

@@ -110,3 +110,9 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 - Checked for missing JSDocs/TSDocs in src/ (none found).
 - Ran markdown-link-check to identify broken links in content/lessons.
 - Fixed several broken links across various markdown files including a16z.com, nngroup.com, austinhenley.com, agi.money, cloudoptimizer.com, realpython.com, aif360.mybluemix.net, huggingface.co, and leetcode.com.
+- **[2026-04-30] Added JSDoc comments to UI components and Utils**
+  - Added missing typed JSDoc comments to `src/components/EditorialCover.tsx` for `EditorialCover`
+  - Added missing typed JSDoc comments to `src/components/MapListToggle.tsx` for `MapListToggle`
+  - Added missing typed JSDoc comments to `src/components/TerminalDashboard.tsx` for `TerminalDashboard`
+  - Added missing typed JSDoc comments to `src/utils/contentLoader.ts` for `getReadingTime`
+  - Verified `PageSkeleton` in `src/components/Skeleton.tsx` already had complete JSDoc.
