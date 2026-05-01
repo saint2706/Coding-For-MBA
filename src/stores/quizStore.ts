@@ -167,8 +167,7 @@ export const useQuizStore = create<QuizStore>()(
             result.push(stats)
           }
         }
-        return result
-          .sort((a, b) => a.accuracy - b.accuracy || b.incorrect - a.incorrect)
+        return result.sort((a, b) => a.accuracy - b.accuracy || b.incorrect - a.incorrect)
       },
       getRecentAttempts: (quizId, limit = 5) =>
         get()
