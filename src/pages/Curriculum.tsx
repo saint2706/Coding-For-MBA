@@ -49,17 +49,22 @@ export default function Curriculum() {
   const phasesData = useMemo(() => {
     return phases.map((phase) => {
       const lessons = getLessonsByPhase(phase.phase)
-      const completedInPhase = lessons.filter((l) => completedSet.has(dayTokenToProgressId(l.day)))
-      const isPhaseComplete = completedInPhase.length === lessons.length && lessons.length > 0
-      const isPhaseStarted = completedInPhase.length > 0
+      let completedInPhaseCount = 0
+      for (let i = 0; i < lessons.length; i++) {
+        if (completedSet.has(dayTokenToProgressId(lessons[i]!.day))) {
+          completedInPhaseCount++
+        }
+      }
+      const isPhaseComplete = completedInPhaseCount === lessons.length && lessons.length > 0
+      const isPhaseStarted = completedInPhaseCount > 0
       const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
       const phaseLabel = String(phase.phase).padStart(2, '0')
-      const phasePct = Math.round((completedInPhase.length / Math.max(1, lessons.length)) * 100)
+      const phasePct = Math.round((completedInPhaseCount / Math.max(1, lessons.length)) * 100)
 
       return {
         ...phase,
         lessons,
-        completedInPhase,
+        completedInPhaseCount,
         isPhaseComplete,
         isPhaseStarted,
         diff,
@@ -75,10 +80,15 @@ export default function Curriculum() {
     () => (totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0),
     [totalLessons, completedCount],
   )
-  const completedPhasesCount = useMemo(
-    () => phasesData.filter((p) => p.isPhaseComplete).length,
-    [phasesData],
-  )
+  const completedPhasesCount = useMemo(() => {
+    let count = 0
+    for (let i = 0; i < phasesData.length; i++) {
+      if (phasesData[i]!.isPhaseComplete) {
+        count++
+      }
+    }
+    return count
+  }, [phasesData])
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -227,7 +237,7 @@ export default function Curriculum() {
                   <div>
                     <dt>Done</dt>
                     <dd>
-                      {phase.completedInPhase.length}/{phase.lessons.length} · {phase.phasePct}%
+                      {phase.completedInPhaseCount}/{phase.lessons.length} · {phase.phasePct}%
                     </dd>
                   </div>
                 </dl>
