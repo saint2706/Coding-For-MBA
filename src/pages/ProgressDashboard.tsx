@@ -130,7 +130,7 @@ export default function ProgressDashboard() {
               <span>{icon}</span> P{phase.phase}
             </div>
             <div className="heatmap-cells">
-              {lessons.map((lesson) => {
+              {(lessons || []).map((lesson) => {
                 const done = completedSet.has(dayTokenToProgressId(lesson.day))
                 return (
                   <Link
@@ -183,7 +183,7 @@ export default function ProgressDashboard() {
                 </span>
               </div>
             </div>
-            <ProgressBar completed={completedInPhaseCount} total={lessons.length} />
+            <ProgressBar completed={completedInPhaseCount} total={lessons?.length || 0} />
           </Link>
         )
       }),

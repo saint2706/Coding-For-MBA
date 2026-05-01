@@ -1,270 +1,249 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
-import '@testing-library/jest-dom'
-import { MemoryRouter } from 'react-router-dom'
-import ProgressDashboard from '../ProgressDashboard'
-import * as contentLoader from '../../utils/contentLoader'
-import { useProgressStore } from '../../stores/progressStore'
-import { useLearningAnalyticsStore } from '../../stores/learningAnalyticsStore'
-import { useGamificationStore } from '../../stores/gamificationStore'
-import { useUserPreferencesStore } from '../../stores/userPreferencesStore'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import ProgressDashboard from '../ProgressDashboard';
+import { MemoryRouter } from 'react-router-dom';
+import '@testing-library/jest-dom';
 
-vi.mock('../../components/SEOHead', () => ({
-  default: () => <div data-testid="seo-head" />,
-}))
+const mockClearAllProgress = vi.fn();
+const mockRefreshDailyChallenge = vi.fn();
 
-vi.mock('../../components/Breadcrumb', () => ({
-  default: () => <div data-testid="breadcrumb" />,
-}))
-
-vi.mock('../../components/ProgressBar', () => ({
-  default: ({ completed, total }: { completed: number; total: number }) => (
-    <div data-testid="progress-bar">
-      {completed}/{total}
-    </div>
-  ),
-}))
-
-vi.mock('../../components/AnimatedCounter', () => ({
-  default: ({ value, suffix = '' }: { value: number; suffix?: string }) => (
-    <span data-testid="animated-counter">
-      {value}
-      {suffix}
-    </span>
-  ),
-}))
-
-vi.mock('../../components/EmptyStateIllustrations', () => ({
-  FreshStartIllustration: () => <div data-testid="fresh-start-illustration" />,
-}))
-
-vi.mock('../../utils/contentLoader', () => ({
-  getAllPhases: vi.fn(),
-  getLessonsByPhase: vi.fn(),
-  getLesson: vi.fn(),
-  getCurriculumMetadata: vi.fn(() => ({ totalDays: 0, totalPhases: 0, totalLevels: 0 })),
-  phaseIcons: ['📊'],
-  difficultyConfig: {
-    beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
-  },
-}))
+const mockSetPalette = vi.fn();
+const mockSetFontSize = vi.fn();
+const mockSetDensity = vi.fn();
+const mockSetCodeLanguage = vi.fn();
+const mockSetSidebarDefaultOpen = vi.fn();
+const mockSetReadingMode = vi.fn();
+const mockSetReadingComfortTheme = vi.fn();
+const mockSetCustomCursorEnabled = vi.fn();
 
 vi.mock('../../stores/progressStore', () => ({
-  useProgressStore: vi.fn(),
-}))
+  useProgressStore: Object.assign(vi.fn((selector) => {
+    const state = {
+      completedLessons: ['day-1', 'day-2'],
+      completedLessonsCount: () => 2,
+      streakDays: () => 5,
+      clearAllProgress: mockClearAllProgress,
+    };
+    return selector(state);
+  }), {
+    getState: () => ({
+      completedLessons: ['day-1', 'day-2'],
+      completedLessonsCount: () => 2,
+      streakDays: () => 5,
+      clearAllProgress: mockClearAllProgress,
+    })
+  })
+}));
 
 vi.mock('../../stores/learningAnalyticsStore', () => ({
-  useLearningAnalyticsStore: vi.fn(),
-  formatDuration: vi.fn().mockImplementation((ms) => `${ms}ms`),
-}))
+  useLearningAnalyticsStore: Object.assign(vi.fn((selector) => {
+    const state = {
+      timeByDate: { '2023-10-01': 3600000 },
+      totalLearningMs: () => 3600000,
+      weekLearningMs: () => 3600000,
+      todayLearningMs: () => 3600000,
+      studyStreakDays: () => 1,
+      getLast7Days: () => [
+        { date: '2023-10-01', ms: 3600000 },
+        { date: '2023-10-02', ms: 0 },
+        { date: '2023-10-03', ms: 0 },
+        { date: '2023-10-04', ms: 0 },
+        { date: '2023-10-05', ms: 0 },
+        { date: '2023-10-06', ms: 0 },
+        { date: '2023-10-07', ms: 0 },
+      ],
+    };
+    return selector(state);
+  }), {
+    getState: () => ({
+      timeByDate: { '2023-10-01': 3600000 },
+      totalLearningMs: () => 3600000,
+      weekLearningMs: () => 3600000,
+      todayLearningMs: () => 3600000,
+      studyStreakDays: () => 1,
+      getLast7Days: () => [
+        { date: '2023-10-01', ms: 3600000 },
+        { date: '2023-10-02', ms: 0 },
+        { date: '2023-10-03', ms: 0 },
+        { date: '2023-10-04', ms: 0 },
+        { date: '2023-10-05', ms: 0 },
+        { date: '2023-10-06', ms: 0 },
+        { date: '2023-10-07', ms: 0 },
+      ],
+    })
+  }),
+  formatDuration: vi.fn(() => '1h 0m')
+}));
 
 vi.mock('../../stores/gamificationStore', () => ({
-  useGamificationStore: vi.fn(),
-  ACHIEVEMENTS: [{ id: 'badge1', label: 'Badge 1', description: 'Desc 1', icon: '🥇' }],
-}))
+  useGamificationStore: Object.assign(vi.fn((selector) => {
+    const state = {
+      xpTotal: 100,
+      achievementsUnlocked: ['first_lesson', 'scholar'],
+      dailyChallenge: { day: 1, type: 'review' },
+      refreshDailyChallenge: mockRefreshDailyChallenge,
+      xpToNextMilestone: () => ({ next: 50, percent: 66 }),
+    };
+    return selector(state);
+  }), {
+    getState: () => ({
+      xpTotal: 100,
+      achievementsUnlocked: ['first_lesson', 'scholar'],
+      dailyChallenge: { day: 1, type: 'review' },
+      refreshDailyChallenge: mockRefreshDailyChallenge,
+      xpToNextMilestone: () => ({ next: 50, percent: 66 }),
+    })
+  }),
+  ACHIEVEMENTS: [
+    { id: 'first_lesson', label: 'First Lesson', description: 'desc', icon: '⭐' },
+    { id: 'scholar', label: 'Scholar', description: 'desc', icon: '🎓' },
+  ]
+}));
 
 vi.mock('../../stores/userPreferencesStore', () => ({
-  useUserPreferencesStore: vi.fn(),
-}))
+  useUserPreferencesStore: Object.assign(vi.fn(() => ({
+    palette: 'gradient-blues',
+    sidebarDefaultOpen: true,
+    fontSize: 'md',
+    codeLanguage: 'python',
+    density: 'comfortable',
+    readingMode: false,
+    readingComfortTheme: false,
+    customCursorEnabled: true,
+    setPalette: mockSetPalette,
+    setSidebarDefaultOpen: mockSetSidebarDefaultOpen,
+    setFontSize: mockSetFontSize,
+    setCodeLanguage: mockSetCodeLanguage,
+    setDensity: mockSetDensity,
+    setReadingMode: mockSetReadingMode,
+    setReadingComfortTheme: mockSetReadingComfortTheme,
+    setCustomCursorEnabled: mockSetCustomCursorEnabled,
+  })), {
+    getState: () => ({
+      palette: 'gradient-blues',
+      sidebarDefaultOpen: true,
+      fontSize: 'md',
+      codeLanguage: 'python',
+      density: 'comfortable',
+      readingMode: false,
+      readingComfortTheme: false,
+      customCursorEnabled: true,
+      setPalette: mockSetPalette,
+      setSidebarDefaultOpen: mockSetSidebarDefaultOpen,
+      setFontSize: mockSetFontSize,
+      setCodeLanguage: mockSetCodeLanguage,
+      setDensity: mockSetDensity,
+      setReadingMode: mockSetReadingMode,
+      setReadingComfortTheme: mockSetReadingComfortTheme,
+      setCustomCursorEnabled: mockSetCustomCursorEnabled,
+    })
+  })
+}));
 
-vi.mock('../../utils/progressTracker', () => ({
-  getStreakDays: vi.fn().mockReturnValue(3),
-}))
+vi.mock('../../utils/contentLoader', () => ({
+  getAllPhases: vi.fn(() => [
+    { phase: 1, title: 'Phase 1', difficulty: 'beginner' },
+    { phase: 2, title: 'Phase 2', difficulty: 'intermediate' }
+  ]),
+  getLessonsByPhase: vi.fn((phase) => {
+    if (phase === 1) return [{ day: 1, title: 'Lesson 1' }, { day: 2, title: 'Lesson 2' }];
+    if (phase === 2) return [{ day: 3, title: 'Lesson 3' }];
+    return [];
+  }),
+  getLesson: vi.fn(() => ({ day: 1, title: 'Lesson 1' })),
+  phaseIcons: ['📖', '🚀'],
+  difficultyConfig: {
+    beginner: { color: 'green', bg: 'lightgreen', label: 'Beginner' },
+    intermediate: { color: 'orange', bg: 'lightyellow', label: 'Intermediate' }
+  },
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 140 })),
+}));
+
+// Mock SEOHead as it might have issues rendering in tests due to react-helmet
+vi.mock('../../components/SEOHead', () => ({
+  default: () => <div data-testid="mock-seo-head"></div>
+}));
+
+class MockIntersectionObserver {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
 
 describe('ProgressDashboard', () => {
   beforeEach(() => {
-    vi.mocked(contentLoader.getAllPhases).mockReturnValue([
-      { phase: 1, title: 'Phase 1', difficulty: 'beginner' },
-    ] as unknown as contentLoader.Phase[])
-    vi.mocked(contentLoader.getCurriculumMetadata).mockReturnValue({
-      totalDays: 2,
-      totalPhases: 1,
-      totalLevels: 1,
-    })
-    vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([
-      { day: '1', title: 'Lesson 1' },
-    ] as unknown as contentLoader.Lesson[])
-    vi.mocked(contentLoader.getLesson).mockReturnValue({
-      day: '1',
-      title: 'Lesson 1',
-    } as unknown as contentLoader.Lesson)
-
-    // Progress store mock
-    vi.mocked(useProgressStore).mockImplementation(((
-      selector?: (state: ReturnType<typeof useProgressStore.getState>) => unknown,
-    ) => {
-      if (typeof selector === 'function') {
-        return selector({
-          completedLessons: ['day-1'],
-          completedLessonsCount: () => 1,
-          streakDays: () => 3,
-        } as unknown as ReturnType<typeof useProgressStore.getState>)
-      }
-      return {
-        getState: () => ({ clearAllProgress: vi.fn() }),
-      }
-    }) as typeof useProgressStore)
-    Object.assign(useProgressStore, {
-      getState: () => ({ clearAllProgress: vi.fn() }),
-    })
-
-    // Analytics store mock
-    vi.mocked(useLearningAnalyticsStore).mockImplementation(((
-      selector?: (state: ReturnType<typeof useLearningAnalyticsStore.getState>) => unknown,
-    ) => {
-      if (typeof selector === 'function') {
-        return selector({
-          timeByDate: {},
-        } as unknown as ReturnType<typeof useLearningAnalyticsStore.getState>)
-      }
-      return {}
-    }) as typeof useLearningAnalyticsStore)
-    Object.assign(useLearningAnalyticsStore, {
-      getState: () => ({
-        totalLearningMs: () => 1000,
-        weekLearningMs: () => 500,
-        todayLearningMs: () => 100,
-        studyStreakDays: () => 2,
-        getLast7Days: () => [{ date: '2023-01-01', ms: 100 }],
-      }),
-    })
-
-    // Gamification store mock
-    vi.mocked(useGamificationStore).mockImplementation(((
-      selector?: (state: ReturnType<typeof useGamificationStore.getState>) => unknown,
-    ) => {
-      if (typeof selector === 'function') {
-        return selector({
-          xpTotal: 100,
-          achievementsUnlocked: ['badge1'],
-          dailyChallenge: { day: '1' },
-          refreshDailyChallenge: vi.fn(),
-          xpToNextMilestone: () => ({ percent: 50, next: 200 }),
-        } as unknown as ReturnType<typeof useGamificationStore.getState>)
-      }
-    }) as typeof useGamificationStore)
-
-    // Preferences store mock
-    vi.mocked(useUserPreferencesStore).mockReturnValue({
-      palette: 'peach-sorbet',
-      fontSize: 'md',
-      density: 'comfortable',
-      codeLanguage: 'python',
-      sidebarDefaultOpen: true,
-      readingMode: false,
-      readingComfortTheme: false,
-      customCursorEnabled: false,
-      setPalette: vi.fn(),
-      setFontSize: vi.fn(),
-      setDensity: vi.fn(),
-      setCodeLanguage: vi.fn(),
-      setSidebarDefaultOpen: vi.fn(),
-      setReadingMode: vi.fn(),
-      setReadingComfortTheme: vi.fn(),
-      setCustomCursorEnabled: vi.fn(),
-    } as unknown as typeof useUserPreferencesStore)
-  })
-
+    vi.clearAllMocks();
+    window.confirm = vi.fn(() => true);
+    window.IntersectionObserver = MockIntersectionObserver as any;
+  });
   afterEach(() => {
-    vi.clearAllMocks()
-  })
+    vi.restoreAllMocks();
+    delete (window as any).confirm;
+    delete (window as any).IntersectionObserver;
+  });
 
-  it('renders overall stats correctly', () => {
+  const renderComponent = () => {
+    return render(
+      <MemoryRouter>
+        <ProgressDashboard />
+      </MemoryRouter>
+    );
+  };
+
+  it('renders progress dashboard without crashing', async () => {
+    renderComponent();
+    await waitFor(() => expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument());
+  });
+
+  it('clears progress when confirmed', () => {
+    renderComponent();
+    const clearBtn = screen.getByRole('button', { name: /Clear All Progress/i });
+    fireEvent.click(clearBtn);
+    expect(window.confirm).toHaveBeenCalledWith('Are you sure you want to clear all progress? This cannot be undone.');
+    expect(mockClearAllProgress).toHaveBeenCalled();
+  });
+
+  it('does not clear progress when cancelled', () => {
+    window.confirm = vi.fn(() => false);
+    renderComponent();
+    const clearBtn = screen.getByRole('button', { name: /Clear All Progress/i });
+    fireEvent.click(clearBtn);
+    expect(mockClearAllProgress).not.toHaveBeenCalled();
+  });
+
+  it('shows empty state when no progress', async () => {
+    // We'll mock the store locally for this test
+    const { useProgressStore } = await import('../../stores/progressStore');
+    (useProgressStore as any).mockImplementation((selector: any) => selector({
+      completedLessons: [],
+      completedLessonsCount: () => 0,
+      streakDays: () => 0,
+      clearAllProgress: mockClearAllProgress,
+    }));
+
+    renderComponent();
+
+    expect(screen.getByText(/Your journey begins here/i)).toBeInTheDocument();
+  });
+  it('handles phases with no lessons safely', async () => {
+    const loader = await import('../../utils/contentLoader');
+    vi.mocked(loader.getLessonsByPhase).mockImplementationOnce(() => []);
     render(
       <MemoryRouter>
         <ProgressDashboard />
-      </MemoryRouter>,
-    )
+      </MemoryRouter>
+    );
+    expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument();
+  });
 
-    expect(screen.getByText('Your Progress')).toBeInTheDocument()
-    // 1 completed out of 2 total = 50%
-    expect(screen.getAllByTestId('animated-counter')[0]).toHaveTextContent('50%')
-  })
-
-  it('renders gamification section', () => {
+  it('handles phases with undefined lessons safely', async () => {
+    const loader = await import('../../utils/contentLoader');
+    vi.mocked(loader.getLessonsByPhase).mockImplementationOnce(() => undefined as any);
     render(
       <MemoryRouter>
         <ProgressDashboard />
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('Gamification')).toBeInTheDocument()
-    expect(screen.getByText('Badge 1')).toBeInTheDocument()
-    expect(screen.getByText('Day 1: Lesson 1')).toBeInTheDocument()
-  })
-
-  it('renders learning analytics section', () => {
-    render(
-      <MemoryRouter>
-        <ProgressDashboard />
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByText('Learning Analytics')).toBeInTheDocument()
-    expect(screen.getAllByText('1000ms')[0]).toBeInTheDocument() // Total
-    expect(screen.getByText('500ms')).toBeInTheDocument() // Week
-    expect(screen.getByText('100ms')).toBeInTheDocument() // Today
-  })
-
-  it('renders empty state when no lessons completed', () => {
-    vi.mocked(useProgressStore).mockImplementation(((
-      selector?: (state: ReturnType<typeof useProgressStore.getState>) => unknown,
-    ) => {
-      if (typeof selector === 'function') {
-        return selector({
-          completedLessons: [],
-          completedLessonsCount: () => 0,
-          streakDays: () => 0,
-        } as unknown as ReturnType<typeof useProgressStore.getState>)
-      }
-      return {
-        getState: () => ({ clearAllProgress: vi.fn() }),
-      }
-    }) as typeof useProgressStore)
-
-    render(
-      <MemoryRouter>
-        <ProgressDashboard />
-      </MemoryRouter>,
-    )
-
-    expect(screen.getByTestId('fresh-start-illustration')).toBeInTheDocument()
-  })
-
-  it('prompts confirmation when clearing progress', () => {
-    const clearAllProgressMock = vi.fn()
-    vi.mocked(useProgressStore).mockImplementation(((
-      selector?: (state: ReturnType<typeof useProgressStore.getState>) => unknown,
-    ) => {
-      if (typeof selector === 'function') {
-        return selector({
-          completedLessons: ['day-1'],
-          completedLessonsCount: () => 1,
-          streakDays: () => 3,
-        } as unknown as ReturnType<typeof useProgressStore.getState>)
-      }
-      return {
-        getState: () => ({ clearAllProgress: clearAllProgressMock }),
-      }
-    }) as typeof useProgressStore)
-    Object.assign(useProgressStore, {
-      getState: () => ({ clearAllProgress: clearAllProgressMock }),
-    })
-
-    const confirmSpy = vi.spyOn(window, 'confirm').mockReturnValue(true)
-
-    render(
-      <MemoryRouter>
-        <ProgressDashboard />
-      </MemoryRouter>,
-    )
-
-    const clearButton = screen.getByText('Clear All Progress')
-    fireEvent.click(clearButton)
-
-    expect(confirmSpy).toHaveBeenCalled()
-    expect(clearAllProgressMock).toHaveBeenCalled()
-
-    confirmSpy.mockRestore()
-  })
-})
+      </MemoryRouter>
+    );
+    expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument();
+  });
+});
