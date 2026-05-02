@@ -89,14 +89,28 @@ function createAttemptId(quizId: string, attemptedAt: string): string {
 }
 
 function computeStats(attempts: QuizAttempt[], quizId: string): QuizStats | null {
-  const records = attempts.filter((attempt) => attempt.quizId === quizId)
-  if (!records.length) return null
+  let attemptsCount = 0
+  let correct = 0
+  let lastAttempt: QuizAttempt | null = null
 
-  const attemptsCount = records.length
-  const correct = records.filter((attempt) => attempt.correct).length
+  for (let i = 0; i < attempts.length; i++) {
+    const attempt = attempts[i]
+    if (!attempt) continue;
+
+    if (attempt.quizId === quizId) {
+      attemptsCount++
+      if (attempt.correct) {
+        correct++
+      }
+      lastAttempt = attempt
+    }
+  }
+
+  if (attemptsCount === 0) return null
+
   const incorrect = attemptsCount - correct
-  const topic = records[records.length - 1]?.topic ?? quizId
-  const lastAttemptAt = records[records.length - 1]?.attemptedAt ?? new Date(0).toISOString()
+  const topic = lastAttempt?.topic ?? quizId
+  const lastAttemptAt = lastAttempt?.attemptedAt ?? new Date(0).toISOString()
 
   return {
     quizId,
