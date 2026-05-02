@@ -95,7 +95,7 @@ function computeStats(attempts: QuizAttempt[], quizId: string): QuizStats | null
 
   for (let i = 0; i < attempts.length; i++) {
     const attempt = attempts[i]
-    if (!attempt) continue;
+    if (!attempt) continue
 
     if (attempt.quizId === quizId) {
       attemptsCount++
