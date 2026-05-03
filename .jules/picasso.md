@@ -68,3 +68,4 @@ Added focus-visible outlines to sidebar close, navbar hamburger, and navbar sear
 ## Focus-Visible for Map List Toggle
 - Added `focus-visible` styles to the `.map-list-toggle-btn` class in `src/styles/home.css`.
 - Ensures proper keyboard accessibility and visible focus indication for the toggle segmented control used to switch between lists and map views.
+Added aria-label to MapListToggle icon buttons for improved accessibility.
