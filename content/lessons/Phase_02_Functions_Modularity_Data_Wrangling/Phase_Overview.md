@@ -80,7 +80,7 @@ NumPy for fast numerical computing. Pandas for data wrangling, analysis, and tra
 ### Cheat Sheets
 
 - [Pandas Cheat Sheet](https://pandas.pydata.org/Pandas_Cheat_Sheet.pdf)
-- [NumPy Cheat Sheet](https://www.datacamp.com/cheat-sheet/numpy-cheat-sheet-data-analysis-in-python)
+- [NumPy Cheat Sheet](https://www.datacamp.com/tutorial/python-numpy-tutorial)
 - [Regex Cheat Sheet](https://www.rexegg.com/regex-quickstart.html)
 
 ### Practice Platforms

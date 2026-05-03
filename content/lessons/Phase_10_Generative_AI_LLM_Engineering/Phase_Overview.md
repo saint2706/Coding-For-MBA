@@ -434,7 +434,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 
 - [Attention Is All You Need (Vaswani et al., 2017)](https://arxiv.org/abs/1706.03762) — The transformer paper
 - [LoRA (Hu et al., 2021)](https://arxiv.org/abs/2106.09685) — Low-rank adaptation for fine-tuning
-- [ReAct (Yao et al., 2022)](https://react-lm.github.io/) — Reasoning and acting in language models
+- [ReAct (Yao et al., 2022)](https://arxiv.org/abs/2210.03629) — Reasoning and acting in language models
 - [RAGAS (Es et al., 2023)](https://arxiv.org/abs/2309.15217) — RAG evaluation metrics
 - [RAG Survey (Gao et al., 2024)](https://arxiv.org/abs/2312.10997) — Comprehensive RAG patterns
 

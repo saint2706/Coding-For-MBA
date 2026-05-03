@@ -371,7 +371,7 @@ RLHF (Reinforcement Learning from Human Feedback) fine-tunes models to be more h
 - [OpenAI API Docs — Models](https://platform.openai.com/docs/models)
 - [Anthropic Model Documentation](https://docs.anthropic.com/en/docs/about-claude/models)
 - [LMSYS Chatbot Arena Leaderboard](https://chat.lmsys.org/) — human preference-based ranking
-- [Open LLM Leaderboard (HuggingFace)](https://huggingface.co/spaces/HuggingFaceH4/open_llm_leaderboard)
+- [Open LLM Leaderboard (HuggingFace)](https://huggingface.co/spaces/open-llm-leaderboard/open_llm_leaderboard)
 - [Ollama — Run LLMs Locally](https://ollama.ai/)
 
 ---

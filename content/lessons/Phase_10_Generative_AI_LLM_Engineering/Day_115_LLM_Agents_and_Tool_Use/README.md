@@ -465,7 +465,7 @@ Agents can take irreversible actions: sending emails to customers, updating data
 ## Further Reading
 
 - [OpenAI Function Calling Guide](https://platform.openai.com/docs/guides/function-calling)
-- [ReAct: Synergizing Reasoning and Acting in Language Models](https://react-lm.github.io/)
+- [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)
 - [LangGraph — Stateful Multi-Agent Orchestration](https://langchain-ai.github.io/langgraph/)
 - [CrewAI — Multi-Agent Collaboration Framework](https://www.crewai.com/)
 - [OWASP LLM Top 10 — Agent Security Considerations](https://owasp.org/www-project-top-10-for-large-language-model-applications/)

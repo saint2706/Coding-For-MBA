@@ -116,3 +116,4 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Added missing typed JSDoc comments to `src/components/TerminalDashboard.tsx` for `TerminalDashboard`
   - Added missing typed JSDoc comments to `src/utils/contentLoader.ts` for `getReadingTime`
   - Verified `PageSkeleton` in `src/components/Skeleton.tsx` already had complete JSDoc.
+Docs: Fixed broken links across documentation and lesson files.

@@ -1,30 +1,103 @@
 {
   "ignorePatterns": [
-    {"pattern": "^https://leetcode\\.com/"},
-    {"pattern": "^https://pandas\\.pydata\\.org/"},
-    {"pattern": "^https://platform\\.openai\\.com/"},
-    {"pattern": "^https://chat\\.lmsys\\.org/"},
-    {"pattern": "^https://aif360\\.mybluemix\\.net/"},
-    {"pattern": "^http://quotes\\.toscrape\\.com/"},
-    {"pattern": "^https://developer\\.mozilla\\.org/"},
-    {"pattern": "^https://a16z\\.com/"},
-    {"pattern": "^https://www\\.nngroup\\.com/"},
-    {"pattern": "^https://austinhenley\\.com/"},
-    {"pattern": "^https://realpython\\.com/"},
-    {"pattern": "^https://azure\\.microsoft\\.com/"},
-    {"pattern": "^https://python\\.useinstructor\\.com/"},
-    {"pattern": "^https://restfulapi\\.net/"},
-    {"pattern": "^https://www\\.dataengineeringweekly\\.com/"},
-    {"pattern": "^https://jsonplaceholder\\.typicode\\.com/"},
-    {"pattern": "^https://feature-engine\\.readthedocs\\.io/"},
-    {"pattern": "^https://joblib\\.readthedocs\\.io/"},
-    {"pattern": "^https://reddit\\.com/r/localllama"},
-    {"pattern": "^https://machinelearningmastery\\.com/"},
-    {"pattern": "^https://docs\\.scipy\\.org/"},
-    {"pattern": "^https://pgtune\\.leopard\\.in\\.ua/"},
-    {"pattern": "^https://python\\.langchain\\.com/"},
-    {"pattern": "^https://docs\\.trychroma\\.com/"},
-    {"pattern": "^https://keras\\.io/"},
-    {"pattern": "^https://developers\\.google\\.com/machine-learning/crash-course"}
+    {
+      "pattern": "^https://leetcode\\.com/"
+    },
+    {
+      "pattern": "^https://pandas\\.pydata\\.org/"
+    },
+    {
+      "pattern": "^https://platform\\.openai\\.com/"
+    },
+    {
+      "pattern": "^https://chat\\.lmsys\\.org/"
+    },
+    {
+      "pattern": "^https://aif360\\.mybluemix\\.net/"
+    },
+    {
+      "pattern": "^http://quotes\\.toscrape\\.com/"
+    },
+    {
+      "pattern": "^https://developer\\.mozilla\\.org/"
+    },
+    {
+      "pattern": "^https://a16z\\.com/"
+    },
+    {
+      "pattern": "^https://www\\.nngroup\\.com/"
+    },
+    {
+      "pattern": "^https://austinhenley\\.com/"
+    },
+    {
+      "pattern": "^https://realpython\\.com/"
+    },
+    {
+      "pattern": "^https://azure\\.microsoft\\.com/"
+    },
+    {
+      "pattern": "^https://python\\.useinstructor\\.com/"
+    },
+    {
+      "pattern": "^https://restfulapi\\.net/"
+    },
+    {
+      "pattern": "^https://www\\.dataengineeringweekly\\.com/"
+    },
+    {
+      "pattern": "^https://jsonplaceholder\\.typicode\\.com/"
+    },
+    {
+      "pattern": "^https://feature-engine\\.readthedocs\\.io/"
+    },
+    {
+      "pattern": "^https://joblib\\.readthedocs\\.io/"
+    },
+    {
+      "pattern": "^https://reddit\\.com/r/localllama"
+    },
+    {
+      "pattern": "^https://machinelearningmastery\\.com/"
+    },
+    {
+      "pattern": "^https://docs\\.scipy\\.org/"
+    },
+    {
+      "pattern": "^https://pgtune\\.leopard\\.in\\.ua/"
+    },
+    {
+      "pattern": "^https://python\\.langchain\\.com/"
+    },
+    {
+      "pattern": "^https://docs\\.trychroma\\.com/"
+    },
+    {
+      "pattern": "^https://keras\\.io/"
+    },
+    {
+      "pattern": "^https://developers\\.google\\.com/machine-learning/crash-course"
+    },
+    {
+      "pattern": "^https://eur-lex\\.europa\\.eu/"
+    },
+    {
+      "pattern": "^https://aif360\\.res\\.ibm\\.com/"
+    },
+    {
+      "pattern": "^\\.\\./SKILL\\.md$"
+    },
+    {
+      "pattern": "^multi-user\\.md$"
+    },
+    {
+      "pattern": "^error-testing\\.md#offline-testing$"
+    },
+    {
+      "pattern": "^service-workers\\.md#offline-testing$"
+    },
+    {
+      "pattern": "^https://gptpromptbuilder\\.com/$"
+    }
   ]
 }
