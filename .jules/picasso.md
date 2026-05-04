@@ -68,3 +68,11 @@ Added focus-visible outlines to sidebar close, navbar hamburger, and navbar sear
 ## Focus-Visible for Map List Toggle
 - Added `focus-visible` styles to the `.map-list-toggle-btn` class in `src/styles/home.css`.
 - Ensures proper keyboard accessibility and visible focus indication for the toggle segmented control used to switch between lists and map views.
+
+### Dynamic ARIA Labels Enhancements
+**Date:** 2024-05-20
+**Goal:** Improve accessibility by making dynamic aria-labels reflect state and adding focus-visible.
+**Changes Made:**
+- Updated `ExerciseWidget` solution toggle button to have a dynamic `aria-label` that reflects its state instead of a static "Toggle solution".
+- Added `focus-visible` to `MapListToggle` button for keyboard accessibility.
+**Learning:** When adding ARIA labels, ensure they dynamically reflect the current state of the button if its function or text changes (e.g., "Hide Answer" vs "Show Answer").

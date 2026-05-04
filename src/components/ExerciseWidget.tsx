@@ -249,7 +249,7 @@ export default function ExerciseWidget({
             onClick={handleToggleSolution}
             aria-expanded={showSolution}
             aria-controls={solutionId}
-            aria-label="Toggle solution"
+            aria-label={showSolution ? 'Hide solution' : 'Show solution'}
           >
             {showSolution ? (
               <>
