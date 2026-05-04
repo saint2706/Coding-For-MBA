@@ -963,30 +963,43 @@ export function getRelatedLessons(lesson: Readonly<Lesson>, count = 4): readonly
   const myTags = new Set((lesson.tags as readonly string[]) || [])
   const myConcepts = new Set((lesson.concepts as readonly string[]) || [])
 
-  const scored = lessons!
-    .filter((l) => l.day !== lesson.day && !prereqs.has(l.day))
-    .map((l) => {
+  const scored: Array<{ lesson: ImmutableLesson; score: number; sharedTags: string[] }> = []
+
+  for (let i = 0; i < lessons!.length; i++) {
+    const l = lessons![i]
+    if (!l) continue
+    if (l.day !== lesson.day && !prereqs.has(l.day)) {
       let score = 0
       const lTags = (l.tags as readonly string[]) || []
       const lConcepts = (l.concepts as readonly string[]) || []
 
-      lTags.forEach((t) => {
-        if (myTags.has(t)) score += 2
-      })
-      lConcepts.forEach((c) => {
-        if (myConcepts.has(c)) score += 3
-      })
+      for (let j = 0; j < lTags.length; j++) {
+        const t = lTags[j]
+        if (t && myTags.has(t)) score += 2
+      }
+      for (let j = 0; j < lConcepts.length; j++) {
+        const c = lConcepts[j]
+        if (c && myConcepts.has(c)) score += 3
+      }
       if (l.phase === lesson.phase) score += 1
       if (Math.abs(l.phase - lesson.phase) === 1) score += 0.5
 
-      return { lesson: l, score, sharedTags: lTags.filter((t) => myTags.has(t)) }
-    })
-    .filter((s) => s.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, count)
+      if (score > 0) {
+        const sharedTags: string[] = []
+        for (let j = 0; j < lTags.length; j++) {
+          const t = lTags[j]
+          if (t && myTags.has(t)) sharedTags.push(t)
+        }
+        scored.push({ lesson: l, score, sharedTags })
+      }
+    }
+  }
+
+  scored.sort((a, b) => b.score - a.score)
+  const sliced = scored.slice(0, count)
 
   const result = Object.freeze(
-    scored.map((s) =>
+    sliced.map((s) =>
       Object.freeze({
         ...s.lesson,
         _sharedTags: Object.freeze([...s.sharedTags]),
