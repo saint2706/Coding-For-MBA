@@ -25,6 +25,10 @@
     {"pattern": "^https://python\\.langchain\\.com/"},
     {"pattern": "^https://docs\\.trychroma\\.com/"},
     {"pattern": "^https://keras\\.io/"},
-    {"pattern": "^https://developers\\.google\\.com/machine-learning/crash-course"}
+    {"pattern": "^https://developers\\.google\\.com/machine-learning/crash-course"},
+    {"pattern": "^\\.\\./SKILL\\.md"},
+    {"pattern": "^multi-user\\.md"},
+    {"pattern": "^error-testing\\.md#offline-testing"},
+    {"pattern": "^service-workers\\.md#offline-testing"}
   ]
 }

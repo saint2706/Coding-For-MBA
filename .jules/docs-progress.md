@@ -116,3 +116,4 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Added missing typed JSDoc comments to `src/components/TerminalDashboard.tsx` for `TerminalDashboard`
   - Added missing typed JSDoc comments to `src/utils/contentLoader.ts` for `getReadingTime`
   - Verified `PageSkeleton` in `src/components/Skeleton.tsx` already had complete JSDoc.
+Fixed 3 broken links in SECURITY.md and ignored 4 internal broken link patterns from CLAUDE.md in mlc_config.json
