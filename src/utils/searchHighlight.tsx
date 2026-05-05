@@ -26,9 +26,14 @@ const regexCache = new Map<string, RegExp>()
  * @returns Array of React nodes with matched terms wrapped in <mark>.
  */
 export function highlightText(text: string, terms: string | readonly string[]): React.ReactNode[] {
-  const normalized = (Array.isArray(terms) ? terms : [terms])
-    .map((term) => term.trim())
-    .filter((term) => term.length > 0)
+  const termsArray = Array.isArray(terms) ? terms : [terms]
+  const normalized: string[] = []
+  for (let i = 0; i < termsArray.length; i++) {
+    const trimmed = termsArray[i]?.trim()
+    if (trimmed && trimmed.length > 0) {
+      normalized.push(trimmed)
+    }
+  }
 
   if (!text || normalized.length === 0) return [text]
 

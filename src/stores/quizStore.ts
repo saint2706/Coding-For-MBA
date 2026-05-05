@@ -93,7 +93,12 @@ function computeStats(attempts: QuizAttempt[], quizId: string): QuizStats | null
   if (!records.length) return null
 
   const attemptsCount = records.length
-  const correct = records.filter((attempt) => attempt.correct).length
+  let correct = 0
+  for (let i = 0; i < attemptsCount; i++) {
+    if (records[i]?.correct) {
+      correct++
+    }
+  }
   const incorrect = attemptsCount - correct
   const topic = records[records.length - 1]?.topic ?? quizId
   const lastAttemptAt = records[records.length - 1]?.attemptedAt ?? new Date(0).toISOString()

@@ -111,7 +111,13 @@ function toDocument(lesson: Lesson): SearchDocument {
       ]
     : [`day ${lesson.day}`]
   const plainContent = stripMarkdown(lesson.content || '')
-  const dayText = dayParts.filter(Boolean).join(' ')
+  let dayText = ''
+  for (let i = 0; i < dayParts.length; i++) {
+    const part = dayParts[i]
+    if (part) {
+      dayText += (dayText ? ' ' : '') + part
+    }
+  }
   const phaseText = `phase ${lesson.phase}`
   const conceptsLower = (lesson.concepts ?? []).join(' ').toLowerCase()
   const tagsLower = (lesson.tags ?? []).join(' ').toLowerCase()
@@ -374,10 +380,15 @@ export function getSearchSnippet(content: string, query: string, maxLength = 180
   if (terms.length === 0) return plain.slice(0, maxLength)
 
   const lower = plain.toLowerCase()
-  const firstMatch = terms
-    .map((term) => lower.indexOf(term))
-    .filter((idx) => idx >= 0)
-    .sort((a, b) => a - b)[0]
+  let firstMatch: number | undefined = undefined
+  for (let i = 0; i < terms.length; i++) {
+    const term = terms[i]
+    if (!term) continue
+    const idx = lower.indexOf(term)
+    if (idx >= 0 && (firstMatch === undefined || idx < firstMatch)) {
+      firstMatch = idx
+    }
+  }
 
   if (firstMatch === undefined) return `${plain.slice(0, maxLength).trim()}…`
 
