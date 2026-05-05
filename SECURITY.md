@@ -25,7 +25,7 @@ If you discover a security vulnerability in this project, please:
 
 ### Dependency Management
 
-- **Automated Scanning**: This project uses [GitHub Dependency Review](https://docs.github.com/en/code-security/dependency-review/about-dependency-review) to block pull requests that introduce high or critical vulnerabilities.
+- **Automated Scanning**: This project uses [GitHub Dependency Review](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review) to block pull requests that introduce high or critical vulnerabilities.
 - **Scheduled Updates**: [Dependabot](https://docs.github.com/en/code-security/dependabot) checks for dependency updates on **Thursdays at 1:00 PM IST** (configured in `.github/dependabot.yml`).
 - **Manual Audits**: Run `npm audit` locally to scan for known vulnerabilities:
 
@@ -104,8 +104,8 @@ npm run typecheck
 
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 - [GitHub Security Best Practices](https://docs.github.com/en/code-security)
-- [npm Security Documentation](https://docs.npmjs.com/about-npm-security)
-- [Node.js Security Best Practices](https://nodejs.org/en/docs/guides/nodejs-security/)
+- [npm Security Documentation](https://docs.npmjs.com/auditing-package-dependencies-for-security-vulnerabilities)
+- [Node.js Security Best Practices](https://nodejs.org/en/learn/getting-started/security-best-practices)
 
 ## Version History
 
