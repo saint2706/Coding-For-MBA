@@ -1,0 +1,70 @@
+{
+    "day": 45,
+    "questions": [
+        {
+            "id": "d45q01",
+            "type": "multiple_choice",
+            "question": "A dataset has a `transaction_date` column. Which feature engineering transformation extracts the most useful signals for a purchase prediction model?",
+            "options": [
+                "Convert the date to a Unix timestamp (seconds since 1970)",
+                "Drop the date column — models can't learn from dates",
+                "Extract day_of_week, month, is_weekend, and days_since_last_purchase as separate numeric features",
+                "Use the full datetime string as a categorical feature with one-hot encoding"
+            ],
+            "answer": 2,
+            "explanation": "Raw datetime objects aren't directly usable by most ML models, and a Unix timestamp hides business-relevant patterns. Extracting components like day_of_week (weekly seasonality), month (annual seasonality), is_weekend (binary behavioral signal), and recency (days since last transaction) exposes patterns the model can learn. This is standard practice — ML can then discover that weekends drive higher conversion, for example."
+        },
+        {
+            "id": "d45q02",
+            "type": "multiple_choice",
+            "question": "A `quality` column has values 'Low', 'Medium', 'High'. Should you apply OneHotEncoding or OrdinalEncoding, and why?",
+            "options": [
+                "OneHotEncoding — always use it for string columns to avoid introducing fake numeric relationships",
+                "OrdinalEncoding — because the values have a natural order (Low < Medium < High), and encoding them as 0, 1, 2 preserves that ordering for the model",
+                "OrdinalEncoding — because tree-based models cannot use one-hot encoded features",
+                "Neither — drop the column and create a binary 'is_high_quality' feature instead"
+            ],
+            "answer": 1,
+            "explanation": "OneHotEncoding treats all categories as unordered (nominal). For truly ordered/ranked categories (ordinal data), OrdinalEncoding assigns integers that preserve the rank: Low=0, Medium=1, High=2. The model can then learn that High > Medium > Low. Using OneHotEncoding on ordinal data loses the ordering information. Use OrdinalEncoder with `categories=[['Low', 'Medium', 'High']]` to ensure the correct order."
+        },
+        {
+            "id": "d45q03",
+            "type": "multiple_choice",
+            "question": "A `StandardScaler` is fit on the full dataset (train + test combined) before the train-test split. A colleague says 'but it's just scaling, not the model.' Why is this still data leakage?",
+            "options": [
+                "It is not leakage — scaling doesn't affect model accuracy, only speed",
+                "The scaler learns the mean and standard deviation from test samples; these statistics influence how training features are normalized, so the model indirectly benefits from test data characteristics",
+                "It causes leakage only if the test set has a different distribution than the train set",
+                "It is leakage only for tree-based models, not for linear models"
+            ],
+            "answer": 1,
+            "explanation": "Data leakage means any information from the test set influences the training process. When a scaler is fit on all data, its learned mean and std include test set statistics. This means training features are normalized using information the model should never have seen. The effect is subtle but real — especially on small datasets where test outliers can shift the scaler parameters. Always fit transformers only on training data."
+        },
+        {
+            "id": "d45q04",
+            "type": "multiple_choice",
+            "question": "When should you use `StratifiedKFold` instead of standard `KFold` for cross-validation?",
+            "options": [
+                "When your features have different scales",
+                "When the target variable is continuous (regression)",
+                "When the target is categorical and class distribution is uneven — StratifiedKFold ensures each fold has the same class proportions as the full dataset",
+                "When you have more than 10,000 training samples"
+            ],
+            "answer": 2,
+            "explanation": "With imbalanced classes (e.g., 5% positive), a random KFold split might produce folds with 0% or 15% positive by chance, making some folds useless for evaluating rare-class performance. StratifiedKFold guarantees each fold maintains the original class ratio (≈5% positive in every fold), producing reliable and comparable performance estimates across folds. Always use StratifiedKFold for classification."
+        },
+        {
+            "id": "d45q05",
+            "type": "multiple_choice",
+            "question": "What is the advantage of `log_amount = np.log1p(amount)` for a right-skewed transaction amount feature?",
+            "options": [
+                "It converts the feature to a percentage, making it easier to interpret",
+                "It compresses the long right tail, making extreme values (e.g., $50,000 purchases) less dominant and bringing the distribution closer to normal, which benefits many ML models",
+                "It ensures all values are between 0 and 1, required by logistic regression",
+                "It removes negative values that would break the model"
+            ],
+            "answer": 1,
+            "explanation": "Transaction amounts are often log-normally distributed — a few very large values stretch the right tail enormously. Log-transforming compresses this tail: $10 → log(11)≈2.4, $1,000 → log(1001)≈6.9, $100,000 → log(100001)≈11.5. This prevents large amounts from dominating distance calculations and makes linear model assumptions (normally distributed errors) more plausible. `log1p` handles zero values safely: log(0+1) = 0."
+        }
+    ]
+}

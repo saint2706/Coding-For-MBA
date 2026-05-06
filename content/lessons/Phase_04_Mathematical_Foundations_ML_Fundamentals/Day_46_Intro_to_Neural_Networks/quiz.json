@@ -1,0 +1,70 @@
+{
+    "day": 46,
+    "questions": [
+        {
+            "id": "d46q01",
+            "type": "multiple_choice",
+            "question": "A single neuron computes `z = np.dot(inputs, weights) + bias` and then applies an activation function. Why is the activation function necessary?",
+            "options": [
+                "To normalize the output to the range [0, 1] for all neurons",
+                "Without activation functions, stacking multiple linear layers is equivalent to a single linear transformation — activation functions introduce non-linearity, enabling networks to learn complex patterns",
+                "To speed up computation by reducing the number of matrix multiplications",
+                "To ensure gradients don't vanish during backpropagation"
+            ],
+            "answer": 1,
+            "explanation": "A composition of linear functions is still linear: W₂(W₁x + b₁) + b₂ = (W₂W₁)x + const. No matter how many layers you stack, without activation functions the whole network collapses to a single linear transformation. Non-linear activations like ReLU, sigmoid, and tanh allow neural networks to approximate arbitrarily complex functions — this is the Universal Approximation Theorem."
+        },
+        {
+            "id": "d46q02",
+            "type": "multiple_choice",
+            "question": "For a neural network with a binary classification output, which activation function should the final layer use, and why?",
+            "options": [
+                "ReLU — because it works in both hidden and output layers",
+                "Linear — because classification outputs should be unbounded",
+                "Sigmoid — it maps any real number to (0, 1), producing a valid probability for the positive class",
+                "Softmax — required for all classification tasks"
+            ],
+            "answer": 2,
+            "explanation": "Sigmoid σ(z) = 1/(1+e^{-z}) squashes any real-valued input to (0, 1), making it a valid probability output for binary classification. The loss function `binary_crossentropy` expects probabilities in this range. Softmax is used for multi-class classification (outputs summing to 1). ReLU and linear activations are for hidden layers and regression outputs, respectively."
+        },
+        {
+            "id": "d46q03",
+            "type": "multiple_choice",
+            "question": "During training, the validation loss stops improving after epoch 15 while training loss continues to decrease. What is happening, and what technique addresses it?",
+            "options": [
+                "The learning rate is too low; increase it to allow faster convergence",
+                "The model is underfitting; add more layers to increase capacity",
+                "The model is overfitting; early stopping (halt training when validation loss stops improving) or dropout can prevent memorization of training data",
+                "The validation set is too small; split more data into validation"
+            ],
+            "answer": 2,
+            "explanation": "Training loss decreasing while validation loss plateaus or rises is the classic overfitting signature. The model memorizes training examples rather than learning generalizable patterns. Early stopping monitors validation loss and halts training at the optimal epoch. Dropout randomly deactivates neurons during training, forcing the network to learn redundant representations — both are standard regularization techniques for deep learning."
+        },
+        {
+            "id": "d46q04",
+            "type": "multiple_choice",
+            "question": "In a Keras model built with `keras.Sequential`, what does adding `layers.Dense(64, activation='relu')` create?",
+            "options": [
+                "A convolutional layer with 64 filters of size relu×relu",
+                "A fully connected layer where every input connects to each of 64 neurons, applying ReLU to each neuron's weighted sum",
+                "64 independent neural networks that vote on the output",
+                "A recurrent layer that processes 64 time steps sequentially"
+            ],
+            "answer": 1,
+            "explanation": "A `Dense` layer (also called fully connected) connects every neuron in the previous layer to each of the 64 neurons in this layer. For an input of shape (batch, n_inputs), it computes: output = ReLU(input @ W + b) where W has shape (n_inputs, 64) and b has shape (64,). The output shape is (batch, 64). This is the fundamental building block for learning complex feature representations."
+        },
+        {
+            "id": "d46q05",
+            "type": "multiple_choice",
+            "question": "A neural network is compiled with `loss='binary_crossentropy'` and `optimizer='adam'`. For regression (predicting house prices), which loss function should be used instead?",
+            "options": [
+                "binary_crossentropy — it works for all prediction tasks",
+                "categorical_crossentropy — because prices belong to categories",
+                "mean_squared_error (MSE) or mean_absolute_error (MAE) — these measure the distance between predicted and actual continuous values",
+                "hinge — the standard loss for regression problems"
+            ],
+            "answer": 2,
+            "explanation": "Binary cross-entropy is designed for binary classification (0/1 outputs). For regression, you need a loss that measures numeric distance between predictions and targets. MSE = mean((y_pred - y_true)²) penalizes large errors heavily. MAE = mean(|y_pred - y_true|) is more robust to outliers. The output layer should also use `activation='linear'` (no activation) to allow unbounded numeric predictions."
+        }
+    ]
+}

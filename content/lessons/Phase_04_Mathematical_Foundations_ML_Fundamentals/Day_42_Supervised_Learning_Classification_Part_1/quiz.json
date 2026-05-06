@@ -1,0 +1,70 @@
+{
+    "day": 42,
+    "questions": [
+        {
+            "id": "d42q01",
+            "type": "multiple_choice",
+            "question": "Logistic regression predicts a churn probability of 0.73 for a customer. What does this output represent, and how is a final class label determined?",
+            "options": [
+                "The model is 73% confident — this is just a confidence score, not a true probability",
+                "P(churn | features) = 0.73; a threshold (typically 0.5) is applied to convert this to a binary prediction: ≥0.5 → 'churn', <0.5 → 'stay'",
+                "The customer has been misclassified 73% of the time in training",
+                "There are 73 features predicting the outcome"
+            ],
+            "answer": 1,
+            "explanation": "Logistic regression outputs a calibrated probability P(positive class | features) using the sigmoid function. A threshold converts probabilities to class labels. The default threshold is 0.5, but for business problems you often tune it — e.g., use 0.3 for churn (act on more at-risk customers) or 0.7 for fraud (only flag high-confidence cases). `model.predict_proba(X)[:, 1]` returns these probabilities."
+        },
+        {
+            "id": "d42q02",
+            "type": "multiple_choice",
+            "question": "A confusion matrix shows: True Negatives=450, False Positives=30, False Negatives=15, True Positives=5. What is the Recall, and what does it mean for a churn detection system?",
+            "options": [
+                "Recall = 5/(5+30) = 14% — of predicted churners, 14% actually churn",
+                "Recall = 5/(5+15) = 25% — the model caught only 25% of actual churners, missing 75%",
+                "Recall = 450/(450+30) = 94% — the model correctly identified 94% of non-churners",
+                "Recall = (450+5)/500 = 91% — overall accuracy of the model"
+            ],
+            "answer": 1,
+            "explanation": "Recall = TP / (TP + FN) = 5 / (5 + 15) = 25%. This means only 1 in 4 actual churners is being identified — the model misses 75% of customers at risk. For churn prevention (where you want to intervene before customers leave), low recall is catastrophic. Lower the classification threshold or optimize for recall during training to catch more churners, even at the cost of some false alarms."
+        },
+        {
+            "id": "d42q03",
+            "type": "multiple_choice",
+            "question": "What does the ROC curve plot, and what does an AUC of 0.50 indicate about a classifier?",
+            "options": [
+                "ROC plots Precision vs Recall; AUC=0.50 means perfect discrimination",
+                "ROC plots True Positive Rate (Recall) vs False Positive Rate at varying thresholds; AUC=0.50 means the model performs no better than random guessing",
+                "ROC plots training accuracy vs test accuracy; AUC=0.50 means the model is overfit",
+                "ROC plots model confidence vs actual labels; AUC=0.50 means the model is well-calibrated"
+            ],
+            "answer": 1,
+            "explanation": "The ROC (Receiver Operating Characteristic) curve plots True Positive Rate (Recall) on the y-axis vs False Positive Rate on the x-axis at every possible classification threshold. AUC (Area Under the Curve) measures overall discrimination ability. AUC=0.50 is a random classifier (diagonal line). AUC=1.0 is perfect. AUC is threshold-independent, making it ideal for comparing models regardless of the operating threshold."
+        },
+        {
+            "id": "d42q04",
+            "type": "multiple_choice",
+            "question": "When would you prioritize Precision over Recall in a classification problem?",
+            "options": [
+                "Always — precision is universally more important than recall",
+                "When the cost of acting on false positives is high, such as blocking a legitimate bank transaction or sending an aggressive retention offer to a customer who was not going to churn",
+                "When the dataset is highly imbalanced (more negatives than positives)",
+                "When using logistic regression rather than tree-based models"
+            ],
+            "answer": 1,
+            "explanation": "Precision = TP / (TP + FP) measures 'of all positive predictions, how many were correct.' When false positives are costly — flagging innocent transactions as fraud, falsely diagnosing a disease, over-sending promotions — you want high precision. Conversely, when false negatives are costly (missing a tumor, missing a fraud case), prioritize recall. The F1 score balances both when neither dominates."
+        },
+        {
+            "id": "d42q05",
+            "type": "multiple_choice",
+            "question": "You use `stratify=y` in `train_test_split`. What does this do, and when is it important?",
+            "options": [
+                "It sorts the dataset by the target label before splitting",
+                "It ensures the class distribution in the train and test sets matches the original dataset, preventing skewed splits on imbalanced data",
+                "It applies data augmentation to the minority class in the training set",
+                "It scales the features within each class separately to preserve distribution"
+            ],
+            "answer": 1,
+            "explanation": "Without stratification, a random split on imbalanced data (e.g., 5% positive) might produce a test set with 0% or 10% positives by chance, making evaluation unreliable. `stratify=y` ensures the same class proportions appear in both train and test sets. Use it whenever your target is categorical — especially critical with class imbalance (<20% minority class)."
+        }
+    ]
+}

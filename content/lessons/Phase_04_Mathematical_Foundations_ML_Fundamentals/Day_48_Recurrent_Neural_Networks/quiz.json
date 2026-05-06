@@ -1,0 +1,70 @@
+{
+    "day": 48,
+    "questions": [
+        {
+            "id": "d48q01",
+            "type": "multiple_choice",
+            "question": "What makes Recurrent Neural Networks (RNNs) fundamentally different from standard feedforward networks for sequence data?",
+            "options": [
+                "RNNs use convolutional filters instead of dense layers",
+                "RNNs maintain a hidden state that is updated at each time step, allowing information from previous inputs to influence the processing of current inputs",
+                "RNNs process the entire sequence in a single forward pass using attention",
+                "RNNs use larger weight matrices to handle variable-length inputs"
+            ],
+            "answer": 1,
+            "explanation": "An RNN cell computes: h_t = tanh(x_t × Wx + h_{t-1} × Wh + b). The hidden state h_{t-1} from the previous step is carried forward, giving the network 'memory.' This recurrent connection is what makes RNNs suitable for sequences where order and context matter — unlike feedforward networks that treat each input independently."
+        },
+        {
+            "id": "d48q02",
+            "type": "multiple_choice",
+            "question": "A Simple RNN is trained on sequences of 100 time steps but fails to learn dependencies between steps 1 and 100. What problem is this, and what architecture addresses it?",
+            "options": [
+                "Exploding gradients — use gradient clipping",
+                "Vanishing gradients — during backpropagation through 100 steps, gradient signals from early steps become exponentially small; LSTM and GRU cells use gating mechanisms to preserve long-range dependencies",
+                "Overfitting — the model needs more dropout layers",
+                "Mode collapse — the model always predicts the same output regardless of input"
+            ],
+            "answer": 1,
+            "explanation": "Backpropagation Through Time (BPTT) multiplies gradients through each time step. With 100 steps and tanh activations (derivatives < 1), gradients shrink exponentially — by step 1, the gradient is near zero. LSTM (Long Short-Term Memory) solves this with forget, input, and output gates that control what information to preserve, write, or read. The 'cell state' highway allows gradients to flow across long sequences without vanishing."
+        },
+        {
+            "id": "d48q03",
+            "type": "multiple_choice",
+            "question": "For time series prediction with an LSTM, input data has shape (samples, timesteps, features). If you have 1,000 sequences each 20 days long with 5 features per day, what is the correct input shape?",
+            "options": [
+                "(1000, 5) — samples × features, time steps are implicit",
+                "(20, 1000, 5) — time steps first, then samples, then features",
+                "(1000, 20, 5) — samples × timesteps × features",
+                "(1000, 100) — samples × (timesteps × features) flattened"
+            ],
+            "answer": 2,
+            "explanation": "Keras LSTM layers expect input shape (batch_size, timesteps, features). For 1,000 sequences of 20 days with 5 daily features, the shape is (1000, 20, 5). The LSTM processes each sequence one day at a time, updating its hidden state across 20 steps. Getting this shape right is one of the most common pain points when working with RNNs — always check `X.shape` before training."
+        },
+        {
+            "id": "d48q04",
+            "type": "multiple_choice",
+            "question": "What is the key advantage of a GRU (Gated Recurrent Unit) over an LSTM?",
+            "options": [
+                "GRU can handle longer sequences than LSTM without vanishing gradients",
+                "GRU has fewer gates (reset and update) than LSTM (forget, input, output), making it simpler, faster to train, and often achieving comparable performance with less computation",
+                "GRU processes sequences bidirectionally by default",
+                "GRU uses ReLU activation instead of tanh, preventing saturation"
+            ],
+            "answer": 1,
+            "explanation": "LSTM has 3 gating mechanisms (forget gate, input gate, output gate) and a separate cell state. GRU simplifies this to 2 gates (reset and update gates) while still addressing vanishing gradients. In practice, GRU trains faster with fewer parameters and achieves similar performance to LSTM on many tasks. Choose LSTM for complex long-range dependencies; GRU for faster prototyping or when computational efficiency matters."
+        },
+        {
+            "id": "d48q05",
+            "type": "multiple_choice",
+            "question": "Which of these problems is best suited for an LSTM model rather than a standard feedforward neural network?",
+            "options": [
+                "Predicting house prices from tabular features (square footage, bedrooms, location)",
+                "Classifying images of cats vs dogs",
+                "Forecasting daily sales for the next 30 days using the past 90 days of sales history",
+                "Clustering customers into segments based on demographic data"
+            ],
+            "answer": 2,
+            "explanation": "Sales forecasting is a sequential time series problem: each day's sales depends on recent history (trends, seasonality), and the temporal order matters. An LSTM can learn these temporal patterns by maintaining state across the 90-day input window. Feedforward networks treat all inputs independently — they would need manual feature engineering (lag features, rolling averages) to capture time dependencies. CNNs handle images; clustering is unsupervised."
+        }
+    ]
+}

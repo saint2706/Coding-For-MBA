@@ -1,0 +1,70 @@
+{
+    "day": 43,
+    "questions": [
+        {
+            "id": "d43q01",
+            "type": "multiple_choice",
+            "question": "A decision tree for loan approval splits first on `credit_score > 650`. What criterion does the algorithm use to choose this split over other possible splits?",
+            "options": [
+                "It picks the feature with the highest mean value first",
+                "It picks the split that maximizes information gain (or minimizes Gini impurity) — the split that creates the two most homogeneous subgroups",
+                "It picks the feature with the most missing values to resolve ambiguity first",
+                "It picks splits randomly and evaluates them during backpropagation"
+            ],
+            "answer": 1,
+            "explanation": "Decision trees use impurity measures (Gini impurity or Information Gain) to evaluate every possible split at every feature. The split chosen at each node is the one that produces the greatest reduction in impurity — meaning the resulting child nodes contain samples that are as 'pure' (same class) as possible. This greedy top-down process continues recursively until a stopping criterion (max depth, min samples) is reached."
+        },
+        {
+            "id": "d43q02",
+            "type": "multiple_choice",
+            "question": "A single decision tree achieves 82% accuracy and a Random Forest with 100 trees achieves 91%. Why does the ensemble outperform the single tree?",
+            "options": [
+                "The Random Forest uses a more complex loss function than a single tree",
+                "Each tree in the forest is trained on a random sample of data and random subset of features; their errors are largely uncorrelated, so averaging the votes reduces overall variance",
+                "The forest trains for 100× more epochs, giving it more time to optimize",
+                "Random Forests use gradient boosting, which is stronger than standard tree splitting"
+            ],
+            "answer": 1,
+            "explanation": "Random Forests use two sources of randomness: (1) Bootstrap sampling — each tree trains on a random sample with replacement; (2) Feature subsampling — each split considers only a random subset of features. This decorrelates the individual trees, so their errors are largely independent. When you average uncorrelated errors, they cancel out, reducing variance without increasing bias — this is the core of bagging."
+        },
+        {
+            "id": "d43q03",
+            "type": "multiple_choice",
+            "question": "In a Random Forest trained on credit data, `feature_importances_` shows: income=0.42, credit_score=0.31, debt_ratio=0.18, employment_years=0.09. What does this tell you?",
+            "options": [
+                "Income appears first in the dataset and is therefore ranked highest",
+                "Income explains 42% of the variance in the target across all 100 trees; together, income and credit score account for 73% of the model's predictive power",
+                "Debt ratio and employment years should be removed because their importance is below 0.2",
+                "Feature importances sum to less than 1.0, indicating some features were ignored"
+            ],
+            "answer": 1,
+            "explanation": "Random Forest feature importance measures the average reduction in impurity (Gini) contributed by each feature across all trees. Importances always sum to 1.0. Income (0.42) and credit_score (0.31) together drive 73% of the model's decisions. This is actionable: focus data collection on these features and consider them for business rules. Note that correlated features may have split importance between them."
+        },
+        {
+            "id": "d43q04",
+            "type": "multiple_choice",
+            "question": "When tuning `max_depth` for a decision tree, the training accuracy stays near 100% for all depths, but test accuracy peaks at depth=4 and declines for depths > 6. What is happening?",
+            "options": [
+                "The tree is underfitting at depth=4; increasing depth always improves generalization",
+                "The training data is too small for deep trees to learn anything meaningful",
+                "Deeper trees memorize training noise (overfitting); depth=4 is the sweet spot where the tree captures real patterns without fitting individual examples",
+                "Decision trees cannot generalize beyond their maximum depth"
+            ],
+            "answer": 2,
+            "explanation": "A fully grown decision tree can create one leaf per training sample, achieving 100% training accuracy but catastrophic test performance. `max_depth` controls the bias-variance tradeoff: too shallow underfits, too deep overfits. Cross-validate max_depth values (e.g., 2–20) and pick the depth that maximizes test/validation accuracy — typically 3–8 for many real-world problems."
+        },
+        {
+            "id": "d43q05",
+            "type": "multiple_choice",
+            "question": "You want to tune both `n_estimators` and `max_depth` for a Random Forest using `GridSearchCV`. Which `param_grid` is correct?",
+            "options": [
+                "{'n_estimators': [100, 200], 'max_depth': [5, 10, None]}",
+                "{'RandomForest.n_estimators': [100, 200], 'RandomForest.max_depth': [5, 10]}",
+                "{'model__n_estimators': [100, 200], 'model__max_depth': [5, 10]}",
+                "{'params': {'n_estimators': [100, 200], 'max_depth': [5, 10]}}"
+            ],
+            "answer": 0,
+            "explanation": "When tuning an estimator directly (not inside a Pipeline), you reference parameters by their name without any prefix. `GridSearchCV(RandomForestClassifier(), {'n_estimators': [100, 200], 'max_depth': [5, 10, None]}, cv=5)` will try all 6 combinations (2 n_estimators × 3 max_depth). Inside a Pipeline, you'd need the `'step_name__parameter'` syntax, e.g., `'classifier__n_estimators'`."
+        }
+    ]
+}
