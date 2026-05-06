@@ -54,6 +54,21 @@ Every time a model outputs a **confidence score**, it's applying probability the
 
 ### Probability Fundamentals
 
+The core vocabulary in compact form:
+
+- $P(A) \in [0, 1]$ — probability of event $A$.
+- $P(A \mid B) = \dfrac{P(A \cap B)}{P(B)}$ — conditional probability.
+- $P(A \cup B) = P(A) + P(B) - P(A \cap B)$ — union (inclusion–exclusion).
+- **Law of total probability**: $P(E) = \sum_i P(E \mid H_i) \, P(H_i)$.
+- **Bayes' theorem**: $P(H \mid E) = \dfrac{P(E \mid H) \, P(H)}{P(E)}$.
+
+The spam example below uses these directly. With $P(\text{spam}) = 0.20$, $P(\text{"free"} \mid \text{spam}) = 0.40$, and $P(\text{"free"} \mid \text{ham}) = 0.02$:
+
+$$
+P(\text{spam} \mid \text{"free"}) = \frac{P(\text{"free"} \mid \text{spam}) \, P(\text{spam})}{P(\text{"free"})} \approx 0.82
+$$
+
+
 ```python
 import numpy as np
 from scipy import stats
@@ -83,6 +98,31 @@ print(f"P(spam | contains 'free'): {p_spam_given_word:.3f}")
 ### Probability Distributions
 
 Three distributions power 80% of ML models. Know them cold.
+
+**Normal (Gaussian)** with mean $\mu$ and standard deviation $\sigma$ has density:
+
+$$
+f(x \mid \mu, \sigma) = \frac{1}{\sigma\sqrt{2\pi}} \, \exp\!\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)
+$$
+
+The **z-score** rescales any value to standard-normal units:
+
+$$
+z = \frac{x - \mu}{\sigma}
+$$
+
+**Binomial** counts $k$ successes in $n$ independent Bernoulli trials with success probability $p$:
+
+$$
+P(X = k) = \binom{n}{k} p^k (1-p)^{n-k}, \qquad \mathbb{E}[X] = np, \quad \mathrm{Var}(X) = np(1-p)
+$$
+
+**Poisson** counts rare events with rate $\lambda$ per interval:
+
+$$
+P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \qquad \mathbb{E}[X] = \mathrm{Var}(X) = \lambda
+$$
+
 
 ```python
 # --- 1. Normal (Gaussian) Distribution ---
@@ -133,7 +173,13 @@ print(f"  P(> 15 orders — need extra staff): {1 - poisson.cdf(15):.4f}")
 
 ### The Central Limit Theorem (CLT)
 
-The CLT is the mathematical reason sampling works — and why ML validation is valid.
+The CLT is the mathematical reason sampling works — and why ML validation is valid. For i.i.d. samples $X_1, \ldots, X_n$ with mean $\mu$ and finite variance $\sigma^2$, the sample mean $\bar{X}_n = \tfrac{1}{n}\sum_{i=1}^{n} X_i$ has approximate distribution:
+
+$$
+\bar{X}_n \;\xrightarrow{\,n \to \infty\,}\; \mathcal{N}\!\left(\mu, \, \frac{\sigma^2}{n}\right)
+$$
+
+In particular, the **standard error of the mean** shrinks as $\sigma / \sqrt{n}$.
 
 ```python
 import numpy as np
@@ -175,6 +221,15 @@ print(f"\nTheoretical SE (σ/√n): ${theoretical_se:.2f}")
 ```
 
 ### Hypothesis Testing for Business Decisions
+
+For a two-proportion test comparing conversion rates $\hat{p}_C$ (control) and $\hat{p}_T$ (treatment), the pooled estimate and z-statistic are:
+
+$$
+\hat{p} = \frac{x_C + x_T}{n_C + n_T}, \qquad
+z = \frac{\hat{p}_T - \hat{p}_C}{\sqrt{\hat{p}(1 - \hat{p}) \left(\tfrac{1}{n_C} + \tfrac{1}{n_T}\right)}}
+$$
+
+A two-tailed p-value is $p = 2 \cdot \big(1 - \Phi(|z|)\big)$, where $\Phi$ is the standard-normal CDF.
 
 ```python
 from scipy import stats
@@ -355,15 +410,15 @@ print(f"95% Parametric CI: [${ci_param[0]:.2f}, ${ci_param[1]:.2f}]")
 
 ## Mastery Check
 
-**Q1**: In Bayes' theorem — P(H|E) = P(E|H)×P(H) / P(E) — what does each term represent?
+**Q1**: In Bayes' theorem $P(H \mid E) = \dfrac{P(E \mid H) \, P(H)}{P(E)}$, what does each term represent?
 <details><summary>Answer</summary>
 
-- **P(H|E)** = Posterior: updated belief after seeing evidence
-- **P(E|H)** = Likelihood: probability of observing this evidence if H is true
-- **P(H)** = Prior: belief before seeing evidence
-- **P(E)** = Marginal likelihood: normalizing constant (probability of the evidence)
+- $P(H \mid E)$ = **Posterior**: updated belief after seeing evidence
+- $P(E \mid H)$ = **Likelihood**: probability of observing this evidence if $H$ is true
+- $P(H)$ = **Prior**: belief before seeing evidence
+- $P(E)$ = **Marginal likelihood**: normalizing constant, $P(E) = \sum_{H'} P(E \mid H') P(H')$
 
-In the spam example: H = spam, E = email contains "free"
+In the spam example: $H = \text{spam}$, $E = \text{email contains "free"}$.
 </details>
 
 **Q2**: Why does the Central Limit Theorem matter for cross-validation?

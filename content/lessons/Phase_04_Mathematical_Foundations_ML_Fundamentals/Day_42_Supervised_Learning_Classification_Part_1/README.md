@@ -52,7 +52,31 @@ That's classification: predicting **discrete categories** from input features.
 
 ### Logistic Regression: The Fundamental Classifier
 
-Despite its name, logistic regression is for classification, not regression. It predicts probabilities.
+Despite its name, logistic regression is for classification, not regression. It predicts probabilities by passing a linear score through the **sigmoid (logistic) function**:
+
+$$
+\sigma(z) = \frac{1}{1 + e^{-z}} \in (0, 1)
+$$
+
+The model is:
+
+$$
+P(y = 1 \mid \mathbf{x}) = \sigma(\mathbf{w}^\top \mathbf{x} + b) = \frac{1}{1 + \exp\!\big(-(\mathbf{w}^\top \mathbf{x} + b)\big)}
+$$
+
+Equivalently, the **log-odds (logit)** of $y = 1$ is linear in the features:
+
+$$
+\log\!\frac{P(y=1 \mid \mathbf{x})}{P(y=0 \mid \mathbf{x})} = \mathbf{w}^\top \mathbf{x} + b
+$$
+
+Parameters are fit by minimizing the **binary cross-entropy** (a.k.a. log-loss):
+
+$$
+\mathcal{L}_{\text{BCE}}(\mathbf{w}, b) = -\frac{1}{n} \sum_{i=1}^{n} \Big[ y_i \log \hat{p}_i + (1 - y_i) \log(1 - \hat{p}_i) \Big]
+$$
+
+where $\hat{p}_i = \sigma(\mathbf{w}^\top \mathbf{x}_i + b)$.
 
 ```python
 import numpy as np
@@ -161,7 +185,25 @@ print(f"True Positives (caught churns): {TP}")
 
 ### Precision, Recall, and F1 Score
 
-Different metrics matter for different problems.
+Different metrics matter for different problems. Each is a simple ratio of confusion-matrix counts:
+
+$$
+\text{Precision} = \frac{TP}{TP + FP}, \qquad
+\text{Recall} = \frac{TP}{TP + FN}
+$$
+
+The **F1 score** is their harmonic mean — it punishes models that ignore one of the two:
+
+$$
+F_1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+$$
+
+A more general $F_\beta$ score lets you weight recall more heavily ($\beta > 1$) when missing positives is costly:
+
+$$
+F_\beta = (1 + \beta^2) \cdot \frac{\text{Precision} \cdot \text{Recall}}{\beta^2 \cdot \text{Precision} + \text{Recall}}
+$$
+
 
 ```python
 from sklearn.metrics import precision_score, recall_score, f1_score
@@ -201,7 +243,14 @@ Recall    = TP / (TP + FN)  →  "How many positives did we catch?"
 
 ### ROC Curve and AUC
 
-The ROC curve shows performance across all possible thresholds.
+The ROC curve shows performance across all possible thresholds. It plots the **true-positive rate** against the **false-positive rate**:
+
+$$
+\text{TPR} = \frac{TP}{TP + FN} = \text{Recall}, \qquad
+\text{FPR} = \frac{FP}{FP + TN}
+$$
+
+**AUC** (area under the ROC curve) has a clean probabilistic meaning: it equals the probability that a randomly drawn positive sample is ranked higher than a randomly drawn negative one.
 
 ```python
 from sklearn.metrics import roc_curve, roc_auc_score
@@ -781,11 +830,12 @@ y_pred = (y_prob >= 0.3).astype(int)
 Today you learned:
 
 - ✅ Classification predicts categories, not numbers
-- ✅ Logistic regression outputs probabilities via sigmoid
-- ✅ Confusion matrix shows TP, TN, FP, FN
-- ✅ Precision: how accurate are positive predictions?
-- ✅ Recall: how many positives did we catch?
-- ✅ F1 Score: harmonic mean of precision and recall
+- ✅ Logistic regression outputs probabilities via the sigmoid: $\sigma(z) = 1 / (1 + e^{-z})$
+- ✅ Trained by minimizing log-loss: $\mathcal{L} = -\tfrac{1}{n}\sum [y \log \hat{p} + (1 - y) \log(1 - \hat{p})]$
+- ✅ Confusion matrix shows $TP$, $TN$, $FP$, $FN$
+- ✅ Precision $= TP / (TP + FP)$: how accurate are positive predictions?
+- ✅ Recall $= TP / (TP + FN)$: how many positives did we catch?
+- ✅ $F_1 = 2 \cdot \text{Prec} \cdot \text{Rec} / (\text{Prec} + \text{Rec})$: harmonic mean of precision and recall
 - ✅ ROC-AUC: classifier performance across all thresholds
 - ✅ Threshold tuning matches business costs
 

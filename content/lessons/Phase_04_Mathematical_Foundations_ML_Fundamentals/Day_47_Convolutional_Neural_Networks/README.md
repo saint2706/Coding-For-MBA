@@ -48,6 +48,32 @@ outcomes:
 
 ### The Convolution Operation
 
+The 2D **discrete convolution** of an input image $I$ with a kernel $K$ of shape $k_h \times k_w$ slides $K$ over $I$ and computes a weighted sum at every position. For an output pixel at $(i, j)$:
+
+$$
+S(i, j) = (I * K)(i, j) = \sum_{m=0}^{k_h - 1} \sum_{n=0}^{k_w - 1} I(i + m,\, j + n) \, K(m, n)
+$$
+
+For a colour input with $C$ channels and $F$ filters, each filter has shape $k_h \times k_w \times C$ and the layer output has $F$ channels:
+
+$$
+S_f(i, j) = \sum_{c=1}^{C} \sum_{m=0}^{k_h - 1} \sum_{n=0}^{k_w - 1} I_c(i + m,\, j + n) \, K^{(f)}_c(m, n) + b_f
+$$
+
+Given input size $H \times W$, kernel size $k$, stride $s$, and padding $p$, the **output spatial size** is:
+
+$$
+H_{\text{out}} = \left\lfloor \frac{H + 2p - k}{s} \right\rfloor + 1, \qquad
+W_{\text{out}} = \left\lfloor \frac{W + 2p - k}{s} \right\rfloor + 1
+$$
+
+A **max-pooling** layer with $p \times p$ window and stride $s$ takes the maximum over each window:
+
+$$
+\text{MaxPool}(I)(i, j) = \max_{0 \le m, n < p} I\big(s i + m,\, s j + n\big)
+$$
+
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -427,10 +453,11 @@ Creates variations (rotated, shifted) the model hasn't seen. Prevents memorizati
 
 ## Summary
 
-- ✅ CNNs use sliding filters to detect spatial patterns
+- ✅ Convolution: $S(i, j) = \sum_{m, n} I(i + m, j + n) K(m, n)$ slides filters over the input
+- ✅ Output size: $H_{\text{out}} = \lfloor (H + 2p - k)/s \rfloor + 1$
 - ✅ Early layers detect edges, deeper layers detect objects
-- ✅ Pooling reduces dimensions and adds invariance
-- ✅ Data augmentation prevents overfitting
+- ✅ Pooling reduces dimensions and adds spatial invariance
+- ✅ Data augmentation expands effective dataset and prevents overfitting
 - ✅ Transfer learning leverages pre-trained models
 
 **Tomorrow**: Recurrent Neural Networks for sequential data.

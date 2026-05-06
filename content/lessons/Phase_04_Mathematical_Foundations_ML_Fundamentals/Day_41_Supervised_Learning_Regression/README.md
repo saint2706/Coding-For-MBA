@@ -52,7 +52,24 @@ That's regression: predicting a **continuous numerical value** based on input fe
 
 ### Linear Regression: The Foundation
 
-Linear regression finds the best straight line (or hyperplane) through your data.
+Linear regression finds the best straight line (or hyperplane) through your data. For a sample with feature vector $\mathbf{x}_i \in \mathbb{R}^p$, the prediction is:
+
+$$
+\hat{y}_i = \mathbf{w}^\top \mathbf{x}_i + b = w_1 x_{i1} + w_2 x_{i2} + \cdots + w_p x_{ip} + b
+$$
+
+The weights $\mathbf{w}$ and bias $b$ are chosen to minimize the **mean-squared-error** loss:
+
+$$
+\mathcal{L}_{\text{MSE}}(\mathbf{w}, b) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+$$
+
+When written in matrix form, the closed-form solution (the *normal equation*) is:
+
+$$
+\mathbf{w}^\star = (X^\top X)^{-1} X^\top \mathbf{y}
+$$
+
 
 ```python
 import numpy as np
@@ -124,7 +141,13 @@ plt.show()
 
 ### Feature Scaling: Why It Matters
 
-Features on different scales can hurt some algorithms.
+Features on different scales can hurt some algorithms. **Standardization** maps each feature to mean zero and unit variance:
+
+$$
+x'_{ij} = \frac{x_{ij} - \mu_j}{\sigma_j}
+$$
+
+where $\mu_j$ and $\sigma_j$ are the column-wise mean and standard deviation computed on the **training set only**.
 
 ```python
 from sklearn.preprocessing import StandardScaler
@@ -158,7 +181,12 @@ for name, coef in zip(X.columns, model_scaled.coef_):
 
 ### Polynomial Regression: Capturing Non-linearity
 
-When relationships aren't straight lines:
+When relationships aren't straight lines, expand the feature into polynomial basis functions and fit a linear model in the expanded space. A degree-$d$ polynomial expansion of a single feature $x$ produces:
+
+$$
+\hat{y} = w_0 + w_1 x + w_2 x^2 + \cdots + w_d x^d
+$$
+
 
 ```python
 from sklearn.preprocessing import PolynomialFeatures
@@ -207,7 +235,21 @@ plt.show()
 
 ### Regularization: Ridge and Lasso
 
-Regularization prevents overfitting by penalizing large coefficients.
+Regularization prevents overfitting by penalizing large coefficients. Both methods minimize the MSE plus a coefficient norm:
+
+**Ridge (L2)**:
+
+$$
+\mathcal{L}_{\text{Ridge}}(\mathbf{w}) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \alpha \sum_{j=1}^{p} w_j^2 = \mathrm{MSE} + \alpha \, \|\mathbf{w}\|_2^2
+$$
+
+**Lasso (L1)**:
+
+$$
+\mathcal{L}_{\text{Lasso}}(\mathbf{w}) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \alpha \sum_{j=1}^{p} |w_j| = \mathrm{MSE} + \alpha \, \|\mathbf{w}\|_1
+$$
+
+The L1 penalty has corners at $w_j = 0$, which is why Lasso drives coefficients **exactly** to zero (automatic feature selection); the L2 penalty only shrinks them smoothly.
 
 ```python
 from sklearn.linear_model import Ridge, Lasso
@@ -301,13 +343,13 @@ print(f"Best Lasso alpha: {best_lasso_alpha:.4f}")
 
 ### Regression Metrics Explained
 
-| Metric   | Formula              | Interpretation           | Use When              |
-| -------- | -------------------- | ------------------------ | --------------------- |
-| **MAE**  | Σ\|y - ŷ\|/n         | Average absolute error   | Robust to outliers    |
-| **MSE**  | Σ(y - ŷ)²/n          | Average squared error    | Penalize large errors |
-| **RMSE** | √MSE                 | Same units as target     | Standard choice       |
-| **R²**   | 1 - SS_res/SS_tot    | Variance explained (0-1) | Compare models        |
-| **MAPE** | Σ\|y - ŷ\|/y/n × 100 | Percentage error         | Business reporting    |
+| Metric   | Formula                                                                      | Interpretation           | Use When              |
+| -------- | ---------------------------------------------------------------------------- | ------------------------ | --------------------- |
+| **MAE**  | $\dfrac{1}{n}\sum_i \lvert y_i - \hat{y}_i\rvert$                            | Average absolute error   | Robust to outliers    |
+| **MSE**  | $\dfrac{1}{n}\sum_i (y_i - \hat{y}_i)^2$                                     | Average squared error    | Penalize large errors |
+| **RMSE** | $\sqrt{\mathrm{MSE}}$                                                        | Same units as target     | Standard choice       |
+| **R²**   | $1 - \dfrac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}$           | Variance explained (0–1) | Compare models        |
+| **MAPE** | $\dfrac{100}{n}\sum_i \left\lvert\dfrac{y_i - \hat{y}_i}{y_i}\right\rvert$   | Percentage error         | Business reporting    |
 
 ### When to Use Each Regression Type
 
@@ -773,12 +815,12 @@ Monitor the train-test gap as you tune!
 
 Today you learned:
 
-- ✅ Linear regression fits a line (or hyperplane) to predict continuous values
-- ✅ Feature scaling ensures fair treatment across features
-- ✅ Polynomial features capture non-linear relationships
-- ✅ Ridge (L2) shrinks coefficients to reduce overfitting
-- ✅ Lasso (L1) drives some coefficients to zero (feature selection)
-- ✅ RMSE and R² are standard regression metrics
-- ✅ Cross-validation helps find optimal regularization strength
+- ✅ Linear regression $\hat{y} = \mathbf{w}^\top \mathbf{x} + b$ fits a line/hyperplane to predict continuous values
+- ✅ Feature scaling $x' = (x - \mu) / \sigma$ ensures fair treatment across features
+- ✅ Polynomial features capture non-linear relationships in a linear model
+- ✅ Ridge (L2): adds $\alpha \|\mathbf{w}\|_2^2$ to shrink coefficients smoothly
+- ✅ Lasso (L1): adds $\alpha \|\mathbf{w}\|_1$ to drive some coefficients to zero (feature selection)
+- ✅ RMSE $= \sqrt{\tfrac{1}{n}\sum (y_i - \hat{y}_i)^2}$ and R² are standard regression metrics
+- ✅ Cross-validation helps find optimal regularization strength $\alpha$
 
 **Tomorrow**: Classification—predicting categories instead of numbers.

@@ -49,6 +49,17 @@ outcomes:
 
 ### The Recurrent Connection
 
+A recurrent layer maintains a hidden state $\mathbf{h}_t$ that summarizes everything seen so far. At every time step it updates the state from the new input $\mathbf{x}_t$ and the previous state $\mathbf{h}_{t-1}$:
+
+$$
+\mathbf{h}_t = \tanh\!\big(W_x \mathbf{x}_t + W_h \mathbf{h}_{t-1} + \mathbf{b}\big), \qquad
+\hat{y}_t = W_y \mathbf{h}_t + \mathbf{b}_y
+$$
+
+The same weight matrices $W_x, W_h$ are reused at every step (parameter sharing across time).
+
+The **vanishing-gradient problem** of vanilla RNNs comes from backpropagating through time: $\partial \mathbf{h}_t / \partial \mathbf{h}_0 \approx \prod_{k=1}^{t} W_h \cdot \mathrm{diag}(\tanh'(\cdot))$. When eigenvalues of $W_h$ are below $1$ this product collapses to zero exponentially fast — the network forgets long-range dependencies.
+
 ```python
 import numpy as np
 
@@ -150,6 +161,36 @@ for name, model in models.items():
 ```
 
 ### Understanding LSTM
+
+The LSTM solves vanishing gradients by adding a **cell state** $\mathbf{c}_t$ that flows through time with only additive interactions, controlled by three sigmoid **gates**. Letting $[\mathbf{h}_{t-1}, \mathbf{x}_t]$ denote the concatenation of the previous hidden state and the current input:
+
+$$
+\mathbf{f}_t = \sigma\!\big(W_f [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_f\big) \quad \text{(forget gate)}
+$$
+
+$$
+\mathbf{i}_t = \sigma\!\big(W_i [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_i\big), \qquad
+\tilde{\mathbf{c}}_t = \tanh\!\big(W_c [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_c\big) \quad \text{(input gate + candidate)}
+$$
+
+$$
+\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t \quad \text{(cell state update)}
+$$
+
+$$
+\mathbf{o}_t = \sigma\!\big(W_o [\mathbf{h}_{t-1}, \mathbf{x}_t] + \mathbf{b}_o\big), \qquad
+\mathbf{h}_t = \mathbf{o}_t \odot \tanh(\mathbf{c}_t) \quad \text{(output gate + hidden state)}
+$$
+
+The forget gate $\mathbf{f}_t$ near $1$ means "remember"; near $0$ means "forget". Because $\mathbf{c}_t$ is updated additively (rather than multiplicatively), gradients can flow across hundreds of time steps without vanishing.
+
+The simpler **GRU** merges the forget and input gates into a single update gate $\mathbf{z}_t$ and uses a reset gate $\mathbf{r}_t$:
+
+$$
+\mathbf{z}_t = \sigma(W_z [\mathbf{h}_{t-1}, \mathbf{x}_t]), \quad
+\mathbf{r}_t = \sigma(W_r [\mathbf{h}_{t-1}, \mathbf{x}_t]), \quad
+\mathbf{h}_t = (1 - \mathbf{z}_t) \odot \mathbf{h}_{t-1} + \mathbf{z}_t \odot \tanh\!\big(W_h [\mathbf{r}_t \odot \mathbf{h}_{t-1}, \mathbf{x}_t]\big)
+$$
 
 ```python
 """
@@ -458,9 +499,11 @@ When choose GRU over LSTM?
 
 ## Summary
 
-- ✅ RNNs process sequences by maintaining hidden state (memory)
-- ✅ LSTM solves vanishing gradients with cell state and gates
-- ✅ GRU offers similar benefits with fewer parameters
+- ✅ RNNs maintain a hidden state: $\mathbf{h}_t = \tanh(W_x \mathbf{x}_t + W_h \mathbf{h}_{t-1} + \mathbf{b})$
+- ✅ Vanilla RNNs suffer vanishing gradients because $\partial \mathbf{h}_t / \partial \mathbf{h}_0$ involves $\prod W_h$
+- ✅ LSTMs add a cell state and three gates ($\mathbf{f}, \mathbf{i}, \mathbf{o}$) so gradients flow additively
+- ✅ Cell update: $\mathbf{c}_t = \mathbf{f}_t \odot \mathbf{c}_{t-1} + \mathbf{i}_t \odot \tilde{\mathbf{c}}_t$
+- ✅ GRU merges into update + reset gates with fewer parameters
 - ✅ Stack RNN layers for complex patterns
 - ✅ Use Bidirectional when full context is available
 - ✅ Embedding layer converts text to dense vectors
