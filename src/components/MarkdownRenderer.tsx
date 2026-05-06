@@ -230,8 +230,7 @@ const ImageWithZoom = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
           <div
             className="image-zoom-overlay"
             onClick={() => setZoomed(false)}
-            role="dialog"
-            aria-modal="true"
+            role="presentation"
             aria-label={`Zoomed: ${rest.alt || 'image'}`}
           >
             <button
