@@ -120,3 +120,6 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 ## 2026-05-05
 - Fixed 3 broken links in `SECURITY.md` pointing to GitHub Code Security and Node.js security best practices.
 - Updated `mlc_config.json` with ignore patterns to prevent false positives from markdown-link-check (e.g., `../SKILL.md`, `www.shapeofai.com`, `eur-lex.europa.eu`).
+
+- **[2026-05-06] Added JSDoc comments to UI components**
+  - Added missing typed JSDoc comments to `src/components/SidebarPhaseGroup.tsx` for `SidebarPhaseGroup`
