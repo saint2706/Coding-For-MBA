@@ -210,8 +210,7 @@ describe('App', () => {
 
   it('calls setTimeout for preloadSearchIndex if requestIdleCallback is not available', async () => {
     const originalRIC = window.requestIdleCallback
-    // @ts-ignore
-    delete window.requestIdleCallback
+    delete (window as unknown as { requestIdleCallback?: unknown }).requestIdleCallback
     vi.useFakeTimers()
     const { preloadSearchIndex } = await import('../utils/searchIndex')
 
