@@ -99,15 +99,40 @@ hidden_state = RNN(sentence)  # Single 512D vector
 # "sat" knows it relates to "cat" and "mat"
 ```
 
-**Attention formula:**
+**Attention formula** — the famous "scaled dot-product attention" from *Attention Is All You Need*:
 
-```
-Attention(Q, K, V) = softmax(QK^T / √d_k) × V
+$$
+\text{Attention}(Q, K, V) = \text{softmax}\!\left(\frac{Q K^\top}{\sqrt{d_k}}\right) V
+$$
 
-Q = Query: "What am I looking for?"
-K = Key: "What do I contain?"
-V = Value: "What information do I have?"
-```
+with shapes $Q \in \mathbb{R}^{n \times d_k}$, $K \in \mathbb{R}^{m \times d_k}$, $V \in \mathbb{R}^{m \times d_v}$ for $n$ query positions and $m$ key/value positions.
+
+- **Q** (query): "What am I looking for?"
+- **K** (key): "What do I contain?"
+- **V** (value): "What information do I have?"
+
+The $\sqrt{d_k}$ scaling keeps the dot products from growing too large (and pushing the softmax into a saturated, low-gradient regime) when $d_k$ is high.
+
+**Multi-head attention** runs $h$ attention heads in parallel on $d_k = d_v = d_{\text{model}} / h$ dimensional projections and concatenates the results:
+
+$$
+\text{head}_i = \text{Attention}(Q W_i^Q,\, K W_i^K,\, V W_i^V), \qquad
+\text{MHA}(Q, K, V) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) \, W^O
+$$
+
+For autoregressive ("causal") models like GPT, a triangular mask $M_{ij} = -\infty$ for $j > i$ is added inside the softmax so position $i$ cannot attend to future positions:
+
+$$
+\text{CausalAttention}(Q, K, V) = \text{softmax}\!\left(\frac{Q K^\top}{\sqrt{d_k}} + M\right) V
+$$
+
+Because the input has no inherent order, transformers add **positional encodings** — for the original sinusoidal scheme, position $\text{pos}$ and dimension $i$ get:
+
+$$
+\text{PE}(\text{pos}, 2i) = \sin\!\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right), \qquad
+\text{PE}(\text{pos}, 2i+1) = \cos\!\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right)
+$$
+
 
 **Intuitive example:**
 

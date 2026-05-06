@@ -52,7 +52,19 @@ Every neural network, every recommendation system, every computer vision model�
 
 ### Vectors: The Language of Data
 
-A vector is an ordered list of numbers. In ML, each sample in your dataset is a vector.
+A vector is an ordered list of numbers. In ML, each sample in your dataset is a vector. Formally, a vector $\mathbf{v} \in \mathbb{R}^n$ is written:
+
+$$
+\mathbf{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}
+$$
+
+The **magnitude** (or $\ell_2$-norm) of a vector measures its length:
+
+$$
+\|\mathbf{v}\|_2 = \sqrt{\sum_{i=1}^{n} v_i^2} = \sqrt{v_1^2 + v_2^2 + \cdots + v_n^2}
+$$
+
+A **unit vector** $\hat{\mathbf{v}} = \mathbf{v} / \|\mathbf{v}\|$ has length $1$ and captures only the direction of $\mathbf{v}$.
 
 ```python
 import numpy as np
@@ -91,7 +103,23 @@ print(f"Length: {np.linalg.norm(unit_a):.2f}")  # 1.0
 
 ### Dot Product: Measuring Similarity
 
-The dot product is fundamental to ML. It measures how "aligned" two vectors are.
+The dot product is fundamental to ML. It measures how "aligned" two vectors are. Algebraically:
+
+$$
+\mathbf{a} \cdot \mathbf{b} = \sum_{i=1}^{n} a_i b_i = a_1 b_1 + a_2 b_2 + \cdots + a_n b_n
+$$
+
+Geometrically it relates to the angle $\theta$ between the vectors:
+
+$$
+\mathbf{a} \cdot \mathbf{b} = \|\mathbf{a}\| \, \|\mathbf{b}\| \cos\theta
+$$
+
+The closely-related **cosine similarity** removes magnitude effects, giving a pure direction-based score in $[-1, 1]$:
+
+$$
+\text{cos\_sim}(\mathbf{a}, \mathbf{b}) = \frac{\mathbf{a} \cdot \mathbf{b}}{\|\mathbf{a}\| \, \|\mathbf{b}\|}
+$$
 
 ```python
 # Dot product: sum of element-wise products
@@ -130,7 +158,24 @@ print(f"Similarity to B: {sim_b:.4f}")
 
 ### Matrices: Data and Transformations
 
-A matrix is a 2D array. In ML, your entire dataset is a matrix.
+A matrix is a 2D array. In ML, your entire dataset is a matrix. A matrix $A \in \mathbb{R}^{m \times n}$ has $m$ rows and $n$ columns:
+
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix}
+$$
+
+**Matrix multiplication** $C = AB$ for $A \in \mathbb{R}^{m \times n}$ and $B \in \mathbb{R}^{n \times p}$ gives $C \in \mathbb{R}^{m \times p}$ where each entry is a dot product:
+
+$$
+C_{ij} = \sum_{k=1}^{n} A_{ik} B_{kj}
+$$
+
+The inner dimensions must match (both equal to $n$); the outer dimensions form the result shape.
 
 ```python
 # Create matrices
@@ -158,7 +203,17 @@ print(f"Result:\n{C}")
 
 ### Matrix Multiplication in ML
 
-Here's why matrix multiplication matters for ML:
+Here's why matrix multiplication matters for ML. **Linear regression** uses a matrix–vector product to compute predictions for every sample at once:
+
+$$
+\hat{\mathbf{y}} = X\mathbf{w} + b
+$$
+
+A **fully-connected neural network layer** is the same operation, wrapped in a non-linear activation function $\sigma(\cdot)$:
+
+$$
+\mathbf{h} = \sigma(XW + \mathbf{b})
+$$
 
 ```python
 # Linear regression: y = Xw + b
@@ -193,6 +248,17 @@ print(f"Neural layer output shape: {output.shape}")
 
 ### Special Matrices and Operations
 
+The **identity matrix** $I_n$ acts like the number $1$ for matrices: $IA = AI = A$.
+
+The **inverse** $A^{-1}$ (when it exists) satisfies $A A^{-1} = A^{-1} A = I$. The **determinant** $\det(A)$ measures how the matrix scales volume; if $\det(A) = 0$, the matrix is **singular** and has no inverse.
+
+**Eigenvectors** $\mathbf{v}$ and **eigenvalues** $\lambda$ are the directions a transformation only stretches, never rotates:
+
+$$
+A\mathbf{v} = \lambda \mathbf{v}
+$$
+
+
 ```python
 # Identity matrix: I @ A = A @ I = A
 I = np.eye(3)  # 3x3 identity
@@ -223,13 +289,13 @@ print(f"Eigenvectors:\n{eigenvectors}")
 
 ### Linear Algebra in ML Algorithms
 
-| Algorithm             | Linear Algebra Role                             |
-| --------------------- | ----------------------------------------------- |
-| **Linear Regression** | Solve normal equation: w = (X^T X)^(-1) X^T y   |
-| **PCA**               | Eigendecomposition of covariance matrix         |
-| **Neural Networks**   | Layers are matrix multiplications + activations |
-| **SVD**               | Matrix factorization for recommendations        |
-| **Word Embeddings**   | Words as vectors; similarity via dot products   |
+| Algorithm             | Linear Algebra Role                                                |
+| --------------------- | ------------------------------------------------------------------ |
+| **Linear Regression** | Normal equation: $\mathbf{w} = (X^\top X)^{-1} X^\top \mathbf{y}$  |
+| **PCA**               | Eigendecomposition of covariance matrix $\Sigma = \frac{1}{n-1} X^\top X$ |
+| **Neural Networks**   | Layers as $\sigma(XW + \mathbf{b})$                                 |
+| **SVD**               | Factorization $A = U\Sigma V^\top$ for recommendations              |
+| **Word Embeddings**   | Words as vectors; similarity via $\mathbf{a} \cdot \mathbf{b}$      |
 
 ### When to Use Sparse Matrices
 
@@ -427,8 +493,8 @@ If the dot product of two vectors is 0, what does this tell you?
 
 **Answer:** The vectors are **orthogonal** (perpendicular).
 
-Geometrically: a · b = |a| |b| cos(θ)
-When a · b = 0 and neither vector is zero, cos(θ) = 0, meaning θ = 90°.
+Geometrically: $\mathbf{a} \cdot \mathbf{b} = \|\mathbf{a}\| \, \|\mathbf{b}\| \cos\theta$.
+When $\mathbf{a} \cdot \mathbf{b} = 0$ and neither vector is zero, $\cos\theta = 0$, so $\theta = 90°$.
 
 **In ML context:**
 
@@ -466,21 +532,21 @@ Given A with shape (100, 50) and B with shape (50, 10), what is the shape of A @
 
 ### Question 3: Why Transpose?
 
-In the normal equation w = (X^T X)^(-1) X^T y, why do we compute X^T X?
+In the normal equation $\mathbf{w} = (X^\top X)^{-1} X^\top \mathbf{y}$, why do we compute $X^\top X$?
 
 <details>
 <summary>Click for Answer</summary>
 
-**Answer:** X^T X creates a square matrix that can be inverted.
+**Answer:** $X^\top X$ creates a square matrix that can be inverted.
 
-- X has shape (n_samples × n_features)
-- X^T has shape (n_features × n_samples)
-- X^T @ X has shape (n_features × n_features) — square!
+- $X$ has shape $(n_\text{samples} \times n_\text{features})$
+- $X^\top$ has shape $(n_\text{features} \times n_\text{samples})$
+- $X^\top X$ has shape $(n_\text{features} \times n_\text{features})$ — square!
 
 **Why it works mathematically:**
-X^T X represents the covariance structure of features. The inverse "normalizes" for correlations between features, allowing us to find optimal weights.
+$X^\top X$ represents the covariance structure of features. The inverse "normalizes" for correlations between features, allowing us to find optimal weights.
 
-**Practical note:** This is called the "normal equation" because it solves ∂Loss/∂w = 0 directly, but it's slow for large n_features. Gradient descent is preferred for large problems.
+**Practical note:** This is called the "normal equation" because it solves $\partial \mathcal{L} / \partial \mathbf{w} = 0$ directly, but it's slow for large $n_\text{features}$. Gradient descent is preferred for large problems.
 
 </details>
 
@@ -561,10 +627,10 @@ D, I = index.search(query_vector.reshape(1, -1), 10)
 Today you learned:
 
 - ✅ Vectors represent data points; matrices represent datasets
-- ✅ Dot product measures vector similarity
+- ✅ Dot product $\mathbf{a} \cdot \mathbf{b}$ measures vector similarity
 - ✅ Matrix multiplication transforms and combines data
-- ✅ Linear regression uses the normal equation: w = (X^T X)^(-1) X^T y
-- ✅ PCA uses eigendecomposition to find principal directions
+- ✅ Linear regression uses the normal equation: $\mathbf{w} = (X^\top X)^{-1} X^\top \mathbf{y}$
+- ✅ PCA uses eigendecomposition $A\mathbf{v} = \lambda \mathbf{v}$ to find principal directions
 - ✅ Every ML model is built on these operations
 
 **Tomorrow**: Calculus Foundations—how gradient descent finds optimal parameters.

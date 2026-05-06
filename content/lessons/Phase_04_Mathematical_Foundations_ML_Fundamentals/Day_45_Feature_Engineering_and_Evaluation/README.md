@@ -45,6 +45,40 @@ outcomes:
 
 ## The Technical Deep Dive
 
+### Common Feature Transformations
+
+A few standard transformations cover most numerical preprocessing. Each fixes a different distributional problem:
+
+**Standardization (z-score)** — centers and rescales to mean $0$, std $1$:
+
+$$
+x'_j = \frac{x_j - \mu_j}{\sigma_j}
+$$
+
+**Min–max normalization** — squashes a feature into $[0, 1]$:
+
+$$
+x'_j = \frac{x_j - \min(x_j)}{\max(x_j) - \min(x_j)}
+$$
+
+**Robust scaling** — uses median and IQR instead, so it ignores outliers:
+
+$$
+x'_j = \frac{x_j - \text{median}(x_j)}{Q_{0.75}(x_j) - Q_{0.25}(x_j)}
+$$
+
+**Log transform** — compresses heavy right tails for skewed monetary or count data:
+
+$$
+x' = \log(1 + x)
+$$
+
+**Pearson correlation** — quantifies linear association between two features (useful for diagnosing multicollinearity):
+
+$$
+\rho_{XY} = \frac{\mathrm{Cov}(X, Y)}{\sigma_X \sigma_Y} = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2} \, \sqrt{\sum_i (y_i - \bar{y})^2}} \in [-1, 1]
+$$
+
 ### Feature Creation
 
 ```python
@@ -330,6 +364,9 @@ Why use sklearn Pipeline over manual preprocessing?
 ## Summary
 
 - ✅ Feature engineering transforms raw data into model-ready signals
+- ✅ Standardize with $x' = (x - \mu)/\sigma$; normalize with $x' = (x - \min)/(\max - \min)$
+- ✅ Use $\log(1 + x)$ for right-skewed monetary/count data
+- ✅ Diagnose multicollinearity via $\rho_{XY} = \mathrm{Cov}(X, Y) / (\sigma_X \sigma_Y)$
 - ✅ Choose encoding based on categorical type (ordinal vs nominal)
 - ✅ Stratified K-Fold preserves class balance
 - ✅ Data leakage inflates scores, fails in production

@@ -52,7 +52,18 @@ outcomes:
 
 ### K-Means Clustering
 
-K-Means groups data points into K clusters by minimizing distance to cluster centers.
+K-Means groups data points into $K$ clusters by minimizing the within-cluster sum of squared distances to the cluster centroids $\boldsymbol{\mu}_1, \ldots, \boldsymbol{\mu}_K$:
+
+$$
+\mathcal{J}(\{C_k\}, \{\boldsymbol{\mu}_k\}) = \sum_{k=1}^{K} \sum_{\mathbf{x}_i \in C_k} \|\mathbf{x}_i - \boldsymbol{\mu}_k\|_2^2
+$$
+
+The algorithm alternates two steps until convergence:
+
+1. **Assignment step** — assign each point to its nearest centroid: $C_k = \{\mathbf{x}_i : k = \arg\min_{j} \|\mathbf{x}_i - \boldsymbol{\mu}_j\|_2\}$.
+2. **Update step** — recompute each centroid as the mean of its assigned points: $\boldsymbol{\mu}_k = \dfrac{1}{|C_k|}\sum_{\mathbf{x}_i \in C_k} \mathbf{x}_i$.
+
+The objective is non-convex, so multiple random restarts (`n_init`) help avoid bad local minima. The final value of $\mathcal{J}$ is reported by sklearn as `inertia_`.
 
 ```python
 import numpy as np
@@ -104,6 +115,14 @@ plt.show()
 ```
 
 ### Finding Optimal K: The Elbow Method
+
+The **silhouette score** for a point $i$ blends how tight its cluster is with how far away the next-closest cluster is:
+
+$$
+s(i) = \frac{b(i) - a(i)}{\max\{a(i), b(i)\}} \in [-1, 1]
+$$
+
+where $a(i)$ is the average distance from $i$ to other points in *its* cluster and $b(i)$ is the average distance to points in the *nearest other* cluster. Higher is better; values near $0$ indicate overlapping clusters, negatives indicate misassignment.
 
 ```python
 # Elbow method: find the "elbow" where adding clusters has diminishing returns
@@ -181,7 +200,25 @@ plt.show()
 
 ### PCA: Dimensionality Reduction
 
-Principal Component Analysis finds directions of maximum variance.
+Principal Component Analysis finds directions of maximum variance. Given a centered data matrix $X \in \mathbb{R}^{n \times p}$ (each column has zero mean), the **sample covariance** is:
+
+$$
+\Sigma = \frac{1}{n - 1} X^\top X
+$$
+
+The principal components are the eigenvectors $\mathbf{v}_1, \ldots, \mathbf{v}_p$ of $\Sigma$, sorted by their eigenvalues $\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_p \geq 0$:
+
+$$
+\Sigma \mathbf{v}_k = \lambda_k \mathbf{v}_k
+$$
+
+Each $\lambda_k$ is the variance captured along $\mathbf{v}_k$, so the **fraction of total variance explained** by the first $K$ components is:
+
+$$
+\text{ExplainedVar}(K) = \frac{\sum_{k=1}^{K} \lambda_k}{\sum_{j=1}^{p} \lambda_j}
+$$
+
+Projecting $\mathbf{x}_i$ onto the top-$K$ components gives a compressed representation $\mathbf{z}_i = V_K^\top \mathbf{x}_i \in \mathbb{R}^K$.
 
 ```python
 from sklearn.decomposition import PCA
@@ -833,10 +870,10 @@ profiles_normalized = profiles / overall  # Ratio to average
 Today you learned:
 
 - ✅ Unsupervised learning finds patterns without labels
-- ✅ K-Means clusters data by minimizing distance to centers
-- ✅ Elbow and Silhouette methods find optimal K
-- ✅ PCA reduces dimensions by finding principal components
-- ✅ Scale features before distance-based algorithms
+- ✅ K-Means minimizes within-cluster variance: $\mathcal{J} = \sum_k \sum_{\mathbf{x}_i \in C_k} \|\mathbf{x}_i - \boldsymbol{\mu}_k\|_2^2$
+- ✅ Elbow (inertia) and silhouette $s(i) = (b - a)/\max(a, b)$ help find optimal $K$
+- ✅ PCA finds eigenvectors of $\Sigma = \tfrac{1}{n-1}X^\top X$; eigenvalues = variance captured
+- ✅ Scale features before any distance- or variance-based algorithm
 - ✅ Cluster profiles translate results into business insights
 - ✅ Combine PCA (reduce) + K-Means (cluster) for high-dimensional data
 

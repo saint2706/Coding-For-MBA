@@ -49,6 +49,19 @@ outcomes:
 
 ### The Neuron: The Basic Unit
 
+A neuron computes a weighted sum of its inputs, adds a bias, and pushes the result through a non-linear activation $\sigma(\cdot)$:
+
+$$
+z = \sum_{i=1}^{n} w_i x_i + b = \mathbf{w}^\top \mathbf{x} + b, \qquad a = \sigma(z)
+$$
+
+A whole **fully-connected layer** with input $\mathbf{x} \in \mathbb{R}^{d_{\text{in}}}$, weight matrix $W \in \mathbb{R}^{d_{\text{out}} \times d_{\text{in}}}$, and bias $\mathbf{b} \in \mathbb{R}^{d_{\text{out}}}$ is just this operation in vector form:
+
+$$
+\mathbf{a} = \sigma(W \mathbf{x} + \mathbf{b})
+$$
+
+
 ```python
 import numpy as np
 
@@ -80,6 +93,27 @@ print(f"Output: {output:.3f}")
 ```
 
 ### Activation Functions
+
+Activations introduce the non-linearity that lets stacked layers represent functions a single linear layer never could. The four workhorses:
+
+$$
+\text{ReLU}(z) = \max(0, z), \qquad
+\sigma(z) = \frac{1}{1 + e^{-z}}, \qquad
+\tanh(z) = \frac{e^{z} - e^{-z}}{e^{z} + e^{-z}}
+$$
+
+For multi-class outputs, the **softmax** turns a vector of $K$ scores into a probability distribution that sums to $1$:
+
+$$
+\text{softmax}(\mathbf{z})_k = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}
+$$
+
+The corresponding loss for a one-hot target $\mathbf{y}$ is the **categorical cross-entropy**:
+
+$$
+\mathcal{L}_{\text{CE}} = -\sum_{k=1}^{K} y_k \log \hat{p}_k
+$$
+
 
 ```python
 import matplotlib.pyplot as plt
@@ -194,6 +228,36 @@ plt.show()
 ```
 
 ### Understanding Backpropagation
+
+For a network of $L$ layers, the **forward pass** computes:
+
+$$
+\mathbf{z}^{(\ell)} = W^{(\ell)} \mathbf{a}^{(\ell-1)} + \mathbf{b}^{(\ell)}, \qquad \mathbf{a}^{(\ell)} = \sigma\!\big(\mathbf{z}^{(\ell)}\big)
+$$
+
+with $\mathbf{a}^{(0)} = \mathbf{x}$ and final prediction $\hat{\mathbf{y}} = \mathbf{a}^{(L)}$.
+
+The **backward pass** uses the chain rule to compute the loss gradient w.r.t. every parameter. Define the layer error:
+
+$$
+\boldsymbol{\delta}^{(\ell)} = \frac{\partial \mathcal{L}}{\partial \mathbf{z}^{(\ell)}}
+$$
+
+Then the recursion is:
+
+$$
+\boldsymbol{\delta}^{(L)} = \nabla_{\mathbf{a}} \mathcal{L} \,\odot\, \sigma'\!\big(\mathbf{z}^{(L)}\big), \qquad
+\boldsymbol{\delta}^{(\ell)} = \big(W^{(\ell+1)}\big)^{\!\top} \boldsymbol{\delta}^{(\ell+1)} \,\odot\, \sigma'\!\big(\mathbf{z}^{(\ell)}\big)
+$$
+
+and the parameter gradients are:
+
+$$
+\frac{\partial \mathcal{L}}{\partial W^{(\ell)}} = \boldsymbol{\delta}^{(\ell)} \big(\mathbf{a}^{(\ell-1)}\big)^{\!\top}, \qquad
+\frac{\partial \mathcal{L}}{\partial \mathbf{b}^{(\ell)}} = \boldsymbol{\delta}^{(\ell)}
+$$
+
+Finally the parameters are updated by SGD: $W^{(\ell)} \leftarrow W^{(\ell)} - \eta \, \partial \mathcal{L} / \partial W^{(\ell)}$.
 
 ```python
 """
@@ -438,8 +502,9 @@ Start with 32; increase if memory allows and training is too slow.
 ## Summary
 
 - ✅ Neural networks learn by adjusting weights via backpropagation
-- ✅ Neurons compute: output = activation(weights · inputs + bias)
-- ✅ ReLU for hidden layers, sigmoid/softmax for classification output
+- ✅ A neuron computes $a = \sigma(\mathbf{w}^\top \mathbf{x} + b)$; a layer is $\mathbf{a} = \sigma(W \mathbf{x} + \mathbf{b})$
+- ✅ ReLU $\max(0, z)$ for hidden layers; sigmoid/softmax for classification output
+- ✅ Backprop recursion: $\boldsymbol{\delta}^{(\ell)} = \big(W^{(\ell+1)}\big)^\top \boldsymbol{\delta}^{(\ell+1)} \odot \sigma'(\mathbf{z}^{(\ell)})$
 - ✅ Use dropout and early stopping to prevent overfitting
 - ✅ Match loss function to task (BCE for classification, MSE for regression)
 

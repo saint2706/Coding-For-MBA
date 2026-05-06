@@ -57,7 +57,13 @@ You don't need to be a calculus expert. You need to understand the *intuition*�
 
 ### Derivatives: How Things Change
 
-A derivative measures how a function's output changes when its input changes. Think of it as the "slope" at any point.
+A derivative measures how a function's output changes when its input changes. Think of it as the "slope" at any point. Formally, the derivative of $f$ at $x$ is the limit of the average rate of change as the step size shrinks to zero:
+
+$$
+f'(x) = \frac{df}{dx} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}
+$$
+
+For $f(x) = x^2$, applying the power rule gives $f'(x) = 2x$.
 
 ```python
 import numpy as np
@@ -118,7 +124,13 @@ plt.show()
 
 ### The Key Insight: Finding Minimums
 
-**At a minimum, the derivative equals zero** (the function is flat—no slope).
+**At a minimum, the derivative equals zero** (the function is flat—no slope). Setting $f'(x) = 0$ gives a *first-order necessary condition* for an optimum:
+
+$$
+\frac{d}{dw}\,\mathcal{L}(w) = 0 \quad \Longrightarrow \quad w \text{ is a stationary point}
+$$
+
+For the loss $\mathcal{L}(w) = (w - 3)^2$, $\mathcal{L}'(w) = 2(w-3) = 0$, giving the unique minimum $w^\star = 3$.
 
 ```python
 # ML Loss function example: L(w) = (w - 3)²
@@ -145,7 +157,13 @@ print(f"Loss at w=5: {loss(5)}")  # 4
 
 ### Gradient Descent: Walking Downhill
 
-We can't always solve for the minimum analytically. **Gradient descent** finds it iteratively.
+We can't always solve for the minimum analytically. **Gradient descent** finds it iteratively by repeatedly stepping in the direction of steepest *descent* — that is, the negative gradient — scaled by a learning rate $\eta$:
+
+$$
+w_{t+1} = w_t - \eta \, \nabla_w \mathcal{L}(w_t)
+$$
+
+For our quadratic loss with $\mathcal{L}'(w) = 2(w - 3)$ and $\eta = 0.1$ starting from $w_0 = 0$, each step shrinks the gap to $w^\star = 3$ by a factor of $1 - 2\eta = 0.8$.
 
 ```python
 def gradient_descent(start, learning_rate, n_steps):
@@ -200,7 +218,18 @@ plt.show()
 
 ### Multivariate Gradients: Multiple Parameters
 
-Real ML models have many parameters. The **gradient** is a vector of partial derivatives.
+Real ML models have many parameters. The **gradient** is a vector of partial derivatives that points in the direction of steepest ascent:
+
+$$
+\nabla_{\mathbf{w}} \mathcal{L} = \begin{bmatrix}
+\dfrac{\partial \mathcal{L}}{\partial w_1} \\[4pt]
+\dfrac{\partial \mathcal{L}}{\partial w_2} \\[4pt]
+\vdots \\[4pt]
+\dfrac{\partial \mathcal{L}}{\partial w_n}
+\end{bmatrix}
+$$
+
+For $\mathcal{L}(w_1, w_2) = (w_1 - 2)^2 + (w_2 + 1)^2$, the partial derivatives are $\partial \mathcal{L} / \partial w_1 = 2(w_1 - 2)$ and $\partial \mathcal{L} / \partial w_2 = 2(w_2 + 1)$.
 
 ```python
 # Loss function with two parameters: L(w1, w2) = (w1-2)² + (w2+1)²
@@ -298,7 +327,13 @@ experiment_learning_rates([0.01, 0.1, 0.9])
 
 ### The Chain Rule: Foundation of Backpropagation
 
-When functions are composed (like neural network layers), we use the chain rule.
+When functions are composed (like neural network layers), we use the chain rule. For $y = g(f(x))$:
+
+$$
+\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}, \quad \text{where } u = f(x)
+$$
+
+For $y = (3x + 2)^2$ with $u = 3x + 2$: $\dfrac{dy}{du} = 2u$ and $\dfrac{du}{dx} = 3$, giving $\dfrac{dy}{dx} = 6(3x + 2)$.
 
 ```python
 # If y = g(f(x)), then dy/dx = dg/df * df/dx
@@ -429,9 +464,9 @@ for epoch in range(n_epochs):
     loss = np.mean((y_pred - y) ** 2)
     loss_history.append(loss)
 
-    # Compute gradients
-    # ∂L/∂w = (2/n) * Σ(y_pred - y) * X
-    # ∂L/∂b = (2/n) * Σ(y_pred - y)
+    # Compute gradients (MSE loss):
+    #   dL/dw = (2/n) * sum((y_pred - y) * X)
+    #   dL/db = (2/n) * sum(y_pred - y)
     dw = (2 / n) * np.sum((y_pred - y) * X)
     db = (2 / n) * np.sum(y_pred - y)
 
@@ -653,17 +688,21 @@ Why is the chain rule essential for training neural networks?
 
 **Concretely:**
 
-```
-input → Layer1 → Layer2 → Layer3 → output → Loss
-```
+$$
+\mathbf{x} \;\to\; \text{Layer}_1 \;\to\; \text{Layer}_2 \;\to\; \text{Layer}_3 \;\to\; \hat{\mathbf{y}} \;\to\; \mathcal{L}
+$$
 
-To update weights in Layer1, we need ∂Loss/∂W1.
+To update weights in Layer 1, we need $\partial \mathcal{L} / \partial W_1$.
 
-Using chain rule:
+Using the chain rule:
 
-```
-∂Loss/∂W1 = ∂Loss/∂output × ∂output/∂Layer3 × ∂Layer3/∂Layer2 × ∂Layer2/∂W1
-```
+$$
+\frac{\partial \mathcal{L}}{\partial W_1}
+= \frac{\partial \mathcal{L}}{\partial \hat{\mathbf{y}}}
+\cdot \frac{\partial \hat{\mathbf{y}}}{\partial \text{Layer}_3}
+\cdot \frac{\partial \text{Layer}_3}{\partial \text{Layer}_2}
+\cdot \frac{\partial \text{Layer}_2}{\partial W_1}
+$$
 
 This is called **backpropagation**: propagating gradients backward through the network.
 
@@ -742,11 +781,11 @@ print(f"Max gradient: {np.max(np.abs(gradient))}")
 
 Today you learned:
 
-- ✅ Derivatives measure how a function changes (slope/rate of change)
-- ✅ Gradients extend derivatives to multiple variables (vector of partial derivatives)
-- ✅ Gradient descent iteratively finds minimums by walking downhill
-- ✅ Learning rate controls step size—too small is slow, too large diverges
-- ✅ The chain rule enables backpropagation through neural network layers
+- ✅ Derivatives $f'(x)$ measure how a function changes (slope/rate of change)
+- ✅ Gradients $\nabla_{\mathbf{w}} \mathcal{L}$ extend derivatives to multiple variables (vector of partial derivatives)
+- ✅ Gradient descent $w_{t+1} = w_t - \eta \nabla_w \mathcal{L}$ iteratively finds minimums by walking downhill
+- ✅ Learning rate $\eta$ controls step size—too small is slow, too large diverges
+- ✅ The chain rule $\dfrac{dy}{dx} = \dfrac{dy}{du} \dfrac{du}{dx}$ enables backpropagation through neural network layers
 - ✅ Common optimizers (Adam, RMSprop) improve on basic gradient descent
 
 **Tomorrow**: Introduction to Machine Learning—putting these mathematical foundations into practice.
