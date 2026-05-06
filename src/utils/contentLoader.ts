@@ -749,8 +749,18 @@ export function getContentStats() {
       .slice(0, 40)
 
     // Phase stats
+    const phaseLessonsMap = new Map<number, typeof lessonMetrics>()
+    for (let i = 0; i < lessonMetrics.length; i++) {
+      const l = lessonMetrics[i]
+      if (l) {
+        if (!phaseLessonsMap.has(l.phase)) {
+          phaseLessonsMap.set(l.phase, [])
+        }
+        phaseLessonsMap.get(l.phase)!.push(l)
+      }
+    }
     const phaseStats = phases.map((p) => {
-      const phaseLessons = lessonMetrics.filter((l) => l.phase === p.phase)
+      const phaseLessons = phaseLessonsMap.get(p.phase) || []
       return {
         phase: p.phase,
         title: p.title,
