@@ -191,3 +191,7 @@
 - **Fixed:** Replaced leftover `any` typing on Zustand selector mocks in `src/pages/__tests__/ProgressDashboard.test.tsx` with `unknown`.
 - **Fixed:** Replaced `@ts-ignore` with proper explicit casting for `window.requestIdleCallback` deletion in `src/__tests__/App.test.tsx`.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 34
+- **Fixed:** Resolved `TS2790` by using optional properties when casting `window` to delete properties.
+- **Verified:** Build, lint, and tests pass.
