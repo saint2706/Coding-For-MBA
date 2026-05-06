@@ -1,0 +1,70 @@
+{
+    "day": 54,
+    "questions": [
+        {
+            "id": "d54q01",
+            "type": "multiple_choice",
+            "question": "What is the 'naive' assumption in Naive Bayes, and why does the algorithm still work well despite this assumption often being violated?",
+            "options": [
+                "The 'naive' assumption is that all features have equal importance for classification",
+                "The 'naive' assumption is that features are conditionally independent given the class label; it works well because it only needs to estimate the relative ranking of class probabilities, not their exact values",
+                "The 'naive' assumption is that the data follows a normal (Gaussian) distribution",
+                "The 'naive' assumption is that training and test data come from the same distribution"
+            ],
+            "answer": 1,
+            "explanation": "Naive Bayes assumes all features are conditionally independent given the class—meaning knowing feature X tells you nothing extra about feature Y once you know the class. In text classification, this means 'machine' and 'learning' are treated as independent words, which is obviously false. Despite this, Naive Bayes often works because: (1) for classification, you only need the correct class to have the highest posterior probability, not accurate probabilities; (2) even correlated features often push probability in the same direction, reinforcing the right prediction. NB is fast, requires little data, and is a strong baseline for text tasks."
+        },
+        {
+            "id": "d54q02",
+            "type": "multiple_choice",
+            "question": "A logistic regression model outputs probabilities of 0.95 for positive class, but a well-calibrated model should output 0.60 for these same samples (which are actually positive 60% of the time). What does this mean?",
+            "options": [
+                "The model is overfitting because it produces probabilities too close to 1.0",
+                "The model is overconfident—its probability scores are not well-calibrated; a probability of 0.95 should correspond to 95% actual frequency, not 60%",
+                "The model's threshold should be adjusted from 0.5 to 0.7 to fix this issue",
+                "This indicates class imbalance; the model needs oversampling to produce accurate probabilities"
+            ],
+            "answer": 1,
+            "explanation": "Calibration measures whether a model's confidence matches its actual accuracy: when a calibrated model predicts 0.95, it should be right 95% of the time. This model is poorly calibrated—it says 0.95 for events that happen 60% of the time, making it overconfident. Calibration matters for risk management and decision-making (a loan model saying 95% repayment probability when true rate is 60% causes serious problems). Fix with: Platt scaling (train a logistic regression on model outputs) or isotonic regression. Evaluate with reliability diagrams and Expected Calibration Error (ECE)."
+        },
+        {
+            "id": "d54q03",
+            "type": "multiple_choice",
+            "question": "In Bayesian inference, what do the prior, likelihood, and posterior represent?",
+            "options": [
+                "Prior = training data; likelihood = model architecture; posterior = model predictions",
+                "Prior = beliefs before seeing data; likelihood = probability of data given parameters; posterior = updated beliefs after observing data (prior × likelihood, normalized)",
+                "Prior = feature distribution; likelihood = target distribution; posterior = joint distribution",
+                "Prior = model complexity penalty; likelihood = training loss; posterior = validation loss"
+            ],
+            "answer": 1,
+            "explanation": "Bayes' theorem: P(θ|data) ∝ P(data|θ) × P(θ). The prior P(θ) encodes beliefs before seeing data—e.g., 'I believe fraud rate is between 1-5% based on industry data.' The likelihood P(data|θ) is how probable the observed data is for a given parameter θ—the standard ML loss function. The posterior P(θ|data) combines both: your updated belief about θ after observing data. As data accumulates, the posterior becomes dominated by the likelihood and converges regardless of prior. Bayesian methods are powerful when data is scarce and you have domain knowledge to encode in priors."
+        },
+        {
+            "id": "d54q04",
+            "type": "multiple_choice",
+            "question": "When should you prefer a probabilistic model that outputs uncertainty estimates over a standard point-estimate model?",
+            "options": [
+                "When the dataset is large; probabilistic models scale better to big data than point-estimate models",
+                "When prediction confidence matters for decisions—e.g., a self-driving car needs to know whether it's 99% vs 60% confident before acting",
+                "When features are categorical; probabilistic models handle categorical data more naturally",
+                "Probabilistic models are always preferable since they contain strictly more information than point estimates"
+            ],
+            "answer": 1,
+            "explanation": "Uncertainty quantification is critical when the cost of wrong decisions is asymmetric or when model confidence should trigger different actions. Examples: a medical diagnosis model with 60% confidence should flag for human review; a trading model with high uncertainty should reduce position size; a robot arm should move slowly when uncertain about object position. Standard models give overconfident point estimates. Gaussian Processes, Bayesian Neural Networks, Monte Carlo Dropout, and conformal prediction all provide uncertainty bounds. The key business question: 'should my system act differently when it's uncertain?' If yes, use probabilistic models."
+        },
+        {
+            "id": "d54q05",
+            "type": "multiple_choice",
+            "question": "Which algorithm is best suited for email spam classification, and why?",
+            "options": [
+                "K-Nearest Neighbors, because spam emails cluster near similar spam emails in feature space",
+                "Naive Bayes (specifically Multinomial NB), because it naturally models word frequency distributions and works well even with small training sets",
+                "Support Vector Machine, because it finds the maximum margin between spam and legitimate emails",
+                "Gradient Boosting, because it handles class imbalance between spam and ham automatically"
+            ],
+            "answer": 1,
+            "explanation": "Multinomial Naive Bayes is the classic spam filter algorithm for good reasons: (1) Text is naturally modeled as word count distributions—MultinomialNB models exactly this; (2) Despite the independence assumption, words like 'free', 'winner', 'click here' are individually strong spam signals; (3) Computationally trivial—trains in milliseconds on millions of emails; (4) Online learning—can update the model in real-time as new spam patterns emerge; (5) Good performance with limited labeled data. Gmail uses far more sophisticated methods today, but NB was the foundation of the first commercial spam filters (SpamAssassin, etc.)."
+        }
+    ]
+}

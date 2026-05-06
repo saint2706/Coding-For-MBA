@@ -1,0 +1,70 @@
+{
+    "day": "60B",
+    "questions": [
+        {
+            "id": "d60Bq01",
+            "type": "multiple_choice",
+            "question": "Why does full fine-tuning of large language models (7B+ parameters) require special techniques like PEFT?",
+            "options": [
+                "Full fine-tuning causes catastrophic forgetting of all previously learned language knowledge, producing worse results than PEFT",
+                "Full fine-tuning requires updating all parameters during backpropagation, storing optimizer states for every parameter—a 7B model needs ~28GB just for the model, plus ~84GB for Adam optimizer states, exceeding most GPU memory budgets",
+                "Full fine-tuning is prohibited by most LLM license agreements, requiring the use of PEFT as a legal workaround",
+                "Full fine-tuning takes too long because GPU parallelism only works with frozen weights"
+            ],
+            "answer": 1,
+            "explanation": "Memory is the bottleneck. For a 7B parameter model in 16-bit: model weights = 14GB. Adam optimizer stores momentum and variance for every parameter: 2 × 14GB = 28GB. Gradients: 14GB. Total: ~56GB minimum. Most GPUs are 24-40GB. PEFT methods like LoRA solve this by only adding and training a tiny number of additional parameters (0.1-1% of total) while keeping the original model frozen. The base model stays fixed; only the small adapters are updated. This reduces trainable parameters from 7B to perhaps 5M, slashing optimizer memory from 28GB to <100MB."
+        },
+        {
+            "id": "d60Bq02",
+            "type": "multiple_choice",
+            "question": "How does LoRA (Low-Rank Adaptation) reduce the number of trainable parameters?",
+            "options": [
+                "LoRA removes entire transformer layers from the model, creating a shallower fine-tuned version",
+                "LoRA decomposes weight update matrices into two smaller low-rank matrices (A and B), so instead of training a full d×d weight update, only d×r and r×d matrices are trained, where r << d",
+                "LoRA uses gradient checkpointing to avoid storing intermediate activations during fine-tuning",
+                "LoRA trains only the final classification layer while freezing all transformer layers"
+            ],
+            "answer": 1,
+            "explanation": "The key insight: weight updates during fine-tuning tend to have low intrinsic rank—you don't need a full-rank weight change. LoRA approximates the weight update ΔW ≈ B×A, where A is (r×d) and B is (d×r), with r typically 4-64. For a 4096×4096 weight matrix: full fine-tuning trains 16.7M parameters; LoRA with r=16 trains 2×4096×16 = 131K parameters—128× fewer. During inference, the LoRA weights are merged: W' = W + B×A (no added latency). Multiple LoRA adapters can coexist on the same base model, enabling cheap model specialization without maintaining full copies."
+        },
+        {
+            "id": "d60Bq03",
+            "type": "multiple_choice",
+            "question": "What does QLoRA add on top of LoRA, and what is the key tradeoff?",
+            "options": [
+                "QLoRA adds quantization-aware training to LoRA, allowing the final model to be deployed in 8-bit without accuracy loss",
+                "QLoRA loads the base model in 4-bit quantization (NF4), reducing base model memory from ~14GB to ~3.5GB for a 7B model, enabling fine-tuning on consumer GPUs; the tradeoff is slightly slower training due to quantization/dequantization overhead",
+                "QLoRA adds quality control metrics (Q stands for Quality) that automatically stop training when validation loss stops improving",
+                "QLoRA uses quantized gradients to reduce communication overhead in multi-GPU training setups"
+            ],
+            "answer": 1,
+            "explanation": "QLoRA (Dettmers et al., 2023) makes fine-tuning accessible on consumer hardware. It loads the frozen base model in 4-bit NF4 (NormalFloat4) quantization, reducing a 7B model from ~14GB (fp16) to ~3.5GB. LoRA adapters are still trained in bfloat16 for precision. Special techniques: NF4 quantization (information-theoretically optimal for normally-distributed weights), double quantization (quantize the quantization constants), and paged optimizers (handle GPU memory spikes). Result: fine-tune a 7B model on a single 24GB GPU. The minor tradeoff is ~10-20% slower training and potentially slight accuracy loss vs full fp16 LoRA."
+        },
+        {
+            "id": "d60Bq04",
+            "type": "multiple_choice",
+            "question": "Your company needs a customer service chatbot that always responds in a specific brand voice and knows your product catalog. Should you fine-tune or use RAG (Retrieval-Augmented Generation)?",
+            "options": [
+                "Fine-tune, because RAG cannot learn company-specific terminology or communication styles",
+                "RAG is always better because fine-tuning causes the model to forget general language abilities",
+                "Use RAG for frequently updated product knowledge (catalog, prices, policies) and fine-tune (or use prompt engineering) for brand voice; they are complementary, not mutually exclusive",
+                "Fine-tune exclusively, because RAG introduces retrieval latency that makes chatbots feel slow"
+            ],
+            "answer": 2,
+            "explanation": "Fine-tuning and RAG solve different problems and are best combined. Fine-tuning adjusts HOW the model behaves—tone, format, communication style, domain-specific reasoning patterns. It's ideal for: consistent brand voice, specialized response formats, technical jargon adoption. RAG adjusts WHAT the model knows—injecting current, specific, verifiable facts at query time. It's ideal for: product catalogs that change monthly, pricing that changes weekly, specific policy documents. Using RAG without fine-tuning gives accurate facts but possibly wrong tone; fine-tuning without RAG gives the right tone but outdated/hallucinated product details. The combination gives both."
+        },
+        {
+            "id": "d60Bq05",
+            "type": "multiple_choice",
+            "question": "What is catastrophic forgetting in fine-tuning, and how does PEFT help mitigate it?",
+            "options": [
+                "Catastrophic forgetting is when the model's accuracy on the fine-tuning task drops suddenly during training; PEFT prevents this by using a lower learning rate",
+                "Catastrophic forgetting is when fine-tuning overwrites pretrained general language knowledge with task-specific patterns, reducing performance on other tasks; PEFT mitigates this by keeping the original model frozen and only training small adapter layers",
+                "Catastrophic forgetting occurs when training data is shuffled randomly, causing the model to lose context; PEFT adds positional encoding to prevent this",
+                "Catastrophic forgetting is a GPU memory overflow that destroys checkpoints; PEFT prevents this by reducing checkpoint size"
+            ],
+            "answer": 1,
+            "explanation": "When you full-fine-tune an LLM on a narrow dataset (e.g., medical Q&A), gradient updates optimize for that distribution and can overwrite the general-purpose weights that encode broad world knowledge, grammar, and reasoning. The model becomes great at medical Q&A but degrades on general tasks—catastrophic forgetting. PEFT methods (LoRA, prefix tuning, adapter layers) keep the original pretrained weights completely frozen and only train small new modules. The base model's knowledge is preserved; only the adapter learns the new task. This is analogous to adding a specialized module to a general brain rather than retraining the entire brain."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 60,
+    "questions": [
+        {
+            "id": "d60q01",
+            "type": "multiple_choice",
+            "question": "Why can't standard neural networks (MLPs, CNNs) be directly applied to graph data?",
+            "options": [
+                "Standard neural networks cannot handle numerical features; graphs require symbolic inputs",
+                "Graphs have irregular, variable-size neighborhoods with no fixed ordering—there is no grid structure for convolutions to slide over, and nodes can have different numbers of neighbors",
+                "Standard neural networks are too slow to process graphs with more than 1000 nodes",
+                "Graphs require edge labels, which standard neural networks cannot represent in their input format"
+            ],
+            "answer": 1,
+            "explanation": "CNNs work on regular grids (pixels have exactly 8 neighbors in fixed positions). Graphs are irregular: a node might have 1 neighbor or 1000, and there's no canonical ordering of neighbors. You can't define a 3×3 convolution filter on a graph. MLPs require fixed-size inputs but graphs have variable structure. Graph Neural Networks (GNNs) solve this by aggregating neighbor information in a permutation-invariant way (sum, mean, or max pooling over neighbors), so the operation works regardless of how many neighbors a node has or in what order they're listed."
+        },
+        {
+            "id": "d60q02",
+            "type": "multiple_choice",
+            "question": "What is message passing in a Graph Neural Network (GNN)?",
+            "options": [
+                "Message passing is the process of transmitting gradients through the graph during backpropagation",
+                "Message passing is the mechanism where each node gathers information from its neighbors, aggregates these messages, and updates its own representation—repeated over multiple layers to incorporate increasingly distant neighborhood information",
+                "Message passing refers to inter-process communication when training large GNNs on distributed GPU clusters",
+                "Message passing encodes edge weights into node features before the main GNN computation begins"
+            ],
+            "answer": 1,
+            "explanation": "Message passing is the core operation of GNNs: (1) Message: each neighbor j sends a message to node i, typically a function of j's current representation (and optionally edge features); (2) Aggregate: node i aggregates all received messages using a permutation-invariant function (sum, mean, max); (3) Update: node i combines its own representation with the aggregated messages to produce a new representation. After k layers, each node's representation encodes information from its k-hop neighborhood. This is analogous to convolution on graphs—each layer expands the 'receptive field' by one hop."
+        },
+        {
+            "id": "d60q03",
+            "type": "multiple_choice",
+            "question": "A pharmaceutical company wants to predict whether a new molecular compound will be toxic. Why are GNNs a natural fit for this task?",
+            "options": [
+                "GNNs are faster than traditional ML methods for tabular chemical property datasets",
+                "Molecules are naturally represented as graphs (atoms as nodes, bonds as edges), and GNNs can learn from the topological structure of molecular graphs to predict properties that depend on connectivity patterns",
+                "GNNs can process SMILES strings directly without converting molecules to graph format",
+                "GNNs are preferred because molecular data always contains missing values that GNNs handle better than other models"
+            ],
+            "answer": 1,
+            "explanation": "A molecule IS a graph: atoms are nodes (with features like atomic number, charge, hybridization) and chemical bonds are edges (with features like bond type: single/double/aromatic). Toxicity depends on structural patterns—certain functional groups, ring structures, or connectivity motifs cause toxicity. GNNs learn to recognize these patterns by propagating information along bonds (message passing) and then pooling the resulting node representations into a graph-level embedding for classification. This is far more principled than encoding molecular descriptors as a flat feature vector, which loses topological information. GNNs are now standard in computational drug discovery."
+        },
+        {
+            "id": "d60q04",
+            "type": "multiple_choice",
+            "question": "What is node classification, and give a real-world example where it applies?",
+            "options": [
+                "Node classification labels entire graphs (e.g., classifying proteins as toxic or non-toxic)",
+                "Node classification predicts a label for each individual node in a graph based on its features and graph structure—e.g., classifying whether each account in a transaction network is fraudulent based on transaction patterns with neighbors",
+                "Node classification groups similar nodes into clusters without predefined categories",
+                "Node classification assigns importance scores to nodes to identify which ones to remove from the graph"
+            ],
+            "answer": 1,
+            "explanation": "Node classification predicts a category for each node, using both node features and structural context from the graph. Classic examples: (1) Fraud detection—in a transaction graph (accounts as nodes, transactions as edges), classify each account as legitimate or fraudulent; fraudsters often cluster and share transaction patterns; (2) Citation network—classify academic papers (nodes) into research topics, using citation links as edges; (3) Social network—identify bot accounts on Twitter using connection patterns; (4) Protein function prediction—classify proteins by their function based on protein interaction networks. GNNs outperform non-graph methods because fraud patterns and topic clusters emerge from connectivity, not just node-level features."
+        },
+        {
+            "id": "d60q05",
+            "type": "multiple_choice",
+            "question": "What is the over-smoothing problem in deep GNNs, and why does it occur?",
+            "options": [
+                "Over-smoothing occurs when edge weights become too uniform after many training epochs",
+                "Over-smoothing occurs when too many message-passing layers cause all node representations to converge to similar values, losing the distinctive local features that distinguish nodes",
+                "Over-smoothing occurs when the loss function is too smooth, causing gradient vanishing during backpropagation",
+                "Over-smoothing occurs when node features are continuous rather than discrete, causing the model to predict average values"
+            ],
+            "answer": 1,
+            "explanation": "Each GNN layer aggregates a node's representation with its neighbors. After k layers, a node's representation contains information from its k-hop neighborhood. As k increases, each node's neighborhood eventually contains most of the graph—the representations of distant nodes mix and become indistinguishable from each other. This is over-smoothing: the GNN cannot distinguish between nodes that share similar multi-hop neighborhoods. Solutions: limit depth (most effective GNNs use 2-3 layers); residual connections (add skip connections to preserve original features); jumping knowledge networks; or PairNorm regularization. This is why very deep GNNs (10+ layers) rarely outperform shallow ones."
+        }
+    ]
+}

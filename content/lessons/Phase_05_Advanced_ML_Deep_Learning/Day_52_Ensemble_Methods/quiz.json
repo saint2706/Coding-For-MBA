@@ -1,0 +1,70 @@
+{
+    "day": 52,
+    "questions": [
+        {
+            "id": "d52q01",
+            "type": "multiple_choice",
+            "question": "What is the core principle that makes ensemble methods more accurate than individual models?",
+            "options": [
+                "Ensembles train faster because the work is parallelized across multiple models",
+                "Diverse models make different errors; combining them cancels out individual mistakes and reduces variance",
+                "Ensemble models use larger datasets since each sub-model sees a different data partition",
+                "Combining models always reduces bias because averaging smooths out underfitting"
+            ],
+            "answer": 1,
+            "explanation": "The ensemble principle exploits error independence: if each model makes random, uncorrelated errors, combining their predictions averages out the noise. Think of it like asking 100 people to estimate the weight of a jar of coins—the group average is more accurate than any individual. This works best when models are diverse (different algorithms, different feature subsets, different training samples). If all models make the same mistake (correlated errors), ensembling doesn't help. This is why variance reduction is the primary benefit of bagging, and boosting reduces both bias and variance."
+        },
+        {
+            "id": "d52q02",
+            "type": "multiple_choice",
+            "question": "How does a Random Forest reduce variance compared to a single decision tree?",
+            "options": [
+                "Random Forest limits tree depth more aggressively than single trees, reducing overfitting",
+                "Random Forest averages predictions from many trees trained on bootstrap samples with random feature subsets, smoothing out individual tree overfitting",
+                "Random Forest uses pruning to remove branches that don't improve test accuracy",
+                "Random Forest trains each tree on the full dataset but uses different random seeds for initialization"
+            ],
+            "answer": 1,
+            "explanation": "Single deep decision trees overfit badly—they memorize the training set. Random Forest introduces two sources of randomness to decorrelate the trees: (1) Bootstrap sampling (bagging)—each tree trains on a random sample with replacement, so each sees a different data subset; (2) Random feature subsets—at each split, only a random subset (√n_features) of features are considered, so trees diverge in their structure. Averaging 100+ different but slightly overfit trees produces predictions where individual errors cancel, dramatically reducing variance while maintaining low bias."
+        },
+        {
+            "id": "d52q03",
+            "type": "multiple_choice",
+            "question": "What is the key difference between bagging (e.g., Random Forest) and boosting (e.g., Gradient Boosting)?",
+            "options": [
+                "Bagging uses regression trees; boosting uses classification trees exclusively",
+                "Bagging trains models in parallel, each independently; boosting trains models sequentially, where each model corrects the errors of the previous one",
+                "Bagging reduces bias; boosting reduces variance",
+                "Bagging requires more hyperparameter tuning than boosting to achieve good performance"
+            ],
+            "answer": 1,
+            "explanation": "Bagging (Bootstrap Aggregating) trains base learners independently in parallel—each tree has no knowledge of the others. The combination is achieved by averaging (regression) or majority vote (classification). Boosting trains models sequentially: each new model focuses on the samples the previous models got wrong, gradually building a strong learner from many weak learners. Result: bagging primarily reduces variance (helps overfitted models), while boosting primarily reduces bias (helps underfitted models)—though gradient boosting can also reduce variance with proper regularization."
+        },
+        {
+            "id": "d52q04",
+            "type": "multiple_choice",
+            "question": "XGBoost consistently wins Kaggle competitions and outperforms plain Gradient Boosting. What key improvements does XGBoost add?",
+            "options": [
+                "XGBoost uses neural networks as base learners instead of decision trees",
+                "XGBoost adds L1/L2 regularization on tree weights, second-order gradient approximations, and hardware-optimized parallel tree construction",
+                "XGBoost automatically selects the optimal number of trees using cross-validation during training",
+                "XGBoost replaces gradient descent with a genetic algorithm for tree construction"
+            ],
+            "answer": 1,
+            "explanation": "XGBoost improves on vanilla Gradient Boosting in three critical ways: (1) Regularization—L1 and L2 penalties on leaf weights prevent overfitting that standard GBM lacks; (2) Second-order gradients—uses both gradient (first derivative) and hessian (second derivative) of the loss to find better splits faster, analogous to Newton's method vs. gradient descent; (3) System optimizations—parallel tree construction (split finding is parallelized), cache-aware algorithms, and out-of-core computation for datasets larger than RAM. Together these make XGBoost faster and more accurate than sklearn's GradientBoostingClassifier."
+        },
+        {
+            "id": "d52q05",
+            "type": "multiple_choice",
+            "question": "You have three trained models (logistic regression, Random Forest, XGBoost) with test accuracies of 85%, 91%, and 92%. How would stacking improve upon these individual models?",
+            "options": [
+                "Stacking averages the three accuracies to get 89.3%, which is a reliable ensemble estimate",
+                "Stacking trains a meta-model on the predictions of the three base models as features, learning optimal weights and capturing complementary strengths",
+                "Stacking always improves accuracy by at least 5% over the best individual model",
+                "Stacking is unnecessary here since XGBoost is already the best model"
+            ],
+            "answer": 1,
+            "explanation": "Stacking (stacked generalization) trains a meta-learner (often logistic regression or gradient boosting) that takes the out-of-fold predictions of base models as its features. Unlike simple averaging, the meta-model learns: 'when logistic regression predicts class A and XGBoost predicts class B, which one is right?' It can learn that XGBoost is reliable for certain input patterns while Random Forest is better for others. The key is using out-of-fold predictions to prevent data leakage. A well-implemented stack typically achieves 93-95% in this scenario by exploiting complementary error patterns."
+        }
+    ]
+}

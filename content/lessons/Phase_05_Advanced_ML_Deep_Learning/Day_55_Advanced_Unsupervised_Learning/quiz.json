@@ -1,0 +1,70 @@
+{
+    "day": 55,
+    "questions": [
+        {
+            "id": "d55q01",
+            "type": "multiple_choice",
+            "question": "What is the key advantage of DBSCAN over K-Means for clustering?",
+            "options": [
+                "DBSCAN is faster than K-Means because it does not require computing distances between all points",
+                "DBSCAN discovers clusters of arbitrary shape and automatically identifies outliers as noise, without requiring the number of clusters to be specified in advance",
+                "DBSCAN guarantees that every point is assigned to exactly one cluster, unlike K-Means which can leave points unassigned",
+                "DBSCAN works better with high-dimensional data because it uses cosine similarity instead of Euclidean distance"
+            ],
+            "answer": 1,
+            "explanation": "K-Means assumes clusters are convex (circular/spherical) and requires you to specify k in advance—it will force every point into a cluster and struggles with non-convex shapes. DBSCAN (Density-Based Spatial Clustering of Applications with Noise) defines clusters as dense regions separated by sparse regions. This means: (1) it can find arbitrarily shaped clusters (crescents, rings, irregular blobs); (2) sparse points become 'noise' (not forced into clusters); (3) k is discovered rather than specified. DBSCAN requires tuning epsilon (neighborhood radius) and min_samples (minimum points to form a dense region)."
+        },
+        {
+            "id": "d55q02",
+            "type": "multiple_choice",
+            "question": "Your production system has 0.1% fraud transactions. You want to detect new fraud patterns without labeled data. Which technique is most appropriate?",
+            "options": [
+                "K-Means clustering with k=2 to separate fraud from legitimate transactions",
+                "PCA to reduce dimensions and then apply logistic regression on the components",
+                "Isolation Forest anomaly detection, which identifies unusual points by measuring how easily they can be isolated from the rest of the data",
+                "UMAP visualization to identify fraud clusters, then manually label them for training"
+            ],
+            "answer": 2,
+            "explanation": "Isolation Forest is designed for anomaly detection without labels. The key insight: anomalies are rare and different—they require fewer random splits in a tree to isolate them. For normal points (which are densely packed), you need many splits. The algorithm builds an ensemble of random isolation trees and scores each point by its average depth—anomalies have shorter paths. With 0.1% fraud, fraud patterns are genuinely unusual in feature space, making Isolation Forest ideal. One-Class SVM is another option but is slower and more sensitive to hyperparameters. Both are unsupervised, requiring no labeled fraud examples."
+        },
+        {
+            "id": "d55q03",
+            "type": "multiple_choice",
+            "question": "How does an autoencoder achieve dimensionality reduction, and what makes it more powerful than PCA?",
+            "options": [
+                "Autoencoders reduce dimensions by dropping features with low variance, while PCA projects onto orthogonal axes",
+                "Autoencoders compress data through a narrow bottleneck layer (encoder) and learn to reconstruct it (decoder), enabling nonlinear dimensionality reduction that PCA cannot capture",
+                "Autoencoders use supervised labels to guide compression, making them more accurate than PCA's unsupervised approach",
+                "Autoencoders are faster than PCA because neural networks compute matrix operations more efficiently"
+            ],
+            "answer": 1,
+            "explanation": "PCA finds linear projections that maximize variance—it can only capture linear relationships. An autoencoder learns encoder f: X → Z (compress to low-dimensional latent space Z) and decoder g: Z → X (reconstruct original X), optimizing reconstruction loss. Because neural networks can model nonlinear functions, autoencoders capture complex nonlinear structure in the data—e.g., the manifold structure of face images. The bottleneck forces the network to learn meaningful compressed representations. Applications: image compression, denoising (denoising autoencoders), anomaly detection (high reconstruction error = anomaly), and feature extraction for downstream tasks."
+        },
+        {
+            "id": "d55q04",
+            "type": "multiple_choice",
+            "question": "What is the purpose of t-SNE and UMAP, and why should you NOT use their outputs directly as features for machine learning?",
+            "options": [
+                "t-SNE and UMAP are feature selection methods; their outputs should not replace the original features because they only select a subset",
+                "t-SNE and UMAP are visualization tools that produce 2D/3D embeddings preserving local structure; their outputs are not suitable as ML features because they are stochastic, non-deterministic on new points, and distort global distances",
+                "t-SNE and UMAP reduce overfitting; they should not be used as features because they require labeled data to train",
+                "t-SNE and UMAP outputs cannot be used as features because neural networks cannot process 2D or 3D input"
+            ],
+            "answer": 1,
+            "explanation": "t-SNE and UMAP are manifold learning algorithms optimized for 2D/3D visualization of cluster structure. Problems with using them as ML features: (1) t-SNE is non-parametric—it cannot project new test points, only the training set; (2) Both are stochastic with random initialization, so outputs change between runs; (3) They distort global structure—distances in the 2D plot are not meaningful; (4) They discard information (high-D → 2D loses most signal). Use UMAP visualization to understand cluster structure and validate K-Means results, but use PCA, autoencoders, or original features as inputs to downstream ML models."
+        },
+        {
+            "id": "d55q05",
+            "type": "multiple_choice",
+            "question": "How do you evaluate clustering quality when you have no ground truth labels?",
+            "options": [
+                "Use accuracy by comparing cluster assignments to a random baseline",
+                "Use the Silhouette Score, which measures how similar each point is to its own cluster versus neighboring clusters, and the Davies-Bouldin Index which measures cluster compactness and separation",
+                "Split data 80/20 and compute cross-entropy loss on the held-out set",
+                "Clustering cannot be evaluated without ground truth labels; you must always label a subset of data first"
+            ],
+            "answer": 1,
+            "explanation": "Unsupervised evaluation uses internal metrics that measure cluster quality without labels. Silhouette Score: for each point, compute a = average distance to same-cluster points, b = average distance to nearest other cluster points; score = (b - a) / max(a, b). Range [-1, 1]: near 1 = well-clustered; near -1 = misassigned. Davies-Bouldin Index: ratio of within-cluster distances to between-cluster distances; lower is better. Calinski-Harabasz Score: variance between clusters / variance within clusters; higher is better. Use these to compare k values in K-Means or epsilon in DBSCAN, but always validate business relevance—metrics don't guarantee meaningful clusters."
+        }
+    ]
+}

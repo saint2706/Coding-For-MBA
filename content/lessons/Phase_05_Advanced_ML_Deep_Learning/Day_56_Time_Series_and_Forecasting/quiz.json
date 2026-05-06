@@ -1,0 +1,70 @@
+{
+    "day": 56,
+    "questions": [
+        {
+            "id": "d56q01",
+            "type": "multiple_choice",
+            "question": "Why must a time series be stationary before fitting an ARIMA model, and how do you make it stationary?",
+            "options": [
+                "Stationarity ensures the model trains faster by reducing the number of parameters needed",
+                "ARIMA assumes constant mean, variance, and autocorrelation structure over time; non-stationary series (trending, seasonal) violate these assumptions, producing unreliable forecasts. Differencing (subtracting previous value) removes trends to achieve stationarity",
+                "Stationarity is required to use the train/test split correctly for time series data",
+                "Non-stationary series have too many missing values for ARIMA to handle"
+            ],
+            "answer": 1,
+            "explanation": "ARIMA's mathematical foundations assume the data-generating process has constant statistical properties over time. A trending series (like stock prices growing over decades) has non-constant mean; a series with increasing volatility has non-constant variance. Fitting ARIMA to non-stationary data produces spurious correlations and poor forecasts. The 'I' in ARIMA stands for Integrated: the 'd' parameter specifies how many times to difference (subtract lag-1 value) to remove trends. Seasonal differencing removes seasonal patterns. Test for stationarity with the Augmented Dickey-Fuller test."
+        },
+        {
+            "id": "d56q02",
+            "type": "multiple_choice",
+            "question": "A retail company wants to forecast daily sales for the next 90 days, accounting for weekly seasonality and a long-term growth trend. Which forecasting approach is most appropriate?",
+            "options": [
+                "ARIMA with d=1 to remove the trend, since seasonality is not important for 90-day forecasts",
+                "A simple moving average of the last 30 days, as it captures recent trends without overfitting",
+                "Facebook Prophet, which explicitly models trend + seasonality components and handles holidays and missing data without requiring stationarity",
+                "LSTM neural network, because deep learning always outperforms statistical methods for business forecasting"
+            ],
+            "answer": 2,
+            "explanation": "Prophet (by Meta/Facebook) is designed exactly for this use case: business time series with multiple seasonalities, trend changes, and holiday effects. Its decomposable model: y(t) = trend(t) + seasonality(t) + holidays(t) + error(t). Key advantages over ARIMA for this problem: (1) handles multiple seasonalities simultaneously (weekly, yearly); (2) robust to missing values and outliers; (3) interpretable components—you can visualize and explain the trend and seasonal patterns; (4) no stationarity requirement; (5) built-in uncertainty intervals. ARIMA requires separate SARIMA extensions for seasonality and is harder to tune."
+        },
+        {
+            "id": "d56q03",
+            "type": "multiple_choice",
+            "question": "Why is using a standard random train/test split WRONG for evaluating time series models?",
+            "options": [
+                "Random splits don't work for time series because the data is not normally distributed",
+                "Random splits create data leakage: future data ends up in the training set, allowing the model to learn from information it wouldn't have in production",
+                "Random splits are computationally expensive for time series data due to high memory usage",
+                "Random splits cannot evaluate seasonality patterns since they may separate training from seasonal peaks"
+            ],
+            "answer": 1,
+            "explanation": "Time series has temporal dependency—future values depend on past values. A random split might put January 2024 in the test set and February 2024 in the training set. The model 'learns' from future data it would never have seen in real deployment, inflating performance estimates. Correct evaluation: always use temporal splits—train on past data, test on future data (e.g., train on 2020-2023, test on 2024). For cross-validation, use walk-forward validation (expanding or sliding window) where each fold respects chronological order. This simulates real production conditions."
+        },
+        {
+            "id": "d56q04",
+            "type": "multiple_choice",
+            "question": "What makes LSTM networks well-suited for time series forecasting compared to traditional regression models?",
+            "options": [
+                "LSTMs are faster to train than ARIMA models, making them better for real-time forecasting",
+                "LSTMs have memory cells that maintain information across long sequences, capturing long-range dependencies and complex nonlinear patterns that ARIMA's linear structure cannot model",
+                "LSTMs do not require feature engineering since they automatically handle missing values and outliers",
+                "LSTMs produce exact point predictions without the uncertainty ranges that ARIMA produces"
+            ],
+            "answer": 1,
+            "explanation": "ARIMA models linear relationships between a small number of past lags. LSTMs (Long Short-Term Memory networks) maintain a cell state with gates (input, forget, output) that decide what to remember and what to discard across many timesteps. This enables: (1) capturing long-range dependencies (e.g., sales in Q4 influenced by Q1 decisions); (2) modeling complex nonlinear patterns (interactions between multiple time-varying factors); (3) handling multiple parallel time series (multivariate forecasting). Trade-off: LSTMs require much more data to train, are less interpretable, and take longer to train than ARIMA."
+        },
+        {
+            "id": "d56q05",
+            "type": "multiple_choice",
+            "question": "What does MAPE (Mean Absolute Percentage Error) measure, and when is it inappropriate to use?",
+            "options": [
+                "MAPE measures the correlation between forecasts and actual values; it is inappropriate when the data has seasonality",
+                "MAPE measures average forecast error as a percentage of actual values; it is inappropriate when actual values are near zero (division by zero) or when asymmetric errors (over vs under forecast) have different costs",
+                "MAPE measures the lag between forecast and actual time series; it is inappropriate for long-horizon forecasts",
+                "MAPE measures variance in forecast errors; it is inappropriate when comparing models trained on different datasets"
+            ],
+            "answer": 1,
+            "explanation": "MAPE = mean(|actual - forecast| / actual) × 100. Problems: (1) Undefined when actual = 0; very unstable when actual is near zero—a small absolute error becomes a huge percentage error. (2) Asymmetric: underforecasting by 50% (MAPE contribution: 50%) is penalized less than overforecasting by 50% (MAPE contribution: 100%). (3) Penalizes models that predict low values when actual is high more than the reverse. Use MAE when you care equally about all errors; RMSE when large errors matter more; SMAPE (Symmetric MAPE) to address asymmetry; or MASE (Mean Absolute Scaled Error) which scales by naive forecast performance."
+        }
+    ]
+}
