@@ -1,0 +1,70 @@
+{
+    "day": 51,
+    "questions": [
+        {
+            "id": "d51q01",
+            "type": "multiple_choice",
+            "question": "What problem does regularization solve, and how does it solve it?",
+            "options": [
+                "Underfitting — regularization adds complexity to the model so it learns more patterns",
+                "Slow training — regularization reduces the number of gradient updates needed",
+                "Overfitting — regularization adds a penalty on model weights to discourage the model from fitting training noise",
+                "Class imbalance — regularization reweights samples from minority classes during training"
+            ],
+            "answer": 2,
+            "explanation": "Regularization addresses overfitting by adding a penalty term to the loss function that grows with the magnitude of model coefficients. This discourages the model from assigning very large weights to any single feature, forcing it to use smaller, more distributed weights. Large weights are a symptom of overfitting—the model is memorizing training data patterns (including noise) rather than learning generalizable relationships. The regularization penalty shrinks weights toward zero, producing simpler, more robust models."
+        },
+        {
+            "id": "d51q02",
+            "type": "multiple_choice",
+            "question": "What is the key practical difference between Ridge (L2) and Lasso (L1) regularization?",
+            "options": [
+                "Ridge is for classification; Lasso is for regression problems only",
+                "Lasso drives some coefficients to exactly zero (feature selection), while Ridge shrinks all coefficients toward zero but rarely eliminates them",
+                "Ridge uses the squared error loss; Lasso uses absolute error loss",
+                "Lasso is computationally faster because it uses matrix operations; Ridge requires iterative optimization"
+            ],
+            "answer": 1,
+            "explanation": "Both methods shrink coefficients, but L1 (Lasso) adds a penalty proportional to the absolute value of weights, which geometrically creates corners in the feasible region—making exact zeros likely. This produces sparse solutions where many features have zero coefficients, effectively performing automatic feature selection. L2 (Ridge) adds a penalty proportional to the square of weights, which creates a smooth circular constraint that shrinks everything toward zero but almost never produces exact zeros. Rule of thumb: use Lasso when you believe only a few features matter; use Ridge when most features are relevant."
+        },
+        {
+            "id": "d51q03",
+            "type": "multiple_choice",
+            "question": "You are predicting house prices using 200 features (location, size, age, etc.). Lasso regression eliminates 180 features and keeps only 20. What does this tell you?",
+            "options": [
+                "The model is underfitting and should use Ridge instead to keep all features",
+                "Most of the 200 features are redundant or uninformative; the 20 retained features carry the predictive signal",
+                "The regularization strength is too high and should be reduced to zero",
+                "Lasso is biased toward numeric features and discarded all categorical variables incorrectly"
+            ],
+            "answer": 1,
+            "explanation": "Lasso's automatic feature selection is revealing the true signal in the data: the 20 retained features (probably location, size, bedrooms, bathrooms, etc.) explain most of the price variance, while the other 180 features are either redundant (correlated with the 20), noisy, or irrelevant. This is valuable domain insight. The remaining model is also more interpretable and less likely to overfit. The regularization strength alpha controls how aggressive the elimination is—tune it with cross-validation to find the optimal number of features."
+        },
+        {
+            "id": "d51q04",
+            "type": "multiple_choice",
+            "question": "How do you choose the optimal regularization strength (alpha) for Ridge or Lasso regression?",
+            "options": [
+                "Set alpha=1.0 as the universal default; this works well for most datasets",
+                "Choose the alpha that minimizes training loss—smaller alpha means less penalty and always better training fit",
+                "Use cross-validation (e.g., RidgeCV or LassoCV) to evaluate multiple alpha values and select the one minimizing validation error",
+                "Set alpha based on the number of features: alpha = 1 / n_features"
+            ],
+            "answer": 2,
+            "explanation": "Alpha is a hyperparameter that controls the bias-variance tradeoff: too small (near zero) → overfitting; too large → underfitting with all coefficients near zero. Cross-validation is the correct approach: for each candidate alpha, train on k-1 folds and evaluate on the held-out fold, then pick the alpha with the best average validation score. Scikit-learn's RidgeCV and LassoCV do this efficiently. Never choose alpha by minimizing training loss—that will always pick the smallest alpha (least regularization) because the penalty is destroying training fit intentionally."
+        },
+        {
+            "id": "d51q05",
+            "type": "multiple_choice",
+            "question": "When should you prefer ElasticNet over pure Lasso or Ridge regression?",
+            "options": [
+                "When your dataset has more samples than features (n >> p)",
+                "When you have groups of correlated features and want sparse solutions that can select entire groups",
+                "When your target variable is binary (classification) rather than continuous",
+                "When training time is the primary constraint and you need the fastest possible algorithm"
+            ],
+            "answer": 1,
+            "explanation": "Lasso has a known weakness with correlated features: it arbitrarily picks one feature from a group of correlated features and sets the others to zero, which can miss important signals. ElasticNet combines L1 and L2 penalties, gaining the sparsity of Lasso (zeros out irrelevant features) while the L2 component handles correlated features more gracefully—it tends to keep correlated features together or drop them together. This makes ElasticNet the preferred default when you have correlated feature groups, like in genomics (many correlated gene expressions) or financial data (correlated economic indicators)."
+        }
+    ]
+}

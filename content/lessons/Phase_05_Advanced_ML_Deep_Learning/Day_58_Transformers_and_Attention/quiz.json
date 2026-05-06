@@ -1,0 +1,70 @@
+{
+    "day": 58,
+    "questions": [
+        {
+            "id": "d58q01",
+            "type": "multiple_choice",
+            "question": "What problem with RNNs did the attention mechanism solve, and how does it work?",
+            "options": [
+                "RNNs could not process batches of text; attention enables parallel processing of entire sequences",
+                "RNNs compressed entire sequences into a single fixed-size vector, losing information for long sequences; attention lets the model directly access any position in the input sequence when generating each output token",
+                "RNNs were unable to handle multiple languages; attention mechanisms learn language-specific representations",
+                "RNNs required labeled data for training; attention enables unsupervised pre-training on raw text"
+            ],
+            "answer": 1,
+            "explanation": "The bottleneck problem: RNNs encode the entire input sequence into a single context vector, which must contain all information needed for generation. For long sequences (e.g., translating a 100-word sentence), early information gets compressed out. Bahdanau attention (2014) solved this: when generating output word t, the model computes a weighted sum of ALL input encoder states, with weights (attention scores) indicating which input positions are most relevant. For 'bank' in 'I deposited money at the bank', high attention on 'money' and 'deposited' disambiguates meaning. This 'direct access' to any input position was transformative for NLP."
+        },
+        {
+            "id": "d58q02",
+            "type": "multiple_choice",
+            "question": "What is self-attention in the Transformer architecture, and why is it powerful?",
+            "options": [
+                "Self-attention is attention applied to the model's own parameters to select which weights to activate",
+                "Self-attention computes relationships between all pairs of positions within a single sequence simultaneously, allowing each token to gather context from every other token in one parallel operation",
+                "Self-attention is a regularization technique where the model attends to its own previous predictions to reduce repetition",
+                "Self-attention refers to the transformer attending to previous layers rather than the input sequence"
+            ],
+            "answer": 1,
+            "explanation": "In self-attention, each token in a sequence queries all other tokens to find relevant context. For each position, three vectors are computed: Query (what am I looking for?), Key (what do I contain?), Value (what do I output?). Attention score = softmax(Q × K^T / √d_k) × V. This allows 'The animal didn't cross the street because it was too tired'—when processing 'it', self-attention attends strongly to 'animal' rather than 'street'. The power: (1) captures long-range dependencies in one step (vs RNNs requiring many steps); (2) fully parallelizable (vs sequential RNN processing); (3) multi-head attention runs multiple attention operations in parallel, capturing diverse relationship types."
+        },
+        {
+            "id": "d58q03",
+            "type": "multiple_choice",
+            "question": "What is the key difference between BERT and GPT in terms of architecture and use cases?",
+            "options": [
+                "BERT uses convolutional layers; GPT uses recurrent layers",
+                "BERT is a bidirectional encoder that reads context from both directions (good for understanding tasks like classification, NER); GPT is a unidirectional decoder that generates text left-to-right (good for generation tasks)",
+                "BERT is larger than GPT and therefore more accurate on all NLP tasks",
+                "BERT uses supervised pre-training; GPT uses unsupervised pre-training"
+            ],
+            "answer": 1,
+            "explanation": "The transformer has two components: an encoder (reads entire sequence bidirectionally) and a decoder (generates tokens left-to-right, can only attend to previous tokens). BERT uses only the encoder stack—pre-trained with Masked Language Modeling (predict randomly masked words) using both left and right context. This makes BERT excellent at understanding: text classification, NER, question answering (given a passage, find the answer span). GPT uses only the decoder stack—pre-trained with next-token prediction. This makes GPT excellent at generation: summarization, translation, creative writing, chatbots. BERT-like models dominate understanding benchmarks; GPT-like models power ChatGPT and similar services."
+        },
+        {
+            "id": "d58q04",
+            "type": "multiple_choice",
+            "question": "Why do transformer models use positional encoding, and what would happen without it?",
+            "options": [
+                "Positional encoding increases the model's memory efficiency by reducing the attention matrix size",
+                "Self-attention is permutation-invariant—it treats input as a set, not a sequence. Positional encoding injects sequence order information so the model knows word positions; without it, 'dog bites man' and 'man bites dog' would produce identical representations",
+                "Positional encoding compresses the sequence length to fit within the model's maximum context window",
+                "Positional encoding replaces tokenization by directly encoding word positions in the vocabulary"
+            ],
+            "answer": 1,
+            "explanation": "Unlike RNNs that inherently process sequences step-by-step, self-attention computes all pairs of token relationships simultaneously—treating the sequence as an unordered set. Without positional information, the attention mechanism cannot distinguish 'The cat sat on the mat' from 'The mat sat on the cat.' Positional encodings are added to token embeddings to inject position information. Original Transformers use sinusoidal encodings (fixed mathematical functions of position). Modern models use learned positional embeddings (BERT, GPT) or relative position encodings (RoPE in LLaMA). The model learns to use this positional signal to understand sequential structure."
+        },
+        {
+            "id": "d58q05",
+            "type": "multiple_choice",
+            "question": "Your company wants to build a custom customer support chatbot using transformer models. Which approach is most cost-effective?",
+            "options": [
+                "Train a transformer from scratch on your customer support tickets to get domain-specific performance",
+                "Fine-tune a pretrained model (e.g., BERT or a small GPT variant) on your labeled support data, leveraging existing language knowledge and requiring far less data and compute than training from scratch",
+                "Use GPT-4 directly via API without any fine-tuning, since large models always outperform fine-tuned small models",
+                "Use only keyword matching and rule-based responses, as transformers are too complex for production customer support"
+            ],
+            "answer": 1,
+            "explanation": "Training a transformer from scratch requires billions of tokens and millions in compute—impractical for most companies. Fine-tuning leverages transfer learning: the pretrained model already understands grammar, semantics, and world knowledge from training on internet-scale text. Fine-tuning on domain-specific data (customer support tickets) with a classification or generation head adapts this knowledge to your specific use case, typically requiring 1K-100K examples rather than billions. For classification (intent detection, routing): fine-tune BERT variants. For generation (response drafting): fine-tune GPT variants or instruction-tune an open-source model. RAG (retrieval-augmented generation) is another option for knowledge-heavy support."
+        }
+    ]
+}

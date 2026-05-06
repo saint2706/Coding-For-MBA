@@ -1,0 +1,70 @@
+{
+    "day": 59,
+    "questions": [
+        {
+            "id": "d59q01",
+            "type": "multiple_choice",
+            "question": "What are the two components of a GAN (Generative Adversarial Network) and how do they interact during training?",
+            "options": [
+                "Encoder and Decoder: the encoder compresses real images and the decoder reconstructs them with added noise",
+                "Generator and Discriminator: the Generator creates fake samples to fool the Discriminator; the Discriminator learns to distinguish real from fake; they compete in a minimax game that drives the Generator to produce increasingly realistic outputs",
+                "Policy and Value networks: the Policy generates new images and the Value network scores their quality against a reward signal",
+                "Teacher and Student networks: the Teacher generates examples and the Student learns to replicate them through knowledge distillation"
+            ],
+            "answer": 1,
+            "explanation": "GAN training is a two-player minimax game. The Generator G takes random noise z and produces fake data G(z). The Discriminator D tries to output 1 for real data and 0 for fake data. They are trained adversarially: D is updated to maximize classification accuracy (real vs fake); G is updated to maximize D's error rate (make fakes that fool D). At Nash equilibrium, G produces samples indistinguishable from real data, and D outputs 0.5 for everything (cannot tell the difference). This adversarial pressure drives the Generator to produce high-quality outputs that must fool a continually improving critic."
+        },
+        {
+            "id": "d59q02",
+            "type": "multiple_choice",
+            "question": "What is mode collapse in GAN training, and why is it a problem?",
+            "options": [
+                "Mode collapse occurs when the Discriminator becomes too accurate, blocking any gradient signal to the Generator",
+                "Mode collapse occurs when the Generator learns to produce only a narrow subset of outputs (e.g., only one face style) that reliably fool the Discriminator, rather than capturing the full diversity of the training distribution",
+                "Mode collapse refers to the training loss collapsing to zero, indicating the model has memorized the training set",
+                "Mode collapse occurs when the learning rate is too high, causing gradient oscillations that destabilize training"
+            ],
+            "answer": 1,
+            "explanation": "Mode collapse is the most common GAN failure mode: the Generator finds a small set of outputs that reliably fool the current Discriminator and stops exploring. For a face generation task, this might mean producing variations of a single face type rather than diverse faces. The Discriminator then updates to reject this narrow range, forcing the Generator to switch to another narrow range, cycling repeatedly. Solutions include: Wasserstein GAN (WGAN) with gradient penalty, which provides better training signal; mini-batch discrimination; conditioning (cGAN); and diverse loss functions. Detecting mode collapse: measure FID (Fréchet Inception Distance) or manually inspect generated sample diversity."
+        },
+        {
+            "id": "d59q03",
+            "type": "multiple_choice",
+            "question": "How does a Variational Autoencoder (VAE) differ from a standard autoencoder, and what makes it suitable for generation?",
+            "options": [
+                "VAEs use a deeper encoder than standard autoencoders, giving them more capacity for complex distributions",
+                "VAEs encode inputs as probability distributions (mean and variance) over latent space rather than fixed points, enabling smooth interpolation and sampling of new data by drawing from the learned distribution",
+                "VAEs use adversarial training during encoding, similar to GANs, to produce higher quality reconstructions",
+                "VAEs are faster than standard autoencoders because they use variational dropout to skip unnecessary computations"
+            ],
+            "answer": 1,
+            "explanation": "Standard autoencoders map inputs to fixed latent points—the latent space has no structure, making random sampling produce garbage. VAEs encode each input as a distribution: N(μ, σ²) over the latent space. The KL divergence loss term regularizes the latent space toward N(0, 1), forcing it to be organized and continuous. The reparameterization trick enables backpropagation through sampling (z = μ + σ × ε, where ε ~ N(0,1)). Result: interpolating between two latent vectors produces semantically meaningful intermediate samples; sampling from N(0,1) generates new, diverse, realistic-looking data. VAEs produce blurrier images than GANs but have more stable training and structured latent spaces."
+        },
+        {
+            "id": "d59q04",
+            "type": "multiple_choice",
+            "question": "How do diffusion models (like those powering Stable Diffusion and DALL-E) generate images?",
+            "options": [
+                "Diffusion models generate images by progressively upsampling random noise using convolutional filters until a full-resolution image is obtained",
+                "Diffusion models learn to reverse a noise-adding process: they are trained to predict and remove noise at each step, so at inference time they start from pure noise and iteratively denoise it into a coherent image",
+                "Diffusion models use two competing networks (similar to GANs) where one adds noise and the other removes it until equilibrium",
+                "Diffusion models copy patches from training images and blend them using learned attention weights to construct new images"
+            ],
+            "answer": 1,
+            "explanation": "Diffusion models work in two phases. Forward process (training): gradually add Gaussian noise to a training image over T steps until it becomes pure noise—this requires no learning. Reverse process (the learned part): train a neural network (U-Net) to predict and remove the noise added at each step, given the noisy image and current timestep. At inference: start with pure Gaussian noise and run the learned denoising model T times (typically 50-1000 steps), progressively revealing a coherent image. Conditioning on text prompts (CLIP embeddings) steers the denoising toward specific content. Stable Diffusion operates in a compressed latent space for efficiency (Latent Diffusion Models)."
+        },
+        {
+            "id": "d59q05",
+            "type": "multiple_choice",
+            "question": "What metric is commonly used to evaluate the quality of generated images, and what does it measure?",
+            "options": [
+                "BLEU score, which measures n-gram overlap between generated and reference images",
+                "Fréchet Inception Distance (FID), which measures the statistical distance between the distribution of generated images and real images in the feature space of a pretrained InceptionV3 network",
+                "Mean Squared Error (MSE) between pixel values of generated and real images",
+                "Accuracy of a separate classifier trained to distinguish generated from real images"
+            ],
+            "answer": 1,
+            "explanation": "FID is the standard evaluation metric for generative image models. Process: (1) Extract features from real images using InceptionV3 (a pretrained classifier); (2) Extract features from generated images using the same network; (3) Fit a multivariate Gaussian to each feature distribution; (4) Compute the Fréchet distance between the two Gaussians. Lower FID = generated images are closer to real image statistics in terms of both quality and diversity. FID captures both fidelity (do images look realistic?) and diversity (do they cover the variety of the real distribution?). MSE measures pixel-level similarity but not perceptual quality; a model that produces slightly blurry images gets high MSE despite looking fine to humans."
+        }
+    ]
+}

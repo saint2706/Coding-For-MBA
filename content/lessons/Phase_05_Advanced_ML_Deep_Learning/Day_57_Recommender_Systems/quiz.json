@@ -1,0 +1,70 @@
+{
+    "day": 57,
+    "questions": [
+        {
+            "id": "d57q01",
+            "type": "multiple_choice",
+            "question": "What is collaborative filtering, and what fundamental assumption makes it work?",
+            "options": [
+                "Collaborative filtering recommends items based on the item's content features (genre, keywords, attributes), assuming similar items should be recommended together",
+                "Collaborative filtering recommends items based on the behavior of similar users, assuming that people with similar past preferences will have similar future preferences",
+                "Collaborative filtering trains a neural network on user-item interactions to predict ratings without any user similarity computation",
+                "Collaborative filtering filters items by popularity, recommending the most interacted-with items to all users"
+            ],
+            "answer": 1,
+            "explanation": "Collaborative filtering (CF) ignores item content entirely—it only uses the matrix of user-item interactions (ratings, clicks, purchases). The core assumption: if Alice and Bob both liked movies A, B, and C, and Alice also liked D, then Bob will probably like D too. This discovers latent preferences without requiring domain knowledge about items. CF comes in two flavors: user-based CF (find similar users, recommend what they liked) and item-based CF (find items similar to what the user liked, used by Amazon's 'customers also bought'). The challenge is sparse interaction data and cold start."
+        },
+        {
+            "id": "d57q02",
+            "type": "multiple_choice",
+            "question": "Netflix wants to recommend movies to a brand new user who has just signed up and rated nothing. What is this problem called, and how is it typically solved?",
+            "options": [
+                "Sparsity problem — solve by applying matrix factorization with regularization",
+                "Cold start problem — solve by using content-based filtering or asking users to rate a few popular items to bootstrap their profile",
+                "Data leakage problem — solve by only recommending movies from the training period",
+                "Popularity bias — solve by diversifying recommendations across genres rather than defaulting to blockbusters"
+            ],
+            "answer": 1,
+            "explanation": "The cold start problem occurs when there's insufficient interaction history to generate collaborative filtering recommendations. Solutions for new users: (1) Onboarding survey—ask users to rate a few seed items (Netflix asks about favorite movies during signup); (2) Demographics-based—recommend popular items in the user's age/location segment; (3) Content-based fallback—use available signals (device type, time of day, landing page) to infer preferences; (4) Hybrid system—combine collaborative filtering with content-based methods. The cold start problem also affects new items (no ratings yet); solution: feature-based similarity to existing items."
+        },
+        {
+            "id": "d57q03",
+            "type": "multiple_choice",
+            "question": "How does Matrix Factorization (SVD, ALS) improve upon user-based collaborative filtering for large-scale recommendation systems?",
+            "options": [
+                "Matrix factorization is faster during recommendation because it replaces dot products with hash lookups",
+                "Matrix factorization decomposes the sparse user-item matrix into dense latent factor matrices, learning compact user and item embeddings that generalize to unobserved interactions and scale to millions of users",
+                "Matrix factorization automatically handles missing ratings by imputing average values before decomposition",
+                "Matrix factorization eliminates the need for negative examples during training, simplifying the data pipeline"
+            ],
+            "answer": 1,
+            "explanation": "User-based CF requires storing and searching all user-item pairs—at Netflix scale (200M users × 15K movies) this is computationally intractable. Matrix factorization decomposes the rating matrix R ≈ U × V^T where U is a (users × k) matrix and V is an (items × k) matrix, with k latent factors (e.g., k=50). Each user and item gets a dense embedding vector. Recommendation = dot product of user and item embeddings. Benefits: (1) compact storage (200M×50 + 15K×50 instead of 200M×15K); (2) captures latent preferences (e.g., an 'action-oriented' factor); (3) handles sparsity by learning generalizable representations; (4) fast lookup using approximate nearest neighbor search."
+        },
+        {
+            "id": "d57q04",
+            "type": "multiple_choice",
+            "question": "What is the difference between implicit and explicit feedback in recommender systems, and which is more common in practice?",
+            "options": [
+                "Explicit feedback is collected automatically by the system; implicit feedback requires users to actively provide ratings",
+                "Explicit feedback is direct user ratings (1-5 stars, thumbs up); implicit feedback is inferred from behavior (clicks, time spent, purchases). Implicit is far more common since most users never rate anything",
+                "Explicit feedback is more accurate because users provide intentional ratings; implicit feedback has too much noise to be useful",
+                "Explicit and implicit feedback are equivalent for collaborative filtering; the choice depends only on data collection infrastructure"
+            ],
+            "answer": 1,
+            "explanation": "Explicit feedback (star ratings, likes/dislikes) directly expresses preferences but suffers from low coverage—only ~5% of Netflix users rate watched content. Implicit feedback (play, pause, skip, rewatch, add-to-list, time spent) is collected automatically for every interaction, providing orders of magnitude more data. Challenge: implicit feedback is noisy and one-sided. A click means 'interested', but absence of a click could mean 'not interested' or 'never saw it'. ALS (Alternating Least Squares) is optimized for implicit feedback, treating interactions as confidence-weighted signals rather than ground-truth preferences. Spotify, YouTube, and TikTok rely almost entirely on implicit signals."
+        },
+        {
+            "id": "d57q05",
+            "type": "multiple_choice",
+            "question": "How do you evaluate a recommender system, and why is RMSE on held-out ratings an incomplete measure?",
+            "options": [
+                "RMSE is the gold standard for recommender systems; it is incomplete only when the rating scale is non-linear",
+                "RMSE measures rating prediction accuracy but ignores ranking quality—a system that predicts ratings accurately may still show users irrelevant items in top-k recommendations, which is what actually matters for engagement",
+                "RMSE cannot be computed for implicit feedback; this is why it is incomplete for modern recommendation systems",
+                "RMSE is incomplete because it does not account for the cold start problem in evaluation"
+            ],
+            "answer": 1,
+            "explanation": "Netflix ran a $1M prize (Netflix Prize) optimizing RMSE, then found the winning algorithm barely improved actual engagement. RMSE measures how accurately you predict a user's rating for an item they've already rated—but what users actually experience is the ranking of items shown to them. Better metrics: Precision@K (what fraction of top-K recommended items are relevant?), Recall@K (what fraction of relevant items appear in top-K?), NDCG (Normalized Discounted Cumulative Gain—rewards relevant items appearing higher in the list), and MRR (Mean Reciprocal Rank—how high is the first relevant item?). Online A/B testing of click-through rate and session time is the ultimate evaluation."
+        }
+    ]
+}

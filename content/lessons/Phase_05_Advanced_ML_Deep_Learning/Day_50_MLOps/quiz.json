@@ -1,0 +1,70 @@
+{
+    "day": 50,
+    "questions": [
+        {
+            "id": "d50q01",
+            "type": "multiple_choice",
+            "question": "What is the primary purpose of experiment tracking in MLOps (e.g., using MLflow)?",
+            "options": [
+                "To automatically deploy the best model to production without human review",
+                "To record hyperparameters, metrics, and artifacts for each training run so experiments are reproducible and comparable",
+                "To parallelize model training across multiple GPU machines",
+                "To encrypt model weights before storing them in a model registry"
+            ],
+            "answer": 1,
+            "explanation": "Experiment tracking solves the 'notebook chaos' problem where data scientists lose track of which configuration produced which result. Tools like MLflow log: hyperparameters (learning rate, depth), metrics (accuracy, F1 over epochs), artifacts (trained model files, feature importance plots), and environment (library versions). This makes any past run reproducible, enables side-by-side comparisons, and provides an audit trail for regulated industries. Without tracking, 'which model is in production?' becomes unanswerable."
+        },
+        {
+            "id": "d50q02",
+            "type": "multiple_choice",
+            "question": "A model performs excellently in testing but degrades over 3 months in production. What MLOps practice would catch this earliest?",
+            "options": [
+                "Retraining the model on the original training data every month",
+                "Using a simpler model that is less likely to overfit",
+                "Monitoring input data distributions and model output distributions for drift against baseline statistics",
+                "Adding more features to the model to capture more real-world variation"
+            ],
+            "answer": 2,
+            "explanation": "Performance degradation over time is caused by data drift (input distribution changes) or concept drift (relationship between inputs and outputs changes). Proactive monitoring tracks statistics like mean, variance, and distribution of input features and compares them to the training baseline. Tools like Evidently AI, WhyLogs, or custom dashboards alert when distributions shift beyond a threshold—before business outcomes degrade. Retraining fixes drift only after it's detected; monitoring catches it early."
+        },
+        {
+            "id": "d50q03",
+            "type": "multiple_choice",
+            "question": "What is the role of a Model Registry in an MLOps pipeline?",
+            "options": [
+                "It trains models automatically when new data arrives",
+                "It stores and versions trained models with lifecycle stages (Staging, Production, Archived) and enables rollback to previous versions",
+                "It encrypts model weights to prevent intellectual property theft",
+                "It automatically selects the best algorithm for a given dataset"
+            ],
+            "answer": 1,
+            "explanation": "A model registry is the single source of truth for trained models. It stores model artifacts with version numbers and lifecycle metadata: a model is promoted from Staging (testing) to Production after validation, and old Production models are Archived rather than deleted. This enables safe deployment (canary releases, A/B testing), instant rollback when a new model underperforms, and compliance auditing ('which model version was making decisions on date X?'). MLflow Model Registry and SageMaker Model Registry are common tools."
+        },
+        {
+            "id": "d50q04",
+            "type": "multiple_choice",
+            "question": "What distinguishes CI/CD for ML (MLOps CI/CD) from standard software CI/CD?",
+            "options": [
+                "ML CI/CD only applies to Python code, while standard CI/CD works with any language",
+                "ML CI/CD is slower because neural networks require GPU hardware for testing",
+                "ML CI/CD must also validate data quality, retrain/re-evaluate models, and test model behavior—not just code correctness",
+                "Standard CI/CD cannot be used for ML; entirely separate tooling is required"
+            ],
+            "answer": 2,
+            "explanation": "Standard CI/CD tests code (unit tests, integration tests, type checking). ML CI/CD adds three additional pipelines: (1) Data validation—check schema, distributions, and quality of new training data before it triggers retraining; (2) Model training pipeline—automated retraining when data or code changes; (3) Model evaluation gate—the new model must beat the current production model on held-out test data before deployment. Only if all three pass does the model get promoted. This prevents 'silent failures' where code tests pass but model quality regresses."
+        },
+        {
+            "id": "d50q05",
+            "type": "multiple_choice",
+            "question": "A data scientist's model takes 4 hours to train and uses 50 GB of raw CSV files stored locally. What is the first MLOps improvement to make this production-ready?",
+            "options": [
+                "Rewrite the model in C++ for faster training",
+                "Increase the batch size to reduce training time",
+                "Version the data in a data store, containerize the training code, and parameterize hyperparameters so runs are reproducible anywhere",
+                "Switch from scikit-learn to a deep learning framework for better scalability"
+            ],
+            "answer": 2,
+            "explanation": "The fundamental MLOps problem here is reproducibility and portability. Local CSV files aren't versioned (if the data changes, old results can't be recreated) and the code won't run on another machine. The minimum viable MLOps stack: (1) Store and version data (S3/GCS/DVC) so you can point to exact training data; (2) Containerize the training job (Docker) so it runs identically anywhere; (3) Parameterize hyperparameters (config file/CLI args) so experiments are reproducible. These three steps transform a notebook script into a production-grade training pipeline."
+        }
+    ]
+}

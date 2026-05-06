@@ -1,0 +1,70 @@
+{
+    "day": 49,
+    "questions": [
+        {
+            "id": "d49q01",
+            "type": "multiple_choice",
+            "question": "What is the key advantage of word embeddings (Word2Vec, GloVe) over one-hot encoding for representing words?",
+            "options": [
+                "Embeddings are smaller in memory since they use single integers instead of arrays",
+                "Embeddings capture semantic similarity—words with similar meanings have similar vector representations",
+                "Embeddings guarantee exact word matches during search without false positives",
+                "Embeddings remove the need for tokenization before model training"
+            ],
+            "answer": 1,
+            "explanation": "One-hot encoding treats every word as completely independent—'king' and 'queen' are as dissimilar as 'king' and 'table'. Word embeddings (Word2Vec, GloVe, fastText) learn dense vector representations from large text corpora such that semantically related words cluster together in vector space. The classic example: embedding('king') - embedding('man') + embedding('woman') ≈ embedding('queen'). This semantic geometry enables models to generalize across related words."
+        },
+        {
+            "id": "d49q02",
+            "type": "multiple_choice",
+            "question": "You need to classify 10,000 customer support tickets into 8 categories. Which preprocessing step most directly improves model performance on this task?",
+            "options": [
+                "Stemming all words to their root form (e.g., 'running' → 'run') to reduce vocabulary size",
+                "Removing all stopwords so that only rare, domain-specific words remain",
+                "Removing stop words, lowercasing, and using TF-IDF weighting to emphasize domain-specific terms",
+                "Converting all text to ASCII to remove special characters before vectorization"
+            ],
+            "answer": 2,
+            "explanation": "For text classification, the standard preprocessing pipeline is: lowercase (reduce vocabulary), remove punctuation/special chars, remove stop words (common words like 'the', 'is' add noise), then represent text with TF-IDF. TF-IDF (Term Frequency-Inverse Document Frequency) downweights words that appear in every document (useless discriminators) and upweights words that appear in few documents (strong category signals). Stemming helps but TF-IDF is the bigger win for classification."
+        },
+        {
+            "id": "d49q03",
+            "type": "multiple_choice",
+            "question": "What does Named Entity Recognition (NER) do, and why is it useful for business applications?",
+            "options": [
+                "NER classifies entire documents into predefined categories like 'positive' or 'negative'",
+                "NER identifies and classifies named entities in text (people, organizations, locations, dates), enabling structured extraction from unstructured text",
+                "NER generates new text by predicting the next word in a sequence",
+                "NER measures the similarity between two sentences using cosine distance"
+            ],
+            "answer": 1,
+            "explanation": "NER is an information extraction technique that locates and classifies named entities in text into categories like PERSON, ORG, LOCATION, DATE, MONEY, PRODUCT. Business value: extract company names from news articles for investment monitoring, pull contract dates from legal documents, identify customer mentions in support tickets, or map supplier relationships from emails. NER converts unstructured text into structured data that feeds downstream analytics pipelines."
+        },
+        {
+            "id": "d49q04",
+            "type": "multiple_choice",
+            "question": "A sentiment analysis model is 92% accurate on movie reviews but only 61% accurate on financial news. What is the most likely cause?",
+            "options": [
+                "Financial news uses longer sentences, and the model has a sequence length limit",
+                "Domain shift: words have different sentiment polarity across domains ('volatile' is negative in movies, neutral/positive in trading)",
+                "The financial dataset has more classes, making the problem inherently harder",
+                "The model was trained on too little data and is underfitting on both domains"
+            ],
+            "answer": 1,
+            "explanation": "This is domain shift—a model trained on one text distribution fails to generalize to another. Sentiment words are domain-specific: 'volatile' and 'aggressive' are negative in movie reviews but can be positive in hedge fund contexts. 'Missed expectations' is catastrophic in earnings news but mild in a film review. Solutions include: fine-tuning on target-domain data, domain adaptation, or using domain-specific pretrained models (e.g., FinBERT for financial text)."
+        },
+        {
+            "id": "d49q05",
+            "type": "multiple_choice",
+            "question": "When using a pretrained transformer model (like BERT) for a custom text classification task, what is the recommended approach?",
+            "options": [
+                "Train BERT from scratch on your custom dataset to avoid transfer learning bias",
+                "Use BERT embeddings as fixed features with a separate classifier, never updating BERT weights",
+                "Add a classification head on top of BERT and fine-tune the entire model on your labeled data with a low learning rate",
+                "Replace BERT's tokenizer with your own vocabulary before any fine-tuning"
+            ],
+            "answer": 2,
+            "explanation": "Fine-tuning the full pretrained model (with a new classification head) consistently outperforms using frozen BERT features. The key is using a very low learning rate (2e-5 to 5e-5) so you gently adjust pretrained weights rather than overwriting them—this preserves the general language understanding BERT learned from billions of tokens. Training from scratch on small custom datasets would overfit badly. Freezing BERT entirely misses the benefit of adapting representations to your domain."
+        }
+    ]
+}

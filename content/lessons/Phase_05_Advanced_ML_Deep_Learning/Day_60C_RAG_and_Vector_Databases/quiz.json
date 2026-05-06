@@ -1,0 +1,70 @@
+{
+    "day": "60C",
+    "questions": [
+        {
+            "id": "d60Cq01",
+            "type": "multiple_choice",
+            "question": "What is a vector embedding, and why does it enable semantic search?",
+            "options": [
+                "A vector embedding is a compressed binary representation of a file, used to reduce storage requirements for large document collections",
+                "A vector embedding is a dense numerical vector that represents the meaning of text such that semantically similar texts have similar vectors, enabling search by meaning rather than exact keyword matching",
+                "A vector embedding is an index structure that maps keywords to document IDs for fast retrieval",
+                "A vector embedding is a one-hot encoding of words in a fixed vocabulary, used as input to neural networks"
+            ],
+            "answer": 1,
+            "explanation": "Embedding models (sentence-transformers, OpenAI text-embedding-ada-002) convert text into dense vectors of 768-3072 dimensions. The key property: semantically similar text maps to nearby vectors in the embedding space. 'What is the cancellation policy?' and 'How do I cancel my subscription?' produce similar vectors despite sharing few words. This enables semantic search: find documents whose meaning matches the query, not just those containing the same keywords. Traditional keyword search (BM25, Elasticsearch) fails for paraphrases and synonyms; semantic search succeeds because it operates on meaning representations rather than surface text."
+        },
+        {
+            "id": "d60Cq02",
+            "type": "multiple_choice",
+            "question": "What problem does RAG (Retrieval-Augmented Generation) solve that a standalone LLM cannot?",
+            "options": [
+                "RAG makes LLMs faster by pre-computing responses for common queries",
+                "RAG solves the knowledge cutoff and hallucination problems: LLMs have static training data and can fabricate facts; RAG retrieves current, specific, verifiable documents and injects them into the prompt so the LLM grounds its response in retrieved evidence",
+                "RAG enables LLMs to understand images and audio, extending beyond text-only capabilities",
+                "RAG reduces the number of tokens an LLM needs to process by pre-summarizing documents before querying"
+            ],
+            "answer": 1,
+            "explanation": "Standalone LLMs have two fundamental limitations for enterprise use: (1) Knowledge cutoff—the model only knows what was in its training data (e.g., GPT-4 knowledge ends at a certain date; it cannot answer questions about recent events or your internal documents); (2) Hallucination—when a model doesn't know something, it confidently fabricates plausible-sounding but incorrect answers. RAG addresses both: at query time, relevant documents are retrieved from a vector database and injected into the LLM's context window. The model sees: 'Using only the following documents: [retrieved docs], answer: [question].' This grounds responses in verifiable sources and enables real-time knowledge updates without retraining."
+        },
+        {
+            "id": "d60Cq03",
+            "type": "multiple_choice",
+            "question": "What is the role of a vector database (e.g., ChromaDB, Pinecone) in a RAG pipeline?",
+            "options": [
+                "Vector databases store the LLM model weights and serve them to the generation component during inference",
+                "Vector databases store document embeddings with associated metadata and provide fast approximate nearest neighbor (ANN) search to retrieve the most semantically similar documents to a query embedding",
+                "Vector databases compress embeddings using dimensionality reduction to reduce storage requirements during retrieval",
+                "Vector databases train the embedding model incrementally as new documents are added to the knowledge base"
+            ],
+            "answer": 1,
+            "explanation": "A vector database is purpose-built for high-dimensional similarity search. Workflow: (1) Indexing—split documents into chunks, embed each chunk with an embedding model, store (embedding, text, metadata) tuples; (2) Retrieval—embed the user query, find top-k most similar stored embeddings using ANN algorithms (HNSW, IVF-Flat). Traditional databases (SQL, Elasticsearch) use exact matching or keyword search—slow and imprecise for millions of high-dimensional vectors. Vector databases use approximate algorithms optimized for this exact problem, returning top-k results in milliseconds even at million-document scale. Popular options: ChromaDB (local/open-source), Pinecone (managed), Weaviate, Qdrant, pgvector (PostgreSQL extension)."
+        },
+        {
+            "id": "d60Cq04",
+            "type": "multiple_choice",
+            "question": "Why does chunk size selection matter in a RAG pipeline, and what is the general tradeoff?",
+            "options": [
+                "Chunk size only affects storage costs; it has no impact on retrieval quality or answer accuracy",
+                "Small chunks provide more precise retrieval but may lack context; large chunks provide more context but may dilute the specific relevant content within the chunk and exceed the LLM's context window",
+                "Larger chunks are always better because they give the LLM more information to work with when generating answers",
+                "Chunk size must exactly match the embedding model's maximum token limit to avoid truncation errors"
+            ],
+            "answer": 1,
+            "explanation": "Chunking strategy is one of the most impactful RAG design decisions. Small chunks (100-200 tokens): high retrieval precision (the retrieved chunk is very relevant), but the surrounding context needed to understand the chunk may be missing—e.g., a table cell without the column headers. Large chunks (1000+ tokens): contain more context but the relevant sentence is buried in irrelevant content, reducing retrieval precision and using more of the LLM's context window. Common strategies: fixed-size with overlap (simple, decent), sentence/paragraph splitting (respects natural boundaries), hierarchical chunking (store both sentence and document embeddings), or semantic chunking (split at topic boundaries). Test different sizes with end-to-end retrieval metrics on representative queries."
+        },
+        {
+            "id": "d60Cq05",
+            "type": "multiple_choice",
+            "question": "When should you choose RAG over fine-tuning for an LLM-based application?",
+            "options": [
+                "Always choose RAG; fine-tuning is deprecated and no longer recommended for production LLM applications",
+                "Choose RAG when the knowledge changes frequently, when you need verifiable citations, or when data is too large to fine-tune on; choose fine-tuning when you need to change the model's behavior, style, or reasoning patterns on a stable dataset",
+                "Choose RAG only for question-answering tasks; fine-tuning is required for all generation tasks",
+                "Choose fine-tuning when the documents are longer than 500 tokens; RAG only works with short snippets"
+            ],
+            "answer": 1,
+            "explanation": "RAG vs. fine-tuning solve different problems. Use RAG when: knowledge changes frequently (product catalog, news, regulations—you can update the vector DB without retraining); you need citations/sources for auditability (RAG can return the exact retrieved chunks used); knowledge base is very large (millions of docs that won't fit in a context window). Use fine-tuning when: you need to change the model's behavior, tone, or output format; you want domain-specific reasoning patterns not present in the base model; performance latency is critical (no retrieval step). Often the best production systems combine both: fine-tune for behavior/style, RAG for knowledge. Prompt engineering is always the first thing to try before either approach."
+        }
+    ]
+}

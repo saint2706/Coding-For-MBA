@@ -1,0 +1,70 @@
+{
+    "day": 53,
+    "questions": [
+        {
+            "id": "d53q01",
+            "type": "multiple_choice",
+            "question": "Why is Grid Search inefficient for tuning models with many hyperparameters, and what is a better alternative?",
+            "options": [
+                "Grid Search is inefficient because it requires sorting the hyperparameter values before searching",
+                "Grid Search evaluates every combination exhaustively, so adding one hyperparameter multiplies total evaluations; Random Search samples random combinations and finds good results with far fewer evaluations",
+                "Grid Search only works with continuous hyperparameters; it cannot handle categorical ones",
+                "Grid Search overfits to the validation set because it evaluates the same data too many times"
+            ],
+            "answer": 1,
+            "explanation": "Grid Search suffers from the curse of dimensionality: 5 hyperparameters with 10 values each = 100,000 combinations. Random Search evaluates random samples from the same space and typically finds results within 5% of Grid Search quality with ~10% of the evaluations. This is because most hyperparameter spaces are low-dimensional: only a few hyperparameters really matter, and Random Search samples those important dimensions more densely. Bergstra & Bengio (2012) proved this empirically. For expensive models, Bayesian Optimization is even better—it builds a surrogate model to predict which hyperparameters will perform best."
+        },
+        {
+            "id": "d53q02",
+            "type": "multiple_choice",
+            "question": "What is the difference between filter methods and wrapper methods for feature selection?",
+            "options": [
+                "Filter methods use statistical scores (correlation, mutual information) independent of the model; wrapper methods train the actual model on subsets to evaluate feature importance",
+                "Filter methods work only for classification; wrapper methods work for both classification and regression",
+                "Filter methods are supervised; wrapper methods are unsupervised",
+                "Filter methods remove duplicate features; wrapper methods remove irrelevant features"
+            ],
+            "answer": 0,
+            "explanation": "Filter methods compute a univariate statistical score per feature (correlation with target, chi-squared, mutual information, ANOVA F-statistic) and select top-k features. They're fast but ignore feature interactions and model-specific behavior. Wrapper methods (RFE, forward/backward selection) actually train the model and evaluate performance on subsets of features—they're model-aware but computationally expensive. Embedded methods (Lasso, feature importances from trees) perform selection as part of training. Typical workflow: filter to reduce 1000 features to 100, then use wrapper or embedded methods on the reduced set."
+        },
+        {
+            "id": "d53q03",
+            "type": "multiple_choice",
+            "question": "Recursive Feature Elimination (RFE) with a Random Forest selects 15 of your original 200 features. What should concern you before trusting this selection?",
+            "options": [
+                "RFE only works correctly with linear models; Random Forest importance can be misleading",
+                "You should be concerned about correlated features—RFE may arbitrarily keep one of a correlated group and discard others that are equally or more important",
+                "RFE with 200 features always overfits; you should use fewer starting features",
+                "The 15 features selected are always interpretable; this means the model lacks complexity"
+            ],
+            "answer": 1,
+            "explanation": "RFE and tree-based importance scores have a known issue with correlated features: when two features are highly correlated, both contain the same information, but Random Forest importance splits the credit arbitrarily. RFE may keep feature A and discard correlated feature B, even though B might be more causally meaningful or more stable in production. Before trusting the selection: check correlations among selected features, validate on a holdout set that RFE performance improves, and consider the stability of selections across bootstrap samples (stability selection)."
+        },
+        {
+            "id": "d53q04",
+            "type": "multiple_choice",
+            "question": "What is Bayesian Optimization for hyperparameter tuning, and why does it outperform Random Search for expensive models?",
+            "options": [
+                "Bayesian Optimization trains multiple models simultaneously to find the best hyperparameters faster",
+                "Bayesian Optimization builds a probabilistic surrogate model of the objective function and uses it to choose the next hyperparameter candidate most likely to improve results, rather than sampling blindly",
+                "Bayesian Optimization is a statistical test that determines which hyperparameters are significant",
+                "Bayesian Optimization applies Bayes' theorem to combine prior model knowledge with training data during fitting"
+            ],
+            "answer": 1,
+            "explanation": "Random Search and Grid Search are memoryless—each evaluation is independent of previous results. Bayesian Optimization maintains a surrogate model (typically a Gaussian Process) that predicts the likely performance for any hyperparameter configuration, given all evaluations so far. An acquisition function (e.g., Expected Improvement) selects the next point that maximizes the probability of beating the current best. This exploits past results to avoid re-evaluating bad regions and focus on promising ones. For models that take hours to train (deep learning, large GBM), this reduces total search time by 10-50×. Tools: Optuna, Hyperopt, Ray Tune."
+        },
+        {
+            "id": "d53q05",
+            "type": "multiple_choice",
+            "question": "During hyperparameter tuning, a practitioner evaluates 500 different configurations on the same validation set and picks the best. What statistical problem occurs?",
+            "options": [
+                "Gradient descent will not converge with so many hyperparameter evaluations",
+                "Multiple comparisons problem: with 500 evaluations, some configurations will appear good due to random chance; the selected model is likely overfit to the validation set",
+                "The model will memorize the validation set after 500 evaluations",
+                "Statistical significance cannot be computed with more than 100 hyperparameter combinations"
+            ],
+            "answer": 1,
+            "explanation": "This is hyperparameter overfitting (also called 'overfitting to the validation set'): with enough trials, some random combination will score well on the validation set purely by chance. The selected model's validation score is an optimistically biased estimate of true performance. Solution: use nested cross-validation (inner loop for hyperparameter selection, outer loop for performance estimation), or hold out a completely separate test set that is only evaluated once after final hyperparameter selection. Never report the validation score used for selection as your model's final performance."
+        }
+    ]
+}
