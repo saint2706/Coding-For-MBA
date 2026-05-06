@@ -11,12 +11,16 @@
  * - Render code blocks with syntax highlighting and copy buttons.
  */
 
-import { useState, memo, JSX, useMemo, type ComponentProps, lazy, Suspense } from 'react'
+import { useState, useEffect, memo, JSX, useMemo, type ComponentProps, lazy, Suspense } from 'react'
+import { createPortal } from 'react-dom'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
 import remarkParse from 'remark-parse'
+import rehypeKatex from 'rehype-katex'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize, { type Options as RehypeSanitizeOptions } from 'rehype-sanitize'
+import 'katex/dist/katex.min.css'
 import { unified } from 'unified'
 import type { Content, Heading, Html, Nodes, Paragraph, Root, Strong } from 'mdast'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -25,6 +29,9 @@ import CopyButton from './CopyButton'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 import { getSecureLinkAttributes } from '../utils/linkSafety'
 import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
+
+const COLLAPSE_THRESHOLD = 20
+const COLLAPSED_LINE_COUNT = 15
 
 const CodePlayground = lazy(() => import('./CodePlayground'))
 const ExerciseWidget = lazy(() => import('./ExerciseWidget'))
@@ -44,10 +51,6 @@ const customTheme = {
   },
 }
 
-/**
- * Custom CodeBlock component for ReactMarkdown.
- * Renders code with syntax highlighting and a copy button.
- */
 function CodeBlock({ className, children }: { className?: string; children: React.ReactNode }) {
   const match = /language-(\w+)/.exec(className || '')
   const lang = match ? match[1]! : ''
@@ -55,15 +58,35 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
   const [showPlayground, setShowPlayground] = useState(false)
   const isPython = lang === 'python' || lang === 'py'
 
+  const lines = code.split('\n')
+  const isLong = lines.length > COLLAPSE_THRESHOLD
+  const [collapsed, setCollapsed] = useState(isLong)
+  const [wrapLines, setWrapLines] = useState(true)
+
   if (!match) {
     return <code className={className}>{children}</code>
   }
 
+  const displayCode = collapsed ? lines.slice(0, COLLAPSED_LINE_COUNT).join('\n') : code
+  const hiddenLineCount = lines.length - COLLAPSED_LINE_COUNT
+
   return (
-    <div className="code-block-wrapper code-block--wrapped">
+    <div
+      className="code-block-wrapper code-block--wrapped"
+      data-wrap={wrapLines ? 'true' : 'false'}
+    >
       <div className="code-block-header">
         <span className="code-block-lang">{lang}</span>
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+          <button
+            type="button"
+            className="code-block-copy"
+            onClick={() => setWrapLines((w) => !w)}
+            aria-label={wrapLines ? 'Disable line wrapping' : 'Enable line wrapping'}
+            title={wrapLines ? 'Unwrap long lines' : 'Wrap long lines'}
+          >
+            {wrapLines ? '↔ Unwrap' : '↩ Wrap'}
+          </button>
           {isPython && (
             <button
               type="button"
@@ -77,34 +100,57 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
           <CopyButton text={code} ariaLabel="Copy code to clipboard" />
         </div>
       </div>
-      <SyntaxHighlighter
-        style={customTheme}
-        language={lang}
-        PreTag="div"
-        wrapLongLines
-        customStyle={{
-          margin: 0,
-          padding: '1rem',
-          background: 'transparent',
-          fontSize: '0.8125rem',
-          lineHeight: '1.65',
-          overflowX: 'hidden',
-          whiteSpace: 'pre-wrap',
-          overflowWrap: 'anywhere',
-          wordBreak: 'break-word',
-        }}
-        tabIndex={0}
-        codeTagProps={{
-          style: {
-            fontFamily: 'var(--font-mono)',
-            whiteSpace: 'pre-wrap',
-            overflowWrap: 'anywhere',
-            wordBreak: 'break-word',
-          },
-        }}
-      >
-        {code}
-      </SyntaxHighlighter>
+      <div className={`code-block-content${collapsed ? ' code-block-content--collapsed' : ''}`}>
+        <SyntaxHighlighter
+          style={customTheme}
+          language={lang}
+          PreTag="div"
+          wrapLongLines={wrapLines}
+          showLineNumbers={lines.length > 3}
+          lineNumberStyle={{
+            minWidth: '2.5em',
+            paddingRight: '1em',
+            color: 'var(--text-muted)',
+            userSelect: 'none',
+            opacity: 0.45,
+            fontSize: '0.75rem',
+          }}
+          customStyle={{
+            margin: 0,
+            padding: '1rem',
+            background: 'transparent',
+            fontSize: '0.8125rem',
+            lineHeight: '1.65',
+            overflowX: 'hidden',
+            whiteSpace: wrapLines ? 'pre-wrap' : 'pre',
+            overflowWrap: wrapLines ? 'anywhere' : 'normal',
+            wordBreak: wrapLines ? 'break-word' : 'normal',
+          }}
+          tabIndex={0}
+          codeTagProps={{
+            style: {
+              fontFamily: 'var(--font-mono)',
+              whiteSpace: wrapLines ? 'pre-wrap' : 'pre',
+              overflowWrap: wrapLines ? 'anywhere' : 'normal',
+              wordBreak: wrapLines ? 'break-word' : 'normal',
+            },
+          }}
+        >
+          {displayCode}
+        </SyntaxHighlighter>
+      </div>
+      {isLong && (
+        <button
+          type="button"
+          className="code-block-expand-btn"
+          onClick={() => setCollapsed((c) => !c)}
+          aria-expanded={!collapsed}
+        >
+          {collapsed
+            ? `▼ Show ${hiddenLineCount} more line${hiddenLineCount !== 1 ? 's' : ''}`
+            : '▲ Collapse'}
+        </button>
+      )}
       {showPlayground && (
         <div className="code-block-inline-playground">
           <Suspense
@@ -143,12 +189,9 @@ const TableComponent = ({ children }: { children?: React.ReactNode }) => {
   )
 }
 
-const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
-  // Respect fetchPriority for LCP (Hero) optimization
-  // If fetchpriority="high", we should not lazy load.
+const ImageWithZoom = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
+  const [zoomed, setZoomed] = useState(false)
 
-  // Intercept the lowercase 'fetchpriority' from the underlying props,
-  // as it is passed by the HTML parser, so it doesn't leak to the DOM via ...rest
   const {
     fetchPriority,
     fetchpriority: lowercaseFetchPriority,
@@ -161,14 +204,57 @@ const ImageComponent = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
 
   const isHighPriority = lowercaseFetchPriority === 'high' || fetchPriority === 'high'
 
+  useEffect(() => {
+    if (!zoomed) return
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setZoomed(false)
+    }
+    document.addEventListener('keydown', handleKey)
+    return () => document.removeEventListener('keydown', handleKey)
+  }, [zoomed])
+
   return (
-    <img
-      loading={isHighPriority ? 'eager' : 'lazy'}
-      decoding="async"
-      fetchPriority={isHighPriority ? 'high' : undefined}
-      alt={rest.alt || 'Course image'}
-      {...rest}
-    />
+    <>
+      <img
+        loading={isHighPriority ? 'eager' : 'lazy'}
+        decoding="async"
+        fetchPriority={isHighPriority ? 'high' : undefined}
+        alt={rest.alt || 'Course image'}
+        className="zoomable-image"
+        onClick={() => rest.src && setZoomed(true)}
+        {...rest}
+      />
+      {zoomed &&
+        rest.src &&
+        createPortal(
+          <div
+            className="image-zoom-overlay"
+            onClick={() => setZoomed(false)}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Zoomed: ${rest.alt || 'image'}`}
+          >
+            <button
+              type="button"
+              className="image-zoom-close"
+              onClick={(e) => {
+                e.stopPropagation()
+                setZoomed(false)
+              }}
+              aria-label="Close zoomed image"
+            >
+              ✕
+            </button>
+            <img
+              src={rest.src}
+              alt={rest.alt || 'Course image'}
+              className="image-zoom-content"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>,
+          document.body,
+        )}
+    </>
   )
 }
 
@@ -190,11 +276,24 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
 }
 
 function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
-  return ({ children, ...props }: JSX.IntrinsicElements['h1'] & ExtraProps) => {
-    // The 'id' prop is now provided by rehype-slug-custom plugin
+  return ({
+    children,
+    id,
+    className: _className,
+    ...props
+  }: JSX.IntrinsicElements['h1'] & ExtraProps) => {
     return (
-      <Tag tabIndex={-1} style={{ outline: 'none' }} {...props}>
+      <Tag
+        id={id}
+        tabIndex={-1}
+        style={{ outline: 'none' }}
+        className="heading-with-anchor"
+        {...props}
+      >
         {children}
+        {id && (
+          <a href={`#${id}`} className="heading-anchor-link" aria-label="Link to this section" />
+        )}
       </Tag>
     )
   }
@@ -544,7 +643,7 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
 const markdownComponents: Components = {
   code: CodeComponent,
   table: TableComponent,
-  img: ImageComponent,
+  img: ImageWithZoom,
   a: LinkComponent,
   h1: createHeadingComponent('h1'),
   h2: createHeadingComponent('h2'),
@@ -624,9 +723,10 @@ const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlu
   rehypeRaw,
   [rehypeSanitize, lessonSanitizerSchema],
   rehypeSlugCustom,
+  rehypeKatex,
 ]
 
-const remarkPlugins = [remarkGfm]
+const remarkPlugins = [remarkGfm, remarkMath]
 
 function InteractiveContent({
   content,
