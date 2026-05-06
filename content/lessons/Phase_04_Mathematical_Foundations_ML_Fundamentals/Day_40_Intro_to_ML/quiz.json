@@ -1,0 +1,70 @@
+{
+    "day": 40,
+    "questions": [
+        {
+            "id": "d40q01",
+            "type": "multiple_choice",
+            "question": "What is the fundamental difference between traditional programming and machine learning?",
+            "options": [
+                "Traditional programming is faster; ML is more accurate",
+                "Traditional programming provides Data + Rules → Answers; ML provides Data + Answers → Rules (the model)",
+                "ML requires more code than traditional programming to solve the same problem",
+                "Traditional programming works on text data; ML works on numeric data"
+            ],
+            "answer": 1,
+            "explanation": "In traditional programming, developers encode explicit rules (if-then logic) to transform data into answers. Machine learning inverts this: you supply data and the known answers (labels), and the algorithm discovers the rules automatically. This makes ML powerful for problems where the rules are too complex to write by hand—like spam detection, image recognition, or language understanding."
+        },
+        {
+            "id": "d40q02",
+            "type": "multiple_choice",
+            "question": "A model achieves 98% training accuracy but only 75% test accuracy. What condition is this, and what is the most direct fix?",
+            "options": [
+                "Underfitting — add more features or use a more complex model",
+                "Overfitting — the model memorized training noise; regularize, simplify the model, or get more training data",
+                "Data leakage — the test set was accidentally included in training",
+                "Class imbalance — the 2% of hard cases are dragging down test accuracy"
+            ],
+            "answer": 1,
+            "explanation": "A large gap between training and test performance (98% vs 75%) is the classic signature of overfitting: the model memorized training examples including noise rather than learning generalizable patterns. Fixes include regularization (L1/L2), reducing model complexity, early stopping, dropout (for neural networks), or collecting more training data to make memorization harder."
+        },
+        {
+            "id": "d40q03",
+            "type": "multiple_choice",
+            "question": "A fraud detection model achieves 99% accuracy on a dataset where 1% of transactions are fraudulent. Why is this metric misleading?",
+            "options": [
+                "99% accuracy is too high — the model is definitely overfitting",
+                "A model that predicts 'not fraud' for every transaction would also achieve 99% accuracy while catching zero fraud; accuracy ignores class imbalance",
+                "Fraud detection requires at least 99.9% accuracy to be production-ready",
+                "The model was likely trained on test data, inflating the accuracy"
+            ],
+            "answer": 1,
+            "explanation": "When classes are heavily imbalanced (99% negative, 1% positive), the trivial classifier that always predicts the majority class achieves 99% accuracy without being useful at all. For imbalanced problems, use Recall (how many frauds did we catch?), Precision (how many fraud alerts are real?), F1 Score, or ROC-AUC as metrics that account for class distribution."
+        },
+        {
+            "id": "d40q04",
+            "type": "multiple_choice",
+            "question": "Why use 5-fold cross-validation instead of a single 80/20 train-test split for model evaluation?",
+            "options": [
+                "Cross-validation trains 5 separate models, which can then be ensembled for better predictions",
+                "Cross-validation is faster than a single split because each fold uses less data",
+                "Cross-validation gives every sample a chance to be in the test set, reducing variance in performance estimates and producing more reliable confidence intervals",
+                "A single split is only valid for regression; classification always requires cross-validation"
+            ],
+            "answer": 2,
+            "explanation": "A single split may be lucky or unlucky depending on which samples end up in the test set. 5-fold CV uses every sample exactly once as test data (across the 5 folds) and averages the results. This dramatically reduces variance in the estimate and provides a standard deviation across folds to quantify reliability. The trade-off is 5× the computation."
+        },
+        {
+            "id": "d40q05",
+            "type": "multiple_choice",
+            "question": "For a hospital tumor screening model, which metric should be maximized, and why?",
+            "options": [
+                "Precision — because false positives (unnecessary biopsies) are more costly than missing tumors",
+                "Accuracy — because the overall correctness rate matters most in medical settings",
+                "Recall — because missing an actual tumor (false negative) is far more dangerous than an unnecessary follow-up",
+                "F1 Score — because medical models must balance precision and recall equally"
+            ],
+            "answer": 2,
+            "explanation": "In medical screening, a false negative (missed tumor) can be fatal. Recall = TP / (TP + FN) measures what fraction of actual positives you caught. Maximizing recall minimizes missed cases, even at the cost of more false alarms (which trigger additional diagnostic tests). Once a screening model flags a patient, follow-up tests with higher precision confirm the diagnosis."
+        }
+    ]
+}

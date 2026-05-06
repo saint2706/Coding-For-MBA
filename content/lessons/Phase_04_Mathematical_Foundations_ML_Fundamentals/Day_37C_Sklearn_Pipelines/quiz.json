@@ -1,0 +1,70 @@
+{
+    "day": "37C",
+    "questions": [
+        {
+            "id": "d37Cq01",
+            "type": "multiple_choice",
+            "question": "In sklearn, a `StandardScaler` is `fit_transform`-ed on the entire dataset before the train-test split. What problem does this cause?",
+            "options": [
+                "The scaler will fail if there are missing values",
+                "Test set statistics (mean and std) leak into the scaler, causing the preprocessing to be optimistically tuned to the test data",
+                "The model will train on unscaled features and produce wrong predictions",
+                "Cross-validation scores will be lower than expected"
+            ],
+            "answer": 1,
+            "explanation": "Fitting the scaler on all data before splitting means the scaler 'sees' test statistics during training. The test set is no longer truly unseen—its mean and std influenced the preprocessing. A `Pipeline` prevents this by fitting every preprocessing step only on the training fold during cross-validation, making the test set genuinely unseen."
+        },
+        {
+            "id": "d37Cq02",
+            "type": "multiple_choice",
+            "question": "What does `ColumnTransformer` with `remainder='passthrough'` do to columns not mentioned in any transformer?",
+            "options": [
+                "It drops all unspecified columns (same as the default behavior)",
+                "It raises a ValueError for columns without a transformer",
+                "It passes unspecified columns through unchanged, including them in the output",
+                "It applies StandardScaler to unspecified columns automatically"
+            ],
+            "answer": 2,
+            "explanation": "`remainder='passthrough'` keeps all columns not listed in any transformer and appends them unchanged to the transformed output. The default `remainder='drop'` silently removes them. Use `passthrough` for binary or already-encoded features you want to preserve as-is alongside your numeric and categorical transformations."
+        },
+        {
+            "id": "d37Cq03",
+            "type": "multiple_choice",
+            "question": "You built a custom sklearn transformer `OutlierClipper`. When writing `fit()`, why must it `return self`?",
+            "options": [
+                "So sklearn can verify that the transformer ran without errors",
+                "To support method chaining: `fit_transform(X)` calls `fit(X).transform(X)`, which requires `fit()` to return the fitted object",
+                "To prevent garbage collection from deleting the fitted parameters",
+                "Because sklearn's `Pipeline` calls `fit()` twice by default"
+            ],
+            "answer": 1,
+            "explanation": "`fit_transform(X)` is implemented as `fit(X).transform(X)`. If `fit()` returned `None`, the chain `.transform(X)` would raise an `AttributeError`. Returning `self` from `fit()` is a core sklearn convention—it enables method chaining and lets `Pipeline` call `transform()` on the fitted object after `fit()` completes."
+        },
+        {
+            "id": "d37Cq04",
+            "type": "multiple_choice",
+            "question": "A `Pipeline` has steps named `'preprocessor'` and `'classifier'` (a `RandomForestClassifier`). How do you reference `n_estimators` in a `GridSearchCV` `param_grid`?",
+            "options": [
+                "{'n_estimators': [100, 200]}",
+                "{'RandomForestClassifier__n_estimators': [100, 200]}",
+                "{'classifier__n_estimators': [100, 200]}",
+                "{'classifier.n_estimators': [100, 200]}"
+            ],
+            "answer": 2,
+            "explanation": "GridSearchCV uses the `'step_name__parameter'` double-underscore syntax to reference parameters inside a Pipeline. The step name (as given to the Pipeline) is `'classifier'`, and the parameter is `n_estimators`. This syntax works at any depth: `'preprocessor__num__imputer__strategy'` can reference a nested pipeline step."
+        },
+        {
+            "id": "d37Cq05",
+            "type": "multiple_choice",
+            "question": "What is the main production benefit of serializing a trained sklearn Pipeline with `joblib.dump()`?",
+            "options": [
+                "The pipeline file is encrypted, protecting the model from unauthorized use",
+                "The entire fitted pipeline—all transformers plus the model—is saved as one file; loading it and calling `.predict()` on raw data applies all preprocessing steps automatically",
+                "Joblib compression reduces the model size to near zero",
+                "The pipeline can be converted directly to a REST API endpoint"
+            ],
+            "answer": 1,
+            "explanation": "Serializing a fitted Pipeline bundles all fitted transformers (imputer with learned medians, scaler with learned means/stds, encoder with learned categories) together with the trained model. Loading it with `joblib.load()` and calling `.predict()` on raw data automatically applies every preprocessing step in the correct order—eliminating manual reproduction of transformations and preventing the 'it worked on my laptop' failure."
+        }
+    ]
+}

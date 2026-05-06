@@ -1,0 +1,70 @@
+{
+    "day": 39,
+    "questions": [
+        {
+            "id": "d39q01",
+            "type": "multiple_choice",
+            "question": "For the loss function L(w) = (w - 3)², the derivative at w = 5 is positive. Which direction should gradient descent move w to reduce the loss?",
+            "options": [
+                "Increase w (move in the positive direction) because the slope is positive",
+                "Decrease w (move in the negative direction) because gradient descent moves opposite to the gradient",
+                "Keep w unchanged because a positive derivative means we are at a minimum",
+                "Set w = 0 to reset the optimization"
+            ],
+            "answer": 1,
+            "explanation": "A positive gradient means the function increases as w increases — so we must move in the opposite direction to go downhill. The gradient descent update rule is: w = w - learning_rate × gradient. Since gradient > 0, we subtract a positive number, decreasing w. Intuitively: if you're on the right side of a valley (slope going up to the right), you walk left to reach the bottom."
+        },
+        {
+            "id": "d39q02",
+            "type": "multiple_choice",
+            "question": "You set the learning rate to 0.9 for gradient descent on a simple quadratic loss. After several steps, the loss oscillates wildly and fails to converge. What is the most likely cause?",
+            "options": [
+                "The learning rate is too small, so convergence is very slow",
+                "The loss function has no minimum, so the algorithm keeps searching",
+                "The learning rate is too large — each step overshoots the minimum, landing on the opposite slope and oscillating or diverging",
+                "The gradient computation has a numerical precision error"
+            ],
+            "answer": 2,
+            "explanation": "A large learning rate causes steps that overshoot the minimum: you land past the bottom on the opposite slope, take another large step back, and oscillate. If large enough, the oscillations grow exponentially, causing the loss to diverge to infinity (NaN). Reduce the learning rate by 10× and check that the loss decreases monotonically."
+        },
+        {
+            "id": "d39q03",
+            "type": "multiple_choice",
+            "question": "Why is the chain rule essential for training neural networks through backpropagation?",
+            "options": [
+                "It allows the network to skip layers during the forward pass for efficiency",
+                "Neural networks are compositions of many functions (layers); the chain rule lets us compute how the final loss changes with respect to weights in any layer by multiplying derivatives through the chain",
+                "It ensures all activation functions produce outputs in the range [0, 1]",
+                "It eliminates the need to compute partial derivatives for the bias terms"
+            ],
+            "answer": 1,
+            "explanation": "Backpropagation computes ∂Loss/∂W₁ for weights in Layer 1 by applying the chain rule: (∂Loss/∂output) × (∂output/∂Layer3) × (∂Layer3/∂Layer2) × (∂Layer2/∂W₁). Each term is the local derivative at that layer. Without the chain rule, we couldn't efficiently propagate gradient signals from the output back through dozens of composed layers."
+        },
+        {
+            "id": "d39q04",
+            "type": "multiple_choice",
+            "question": "Your model's training loss becomes `NaN` after 40 iterations. What are the most likely causes and the first fix to try?",
+            "options": [
+                "The dataset is too small; collect more data and retrain",
+                "The model architecture is too shallow; add more layers",
+                "The learning rate is too high, causing exploding gradients; reduce it by 10×–100× and optionally add gradient clipping",
+                "The loss function is wrong; switch from MSE to cross-entropy"
+            ],
+            "answer": 2,
+            "explanation": "NaN loss is almost always caused by numerical overflow from an excessively large learning rate. Weights grow exponentially, producing NaN in activations or the loss computation. Fix: (1) reduce learning rate by 10–100×, (2) add gradient clipping (`np.clip(grad, -1.0, 1.0)`), (3) ensure input features are normalized. Always monitor `max(|weights|)` and `max(|gradients|)` to detect instability early."
+        },
+        {
+            "id": "d39q05",
+            "type": "multiple_choice",
+            "question": "What is the difference between Batch Gradient Descent and Mini-batch Gradient Descent, and which is the standard choice for deep learning?",
+            "options": [
+                "Batch uses the full dataset per update; Mini-batch uses small random subsets (32–128 samples). Mini-batch is standard for deep learning",
+                "Batch computes exact gradients; Mini-batch approximates them. Batch is standard because it is more accurate",
+                "Mini-batch processes one sample at a time; Batch processes all samples. They produce identical updates",
+                "Batch is for classification; Mini-batch is for regression. Choice depends on the problem type"
+            ],
+            "answer": 0,
+            "explanation": "Batch GD uses the entire dataset for each parameter update (accurate but slow for large data). Stochastic GD uses one sample (fast but noisy). Mini-batch GD — batches of 32–128 samples — is the best of both: GPU-efficient, lower memory footprint, beneficial gradient noise that helps escape local minima. It is the default for deep learning with Adam, RMSprop, and SGD optimizers."
+        }
+    ]
+}

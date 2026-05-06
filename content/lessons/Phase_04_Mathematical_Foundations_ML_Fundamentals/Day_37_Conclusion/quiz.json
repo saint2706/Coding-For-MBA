@@ -1,0 +1,70 @@
+{
+    "day": 37,
+    "questions": [
+        {
+            "id": "d37q01",
+            "type": "multiple_choice",
+            "question": "You have a NumPy array `a = np.array([[1], [2], [3]])` with shape (3, 1) and `b = np.array([10, 20, 30])` with shape (3,). What is the result of `a + b`?",
+            "options": [
+                "A 1D array [11, 22, 33]",
+                "A 3×3 matrix where each row of a is added to the full array b",
+                "An error because the shapes are incompatible",
+                "A 3×1 array [11, 22, 33]"
+            ],
+            "answer": 1,
+            "explanation": "NumPy broadcasting expands `a` (3, 1) and `b` (3,) to shape (3, 3). Each row of `a` is added to the entire array `b`, producing [[11, 21, 31], [12, 22, 32], [13, 23, 33]]. Broadcasting is one of NumPy's most powerful features for vectorized operations."
+        },
+        {
+            "id": "d37q02",
+            "type": "multiple_choice",
+            "question": "What is the difference between `df.groupby('department')['salary'].mean()` and `df.groupby('department')['salary'].transform('mean')`?",
+            "options": [
+                "They produce identical results; `transform` is just an alias for `mean`",
+                "`mean()` returns one value per group; `transform('mean')` returns a Series the same length as the original DataFrame with each row replaced by its group's mean",
+                "`transform` is faster than `mean()` for large DataFrames",
+                "`mean()` ignores NaN values while `transform('mean')` does not"
+            ],
+            "answer": 1,
+            "explanation": "`groupby().mean()` returns a compact result with one row per group. `transform('mean')` returns values aligned with the original index—every row gets its group's mean. This is essential for creating features like 'salary relative to department average' without losing the original row structure."
+        },
+        {
+            "id": "d37q03",
+            "type": "multiple_choice",
+            "question": "Which visualization is most appropriate for exploring the relationship between a categorical feature and a continuous target variable before building an ML model?",
+            "options": [
+                "Scatter plot with the category on the x-axis",
+                "Line chart connecting category means",
+                "Box plot (or violin plot) showing the target distribution per category",
+                "Pie chart of the category proportions"
+            ],
+            "answer": 2,
+            "explanation": "A box plot shows the median, quartiles, and outliers of the continuous target for each category—revealing whether the category is predictive. It answers 'do different categories produce different target distributions?' A scatter plot is for two continuous variables, and pie charts don't show distribution spread."
+        },
+        {
+            "id": "d37q04",
+            "type": "multiple_choice",
+            "question": "Why should you convert a low-cardinality string column (e.g., 'status' with values 'active', 'inactive', 'pending') to `category` dtype in pandas?",
+            "options": [
+                "It enables arithmetic operations on string columns",
+                "It reduces memory usage by storing integer codes instead of repeating string values, and speeds up groupby operations",
+                "It automatically one-hot encodes the column for ML models",
+                "It prevents missing values from appearing in the column"
+            ],
+            "answer": 1,
+            "explanation": "A `category` dtype stores each unique string once plus an integer code per row—instead of repeating the full string millions of times. For a column with 5 unique values across 1M rows, memory savings can be 10-50×. GroupBy and comparison operations are also faster on integer codes."
+        },
+        {
+            "id": "d37q05",
+            "type": "multiple_choice",
+            "question": "You're framing an ML problem: 'Predict which customers will churn next month.' What is X, y, and the ML type?",
+            "options": [
+                "X = churn label, y = customer features, type = unsupervised clustering",
+                "X = customer behavioral and demographic features, y = binary churn label (1=churned, 0=retained), type = supervised binary classification",
+                "X = customer features, y = churn probability as a continuous value, type = regression",
+                "X = all available data columns, y = customer ID, type = supervised regression"
+            ],
+            "answer": 1,
+            "explanation": "Churn prediction is a classic supervised binary classification problem. Features (X) include behavioral signals like login frequency, usage metrics, tenure, and plan type. The target (y) is a binary label: did the customer cancel within the prediction window? The model learns to predict this label from the features."
+        }
+    ]
+}

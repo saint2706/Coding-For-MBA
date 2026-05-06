@@ -1,0 +1,70 @@
+{
+    "day": "37B",
+    "questions": [
+        {
+            "id": "d37Bq01",
+            "type": "multiple_choice",
+            "question": "In Bayes' theorem — P(H|E) = P(E|H) × P(H) / P(E) — an email spam classifier computes P(spam | 'free'). If P(spam)=0.20, P('free'|spam)=0.40, and P('free'|ham)=0.02, what is P(spam | 'free') approximately?",
+            "options": [
+                "20% — the prior probability of spam",
+                "40% — the likelihood of seeing 'free' in spam",
+                "82% — the updated posterior probability after observing the word",
+                "60% — the complement of P('free'|ham)"
+            ],
+            "answer": 2,
+            "explanation": "P('free') = 0.20×0.40 + 0.80×0.02 = 0.096. P(spam|'free') = (0.40 × 0.20) / 0.096 ≈ 0.833. Bayes' theorem updates the prior (20% spam) with the evidence (word 'free' is 20× more likely in spam than ham) to produce the posterior (~83%). This is exactly how Naive Bayes classifiers work."
+        },
+        {
+            "id": "d37Bq02",
+            "type": "multiple_choice",
+            "question": "A call center receives an average of 12 customer calls per hour. Which distribution models the probability of receiving exactly 15 calls in a given hour?",
+            "options": [
+                "Normal distribution with μ=12",
+                "Binomial distribution with n=15 and p=0.8",
+                "Poisson distribution with λ=12",
+                "Uniform distribution between 0 and 24"
+            ],
+            "answer": 2,
+            "explanation": "The Poisson distribution models the count of rare, independent events per unit of time when the average rate (λ) is known. Call arrivals per hour with an average rate perfectly fit this: `stats.poisson(mu=12).pmf(15)`. Use Poisson for arrivals, defects, requests, or any count of events in a fixed interval."
+        },
+        {
+            "id": "d37Bq03",
+            "type": "multiple_choice",
+            "question": "Why does the Central Limit Theorem matter for k-fold cross-validation?",
+            "options": [
+                "It guarantees your model will not overfit on any individual fold",
+                "It ensures the mean accuracy across folds is approximately normally distributed, making confidence intervals and significance tests valid",
+                "It proves that k=5 always produces better estimates than k=3",
+                "It shows that accuracy will improve as you add more training data"
+            ],
+            "answer": 1,
+            "explanation": "The CLT states that the mean of many independent samples approaches a normal distribution regardless of the underlying distribution. When you average accuracy across k folds, the CLT guarantees this mean is approximately normal—even if individual fold accuracies aren't. This makes confidence intervals (mean ± z×SE) and model comparison tests statistically valid."
+        },
+        {
+            "id": "d37Bq04",
+            "type": "multiple_choice",
+            "question": "An A/B test on a new checkout page yields p-value = 0.03. A product manager says: 'There's a 97% chance the new design is better.' What is wrong with this statement?",
+            "options": [
+                "Nothing is wrong — a p-value of 0.03 means exactly a 97% probability of improvement",
+                "The correct interpretation is that, if there were truly no difference, results this extreme would occur only 3% of the time — the p-value says nothing about the probability the new design is better",
+                "The p-value threshold should be 0.01 for A/B tests, so the result is not significant",
+                "The p-value only applies to the null hypothesis, not the treatment group"
+            ],
+            "answer": 1,
+            "explanation": "A p-value of 0.03 means: 'Assuming no true difference, we'd see data this extreme 3% of the time.' It does NOT mean 'there's a 97% probability the new design is better.' That probabilistic statement requires Bayesian analysis with a prior. The correct conclusion is: we reject the null hypothesis at α=0.05. Always report effect size alongside p-value to convey practical significance."
+        },
+        {
+            "id": "d37Bq05",
+            "type": "multiple_choice",
+            "question": "You want to estimate the 95% confidence interval for average cart value without assuming the data is normally distributed. Which technique is appropriate?",
+            "options": [
+                "Use the normal distribution formula: mean ± 1.96 × std",
+                "Bootstrapping: repeatedly resample the data with replacement, compute the mean each time, and take the 2.5th–97.5th percentile of bootstrap means",
+                "Multiply the sample mean by 0.95 and 1.05 to get bounds",
+                "Use the Poisson distribution since cart values are counts"
+            ],
+            "answer": 1,
+            "explanation": "Bootstrapping makes no distributional assumptions. By resampling (with replacement) thousands of times and computing the mean each time, you build an empirical distribution of the statistic. The 2.5th and 97.5th percentiles of these bootstrap means form a non-parametric 95% CI—valid even for skewed data like cart values, which follow a log-normal distribution."
+        }
+    ]
+}

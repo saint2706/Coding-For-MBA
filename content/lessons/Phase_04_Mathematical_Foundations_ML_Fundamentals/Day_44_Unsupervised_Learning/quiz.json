@@ -1,0 +1,70 @@
+{
+    "day": 44,
+    "questions": [
+        {
+            "id": "d44q01",
+            "type": "multiple_choice",
+            "question": "What is the fundamental difference between supervised and unsupervised learning?",
+            "options": [
+                "Supervised learning is faster to train; unsupervised learning is more accurate",
+                "Supervised learning requires labeled examples (input-output pairs); unsupervised learning finds structure in unlabeled data without predefined categories",
+                "Supervised learning works on numeric data only; unsupervised learning handles all data types",
+                "Unsupervised learning uses gradient descent; supervised learning does not"
+            ],
+            "answer": 1,
+            "explanation": "Supervised learning trains on labeled data — each sample has a known target (spam/not spam, price, churn/stay). Unsupervised learning has no labels: algorithms like K-Means clustering and PCA discover hidden structure, groupings, or lower-dimensional representations in the data autonomously. Unsupervised learning is essential when labeling data is expensive or when you're exploring unknown patterns."
+        },
+        {
+            "id": "d44q02",
+            "type": "multiple_choice",
+            "question": "You run K-Means on customer data. Why must you scale the features with `StandardScaler` before clustering?",
+            "options": [
+                "K-Means requires all features to have integer values",
+                "K-Means measures Euclidean distance between points; features on large scales (e.g., annual income: 0–200,000) will dominate over small-scale features (e.g., age: 0–70), producing clusters driven entirely by the large-scale feature",
+                "StandardScaler converts categorical features to numeric values for K-Means",
+                "Scaling speeds up K-Means by reducing the number of iterations needed"
+            ],
+            "answer": 1,
+            "explanation": "K-Means assigns points to the nearest cluster center using Euclidean distance. An unscaled income feature (range 0–200,000) contributes 200,000 times more to the distance calculation than an age feature (range 0–70). Without scaling, clusters are dominated by high-magnitude features and low-magnitude features become irrelevant. StandardScaler (mean=0, std=1) puts all features on equal footing."
+        },
+        {
+            "id": "d44q03",
+            "type": "multiple_choice",
+            "question": "The elbow method plots K vs inertia for K=1 to 10. Inertia drops steeply from K=1 to K=3, then gradually from K=3 onward. What is the optimal K and why?",
+            "options": [
+                "K=1 — the lowest inertia point gives the best clustering",
+                "K=10 — more clusters always produce better segmentation",
+                "K=3 — it is the 'elbow' where adding more clusters yields diminishing returns in inertia reduction",
+                "K=5 — the standard industry default for customer segmentation"
+            ],
+            "answer": 2,
+            "explanation": "Inertia (sum of squared distances to cluster centers) always decreases as K increases — adding more clusters makes every point closer to a center. The elbow is where the rate of decrease sharply changes: at K=3, adding a 4th cluster provides little additional benefit. This suggests K=3 captures the meaningful structure. Combine with the Silhouette Score (which peaks at the optimal K) for confirmation."
+        },
+        {
+            "id": "d44q04",
+            "type": "multiple_choice",
+            "question": "PCA reduces a dataset from 50 features to 10 principal components while retaining 95% of the variance. What does this mean practically?",
+            "options": [
+                "The 40 dropped features were duplicates and contained no information",
+                "The 10 components capture 95% of the information in the original 50 features — downstream models trained on 10 components will have nearly identical performance but train 5× faster",
+                "95% of data samples can be reconstructed exactly from 10 components",
+                "PCA removed 40 noisy features and improved accuracy by 95%"
+            ],
+            "answer": 1,
+            "explanation": "Principal components are linear combinations of original features that maximize variance. The first few PCs often capture the bulk of the information because real-world features are correlated. Retaining 95% variance with 10 components means you lose only 5% of information while reducing dimensionality 5×. This speeds up training, reduces memory, and can improve model generalization by eliminating correlated noise."
+        },
+        {
+            "id": "d44q05",
+            "type": "multiple_choice",
+            "question": "The Silhouette Score for K=3 is 0.68 and for K=5 is 0.52 on the same dataset. Which K should you choose, and what does the silhouette score measure?",
+            "options": [
+                "K=5 — more clusters always represent the data better",
+                "K=3 — the Silhouette Score measures how similar each point is to its own cluster versus neighboring clusters; higher scores indicate better-defined, more separated clusters",
+                "K=3 — but only because the elbow method also suggests K=3",
+                "Neither — a Silhouette Score below 0.70 means clustering found no meaningful structure"
+            ],
+            "answer": 1,
+            "explanation": "The Silhouette Score ranges from -1 to +1. For each point, it measures (distance to nearest foreign cluster - distance to own cluster center) / max(both). A score near +1 means the point is well within its cluster and far from others. K=3 (score=0.68) produces tighter, more separated clusters than K=5 (score=0.52). Values above 0.5 generally indicate reasonable structure; above 0.7 is strong."
+        }
+    ]
+}

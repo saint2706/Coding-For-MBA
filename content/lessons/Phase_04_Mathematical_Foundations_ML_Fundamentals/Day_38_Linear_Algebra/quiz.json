@@ -1,0 +1,70 @@
+{
+    "day": 38,
+    "questions": [
+        {
+            "id": "d38q01",
+            "type": "multiple_choice",
+            "question": "Two word embedding vectors have a dot product of 0. What does this tell you about the concepts they represent?",
+            "options": [
+                "The two words are identical in meaning",
+                "The two words are antonyms",
+                "The vectors are orthogonal — the words are unrelated, with no directional alignment in embedding space",
+                "One of the vectors has zero magnitude"
+            ],
+            "answer": 2,
+            "explanation": "Geometrically, a · b = |a||b|cos(θ). A dot product of 0 (with non-zero vectors) means cos(θ) = 0, so θ = 90°—the vectors are perpendicular. In embedding space, orthogonal vectors represent unrelated concepts. This property is also used in PCA, where principal components are orthogonal to ensure they capture independent sources of variance."
+        },
+        {
+            "id": "d38q02",
+            "type": "multiple_choice",
+            "question": "Matrix A has shape (100, 50) and matrix B has shape (50, 10). What is the shape of A @ B, and what does this operation represent in a neural network context?",
+            "options": [
+                "Shape (50, 50) — combining the inner dimensions",
+                "Shape (100, 10) — transforming 100 samples from 50 features to 10 outputs",
+                "Shape (100, 50) — no change because dimensions match",
+                "This operation is invalid because the shapes are incompatible"
+            ],
+            "answer": 1,
+            "explanation": "Matrix multiplication (m×n) @ (n×p) = (m×p). Here: (100×50) @ (50×10) = (100×10). In a neural network, A represents 100 data samples with 50 features, B represents a weight matrix mapping 50 inputs to 10 neurons, and the result is 100 samples with 10 activations. Every neural network layer is fundamentally this operation plus an activation function."
+        },
+        {
+            "id": "d38q03",
+            "type": "multiple_choice",
+            "question": "In the normal equation w = (X^T X)^{-1} X^T y, why do we compute X^T X?",
+            "options": [
+                "To normalize the feature magnitudes before inversion",
+                "To create a square (n_features × n_features) matrix that can be inverted — since X itself is rectangular and cannot be inverted",
+                "To reduce computation from O(n) to O(1)",
+                "To ensure the target variable y aligns with the feature dimensions"
+            ],
+            "answer": 1,
+            "explanation": "X has shape (n_samples × n_features) and is rectangular — it cannot be inverted. X^T X has shape (n_features × n_features), which is square and can be inverted. This represents the covariance structure of the features, and inverting it 'normalizes' for correlations between features to find the optimal weights. For large datasets, use gradient descent instead — inverting large matrices is computationally expensive."
+        },
+        {
+            "id": "d38q04",
+            "type": "multiple_choice",
+            "question": "In PCA, what do eigenvalues of the covariance matrix represent?",
+            "options": [
+                "The correlation between pairs of features",
+                "The number of dimensions required to represent the data",
+                "The variance explained by each principal component — larger eigenvalue means that direction captures more spread in the data",
+                "The mean of each feature after centering"
+            ],
+            "answer": 2,
+            "explanation": "Eigenvalues measure how much variance each principal component captures. If eigenvalues are [5.2, 2.1, 0.4, 0.1], PC1 explains 5.2/7.8 = 67% of total variance, and PC1+PC2 together explain 94%. You keep components with the largest eigenvalues, retaining maximum information while reducing dimensions. This is the foundation of dimensionality reduction."
+        },
+        {
+            "id": "d38q05",
+            "type": "multiple_choice",
+            "question": "Your recommendation system represents 1 million users and 100,000 products as 100-dimensional vectors. Why is brute-force dot product similarity impractical, and what is the standard solution?",
+            "options": [
+                "Dot products can't be computed for vectors with more than 50 dimensions",
+                "Storing 100M × 100-dimensional vectors exceeds available memory, so you must reduce to 10 dimensions first",
+                "Brute-force requires trillions of operations; approximate nearest neighbor libraries like FAISS or Annoy find similar vectors in logarithmic time",
+                "The dot product is undefined for recommendation systems — use Euclidean distance instead"
+            ],
+            "answer": 2,
+            "explanation": "Finding similarities for one query against 100K products requires 100K × 100 = 10M dot product operations; doing this for 1M users simultaneously is trillions of operations. Approximate nearest neighbor (ANN) libraries like FAISS (Facebook) and Annoy (Spotify) use tree structures or hashing to find similar vectors in O(log n) time, enabling real-time recommendations at scale."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 41,
+    "questions": [
+        {
+            "id": "d41q01",
+            "type": "multiple_choice",
+            "question": "A linear regression model for house prices produces coefficients: sqft=100, bedrooms=20000, age=-500. How do you interpret the `age` coefficient of -500?",
+            "options": [
+                "The model is incorrect because negative coefficients are invalid in regression",
+                "Houses with older age tend to have lower predicted prices; each additional year reduces the predicted price by $500, holding other features constant",
+                "Age has the smallest absolute impact compared to sqft and bedrooms",
+                "The negative sign means age is negatively correlated with the residuals"
+            ],
+            "answer": 1,
+            "explanation": "Each coefficient in linear regression represents the change in the target for a one-unit increase in that feature, holding all other features constant. A coefficient of -500 for `age` means each additional year of house age reduces the predicted price by $500, all else equal. The sign and magnitude directly encode directional relationships, making linear regression highly interpretable."
+        },
+        {
+            "id": "d41q02",
+            "type": "multiple_choice",
+            "question": "Why does feature scaling (e.g., StandardScaler) matter when applying Ridge regression but generally not affect LinearRegression's predictions?",
+            "options": [
+                "LinearRegression requires features to have zero mean; Ridge requires unit variance",
+                "Ridge adds a regularization penalty proportional to coefficient magnitude; without scaling, large-scale features get unfairly penalized less than small-scale features, distorting which features are regularized",
+                "Feature scaling speeds up Ridge but has no effect on model accuracy",
+                "LinearRegression automatically normalizes features internally; Ridge does not"
+            ],
+            "answer": 1,
+            "explanation": "Ridge penalizes large coefficients: Loss = MSE + α × Σ(wᵢ²). If `sqft` ranges 800–3000 and `age` ranges 0–50, the coefficient for `age` will be much larger in raw scale to achieve the same predictive effect. Ridge would unfairly penalize `age` more. Scaling puts all features on the same scale so the regularization is applied fairly across all coefficients."
+        },
+        {
+            "id": "d41q03",
+            "type": "multiple_choice",
+            "question": "A polynomial regression model of degree 15 fits training data perfectly (R²=0.99) but performs poorly on new data (R²=0.45). A degree-2 model achieves R²=0.88 on both. What should you choose and why?",
+            "options": [
+                "Degree 15 — higher training accuracy always indicates a better model",
+                "Degree 2 — it generalizes better because it captures the true signal without memorizing noise",
+                "Degree 15 with more training data to close the gap",
+                "Average the predictions of both models for a balanced result"
+            ],
+            "answer": 1,
+            "explanation": "Degree 15 is severely overfitting: it memorized every noise fluctuation in the training set, so it fails on new data. Degree 2 captures the underlying quadratic trend without fitting noise, achieving good performance on both train and test. This is the bias-variance tradeoff — a simpler model with slightly higher bias generalizes far better than a complex model with high variance."
+        },
+        {
+            "id": "d41q04",
+            "type": "multiple_choice",
+            "question": "What is the key difference between Ridge (L2) and Lasso (L1) regularization?",
+            "options": [
+                "Ridge works for regression; Lasso works for classification",
+                "Ridge penalizes the sum of squared coefficients, shrinking all toward zero but rarely to exactly zero; Lasso penalizes absolute values and can force some coefficients to exactly zero, performing feature selection",
+                "Lasso requires more data than Ridge to work effectively",
+                "Ridge is faster to train; Lasso produces more accurate predictions"
+            ],
+            "answer": 1,
+            "explanation": "Ridge (L2) adds α × Σ(wᵢ²) to the loss, shrinking all coefficients toward zero proportionally. Lasso (L1) adds α × Σ|wᵢ|, which can push coefficients to exactly 0 — effectively removing features. Use Ridge when you believe most features are relevant; use Lasso when you suspect many features are irrelevant and want automatic feature selection."
+        },
+        {
+            "id": "d41q05",
+            "type": "multiple_choice",
+            "question": "RMSE is $25,000 for a house price model predicting values ranging from $200,000 to $800,000. R² is 0.87. How should you interpret these results?",
+            "options": [
+                "The model is useless — an error of $25,000 is too large for real estate",
+                "RMSE of $25,000 (~5% of the price range) suggests reasonable accuracy; R²=0.87 means the model explains 87% of price variance — both indicate a useful model worth deploying",
+                "R²=0.87 is below the required threshold of 0.90 for production models",
+                "RMSE and R² measure different things and cannot be interpreted together"
+            ],
+            "answer": 1,
+            "explanation": "Context matters for RMSE: $25,000 on a $200K–$800K price range is roughly ±5–12%, which is competitive with Zillow's Zestimate. R²=0.87 means 87% of price variance is explained by the model — strong for real estate given unquantified factors like renovations and neighborhood dynamics. Always interpret RMSE relative to the target scale, not in isolation."
+        }
+    ]
+}
