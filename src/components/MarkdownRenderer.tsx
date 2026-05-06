@@ -15,9 +15,12 @@ import { useState, useEffect, memo, JSX, useMemo, type ComponentProps, lazy, Sus
 import { createPortal } from 'react-dom'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
 import remarkParse from 'remark-parse'
+import rehypeKatex from 'rehype-katex'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize, { type Options as RehypeSanitizeOptions } from 'rehype-sanitize'
+import 'katex/dist/katex.min.css'
 import { unified } from 'unified'
 import type { Content, Heading, Html, Nodes, Paragraph, Root, Strong } from 'mdast'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
@@ -720,9 +723,10 @@ const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlu
   rehypeRaw,
   [rehypeSanitize, lessonSanitizerSchema],
   rehypeSlugCustom,
+  rehypeKatex,
 ]
 
-const remarkPlugins = [remarkGfm]
+const remarkPlugins = [remarkGfm, remarkMath]
 
 function InteractiveContent({
   content,
