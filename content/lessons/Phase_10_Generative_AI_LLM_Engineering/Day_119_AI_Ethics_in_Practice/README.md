@@ -429,7 +429,7 @@ A model card (introduced by Google, 2019) is a standardized fact sheet about an 
 - [AI Fairness 360 (AIF360) — IBM Open Source](https://ai-fairness-360.org/)
 - [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)
 - [EU AI Act — Official Text](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689)
-- [Google Responsible AI Practices](https://ai.google/responsibility/responsible-ai-practices/)
+- [Google Responsible AI Practices](https://ai.google/principles/#our-ai-principles-in-action)
 - [OWASP LLM Top 10 — Full Security Checklist](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
 
 ---
