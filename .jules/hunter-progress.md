@@ -185,3 +185,13 @@
 
 ## Session 32
 - **Fixed:** No issues remain for today. Build, lint, tests pass completely with full strict types.
+
+## Session 33
+- **Fixed:** Removed leftover `as any` casts in `src/pages/__tests__/ProgressDashboard.test.tsx` by using `as unknown as Type` replacements.
+- **Fixed:** Replaced leftover `any` typing on Zustand selector mocks in `src/pages/__tests__/ProgressDashboard.test.tsx` with `unknown`.
+- **Fixed:** Replaced `@ts-ignore` with proper explicit casting for `window.requestIdleCallback` deletion in `src/__tests__/App.test.tsx`.
+- **Verified:** Build, lint, and tests pass.
+
+## Session 34
+- **Fixed:** Resolved `TS2790` by using optional properties when casting `window` to delete properties.
+- **Verified:** Build, lint, and tests pass.

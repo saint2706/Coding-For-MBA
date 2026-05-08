@@ -190,12 +190,13 @@ describe('ProgressDashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     window.confirm = vi.fn(() => true)
-    window.IntersectionObserver = MockIntersectionObserver as any
+    window.IntersectionObserver =
+      MockIntersectionObserver as unknown as typeof window.IntersectionObserver
   })
   afterEach(() => {
     vi.restoreAllMocks()
-    delete (window as any).confirm
-    delete (window as any).IntersectionObserver
+    delete (window as unknown as { confirm?: unknown }).confirm
+    delete (window as unknown as { IntersectionObserver?: unknown }).IntersectionObserver
   })
 
   const renderComponent = () => {
@@ -232,7 +233,11 @@ describe('ProgressDashboard', () => {
   it('shows empty state when no progress', async () => {
     // We'll mock the store locally for this test
     const { useProgressStore } = await import('../../stores/progressStore')
-    ;(useProgressStore as any).mockImplementation((selector: any) =>
+    ;(
+      useProgressStore as unknown as {
+        mockImplementation: (fn: (selector: (state: unknown) => unknown) => unknown) => void
+      }
+    ).mockImplementation((selector: (state: unknown) => unknown) =>
       selector({
         completedLessons: [],
         completedLessonsCount: () => 0,
@@ -258,7 +263,9 @@ describe('ProgressDashboard', () => {
 
   it('handles phases with undefined lessons safely', async () => {
     const loader = await import('../../utils/contentLoader')
-    vi.mocked(loader.getLessonsByPhase).mockImplementationOnce(() => undefined as any)
+    vi.mocked(loader.getLessonsByPhase).mockImplementationOnce(
+      () => undefined as unknown as ReturnType<typeof loader.getLessonsByPhase>,
+    )
     render(
       <MemoryRouter>
         <ProgressDashboard />
