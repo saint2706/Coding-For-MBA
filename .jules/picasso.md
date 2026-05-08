@@ -76,3 +76,5 @@ Added focus-visible outlines to sidebar close, navbar hamburger, and navbar sear
 - Updated `ExerciseWidget` solution toggle button to have a dynamic `aria-label` that reflects its state instead of a static "Toggle solution".
 - Added `focus-visible` to `MapListToggle` button for keyboard accessibility.
 **Learning:** When adding ARIA labels, ensure they dynamically reflect the current state of the button if its function or text changes (e.g., "Hide Answer" vs "Show Answer").
+
+- Added missing aria-labels to buttons in MapListToggle and MarkdownRenderer

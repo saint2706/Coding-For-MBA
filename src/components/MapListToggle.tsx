@@ -43,6 +43,7 @@ function Toggle({ defaultActive, ariaLabel = 'Switch view', children }: TogglePr
               type="button"
               role="tab"
               aria-selected={isActive}
+              aria-label={`Switch to ${v.props.label} view`}
               className={`map-list-toggle-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2${isActive ? ' active' : ''}`}
               onClick={() => setActive(v.props.label)}
             >
