@@ -150,18 +150,25 @@ export const useQuizStore = create<QuizStore>()(
       getQuizStats: (quizId) => computeStats(get().attempts, quizId),
       getMostMissedQuestions: (limit = 5) => {
         const grouped = new Set(get().attempts.map((attempt) => attempt.quizId))
-        return [...grouped]
-          .map((quizId) => get().getQuizStats(quizId))
-          .filter((stats): stats is QuizStats => Boolean(stats))
+        const results: QuizStats[] = []
+        for (const quizId of grouped) {
+          const stats = get().getQuizStats(quizId)
+          if (stats) results.push(stats)
+        }
+        return results
           .sort((a, b) => b.incorrect - a.incorrect || a.accuracy - b.accuracy)
           .slice(0, limit)
       },
       getLowScoringTopics: (threshold = 60, minAttempts = 2) => {
         const grouped = new Set(get().attempts.map((attempt) => attempt.quizId))
-        return [...grouped]
-          .map((quizId) => get().getQuizStats(quizId))
-          .filter((stats): stats is QuizStats => Boolean(stats))
-          .filter((stats) => stats.attempts >= minAttempts && stats.accuracy < threshold)
+        const results: QuizStats[] = []
+        for (const quizId of grouped) {
+          const stats = get().getQuizStats(quizId)
+          if (stats && stats.attempts >= minAttempts && stats.accuracy < threshold) {
+            results.push(stats)
+          }
+        }
+        return results
           .sort((a, b) => a.accuracy - b.accuracy || b.incorrect - a.incorrect)
       },
       getRecentAttempts: (quizId, limit = 5) =>

@@ -42,3 +42,4 @@
 - Replaced chained `.split().map().filter()` calls with a single `.split().reduce()` pass in `src/utils/linkSafety.ts`, `src/utils/searchIndex.ts`, `src/utils/frontmatter-core.js`, and `src/utils/contentLoader.ts` to reduce garbage collection overhead and improve performance.
 - ⚡ Bolt | Optimized `completedInPhase` calculations in `src/pages/Curriculum.tsx` and `src/pages/Home.tsx` by replacing chaining `.filter(...).length` with standard `for` loops and accumulator variables to minimize intermediate array allocations and reduce garbage collection pressure.
 ⚡ Bolt: Refactored O(N) array allocation chains into standard loops for performance optimization.
+>> 2026-04-28 19:40:31 UTC - ⚡ Bolt | Optimized src/stores/quizStore.ts and src/stores/gamificationStore.ts by replacing chained .map().filter() array allocation chains with standard for loops to minimize intermediate array allocations and reduce garbage collection pressure.
