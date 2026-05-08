@@ -211,3 +211,13 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 -   [x] **[SEO] Semantic HTML Fixes**: Converted `tree-section-label` from `<div>` to `<h2>` in `src/components/Sidebar.tsx` to improve semantic document outline.
+
+### [Date: Current] - XSS Prevention and Accessibility Updates
+
+**Priority Areas:**
+1.  **Security**: Preventing XSS vulnerabilities from literal `<` evaluation in script tags.
+2.  **Accessibility**: Ensuring proper ARIA roles for overlay elements.
+
+**Changes:**
+-   [x] **[GEO][SEO] Structured Data XSS Fix**: Updated the JSON-LD stringify escape sequences from `.replace(/</g, '\\u003c')` to `.replace(/</g, '\\\\u003c')` in `SEOHead.tsx` and `MasteryCheck.tsx` so that React renders the literal `\u003c` in the DOM `dangerouslySetInnerHTML`, preventing XSS execution without breaking JSON parsing.
+-   [x] **[A11Y] Overlay Accessibility Fix**: Replaced `role="dialog"` and `aria-modal="true"` with `role="presentation"` on the `.image-zoom-overlay` element inside `MarkdownRenderer.tsx`. This accurately represents the element as a non-interactive layout backdrop to screen readers, preventing confusion when clicking the background overlay.
