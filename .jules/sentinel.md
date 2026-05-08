@@ -9,3 +9,11 @@
 
 - **JSON Parsing & Validation:** When parsing JSON data from untrusted sources (like `localStorage`), it is crucial to explicitly validate the resulting object's shape before attempting to access its properties. `JSON.parse()` can return primitives, arrays, or objects. Relying on implicit assumptions (e.g., `const parsed = JSON.parse(val)` and accessing `parsed.property`) can lead to type errors, application crashes, or even prototype pollution vectors if not carefully handled. Explicit checks like `typeof parsed === 'object' && !Array.isArray(parsed) && parsed !== null` provide critical defensive depth.
 - Fixed JSON-LD XSS vulnerability by properly escaping `<` as a single backslash unicode escape sequence instead of double backslash string.
+
+### XSS Vulnerability in JSON-LD Injection
+- **Date:** 2026-05-08
+- **Vulnerability:** Cross-Site Scripting (XSS) via broken string escaping.
+- **Component:** `SEOHead.tsx` and `MasteryCheck.tsx` in `dangerouslySetInnerHTML`.
+- **Description:** The JSON-LD schema strings were originally replacing `<` characters with `\\u003c`. This injected literal backslashes into the inner HTML, which breaks JSON-LD parsing and leaves the content vulnerable to XSS injection if unsanitized data enters the JSON.
+- **Fix:** Changed the replacement string to `\u003c`, which translates to the correct `<` sequence in the parsed JavaScript string and prevents XSS by replacing all `<` tokens.
+- **Severity:** High
