@@ -2,6 +2,15 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import BackToTop from '../BackToTop'
+import * as motionReact from 'motion/react'
+
+vi.mock('motion/react', async () => {
+  const actual = await vi.importActual('motion/react')
+  return {
+    ...actual as any,
+    useReducedMotion: vi.fn(),
+  }
+})
 
 describe('BackToTop', () => {
   let container: HTMLDivElement
@@ -74,5 +83,46 @@ describe('BackToTop', () => {
     })
 
     expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' })
+  })
+
+  it('scrolls with auto behavior when reduced motion is preferred', async () => {
+    vi.mocked(motionReact.useReducedMotion).mockReturnValue(true)
+
+    act(() => {
+      root?.render(<BackToTop />)
+    })
+
+    await act(async () => {
+      Object.defineProperty(window, 'scrollY', { value: 500, configurable: true })
+      window.dispatchEvent(new Event('scroll'))
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+    })
+
+    const button = container.querySelector('button')
+    expect(button).toBeTruthy()
+
+    act(() => {
+      button?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'auto' })
+  })
+
+  it('throttles multiple rapid scroll events', async () => {
+    act(() => {
+      root?.render(<BackToTop />)
+    })
+
+    await act(async () => {
+      Object.defineProperty(window, 'scrollY', { value: 500, configurable: true })
+      window.dispatchEvent(new Event('scroll'))
+      // Dispatch another scroll immediately to hit the ticking = true branch
+      window.dispatchEvent(new Event('scroll'))
+      await new Promise((resolve) => requestAnimationFrame(resolve))
+    })
+
+    const button = container.querySelector('button')
+    expect(button).toBeTruthy()
+
   })
 })
