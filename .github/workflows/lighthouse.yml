@@ -29,8 +29,8 @@ jobs:
 
       - name: Serve dist
         run: |
-          npm run preview >/tmp/serve.log 2>&1 &
-          npx --yes wait-on@8 http://localhost:4173
+          VITE_BASE_PATH=/ npm run preview -- --host 127.0.0.1 >/tmp/serve.log 2>&1 &
+          npx --yes wait-on@8 http://127.0.0.1:4173
 
       - name: Run Lighthouse CI
         run: npx --yes @lhci/cli@0.15.x autorun --config=./lighthouserc.json
