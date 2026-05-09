@@ -76,12 +76,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   const completedIdsByPhase = useMemo(() => {
     const idsByPhase: Record<number, string> = {}
-    for (const phase of phases) {
+    for (let i = 0; i < phases.length; i++) {
+      const phase = phases[i]
+      if (!phase) continue
       const lessons = getLessonsByPhase(phase.phase)
-      idsByPhase[phase.phase] = lessons
-        .map((l) => dayTokenToProgressId(l.day))
-        .filter((id) => completedSet.has(id))
-        .join(',')
+      const completedIds: string[] = []
+      for (let j = 0; j < lessons.length; j++) {
+        const l = lessons[j]
+        if (!l) continue
+        const id = dayTokenToProgressId(l.day)
+        if (completedSet.has(id)) {
+          completedIds.push(String(id))
+        }
+      }
+      idsByPhase[phase.phase] = completedIds.join(',')
     }
     return idsByPhase
   }, [phases, completedSet])
