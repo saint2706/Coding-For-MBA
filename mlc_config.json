@@ -98,6 +98,21 @@
     },
     {
       "pattern": "^https://aif360\\.res\\.ibm\\.com/"
+    },
+    {
+      "pattern": "^https://platform\\.openai\\.com"
+    },
+    {
+      "pattern": "^https://leetcode\\.com"
+    },
+    {
+      "pattern": "^https://realpython\\.com"
+    },
+    {
+      "pattern": "^https://a16z\\.com"
+    },
+    {
+      "pattern": "^https://cube\\.dev"
     }
   ]
 }
