@@ -229,3 +229,10 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 -   [x] **[GEO][SEO] Structured Data XSS Fix Revert**: Reverted the JSON-LD stringify escape sequences from `.replace(/</g, \\u003c)` back to `.replace(/</g, \u003c)` in `SEOHead.tsx` and `MasteryCheck.tsx` to comply with industry standards.
+
+### [Date: Current] - Manifest update
+**Priority Areas:**
+1. **SEO (Visibility)**: Accurate metadata.
+
+**Changes:**
+- [x] **[SEO] Manifest update**: Updated public/manifest.json to reflect 140 days instead of 108
