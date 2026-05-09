@@ -145,6 +145,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
           className="code-block-expand-btn"
           onClick={() => setCollapsed((c) => !c)}
           aria-expanded={!collapsed}
+          aria-label={collapsed ? 'Expand code block' : 'Collapse code block'}
         >
           {collapsed
             ? `▼ Show ${hiddenLineCount} more line${hiddenLineCount !== 1 ? 's' : ''}`
