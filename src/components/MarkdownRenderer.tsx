@@ -80,7 +80,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
           <button
             type="button"
-            className="code-block-copy"
+            className="code-block-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             onClick={() => setWrapLines((w) => !w)}
             aria-label={wrapLines ? 'Disable line wrapping' : 'Enable line wrapping'}
             title={wrapLines ? 'Unwrap long lines' : 'Wrap long lines'}
@@ -142,7 +142,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
       {isLong && (
         <button
           type="button"
-          className="code-block-expand-btn"
+          className="code-block-expand-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
           onClick={() => setCollapsed((c) => !c)}
           aria-expanded={!collapsed}
           aria-label={collapsed ? 'Expand code block' : 'Collapse code block'}
@@ -236,7 +236,7 @@ const ImageWithZoom = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
           >
             <button
               type="button"
-              className="image-zoom-close"
+              className="image-zoom-close focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               onClick={(e) => {
                 e.stopPropagation()
                 setZoomed(false)
