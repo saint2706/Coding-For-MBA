@@ -129,3 +129,8 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Validated frontmatter and metadata with `npm run validate-content`.
   - Confirmed no placeholder text like 'TODO: Add content' exists in the codebase.
 - Added ^https://cube\\.dev to ignorePatterns in mlc_config.json
+- **[2026-05-11] Documentation Audit**
+  - Confirmed all exported declarations in `src/` contain complete JSDoc annotations via custom Node.js script (`check-jsdoc.cjs`).
+  - Ran `markdown-link-check` over all documentation files (`README.md`, `CONTRIBUTING.md`, `docs/`) and validated all links are working.
+  - Validated frontmatter and metadata with `npm run validate-content` and ensured no placeholder/empty TODOs exist in production docs.
+  - Confirmed the Vite build step completes without errors.
