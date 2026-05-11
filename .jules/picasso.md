@@ -79,3 +79,4 @@ Added focus-visible outlines to sidebar close, navbar hamburger, and navbar sear
 
 - Added missing aria-labels to buttons in MapListToggle and MarkdownRenderer
 - 🎨 Picasso: Added missing focus-visible classes to buttons in MarkdownRenderer for better keyboard navigation.
+Fixed dynamic aria-label conflict with aria-live region in CopyButton.tsx
