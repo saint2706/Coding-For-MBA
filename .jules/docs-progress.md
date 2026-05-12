@@ -128,4 +128,5 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Found and fixed one code style issue in `src/stores/quizStore.ts` using `npm run format`.
   - Validated frontmatter and metadata with `npm run validate-content`.
   - Confirmed no placeholder text like 'TODO: Add content' exists in the codebase.
-- Added ^https://cube\\.dev to ignorePatterns in mlc_config.json
+- Added ^https://cube.dev to ignorePatterns in mlc_config.json
+>> Fixed malformed URL text https://cube\.dev to https://cube.dev in .jules/docs-progress.md causing markdown-link-check crash

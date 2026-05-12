@@ -113,6 +113,15 @@
     },
     {
       "pattern": "^https://cube\\.dev"
+    },
+    {
+      "pattern": "^http://"
+    },
+    {
+      "pattern": "^https://pytorch-geometric.readthedocs.io"
+    },
+    {
+      "pattern": "^https://xgboost.readthedocs.io"
     }
   ]
 }
