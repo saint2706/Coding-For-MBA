@@ -153,7 +153,14 @@ const PersistedGamificationSchema = z.object({
   xpByDay: z
     .record(z.string(), z.number())
     .transform((data) => {
-      return Object.fromEntries(Object.entries(data).map(([key, val]) => [Number(key), val]))
+      const result: Record<number, number> = {}
+      for (const key in data) {
+        const val = data[key]
+        if (val !== undefined) {
+          result[Number(key)] = val
+        }
+      }
+      return result
     })
     .catch({}),
   achievementsUnlocked: z.array(z.string()).catch([]),

@@ -149,7 +149,12 @@ export const useQuizStore = create<QuizStore>()(
       },
       getQuizStats: (quizId) => computeStats(get().attempts, quizId),
       getMostMissedQuestions: (limit = 5) => {
-        const grouped = new Set(get().attempts.map((attempt) => attempt.quizId))
+        const grouped = new Set<string>()
+        const attempts = get().attempts
+        for (let i = 0; i < attempts.length; i++) {
+          const attempt = attempts[i]
+          if (attempt) grouped.add(attempt.quizId)
+        }
         const results: QuizStats[] = []
         for (const quizId of grouped) {
           const stats = get().getQuizStats(quizId)
@@ -160,7 +165,12 @@ export const useQuizStore = create<QuizStore>()(
           .slice(0, limit)
       },
       getLowScoringTopics: (threshold = 60, minAttempts = 2) => {
-        const grouped = new Set(get().attempts.map((attempt) => attempt.quizId))
+        const grouped = new Set<string>()
+        const attempts = get().attempts
+        for (let i = 0; i < attempts.length; i++) {
+          const attempt = attempts[i]
+          if (attempt) grouped.add(attempt.quizId)
+        }
         const results: QuizStats[] = []
         for (const quizId of grouped) {
           const stats = get().getQuizStats(quizId)

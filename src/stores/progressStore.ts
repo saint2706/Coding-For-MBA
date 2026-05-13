@@ -86,9 +86,14 @@ function toDayKey(input: Date): string {
 
 function parseValidDays(value: unknown): number[] {
   if (!Array.isArray(value)) return []
-  return [...new Set(value.filter((n): n is number => Number.isInteger(n) && n > 0))].sort(
-    (a, b) => a - b,
-  )
+  const validDays = new Set<number>()
+  for (let i = 0; i < value.length; i++) {
+    const n = value[i]
+    if (Number.isInteger(n) && (n as number) > 0) {
+      validDays.add(n as number)
+    }
+  }
+  return [...validDays].sort((a, b) => a - b)
 }
 
 function parseValidCompletionDates(value: unknown): Record<number, string> {
@@ -256,9 +261,17 @@ export const useProgressStore = create<ProgressStore>()(
       },
       getCompletedForPhase: (phaseLessonDays) => {
         const completed = new Set(get().completedLessons)
-        return phaseLessonDays
-          .map((day) => dayTokenToProgressId(day))
-          .filter((day) => completed.has(day))
+        const result: number[] = []
+        for (let i = 0; i < phaseLessonDays.length; i++) {
+          const day = phaseLessonDays[i]
+          if (day !== undefined) {
+            const id = dayTokenToProgressId(day)
+            if (completed.has(id)) {
+              result.push(id)
+            }
+          }
+        }
+        return result
       },
       completedLessonsCount: () => get().completedLessons.length,
       phaseProgress: (phaseLessonDays) => {
