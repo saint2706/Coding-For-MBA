@@ -64,20 +64,28 @@ export default function Exercises() {
 
   // Filter logic
   const filtered = useMemo(() => {
-    const results = exercises.filter((ex) => {
-      if (phaseFilter !== '' && ex.phase !== phaseFilter) return false
-      if (difficultyFilter && ex.difficulty !== difficultyFilter) return false
-      if (searchQuery) {
-        const q = searchQuery.toLowerCase()
-        return (
+    const results = []
+    const q = searchQuery ? searchQuery.toLowerCase() : ''
+
+    for (let i = 0; i < exercises.length; i++) {
+      const ex = exercises[i]
+      if (!ex) continue
+
+      if (phaseFilter !== '' && ex.phase !== phaseFilter) continue
+      if (difficultyFilter && ex.difficulty !== difficultyFilter) continue
+
+      if (q) {
+        const matchesQuery =
           ex.title.toLowerCase().includes(q) ||
           ex.goal.toLowerCase().includes(q) ||
           ex.lessonTitle.toLowerCase().includes(q) ||
           ex.tags.some((t) => t.toLowerCase().includes(q))
-        )
+
+        if (!matchesQuery) continue
       }
-      return true
-    })
+
+      results.push(ex)
+    }
 
     return results.sort((a, b) => {
       if (sortOrder === 'phase-desc') return b.phase - a.phase || compareDayTokens(b.day, a.day)

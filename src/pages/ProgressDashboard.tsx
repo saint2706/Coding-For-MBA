@@ -119,76 +119,85 @@ export default function ProgressDashboard() {
     setCustomCursorEnabled,
   } = useUserPreferencesStore()
 
-  const renderedHeatmapPhases = useMemo(
-    () =>
-      phases.map((phase) => {
-        const lessons = getLessonsByPhase(phase.phase)
-        const icon = phaseIcons[phase.phase - 1] || '📖'
-        return (
-          <div className="heatmap-phase" key={phase.phase}>
-            <div className="heatmap-phase-label">
-              <span>{icon}</span> P{phase.phase}
-            </div>
-            <div className="heatmap-cells">
-              {(lessons || []).map((lesson) => {
-                const done = completedSet.has(dayTokenToProgressId(lesson.day))
-                return (
-                  <Link
-                    to={`/lesson/${lesson.day}`}
-                    className={`heatmap-cell ${done ? 'done' : ''}`}
-                    key={lesson.day}
-                    title={`Day ${lesson.day}: ${lesson.title}${done ? ' ✓' : ''}`}
-                  >
-                    <span className="sr-only">
-                      Day {lesson.day}: {lesson.title} {done ? '(completed)' : '(not completed)'}
-                    </span>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        )
-      }),
-    [phases, completedSet],
-  )
+  const renderedHeatmapPhases = useMemo(() => {
+    const result = []
+    for (let i = 0; i < phases.length; i++) {
+      const phase = phases[i]
+      if (!phase) continue
+      const lessons = getLessonsByPhase(phase.phase)
+      const icon = phaseIcons[phase.phase - 1] || '📖'
 
-  const renderedProgressPhases = useMemo(
-    () =>
-      phases.map((phase) => {
-        const lessons = getLessonsByPhase(phase.phase)
-        let completedInPhaseCount = 0
-        if (lessons) {
-          for (let i = 0; i < lessons.length; i++) {
-            if (completedSet.has(dayTokenToProgressId(lessons[i]!.day))) {
-              completedInPhaseCount++
-            }
+      const cells = []
+      for (let j = 0; j < (lessons || []).length; j++) {
+        const lesson = lessons[j]
+        if (!lesson) continue
+        const done = completedSet.has(dayTokenToProgressId(lesson.day))
+        cells.push(
+          <Link
+            to={`/lesson/${lesson.day}`}
+            className={`heatmap-cell ${done ? 'done' : ''}`}
+            key={lesson.day}
+            title={`Day ${lesson.day}: ${lesson.title}${done ? ' ✓' : ''}`}
+          >
+            <span className="sr-only">
+              Day {lesson.day}: {lesson.title} {done ? '(completed)' : '(not completed)'}
+            </span>
+          </Link>,
+        )
+      }
+
+      result.push(
+        <div className="heatmap-phase" key={phase.phase}>
+          <div className="heatmap-phase-label">
+            <span>{icon}</span> P{phase.phase}
+          </div>
+          <div className="heatmap-cells">{cells}</div>
+        </div>,
+      )
+    }
+    return result
+  }, [phases, completedSet])
+
+  const renderedProgressPhases = useMemo(() => {
+    const result = []
+    for (let i = 0; i < phases.length; i++) {
+      const phase = phases[i]
+      if (!phase) continue
+      const lessons = getLessonsByPhase(phase.phase)
+      let completedInPhaseCount = 0
+      if (lessons) {
+        for (let j = 0; j < lessons.length; j++) {
+          const lesson = lessons[j]
+          if (lesson && completedSet.has(dayTokenToProgressId(lesson.day))) {
+            completedInPhaseCount++
           }
         }
-        const icon = phaseIcons[phase.phase - 1] || '📖'
-        const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+      }
+      const icon = phaseIcons[phase.phase - 1] || '📖'
+      const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
 
-        return (
-          <Link to={`/phase/${phase.phase}`} className="progress-phase-row" key={phase.phase}>
-            <div className="progress-phase-info">
-              <span className="progress-phase-icon">{icon}</span>
-              <div>
-                <span className="progress-phase-name">
-                  Phase {phase.phase}: {phase.title}
-                </span>
-                <span
-                  className="difficulty-badge"
-                  style={{ color: diff.color, background: diff.bg, marginLeft: '0.5rem' }}
-                >
-                  {diff.label}
-                </span>
-              </div>
+      result.push(
+        <Link to={`/phase/${phase.phase}`} className="progress-phase-row" key={phase.phase}>
+          <div className="progress-phase-info">
+            <span className="progress-phase-icon">{icon}</span>
+            <div>
+              <span className="progress-phase-name">
+                Phase {phase.phase}: {phase.title}
+              </span>
+              <span
+                className="difficulty-badge"
+                style={{ color: diff.color, background: diff.bg, marginLeft: '0.5rem' }}
+              >
+                {diff.label}
+              </span>
             </div>
-            <ProgressBar completed={completedInPhaseCount} total={lessons?.length || 0} />
-          </Link>
-        )
-      }),
-    [phases, completedSet],
-  )
+          </div>
+          <ProgressBar completed={completedInPhaseCount} total={lessons?.length || 0} />
+        </Link>,
+      )
+    }
+    return result
+  }, [phases, completedSet])
 
   return (
     <div className="page-container">

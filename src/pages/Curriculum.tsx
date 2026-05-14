@@ -47,7 +47,10 @@ export default function Curriculum() {
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
   const phasesData = useMemo(() => {
-    return phases.map((phase) => {
+    const result = []
+    for (let j = 0; j < phases.length; j++) {
+      const phase = phases[j]
+      if (!phase) continue
       const lessons = getLessonsByPhase(phase.phase)
       let completedInPhaseCount = 0
       for (let i = 0; i < lessons.length; i++) {
@@ -61,7 +64,7 @@ export default function Curriculum() {
       const phaseLabel = String(phase.phase).padStart(2, '0')
       const phasePct = Math.round((completedInPhaseCount / Math.max(1, lessons.length)) * 100)
 
-      return {
+      result.push({
         ...phase,
         lessons,
         completedInPhaseCount,
@@ -70,8 +73,9 @@ export default function Curriculum() {
         diff,
         phaseLabel,
         phasePct,
-      }
-    })
+      })
+    }
+    return result
   }, [phases, completedSet])
 
   const { totalDays: totalLessons } = getCurriculumMetadata()
