@@ -3,10 +3,11 @@ import { createRoot } from 'react-dom/client'
 import { act } from 'react'
 import { MemoryRouter } from 'react-router-dom'
 import ExerciseCard from '../ExerciseCard'
+import { useReducedMotion } from 'motion/react'
 
 // Mock motion to avoid animation issues
 vi.mock('motion/react', () => ({
-  useReducedMotion: () => false,
+  useReducedMotion: vi.fn(() => false),
   motion: {
     div: ({
       children,
@@ -118,5 +119,22 @@ describe('ExerciseCard', () => {
     renderCard(unknownPhaseExercise)
 
     expect(container?.textContent).toContain('📖 Phase 99')
+  })
+
+  it('respects reduced motion preference', () => {
+    vi.mocked(useReducedMotion).mockReturnValueOnce(true)
+    renderCard()
+
+    // Test passes if it renders without crashing with reduced motion
+    expect(container?.textContent).toContain('Test Exercise')
+  })
+
+  it('falls back to beginner difficulty config for unknown difficulty', () => {
+    const unknownDifficultyExercise = { ...mockExercise, difficulty: 'unknown-diff' as 'beginner' }
+    renderCard(unknownDifficultyExercise)
+
+    const badge = container?.querySelector('.difficulty-badge')
+    expect(badge).not.toBeNull()
+    expect(badge?.textContent).toBe('Beginner') // fallback label
   })
 })
