@@ -17,3 +17,4 @@
 - **Description:** The JSON-LD schema strings were originally replacing `<` characters with `\\u003c`. This injected literal backslashes into the inner HTML, which breaks JSON-LD parsing and leaves the content vulnerable to XSS injection if unsanitized data enters the JSON.
 - **Fix:** Changed the replacement string to `\u003c`, which translates to the correct `<` sequence in the parsed JavaScript string and prevents XSS by replacing all `<` tokens.
 - **Severity:** High
+- [x] **[SECURITY] Dependency Fix**: Updated `basic-ftp` to version 5.3.1 in `package.json` overrides to resolve a high severity DoS vulnerability via unbounded memory consumption (GHSA-rpmf-866q-6p89).
