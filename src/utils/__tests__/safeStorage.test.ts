@@ -6,126 +6,145 @@ describe('safeStorage', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    originalLocalStorage = global.localStorage
+    localStorage.clear()
+    originalLocalStorage = window.localStorage
+  })
 
-    // Mock localStorage
-    const localStorageMock = (() => {
-      let store: Record<string, string> = {}
-      return {
-        getItem: vi.fn((key: string) => store[key] || null),
-        setItem: vi.fn((key: string, value: string) => {
-          store[key] = value.toString()
-        }),
-        removeItem: vi.fn((key: string) => {
-          delete store[key]
-        }),
-        clear: vi.fn(() => {
-          store = {}
-        }),
-        key: vi.fn((index: number) => Object.keys(store)[index] || null),
-        get length() {
-          return Object.keys(store).length
-        },
-      }
-    })()
-
-    Object.defineProperty(global, 'localStorage', {
-      value: localStorageMock,
+  afterEach(() => {
+    vi.restoreAllMocks()
+    Object.defineProperty(window, 'localStorage', {
+      value: originalLocalStorage,
       writable: true,
     })
   })
 
-  afterEach(() => {
-    global.localStorage = originalLocalStorage
-  })
-
   describe('getStoredString', () => {
-    it('should return the stored string if it exists', () => {
-      localStorage.setItem('testKey', 'testValue')
-      expect(getStoredString('testKey')).toBe('testValue')
+    it('returns value from localStorage if exists', () => {
+      localStorage.setItem('test_key', 'test_value')
+      expect(getStoredString('test_key')).toBe('test_value')
     })
 
-    it('should return null if the key does not exist and no fallback is provided', () => {
-      expect(getStoredString('nonExistentKey')).toBeNull()
+    it('returns defaultValue if key does not exist', () => {
+      expect(getStoredString('non_existent_key', 'default_val')).toBe('default_val')
     })
 
-    it('should return the fallback if the key does not exist', () => {
-      expect(getStoredString('nonExistentKey', 'fallbackValue')).toBe('fallbackValue')
+    it('returns null if key does not exist and no defaultValue provided', () => {
+      expect(getStoredString('non_existent_key')).toBeNull()
     })
 
-    it('should return fallback if localStorage throws an error', () => {
-      vi.spyOn(localStorage, 'getItem').mockImplementation(() => {
-        throw new Error('Access Denied')
+    it('handles localStorage throwing an error', () => {
+      const mockLocalStorage = {
+        getItem: vi.fn().mockImplementation(() => {
+          throw new Error('Storage disabled')
+        }),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
+        length: 0,
+        key: vi.fn(),
+      }
+      Object.defineProperty(window, 'localStorage', {
+        value: mockLocalStorage,
+        writable: true,
       })
-      expect(getStoredString('testKey', 'fallbackValue')).toBe('fallbackValue')
+      expect(getStoredString('test_key', 'fallback')).toBe('fallback')
+      expect(getStoredString('test_key')).toBeNull()
     })
   })
 
   describe('getStoredJson', () => {
-    it('should return parsed JSON if it exists and is valid', () => {
-      const testData = { a: 1, b: 'two' }
-      localStorage.setItem('testKey', JSON.stringify(testData))
-      expect(getStoredJson('testKey', { a: 0, b: '' })).toEqual(testData)
+    it('returns parsed object when valid json exists', () => {
+      localStorage.setItem('json_key', JSON.stringify({ a: 1 }))
+      expect(getStoredJson('json_key', { b: 2 })).toEqual({ a: 1 })
     })
 
-    it('should return fallback if key does not exist', () => {
-      expect(getStoredJson('nonExistentKey', { a: 0 })).toEqual({ a: 0 })
+    it('returns fallback when storage is empty', () => {
+      expect(getStoredJson('empty_key', { fallback: true })).toEqual({ fallback: true })
     })
 
-    it('should return fallback if JSON parsing fails', () => {
-      localStorage.setItem('testKey', 'invalid json')
-      expect(getStoredJson('testKey', { a: 0 })).toEqual({ a: 0 })
+    it('returns fallback when json is invalid', () => {
+      localStorage.setItem('invalid_json', '{ bad json }')
+      expect(getStoredJson('invalid_json', { fallback: true })).toEqual({ fallback: true })
     })
 
-    it('should return fallback if validation fails', () => {
-      localStorage.setItem('testKey', JSON.stringify({ a: 1 }))
-      const validate = (val: unknown): val is { b: string } =>
-        typeof val === 'object' && val !== null && 'b' in val
-
-      expect(getStoredJson('testKey', { b: 'fallback' }, validate)).toEqual({ b: 'fallback' })
+    it('returns fallback when parsed type mismatch object', () => {
+      localStorage.setItem('mismatch', JSON.stringify('string_val'))
+      expect(getStoredJson('mismatch', { fallback: true })).toEqual({ fallback: true })
     })
 
-    it('should return parsed JSON if validation passes', () => {
-      const testData = { b: 'valid' }
-      localStorage.setItem('testKey', JSON.stringify(testData))
-      const validate = (val: unknown): val is { b: string } =>
-        typeof val === 'object' && val !== null && 'b' in val
-
-      expect(getStoredJson('testKey', { b: 'fallback' }, validate)).toEqual(testData)
+    it('returns fallback when parsed type mismatch array', () => {
+      localStorage.setItem('mismatch_arr', JSON.stringify({ a: 1 }))
+      expect(getStoredJson('mismatch_arr', [1, 2])).toEqual([1, 2])
     })
 
-    it('should return fallback if parsed JSON is null', () => {
-      localStorage.setItem('testKey', JSON.stringify(null))
-      expect(getStoredJson('testKey', { a: 0 })).toEqual({ a: 0 })
+    it('returns fallback when parsed type mismatch primitive', () => {
+      localStorage.setItem('mismatch_prim', JSON.stringify({ a: 1 }))
+      expect(getStoredJson('mismatch_prim', 'string_val')).toEqual('string_val')
+    })
+
+    it('uses optional validate function', () => {
+      localStorage.setItem('valid_key', JSON.stringify({ a: 1, b: 2 }))
+      const validate = (val: any): val is { a: number; b: number } =>
+        val && typeof val.a === 'number'
+      expect(getStoredJson('valid_key', { a: 0, b: 0 }, validate)).toEqual({ a: 1, b: 2 })
+
+      localStorage.setItem('invalid_validate', JSON.stringify({ a: 'string', b: 2 }))
+      expect(getStoredJson('invalid_validate', { a: 0, b: 0 }, validate)).toEqual({ a: 0, b: 0 })
     })
   })
 
   describe('setStoredString', () => {
-    it('should set the string and return true on success', () => {
-      expect(setStoredString('testKey', 'testValue')).toBe(true)
-      expect(localStorage.getItem('testKey')).toBe('testValue')
+    it('sets value in localStorage and returns true', () => {
+      const result = setStoredString('test_key', 'new_value')
+      expect(result).toBe(true)
+      expect(localStorage.getItem('test_key')).toBe('new_value')
     })
 
-    it('should return false if localStorage throws an error', () => {
-      vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
-        throw new Error('Quota Exceeded')
+    it('returns false if localStorage throws an error', () => {
+      const mockLocalStorage = {
+        getItem: vi.fn(),
+        setItem: vi.fn().mockImplementation(() => {
+          throw new Error('Quota exceeded')
+        }),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
+        length: 0,
+        key: vi.fn(),
+      }
+      Object.defineProperty(window, 'localStorage', {
+        value: mockLocalStorage,
+        writable: true,
       })
-      expect(setStoredString('testKey', 'testValue')).toBe(false)
+      const result = setStoredString('test_key', 'new_value')
+      expect(result).toBe(false)
     })
   })
 
   describe('removeStoredValue', () => {
-    it('should remove the value and return true on success', () => {
-      localStorage.setItem('testKey', 'testValue')
-      expect(removeStoredValue('testKey')).toBe(true)
-      expect(localStorage.getItem('testKey')).toBeNull()
+    it('removes value from localStorage and returns true', () => {
+      localStorage.setItem('test_key', 'value_to_remove')
+      const result = removeStoredValue('test_key')
+      expect(result).toBe(true)
+      expect(localStorage.getItem('test_key')).toBeNull()
     })
 
-    it('should return false if localStorage throws an error', () => {
-      vi.spyOn(localStorage, 'removeItem').mockImplementation(() => {
-        throw new Error('Access Denied')
+    it('returns false if localStorage throws an error', () => {
+      const mockLocalStorage = {
+        getItem: vi.fn(),
+        setItem: vi.fn(),
+        removeItem: vi.fn().mockImplementation(() => {
+          throw new Error('Storage error')
+        }),
+        clear: vi.fn(),
+        length: 0,
+        key: vi.fn(),
+      }
+      Object.defineProperty(window, 'localStorage', {
+        value: mockLocalStorage,
+        writable: true,
       })
-      expect(removeStoredValue('testKey')).toBe(false)
+      const result = removeStoredValue('test_key')
+      expect(result).toBe(false)
     })
   })
 })

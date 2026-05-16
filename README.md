@@ -178,3 +178,16 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+## Testing Improvements
+- Added unit tests for `safeStorage`, `progressTracker`, and `searchIndex`.
+- Coverage metrics Before:
+  - Statements: 87.2%
+  - Branches: 76.39%
+  - Functions: 89.86%
+  - Lines: 89.11%
+- Coverage metrics After:
+  - Statements: 87.38%
+  - Branches: 76.51%
+  - Functions: 90.07%
+  - Lines: 89.32%

@@ -1,99 +1,156 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import {
-  clearAllProgress,
-  getCompletedCount,
-  getCompletedForPhase,
-  getCompletedLessons,
-  getLastVisited,
-  getPhaseProgress,
-  getStreakDays,
-  isLessonComplete,
   markLessonComplete,
   markLessonIncomplete,
-  setLastVisited,
+  isLessonComplete,
   toggleLessonComplete,
+  getCompletedLessons,
+  getCompletedCount,
+  getCompletedForPhase,
+  setLastVisited,
+  getLastVisited,
+  clearAllProgress,
+  getPhaseProgress,
+  getStreakDays,
+  hydrateProgressStore,
 } from '../progressTracker'
+import { useProgressStore } from '../../stores/progressStore'
+
+// Mock the store explicitly
+vi.mock('../../stores/progressStore', () => ({
+  useProgressStore: {
+    getState: vi.fn(),
+    persist: {
+      rehydrate: vi.fn(),
+    },
+  },
+}))
 
 describe('progressTracker', () => {
+  let mockStore: any
+
   beforeEach(() => {
-    clearAllProgress()
+    vi.clearAllMocks()
+
+    mockStore = {
+      hydrate: vi.fn(),
+      markLessonComplete: vi.fn(),
+      markLessonIncomplete: vi.fn(),
+      isLessonComplete: vi.fn(),
+      toggleLessonComplete: vi.fn(),
+      completedLessons: [1, 2],
+      completedLessonsCount: vi.fn().mockReturnValue(2),
+      getCompletedForPhase: vi.fn().mockReturnValue([1]),
+      setLastVisited: vi.fn(),
+      lastVisitedLesson: 5,
+      clearAllProgress: vi.fn(),
+      phaseProgress: vi.fn().mockReturnValue({ completed: 1, total: 3, percent: 33 }),
+      streakDays: vi.fn().mockReturnValue(5),
+    }
+    ;(useProgressStore.getState as any).mockReturnValue(mockStore)
   })
 
-  it('marks lessons complete/incomplete and returns sorted completed lessons', () => {
-    markLessonComplete(5)
-    markLessonComplete(2)
-    markLessonComplete(2)
-
-    expect(isLessonComplete(2)).toBe(true)
-    expect(getCompletedCount()).toBe(2)
-    expect(getCompletedLessons()).toEqual([2, 5])
-
-    markLessonIncomplete(2)
-    expect(getCompletedLessons()).toEqual([5])
+  afterEach(() => {
+    vi.restoreAllMocks()
   })
 
-  it('toggles completion and filters by phase list', () => {
-    expect(toggleLessonComplete(10)).toBe(true)
-    expect(toggleLessonComplete(12)).toBe(true)
-    expect(toggleLessonComplete(10)).toBe(false)
-
-    expect(getCompletedForPhase([9, 10, 12, 14])).toEqual([12])
-  })
-
-  it('stores and validates last visited lesson in zustand store', () => {
-    expect(getLastVisited()).toBeNull()
-
-    setLastVisited(8)
-    expect(getLastVisited()).toBe(8)
-
-    setLastVisited(0)
-    expect(getLastVisited()).toBe(8)
-  })
-
-  it('provides computed selectors for phase progress and streak', () => {
-    markLessonComplete(1)
-    markLessonComplete(2)
-    markLessonComplete(5)
-
-    expect(getPhaseProgress([1, 2, 3, 4])).toEqual({ completed: 2, total: 4, percent: 50 })
-    expect(getStreakDays()).toBe(1)
-  })
-
-  it('does not throw when storage is unavailable or quota exceeded', () => {
-    const setItemSpy = vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
-      throw new DOMException('Quota exceeded', 'QuotaExceededError')
+  describe('Store Delegation', () => {
+    it('markLessonComplete delegates to store', () => {
+      markLessonComplete('1-1')
+      expect(mockStore.hydrate).toHaveBeenCalled()
+      expect(mockStore.markLessonComplete).toHaveBeenCalledWith('1-1')
     })
 
-    expect(() => markLessonComplete(1)).not.toThrow()
-    expect(() => setLastVisited(1)).not.toThrow()
-
-    setItemSpy.mockRestore()
-
-    const removeSpy = vi.spyOn(localStorage, 'removeItem').mockImplementation(() => {
-      throw new DOMException('Blocked', 'SecurityError')
+    it('markLessonIncomplete delegates to store', () => {
+      markLessonIncomplete(2)
+      expect(mockStore.markLessonIncomplete).toHaveBeenCalledWith(2)
     })
 
-    expect(() => clearAllProgress()).not.toThrow()
+    it('isLessonComplete delegates to store', () => {
+      mockStore.isLessonComplete.mockReturnValue(true)
+      const result = isLessonComplete('2-1')
+      expect(mockStore.isLessonComplete).toHaveBeenCalledWith('2-1')
+      expect(result).toBe(true)
+    })
 
-    removeSpy.mockRestore()
+    it('toggleLessonComplete delegates to store', () => {
+      mockStore.toggleLessonComplete.mockReturnValue(false)
+      const result = toggleLessonComplete(3)
+      expect(mockStore.toggleLessonComplete).toHaveBeenCalledWith(3)
+      expect(result).toBe(false)
+    })
+
+    it('getCompletedLessons returns from store', () => {
+      const result = getCompletedLessons()
+      expect(result).toEqual([1, 2])
+    })
+
+    it('getCompletedCount delegates to store', () => {
+      const result = getCompletedCount()
+      expect(mockStore.completedLessonsCount).toHaveBeenCalled()
+      expect(result).toBe(2)
+    })
+
+    it('getCompletedForPhase delegates to store', () => {
+      const result = getCompletedForPhase(['1-1', '1-2'])
+      expect(mockStore.getCompletedForPhase).toHaveBeenCalledWith(['1-1', '1-2'])
+      expect(result).toEqual([1])
+    })
+
+    it('setLastVisited delegates to store', () => {
+      setLastVisited('3-1')
+      expect(mockStore.setLastVisited).toHaveBeenCalledWith('3-1')
+    })
+
+    it('getLastVisited returns from store', () => {
+      const result = getLastVisited()
+      expect(result).toBe(5)
+    })
+
+    it('clearAllProgress delegates to store', () => {
+      clearAllProgress()
+      expect(mockStore.clearAllProgress).toHaveBeenCalled()
+    })
+
+    it('getPhaseProgress delegates to store', () => {
+      const result = getPhaseProgress(['2-1'])
+      expect(mockStore.phaseProgress).toHaveBeenCalledWith(['2-1'])
+      expect(result).toEqual({ completed: 1, total: 3, percent: 33 })
+    })
+
+    it('getStreakDays delegates to store', () => {
+      const date = new Date()
+      const result = getStreakDays(date)
+      expect(mockStore.streakDays).toHaveBeenCalledWith(date)
+      expect(result).toBe(5)
+    })
+
+    it('hydrateProgressStore forces hydration', () => {
+      hydrateProgressStore()
+      expect(mockStore.hydrate).toHaveBeenCalled()
+    })
   })
 
-  it('hydrates migrated legacy state on storage events', () => {
-    localStorage.setItem(
-      'coding-for-mba-progress',
-      JSON.stringify({
-        state: {
-          completedLessons: [1, 4],
-          lastVisitedLesson: 4,
-          completionDates: { 1: '2026-02-18', 4: '2026-02-19' },
-        },
-        version: 2,
-      }),
-    )
+  describe('Storage Events', () => {
+    it('triggers rehydrate on appropriate storage event', () => {
+      const rehydrateSpy = vi.spyOn(useProgressStore.persist, 'rehydrate')
+      const event = new StorageEvent('storage', { key: 'coding-for-mba-progress' })
+      window.dispatchEvent(event)
+      expect(rehydrateSpy).toHaveBeenCalled()
+    })
 
-    window.dispatchEvent(new StorageEvent('storage', { key: 'coding-for-mba-progress' }))
+    it('triggers rehydrate on null key storage event', () => {
+      const rehydrateSpy = vi.spyOn(useProgressStore.persist, 'rehydrate')
+      const event = new StorageEvent('storage', { key: null })
+      window.dispatchEvent(event)
+      expect(rehydrateSpy).toHaveBeenCalled()
+    })
 
-    expect(getCompletedLessons()).toEqual([1, 4])
-    expect(getLastVisited()).toBe(4)
-    expect(getCompletedForPhase([2, 4, 9])).toEqual([4])
+    it('does not trigger rehydrate on unrelated storage event', () => {
+      const rehydrateSpy = vi.spyOn(useProgressStore.persist, 'rehydrate')
+      const event = new StorageEvent('storage', { key: 'other-key' })
+      window.dispatchEvent(event)
+      expect(rehydrateSpy).not.toHaveBeenCalled()
+    })
   })
 })

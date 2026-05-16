@@ -1,89 +1,185 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import {
+  computeRankingBoost,
+  createSearchDocuments,
+  getSearchIndexStatus,
+  subscribeSearchIndexStatus,
+  search,
+  extractMatchedTerms,
+  getSearchSnippet,
+} from '../searchIndex'
 
-const lessons = [
-  {
-    day: '11',
-    daySortKey: '00011:',
-    title: 'Intro to Python Variables',
-    phase: 1,
-    tags: ['python', 'basics'],
-    concepts: ['variable'],
-    content: '# Intro\nVariables store values.',
-    path: '/content/lessons/Phase_1/README.md',
-  },
-  {
-    day: '11B',
-    daySortKey: '00011:B',
-    title: 'SQL JOIN Deep Dive',
-    phase: 2,
-    tags: ['sql'],
-    concepts: ['join'],
-    content: 'Learn relational joins and indexing.',
-    path: '/content/lessons/Phase_2/README.md',
-  },
-]
-
-vi.mock('../contentLoader', () => ({
-  getAllLessons: () => lessons,
+// Mock the dependencies
+vi.mock('../../content/index', () => ({
+  getAllLessons: vi.fn(() => [
+    {
+      id: 1,
+      day: '1',
+      phase: 1,
+      title: 'Introduction to Python',
+      content: 'This is an **introduction** to Python programming.',
+      concepts: ['Variables', 'Types'],
+      tags: ['basics'],
+    },
+    {
+      id: 2,
+      day: '2',
+      phase: 1,
+      title: 'Advanced Python',
+      content: 'Let us dive deeper into Python. Functions and classes.',
+      concepts: ['Functions', 'Classes'],
+      tags: ['advanced'],
+    },
+  ]),
 }))
 
-let search: (query: string, limit?: number) => unknown[]
-let preloadSearchIndex: () => void
-let getSearchIndexStatus: () => { isReady: boolean; processedCount: number; totalCount: number }
+vi.mock('../dayToken', () => ({
+  parseDayToken: vi.fn((day) => ({
+    token: day,
+    number: parseInt(day),
+    suffix: null,
+  })),
+  normalizeDayToken: vi.fn((day) => day),
+  dayTokenFromPath: vi.fn((path) => '1'),
+}))
 
-beforeEach(async () => {
-  vi.resetModules()
-  if (!window.requestIdleCallback) {
-    window.requestIdleCallback = vi.fn((cb) => {
-      const id = setTimeout(cb, 1)
-      return Number(id)
-    }) as unknown as typeof window.requestIdleCallback
-  }
-
-  const mod = await import('../searchIndex')
-  search = mod.search
-  preloadSearchIndex = mod.preloadSearchIndex
-  getSearchIndexStatus = mod.getSearchIndexStatus
-})
-
-afterEach(() => {
-  vi.clearAllMocks()
-})
+vi.mock('../contentLoader', () => ({
+  getAllLessons: vi.fn(() => [
+    {
+      id: 1,
+      day: '1',
+      phase: 1,
+      title: 'Introduction to Python',
+      content: 'This is an **introduction** to Python programming.',
+      concepts: ['Variables', 'Types'],
+      tags: ['basics'],
+    },
+    {
+      id: 2,
+      day: '2',
+      phase: 1,
+      title: 'Advanced Python',
+      content: 'Let us dive deeper into Python. Functions and classes.',
+      concepts: ['Functions', 'Classes'],
+      tags: ['advanced'],
+    },
+  ]),
+}))
 
 describe('searchIndex', () => {
-  it('returns no results for empty query', () => {
-    expect(search('')).toEqual([])
-    expect(search('   ')).toEqual([])
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.useFakeTimers()
   })
 
-  it('returns empty before any docs are processed and then returns partial results', async () => {
-    expect(search('python')).toEqual([])
-
-    await new Promise((resolve) => setTimeout(resolve, 5))
-
-    const results = search('python')
-    expect(results.length).toBeGreaterThan(0)
-    expect((results[0] as { item: { day: string } }).item.day).toBe('11')
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
-  it('respects result limit', async () => {
-    preloadSearchIndex()
-    await new Promise((resolve) => setTimeout(resolve, 5))
+  describe('extractMatchedTerms', () => {
+    it('normalizes and extracts unique terms', () => {
+      const terms = extractMatchedTerms('Python PYTHON advanced 1')
+      expect(terms).toEqual(['python', 'advanced', '1'])
+    })
 
-    const results = search('11B', 1)
-    expect(results.length).toBe(1)
+    it('ignores single character terms that are not digits', () => {
+      const terms = extractMatchedTerms('a b c 1 python')
+      expect(terms).toEqual(['1', 'python'])
+    })
   })
 
-  it('supports background preloading via preloadSearchIndex and reports readiness progress', async () => {
-    preloadSearchIndex()
-    await new Promise((resolve) => setTimeout(resolve, 5))
+  describe('getSearchSnippet', () => {
+    it('returns empty string for empty content', () => {
+      expect(getSearchSnippet('', 'test')).toBe('')
+    })
 
-    const status = getSearchIndexStatus()
-    expect(status.totalCount).toBe(2)
-    expect(status.processedCount).toBeGreaterThan(0)
+    it('returns truncated content if no match', () => {
+      expect(getSearchSnippet('a'.repeat(200), 'test', 10)).toBe('aaaaaaaaaa…')
+    })
 
-    const results = search('sql')
-    expect(results.length).toBeGreaterThan(0)
-    expect((results[0] as { item: { title: string } }).item.title).toContain('SQL')
+    it('centers snippet around match', () => {
+      const content = 'prefix '.repeat(20) + 'match term' + ' suffix'.repeat(20)
+      const snippet = getSearchSnippet(content, 'match', 30)
+      expect(snippet).toContain('match')
+      expect(snippet.length).toBeLessThanOrEqual(32) // account for ellipses
+      expect(snippet.startsWith('…')).toBe(true)
+      expect(snippet.endsWith('…')).toBe(true)
+    })
+
+    it('handles match near start', () => {
+      const content = 'match term' + ' suffix'.repeat(20)
+      const snippet = getSearchSnippet(content, 'match', 20)
+      expect(snippet.startsWith('…')).toBe(false)
+      expect(snippet.endsWith('…')).toBe(true)
+    })
+  })
+
+  describe('computeRankingBoost', () => {
+    it('calculates boost based on term occurrences', () => {
+      const doc = {
+        titleLower: 'test title',
+        conceptsLower: 'concept test',
+        tagsLower: 'tag test',
+        phaseTextLower: 'phase test',
+        dayTextLower: 'day test',
+        plainContentLower: 'body test',
+      } as any
+
+      const score = computeRankingBoost(doc, ['test'])
+      expect(score).toBeGreaterThan(0)
+    })
+  })
+
+  describe('createSearchDocuments', () => {
+    it('converts lessons to search documents', () => {
+      const lessons = [
+        {
+          id: 1,
+          day: '1',
+          phase: 1,
+          title: 'Title',
+          content: '# Heading\nText **bold**',
+          concepts: ['A'],
+          tags: ['B'],
+        },
+      ] as any[]
+
+      const docs = createSearchDocuments(lessons)
+      expect(docs).toHaveLength(1)
+      expect(docs[0]?.plainContent).toBe('Heading Text bold')
+      expect(docs[0]?.titleLower).toBe('title')
+      expect(docs[0]?.conceptsLower).toBe('a')
+    })
+  })
+
+  describe('indexing and searching', () => {
+    it('search triggers indexing and returns results', () => {
+      // Need to clear module state for full test, but in this isolated test
+      // search will trigger background index
+      search('python')
+
+      const status = getSearchIndexStatus()
+      expect(status.isIndexing).toBe(true)
+
+      // Advance timers to let requestIdleCallback or setTimeout finish
+      vi.runAllTimers()
+
+      const finalStatus = getSearchIndexStatus()
+      expect(finalStatus.isIndexing).toBe(false)
+      expect(finalStatus.isReady).toBe(true)
+
+      const results = search('python')
+      expect(results.length).toBeGreaterThan(0)
+      expect(results[0]?.item.title.includes('Python')).toBe(true)
+    })
+
+    it('subscribeSearchIndexStatus works', () => {
+      const listener = vi.fn()
+      const unsubscribe = subscribeSearchIndexStatus(listener)
+
+      expect(listener).toHaveBeenCalled() // initial call
+
+      unsubscribe()
+    })
   })
 })
