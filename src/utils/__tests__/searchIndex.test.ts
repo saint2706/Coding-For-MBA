@@ -40,7 +40,7 @@ vi.mock('../dayToken', () => ({
     suffix: null,
   })),
   normalizeDayToken: vi.fn((day) => day),
-  dayTokenFromPath: vi.fn((path) => '1'),
+  dayTokenFromPath: vi.fn((_path) => '1'),
 }))
 
 vi.mock('../contentLoader', () => ({
