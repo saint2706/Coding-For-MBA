@@ -236,3 +236,6 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 - [x] **[SEO] Manifest update**: Updated public/manifest.json to reflect 140 days instead of 108
+- [GEO] Fixed JSON-LD XSS vulnerability by correcting the escape sequence for less-than characters.
+- [GEO][SEO] Structured Data XSS Fix Revert: Reverted the JSON-LD stringify escape sequences from .replace(/</g, \u003c) back to .replace(/</g, \\u003c) to comply with industry standards.
+- [SEO] Semantic HTML Fixes: Added a screen-reader-only <h1> tag to Home.tsx to resolve the skipped heading level issue where the page's first heading was an <h2>.
