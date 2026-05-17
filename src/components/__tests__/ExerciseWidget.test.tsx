@@ -250,8 +250,6 @@ describe('ExerciseWidget', () => {
 
     // Button text should change back
     expect(showButton.textContent).toContain('Show Solution')
-
-
   })
 
   it('requires confirmation before loading solution', async () => {

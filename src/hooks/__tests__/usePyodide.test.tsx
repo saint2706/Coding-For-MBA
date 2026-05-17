@@ -277,7 +277,9 @@ describe('usePyodide', () => {
     const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
     if (window._pyodideInstance) {
       window._pyodideInstance.runPythonAsync = async () => {
-        await act(async () => { vi.advanceTimersByTime(100) })
+        await act(async () => {
+          vi.advanceTimersByTime(100)
+        })
         return 'done'
       }
     }
