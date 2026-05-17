@@ -22,6 +22,12 @@ interface SidebarPhaseGroupProps {
   onClose: () => void
 }
 
+/**
+ * Renders an accordion group of lessons for a specific phase in the sidebar curriculum.
+ *
+ * @param {SidebarPhaseGroupProps} props - The component props.
+ * @returns {JSX.Element} The phase group accordion block.
+ */
 function SidebarPhaseGroup({
   phase,
   isActive,
@@ -195,11 +201,11 @@ function propsAreEqual(
 }
 
 /**
- * Renders an accordion group of lessons for a specific phase in the sidebar curriculum.
- * Memoized to prevent re-rendering when navigation occurs outside of the current phase.
- *
- * @param {SidebarPhaseGroupProps} props - The component props.
- * @returns {JSX.Element} The phase group accordion block.
+ * @returns {boolean}
  */
 export { propsAreEqual }
+
+/**
+ * @returns {JSX.Element}
+ */
 export default memo(SidebarPhaseGroup, propsAreEqual)

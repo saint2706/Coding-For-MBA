@@ -129,3 +129,5 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Validated frontmatter and metadata with `npm run validate-content`.
   - Confirmed no placeholder text like 'TODO: Add content' exists in the codebase.
 - Added ^https://cube\\.dev to ignorePatterns in mlc_config.json
+- **[2026-05-18] JSDoc Fixes**
+  - Fixed JSDoc placement in src/components/SidebarPhaseGroup.tsx to properly document the exported component and satisfy automated checks.
