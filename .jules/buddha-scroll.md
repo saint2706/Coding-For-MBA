@@ -236,3 +236,10 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 - [x] **[SEO] Manifest update**: Updated public/manifest.json to reflect 140 days instead of 108
+### [Date: Current] - Deep JSON-LD Integration on Content Stats
+
+**Priority Areas:**
+1.  **GEO (Intelligence)**: Securely injecting JSON-LD schema into the application routes.
+
+**Changes:**
+-   [x] **[GEO][SEO] Structured Data Enhancement**: Added a `CollectionPage` schema to `src/pages/ContentStats.tsx` using `buildCollectionPageSchema` to improve site topology discovery for search engine agents.

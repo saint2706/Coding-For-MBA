@@ -12,6 +12,7 @@
 import { Link } from 'react-router-dom'
 import { phaseIcons, getContentStats } from '../utils/contentLoader'
 import SEOHead from '../components/SEOHead'
+import { buildCollectionPageSchema } from '../utils/seoSchemas'
 import AnimatedCounter from '../components/AnimatedCounter'
 
 /**
@@ -30,6 +31,12 @@ import AnimatedCounter from '../components/AnimatedCounter'
  */
 export default function ContentStats() {
   const stats = getContentStats()
+  const collectionSchema = buildCollectionPageSchema(
+    'Curriculum Statistics',
+    'Comprehensive content analytics for the 140-day Coding for MBA curriculum.',
+    '/stats',
+    [],
+  )
 
   const maxTagCount = stats.tagCloud[0]?.[1] || 1
 
@@ -39,6 +46,7 @@ export default function ContentStats() {
         title="Content Statistics"
         description="Comprehensive content analytics for the 140-day Coding for MBA curriculum — word counts, reading times, difficulty distributions, tag clouds, and phase breakdowns."
         path="/stats"
+        jsonLd={[collectionSchema]}
         breadcrumbs={[
           { name: 'Home', url: '/' },
           { name: 'Content Stats', url: '/stats' },
