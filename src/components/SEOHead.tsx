@@ -125,13 +125,9 @@ export default function SEOHead({
 
       {/* JSON-LD Structured Data */}
       {allSchemas.map((schema, i) => (
-        <script
-          key={`jsonld-${i}`}
-          type="application/ld+json"
-          /* nosec */ dangerouslySetInnerHTML={{
-            __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
-          }}
-        />
+        <script key={`jsonld-${i}`} type="application/ld+json">
+          {JSON.stringify(schema).replace(/</g, '\\u003c')}
+        </script>
       ))}
     </Helmet>
   )
