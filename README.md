@@ -178,3 +178,9 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+### Testing Improvements
+
+- Refactored `src/hooks/__tests__/usePyodide.test.tsx` to remove fixed timeouts by using `vi.useFakeTimers()` and `vi.advanceTimersByTime()`.
+- Replaced `setTimeout` loops with `vi.waitFor` in `src/utils/__tests__/searchIndex.test.ts` and `src/utils/__tests__/searchIndex.perf.test.ts`.
+- Removed `await new Promise((resolve) => setTimeout(resolve, 350))` in `src/components/__tests__/ExerciseWidget.test.tsx` in favor of `waitFor` on the UI state directly.

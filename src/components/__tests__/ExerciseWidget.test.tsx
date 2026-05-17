@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import React, { act } from 'react'
+import { waitFor } from '@testing-library/react'
 import { createRoot } from 'react-dom/client'
 import { MemoryRouter } from 'react-router-dom'
 import ExerciseWidget from '../ExerciseWidget'
@@ -241,16 +242,16 @@ describe('ExerciseWidget', () => {
       showButton.click()
     })
 
-    await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 350))
+    await waitFor(() => {
+      expect(showButton.textContent).toContain('Show Solution')
+      const solutionCodeHidden = container.querySelector('.syntax-highlighter')
+      expect(solutionCodeHidden).toBeNull()
     })
 
     // Button text should change back
     expect(showButton.textContent).toContain('Show Solution')
 
-    // Solution code should be unmounted after closing the panel
-    const solutionCodeHidden = container.querySelector('.syntax-highlighter')
-    expect(solutionCodeHidden).toBeNull()
+
   })
 
   it('requires confirmation before loading solution', async () => {

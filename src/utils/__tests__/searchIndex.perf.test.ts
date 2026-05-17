@@ -20,7 +20,7 @@ describe('searchIndex first-search performance', () => {
     vi.resetModules()
     if (!window.requestIdleCallback) {
       window.requestIdleCallback = vi.fn((cb) => {
-        const id = setTimeout(cb, 1)
+        const id = setTimeout(cb, 0)
         return Number(id)
       }) as unknown as typeof window.requestIdleCallback
     }

@@ -222,7 +222,7 @@ describe('usePyodide', () => {
       window._pyodideInstance.runPythonAsync = vi.fn().mockImplementation(
         () =>
           new Promise((_, reject) => {
-            setTimeout(() => reject(new Error('Late python failure')), 100)
+            setTimeout(() => reject(new Error('Late python failure')), 1000)
           }),
       )
     }
@@ -239,7 +239,9 @@ describe('usePyodide', () => {
     })
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 150))
+      vi.useFakeTimers()
+      vi.advanceTimersByTime(150)
+      vi.useRealTimers()
     })
 
     expect(unhandledRejections).toEqual([])
@@ -275,7 +277,7 @@ describe('usePyodide', () => {
     const originalRunPythonAsync = window._pyodideInstance?.runPythonAsync
     if (window._pyodideInstance) {
       window._pyodideInstance.runPythonAsync = async () => {
-        await new Promise((resolve) => setTimeout(resolve, 100))
+        await act(async () => { vi.advanceTimersByTime(100) })
         return 'done'
       }
     }
