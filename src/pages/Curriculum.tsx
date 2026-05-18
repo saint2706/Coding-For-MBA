@@ -43,8 +43,7 @@ export default function Curriculum() {
   })
   const timelineScaleY = useTransform(scrollYProgress, [0, 1], [0.1, 1])
 
-  const completedLessons = useProgressStore((state) => state.completedLessons)
-  const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+  const completedSet = useProgressStore((state) => state.completedSet) || new Set()
 
   const phasesData = useMemo(() => {
     return phases.map((phase) => {

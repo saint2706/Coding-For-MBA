@@ -134,7 +134,7 @@ export default function Lesson() {
 
   const handleToggleComplete = useCallback(() => {
     const day = dayNum ? dayTokenToProgressId(dayNum) : Number.NaN
-    const beforeCompleted = new Set(useProgressStore.getState().completedLessons)
+    const beforeCompleted = useProgressStore.getState().completedSet || new Set()
     const nowComplete = useProgressStore.getState().toggleLessonComplete(day)
 
     const now = Date.now()
@@ -150,9 +150,8 @@ export default function Lesson() {
         useGamificationStore.getState().awardLessonCompletion(day)
       }
 
+      const afterCompletedSet = useProgressStore.getState().completedSet || new Set()
       const afterCompleted = useProgressStore.getState().completedLessons
-      // ⚡ Bolt: Convert array to Set for O(1) lookups during phase completion check, eliminating O(N*M) bottleneck
-      const afterCompletedSet = new Set(afterCompleted)
       const wasPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
             beforeCompleted.has(dayTokenToProgressId(entry.day)),
