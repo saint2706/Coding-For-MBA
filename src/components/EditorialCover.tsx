@@ -57,5 +57,6 @@ const EditorialCover = Object.assign(Cover, {
 
 /**
  * The combined EditorialCover component exposing sub-components.
+ * @returns {JSX.Element} The rendered EditorialCover component.
  */
 export default EditorialCover

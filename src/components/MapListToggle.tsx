@@ -68,5 +68,6 @@ const MapListToggle = Object.assign(Toggle, { View })
 
 /**
  * The combined MapListToggle component exposing the View sub-component.
+ * @returns {JSX.Element} The rendered MapListToggle component.
  */
 export default MapListToggle

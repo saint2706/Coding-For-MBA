@@ -30,5 +30,6 @@ SyntaxHighlighter.registerLanguage('javascript', javascript)
  * markdown, typescript, and javascript pre-registered to minimize bundle size.
  *
  * @type {React.ComponentType}
+ * @returns {React.ComponentType} The SyntaxHighlighter component.
  */
 export default SyntaxHighlighter
