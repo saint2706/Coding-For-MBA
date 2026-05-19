@@ -19,3 +19,4 @@
 - **Severity:** High
 - Removed `dangerouslySetInnerHTML` for JSON-LD scripts in `MasteryCheck.tsx` and `SEOHead.tsx` in favor of React 19's native `<script>` tag children support.
 - Fixed medium and high severity vulnerabilities using `npm audit fix`.
+- Resolved GitHub Action CI check failure where `npm ci` would fail due to an invalid TypeScript version `~6.0.3` which is not a valid registry target format. Corrected to `6.0.3` in `package.json` to allow clean installation of the `typescript` package on CI environments.

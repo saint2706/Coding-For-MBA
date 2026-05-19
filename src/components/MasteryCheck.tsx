@@ -50,7 +50,9 @@ export default function MasteryCheck({
 
   return (
     <div className={`mastery-check ${revealed ? 'mastery-check--revealed' : ''}`}>
-      <script type="application/ld+json">{JSON.stringify(faqSchema).replace(/</g, '\\u003c')}</script>
+      <script type="application/ld+json">
+        {JSON.stringify(faqSchema).replace(/</g, '\\u003c')}
+      </script>
       <div className="mastery-check__header">
         <span className="mastery-check__badge">Q{questionNumber}</span>
         <h3 className="mastery-check__title">{title}</h3>
