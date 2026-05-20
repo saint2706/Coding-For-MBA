@@ -37,7 +37,7 @@ describe('ConceptGraphPage', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('🔗 Concept Dependency Graph')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /Concept Dependency Graph/i })).toBeInTheDocument()
     expect(screen.getByTestId('concept-graph')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('Search lessons or concepts…')).toBeInTheDocument()
   })

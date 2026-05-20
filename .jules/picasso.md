@@ -79,3 +79,11 @@ Added focus-visible outlines to sidebar close, navbar hamburger, and navbar sear
 
 - Added missing aria-labels to buttons in MapListToggle and MarkdownRenderer
 - 🎨 Picasso: Added missing focus-visible classes to buttons in MarkdownRenderer for better keyboard navigation.
+
+### Accessibility Enhancements for Emojis and Focus States
+**Date:** 2024-05-20
+**Goal:** Ensure decorative emojis are hidden from screen readers and interactive buttons have visible focus states.
+**Changes Made:**
+- Added `<span aria-hidden="true">` wrappers to decorative emojis in `CodePlayground.tsx`, `RelatedLessons.tsx`, and `ConceptGraphPage.tsx` to prevent redundant screen reader announcements.
+- Added `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2` to the `lesson-complete-btn` in `Lesson.tsx`.
+**Learning:** Always verify that even minor interactive elements (like the complete button on lessons) have standard keyboard focus styling applied, and continue to aggressively wrap text-adjacent decorative emojis in `aria-hidden`.

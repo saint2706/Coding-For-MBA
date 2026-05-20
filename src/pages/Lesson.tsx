@@ -311,7 +311,7 @@ export default function Lesson() {
             <div className="lesson-header-controls">
               <button
                 type="button"
-                className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
+                className={`lesson-complete-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${completed ? 'completed' : ''}`}
                 onClick={handleToggleComplete}
                 aria-pressed={completed}
                 aria-label={completed ? 'Mark lesson as incomplete' : 'Mark lesson as complete'}

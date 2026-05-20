@@ -93,7 +93,7 @@ export default function ConceptGraphPage() {
       <Breadcrumb items={[{ label: 'Home', to: '/' }, { label: 'Concept Graph' }]} />
 
       <div className="concept-graph-header">
-        <h1>🔗 Concept Dependency Graph</h1>
+        <h1><span aria-hidden="true">🔗</span> Concept Dependency Graph</h1>
         <p>
           Explore how lessons connect through prerequisites. Each node is a lesson, colored by
           phase. Edges show prerequisite relationships. Click any node to navigate to that lesson.
