@@ -229,7 +229,9 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
     return (
       <div className="code-playground">
         <div className="code-playground__toolbar">
-          <span className="code-playground__label"><span aria-hidden="true">🐍</span> Python Playground</span>
+          <span className="code-playground__label">
+            <span aria-hidden="true">🐍</span> Python Playground
+          </span>
           <div className="code-playground__actions">
             <CopyButton
               text={code}
