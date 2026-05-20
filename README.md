@@ -178,3 +178,7 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+## CI/CD Optimizations
+- Added `actions/checkout@v6` to `.github/workflows/dependency-review.yml` to resolve missing checkout dependency.
+- Expanded matrix testing to include Node `20.x` and `22.x` in `.github/workflows/ci.yml`.
