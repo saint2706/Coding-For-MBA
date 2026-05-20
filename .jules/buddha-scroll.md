@@ -236,3 +236,4 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 
 **Changes:**
 - [x] **[SEO] Manifest update**: Updated public/manifest.json to reflect 140 days instead of 108
+- [SEO/GEO] Refactored `dangerouslySetInnerHTML` in JSON-LD `<script>` blocks in `SEOHead.tsx` and `MasteryCheck.tsx` to use direct child string interpolation with XSS escaping (`\u003c`). This improves security compliance and fulfills the instruction to avoid unsanitized `dangerouslySetInnerHTML`.
