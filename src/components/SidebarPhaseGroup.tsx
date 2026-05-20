@@ -202,4 +202,7 @@ function propsAreEqual(
  * @returns {JSX.Element} The phase group accordion block.
  */
 export { propsAreEqual }
+/**
+ * @returns {JSX.Element} The rendered SidebarPhaseGroup component.
+ */
 export default memo(SidebarPhaseGroup, propsAreEqual)
