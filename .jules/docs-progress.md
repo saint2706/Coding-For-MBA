@@ -134,3 +134,6 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 - Added missing `@returns` JSDoc to `SidebarPhaseGroup` in `src/components/SidebarPhaseGroup.tsx`
 - Added missing `@returns` JSDoc to `TerminalDashboard` in `src/components/TerminalDashboard.tsx`
 - Added missing `@returns` JSDoc to `SyntaxHighlighter` in `src/utils/prism.ts`
+- Added missing JSDoc comments to `scripts/validate-content.d.ts` for exported functions.
+- Added missing JSDoc comments to `scripts/vite-plugin-critical-css.ts` for the default exported plugin.
+- Verified all links using `markdown-link-check`.

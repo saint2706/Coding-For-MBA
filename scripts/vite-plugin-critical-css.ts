@@ -11,6 +11,10 @@ import path from 'node:path'
 
 import type { Plugin, ResolvedConfig } from 'vite'
 
+/**
+ * Vite Plugin - Critical CSS
+ * @returns {Plugin} The Vite plugin instance.
+ */
 export default function criticalCss(): Plugin {
   let resolvedConfig: ResolvedConfig | null = null
 
