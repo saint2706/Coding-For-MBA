@@ -21,6 +21,7 @@ vi.mock('../../stores/progressStore', () => ({
     vi.fn((selector) => {
       const state = {
         completedLessons: ['day-1', 'day-2'],
+        completedLessonsSet: new Set(['day-1', 'day-2']),
         completedLessonsCount: () => 2,
         streakDays: () => 5,
         clearAllProgress: mockClearAllProgress,
@@ -30,6 +31,7 @@ vi.mock('../../stores/progressStore', () => ({
     {
       getState: () => ({
         completedLessons: ['day-1', 'day-2'],
+        completedLessonsSet: new Set(['day-1', 'day-2']),
         completedLessonsCount: () => 2,
         streakDays: () => 5,
         clearAllProgress: mockClearAllProgress,
@@ -240,6 +242,7 @@ describe('ProgressDashboard', () => {
     ).mockImplementation((selector: (state: unknown) => unknown) =>
       selector({
         completedLessons: [],
+        completedLessonsSet: new Set(),
         completedLessonsCount: () => 0,
         streakDays: () => 0,
         clearAllProgress: mockClearAllProgress,

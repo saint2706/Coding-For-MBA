@@ -116,6 +116,7 @@ describe('progressStore selectors', () => {
 
     expect(migrated).toEqual({
       completedLessons: [1, 3],
+      completedLessonsSet: new Set([1, 3]),
       lastVisitedLesson: null,
       completionDates: { 1: '2026-03-01' },
     })
