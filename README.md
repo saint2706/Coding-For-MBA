@@ -178,3 +178,15 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+
+## 🔄 CI/CD Optimization Progress
+
+**Before:**
+- `dependency-review-action` was missing the required `actions/checkout` prerequisite step, causing the workflow to fail.
+- GitHub Action linting tools (`actionlint`) downloaded temporarily during task execution polluted the repository root.
+
+**After:**
+- Added `actions/checkout@v4` to `dependency-review.yml` to allow the action to analyze the code.
+- Kept `actions/setup-node@v4` and `actions/cache@v4` in `.github/actions/node-bootstrap/action.yml` as they are the valid latest major tags.
+- Verified workflow linting and removed all temporary script artifacts to maintain repository hygiene.
