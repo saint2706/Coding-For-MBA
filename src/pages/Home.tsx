@@ -182,6 +182,7 @@ export default function Home() {
         breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
 
+      <h1 className="sr-only">Coding for MBA - The Analyst&apos;s Terminal</h1>
       <EditorialCover>
         <EditorialCover.Eyebrow>
           <span className="cover-issue">ISSUE 01</span>

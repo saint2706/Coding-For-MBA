@@ -237,3 +237,10 @@ This scroll records the harmonization of the `Coding-For-MBA` codebase for human
 **Changes:**
 - [x] **[SEO] Manifest update**: Updated public/manifest.json to reflect 140 days instead of 108
 - [SEO/GEO] Refactored `dangerouslySetInnerHTML` in JSON-LD `<script>` blocks in `SEOHead.tsx` and `MasteryCheck.tsx` to use direct child string interpolation with XSS escaping (`\u003c`). This improves security compliance and fulfills the instruction to avoid unsanitized `dangerouslySetInnerHTML`.
+
+### [Date: Current] - Deep Semantic HTML Outline Harmonization
+**Priority Areas:**
+1.  **SEO (Visibility)**: Perfect HTML structure.
+
+**Changes:**
+-   [x] **[SEO] Semantic HTML Fixes**: Injected an `<h1 className="sr-only">Coding for MBA - The Analyst's Terminal</h1>` inside `src/pages/Home.tsx` just before `EditorialCover` to ensure the Home Page document outline has a top-level `<h1>` heading.
