@@ -63,12 +63,16 @@ vi.mock('../../stores/progressStore', () => {
   ) =>
     selector({
       lastVisitedLesson: mockGetLastVisited(),
-      completedLessonsSet: new Set(Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1)),
+      completedLessonsSet: new Set(
+        Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
+      ),
       completedLessonsCount: () => mockGetCompletedCount(),
       streakDays: () => 0,
     })
   storeFn.getState = () => ({
-    completedLessonsSet: new Set(Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1)),
+    completedLessonsSet: new Set(
+      Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
+    ),
     completedLessonsCount: () => mockGetCompletedCount(),
     lastVisitedLesson: mockGetLastVisited(),
   })

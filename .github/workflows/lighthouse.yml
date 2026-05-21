@@ -12,6 +12,9 @@ permissions:
   # Required for actions/upload-artifact to publish Lighthouse reports.
   actions: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   lighthouse:
     runs-on: ubuntu-latest

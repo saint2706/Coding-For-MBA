@@ -222,7 +222,7 @@ export const useProgressStore = create<ProgressStore>()(
         if (!Number.isInteger(normalizedDay) || normalizedDay < 1) return
 
         set((state) => {
-          const nextCompleted = state.completedLessons.filter((value) => value !== normalizedDay);
+          const nextCompleted = state.completedLessons.filter((value) => value !== normalizedDay)
           return {
             completedLessons: nextCompleted,
             completedLessonsSet: new Set(nextCompleted),
@@ -290,7 +290,10 @@ export const useProgressStore = create<ProgressStore>()(
       skipHydration: true,
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        useProgressStore.setState({ hasHydrated: true, completedLessonsSet: new Set(state.completedLessons) })
+        useProgressStore.setState({
+          hasHydrated: true,
+          completedLessonsSet: new Set(state.completedLessons),
+        })
         removeStoredValue(LAST_VISITED_KEY)
       },
     },

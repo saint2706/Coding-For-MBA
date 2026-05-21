@@ -74,7 +74,6 @@ export default function Home() {
   const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
   const challengeLesson = getLesson(dailyChallenge.day)
 
-
   const completedCount = useProgressStore((state) => state.completedLessonsCount())
   const totalLessons = stats.totalDays
   const completedPct = Math.round((completedCount / Math.max(1, totalLessons)) * 100)
