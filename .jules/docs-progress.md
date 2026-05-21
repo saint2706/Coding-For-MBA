@@ -134,3 +134,4 @@ Added complete and well-formatted JSDoc to the following exported components, fu
 - Added missing `@returns` JSDoc to `SidebarPhaseGroup` in `src/components/SidebarPhaseGroup.tsx`
 - Added missing `@returns` JSDoc to `TerminalDashboard` in `src/components/TerminalDashboard.tsx`
 - Added missing `@returns` JSDoc to `SyntaxHighlighter` in `src/utils/prism.ts`
+- Fixed broken links in CLAUDE.md by removing invalid markdown links.
