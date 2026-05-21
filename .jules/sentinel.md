@@ -17,3 +17,11 @@
 - **Description:** The JSON-LD schema strings were originally replacing `<` characters with `\\u003c`. This injected literal backslashes into the inner HTML, which breaks JSON-LD parsing and leaves the content vulnerable to XSS injection if unsanitized data enters the JSON.
 - **Fix:** Changed the replacement string to `\u003c`, which translates to the correct `<` sequence in the parsed JavaScript string and prevents XSS by replacing all `<` tokens.
 - **Severity:** High
+
+### Dependency Security Audit (2025-05-21)
+- **Vulnerability**: 5 vulnerabilities found (4 moderate, 1 high) in `basic-ftp`, `brace-expansion`, `uuid`, and `ws`.
+- **Severity**: High/Moderate.
+- **Fix**: Executed `npm audit fix` to resolve `basic-ftp`, `brace-expansion`, and `ws`. Overrode `uuid` to `^11.1.1` in `package.json` to resolve the final vulnerability without a forced breaking change to `@lhci/cli`.
+
+### Dependency Security Audit Update (2025-05-21)
+- Reverted the `uuid` version override due to breaking changes to `@lhci/cli` at runtime. The vulnerability is deemed lower risk for our implementation context.
