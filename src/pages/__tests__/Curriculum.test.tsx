@@ -120,11 +120,11 @@ describe('Curriculum', () => {
 
     vi.mocked(useProgressStore).mockImplementation(((
       selector: (state: {
-        completedLessons: number[]
+        completedLessonsSet: Set<number>
         completedLessonsCount: () => number
       }) => unknown,
     ) => {
-      return selector({ completedLessons: [1], completedLessonsCount: () => 1 }) // numeric id as returned by mock
+      return selector({ completedLessonsSet: new Set([1]), completedLessonsCount: () => 1 }) // numeric id as returned by mock
     }) as unknown as typeof useProgressStore)
 
     act(() => {

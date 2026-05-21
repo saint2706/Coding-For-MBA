@@ -83,8 +83,8 @@ export default function Lesson() {
   const [readingMode, setReadingMode] = useState(readingModePreference)
   const [nearBottom, setNearBottom] = useState(false)
 
-  const completedLessons = useProgressStore((state) => state.completedLessons)
-  const completed = dayNum ? completedLessons.includes(dayTokenToProgressId(dayNum)) : false
+  const completedSet = useProgressStore((state) => state.completedLessonsSet)
+  const completed = dayNum ? completedSet.has(dayTokenToProgressId(dayNum)) : false
 
   const lastToastAtRef = useRef(0)
 
@@ -134,7 +134,7 @@ export default function Lesson() {
 
   const handleToggleComplete = useCallback(() => {
     const day = dayNum ? dayTokenToProgressId(dayNum) : Number.NaN
-    const beforeCompleted = new Set(useProgressStore.getState().completedLessons)
+    const beforeCompleted = useProgressStore.getState().completedLessonsSet
     const nowComplete = useProgressStore.getState().toggleLessonComplete(day)
 
     const now = Date.now()
@@ -150,9 +150,9 @@ export default function Lesson() {
         useGamificationStore.getState().awardLessonCompletion(day)
       }
 
-      const afterCompleted = useProgressStore.getState().completedLessons
+      const afterCompletedSet = useProgressStore.getState().completedLessonsSet
       // ⚡ Bolt: Convert array to Set for O(1) lookups during phase completion check, eliminating O(N*M) bottleneck
-      const afterCompletedSet = new Set(afterCompleted)
+
       const wasPhaseCompleted = lesson
         ? getLessonsByPhase(lesson.phase).every((entry) =>
             beforeCompleted.has(dayTokenToProgressId(entry.day)),
@@ -174,7 +174,7 @@ export default function Lesson() {
       }
 
       const totalLessonCount = getCurriculumMetadata().totalDays
-      if (afterCompleted.length === totalLessonCount) {
+      if (afterCompletedSet.size === totalLessonCount) {
         triggerCurriculumFireworks()
         toastSuccess('🎓 Curriculum complete! Incredible work.')
       }
