@@ -17,3 +17,4 @@
 - **Description:** The JSON-LD schema strings were originally replacing `<` characters with `\\u003c`. This injected literal backslashes into the inner HTML, which breaks JSON-LD parsing and leaves the content vulnerable to XSS injection if unsanitized data enters the JSON.
 - **Fix:** Changed the replacement string to `\u003c`, which translates to the correct `<` sequence in the parsed JavaScript string and prevents XSS by replacing all `<` tokens.
 - **Severity:** High
+- [SECURITY] Dependency Fix: Resolved moderate severity vulnerabilities in `brace-expansion`, `qs`, and `ws` via `npm audit fix`.
