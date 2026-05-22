@@ -128,9 +128,11 @@ Added complete and well-formatted JSDoc to the following exported components, fu
   - Found and fixed one code style issue in `src/stores/quizStore.ts` using `npm run format`.
   - Validated frontmatter and metadata with `npm run validate-content`.
   - Confirmed no placeholder text like 'TODO: Add content' exists in the codebase.
-- Added ^https://cube\\.dev to ignorePatterns in mlc_config.json
+- Added `^https://cube\\.dev` to ignorePatterns in mlc_config.json
 - Added missing `@returns` JSDoc to `EditorialCover` in `src/components/EditorialCover.tsx`
 - Added missing `@returns` JSDoc to `MapListToggle` in `src/components/MapListToggle.tsx`
 - Added missing `@returns` JSDoc to `SidebarPhaseGroup` in `src/components/SidebarPhaseGroup.tsx`
 - Added missing `@returns` JSDoc to `TerminalDashboard` in `src/components/TerminalDashboard.tsx`
 - Added missing `@returns` JSDoc to `SyntaxHighlighter` in `src/utils/prism.ts`
+- **[2026-05-08] Documentation Audit & Improvements**
+  - Fixed `TypeError: Invalid URL` crash in `markdown-link-check` by fixing malformed link inside `.jules/docs-progress.md`.
