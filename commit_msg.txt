@@ -1,0 +1,11 @@
+🔄 CI/CD: Pinned GitHub Actions to true major versions
+
+- Updated `actions/checkout` to `@v4` (was using fake @v6).
+- Updated `actions/upload-artifact` to `@v4` (was using fake @v7).
+- Updated `actions/cache` to `@v4` (was using fake @v5).
+- Updated `actions/github-script` to `@v7` (was using fake @v9).
+- Updated `actions/upload-pages-artifact` to `@v3` (was using fake @v5).
+- Updated `actions/deploy-pages` to `@v4` (was using fake @v5).
+- Updated `github/codeql-action/*` to `@v3` (was using fake @v4).
+- Added missing `actions/checkout@v4` step before `actions/dependency-review-action@v4` in `dependency-review.yml`.
+- Verified all workflows pass Actionlint.

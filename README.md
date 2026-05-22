@@ -178,3 +178,8 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+### 🔄 CI/CD Improvements
+
+- Pinned all GitHub actions to their true major versions (e.g. `checkout@v4`, `cache@v4`).
+- Fixed a silent failure in dependency review where checkout was missing before analysis.
