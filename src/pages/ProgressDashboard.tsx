@@ -47,7 +47,9 @@ export default function ProgressDashboard() {
   const phases = getAllPhases()
   const { totalDays: totalLessons } = getCurriculumMetadata()
 
-  const completedSet = useProgressStore((state) => state.completedSet || new Set(state.completedLessons))
+  const completedSet = useProgressStore(
+    (state) => state.completedSet || new Set(state.completedLessons),
+  )
   const completedCount = useProgressStore((state) => state.completedLessonsCount())
 
   const overallPct = totalLessons > 0 ? Math.round((completedCount / totalLessons) * 100) : 0

@@ -37,7 +37,9 @@ export default function PhaseOverview() {
   const lessons = getLessonsByPhase(phaseNum!)
   const prefersReducedMotion = useReducedMotion()
 
-  const completedSet = useProgressStore((state) => state.completedSet || new Set(state.completedLessons))
+  const completedSet = useProgressStore(
+    (state) => state.completedSet || new Set(state.completedLessons),
+  )
 
   if (!phase) {
     return (

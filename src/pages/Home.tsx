@@ -67,14 +67,15 @@ export default function Home() {
   const lastVisitedDay = useProgressStore((state) => state.lastVisitedLesson)
   const lastVisitedLesson = lastVisitedDay ? (getLesson(lastVisitedDay) ?? null) : null
 
-
   const streakDays = useProgressStore((state) => state.streakDays())
   const xp = useGamificationStore((state) => state.xpTotal)
   const dailyChallenge = useGamificationStore((state) => state.dailyChallenge)
   const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
   const challengeLesson = getLesson(dailyChallenge.day)
 
-  const completedSet = useProgressStore((state) => state.completedSet || new Set(state.completedLessons))
+  const completedSet = useProgressStore(
+    (state) => state.completedSet || new Set(state.completedLessons),
+  )
   const completedCount = useProgressStore((state) => state.completedLessonsCount())
   const totalLessons = stats.totalDays
   const completedPct = Math.round((completedCount / Math.max(1, totalLessons)) * 100)

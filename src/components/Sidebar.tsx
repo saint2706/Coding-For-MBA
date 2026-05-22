@@ -71,7 +71,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const dueByPhase = useMemo(() => getReviewDueCountByPhase(), [])
   const reviewStreak = useMemo(() => getReviewStreak(), [])
 
-  const completedSet = useProgressStore((state) => state.completedSet || new Set(state.completedLessons))
+  const completedSet = useProgressStore(
+    (state) => state.completedSet || new Set(state.completedLessons),
+  )
 
   const completedIdsByPhase = useMemo(() => {
     const idsByPhase: Record<number, string> = {}

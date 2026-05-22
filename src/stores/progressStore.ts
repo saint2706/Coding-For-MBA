@@ -149,7 +149,10 @@ function mergeLegacyLastVisited(lastVisitedLesson: number | null): number | null
 
 function normalizePersistedState(
   state: unknown,
-): Pick<ProgressStore, 'completedLessons' | 'lastVisitedLesson' | 'completionDates' | 'completedSet'> {
+): Pick<
+  ProgressStore,
+  'completedLessons' | 'lastVisitedLesson' | 'completionDates' | 'completedSet'
+> {
   if (Array.isArray(state)) {
     return {
       completedLessons: parseValidDays(state),
@@ -181,7 +184,7 @@ function normalizePersistedState(
 
   return {
     completedLessons: [],
-      completedSet: new Set<number>(),
+    completedSet: new Set<number>(),
     lastVisitedLesson: mergeLegacyLastVisited(null),
     completionDates: {},
   }
@@ -292,7 +295,7 @@ export const useProgressStore = create<ProgressStore>()(
         if (!state) return
         useProgressStore.setState({
           hasHydrated: true,
-          completedSet: new Set(state.completedLessons)
+          completedSet: new Set(state.completedLessons),
         })
         removeStoredValue(LAST_VISITED_KEY)
       },
