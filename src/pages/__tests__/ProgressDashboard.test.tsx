@@ -21,6 +21,7 @@ vi.mock('../../stores/progressStore', () => ({
     vi.fn((selector) => {
       const state = {
         completedLessons: ['day-1', 'day-2'],
+        completedSet: new Set(['day-1', 'day-2']),
         completedLessonsCount: () => 2,
         streakDays: () => 5,
         clearAllProgress: mockClearAllProgress,

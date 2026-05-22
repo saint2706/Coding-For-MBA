@@ -6,6 +6,7 @@ describe('progressStore selectors', () => {
     useProgressStore.setState({
       completedLessons: [],
       lastVisitedLesson: null,
+      completedSet: new Set([1, 3]),
       completionDates: {},
       hasHydrated: false,
     })
@@ -117,6 +118,7 @@ describe('progressStore selectors', () => {
     expect(migrated).toEqual({
       completedLessons: [1, 3],
       lastVisitedLesson: null,
+      completedSet: new Set([1, 3]),
       completionDates: { 1: '2026-03-01' },
     })
   })

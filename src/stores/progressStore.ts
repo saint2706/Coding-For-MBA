@@ -60,6 +60,7 @@ const PersistedProgressSchema = z.object({
 })
 
 type ProgressStore = {
+  completedSet: Set<number>
   completedLessons: number[]
   lastVisitedLesson: number | null
   completionDates: Record<number, string>
@@ -148,10 +149,11 @@ function mergeLegacyLastVisited(lastVisitedLesson: number | null): number | null
 
 function normalizePersistedState(
   state: unknown,
-): Pick<ProgressStore, 'completedLessons' | 'lastVisitedLesson' | 'completionDates'> {
+): Pick<ProgressStore, 'completedLessons' | 'lastVisitedLesson' | 'completionDates' | 'completedSet'> {
   if (Array.isArray(state)) {
     return {
       completedLessons: parseValidDays(state),
+      completedSet: new Set(parseValidDays(state)),
       lastVisitedLesson: mergeLegacyLastVisited(null),
       completionDates: {},
     }
@@ -171,6 +173,7 @@ function normalizePersistedState(
 
     return {
       completedLessons,
+      completedSet: new Set(completedLessons),
       lastVisitedLesson,
       completionDates,
     }
@@ -178,6 +181,7 @@ function normalizePersistedState(
 
   return {
     completedLessons: [],
+      completedSet: new Set<number>(),
     lastVisitedLesson: mergeLegacyLastVisited(null),
     completionDates: {},
   }
@@ -192,6 +196,7 @@ export const useProgressStore = create<ProgressStore>()(
   persist(
     (set, get) => ({
       completedLessons: [],
+      completedSet: new Set<number>(),
       lastVisitedLesson: null,
       completionDates: {},
       hasHydrated: false,
@@ -207,6 +212,7 @@ export const useProgressStore = create<ProgressStore>()(
           if (state.completedLessons.includes(normalizedDay)) return state
           return {
             completedLessons: [...state.completedLessons, normalizedDay].sort((a, b) => a - b),
+            completedSet: new Set([...state.completedLessons, normalizedDay]),
             completionDates: {
               ...state.completionDates,
               [normalizedDay]: toDayKey(completedAt),
@@ -220,6 +226,7 @@ export const useProgressStore = create<ProgressStore>()(
 
         set((state) => ({
           completedLessons: state.completedLessons.filter((value) => value !== normalizedDay),
+          completedSet: new Set(state.completedLessons.filter((value) => value !== normalizedDay)),
           completionDates: Object.fromEntries(
             Object.entries(state.completionDates).filter(
               ([savedDay]) => Number(savedDay) !== normalizedDay,
@@ -244,6 +251,7 @@ export const useProgressStore = create<ProgressStore>()(
       clearAllProgress: () => {
         set({
           completedLessons: [],
+          completedSet: new Set<number>(),
           lastVisitedLesson: null,
           completionDates: {},
         })
@@ -255,7 +263,7 @@ export const useProgressStore = create<ProgressStore>()(
         set({ lastVisitedLesson: normalizedDay })
       },
       getCompletedForPhase: (phaseLessonDays) => {
-        const completed = new Set(get().completedLessons)
+        const completed = get().completedSet
         return phaseLessonDays
           .map((day) => dayTokenToProgressId(day))
           .filter((day) => completed.has(day))
@@ -282,7 +290,10 @@ export const useProgressStore = create<ProgressStore>()(
       skipHydration: true,
       onRehydrateStorage: () => (state) => {
         if (!state) return
-        useProgressStore.setState({ hasHydrated: true })
+        useProgressStore.setState({
+          hasHydrated: true,
+          completedSet: new Set(state.completedLessons)
+        })
         removeStoredValue(LAST_VISITED_KEY)
       },
     },
