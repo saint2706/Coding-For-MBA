@@ -159,14 +159,11 @@ vi.mock('../../utils/contentLoader', () => ({
   ]),
   getLessonsByPhase: vi.fn((phase) => {
     if (phase === 1)
-      return [
-        { day: '1', title: 'Lesson 1' } as any,
-        { day: '2', title: 'Lesson 2' } as any,
-      ]
+      return [{ day: '1', title: 'Lesson 1' } as any, { day: '2', title: 'Lesson 2' } as any]
     if (phase === 2) return [{ day: '3', title: 'Lesson 3' } as any]
     return []
   }),
-  getLesson: vi.fn(() => ({ day: '1', title: 'Lesson 1' } as any)),
+  getLesson: vi.fn(() => ({ day: '1', title: 'Lesson 1' }) as any),
   phaseIcons: ['📖', '🚀'],
   difficultyConfig: {
     beginner: { color: 'green', bg: 'lightgreen', label: 'Beginner' },
@@ -303,17 +300,23 @@ describe('ProgressDashboard', () => {
     expect(mockSetSidebarDefaultOpen).toHaveBeenCalledWith(false)
 
     // Test reading mode default
-    const readingModeCheckbox = screen.getByRole('checkbox', { name: /Start lessons in reading mode/i })
+    const readingModeCheckbox = screen.getByRole('checkbox', {
+      name: /Start lessons in reading mode/i,
+    })
     fireEvent.click(readingModeCheckbox)
     expect(mockSetReadingMode).toHaveBeenCalledWith(true)
 
     // Test reading comfort theme
-    const comfortThemeCheckbox = screen.getByRole('checkbox', { name: /Apply the softer reading palette/i })
+    const comfortThemeCheckbox = screen.getByRole('checkbox', {
+      name: /Apply the softer reading palette/i,
+    })
     fireEvent.click(comfortThemeCheckbox)
     expect(mockSetReadingComfortTheme).toHaveBeenCalledWith(true)
 
     // Test custom cursor
-    const customCursorCheckbox = screen.getByRole('checkbox', { name: /Enable enhanced pointer effects/i })
+    const customCursorCheckbox = screen.getByRole('checkbox', {
+      name: /Enable enhanced pointer effects/i,
+    })
     fireEvent.click(customCursorCheckbox)
     expect(mockSetCustomCursorEnabled).toHaveBeenCalledWith(false)
   })
@@ -336,7 +339,11 @@ describe('ProgressDashboard', () => {
 
     const loader = await import('../../utils/contentLoader')
     vi.mocked(loader.getLessonsByPhase).mockImplementation((phase) => {
-      if (phase === 1) return [{ day: '1', title: 'Lesson 1', phase: 1, content: '', path: '' } as any, { day: '2', title: 'Lesson 2', phase: 1, content: '', path: '' } as any]
+      if (phase === 1)
+        return [
+          { day: '1', title: 'Lesson 1', phase: 1, content: '', path: '' } as any,
+          { day: '2', title: 'Lesson 2', phase: 1, content: '', path: '' } as any,
+        ]
       return []
     })
 

@@ -182,3 +182,5 @@ This project is open source for educational purposes.
 ### Test Coverage Updates
 
 - 🧪 Enhanced unit test coverage for `ProgressDashboard.tsx` to explicitly verify clear progress actions, UI rendering on complex interactions, and preference handlers. Tests mock dependencies properly and maintain strict typings without fixed UI timeouts.
+
+- 🔄 CI: Updated `actions/setup-node` to `v6` and `actions/cache` to `v5` in `.github/actions/node-bootstrap/action.yml` to resolve Node.js 20 deprecation warnings and ensure workflow stability.
