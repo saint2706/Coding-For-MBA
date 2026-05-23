@@ -178,3 +178,7 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+## 🔄 CI/CD Optimizations
+- Pinned fake major tags for GitHub Actions to their true versions (`v4`, `v3`, `v7`, etc.)
+- Fixed `dependency-review.yml` missing repository checkout step
