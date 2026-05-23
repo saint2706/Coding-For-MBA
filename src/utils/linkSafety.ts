@@ -23,8 +23,8 @@ const URL_SCHEME_PATTERN = /^[a-zA-Z][^:/?#]*:/
  * Validates and normalizes a URL string.
  * Detects if the link is external and safe to use.
  *
- * @param href - The raw URL string to check.
- * @returns Object containing the normalized URL and safety flags.
+ * @param {string | null | undefined} href - The raw URL string to check.
+ * @returns {{ normalizedHref: string | null, isExternal: boolean, isSafe: boolean }} Object containing the normalized URL and safety flags.
  */
 export const normalizeAndValidateHref = (href?: string | null) => {
   if (typeof href !== 'string') {
@@ -81,9 +81,9 @@ export interface LinkProps {
  * Generates secure HTML attributes for a link.
  * Automatically adds `rel="noopener noreferrer"` and `target="_blank"` for external links.
  *
- * @param href - The destination URL.
- * @param props - Additional link properties (target, rel).
- * @returns Safe props object or null if the link is unsafe.
+ * @param {string | null | undefined} href - The destination URL.
+ * @param {LinkProps} props - Additional link properties (target, rel).
+ * @returns {{ href: string, target?: string, rel?: string } | null} Safe props object or null if the link is unsafe.
  */
 export const getSecureLinkAttributes = (href?: string | null, props: LinkProps = {}) => {
   const { normalizedHref, isExternal, isSafe } = normalizeAndValidateHref(href)
