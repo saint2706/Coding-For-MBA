@@ -178,3 +178,7 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+### Test Coverage Updates
+
+- 🧪 Enhanced unit test coverage for `ProgressDashboard.tsx` to explicitly verify clear progress actions, UI rendering on complex interactions, and preference handlers. Tests mock dependencies properly and maintain strict typings without fixed UI timeouts.

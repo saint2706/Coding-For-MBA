@@ -160,13 +160,13 @@ vi.mock('../../utils/contentLoader', () => ({
   getLessonsByPhase: vi.fn((phase) => {
     if (phase === 1)
       return [
-        { day: 1, title: 'Lesson 1' },
-        { day: 2, title: 'Lesson 2' },
+        { day: '1', title: 'Lesson 1' } as any,
+        { day: '2', title: 'Lesson 2' } as any,
       ]
-    if (phase === 2) return [{ day: 3, title: 'Lesson 3' }]
+    if (phase === 2) return [{ day: '3', title: 'Lesson 3' } as any]
     return []
   }),
-  getLesson: vi.fn(() => ({ day: 1, title: 'Lesson 1' })),
+  getLesson: vi.fn(() => ({ day: '1', title: 'Lesson 1' } as any)),
   phaseIcons: ['📖', '🚀'],
   difficultyConfig: {
     beginner: { color: 'green', bg: 'lightgreen', label: 'Beginner' },
@@ -272,5 +272,77 @@ describe('ProgressDashboard', () => {
       </MemoryRouter>,
     )
     expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument()
+  })
+
+  it('updates preferences when interacting with settings', () => {
+    renderComponent()
+
+    // Test palette selection
+    const dawnDuskBtn = screen.getByRole('radio', { name: 'Golden Summer Fields' })
+    fireEvent.click(dawnDuskBtn)
+    expect(mockSetPalette).toHaveBeenCalledWith('golden-summer-fields')
+
+    // Test font size
+    const fontSizeSelect = screen.getByLabelText('Font size')
+    fireEvent.change(fontSizeSelect, { target: { value: 'lg' } })
+    expect(mockSetFontSize).toHaveBeenCalledWith('lg')
+
+    // Test layout density
+    const densitySelect = screen.getByLabelText('Layout density')
+    fireEvent.change(densitySelect, { target: { value: 'compact' } })
+    expect(mockSetDensity).toHaveBeenCalledWith('compact')
+
+    // Test code language
+    const languageSelect = screen.getByLabelText('Preferred code language')
+    fireEvent.change(languageSelect, { target: { value: 'sql' } })
+    expect(mockSetCodeLanguage).toHaveBeenCalledWith('sql')
+
+    // Test sidebar default
+    const sidebarCheckbox = screen.getByRole('checkbox', { name: /Open sidebar on new pages/i })
+    fireEvent.click(sidebarCheckbox)
+    expect(mockSetSidebarDefaultOpen).toHaveBeenCalledWith(false)
+
+    // Test reading mode default
+    const readingModeCheckbox = screen.getByRole('checkbox', { name: /Start lessons in reading mode/i })
+    fireEvent.click(readingModeCheckbox)
+    expect(mockSetReadingMode).toHaveBeenCalledWith(true)
+
+    // Test reading comfort theme
+    const comfortThemeCheckbox = screen.getByRole('checkbox', { name: /Apply the softer reading palette/i })
+    fireEvent.click(comfortThemeCheckbox)
+    expect(mockSetReadingComfortTheme).toHaveBeenCalledWith(true)
+
+    // Test custom cursor
+    const customCursorCheckbox = screen.getByRole('checkbox', { name: /Enable enhanced pointer effects/i })
+    fireEvent.click(customCursorCheckbox)
+    expect(mockSetCustomCursorEnabled).toHaveBeenCalledWith(false)
+  })
+
+  it('calculates completed lessons in phase properly', async () => {
+    // Override store mock to include 'day-1'
+    const { useProgressStore } = await import('../../stores/progressStore')
+    ;(
+      useProgressStore as unknown as {
+        mockImplementation: (fn: (selector: (state: unknown) => unknown) => void) => void
+      }
+    ).mockImplementation((selector: (state: unknown) => unknown) =>
+      selector({
+        completedLessons: [1],
+        completedLessonsCount: () => 1,
+        streakDays: () => 5,
+        clearAllProgress: mockClearAllProgress,
+      }),
+    )
+
+    const loader = await import('../../utils/contentLoader')
+    vi.mocked(loader.getLessonsByPhase).mockImplementation((phase) => {
+      if (phase === 1) return [{ day: '1', title: 'Lesson 1', phase: 1, content: '', path: '' } as any, { day: '2', title: 'Lesson 2', phase: 1, content: '', path: '' } as any]
+      return []
+    })
+
+    renderComponent()
+
+    // Wait for the specific text because the component might render asynchronously
+    await waitFor(() => expect(screen.getByText('1/2 lessons')).toBeInTheDocument())
   })
 })
