@@ -79,3 +79,11 @@ Added focus-visible outlines to sidebar close, navbar hamburger, and navbar sear
 
 - Added missing aria-labels to buttons in MapListToggle and MarkdownRenderer
 - 🎨 Picasso: Added missing focus-visible classes to buttons in MarkdownRenderer for better keyboard navigation.
+
+### Sidebar Accessibility Enhancements
+**Date:** 2024-05-20
+**Goal:** Improve semantic structure and fix skip heading level in `Sidebar.tsx`, and fix redundant `aria-label` in `CopyButton.tsx`.
+**Changes Made:**
+- Inserted an `<h1>` heading with `className="sr-only"` at the top of the Sidebar component so that the `<h2>` tags follow proper heading hierarchy for screen readers.
+- Removed a hard-coded static `aria-label` from `CopyButton.tsx` that conflicted with the `aria-live` region and the dynamic `copied` state.
+**Learning:** Always check heading hierarchy visually and semantically (e.g., using `sr-only` elements when you don't want the visual impact of an `<h1>`). Avoid combining static `aria-label`s with dynamic state text, as it leads to confusing double-announcements for screen reader users.

@@ -128,6 +128,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         role="navigation"
         aria-label="Lesson navigation"
       >
+        <h1 className="sr-only">Sidebar Navigation</h1>
         <div className="sidebar-header">
           <Link to="/" className="sidebar-brand" onClick={onClose}>
             <span className="sidebar-brand-mark" aria-hidden="true">
