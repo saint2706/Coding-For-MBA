@@ -17,3 +17,6 @@
 - **Description:** The JSON-LD schema strings were originally replacing `<` characters with `\\u003c`. This injected literal backslashes into the inner HTML, which breaks JSON-LD parsing and leaves the content vulnerable to XSS injection if unsanitized data enters the JSON.
 - **Fix:** Changed the replacement string to `\u003c`, which translates to the correct `<` sequence in the parsed JavaScript string and prevents XSS by replacing all `<` tokens.
 - **Severity:** High
+## Sentinel Security Improvements
+- Ran `npm audit fix` to resolve moderate and high dependency vulnerabilities (DoS/XSS risks in transitive dependencies).
+- Updated fake or advanced major action tags in `.github/workflows` to true stable current major versions (`v4` for checkout, `v4` for cache, `v4` for upload-artifact, `v7` for github-script, etc.) to prevent supply chain risks from maliciously seeded tags.
