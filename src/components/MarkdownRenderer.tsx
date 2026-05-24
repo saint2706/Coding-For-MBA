@@ -445,7 +445,7 @@ function getInlineNodeText(node: Nodes): string {
   }
 
   if ('children' in node && Array.isArray(node.children)) {
-    return node.children.map((child) => getInlineNodeText(child as Nodes)).join('')
+    return node.children.map((child: Nodes) => getInlineNodeText(child as Nodes)).join('')
   }
 
   return ''
@@ -453,7 +453,7 @@ function getInlineNodeText(node: Nodes): string {
 
 function getHeadingText(node: Heading): string {
   return node.children
-    .map((child) => getInlineNodeText(child as Nodes))
+    .map((child: Nodes) => getInlineNodeText(child as Nodes))
     .join('')
     .trim()
 }
@@ -464,7 +464,7 @@ function isLabeledParagraph(node: Content, label: string): boolean {
   if (!first || first.type !== 'strong') return false
 
   const strongText = (first as Strong).children
-    .map((child) => getInlineNodeText(child as Nodes))
+    .map((child: Nodes) => getInlineNodeText(child as Nodes))
     .join('')
     .trim()
     .replace(/:$/, '')
@@ -479,7 +479,7 @@ function extractLabeledTextFromParagraph(node: Content, label: string): string {
 
   const rest = children
     .slice(1)
-    .map((child) => getInlineNodeText(child as Nodes))
+    .map((child: Nodes) => getInlineNodeText(child as Nodes))
     .join('')
     .trim()
 
@@ -594,7 +594,7 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
 
     const title = questionMatch?.[2]?.trim() || ''
     const detailsNodeIndex = sectionNodes.findIndex(
-      (sectionNode) => sectionNode?.type === 'html' && /<details[\s>]/i.test(sectionNode.value),
+      (sectionNode: Content) => sectionNode?.type === 'html' && /<details[\s>]/i.test(sectionNode.value),
     )
 
     const questionNodes =
@@ -622,7 +622,7 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
 
     const { code: codeSnippet, remaining: questionText } = extractCodeBlock(questionBody)
     const answerText = answerBody
-      .replace(/```[\s\S]*?```/g, (codeBlock) => {
+      .replace(/```[\s\S]*?```/g, (codeBlock: string) => {
         const codeContent = codeBlock.replace(/```(?:\w+)?\s*\n?/, '').replace(/\n?```$/, '')
         return codeContent
       })

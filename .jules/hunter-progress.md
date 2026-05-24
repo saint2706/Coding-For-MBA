@@ -195,3 +195,7 @@
 ## Session 34
 - **Fixed:** Resolved `TS2790` by using optional properties when casting `window` to delete properties.
 - **Verified:** Build, lint, and tests pass.
+
+## Session 35
+- **Fixed:** Removed `any` typings from `child` and `sectionNode` inside mapping iterations in `src/components/MarkdownRenderer.tsx` by updating parameters to correctly typed alternatives using `Nodes` and `Content` imported from `mdast`.
+- **Verified:** Build, lint, and tests pass.
