@@ -79,3 +79,6 @@ Added focus-visible outlines to sidebar close, navbar hamburger, and navbar sear
 
 - Added missing aria-labels to buttons in MapListToggle and MarkdownRenderer
 - 🎨 Picasso: Added missing focus-visible classes to buttons in MarkdownRenderer for better keyboard navigation.
+### Accessibility: Wrapped decorative symbols
+- Added `aria-hidden="true"` to `span` wrappers around symbols like `✕`, `▶`, `▼`, `▲`, `↔`, `↩` in `MarkdownRenderer.tsx`, `Navbar.tsx`, and `PythonRunner.tsx` inside interactive elements.
+- This ensures screen readers do not read out loud repetitive uninformative visual decorative text.

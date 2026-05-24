@@ -85,7 +85,15 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
             aria-label={wrapLines ? 'Disable line wrapping' : 'Enable line wrapping'}
             title={wrapLines ? 'Unwrap long lines' : 'Wrap long lines'}
           >
-            {wrapLines ? '↔ Unwrap' : '↩ Wrap'}
+            {wrapLines ? (
+              <>
+                <span aria-hidden="true">↔</span> Unwrap
+              </>
+            ) : (
+              <>
+                <span aria-hidden="true">↩</span> Wrap
+              </>
+            )}
           </button>
           {isPython && (
             <button
@@ -94,7 +102,15 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
               onClick={() => setShowPlayground((p) => !p)}
               aria-label={showPlayground ? 'Close playground' : 'Try this code'}
             >
-              {showPlayground ? '✕ Close' : '▶ Try It'}
+              {showPlayground ? (
+                <>
+                  <span aria-hidden="true">✕</span> Close
+                </>
+              ) : (
+                <>
+                  <span aria-hidden="true">▶</span> Try It
+                </>
+              )}
             </button>
           )}
           <CopyButton text={code} ariaLabel="Copy code to clipboard" />
@@ -147,9 +163,16 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
           aria-expanded={!collapsed}
           aria-label={collapsed ? 'Expand code block' : 'Collapse code block'}
         >
-          {collapsed
-            ? `▼ Show ${hiddenLineCount} more line${hiddenLineCount !== 1 ? 's' : ''}`
-            : '▲ Collapse'}
+          {collapsed ? (
+            <>
+              <span aria-hidden="true">▼</span> Show {hiddenLineCount} more line
+              {hiddenLineCount !== 1 ? 's' : ''}
+            </>
+          ) : (
+            <>
+              <span aria-hidden="true">▲</span> Collapse
+            </>
+          )}
         </button>
       )}
       {showPlayground && (
@@ -243,7 +266,7 @@ const ImageWithZoom = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
               }}
               aria-label="Close zoomed image"
             >
-              ✕
+              <span aria-hidden="true">✕</span>
             </button>
             <img
               src={rest.src}
