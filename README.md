@@ -178,3 +178,8 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+### Pipeline Optimizations
+
+- **GitHub Actions Pinning**: Downgraded core actions to true major versions (`checkout@v4`, `cache@v4`, `upload-artifact@v4`, etc) instead of fake newer tags, improving pipeline stability and preventing upstream regressions.
+- **Dependency Review Reliability**: Added explicit `actions/checkout@v4` step to `dependency-review.yml` to ensure codebase is present prior to security vulnerability checks.
