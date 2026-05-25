@@ -178,3 +178,7 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+## CI/CD 🔄 Pipeline Optimizations
+- **Pinned Versions:** All GitHub Actions (e.g., checkout, cache, upload-artifact) pinned to latest major versions.
+- **Dependency Review:** Corrected `actions/dependency-review-action` by ensuring `actions/checkout@v4` runs beforehand.
