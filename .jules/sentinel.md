@@ -17,3 +17,8 @@
 - **Description:** The JSON-LD schema strings were originally replacing `<` characters with `\\u003c`. This injected literal backslashes into the inner HTML, which breaks JSON-LD parsing and leaves the content vulnerable to XSS injection if unsanitized data enters the JSON.
 - **Fix:** Changed the replacement string to `\u003c`, which translates to the correct `<` sequence in the parsed JavaScript string and prevents XSS by replacing all `<` tokens.
 - **Severity:** High
+
+- **Severity**: High
+- **Vulnerability**: XSS via JSON-LD Structured Data in React `dangerouslySetInnerHTML` / inner children stringification
+- **Fix**: Replaced `.replace(/</g, '\\u003c')` with `.replace(/</g, '\\\\u003c')` in `src/components/SEOHead.tsx` and `src/components/MasteryCheck.tsx`. This ensures that `\u003c` is properly output in the serialized JS string, satisfying React escaping requirements without breaking JSON parsers.
+- **Dependency Vulnerabilities**: Fixed moderate vulnerabilities reported by `npm audit` using `npm audit fix`.
