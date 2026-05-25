@@ -8,14 +8,23 @@ const ROOT = join(__dirname, '..')
 const LESSONS_DIR = join(ROOT, 'content', 'lessons')
 const BASE_URL = process.env.SITE_URL || 'https://saint2706.github.io/Coding-For-MBA'
 
-/** Extract frontmatter `day`, `phase` or `title` value from a markdown file. */
+/**
+ * Extract frontmatter `day`, `phase` or `title` value from a markdown file.
+ * @param {string} filePath
+ * @returns {Record<string, any>} The extracted frontmatter object.
+ */
 function extractFrontmatter(filePath) {
   const raw = readFileSync(filePath, 'utf-8')
   const { frontmatter } = parseMarkdown(raw)
   return frontmatter
 }
 
-/** Recursively find files matching a name. */
+/**
+ * Recursively find files matching a name.
+ * @param {string} dir
+ * @param {string} filename
+ * @returns {string[]} An array of file paths.
+ */
 function findFiles(dir, filename) {
   const results = []
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
