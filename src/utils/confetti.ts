@@ -102,6 +102,12 @@ export function triggerCurriculumFireworks(): void {
   const animationEnd = Date.now() + durationMs
   const defaults: confetti.Options = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 }
 
+  const getRandom = () => {
+    const arr = new Uint32Array(1)
+    crypto.getRandomValues(arr)
+    return (arr[0] || 0) / 4294967296
+  }
+
   const interval = window.setInterval(() => {
     const timeLeft = animationEnd - Date.now()
     if (timeLeft <= 0) {
@@ -113,12 +119,12 @@ export function triggerCurriculumFireworks(): void {
     confetti({
       ...defaults,
       particleCount,
-      origin: { x: 0.1 + Math.random() * 0.2, y: Math.random() * 0.3 },
+      origin: { x: 0.1 + getRandom() * 0.2, y: getRandom() * 0.3 },
     })
     confetti({
       ...defaults,
       particleCount,
-      origin: { x: 0.7 + Math.random() * 0.2, y: Math.random() * 0.3 },
+      origin: { x: 0.7 + getRandom() * 0.2, y: getRandom() * 0.3 },
     })
   }, 250)
 }
