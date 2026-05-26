@@ -10,12 +10,12 @@ vi.mock('../../components/AnimatedCounter', () => ({
     if (format) displayValue = format(value)
     if (suffix) displayValue = `${displayValue}${suffix}`
     return <span data-testid="mock-counter">{displayValue}</span>
-  }
+  },
 }))
 
 // Mock SEOHead
 vi.mock('../../components/SEOHead', () => ({
-  default: () => <div data-testid="mock-seo-head" />
+  default: () => <div data-testid="mock-seo-head" />,
 }))
 
 // Mock contentLoader
@@ -29,7 +29,7 @@ vi.mock('../../utils/contentLoader', () => ({
     difficultyMap: {
       beginner: 20,
       intermediate: 15,
-      advanced: 7
+      advanced: 7,
     },
     phaseStats: [
       {
@@ -37,25 +37,25 @@ vi.mock('../../utils/contentLoader', () => ({
         title: 'Phase One',
         lessonCount: 20,
         totalWords: 5000,
-        totalReadingTime: 40
+        totalReadingTime: 40,
       },
       {
         phase: 2,
         title: 'Phase Two',
         lessonCount: 22,
         totalWords: 10000,
-        totalReadingTime: 80
-      }
+        totalReadingTime: 80,
+      },
     ],
     tagCloud: [
       ['react', 10],
-      ['typescript', 5]
+      ['typescript', 5],
     ],
     topConcepts: [
       ['components', 8],
-      ['hooks', 6]
-    ]
-  }))
+      ['hooks', 6],
+    ],
+  })),
 }))
 
 describe('ContentStats', () => {
@@ -67,7 +67,7 @@ describe('ContentStats', () => {
     render(
       <MemoryRouter>
         <ContentStats />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     // Check header
@@ -119,13 +119,13 @@ describe('ContentStats', () => {
       difficultyMap: {},
       phaseStats: [],
       tagCloud: [],
-      topConcepts: []
+      topConcepts: [],
     })
 
     render(
       <MemoryRouter>
         <ContentStats />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     expect(screen.getByText('Content Statistics')).toBeDefined()

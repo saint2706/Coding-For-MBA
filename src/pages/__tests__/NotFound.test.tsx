@@ -7,7 +7,7 @@ import NotFound from '../NotFound'
 vi.mock('../../components/SEOHead', () => ({
   default: ({ title, noIndex }: any) => (
     <div data-testid="mock-seo-head" data-title={title} data-noindex={noIndex} />
-  )
+  ),
 }))
 
 // Mock Breadcrumb
@@ -18,7 +18,7 @@ vi.mock('../../components/Breadcrumb', () => ({
         <span key={i}>{item.label}</span>
       ))}
     </div>
-  )
+  ),
 }))
 
 // Mock contentLoader
@@ -27,8 +27,8 @@ vi.mock('../../utils/contentLoader', () => ({
   getAllPhases: vi.fn(() => [
     { phase: 1, title: 'Phase One' },
     { phase: 2, title: 'Phase Two' },
-    { phase: 3, title: 'Phase Three' } // No icon defined for this one
-  ])
+    { phase: 3, title: 'Phase Three' }, // No icon defined for this one
+  ]),
 }))
 
 describe('NotFound', () => {
@@ -40,7 +40,7 @@ describe('NotFound', () => {
     render(
       <MemoryRouter>
         <NotFound />
-      </MemoryRouter>
+      </MemoryRouter>,
     )
 
     // Check header and code
