@@ -113,6 +113,9 @@
     },
     {
       "pattern": "^https://cube\\.dev"
+    },
+    {
+      "pattern": "^https://peps\\.python\\.org/"
     }
   ]
 }
