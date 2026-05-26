@@ -178,3 +178,9 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+### 🔄 CI/CD Improvements
+
+- **Before**: Unpinned, fake major version tags for core actions. Dependency vulnerabilities (`npm audit`) detected.
+- **After**: Pinned exact major versions (e.g., `actions/checkout@v4`, `actions/cache@v4`). Applied caching optimizations. Dependency vulnerabilities resolved safely.
+- **Timing metrics**: Verified successful CI execution (`build` + `test`) after optimizations without failures.
