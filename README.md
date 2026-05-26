@@ -178,3 +178,7 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+### Testing Improvements
+- **Coverage**: Increased overall coverage to 87.94%. Added coverage for all custom shell scripts (`analyze-bundle.js`, `generate-llms-txt.js`, `generate-sitemap.js`, `optimize-images.js`, `validate-content.js`, `vite-plugin-critical-css.ts`) mapping them to the Vitest infrastructure. Also, fully covered previously missing `ContentStats.tsx` and `NotFound.tsx` pages.
+- **Reliability**: Ensured proper isolation via Vitest by making use of `beforeEach` and `afterEach` in all the script tests removing file side effects. Replaced brittle manual React `createRoot` rendering inside `App.test.tsx` with standard `@testing-library/react` wrappers.

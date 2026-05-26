@@ -1,121 +1,133 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { createRoot } from 'react-dom/client'
-import { act } from 'react'
+import { render, screen } from '@testing-library/react'
+import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 import ContentStats from '../ContentStats'
-import * as contentLoader from '../../utils/contentLoader'
 
-vi.mock('../../components/SEOHead', () => ({
-  default: () => <div data-testid="seo-head" />,
-}))
-
+// Mock AnimatedCounter to simplify testing
 vi.mock('../../components/AnimatedCounter', () => ({
-  default: ({
-    value,
-    suffix,
-    format,
-  }: {
-    value: number
-    suffix?: string
-    format?: (v: number) => string
-  }) => (
-    <span data-testid="counter">
-      {format ? format(value) : value}
-      {suffix || ''}
-    </span>
-  ),
+  default: ({ value, format, suffix }: any) => {
+    let displayValue = value
+    if (format) displayValue = format(value)
+    if (suffix) displayValue = `${displayValue}${suffix}`
+    return <span data-testid="mock-counter">{displayValue}</span>
+  }
 }))
 
+// Mock SEOHead
+vi.mock('../../components/SEOHead', () => ({
+  default: () => <div data-testid="mock-seo-head" />
+}))
+
+// Mock contentLoader
 vi.mock('../../utils/contentLoader', () => ({
-  getContentStats: vi.fn(),
-  phaseIcons: ['📊', '🐍'],
+  phaseIcons: ['1️⃣', '2️⃣'],
+  getContentStats: vi.fn(() => ({
+    lessonCount: 42,
+    phaseCount: 2,
+    totalWords: 15000,
+    totalReadingMins: 120, // 2 hours
+    difficultyMap: {
+      beginner: 20,
+      intermediate: 15,
+      advanced: 7
+    },
+    phaseStats: [
+      {
+        phase: 1,
+        title: 'Phase One',
+        lessonCount: 20,
+        totalWords: 5000,
+        totalReadingTime: 40
+      },
+      {
+        phase: 2,
+        title: 'Phase Two',
+        lessonCount: 22,
+        totalWords: 10000,
+        totalReadingTime: 80
+      }
+    ],
+    tagCloud: [
+      ['react', 10],
+      ['typescript', 5]
+    ],
+    topConcepts: [
+      ['components', 8],
+      ['hooks', 6]
+    ]
+  }))
 }))
 
 describe('ContentStats', () => {
-  let container: HTMLDivElement | null = null
-  let root: ReturnType<typeof createRoot> | null = null
-
   beforeEach(() => {
-    container = document.createElement('div')
-    document.body.appendChild(container)
-    root = createRoot(container)
-  })
-
-  afterEach(() => {
-    act(() => {
-      root!.unmount()
-    })
-    if (container && container.parentNode) {
-      container.parentNode.removeChild(container)
-    }
-    container = null
     vi.clearAllMocks()
   })
 
-  it('renders content statistics correctly', () => {
-    vi.mocked(contentLoader.getContentStats).mockReturnValue({
-      lessonCount: 2,
-      phaseCount: 1,
-      totalWords: 14,
-      totalReadingMins: 7,
-      difficultyMap: { beginner: 1, advanced: 1 },
-      tagCloud: [
-        ['python', 2],
-        ['basics', 1],
-        ['data', 1],
-      ],
-      phaseStats: [
-        {
-          phase: 1,
-          title: 'Python Foundations',
-          lessonCount: 2,
-          totalWords: 14,
-          totalReadingTime: 7,
-        },
-      ],
-      topConcepts: [
-        ['variables', 2],
-        ['types', 1],
-        ['loops', 1],
-      ],
-    })
+  it('renders content stats successfully', () => {
+    render(
+      <MemoryRouter>
+        <ContentStats />
+      </MemoryRouter>
+    )
 
-    act(() => {
-      root!.render(
-        <MemoryRouter>
-          <ContentStats />
-        </MemoryRouter>,
-      )
-    })
+    // Check header
+    expect(screen.getByText('Content Statistics')).toBeDefined()
+    expect(screen.getByTestId('mock-seo-head')).toBeDefined()
 
-    expect(container?.innerHTML).toContain('Content Statistics')
-
-    // Check hero stats (2 lessons, 1 phase, 14 words, 7 mins total reading time -> 0 hours)
-    const counters = container?.querySelectorAll('[data-testid="counter"]')
-    expect(counters?.length).toBe(4)
-    if (counters && counters.length >= 4) {
-      expect(counters[0]!.textContent).toBe('2') // lessons
-      expect(counters[1]!.textContent).toBe('1') // phases
-      expect(counters[2]!.textContent).toBe('14') // words
-      expect(counters[3]!.textContent).toBe('0h') // reading time
-    }
+    // Check counters
+    const counters = screen.getAllByTestId('mock-counter')
+    expect(counters).toHaveLength(4)
+    expect(counters[0]?.textContent).toBe('42') // lessons
+    expect(counters[1]?.textContent).toBe('2') // phases
+    expect(counters[2]?.textContent).toBe('15,000') // words
+    expect(counters[3]?.textContent).toBe('2h') // reading time
 
     // Check difficulty distribution
-    expect(container?.innerHTML).toContain('beginner')
-    expect(container?.innerHTML).toContain('advanced')
+    expect(screen.getByText('beginner')).toBeDefined()
+    expect(screen.getByText('20')).toBeDefined()
+    expect(screen.getByText('intermediate')).toBeDefined()
+    expect(screen.getByText('15')).toBeDefined()
+    expect(screen.getByText('advanced')).toBeDefined()
+    expect(screen.getByText('7')).toBeDefined()
 
     // Check phase breakdown
-    expect(container?.innerHTML).toContain('Phase 1')
-    expect(container?.innerHTML).toContain('Python Foundations')
+    expect(screen.getByText('Phase 1')).toBeDefined()
+    expect(screen.getByText('Phase One')).toBeDefined()
+    expect(screen.getByText('Phase 2')).toBeDefined()
+    expect(screen.getByText('Phase Two')).toBeDefined()
 
-    // Check tag cloud
-    expect(container?.innerHTML).toContain('python')
-    expect(container?.innerHTML).toContain('basics')
-    expect(container?.innerHTML).toContain('data')
+    // Check tags
+    expect(screen.getByText('react')).toBeDefined()
+    expect(screen.getByText('10')).toBeDefined()
+    expect(screen.getByText('typescript')).toBeDefined()
+    expect(screen.getByText('5')).toBeDefined()
 
-    // Check top concepts
-    expect(container?.innerHTML).toContain('variables')
-    expect(container?.innerHTML).toContain('types')
-    expect(container?.innerHTML).toContain('loops')
+    // Check concepts
+    expect(screen.getByText('components')).toBeDefined()
+    expect(screen.getByText('8')).toBeDefined()
+    expect(screen.getByText('hooks')).toBeDefined()
+    expect(screen.getByText('6')).toBeDefined()
+  })
+
+  it('handles empty tag cloud gracefully', async () => {
+    const { getContentStats } = await import('../../utils/contentLoader')
+    vi.mocked(getContentStats).mockReturnValueOnce({
+      lessonCount: 0,
+      phaseCount: 0,
+      totalWords: 0,
+      totalReadingMins: 0,
+      difficultyMap: {},
+      phaseStats: [],
+      tagCloud: [],
+      topConcepts: []
+    })
+
+    render(
+      <MemoryRouter>
+        <ContentStats />
+      </MemoryRouter>
+    )
+
+    expect(screen.getByText('Content Statistics')).toBeDefined()
   })
 })
