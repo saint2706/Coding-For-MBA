@@ -22,8 +22,8 @@ import { useUserPreferencesStore } from './stores/userPreferencesStore'
 import { useLearningAnalytics } from './hooks/useLearningAnalytics'
 import { hydrateGamificationStore } from './stores/gamificationStore'
 import { preloadSearchIndex } from './utils/searchIndex'
+import Home from './pages/Home'
 
-const Home = lazy(() => import('./pages/Home'))
 const Lesson = lazy(() => import('./pages/Lesson'))
 const PhaseOverview = lazy(() => import('./pages/PhaseOverview'))
 const Curriculum = lazy(() => import('./pages/Curriculum'))

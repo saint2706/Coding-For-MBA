@@ -12,7 +12,6 @@
 
 const routePrefetchers: Array<{ match: (path: string) => boolean; load: () => Promise<unknown> }> =
   [
-    { match: (path) => path === '/', load: () => import('../pages/Home') },
     { match: (path) => path === '/curriculum', load: () => import('../pages/Curriculum') },
     { match: (path) => path.startsWith('/phase/'), load: () => import('../pages/PhaseOverview') },
     { match: (path) => path.startsWith('/lesson/'), load: () => import('../pages/Lesson') },
