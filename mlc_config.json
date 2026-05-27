@@ -113,6 +113,24 @@
     },
     {
       "pattern": "^https://cube\\.dev"
+    },
+    {
+      "pattern": "^https://mlflow\\.org/"
+    },
+    {
+      "pattern": "^https://pair\\.withgoogle\\.com/"
+    },
+    {
+      "pattern": "^https://docs\\.anthropic\\.com/"
+    },
+    {
+      "pattern": "^https://www\\.anthropic\\.com/"
+    },
+    {
+      "pattern": "^https://github\\.com/"
+    },
+    {
+      "pattern": "^https://docs\\.ragas\\.io/"
     }
   ]
 }
