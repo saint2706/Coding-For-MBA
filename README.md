@@ -178,3 +178,8 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+
+### Pipeline Optimizations
+- **Version Pinning**: Fixed GitHub Actions core version drift to stable v4 releases (checkout, setup-node, cache, dependency-review-action).
+- **Composite Workflows**: Utilizing `node-bootstrap` custom composite action to uniformly cache `.npm` and bootstrap cleanly across all tasks.
+- **Workflow Optimization**: Addressed warnings around invalid attributes in `.github/workflows/dependency-review.yml`.
