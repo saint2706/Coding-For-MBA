@@ -230,15 +230,15 @@ describe('usePyodide', () => {
     }
 
     let result: { output: string; error: string | null } | undefined
-    let resultPromise: Promise<any> | undefined;
+    let resultPromise: Promise<any> | undefined
     await act(async () => {
       // Small timeout
       resultPromise = hookResult!.runPython('sleep', { timeoutMs: 10 })
     })
     await act(async () => {
-      vi.advanceTimersByTime(10);
+      vi.advanceTimersByTime(10)
     })
-    result = await resultPromise!;
+    result = await resultPromise!
 
     expect(result).toEqual({
       output: '',
