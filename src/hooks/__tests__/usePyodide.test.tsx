@@ -91,6 +91,7 @@ describe('usePyodide', () => {
     delete window._pyodideLoading
     delete window.__stdoutCallback
     delete window.__stderrCallback
+    vi.useRealTimers()
   })
 
   it('runs python code successfully and captures output', async () => {
@@ -191,6 +192,7 @@ describe('usePyodide', () => {
   })
 
   it('handles timeout', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
     let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
@@ -228,18 +230,23 @@ describe('usePyodide', () => {
     }
 
     let result: { output: string; error: string | null } | undefined
+    let resultPromise: Promise<any> | undefined;
     await act(async () => {
       // Small timeout
-      result = await hookResult!.runPython('sleep', { timeoutMs: 10 })
+      resultPromise = hookResult!.runPython('sleep', { timeoutMs: 10 })
     })
+    await act(async () => {
+      vi.advanceTimersByTime(10);
+    })
+    result = await resultPromise!;
 
-    expect(result!).toEqual({
+    expect(result).toEqual({
       output: '',
       error: 'Python execution timed out after 10ms.',
     })
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 150))
+      vi.advanceTimersByTime(150)
     })
 
     expect(unhandledRejections).toEqual([])
@@ -253,6 +260,7 @@ describe('usePyodide', () => {
   })
 
   it('handles abort signal', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
     let hookResult: ReturnType<typeof usePyodide>
 
     function TestComponent() {
@@ -290,6 +298,9 @@ describe('usePyodide', () => {
     // Abort immediately
     controller.abort()
 
+    await act(async () => {
+      vi.advanceTimersByTime(100)
+    })
     const result = await resultPromise
     expect(result.error).toBe('Execution cancelled by user.')
 

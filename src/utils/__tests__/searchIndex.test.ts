@@ -32,6 +32,7 @@ let preloadSearchIndex: () => void
 let getSearchIndexStatus: () => { isReady: boolean; processedCount: number; totalCount: number }
 
 beforeEach(async () => {
+  vi.useFakeTimers()
   vi.resetModules()
   if (!window.requestIdleCallback) {
     window.requestIdleCallback = vi.fn((cb) => {
@@ -48,6 +49,7 @@ beforeEach(async () => {
 
 afterEach(() => {
   vi.clearAllMocks()
+  vi.useRealTimers()
 })
 
 describe('searchIndex', () => {
@@ -59,7 +61,7 @@ describe('searchIndex', () => {
   it('returns empty before any docs are processed and then returns partial results', async () => {
     expect(search('python')).toEqual([])
 
-    await new Promise((resolve) => setTimeout(resolve, 5))
+    await vi.advanceTimersByTimeAsync(5)
 
     const results = search('python')
     expect(results.length).toBeGreaterThan(0)
@@ -68,7 +70,7 @@ describe('searchIndex', () => {
 
   it('respects result limit', async () => {
     preloadSearchIndex()
-    await new Promise((resolve) => setTimeout(resolve, 5))
+    await vi.advanceTimersByTimeAsync(5)
 
     const results = search('11B', 1)
     expect(results.length).toBe(1)
@@ -76,7 +78,7 @@ describe('searchIndex', () => {
 
   it('supports background preloading via preloadSearchIndex and reports readiness progress', async () => {
     preloadSearchIndex()
-    await new Promise((resolve) => setTimeout(resolve, 5))
+    await vi.advanceTimersByTimeAsync(5)
 
     const status = getSearchIndexStatus()
     expect(status.totalCount).toBe(2)

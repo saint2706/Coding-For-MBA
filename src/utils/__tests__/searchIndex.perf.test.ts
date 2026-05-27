@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 
 const lessons = Array.from({ length: 1500 }, (_, i) => ({
   day: String(i + 1),
@@ -17,6 +17,7 @@ vi.mock('../contentLoader', () => ({
 
 describe('searchIndex first-search performance', () => {
   beforeEach(() => {
+    vi.useFakeTimers()
     vi.resetModules()
     if (!window.requestIdleCallback) {
       window.requestIdleCallback = vi.fn((cb) => {
@@ -40,10 +41,14 @@ describe('searchIndex first-search performance', () => {
 
     let laterResults = search('corporate finance')
     for (let i = 0; i < 100 && laterResults.length === 0; i++) {
-      await new Promise((resolve) => setTimeout(resolve, 100))
+      await vi.advanceTimersByTimeAsync(100)
       laterResults = search('corporate finance')
     }
 
     expect(laterResults.length).toBeGreaterThan(0)
   }, 10000)
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
 })

@@ -120,6 +120,7 @@ describe('ExerciseWidget', () => {
       root.unmount()
     })
     document.body.removeChild(container)
+    vi.useRealTimers()
   })
 
   const defaultProps = {
@@ -204,6 +205,7 @@ describe('ExerciseWidget', () => {
   })
 
   it('lazy loads the solution content', async () => {
+    vi.useFakeTimers()
     await act(async () => {
       root.render(
         <MemoryRouter>
@@ -242,7 +244,7 @@ describe('ExerciseWidget', () => {
     })
 
     await act(async () => {
-      await new Promise((resolve) => setTimeout(resolve, 350))
+      vi.advanceTimersByTime(350)
     })
 
     // Button text should change back
