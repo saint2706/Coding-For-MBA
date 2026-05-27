@@ -85,7 +85,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
             aria-label={wrapLines ? 'Disable line wrapping' : 'Enable line wrapping'}
             title={wrapLines ? 'Unwrap long lines' : 'Wrap long lines'}
           >
-            {wrapLines ? '↔ Unwrap' : '↩ Wrap'}
+            {wrapLines ? <> <span aria-hidden="true">↔</span> Unwrap </> : <> <span aria-hidden="true">↩</span> Wrap </> }
           </button>
           {isPython && (
             <button
@@ -94,7 +94,7 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
               onClick={() => setShowPlayground((p) => !p)}
               aria-label={showPlayground ? 'Close playground' : 'Try this code'}
             >
-              {showPlayground ? '✕ Close' : '▶ Try It'}
+              {showPlayground ? <> <span aria-hidden="true">✕</span> Close </> : <> <span aria-hidden="true">▶</span> Try It </> }
             </button>
           )}
           <CopyButton text={code} ariaLabel="Copy code to clipboard" />
@@ -243,7 +243,7 @@ const ImageWithZoom = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
               }}
               aria-label="Close zoomed image"
             >
-              ✕
+              <span aria-hidden="true">✕</span>
             </button>
             <img
               src={rest.src}

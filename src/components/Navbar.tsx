@@ -129,7 +129,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
                 aria-label="Clear search"
                 title="Clear search"
               >
-                ✕
+                <span aria-hidden="true">✕</span>
               </button>
             ) : (
               <kbd className="navbar-search-shortcut">/</kbd>

@@ -163,7 +163,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
               aria-label="Cancel current Python execution"
               title="Cancel execution"
             >
-              ✕ Cancel
+              <span aria-hidden="true">✕</span> Cancel
             </button>
           )}
         </div>
