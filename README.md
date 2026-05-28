@@ -178,3 +178,4 @@ You can download artifacts from the corresponding workflow run page in the **Act
 ## 📄 License
 
 This project is open source for educational purposes.
+🔄 CI/CD Optimization: Pinned core actions to true major versions
