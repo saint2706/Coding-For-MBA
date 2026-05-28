@@ -22,7 +22,7 @@ vi.mock('../../utils/contentLoader', async () => {
 
 // Mock store
 const useProgressStoreMock = vi.fn((selector) =>
-  selector({ completedLessons: [] } as unknown as ReturnType<
+  selector({ completedLessons: [], completedSet: new Set([]) } as unknown as ReturnType<
     typeof import('../../stores/progressStore').useProgressStore.getState
   >),
 )
@@ -120,7 +120,7 @@ describe('Sidebar', () => {
   })
 
   it('renders accessible progress information', async () => {
-    useProgressStoreMock.mockImplementation((selector) => selector({ completedLessons: ['01'] })) // ID '01' for day '01' because we mocked dayTokenToProgressId to return token
+    useProgressStoreMock.mockImplementation((selector) => selector({ completedLessons: ['01'], completedSet: new Set(['01']) })) // ID '01' for day '01' because we mocked dayTokenToProgressId to return token
 
     vi.mocked(reviewTracker.getReviewDueCountByPhase).mockReturnValue({
       1: 5,

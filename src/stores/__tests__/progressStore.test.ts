@@ -5,6 +5,7 @@ describe('progressStore selectors', () => {
     localStorage.clear()
     useProgressStore.setState({
       completedLessons: [],
+      completedSet: new Set(),
       lastVisitedLesson: null,
       completionDates: {},
       hasHydrated: false,
@@ -116,6 +117,7 @@ describe('progressStore selectors', () => {
 
     expect(migrated).toEqual({
       completedLessons: [1, 3],
+      completedSet: new Set([1, 3]),
       lastVisitedLesson: null,
       completionDates: { 1: '2026-03-01' },
     })
