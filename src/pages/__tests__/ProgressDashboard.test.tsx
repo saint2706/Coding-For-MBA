@@ -261,6 +261,55 @@ describe('ProgressDashboard', () => {
     expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument()
   })
 
+  it('updates custom cursor preference', () => {
+    renderComponent()
+    const checkbox = screen.getByRole('checkbox', { name: /custom cursor/i })
+    fireEvent.click(checkbox)
+    expect(mockSetCustomCursorEnabled).toHaveBeenCalledWith(false)
+  })
+
+  it('updates font size preference', () => {
+    renderComponent()
+    const select = screen.getByRole('combobox', { name: /font size/i })
+    fireEvent.change(select, { target: { value: 'lg' } })
+    expect(mockSetFontSize).toHaveBeenCalledWith('lg')
+  })
+
+  it('updates color theme preference', () => {
+    renderComponent()
+    const select = screen.getByRole('radio', { name: /Light Steel/i })
+    fireEvent.click(select)
+    expect(mockSetPalette).toHaveBeenCalledWith('light-steel')
+  })
+
+  it('updates data density preference', () => {
+    renderComponent()
+    const select = screen.getByRole('combobox', { name: /layout density/i })
+    fireEvent.change(select, { target: { value: 'compact' } })
+    expect(mockSetDensity).toHaveBeenCalledWith('compact')
+  })
+
+  it('updates code language preference', () => {
+    renderComponent()
+    const select = screen.getByRole('combobox', { name: /preferred code language/i })
+    fireEvent.change(select, { target: { value: 'sql' } })
+    expect(mockSetCodeLanguage).toHaveBeenCalledWith('sql')
+  })
+
+  it('updates reading mode preference', () => {
+    renderComponent()
+    const checkbox = screen.getByLabelText(/start lessons in reading mode/i)
+    fireEvent.click(checkbox)
+    expect(mockSetReadingMode).toHaveBeenCalledWith(true)
+  })
+
+  it('updates reading comfort theme preference', () => {
+    renderComponent()
+    const checkbox = screen.getByLabelText(/apply the softer reading palette in reading mode/i)
+    fireEvent.click(checkbox)
+    expect(mockSetReadingComfortTheme).toHaveBeenCalledWith(true)
+  })
+
   it('handles phases with undefined lessons safely', async () => {
     const loader = await import('../../utils/contentLoader')
     vi.mocked(loader.getLessonsByPhase).mockImplementationOnce(
