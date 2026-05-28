@@ -29,7 +29,7 @@
     "typecheck:staged": "node -e \"require('child_process').spawnSync('npm',['run','typecheck'],{stdio:'inherit',shell:true})\""
   },
   "dependencies": {
-    "@dr.pogodin/react-helmet": "^3.1.1",
+    "@dr.pogodin/react-helmet": "^3.2.2",
     "@fontsource-variable/fraunces": "^5.2.9",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "canvas-confetti": "^1.9.3",
