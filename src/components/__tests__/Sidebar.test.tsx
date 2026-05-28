@@ -120,7 +120,9 @@ describe('Sidebar', () => {
   })
 
   it('renders accessible progress information', async () => {
-    useProgressStoreMock.mockImplementation((selector) => selector({ completedLessons: ['01'], completedSet: new Set(['01']) })) // ID '01' for day '01' because we mocked dayTokenToProgressId to return token
+    useProgressStoreMock.mockImplementation((selector) =>
+      selector({ completedLessons: ['01'], completedSet: new Set(['01']) }),
+    ) // ID '01' for day '01' because we mocked dayTokenToProgressId to return token
 
     vi.mocked(reviewTracker.getReviewDueCountByPhase).mockReturnValue({
       1: 5,

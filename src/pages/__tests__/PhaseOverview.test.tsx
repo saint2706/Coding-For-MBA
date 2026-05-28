@@ -80,7 +80,9 @@ describe('PhaseOverview', () => {
     vi.mocked(contentLoader.getPhase).mockReturnValue(undefined)
     vi.mocked(contentLoader.getLessonsByPhase).mockReturnValue([])
     vi.mocked(useProgressStore).mockImplementation((selector) =>
-      selector({ completedLessons: [], completedSet: new Set([]) } as unknown as ReturnType<typeof useProgressStore.getState>),
+      selector({ completedLessons: [], completedSet: new Set([]) } as unknown as ReturnType<
+        typeof useProgressStore.getState
+      >),
     )
 
     act(() => {

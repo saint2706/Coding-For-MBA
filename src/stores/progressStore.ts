@@ -149,7 +149,10 @@ function mergeLegacyLastVisited(lastVisitedLesson: number | null): number | null
 
 function normalizePersistedState(
   state: unknown,
-): Pick<ProgressStore, 'completedLessons' | 'completedSet' | 'lastVisitedLesson' | 'completionDates'> {
+): Pick<
+  ProgressStore,
+  'completedLessons' | 'completedSet' | 'lastVisitedLesson' | 'completionDates'
+> {
   if (Array.isArray(state)) {
     return {
       completedLessons: parseValidDays(state),
