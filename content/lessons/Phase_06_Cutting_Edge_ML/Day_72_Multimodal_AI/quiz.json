@@ -1,0 +1,70 @@
+{
+    "day": 72,
+    "questions": [
+        {
+            "id": "d72q01",
+            "type": "multiple_choice",
+            "question": "What is a Vision-Language Model (VLM), and what makes it fundamentally different from a text-only LLM?",
+            "options": [
+                "A VLM is a text LLM that has been given access to an image search API — it finds similar images online rather than processing images directly",
+                "A VLM processes both images and text in a unified architecture — it encodes images into the same embedding space as text, enabling the model to reason about visual content (charts, photos, documents, screenshots) alongside textual context in a single forward pass",
+                "A VLM is a specialized computer vision model (like ResNet) that has been expanded with a language decoder for generating captions — it cannot engage in multi-turn conversation about images",
+                "A VLM is identical to a text LLM but trained exclusively on image captions rather than web text"
+            ],
+            "answer": 1,
+            "explanation": "VLMs (GPT-4o, Gemini, Claude 3.5 Sonnet, LLaVA) accept multimodal inputs in a unified architecture. The key innovation: images are converted into visual tokens or embeddings by a vision encoder (often a ViT — Vision Transformer), then projected into the same embedding space as text tokens. The LLM then processes a sequence containing both visual and text embeddings, enabling it to: analyze charts and graphs, read text in images (OCR), describe scenes, answer questions about product photos, understand diagrams. This is not image search — the model directly processes pixel-level information. The practical impact: a single API call can now extract data from a scanned invoice, explain a complex dashboard screenshot, or analyze competitor product photos."
+        },
+        {
+            "id": "d72q02",
+            "type": "multiple_choice",
+            "question": "Your operations team receives thousands of supplier invoices as PDF scans monthly. Currently, data entry clerks manually type invoice data into your ERP system. How would a multimodal AI system transform this process, and what accuracy benchmark should you establish before deployment?",
+            "options": [
+                "Multimodal AI cannot process scanned PDFs because they are images, not structured text — you would need OCR software to convert scans to text first before any AI processing",
+                "A VLM can directly process invoice images and extract structured data (vendor name, date, line items, amounts, tax) in a single API call; before deployment, benchmark against 200+ manually verified invoices to measure field-level extraction accuracy, and require >95% accuracy with human review for flagged low-confidence extractions",
+                "Multimodal AI processes invoices faster than humans but always requires human verification of every field — it provides speed without accuracy improvement",
+                "The best approach is to use a specialized invoice OCR tool (AWS Textract, Google Document AI) rather than a general-purpose VLM, as VLMs are not designed for document extraction"
+            ],
+            "answer": 1,
+            "explanation": "Document AI is one of the highest-ROI multimodal use cases. VLMs can extract structured data from unstructured invoice images: {vendor: 'ACME Corp', date: '2025-03-15', total: 4850.00, line_items: [{description: 'Cloud services', qty: 1, unit_price: 4850.00}]}. Modern VLMs (GPT-4o, Claude 3.5 Sonnet) achieve 95-99% field-level accuracy on standard invoice formats. Deployment best practices: (1) Start with a benchmark set of 200+ invoices with verified ground truth, (2) Measure per-field accuracy (vendor name, amount, date separately), (3) Implement confidence scoring — flag low-confidence extractions for human review, (4) Maintain a rejection rate target (flag <10% for human review while catching >99% of errors). Companies using this pattern report 80-90% reduction in manual data entry for invoice processing."
+        },
+        {
+            "id": "d72q03",
+            "type": "multiple_choice",
+            "question": "What are image embeddings, and how do they enable reverse image search (finding similar products from a photo) in an e-commerce platform?",
+            "options": [
+                "Image embeddings are compressed versions of images that reduce file size for faster loading — they are used for CDN optimization, not search",
+                "Image embeddings map images to dense numeric vectors (like text embeddings) where visually similar images are geometrically close — a photo of a red leather handbag maps to a vector near other red leather handbag images; reverse image search finds products with the highest cosine similarity to the query image's embedding",
+                "Image embeddings are metadata tags (color, shape, category) extracted from images by computer vision models and stored in a relational database",
+                "Image embeddings require the image to contain text (labels, SKU numbers) — they extract text from images for indexing in a text search engine"
+            ],
+            "answer": 1,
+            "explanation": "CLIP (Contrastive Language-Image Pre-training, OpenAI) and similar models learn a shared embedding space for images and text: an image of a red sneaker and the text 'red running shoes' map to nearby vectors. This enables: (1) Image-to-image search: embed a customer's photo of a product they want → find closest product images in your catalog. (2) Text-to-image search: 'casual blue summer dress' → find matching product images without keyword tags. (3) Cross-modal retrieval: search your image library using text descriptions. Implementation: encode product catalog images once with CLIP, store in a vector database (Pinecone, Qdrant), at query time embed the user's uploaded photo and return top-k similar products. Pinterest's 'Shop the Look' and IKEA's visual search use exactly this architecture."
+        },
+        {
+            "id": "d72q04",
+            "type": "multiple_choice",
+            "question": "What is Multimodal RAG, and how does it extend standard text-based RAG for use cases like analyzing a company's annual reports that contain charts, tables, and text?",
+            "options": [
+                "Multimodal RAG is identical to standard RAG but uses a larger chunk size to accommodate image file sizes",
+                "Multimodal RAG stores and retrieves both text chunks and image embeddings — when a user asks 'What does the revenue trend chart show?', the system retrieves the relevant chart image alongside text context and passes both to a VLM to generate an answer grounded in the actual visual content",
+                "Multimodal RAG converts all images to text descriptions using OCR before indexing — it is text-only RAG applied to documents that happen to contain images",
+                "Multimodal RAG is only appropriate for databases that contain exclusively images — it cannot handle mixed text-and-image documents"
+            ],
+            "answer": 1,
+            "explanation": "Standard RAG embeds text chunks and retrieves text. But annual reports, technical manuals, and research papers contain critical information in charts, graphs, and tables that cannot be captured by text extraction alone — a revenue bar chart's trend is not conveyed by the surrounding caption text. Multimodal RAG: (1) Index phase: extract text chunks AND store images/diagrams with their embeddings (using CLIP or VLM-generated descriptions), (2) Retrieval phase: query retrieves both relevant text chunks AND relevant images, (3) Generation phase: pass retrieved text + retrieved images to a VLM — it can read the chart directly and integrate with text context. This is how enterprises build 'ask your annual report' or 'ask your manual' systems. GPT-4o's ability to process 10+ images in a single context window makes this practical."
+        },
+        {
+            "id": "d72q05",
+            "type": "multiple_choice",
+            "question": "A retail company wants to automate product catalog quality control using VLMs — automatically flagging product images that have poor lighting, missing backgrounds, or text overlaid on images. What is the most important consideration before deploying this at scale?",
+            "options": [
+                "VLMs cannot assess image quality — they only understand image content (objects, scenes) but cannot evaluate technical photography attributes",
+                "Cost management — processing 1 million product images at VLM API rates can cost thousands of dollars; validate that the business value (reduced manual QC labor) exceeds the inference cost, and consider a tiered approach: fast/cheap model for initial screening, expensive VLM only for borderline cases",
+                "The VLM must be fine-tuned on your specific product catalog before deployment — off-the-shelf VLMs have no knowledge of retail photography standards",
+                "You must obtain consent from the photographers whose images you are processing through the VLM API, as image analysis constitutes processing of copyrighted creative works"
+            ],
+            "answer": 1,
+            "explanation": "Scaling multimodal AI to millions of images introduces real cost economics that must be evaluated before deployment. At GPT-4o pricing (~$0.01/image for standard resolution), 1 million images = $10,000/run. If your catalog updates 100K products daily, that's $1,000/day just for image QC API costs. The tiered approach is standard practice: (1) Tier 1: fast, cheap rule-based checks (image dimensions, file size, aspect ratio) — eliminates 70% of obvious failures, (2) Tier 2: small/cheap vision model (MobileNet, ViT-B) for binary quality assessment, (3) Tier 3: VLM API only for ambiguous cases requiring nuanced judgment (~5-10% of images). This reduces VLM costs by 90%+ while maintaining quality. Before any production deployment, calculate: QC labor cost saved vs. VLM API cost, then build the tier architecture to achieve target ROI."
+        }
+    ]
+}

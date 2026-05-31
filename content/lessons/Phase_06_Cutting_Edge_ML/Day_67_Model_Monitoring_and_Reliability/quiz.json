@@ -1,0 +1,70 @@
+{
+    "day": 67,
+    "questions": [
+        {
+            "id": "d67q01",
+            "type": "multiple_choice",
+            "question": "What is the difference between Data Drift and Concept Drift, and which is harder to detect in a production ML system?",
+            "options": [
+                "Data Drift means the model's code has bugs; Concept Drift means the training data was corrupted — both are detected by running unit tests",
+                "Data Drift (covariate shift) means the input feature distribution changes (e.g., users now submit more mobile transactions vs. desktop); Concept Drift means the relationship between inputs and the correct output changes (e.g., 'buying masks' went from indicating a medical worker to indicating any person post-COVID) — Concept Drift is harder because it requires labeled ground truth to detect, which is often delayed by weeks",
+                "Data Drift is detectable by monitoring model accuracy; Concept Drift is detectable by monitoring input feature statistics — they require different monitoring tools",
+                "Both types of drift are equivalent in practice — detecting one is sufficient to identify either problem"
+            ],
+            "answer": 1,
+            "explanation": "Data Drift is detectable immediately by comparing input distributions: statistical tests (KS test, PSI) flag when today's features look different from training data, with no labels needed. Concept Drift is insidious: the inputs may look normal, but the meaning has changed. A credit model trained pre-COVID vs. post-COVID sees similar features (income, debt ratio) but 'high income + high debt' now means something different (stimulus checks changed behavior). Detecting Concept Drift requires ground truth labels — knowing whether a loan defaulted — which may arrive weeks or months after prediction. This delayed feedback makes Concept Drift the more dangerous and difficult challenge in production ML."
+        },
+        {
+            "id": "d67q02",
+            "type": "multiple_choice",
+            "question": "The Population Stability Index (PSI) for your fraud model's 'transaction_amount' feature shows PSI = 0.28 this month. What action should you take?",
+            "options": [
+                "No action needed — PSI values below 0.5 indicate stable distributions in most financial models",
+                "Retrain the model immediately using the most recent data — PSI > 0.2 indicates significant distribution shift that likely degrades model performance and warrants retraining",
+                "Increase the model's decision threshold from 0.5 to 0.7 to compensate for the distribution shift without retraining",
+                "PSI is only relevant for categorical features — PSI of 0.28 on a continuous feature like transaction amount should be ignored"
+            ],
+            "answer": 1,
+            "explanation": "PSI (Population Stability Index) is an industry-standard drift metric from credit scoring: PSI < 0.1 = no significant change (monitor normally); 0.1 ≤ PSI < 0.2 = moderate shift (investigate); PSI ≥ 0.2 = significant shift (action required, likely retrain). PSI = 0.28 means the transaction amount distribution has shifted substantially from training time — perhaps due to inflation, new merchant categories, or seasonal spending changes. At this level, the model's fraud detection boundaries are likely miscalibrated. Standard practice: investigate root cause, assess model performance on recent labeled data, and retrain on fresh data incorporating the new distribution. Many financial institutions set automated retraining triggers at PSI ≥ 0.2."
+        },
+        {
+            "id": "d67q03",
+            "type": "multiple_choice",
+            "question": "What is a 'silent failure' in production ML, and why is it more dangerous than an obvious API error?",
+            "options": [
+                "A silent failure is when an ML model's API returns HTTP 500 errors without logging — easily fixed by adding error handling",
+                "A silent failure is when a model continues returning predictions that appear valid (proper format, no errors) but are systematically wrong due to drift or data pipeline issues — dangerous because there are no error alarms, dashboards show normal operation, and business decisions are made on degraded predictions for weeks or months before anyone notices",
+                "A silent failure refers to a model that gives correct predictions but has high latency — silent because users don't complain about slow responses",
+                "A silent failure is a model that fails only for rare edge cases, affecting less than 1% of predictions — it is less dangerous than widespread failures"
+            ],
+            "answer": 1,
+            "explanation": "Silent failures are the nightmare scenario of production ML. Unlike a server crash (immediate alert, obvious fix), a silent failure looks normal: the API returns 200 OK, predictions are numeric, logs show no errors. But the model is confidently wrong. Example: a churn model's input pipeline started dropping the 'recent_purchase' feature due to a schema change. The model still returns churn probabilities — using the previous month's feature values from cache. The model looks healthy; business analysts act on stale predictions. Silent failures are detected only by monitoring business outcomes (actual churn vs. predicted), model performance metrics on labeled data, or data quality checks. This is why end-to-end monitoring (not just API health) is critical."
+        },
+        {
+            "id": "d67q04",
+            "type": "multiple_choice",
+            "question": "Your recommendation model's API returns predictions with 500ms latency 10% of the time, causing user-visible slowdowns. Which reliability pattern should you implement to prevent cascading failures across dependent services?",
+            "options": [
+                "Increase the model server's CPU allocation by 4x to reduce latency — hardware scaling is the only reliable solution for latency issues",
+                "Implement a Circuit Breaker pattern: when the error rate or latency exceeds a threshold (e.g., >5% errors in 30 seconds), stop calling the slow ML service and return cached/fallback recommendations instead, allowing the model service to recover without cascading load",
+                "Add a retry mechanism to call the model 3 times if it exceeds 500ms — retries will eventually succeed and are transparent to users",
+                "Switch to synchronous model calls instead of asynchronous calls to reduce the coordination overhead causing the latency spikes"
+            ],
+            "answer": 1,
+            "explanation": "The Circuit Breaker pattern (from Martin Fowler) has three states: (1) Closed — normal operation, all calls go through; (2) Open — error threshold breached, all calls return fallback immediately; (3) Half-Open — after recovery timeout, test with a few requests. For a recommendation API: fallback = show trending/popular items (still useful, just not personalized). Without a circuit breaker: when the model is slow, the mobile app waits 500ms for each of 10 recommendations = 5-second load time. Users abandon. The spike in retries (option C) actually makes cascading failures worse — adding 3x load to an already stressed system. Circuit Breaker trades recommendation quality for site availability, the right tradeoff during outages."
+        },
+        {
+            "id": "d67q05",
+            "type": "multiple_choice",
+            "question": "You deploy a new pricing model and want to validate its business impact before full rollout. You decide to monitor 'average revenue per user' as the primary business metric alongside technical model metrics. Why is monitoring business metrics separately from model metrics (like AUC) essential?",
+            "options": [
+                "Business metrics are monitored by different teams (Finance vs. Engineering) and serve compliance purposes, while model metrics serve technical purposes — they are separate concerns",
+                "A model can have excellent technical metrics (high AUC, low log loss) but poor business outcomes — for example, a pricing model that maximizes predicted conversion probability might recommend prices that are technically 'optimal' but damage brand perception or long-term customer lifetime value, which only business metrics would reveal",
+                "Business metrics are easier to monitor than model metrics because they use existing BI dashboards rather than requiring ML infrastructure",
+                "Model metrics like AUC are leading indicators of business performance — monitoring business metrics separately is redundant since they will always correlate"
+            ],
+            "answer": 1,
+            "explanation": "The Goodhart's Law problem in ML: 'When a measure becomes a target, it ceases to be a good measure.' A pricing model optimized for predicted purchase probability might learn to recommend aggressive discounts that boost short-term conversions but train customers to wait for sales, degrading long-term margin. The model's AUC is excellent (it accurately predicts who will buy at the discounted price), but ARPU and LTV are falling. Business metrics (revenue, margin, churn rate, NPS) measure what actually matters; model metrics measure proxy performance. Both must be monitored independently. Amazon and Booking.com discovered this when recommendation systems maximized CTR but reduced session quality — model metrics looked great, business metrics revealed the problem."
+        }
+    ]
+}

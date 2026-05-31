@@ -1,0 +1,70 @@
+{
+    "day": 61,
+    "questions": [
+        {
+            "id": "d61q01",
+            "type": "multiple_choice",
+            "question": "What is the core trade-off in Reinforcement Learning described as 'Explore vs. Exploit,' and why does it matter for a business recommendation system?",
+            "options": [
+                "Whether to use supervised or unsupervised learning for the training data",
+                "Whether the agent should try new actions to discover better rewards (explore) or repeat actions it already knows yield rewards (exploit) — an agent that only exploits creates a filter bubble; one that only explores never masters anything",
+                "Whether to train on more data or fewer features to balance accuracy and speed",
+                "Whether to deploy the model online or offline to balance risk and performance"
+            ],
+            "answer": 1,
+            "explanation": "The explore-exploit dilemma is fundamental to RL. A news feed that only exploits will show you what you already like (filter bubble), missing potentially higher-engagement content. A feed that only explores will show you random articles, frustrating users. The balance is controlled by epsilon (ε): at ε=0.1, the agent explores 10% of the time. Real-world systems like Netflix and Spotify tune this parameter carefully — exploration discovers new interests while exploitation delivers reliable satisfaction."
+        },
+        {
+            "id": "d61q02",
+            "type": "multiple_choice",
+            "question": "In the Q-Learning update formula Q(S,A) ← Q(S,A) + α[R + γ·maxQ(S',A') − Q(S,A)], what does the Discount Factor (γ) control?",
+            "options": [
+                "How quickly the agent forgets old experiences when new data arrives",
+                "The ratio of exploration to exploitation in action selection",
+                "How much the agent values future rewards relative to immediate rewards — γ near 0 creates a short-sighted agent focused on instant payoff; γ near 1 creates a far-sighted agent that plans for long-term gain",
+                "The size of the Q-Table relative to the number of possible states"
+            ],
+            "answer": 2,
+            "explanation": "The discount factor γ determines the present value of future rewards. At γ=0, the agent only cares about the immediate reward R — it's purely greedy. At γ=0.99, a reward 100 steps in the future is still worth 0.99^100 ≈ 0.37 of its face value. This mirrors financial discounting: a dollar today is worth more than a dollar tomorrow. For a supply chain agent, γ controls whether it optimizes for today's cost savings vs. long-term inventory health. Most practical RL systems use γ between 0.9–0.99."
+        },
+        {
+            "id": "d61q03",
+            "type": "multiple_choice",
+            "question": "Why is Offline RL (Batch RL) the preferred approach for training a treatment optimization model in healthcare?",
+            "options": [
+                "Offline RL produces higher accuracy because it has access to more data than Online RL",
+                "Offline RL is faster to train because it uses pre-computed Q-Tables rather than real-time interaction",
+                "Online RL requires dangerous real-world exploration (trying random treatments on patients) to learn; Offline RL learns safely from historical patient records without ever taking a new risky action",
+                "Offline RL is cheaper because it does not require GPUs for training"
+            ],
+            "answer": 2,
+            "explanation": "In Online RL, the agent must explore — trying actions it has never tried before, including potentially harmful ones. In healthcare, 'exploring' means trying a random drug dose on a real patient. This is ethically and legally unacceptable. Offline RL uses a static dataset of historical (State, Action, Reward, Next State) tuples from past patient records to learn which treatments worked best, without ever making a new real-world intervention. This is why Offline RL is used in medical AI, industrial control, and finance — domains where exploration is dangerous or impossible."
+        },
+        {
+            "id": "d61q04",
+            "type": "multiple_choice",
+            "question": "Google's DeepMind used Reinforcement Learning to reduce data center cooling energy by 40%. Which component of the RL framework maps to the cooling system's thermostats and fans?",
+            "options": [
+                "The State — because thermostats observe temperature readings",
+                "The Reward — because energy savings are the positive feedback signal",
+                "The Action — because the agent sets thermostat values and fan speeds to interact with the environment",
+                "The Policy — because the control rules determine cooling behavior"
+            ],
+            "answer": 2,
+            "explanation": "In RL: State = current sensor readings (temperature, power usage across data center zones); Action = control settings the agent applies (thermostat setpoints, fan speeds, pump flow rates); Reward = negative energy consumption (lower energy = higher reward). The agent learned that counter-intuitive cooling strategies — pre-cooling certain zones, running fans at unusual speeds — yielded a 40% energy reduction that human engineers had not considered. This is a landmark business case for RL: the environment is complex, interactions are continuous, and the payoff is measurable in dollars."
+        },
+        {
+            "id": "d61q05",
+            "type": "multiple_choice",
+            "question": "Your e-commerce company wants to use Reinforcement Learning for dynamic pricing. A new RL agent has no historical knowledge and will make random pricing decisions at launch. What is this problem called, and what is the recommended solution?",
+            "options": [
+                "The Reward Hacking problem — solved by designing a multi-objective reward function that balances revenue and customer satisfaction",
+                "The Cold Start problem — solved by pre-training the agent using Imitation Learning (copying past human pricing decisions) or Offline RL on historical pricing logs before going live",
+                "The Sim-to-Real Gap — solved by Domain Randomization to make the simulated pricing environment harder than reality",
+                "The Exploration Overshoot problem — solved by setting epsilon to 0.0 to disable random pricing from day one"
+            ],
+            "answer": 1,
+            "explanation": "The Cold Start problem occurs when a new RL agent has an empty Q-Table and must explore randomly before learning. In dynamic pricing, random exploration means setting prices at $0 or $10,000 for real customers — catastrophic for revenue and brand. The solution is Imitation Learning: initialize the agent by cloning historical human pricing behavior (supervised learning on past decisions), then switch to RL for improvement. Alternatively, Offline RL pre-trains on historical logs. This gives the agent a sensible starting policy before any live interaction, dramatically reducing the costly exploration phase."
+        }
+    ]
+}

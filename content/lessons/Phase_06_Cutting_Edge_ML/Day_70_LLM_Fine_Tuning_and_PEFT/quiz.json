@@ -1,0 +1,70 @@
+{
+    "day": 70,
+    "questions": [
+        {
+            "id": "d70q01",
+            "type": "multiple_choice",
+            "question": "Why is full fine-tuning of a large language model like GPT-3 (175B parameters) impractical for most organizations, and what problem does PEFT solve?",
+            "options": [
+                "Full fine-tuning requires proprietary training data that most organizations cannot access; PEFT provides a way to train without private data",
+                "Full fine-tuning of a 175B model requires ~350GB GPU VRAM, weeks of training, and costs $100,000+ — prohibitive for all but the largest tech companies; PEFT (Parameter-Efficient Fine-Tuning) trains only a tiny fraction of new parameters while keeping the original model frozen, achieving comparable results with a fraction of the compute and cost",
+                "Full fine-tuning permanently modifies the base model making it unusable for other tasks; PEFT preserves multitasking by training only output layers",
+                "Full fine-tuning is deprecated by OpenAI and Anthropic — PEFT is the only supported customization method for modern LLMs"
+            ],
+            "answer": 1,
+            "explanation": "The compute economics of LLM fine-tuning: GPT-3 (175B parameters) at float16 requires ~350GB VRAM just for the model weights — you'd need 5+ A100 80GB GPUs minimum, costing $30-50/hour in cloud compute, running for weeks = $100K+. Most organizations have 0-2 GPUs. PEFT methods address this by: (1) Freezing the original model weights (no gradient updates needed for billions of parameters), (2) Adding a small number of trainable parameters (adapters, low-rank matrices), (3) Training only these new parameters — often <1% of total model size. LoRA on a 7B model can run on a single RTX 3090 (24GB) in hours for ~$10. This democratized LLM customization, enabling startups and enterprises alike to build domain-specific models."
+        },
+        {
+            "id": "d70q02",
+            "type": "multiple_choice",
+            "question": "LoRA (Low-Rank Adaptation) decomposes the weight update ΔW into two small matrices A×B. If a weight matrix W is 4096×4096 (16.7M parameters) and LoRA uses rank r=8, how many trainable parameters does LoRA add, and why is this mathematically sound?",
+            "options": [
+                "LoRA adds 16.7M parameters — equal to the original matrix — because it must match the original dimension for the addition W_new = W + ΔW to work",
+                "LoRA adds (4096×8) + (8×4096) = 65,536 parameters — less than 0.4% of the original — and is mathematically sound because weight updates in pre-trained models tend to have low intrinsic rank, meaning they can be well-approximated by the product of two smaller matrices",
+                "LoRA adds 8 parameters — one scalar weight per rank dimension — because rank decomposition reduces any matrix to its singular values",
+                "LoRA cannot be applied to matrices larger than 1024×1024 — for larger matrices, QLoRA must be used instead"
+            ],
+            "answer": 1,
+            "explanation": "LoRA's math: instead of updating W (d×k = 4096×4096 = 16.7M params), learn ΔW = A×B where A is (d×r = 4096×8) and B is (r×k = 8×4096). Total new params = 4096×8 + 8×4096 = 32,768 + 32,768 = 65,536. That's 0.4% of the original. The theoretical justification (Aghajanyan et al., 2020): LLM weight updates during fine-tuning have low 'intrinsic dimensionality' — the meaningful changes live in a much lower-dimensional subspace than the full matrix. Empirically confirmed: LoRA with r=4–16 matches full fine-tuning performance on most tasks. At inference, A×B is merged back into W with zero latency overhead. This insight transformed practical LLM deployment — the original LoRA paper has 5,000+ citations."
+        },
+        {
+            "id": "d70q03",
+            "type": "multiple_choice",
+            "question": "What is QLoRA, and how does it make fine-tuning a 70B parameter model feasible on a single consumer GPU?",
+            "options": [
+                "QLoRA (Quantized LoRA) is a method that quantizes the LoRA adapter weights from float32 to int4 during training, reducing gradient computation costs",
+                "QLoRA combines 4-bit quantization of the frozen base model (reducing its memory footprint by ~4x) with LoRA adapters trained in full precision — making a 70B model's frozen weights fit in ~40GB instead of ~140GB, enabling fine-tuning on a single A100 GPU that would otherwise require 4+ GPUs",
+                "QLoRA is identical to LoRA but uses a different optimizer (Q-Adam) that requires less memory than Adam",
+                "QLoRA stands for Quick LoRA — it achieves identical results to standard LoRA but trains 4x faster by skipping matrix multiplication for zero-valued entries"
+            ],
+            "answer": 1,
+            "explanation": "QLoRA (Dettmers et al., 2023) achieved a landmark result: fine-tuning a 65B LLaMA model on a single 48GB GPU. The key innovations: (1) 4-bit NormalFloat (NF4) quantization — store the frozen base model in 4 bits instead of 16, reducing memory by 4x. A 70B model at float16 = ~140GB; at NF4 = ~35GB. (2) Double quantization — even quantize the quantization constants, saving another ~0.5 bits per parameter. (3) Paged Optimizer — use CPU RAM for optimizer states that don't fit on GPU. LoRA adapters are still trained in full bfloat16 precision, so gradient updates are accurate. The result: 'fine-tune a model that would need 8 GPUs on 1 GPU for 1/8 the cost.' This paper had extraordinary practical impact — it enabled the open-source LLM fine-tuning community to flourish."
+        },
+        {
+            "id": "d70q04",
+            "type": "multiple_choice",
+            "question": "What is Instruction Tuning, and how does it transform a base LLM (which predicts next tokens) into a useful assistant that follows user instructions?",
+            "options": [
+                "Instruction Tuning is the process of adding special instruction tokens (<<SYS>>, [INST]) to the tokenizer vocabulary — it is a tokenization technique, not a training technique",
+                "Instruction Tuning fine-tunes the base model on a dataset of (instruction, response) pairs — teaching it to follow the format 'when a user asks X, produce a helpful Y response' rather than just continuing text, transforming a document-completion model into an instruction-following assistant",
+                "Instruction Tuning is only applicable to decoder-only models — BERT-based models are instruction-tuned by default during pre-training",
+                "Instruction Tuning requires RLHF (Reinforcement Learning from Human Feedback) — you cannot do instruction tuning without human preference data"
+            ],
+            "answer": 1,
+            "explanation": "Base LLMs (GPT-3, LLaMA before fine-tuning) are trained to predict the next token in a document — they continue text, not follow instructions. Given 'Write an email about Q3 results,' a base model might continue with 'company performance metrics showing...' as if completing an article. Instruction tuning (InstructGPT, 2022) trains on examples like: Input: 'Write a professional email summarizing Q3 revenue growth of 15%.' Output: 'Dear team, I'm pleased to share our Q3 results...' With thousands of such pairs, the model learns the instruction-following format. This transformed GPT-3 into ChatGPT. For business use cases, instruction tuning on company-specific examples (internal data analysis requests, reporting templates, customer service scripts) customizes the model to your organization's conventions and tone."
+        },
+        {
+            "id": "d70q05",
+            "type": "multiple_choice",
+            "question": "Your company wants to customize an LLM for analyzing financial reports using its proprietary terminology. You have 50,000 labeled examples and need the model to stay current with new reports. Should you use fine-tuning (LoRA) or RAG (Retrieval-Augmented Generation), and why?",
+            "options": [
+                "Always use fine-tuning — RAG is too slow for production financial analysis requiring real-time responses",
+                "Always use RAG — fine-tuning is too expensive for any business application",
+                "Use fine-tuning (LoRA) to teach the model your terminology, writing style, and analysis format (knowledge baked into weights); use RAG to provide up-to-date document content at query time (knowledge retrieved dynamically) — the best production systems often combine both: fine-tune for style/format, RAG for current content",
+                "Use fine-tuning only — RAG cannot handle financial documents because it requires structured data, not unstructured PDFs"
+            ],
+            "answer": 2,
+            "explanation": "Fine-tuning vs. RAG is a common architectural decision: Fine-tuning bakes knowledge into model weights — good for teaching consistent style ('our internal definition of EBITDA adjustment'), output format (report structure), and domain vocabulary. It does NOT help with freshness — a model fine-tuned in January doesn't know about February's earnings. RAG provides dynamic knowledge retrieval — when Q2 earnings arrive, you add them to the vector database; the model immediately has access without retraining. The optimal architecture combines both: (1) Fine-tune for format/style/domain knowledge, (2) RAG for current document retrieval. For your financial analysis use case: fine-tune on 50K historical analyses to learn your firm's methodology, then RAG to retrieve relevant sections of each new 10-K filing at query time. This is how Bloomberg's BloombergGPT architecture works."
+        }
+    ]
+}
