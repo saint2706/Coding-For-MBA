@@ -133,6 +133,20 @@ How to read it:
 - What is the value/type of critical variables on that line?
 - Did earlier lines create bad state that surfaces later?
 
+### Connecting tracebacks to error handling (Day 11 review)
+
+Once you've identified the error class from the traceback, you can often prevent the crash entirely with a targeted `try/except` at the right layer. The debugging workflow tells you *what* went wrong and *where*; error handling (taught in Day 11) tells you *how to recover*.
+
+| Traceback error | Typical `except` fix |
+|---|---|
+| `ZeroDivisionError` | `except ZeroDivisionError: return None` |
+| `KeyError` | `except KeyError:` or use `.get()` before accessing |
+| `ValueError` | `except ValueError:` around type conversion |
+| `AttributeError` | `except AttributeError:` or check with `hasattr()` |
+| `TypeError` | Add input validation with `raise TypeError(...)` at function entry |
+
+> **Debugging vs. error handling**: Debugging finds bugs during development. Error handling manages *expected* bad states at runtime — missing data, malformed input, edge cases the business sends in. Both skills are essential; neither replaces the other.
+
 ---
 
 ## 3) `breakpoint()` / `pdb` Walkthrough

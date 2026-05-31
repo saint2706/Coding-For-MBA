@@ -1,8 +1,8 @@
 ---
 phase: 1
 title: "Algorithmic Thinking & Python Foundations"
-days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 11B, 11C, 12]
-totalDuration: 570
+days: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, "11B", "11C", 12]
+totalDuration: 630
 difficulty: "beginner"
 ---
 
@@ -18,6 +18,9 @@ Welcome to the first major milestone of your programming journey! Over these 12 
 
 ### What You've Accomplished
 
+**Day 1: Algorithmic Thinking**
+Before writing a single line of code, you developed the most important skill: algorithmic thinking. You learned to decompose any business problem into ordered steps, write pseudocode, and use the three-question framework (input / output / steps) to plan before you code.
+
 **Days 1-4: The Building Blocks**
 You learned that programming is nothing more than giving precise instructions to a machine. You mastered variables (labeled containers), operators (the math and logic), and strings (text manipulation). You can now store data, perform calculations, and format output professionally.
 
@@ -27,18 +30,22 @@ You progressed to collections—lists, tuples, sets, and dictionaries. Each serv
 **Days 9-10: Control Flow**
 You taught your programs to think. Conditionals let code make decisions; loops let it repeat without repetition. Your programs can now respond to input, process batches, and handle complex business logic.
 
-**Days 11-12: Abstraction**
-You learned the art of functions—encapsulating logic into reusable blocks. Combined with list comprehensions, you can now write clean, Pythonic code that's both powerful and readable.
+**Days 11-12: Abstraction & Robustness**
+You learned the art of functions—encapsulating logic into reusable blocks. You also learned error handling (`try/except/raise`) to write robust code that handles bad input gracefully instead of crashing. Combined with list comprehensions, generators, and a disciplined debugging workflow, you can now write clean, production-ready Pythonic code.
 
 ### Skills Unlocked
 
-| Skill              | Capability                                    |
-| ------------------ | --------------------------------------------- |
-| **Data Types**     | int, float, str, bool, list, tuple, set, dict |
-| **Operators**      | Arithmetic, comparison, logical, assignment   |
-| **Control Flow**   | if/elif/else, for loops, while loops          |
-| **Functions**      | Parameters, returns, scope, *args/**kwargs    |
-| **Comprehensions** | List, dict, and set comprehensions            |
+| Skill                    | Capability                                          |
+| ------------------------ | --------------------------------------------------- |
+| **Algorithmic Thinking** | Decompose problems, write pseudocode, plan first    |
+| **Data Types**           | int, float, str, bool, list, tuple, set, dict       |
+| **Operators**            | Arithmetic, comparison, logical, assignment         |
+| **Control Flow**         | if/elif/else, for loops, while loops                |
+| **Functions**            | Parameters, returns, scope, *args/**kwargs          |
+| **Error Handling**       | try/except/else/finally, raise, graceful recovery   |
+| **Comprehensions**       | List, dict, and set comprehensions                  |
+| **Generators**           | yield, yield from, itertools for streaming data     |
+| **Debugging**            | Tracebacks, pdb/breakpoint(), structured logging    |
 
 ---
 
@@ -425,13 +432,16 @@ Score each question out of 10 points (60 total). Prioritize how the learner reas
 
 Before moving to Phase 2, ensure you can:
 
+- [ ] Apply the three-question framework to decompose any new problem
+- [ ] Write pseudocode before translating to Python
 - [ ] Create and use all basic data types
 - [ ] Choose the right collection (list vs tuple vs set vs dict)
 - [ ] Write conditional logic with multiple branches
 - [ ] Use both `for` and `while` loops appropriately
 - [ ] Define functions with parameters and return values
+- [ ] Handle expected errors with `try/except` and validate inputs with `raise`
 - [ ] Write clean list comprehensions
-- [ ] Debug code by reading error messages
+- [ ] Debug code by reading error messages and using `breakpoint()`
 - [ ] Follow PEP 8 naming conventions
 - [ ] Complete **Day 11B: Generators & Iterators** prep: [Day_11B_Generators_Iterators](./Day_11B_Generators_Iterators/README.md)
 - [ ] Complete **Day 11C: Debugging Workflows** prep: [Day_11C_Debugging_Workflows](./Day_11C_Debugging_Workflows/README.md)

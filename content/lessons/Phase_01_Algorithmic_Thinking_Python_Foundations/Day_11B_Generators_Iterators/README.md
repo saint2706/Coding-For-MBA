@@ -17,7 +17,7 @@ concepts:
   - "generator functions and yield"
   - "yield from composition"
   - "itertools workflows"
-prerequisites: [10, 11, 12]
+prerequisites: [10, 11]
 outcomes:
   - "Use iter() and next() with confidence"
   - "Build custom iterators and generator pipelines"

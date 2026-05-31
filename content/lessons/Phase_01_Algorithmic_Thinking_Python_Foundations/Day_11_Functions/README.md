@@ -16,11 +16,13 @@ concepts:
   - "parameters and arguments"
   - "return values"
   - "scope and namespace"
+  - "error handling (try/except/raise)"
 prerequisites: [1, 2, 3, 9, 10]
 outcomes:
   - "Define and call functions"
   - "Use parameters and return values effectively"
   - "Understand variable scope"
+  - "Handle errors gracefully with try/except and raise"
 ---
 
 # 🎯 Day 11: Functions
@@ -211,6 +213,93 @@ def increment():
 
 # LEGB Rule: Local → Enclosing → Global → Built-in
 ```
+
+### Error Handling in Functions
+
+When a function receives bad input or encounters an unexpected condition, it needs to handle it gracefully rather than crashing the entire program. Python's `try/except` block is the tool for this.
+
+**The structure:**
+
+```python
+try:
+    # Code that might fail
+    result = risky_operation()
+except SomeErrorType:
+    # What to do when that specific error occurs
+    result = fallback_value
+```
+
+**Business example — safe division for KPI calculations:**
+
+```python
+def growth_rate(current, previous):
+    try:
+        return (current - previous) / previous * 100
+    except ZeroDivisionError:
+        return None  # Can't calculate growth with no baseline
+
+
+print(growth_rate(120000, 100000))  # 20.0
+print(growth_rate(120000, 0))       # None
+```
+
+**Catching multiple error types:**
+
+```python
+def parse_revenue(value):
+    try:
+        return float(value.strip().replace("$", "").replace(",", ""))
+    except AttributeError:
+        # value was None or not a string
+        return None
+    except ValueError:
+        # string was not a valid number
+        return None
+
+
+print(parse_revenue("$1,250.00"))  # 1250.0
+print(parse_revenue(None))         # None
+print(parse_revenue("N/A"))        # None
+```
+
+**`else` and `finally` clauses:**
+
+```python
+def load_config(filename):
+    try:
+        f = open(filename)
+        data = f.read()
+    except FileNotFoundError:
+        print(f"Config file {filename} not found, using defaults")
+        data = "{}"
+    else:
+        # Runs only if no exception occurred
+        print("Config loaded successfully")
+    finally:
+        # Runs always — cleanup code goes here
+        print("load_config finished")
+    return data
+```
+
+**`raise` — validating inputs inside your own functions:**
+
+```python
+def apply_discount(price, discount_pct):
+    if discount_pct < 0 or discount_pct > 100:
+        raise ValueError(f"discount_pct must be 0-100, got {discount_pct}")
+    return price * (1 - discount_pct / 100)
+
+
+try:
+    final = apply_discount(100, 150)  # Invalid input
+except ValueError as e:
+    print("Error:", e)
+# Error: discount_pct must be 0-100, got 150
+```
+
+> **Rule of thumb**: validate inputs at the top of a function with `raise`, and wrap uncertain external operations (file reads, type conversions, network calls) with `try/except`. Never use bare `except:` — always name the specific error type so you don't accidentally swallow unrelated bugs.
+
+---
 
 ### Lambda Functions (Anonymous Functions)
 

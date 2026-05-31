@@ -4,19 +4,24 @@ title: "Introduction to Python"
 phase: 1
 phaseTitle: "Algorithmic Thinking & Python Foundations"
 slug: "introduction-to-python"
-duration: 45
+duration: 60
 difficulty: "beginner"
 tags:
   - python
   - basics
   - getting-started
+  - algorithmic-thinking
 concepts:
+  - "algorithmic thinking"
+  - "problem decomposition"
+  - "pseudocode"
   - "print statements"
   - "basic arithmetic"
   - "script execution"
   - "REPL environment"
 prerequisites: []
 outcomes:
+  - "Decompose a business problem into algorithmic steps"
   - "Write and execute your first Python script"
   - "Perform basic arithmetic calculations"
   - "Understand the difference between scripts and the REPL"
@@ -47,6 +52,85 @@ The robot follows your recipe exactly, every single time. No guessing, no improv
 - That monthly report you spend 4 hours creating in Excel? Python can do it in 4 seconds.
 - Those 500 customer emails you need to personalize? Python handles them before your coffee gets cold.
 - That pricing analysis across 10,000 products? Python doesn't need lunch breaks.
+
+---
+
+## Thinking Algorithmically
+
+Before writing a single line of Python, the most important skill to develop is **algorithmic thinking**: the ability to break any problem into a clear, ordered sequence of steps a machine can follow.
+
+This is the "Algorithmic" in Phase 1's title — and it underpins everything else you'll learn.
+
+### What Is an Algorithm?
+
+An algorithm is simply a precise, ordered recipe for solving a problem. You already write algorithms every day — you just don't call them that.
+
+**Business example — Approving a Purchase Order:**
+
+> 1. Receive the purchase request
+> 2. Check if the amount is within the requester's approval limit
+> 3. If yes → mark as approved and notify the requester
+> 4. If no → escalate to the requester's manager
+> 5. Log the decision with timestamp
+
+That's an algorithm. Python lets you express it so a computer runs it automatically, thousands of times per day without mistakes.
+
+### Three Skills of Algorithmic Thinking
+
+**1. Decomposition — Break the problem down**
+
+Never try to solve the whole problem at once. Split it into the smallest possible pieces, then solve each piece.
+
+| The Big Problem | Decomposed Steps |
+|---|---|
+| "Calculate customer churn rate" | 1. Count total customers at start of period<br>2. Count customers lost during period<br>3. Divide lost ÷ total<br>4. Multiply by 100 for percentage |
+
+**2. Abstraction — Ignore irrelevant details**
+
+Focus only on what matters for the problem at hand. When calculating churn, you don't need each customer's address or favorite product — just whether they churned or not.
+
+**3. Pattern Recognition — Spot what repeats**
+
+If you're doing the same calculation for January, then February, then March… that's a pattern you can automate with a loop (Day 10). Spotting repetition is what tells you when to stop copy-pasting and start programming.
+
+### Pseudocode: Plan Before You Code
+
+Pseudocode is informal, human-readable logic — not valid Python, but a bridge between your thinking and the code you'll write.
+
+**Business problem**: Calculate a sales rep's commission.
+
+```
+Pseudocode:
+  GET sales_amount and commission_rate
+  IF sales_amount > 50000 THEN
+      apply bonus_multiplier of 1.5 to commission_rate
+  CALCULATE commission = sales_amount × commission_rate
+  PRINT "Commission earned: $" + commission
+```
+
+Now translating to Python is mechanical — the hard thinking is already done:
+
+```python
+sales_amount = 62000
+commission_rate = 0.08
+
+if sales_amount > 50000:
+    commission_rate = commission_rate * 1.5
+
+commission = sales_amount * commission_rate
+print("Commission earned: $", commission)
+# Output: Commission earned: $ 7440.0
+```
+
+### The Three-Question Framework
+
+Before writing any code, ask yourself:
+
+1. **What is the input?** (What data do I start with?)
+2. **What is the output?** (What does the result look like?)
+3. **What are the steps?** (How do I transform input into output?)
+
+Answering these three questions in plain English *before* touching the keyboard is what separates professionals from beginners.
 
 ---
 
@@ -135,6 +219,63 @@ python my_script.py
 ---
 
 ## Hands-on Lab
+
+### Exercise 0: Algorithmic Thinking Before Code
+
+**Goal**: Practice decomposing a business problem before writing any Python.
+
+**The Business Problem**: A retailer wants to calculate the final price a customer pays, given a product price, a percentage discount, and a sales tax rate.
+
+**Your task** (in plain English, no code yet):
+1. Write out the three-question framework answers:
+   - What is the input?
+   - What is the output?
+   - What are the steps?
+2. Write pseudocode for the solution
+3. Only then translate it to Python
+
+<details>
+<summary>Click for Answer</summary>
+
+**Three-Question Framework:**
+- Input: `price`, `discount_percent`, `tax_rate`
+- Output: `final_price` (a single dollar amount)
+- Steps:
+  1. Calculate the discount amount = price × (discount_percent / 100)
+  2. Calculate the discounted price = price − discount amount
+  3. Calculate tax amount = discounted price × tax_rate
+  4. Final price = discounted price + tax amount
+
+**Pseudocode:**
+```
+GET price, discount_percent, tax_rate
+CALCULATE discount_amount = price × (discount_percent / 100)
+CALCULATE discounted_price = price - discount_amount
+CALCULATE tax_amount = discounted_price × tax_rate
+CALCULATE final_price = discounted_price + tax_amount
+PRINT final_price
+```
+
+**Python translation:**
+```python
+price = 120.00
+discount_percent = 15
+tax_rate = 0.08
+
+discount_amount = price * (discount_percent / 100)
+discounted_price = price - discount_amount
+tax_amount = discounted_price * tax_rate
+final_price = discounted_price + tax_amount
+
+print("Final price: $", round(final_price, 2))
+# Output: Final price: $ 110.16
+```
+
+Notice: the Python almost writes itself once the pseudocode is clear.
+
+</details>
+
+---
 
 ### Exercise 1: The Company Introduction
 
@@ -370,6 +511,9 @@ print("Final amount: $", round(final_amount, 2))
 
 Today you learned:
 
+- ✅ Algorithmic thinking means decomposing problems into ordered steps before coding
+- ✅ Pseudocode bridges your reasoning and Python code
+- ✅ The three-question framework (input / output / steps) prevents wasted effort
 - ✅ Python is a precise, repeatable tool for business automation
 - ✅ `print()` displays information to users
 - ✅ Python handles arithmetic naturally with proper order of operations

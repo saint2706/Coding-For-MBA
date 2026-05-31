@@ -4,15 +4,15 @@
         {
             "id": "d01q01",
             "type": "multiple_choice",
-            "question": "What is a variable in Python?",
+            "question": "What is the correct order when applying the three-question algorithmic thinking framework to a new problem?",
             "options": [
-                "A loop that repeats code",
-                "A labeled container that stores a value in memory",
-                "A function that returns a result",
-                "A module imported from a library"
+                "Write code first, then figure out the output, then decide on inputs",
+                "Identify inputs → determine outputs → define the transformation steps",
+                "Write pseudocode → identify the bug → fix it → test",
+                "Choose the programming language → install dependencies → start coding"
             ],
             "answer": 1,
-            "explanation": "A variable is a named storage location in memory. When you write `revenue = 50000`, Python reserves space in memory, stores the value 50000, and associates the label 'revenue' with it."
+            "explanation": "The three-question framework — What is the input? What is the output? What are the steps? — forces you to fully understand the problem before writing a single line of code. This prevents wasted effort and reveals edge cases early."
         },
         {
             "id": "d01q02",

@@ -56,15 +56,15 @@
         {
             "id": "d11q05",
             "type": "multiple_choice",
-            "question": "What is a lambda function?",
+            "question": "What is the recommended practice when catching exceptions with `except`?",
             "options": [
-                "A function that runs asynchronously",
-                "A shorthand for a small, anonymous single-expression function",
-                "A recursive function",
-                "A function that takes no return value"
+                "Always use bare `except:` to catch every possible error",
+                "Name the specific exception type (e.g., `except ValueError`) so unrelated errors are not silently swallowed",
+                "Wrap every line of code individually in its own try/except block",
+                "Use `except` only on the last line of a function"
             ],
             "answer": 1,
-            "explanation": "Lambda functions are anonymous, inline functions: `lambda x: x * 2` is equivalent to a one-line `def`. They are commonly used with `sorted()`, `map()`, and `filter()` — e.g., `sorted(employees, key=lambda e: e['salary'])`."
+            "explanation": "Naming the specific exception type (e.g., `except ValueError`, `except ZeroDivisionError`) means you only catch errors you actually know how to handle. A bare `except:` will also catch `KeyboardInterrupt`, `SystemExit`, and bugs you haven't seen yet — hiding real problems."
         }
     ]
 }
