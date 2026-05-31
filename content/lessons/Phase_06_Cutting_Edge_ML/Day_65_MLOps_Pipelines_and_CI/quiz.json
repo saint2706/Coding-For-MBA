@@ -1,0 +1,70 @@
+{
+    "day": 65,
+    "questions": [
+        {
+            "id": "d65q01",
+            "type": "multiple_choice",
+            "question": "Google's famous paper describes ML systems as the 'High-Interest Credit Card of Technical Debt.' Only ~5% of an ML system is model code. What makes up the other 95%, and why does this matter for ML project planning?",
+            "options": [
+                "The other 95% is documentation and testing — ML teams spend most time writing test cases and README files",
+                "The other 95% includes data collection pipelines, data validation, feature stores, serving infrastructure, monitoring, and resource management — underestimating these leads to projects that perform well in notebooks but never reach production, a pattern called 'POC purgatory'",
+                "The other 95% is hyperparameter tuning — finding the optimal model configuration takes far more time than writing the training code",
+                "The other 95% is business analysis and stakeholder meetings — the technical work is actually the smallest part of ML projects"
+            ],
+            "answer": 1,
+            "explanation": "The 'Hidden Technical Debt in ML Systems' paper (Sculley et al., Google, 2015) identified that model code is just the tip of the iceberg. The real cost lies in: data collection pipelines (ETL, streaming), feature engineering and feature stores, data validation (detecting schema drift), experiment tracking, model registry, serving infrastructure (APIs, containers), monitoring (drift detection, performance degradation), and retraining pipelines. This is why 87% of ML models never make it to production (VentureBeat, 2019). MBA teams sponsoring ML projects should budget 3-5x the expected model development time for infrastructure. MLOps addresses this systematically."
+        },
+        {
+            "id": "d65q02",
+            "type": "multiple_choice",
+            "question": "In MLOps, why must you version Code, Data, AND Environment together — and what breaks if you only version the code?",
+            "options": [
+                "Versioning all three is just industry best practice for documentation purposes — missing one only affects auditability, not model performance",
+                "ML results are determined by the intersection of code, data, and environment: the same code on different data or with different library versions (Pandas 1.1 vs 2.0) produces a completely different model — without all three versioned together, you cannot reproduce yesterday's experiment, debug a production failure, or audit a regulatory inquiry",
+                "You only need to version data and environment — code versioning with Git is sufficient for audit trails",
+                "Versioning all three is only necessary for deep learning models; traditional ML models like logistic regression are deterministic and need only code versioning"
+            ],
+            "answer": 1,
+            "explanation": "Reproducibility requires all three components: (1) Code (Git) — the training script. (2) Data (DVC, Delta Lake) — the exact rows used for training, including any preprocessing. A data pipeline that filters differently next month produces a different model. (3) Environment (Docker, conda) — library versions. scikit-learn changed its random state behavior between versions; XGBoost results differ across versions. A model that scored 0.92 AUC on Tuesday might score 0.87 on Wednesday if data was resampled or a library was updated. In regulated industries (banking, healthcare), regulators can demand you reproduce a model from 3 years ago — impossible without all three components versioned."
+        },
+        {
+            "id": "d65q03",
+            "type": "multiple_choice",
+            "question": "What is Continuous Training (CT) in MLOps, and how does it differ from standard CI/CD in software engineering?",
+            "options": [
+                "Continuous Training means the model trains on streaming data 24/7 with no stopping — it is always learning from new inputs",
+                "Standard CI/CD only tests and deploys code changes; CT adds a third trigger: when data distribution drifts or model performance degrades, the pipeline automatically retrains the model on fresh data, re-validates it, and re-deploys — treating the trained model artifact as a deliverable that must also be continuously updated",
+                "Continuous Training is just MLflow's term for experiment tracking — logging all training runs to a central server",
+                "CT is a cloud-specific term for auto-scaling ML training jobs based on data volume"
+            ],
+            "answer": 1,
+            "explanation": "Software CI/CD deploys when code changes. ML systems have an additional degradation vector: the data distribution changes over time (concept drift, data drift) even when the code hasn't changed. A fraud detection model trained in January may degrade in July as fraud patterns evolve. CT addresses this: (1) Monitor production model performance, (2) Detect data drift (PSI, KS test), (3) Trigger retraining when thresholds are crossed, (4) Validate new model on holdout set, (5) Deploy if it beats the incumbent. This 'always-fresh' model is critical for time-sensitive domains: credit scoring, ad CTR prediction, search ranking. Production ML teams at Google, LinkedIn, and Uber retrain key models daily or even hourly."
+        },
+        {
+            "id": "d65q04",
+            "type": "multiple_choice",
+            "question": "Your team uses MLflow to track experiments. A data scientist runs 50 experiments with different hyperparameters. Three months later, the best model underperforms in production. What MLflow capability helps you diagnose why?",
+            "options": [
+                "MLflow's model serving API — it re-runs the model on production data to identify which input patterns cause failures",
+                "MLflow's experiment tracking — you can retrieve the exact hyperparameters, dataset version, metrics (train/validation AUC), and code commit hash for each of the 50 runs, compare them, and identify whether the best-performing experiment on validation set was actually overfit or used stale training data",
+                "MLflow's feature store — it logs all feature transformations so you can identify if production features are computed differently",
+                "MLflow's model registry's Staging environment — re-routing production traffic to the staging model immediately resolves the underperformance"
+            ],
+            "answer": 1,
+            "explanation": "MLflow's core value is experiment reproducibility and comparison. Each tracked run stores: parameters (learning_rate=0.01, max_depth=6), metrics (train_auc=0.95, val_auc=0.91), artifacts (model pickle, feature importances), and tags (git commit hash, data version, user). When a production model underperforms, you can: (1) Pull up all 50 experiments in MLflow UI, (2) Filter by validation AUC, (3) Compare the champion model's validation data timestamp vs. production data timestamp — if 3 months old, it's likely stale. (4) Check if the data version tag shows the exact training dataset, revealing if preprocessing had changed. Without experiment tracking, diagnosing production failures becomes archaeology."
+        },
+        {
+            "id": "d65q05",
+            "type": "multiple_choice",
+            "question": "What is a Feature Store, and why does it solve a critical problem in organizations where multiple ML teams compute the same customer features independently?",
+            "options": [
+                "A Feature Store is a database that stores raw input data before preprocessing — it is simply a centralized data lake for ML teams",
+                "A Feature Store is a centralized repository that computes, stores, and serves features with consistent logic across training and serving: it ensures the 'customer_30d_spend' feature used in fraud detection and the same feature used in churn prediction are computed identically, preventing training-serving skew and duplicated engineering effort",
+                "A Feature Store is MLflow's term for the model registry — it stores trained model artifacts rather than input features",
+                "A Feature Store only matters for real-time ML systems; batch prediction systems do not benefit from centralized feature management"
+            ],
+            "answer": 1,
+            "explanation": "Training-serving skew is a top cause of ML production failures: the fraud model trains on 'customer_avg_transaction_7d' computed one way in Python during training, but production serves a differently computed version from the real-time pipeline. Results degrade silently. Feature Stores (Tecton, Feast, Hopsworks, Databricks Feature Store) solve this: features are defined once with version-controlled logic, computed consistently for both training (historical backfill) and serving (real-time lookup), and shared across teams. Business impact: (1) Feature reuse — 'customer_lifetime_value' defined once, reused by 10 teams; (2) Consistency — training and inference use identical computations; (3) Governance — audit which features each model uses."
+        }
+    ]
+}

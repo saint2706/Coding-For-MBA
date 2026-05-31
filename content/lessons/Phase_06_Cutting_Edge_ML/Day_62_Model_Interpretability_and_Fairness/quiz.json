@@ -1,0 +1,70 @@
+{
+    "day": 62,
+    "questions": [
+        {
+            "id": "d62q01",
+            "type": "multiple_choice",
+            "question": "What is the fundamental difference between Global and Local interpretability, and when would you use each?",
+            "options": [
+                "Global interpretability uses SHAP values; local interpretability uses LIME values — they are simply different libraries for the same purpose",
+                "Global interpretability explains how the model behaves on average across all predictions (e.g., 'income is the most important feature overall'); local interpretability explains why the model made a specific individual prediction (e.g., 'Bob was rejected because of his debt ratio')",
+                "Global interpretability is for regulators; local interpretability is for data scientists — they serve different audiences but provide the same information",
+                "Global interpretability applies to linear models; local interpretability applies to deep learning models"
+            ],
+            "answer": 1,
+            "explanation": "Global interpretability answers 'how does this model work in general?' — useful for model audits, stakeholder presentations, and feature engineering decisions. Local interpretability answers 'why did this model make this specific decision?' — critical for GDPR compliance (right to explanation), customer service (explaining a loan rejection), and debugging anomalous predictions. SHAP can provide both: SHAP summary plots give global importance, while a SHAP waterfall plot for a single customer gives local explanation. In a loan approval system, a regulator wants global insight; the rejected applicant wants local explanation."
+        },
+        {
+            "id": "d62q02",
+            "type": "multiple_choice",
+            "question": "SHAP values are grounded in game theory. In the loan approval analogy, what does the 'Shapley Value' of the Debt-to-Income Ratio feature represent?",
+            "options": [
+                "The raw coefficient of Debt-to-Income Ratio in a linear regression model",
+                "The average prediction accuracy when Debt-to-Income Ratio is included vs. excluded from the model",
+                "The marginal contribution of Debt-to-Income Ratio to the prediction across all possible combinations of other features — how much it pushed the prediction above or below the average prediction",
+                "The correlation between Debt-to-Income Ratio and the target variable in the training dataset"
+            ],
+            "answer": 2,
+            "explanation": "Shapley values from cooperative game theory fairly distribute a 'payout' (the prediction minus the base rate) among 'players' (features). For a loan rejection predicted at 80% default risk vs. 10% average: SHAP asks 'how much did Debt-to-Income Ratio contribute?' by averaging its marginal impact across all possible subsets of other features. A SHAP value of +0.35 for Debt-to-Income means this feature alone pushed the default probability 35 percentage points above average. A SHAP value of -0.15 for Employment History means stable employment reduced default risk by 15 points. The sum of all SHAP values equals (prediction - base rate)."
+        },
+        {
+            "id": "d62q03",
+            "type": "multiple_choice",
+            "question": "Your hiring algorithm uses 'Zip Code' as a feature and achieves 92% accuracy. A bias audit reveals that acceptance rates for minority candidates are 35% vs. 58% for majority candidates. What is the core problem, and how should it be addressed?",
+            "options": [
+                "The model is overfitting to zip code — apply L2 regularization to reduce its weight",
+                "The Disparate Impact Ratio is 0.60 (below the 0.8 threshold), indicating proxy variable bias where zip code encodes race/ethnicity — remove zip code or apply fairness constraints (e.g., equalized odds post-processing) even at a small accuracy cost",
+                "The model needs more training data from minority zip codes to improve its accuracy for those groups",
+                "The 35% vs. 58% gap is within acceptable range since both groups are being hired at positive rates"
+            ],
+            "answer": 1,
+            "explanation": "Disparate Impact Ratio = 35%/58% = 0.60, well below the 0.8 legal threshold (Four-Fifths Rule). Zip Code is a proxy variable that encodes race/socioeconomic status — even after removing explicit race as a feature, the model reconstructs it through correlated variables like zip code. This is 'Redlining' in ML form. The fix involves: (1) removing or replacing the proxy variable, (2) applying fairness constraints during training (Fairlearn's ExponentiatedGradient), or (3) post-processing predictions to equalize outcomes. Accepting a 2% accuracy drop to achieve legal compliance is always the right business decision."
+        },
+        {
+            "id": "d62q04",
+            "type": "multiple_choice",
+            "question": "A bank must comply with GDPR's 'right to explanation' for automated credit decisions. Which model type is most appropriate, and why?",
+            "options": [
+                "A 500-layer deep neural network — because higher accuracy means fewer incorrect rejections that need explaining",
+                "An ensemble of 1,000 decision trees (Random Forest) — because ensemble methods are always more interpretable than single models",
+                "A shallow decision tree or logistic regression — because these 'white box' models expose their rules directly (e.g., 'IF debt_ratio > 0.4 AND no_credit_history THEN reject') and can provide legally defensible explanations without post-hoc interpretation tools",
+                "Any model paired with SHAP values — because SHAP makes any model fully transparent and legally compliant regardless of complexity"
+            ],
+            "answer": 2,
+            "explanation": "GDPR requires that automated decisions affecting individuals be explainable in simple terms. While SHAP can post-hoc explain any model, regulators and courts often require inherently interpretable models — ones where the decision logic is transparent by design, not reconstructed after the fact. A logistic regression's coefficients or a decision tree's if-then rules can be printed and shown to a regulator directly. This is the accuracy-interpretability tradeoff in practice: a 2% accuracy sacrifice for 100% legal clarity is not just acceptable — it may be legally required. In healthcare and credit, 'slightly less accurate but legal' beats 'perfect but unaccountable.'"
+        },
+        {
+            "id": "d62q05",
+            "type": "multiple_choice",
+            "question": "When debugging an XGBoost model that predicts customer churn, you find a customer with 5 years of tenure is predicted as high-risk for churn. A SHAP waterfall plot shows 'tenure = 5 years' has a SHAP value of +0.42. What does this tell you?",
+            "options": [
+                "The model has an error — longer tenure should always reduce churn risk, so a positive SHAP value indicates a data bug",
+                "Tenure of 5 years pushed this customer's churn probability 42 percentage points above the average prediction, suggesting the model learned an unusual pattern (e.g., '5-year customers frequently churn due to contract renewals') that should be investigated",
+                "The model assigns 42% of its total prediction weight to the tenure feature across all customers",
+                "SHAP values above 0.4 indicate features that should be removed for reducing model complexity"
+            ],
+            "answer": 1,
+            "explanation": "A positive SHAP value of +0.42 for tenure=5 means that for this specific customer, having 5 years of tenure pushed their predicted churn probability 42 percentage points higher than the baseline. This is counterintuitive (we'd expect longer tenure = lower churn) but could reflect real patterns: many SaaS companies see 5-year contract renewal spikes where customers evaluate competitors. This is the power of local SHAP: it flags cases where the model learned something surprising. You should investigate: Are 5-year customers actually churning more? Is there a data artifact? Is contract expiry driving a real pattern? SHAP turns model debugging into a business investigation."
+        }
+    ]
+}

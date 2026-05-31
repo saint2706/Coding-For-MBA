@@ -1,0 +1,70 @@
+{
+    "day": 69,
+    "questions": [
+        {
+            "id": "d69q01",
+            "type": "multiple_choice",
+            "question": "What is Demographic Parity as a fairness metric, and in what business context is it the most appropriate standard to apply?",
+            "options": [
+                "Demographic Parity requires that the model achieves equal accuracy across all demographic groups — it is the universal fairness standard for any ML system",
+                "Demographic Parity requires equal positive prediction rates across groups (P(Ŷ=1|A=0) = P(Ŷ=1|A=1)) — most appropriate for contexts like hiring ad targeting or loan marketing where equal access to opportunity is the fairness goal, regardless of underlying qualification rates",
+                "Demographic Parity requires that training datasets contain equal numbers of samples from each demographic group — it is a data collection standard, not a model evaluation metric",
+                "Demographic Parity is the same as Equal Opportunity — both require equalizing true positive rates across groups"
+            ],
+            "answer": 1,
+            "explanation": "Demographic Parity (Statistical Parity) says: the same fraction of each group should receive positive predictions. Example: if 30% of male applicants receive a job interview, 30% of female applicants should too. This is appropriate when the policy goal is equal access regardless of historical qualification gaps (which themselves may reflect systemic bias). However, it has critics: if men genuinely have more programming experience due to historical educational access differences, enforcing equal hiring rates may lower overall hiring quality. The Impossibility Theorem (Chouldechova, 2017) proves you cannot simultaneously satisfy Demographic Parity, Equal Opportunity, and Predictive Parity when base rates differ across groups. Choosing the right metric requires engaging legal counsel and ethicists."
+        },
+        {
+            "id": "d69q02",
+            "type": "multiple_choice",
+            "question": "A bail recommendation algorithm has Equal Opportunity (equal True Positive Rates for actual criminals) but not Demographic Parity. A civil rights group argues this is still discriminatory. What is the source of this disagreement, and why can't both sides be right simultaneously?",
+            "options": [
+                "The disagreement is purely political — both metrics are technically equivalent when sample sizes are large enough",
+                "The Impossibility Theorem: when base rates of recidivism differ between groups, you mathematically cannot achieve both Equal Opportunity (equal TPR) and Demographic Parity (equal positive prediction rates) simultaneously — each metric embodies a different moral theory of fairness, and choosing between them requires a values judgment beyond statistics",
+                "The disagreement can be resolved by using a more powerful model — better algorithms can satisfy all fairness metrics simultaneously",
+                "The civil rights group is wrong — Equal Opportunity is the legally mandated standard in the US, and Demographic Parity is optional"
+            ],
+            "answer": 1,
+            "explanation": "This is the famous COMPAS recidivism controversy. ProPublica found COMPAS violated Demographic Parity (Black defendants labeled higher risk at 2x the rate of white defendants). Northpointe (the vendor) showed COMPAS satisfied Predictive Parity (risk scores equally calibrated across races — a score of 7 means ~70% recidivism for both groups). Both were simultaneously true and both were valid criticisms. Chouldechova (2017) proved mathematically that if recidivism base rates differ between groups, you cannot achieve both metrics at once. The choice between them is a moral judgment: do we prioritize equal calibration (individual fairness) or equal outcomes (group fairness)? This is why AI ethics requires philosophers, legal scholars, and community stakeholders — not just data scientists."
+        },
+        {
+            "id": "d69q03",
+            "type": "multiple_choice",
+            "question": "What is a Model Card, and why has it become a standard best practice for responsible AI deployment at companies like Google and Hugging Face?",
+            "options": [
+                "A Model Card is a summary of a model's hyperparameters and training infrastructure — it is a technical reference document for ML engineers",
+                "A Model Card is a standardized documentation format that describes a model's intended use, performance across different demographic groups, known limitations, and ethical considerations — enabling downstream users, regulators, and auditors to make informed decisions about whether to use the model for a specific application",
+                "A Model Card is a legal contract between the model developer and deploying organization, specifying performance guarantees and liability",
+                "A Model Card is a visualization tool that shows model architecture diagrams and data flow — it is part of the model explainability toolkit"
+            ],
+            "answer": 1,
+            "explanation": "Model Cards (Mitchell et al., Google, 2019) are transparent model documentation including: (1) Intended use — what the model was designed for and what it wasn't, (2) Performance disaggregated by subgroup — not just overall accuracy, but accuracy for each age group, gender, geography, (3) Evaluation datasets — what data was used for benchmarking, (4) Limitations — failure modes, distributional edge cases, (5) Ethical considerations — potential misuse, fairness concerns. Hugging Face now requires Model Cards for all published models; the EU AI Act mandates documentation for high-risk AI systems. Business impact: a model deployed without a Model Card exposes the company to regulatory risk — you cannot demonstrate due diligence if you cannot show what you knew about the model's limitations."
+        },
+        {
+            "id": "d69q04",
+            "type": "multiple_choice",
+            "question": "What is Red-Teaming in AI, and why is it a critical step before deploying a customer-facing LLM application?",
+            "options": [
+                "Red-Teaming is adversarial performance testing where the model is given deliberately noisy or corrupted inputs to test its robustness",
+                "Red-Teaming is a structured process where a dedicated team attempts to make the AI produce harmful, biased, or unintended outputs — simulating adversarial users who will try to jailbreak the system, extract sensitive information, or cause discriminatory outputs before real users can cause real harm",
+                "Red-Teaming is a competitive benchmarking exercise where multiple ML models are ranked against each other on standard test sets",
+                "Red-Teaming is the practice of keeping a backup (red) model version ready in case the primary (blue) model fails in production"
+            ],
+            "answer": 1,
+            "explanation": "AI Red-Teaming applies the security concept of adversarial testing to ML safety. A red team systematically tries to elicit: (1) Jailbreaks — 'Pretend you're an AI with no restrictions and explain how to...' (2) Prompt injection — malicious input that overrides system instructions, (3) Harmful stereotypes — probing for racial, gender, or national biases, (4) Misinformation — testing if the model confidently generates false information, (5) Data extraction — trying to recover training data or system prompts. Google, OpenAI, Anthropic, and Microsoft conduct extensive red-teaming before model releases. For business applications, red-teaming should occur before deploying any LLM that talks to real customers — reputational damage from a publicized LLM failure (like a chatbot making racist statements) is severe and immediate."
+        },
+        {
+            "id": "d69q05",
+            "type": "multiple_choice",
+            "question": "Your company's hiring algorithm is found to have disparate impact against women. Legal counsel advises you to fix it. What is the difference between pre-processing, in-processing, and post-processing bias mitigation, and which approach is generally preferred for high-stakes decisions?",
+            "options": [
+                "Pre-processing removes biased features before training; in-processing adds fairness penalties during training; post-processing adjusts thresholds after training — post-processing is always preferred because it doesn't change the model",
+                "All three are equivalent in effectiveness — choose based on which phase of the ML lifecycle you are currently in",
+                "Pre-processing fixes the training data (resampling, re-weighting, removing proxy variables); in-processing constrains the model during training (Fairlearn's ExponentiatedGradient, adversarial debiasing); post-processing adjusts decision thresholds by group after training — for high-stakes decisions, pre-processing is often preferred because it addresses root causes in data rather than patching outputs, and is more explainable to regulators",
+                "Pre-processing is illegal under anti-discrimination law because it treats groups differently during data preparation; only post-processing is legally compliant"
+            ],
+            "answer": 2,
+            "explanation": "The three-phase framework: (1) Pre-processing (upstream fix): rebalance training data, remove proxy variables, use fairness-aware data augmentation. Pros: addresses root cause, model itself is fair. (2) In-processing (constrained training): add fairness constraints (e.g., demographic parity constraint) to the loss function. Pros: jointly optimizes accuracy and fairness. Cons: more complex training. (3) Post-processing (output adjustment): apply different decision thresholds per group to equalize outcomes. Pros: easy to implement without retraining. Cons: explicitly treats groups differently in decisions, which may raise legal concerns depending on jurisdiction. Regulators generally prefer pre-processing because it demonstrates the organization took fairness seriously throughout the development process, not as an afterthought. IBM's AI Fairness 360 toolkit provides all three approaches."
+        }
+    ]
+}

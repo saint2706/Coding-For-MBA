@@ -1,0 +1,70 @@
+{
+    "day": 64,
+    "questions": [
+        {
+            "id": "d64q01",
+            "type": "multiple_choice",
+            "question": "What is Transfer Learning in NLP, and why does it make building a custom medical text classifier dramatically cheaper than training from scratch?",
+            "options": [
+                "Transfer Learning moves a model trained on one programming language to another, reducing the need to retrain on new syntax",
+                "Transfer Learning downloads a pre-trained model (like BERT, trained on billions of words at $500K+ cost) and fine-tunes it on your small domain-specific dataset — you inherit all the general language understanding and only teach the model your specific task on thousands of examples instead of billions",
+                "Transfer Learning transfers the weights from one model architecture to another to reduce inference latency",
+                "Transfer Learning uses a teacher model to label unlabeled data for a student model, reducing annotation costs"
+            ],
+            "answer": 1,
+            "explanation": "Training BERT from scratch cost Google ~$500,000 in compute and required 3.3 billion words. Your medical startup cannot do this. But BERT already 'knows' English grammar, semantics, and world knowledge. Transfer Learning lets you download this pre-trained model and fine-tune it on your 10,000 labeled medical records — a process that takes hours on a single GPU and costs tens of dollars. The pre-trained model provides the foundation; fine-tuning teaches it your specific domain (medical terminology, diagnosis codes, clinical language patterns). This is why modern NLP democratized — any company with a few thousand labeled examples can now build state-of-the-art text models."
+        },
+        {
+            "id": "d64q02",
+            "type": "multiple_choice",
+            "question": "BERT and GPT are both transformer-based models. What architectural difference makes BERT better for text classification and GPT better for text generation?",
+            "options": [
+                "BERT uses convolutional layers for classification; GPT uses recurrent layers for generation",
+                "BERT is an encoder that reads text bidirectionally (using context from both left and right), making it excellent at understanding meaning; GPT is a decoder that generates text left-to-right (each token only sees preceding tokens), making it natural for generation tasks",
+                "BERT requires more training data than GPT, which is why BERT is used for large enterprise classification and GPT for smaller generation tasks",
+                "BERT is open-source; GPT is proprietary — the difference is licensing, not architecture"
+            ],
+            "answer": 1,
+            "explanation": "BERT (Bidirectional Encoder Representations from Transformers) uses the encoder stack and Masked Language Modeling — it sees the full context on both sides of every word. For 'The bank approved the loan,' BERT knows 'bank' means financial institution, not riverbank, because it sees both 'approved' and 'loan' simultaneously. This bidirectional understanding excels at classification, NER, and question answering. GPT (Generative Pretrained Transformer) uses the decoder stack with causal masking — when generating token 5, it only sees tokens 1-4. This constraint makes it naturally suited for autoregressive generation. For customer support: use BERT to classify ticket intent; use GPT to draft the response."
+        },
+        {
+            "id": "d64q03",
+            "type": "multiple_choice",
+            "question": "You use a Hugging Face pipeline for sentiment analysis on customer reviews: `pipeline('sentiment-analysis')('The product arrived broken')`. What is happening under the hood, and why is this remarkably powerful for business?",
+            "options": [
+                "The pipeline calls a rule-based keyword matching system that labels reviews containing 'broken' as negative",
+                "The pipeline runs tokenization → feeds tokens to a pre-trained BERT-like model → outputs a label (NEGATIVE) and confidence score — a complete NLP pipeline in one line that would have required months of ML engineering just 5 years ago",
+                "The pipeline sends the text to an external cloud API and returns cached results from a sentiment database",
+                "The pipeline uses TF-IDF vectorization plus a logistic regression classifier trained on Amazon reviews"
+            ],
+            "answer": 1,
+            "explanation": "The Hugging Face pipeline abstracts: (1) Tokenization — splitting 'The product arrived broken' into subword tokens with special [CLS] and [SEP] tokens, (2) Model inference — running the tokenized sequence through a fine-tuned DistilBERT/BERT model with a classification head, (3) Post-processing — converting logits to probabilities via softmax, returning {'label': 'NEGATIVE', 'score': 0.997}. Before transformers, this required weeks of feature engineering, domain-specific dictionaries, and hand-tuned rules. Now a junior analyst can process 10,000 customer reviews in minutes. The business value: real-time brand monitoring, automatic ticket routing, product feedback analysis — all with one pip install."
+        },
+        {
+            "id": "d64q04",
+            "type": "multiple_choice",
+            "question": "Your e-commerce platform wants to extract product names, prices, and brands from unstructured supplier emails. Which NLP task and model type is most appropriate?",
+            "options": [
+                "Text Classification with BERT — classify each email as 'has product info' or 'no product info'",
+                "Named Entity Recognition (NER) with a BERT-based token classification model — it labels each word/token with tags like PRODUCT, PRICE, BRAND, and O (other), extracting structured information from unstructured text",
+                "Text Generation with GPT — prompt the model to rewrite the email in structured JSON format",
+                "Semantic Similarity with Sentence Transformers — compare emails to a template to find the most similar structured email"
+            ],
+            "answer": 1,
+            "explanation": "NER (Named Entity Recognition) is a token-level classification task: each token in the input is assigned an entity label. A fine-tuned BERT NER model on supplier emails would label: 'Samsung [BRAND] Galaxy S24 [PRODUCT] costs $799 [PRICE].' The model outputs IOB2 tags (B-PRODUCT, I-PRODUCT, O, B-PRICE, etc.) which are then post-processed into structured records. This is exactly how companies like Samsara, Flexport, and logistics firms automate document processing. Text Generation (option C) is a valid modern approach using LLMs with structured output, but it requires more expensive models and is less deterministic than a fine-tuned NER model for high-volume, well-defined extraction tasks."
+        },
+        {
+            "id": "d64q05",
+            "type": "multiple_choice",
+            "question": "What is the key difference between tokenization and embeddings, and why do embeddings enable semantic search that keyword search cannot?",
+            "options": [
+                "Tokenization converts text to integers (word IDs); embeddings convert integers back to text — they are inverse operations",
+                "Tokenization splits text into subword tokens and maps them to integer IDs (required for model input); embeddings map those tokens or entire sentences into dense numeric vectors where semantically similar texts are geometrically close — enabling 'angry customer' to match 'frustrated user' even without shared keywords",
+                "Tokenization is fast but inaccurate; embeddings are slow but accurate — you choose based on your latency requirements",
+                "Tokenization handles English text; embeddings are required for multilingual text processing"
+            ],
+            "answer": 1,
+            "explanation": "Tokenization is mechanical: 'unhappy' → ['un', '##happy'] → [1234, 5678]. This is required for model input but discards semantic meaning. Embeddings are learned representations: a sentence encoder maps 'The client is dissatisfied' to a 768-dimensional vector. The crucial property: 'frustrated customer' and 'angry client' map to nearby vectors (high cosine similarity), even though they share no words. Keyword search for 'angry customer' would miss 'frustrated client.' Semantic search with embeddings finds it. This powers modern enterprise search, customer support ticket routing, duplicate detection, and recommendation systems. Sentence Transformers (SBERT) make this accessible in Python with three lines of code."
+        }
+    ]
+}

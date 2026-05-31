@@ -1,0 +1,70 @@
+{
+    "day": 63,
+    "questions": [
+        {
+            "id": "d63q01",
+            "type": "multiple_choice",
+            "question": "What is the fundamental difference between correlation and causation, and why does it matter for a marketing team deciding whether to increase ad spend?",
+            "options": [
+                "Correlation measures linear relationships; causation measures non-linear relationships — both are equally useful for business decisions",
+                "Correlation shows that two variables move together (e.g., ad spend and revenue both rise in Q4), but this could be driven by a third variable (holiday season); causation proves that increasing ad spend directly produces revenue — only causal knowledge lets you confidently invest more",
+                "Correlation is measured on historical data; causation requires real-time data — the marketing team should switch to real-time analytics",
+                "Correlation is a statistical technique; causation is a business judgment — data scientists handle correlation, executives handle causation"
+            ],
+            "answer": 1,
+            "explanation": "Ice cream sales and drowning rates are highly correlated — not because ice cream causes drowning, but because hot weather (a confounder) drives both. Similarly, a marketing team seeing that ad spend and revenue rise together in Q4 cannot conclude that ads caused revenue — the holiday shopping season drives both. This is Judea Pearl's 'Ladder of Causation': Association (seeing) ≠ Intervention (doing). Randomized A/B tests or causal inference methods like Difference-in-Differences establish true causality. A marketing team that mistakes correlation for causation may waste millions on ads that merely coincide with organic revenue growth."
+        },
+        {
+            "id": "d63q02",
+            "type": "multiple_choice",
+            "question": "Simpson's Paradox occurs in a clinical trial: Drug A shows 78% success overall vs. Drug B's 83%. However, Drug A outperforms Drug B in both mild AND severe patient subgroups. How is this possible, and which drug should doctors prescribe?",
+            "options": [
+                "This is a data entry error — it is mathematically impossible for one drug to be better in every subgroup but worse overall",
+                "Drug B was tested on more patients, giving it statistical power that Drug A lacks — doctors should use Drug B because sample size matters more than subgroup results",
+                "Drug A was disproportionately assigned to harder cases (severe patients); Drug B got easier cases — the overall rates are confounded by severity. Doctors should prescribe Drug A since it performs better within each comparable severity level",
+                "Both drugs perform equivalently — the paradox shows statistical analysis is unreliable for clinical decisions"
+            ],
+            "answer": 2,
+            "explanation": "This is the classic Berkeley admissions paradox applied to medicine. Drug A (78% overall) was used more on severe cases (which have lower base success rates), making its overall average look worse. Drug B (83% overall) was mostly used on mild cases (higher base success rates). When you control for severity — comparing like-for-like — Drug A wins in every category. The confounder (severity) must be accounted for. Doctors should prescribe Drug A, stratifying by patient severity. This illustrates why aggregate statistics can be actively misleading in medical and business decisions, and why stratified analysis or regression with controls is essential."
+        },
+        {
+            "id": "d63q03",
+            "type": "multiple_choice",
+            "question": "Traditional ML predicts P(Buy | User). Uplift modeling predicts P(Buy | Treated) − P(Buy | Control). Why does this distinction change which customers a marketing campaign should target?",
+            "options": [
+                "They are mathematically equivalent — targeting high P(Buy) customers is the same as targeting high uplift customers",
+                "Traditional ML identifies customers likely to buy anyway (Sure Things) and may waste budget on them; uplift modeling identifies Persuadables — customers who buy IF treated but not otherwise — maximizing ROI by spending only where the treatment changes behavior",
+                "Uplift modeling requires A/B test data which is harder to collect, making traditional ML more practical for most campaigns",
+                "Traditional ML is better for large campaigns; uplift modeling is only useful for personalized one-to-one marketing"
+            ],
+            "answer": 1,
+            "explanation": "The four customer segments in uplift modeling: (1) Sure Things — buy regardless of treatment (wasting money on them), (2) Lost Causes — won't buy regardless, (3) Sleeping Dogs — buy when NOT treated, but don't when treated (negative uplift!), (4) Persuadables — the gold segment who buy only because of the treatment. Traditional ML targets high P(Buy) customers who are mostly Sure Things — giving discounts to customers who would have paid full price anyway. Uplift modeling targets Persuadables, maximizing incremental lift per dollar spent. Criteo, Uber, and DoorDash use uplift modeling for promotions — studies show 20-40% improvement in campaign ROI vs. propensity-based targeting."
+        },
+        {
+            "id": "d63q04",
+            "type": "multiple_choice",
+            "question": "You want to measure the causal effect of a new store layout on sales without running a full randomized experiment. Half your stores received the redesign due to budget constraints. Which causal inference method is most appropriate?",
+            "options": [
+                "Simple before-after comparison of redesigned stores — since you know which stores changed, the treatment is clear",
+                "Difference-in-Differences (DiD) — comparing the change in sales in redesigned stores vs. unchanged stores over the same time period, removing the effect of overall market trends that would affect all stores",
+                "Propensity Score Matching — matching redesigned stores to similar non-redesigned stores based on their characteristics, then comparing outcomes",
+                "Regression Discontinuity Design — since stores were assigned based on a budget threshold, you can compare stores just above and below the budget cutoff"
+            ],
+            "answer": 1,
+            "explanation": "Difference-in-Differences compares: (redesigned stores after − redesigned stores before) − (control stores after − control stores before). This isolates the causal effect of the redesign by subtracting out time trends (e.g., seasonal effects, economic conditions) that affect all stores equally. Propensity Score Matching (option C) is also valid and commonly used, but DiD is preferred when you have panel data (same stores observed before and after). Regression Discontinuity (option D) is appropriate here if stores were assigned based on a budget score threshold — actually making it a plausible alternative. DiD is the most commonly used quasi-experimental method in business, used by economists to evaluate policy changes, pricing interventions, and product launches."
+        },
+        {
+            "id": "d63q05",
+            "type": "multiple_choice",
+            "question": "A counterfactual question asks: 'Would this customer have churned if we had NOT sent the cancellation-prevention email?' Why can't a standard supervised learning model answer this question directly?",
+            "options": [
+                "Supervised learning models cannot make predictions about future events — they only describe historical patterns",
+                "The fundamental problem of causal inference: for each customer, we can only observe one potential outcome (they either received the email or they didn't) — we never observe what would have happened under the alternative treatment, so there is no ground truth label for the counterfactual",
+                "Standard models lack sufficient training data because counterfactual scenarios are rare in real-world datasets",
+                "Supervised learning requires the target variable to be binary, but churn outcomes are continuous probabilities"
+            ],
+            "answer": 1,
+            "explanation": "This is the Fundamental Problem of Causal Inference (Rubin's Potential Outcomes Framework): for customer Alice who received the email and did NOT churn, we cannot observe what would have happened if she had not received the email. We only observe one timeline. This means we cannot directly compute Individual Treatment Effect (ITE). Standard ML trains on observed labels — it cannot learn counterfactuals because the counterfactual outcome was never observed. Causal methods (propensity scoring, double ML, causal forests) estimate these counterfactual outcomes by carefully comparing similar treated vs. untreated customers, accounting for selection bias. This distinction is why causal inference is more complex — and more valuable — than standard prediction."
+        }
+    ]
+}

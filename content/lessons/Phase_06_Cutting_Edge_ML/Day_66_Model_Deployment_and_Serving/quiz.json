@@ -1,0 +1,70 @@
+{
+    "day": 66,
+    "questions": [
+        {
+            "id": "d66q01",
+            "type": "multiple_choice",
+            "question": "A credit card fraud detection system must decide within 200ms whether to approve or decline a transaction. Which serving pattern is required, and why?",
+            "options": [
+                "Batch serving — run fraud checks nightly and flag suspicious accounts for human review the next morning",
+                "Real-time serving via REST API — the fraud model must be called synchronously at transaction time, receive features (merchant, amount, location, velocity), and return a fraud score within the payment processing window before the transaction completes",
+                "Serverless inference — deploy the model as a Lambda function triggered by each transaction event, which introduces too much cold start latency for sub-200ms requirements",
+                "Edge deployment — run the fraud model on the payment terminal device to eliminate network latency entirely"
+            ],
+            "answer": 1,
+            "explanation": "Real-time serving is mandatory when a prediction must influence an in-progress user action. Fraud detection requires: (1) Synchronous call — the payment gateway waits for the fraud score before approving, (2) Sub-200ms latency — Visa's network has strict SLAs, (3) Stateless API — each request is independent with all features in the payload. Batch serving (option A) would mean approving all transactions then flagging fraud afterward — too late, money is already moved. Serverless (option C) has cold start latency (100-500ms) making it marginal for this SLA. Real-time REST APIs with models loaded in memory (FastAPI + Uvicorn) easily achieve <50ms for tabular models. Visa processes 65,000 transactions per second using real-time ML."
+        },
+        {
+            "id": "d66q02",
+            "type": "multiple_choice",
+            "question": "Your data team wants to generate personalized product recommendations for 10 million users to include in tomorrow morning's email campaign. Which serving pattern is most appropriate?",
+            "options": [
+                "Real-time API serving — trigger recommendations when users open their email client to ensure freshness",
+                "Batch serving — run the recommendation model overnight on all 10 million users, store results in a database, and retrieve pre-computed recommendations at email send time without any model inference at send time",
+                "Canary deployment — send recommendations to 5% of users first and measure click-through before sending to all 10 million",
+                "Streaming inference — process each user in a Kafka stream as they become active during the day"
+            ],
+            "answer": 1,
+            "explanation": "Batch serving is ideal when: (1) Predictions are needed for a fixed, known set of items (all 10M users), (2) Freshness requirements are hours, not milliseconds, (3) Computation cost favors pre-computing vs. on-demand. Running the recommendation model overnight produces a 'recommendation table' (user_id → [item_1, item_2, ...]) stored in a fast key-value store (Redis, DynamoDB). Email send just queries pre-computed results — zero model inference latency at send time. Real-time inference for 10M email recipients simultaneously would overwhelm any API serving infrastructure. Batch ML jobs at Google, Netflix, and Spotify generate billions of pre-computed recommendations daily during off-peak hours."
+        },
+        {
+            "id": "d66q03",
+            "type": "multiple_choice",
+            "question": "A team says their ML model works perfectly on their laptop but fails when deployed to production. How does Docker solve this problem, and what is the core principle behind it?",
+            "options": [
+                "Docker compresses the model file for faster network transfer to production servers",
+                "Docker packages the entire runtime environment (OS libraries, Python version, pip packages, model artifacts, FastAPI server code) into a portable container image — 'shipping your machine' so the exact environment that works locally is reproduced identically in production, staging, and any cloud provider",
+                "Docker is a cloud service that automatically scales ML APIs based on request volume, eliminating the need for DevOps engineers",
+                "Docker converts Python models to compiled binaries for 10x faster inference in production"
+            ],
+            "answer": 1,
+            "explanation": "'It works on my machine' is the classic deployment failure. The root cause: environment differences. Your laptop has Python 3.11, numpy 1.26, scikit-learn 1.4, and CUDA 11.8. Production has Python 3.9, numpy 1.23, and no GPU. Docker solves this with containerization: a Dockerfile specifies the exact base image (python:3.11-slim), pip packages (requirements.txt with pinned versions), and application code. Building creates an immutable image. Running the image creates a container with an identical environment everywhere — local, CI/CD, AWS, GCP, on-premise. This is why Docker adoption in ML teams jumped from 15% (2019) to 78% (2023) — reproducible deployments became non-negotiable for production ML."
+        },
+        {
+            "id": "d66q04",
+            "type": "multiple_choice",
+            "question": "What is a Canary Deployment, and why is it the safest approach when rolling out a new version of a high-stakes ML model like a loan approval system?",
+            "options": [
+                "A Canary Deployment is a backup deployment that activates only if the primary model fails — it is a disaster recovery strategy",
+                "A Canary Deployment routes a small percentage (e.g., 5%) of live traffic to the new model version while 95% still uses the old model — if the new model shows degraded performance or unexpected behavior, only 5% of users are affected, and you can roll back instantly before full rollout",
+                "A Canary Deployment tests the model on synthetic 'canary' users who have agreed to receive experimental AI decisions",
+                "A Canary Deployment runs both model versions in parallel and always serves the more conservative (lower-risk) prediction to customers"
+            ],
+            "answer": 1,
+            "explanation": "Named after the 'canary in a coal mine,' canary deployments detect problems before they affect all users. For a loan approval model: new model v2 gets 5% of applicants. If v2 has a bug (e.g., approving high-risk loans at twice the rate), you catch it with 5% blast radius instead of 100%. Monitoring during canary phase: approval rates by risk segment, model latency, error rates, business KPIs (default rates if observable). Tools: Nginx weighted routing, Kubernetes traffic splitting, AWS CodeDeploy, Istio. Compare to Blue-Green deployment (100% instant switchover — less safe for models). Canary is standard practice at Amazon, Netflix, and any company where model errors have financial consequences."
+        },
+        {
+            "id": "d66q05",
+            "type": "multiple_choice",
+            "question": "When should you choose serverless inference (AWS Lambda, Google Cloud Functions) over a persistent FastAPI server for an ML model?",
+            "options": [
+                "Always choose serverless — it is cheaper and faster than maintaining a persistent server for any ML use case",
+                "Choose serverless when traffic is sporadic and unpredictable (e.g., a nightly report that calls the model 100 times then goes quiet for 23 hours) — serverless scales to zero, eliminating idle compute costs; choose persistent servers for high-throughput, latency-sensitive APIs where cold start delay is unacceptable",
+                "Choose serverless only for models smaller than 100MB — larger models cannot fit in Lambda's memory limit",
+                "Serverless is only appropriate for preprocessing pipelines, not for actual model inference"
+            ],
+            "answer": 1,
+            "explanation": "Serverless excels at bursty, infrequent traffic: scale to zero (pay nothing when idle), instant scale-up for bursts, no server management. Tradeoffs: cold start latency (100-500ms for Python runtime initialization + model loading), memory limits (AWS Lambda: up to 10GB RAM, 15-minute timeout), and stateless execution. Use serverless for: nightly batch triggers, webhook handlers, low-volume APIs (<100 req/min), event-driven inference. Use persistent servers (FastAPI + ECS/Kubernetes) for: real-time fraud detection, recommendation APIs, any use case requiring <100ms latency, GPU-based models, or sustained high throughput. The business decision: persistent server costs $500/month idle; serverless costs $0 idle but $X per 1M invocations."
+        }
+    ]
+}

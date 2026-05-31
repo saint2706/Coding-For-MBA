@@ -1,0 +1,70 @@
+{
+    "day": 68,
+    "questions": [
+        {
+            "id": "d68q01",
+            "type": "multiple_choice",
+            "question": "What is the ReAct (Reason + Act) pattern for AI agents, and why is it more reliable than asking an LLM to answer a multi-step question in a single prompt?",
+            "options": [
+                "ReAct stands for Recursive + Actionable — it breaks complex prompts into sub-prompts and combines their outputs automatically",
+                "ReAct interleaves Thought (reasoning about what to do next), Action (calling a tool), and Observation (reading the result) in a loop — this grounds the agent's reasoning in real external data at each step, preventing hallucination and enabling complex multi-step tasks that single-prompt approaches cannot reliably solve",
+                "ReAct is a React.js framework for building AI agent user interfaces — it separates agent logic from the UI layer",
+                "ReAct is a method for training LLMs with reinforcement learning, using human feedback as the reward signal"
+            ],
+            "answer": 1,
+            "explanation": "Single-prompt LLMs hallucinate when asked multi-step questions requiring real data: 'What is AAPL's current P/E ratio compared to the sector average?' The model guesses from training data (stale). ReAct solves this: Thought: 'I need current AAPL price and earnings' → Action: search_web('AAPL stock P/E ratio') → Observation: 'AAPL P/E = 32.4' → Thought: 'Now I need sector average' → Action: search_web('Technology sector P/E average 2025') → Observation: '28.7' → Final Answer: 'AAPL P/E of 32.4 is 13% above the tech sector average of 28.7.' Each step is grounded in fresh data. This is why production AI agents (AutoGPT, LangChain agents, Claude with tools) use ReAct — reliability requires anchoring reasoning to verified observations."
+        },
+        {
+            "id": "d68q02",
+            "type": "multiple_choice",
+            "question": "When using OpenAI Function Calling (or Claude's tool use), what is the LLM's role vs. the developer's role?",
+            "options": [
+                "The LLM executes the function code directly on its own compute infrastructure; the developer only defines the function signature",
+                "The LLM decides WHICH function to call and WITH WHAT arguments based on the conversation context; the developer writes the actual function code and executes it — the LLM never runs code, it only produces a structured JSON specification of the desired tool call that the developer's code then executes",
+                "The developer provides candidate answers for the LLM to choose between; the LLM selects the most accurate answer using its internal knowledge",
+                "Function calling is only available for OpenAI models — Anthropic and Google models cannot call external functions"
+            ],
+            "answer": 1,
+            "explanation": "This is a critical architectural distinction. When you provide tools to an LLM: (1) Developer defines tool schemas (name, description, parameter types), (2) User sends a message, (3) LLM decides if a tool call is needed and returns a structured JSON: {'function': 'get_stock_price', 'arguments': {'ticker': 'AAPL'}}, (4) Developer's code receives this JSON, executes the actual function (API call, database query, calculation), and returns the result to the LLM, (5) LLM incorporates the observation and continues reasoning. The LLM is the 'brain' choosing what to do; your code is the 'hands' doing it. The LLM has no internet access, cannot make API calls, and cannot execute code — it only generates text that specifies desired actions."
+        },
+        {
+            "id": "d68q03",
+            "type": "multiple_choice",
+            "question": "You build an AI agent to handle customer support tickets. The agent can: search the knowledge base, look up order status, process refunds, and escalate to humans. What is the most important safety constraint to implement?",
+            "options": [
+                "Limit the agent to 5 tool calls per conversation to prevent infinite loops",
+                "Require human approval before any irreversible actions (like processing refunds or cancellations) — read-only actions (knowledge base search, order lookup) can run autonomously, but write actions that affect real customer accounts or financial systems should have a human-in-the-loop confirmation step",
+                "Use the smallest LLM possible for customer support to minimize API costs — smaller models make fewer errors",
+                "Log all agent actions to a database but allow the agent to operate fully autonomously to maximize throughput"
+            ],
+            "answer": 1,
+            "explanation": "The key agent safety principle: separate read (reversible, low-risk) from write (irreversible, high-risk) operations. An agent searching the knowledge base or checking order status carries negligible risk — if it makes a mistake, it just misses information. An agent processing a refund, cancelling a subscription, or modifying account details takes irreversible real-world actions. Best practice: implement a 'human-in-the-loop' gate for write operations. Show the agent's proposed action ('I plan to issue a $89.99 refund to order #12345') and require explicit approval. This pattern is used by Intercom, Zendesk, and Salesforce's AI agents. Fully autonomous write actions require extensive testing, tight permission scopes, and robust rollback mechanisms before deployment."
+        },
+        {
+            "id": "d68q04",
+            "type": "multiple_choice",
+            "question": "What is the key challenge of multi-agent systems where multiple AI agents collaborate on a task, compared to single-agent systems?",
+            "options": [
+                "Multi-agent systems require more API tokens per task — the main challenge is cost optimization",
+                "Multi-agent systems introduce coordination challenges: agents can give conflicting instructions to each other, error propagation across agents compounds small mistakes into large failures, and debugging becomes exponentially harder since you must trace decisions across multiple agents' reasoning chains",
+                "Multi-agent systems are simply parallel single agents — there are no unique challenges beyond scaling infrastructure",
+                "The main challenge is that multiple agents always reach the same conclusion through consensus, limiting the diversity of solutions they can generate"
+            ],
+            "answer": 1,
+            "explanation": "Multi-agent systems unlock parallelism and specialization (a research agent + writing agent + fact-checking agent), but introduce unique failure modes: (1) Error amplification — Agent A misinterprets data and passes the wrong summary to Agent B, which builds a flawed analysis, which Agent C uses for a recommendation — small early errors cascade. (2) Conflicting instructions — two planning agents propose incompatible actions simultaneously. (3) Circular dependencies — Agent A waits for Agent B which waits for Agent A. (4) Debugging complexity — tracing why a final output is wrong requires reconstructing the full chain of agent decisions. Frameworks like LangGraph, AutoGen, and CrewAI provide orchestration patterns (supervisor, peer-to-peer, hierarchical) to manage these challenges."
+        },
+        {
+            "id": "d68q05",
+            "type": "multiple_choice",
+            "question": "Your company wants to use an AI agent to automate competitive intelligence gathering — monitoring competitor websites, analyzing pricing changes, and summarizing insights weekly. What practical constraint makes this agent more complex than it initially appears?",
+            "options": [
+                "LLMs cannot read URLs — all web content must be manually converted to plain text before feeding to the agent",
+                "The agent must handle reliability challenges: websites change structure (breaking scrapers), some sites block bots (requiring rate limiting and fallbacks), content may be behind login walls, and the agent must distinguish factual changes from SEO-optimized noise — robust agents require error handling, retry logic, source validation, and human review of low-confidence findings",
+                "Competitive intelligence is legally protected trade secret information — AI agents cannot legally access competitor public websites",
+                "The agent would need to be retrained weekly to incorporate new competitor information — without retraining, the LLM has stale knowledge"
+            ],
+            "answer": 1,
+            "explanation": "Building production-grade web agents reveals practical challenges beyond the happy path: (1) Web structure changes — a pricing table's HTML changes, your scraper breaks silently. (2) Anti-bot measures — competitors using Cloudflare return CAPTCHAs instead of price data. (3) Rate limiting — aggressive scraping gets your IP blocked. (4) Content quality — press releases ≠ factual claims; filtering signal from noise requires judgment. (5) Source attribution — the agent must track where each insight came from for auditability. (6) Freshness vs. accuracy — a website might not update for months, making 'no change' findings ambiguous. Production competitive intelligence agents at companies like Crayon and Klue address all these with fallback sources, human review queues, and confidence scoring."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 71,
+    "questions": [
+        {
+            "id": "d71q01",
+            "type": "multiple_choice",
+            "question": "What problem does Retrieval-Augmented Generation (RAG) solve that a standard LLM cannot address?",
+            "options": [
+                "RAG solves the hallucination problem entirely — an LLM with RAG will never generate false information",
+                "Standard LLMs have a training cutoff and cannot access private/proprietary data; RAG solves this by retrieving relevant documents from an external knowledge base at query time, grounding the LLM's response in current, domain-specific content that was never part of training",
+                "RAG makes LLMs faster by caching frequently asked questions and returning pre-computed answers",
+                "RAG replaces the need for fine-tuning — it teaches the model new skills by providing examples in the retrieved context"
+            ],
+            "answer": 1,
+            "explanation": "Standard LLMs have two fundamental limitations: (1) Knowledge cutoff — a model trained through 2024 cannot answer questions about 2025 events. (2) No private data access — GPT-4 cannot read your internal HR policies, sales contracts, or product documentation. RAG addresses both: at query time, the user's question is embedded into a vector, similar document chunks are retrieved from your vector database, and those chunks are injected into the LLM's prompt as context. The model answers based on the retrieved content, not just its weights. RAG is the standard architecture for enterprise LLM applications: customer support chatbots (retrieve from knowledge base), legal research tools (retrieve from case documents), and internal Q&A systems (retrieve from Confluence/Slack)."
+        },
+        {
+            "id": "d71q02",
+            "type": "multiple_choice",
+            "question": "What is a text embedding, and what geometric property makes it useful for semantic search?",
+            "options": [
+                "A text embedding is a compressed version of text that reduces storage requirements while preserving all original characters",
+                "A text embedding maps text to a dense numeric vector (e.g., 768 dimensions) in a space where semantically similar texts are geometrically close — 'unhappy customer' and 'dissatisfied client' map to nearby vectors (high cosine similarity), enabling semantic search that finds relevant content even without keyword overlap",
+                "A text embedding is an index structure that enables O(log n) exact keyword matching across millions of documents",
+                "A text embedding is a probability distribution over a vocabulary that represents word frequency in a document — similar to TF-IDF but computed by neural networks"
+            ],
+            "answer": 1,
+            "explanation": "Embedding models (BERT, Sentence Transformers, OpenAI text-embedding-3) encode text into high-dimensional vectors with a critical geometric property: semantic similarity corresponds to vector proximity. 'Revenue declined' and 'Sales decreased' land near each other in vector space even though they share no words. This enables semantic search: embed the query, find the closest document vectors (nearest neighbor search), retrieve those documents. Compare to keyword search (Elasticsearch, CTRL+F): searching for 'client satisfaction' misses documents about 'customer happiness.' In practice, embedding quality directly determines RAG quality — better embeddings = better retrieval = better final answers. Evaluation: use metrics like NDCG (ranking quality) and Hit Rate (did the right document appear in top-k results)."
+        },
+        {
+            "id": "d71q03",
+            "type": "multiple_choice",
+            "question": "Why do RAG systems chunk documents rather than embedding entire documents at once, and what is the tradeoff in chunk size?",
+            "options": [
+                "Chunking is required because embedding models have a maximum token limit (e.g., 512 tokens for many models) and cannot process longer texts; it is purely a technical constraint with no quality implications",
+                "Chunking splits documents into smaller pieces for embedding because: (1) embedding a full 50-page report produces one vector that averages out all topics, making retrieval imprecise; (2) smaller chunks enable retrieval of the specific section relevant to a query. Smaller chunks = more precise retrieval but risk losing surrounding context; larger chunks = more context but noisier embeddings — the optimal size depends on document structure",
+                "Chunking is an optimization technique that reduces vector database storage costs by deduplicating redundant content across documents",
+                "Chunking is only needed for very large documents (>100 pages) — short documents under 10 pages should always be embedded as a single unit"
+            ],
+            "answer": 1,
+            "explanation": "Chunking strategy is one of the most impactful RAG design decisions. Imagine embedding a 50-page annual report as one vector: a query about 'R&D spending' gets the single company vector, not the specific paragraph about R&D. By chunking into 200-500 token pieces, each chunk's embedding captures one specific topic. Tradeoffs: (1) Small chunks (50-100 tokens): very precise retrieval, but may miss context (a sentence mentioning 'costs' without surrounding explanation), (2) Large chunks (500-1000 tokens): more contextual, but the embedding averages many topics — 'what was the revenue?' might retrieve a chunk primarily about expenses that happens to mention revenue. Advanced approaches: recursive chunking (respect document structure), sliding window with overlap (each chunk shares context with neighbors), and semantic chunking (split at topic boundaries detected by embeddings)."
+        },
+        {
+            "id": "d71q04",
+            "type": "multiple_choice",
+            "question": "What is Approximate Nearest Neighbor (ANN) search, and why is it used in vector databases instead of exact nearest neighbor search for production RAG systems?",
+            "options": [
+                "ANN search is a newer algorithm that achieves exact nearest neighbor results — 'approximate' refers to the approximation of the distance metric, not the results",
+                "Exact nearest neighbor requires comparing a query vector to every document vector (O(n) complexity) — with 10 million documents, this takes seconds per query. ANN algorithms like HNSW and IVF trade a small accuracy loss (occasionally missing the #1 closest vector) for sub-millisecond search across millions of vectors, making production-scale semantic search feasible",
+                "ANN search is used because embedding vectors are probabilistic and exact distance comparisons are mathematically undefined",
+                "ANN is required for cosine similarity; exact nearest neighbor can only compute Euclidean distance"
+            ],
+            "answer": 1,
+            "explanation": "The scaling problem: exact nearest neighbor search computes the dot product between your query vector and every stored vector. At 10M documents × 768 dimensions, that's 7.68 billion float multiplications per query — taking 2-10 seconds on a CPU. Unacceptable for real-time RAG. ANN algorithms use data structures that dramatically prune the search space: (1) HNSW (Hierarchical Navigable Small World): a graph structure enabling greedy search in O(log n) time, (2) IVF (Inverted File Index): clusters vectors and only searches relevant clusters. Trade-off: occasionally the true nearest neighbor is in a cluster that wasn't searched — typically <1% accuracy loss. Pinecone, Weaviate, Chroma, and Qdrant all use ANN under the hood. In practice, retrieving the top-10 relevant chunks via ANN in 5ms is far more valuable than getting the exact top-10 in 5 seconds."
+        },
+        {
+            "id": "d71q05",
+            "type": "multiple_choice",
+            "question": "You build a RAG system for your company's legal contract database. Users ask questions and get answers, but the system frequently hallucinates contract terms that don't exist. What is the most likely root cause and fix?",
+            "options": [
+                "The LLM needs to be fine-tuned on legal language — the hallucinations are caused by the base model's lack of legal domain knowledge",
+                "Poor retrieval quality — the system is not finding the relevant contract clauses, so the LLM receives irrelevant context and fills gaps with hallucination; fix by improving embeddings (use a legal-domain embedding model), chunking strategy (preserve contract clause structure), and adding a re-ranking step to select the most relevant retrieved chunks",
+                "The vector database needs more memory — hallucinations occur when ANN search times out and returns random results",
+                "The chunking overlap is too large — overlapping chunks confuse the LLM by providing redundant context that triggers creative generation"
+            ],
+            "answer": 1,
+            "explanation": "In RAG systems, hallucinations are almost always a retrieval problem, not an LLM problem. If the retrieved context contains the correct answer, modern LLMs rarely hallucinate — they just quote the context. If retrieval fails (returns irrelevant clauses), the LLM has no relevant information and either says 'I don't know' (good behavior) or confidently invents an answer (hallucination). Diagnosis: evaluate retrieval quality independently — given 50 test questions with known correct source clauses, what fraction of the time does the retrieval find the right clause in top-3? Below 80% indicates a retrieval problem. Fixes: (1) Domain-specific embedding model (legal-BERT > general BERT for legal text), (2) Better chunking (split at clause boundaries, not fixed token counts), (3) Cross-encoder re-ranking (slow but accurate second-stage ranking), (4) Metadata filtering (only search clauses from the specific contract)."
+        }
+    ]
+}
