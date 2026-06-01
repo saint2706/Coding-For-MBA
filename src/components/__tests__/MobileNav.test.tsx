@@ -132,9 +132,9 @@ describe('MobileNav', () => {
     expect(notesLink).toHaveClass('active')
   })
 
-  it('sets "Notes" as active when on nested notes path', () => {
+  it('does not mark any tab active on non-nav path', () => {
     vi.mocked(useLocation).mockReturnValue({
-      pathname: '/notes/1',
+      pathname: '/lesson/1',
       search: '',
       hash: '',
       state: null,
@@ -142,13 +142,20 @@ describe('MobileNav', () => {
     } as Location)
 
     render(
-      <MemoryRouter initialEntries={['/notes/1']}>
+      <MemoryRouter initialEntries={['/lesson/1']}>
         <MobileNav />
       </MemoryRouter>,
     )
 
+    const homeLink = screen.getByText('Home').closest('a')
+    const learnLink = screen.getByText('Learn').closest('a')
+    const progressLink = screen.getByText('Progress').closest('a')
     const notesLink = screen.getByText('Notes').closest('a')
-    expect(notesLink).toHaveClass('active')
+
+    expect(homeLink).not.toHaveClass('active')
+    expect(learnLink).not.toHaveClass('active')
+    expect(progressLink).not.toHaveClass('active')
+    expect(notesLink).not.toHaveClass('active')
   })
 
   it('applies prefetch handlers to navigation links', () => {
