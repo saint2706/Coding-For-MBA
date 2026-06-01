@@ -99,7 +99,6 @@ export default function ProgressDashboard() {
     refreshDailyChallenge()
   }, [refreshDailyChallenge])
 
-
   const renderedHeatmapPhases = useMemo(
     () =>
       phases.map((phase) => {

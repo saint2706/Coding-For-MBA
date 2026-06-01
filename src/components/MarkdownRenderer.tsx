@@ -594,7 +594,8 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
 
     const title = questionMatch?.[2]?.trim() || ''
     const detailsNodeIndex = sectionNodes.findIndex(
-      (sectionNode: Content) => sectionNode?.type === 'html' && /<details[\s>]/i.test((sectionNode as Html).value),
+      (sectionNode: Content) =>
+        sectionNode?.type === 'html' && /<details[\s>]/i.test((sectionNode as Html).value),
     )
 
     const questionNodes =

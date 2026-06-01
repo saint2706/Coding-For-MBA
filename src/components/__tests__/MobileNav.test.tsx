@@ -50,7 +50,7 @@ describe('MobileNav', () => {
     expect(screen.getByText('Home')).toBeInTheDocument()
     expect(screen.getByText('Learn')).toBeInTheDocument()
     expect(screen.getByText('Progress')).toBeInTheDocument()
-    expect(screen.getByText('Explore')).toBeInTheDocument()
+    expect(screen.getByText('Notes')).toBeInTheDocument()
   })
 
   it('sets "Home" as active when on root path', () => {
@@ -113,9 +113,9 @@ describe('MobileNav', () => {
     expect(progressLink).toHaveClass('active')
   })
 
-  it('sets "Explore" as active when on concepts path', () => {
+  it('sets "Notes" as active when on notes path', () => {
     vi.mocked(useLocation).mockReturnValue({
-      pathname: '/concepts',
+      pathname: '/notes',
       search: '',
       hash: '',
       state: null,
@@ -123,18 +123,18 @@ describe('MobileNav', () => {
     } as Location)
 
     render(
-      <MemoryRouter initialEntries={['/concepts']}>
+      <MemoryRouter initialEntries={['/notes']}>
         <MobileNav />
       </MemoryRouter>,
     )
 
-    const exploreLink = screen.getByText('Explore').closest('a')
-    expect(exploreLink).toHaveClass('active')
+    const notesLink = screen.getByText('Notes').closest('a')
+    expect(notesLink).toHaveClass('active')
   })
 
-  it('sets "Explore" as active when on a lesson path', () => {
+  it('sets "Notes" as active when on nested notes path', () => {
     vi.mocked(useLocation).mockReturnValue({
-      pathname: '/lesson/1',
+      pathname: '/notes/1',
       search: '',
       hash: '',
       state: null,
@@ -142,13 +142,13 @@ describe('MobileNav', () => {
     } as Location)
 
     render(
-      <MemoryRouter initialEntries={['/lesson/1']}>
+      <MemoryRouter initialEntries={['/notes/1']}>
         <MobileNav />
       </MemoryRouter>,
     )
 
-    const exploreLink = screen.getByText('Explore').closest('a')
-    expect(exploreLink).toHaveClass('active')
+    const notesLink = screen.getByText('Notes').closest('a')
+    expect(notesLink).toHaveClass('active')
   })
 
   it('applies prefetch handlers to navigation links', () => {
@@ -175,7 +175,7 @@ describe('MobileNav', () => {
     const progressLink = screen.getByText('Progress').closest('a')
     expect(progressLink).toHaveAttribute('data-prefetch-route', '/progress')
 
-    const exploreLink = screen.getByText('Explore').closest('a')
-    expect(exploreLink).toHaveAttribute('data-prefetch-route', '/concepts')
+    const notesLink = screen.getByText('Notes').closest('a')
+    expect(notesLink).toHaveAttribute('data-prefetch-route', '/notes')
   })
 })
