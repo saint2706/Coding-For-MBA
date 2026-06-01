@@ -5,7 +5,7 @@
  * to main sections of the application.
  */
 
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
 /**
@@ -21,9 +21,6 @@ import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
  * @returns {JSX.Element} The rendered mobile navigation bar.
  */
 export default function MobileNav() {
-  const location = useLocation()
-  const isLesson = location.pathname.startsWith('/lesson/')
-
   return (
     <nav className="mobile-nav" aria-label="Mobile navigation">
       <NavLink
@@ -79,10 +76,10 @@ export default function MobileNav() {
         <span>Progress</span>
       </NavLink>
       <NavLink
-        to="/concepts"
-        className={({ isActive }) => `mobile-nav-item ${isActive || isLesson ? 'active' : ''}`}
-        aria-label="Explore"
-        {...createRoutePrefetchHandlers('/concepts')}
+        to="/notes"
+        className={({ isActive }) => `mobile-nav-item ${isActive ? 'active' : ''}`}
+        aria-label="Notes"
+        {...createRoutePrefetchHandlers('/notes')}
       >
         <svg
           viewBox="0 0 24 24"
@@ -91,10 +88,10 @@ export default function MobileNav() {
           strokeWidth="2"
           aria-hidden="true"
         >
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 2v4m0 12v4m-7.07-2.93l2.83-2.83m8.48-8.48l2.83-2.83M2 12h4m12 0h4m-2.93 7.07l-2.83-2.83M6.76 6.76L3.93 3.93" />
+          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5" />
+          <path d="M17.586 3.586a2 2 0 112.828 2.828L12 15l-4 1 1-4 8.586-8.414z" />
         </svg>
-        <span>Explore</span>
+        <span>Notes</span>
       </NavLink>
     </nav>
   )

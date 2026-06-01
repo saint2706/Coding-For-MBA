@@ -178,10 +178,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               onClick={onClose}
             />
             <PrimaryItem
-              to="/concepts"
-              active={location.pathname === '/concepts'}
-              glyph="◈"
-              label="concept map"
+              to="/notes"
+              active={location.pathname === '/notes'}
+              glyph="✎"
+              label="notes"
+              onClick={onClose}
+            />
+            <PrimaryItem
+              to="/settings"
+              active={location.pathname === '/settings'}
+              glyph="⚙"
+              label="settings"
               onClick={onClose}
             />
             <PrimaryItem

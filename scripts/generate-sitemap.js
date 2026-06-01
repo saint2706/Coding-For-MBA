@@ -75,7 +75,8 @@ const urls = [
   { loc: `${BASE_URL}/#/curriculum`, priority: '0.8', changefreq: 'monthly', lastmod: today },
   { loc: `${BASE_URL}/#/exercises`, priority: '0.7', changefreq: 'monthly', lastmod: today },
   { loc: `${BASE_URL}/#/progress`, priority: '0.5', changefreq: 'daily', lastmod: today },
-  { loc: `${BASE_URL}/#/concepts`, priority: '0.6', changefreq: 'monthly', lastmod: today },
+  { loc: `${BASE_URL}/#/notes`, priority: '0.5', changefreq: 'daily', lastmod: today },
+  { loc: `${BASE_URL}/#/settings`, priority: '0.4', changefreq: 'monthly', lastmod: today },
   { loc: `${BASE_URL}/#/stats`, priority: '0.4', changefreq: 'monthly', lastmod: today },
   { loc: `${BASE_URL}/#/review`, priority: '0.5', changefreq: 'daily', lastmod: today },
 ]

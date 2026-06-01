@@ -25,7 +25,6 @@ import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
-import { useUserPreferencesStore, type ColorPalette } from '../stores/userPreferencesStore'
 import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
 import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
 import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
@@ -100,24 +99,6 @@ export default function ProgressDashboard() {
     refreshDailyChallenge()
   }, [refreshDailyChallenge])
 
-  const {
-    palette,
-    sidebarDefaultOpen,
-    fontSize,
-    codeLanguage,
-    density,
-    readingMode,
-    readingComfortTheme,
-    customCursorEnabled,
-    setPalette,
-    setSidebarDefaultOpen,
-    setFontSize,
-    setCodeLanguage,
-    setDensity,
-    setReadingMode,
-    setReadingComfortTheme,
-    setCustomCursorEnabled,
-  } = useUserPreferencesStore()
 
   const renderedHeatmapPhases = useMemo(
     () =>
@@ -401,190 +382,15 @@ export default function ProgressDashboard() {
         </svg>
       </section>
 
-      <section className="preferences-card" aria-labelledby="preferences-heading">
-        <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
-          <h2 id="preferences-heading">Preferences</h2>
-          <p>Customize your learning experience. Settings are saved automatically.</p>
+      <div className="settings-callout glass-card">
+        <div>
+          <strong>Preferences</strong>
+          <p>Customize palette, font size, reading mode, and more.</p>
         </div>
-
-        <div className="preferences-grid">
-          <div className="preferences-field preferences-field--palette">
-            Color palette
-            <div className="palette-grid" role="radiogroup" aria-label="Color palette">
-              {(
-                [
-                  {
-                    id: 'peach-sorbet',
-                    label: 'Peach Sorbet',
-                    swatches: ['#f08080', '#f4978e', '#f8ad9d', '#fbc4ab', '#ffdab9'],
-                  },
-                  {
-                    id: 'gradient-blues',
-                    label: 'Gradient Blues',
-                    swatches: ['#7400b8', '#5e60ce', '#48bfe3', '#72efdd', '#80ffdb'],
-                  },
-                  {
-                    id: 'neon-party',
-                    label: 'Neon Party',
-                    swatches: ['#00ccff', '#00ffcc', '#ffff00', '#ff00cc', '#cc00ff'],
-                  },
-                  {
-                    id: 'deep-ocean-blue',
-                    label: 'Deep Ocean Blue',
-                    swatches: ['#006466', '#0b525b', '#212f45', '#312244', '#4d194d'],
-                  },
-                  {
-                    id: 'pastel-dreamland',
-                    label: 'Pastel Dreamland',
-                    swatches: ['#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff'],
-                  },
-                  {
-                    id: 'golden-summer-fields',
-                    label: 'Golden Summer Fields',
-                    swatches: ['#ccd5ae', '#e9edc9', '#fefae0', '#faedcd', '#d4a373'],
-                  },
-                  {
-                    id: 'light-steel',
-                    label: 'Light Steel',
-                    swatches: ['#f8f9fa', '#ced4da', '#adb5bd', '#6c757d', '#212529'],
-                  },
-                ] as { id: ColorPalette; label: string; swatches: string[] }[]
-              ).map(({ id, label, swatches }) => (
-                <button
-                  key={id}
-                  type="button"
-                  role="radio"
-                  aria-checked={palette === id}
-                  className={`palette-swatch-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2${palette === id ? ' palette-swatch-btn--active' : ''}`}
-                  onClick={() => setPalette(id)}
-                  title={label}
-                  aria-label={label}
-                >
-                  <span className="palette-swatch-strip" aria-hidden="true">
-                    {swatches.map((color) => (
-                      <span
-                        key={color}
-                        className="palette-swatch-color"
-                        style={{ background: color }}
-                      />
-                    ))}
-                  </span>
-                  <span className="palette-swatch-name">{label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <label className="preferences-field" htmlFor="font-size-preference">
-            Font size
-            <select
-              id="font-size-preference"
-              value={fontSize}
-              onChange={(event) => setFontSize(event.target.value as 'sm' | 'md' | 'lg')}
-              aria-label="Font size"
-            >
-              <option value="sm">Small</option>
-              <option value="md">Medium</option>
-              <option value="lg">Large</option>
-            </select>
-          </label>
-
-          <label className="preferences-field" htmlFor="density-preference">
-            Layout density
-            <select
-              id="density-preference"
-              value={density}
-              onChange={(event) => setDensity(event.target.value as 'comfortable' | 'compact')}
-              aria-label="Layout density"
-            >
-              <option value="comfortable">Comfortable</option>
-              <option value="compact">Compact</option>
-            </select>
-          </label>
-
-          <label className="preferences-field" htmlFor="code-language-preference">
-            Code language
-            <select
-              id="code-language-preference"
-              value={codeLanguage}
-              onChange={(event) => setCodeLanguage(event.target.value as 'python' | 'sql')}
-              aria-label="Preferred code language"
-            >
-              <option value="python">Python</option>
-              <option value="sql">SQL</option>
-            </select>
-          </label>
-
-          <label className="preferences-field preferences-toggle" htmlFor="sidebar-default-open">
-            Sidebar default
-            <span className="preferences-toggle-row">
-              <input
-                id="sidebar-default-open"
-                type="checkbox"
-                checked={sidebarDefaultOpen}
-                onChange={(event) => setSidebarDefaultOpen(event.target.checked)}
-                aria-describedby="sidebar-default-help"
-              />
-              Open sidebar on new pages
-            </span>
-            <small id="sidebar-default-help">You can still toggle the sidebar anytime.</small>
-          </label>
-
-          <label className="preferences-field preferences-toggle" htmlFor="reading-mode-default">
-            Reading mode
-            <span className="preferences-toggle-row">
-              <input
-                id="reading-mode-default"
-                type="checkbox"
-                checked={readingMode}
-                onChange={(event) => setReadingMode(event.target.checked)}
-                aria-describedby="reading-mode-help"
-              />
-              Start lessons in reading mode
-            </span>
-            <small id="reading-mode-help">
-              Focus on lesson text with reduced interface chrome.
-            </small>
-          </label>
-
-          <label
-            className="preferences-field preferences-toggle"
-            htmlFor="reading-comfort-theme-default"
-          >
-            Reading comfort theme
-            <span className="preferences-toggle-row">
-              <input
-                id="reading-comfort-theme-default"
-                type="checkbox"
-                checked={readingComfortTheme}
-                onChange={(event) => setReadingComfortTheme(event.target.checked)}
-                aria-describedby="reading-comfort-theme-help"
-              />
-              Apply the softer reading palette in reading mode
-            </span>
-            <small id="reading-comfort-theme-help">
-              Keeps your selected palette for the rest of the app.
-            </small>
-          </label>
-
-          <label className="preferences-field preferences-toggle" htmlFor="custom-cursor-enabled">
-            Custom cursor
-            <span className="preferences-toggle-row">
-              <input
-                id="custom-cursor-enabled"
-                type="checkbox"
-                checked={customCursorEnabled}
-                onChange={(event) => setCustomCursorEnabled(event.target.checked)}
-                aria-describedby="custom-cursor-help"
-              />
-              Enable enhanced pointer effects on desktop
-            </span>
-            <small id="custom-cursor-help">
-              Disabled by default for a calmer reading experience.
-            </small>
-          </label>
-        </div>
-      </section>
+        <Link to="/settings" className="continue-banner-cta">
+          Open Settings
+        </Link>
+      </div>
 
       {/* Heatmap Grid */}
       <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>

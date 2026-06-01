@@ -31,7 +31,8 @@ const SearchResults = lazy(() => import('./pages/SearchResults'))
 const ProgressDashboard = lazy(() => import('./pages/ProgressDashboard'))
 const Exercises = lazy(() => import('./pages/Exercises'))
 const NotebookViewer = lazy(() => import('./pages/NotebookViewer'))
-const ConceptGraphPage = lazy(() => import('./pages/ConceptGraphPage'))
+const NotesPage = lazy(() => import('./pages/NotesPage'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage'))
 const ContentStats = lazy(() => import('./pages/ContentStats'))
 const Review = lazy(() => import('./pages/Review'))
 const CaseStudies = lazy(() => import('./pages/CaseStudies'))
@@ -103,7 +104,8 @@ export default function App() {
               <Route path="/exercises" element={<Exercises />} />
               <Route path="/solutions/:phaseNum" element={<NotebookViewer />} />
               <Route path="/search" element={<SearchResults />} />
-              <Route path="/concepts" element={<ConceptGraphPage />} />
+              <Route path="/notes" element={<NotesPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
               <Route path="/stats" element={<ContentStats />} />
               <Route path="/review" element={<Review />} />
               <Route path="/case-studies" element={<CaseStudies />} />

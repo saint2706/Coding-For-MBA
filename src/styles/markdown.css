@@ -255,6 +255,8 @@
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
+  flex-shrink: 0;
+  overflow: visible;
 }
 
 .code-block-copy {

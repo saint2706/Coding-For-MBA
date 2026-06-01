@@ -23,7 +23,8 @@ const routePrefetchers: Array<{ match: (path: string) => boolean; load: () => Pr
       load: () => import('../pages/NotebookViewer'),
     },
     { match: (path) => path === '/search', load: () => import('../pages/SearchResults') },
-    { match: (path) => path === '/concepts', load: () => import('../pages/ConceptGraphPage') },
+    { match: (path) => path === '/notes', load: () => import('../pages/NotesPage') },
+    { match: (path) => path === '/settings', load: () => import('../pages/SettingsPage') },
     { match: (path) => path === '/stats', load: () => import('../pages/ContentStats') },
     { match: (path) => path === '/review', load: () => import('../pages/Review') },
   ]

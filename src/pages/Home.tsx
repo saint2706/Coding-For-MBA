@@ -10,7 +10,7 @@
  * a workstation, not a marketing page.
  */
 
-import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
 import { buildWebSiteSchema, buildCourseSchema, buildProductSchema } from '../utils/seoSchemas'
@@ -27,9 +27,7 @@ import { useGamificationStore } from '../stores/gamificationStore'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import EditorialCover from '../components/EditorialCover'
 import TerminalDashboard from '../components/TerminalDashboard'
-import MapListToggle from '../components/MapListToggle'
 
-const ConceptGraph = lazy(() => import('../components/ConceptGraph'))
 
 function pad(n: number, width = 2): string {
   return String(n).padStart(width, '0')
@@ -296,32 +294,11 @@ export default function Home() {
           <h2 className="section-headline display-headline">The path</h2>
           <p className="section-lede">
             From the first variable assignment to a production data pipeline. Walk it linearly, or
-            jump in via the concept map.
+            jump in wherever you need.
           </p>
         </header>
 
-        <MapListToggle defaultActive="phases" ariaLabel="Switch curriculum view">
-          <MapListToggle.View label="phases" glyph="▣">
-            <div className="phases-grid-editorial">{renderedPhases}</div>
-          </MapListToggle.View>
-          <MapListToggle.View label="map" glyph="◈">
-            <div className="map-view-frame">
-              <Suspense
-                fallback={
-                  <div className="page-loader">
-                    <div className="page-loader-spinner" />
-                  </div>
-                }
-              >
-                <ConceptGraph />
-              </Suspense>
-              <p className="map-view-caption">
-                Each node is a concept; edges are prerequisites. Click any node to jump to the
-                lesson that introduces it. Drag to rearrange.
-              </p>
-            </div>
-          </MapListToggle.View>
-        </MapListToggle>
+        <div className="phases-grid-editorial">{renderedPhases}</div>
       </section>
     </div>
   )

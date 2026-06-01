@@ -145,12 +145,12 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
               Curriculum
             </Link>
             <Link
-              to="/concepts"
-              className={location.pathname === '/concepts' ? 'active' : ''}
-              aria-current={location.pathname === '/concepts' ? 'page' : undefined}
-              {...createRoutePrefetchHandlers('/concepts')}
+              to="/notes"
+              className={location.pathname === '/notes' ? 'active' : ''}
+              aria-current={location.pathname === '/notes' ? 'page' : undefined}
+              {...createRoutePrefetchHandlers('/notes')}
             >
-              Map
+              Notes
             </Link>
             <Link
               to="/progress"
