@@ -49,7 +49,15 @@ function SettingsSection({ title, children }: { title: string; children: React.R
   )
 }
 
-function SettingsRow({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
+function SettingsRow({
+  label,
+  hint,
+  children,
+}: {
+  label: string
+  hint?: string
+  children: React.ReactNode
+}) {
   return (
     <div className="settings-row">
       <div className="settings-row-label">
@@ -116,7 +124,11 @@ export default function SettingsPage() {
               >
                 <span className="palette-swatch-strip" aria-hidden="true">
                   {swatches.map((color) => (
-                    <span key={color} className="palette-swatch-color" style={{ background: color }} />
+                    <span
+                      key={color}
+                      className="palette-swatch-color"
+                      style={{ background: color }}
+                    />
                   ))}
                 </span>
                 <span className="palette-swatch-name">{label}</span>
@@ -149,7 +161,10 @@ export default function SettingsPage() {
         </SettingsSection>
 
         <SettingsSection title="Reading">
-          <SettingsRow label="Reading mode" hint="Focus on lesson text with reduced interface chrome.">
+          <SettingsRow
+            label="Reading mode"
+            hint="Focus on lesson text with reduced interface chrome."
+          >
             <label className="settings-toggle">
               <input
                 type="checkbox"

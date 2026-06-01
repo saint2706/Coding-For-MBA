@@ -16,7 +16,15 @@ function formatRelative(ts: number): string {
   return `${days}d ago`
 }
 
-function NoteCard({ day, content, updatedAt }: { day: string; content: string; updatedAt: number }) {
+function NoteCard({
+  day,
+  content,
+  updatedAt,
+}: {
+  day: string
+  content: string
+  updatedAt: number
+}) {
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState(content)
   const setNote = useNotesStore((s) => s.setNote)
@@ -130,7 +138,9 @@ export default function NotesPage() {
 
       {sorted.length === 0 ? (
         <div className="notes-empty glass-card">
-          <span className="notes-empty-glyph" aria-hidden="true">✎</span>
+          <span className="notes-empty-glyph" aria-hidden="true">
+            ✎
+          </span>
           <p>No notes yet.</p>
           <p className="notes-empty-hint">
             Open any lesson and use the note panel to jot something down.
