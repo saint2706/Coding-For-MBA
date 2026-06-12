@@ -65,3 +65,7 @@ actionlint
 
 # Coverage
 coverage/
+
+# Installed agent skills (local only)
+.agents/
+skills-lock.json
