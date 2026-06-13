@@ -227,6 +227,16 @@ tuple_size = sys.getsizeof((1, 2, 3, 4, 5))  #  80 bytes
 # This matters at scale (millions of records)
 ```
 
+**Why tuples are faster** comes down to how Python manages memory. When Python creates a tuple, it allocates exactly the right amount of memory for those elements and nothing more — the size is fixed at creation time. Lists, on the other hand, maintain an internal buffer of extra capacity so that future `.append()` calls can happen efficiently without constantly reallocating memory. You can see this directly:
+
+```python
+import sys
+print(sys.getsizeof([1, 2, 3]))    # 88 bytes  (list with extra buffer)
+print(sys.getsizeof((1, 2, 3)))    # 64 bytes  (tuple, exact fit)
+```
+
+In large-scale applications, this difference compounds quickly. If you store 10 million coordinate pairs (latitude, longitude) as lists, you pay for the list overhead on every single record; as tuples, you save hundreds of MB of RAM and get faster iteration because the CPU can load the data more efficiently. The key production rule: **if the data won't change, use a tuple — it's a signal to both Python and your team that this data is immutable by design**.
+
 ---
 
 ## Hands-on Lab
@@ -248,6 +258,17 @@ print(f"Name: {name}")
 print(f"Price: ${price:.2f}")
 print(f"Category: {category}")
 print(f"In Stock: {'Yes' if in_stock else 'No'}")
+```
+
+**Expected Output:**
+
+```text
+=== PRODUCT DETAILS ===
+SKU: SKU-001
+Name: Wireless Mouse
+Price: $29.99
+Category: Electronics
+In Stock: Yes
 ```
 
 ---
@@ -277,6 +298,13 @@ d2 = calculate_distance(warehouse, customer2)
 
 print(f"Distance to Customer 1: {d1:.2f} units")  # 5.00
 print(f"Distance to Customer 2: {d2:.2f} units")  # 10.00
+```
+
+**Expected Output:**
+
+```text
+Distance to Customer 1: 5.00 units
+Distance to Customer 2: 10.00 units
 ```
 
 ---
@@ -310,6 +338,17 @@ for record in records:
     total_revenue += record.revenue
 
 print(f"\nTotal Revenue: ${total_revenue:,.2f}")
+```
+
+**Expected Output:**
+
+```text
+=== SALES SUMMARY ===
+2024-01-15 | North | Widget |  100 units | $2,999.00
+2024-01-15 | South | Gadget |   75 units | $5,624.25
+2024-01-16 | North | Widget |  120 units | $3,598.80
+
+Total Revenue: $12,222.05
 ```
 
 ---
@@ -473,3 +512,16 @@ Continue in `sales_tracker_phase1.py` with immutable record modeling.
 **Measurable output**
 
 - Print one report line showing the latest tuple and whether orders are above/below average.
+
+---
+
+## Glossary
+
+- **Tuple**: An ordered, immutable sequence of values enclosed in parentheses `()`
+- **Immutable**: Cannot be changed after creation; any "change" creates a new object
+- **Packing**: Combining multiple values into a tuple (e.g., `point = (3, 4)`)
+- **Unpacking**: Extracting tuple values into separate variables (e.g., `x, y = point`)
+- **`namedtuple`**: A tuple subclass with named fields for improved readability
+- **Hashable**: Objects that can be used as dictionary keys or set elements; tuples are hashable, lists are not
+- **Memory footprint**: The amount of RAM an object occupies; tuples have a smaller footprint than equivalent lists
+- **Fixed-size collection**: A sequence whose length does not change after creation

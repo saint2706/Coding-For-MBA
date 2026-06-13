@@ -509,7 +509,9 @@ print("Final amount: $", round(final_amount, 2))
 
 ## Summary
 
-Today you learned:
+### Key Concepts Covered
+
+Day 1 establishes the mental model that separates effective programmers from copy-pasters: before touching the keyboard, you must think algorithmically. Algorithmic thinking means decomposing any business problem — pricing, reporting, approvals — into a precise, ordered sequence of steps that a machine can execute without ambiguity. You practiced this with pseudocode as a bridge between plain-English logic and valid Python. On the technical side, you wrote your first Python programs using `print()`, performed arithmetic with proper operator precedence, and learned the difference between the interactive REPL (for exploration) and saved `.py` script files (for repeatable work).
 
 - ✅ Algorithmic thinking means decomposing problems into ordered steps before coding
 - ✅ Pseudocode bridges your reasoning and Python code
@@ -520,4 +522,28 @@ Today you learned:
 - ✅ Scripts (`.py` files) allow you to save and rerun code
 - ✅ The REPL lets you experiment interactively
 
-**Tomorrow**: We'll learn how to store and manipulate data using **variables**—the building blocks of every program.
+### What's Coming Next
+
+**Tomorrow**: We'll learn how to store and manipulate data using **variables** — the building blocks of every program. Variables let your code remember information between steps, making it possible to build real, multi-step business calculations.
+
+---
+
+## Glossary
+
+**Algorithm**: A precise, ordered sequence of steps to solve a problem
+
+**Pseudocode**: Informal human-readable description of logic before writing real code
+
+**REPL (Read-Eval-Print Loop)**: Interactive Python shell where code is executed line by line
+
+**Script**: A `.py` file containing Python code that can be saved and re-executed
+
+**print()**: Built-in function that displays output to the screen
+
+**Comment**: Text after `#` that Python ignores; used to explain code to humans
+
+**Operator**: A symbol that performs an operation on values (e.g., `+`, `-`, `*`, `/`)
+
+**Decomposition**: Breaking a complex problem into smaller, manageable pieces
+
+**Abstraction**: Focusing only on relevant details and ignoring noise

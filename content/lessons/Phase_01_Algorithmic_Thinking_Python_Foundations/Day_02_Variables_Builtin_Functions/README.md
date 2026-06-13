@@ -182,6 +182,41 @@ def calculate_tax(amount: float, rate: float) -> float:
 # IDE can now warn you about type mismatches
 ```
 
+### Dynamic Typing: Power and Peril
+
+Python is **dynamically typed** — it "figures out" the type of a variable from the value you assign. This flexibility accelerates development but introduces a class of bugs that only appear at runtime, not at "compile time" like in Java or C++.
+
+**The production risk**: a type error in a business calculation can cause silent data corruption with no error message. Consider this example:
+
+```python
+# A value read from a CSV or API response arrives as a string
+monthly_revenue = "1000"   # looks like a number, is actually a string
+
+# This silently "works" — but produces wrong output
+annual_revenue = monthly_revenue * 12
+print(annual_revenue)  # "100010001000100010001000100010001000" ← string repetition!
+# No error raised. Your annual revenue report is now garbage.
+
+# Correct approach: validate type at the boundary
+monthly_revenue = int("1000")   # explicit conversion
+annual_revenue = monthly_revenue * 12
+print(annual_revenue)  # 12000 ← correct
+```
+
+**Production recommendations**:
+
+- Use **type hints** in function signatures (`amount: float`) to document intent
+- Use **`isinstance()` checks** at data boundaries (API inputs, CSV reads, user input) to catch wrong types early
+- Use **`mypy`** or **`pyright`** for static type analysis in larger codebases — these tools catch type mismatches before runtime
+
+```python
+# Defensive boundary check
+def calculate_commission(sales: float, rate: float) -> float:
+    if not isinstance(sales, (int, float)):
+        raise TypeError(f"sales must be a number, got {type(sales).__name__}")
+    return sales * rate
+```
+
 ---
 
 ## Hands-on Lab
@@ -206,6 +241,14 @@ print("Customer:", customer_name)
 print("ID:", customer_id)
 print("Annual Revenue: $", annual_revenue)
 print("Premium Status:", is_premium)
+```
+
+**Expected Output:**
+```text
+Customer: Sarah Chen
+ID: 10042
+Annual Revenue: $ 125000.0
+Premium Status: True
 ```
 
 ---
@@ -233,6 +276,14 @@ print("You Save: $", round(discount_amount, 2))
 print("Final Price: $", round(final_price, 2))
 ```
 
+**Expected Output:**
+```text
+Original Price: $ 299.99
+Discount: 15.0 %
+You Save: $ 45.0
+Final Price: $ 254.99
+```
+
 ---
 
 ### Exercise 3: Quick Stats Dashboard
@@ -256,6 +307,15 @@ print("Total:", "$" + str(total))
 print("Best Month:", "$" + str(best_month))
 print("Worst Month:", "$" + str(worst_month))
 print("Average:", "$" + str(average))
+```
+
+**Expected Output:**
+```text
+=== Q1 Sales Dashboard ===
+Total: $145500
+Best Month: $52000
+Worst Month: $45000
+Average: $48500.0
 ```
 
 ---
@@ -430,3 +490,31 @@ Build the starter for a single script named `sales_tracker_phase1.py` that you w
 **Measurable output**
 
 - Output exactly one KPI line that includes the store code and order count so you can compare later days against a visible baseline.
+
+---
+
+## Glossary
+
+**Variable**: A named container that stores a value in memory
+
+**Assignment (`=`)**: The operator that binds a value to a variable name
+
+**Data type**: The category of a value (int, float, str, bool)
+
+**`int`**: Integer type — whole numbers without a decimal point
+
+**`float`**: Floating-point type — numbers with decimal precision
+
+**`str`**: String type — text data enclosed in quotes
+
+**`bool`**: Boolean type — either `True` or `False`
+
+**Type conversion**: Explicitly converting a value from one type to another (e.g., `int("5")`)
+
+**Dynamic typing**: Python automatically infers the type of a variable from the assigned value
+
+**Built-in function**: A function provided by Python without needing any import (e.g., `len()`, `max()`)
+
+**`snake_case`**: Naming convention using lowercase letters and underscores (e.g., `total_revenue`)
+
+**`UPPER_SNAKE_CASE`**: Naming convention for constants (e.g., `TAX_RATE`)

@@ -156,6 +156,44 @@ daily_sales += 99  # Third sale
 print(daily_sales)  # 524
 ```
 
+### Bitwise Operators
+
+Bitwise operators work on individual bits of integers. You won't use them in everyday business scripting, but they appear in three important professional contexts:
+
+**1. Permissions and flags systems** — Linux file permissions use binary flags: `chmod 755` translates to binary `111 101 101`, encoding read/write/execute rights for owner, group, and others. Many APIs and databases use the same pattern to pack multiple boolean settings into a single integer field.
+
+**2. Data engineering** — Bit masking lets you store multiple boolean flags in one integer column, reducing storage costs dramatically on high-volume event tables.
+
+**3. Financial systems** — Fast parity checks and CRC checksums for data integrity use bitwise XOR (`^`).
+
+| Operator | Name         | Example    | Result |
+| -------- | ------------ | ---------- | ------ |
+| `&`      | Bitwise AND  | `6 & 3`    | `2`    |
+| `\|`     | Bitwise OR   | `6 \| 3`   | `7`    |
+| `^`      | Bitwise XOR  | `6 ^ 3`    | `5`    |
+| `~`      | Bitwise NOT  | `~6`       | `-7`   |
+| `<<`     | Left shift   | `1 << 3`   | `8`    |
+| `>>`     | Right shift  | `8 >> 2`   | `2`    |
+
+```python
+# Practical example: permissions bitmask
+# Define permission flags as powers of 2
+READ    = 0b001  # 1
+WRITE   = 0b010  # 2
+EXECUTE = 0b100  # 4
+
+# Grant a user read + write permissions
+user_permissions = READ | WRITE   # 0b011 = 3
+
+# Check if user has read permission
+can_read  = bool(user_permissions & READ)    # True
+can_write = bool(user_permissions & WRITE)   # True
+can_exec  = bool(user_permissions & EXECUTE) # False
+
+print(f"Read: {can_read}, Write: {can_write}, Execute: {can_exec}")
+# Read: True, Write: True, Execute: False
+```
+
 ### Operator Precedence
 
 Python evaluates operators in this order (highest to lowest):
@@ -276,6 +314,15 @@ print("====================")
 print("LOAN ELIGIBLE:", is_eligible)
 ```
 
+**Expected Output:**
+```text
+Revenue Requirement: True
+Experience Requirement: True
+Credit Requirement: True
+====================
+LOAN ELIGIBLE: True
+```
+
 ---
 
 ### Exercise 2: Tiered Commission Calculator
@@ -305,6 +352,13 @@ print("Rate:", rate * 100, "%")
 print("Commission: $", commission)
 ```
 
+**Expected Output:**
+```text
+Sales: $ 75000
+Rate: 7.000000000000001 %
+Commission: $ 5250.0
+```
+
 ---
 
 ### Exercise 3: Inventory Alert System
@@ -332,6 +386,18 @@ print("Low Stock:", is_low_stock)
 print("Out of Stock:", is_out_of_stock)
 print("Overstocked:", is_overstocked)
 print("NEEDS ATTENTION:", needs_attention)
+```
+
+**Expected Output:**
+```text
+=== INVENTORY ALERT ===
+Product: Widget Pro
+Quantity: 15
+-------------------------
+Low Stock: True
+Out of Stock: False
+Overstocked: False
+NEEDS ATTENTION: True
 ```
 
 ---
@@ -506,3 +572,29 @@ Continue in `sales_tracker_phase1.py` using yesterday's variables.
 **Measurable output**
 
 - Print one formatted report line: `"REPORT {report_label} | Revenue=$... | Anomaly=True/False"`.
+
+---
+
+## Glossary
+
+**Operator**: A symbol that performs a computation on one or more values
+
+**Arithmetic operator**: Performs math operations (`+`, `-`, `*`, `/`, `//`, `%`, `**`)
+
+**Comparison operator**: Compares two values and returns a boolean (`==`, `!=`, `<`, `>`, `<=`, `>=`)
+
+**Logical operator**: Combines boolean expressions (`and`, `or`, `not`)
+
+**Assignment operator**: Assigns a value to a variable (`=`, `+=`, `-=`, etc.)
+
+**Modulo (`%`)**: Returns the remainder after division (e.g., `10 % 3 == 1`)
+
+**Integer division (`//`)**: Divides and discards the decimal part (e.g., `10 // 3 == 3`)
+
+**Exponentiation (`**`)**: Raises a number to a power (e.g., `2 ** 8 == 256`)
+
+**Bitwise operator**: Operates on individual bits of integers (`&`, `|`, `^`, `~`, `<<`, `>>`)
+
+**PEMDAS**: Order of operations — Parentheses, Exponents, Multiplication/Division, Addition/Subtraction
+
+**Operator precedence**: The rules that determine which operators are evaluated first

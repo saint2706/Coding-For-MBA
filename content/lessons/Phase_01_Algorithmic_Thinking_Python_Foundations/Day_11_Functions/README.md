@@ -190,6 +190,28 @@ def flexible_func(required, *args, **kwargs):
     print(f"Extra keyword: {kwargs}")
 ```
 
+### Real Business Use: Flexible Report Builder
+
+`*args` and `**kwargs` shine when function callers have genuinely different needs that you can't predict at design time. Two common scenarios:
+
+**`*args` — variable columns in a report**: You're building a report generation function. Some reports need 2 columns, others need 10. `*args` lets you pass any number of column names without changing the function signature every time requirements change.
+
+**`**kwargs` — optional dashboard settings**: A dashboard configuration function where different dashboards need different settings (`title`, `color_scheme`, `show_legend`, etc.). Callers only pass the settings they need; the function uses `settings.get()` with a default for everything else.
+
+```python
+def generate_report(*columns, **settings):
+    """Build a report with any columns and optional settings."""
+    title = settings.get("title", "Monthly Report")
+    print(f"=== {title} ===")
+    for col in columns:
+        print(f"  Column: {col}")
+    if settings.get("show_totals", False):
+        print("  [Totals row included]")
+
+# Flexible: works with 2 or 20 columns
+generate_report("Revenue", "Units", title="Q1 Summary", show_totals=True)
+```
+
 ### Scope and Namespace
 
 ```python
@@ -452,6 +474,14 @@ print(f"CAGR: {calculate_cagr(100000, 200000, 5):.1f}%")
 print(f"Break-even: {calculate_break_even(50000, 25, 10):.0f} units")
 ```
 
+**Expected Output:**
+
+```text
+ROI: 50.0%
+CAGR: 14.9%
+Break-even: 3333 units
+```
+
 ---
 
 ### Exercise 2: Data Validator
@@ -505,6 +535,14 @@ print(f"Valid: {is_valid}")
 print(f"Errors: {errors}")
 ```
 
+**Expected Output:**
+
+```text
+Valid: True
+Valid: False
+Errors: ['Email: Missing @ symbol', 'Age: Age cannot be negative']
+```
+
 ---
 
 ### Exercise 3: Report Generator
@@ -553,6 +591,22 @@ sales = [
 ]
 
 generate_report(sales, title="2024 Sales Report", show_total=True, show_average=True)
+```
+
+**Expected Output:**
+
+```text
+========================================
+           2024 Sales Report            
+========================================
+Q1 Sales             $     125,000.00
+Q2 Sales             $     148,000.00
+Q3 Sales             $     132,000.00
+Q4 Sales             $     175,000.00
+----------------------------------------
+TOTAL                $     580,000.00
+AVERAGE              $     145,000.00
+========================================
 ```
 
 ---
@@ -767,3 +821,20 @@ Refactor `sales_tracker_phase1.py` into reusable functions.
 **Measurable output**
 
 - Print one function-generated line confirming KPI parity, e.g., `"FUNCTION_CHECK | weekly_revenue=..."`.
+
+---
+
+## Glossary
+
+- **Function**: A named, reusable block of code that performs a specific task
+- **`def`**: Keyword used to define a function
+- **Parameter**: A variable in the function definition that receives input values
+- **Argument**: The actual value passed to a function when it is called
+- **`return`**: Sends a value back from a function to the caller
+- **Docstring**: A string literal at the top of a function that documents its purpose
+- **`*args`**: Allows a function to accept any number of positional arguments as a tuple
+- **`**kwargs`**: Allows a function to accept any number of keyword arguments as a dictionary
+- **Default parameter**: A parameter with a pre-set value used when no argument is provided
+- **Scope**: The region of code where a variable is accessible (local vs. global)
+- **DRY (Don't Repeat Yourself)**: The principle that logic should be written once and reused
+- **Pure function**: A function that always returns the same output for the same input and has no side effects
