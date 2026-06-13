@@ -92,6 +92,8 @@ print(products[::2])  # ["Laptop", "Tablet", "Earbuds"]
 print(products[::-1])  # Reversed list
 ```
 
+Slicing lets you extract exactly the sub-list you need without writing a loop. For example, after sorting a sales leaderboard, `top_reps = sales_figures[:3]` instantly extracts the top 3 performers for the weekly award email — no loops required. Analysts rely on this constantly: to pull Q1 data from a full-year list, `q1 = monthly_revenue[:3]` is all it takes; similarly, `recent = log_entries[-10:]` retrieves the most recent 10 records from an event log without touching the rest of the data.
+
 ### Modifying Lists
 
 ```python
@@ -265,6 +267,16 @@ print("Best day:", max(daily_sales))
 print("Worst day:", min(daily_sales))
 ```
 
+**Expected Output:**
+
+```text
+Sales this week: [1250, 980, 1540, 1120, 1680]
+Total: 6570
+Average: 1314.0
+Best day: 1680
+Worst day: 980
+```
+
 ---
 
 ### Exercise 2: Product Inventory Manager
@@ -296,6 +308,16 @@ if "Monitor" in products:
     print(f"Monitor is at position {position}")
 ```
 
+**Expected Output:**
+
+```text
+Current inventory: ['Laptop', 'Mouse', 'Keyboard', 'Monitor', 'Webcam']
+After adding: ['Laptop', 'Mouse', 'Keyboard', 'Monitor', 'Webcam', 'Microphone']
+After removing: ['Laptop', 'Mouse', 'Keyboard', 'Monitor', 'Microphone']
+Sorted: ['Keyboard', 'Laptop', 'Microphone', 'Monitor', 'Mouse']
+Monitor is at position 3
+```
+
 ---
 
 ### Exercise 3: Top Performer Analysis
@@ -324,6 +346,20 @@ for i, (name, sales) in enumerate(sorted_data, 1):
 
 print(f"\nTop Performer: {sorted_data[0][0]}")
 print(f"Needs Improvement: {sorted_data[-1][0]}")
+```
+
+**Expected Output:**
+
+```text
+=== PERFORMANCE RANKING ===
+1. Eve: $95,000
+2. Charlie: $91,000
+3. Alice: $85,000
+4. Bob: $72,000
+5. Diana: $68,000
+
+Top Performer: Eve
+Needs Improvement: Diana
 ```
 
 ---
@@ -489,3 +525,21 @@ Extend the same `sales_tracker_phase1.py` file with multi-day tracking.
 **Measurable output**
 
 - Print one KPI line: `"WEEK-TO-DATE | total_orders=... | avg_orders=..."`.
+
+---
+
+## Glossary
+
+- **List**: An ordered, mutable sequence of values enclosed in square brackets `[]`
+- **Index**: The numeric position of an element (zero-based; negative indices count from the end)
+- **Slicing**: Extracting a sub-list using `[start:end:step]` notation
+- **Mutable**: Can be changed after creation (lists are mutable; strings are not)
+- **`.append()`**: Adds one element to the end of a list
+- **`.extend()`**: Adds all elements of an iterable to the end of a list
+- **`.insert()`**: Inserts an element at a specific index
+- **`.remove()`**: Removes the first occurrence of a value
+- **`.pop()`**: Removes and returns the element at a given index (default: last element)
+- **`.sort()`**: Sorts the list in-place (modifies the original list)
+- **`sorted()`**: Returns a new sorted list without modifying the original
+- **`len()`**: Returns the number of elements in a list
+- **Nested list**: A list that contains other lists as elements

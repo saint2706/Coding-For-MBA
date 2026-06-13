@@ -31,6 +31,24 @@ outcomes:
 
 ---
 
+## Business Impact: Why MBA Students Need This
+
+> **Scenario**: Your data pipeline needs to process 50 million customer transactions. Loading all 50M rows into a list would crash your 16GB RAM server. Generators solve this by processing one row at a time — your server stays alive, your pipeline stays cheap.
+
+The financial reality:
+- A list of 50M transaction records might consume 8–12 GB of RAM.
+- With generators, that same pipeline uses under 1 MB — regardless of dataset size.
+- Less RAM means smaller (cheaper) cloud instances. On AWS, that difference can be $500–$2,000/month for always-on analytics workloads.
+
+**Tools you already know that use generators internally:**
+- **Pandas `read_csv(chunksize=...)`** — reads CSV files one chunk at a time instead of all at once
+- **Python's `csv.reader`** — yields one row at a time from a file, never loads the whole file
+- **Database cursors** (`psycopg2`, `sqlite3`) — stream query results row by row from the database
+
+When you understand generators, you understand *why* these tools work the way they do — and when to use them.
+
+---
+
 ## The "Never-Coded" Bridge
 
 Imagine three MBA situations:
@@ -258,6 +276,14 @@ for metric in KPIWindow(["Revenue", "Gross Margin", "CAC", "LTV"]):
     print(metric)
 ```
 
+**Expected Output:**
+```
+Revenue
+Gross Margin
+CAC
+LTV
+```
+
 ---
 
 ### Exercise 2: Generator Pipeline over a Large Simulated Dataset
@@ -303,6 +329,13 @@ print("High-value count:", count)
 print("Net total:", round(net_total, 2))
 ```
 
+**Expected Output:**
+```
+Preview: [{'id': 480, 'amount': 500, 'channel': 'store', 'fee': 7.5, 'net': 492.5}, {'id': 481, 'amount': 501, 'channel': 'online', 'fee': 7.51, 'net': 493.49}, {'id': 482, 'amount': 502, 'channel': 'online', 'fee': 7.53, 'net': 494.47}, {'id': 483, 'amount': 503, 'channel': 'store', 'fee': 7.54, 'net': 495.46}, {'id': 484, 'amount': 504, 'channel': 'online', 'fee': 7.56, 'net': 496.44}]
+High-value count: 314160
+Net total: 188608626.36
+```
+
 ---
 
 ### Exercise 3: `itertools` in Operations Reporting
@@ -328,6 +361,13 @@ print("Preview rows:", preview)
 for category, rows in groupby(combined, key=lambda r: r[0]):
     units = sum(r[2] for r in rows)
     print(f"{category}: {units} units")
+```
+
+**Expected Output:**
+```
+Preview rows: [('Accessories', 'Mouse', 40), ('Accessories', 'Keyboard', 20), ('Computers', 'Laptop', 10)]
+Accessories: 60 units
+Computers: 16 units
 ```
 
 ---
@@ -412,3 +452,24 @@ Today you learned:
 - ✅ Why generator pipelines are often better for large, one-pass datasets
 
 **Next step depth**: Revisit this lesson while scaling your Phase 1 mini-scenarios into larger pipelines and operational reporting scripts.
+
+### What's Coming Next
+
+**Day 11C: Debugging Workflows** — After building streaming data pipelines, you'll inevitably encounter bugs in them. Day 11C gives you a repeatable five-step system for diagnosing and fixing broken scripts under pressure: reading Python tracebacks, using `breakpoint()` and `pdb` to inspect state mid-execution, and switching from ad-hoc `print()` calls to structured `logging`. These skills directly apply to generators: when a pipeline produces wrong results, you need to know how to step through it and inspect state at each `yield`.
+
+---
+
+## Glossary
+
+- **Iterator**: An object that produces values one at a time when `next()` is called on it
+- **Iterable**: Any object that can be looped over (list, tuple, string, generator, etc.)
+- **Generator**: A special function using `yield` that produces values lazily, one at a time
+- **`yield`**: Pauses a generator function and returns a value to the caller; resumes on the next call
+- **`next()`**: Retrieves the next value from an iterator or generator
+- **Lazy evaluation**: Values are computed only when requested, not all at once
+- **Memory efficiency**: Generators use O(1) memory regardless of the total number of items
+- **`__iter__()`**: Dunder method that makes an object iterable
+- **`__next__()`**: Dunder method that returns the next value from an iterator
+- **`StopIteration`**: Exception raised when an iterator has no more values to produce
+- **`itertools`**: Python standard library module with advanced iterator tools (`chain`, `islice`, `groupby`, etc.)
+- **Generator expression**: A one-line generator syntax: `(x*2 for x in range(10))`

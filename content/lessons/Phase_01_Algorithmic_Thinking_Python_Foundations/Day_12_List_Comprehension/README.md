@@ -44,6 +44,8 @@ for x in [1, 2, 3, 4, 5]:
     doubled.append(x * 2)
 ```
 
+This single line demonstrates the core pattern of a list comprehension: it reads almost like plain English ("give me `x * 2` for each `x` in this list") and eliminates the ceremony of initializing an empty list and calling `.append()`. The same pattern scales to hundreds of items with no extra code.
+
 You write:
 
 ```python
@@ -251,6 +253,36 @@ print(f"Loop: {loop_time:.4f}s")
 print(f"Comprehension: {comp_time:.4f}s")
 ```
 
+### Performance: Comprehensions vs. Loops
+
+List comprehensions are not just syntactic sugar — they execute at C speed internally. Python's bytecode for a list comprehension is more optimized than an equivalent `for` loop with `.append()`, because the interpreter avoids repeated attribute lookups on the list object and handles the iteration in a tighter internal loop.
+
+```python
+import timeit
+
+# Traditional loop
+def using_loop():
+    result = []
+    for x in range(10000):
+        if x % 2 == 0:
+            result.append(x * 2)
+    return result
+
+# List comprehension
+def using_comprehension():
+    return [x * 2 for x in range(10000) if x % 2 == 0]
+
+# Comprehensions are typically 30-50% faster on large datasets
+loop_time = timeit.timeit(using_loop, number=1000)
+comp_time = timeit.timeit(using_comprehension, number=1000)
+print(f"Loop:          {loop_time:.3f}s")
+print(f"Comprehension: {comp_time:.3f}s")
+```
+
+For large datasets (100k+ items), this speed difference compounds significantly — a 30% speedup that runs 1,000 times per day adds up fast in production pipelines.
+
+**But**: complex comprehensions with multiple operations or nested conditionals should be split into loops for readability. Correctness and maintainability come before cleverness.
+
 ### Walrus Operator (Python 3.8+)
 
 ```python
@@ -294,6 +326,14 @@ total = sum(s["price"] * s["quantity"] for s in sales)
 print(f"Total revenue: ${total:,}")
 ```
 
+**Expected Output:**
+```
+Revenues: [4995, 1450, 2370, 4485]
+High-value products: ['Laptop', 'Mouse', 'Keyboard', 'Monitor']
+Price lookup: {'Laptop': 999, 'Mouse': 29, 'Keyboard': 79, 'Monitor': 299}
+Total revenue: $13,300
+```
+
 ---
 
 ### Exercise 2: Text Processing Pipeline
@@ -331,6 +371,14 @@ for email in valid:
 print("By domain:", dict(by_domain))
 ```
 
+**Expected Output:**
+```
+Cleaned: ['alice@email.com', 'bob@company.org', 'charlie@domain.net', 'invalid-email', 'diana@test.io']
+Valid: ['alice@email.com', 'bob@company.org', 'charlie@domain.net', 'diana@test.io']
+Unique domains: {'email.com', 'company.org', 'domain.net', 'test.io'}  # order may vary (set)
+By domain: {'email.com': ['alice@email.com'], 'company.org': ['bob@company.org'], 'domain.net': ['charlie@domain.net'], 'test.io': ['diana@test.io']}
+```
+
 ---
 
 ### Exercise 3: Matrix Operations
@@ -360,6 +408,20 @@ doubled_matrix = [[n * 2 for n in row] for row in matrix]
 print("Doubled:")
 for row in doubled_matrix:
     print(row)
+```
+
+**Expected Output:**
+```
+Flattened: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+Transposed:
+[1, 4, 7]
+[2, 5, 8]
+[3, 6, 9]
+Values > 5: [6, 7, 8, 9]
+Doubled:
+[2, 4, 6]
+[8, 10, 12]
+[14, 16, 18]
 ```
 
 ---
@@ -508,6 +570,17 @@ You now understand:
 
 **Next-step depth**: Before moving on, deepen your Phase 1 data-processing toolkit with [Day 11B: Generators & Iterators](../Day_11B_Generators_Iterators/README.md).
 
+### What's Coming Next
+
+**Phase 2: Functions, Modularity & Data Wrangling** — You've built strong foundations in Python syntax, data structures, and control flow. Phase 2 takes you from writing scripts to building programs. Key skills you'll develop:
+
+- **Functions as building blocks**: writing reusable, well-named functions that do one thing clearly — the foundation of all production analytics code
+- **Modules and packages**: organizing code across files so your projects stay maintainable as they grow
+- **Data wrangling with Pandas**: reading, cleaning, transforming, and aggregating real datasets — the skill most in demand for MBA analysts
+- **File I/O**: reading CSVs, Excel files, and JSON — the formats you'll encounter in every business context
+
+The list comprehension and generator patterns you learned today will appear constantly in Phase 2 as concise, efficient tools for transforming and filtering data.
+
 ---
 
 ## Recurring Mini-Scenario Challenge: Retail Pulse Sales Tracker (Day 12)
@@ -523,3 +596,18 @@ Complete the end-of-phase version of `sales_tracker_phase1.py`.
 **Measurable output**
 
 - Print one final report line that includes both a KPI value and a computed list, e.g., `"FINAL_REPORT | weekly_revenue=... | surge_days=[...]"`.
+
+---
+
+## Glossary
+
+- **List comprehension**: A concise one-line syntax for creating lists: `[expression for item in iterable if condition]`
+- **Dictionary comprehension**: Similar syntax for creating dicts: `{k: v for k, v in items}`
+- **Set comprehension**: Similar syntax for creating sets: `{expression for item in iterable}`
+- **Generator expression**: Lazy version of list comprehension using parentheses: `(x for x in iterable)`
+- **Expression**: The value or operation placed before `for` in a comprehension
+- **Filter**: The optional `if condition` part of a comprehension that selects only matching items
+- **`timeit`**: Python module for timing small code snippets to compare performance
+- **Readability**: Code that is easily understood by humans; comprehensions aid readability up to moderate complexity
+- **Nested comprehension**: A comprehension inside another comprehension (use sparingly)
+- **Pythonic**: Code written in a style idiomatic to Python, leveraging its unique features effectively

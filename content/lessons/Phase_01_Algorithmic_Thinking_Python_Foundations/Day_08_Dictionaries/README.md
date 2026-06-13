@@ -93,6 +93,29 @@ if "phone" in user:
     print(user["phone"])
 ```
 
+**Production Insight: Defensive Dictionary Access**
+
+In production, APIs return JSON that may have missing or null keys depending on the data source, the API version, or the user's account tier. Accessing nested keys with bracket notation (`d["key"]`) crashes the moment any level is absent.
+
+Use chained `.get()` calls with sensible domain defaults instead:
+
+```python
+# Dangerous (crashes if any key is missing)
+user_tier = api_response["user"]["subscription_tier"]
+
+# Safe (returns "free" as fallback if either key is absent)
+user_tier = api_response.get("user", {}).get("subscription_tier", "free")
+```
+
+The default value in `.get(key, default)` is critical — choose defaults that make sense for your domain:
+
+- `0` for counts or numeric totals (e.g., `response.get("order_count", 0)`)
+- `"N/A"` for display labels that must always render as a string
+- `[]` for lists you will iterate over (avoids a separate `None` check)
+- `{}` for nested dicts you will call `.get()` on again (as shown above)
+
+This pattern is especially common when consuming REST APIs, parsing webhook payloads, or reading records from BigQuery or Snowflake that may have nullable columns.
+
 ### Modifying Dictionaries
 
 ```python
@@ -278,6 +301,15 @@ print()
 lookup_product("SKU999")
 ```
 
+**Expected Output:**
+```text
+Product: Mechanical Keyboard
+Price: $89.99
+In Stock: 75 units
+
+SKU SKU999 not found
+```
+
 ---
 
 ### Exercise 2: Word Frequency Counter
@@ -307,6 +339,18 @@ print("=== WORD FREQUENCY ===")
 for word, count in sorted_words[:5]:
     print(f"{word}: {count}")
 ```
+
+**Expected Output:**
+```text
+=== WORD FREQUENCY ===
+python: 3
+is: 2
+a: 2
+also: 1
+beginner-friendly: 1
+```
+
+> Note: Words with the same count (like `"a"` and `"is"`) may appear in a different order depending on Python version, since the sort is stable but ties among equal-count words preserve insertion order from the `defaultdict`.
 
 ---
 
@@ -342,6 +386,17 @@ for region, total in by_region.items():
 print("\n=== SALES BY CATEGORY ===")
 for category, total in by_category.items():
     print(f"{category}: ${total:,.2f}")
+```
+
+**Expected Output:**
+```text
+=== SALES BY REGION ===
+North: $2,350.00
+South: $1,400.00
+
+=== SALES BY CATEGORY ===
+Electronics: $2,950.00
+Clothing: $800.00
 ```
 
 ---
@@ -517,3 +572,20 @@ Extend `sales_tracker_phase1.py` into a richer business model.
 **Measurable output**
 
 - Print one dictionary-driven summary line for the latest day: `"SNAPSHOT <date> | revenue=... | unique_customers=..."`.
+
+---
+
+## Glossary
+
+- **Dictionary**: An unordered collection of key-value pairs enclosed in curly braces `{}`
+- **Key**: The unique identifier used to look up a value in a dictionary
+- **Value**: The data associated with a key in a dictionary
+- **Key-value pair**: A single entry in a dictionary (`"name": "Alice"`)
+- **`.get(key, default)`**: Safely retrieves a value, returning a default if the key doesn't exist
+- **`.keys()`**: Returns a view of all keys in a dictionary
+- **`.values()`**: Returns a view of all values in a dictionary
+- **`.items()`**: Returns a view of all key-value tuples in a dictionary
+- **`.update()`**: Merges another dictionary into the current one
+- **Nested dictionary**: A dictionary where values are themselves dictionaries
+- **JSON (JavaScript Object Notation)**: A data format that maps directly to Python dictionaries; ubiquitous in APIs
+- **Hash map**: The underlying data structure of a dictionary, enabling O(1) average-time lookups

@@ -254,6 +254,13 @@ print("Email:", email)  # sarah.oconnor@example.com
 print("Display:", display)  # Sarah O'Connor (Marketing)
 ```
 
+**Expected Output:**
+
+```text
+Email: sarah.oconnor@example.com
+Display: Sarah O'Connor (Marketing)
+```
+
 ---
 
 ### Exercise 2: Invoice Line Formatter
@@ -320,6 +327,16 @@ print(f"Email: {email}")
 print(f"Phone: {phone}")
 print(f"Valid email: {email.count('@') == 1}")
 print(f"Valid phone: {phone.isdigit() and len(phone) == 10}")
+```
+
+**Expected Output:**
+
+```text
+Name: John Doe
+Email: john.doe@email.com
+Phone: 5551234567
+Valid email: True
+Valid phone: True
 ```
 
 ---
@@ -490,3 +507,19 @@ Keep extending `sales_tracker_phase1.py`; do not restart.
 **Measurable output**
 
 - Print one parsed-label line showing extracted city and normalized date so correctness is visible immediately.
+
+---
+
+## Glossary
+
+- **String**: An immutable sequence of characters enclosed in quotes (`'hello'` or `"hello"`)
+- **String literal**: A fixed string value written directly in code
+- **Concatenation**: Joining strings together using the `+` operator
+- **f-string (formatted string literal)**: A modern string with embedded expressions using `f"..."` syntax (Python 3.6+)
+- **String method**: A built-in function called on a string object (e.g., `.upper()`, `.strip()`, `.split()`)
+- **Indexing**: Accessing a single character by position using `[n]` (zero-based)
+- **Slicing**: Extracting a substring using `[start:end]` notation
+- **Immutability**: Strings cannot be changed in place; operations return new string objects
+- **`.strip()`**: Removes leading and trailing whitespace
+- **`.split()`**: Splits a string into a list at a delimiter
+- **`.join()`**: Joins a list of strings into one string with a separator

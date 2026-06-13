@@ -51,6 +51,8 @@ print("Processing customer 3")
 
 You write:
 
+This single loop replaces a thousand duplicate lines and scales instantly — whether you have 10 customers or 10 million, the code stays identical. In production systems this pattern is what separates maintainable data pipelines from brittle copy-paste scripts.
+
 ```python
 # Elegant and scalable
 for i in range(1000):
@@ -145,6 +147,28 @@ queue = ["task1", "task2", "task3"]
 while queue:  # While list is not empty
     task = queue.pop(0)
     print(f"Processing: {task}")
+```
+
+### Common Pitfalls
+
+> ⚠️ **Common Pitfalls**
+
+- **Infinite loops**: If the loop condition never becomes `False`, the program hangs forever. Always double-check that your loop variable is changing inside the loop body.
+- **Blocking the main thread**: In production systems (web servers, APIs), a long-running loop blocks all other requests. Use background workers, async I/O, or generators for heavy processing.
+- **Off-by-one errors**: `range(10)` gives 0–9, not 1–10. Double-check your range endpoints.
+
+```python
+# DANGEROUS: Infinite loop (missing i += 1)
+i = 0
+while i < 5:
+    print("Processing...")
+    # i never changes — this runs forever!
+
+# FIXED:
+i = 0
+while i < 5:
+    print("Processing row", i)
+    i += 1  # Loop will terminate after 5 iterations
 ```
 
 ### Break and Continue
@@ -299,6 +323,22 @@ print(f"{'TOTAL':12} ${total:>10,}")
 print(f"{'AVERAGE':12} ${total / len(sales_data):>10,.0f}")
 ```
 
+**Expected Output:**
+
+```text
+==============================
+MONTHLY SALES REPORT
+==============================
+January      $    45,000
+February     $    52,000
+March        $    48,000
+April        $    61,000
+May          $    55,000
+------------------------------
+TOTAL        $   261,000
+AVERAGE      $    52,200
+```
+
 ---
 
 ### Exercise 2: Prime Number Finder
@@ -326,6 +366,14 @@ for num in range(2, limit + 1):
 print(f"Prime numbers up to {limit}:")
 print(primes)
 print(f"Count: {len(primes)}")
+```
+
+**Expected Output:**
+
+```text
+Prime numbers up to 50:
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+Count: 15
 ```
 
 ---
@@ -360,6 +408,15 @@ for attempt, pwd in enumerate(passwords_to_try, 1):
 
     if attempt == max_attempts:
         print("❌ Account locked - too many attempts")
+```
+
+**Expected Output:**
+
+```text
+Attempt 1: 'pass' → Too short (min 8 chars)
+Attempt 2: 'Password' → Needs a digit
+Attempt 3: 'Password123' → Valid
+✅ Login successful!
 ```
 
 ---
@@ -554,3 +611,20 @@ Extend `sales_tracker_phase1.py` with loop-based rollups.
 **Measurable output**
 
 - Print one weekly summary line: `"WEEKLY_SUMMARY | low=... normal=... surge=... avg_revenue=..."`.
+
+---
+
+## Glossary
+
+- **Loop**: A control structure that repeats a block of code multiple times
+- **`for` loop**: Iterates over a sequence (list, range, string, etc.) a known number of times
+- **`while` loop**: Repeats as long as a condition remains `True`
+- **`range()`**: Generates a sequence of integers for use in `for` loops
+- **`break`**: Immediately exits the current loop
+- **`continue`**: Skips the rest of the current iteration and moves to the next
+- **`enumerate()`**: Returns both the index and value during iteration
+- **`zip()`**: Iterates over multiple sequences in parallel
+- **Iteration**: One pass through a loop body
+- **Infinite loop**: A loop whose condition never becomes `False`, causing the program to hang
+- **Loop variable**: The variable that changes with each iteration (often `i`, `j`, or a meaningful name)
+- **Nested loop**: A loop inside another loop

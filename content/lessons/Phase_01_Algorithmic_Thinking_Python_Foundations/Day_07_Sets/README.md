@@ -138,6 +138,58 @@ exclusive = team_a ^ team_b
 # {"Alice", "Bob", "Eve", "Frank"}
 ```
 
+### Sets vs. SQL JOINs
+
+If you've used SQL in tools like BigQuery, Snowflake, or dbt, set operations map directly onto JOIN patterns you already know:
+
+| Python Set Operation | SQL Equivalent | What it returns |
+| -------------------- | --------------------------------------- | ----------------------------------------- |
+| `set_a \| set_b` | `FULL OUTER JOIN` | All unique records from both sides |
+| `set_a & set_b` | `INNER JOIN` | Only records that exist in both |
+| `set_a - set_b` | `LEFT ANTI JOIN` / `WHERE b.id IS NULL` | Records in A but not in B |
+| `set_a ^ set_b` | Two `LEFT ANTI JOIN`s combined | Records in either side, but not both |
+
+This is more than trivia — when you reach SQL in analytics, recognising that an INNER JOIN and `&` answer the same "who's in both?" question makes both tools click faster.
+
+**Side-by-side comparison:**
+
+```python
+# Python Sets
+newsletter = {"C001", "C002", "C003", "C004"}
+purchasers = {"C003", "C004", "C005", "C006"}
+
+# Who is in BOTH? (INNER JOIN equivalent)
+both = newsletter & purchasers            # {"C003", "C004"}
+
+# Who is in newsletter but NOT purchased? (LEFT ANTI JOIN equivalent)
+not_yet_bought = newsletter - purchasers  # {"C001", "C002"}
+
+# All unique customers across both lists? (FULL OUTER JOIN equivalent)
+everyone = newsletter | purchasers        # {"C001","C002","C003","C004","C005","C006"}
+```
+
+```sql
+-- SQL equivalents (same logic, different syntax)
+
+-- INNER JOIN: customers in both lists
+SELECT n.customer_id
+FROM newsletter n
+INNER JOIN purchasers p ON n.customer_id = p.customer_id;
+
+-- LEFT ANTI JOIN: newsletter subscribers who haven't purchased
+SELECT n.customer_id
+FROM newsletter n
+LEFT JOIN purchasers p ON n.customer_id = p.customer_id
+WHERE p.customer_id IS NULL;
+
+-- FULL OUTER JOIN: all unique customers
+SELECT COALESCE(n.customer_id, p.customer_id) AS customer_id
+FROM newsletter n
+FULL OUTER JOIN purchasers p ON n.customer_id = p.customer_id;
+```
+
+The Python version is often faster to prototype; the SQL version scales to millions of rows in a data warehouse. Knowing both lets you choose the right tool for the job.
+
 ### Fast Membership Testing
 
 ```python
@@ -263,6 +315,16 @@ all_engaged = newsletter | purchasers
 print("Total engaged:", len(all_engaged))
 ```
 
+**Expected Output:**
+```text
+Marketing targets: {'C001', 'C002', 'C005'}
+Upgrade candidates: {'C003', 'C006'}
+VIP customers: {'C004'}
+Total engaged: 7
+```
+
+> Note: Set elements print in arbitrary order, so the elements inside `{}` may appear in a different sequence each run. The counts are always deterministic.
+
 ---
 
 ### Exercise 2: Skill Gap Analysis
@@ -287,6 +349,18 @@ print(f"❌ Need training/hiring: {missing}")
 print(f"💡 Bonus capabilities: {extra}")
 print(f"\nReadiness: {len(have)}/{len(required_skills)} skills covered")
 ```
+
+**Expected Output:**
+```text
+=== SKILL GAP ANALYSIS ===
+✅ Covered: {'Python', 'SQL', 'AWS'}
+❌ Need training/hiring: {'Docker', 'Kubernetes'}
+💡 Bonus capabilities: {'JavaScript', 'React'}
+
+Readiness: 3/5 skills covered
+```
+
+> Note: Set elements print in arbitrary order; the element groupings are deterministic but their sequence inside `{}` may vary.
 
 ---
 
@@ -316,6 +390,15 @@ personal_emails = unique_emails - company_emails
 print(f"Company emails: {company_emails}")
 print(f"Personal emails: {personal_emails}")
 ```
+
+**Expected Output:**
+```text
+Original: 6 → Unique: 4
+Company emails: {'alice@company.com', 'charlie@company.com'}
+Personal emails: {'bob@gmail.com', 'diana@gmail.com'}
+```
+
+> Note: Set elements print in arbitrary order; the counts (6 raw, 4 unique) are always deterministic.
 
 ---
 
@@ -476,3 +559,19 @@ Keep extending `sales_tracker_phase1.py` by tracking uniqueness.
 **Measurable output**
 
 - Print one anomaly line: `"DUPLICATE_CUSTOMERS=<count>"`.
+
+---
+
+## Glossary
+
+- **Set**: An unordered collection of unique elements enclosed in curly braces `{}`
+- **Unordered**: Elements have no guaranteed position; indexing is not supported
+- **Unique elements**: Sets automatically discard duplicate values
+- **Union (`|`)**: Returns all elements from both sets (no duplicates)
+- **Intersection (`&`)**: Returns only elements present in both sets
+- **Difference (`-`)**: Returns elements in the first set but not the second
+- **Symmetric difference (`^`)**: Returns elements in either set but not both
+- **`frozenset`**: An immutable version of a set that can be used as a dictionary key
+- **Hashing**: The mechanism sets use to store elements for O(1) average lookup time
+- **`in` operator**: Tests membership in a set (e.g., `"alice" in customers`)
+- **Deduplication**: Using a set to remove duplicate values from a collection
