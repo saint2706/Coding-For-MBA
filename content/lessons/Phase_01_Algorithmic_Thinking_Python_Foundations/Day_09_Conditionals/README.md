@@ -189,6 +189,32 @@ if inventory:  # Non-empty list is truthy
     print("Items available")
 ```
 
+### Why Truthiness Matters in Python Code
+
+Python's truthiness rules aren't just trivia — they enable a more readable, idiomatic coding style that you'll see throughout professional Python codebases.
+
+Instead of `if len(my_list) > 0:`, experienced Pythonistas write `if my_list:` — both check the same thing, but the second reads almost like plain English. Similarly, `if not my_list:` is the Pythonic way to check "is this list empty?", replacing the verbose `if len(my_list) == 0:`.
+
+This matters most in data pipelines and automation, where you constantly guard against empty results:
+
+```python
+# Verbose (works, but non-Pythonic)
+if len(pending_orders) > 0:
+    process_orders(pending_orders)
+
+if len(error_log) > 0:
+    send_alert_email(error_log)
+
+# Pythonic (same logic, more readable)
+if pending_orders:
+    process_orders(pending_orders)
+
+if error_log:
+    send_alert_email(error_log)
+```
+
+The same principle applies to API results (`if results:` before iterating), configuration values (`if config.get("feature_flag"):` before enabling a feature), and any optional input. Writing `if results:` is safer than `if results != None:` because it also handles the case where the API returns an empty list rather than `None`.
+
 ---
 
 ## Senior-Level Insights
@@ -326,6 +352,12 @@ print(f"Decision: {decision}")
 print(f"Reason: {reason}")
 ```
 
+**Expected Output:**
+```text
+Decision: APPROVED
+Reason: All criteria met
+```
+
 ---
 
 ### Exercise 2: Shipping Cost Calculator
@@ -363,6 +395,14 @@ print(f"Base rate: ${base_rate:.2f}")
 print(f"Weight fee: ${weight_fee:.2f}")
 print(f"Priority: ${priority_fee:.2f}")
 print(f"Total Shipping: ${total:.2f}")
+```
+
+**Expected Output:**
+```text
+Base rate: $25.00
+Weight fee: $5.00
+Priority: $15.00
+Total Shipping: $45.00
 ```
 
 ---
@@ -403,6 +443,15 @@ print("=== CUSTOMER CLASSIFICATION ===")
 for name, spend, years in customers:
     tier = classify_customer(spend, years)
     print(f"{name}: ${spend:,} over {years}yr → {tier}")
+```
+
+**Expected Output:**
+```text
+=== CUSTOMER CLASSIFICATION ===
+Alice: $15,000 over 2yr → VIP
+Bob: $3,000 over 7yr → Regular
+Charlie: $6,000 over 1yr → Premium
+Diana: $500 over 3yr → Inactive
 ```
 
 ---
@@ -584,3 +633,19 @@ Continue in `sales_tracker_phase1.py` by adding policy decisions.
 **Measurable output**
 
 - Print one policy result line for the latest day: `"POLICY=<tier> | discount_action=True/False"`.
+
+---
+
+## Glossary
+
+- **Conditional statement**: Code that executes only when a specific condition is true (`if`, `elif`, `else`)
+- **Boolean expression**: An expression that evaluates to `True` or `False`
+- **`if` statement**: Executes a block of code when the condition is `True`
+- **`elif`**: Short for "else if"; checks an additional condition when the previous one was `False`
+- **`else`**: Executes when all preceding conditions are `False`
+- **Truthy value**: Any value Python evaluates as `True` in a boolean context (non-zero, non-empty)
+- **Falsy value**: Values Python evaluates as `False` — `0`, `0.0`, `""`, `[]`, `{}`, `None`, `False`
+- **Nested conditional**: An `if` statement inside another `if` statement
+- **Ternary expression**: A one-line conditional — `value_if_true if condition else value_if_false`
+- **Short-circuit evaluation**: Python stops evaluating `and`/`or` chains as soon as the result is determined
+- **Guard clause**: An early `if` check that exits a block immediately for invalid/edge-case inputs
