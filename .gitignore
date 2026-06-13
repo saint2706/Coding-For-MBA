@@ -37,6 +37,9 @@ public/sitemap.xml
 .adal/
 .agent/
 
+# Claude Code agent worktrees (temporary, auto-generated)
+.claude/worktrees/
+
 # Lock files (project uses npm)
 pnpm-lock.yaml
 yarn.lock
