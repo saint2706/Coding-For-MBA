@@ -151,6 +151,52 @@ Once you've identified the error class from the traceback, you can often prevent
 
 ## 3) `breakpoint()` / `pdb` Walkthrough
 
+### Using pdb: Python's Built-in Debugger
+
+Python ships with a built-in interactive debugger called `pdb`. You can activate it two ways:
+
+```python
+# Python 3.6 and below — explicit import
+import pdb; pdb.set_trace()
+
+# Python 3.7+ — preferred, cleaner
+breakpoint()
+```
+
+**Key pdb commands:**
+
+| Command | Action |
+|---------|--------|
+| `n` | Next line (step over) |
+| `s` | Step into function call |
+| `c` | Continue until next breakpoint |
+| `p variable_name` | Print a variable's value |
+| `l` | List surrounding source code |
+| `q` | Quit the debugger |
+
+**Concrete example — using `breakpoint()` to inspect a crash:**
+
+```python
+def calculate_margin(revenue, cost):
+    margin = (revenue - cost) / revenue   # crashes if revenue is 0
+    return round(margin * 100, 2)
+
+records = [
+    {"revenue": 50000, "cost": 30000},
+    {"revenue": 0,     "cost": 5000},   # <-- bug is here
+    {"revenue": 80000, "cost": 45000},
+]
+
+for record in records:
+    breakpoint()   # pause before each calculation to inspect record
+    result = calculate_margin(record["revenue"], record["cost"])
+    print(f"Margin: {result}%")
+```
+
+At the `(Pdb)` prompt, type `p record` to see the current record's values before the crash happens. When you reach the zero-revenue record, type `p record["revenue"]` — you'll see `0`, confirming the root cause.
+
+> **VS Code alternative**: For a visual step-through debugger, VS Code's built-in debugger (click the Run & Debug panel, set breakpoints by clicking line numbers) is the modern alternative. It shows variables in a sidebar and lets you hover over values — no terminal commands needed.
+
 Python's built-in debugger pauses execution and lets you inspect state in real time.
 
 ```python
@@ -443,3 +489,92 @@ Apply the full workflow and produce a corrected version.
 - Where can you replace ad hoc prints with structured logs in your current work?
 
 By mastering this workflow now, you'll ship more reliable analytics code in every later phase.
+
+---
+
+## Mastery Check
+
+### Question 1: Reading a Traceback
+
+Study this traceback and answer: what is the error, and on which line did it occur?
+
+```text
+Traceback (most recent call last):
+  File "report.py", line 14, in <module>
+    result = generate_report(data)
+  File "report.py", line 8, in generate_report
+    rate = signups / visits
+ZeroDivisionError: division by zero
+```
+
+<details>
+<summary>Click for Answer</summary>
+
+The error is a `ZeroDivisionError` — the code tried to divide by zero. It occurred on **line 8** inside the `generate_report` function, at the expression `signups / visits`. The call originated from **line 14** in the main script. Fix: add a guard `if visits == 0: return None` before the division.
+
+</details>
+
+---
+
+### Question 2: Find and Fix the Bug
+
+What is wrong with this function, and how do you fix it?
+
+```python
+def first_above_threshold(values, threshold):
+    for v in values:
+        if v > threshold:
+            return v
+        else:
+            return None
+```
+
+<details>
+<summary>Click for Answer</summary>
+
+The `else: return None` runs on the very first value that is NOT above the threshold, exiting the loop immediately before checking the remaining values. The fix is to move `return None` **outside** the loop so it only runs after all values have been checked:
+
+```python
+def first_above_threshold(values, threshold):
+    for v in values:
+        if v > threshold:
+            return v
+    return None  # only reached if no value exceeds threshold
+```
+
+</details>
+
+---
+
+### Question 3: Choosing the Right Debugging Tool
+
+You have three situations. Match each to the right debugging approach: `print()` debugging, `pdb` / `breakpoint()`, or VS Code debugger.
+
+1. You have a 15-line script that crashes on one specific input and you want to check one variable quickly.
+2. You're debugging a complex function with 5 nested loops, and you need to inspect state at each iteration to find where the logic diverges.
+3. You're working on a large multi-file project, want to set breakpoints across different files, and prefer a visual interface.
+
+<details>
+<summary>Click for Answer</summary>
+
+1. **`print()` debugging** — for a quick, one-off check in a small script, inserting a `print(variable)` is the fastest path to an answer.
+2. **`pdb` / `breakpoint()`** — for complex logic requiring step-by-step inspection in the terminal, `breakpoint()` lets you pause at each iteration and run `p` commands to check state as you go.
+3. **VS Code debugger** — for multi-file projects where a visual sidebar showing all variable values, a call stack panel, and click-to-set breakpoints makes the process far more manageable than terminal-based pdb.
+
+</details>
+
+---
+
+## Glossary
+
+- **Bug**: An error in code that causes incorrect or unexpected behavior
+- **Debugging**: The process of finding and fixing bugs in code
+- **`print()` debugging**: The practice of inserting `print()` statements to inspect variable values at runtime
+- **`pdb`**: Python's built-in interactive debugger module
+- **Breakpoint**: A marker that pauses program execution so you can inspect state at that point
+- **`breakpoint()`**: Built-in function (Python 3.7+) that activates the debugger at that line
+- **Stack trace (Traceback)**: The error output showing the chain of function calls that led to an exception
+- **Exception**: A runtime error that interrupts normal program flow
+- **`try/except`**: Block structure that catches and handles exceptions gracefully
+- **`logging` module**: Python's standard library for structured, level-based logging (preferred over print in production)
+- **Scientific method of debugging**: Form hypothesis → test → observe → revise → repeat
