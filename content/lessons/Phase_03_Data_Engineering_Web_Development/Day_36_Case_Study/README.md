@@ -379,7 +379,73 @@ services:
      - Inspect logs for timeout/retry failures during extraction.
      - Validate duplicate protection/idempotency settings.
 
+### ETL Load Strategy — Full Load vs Incremental Load
+
+The case study uses `if_exists="replace"` in several places, which is a **Full Load** strategy. It is correct for small reference datasets but wrong for large or audit-sensitive tables:
+
+| Strategy | How It Works | When to Use | Risk |
+|----------|-------------|-------------|------|
+| **Full Load** | Delete everything, reload all data | Small tables (<10K rows), reference data (product catalog, config) | Loses history; slow for large tables |
+| **Append** | Add new rows, keep old ones | Immutable event logs, audit trails | Table grows forever; creates duplicates if re-run |
+| **Incremental (Upsert)** | Insert new rows, update changed rows | Most business data — orders, inventory, customer profiles | Requires a unique key; most complex to implement |
+| **Snapshot** | Add rows with a `snapshot_date` column | Slowly changing dimensions, historical state reporting | Storage grows proportionally |
+
+**The weather pipeline uses Full Load correctly** — we only care about today's conditions. But for a **sales pipeline**, use Incremental to avoid losing history:
+
+```python
+# Incremental upsert — does not overwrite existing orders
+conn = sqlite3.connect("sales.db")
+conn.execute("""
+    CREATE TABLE IF NOT EXISTS orders (
+        order_id TEXT PRIMARY KEY,
+        customer TEXT,
+        amount REAL,
+        updated_at TEXT
+    )
+""")
+for order in new_orders:
+    conn.execute("""
+        INSERT OR REPLACE INTO orders (order_id, customer, amount, updated_at)
+        VALUES (?, ?, ?, ?)
+    """, (order["id"], order["customer"], order["amount"], order["updated_at"]))
+conn.commit()
+```
+
 ### Exercise 1: Weather Pipeline
+
+**Business Scenario:** A logistics company's route planning team needs daily weather data to optimize delivery schedules. Drivers need to know wind speed and precipitation forecasts for 5 key cities. You'll build a pipeline that fetches weather data from the Open-Meteo API (free, no key required), processes it, and stores it in SQLite.
+
+**Your Task:**
+1. Fetch current weather data for 5 cities using the Open-Meteo API: `https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true`
+2. Extract: city name, temperature (°C), windspeed (km/h), and timestamp
+3. Store in SQLite table `weather_log` with columns: city, temperature, windspeed, fetched_at
+4. Print the daily briefing in a formatted table
+
+**City coordinates to use:**
+```python
+cities = [
+    {"name": "New York",    "lat": 40.71, "lon": -74.01},
+    {"name": "Los Angeles", "lat": 34.05, "lon": -118.24},
+    {"name": "Chicago",     "lat": 41.88, "lon": -87.63},
+    {"name": "Houston",     "lat": 29.76, "lon": -95.37},
+    {"name": "Phoenix",     "lat": 33.45, "lon": -112.07},
+]
+```
+
+**Expected Output:**
+```
+=== Daily Weather Briefing — 2024-01-15 08:00 UTC ===
+
+City           | Temp (°C) | Wind (km/h) | Fetched At
+---------------|-----------|-------------|------------------
+New York       |      -2.1 |        18.5 | 2024-01-15 08:01
+Los Angeles    |      14.3 |         8.2 | 2024-01-15 08:01
+Chicago        |      -5.8 |        22.1 | 2024-01-15 08:01
+Houston        |       9.4 |        12.6 | 2024-01-15 08:02
+Phoenix        |      11.7 |         6.4 | 2024-01-15 08:02
+
+Pipeline complete. 5 records written to weather_log.db
+```
 
 ```python
 import requests
@@ -423,6 +489,40 @@ print(df)
 ```
 
 ### Exercise 2: GitHub Stats Pipeline
+
+**Business Scenario:** The engineering team tracks the health of their top open-source dependencies. Every week, the tech lead wants a report showing stars, open issues, and last push date for the team's 5 most-used repos. This pipeline automates that report.
+
+**Your Task:**
+1. Use the GitHub REST API to fetch repo data for at least 5 repos (use public endpoints, no auth needed for basic data)
+2. For each repo: extract name, stars, open issues, last push date
+3. Store in a SQLite database table `github_stats` (upsert to avoid duplicates)
+4. Display as a formatted report
+
+**Repos to use:**
+```python
+repos = [
+    "psf/requests",
+    "pandas-dev/pandas",
+    "tiangolo/fastapi",
+    "pallets/flask",
+    "docker/compose"
+]
+```
+
+**Expected Output:**
+```
+=== GitHub Dependency Health Report — 2024-01-15 ===
+
+Repository         | Stars  | Open Issues | Last Push
+-------------------|--------|-------------|------------------
+requests           | 51,234 |         287 | 2024-01-14
+pandas             | 41,876 |       3,542 | 2024-01-15
+fastapi            | 72,310 |         643 | 2024-01-15
+flask              | 67,891 |          54 | 2024-01-13
+compose            | 33,412 |         312 | 2024-01-12
+
+5 records saved to github_stats.db
+```
 
 ```python
 import requests
@@ -471,6 +571,67 @@ df = github_pipeline("python")
 
 ### Exercise 3: Full Dashboard
 
+**Business Scenario:** The logistics company wants a unified operations dashboard combining the weather data and GitHub dependency stats pipelines into a single internal web page. The Flask app reads from the SQLite databases built in Exercises 1 and 2 and renders styled HTML tables.
+
+**Your Task:**
+1. Create a Flask app with route `GET /` that reads from both SQLite databases
+2. Pass `repos` (list of dicts) and `languages` (list of dicts) to `templates/index.html`
+3. Create `templates/index.html` (content provided below) — Flask looks for templates in the `templates/` subdirectory
+4. Run with `flask run` and verify the dashboard renders correctly
+
+**`templates/index.html` (create this file):**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Operations Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 960px; margin: 40px auto; color: #333; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+    th { background: #2c3e50; color: white; padding: 10px 14px; text-align: left; }
+    td { border-bottom: 1px solid #ddd; padding: 8px 14px; }
+    tr:hover { background: #f5f5f5; }
+    h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; }
+    .stat { font-size: 1.2em; font-weight: bold; color: #2980b9; }
+  </style>
+</head>
+<body>
+  <h1>Operations Dashboard</h1>
+  <p>Showing top <span class="stat">{{ total_repos }}</span> repositories</p>
+
+  <h2>Top Repositories by Stars</h2>
+  <table>
+    <tr><th>Repository</th><th>Language</th><th>Stars</th><th>Open Issues</th></tr>
+    {% for repo in repos %}
+    <tr>
+      <td>{{ repo.name }}</td>
+      <td>{{ repo.language or "N/A" }}</td>
+      <td>{{ "{:,}".format(repo.stars) }}</td>
+      <td>{{ repo.open_issues }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Stars by Language (Top 5)</h2>
+  <table>
+    <tr><th>Language</th><th>Repos</th><th>Total Stars</th></tr>
+    {% for lang in languages %}
+    <tr>
+      <td>{{ lang.language or "Unknown" }}</td>
+      <td>{{ lang.count }}</td>
+      <td>{{ "{:,}".format(lang.stars) }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+</html>
+```
+
+**Expected Output:**
+- `GET /` renders a styled HTML page with two tables: "Top Repositories by Stars" and "Stars by Language"
+- Each table is populated with live data from `github.db`
+
 ```python
 # app.py
 from flask import Flask, render_template
@@ -518,13 +679,54 @@ if __name__ == "__main__":
 
 ### Exercise 4: Failure Injection — Stale + Duplicate Batch
 
-Inject a controlled pipeline incident where the source sends yesterday's snapshot with duplicated IDs.
+**Business Scenario:** The weather pipeline has been running in production for weeks and silently accumulating duplicate records. The `if_exists="append"` strategy causes the `current_weather` table to grow by 5 rows every run (5→10→15→20…). The data freshness check also never fires because old records are never replaced. Debug and fix both issues.
 
-Your debugging goals:
+**Starter Code (Broken — has the duplicate accumulation bug):**
+```python
+import sqlite3
+import pandas as pd
+from datetime import datetime, timedelta
 
-1. Trip freshness and uniqueness quality checks automatically.
-2. Contain blast radius by quarantining bad data instead of loading to production tables.
-3. Write a short postmortem using the template and propose prevention controls.
+def fetch_weather_batch() -> pd.DataFrame:
+    """Simulates fetching weather data (same cities each run)."""
+    return pd.DataFrame({
+        "city": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+        "temperature": [-2.1, 14.3, -5.8, 9.4, 11.7],
+        "windspeed": [18.5, 8.2, 22.1, 12.6, 6.4],
+        # BUG 1: Using yesterday's timestamp (stale data) instead of now
+        "fetched_at": (datetime.utcnow() - timedelta(days=1)).isoformat()
+    })
+
+def save_weather(df: pd.DataFrame):
+    conn = sqlite3.connect("weather_bug.db")
+
+    # BUG 2: "append" keeps adding rows every run — table grows indefinitely!
+    df.to_sql("current_weather", conn, if_exists="append", index=False)
+
+    row_count = pd.read_sql(
+        "SELECT COUNT(*) as n FROM current_weather", conn
+    ).iloc[0]["n"]
+    print(f"After run: table has {row_count} rows")  # Will be 5, 10, 15, 20...
+    conn.close()
+
+# Run 3 times and watch the table grow
+for i in range(3):
+    save_weather(fetch_weather_batch())
+```
+
+**Your Debugging Goals:**
+1. Run the code 3 times — confirm the table grows from 5 → 10 → 15 rows
+2. Fix Bug 1: update `fetched_at` to use `datetime.utcnow()` (current time)
+3. Fix Bug 2: replace `if_exists="append"` with `if_exists="replace"` so each run resets the table to exactly 5 rows
+4. Add a freshness assertion after loading: if any row's `fetched_at` is more than 1 hour old, raise a `ValueError("Stale data detected")`
+5. Verify that after 3 runs of the fixed code, the table still has exactly 5 rows
+
+**Expected Output after fix:**
+```
+After run: table has 5 rows
+After run: table has 5 rows  ← upsert replaced existing records
+After run: table has 5 rows  ← still 5, no duplicates!
+```
 
 ---
 

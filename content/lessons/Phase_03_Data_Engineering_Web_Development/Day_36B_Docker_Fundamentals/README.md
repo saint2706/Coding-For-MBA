@@ -98,6 +98,29 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 
 ### 3. Building and Running
 
+**Image vs Container — the key distinction:**
+
+| Concept | Analogy | Definition |
+|---------|---------|-----------|
+| **Docker Image** | Class / Blueprint | A read-only snapshot of your application and all its dependencies. Built once with `docker build`. Stored in a registry (Docker Hub, ECR). Can be shared and reused. |
+| **Docker Container** | Instance / Running process | A live, running instance created FROM an image. You can have 10 containers all running from the same image. Containers are isolated, ephemeral, and disposable. |
+
+```
+docker build -t myapp:v1 .    # Creates an IMAGE from your Dockerfile
+docker run myapp:v1           # Creates and starts a CONTAINER from that IMAGE
+docker ps                     # Lists running CONTAINERS
+docker images                 # Lists available IMAGES on your machine
+```
+
+**The lifecycle:**
+1. Write a `Dockerfile` (recipe for your image)
+2. `docker build` → creates an immutable image
+3. `docker run` → starts a container from that image
+4. Container runs your app, isolated from the host system
+5. `docker stop` → stops the container (image still exists)
+6. `docker rm` → removes the container (image still exists)
+7. The same image can be run on any machine that has Docker installed — no more "it works on my machine"
+
 ```bash
 # Build image from Dockerfile in current directory
 docker build -t my-data-api:v1 .
@@ -279,38 +302,139 @@ docker run -e API_KEY=$MY_API_KEY my-app
 
 ### Exercise 1: Containerize the Phase 3 Case Study
 
-Take the Flask/FastAPI app you built in Day 35 or 36 and containerize it:
+**Business Scenario:** Your Phase 3 Flask/FastAPI case study app works perfectly on your laptop, but the DevOps team needs to deploy it to a Linux server. Instead of documenting every install step, you'll containerize it — one `docker build` command creates a self-contained unit that runs identically everywhere.
 
-1. Write a `Dockerfile` following the template above
-2. Build the image: `docker build -t phase3-app:v1 .`
-3. Run and verify: `docker run -p 5000:5000 phase3-app:v1`
-4. Test with `curl` or Postman
+**Your Task:**
+1. Create a `Dockerfile` in the project root
+2. Use `python:3.11-slim` as the base image
+3. Set the working directory to `/app`, copy your code, install requirements, and expose port 5000
+4. Build: `docker build -t phase3-app:v1 .`
+5. Run: `docker run -p 5000:5000 phase3-app:v1`
+6. Verify: `curl http://localhost:5000/health` should return `{"status": "ok"}`
+
+**Expected Dockerfile:**
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 5000
+CMD ["python", "app.py"]
+```
+
+**Expected terminal output after `docker run`:**
+```
+ * Running on http://0.0.0.0:5000
+ * Press CTRL+C to quit
+
+# In a new terminal:
+curl http://localhost:5000/health
+{"status": "ok"}
+```
 
 ### Exercise 2: Multi-Service Data Pipeline
 
-Write a `docker-compose.yml` for this architecture:
-- A Python script that scrapes data (your Day 30 web scraper)
-- A PostgreSQL database to store records
-- pgAdmin for database inspection (use `dpage/pgadmin4` image)
+**Business Scenario:** Your data pipeline needs three services running together: a Flask API (Python), a MongoDB database, and a Redis cache. Instead of starting each manually, `docker-compose` orchestrates all three with a single command.
 
+**Your Task:**
+1. Create `docker-compose.yml` with three services: `api`, `mongo`, `redis`
+2. The `api` service builds from your local `Dockerfile`, exposes port 5000, and depends on `mongo` and `redis`
+3. `mongo` uses `mongo:7.0` image, `redis` uses `redis:alpine`
+4. Run: `docker-compose up`
+5. Verify all services start
+
+**Expected `docker-compose.yml` (replace any `pass` stubs — YAML does not support `pass`):**
 ```yaml
-version: "3.9"
+version: "3.8"
+
 services:
-  scraper:
-    # TODO: build from Dockerfile
-    # TODO: set environment variable for DB connection
-    pass
-  db:
-    # TODO: use postgres:15 image
-    # TODO: set credentials via environment variables
-    pass
-  pgadmin:
-    # TODO: use dpage/pgadmin4 image
-    # TODO: expose on port 5050
-    pass
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/appdb
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongo
+      - redis
+
+  mongo:
+    image: mongo:7.0
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongo_data:
+```
+
+**Expected folder structure:**
+```
+project/
+├── app.py
+├── Dockerfile
+├── docker-compose.yml
+└── requirements.txt
+```
+
+**Expected terminal output after `docker-compose up`:**
+```
+[+] Running 3/3
+ ✔ Container project-mongo-1  Started
+ ✔ Container project-redis-1  Started
+ ✔ Container project-api-1    Started
 ```
 
 ### Exercise 3: Debug a Broken Container
+
+**Business Scenario:** A colleague pushed a broken `Dockerfile` that fails to build. You need to diagnose the error from the build output and fix it.
+
+**Broken `Dockerfile`:**
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt    # BUG 1: Missing destination argument
+RUN pip install requirements.txt  # BUG 2: Should be `pip install -r requirements.txt`
+COPY . /app
+EXPOSE 8080
+CMD python app.py  # BUG 3: Should use exec form ["python", "app.py"] for signal handling
+```
+
+**Your Task:**
+1. Identify all 3 bugs
+2. Fix them in the corrected Dockerfile
+3. Build successfully: `docker build -t fixed-app .`
+4. Verify the build completes without errors
+
+**Fixed `Dockerfile`:**
+```dockerfile
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .           # Fixed: added destination "."
+RUN pip install -r requirements.txt  # Fixed: added -r flag
+COPY . /app
+EXPOSE 8080
+CMD ["python", "app.py"]          # Fixed: exec form for proper signal handling
+```
+
+**Expected output after fix:**
+```
+Step 1/7 : FROM python:3.11-slim
+ ---> a1b2c3d4e5f6
+...
+Step 7/7 : CMD ["python", "app.py"]
+ ---> Running in abc123
+Successfully built abc123def456
+Successfully tagged fixed-app:latest
+```
 
 The following Dockerfile has 3 bugs. Find and fix them:
 

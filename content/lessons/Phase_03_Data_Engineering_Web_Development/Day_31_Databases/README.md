@@ -174,6 +174,22 @@ JOIN departments d ON e.department_id = d.id;
 
 ### SQL Injection Prevention
 
+**Why parameterized queries work — the mechanism:**
+
+In a **vulnerable query** like:
+```python
+cursor.execute(f"SELECT * FROM users WHERE name = '{user_input}'")
+```
+The database receives a single string of SQL code and executes whatever text it finds — including any SQL commands hidden inside `user_input`. If `user_input` is `"'; DROP TABLE users; --"`, the database executes the DROP.
+
+In a **parameterized query**:
+```python
+cursor.execute("SELECT * FROM users WHERE name = ?", (user_input,))
+```
+The database driver separates the **SQL template** from the **data values**. The `?` is a placeholder that the database driver fills in *after* parsing the SQL structure. Critically, the driver **treats the substituted value as a literal string only**, never as executable SQL code. No amount of SQL syntax in `user_input` can be interpreted as a command — the database sees it as text data, not instructions.
+
+**Bottom line:** Always use `?` (SQLite) or `%s` (PostgreSQL/MySQL) placeholders. Never use f-strings or `.format()` to build SQL queries with user-supplied data.
+
 ```python
 # NEVER do this (SQL injection vulnerability):
 name = "'; DROP TABLE employees; --"
@@ -201,11 +217,33 @@ cursor.execute("SELECT * FROM employees WHERE name = ?", (name,))  # SAFE
 | > 1M rows     | PostgreSQL, MySQL          |
 | Distributed   | Cloud databases (BigQuery) |
 
+> **SQLite Concurrency Warning:** SQLite locks the **entire database file** during writes. If two processes try to write simultaneously, one will wait (or fail with a `OperationalError: database is locked`). For applications with concurrent writes (e.g., a web server with multiple users), upgrade to PostgreSQL or MySQL. SQLite is excellent for: single-user tools, prototypes, read-heavy workloads, and embedded databases (e.g., mobile apps).
+
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Employee Database
+
+**Business Scenario:** HR needs a quick analysis of average salaries by department from the company's SQLite employee database. The database doesn't exist yet, so you'll create it, populate it with sample data, and run aggregation queries to produce the report.
+
+**Your Task:**
+1. Create an SQLite database (in-memory with `:memory:` is fine)
+2. Create an `employees` table with columns: `id`, `name`, `department`, `salary`, `hire_date`
+3. Insert at least 6 employee records across 3 departments
+4. Query: average salary by department (ORDER BY avg salary descending)
+5. Query: employees hired in the last 2 years
+6. Print results in a formatted way
+
+**Sample Data to Insert:**
+| name | department | salary | hire_date |
+|------|-----------|--------|-----------|
+| Alice Johnson | Engineering | 95000 | 2023-01-15 |
+| Bob Smith | Marketing | 72000 | 2022-06-01 |
+| Charlie Brown | Engineering | 88000 | 2021-03-20 |
+| Diana Prince | HR | 68000 | 2023-09-10 |
+| Eve Wilson | Marketing | 76000 | 2020-01-05 |
+| Frank Castle | Engineering | 102000 | 2024-02-14 |
 
 ```python
 import sqlite3
@@ -256,7 +294,47 @@ def create_employee_db():
 conn = create_employee_db()
 ```
 
+**Expected Output:**
+```
+=== Average Salary by Department ===
+   department  avg_salary  employee_count
+0  Engineering    95000.00               3
+1  Marketing       74000.00               2
+2  HR              68000.00               1
+
+=== Recently Hired Employees (last 2 years) ===
+   name           department  salary  hire_date
+0  Alice Johnson  Engineering  95000  2023-01-15
+1  Diana Prince   HR           68000  2023-09-10
+2  Frank Castle   Engineering 102000  2024-02-14
+```
+
 ### Exercise 2: Sales Analytics
+
+**Business Scenario:** The Sales team keeps daily transaction records in SQLite. The CFO wants a weekly summary: total revenue per product, the top 3 highest-value transactions, and month-over-month comparison. You'll build the queries and return the results as DataFrames.
+
+**Your Task:**
+1. Create and populate a `sales` table (or use the existing one in the lesson)
+2. Query: total revenue and transaction count per product (sorted by revenue desc)
+3. Query: top 3 highest-value transactions with customer name and product
+4. Use Pandas to read the results: `pd.read_sql_query(sql, conn)`
+5. Print both DataFrames
+
+**Expected Output:**
+```
+=== Revenue by Product ===
+      product  total_revenue  transactions
+0  Laptop Pro     1999.98              2
+1    Monitor      299.99              1
+2   Keyboard       79.99              1
+3      Mouse       29.99              1
+
+=== Top 3 Transactions ===
+   customer       product  amount        date
+0  Alice          Laptop Pro  999.99  2024-01-15
+1  Charlie        Laptop Pro  999.99  2024-01-15
+2  Diana          Monitor     299.99  2024-01-16
+```
 
 ```python
 import sqlite3
@@ -325,6 +403,30 @@ create_sales_db()
 ```
 
 ### Exercise 3: DataFrame to Database
+
+**Business Scenario:** You've cleaned a large CSV of customer survey responses in Pandas. Now you need to persist it to SQLite so other team members can query it with SQL tools like DBeaver or Tableau. The pipeline must be idempotent — running it twice should not create duplicates.
+
+**Your Task:**
+1. Create a Pandas DataFrame representing customer survey results (5+ rows, 4+ columns)
+2. Write it to SQLite using `df.to_sql("table_name", conn, if_exists="replace", index=False)`
+3. Read it back with `pd.read_sql_query()` to verify the round-trip
+4. Add a new column to the DataFrame and use `if_exists="replace"` to update the table
+5. Print the final table
+
+**Expected Output:**
+```
+Written 5 rows to SQLite table 'customer_survey'
+
+=== Round-trip Verification ===
+   customer_id       name  nps_score  product  satisfaction
+0            1     Alice           9   Laptop          High
+1            2       Bob           7    Mouse        Medium
+2            3   Charlie          10  Keyboard          High
+3            4     Diana           6   Monitor          Low
+4            5       Eve           8   Laptop        Medium
+
+Table updated with satisfaction column. Final shape: (5, 5)
+```
 
 ```python
 import sqlite3
