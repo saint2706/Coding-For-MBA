@@ -103,6 +103,25 @@ print(f"Length: {np.linalg.norm(unit_a):.2f}")  # 1.0
 
 ### Dot Product: Measuring Similarity
 
+#### Scale Sensitivity: Why You Must Normalize Before Similarity
+
+When computing similarity between customer vectors, the **scale of features dominates**:
+- Customer A: income=$100,000, age=35
+- Customer B: income=$100,500, age=25
+
+Raw dot product: A·B = 100,000 × 100,500 + 35 × 25 = 10,050,000,000 + 875 ≈ 10 billion
+The income term crushes the age term entirely. Customers with similar incomes but very different ages appear similar.
+
+**Always standardize features before computing distance/similarity.**
+
+| Measure | Formula | When to Use |
+|---------|---------|------------|
+| **Dot product** | a·b = Σ aᵢbᵢ | When magnitude matters (e.g., revenue × quantity, weighted scores) |
+| **Euclidean distance** | √(Σ(aᵢ−bᵢ)²) | When absolute difference matters (k-means clustering, KNN with standardized features) |
+| **Cosine similarity** | cos θ = a·b / (‖a‖‖b‖) | When direction matters more than magnitude (text documents, user preference profiles) |
+
+Example: Document A has 100 mentions of "machine learning", Document B has 5 mentions. Euclidean distance says they're far apart. Cosine similarity ignores the length difference and focuses on whether they cover the same topics.
+
 The dot product is fundamental to ML. It measures how "aligned" two vectors are. Algebraically:
 
 $$
@@ -259,6 +278,28 @@ A\mathbf{v} = \lambda \mathbf{v}
 $$
 
 
+#### Linear Algebra Concepts: Business Intuition
+
+**Determinant** — A scalar that measures how much a transformation scales space. For a 2×2 matrix:
+- det > 0: the transformation preserves orientation
+- det = 0: the matrix is **singular** — it collapses space to a lower dimension (vectors become linearly dependent). This means the matrix cannot be inverted.
+- **Business consequence**: A singular feature matrix means two or more features are perfect linear combinations of each other (e.g., `revenue = price × quantity`, and you included all three). The regression has no unique solution — coefficients become unreliable.
+
+**Inverse** — The matrix A⁻¹ such that A × A⁻¹ = I (identity). In linear regression, the optimal weights are w = (XᵀX)⁻¹Xᵀy. If XᵀX is singular (or near-singular), the inverse is numerically unstable and weights blow up.
+- **Diagnosis**: Check `np.linalg.cond(X)` — condition numbers > 1000 indicate numerical instability.
+- **Fix**: Regularization (Ridge adds λI to XᵀX before inverting, making it always invertible).
+
+**Rank** — The number of linearly independent rows (or columns) of a matrix. A rank-deficient matrix has more columns than independent directions — some features are redundant.
+- `np.linalg.matrix_rank(X)` tells you if your feature matrix has full rank.
+
+**Singularity** — A square matrix is singular when its determinant is zero. In practice, near-singularity (condition number > 10⁶) is equally problematic.
+
+**PCA (Principal Component Analysis)** — Finds the directions (principal components) of maximum variance in your data. These are the **eigenvectors** of the covariance matrix.
+- The first principal component points in the direction where customers vary most (e.g., overall spending level).
+- The second principal component is orthogonal to the first — it captures the next most variation (e.g., spending pattern: frequent small vs rare large).
+- **Business use**: Reduce 50 correlated customer features to 5 independent components that capture 90% of variance, improving model stability and speed.
+- **Variance explained**: Each eigenvalue tells you how much variance its eigenvector captures. Plot a scree plot to see where adding components stops helping.
+
 ```python
 # Identity matrix: I @ A = A @ I = A
 I = np.eye(3)  # 3x3 identity
@@ -283,6 +324,35 @@ print(f"Eigenvalues: {eigenvalues}")
 print(f"Eigenvectors:\n{eigenvectors}")
 ```
 
+### Additional Linear Algebra Concepts for ML
+
+**Orthogonality**
+Two vectors are orthogonal if their dot product is zero (perpendicular). PCA components are orthogonal — they capture independent sources of variation. Orthogonal features in a regression model have zero shared variance, making coefficient interpretation clean.
+
+**SVD (Singular Value Decomposition)**
+Any matrix X can be decomposed as X = UΣVᵀ where U and V are orthogonal and Σ contains singular values (square roots of eigenvalues of XᵀX). SVD is the mathematical core of PCA and is more numerically stable than eigendecomposition for non-square matrices.
+
+```python
+U, sigma, Vt = np.linalg.svd(X, full_matrices=False)
+# sigma: singular values (descending order)
+# Vt: principal component directions (rows)
+# Reconstruction with k components:
+k = 2
+X_reconstructed = U[:, :k] @ np.diag(sigma[:k]) @ Vt[:k, :]
+```
+
+**Condition Number**
+Ratio of largest to smallest singular value. Indicates how much a small input perturbation amplifies output error.
+```python
+cond = np.linalg.cond(X)
+# < 30: well-conditioned
+# 30–1000: moderate concern
+# > 1000: ill-conditioned — regularization recommended
+```
+
+**Why Regularization Helps Ill-Conditioned Systems**
+Ridge regression adds λI to XᵀX before inverting: w = (XᵀX + λI)⁻¹Xᵀy. Adding λ to every diagonal element ensures XᵀX is never singular and bounds the condition number, preventing coefficient blow-up.
+
 ---
 
 ## Senior-Level Insights
@@ -296,6 +366,17 @@ print(f"Eigenvectors:\n{eigenvectors}")
 | **Neural Networks**   | Layers as $\sigma(XW + \mathbf{b})$                                 |
 | **SVD**               | Factorization $A = U\Sigma V^\top$ for recommendations              |
 | **Word Embeddings**   | Words as vectors; similarity via $\mathbf{a} \cdot \mathbf{b}$      |
+
+### Decision Guide: Operations and Similarity Measures
+
+| Operation / Measure | Business Use | Scaling Required? | Failure Mode |
+|--------------------|-----------|--------------------|-------------|
+| Dot product | Weighted scores, portfolio returns | Sometimes | Dominated by high-magnitude features |
+| Euclidean distance | K-means, KNN | Yes (standardize) | Curse of dimensionality in high dims |
+| Cosine similarity | Recommendations, NLP, user profiles | Normalize to unit length | Fails if all-zero vectors appear |
+| Matrix inverse | Linear regression (OLS) | No (but check condition) | Fails when multicollinearity present |
+| SVD / PCA | Dimensionality reduction, noise removal | Yes (center features) | Loses interpretability of original features |
+| Eigendecomposition | Covariance analysis, graph algorithms | Yes | Only applicable to square matrices |
 
 ### When to Use Sparse Matrices
 
@@ -345,6 +426,16 @@ print(f"Solution: {x_good}")
 
 ### Exercise 1: Vector Similarity Search
 
+**Business Scenario:** You are a data scientist at RetailCo. The product team wants a recommendation engine: "Given a customer's purchase vector, find the 3 most similar customers."
+
+**Goal:** Implement and compare Euclidean distance vs cosine similarity for customer similarity.
+
+**Tasks:**
+1. Create 5 customer feature vectors (standardized): [spending_electronics, spending_clothing, spending_home]
+2. Compute pairwise cosine similarities
+3. For Customer 1, find the top 2 most similar customers
+4. Explain: would the result differ if features were not standardized?
+
 ```python
 import numpy as np
 
@@ -383,9 +474,19 @@ for name, score in similar:
     print(f"  {name}: {score:.3f}")
 ```
 
+**Expected Output:**
+```
+Cosine similarity matrix (approx):
+Customer 0 ↔ Customer 3: 0.98  (most similar)
+Customer 0 ↔ Customer 1: 0.72
+Top 2 similar to Customer 0: [Customer 3, Customer 1]
+```
+
 ---
 
 ### Exercise 2: Linear Regression from Scratch
+
+**Business Scenario:** A portfolio manager uses a 3×3 factor loading matrix to convert 3 economic indicators into 3 portfolio scores.
 
 ```python
 import numpy as np
@@ -421,6 +522,12 @@ plt.ylabel("y")
 plt.title("Linear Regression via Normal Equation")
 plt.legend()
 plt.show()
+```
+
+**Expected Output:**
+```
+Factor scores shape: (n_customers, 3)
+Condition number of factor matrix: ~15.3 (acceptable — below 1000)
 ```
 
 ---
@@ -478,6 +585,14 @@ pc1 = eigenvectors[:, np.argmax(eigenvalues)]
 data_1d = data_centered @ pc1
 print(f"Reduced from {data.shape[1]}D to 1D")
 print(f"Variance retained: {eigenvalues.max() / eigenvalues.sum() * 100:.1f}%")
+```
+
+**Expected Output:**
+```
+Variance explained by component 1: ~52%
+Variance explained by component 2: ~31%
+Cumulative variance (2 components): ~83%
+Interpretation: 2 components capture most customer variation — suitable for visualization
 ```
 
 ---
@@ -619,6 +734,23 @@ D, I = index.search(query_vector.reshape(1, -1), 10)
 
 1. **Operation-to-symptom mapping drill**: For each operation (`scaling`, `matrix projection`, `feature interaction`, `PCA rotation`), map how it changes feature geometry and identify one multicollinearity symptom (unstable coefficients, inflated variance, sign flips).
 2. **Collinearity diagnosis mini-case**: You observe opposite-signed coefficients for two nearly identical marketing spend variables. Explain conceptually (linear dependence in `X^T X`) *why the model failed*, then take corrective action by computing VIF and applying either feature dropping, Ridge regularization, or PCA.
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|-----------|
+| Scalar | A single number (0-dimensional) |
+| Vector | 1-D array of numbers; represents a point or direction in space |
+| Matrix | 2-D array; represents a linear transformation or dataset |
+| Tensor | N-dimensional generalization of matrix (used in deep learning) |
+| Norm | Measure of vector length; L2 norm = √(Σxᵢ²) |
+| Transpose | Flipping rows and columns: (Aᵀ)ᵢⱼ = Aⱼᵢ |
+| Rank | Number of linearly independent rows/columns |
+| Eigenvector | Direction unchanged by a transformation; only scaled by its eigenvalue |
+| Sparse | A matrix with mostly zero values (e.g., TF-IDF, adjacency matrices) |
+| Singular | Square matrix with determinant = 0; has no inverse |
 
 ---
 

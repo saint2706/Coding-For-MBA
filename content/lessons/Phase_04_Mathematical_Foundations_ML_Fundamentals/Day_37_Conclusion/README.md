@@ -45,6 +45,10 @@ This is the moment where everything you've learned comes together. NumPy for fas
 
 Today, we consolidate these skills before diving into machine learning. Think of this as your pre-flight checklist before takeoff.
 
+**Phase 04 Recurring Dataset — RetailCo Customer Analytics**
+
+> Throughout Phase 04 you will work with a fictional retail company, "RetailCo." The dataset contains 10,000 customers with features: `customer_id`, `age`, `annual_income`, `years_as_customer`, `total_spend_last_12m`, `num_purchases`, `product_category` (Electronics/Clothing/Home), `region` (North/South/East/West), `churn_label` (0/1). Later lessons will use this same dataset to predict churn, segment customers, and evaluate model performance end-to-end.
+
 ---
 
 ## The Technical Deep Dive
@@ -52,6 +56,14 @@ Today, we consolidate these skills before diving into machine learning. Think of
 ### NumPy Essentials: The Foundation of Scientific Python
 
 NumPy is the backbone of all Python data science. Machine learning libraries like scikit-learn and TensorFlow are built on NumPy arrays.
+
+Before looking at the code, make sure you understand five core NumPy concepts:
+
+- **Vectorization**: applying an operation to an entire array at once without a Python `for` loop. Under the hood, NumPy delegates work to CPU SIMD (Single Instruction, Multiple Data) instructions, which can process multiple values in a single clock cycle. This makes vectorized code 10–100× faster than equivalent Python loops and is why libraries like scikit-learn and TensorFlow are built on NumPy.
+- **Broadcasting**: NumPy's set of rules for applying arithmetic operations between arrays of different but *compatible* shapes — without copying data. For example, adding a column vector of shape `(3, 1)` to a row vector of shape `(3,)` automatically expands both to `(3, 3)`, computing all pairwise sums. The rule: dimensions are compatible if they are equal, or if one of them is 1.
+- **Axis**: the direction of aggregation. `axis=0` collapses *rows* (operates down each column, so `matrix.sum(axis=0)` gives one sum per column). `axis=1` collapses *columns* (operates across each row, so `matrix.sum(axis=1)` gives one sum per row). Getting this wrong is one of the most common NumPy bugs in ML code.
+- **Shape**: a tuple `(rows, columns)` (or more dimensions for tensors) that describes an array's structure. `.reshape()` reorders the element layout without copying data, as long as the total number of elements stays the same — e.g., `np.arange(12).reshape(3, 4)` creates a 3×4 matrix.
+- **Normalization**: scaling values so they fall in a standard range or sum to 1. *Row normalization* (dividing each row by its sum) is appropriate when rows represent probability distributions or feature vectors where the overall magnitude should not influence comparisons — for example, comparing two documents by word frequencies regardless of document length. Scaling to [0,1] or zero mean/unit variance is common before feeding features into distance-based ML models.
 
 ```python
 import numpy as np
@@ -104,27 +116,35 @@ import pandas as pd
 # Loading data
 df = pd.read_csv("data.csv")
 
-# First look - always do this
+# These five calls answer the first five questions any data analyst asks:
+# How large is the dataset? Are types correct? Are values missing?
+# What does the distribution look like? What are the columns?
 print(df.head())  # First 5 rows
 print(df.info())  # Data types, missing values
 print(df.describe())  # Statistics for numeric columns
 print(df.shape)  # (rows, columns)
 print(df.columns.tolist())  # Column names
 
-# Selection - accessing data
+# Selection — choose which rows and columns to work with
+# Use df["col"] for a Series, df[["col1","col2"]] for a DataFrame slice,
+# .loc for label-based access, .iloc for position-based access.
 df["column"]  # Single column (Series)
 df[["col1", "col2"]]  # Multiple columns (DataFrame)
 df.loc[0]  # Row by label
 df.iloc[0]  # Row by position
 df.loc[0:5, "column"]  # Slice rows, specific column
 
-# Filtering - subset by condition
+# Filtering — keep only rows that satisfy a condition
+# Essential for EDA: isolate a customer segment, remove outliers,
+# or scope the dataset to a specific time window before modeling.
 df[df["age"] > 30]  # Age over 30
 df[(df["age"] > 30) & (df["city"] == "NYC")]  # Multiple conditions
 df[df["category"].isin(["A", "B"])]  # In a list
 df[df["name"].str.contains("John")]  # String matching
 
-# Aggregation - computing statistics
+# Aggregation — split into groups, compute statistics, combine results
+# This is the workhorse of business reporting: average revenue by segment,
+# unique customer counts by region, total sales by product category.
 df.groupby("category")["sales"].mean()  # Mean sales per category
 df.groupby("category").agg(
     {
@@ -226,6 +246,18 @@ Before any ML project, ensure your data is ready:
 | **Balance**      | Class imbalance?                 | `df["target"].value_counts(normalize=True)` |
 | **Correlations** | Features correlated with target? | `df.corr()["target"]`                       |
 
+### EDA Best Practices for ML
+
+Exploratory Data Analysis is not just clicking through a notebook — it is a disciplined, reproducible process with real consequences for model quality.
+
+**Reproducible exploratory analysis**: Always set `np.random.seed()` or `random_state=` at the top of your notebook. Log every filter decision as a comment or in a `data_decisions.md` file (e.g., "removed 12 rows where income < 0 — confirmed with domain expert on 2024-03-15"). If you cannot reproduce your EDA from scratch, you cannot debug a model trained on its output.
+
+**Data dictionaries**: Before touching the data, document what each column means and its units. Is `age` in years or months? Is `income` gross or net? Is `spend` in USD or local currency? Ambiguous columns are the #1 source of silent bugs in ML pipelines. A simple table in a README — column name, type, units, example values, known quirks — prevents hours of debugging downstream.
+
+**Target leakage checks**: Any feature computed using future data or the target itself must be flagged and excluded. Common leakage traps: running averages that include the current row's target, time-lagged features computed over windows that cross the train/test cut-off date, or proxy columns that encode the label (e.g., "refund_requested" as a feature when predicting "churned"). Audit with a feature-availability timeline: for each feature, ask "would this value be available at prediction time in production?"
+
+**Train/test separation during EDA**: EDA should be performed **only on the training set**. Looking at the test set distribution before finalizing preprocessing — even just `.describe()` — is a subtle form of data leakage. You may unconsciously adjust your imputation strategy or feature engineering to fit the test set, inflating reported performance. Split first, explore only the training fold.
+
 ### Memory Optimization for Large Datasets
 
 ```python
@@ -249,6 +281,17 @@ for chunk in chunks:
 ## Hands-on Lab
 
 ### Exercise 1: NumPy Array Gymnastics
+
+**Scenario**: You are a data engineer at a retail bank. The risk team has given you a 5×5 matrix of correlation coefficients between five loan features. Your task is to explore this matrix programmatically.
+
+**Goal**: Understand NumPy array operations on a correlation matrix.
+
+**Tasks**:
+1. Create a 5×5 matrix with values 1–25 (stand-in for the correlation matrix).
+2. Extract the main diagonal (represents each feature's correlation with itself — always 1.0 in a real correlation matrix).
+3. Compute row-wise and column-wise sums to check symmetry and magnitude.
+4. Row-normalize the matrix so each row sums to 1 — converts raw values to relative weights.
+5. Identify all values above the mean — these represent the stronger-than-average correlations that the risk team should investigate for multicollinearity.
 
 ```python
 import numpy as np
@@ -279,9 +322,35 @@ indices = np.where(matrix > mean_val)
 print(f"Values > {mean_val}: {matrix[indices]}")
 ```
 
+**Expected Output**:
+```
+Matrix:
+ [[ 1  2  3  4  5]
+ [ 6  7  8  9 10]
+ [11 12 13 14 15]
+ [16 17 18 19 20]
+ [21 22 23 24 25]]
+Diagonal: [ 1  7 13 19 25]
+Row sums: [ 15  40  65  90 115]
+Col sums: [55 60 65 70 75]
+Row sums after normalization: [1. 1. 1. 1. 1.]
+Values > 13.0: [14 15 16 17 18 19 20 21 22 23 24 25]
+```
+
 ---
 
 ### Exercise 2: Pandas Data Exploration
+
+**Scenario**: You are a CRM analyst at a subscription company. Your manager wants a category performance summary before the quarterly review.
+
+**Goal**: Explore and profile a customer DataFrame for ML readiness.
+
+**Tasks**:
+1. Run basic exploration — check shape, missing values, and data types to assess data quality before any modeling.
+2. Handle missing income values by filling with the category median (group-aware imputation preserves segment distributions better than a global mean).
+3. Create derived features: `age_group` (binned), `spending_ratio` (spending ÷ income), and temporal features from `signup_date`.
+4. Build a category-level summary using `groupby().agg()` — this is the type of executive table your manager will paste into the slide deck.
+5. Identify high-value customers using compound filters — this segment is often the starting point for churn-prevention campaigns.
 
 ```python
 import pandas as pd
@@ -345,9 +414,32 @@ high_value = df[(df["spending_ratio"] > 0.02) & (df["income"] > 70000)]
 print(f"\nHigh-value customers: {len(high_value)}")
 ```
 
+**Expected Output (approximate)**:
+```
+Shape: (200, 6)
+Missing values: income    11 ...
+Category Summary (approx.):
+         count  income    spending  spending_ratio
+Bronze    66    57420.21  987.32    0.019
+Gold      66    62100.45  1015.67   0.018
+Silver    68    59800.10  998.44    0.018
+High-value customers: ~12
+```
+
 ---
 
 ### Exercise 3: ML-Ready Data Preparation
+
+**Scenario**: You are preparing a dataset for a marketing ML model that predicts purchase amounts.
+
+**Goal**: Complete end-to-end ML data preparation — from raw simulation to clean `X` and `y` tensors ready for a model.
+
+**Tasks**:
+1. Check for data quality issues: missing values and invalid entries (negative incomes from measurement error).
+2. Fix negative income values by replacing them with the column median — a safe, non-leaking imputation.
+3. Visualize the target distribution to check whether it is roughly normal (required by linear regression) or skewed (may need a log transform).
+4. Compute and plot feature correlations with the target — this tells you which features will be most predictive and whether any appear suspiciously perfect (possible leakage).
+5. Separate features (`X`) and target (`y`) — the canonical split every scikit-learn model expects.
 
 ```python
 import pandas as pd
@@ -411,6 +503,17 @@ print(f"\nFeatures shape: {X.shape}")
 print(f"Target shape: {y.shape}")
 print(f"Target range: {y.min():.2f} to {y.max():.2f}")
 ```
+
+**Expected Output**:
+```
+Missing values: 0
+Negative incomes: ~3
+Features shape: (500, 5)
+Target shape: (500,)
+Target range: approximately 20.00 to 300.00
+```
+
+**Plot descriptions**: The left panel shows a roughly bell-shaped histogram of `purchase_amount` centered around 130, with a long right tail — approximately normal but with some spread introduced by the random noise term. The right panel shows a horizontal bar chart of Pearson correlations with the target; `email_clicks` and `is_member` will appear as the highest correlators (consistent with the large coefficients 15 and 50 in the data-generating formula), while `income` will appear near zero (coefficient 0.001 is negligible at this scale).
 
 ---
 
@@ -554,6 +657,21 @@ A company asks you to "predict which customers will churn next month." Frame thi
 4. Handle class imbalance (typically few churners)
 
 </details>
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|-----------|
+| **Array** | Multi-dimensional grid of values sharing a single dtype |
+| **Vectorization** | Applying operations to whole arrays without Python loops; uses CPU SIMD |
+| **Broadcasting** | NumPy's rule for operating on arrays of compatible but unequal shapes |
+| **dtype** | Data type of array elements (e.g., float64, int32, object) |
+| **Feature** | An input variable used by a model to make predictions |
+| **Target** | The output variable a model is trained to predict (also: label, y) |
+| **Cardinality** | Number of unique values in a column |
+| **Correlation** | Statistical measure of linear relationship between two variables, −1 to 1 |
 
 ---
 

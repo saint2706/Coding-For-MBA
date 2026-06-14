@@ -82,6 +82,17 @@ X_test_scaled = scaler.transform(X_test)         # Transform only, no fit
 # With Pipeline, this is handled automatically — you can't make this mistake.
 ```
 
+> **⚠️ What Pipeline does NOT prevent**
+> 
+> A sklearn Pipeline guarantees that `fit()` is never called on test data within the pipeline. However, these leakage sources remain your responsibility:
+> 
+> 1. **Target-derived features**: If you create a feature like `transaction_rank_by_user` using the entire dataset's target before the pipeline, leakage is in the data, not the preprocessing.
+> 2. **Temporal leakage**: Using a feature whose value at prediction time incorporates future information (e.g., a 30-day rolling average that looks forward).
+> 3. **Precomputed global aggregates**: Computing `mean_category_spend` on the full dataset before splitting, then using it as a feature.
+> 4. **Leakage before pipeline entry**: Any transformation applied outside the pipeline (e.g., `pd.get_dummies(df)` on the full dataframe before `train_test_split`) is not protected.
+> 
+> Pipeline is a powerful leakage guard, but it cannot save you from leakage introduced in data collection, feature definition, or preprocessing outside the pipeline.
+
 ### Basic Pipeline
 
 ```python
@@ -121,6 +132,8 @@ print(f"Intercept: {pipe.named_steps['classifier'].intercept_}")
 ### ColumnTransformer: Different Transformations per Feature Type
 
 The real-world superpower — apply different preprocessing to numeric vs categorical columns.
+
+Each transformer in a Pipeline step is chosen for a specific reason: `SimpleImputer` handles missing values before downstream estimators that would otherwise fail; `StandardScaler` centers and scales features so distance-based models and regularization are not dominated by high-magnitude features; `OneHotEncoder` converts categories into binary indicators because most estimators cannot natively handle strings. Always choose transformers based on your data type and the requirements of the downstream model.
 
 ```python
 from sklearn.compose import ColumnTransformer
@@ -247,6 +260,20 @@ print(f"Custom pipeline score: {custom_pipe.score(X_simple, y_simple):.3f}")
 
 ### Cross-Validation with Pipelines
 
+#### Choosing the Right CV Strategy
+
+| Situation | Recommended CV | Why |
+|-----------|---------------|-----|
+| Default balanced dataset | 5-fold | Good variance/bias tradeoff; standard |
+| Very small dataset (n < 100) | 10-fold or LOOCV | More training data per fold |
+| Large dataset (n > 100k) | 3-fold | Saves compute |
+| Imbalanced classes | StratifiedKFold | Preserves class ratio in each fold |
+| Time-ordered data | TimeSeriesSplit | Prevents future data leaking into past |
+| Grouped observations | GroupKFold | Same patient/user cannot appear in both train and test |
+| Hyperparameter tuning | Nested CV | Outer loop evaluates model, inner loop selects hyperparameters |
+
+**Why 5 is the default**: With 5 folds, each fold uses 80% of data for training and 20% for validation — sufficient training signal with reasonable variance. The choice of 5 is a community convention backed by empirical studies (e.g., Kohavi 1995), not a mathematical optimum.
+
 ```python
 from sklearn.model_selection import cross_val_score, GridSearchCV
 from sklearn.pipeline import Pipeline
@@ -315,6 +342,11 @@ print(f"Prediction: {prediction[0]} (P={probability[0][1]:.3f})")
 os.remove('customer_model_v1.pkl')
 ```
 
+**Expected Output:**
+Saved pipeline to: churn_pipeline.pkl
+Reloaded pipeline predictions match original: True
+Parity check (max absolute diff): 0.000
+
 ---
 
 ## 💼 MBA Context: Why Pipelines Are a Career Differentiator
@@ -328,6 +360,40 @@ os.remove('customer_model_v1.pkl')
 | "It worked on my laptop" failures         | Identical behavior train → prod |
 
 **McKinsey, BCG data labs** and **internal analytics teams at Fortune 500 companies** enforce pipeline-based ML. Interviewers at these firms will give you data and ask you to build a pipeline — a notebook-only approach will cost you the offer.
+
+---
+
+### Advanced Pipeline Features
+
+**`set_output(transform="pandas")`** (sklearn ≥ 1.2)
+By default, pipeline transformers return numpy arrays. This loses column names:
+```python
+pipeline.set_output(transform="pandas")
+# Transformers now return DataFrames with feature names preserved
+```
+Caution: Metadata routing (passing `sample_weight` through pipelines) is a newer API that changed significantly in sklearn 1.3+; check the release notes before relying on it.
+
+**Pipeline Caching**
+If preprocessing is expensive, cache intermediate results:
+```python
+from sklearn.pipeline import Pipeline
+from tempfile import mkdtemp
+cache_dir = mkdtemp()
+pipeline = Pipeline([('scaler', StandardScaler()), ('model', LogisticRegression())], memory=cache_dir)
+```
+
+**Unit Testing Custom Transformers**
+```python
+import pytest
+def test_custom_transformer():
+    t = MyTransformer()
+    X = pd.DataFrame({'value': [1, 2, 3]})
+    t.fit(X)
+    result = t.transform(X)
+    assert result.shape == X.shape
+    # Test that transform produces same result as fit_transform
+    assert np.allclose(result, t.fit_transform(X))
+```
 
 ---
 
@@ -356,6 +422,36 @@ joblib.dump(trained_pipe, f'model_v{version}.pkl')
 - **Multi-target outputs**: If your preprocessing changes based on target, pipelines get complex
 - **Very custom ensembles**: Multiple parallel pipelines are better handled with `FeatureUnion` or a custom class
 
+### Production Pipeline Considerations
+
+**Schema Validation**
+Before a pipeline processes new data, validate that incoming features match the training schema:
+```python
+expected_columns = X_train.columns.tolist()
+assert list(X_new.columns) == expected_columns, f"Schema mismatch: {set(X_new.columns) ^ set(expected_columns)}"
+```
+
+**Unknown Category Handling**
+`OneHotEncoder(handle_unknown='ignore')` silently drops unseen categories as all zeros. This is usually correct but can mask data quality issues. Log warnings when unknown categories appear in production.
+
+**Feature Name Inspection**
+```python
+pipeline.named_steps['preprocessor'].get_feature_names_out()
+```
+Use this to verify the feature order the model received — critical for debugging and SHAP explanations.
+
+**Model and Data Versioning**
+Tag every saved pipeline with:
+- Training data version/hash
+- sklearn version (pipelines can break across minor versions)
+- Training date and dataset size
+
+**Pickle Security Risks**
+`pickle.load()` executes arbitrary code — never unpickle files from untrusted sources. For production systems, prefer `joblib` + checksum verification, or model serialization formats like ONNX.
+
+**Monitoring Preprocessing Drift**
+Log the distribution of each feature entering the pipeline and alert when it drifts from training distribution. A pipeline that ran fine in development can silently fail when income values shift from thousands to millions due to a data source change.
+
 ---
 
 ## Hands-on Lab
@@ -383,6 +479,11 @@ for train_idx, test_idx in kf.split(X_scaled):
 
 # Fix the leakage by wrapping everything in a Pipeline.
 ```
+
+**Expected Output / Pass Criteria:**
+- Leaky pipeline test accuracy: ~0.95 (suspicious — matches training closely)
+- Fixed pipeline test accuracy: ~0.82 (realistic — gap from training is expected)
+- Confirmed: No StandardScaler.fit() call was made on test data
 
 ### Exercise 2: Build a Customer Churn Pipeline (Medium)
 
@@ -414,6 +515,11 @@ y = (df['tenure_months'] < 12).astype(int)  # churn = short tenure
 # 4. Run 5-fold cross-validation and report mean accuracy
 # 5. Serialize the fitted pipeline to 'churn_model.pkl'
 ```
+
+**Expected Output:**
+CV accuracy scores: [0.81, 0.83, 0.79, 0.82, 0.80]
+Mean: 0.81 ± 0.01
+Interpretation: Low variance across folds → pipeline is stable; no fold is dramatically different suggesting no systematic leakage
 
 ### Exercise 3: Custom Log-Odds Transformer (Hard)
 
@@ -514,3 +620,9 @@ Today you mastered the engineering backbone of reproducible ML:
 - ✅ **joblib serialization** is how ML models go from notebook to production
 
 **Next → Day 38**: Linear Algebra for ML — the mathematical engine behind every gradient and transformation pipeline you'll build.
+
+## Cross-References
+
+- **Day 37C → Day 45**: Day 45 (Feature Engineering and Evaluation) extends these pipeline concepts with advanced CV strategies, nested cross-validation, and feature selection inside pipelines
+- **Day 37C → Day 42**: The churn classification lesson (Day 42) uses a ColumnTransformer pipeline identical in structure to what you built here — you can directly reuse your pipeline template
+- **Day 37C → Day 41**: Linear regression benefits from StandardScaler preprocessing; the pipeline pattern here eliminates manual preprocessing in Day 41
