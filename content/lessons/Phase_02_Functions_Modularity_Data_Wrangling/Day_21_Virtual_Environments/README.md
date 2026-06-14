@@ -227,6 +227,16 @@ pip freeze > requirements.txt
 pip list
 ```
 
+**Expected Output (after successful setup):**
+```
+(venv) > pip list
+Package      Version
+------------ -------
+pip          23.3.1
+python-dotenv 1.0.0
+requests     2.31.0
+```
+
 ### Exercise 2: Recreate Environment
 
 ```bash
@@ -246,6 +256,17 @@ pip install -r requirements.txt
 
 # 4. Verify all packages are back
 pip list
+```
+
+**Expected Output (environment is fresh, same packages reinstalled):**
+```
+(venv) > pip list
+Package      Version
+------------ -------
+pip          23.3.1
+python-dotenv 1.0.0
+requests     2.31.0
+# All packages restored from requirements.txt
 ```
 
 ### Exercise 3: Environment Info Script
@@ -282,6 +303,22 @@ def show_environment_info():
 
 if __name__ == "__main__":
     show_environment_info()
+```
+
+**Expected Output (when run inside an active venv):**
+```
+=== Python Environment Info ===
+
+Python Version: 3.11.5 (main, ...)
+Python Executable: /home/user/weather_app/venv/bin/python
+
+✅ Virtual Environment ACTIVE
+   Location: /home/user/weather_app/venv
+
+=== Installed Packages ===
+   pip: 23.3.1
+   python-dotenv: 1.0.0
+   requests: 2.31.0
 ```
 
 ---
@@ -425,6 +462,19 @@ Today you learned:
 **Tomorrow**: We'll explore **NumPy**—the foundation of numerical computing in Python.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Virtual Environment | An isolated Python installation that has its own `site-packages` directory, separate from the system-wide Python. |
+| Isolation | The property of a virtual environment whereby packages installed in it cannot interfere with packages in other environments. |
+| Dependency Conflict | A situation where two projects require incompatible versions of the same package; virtual environments prevent this. |
+| Activation | The act of switching the shell's `PATH` so that `python` and `pip` point to the virtual environment's executables. |
+| `venv` | The built-in Python module for creating lightweight virtual environments, invoked as `python -m venv <name>`. |
+| `deactivate` | A shell command that reverses activation, restoring `python` and `pip` to their system defaults. |
+| `.gitignore` | A file listing paths that Git should not track; the `venv/` directory should always be listed here. |
+| `requirements.txt` | The shareable list of a project's dependencies; teammates use it to recreate the same environment with `pip install -r`. |
 
 ## Task Block (Core / Stretch / Expert)
 

@@ -29,6 +29,24 @@ outcomes:
 
 ---
 
+## What Is Vectorization?
+
+**Vectorization** is the practice of replacing Python loops with array-level operations that execute in optimized C code. Instead of iterating element-by-element, you express the computation once and NumPy applies it to the entire array simultaneously.
+
+```python
+# Non-vectorized: Python loop (slow)
+result = []
+for salary in salaries:
+    result.append(salary * 1.10)
+
+# Vectorized: NumPy array operation (fast)
+result = salaries * 1.10  # Applied to all 10,000 values at once
+```
+
+Why is it faster? Python loops carry per-iteration overhead (type checking, memory allocation, interpreter dispatch). NumPy operations delegate to pre-compiled C routines operating on contiguous memory blocks — no Python overhead per element. For large datasets, vectorized operations are typically **10–100× faster** than equivalent Python loops.
+
+---
+
 ## The "Never-Coded" Bridge
 
 **Imagine calculating year-end bonuses for 10,000 employees:**
@@ -267,6 +285,17 @@ print(f"Best product: Product {np.argmax(np.sum(sales, axis=0)) + 1}")
 print(f"Average daily revenue: {np.mean(sales):.2f}")
 ```
 
+**Expected Output:**
+```
+Sales Analysis:
+Total sales: 2680
+Daily totals: [405 420 417 429 468]
+Product totals: [680 493 430 536]
+Best day overall: Day 5
+Best product: Product 1
+Average daily revenue: 107.20
+```
+
 ---
 
 ### Exercise 2: Portfolio Returns
@@ -292,6 +321,16 @@ print(f"Worst day: {np.min(portfolio_returns):.2f}%")
 print(f"Days with positive return: {np.sum(portfolio_returns > 0)}")
 ```
 
+**Expected Output (uses random seed 42 — deterministic):**
+```
+Portfolio Analysis:
+Average daily return: -0.18%
+Return volatility: 1.89%
+Best day: 3.54%
+Worst day: -4.25%
+Days with positive return: 4
+```
+
 ---
 
 ### Exercise 3: Data Cleaning
@@ -314,6 +353,15 @@ print(f"Std: {np.nanstd(cleaned):.2f}")
 # Fill NaN with mean
 filled = np.where(np.isnan(cleaned), np.nanmean(cleaned), cleaned)
 print(f"Filled data: {filled}")
+```
+
+**Expected Output:**
+```
+Sensor Statistics:
+Valid readings: 6
+Mean: 24.30
+Std: 0.57
+Filled data: [23.5  24.1  24.3  25.   24.8  24.3  23.9  24.5]
 ```
 
 ---
@@ -438,6 +486,19 @@ Today you learned:
 **Tomorrow**: We'll explore **Pandas**—the data analysis powerhouse built on NumPy.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Vectorization | Replacing Python loops with array-level operations that execute in optimized C code — the primary reason NumPy is 10–100× faster than pure Python. |
+| Broadcasting | NumPy's mechanism for automatically expanding arrays of compatible shapes so element-wise operations can be performed without explicit copying. |
+| ndarray | NumPy's core data structure: a fixed-type, contiguous-memory N-dimensional array that supports vectorized operations. |
+| Axis | A dimension of an ndarray; `axis=0` refers to rows (collapse down columns), `axis=1` refers to columns (collapse across rows). |
+| Shape | A tuple describing the size of each dimension of an array, e.g., `(3, 4)` for a 3-row, 4-column matrix. |
+| Boolean Indexing | Filtering an array by passing a boolean mask (array of `True`/`False` values) as the index, e.g., `arr[arr > 5]`. |
+| View | A NumPy array that shares underlying memory with another; modifying the view changes the original. |
+| `np.nan` | A special floating-point value representing "Not a Number"; used to represent missing numeric data in NumPy arrays. |
 
 ## Task Block (Core / Stretch / Expert)
 

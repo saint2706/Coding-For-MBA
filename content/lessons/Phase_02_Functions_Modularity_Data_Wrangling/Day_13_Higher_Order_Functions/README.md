@@ -260,6 +260,12 @@ print(f"Top performers: {len(top_sales)}")
 print(f"Total bonus pool: ${total_bonus:,.2f}")
 ```
 
+**Expected Output:**
+```
+Top performers: 3
+Total bonus pool: $1,670.00
+```
+
 ---
 
 ### Exercise 2: Building a Calculator Factory
@@ -290,6 +296,13 @@ results = [create_operation(op)(a, b) for op, a, b in expression]
 print(results)  # [8, 28, 6]
 ```
 
+**Expected Output:**
+```
+8
+28
+[8, 28, 6]
+```
+
 ---
 
 ### Exercise 3: Sorting Complex Data
@@ -315,6 +328,15 @@ print("Best value:")
 for p in by_value:
     ratio = p["rating"] / p["price"] * 100
     print(f"  {p['name']}: {ratio:.2f} rating per $")
+```
+
+**Expected Output:**
+```
+Best value:
+  Mouse: 1.66 rating per $
+  Keyboard: 0.59 rating per $
+  Laptop: 0.05 rating per $
+  Monitor: 0.14 rating per $
 ```
 
 ---
@@ -456,6 +478,20 @@ Today you learned:
 **Tomorrow**: We'll explore **modules**—organizing code into reusable packages.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Higher-Order Function | A function that accepts another function as an argument or returns a function as its output. |
+| First-Class Object | A value that can be assigned to a variable, passed as an argument, or returned from a function; in Python, functions are first-class objects. |
+| Lambda | An anonymous, single-expression function defined with the `lambda` keyword, e.g., `lambda x: x * 2`. |
+| Closure | A function that retains access to variables from its enclosing scope even after that scope has finished executing. |
+| Lazy Evaluation | A strategy where computation is deferred until the result is actually needed; `map()` and `filter()` return lazy iterators. |
+| `map()` | A built-in that applies a function to every element of an iterable and returns a lazy iterator of results. |
+| `filter()` | A built-in that returns a lazy iterator of items from an iterable for which the function returns `True`. |
+| `reduce()` | From `functools`; collapses an iterable into a single value by applying a function cumulatively to pairs of elements. |
+| Partial Function | A function created with `functools.partial` that pre-fills some arguments of another function. |
 
 ## Task Block (Core / Stretch / Expert)
 

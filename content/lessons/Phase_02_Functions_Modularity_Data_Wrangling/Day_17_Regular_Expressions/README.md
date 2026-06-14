@@ -260,6 +260,16 @@ for match in re.finditer(pattern, log_entry):
     )
 ```
 
+**Expected Output:**
+```
+Timestamps: ['2024-01-15 10:30:45', '2024-01-15 10:31:02', '2024-01-15 10:32:15']
+Levels: ['ERROR', 'INFO', 'ERROR']
+Emails: ['alice@example.com', 'bob@company.org']
+Time: 2024-01-15 10:30:45, Level: ERROR, Message: User login failed for alice@ex...
+Time: 2024-01-15 10:31:02, Level: INFO, Message: User bob@company.org authenticat...
+Time: 2024-01-15 10:32:15, Level: ERROR, Message: Database timeout for query id: ...
+```
+
 ---
 
 ### Exercise 2: Data Validator
@@ -301,6 +311,17 @@ for email, phone, password in test_data:
     print(f"\nEmail '{email}': {validate_email(email)}")
     print(f"Phone '{phone}': {validate_phone(phone)}")
     print(f"Password: {validate_password(password)}")
+```
+
+**Expected Output:**
+```
+Email 'alice@email.com': True
+Phone '555-123-4567': True
+Password: (True, 'Valid')
+
+Email 'invalid-email': False
+Phone '12345': False
+Password: (False, 'Too short')
 ```
 
 ---
@@ -356,6 +377,16 @@ Extra    spaces   and   stuff!!!
 print("Cleaned:", clean_text(sample))
 print("URLs:", extract_urls(sample))
 print("Masked:", mask_sensitive(sample))
+```
+
+**Expected Output:**
+```
+Cleaned: Contact us at https example.com or call 555-123-4567. Credit card XXXX-XXXX-XXXX-3456, SSN XXX-XX-6789 Extra spaces and stuff!
+URLs: ['https://example.com']
+Masked: 
+<p>Contact us at https://example.com or call 555-123-4567.</p>
+Credit card: XXXX-XXXX-XXXX-3456, SSN: XXX-XX-6789
+Extra    spaces   and   stuff!!!
 ```
 
 ---
@@ -482,6 +513,20 @@ Today you learned:
 **Tomorrow**: We'll explore **Classes and Objects**—the foundation of object-oriented programming.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Regular Expression (Regex) | A sequence of characters that defines a search pattern; used for matching, extracting, and replacing text. |
+| Quantifier | A symbol that specifies how many times a character or group must appear, e.g., `+` (1 or more), `*` (0 or more), `{n,m}` (between n and m). |
+| Character Class | A set of characters enclosed in `[...]` that matches any single character from the set, e.g., `[a-z]` matches any lowercase letter. |
+| Capturing Group | Parentheses `(...)` in a pattern that capture the matched text for later retrieval via `.group(n)` or backreferences. |
+| Greedy vs Non-Greedy | Greedy quantifiers (`*`, `+`) match as much as possible; non-greedy (`*?`, `+?`) match as little as possible. |
+| Lookahead | An assertion `(?=...)` that matches a position only if followed by the specified pattern, without consuming characters. |
+| `re.compile()` | Pre-compiles a regex pattern into a reusable object, improving performance when the same pattern is applied many times. |
+| `re.sub()` | Replaces all occurrences of a pattern in a string with a replacement string; supports backreferences like `\\1`. |
+| Named Group | A capturing group with a label, e.g., `(?P<name>\\w+)`, accessible via `match.group("name")`. |
 
 ## Task Block (Core / Stretch / Expert)
 

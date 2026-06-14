@@ -214,6 +214,15 @@ pip freeze > requirements.txt
 cat requirements.txt
 ```
 
+**Expected Output (example — actual versions may differ):**
+```
+# Contents of requirements.txt will look like:
+matplotlib==3.8.2
+numpy==1.26.3
+pandas==2.1.4
+# ... (all installed packages with pinned versions)
+```
+
 ### Exercise 2: Version Management
 
 ```python
@@ -230,6 +239,15 @@ for pkg in packages:
         print(f"{pkg:20} {version}")
     except pkg_resources.DistributionNotFound:
         print(f"{pkg:20} NOT INSTALLED")
+```
+
+**Expected Output (versions vary by environment):**
+```
+Installed Package Versions:
+----------------------------------------
+numpy                1.26.3
+pandas               2.1.4
+requests             2.31.0
 ```
 
 ### Exercise 3: Requirements File
@@ -256,6 +274,8 @@ tqdm>=4.64.0
 # jupyter>=1.0.0
 # pytest>=7.0.0
 ```
+
+**Note:** This file is used as input to `pip install -r requirements.txt`. There is no program output — pip will download and install each listed package.
 
 ---
 
@@ -375,6 +395,20 @@ Today you learned:
 **Tomorrow**: We'll explore **virtual environments**—isolating project dependencies.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Package Manager | A tool that automates installing, upgrading, and removing software libraries; Python's primary package manager is `pip`. |
+| Dependency | A package that your code requires in order to run; listed in `requirements.txt` so others can reproduce your environment. |
+| Requirements File | A text file (`requirements.txt`) listing package names and version constraints; used to reproduce an environment with `pip install -r`. |
+| PyPI | The Python Package Index (pypi.org); the official public repository of Python packages where `pip` downloads packages by default. |
+| Semantic Versioning | A versioning scheme `MAJOR.MINOR.PATCH` where MAJOR = breaking changes, MINOR = new features, PATCH = bug fixes. |
+| Version Specifier | A constraint on which package versions are acceptable, e.g., `>=1.5,<2.0` means 1.5.x or 1.x but not 2.0+. |
+| `pip freeze` | A command that outputs all currently installed packages with exact versions; used to generate a reproducible `requirements.txt`. |
+| Pinning | Locking a dependency to an exact version (e.g., `pandas==2.1.4`) to ensure consistent builds across environments. |
+| Transitive Dependency | A package that your direct dependency requires; installed automatically by pip but not listed in your own requirements file. |
 
 ## Task Block (Core / Stretch / Expert)
 

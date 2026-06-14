@@ -281,6 +281,15 @@ for i, date in enumerate(schedule, 1):
     print(f"  Report {i}: {date.strftime('%A, %B %d, %Y')}")
 ```
 
+**Expected Output:**
+```
+Report Schedule:
+  Report 1: Monday, January 15, 2024
+  Report 2: Monday, January 22, 2024
+  Report 3: Monday, January 29, 2024
+  Report 4: Monday, February 05, 2024
+```
+
 ---
 
 ### Exercise 2: Age Calculator
@@ -313,6 +322,12 @@ bday = date(1990, 7, 15)
 result = calculate_age(bday)
 print(f"Age: {result['age']} years")
 print(f"Next birthday: {result['next_birthday']} ({result['days_until']} days)")
+```
+
+**Expected Output (example for birthday 1990-07-15, run in 2026):**
+```
+Age: 35 years
+Next birthday: 2026-07-15 (31 days)
 ```
 
 ---
@@ -365,6 +380,13 @@ events = [
 
 for event in events:
     print(event.display())
+```
+
+**Expected Output (approximate, depends on run time):**
+```
+🏁 Product Launch happened 831 days ago
+⏳ Team Meeting: 0d 3h 45m remaining
+⏳ Holiday: 193d 0h 0m remaining
 ```
 
 ---
@@ -510,6 +532,20 @@ Today you learned:
 **Tomorrow**: We'll explore **Python Package Manager (pip)**—installing and managing third-party packages.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| `datetime` | A Python standard-library module providing classes (`date`, `time`, `datetime`, `timedelta`) for working with dates and times. |
+| Epoch | The reference point (January 1, 1970 UTC) from which Unix timestamps are measured as a count of seconds. |
+| Timezone Offset | The difference (in hours/minutes) between a local time and UTC; e.g., UTC-5 means 5 hours behind Coordinated Universal Time. |
+| Naive Datetime | A `datetime` object with no timezone information attached; assumes the local system timezone by convention. |
+| Aware Datetime | A `datetime` object with explicit timezone information attached (e.g., using `zoneinfo.ZoneInfo`). |
+| `strftime` | A method that formats a `datetime` object into a string using format codes like `%Y` (year) and `%m` (month). |
+| `strptime` | A class method that parses a date string into a `datetime` object using a matching format string. |
+| `timedelta` | A duration representing the difference between two `datetime` or `date` objects, stored as days, seconds, and microseconds. |
+| ISO 8601 | An international standard for representing dates and times as strings, e.g., `"2024-01-15T14:30:00"`. |
 
 ## Task Block (Core / Stretch / Expert)
 

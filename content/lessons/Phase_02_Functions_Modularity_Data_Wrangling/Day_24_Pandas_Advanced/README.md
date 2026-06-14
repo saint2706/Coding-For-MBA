@@ -20,7 +20,24 @@ outcomes: [Aggregate data with groupby, Merge and join DataFrames, Create pivot 
 
 ## The "Never-Coded" Bridge
 
-Yesterday you learned to load and filter data. Today you'll learn to **aggregate** and **combine** data—the operations that turn raw records into executive dashboards.
+**Think about how a finance team builds the monthly P&L report.** They pull revenue records from one system, cost data from another, and headcount from HR — then manually combine (join) the tables, summarize (aggregate) totals by department, and pivot the result into a cross-tab by month.
+
+That multi-step process — join, aggregate, pivot — is exactly what today's Pandas operations automate:
+
+- **`groupby()`** = summarize by department, region, or product (like an Excel PivotTable)
+- **`merge()`** = join two datasets on a shared key (like a VLOOKUP or SQL JOIN)
+- **`pivot_table()`** = reshape grouped data into a cross-tab matrix (like rotating rows to columns)
+
+```python
+# One pipeline replacing 30 minutes of manual spreadsheet work:
+summary = (
+    pd.merge(orders, customers, on="customer_id")   # Join
+      .groupby("region")["revenue"].sum()            # Aggregate
+      .reset_index()
+)
+```
+
+Once you master these three operations, you can produce in seconds what used to take a business analyst an afternoon.
 
 ---
 
@@ -239,6 +256,21 @@ print(top.unstack())
 
 # Monthly trend
 sales.set_index("date")["revenue"].resample("M").sum()
+```
+
+**Expected Output (uses random seed 42 — deterministic):**
+```
+       sum        mean
+region
+East   14867  165.19
+North  13766  148.56
+South  11567  138.16
+
+product   A     B     C
+region
+East    5028  5092  4747
+North   4401  5130  4235
+South   3788  3807  3972
 ```
 
 ### Performance Toolkit
@@ -463,13 +495,59 @@ print("✅ Chunked output matches full-load output")
 
 ## Mastery Check
 
-**Q1**: GroupBy with multiple aggregations: `df.groupby("col").agg(["sum", "mean"])`
+### Question 1: GroupBy with Multiple Aggregations
+How do you compute both `sum` and `mean` for a column grouped by region?
 
-**Q2**: Merge with left join: `pd.merge(df1, df2, on="key", how="left")`
+<details>
+<summary>Click for Answer</summary>
 
-**Q3**: Pivot table: `pd.pivot_table(df, values="val", index="row", columns="col")`
+```python
+df.groupby("region")["sales"].agg(["sum", "mean"])
+```
+This returns a DataFrame with one row per region and columns `sum` and `mean`.
 
-**Q4**: Your optimized pipeline is 24% faster but only saves 8% memory and is less readable for junior analysts. Based on your benchmark thresholds and team maintainability needs, which version do you ship and why?
+</details>
+
+---
+
+### Question 2: Merge / Left Join
+How do you keep all orders even if some have no matching customer record?
+
+<details>
+<summary>Click for Answer</summary>
+
+```python
+pd.merge(orders, customers, on="customer_id", how="left")
+```
+A left join retains every row from the left DataFrame (`orders`); unmatched rows from `customers` produce `NaN`.
+
+</details>
+
+---
+
+### Question 3: Pivot Table
+How do you build a cross-tab of total revenue by region (rows) and month (columns)?
+
+<details>
+<summary>Click for Answer</summary>
+
+```python
+pd.pivot_table(df, values="revenue", index="region", columns="date", aggfunc="sum")
+```
+
+</details>
+
+---
+
+### Question 4: Performance Decision
+Your optimized pipeline is 24% faster but only saves 8% memory and is less readable for junior analysts. Based on the benchmark decision threshold (speedup > 20% OR memory reduction > 30%), which version do you ship and why?
+
+<details>
+<summary>Click for Answer</summary>
+
+Ship the **optimized** version. The speedup threshold (>20%) is met (24% faster), triggering the "choose optimized" rule. However, document the readability tradeoff: add clear variable names, inline comments, or a docstring explaining the optimization choices so junior analysts can still follow the logic. Optimization and readability are not mutually exclusive — prefer both when possible.
+
+</details>
 
 ---
 
@@ -483,6 +561,20 @@ print("✅ Chunked output matches full-load output")
 **🎉 Congratulations!** You've completed **Phase 2: Functions, Modularity & Data Wrangling**!
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| `groupby()` | Groups rows by one or more columns so aggregation functions can be applied per group, similar to SQL `GROUP BY`. |
+| `agg()` | Applies one or more aggregation functions to a grouped DataFrame, returning one row per group. |
+| `transform()` | Returns an array the same size as the input, broadcasting the aggregation result back to each original row. |
+| Merge / Join | Combining two DataFrames on a shared key column, equivalent to a SQL JOIN; types include inner, left, right, and outer. |
+| Pivot Table | A reshaped summary table where grouped values fill a matrix of row × column categories, created with `pd.pivot_table()`. |
+| `resample()` | Resamples time-indexed data to a different frequency (e.g., daily → monthly), then applies aggregation. |
+| Vectorized Operation | A computation applied to every element of a column or DataFrame at once using NumPy/Pandas built-ins, avoiding Python loops. |
+| `query()` / `eval()` | Pandas methods for expressing row filters (`query`) and column calculations (`eval`) as readable string expressions. |
+| Chunked Processing | Reading a large file in pieces using `chunksize` in `pd.read_csv()`, allowing datasets larger than memory to be processed. |
 
 ## Task Block (Core / Stretch / Expert)
 
