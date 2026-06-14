@@ -283,6 +283,13 @@ if __name__ == "__main__":
     print(f"Break-even: {calculate_break_even(50000, 25, 10):.0f} units")
 ```
 
+**Expected Output:**
+```
+ROI: 50.0%
+Future value: $16,288.95
+Break-even: 5000 units
+```
+
 ---
 
 ### Exercise 2: Build a Utils Package
@@ -328,6 +335,12 @@ print(clean_text("  HELLO WORLD  "))  # "hello world"
 print(format_currency(1234.5))  # "$1,234.50"
 ```
 
+**Expected Output:**
+```
+hello world
+$1,234.50
+```
+
 ---
 
 ### Exercise 3: Working with Standard Library
@@ -357,6 +370,16 @@ print(f"30 days from now: {future}")
 words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
 freq = Counter(words)
 print(f"Word frequency: {freq.most_common()}")
+```
+
+**Expected Output:**
+```
+Square root of 144: 12.0
+Log base 10 of 1000: 3.0
+Random choice: (varies)
+Shuffled: (varies)
+30 days from now: (varies by run date)
+Word frequency: [('apple', 3), ('banana', 2), ('cherry', 1)]
 ```
 
 ---
@@ -510,6 +533,20 @@ Today you learned:
 **Tomorrow**: We'll master **exception handling**—making code robust against errors.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Module | Any `.py` file; a self-contained unit of Python code that can be imported by other scripts or modules. |
+| Package | A directory containing an `__init__.py` file and one or more modules, allowing hierarchical namespacing. |
+| Standard Library | The collection of modules that ship with every Python installation (e.g., `math`, `json`, `datetime`, `os`). |
+| Circular Import | A situation where module A imports from module B, which in turn imports from module A, causing an import error or unexpected behavior. |
+| `__name__` | A built-in variable set to `"__main__"` when a file is run directly, or to the module’s name when it is imported. |
+| `__init__.py` | A file that marks a directory as a Python package and can expose a clean public API via selective imports. |
+| Absolute Import | An import that specifies the full path from the project root, e.g., `from my_package.module_a import func`. |
+| Relative Import | An import using dot notation within a package, e.g., `from . import sibling_module`. |
+| Alias | A short nickname given to an imported module, e.g., `import pandas as pd`, to reduce repetitive typing. |
 
 ## Task Block (Core / Stretch / Expert)
 

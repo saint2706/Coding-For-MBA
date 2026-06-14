@@ -348,6 +348,16 @@ account.withdraw(200)
 account.statement()
 ```
 
+**Expected Output:**
+```
+Account: Alice
+------------------------------
+Deposit      +$    500.00
+Withdraw     -$    200.00
+------------------------------
+Balance      $   1300.00
+```
+
 ---
 
 ### Exercise 2: Product Inventory
@@ -393,6 +403,11 @@ inv = Inventory()
 inv.add_product(Product("LAP001", "Laptop", 999, 5))
 inv.add_product(Product("MOU001", "Mouse", 29, 50))
 print(f"Total value: ${inv.total_value():,.2f}")
+```
+
+**Expected Output:**
+```
+Total value: $6,445.00
 ```
 
 ---
@@ -443,6 +458,12 @@ order.add_item("Laptop", 1, 999)
 order.add_item("Mouse", 2, 29)
 print(order.process())
 print(f"Items: {len(order.items)}, Total: ${order.total:.2f}")
+```
+
+**Expected Output:**
+```
+Order processed. Total: $1,057.00
+Items: 2, Total: $1,057.00
 ```
 
 ---
@@ -619,6 +640,21 @@ Today you learned:
 **Tomorrow**: We'll explore **DateTime**—handling dates, times, and time zones.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Class | A blueprint for creating objects that bundles data (attributes) and behavior (methods) into a single reusable template. |
+| Object | An instance of a class; a concrete entity created from the class blueprint with its own attribute values. |
+| Instance | A specific realized object created by calling a class, e.g., `account = BankAccount("Alice")` creates one instance. |
+| `__init__` | The constructor method called automatically when an instance is created; used to initialize instance attributes. |
+| Method | A function defined inside a class that operates on instances via the `self` parameter. |
+| Inheritance | A mechanism where a child class acquires attributes and methods from a parent class, enabling code reuse. |
+| `self` | A conventional name for the first parameter of instance methods, referring to the specific object calling the method. |
+| `@property` | A decorator that allows a method to be accessed like an attribute, enabling computed values and validation on assignment. |
+| Encapsulation | Bundling data and the methods that operate on that data together, and restricting direct access to internal state. |
+| Dataclass | A class decorated with `@dataclass` that auto-generates `__init__`, `__repr__`, and `__eq__` from annotated fields. |
 
 ## Task Block (Core / Stretch / Expert)
 

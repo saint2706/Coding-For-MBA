@@ -276,6 +276,14 @@ else:
     print("Using default price")
 ```
 
+**Expected Output (simulated - assuming user enters "abc", then "-5", then gives up):**
+```
+Invalid input: could not convert string to float: 'abc'. 2 attempts left.
+Invalid input: Number must be positive. 1 attempts left.
+Max attempts reached. Using default.
+Using default price
+```
+
 ---
 
 ### Exercise 2: File Processing with Error Recovery
@@ -310,6 +318,11 @@ def process_data_files(file_paths):
 files = ["data1.txt", "data2.txt", "nonexistent.txt"]
 report = process_data_files(files)
 print(f"Processed: {report['processed']}, Failed: {report['failed']}")
+```
+
+**Expected Output (assuming data1.txt and data2.txt don't exist):**
+```
+Processed: 0, Failed: 3
 ```
 
 ---
@@ -363,6 +376,11 @@ except AccountLockedError:
     print("❌ Contact support to unlock account")
 except InvalidAmountError:
     print("❌ Please enter a valid amount")
+```
+
+**Expected Output:**
+```
+❌ Cannot withdraw $150 from $100
 ```
 
 ---
@@ -532,6 +550,20 @@ Today you learned:
 **Tomorrow**: We'll explore **file handling**—reading from and writing to files.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Exception | An event that disrupts the normal flow of a program; in Python, exceptions are objects raised when an error occurs. |
+| Traceback | The stack trace printed when an unhandled exception occurs, showing the call chain that led to the error. |
+| `try/except` | A control structure that attempts risky code in `try` and catches specific errors in `except` blocks. |
+| `finally` | A block that always executes after `try/except`, regardless of whether an exception was raised — used for cleanup. |
+| `raise` | A keyword that explicitly throws an exception, either a new one or re-raises the current one. |
+| Context Manager | An object (used with `with`) that handles setup and teardown automatically, e.g., file handles and database connections. |
+| Custom Exception | A user-defined exception class that inherits from `Exception` or a subclass, giving business-meaningful error names. |
+| Exception Chaining | Using `raise NewError from original_error` to preserve the original cause when re-raising as a different exception type. |
+| Silent Failure | The anti-pattern of catching an exception with `except: pass`, hiding errors that should be logged or handled. |
 
 ## Task Block (Core / Stretch / Expert)
 

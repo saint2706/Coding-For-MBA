@@ -20,6 +20,24 @@ outcomes:
 
 ---
 
+## The "Never-Coded" Bridge
+
+**Imagine a bakery where each baker makes bread differently every day.** One uses a recipe, another guesses, a third uses last week's recipe. The result: inconsistent loaves, unhappy customers, and no ability to scale.
+
+**Now imagine a bakery with an assembly line:** Raw ingredients come in one end, pass through precise, repeatable stations (mix → proof → bake → cool), and a consistent product comes out the other end. Adding a new baker is easy — they follow the pipeline, not someone's personal recipe.
+
+Building a data pipeline works exactly the same way. Instead of a one-off notebook where you run cells manually in random order, you build a **modular package** with clear stages:
+
+```
+Raw CSV → ingest.py → clean.py → aggregate.py → final_metrics.csv
+```
+
+Each module has one job. The whole pipeline runs with a single command. A new analyst can clone the repo, run `pip install -r requirements.txt`, and reproduce your results in minutes — not days.
+
+This capstone takes you from "getting an answer once" to "delivering a system."
+
+---
+
 ## Capstone Scenario
 
 You are the analytics lead for a subscription business. Operations sends weekly CSV extracts with inconsistent formats, occasional bad records, and duplicate IDs. Leadership needs a reliable summary table to make retention and revenue decisions.
@@ -234,3 +252,19 @@ If total score is 70+ but any mandatory gate is missing, result is **Not Yet Pas
 - Add a lightweight Makefile for setup/run/test automation.
 
 This mini capstone is your transition point from notebook-style analysis to reliable, production-minded analytics workflows.
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Modular Package | A Python project organized into separate `.py` files (modules), each with a single responsibility, connected by a clear entry point. |
+| Pipeline | A sequence of processing stages where the output of one step is the input to the next; enables reproducible, automated data workflows. |
+| Ingestion | The first pipeline stage: reading raw data from source files (CSV, JSON, database) and loading it into memory for processing. |
+| Idempotent | A property ensuring that running the pipeline multiple times on the same input always produces the same output — essential for reliability. |
+| Entry Point | The script or command that kicks off the entire pipeline, e.g., `python -m pipeline.run_pipeline`. |
+| Logging | Writing timestamped records of pipeline events (start, row counts, errors) to a file or console for debugging and auditing. |
+| Executive Readout | A concise, structured report (200–400 words) translating pipeline output into business decisions, recommendations, and next actions. |
+| Reproducible Environment | A setup where anyone can recreate the exact Python version and package versions needed to run the pipeline, using `requirements.txt` and `venv`. |
+| Schema Check | A validation that confirms a loaded dataset has the expected columns, data types, and row count before processing begins. |

@@ -259,6 +259,12 @@ print(f"Total: {report['total_lines']} lines")
 print(f"Errors: {len(report['errors'])}")
 ```
 
+**Expected Output:**
+```
+Total: 5 lines
+Errors: 1
+```
+
 ---
 
 ### Exercise 2: Configuration Manager
@@ -294,6 +300,11 @@ config = ConfigManager("app_config.json")
 config.set("theme", "dark")
 config.set("language", "en")
 print(config.get("theme"))  # "dark"
+```
+
+**Expected Output:**
+```
+dark
 ```
 
 ---
@@ -339,6 +350,11 @@ with open("sales_raw.csv", "w") as f:
 
 count = transform_sales_data("sales_raw.csv", "sales_enhanced.csv")
 print(f"Processed {count} rows")
+```
+
+**Expected Output:**
+```
+Processed 3 rows
 ```
 
 ---
@@ -477,6 +493,20 @@ Today you learned:
 **Tomorrow**: We'll explore **regular expressions**—powerful pattern matching for text.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| File Handle | An object returned by `open()` that represents an open file and provides methods to read or write its contents. |
+| Mode (r/w/a) | The access mode used when opening a file: `r` (read-only), `w` (write/overwrite), `a` (append to end). |
+| Context Manager | An object used with `with` that automatically handles resource cleanup (e.g., closing files) even if an exception occurs. |
+| `pathlib` | A standard-library module providing object-oriented file-system paths with cross-platform support (`Path` class). |
+| CSV | Comma-Separated Values; a plain-text tabular format widely used for data exchange, handled by Python's `csv` module. |
+| JSON | JavaScript Object Notation; a lightweight text format for structured data, handled by Python's `json` module. |
+| Encoding | The character mapping used to convert text to bytes (e.g., UTF-8); always specify `encoding="utf-8"` to avoid platform surprises. |
+| Atomic Write | A write pattern using a temp file + rename so that a crash mid-write never leaves a partially written or corrupt file. |
+| Binary Mode | Opening a file with `b` (e.g., `"rb"`, `"wb"`) to read/write raw bytes instead of decoded text. |
 
 ## Task Block (Core / Stretch / Expert)
 

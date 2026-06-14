@@ -233,7 +233,28 @@ Title: EDA Memo — <Project / Dataset / Date>
 
 ### Exercise: Revenue Drop Investigation
 
-You are given a monthly transaction dataset where revenue declined in one region.
+**Business context:** You are an analyst at a retail company. Q2 revenue in the Northeast region dropped 12% MoM. Leadership wants to know why before the board meeting next week.
+
+**Sample data setup (run this first):**
+
+```python
+import pandas as pd
+import numpy as np
+
+np.random.seed(42)
+n = 500
+data = pd.DataFrame({
+    "month": np.random.choice(["2024-04", "2024-05", "2024-06"], n),
+    "region": np.random.choice(["Northeast", "Southeast", "West"], n, p=[0.4, 0.3, 0.3]),
+    "channel": np.random.choice(["Online", "In-Store", "Partner"], n),
+    "order_value": np.random.exponential(scale=200, size=n),
+    "discount": np.random.uniform(0, 0.30, n),
+    "order_count": np.random.randint(1, 50, n),
+})
+# Introduce some missingness and an issue
+data.loc[data["region"] == "Northeast", "order_value"] *= np.random.uniform(0.6, 1.0, (data["region"] == "Northeast").sum())
+data.loc[np.random.choice(n, 30, replace=False), "order_count"] = np.nan
+```
 
 Follow these explicit steps in order:
 
@@ -243,15 +264,73 @@ Follow these explicit steps in order:
 4. **Hypothesis updates** → Update the EDA Hypothesis Log with evidence status, confidence, and the next test for each hypothesis.
 5. **Memo + handoff** → Draft the 1-page EDA memo and complete the visualization handoff checklist for Day 27.
 
+**Expected deliverables for step 1 (example frame):**
+
+```
+Business decision: Recommend whether to shift Q3 marketing budget from Northeast to other regions.
+Primary KPI: Revenue per order (to distinguish volume vs. value drivers).
+Working hypotheses:
+  1. Discount rate increased in Northeast → margin erosion, not volume decline.
+  2. Partner channel underperformed → channel mix shift explains the drop.
+  3. Data ingestion gap → some Northeast orders missing, inflating the apparent decline.
+```
+
+**Expected deliverables for step 3 (example missingness summary):**
+
+```
+order_count    6.0% missing
+order_value    0.0% missing
+discount       0.0% missing
+
+→ Strategy: order_count is 6% missing; if needed for KPI, impute with segment median and flag.
+→ Outlier strategy for order_value: retain values above IQR upper bound but flag them in the EDA log
+  because high-value orders could be VIP behavior, not errors.
+```
+
 ---
 
 ## Mastery Check
 
-**Q1.** Why start EDA with business questions instead of charts?
+### Question 1: Business-First EDA
+Why start EDA with business questions instead of jumping to charts?
 
-**Q2.** When should outliers be retained rather than removed?
+<details>
+<summary>Click for Answer</summary>
 
-**Q3.** Give one example of why a high correlation might still be non-actionable.
+Starting with charts produces beautiful but unfocused analysis. Business questions define which metrics matter, which segments are relevant, and which data quality risks could invalidate conclusions. Without that framing, you risk answering the wrong question or building a dashboard no one uses for decisions.
+
+</details>
+
+---
+
+### Question 2: Outlier Retention
+When should outliers be retained rather than removed?
+
+<details>
+<summary>Click for Answer</summary>
+
+Retain outliers when they represent real, meaningful events rather than errors:
+- **Fraud signals**: A transaction for $50,000 in a low-value segment is worth investigating, not removing.
+- **VIP behavior**: High-spend customers will always look like outliers but drive disproportionate revenue.
+- **Stockout spikes**: An unusually low order volume in one week might reflect supply disruption, not bad data.
+
+Only remove outliers when you can document a clear reason (e.g., data entry error, known system glitch).
+
+</details>
+
+---
+
+### Question 3: Correlation Caveat
+Give one example of why a high correlation might still be non-actionable.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Simpson's Paradox**: A positive correlation between marketing spend and revenue at the total level may disappear or reverse when broken down by channel. If budget shifts caused a mix change rather than actual lift, acting on the aggregate correlation would mislead resource allocation decisions.
+
+Other examples: shared time trends (both metrics grow with the economy), or a confounding third variable (ice cream sales and drowning incidents both rise in summer).
+
+</details>
 
 ---
 
@@ -276,6 +355,21 @@ Before moving from EDA to visualization/storytelling, confirm these outputs are 
 - ✅ A concise EDA memo translates analysis into next actions
 
 **Next bridge:** Phase 3 will convert these validated EDA findings into clear visual stories and dashboards.
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| EDA | Exploratory Data Analysis; the process of summarizing, visualizing, and checking a dataset to understand its structure and quality before formal analysis. |
+| Profiling | Systematically computing summary statistics (shape, dtype, missing rate, cardinality) for every column in a dataset. |
+| Distribution | The pattern of how values in a variable are spread across their possible range; described by shape (symmetric/skewed), center, and spread. |
+| Correlation | A statistical measure (typically Pearson's r) of the linear relationship strength between two numeric variables, ranging from -1 to +1. |
+| Univariate Analysis | Examining one variable at a time — its distribution, range, missingness, and cardinality. |
+| Bivariate Analysis | Examining the relationship between two variables — how one moves with the other across segments or over time. |
+| Simpson's Paradox | A phenomenon where a trend present in aggregated data reverses or disappears when the data is broken into subgroups. |
+| IQR (Interquartile Range) | The difference between the 75th and 25th percentiles; used to define outlier boundaries as values beyond 1.5 × IQR from Q1/Q3. |
 
 ---
 

@@ -29,7 +29,7 @@ In most MBA projects, analysis fails for one reason: hidden data quality problem
 - Missing values are handled inconsistently
 - Numeric columns silently become text
 
-This playbook gives you a repeatable, auditable workflow you can run before every analysis or dashboard.
+This playbook gives you a **repeatable and idempotent** workflow you can run before every analysis or dashboard. **Idempotent** means that running the cleaning script once produces the same output as running it 10 times — no side-effects accumulate, no records are double-dropped, and no columns are double-imputed. Idempotency is essential for production pipelines where the same data may be reprocessed due to failures or schedule re-runs.
 
 ---
 
@@ -90,7 +90,7 @@ Use a decision tree instead of defaulting to `fillna(0)`.
 Is the column required for the business decision?
 ├─ No → Keep nulls, flag in documentation, continue.
 └─ Yes
-   ├─ Is missingness < 5% and random?
+   ├─ Is missingness < 5% and random? (5% is a common governance threshold — the materiality argument: if fewer than 1 in 20 rows are affected and the missing pattern appears random, dropping them is unlikely to introduce bias. Adjust this threshold based on your sample size and how critical the column is to the decision.)
    │  ├─ Yes → Drop affected rows (if sample size remains sufficient).
    │  └─ No
    ├─ Can value be safely imputed from business logic?
@@ -233,7 +233,7 @@ Map assertion outcomes to severity so teams know when to block vs continue.
 | Severity | Gate rule | Assertion outcome example | Action |
 |---|---|---|---|
 | P0 (block) | Hard contract violated | `customer_id` not unique, required dates unparsed, row count = 0 | Stop pipeline, open incident, no dashboard refresh |
-| P1 (warn) | Material but tolerable degradation | Email validity drops below threshold (e.g., < 98%), null rate exceeds policy by small margin | Continue with warning, notify owner, create remediation ticket |
+| P1 (warn) | Material but tolerable degradation | Email validity drops below threshold (e.g., < 98% — a business threshold chosen because more than 2 in 100 invalid emails would meaningfully impair deliverability and attribution), null rate exceeds policy by small margin | Continue with warning, notify owner, create remediation ticket |
 | P2 (monitor) | Minor drift/trend change | Parse failure rate increases but stays under warning threshold | Log metric to quality dashboard and review weekly |
 
 Example implementation idea:
@@ -246,17 +246,55 @@ Example implementation idea:
 
 ## Hands-on Lab: Clean the Dirty Customer File
 
+**Business scenario:** You are preparing a customer dataset for a churn-prediction model. The raw CSV from the CRM export contains formatting inconsistencies, duplicates, and missing values. You must produce a clean, validated dataset before handing it off to the data science team.
+
 Use this file from extras:
 
 `content/lessons/Phase_02_Functions_Modularity_Data_Wrangling/extras/sample_customers_dirty.csv`
 
+**Sample data characteristics (what you will find):**
+- ~200 rows with 8 columns: `customer_id`, `name`, `email`, `age`, `signup_date`, `lifetime_value`, `campaign_source`, `updated_at`
+- ~15% missing `lifetime_value`
+- ~5 duplicate `customer_id` rows with conflicting records
+- Some `age` values as strings ("thirty-two") instead of integers
+- Mixed date formats in `signup_date` ("2024-01-15" and "Jan 15 2024")
+- Several rows with invalid email formats (missing "@" or domain)
+
 ### Your tasks
 
 1. Build a profile table (`dtype`, `missing_pct`, `n_unique`, sample values)
-2. Apply the null decision tree and document each decision
-3. Resolve duplicate `customer_id` records
+2. Apply the null decision tree and document each decision in the Null Strategy Matrix
+3. Resolve duplicate `customer_id` records using the conflict resolution policy
 4. Coerce numeric/date fields and capture parse failures
 5. Write 5+ assertions that must pass before analysis
+
+### Expected output (sample profile table format)
+
+```
+                 dtype  missing_pct  n_unique
+customer_id      object         0.2       195
+name             object         0.0       195
+email            object         0.0       195
+age              object         5.1       162
+signup_date      object         0.0        45
+lifetime_value  float64        14.9       195
+campaign_source  object        31.5         4
+updated_at       object         0.0       195
+
+Duplicate customer_id rows: 5
+```
+
+### Expected output (assertions block)
+
+```python
+# These must all pass on your clean output
+assert clean["customer_id"].is_unique
+assert clean["email"].str.contains(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", na=False).all()
+assert clean["signup_date"].notna().all()
+assert clean["age"].between(0, 120).all()
+assert clean["lifetime_value"].notna().all()
+print("✅ All 5 validation assertions passed")
+```
 
 ### Output deliverables
 
@@ -266,3 +304,84 @@ Use this file from extras:
 - `data_quality_decisions.md` (null/duplicate policies chosen, quality gate thresholds, and unresolved risks)
 
 ➡️ After this playbook, you are ready for Phase 3 visualization and pipeline automation with much lower risk.
+
+---
+
+## Mastery Check
+
+### Question 1: Null Handling Strategy
+When would you choose to impute a missing value rather than drop the row?
+
+<details>
+<summary>Click for Answer</summary>
+
+Impute when:
+- The column is required for the downstream decision and dropping rows would reduce sample size below acceptable levels.
+- Missingness is NOT random (e.g., concentrated in one segment) — dropping would bias results.
+- A sensible business rule or statistical method (median, mode, forward-fill) can produce a defensible substitute.
+
+Always add an `_imputed` indicator column so downstream consumers know which values were filled.
+
+</details>
+
+---
+
+### Question 2: Idempotency
+What does it mean for a cleaning script to be idempotent, and why does it matter?
+
+<details>
+<summary>Click for Answer</summary>
+
+An idempotent script produces the same output regardless of how many times it is run on the same input. It matters because production pipelines are often re-run after failures, schedule misses, or data refreshes. If a script isn't idempotent, repeated runs could double-drop rows, double-impute values, or accumulate duplicate records — making debugging extremely difficult.
+
+Test for idempotency by running your cleaning script twice on the same input and comparing the outputs with `pd.testing.assert_frame_equal()`.
+
+</details>
+
+---
+
+### Question 3: Threshold Decisions
+A column has 12% missing values and is required for the KPI. The 5% drop threshold has been exceeded. What are your options?
+
+<details>
+<summary>Click for Answer</summary>
+
+1. **Impute with business logic**: Use median (numeric) or mode (categorical) if the missing pattern appears random; add an imputation flag column.
+2. **Segment-specific imputation**: If missingness is concentrated (e.g., one region), impute using that segment's distribution to avoid cross-segment bias.
+3. **Escalate to data collection fix**: If the column is critical and imputation would be unreliable, file a data quality incident to fix the upstream source.
+4. **Exclude from current analysis with documentation**: Report the limitation explicitly in the EDA memo and adjust confidence in KPI conclusions.
+
+</details>
+
+---
+
+### Question 4: Validation Severity
+When should a validation failure block a pipeline entirely versus emit a warning?
+
+<details>
+<summary>Click for Answer</summary>
+
+Use the severity gate framework:
+- **P0 (block)**: Violations of hard contracts — primary key not unique, required date columns unparsed, row count = 0. These indicate a fundamental data failure where downstream analysis would be meaningless or dangerous.
+- **P1 (warn)**: Material but tolerable degradation — email validity below threshold, null rate slightly above policy. The pipeline can continue but the owner must be notified and a remediation ticket opened.
+- **P2 (monitor)**: Minor drift that should be tracked — metric logging only, no immediate action.
+
+The key principle: block when the error would make the analysis wrong; warn when it degrades quality but results remain usable with caveats.
+
+</details>
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| Imputation | The process of replacing missing values with a substitute (e.g., median, mean, or mode) based on the existing data distribution or business rules. |
+| Coercion | Forcing a column to a target data type, e.g., converting string representations of numbers to `float64` with `pd.to_numeric()`. |
+| Assertion | An executable check (`assert condition`) that halts execution if a data quality constraint is violated; treated as a P0 quality gate. |
+| Entity Resolution | The process of identifying and merging records that refer to the same real-world entity despite minor differences in keys, spelling, or formatting. |
+| Idempotent | A property of a script or function: running it multiple times on the same input always produces the same output with no accumulating side effects. |
+| Null Strategy Matrix | A governance table documenting each column's criticality, missing rate, chosen handling strategy, rationale, and owner. |
+| Quality Gate | A defined threshold or rule that determines whether a pipeline can proceed (pass) or must halt and alert (fail). |
+| Parse Failure | An instance where type coercion cannot convert a value to the target type (e.g., converting `"thirty-two"` to integer); should be audited and escalated. |
+| Deduplication | The process of identifying and removing duplicate records, typically keeping one canonical version per entity based on a conflict resolution policy. |

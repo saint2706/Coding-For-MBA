@@ -20,14 +20,20 @@ outcomes: [Create and manipulate DataFrames, Load data from CSV, Filter and tran
 
 ## The "Never-Coded" Bridge
 
-Think of Pandas as a programmable spreadsheet. Load, analyze, export—in 3 lines:
+**Think about the last time you used Excel.** You opened a file, filtered rows, sorted columns, calculated a sum, and copy-pasted results into another sheet. Each step was manual, unrepeatable, and error-prone.
+
+Pandas gives you the same power but as code — making every step **reproducible, auditable, and automatable**:
 
 ```python
 import pandas as pd
 
-df = pd.read_csv("sales.csv")
-summary = df.groupby("region")["revenue"].sum()
+df = pd.read_csv("sales.csv")          # Open the file
+high_revenue = df[df["revenue"] > 500] # Filter rows
+by_region = df.groupby("region")["revenue"].sum()  # Sum by category
+by_region.to_csv("summary.csv")        # Save results
 ```
+
+A DataFrame is like a SQL table or an Excel sheet in memory: rows have numeric indices, columns have named headers, and you can query, join, and transform data using Python instead of clicking around a spreadsheet. The key difference is that your entire analysis is a script you can re-run on next month's data in seconds.
 
 ---
 
@@ -123,15 +129,89 @@ high_earners = employees[employees["salary"] > 80000]
 print(high_earners)
 ```
 
+**Expected Output:**
+```
+Avg salary: $80,666.67
+      name  department  salary
+1  Bob     Engineering   95000
+```
+
 ---
 
 ## Mastery Check
 
-**Q1**: Select multiple columns: `df[["col1", "col2"]]`
+### Question 1: Column Selection
+How do you select multiple columns from a DataFrame?
 
-**Q2**: Filter with multiple conditions: `df[(cond1) & (cond2)]`
+<details>
+<summary>Click for Answer</summary>
 
-**Q3**: Add calculated column: `df["new"] = df["old"] * 1.1`
+Pass a list of column names inside double brackets:
+```python
+df[["col1", "col2"]]
+```
+A single set of brackets returns a Series; double brackets return a DataFrame.
+
+</details>
+
+---
+
+### Question 2: Multi-Condition Filter
+How do you filter rows where department is "Sales" AND salary > 70,000?
+
+<details>
+<summary>Click for Answer</summary>
+
+Use `&` to combine conditions, wrapping each in parentheses:
+```python
+df[(df["department"] == "Sales") & (df["salary"] > 70000)]
+```
+
+</details>
+
+---
+
+### Question 3: Calculated Column
+How do you add a `bonus` column equal to 10% of salary?
+
+<details>
+<summary>Click for Answer</summary>
+
+```python
+df["bonus"] = df["salary"] * 0.10
+```
+This is a vectorized operation — it applies to all rows at once without a loop.
+
+</details>
+
+---
+
+### Question 4: loc vs iloc
+What is the difference between `.loc` and `.iloc`?
+
+<details>
+<summary>Click for Answer</summary>
+
+- `.loc` selects by **label** (row index or column name): `df.loc[0:2, "name"]`
+- `.iloc` selects by **integer position**: `df.iloc[0:2, 0]`
+
+Use `.loc` for named access and `.iloc` for positional slicing.
+
+</details>
+
+---
+
+### Question 5: Design Scenario
+**Scenario**: You have a sales DataFrame with columns `region`, `product`, `revenue`. Write code to find the total revenue per region, sorted from highest to lowest.
+
+<details>
+<summary>Click for Answer</summary>
+
+```python
+df.groupby("region")["revenue"].sum().sort_values(ascending=False)
+```
+
+</details>
 
 ---
 
@@ -145,6 +225,20 @@ print(high_earners)
 **Tomorrow**: Advanced Pandas—groupby, merges, and pivots.
 
 ---
+
+## Glossary
+
+| Term | Definition |
+|------|------------|
+| DataFrame | A 2-dimensional labeled data structure with named columns and a row index; the core Pandas object, similar to a SQL table or spreadsheet. |
+| Series | A 1-dimensional labeled array in Pandas; a single column of a DataFrame is a Series. |
+| Index | The row labels of a DataFrame or Series; defaults to integers (0, 1, 2, …) but can be set to meaningful identifiers. |
+| `.loc` | Label-based selection: selects rows/columns by their explicit index label or column name. |
+| `.iloc` | Integer-location-based selection: selects rows/columns by their positional offset (0-based integer). |
+| Aggregation | A computation that reduces multiple values to a single summary statistic, e.g., `sum()`, `mean()`, `count()`. |
+| `groupby()` | A Pandas method that splits a DataFrame into groups based on a column’s values, enabling per-group aggregations. |
+| `fillna()` / `dropna()` | Methods for handling missing values: `fillna()` replaces them; `dropna()` removes affected rows or columns. |
+| Method Chaining | Writing multiple Pandas operations end-to-end in a single expression, e.g., `df.query(...).groupby(...).sum()`. |
 
 ## Task Block (Core / Stretch / Expert)
 
