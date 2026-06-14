@@ -76,6 +76,35 @@ for quote in quotes[:3]:
 
 ### CSS Selectors
 
+**CSS Selector Syntax — Quick Reference:**
+
+CSS selectors are patterns that identify HTML elements. They were originally designed for styling web pages, but `BeautifulSoup`'s `.select()` method uses the same syntax for finding elements:
+
+| Selector | Syntax | Example | Matches |
+|----------|--------|---------|---------|
+| Tag | `tag` | `"span"` | All `<span>` elements |
+| Class | `.classname` | `".price"` | Elements with `class="price"` |
+| ID | `#idname` | `"#main"` | Element with `id="main"` |
+| Descendant | `parent child` | `"div span"` | `<span>` inside a `<div>` |
+| Direct child | `parent > child` | `"ul > li"` | `<li>` directly inside `<ul>` |
+| Attribute | `[attr=value]` | `'a[href]'` | `<a>` elements that have an `href` |
+| Multiple | `s1, s2` | `"h1, h2"` | All `<h1>` and `<h2>` elements |
+
+**Examples:**
+```python
+# Find all elements with class="price"
+prices = soup.select(".price")
+
+# Find all <a> elements inside <div class="product">
+links = soup.select("div.product a")
+
+# Find the element with id="main-content"
+main = soup.select("#main-content")
+
+# Find all <li> elements directly inside <ul class="nav">
+nav_items = soup.select("ul.nav > li")
+```
+
 ```python
 from bs4 import BeautifulSoup
 import requests
@@ -202,11 +231,71 @@ def safe_request(url, retries=3):
 - When terms of service prohibit it
 - When data is personal/private
 
+### Why `requests` Fails on Modern Websites — and When You Need a Headless Browser
+
+Many modern websites are **Single Page Applications (SPAs)** — they use JavaScript to load content dynamically *after* the initial HTML is delivered. When you use `requests.get(url)`, you receive only the initial HTML shell, and the actual product listings / prices / data are missing because they haven't been loaded yet by JavaScript.
+
+**How to tell if a site uses JavaScript rendering:**
+- Right-click → "View Page Source" and the data you see in the browser is NOT in the source
+- The URL doesn't change as you click around, but the content changes
+
+**Solutions:**
+| Approach | Tool | When to Use |
+|----------|------|-------------|
+| Static HTML scraping | `requests` + `BeautifulSoup` | Page content is in the raw HTML |
+| Headless browser | `selenium` or `playwright` | Content is rendered by JavaScript |
+| Official API | `requests` + JSON | Site offers a public API |
+
+**Playwright example (headless browser):**
+```python
+# pip install playwright && playwright install
+from playwright.sync_api import sync_playwright
+
+with sync_playwright() as p:
+    browser = p.chromium.launch()
+    page = browser.new_page()
+    page.goto("https://example.com/spa-page")
+    page.wait_for_selector(".product-price")  # Wait for JS to render
+    html = page.content()
+    browser.close()
+# Now parse html with BeautifulSoup as normal
+```
+
+**Note:** Headless browsing is slower and more resource-intensive than `requests`. Use it only when necessary.
+
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Basic Quote Scraper
+
+**Business Scenario:** The Marketing team wants to build an internal database of inspirational quotes for use in weekly newsletters and social media posts. They need a script that automatically scrapes the public quotes website `http://quotes.toscrape.com` and returns a structured list of quotes with their authors and tags.
+
+**Your Task:**
+1. Fetch the first page of `http://quotes.toscrape.com`
+2. Extract all quote texts, author names, and tags
+3. Store the results in a list of dictionaries (or a DataFrame)
+4. Print the first 3 results in a formatted way
+
+**Expected Output:**
+```
+Quote 1:
+  Text: "The world as we have created it is a process of our thinking..."
+  Author: Albert Einstein
+  Tags: ['change', 'deep-thoughts', 'thinking', 'world']
+
+Quote 2:
+  Text: "It is our choices, Harry, that show what we truly are..."
+  Author: J.K. Rowling
+  Tags: ['abilities', 'choices']
+
+Quote 3:
+  Text: "There are only two ways to live your life..."
+  Author: Albert Einstein
+  Tags: ['inspirational', 'life', 'live', 'miracle', 'miracles']
+
+Total quotes found: 10
+```
 
 ```python
 from bs4 import BeautifulSoup
@@ -237,6 +326,31 @@ print(df)
 ```
 
 ### Exercise 2: Multi-Page Scraper
+
+**Business Scenario:** Marketing needs ALL quotes from the website (which spans multiple pages), not just the first page. The script must follow pagination links and stop when there are no more pages.
+
+**Your Task:**
+1. Start at `http://quotes.toscrape.com`
+2. After scraping each page, look for the "Next" button and follow the link
+3. Continue until there is no "Next" page (or until you've scraped 5 pages max to be polite)
+4. Count total quotes collected and print the unique authors found
+
+**Expected Output:**
+```
+Scraping page 1...
+Scraping page 2...
+Scraping page 3...
+...
+Scraping page 10...
+No more pages found.
+
+Total quotes collected: 100
+Unique authors: 52
+Top 3 authors by quote count:
+  Albert Einstein: 10
+  J.K. Rowling: 7
+  Mark Twain: 6
+```
 
 ```python
 import time
@@ -282,6 +396,27 @@ print(df.head())
 ```
 
 ### Exercise 3: Table Extraction
+
+**Business Scenario:** An analyst needs to extract a financial comparison table from a public webpage and load it into a Pandas DataFrame for further analysis. HTML tables are ubiquitous in financial reporting, economic databases, and Wikipedia — `pd.read_html()` is the fastest way to extract them.
+
+**Your Task:**
+1. Use `pd.read_html()` to extract a table from a public URL (you can use `https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)` or any table-heavy page)
+2. Select the most relevant table from the list returned
+3. Clean the column names (strip whitespace, rename as needed)
+4. Display the first 5 rows
+
+**Expected Output:**
+```
+Tables found on page: 4
+Using table index 1 (first main data table):
+
+   Rank   Country/Territory       IMF Estimate
+0     1   United States           28,781,083
+1     2   China                   18,532,633
+2     3   Germany                  4,591,100
+3     4   Japan                    4,110,452
+4     5   India                    3,937,011
+```
 
 ```python
 import pandas as pd

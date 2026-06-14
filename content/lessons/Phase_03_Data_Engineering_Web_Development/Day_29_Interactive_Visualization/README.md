@@ -34,6 +34,52 @@ outcomes: [Create interactive web-ready charts, Build zoomable visualizations, E
 
 ## The Technical Deep Dive
 
+### Data Format for Plotly Express: Tidy (Long) vs Wide
+
+Before building interactive charts with Plotly Express, you need to understand the data format it expects. This is the #1 stumbling block for beginners.
+
+**Wide format** (how most spreadsheets look): Each variable gets its own column.
+```
+Month  | Product_A | Product_B | Product_C
+-------|-----------|-----------|----------
+Jan    | 10000     | 8000      | 12000
+Feb    | 15000     | 9000      | 14000
+```
+
+**Tidy (Long) format** (what Plotly Express prefers): Each row is one observation. Multiple series become a single "value" column with a "category" column identifying which series it belongs to.
+```
+Month  | Product   | Revenue
+-------|-----------|--------
+Jan    | Product_A | 10000
+Jan    | Product_B | 8000
+Jan    | Product_C | 12000
+Feb    | Product_A | 15000
+```
+
+**Why Plotly Express prefers long format:** Long format lets you pass one column name to `color=`, `size=`, `facet_col=`, and `animation_frame=` parameters, and Plotly automatically creates a separate trace for each unique value.
+
+```python
+# Convert wide to long (melt) before using Plotly Express
+import pandas as pd
+import plotly.express as px
+
+wide_df = pd.DataFrame({
+    "Month": ["Jan", "Feb", "Mar"],
+    "Product_A": [10000, 15000, 13000],
+    "Product_B": [8000, 9000, 11000],
+})
+
+# Melt into long format
+long_df = wide_df.melt(id_vars="Month", var_name="Product", value_name="Revenue")
+# Now: Month | Product | Revenue
+
+fig = px.line(long_df, x="Month", y="Revenue", color="Product",
+              title="Monthly Revenue by Product")
+fig.show()
+```
+
+**When you can use wide format:** Plotly Express `px.line()` accepts wide format if you pass a list to `y=` — but you lose access to `color=`, `facet_col=`, and `animation_frame=`. Use long format from the start to avoid limitations.
+
 ### Plotly Express Basics
 
 ```python
@@ -148,11 +194,41 @@ fig.write_image("chart.png", scale=2)  # Static image (needs kaleido)
 | Exploratory analysis   | Plotly             |
 | Complex custom layouts | Matplotlib         |
 
+### When to Graduate: Plotly Express vs Plotly Graph Objects
+
+| Feature | Plotly Express (px) | Plotly Graph Objects (go) |
+|---------|-------------------|--------------------------|
+| **Purpose** | Fast, opinionated — one-liners for common chart types | Full control — build any chart from scratch |
+| **Syntax** | `px.bar(df, x="col", y="val", color="cat")` | `go.Figure(data=[go.Bar(x=..., y=...)])` |
+| **Data format** | Prefers tidy/long DataFrames | Accepts lists, arrays, or dicts |
+| **Customization** | Limited — good for 80% of use cases | Unlimited — every trace, axis, and annotation is configurable |
+| **When to use** | Quick exploration, standard charts | Custom layouts, mixed chart types, pixel-perfect dashboards |
+| **Dash/Streamlit** | Both work equally well | Required for complex multi-trace figures |
+
+**Rule of thumb:** Start with `px`. When you hit a wall (e.g., you need a dual y-axis or a custom tooltip), switch to `go`.
+
+### Next Step: Dash and Streamlit
+
+Plotly charts are interactive HTML — but they live in Jupyter or static files. To build a **full web application** with dropdowns, sliders, and live data:
+- **Dash** (by Plotly): Full web app framework, pure Python. Best for data-heavy analytical apps.
+- **Streamlit**: Simpler syntax, great for prototypes and internal tools. Add `st.plotly_chart(fig)` to embed any Plotly figure in a web app.
+
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Sales Dashboard
+
+**Business Scenario:** The Sales Director wants a self-service interactive dashboard showing monthly revenue by product. Unlike a static PNG, this needs to be sharable as an HTML file where stakeholders can hover over data points to see exact values, click the legend to isolate product lines, and zoom into specific months.
+
+**Your Task:**
+1. Create an interactive line chart with `plotly.express` showing revenue over 12 months for at least 2 products
+2. Use the tidy (long) format for your data — melt if necessary
+3. Add hover tooltips showing the exact revenue value and date
+4. Set a descriptive title and axis labels
+5. Show the chart (or save as HTML with `fig.write_html("sales_dashboard.html")`)
+
+**Expected Output:** An interactive Plotly line chart. Hovering over a point displays the month and revenue. Clicking a product name in the legend toggles its visibility. The chart has a title "Monthly Sales Dashboard."
 
 ```python
 import plotly.express as px
@@ -185,6 +261,16 @@ fig.show()
 
 ### Exercise 2: Time Series with Range Selector
 
+**Business Scenario:** The finance team monitors daily stock prices and needs a chart with built-in time range controls — buttons to toggle between "1 month", "3 months", "6 months", and "1 year" views, plus a range slider at the bottom for custom date selection.
+
+**Your Task:**
+1. Generate or use a time series dataset (daily data over 1 year)
+2. Create a Plotly line chart with `rangeselector` buttons: 1M, 3M, 6M, 1Y, All
+3. Add a `rangeslider` at the bottom of the chart
+4. Display the chart
+
+**Expected Output:** An interactive time series chart with 5 preset range buttons at the top and a mini range-slider at the bottom. Clicking "1M" zooms to the last month of data.
+
 ```python
 import plotly.express as px
 import pandas as pd
@@ -208,6 +294,16 @@ fig.show()
 ```
 
 ### Exercise 3: Animated Scatter
+
+**Business Scenario:** The strategy team wants to present how marketing spend vs. revenue has evolved across 5 regions over a 5-year period — similar to a Gapminder "bubble chart" animation. Each frame of the animation represents one year; bubbles move as both variables change.
+
+**Your Task:**
+1. Create a dataset with columns: Year, Region, Marketing_Spend, Revenue, Market_Size
+2. Build an animated scatter plot with `animation_frame="Year"`
+3. Map `Marketing_Spend` → x-axis, `Revenue` → y-axis, `Region` → color, `Market_Size` → bubble size
+4. Add a title and axis labels
+
+**Expected Output:** A Plotly animated scatter with a play/pause button and a year slider at the bottom. Each frame shows the 5 regional bubbles repositioned for that year. The size of each bubble reflects market size.
 
 ```python
 import plotly.express as px

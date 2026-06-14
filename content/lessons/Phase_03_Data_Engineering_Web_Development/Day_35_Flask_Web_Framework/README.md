@@ -61,6 +61,68 @@ if __name__ == "__main__":
 
 ### Templates with Jinja2
 
+### What is Jinja2 and Why Do We Need It?
+
+**Jinja2** is a **templating engine** for Python — it lets you write HTML files with embedded Python-like expressions that get evaluated on the server and replaced with real values before the page is sent to the browser.
+
+**The problem Jinja2 solves:** Without a templating engine, you'd have to build HTML strings manually in Python:
+```python
+# Bad: HTML hardcoded in Python — unmaintainable
+html = "<h1>Hello, " + user_name + "!</h1>"
+html += "<ul>"
+for item in products:
+    html += f"<li>{item['name']}: ${item['price']}</li>"
+html += "</ul>"
+```
+
+This mixes logic with presentation, making both hard to maintain. Jinja2 separates concerns:
+- Python code (routes.py): handles business logic and data
+- HTML templates (templates/*.html): handles presentation and layout
+
+**Jinja2 syntax quick reference:**
+
+| Syntax | Purpose | Example |
+|--------|---------|---------|
+| `{{ variable }}` | Print a variable's value | `{{ user.name }}` |
+| `{% if condition %}` | Conditional block | `{% if user.is_admin %}` |
+| `{% for item in list %}` | Loop | `{% for product in products %}` |
+| `{% extends "base.html" %}` | Template inheritance | Reuse header/footer |
+| `{% block content %}` | Define a replaceable block | Fill in per-page content |
+| `{{ value \| filter }}` | Apply a filter | `{{ price \| round(2) }}` |
+
+**How Flask connects Python to Jinja2:**
+```python
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route("/products")
+def product_list():
+    products = [
+        {"name": "Laptop", "price": 999.99},
+        {"name": "Mouse", "price": 29.99},
+    ]
+    # render_template() finds templates/products.html
+    # and makes `products` available inside the template as {{ products }}
+    return render_template("products.html", products=products)
+```
+
+**Corresponding template** (`templates/products.html`):
+```html
+<!DOCTYPE html>
+<html>
+<body>
+  <h1>Product Catalog</h1>
+  <ul>
+    {% for product in products %}
+    <li>{{ product.name }}: ${{ product.price }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
+```
+Flask automatically looks for templates in the `templates/` subdirectory of your project.
+
 ```python
 # app.py
 from flask import Flask, render_template
@@ -270,6 +332,51 @@ def log_response(response):
 
 ### Exercise 1: Simple Blog
 
+**Business Scenario:** You're building a simple internal company blog where employees can post updates. The homepage lists all posts (title + author + date), and clicking a post shows the full content.
+
+**Your Task:**
+1. Create the Flask app with two routes: `GET /` (list posts) and `GET /post/<int:id>` (single post)
+2. Create the `templates/blog_index.html` template (content provided below)
+3. Create the `templates/post.html` template (content provided below)
+4. Run with `flask run` and verify both pages work
+
+**`templates/blog_index.html` (create this file):**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Company Blog</title></head>
+<body>
+  <h1>Company Blog</h1>
+  <hr>
+  {% for post in posts %}
+  <article>
+    <h2><a href="/post/{{ post.id }}">{{ post.title }}</a></h2>
+    <p><em>By {{ post.author }} on {{ post.date }}</em></p>
+    <p>{{ post.summary }}</p>
+    <hr>
+  </article>
+  {% else %}
+  <p>No posts yet.</p>
+  {% endfor %}
+</body>
+</html>
+```
+
+**`templates/post.html` (create this file):**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>{{ post.title }}</title></head>
+<body>
+  <a href="/">&larr; Back to Blog</a>
+  <h1>{{ post.title }}</h1>
+  <p><em>By {{ post.author }} on {{ post.date }}</em></p>
+  <hr>
+  <p>{{ post.content }}</p>
+</body>
+</html>
+```
+
 ```python
 from flask import Flask, render_template
 
@@ -297,7 +404,50 @@ if __name__ == "__main__":
     app.run(debug=True)
 ```
 
+**Expected Output:**
+- `GET /` renders a list of blog posts with title, author, date, and summary
+- `GET /post/1` renders the full content of the first post
+- `GET /post/99` returns a 404 page (or redirect to `/` with a "Post not found" message)
+
 ### Exercise 2: Contact Form
+
+**Business Scenario:** Your marketing site needs a "Contact Us" form. When a visitor submits their name, email, and message, the data should be validated (non-empty fields) and stored (or printed to console in this exercise). The page should show a success message after submission.
+
+**Your Task:**
+1. Create a Flask route `GET /contact` (render the form) and `POST /contact` (process it)
+2. Create `templates/contact.html` (content provided below)
+3. Validate that name, email, and message are all non-empty; if invalid, re-render the form with an error
+4. On success, redirect to `/` or render a "Thank You" page
+
+**`templates/contact.html` (create this file):**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Contact Us</title></head>
+<body>
+  <h1>Contact Us</h1>
+  {% if error %}
+  <p style="color:red;">{{ error }}</p>
+  {% endif %}
+  {% if success %}
+  <p style="color:green;">{{ success }}</p>
+  {% endif %}
+  <form method="POST" action="/contact">
+    <label>Name: <input type="text" name="name" required></label><br><br>
+    <label>Email: <input type="email" name="email" required></label><br><br>
+    <label>Message:<br>
+      <textarea name="message" rows="4" cols="40" required></textarea>
+    </label><br><br>
+    <button type="submit">Send Message</button>
+  </form>
+</body>
+</html>
+```
+
+**Expected Output:**
+- `GET /contact` — renders the form
+- `POST /contact` with valid data — prints `"New contact: Alice (alice@example.com): Hello!"` to console and redirects or shows success message
+- `POST /contact` with empty fields — re-renders form with error: "All fields are required."
 
 ```python
 from flask import Flask, render_template, request, flash, redirect, url_for
@@ -325,6 +475,55 @@ if __name__ == "__main__":
 ```
 
 ### Exercise 3: Data Dashboard
+
+**Business Scenario:** The analytics team wants an internal web dashboard showing live sales statistics. The page should display a summary table of sales by region, total revenue, and the top 3 products — all rendered server-side from a Python data source.
+
+**Your Task:**
+1. Create a Flask route `GET /dashboard` that computes or loads sales data
+2. Pass the data to `templates/dashboard.html`
+3. Create the template (content provided below)
+4. Display a summary table and key metrics
+
+**`templates/dashboard.html` (create this file):**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sales Dashboard</title>
+  <style>
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+    th { background-color: #4472C4; color: white; }
+    tr:nth-child(even) { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Sales Dashboard</h1>
+  <h2>Total Revenue: ${{ total_revenue | round(2) }}</h2>
+  <h3>Sales by Region</h3>
+  <table>
+    <tr><th>Region</th><th>Revenue</th><th>Transactions</th></tr>
+    {% for row in region_data %}
+    <tr>
+      <td>{{ row.region }}</td>
+      <td>${{ row.revenue | round(2) }}</td>
+      <td>{{ row.transactions }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h3>Top 3 Products</h3>
+  <ol>
+    {% for product in top_products %}
+    <li>{{ product.name }}: ${{ product.revenue | round(2) }}</li>
+    {% endfor %}
+  </ol>
+</body>
+</html>
+```
+
+**Expected Output:**
+- `GET /dashboard` renders a styled HTML page with total revenue header, a "Sales by Region" table, and a top-3 products list
 
 ```python
 from flask import Flask, render_template
@@ -361,13 +560,43 @@ if __name__ == "__main__":
 
 ### Exercise 4: Failure Injection — Production Misconfiguration
 
-Deliberately remove one required environment variable and trigger an unhandled exception in a route.
+**Business Scenario:** A colleague's Flask app raises an unhandled exception when certain URLs are visited. You need to identify the unhandled exception and add proper error handling.
 
-Your debugging goals:
+**Starter Code (Broken — raises unhandled exception):**
+```python
+from flask import Flask, render_template
 
-1. Fail fast at startup with actionable config validation errors.
-2. Verify error middleware returns consistent `500` behavior without stack traces to users.
-3. Use structured logs to trace the failing request end-to-end.
+app = Flask(__name__)
+
+products = {
+    1: {"name": "Laptop", "price": 999.99},
+    2: {"name": "Mouse", "price": 29.99},
+}
+
+@app.route("/product/<int:product_id>")
+def product_detail(product_id):
+    product = products[product_id]   # BUG: KeyError if product_id not in dict
+    return render_template("product.html", product=product)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+
+**Your Task:**
+1. Run the app and visit `http://localhost:5000/product/99` — what error do you see?
+2. Fix the `KeyError` by using `products.get(product_id)` and returning a `404` if not found:
+   ```python
+   from flask import abort
+   product = products.get(product_id)
+   if product is None:
+       abort(404)
+   ```
+3. Add a custom 404 error handler that renders a friendly "Product not found" page
+4. Test that `GET /product/1` still works and `GET /product/99` now returns a clean 404
+
+**Expected Output after fix:**
+- `GET /product/1` → renders product detail page: "Laptop — $999.99"
+- `GET /product/99` → renders custom 404 page: "Product not found. Return to homepage."
 
 ### Exercise 5: Definition of Done (DoD) Drill
 

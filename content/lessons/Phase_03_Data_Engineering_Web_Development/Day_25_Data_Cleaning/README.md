@@ -193,6 +193,23 @@ df_unique = df.drop_duplicates(
 
 Outliers can distort statistics. Detect them with IQR or Z-scores.
 
+**What is IQR?** The **Interquartile Range (IQR)** measures the spread of the middle 50% of your data. It is calculated as Q3 − Q1, where:
+- **Q1 (1st quartile / 25th percentile)**: the value below which 25% of data falls
+- **Q3 (3rd quartile / 75th percentile)**: the value below which 75% of data falls
+
+**Tukey Fence — the 1.5 multiplier:** The formula `Q1 − 1.5 × IQR` and `Q3 + 1.5 × IQR` is called the **Tukey fence**, named after statistician John Tukey. The value **1.5** is the standard threshold for flagging "mild" outliers. Why 1.5? For normally distributed data, roughly 99.3% of observations fall within the Tukey fence—anything beyond is statistically unusual. A stricter multiplier of **3.0** is used for "extreme" outliers. This is a convention, not a law, and you should adjust it based on domain knowledge.
+
+**Z-Score and the 3-Sigma Rule:** A **Z-score** measures how many standard deviations a value is from the mean. The formula is `Z = (x − mean) / std`. The **3-sigma rule** (also called the empirical rule) states that for a **normal distribution**, about 99.7% of values lie within 3 standard deviations of the mean. So any value with |Z| > 3 is considered an outlier. Z-scores assume the data is approximately normally distributed—they break down for heavily skewed data.
+
+**When to use IQR vs Z-Score:**
+
+| Method | When to Use | Strength |
+|--------|-------------|----------|
+| **IQR (Tukey fence)** | Skewed distributions, business data (sales, revenue, prices) | Robust — not affected by the outliers it detects |
+| **Z-Score (3-sigma)** | Approximately normal distributions (heights, test scores) | Sensitive — outliers themselves influence mean and std |
+
+**Rule of thumb:** Default to IQR for business data; use Z-scores when you know the data is roughly normal.
+
 ```python
 import numpy as np
 
@@ -278,6 +295,17 @@ df["revenue_capped"] = df["revenue"].clip(lower=lower_bound, upper=upper_bound)
 
 ### Exercise 1: Customer Data Normalization
 
+**Business Scenario:** The Marketing team has collected customer records from three different CRM systems following a company merger. Each system stored data in different formats — names in ALL CAPS, emails with inconsistent casing, phone numbers with varying punctuation. Before running a re-engagement campaign, Marketing needs a single unified, clean customer list with no duplicates.
+
+**Your Task:**
+1. Standardize all customer names to Title Case (strip leading/trailing spaces)
+2. Normalize all email addresses to lowercase
+3. Extract only the numeric digits from phone numbers and flag valid 10-digit numbers
+4. Parse all dates into a consistent datetime format, coercing unparseable values to `NaT`
+5. Remove duplicate records based on email address (keep the first occurrence)
+
+**Sample Input:** 5 rows with inconsistent casing, 2 duplicate emails, 1 null name, 1 unparseable date.
+
 ```python
 import pandas as pd
 
@@ -343,9 +371,29 @@ print(cleaned)
 print(f"\nValid phone numbers: {cleaned['Phone_Valid'].sum()}/{len(cleaned)}")
 ```
 
+**Expected Output:**
+```
+   Name               Email             Phone       Signup_Date  Phone_Valid
+0  Alice Johnson      alice@gmail.com   5551234567  2024-01-15   True
+1  Bob Smith          bob@company.org   5552345678  2024-01-20   True
+2  Charlie Brown      charlie@test.com  5553456789  2024-02-01   True
+```
+*Note: The duplicate Alice Johnson row and the null-name row are removed, leaving 3 unique records.*
+
 ---
 
 ### Exercise 2: Sales Data Deduplication
+
+**Business Scenario:** Your e-commerce platform experienced a database sync error during a server migration, causing some order records to be written twice. The finance team can't close the books until duplicate orders are identified and removed — otherwise revenue totals will be inflated.
+
+**Your Task:**
+1. Identify all duplicate Order IDs in the dataset
+2. Report how many duplicate records were found and from how many distinct orders
+3. Remove duplicates, keeping the first occurrence of each Order ID
+4. Verify no duplicates remain using an assertion
+5. Report the total revenue from the cleaned dataset
+
+**Sample Input:** 6 rows with 2 duplicated Order IDs (ORD001 and ORD002), for 4 unique orders.
 
 ```python
 import pandas as pd
@@ -393,9 +441,31 @@ cleaned_sales = deduplicate_sales(sales)
 print(f"\nTotal revenue: ${cleaned_sales['Amount'].sum():,.2f}")
 ```
 
+**Expected Output:**
+```
+Found 4 duplicate records from 2 orders
+Cleaned: 6 → 4 records
+
+Total revenue: $1,409.96
+```
+
 ---
 
 ### Exercise 3: Complete Data Pipeline
+
+**Business Scenario:** The Operations team exports product catalog data from a legacy inventory system that has never been properly validated. The downstream pricing engine cannot accept products with negative prices, invalid stock levels, or duplicate product names. You need to build a complete, reusable cleaning pipeline.
+
+**Your Task:**
+1. Drop rows with null product names
+2. Standardize product names to Title Case (strip whitespace)
+3. Strip `$` and `,` from price strings and convert to float
+4. Remove products with non-positive prices
+5. Normalize category names to lowercase
+6. Cap ratings at 5.0 and fill null ratings with the median
+7. Convert stock to integer and remove rows with negative stock
+8. Deduplicate by product name (keep first occurrence)
+
+**Sample Input:** 6 rows including 1 null name, 1 negative price (`$-50`), 1 negative stock (`-10`), 1 invalid rating (6.0), and 1 duplicate product name.
 
 ```python
 import pandas as pd
@@ -469,6 +539,22 @@ cleaned = clean_ecommerce_data(raw_data)
 print("\nCleaned Data:")
 print(cleaned)
 ```
+
+**Expected Output:**
+```
+Starting with 6 records
+After dropping null names: 5
+After removing invalid prices: 4
+After removing invalid stock: 3
+After deduplication: 3
+
+Cleaned Data:
+  product_name   price   category  rating  stock
+0  Laptop Pro   999.99  electronics  4.5    100
+1  Mouse         29.99  electronics  3.8     50
+2  Keyboard      79.99  electronics  4.35    75
+```
+*(Laptop Pro duplicate, negative price Monitor, and negative stock entry are all removed)*
 
 ---
 

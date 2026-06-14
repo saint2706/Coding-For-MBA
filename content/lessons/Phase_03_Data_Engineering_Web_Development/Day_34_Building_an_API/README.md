@@ -40,6 +40,44 @@ outcomes: [Build REST APIs with FastAPI, Validate requests with Pydantic, Handle
 
 ## The Technical Deep Dive
 
+### Why FastAPI Uses Python Type Hints
+
+FastAPI is built on two core Python libraries that transform type hints into superpowers:
+
+**Pydantic** (data validation): When you define a function parameter as `price: float`, Pydantic automatically:
+- Rejects requests that send a string like `"not a number"` (returns a `422 Unprocessable Entity` error with a clear message)
+- Coerces compatible types: `"42"` → `42.0`
+- Generates a JSON schema showing exactly what the endpoint expects
+
+**Python type hints → automatic documentation**: FastAPI reads your type hints and generates an interactive **Swagger UI** at `/docs` and a **ReDoc** UI at `/redoc` — with zero extra work. Every parameter, its type, and its description is automatically documented.
+
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+app = FastAPI()
+
+class Product(BaseModel):
+    name: str
+    price: float
+    quantity: int = 0  # Default value
+
+@app.post("/products")
+def create_product(product: Product):
+    # FastAPI automatically:
+    # 1. Parses the JSON request body
+    # 2. Validates types (price must be float, quantity must be int)
+    # 3. Returns 422 if validation fails — before your code even runs
+    # 4. Documents this endpoint in Swagger UI at /docs
+    return {"message": f"Created {product.name}", "id": 42}
+```
+
+**Navigate to `http://127.0.0.1:8000/docs` after starting the server** — you'll see a fully interactive API explorer with no extra setup.
+
+**`dict` vs Pydantic model in responses:**
+- Returning a `dict` works but bypasses Pydantic validation on output
+- Defining a `response_model=ProductResponse` in the decorator tells FastAPI to validate the response shape too, automatically filtering out any fields not in the model (useful for hiding internal database IDs or passwords)
+
 ### FastAPI Basics
 
 ```python
@@ -269,6 +307,40 @@ async def add_request_context(request: Request, call_next):
 
 ### Exercise 1: Todo API
 
+**Business Scenario:** Your team needs a simple task management API as the backend for a project management tool. The MVP needs four endpoints: list all tasks, get one task, create a task, and mark a task as done.
+
+**Your Task:**
+1. Build a FastAPI app with an in-memory `todos` list (a Python list of dicts)
+2. Implement: `GET /todos` (list all), `GET /todos/{id}` (get one), `POST /todos` (create), `PATCH /todos/{id}/complete` (mark done)
+3. Use a Pydantic model for the create request body
+4. Run the server: `uvicorn main:app --reload`
+
+**Testing with curl:**
+```bash
+# Create a task
+curl -X POST "http://localhost:8000/todos" \
+     -H "Content-Type: application/json" \
+     -d '{"title": "Prepare board presentation", "priority": "high"}'
+
+# List all tasks
+curl "http://localhost:8000/todos"
+
+# Mark as done
+curl -X PATCH "http://localhost:8000/todos/1/complete"
+```
+
+**Expected Output (from `GET /todos` after the above):**
+```json
+[
+  {
+    "id": 1,
+    "title": "Prepare board presentation",
+    "priority": "high",
+    "completed": true
+  }
+]
+```
+
 ```python
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -322,6 +394,27 @@ def delete_todo(todo_id: int):
 
 ### Exercise 2: Calculator API
 
+**Business Scenario:** A financial modeling team needs a calculator microservice that other applications (Excel macros, Python scripts, a dashboard) can call via HTTP. The service must accept two numbers and an operation, validate inputs, and return the result with proper error handling for division by zero.
+
+**Your Task:**
+1. Create `GET /calculate?a=10&b=5&op=multiply` (use query parameters)
+2. Support operations: `add`, `subtract`, `multiply`, `divide`
+3. Return `{"result": 50}` for valid inputs
+4. Return `HTTP 400` with a message for invalid operations or division by zero
+5. Return `HTTP 422` automatically for non-numeric inputs (handled by FastAPI type hints)
+
+**Expected Output:**
+```bash
+curl "http://localhost:8000/calculate?a=10&b=5&op=multiply"
+# → {"result": 50.0}
+
+curl "http://localhost:8000/calculate?a=10&b=0&op=divide"
+# → {"error": "Division by zero is not allowed"}  (HTTP 400)
+
+curl "http://localhost:8000/calculate?a=10&b=5&op=power"
+# → {"detail": "Operation must be one of: add, subtract, multiply, divide"}  (HTTP 400)
+```
+
 ```python
 from fastapi import FastAPI, Query
 
@@ -352,6 +445,29 @@ def calculate(operation: str, a: float, b: float):
 ```
 
 ### Exercise 3: User Registration
+
+**Business Scenario:** You're building the backend for a SaaS application's signup flow. The endpoint must validate that the email is unique (no duplicate registrations), the password meets minimum requirements, and the response never returns the stored password hash.
+
+**Your Task:**
+1. Define `UserCreate` Pydantic model: `email: str`, `name: str`, `password: str`
+2. Define `UserResponse` Pydantic model: `id: int`, `email: str`, `name: str` (no password field)
+3. `POST /users` — create a new user; reject if email already exists (HTTP 409)
+4. `GET /users/{id}` — return user info using `UserResponse` (automatically hides password)
+5. Simulate password hashing: `hashed = "hashed_" + password`
+
+**Expected Output:**
+```bash
+curl -X POST "http://localhost:8000/users" \
+     -H "Content-Type: application/json" \
+     -d '{"email": "alice@example.com", "name": "Alice", "password": "secret123"}'
+# → {"id": 1, "email": "alice@example.com", "name": "Alice"}  ← password hidden!
+
+# Try duplicate email:
+curl -X POST "http://localhost:8000/users" \
+     -H "Content-Type: application/json" \
+     -d '{"email": "alice@example.com", "name": "Alice2", "password": "other"}'
+# → {"detail": "Email already registered"}  (HTTP 409)
+```
 
 ```python
 from fastapi import FastAPI, HTTPException
@@ -405,13 +521,49 @@ def get_user(username: str):
 
 ### Exercise 4: Failure Injection — Contract Break Regression
 
-Introduce a controlled breaking change (for example, return `201` instead of `200`, rename `message` → `detail`, or remove pagination metadata).
+**Business Scenario:** A colleague has written a FastAPI endpoint that is supposed to return product data matching a specific price range. The code has a **contract break** — the Pydantic response model says `price` should be a `float`, but the code returns it as a string. Debug and fix it.
 
-Your debugging goals:
+**Starter Code (Broken):**
+```python
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-1. Catch the regression via contract tests.
-2. Restore backward compatibility (or version the endpoint).
-3. Update API docs/changelog with clear migration notes.
+app = FastAPI()
+
+class ProductResponse(BaseModel):
+    id: int
+    name: str
+    price: float  # Contract: price must be a float
+
+# Simulated database
+products_db = [
+    {"id": 1, "name": "Laptop", "price": "999.99"},   # BUG: price stored as string
+    {"id": 2, "name": "Mouse", "price": "29.99"},      # BUG: same issue
+]
+
+@app.get("/products/{product_id}", response_model=ProductResponse)
+def get_product(product_id: int):
+    for p in products_db:
+        if p["id"] == product_id:
+            return p  # FastAPI will try to coerce "999.99" → 999.99 via Pydantic
+    return {"error": "Not found"}  # BUG: Should raise HTTPException, not return a dict
+```
+
+**Your Task:**
+1. Run the broken code. What happens when you call `GET /products/1`? Does Pydantic coerce the string to float, or does it fail?
+2. What happens when you call `GET /products/99` (non-existent product)? Why is the current error response wrong?
+3. Fix both bugs:
+   - Convert price strings to floats in the database (or in the query logic)
+   - Raise `HTTPException(status_code=404, detail="Product not found")` instead of returning a dict
+
+**Expected Output after fix:**
+```bash
+curl "http://localhost:8000/products/1"
+# → {"id": 1, "name": "Laptop", "price": 999.99}
+
+curl "http://localhost:8000/products/99"
+# → {"detail": "Product not found"}  (HTTP 404)
+```
 
 ### Exercise 5: Definition of Done (DoD) Drill
 

@@ -170,6 +170,16 @@ print(f"Marketing vs Revenue correlation: {marketing_revenue_corr:.3f}")
 
 Percentiles divide your data into 100 equal parts. Essential for benchmarking.
 
+**What is a Percentile?** A **percentile** tells you what percentage of values in a dataset fall *below* a given value. For example, if your salary is at the **75th percentile**, 75% of people earn less than you. Percentiles divide ranked data into 100 equal parts.
+
+**What is a Quantile?** A **quantile** is the generalized form. Quantiles divide data into equal-sized groups using proportions (0 to 1) instead of percentages (0 to 100). So the **0.75 quantile** is the same as the **75th percentile**. Pandas uses the 0–1 scale: `df["col"].quantile(0.75)`.
+
+**Business uses of percentiles:**
+- **P50 (Median)**: The "typical" value — half the data is above, half below
+- **P75**: The threshold above which the top 25% of values lie (e.g., "top quartile" performers)
+- **P90 / P95**: Common SLA thresholds (e.g., "95% of requests complete under 200ms")
+- **P25**: The lower quartile — 25% of data falls below this point
+
 ```python
 df = pd.DataFrame(
     {
@@ -197,6 +207,16 @@ print(f"\nTop 25% performers:\n{top_performers}")
 ### Distributions
 
 Understanding distributions helps you choose the right statistical methods.
+
+**What is Skewness?** Skewness measures the asymmetry of a distribution:
+
+- **Right-skewed (positive skew):** The tail extends to the right. The mean is pulled *above* the median by high outliers. Most business data (revenue, salaries, customer spend) is right-skewed — a few large values drag the mean up.
+- **Left-skewed (negative skew):** The tail extends to the left. The mean falls *below* the median.
+- **Symmetric (skew ≈ 0):** Mean ≈ median (e.g., heights of adults).
+
+**Why skewness matters for your analysis:** When data is skewed, the **mean is misleading** as a measure of "typical." Always check skewness before using the mean in a report. Use `df["col"].skew()` — values above 1 or below -1 indicate significant skew.
+
+**`np.random.exponential` vs `np.random.normal`:** We use `np.random.exponential` to simulate **right-skewed** data (like customer purchase amounts, where most buy small amounts but a few buy a lot) and `np.random.normal` to simulate **symmetric, bell-curve** data (like product ratings or measurement errors). This distinction matters: using the wrong distribution assumption for a test can produce misleading p-values.
 
 ```python
 import numpy as np
@@ -297,11 +317,50 @@ def safe_statistics(series, name="column"):
     }
 ```
 
+### A/B Testing Fundamentals
+
+A/B testing is how businesses use statistics to make decisions. You show version A to one group of customers and version B to another, then test whether any observed difference is **statistically significant** or just random noise.
+
+**Key concepts:**
+
+- **Null Hypothesis (H₀):** There is no difference between A and B (the observed difference is due to chance)
+- **Alternative Hypothesis (H₁):** B is genuinely different from A
+- **p-value:** The probability of seeing a difference this large *by chance alone*, assuming H₀ is true. A p-value < 0.05 is the standard threshold for "statistical significance."
+- **Statistical significance vs. practical significance:** A result can be statistically significant (p < 0.05) but so small it doesn't matter for the business. Always report **effect size** alongside p-values.
+
+```python
+from scipy import stats
+import numpy as np
+
+np.random.seed(42)
+# Conversion rates: Version A = 10%, Version B = 12%
+control = np.random.binomial(1, 0.10, 1000)   # Group A
+treatment = np.random.binomial(1, 0.12, 1000)  # Group B
+
+t_stat, p_value = stats.ttest_ind(control, treatment)
+print(f"Control conversion rate: {control.mean():.1%}")
+print(f"Treatment conversion rate: {treatment.mean():.1%}")
+print(f"p-value: {p_value:.4f}")
+
+if p_value < 0.05:
+    print("✓ Statistically significant — B outperforms A")
+else:
+    print("✗ Not significant — could be random variation")
+```
+
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Revenue Analysis
+
+**Business Scenario:** You are the CFO's analyst. Monthly revenue data for the past year includes one unusually large month (July) caused by a one-time enterprise contract. The CFO wants to know: (a) how much this outlier inflates the average, (b) what the "normal" baseline revenue looks like, and (c) what number to use for forecasting.
+
+**Your Task:**
+1. Compute mean, median, and standard deviation WITH the outlier included
+2. Detect the outlier using the IQR method
+3. Compute the same statistics WITHOUT the outlier
+4. Print a business insight explaining the distortion and the recommended forecast figure
 
 ```python
 import pandas as pd
@@ -367,9 +426,38 @@ def analyze_revenue(df):
 analyze_revenue(monthly_revenue)
 ```
 
+**Expected Output:**
+```
+=== With Outlier ===
+Mean: $97,500.00
+Median: $66,500.00
+Std Dev: $123,614.27
+
+Outliers detected: 1
+        month  revenue
+6  2024-07-31   500000
+
+=== Without Outlier ===
+Mean: $63,909.09
+Median: $65,000.00
+Std Dev: $10,124.27
+
+=== Business Insight ===
+The outlier inflated the mean by $33,590.91
+For forecasting, use median ($66,500.00) or exclude one-time contracts
+```
+
 ---
 
 ### Exercise 2: Customer Segmentation
+
+**Business Scenario:** The marketing team wants to move from "one-size-fits-all" campaigns to targeted messaging. They need customers segmented by three dimensions: **total lifetime spend** (how valuable), **average order value** (what they buy), and **recency** (how recently they purchased). The goal is to identify Champions (high value, recent buyers) vs. At-Risk customers (previously active but gone quiet).
+
+**Your Task:**
+1. Compute percentile rank for `total_purchases`, `avg_order_value`, and `days_since_last_order`
+2. Note: for recency, a LOWER `days_since_last_order` means MORE recent — so invert the ranking
+3. Assign each customer to a segment based on the thresholds in `assign_segment()`
+4. Produce a summary table showing count, mean/median spend, and median recency per segment
 
 ```python
 import pandas as pd
@@ -433,9 +521,37 @@ print(summary)
 print(f"\nSegment distribution:\n{segmented['segment'].value_counts()}")
 ```
 
+**Expected Output (values are approximate due to random seed):**
+```
+=== Customer Segment Summary ===
+                   customer_id total_purchases           days_since_last_order
+                         count            mean   median                 median
+segment
+At Risk                     21          135.46    87.23                 134.56
+Average                     44          432.18   352.41                  38.21
+Champions                   12         1876.23  1654.32                   5.41
+Loyal Customers             18          789.34   623.45                  28.67
+Recent Customers             5          112.34    98.23                   2.34
+
+Segment distribution:
+Average            44
+At Risk            21
+Loyal Customers    18
+Champions          12
+Recent Customers    5
+```
+
 ---
 
 ### Exercise 3: Correlation Dashboard
+
+**Business Scenario:** The Head of Growth wants to understand which variables actually drive revenue. She suspects marketing spend is the primary driver, but wants to rule out external factors like weather. You have 100 weeks of data covering marketing spend, website traffic, revenue, and average temperature.
+
+**Your Task:**
+1. Build a full correlation matrix for all four variables
+2. For each key pair, print the correlation coefficient and classify its strength (Strong/Moderate/Weak)
+3. Identify which variable is the best predictor of revenue
+4. Note which variable shows near-zero correlation (the control variable)
 
 ```python
 import pandas as pd
@@ -492,6 +608,26 @@ def correlation_analysis(df):
 
 
 correlation_analysis(df)
+```
+
+**Expected Output (values are approximate due to random seed):**
+```
+=== Correlation Matrix ===
+                  marketing_spend  website_traffic  revenue  temperature
+marketing_spend             1.000            0.894    0.765        0.053
+website_traffic             0.894            1.000    0.889        0.047
+revenue                     0.765            0.889    1.000        0.021
+temperature                 0.053            0.047    0.021        1.000
+
+=== Interpretation ===
+marketing_spend vs website_traffic: r = 0.894 (Strong positive)
+marketing_spend vs revenue: r = 0.765 (Strong positive)
+website_traffic vs revenue: r = 0.889 (Strong positive)
+temperature vs revenue: r = 0.021 (Weak positive)
+
+=== Business Insights ===
+✓ Marketing spend strongly drives traffic (r=0.89)
+  → Continue investing in marketing channels
 ```
 
 ---

@@ -72,6 +72,26 @@ print(tips.head())
 
 Understanding data distribution is fundamental to statistical analysis.
 
+**What is a Violin Plot?** A **violin plot** combines a box plot with a kernel density estimate (KDE) to show the full shape of a distribution. Where a box plot only shows you the median, quartiles, and outliers, a violin plot additionally reveals **multimodal distributions** — data with two or more peaks.
+
+**Violin plot anatomy:**
+- The **wide part** of the violin shows where most data is concentrated (like a histogram rotated 90°)
+- The **narrow part** shows sparse regions
+- The **white dot** in the center marks the median
+- The **thick black bar** shows the IQR (25th to 75th percentile)
+- The **thin lines** extend to the whiskers (typically 1.5 × IQR beyond Q1/Q3)
+
+**When to choose violin over box plot:**
+| Situation | Prefer |
+|-----------|--------|
+| Data has one peak (unimodal) | Box plot (simpler, easier to read) |
+| Data might have two peaks (bimodal) | Violin plot (reveals the shape) |
+| Comparing 2–4 groups | Either works |
+| Comparing 5+ groups in a presentation | Box plot (violins get cluttered) |
+| Showing distribution shape to stakeholders | Violin plot |
+
+**Business example:** Analyzing salary distributions across departments. A bimodal distribution in the "Engineering" violin might reveal two distinct pay bands (junior vs. senior), which a box plot would obscure.
+
 ```python
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -353,11 +373,52 @@ plt.savefig("figure.pdf", bbox_inches="tight")  # Vector format for print
 plt.savefig("figure.svg", bbox_inches="tight")  # Vector format for web
 ```
 
+### The Danger of Over-Plotting in Executive Dashboards
+
+The most common mistake in business visualization is trying to show too much at once:
+
+- **Too many variables on one chart** (5+ series on a line chart) makes every line hard to read
+- **Too much text** — annotations, footnotes, and data labels compete for attention
+- **Cognitive load kills decisions** — if a chart requires more than 5 seconds to interpret, executives will ignore it
+
+**Rules for executive dashboards:**
+1. **One key insight per chart** — if you can't state the point in one sentence, split the chart
+2. **Remove chart junk** — eliminate gridlines, borders, tick marks, and legends that don't add information
+3. **Highlight the signal** — use color to draw attention to the one thing that matters (e.g., make the "at-risk" bar red, leave others grey)
+4. **Order bars by value**, not alphabetically, unless the category order carries meaning
+
+```python
+# Before: Cluttered
+plt.figure(figsize=(8, 5))
+for i, col in enumerate(df.columns):
+    plt.plot(df.index, df[col], label=col)
+plt.legend()  # 8-item legend = cognitive overload
+
+# After: Focused — highlight one series
+fig, ax = plt.subplots(figsize=(8, 5))
+for col in df.columns:
+    ax.plot(df.index, df[col], color="lightgray", linewidth=1)
+ax.plot(df.index, df["key_product"], color="#E63946", linewidth=2.5, label="Key Product")
+ax.annotate("Peak Month", xy=(df["key_product"].idxmax(), df["key_product"].max()),
+            xytext=(5, 10), textcoords="offset points")
+ax.legend()
+```
+
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Statistical Distribution Analysis
+
+**Business Scenario:** HR wants to compare salary distributions across 4 departments (Engineering, Marketing, Sales, Operations). The compensation committee suspects Engineering has two distinct pay bands (junior/senior). A violin plot would make this visible in a way a standard box plot would not.
+
+**Your Task:**
+1. Create a violin plot comparing salary distributions across 4 departments
+2. Add a strip plot (or swarm plot) overlay to show individual data points
+3. Use appropriate labels and a title
+4. Note in a comment which department shows evidence of a bimodal distribution
+
+**Expected Output:** A violin plot with 4 violins side by side, individual data points overlaid as a strip plot, y-axis labeled "Salary ($)", and a title "Salary Distribution by Department."
 
 ```python
 import seaborn as sns
@@ -432,6 +493,16 @@ distribution_analysis(tips, "total_bill", "day")
 
 ### Exercise 2: Correlation Dashboard
 
+**Business Scenario:** The data science team wants to quickly identify which pairs of numerical variables in a business dataset are strongly correlated — positive or negative — before building a predictive model. A heatmap of the correlation matrix is the standard tool.
+
+**Your Task:**
+1. Generate a correlation matrix for a business dataset (you may create synthetic data)
+2. Create a heatmap using Seaborn with diverging color scale (blue = negative, red = positive)
+3. Annotate each cell with the correlation coefficient rounded to 2 decimal places
+4. Add a title
+
+**Expected Output:** A square heatmap with color cells ranging from dark blue (−1.0) to dark red (+1.0), numeric annotations in each cell, and variable names on both axes.
+
 ```python
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -502,6 +573,16 @@ create_correlation_dashboard(tips)
 ---
 
 ### Exercise 3: Multi-Dimensional Exploration
+
+**Business Scenario:** The product team wants to explore the relationship between price, marketing spend, and sales volume across 5 product categories. A scatter plot with color and size encoding can show three dimensions at once: x = price, y = sales, size = marketing spend, color = category.
+
+**Your Task:**
+1. Create a scatter plot with price on x-axis and sales on y-axis
+2. Encode marketing spend as point size (larger = higher spend)
+3. Encode product category as point color (use a categorical palette)
+4. Add a legend, labels, and title
+
+**Expected Output:** A scatter plot with variably-sized, color-coded points, a legend showing category colors, and axis labels. Points with high marketing spend (large circles) should visually cluster near high-sales regions if the relationship holds.
 
 ```python
 import seaborn as sns
