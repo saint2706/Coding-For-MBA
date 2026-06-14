@@ -47,6 +47,31 @@ outcomes:
 
 ## The Technical Deep Dive
 
+### Neural Network Fundamentals: Key Terms
+
+Before looking at Keras code, understand what each component does:
+
+| Term | Definition | In Keras |
+|------|-----------|---------|
+| **Logits** | Raw model output scores before activation — not bounded to [0,1] | Last Dense layer without activation |
+| **Softmax/Sigmoid** | Converts logits to probabilities: sigmoid for binary (0–1), softmax for multiclass (sum=1) | `activation='sigmoid'` or `'softmax'` |
+| **Loss function** | Measures prediction error; what the optimizer minimizes | `model.compile(loss=...)` |
+| **Binary cross-entropy** | Loss for binary classification: −[y log(ŷ) + (1−y) log(1−ŷ)] | `'binary_crossentropy'` |
+| **Batch** | Subset of training samples processed together before a weight update | `model.fit(batch_size=32)` |
+| **Epoch** | One full pass through the entire training dataset | `model.fit(epochs=50)` |
+| **Optimizer** | Algorithm that updates weights to minimize loss | `model.compile(optimizer='adam')` |
+| **Validation set** | Data held out during training (not test set!) to monitor for overfitting | `model.fit(validation_split=0.2)` |
+| **Parameter** | A learnable weight or bias in the model; total count = model complexity | `model.summary()` shows total params |
+| **Backpropagation** | Algorithm that computes gradients of the loss with respect to each parameter, using the chain rule | Automatic in Keras; called by `model.fit()` |
+
+**Why the output activation/loss pair matters:**
+
+| Task | Output Activation | Loss Function | Why |
+|------|-----------------|--------------|-----|
+| Binary classification | `sigmoid` | `binary_crossentropy` | sigmoid → probability in (0,1); log loss penalizes confident wrong predictions heavily |
+| Multiclass classification | `softmax` | `categorical_crossentropy` | softmax sums to 1 (valid probability distribution over classes) |
+| Regression | None (linear) | `mse` or `mae` | Unbounded output needed for continuous targets |
+
 ### The Neuron: The Basic Unit
 
 A neuron computes a weighted sum of its inputs, adds a bias, and pushes the result through a non-linear activation $\sigma(\cdot)$:
@@ -297,6 +322,65 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
+### Neural Network Engineering: Critical Concepts
+
+**Weight Initialization**
+How weights are initialized affects whether gradients can flow through the network:
+- **Glorot/Xavier uniform** (default for tanh): Variance = 2/(fan_in + fan_out) — prevents vanishing/exploding
+- **He initialization** (default for relu): Variance = 2/fan_in — accounts for ReLU killing half the signal
+```python
+Dense(64, activation='relu', kernel_initializer='he_uniform')
+```
+
+**Vanishing and Exploding Gradients**
+- **Vanishing**: In deep networks, gradients shrink as they propagate backward — early layers learn very slowly. Fix: ReLU activations, residual connections (ResNet), batch normalization.
+- **Exploding**: Gradients grow exponentially — loss becomes NaN. Fix: gradient clipping, lower learning rate.
+```python
+optimizer = Adam(learning_rate=0.001, clipnorm=1.0)  # Clip gradient norm to 1.0
+```
+
+**Batch Normalization**
+Normalizes layer inputs within each mini-batch to zero mean and unit variance:
+```python
+model = Sequential([
+    Dense(128, activation='relu'),
+    BatchNormalization(),  # After activation or before — depends on convention
+    Dense(64, activation='relu'),
+    BatchNormalization(),
+    Dense(1, activation='sigmoid')
+])
+```
+Benefits: Faster convergence, allows higher learning rates, reduces sensitivity to initialization.
+
+**Reproducibility**
+```python
+import tensorflow as tf
+import numpy as np
+import random
+
+def set_seeds(seed=42):
+    random.seed(seed)
+    np.random.seed(seed)
+    tf.random.set_seed(seed)
+    
+set_seeds(42)  # Call before model creation AND training
+```
+
+**When Neural Networks Are a Poor Choice for Tabular Data**
+Tabular data (structured, with meaningful feature names) is the domain where tree models often outperform neural networks:
+- **Gradient Boosting (XGBoost, LightGBM) is usually better** for tabular data with < 100k rows
+- NNs shine on: images, text, audio, sequences — where feature interactions are spatial/temporal
+- For tabular data: NNs need more tuning, more data, and more compute for similar accuracy
+- **Rule of thumb**: If Random Forest AUC > 0.85 on your tabular problem, try GBM before investing in neural network architecture search
+
+| Data Type | Recommended First Try | Neural Network Suitable? |
+|-----------|----------------------|------------------------|
+| Structured tabular (< 100k rows) | Random Forest or LightGBM | Rarely — NNs often underperform |
+| Structured tabular (> 500k rows) | LightGBM or wide NN | Possible with embeddings for categoricals |
+| Image | CNN | Yes — primary use case |
+| Text | Transformer (BERT, GPT) | Yes — primary use case |
+| Time series | LightGBM with lags, LSTM | Both; start with tree models |
+
 ---
 
 ## Senior-Level Insights
@@ -318,6 +402,18 @@ plt.show()
 | **Learning rate**     | 0.001, 0.01      | Lower = slower, more stable              |
 | **Batch size**        | 32, 64, 128      | Smaller = noisier, may generalize better |
 | **Epochs**            | 10-100           | Use early stopping                       |
+
+#### Hyperparameter Choices: Why These Defaults?
+
+| Hyperparameter | Typical Default | Justification | When to Change |
+|---------------|----------------|--------------|----------------|
+| **Hidden layer size** | 64–256 neurons | Rule of thumb: 2× input features; start moderate to avoid overfit | Increase if validation loss is still high; decrease if model overfits fast |
+| **Number of layers** | 1–3 hidden | More layers = more capacity but harder to train; tabular data rarely needs > 3 | Increase for image/text where local patterns need hierarchical extraction |
+| **Epochs** | 50–200 | Enough to converge; use EarlyStopping to stop when validation stops improving | Set high; let EarlyStopping decide actual stopping point |
+| **Batch size** | 32 | Powers of 2 for GPU efficiency; 32 is a robust default that balances noise and speed | Larger (256) for smoother training but may hurt generalization; smaller (8) for tiny datasets |
+| **Validation split** | 0.2 | 80/20 echoes standard train/test convention; ensure val set is large enough to be reliable | Increase if imbalanced classes cause unstable validation metrics |
+| **Optimizer** | Adam | Adaptive per-parameter learning rates; requires minimal tuning; default learning_rate=0.001 works broadly | Switch to SGD with momentum for large models where Adam's memory footprint matters |
+| **Learning rate** | 0.001 (Adam default) | Generally stable starting point; adjust if loss spikes (too high) or barely decreases (too low) | Use ReduceLROnPlateau callback to auto-reduce |
 
 ### Preventing Overfitting
 
@@ -342,11 +438,101 @@ early_stop = keras.callbacks.EarlyStopping(
 # history = model.fit(..., callbacks=[early_stop])
 ```
 
+### Senior-Level Neural Network Insights
+
+**GPU vs CPU Tradeoffs**
+
+| Consideration | CPU | GPU |
+|--------------|-----|-----|
+| Small models (< 1M params) | Often faster (no transfer overhead) | Slower (transfer latency dominates) |
+| Large models, large batches | Too slow for training | 10–100× faster |
+| Inference latency | Lower for single sample | Higher for single sample |
+| Cost | Free (existing hardware) | Cloud: $0.50–$3/hr |
+
+Practical rule: Use CPU for development and small experiments; use GPU (Colab free tier, AWS g4dn) for training > 100 epochs on > 10k samples.
+
+**Experiment Tracking**
+```python
+# Log every run with its hyperparameters and results
+import mlflow
+
+with mlflow.start_run():
+    mlflow.log_params({'learning_rate': 0.001, 'batch_size': 32, 'epochs': 100})
+    mlflow.log_metric('val_auc', val_auc)
+    mlflow.keras.log_model(model, 'model')
+```
+
+**Checkpointing**
+```python
+from tensorflow.keras.callbacks import ModelCheckpoint
+
+checkpoint = ModelCheckpoint(
+    'best_model.keras',
+    monitor='val_loss',
+    save_best_only=True,  # Only saves when val_loss improves
+    mode='min'
+)
+```
+
+**Model Serving and Monitoring**
+- Export model: `model.save('churn_v1.keras')` or `model.export('serving_model')` for TF Serving
+- Monitor: Log input feature distributions, prediction score distributions, and (when labels arrive) actual accuracy
+- Alert when: mean predicted probability shifts > 10% month-over-month
+
+**Responsible Deployment**
+- Evaluate on demographic subgroups before deployment
+- Document model limitations (e.g., "trained on data from 2022–2024; may not reflect post-2025 customer behavior")
+- Set a model expiry date and retraining schedule
+
+### Neural Network Troubleshooting Guide
+
+| Symptom | Likely Cause | Intervention |
+|---------|-------------|-------------|
+| Loss is NaN from epoch 1 | Exploding gradients; learning rate too high | Reduce learning rate (10× smaller); add gradient clipping |
+| Training loss high, doesn't decrease | Learning rate too low; model too small; wrong loss | Try learning rate 10× larger; add more layers/neurons; verify loss matches task |
+| Training loss low, val loss high (large gap) | Overfitting | Add Dropout(0.3–0.5); reduce model size; add more training data; L2 regularization |
+| Both losses plateau early | Learning rate too high after initial drop; data issue | Use ReduceLROnPlateau; check for label noise |
+| Val loss decreases then sharply increases | Overfitting kicking in | Use EarlyStopping with patience=10, restore_best_weights=True |
+| Model performs poorly despite low loss | Wrong loss function for task | Binary problem? Use binary_crossentropy, not mse; check class imbalance |
+| Results vary across runs | Non-deterministic operations | Set all seeds; use deterministic mode |
+
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Building Your First Neural Network
+
+**Business Scenario:** RetailCo wants to predict customer churn (binary classification). The team wants to test whether a neural network outperforms the Random Forest baseline.
+
+**Goal:** Build, train, and evaluate a neural network; compare to a non-neural baseline.
+
+**Compute Budget:** < 5 minutes on CPU. If training takes longer, reduce epochs to 30 or batch_size to 64.
+
+**Tasks:**
+1. Establish a non-neural baseline: train LogisticRegression and report test AUC
+2. Build a 2-layer neural network (128 → 64 → sigmoid); compile with Adam + binary_crossentropy
+3. Train for 100 epochs with EarlyStopping(patience=10, restore_best_weights=True) and validation_split=0.2
+4. Plot training vs validation loss curves — diagnose: is the model overfitting?
+5. Report test AUC; compare to LogisticRegression baseline
+6. Debug task: Change learning_rate to 10.0 — observe what happens to the loss curve. Report: "The loss curve shows ___ which indicates ___."
+
+**Expected Output:**
+```
+LogisticRegression baseline AUC: ~0.78
+Neural network test AUC: ~0.80–0.84
+Early stopping triggered at: ~45–65 epochs
+Training stopped before epoch 100: confirms model converged
+
+Training/validation loss (healthy training):
+Epoch 1:  train_loss=0.65, val_loss=0.63
+Epoch 30: train_loss=0.41, val_loss=0.44
+Epoch 50 (EarlyStopping): train_loss=0.38, val_loss=0.43 (small gap = not overfitting)
+
+Debug (learning_rate=10.0):
+Epoch 1: train_loss=0.69
+Epoch 2: train_loss=nan  ← Loss explodes; NaN indicates gradient explosion
+Diagnosis: "Learning rate too large — gradients explode, causing NaN loss. Fix: reduce learning_rate to 0.001."
+```
 
 ```python
 import numpy as np

@@ -50,6 +50,28 @@ That's classification: predicting **discrete categories** from input features.
 
 ## The Technical Deep Dive
 
+### Core Classification Concepts
+
+**Decision Threshold**
+A classifier outputs a probability score (0 to 1). The *decision threshold* is the probability cutoff above which we predict "positive." The default is 0.5, but this is rarely optimal for business problems.
+- Threshold=0.3: More positives predicted → higher recall, lower precision
+- Threshold=0.7: Fewer positives predicted → higher precision, lower recall
+
+**Score vs Probability**
+Not all classifiers produce true probabilities. Logistic regression outputs calibrated probabilities. Decision trees and SVMs output scores that need calibration before being interpreted as probabilities.
+
+**Calibration**
+A *calibrated* model's predicted probability of 0.7 means: "Of all cases scored 0.7, roughly 70% are actually positive." Poor calibration misleads decision-makers who use predicted probabilities to set priorities.
+
+**Prevalence / Base Rate**
+The fraction of positive cases in the dataset. If only 5% of customers churn, a model that always predicts "no churn" gets 95% accuracy while being completely useless. Prevalence determines which metrics matter.
+
+**Class Imbalance**
+When one class is rare (fraud: 0.1%, disease: 1%, churn: 5–20%). Effects:
+- Accuracy becomes misleading
+- Models biased toward majority class without correction
+- Solutions: `class_weight='balanced'`, SMOTE oversampling, threshold adjustment, use PR-AUC over ROC-AUC
+
 ### Logistic Regression: The Fundamental Classifier
 
 Despite its name, logistic regression is for classification, not regression. It predicts probabilities by passing a linear score through the **sigmoid (logistic) function**:
@@ -380,6 +402,85 @@ for name, coef in zip(X.columns, model.coef_[0]):
         )
 ```
 
+### Extended Classification Toolkit
+
+**PR-AUC (Precision-Recall AUC)**
+ROC-AUC can be optimistic for imbalanced data because it includes true negatives in the denominator. PR-AUC focuses only on the positive class:
+```python
+from sklearn.metrics import average_precision_score, PrecisionRecallDisplay
+pr_auc = average_precision_score(y_test, y_prob)
+PrecisionRecallDisplay.from_predictions(y_test, y_prob)
+```
+Rule of thumb: If positive class < 10% of data, prefer PR-AUC over ROC-AUC.
+
+**Calibration Curves**
+```python
+from sklearn.calibration import calibration_curve, CalibrationDisplay
+CalibrationDisplay.from_predictions(y_test, y_prob, n_bins=10)
+# A perfectly calibrated model follows the diagonal line
+```
+To fix miscalibration: use `CalibratedClassifierCV(model, cv=5, method='isotonic')`.
+
+**Handling Class Imbalance**
+```python
+# Option 1: Class weights (built-in to most sklearn models)
+LogisticRegression(class_weight='balanced')
+
+# Option 2: SMOTE (synthetic minority oversampling)
+from imblearn.over_sampling import SMOTE
+X_resampled, y_resampled = SMOTE(random_state=42).fit_resample(X_train, y_train)
+
+# Option 3: Threshold adjustment (no retraining needed)
+# Lower threshold from 0.5 to 0.3 to catch more positives
+```
+
+**Multiclass Classification Metrics**
+For problems with >2 classes (e.g., product category prediction):
+```python
+from sklearn.metrics import classification_report
+print(classification_report(y_test, y_pred))
+# Shows per-class precision, recall, F1 + macro/weighted averages
+```
+
+**Fairness Across Subgroups**
+Always evaluate model performance separately for key demographic or business subgroups:
+```python
+for group in ['North', 'South', 'East', 'West']:
+    mask = test_df['region'] == group
+    group_recall = recall_score(y_test[mask], y_pred[mask])
+    print(f"{group}: recall={group_recall:.3f}")
+```
+If one subgroup has substantially lower recall (more missed churners), the model is inequitably serving that group.
+
+### Critical: Threshold Selection Must Use Validation Data
+
+**Never select your optimal threshold using the test set.**
+
+The test set is reserved for a single, final, unbiased evaluation. If you tune the threshold on test data:
+1. You're fitting a hyperparameter (threshold) to test data
+2. Your reported metrics are optimistically biased
+3. Production performance will be worse than reported
+
+**Correct procedure:**
+1. Train model on training set
+2. Use validation set (or CV) to sweep thresholds and find the cost-minimizing threshold
+3. Apply that threshold to the test set for a single final evaluation — report these numbers
+
+**Production prevalence shifts**
+The training set may have 15% churn rate, but production may shift to 8% after a product improvement. A threshold optimized for 15% prevalence will over-flag at 8% prevalence. Re-calibrate and re-validate the threshold periodically using recent labeled data.
+
+### Metric Decision Guide
+
+| Business Situation | Recommended Primary Metric | Reason |
+|-------------------|--------------------------|--------|
+| Equal cost of FP and FN; balanced classes | F1 Score | Harmonic mean of precision and recall |
+| FN much costlier than FP (fraud, disease) | Recall (maximize) | Minimize missed positives |
+| FP much costlier than FN (spam, intrusive alerts) | Precision (maximize) | Minimize false alarms |
+| Need to rank/score cases (no threshold fixed yet) | ROC-AUC | Threshold-agnostic discrimination |
+| Class imbalance (positive < 10%) | PR-AUC | Ignores TN dominance in ROC |
+| Model probabilities used for decisions | Calibration (Brier score) | Accurate probability estimates matter |
+| Must explain to stakeholders | Confusion matrix + business cost | Most transparent |
+
 ---
 
 ## Hands-on Lab
@@ -483,6 +584,29 @@ print("\n=== Feature Importance ===")
 print(importance.to_string(index=False))
 ```
 
+**Business Scenario:** RetailCo loses an average of $800 when a customer churns (FN cost) and spends $60 on a retention campaign sent to a loyal customer (FP cost).
+
+**Tasks:**
+1. Train LogisticRegression and a second model of your choice on the churn dataset
+2. Report: accuracy, precision, recall, F1, ROC-AUC for both models on test set
+3. Plot the confusion matrix for the best model
+4. Find the optimal probability threshold using business costs: minimize (800 × FN_count + 60 × FP_count)
+5. Write a stakeholder-facing recommendation: "We recommend setting the model threshold at __%, which will contact __% of customers and retain approximately __ churners per month at a net cost saving of $__."
+
+**Expected Outputs:**
+Confusion Matrix (at threshold=0.5, example):
+```
+                Predicted No Churn  Predicted Churn
+Actual No Churn        1,520                80      (FP=80, $60 each = $4,800)
+Actual Churn             180               220      (FN=180, $800 each = $144,000)
+Total cost at 0.5 threshold: ~$148,800/month
+```
+
+At optimal threshold (~0.35):
+- FN reduced to ~90 (savings: $72,000)
+- FP increased to ~200 (cost: $12,000)
+- Net: ~$102,000 — 31% cost reduction vs default threshold
+
 ---
 
 ### Exercise 2: Threshold Optimization for Business Metrics
@@ -562,6 +686,29 @@ print(f"Default threshold (0.5): Cost = ${costs[24]:,.0f}")
 print(f"Optimal threshold ({thresholds[optimal_idx]:.2f}): Cost = ${min(costs):,.0f}")
 print(f"Savings: ${costs[24] - min(costs):,.0f}")
 ```
+
+> **How are FN and FP costs estimated in practice?**
+>
+> The $500 False Negative cost (missed churn) and $50 False Positive cost (unnecessary retention offer) above are illustrative. In practice, business teams estimate these from:
+>
+> - **FN cost** (missing a churner): Lost annual contract value minus average cost to retain (e.g., $1,200 revenue × 0.9 margin − $200 retention offer = $880 per missed churn)
+> - **FP cost** (contacting a loyal customer): Retention offer cost + staff time − cannibalization risk
+>
+> These are estimates, not truths. Always run **sensitivity analysis**:
+>
+> ```python
+> import numpy as np
+>
+> fn_costs = np.arange(100, 1000, 100)  # Test a range of FN costs
+> fp_costs = np.arange(10, 200, 20)    # Test a range of FP costs
+>
+> for fn_cost in fn_costs:
+>     for fp_cost in fp_costs:
+>         total_cost = fn_cost * FN_count + fp_cost * FP_count
+>         optimal_threshold = ... # recompute for these costs
+> ```
+>
+> If the optimal threshold changes significantly across the plausible cost range, your decision is sensitive to cost assumptions — get better estimates from finance before committing.
 
 ---
 

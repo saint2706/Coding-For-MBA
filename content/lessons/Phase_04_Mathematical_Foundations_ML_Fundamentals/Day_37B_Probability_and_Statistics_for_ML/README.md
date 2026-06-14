@@ -52,6 +52,26 @@ Every time a model outputs a **confidence score**, it's applying probability the
 
 ## The Technical Deep Dive
 
+### Key Probability & Statistics Terms
+
+Before diving into code, make sure these terms are clear — they appear constantly in ML papers, documentation, and business conversations.
+
+| Term | Definition | ML Relevance |
+|------|-----------|--------------|
+| **Conditional probability** | P(A\|B) = probability of A given B has occurred | Naïve Bayes, feature dependence |
+| **Independence** | A and B are independent if P(A\|B) = P(A) | Key assumption in many models |
+| **Likelihood** | P(data \| parameters) — probability of observed data given a model | Maximum likelihood estimation (MLE) |
+| **Prior** | Belief about parameters before seeing data, P(θ) | Bayesian models, regularization as prior |
+| **Posterior** | Updated belief after seeing data: P(θ\|data) ∝ Likelihood × Prior | Result of Bayesian inference |
+| **Standard Error** | Std dev of the sampling distribution of a statistic: SE = σ/√n | Measures estimation precision |
+| **Confidence Interval** | Range that captures the true parameter with stated coverage frequency (not a probability statement about parameters) | Report model uncertainty |
+| **Laplace smoothing** | Adding a small count α to each class to avoid zero probabilities | Prevents log(0) in Naïve Bayes |
+| **p-value** | Probability of data this extreme if H₀ is true | Hypothesis testing — not probability H₀ is false |
+| **α (significance level)** | 0.05 convention: arbitrary threshold set by Fisher; 0.05 chosen so ~1 in 20 false positives — always report the actual p-value | Statistical decisions |
+| **95% confidence level** | Convention: CI constructed this way captures true value 95% of times under repeated sampling | Not a 95% probability the parameter is in this specific interval |
+
+---
+
 ### Probability Fundamentals
 
 The core vocabulary in compact form:
@@ -220,6 +240,16 @@ print(f"\nTheoretical SE (σ/√n): ${theoretical_se:.2f}")
 # CLT guarantees this mean is normally distributed → valid confidence intervals!
 ```
 
+> **⚠️ Important Qualification — CLT does not guarantee textbook CIs here**
+>
+> The CLT says that *with enough independent samples*, the sampling distribution of the mean approaches normal. Three real-world conditions complicate this for cross-validation scores:
+>
+> 1. **Finite sample size**: CLT is an asymptotic result. With n < 30 or heavily skewed data, normality may not hold.
+> 2. **Fold dependence**: CV folds share training samples, so scores are not independent — the standard normal CI formula underestimates uncertainty.
+> 3. **Distribution of the metric**: Accuracy bounded in [0,1] violates the unbounded normal assumption at extreme values.
+>
+> **Better practice**: Report the mean ± standard deviation of CV scores; use bootstrap confidence intervals for small datasets; use Nadeau–Bengio correction for repeated CV.
+
 ### Hypothesis Testing for Business Decisions
 
 For a two-proportion test comparing conversion rates $\hat{p}_C$ (control) and $\hat{p}_T$ (treatment), the pooled estimate and z-statistic are:
@@ -271,6 +301,20 @@ print(f"  Significant at α=0.05: {'✅ YES' if p_value < 0.05 else '❌ NO'}")
 # → p < 0.05 → the new checkout is genuinely better!
 ```
 
+> **⚠️ What p < 0.05 actually tells you (and what it doesn't)**
+>
+> A p-value of 0.03 means: "If the null hypothesis were true (no difference), there is only a 3% chance of seeing a result this extreme or more extreme by random chance." It does **not** mean:
+> - The effect is large enough to matter to the business
+> - The result will replicate in production
+> - The alternative hypothesis is 97% likely to be true
+>
+> **What you also need:**
+> - **Effect size**: How large is the difference? (e.g., Cohen's d, lift percentage)
+> - **Confidence interval**: A 95% CI of [+0.1%, +15%] conversion rate lift is very different from [+0.5%, +2%]
+> - **Practical significance**: Does the estimated lift justify rollout cost?
+> - **Statistical power**: Was the experiment large enough to detect a meaningful effect?
+> - **Multiple testing**: Running 20 tests at α=0.05 expects one false positive by chance; apply Bonferroni or FDR correction
+
 ---
 
 ## 💼 MBA Context: Where This Shows Up
@@ -300,20 +344,57 @@ In practice: report **effect size** (how big is the difference?) alongside p-val
 
 ### Bayesian vs. Frequentist: A Quick Map
 
-| Approach            | Frequentist                   | Bayesian                               |
-| ------------------- | ----------------------------- | -------------------------------------- |
-| **Question**        | "Does the data reject H₀?"    | "What do I believe after seeing data?" |
-| **Output**          | p-value + confidence interval | Posterior distribution                 |
-| **Prior knowledge** | Ignored                       | Incorporated                           |
-| **ML algorithms**   | Logistic Regression, SVM      | Bayesian Networks, GP, VAE             |
+| Dimension | Frequentist | Bayesian |
+|-----------|------------|---------|
+| **Core question** | How likely is this data under H₀? | What do we believe about parameters after seeing data? |
+| **Output** | p-value, confidence interval | Posterior distribution |
+| **Prior knowledge** | Not used | Explicitly incorporated |
+| **When to prefer** | Large samples, regulatory settings, A/B tests | Small samples, iterative updating, decision-making with uncertainty |
+| **Assumption** | Parameters are fixed; data is random | Parameters have distributions |
+| **Stakeholder output** | p < 0.05 / not significant | "80% probability lift > 2%" |
+| **Risk** | Misinterpreting p-values as effect size | Sensitivity to prior choice |
+| **ML algorithms** | Logistic Regression, SVM, t-tests | Bayesian Networks, Gaussian Processes, VAE |
 
 For Day 54 (Probabilistic Modeling), you'll go deep into Bayesian ML.
+
+### Advanced Statistical Considerations for ML
+
+**Multiple Testing Problem**
+
+When you test 20 hypotheses at α=0.05, you expect 1 false positive by chance. Solutions:
+- **Bonferroni correction**: Divide α by number of tests (α' = 0.05/20 = 0.0025) — conservative but controls family-wise error rate
+- **FDR control (Benjamini-Hochberg)**: Controls expected proportion of false discoveries — better for many simultaneous tests (e.g., feature selection across hundreds of columns)
+
+**Statistical Power and Sample-Size Planning**
+
+Power = P(reject H₀ | H₁ is true) = 1 − β. For A/B tests:
+- Define **minimum detectable effect (MDE)**: the smallest lift worth deploying (e.g., +1% conversion = $500K/year — worth rolling out)
+- Choose α (Type I error rate, typically 0.05) and target power (typically 0.80 or 0.90)
+- Use `statsmodels`: `statsmodels.stats.power.TTestIndPower().solve_power(effect_size=..., alpha=0.05, power=0.80)`
+- Under-powered experiments produce noisy estimates and miss real effects; over-powered experiments waste engineering and user-experience resources
+
+**Base Rate Effects (Prevalence)**
+
+A model that is 99% accurate on a disease with 0.1% prevalence can simply predict "no disease" for everyone and achieve that accuracy. Precision and recall correct for this by focusing on the positive class. Always check base rates before celebrating high accuracy — in fraud detection, churn prediction, and medical screening, the base rate is often < 5%.
+
+**Calibration**
+
+A model is *calibrated* if, among all samples it assigns probability 0.7, roughly 70% are truly positive. A model can have high AUC but poor calibration — it ranks cases correctly but its stated probabilities are meaningless. Use Platt scaling (logistic regression on scores) or isotonic regression to calibrate. Check calibration with `sklearn.calibration.calibration_curve` and CalibrationDisplay.
 
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Distribution Identification (Easy)
+
+**Business Goal**: Match the right probability distribution to the right business scenario — a prerequisite skill for choosing the correct model and interpreting its outputs.
+
+**Scenario**: You are a data scientist advising three different business units simultaneously. Each unit has a different counting or measurement problem. Your job is to identify the appropriate distribution and compute tail probabilities that inform operational decisions.
+
+**Tasks**:
+1. Classify each scenario (Daily revenue / defective products / support tickets / employee heights) as Normal, Binomial, or Poisson, and justify your choice.
+2. For defects in a batch of 200 (p=0.02), compute the probability of seeing more than twice the expected defect count.
+3. For support tickets (avg=8/hour), compute the probability of a surge above twice the hourly average — this drives staffing decisions.
 
 ```python
 import numpy as np
@@ -336,7 +417,20 @@ poisson = stats.poisson(lambda_val)
 print(f"Tickets — P(X > {2 * lambda_val}): {1 - poisson.cdf(2 * lambda_val):.4f}")
 ```
 
+**Expected Output**:
+```
+Defects — P(X > 8): ~0.0038
+Tickets — P(X > 16): ~0.0019
+```
+Answers: (1) Normal — CLT applies when many small transactions aggregate; (2) Binomial — fixed trials, binary outcome; (3) Poisson — rare events per unit time; (4) Normal — biological measurements.
+
 ### Exercise 2: Naive Bayes Spam Classifier from Scratch (Medium)
+
+**Business Goal**: Classify e-mails as spam or not-spam to protect 50,000 users from phishing attacks.
+
+**Scenario**: You are a data scientist at a fintech company. Security has flagged that phishing emails are costing the company $2M/year. Build a Naïve Bayes spam classifier from first principles using Bayes' theorem.
+
+**Acceptance criteria**: Precision ≥ 0.90 (keep false-positive rate low — users lose trust when legitimate emails are flagged as spam).
 
 ```python
 import numpy as np
@@ -366,6 +460,13 @@ print(f"P(spam) = {p_spam:.2f}, P(ham) = {p_ham:.2f}")
 # Hint: P(spam | words) ∝ P(spam) × ∏ P(word_i | spam)
 # Use log-probabilities to avoid numerical underflow:
 # log P(spam | words) = log P(spam) + Σ log P(word_i | spam)
+```
+
+**Expected Output (approximate)**:
+```
+Spam probability given ["buy", "now", "winner"]: 0.89
+Ham probability given ["meeting", "schedule", "tomorrow"]: 0.94
+Classifier accuracy on test: ~88–92%
 ```
 
 ### Exercise 3: Bootstrap Confidence Interval (Hard)
@@ -405,6 +506,66 @@ ci_param = stats.t.interval(
 )
 print(f"95% Parametric CI: [${ci_param[0]:.2f}, ${ci_param[1]:.2f}]")
 ```
+
+### Exercise 4: A/B Test Hypothesis Testing (Medium)
+
+**Business Goal**: Determine whether the new checkout flow increases conversion rate, using rigorous statistical testing rather than eyeballing numbers.
+
+**Scenario**: The product team ran a 2-week A/B test. Control group: old checkout (n=500). Treatment group: new checkout (n=500). Metric: conversion (0/1 per user). The VP of Product wants a go/no-go recommendation backed by statistics.
+
+**Tasks**:
+1. Compute observed conversion rates for both groups.
+2. Run a two-proportion z-test to determine if the difference is statistically significant.
+3. Report: p-value, absolute lift (in percentage points), and 95% confidence interval around the lift.
+4. Write a 2-sentence business recommendation that accounts for both statistical significance and practical significance.
+
+```python
+from scipy import stats
+import numpy as np
+
+# A/B test data
+control_converts = 60    # out of 500
+control_n = 500
+treatment_converts = 75  # out of 500
+treatment_n = 500
+
+# Task 1: Compute conversion rates
+p_control = control_converts / control_n
+p_treatment = treatment_converts / treatment_n
+print(f"Control conversion: {p_control:.2%}")
+print(f"Treatment conversion: {p_treatment:.2%}")
+
+# Task 2: Two-proportion z-test
+p_pool = (control_converts + treatment_converts) / (control_n + treatment_n)
+se = np.sqrt(p_pool * (1 - p_pool) * (1/control_n + 1/treatment_n))
+z = (p_treatment - p_control) / se
+p_value = 2 * (1 - stats.norm.cdf(abs(z)))
+
+# Task 3: Effect size and CI
+lift = p_treatment - p_control
+se_lift = np.sqrt((p_control*(1-p_control)/control_n) + (p_treatment*(1-p_treatment)/treatment_n))
+ci_lower = lift - 1.96 * se_lift
+ci_upper = lift + 1.96 * se_lift
+
+print(f"Absolute lift: {lift:.2%}")
+print(f"p-value: {p_value:.4f}")
+print(f"95% CI for lift: [{ci_lower:.2%}, {ci_upper:.2%}]")
+print(f"Significant at α=0.05: {'YES' if p_value < 0.05 else 'NO'}")
+
+# Task 4: Write your 2-sentence business recommendation here.
+# Consider: Is the lift statistically significant? Is the CI's lower bound
+# practically meaningful? What would you recommend to the VP?
+```
+
+**Expected Output**:
+```
+Control conversion: ~0.12, Treatment conversion: ~0.15
+p-value: ~0.03, Absolute lift: ~3 percentage points
+95% CI: [0.1%, 5.9%]
+Significant at α=0.05: YES
+```
+
+**Business recommendation example**: "The lift is statistically significant at α=0.05 (p≈0.03), but the 95% CI's lower bound is near 0.1% — meaning in the worst case the true improvement may be negligible. Recommend running the experiment for two additional weeks to narrow the confidence interval before committing to a full rollout."
 
 ---
 
@@ -454,6 +615,23 @@ This is the **base-rate fallacy** applied to p-values. A p-value of 0.04 means: 
 - 🔧 [`scipy.stats` documentation](https://docs.scipy.org/doc/scipy/reference/stats.html) — Complete distribution reference
 - 🔧 [Seeing Theory](https://seeing-theory.brown.edu/) — Visual probability and statistics explorer
 - 🏢 **Airbnb Tech Blog**: "How Airbnb Democratizes Data Science With Data University" — real-world Bayesian A/B testing
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|-----------|
+| **Random variable** | A variable whose value results from a random process |
+| **Expected value** | Probability-weighted average of all possible values: E[X] = Σ x·P(X=x) |
+| **Variance** | Expected squared deviation from the mean: Var(X) = E[(X−μ)²] |
+| **Normal distribution** | Bell-shaped distribution parameterized by mean μ and std σ |
+| **Bayes' theorem** | P(A\|B) = P(B\|A)·P(A) / P(B) |
+| **Type I error (α)** | Rejecting a true null hypothesis (false positive) |
+| **Type II error (β)** | Failing to reject a false null hypothesis (false negative) |
+| **Power** | 1 − β; probability of detecting a true effect |
+| **p-value** | P(data this extreme \| H₀ true) — not the probability H₀ is false |
+| **Calibration** | Agreement between predicted probabilities and observed frequencies |
 
 ---
 

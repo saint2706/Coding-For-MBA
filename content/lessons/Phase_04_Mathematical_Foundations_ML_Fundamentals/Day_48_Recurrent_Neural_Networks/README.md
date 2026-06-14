@@ -47,6 +47,21 @@ outcomes:
 
 ## The Technical Deep Dive
 
+### RNN and Sequence Modeling: Key Terms
+
+| Term | Definition | Example |
+|------|-----------|---------|
+| **Hidden state** | A vector that carries information from previous timesteps to the current one; the RNN's "memory" | h_t = tanh(W_h × h_{t-1} + W_x × x_t) |
+| **Timestep** | One element in a sequence | One day's sales, one word in a sentence, one sensor reading |
+| **Sequence window (lookback)** | How many past timesteps the model uses as input | 10-day window: use sales from t-10 to t-1 to predict t |
+| **Horizon** | How many steps ahead the model predicts | 1-step: predict tomorrow; 7-step: predict next week |
+| **Vanishing gradient** | Gradients shrink exponentially as they propagate through many timesteps — early timesteps get almost no learning signal | Problem for vanilla RNNs on sequences > 20 timesteps |
+| **Gate** | A learned component in LSTM/GRU that controls information flow (forget, input, output gates) | Forget gate: multiplies h_{t-1} by values in [0,1] to selectively erase memory |
+| **Teacher forcing** | During training, using the true target at time t as input to predict t+1 (instead of the model's own prediction) | Speeds up training; can cause instability at inference time (exposure bias) |
+| **Autoregressive forecasting** | At inference, feeding the model's own prediction as the next input | Multi-step: predict t+1, feed it back to predict t+2, and so on |
+| **Masking** | Telling the model to ignore padded timesteps (zeros added to make sequences equal length) | `Masking(mask_value=0.0)` in Keras |
+| **Bidirectional** | Processing the sequence both forward and backward; can only be used when the full sequence is available | Text classification (whole sentence known); NOT for real-time forecasting (future unknown) |
+
 ### The Recurrent Connection
 
 A recurrent layer maintains a hidden state $\mathbf{h}_t$ that summarizes everything seen so far. At every time step it updates the state from the new input $\mathbf{x}_t$ and the previous state $\mathbf{h}_{t-1}$:

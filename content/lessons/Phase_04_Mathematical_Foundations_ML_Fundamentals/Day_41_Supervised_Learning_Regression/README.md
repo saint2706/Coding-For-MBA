@@ -50,6 +50,30 @@ That's regression: predicting a **continuous numerical value** based on input fe
 
 ## The Technical Deep Dive
 
+> **RetailCo Thread**: In this lesson, we will apply regression to predict `total_spend_last_12m` for RetailCo customers using `age`, `annual_income`, `years_as_customer`, `num_purchases`, and `product_category`. The model and metric choices made here will feed into the evaluation framework in Day 45.
+
+### Regression Assumptions and Diagnostics
+
+Before fitting a regression model, understand what assumptions it makes and what violations look like:
+
+**Linear Regression Assumptions:**
+
+| Assumption | What It Means | Business Consequence of Violation | Diagnostic |
+|-----------|--------------|-----------------------------------|-----------|
+| **Linearity** | Relationship between X and y is linear | Systematic under/over-prediction | Plot residuals vs fitted values — should show no pattern |
+| **Independence** | Errors are independent across observations | Underestimated standard errors (common with time series or repeat customers) | Durbin-Watson test; plot residuals over time |
+| **Homoscedasticity** | Error variance is constant | Prediction intervals are too wide or too narrow in different regions | Breusch-Pagan test; plot residuals vs fitted values |
+| **Normality of errors** | Residuals are approximately normally distributed | Affects CI and p-value validity | Q-Q plot of residuals |
+| **No multicollinearity** | Features are not highly correlated with each other | Coefficients are unstable and uninterpretable | Variance Inflation Factor (VIF) > 10 signals multicollinearity |
+
+**Key Definitions:**
+
+- **Residual**: The difference between actual and predicted value: εᵢ = yᵢ − ŷᵢ. Residual plots reveal model misspecification.
+- **Multicollinearity**: When two or more features are highly correlated (e.g., `house_size` and `num_rooms`). Coefficients become unreliable — a small change in data can flip the sign of a coefficient.
+- **Heteroscedasticity**: When error variance increases with fitted values (common in income data). Makes standard errors unreliable.
+- **Extrapolation**: Predicting outside the range of training data. A model trained on houses priced $100k–$500k should not be used to price a $2M mansion.
+- **Regularization (Ridge/Lasso)**: Adds a penalty on coefficient size. Ridge (L2) shrinks all coefficients smoothly. Lasso (L1) drives some to exactly zero (feature selection). Both help when features are correlated or when n < p (more features than samples).
+
 ### Linear Regression: The Foundation
 
 Linear regression finds the best straight line (or hyperplane) through your data. For a sample with feature vector $\mathbf{x}_i \in \mathbb{R}^p$, the prediction is:
@@ -351,6 +375,18 @@ print(f"Best Lasso alpha: {best_lasso_alpha:.4f}")
 | **R²**   | $1 - \dfrac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}$           | Variance explained (0–1) | Compare models        |
 | **MAPE** | $\dfrac{100}{n}\sum_i \left\lvert\dfrac{y_i - \hat{y}_i}{y_i}\right\rvert$   | Percentage error         | Business reporting    |
 
+### Regression Metric Selection Guide
+
+| Metric | Formula | Best When | Avoid When | Example |
+|--------|---------|-----------|-----------|---------|
+| **MAE** | mean(\|y − ŷ\|) | Errors in original units; outliers should not be penalized heavily; stakeholders understand it | Large errors are disproportionately costly | Forecasting daily store visits |
+| **RMSE** | √mean((y−ŷ)²) | Large errors are especially bad; compare models on same scale | Target has many outliers (will dominate loss) | Predicting financial returns where large mistakes are catastrophic |
+| **MAPE** | mean(\|y−ŷ\|/y) × 100% | Percentage errors matter; comparing accuracy across different scales | y can be zero or near-zero (division by zero) | Sales forecasting across categories of different magnitude |
+| **R²** | 1 − SS_res/SS_tot | Communicating variance explained to stakeholders | Sole production metric; can be gamed; doesn't show direction of errors | Explaining model fit in presentations |
+| **RMSE vs MAE** | — | RMSE > MAE signals large errors are present | — | If RMSE = 50 but MAE = 30, errors are mostly small with occasional large ones |
+
+**Cost-asymmetric targets**: When over-prediction and under-prediction have different business costs (e.g., over-ordering inventory wastes money but under-ordering loses sales), use quantile regression or asymmetric loss functions.
+
 ### When to Use Each Regression Type
 
 | Scenario                       | Recommended Model         | Why                        |
@@ -390,6 +426,72 @@ X_train, X_test = train_test_split(X, ...)
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)  # Fit on train only
 X_test_scaled = scaler.transform(X_test)  # Transform test
+```
+
+### Advanced Regression Topics
+
+**Prediction Intervals vs Confidence Intervals**
+- **Confidence interval**: Range for the *expected mean* response at a given X — "The mean house price for 2,000 sqft homes is $350k ± $15k (95% CI)"
+- **Prediction interval**: Range for an *individual* prediction — "This specific house is predicted at $350k ± $60k (95% PI)"
+Prediction intervals are always wider than confidence intervals because they include irreducible individual variation.
+
+```python
+# sklearn does not provide prediction intervals natively for linear regression
+# Use statsmodels for proper inference:
+import statsmodels.api as sm
+model = sm.OLS(y_train, sm.add_constant(X_train)).fit()
+predictions = model.get_prediction(sm.add_constant(X_test))
+pred_summary = predictions.summary_frame(alpha=0.05)
+# Columns: mean, mean_se, obs_ci_lower, obs_ci_upper (prediction interval)
+```
+
+**Quantile Regression**
+When you need the 10th or 90th percentile rather than the mean (e.g., worst-case revenue forecast, planning inventory for peak demand):
+```python
+from sklearn.linear_model import QuantileRegressor
+q10 = QuantileRegressor(quantile=0.1).fit(X_train, y_train)
+q90 = QuantileRegressor(quantile=0.9).fit(X_train, y_train)
+```
+
+**Time-Aware Regression Validation**
+Never use random train/test splits for time-series data. Use a chronological split:
+```python
+from sklearn.model_selection import TimeSeriesSplit
+tscv = TimeSeriesSplit(n_splits=5)
+for train_idx, val_idx in tscv.split(X):
+    # Always: train on past, validate on future
+```
+
+**Leakage in Target-Derived Features**
+If you create `days_to_next_purchase` as a feature to predict `churn`, but that feature is computed from the outcome period, you have leakage. Audit every feature with the question: "Would this value be available at the time I need to make a prediction?"
+
+### Senior-Level Regression Insights
+
+**Coefficient and Feature Importance Caveats**
+- Linear model coefficients are valid only if features are standardized — otherwise they're not comparable
+- Correlated features "share" predictive power unpredictably across coefficients — adding a correlated feature can reverse the sign of an existing one
+- Tree feature importance (MDI) biases toward high-cardinality and high-variance features; prefer permutation importance for unbiased estimates
+
+**Subgroup Error Analysis**
+A model with RMSE=$30k overall may have RMSE=$60k for a specific region or store type. Always segment errors:
+```python
+error_by_region = test_df.assign(error=abs(y_test - y_pred)).groupby('region')['error'].mean()
+```
+Large subgroup errors often indicate missing features for that group.
+
+**Drift Monitoring**
+Production models degrade as the world changes. Monitor:
+- Input drift: distribution of features shifts (e.g., income ranges change post-inflation)
+- Concept drift: relationship between features and target changes (e.g., pricing dynamics shift)
+- Track RMSE on new labeled data weekly; set an alert threshold for retraining.
+
+**Baseline-vs-Complexity Deployment Gate**
+Before deploying a complex model, confirm it beats a simple baseline by enough to justify the maintenance cost:
+```python
+baseline_rmse = mean_absolute_error(y_test, np.full_like(y_test, y_train.mean()))
+model_rmse = mean_absolute_error(y_test, model.predict(X_test))
+if (baseline_rmse - model_rmse) / baseline_rmse < 0.10:
+    print("Model does not improve enough over baseline — reconsider complexity")
 ```
 
 ---
@@ -476,6 +578,28 @@ importance = pd.DataFrame(
 print("\n=== Feature Importance ===")
 print(importance.to_string(index=False))
 ```
+
+**Business Scenario:** RetailCo's real estate team wants to estimate store rental costs in new markets. Your model will inform capital allocation decisions.
+
+**Tasks:**
+1. Split data 80/20; train LinearRegression, Ridge, and RandomForestRegressor
+2. Report MAE, RMSE, MAPE, and R² on the test set for each model
+3. Plot residuals vs fitted values for the best model
+4. Interpret the residual plot: are errors random, or is there a pattern?
+5. Write a 3-sentence "Business Recommendation Memo" stating: which model to use, the expected average prediction error, and what the model cannot reliably predict
+
+**Expected Metric Ranges:**
+Linear Regression: RMSE ~$35,000–55,000, R² ~0.55–0.70
+Ridge Regression: Similar to linear; slightly better when multicollinearity present
+Random Forest: RMSE ~$20,000–35,000, R² ~0.75–0.88
+
+**Residual Plot Interpretation:**
+- Horizontal band of points with no pattern → assumptions met ✅
+- Fan shape (errors grow with fitted value) → heteroscedasticity — try log-transforming target ⚠️
+- Curved pattern → non-linearity not captured — try polynomial features or tree model ⚠️
+
+**Sample Business Recommendation Memo:**
+"The Random Forest model reduces prediction error by 38% vs a linear baseline (RMSE: $28k vs $45k). The model is most reliable for stores priced $50k–$300k/year; predictions outside this range should be treated with caution. Recommend using this model for initial market screening but requiring human review for any estimate above $250k."
 
 ---
 

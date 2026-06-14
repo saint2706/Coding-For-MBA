@@ -50,6 +50,37 @@ outcomes:
 
 ## The Technical Deep Dive
 
+### How Tree-Based Models Work: Core Concepts
+
+**Decision Tree — Split Mechanics**
+A decision tree splits data at each node by finding the feature and threshold that maximize *information gain* (or minimize *impurity*).
+
+- **Gini Impurity**: Probability of misclassifying a randomly chosen sample:
+  Gini(node) = 1 − Σ pᵢ²
+  A pure node (all same class) has Gini = 0. A maximally impure node (equal classes) has Gini = 0.5.
+  
+- **Split Gain**: Weighted improvement in impurity after a split:
+  Gain = Gini(parent) − [n_left/n × Gini(left) + n_right/n × Gini(right)]
+  The algorithm searches all features and thresholds; picks the one with highest gain.
+
+**Random Forest — Variance Reduction via Ensemble**
+A single decision tree has high variance — it is very sensitive to small changes in training data. Random Forest reduces this by:
+1. **Bagging** (Bootstrap Aggregating): Training each tree on a different bootstrapped sample (random sample with replacement). ~37% of samples are "out-of-bag" per tree.
+2. **Feature subsampling**: At each split, consider only a random subset of features (typically √p for classification, p/3 for regression). This decorrelates trees — they make different errors.
+3. **Aggregation**: Average predictions across all trees (regression) or majority vote (classification).
+
+**Out-of-Bag (OOB) Evaluation**
+Each tree is trained on ~63% of data. The remaining ~37% (OOB samples) can be used as a free validation set without a separate train/test split:
+```python
+RandomForestClassifier(oob_score=True)
+print(rf.oob_score_)  # Free estimate of generalization error
+```
+
+**Why Forests Reduce Variance**
+If each tree has variance σ² and trees are independent, the average of n trees has variance σ²/n. In practice, trees are correlated (feature subsampling reduces but doesn't eliminate correlation), but the variance reduction is substantial.
+
+---
+
 ### Decision Trees: Intuitive Classification
 
 Decision trees split data based on feature thresholds to arrive at predictions.
@@ -207,7 +238,76 @@ print(f"Majority vote: {'Approved' if sum(sample_predictions) > 50 else 'Denied'
 print(f"RF prediction: {'Approved' if rf_model.predict(sample)[0] else 'Denied'}")
 ```
 
+### Gradient Boosting: Conceptual Introduction
+
+While Random Forest builds trees in **parallel** (each tree independent), Gradient Boosting builds trees **sequentially** — each tree corrects the errors of the previous ensemble:
+1. Start with a constant prediction (e.g., mean of y)
+2. Compute residuals (actual − predicted)
+3. Fit a small tree to the residuals
+4. Update predictions: ŷ_new = ŷ_old + learning_rate × tree_prediction
+5. Repeat for n_estimators rounds
+
+This makes Gradient Boosting more accurate than Random Forest on many tabular datasets, but also more prone to overfitting (learning rate and early stopping are critical) and slower to train.
+
+### Feature Importance: What It Means and What to Watch Out For
+
+**MDI Importance (default in sklearn)**: Average impurity decrease across all splits using that feature. Fast, but biased toward:
+- High-cardinality features (more possible split points → more chances to appear important)
+- Continuous features over binary ones
+
+**Permutation Importance**: Shuffle one feature at a time; measure how much performance drops. More reliable but slower:
+```python
+from sklearn.inspection import permutation_importance
+result = permutation_importance(rf, X_test, y_test, n_repeats=10)
+```
+
+**SHAP Values**: Shapley values from game theory — each feature gets credit for its marginal contribution across all orderings:
+```python
+import shap
+explainer = shap.TreeExplainer(rf)
+shap_values = explainer.shap_values(X_test)
+shap.summary_plot(shap_values[1], X_test)  # Class 1 SHAP values
+```
+
+**Caveats for SHAP**:
+- Highly correlated features split their SHAP values — individually they may look less important than they are jointly
+- SHAP shows model behavior, not causal importance — a feature can have high SHAP but low actual causal effect
+- For business communication, combine SHAP with domain expertise and experimentation
+
+---
+
 ### Hyperparameter Tuning with GridSearchCV
+
+#### Why These Hyperparameter Ranges?
+
+```python
+# Common Random Forest hyperparameter grid with justifications:
+param_grid = {
+    'n_estimators': [100, 200, 500],      # More trees → lower variance; diminishing returns after 200–500
+    'max_depth': [None, 10, 20, 30],       # None = full depth (overfit risk); 10–20 often sufficient
+    'min_samples_split': [2, 5, 10],       # Larger → simpler trees; prevents fitting tiny leaf nodes
+    'max_features': ['sqrt', 'log2', None] # sqrt(p) is proven default for classification
+}
+```
+
+**Why these specific values?** They span the range from "fully grown" to "heavily regularized" for each hyperparameter. The endpoints are chosen to bracket the likely optimum without wasting compute on clearly extreme values.
+
+> **⚠️ Never tune hyperparameters on the test set**
+> 
+> Using the test set to select hyperparameters is a form of overfitting to the test set. The test set exists to estimate *future* performance on data you haven't seen. If you tune on it, your reported test accuracy is optimistic — you've essentially peeked at the answer.
+> 
+> **Correct procedure**: Use nested cross-validation or a dedicated validation set for hyperparameter search; use the test set only for final evaluation.
+> 
+> ```python
+> # WRONG: tune on test set
+> best_params = grid_search_on(X_test, y_test)  # Never do this
+> 
+> # CORRECT: tune on validation set (or use nested CV)
+> inner_cv = StratifiedKFold(n_splits=5)
+> outer_cv = StratifiedKFold(n_splits=5)
+> grid = GridSearchCV(model, param_grid, cv=inner_cv)
+> scores = cross_val_score(grid, X_train, y_train, cv=outer_cv)
+> ```
 
 ```python
 from sklearn.model_selection import GridSearchCV
@@ -282,6 +382,45 @@ print(f"Best test accuracy: {max(test_scores):.3f}")
 
 ## Senior-Level Insights
 
+### Senior-Level Considerations for Classification Part 2
+
+**Nested Cross-Validation for Honest Evaluation**
+When both tuning and evaluation happen on the same data, you need nested CV:
+- Outer CV: estimates generalization performance
+- Inner CV: tunes hyperparameters within each outer fold
+This prevents hyperparameter selection from leaking into the performance estimate.
+
+**Reproducible Parallel Tuning**
+```python
+GridSearchCV(
+    model, param_grid, 
+    cv=5,
+    n_jobs=-1,              # Use all CPUs
+    random_state=42,        # For RandomizedSearchCV
+    return_train_score=True # Diagnose overfitting during search
+)
+```
+
+**Inference Latency**
+Random Forest with 500 trees × max_depth=30 can be 100ms per prediction — unacceptable for real-time APIs. Measure:
+```python
+import time
+start = time.time()
+rf.predict(X_test)
+latency = (time.time() - start) / len(X_test) * 1000  # ms per sample
+print(f"Latency: {latency:.1f} ms/sample")
+```
+If latency is unacceptable: reduce n_estimators, limit max_depth, or use a single calibrated tree for serving.
+
+**Governance Risk of Business Rules from Decision Trees**
+Converting a decision tree's branches into hard business rules (e.g., "deny credit to all customers with income < $30k") codifies model behavior into policy. This is risky:
+1. The rule was optimized for accuracy, not necessarily for fairness
+2. Rules do not update when the world changes; models can be retrained
+3. Rules may discriminate against protected groups even when income correlates with a protected attribute
+Always legal-review any model-derived rule before implementing as policy.
+
+---
+
 ### Decision Tree vs Random Forest
 
 | Aspect                 | Decision Tree        | Random Forest          |
@@ -302,28 +441,52 @@ print(f"Best test accuracy: {max(test_scores):.3f}")
 | `min_samples_leaf`  | Leaf size          | Reduce overfitting                       | Capture rare cases |
 | `max_features`      | Features per split | (rarely adjusted)                        | Reduce correlation |
 
-### When to Use Tree Models
+### Model Selection Decision Guide
 
-```python
-# Use Decision Trees when:
-# - You need interpretable rules
-# - Stakeholders need to understand decisions
-# - You're building a baseline model
+| Factor | Logistic Regression | Decision Tree | Random Forest | Gradient Boosting (XGBoost/LightGBM) |
+|--------|--------------------|--------------|--------------|------------------------------------|
+| **Accuracy** | Good for linear problems | Lower (high variance) | High | Highest (typically) |
+| **Interpretability** | Coefficients explain feature impact | Full rule extraction | Limited (SHAP helps) | Limited (SHAP helps) |
+| **Training speed** | Fast | Fast | Medium | Slower (sequential boosting) |
+| **Inference latency** | Instant | Fast | Medium (n_trees × tree_depth) | Similar to RF |
+| **Memory** | Tiny | Small | Medium-Large (scales with n_trees) | Medium |
+| **Calibration** | Good (native probabilities) | Poor | Fair | Poor (needs Platt scaling) |
+| **Tuning effort** | Low (2 params) | Low-Medium | Medium (3–4 key params) | High (many interdependent params) |
+| **Missing values** | Needs imputation | Handles natively (some implementations) | Needs imputation | LightGBM handles natively |
+| **Class imbalance** | class_weight='balanced' | class_weight='balanced' | class_weight='balanced' | scale_pos_weight |
+| **Small dataset (n<1k)** | Good (low variance) | Overfit risk | Use with small n_estimators | Overfit risk; use with early stopping |
+| **Categorical features** | Needs encoding | Can split on categories | Needs encoding | LightGBM handles natively |
 
-# Use Random Forests when:
-# - Accuracy matters more than interpretability
-# - You have mixed feature types
-# - You want robust feature importance
-
-# Consider Gradient Boosting when:
-# - You need maximum accuracy
-# - You have time for tuning
-# - Memory isn't a constraint
-```
+**When to choose which:**
+- Start with Logistic Regression as your interpretable baseline.
+- If accuracy is insufficient, try Random Forest (less tuning than GBM, robust default).
+- If you need maximum accuracy and have time to tune, use LightGBM or XGBoost.
+- Never deploy a model you cannot explain to the business stakeholder who owns the decision.
 
 ---
 
 ## Hands-on Lab
+
+**Business Scenario:** RetailCo wants to identify high-risk customers (likely to default on store credit) using their purchase history and demographics.
+
+**Tasks:**
+1. Train a Decision Tree with default settings; report test accuracy and identify signs of overfitting
+2. Train a Random Forest with n_estimators=100; compare accuracy, recall, F1 vs Decision Tree
+3. Run RandomizedSearchCV on Random Forest hyperparameters; report best params and CV score
+4. Extract top 5 feature importances; explain each in plain language to a non-technical stakeholder
+5. Extract and validate a business rule from the decision tree: "Customers with X who also have Y are high-risk at 78% precision" — validate this rule on the test set
+
+**Expected Outputs:**
+Decision Tree test accuracy: ~0.79 (overfit if train accuracy is ~0.98)
+Random Forest test accuracy: ~0.85, recall: ~0.73, F1: ~0.79
+Best RF params (example): {'n_estimators': 200, 'max_depth': 15, 'min_samples_split': 5}
+CV best score: ~0.84
+
+Business Rule Validation:
+Extracted rule: income < $35,000 AND missed_payments > 0 → high-risk
+Test set precision for this rule: ~0.72 (acceptable, not cherry-picked from test set)
+
+---
 
 ### Exercise 1: Complete Tree Classification Pipeline
 

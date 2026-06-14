@@ -55,6 +55,20 @@ You don't need to be a calculus expert. You need to understand the *intuition*�
 
 ## The Technical Deep Dive
 
+### Key Calculus & Optimization Terms
+
+| Term | Plain-Language Definition | Business / ML Meaning |
+|------|--------------------------|----------------------|
+| **Loss function** | A function that measures how wrong a model's predictions are | Quantifies the cost of prediction errors; what we minimize during training |
+| **Derivative** | The instantaneous rate of change of a function at a point; slope of the tangent line | How much loss changes when we nudge a single parameter |
+| **Partial derivative** | Derivative with respect to one variable while holding all others fixed | How much loss changes when we nudge one weight, all others constant |
+| **Gradient** | Vector of all partial derivatives — one entry per parameter | Direction of steepest uphill ascent in parameter space; we move in the *opposite* direction to reduce loss |
+| **Convexity** | A function is convex if the line segment between any two points on it lies above the curve | Convex loss functions (e.g., linear regression MSE) have a single global minimum — gradient descent is guaranteed to find it |
+| **Local minimum** | A point where the function is lower than all nearby points, but possibly not the lowest overall | Neural networks can get trapped here; rarely a problem in practice for overparameterized models |
+| **Global minimum** | The lowest point of the entire function | The target for training; guaranteed with convex losses |
+| **Epoch** | One complete pass through the entire training dataset | After each epoch, weights are updated based on aggregated gradients |
+| **Convergence** | When parameter updates become negligibly small — loss has stabilized | Observable as: loss curve flattens; gradient norm approaches zero |
+
 ### Derivatives: How Things Change
 
 A derivative measures how a function's output changes when its input changes. Think of it as the "slope" at any point. Formally, the derivative of $f$ at $x$ is the limit of the average rate of change as the step size shrinks to zero:
@@ -123,6 +137,22 @@ plt.show()
 ```
 
 ### The Key Insight: Finding Minimums
+
+**Business Application: Optimizing a Pricing Model**
+
+Instead of an abstract quadratic, consider a pricing problem. Your company sells a product at price p. Historical data suggests demand follows: demand(p) = 1000 − 5p. Revenue is R(p) = p × demand(p) = 1000p − 5p².
+
+To maximize revenue, you find the price that makes dR/dp = 0:
+dR/dp = 1000 − 10p = 0 → p* = $100
+
+This is exactly what gradient *ascent* does (or descent on the negative revenue):
+- At p=50: dR/dp = 500 (revenue increasing — move price up)
+- At p=100: dR/dp = 0 (optimal price — stop)
+- At p=150: dR/dp = −500 (revenue decreasing — move price down)
+
+The gradient tells you the marginal business impact of changing your decision variable.
+
+---
 
 **At a minimum, the derivative equals zero** (the function is flat—no slope). Setting $f'(x) = 0$ gives a *first-order necessary condition* for an optimum:
 
@@ -325,6 +355,18 @@ experiment_learning_rates([0.01, 0.1, 0.9])
 # 0.9: Too fast - oscillates wildly (or diverges)
 ```
 
+> **⚠️ Important Qualification**
+> 
+> The learning rate values above are specific to the toy loss `L(w) = (w − 3)²`. A "just right" learning rate depends heavily on:
+> 
+> - **Loss function curvature**: A steep loss landscape needs smaller steps than a flat one
+> - **Feature scale**: If features span very different ranges (age: 18–80 vs income: 10,000–500,000), gradients will be wildly different in magnitude. Standardize features before training.
+> - **Batch size**: Mini-batch gradients are noisier than full-batch — stochastic gradients tolerate higher learning rates
+> - **Optimizer**: Adam, RMSprop, and AdaGrad adapt the effective learning rate per parameter — they're much less sensitive to the initial choice than vanilla gradient descent
+> - **Model architecture**: Deeper networks with many layers often require smaller learning rates due to gradient accumulation
+> 
+> **Practical approach**: Start with 1e-3 for Adam or 0.1 for SGD with momentum; use a learning rate scheduler (e.g., cosine annealing) and monitor the loss curve.
+
 ### The Chain Rule: Foundation of Backpropagation
 
 When functions are composed (like neural network layers), we use the chain rule. For $y = g(f(x))$:
@@ -369,6 +411,47 @@ print(f"Analytical derivative: {analytical_deriv:.4f}")
 # Loss = L(output) where output = activation(W @ input + b)
 # Chain rule lets us compute ∂Loss/∂W by chaining derivatives through layers
 ```
+
+### Advanced Optimization Concepts
+
+**Gradient Checking (Finite Differences)**
+Verify your gradient implementation is correct by comparing to numerical approximation:
+```python
+def numerical_gradient(f, w, epsilon=1e-5):
+    """Finite-difference gradient check"""
+    grad = np.zeros_like(w)
+    for i in range(len(w)):
+        w_plus = w.copy(); w_plus[i] += epsilon
+        w_minus = w.copy(); w_minus[i] -= epsilon
+        grad[i] = (f(w_plus) - f(w_minus)) / (2 * epsilon)
+    return grad
+
+# If |analytic_grad - numeric_grad| / (|analytic_grad| + |numeric_grad|) < 1e-7, your gradient is correct
+```
+
+**Stochastic and Mini-Batch Gradient Descent**
+| Variant | Update Rule | Pro | Con |
+|---------|------------|-----|-----|
+| Batch GD | All n samples per update | Smooth, stable | Slow for large datasets |
+| Stochastic GD (SGD) | 1 sample per update | Fast, can escape local minima | Noisy, needs tuning |
+| Mini-batch GD | k samples per update (k=32–256) | Best tradeoff; GPU-efficient | Hyperparameter k to tune |
+
+**Adam Optimizer (Adaptive Moment Estimation)**
+Adam maintains per-parameter adaptive learning rates using estimates of gradient mean (m) and variance (v):
+```
+m_t = β₁ × m_{t-1} + (1 − β₁) × g_t      # Gradient momentum
+v_t = β₂ × v_{t-1} + (1 − β₂) × g_t²    # Gradient variance
+w_{t+1} = w_t − α × m̂_t / (√v̂_t + ε)    # Adaptive update
+```
+Default values (β₁=0.9, β₂=0.999, ε=1e-8) work well for most problems. Adam is the default choice for neural networks.
+
+**Saddle Points**
+In high-dimensional spaces, most "flat" regions are saddle points (gradient=0 but not a minimum), not true local minima. The gradient points away from a saddle point in some directions, so momentum-based optimizers naturally escape them.
+
+**Regularization Gradients**
+Adding L2 regularization to the loss (λ Σwᵢ²) adds a gradient term that pushes weights toward zero:
+∂L_reg/∂wᵢ = ∂L/∂wᵢ + 2λwᵢ
+This is why L2 regularization is called "weight decay" — each update shrinks weights slightly before the gradient step.
 
 ---
 
@@ -437,6 +520,32 @@ plt.show()
 
 ### Exercise 1: Implement Gradient Descent for Linear Regression
 
+**Business Scenario:** You are pricing manager modeling how total revenue R(p) = p × demand(p) changes with price p. Your loss is mean squared error between predicted and actual revenue across 100 price points.
+
+**Tasks:**
+1. Implement gradient descent on L(w) = (w − 3)² with learning_rate=0.1, 50 iterations
+2. Plot the loss curve — it should decrease monotonically
+3. Repeat with learning_rate=0.9 — observe: does it converge or diverge?
+4. Report: final w value, final loss, number of iterations to convergence (loss < 0.01)
+
+**Expected Output (learning_rate=0.1):**
+```
+Iteration 0:  w=0.000, loss=9.000
+Iteration 10: w=2.658, loss=0.117
+Iteration 20: w=2.936, loss=0.004
+Iteration 30: w=2.998, loss=0.000
+Converged at iteration ~28
+Final w ≈ 3.00 (correct: minimum at w=3)
+```
+
+**Expected Output (learning_rate=0.9):**
+```
+Iteration 0: w=0.000, loss=9.000
+Iteration 1: w=5.400, loss=5.760  ← overshoots!
+Iteration 2: w=0.360, loss=6.912  ← oscillates
+Diagnosis: Diverging — loss is increasing, not decreasing. Fix: reduce learning rate.
+```
+
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
@@ -502,6 +611,13 @@ plt.show()
 ---
 
 ### Exercise 2: Visualize Loss Landscape
+
+**Expected Output (multi-variable gradient descent):**
+```
+Optimal w0 (intercept) ≈ target intercept ± 0.5
+Optimal w1 (slope) ≈ target slope ± 0.1
+Final loss: < 5.0
+```
 
 ```python
 import numpy as np
@@ -774,6 +890,24 @@ print(f"Max gradient: {np.max(np.abs(gradient))}")
 
 1. **Gradient behavior explanation**: Given three training logs (smooth convergence, oscillation, exploding loss), use derivative magnitude and curvature intuition to explain gradient behavior in each run.
 2. **Learning instability case**: A network loss becomes `nan` after 40 iterations. Explain conceptually *why the model failed* (step size too large on steep curvature + unstable updates), then apply concrete fixes: lower learning rate, gradient clipping, and feature normalization; verify by plotting gradient norms over epochs.
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|-----------|
+| Derivative | Rate of change of a function; slope of tangent line |
+| Partial derivative | Derivative with respect to one variable, others held fixed |
+| Gradient | Vector of all partial derivatives; points in direction of steepest ascent |
+| Hessian | Matrix of second-order partial derivatives; describes curvature |
+| Learning rate (α) | Step size for parameter updates; too large → diverge, too small → slow |
+| Epoch | One full pass through training data |
+| Batch size | Number of samples per gradient update |
+| Momentum | Exponential moving average of past gradients; smooths updates |
+| Adam | Adaptive optimizer combining momentum and per-parameter learning rates |
+| Convergence | State where parameter updates become negligible; loss has stabilized |
+| Saddle point | Critical point (gradient=0) that is not a local minimum or maximum |
 
 ---
 

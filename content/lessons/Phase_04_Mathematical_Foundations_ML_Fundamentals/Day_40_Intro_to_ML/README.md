@@ -68,6 +68,40 @@ Data + Answers → Rules (Model)
 | **Unsupervised**  | Structure in unlabeled data     | Features only     | Groups/Patterns | Customer segmentation, anomaly detection, topic modeling |
 | **Reinforcement** | Actions from trial and error    | States + Rewards  | Policy          | Game AI, robotics, autonomous driving                    |
 
+### Foundational ML Concepts
+
+**Generalization**
+A model *generalizes* when it performs well on new, unseen data — not just on the training data it learned from. The entire goal of ML is to learn patterns that generalize, not to memorize training examples.
+
+**Overfitting**
+A model *overfits* when it learns the training data too specifically — memorizing noise rather than signal. Signs:
+- Training accuracy >> test accuracy (large gap)
+- Learning curve: training loss continues dropping while validation loss rises
+- A 15-node decision tree that achieves 99% training accuracy but 72% test accuracy is overfit
+
+**Underfitting**
+A model *underfits* when it is too simple to capture the underlying pattern. Signs:
+- Both training and test accuracy are low
+- Learning curve: both training and validation loss plateau at a high value
+- A linear model on clearly nonlinear data is underfit
+
+**Bias–Variance Tradeoff**
+Every model error decomposes into:
+- **Bias** (systematic error from wrong assumptions) → underfitting → simple models
+- **Variance** (sensitivity to training data fluctuations) → overfitting → complex models
+- **Irreducible noise** (randomness in the data)
+
+| Model | Bias | Variance | Typical Situation |
+|-------|------|----------|------------------|
+| Linear regression (simple) | High | Low | Underfit on complex relationships |
+| Deep decision tree | Low | High | Overfit on training data |
+| Random Forest | Low-Medium | Medium | Well-balanced; popular for tabular data |
+
+**Training, Validation, and Test Sets**
+- **Training set**: Data used to fit model parameters (weights)
+- **Validation set**: Data used to tune hyperparameters and select the best model — never used to fit weights
+- **Test set**: Data held out until final evaluation — used exactly once to report unbiased performance. Looking at test performance during development defeats its purpose.
+
 ### The Supervised Learning Workflow
 
 ```python
@@ -113,7 +147,23 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print(f"Training samples: {len(X_train)}")
 print(f"Testing samples: {len(X_test)}")
+```
 
+> **Why 80/20 and 5-fold?**
+> 
+> The 80/20 split is a convention, not a mathematical rule. The right split depends on:
+> 
+> | Factor | Guideline |
+> |--------|----------|
+> | Small dataset (n < 1,000) | 70/30 or use CV only — 20% test may be too small to be reliable |
+> | Large dataset (n > 100,000) | 95/5 or 99/1 is fine — 1% of a million rows is still 10,000 |
+> | Time-ordered data | Use chronological split — random splits create temporal leakage |
+> | Grouped data (users, patients) | Split by group — the same user cannot be in both train and test |
+> | Class imbalance | Use stratified split to preserve class ratio |
+> 
+> For 5-fold CV: the choice of 5 folds gives each sample an 80% chance of being in training and 20% in validation. This is practically identical to an 80/20 split but repeated 5 times across different held-out subsets. 10-fold is better for small datasets; 3-fold saves compute for large ones.
+
+```python
 # Step 3: Train the model
 model = LinearRegression()
 model.fit(X_train, y_train)
@@ -284,6 +334,30 @@ f1 = f1_score(y_true, y_pred)
 print(f"F1 Score: {f1:.2%}")
 ```
 
+### Metric Selection Guide
+
+**Regression Metrics**
+
+| Metric | Formula | When to Use | When NOT to Use |
+|--------|---------|-------------|-----------------|
+| MAE | mean(\|y − ŷ\|) | Error must be interpretable in original units; outliers should not dominate | When large errors are disproportionately costly |
+| RMSE | √mean((y − ŷ)²) | Large errors are especially bad (financial forecasts, safety) | When outliers in target are common and acceptable |
+| MAPE | mean(\|y−ŷ\|/y) | Percentage errors matter; useful for forecasting | When y can be zero or near-zero |
+| R² | 1 − SS_res/SS_tot | Explaining variance; communicating to non-technical stakeholders | Never as sole metric in production |
+
+**Classification Metrics**
+
+| Metric | Formula | When to Use | When NOT to Use |
+|--------|---------|-------------|-----------------|
+| Accuracy | Correct / Total | Balanced classes, equal cost of errors | Imbalanced classes — always misleading |
+| Precision | TP / (TP + FP) | Cost of false positives is high (spam filter, fraud alert) | When missing positives is costly |
+| Recall (Sensitivity) | TP / (TP + FN) | Cost of false negatives is high (cancer screening, fraud detection) | When false alarms are costly |
+| F1 Score | 2 × P × R / (P + R) | Balance between precision and recall; imbalanced classes | When the two error types have very different costs |
+| ROC-AUC | Area under ROC curve | Model ranking/discrimination; comparing models | When class prevalence is very different between train and production |
+| PR-AUC | Area under Precision-Recall curve | Imbalanced classes; rare positives | When classes are balanced |
+
+**Decision rule**: Ask "What is the cost of a false positive vs false negative in business terms?" If FN cost >> FP cost (missed cancer, missed fraud), maximize recall. If FP cost >> FN cost (spam filter, intrusive alert), maximize precision.
+
 ---
 
 ## Senior-Level Insights
@@ -340,11 +414,78 @@ for train_idx, test_idx in gkf.split(X, y, groups):
     pass
 ```
 
+### Essential ML Engineering Practices
+
+**Always Compare to a Baseline**
+Before claiming your model "works," compare to trivial baselines:
+- **Regression**: predict the mean; predict the last value; predict by category mean
+- **Classification**: always predict the majority class; random classifier; predict by base rate
+If your model cannot beat a baseline, it has not learned anything useful.
+
+**Class Imbalance**
+If 95% of customers do not churn, a model that always predicts "no churn" gets 95% accuracy while being completely useless. Solutions:
+- `class_weight='balanced'` in sklearn: upweights minority class during training
+- SMOTE: synthetic oversampling of minority class
+- Adjust decision threshold: instead of 0.5, use a lower threshold to catch more churners
+
+**Target Leakage**
+A feature that is only available after the target is known will not be available at prediction time. Example: including `days_since_last_contact` in a churn model when that contact was triggered by early churn signals. Always audit feature availability with a timeline.
+
+**Model Calibration**
+A well-calibrated model produces predicted probabilities that match actual frequencies. Check:
+```python
+from sklearn.calibration import calibration_curve
+fraction_of_positives, mean_predicted_value = calibration_curve(y_test, y_prob, n_bins=10)
+```
+A model with AUC=0.85 but poor calibration will mislead business stakeholders who use the probabilities to make decisions.
+
+**Threshold Selection**
+The default 0.5 threshold is rarely optimal. Choose the threshold that minimizes business cost:
+```python
+# For each threshold, compute (FP_cost × FP_count) + (FN_cost × FN_count)
+thresholds = np.linspace(0, 1, 100)
+costs = [fp_cost * FP(t) + fn_cost * FN(t) for t in thresholds]
+optimal_threshold = thresholds[np.argmin(costs)]
+```
+
+### Model Governance Checklist
+
+Before deploying any ML model, verify:
+
+| Checkpoint | Question | Why It Matters |
+|-----------|---------|----------------|
+| **Metric ownership** | Who defined the success metric? Can they explain it to stakeholders? | Prevents "accuracy theatre" |
+| **Reproducibility** | Can I re-run training and get the same result? | Debugging, auditing, regulatory requirements |
+| **Subgroup evaluation** | Does the model perform equally across gender, region, age group? | Fairness; regulatory risk |
+| **Drift monitoring** | How will you detect when input distributions change? | Models degrade silently |
+| **Retraining triggers** | What metric degradation triggers a retrain? | Prevents stale models from making bad decisions |
+| **Go/no-go criteria** | What test-set performance is required before deployment? | Prevents deploying underperforming models |
+| **Rollback plan** | If the model fails in production, how do you revert? | Risk management |
+
 ---
 
 ## Hands-on Lab
 
 ### Exercise 1: Complete ML Workflow on Iris Dataset
+
+**Business Scenario:** RetailCo wants to predict which customers will churn (not purchase in next 90 days). Marketing has a budget to contact 500 customers per month.
+
+**Goal:** Build a baseline classification model and understand how to evaluate it beyond accuracy.
+
+**Tasks:**
+1. Load the provided customer dataset; split 80/20 with stratification on churn label
+2. Train a LogisticRegression model; report accuracy, precision, recall, F1 on test set
+3. Plot the confusion matrix
+4. Plot the ROC curve and report AUC
+5. Write a 1-sentence interpretation: "Of every 100 customers the model flags, ____ will actually churn."
+
+**Expected Output:**
+```
+Test accuracy: ~0.82 (note: a model predicting "no churn" always gets ~0.80 with 80% non-churners)
+Precision: ~0.58, Recall: ~0.51, F1: ~0.54
+ROC-AUC: ~0.78
+Interpretation: This model is better than random but precision is low — nearly half of flagged customers won't churn.
+```
 
 ```python
 from sklearn.datasets import load_iris
@@ -497,6 +638,22 @@ plt.show()
 ---
 
 ### Exercise 3: Building a Complete Prediction Pipeline
+
+**Business Scenario:** Predict quarterly sales for RetailCo stores.
+
+**Tasks:**
+1. Split data; train LinearRegression
+2. Report RMSE, MAE, R² on test set
+3. Plot predictions vs actuals — examine whether errors are random or systematic
+4. Compare to a baseline: predict mean sales for every store
+
+**Expected Output:**
+```
+Baseline RMSE (predict mean): ~$45,000
+Linear model RMSE: ~$28,000
+R²: ~0.61
+Conclusion: Model reduces error by 38% vs baseline, but 39% of variance is unexplained.
+```
 
 ```python
 import pandas as pd
@@ -736,6 +893,27 @@ For 10,000 samples, 5-fold gives reliable estimates while training only 5 models
 
 1. **Math-foundation failure map**: For one failed baseline model, connect symptoms to foundation-level causes (linear algebra: collinearity, calculus: unstable optimization, statistics: distribution shift).
 2. **Why-model-failed case**: Validation accuracy drops while training accuracy rises. Explain conceptually *why the model failed* (high variance + weak generalization assumptions), then take corrective action using stronger regularization, simpler hypothesis class, and cross-validation-based model selection.
+
+---
+
+## Glossary
+
+| Term | Definition |
+|------|-----------|
+| Supervised learning | Learning from labeled (input, output) pairs |
+| Unsupervised learning | Finding patterns without labeled outputs |
+| Generalization | Model performs well on unseen data |
+| Overfitting | Model memorizes training noise; fails on new data |
+| Underfitting | Model too simple to capture patterns |
+| Bias | Systematic error from wrong model assumptions |
+| Variance | Sensitivity to fluctuations in training data |
+| Training set | Data used to fit model parameters |
+| Validation set | Data used to tune hyperparameters |
+| Test set | Data held out for final, unbiased evaluation |
+| Precision | Fraction of predicted positives that are truly positive |
+| Recall | Fraction of actual positives that were predicted positive |
+| ROC-AUC | Area under Receiver Operating Characteristic curve; measures discrimination |
+| Calibration | Agreement between predicted probabilities and observed frequencies |
 
 ---
 
