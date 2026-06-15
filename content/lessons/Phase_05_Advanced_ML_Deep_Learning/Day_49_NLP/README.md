@@ -811,6 +811,87 @@ def classify_ticket(text: str):
 
 ---
 
+## Senior-Level Insights: Production NLP Engineering
+
+### Out-of-Vocabulary (OOV) Handling
+
+Classical models (BoW, TF-IDF, Word2Vec) fail silently when they encounter words not seen during training. Production NLP systems must handle this explicitly:
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Problem: OOV words get silently dropped
+vectorizer = TfidfVectorizer()
+vectorizer.fit(["I love this product"])
+# "amazing" → not in vocabulary → ignored during transform
+
+# Solution 1: Use subword tokenization (character n-grams)
+vectorizer_char = TfidfVectorizer(analyzer='char_wb', ngram_range=(3, 5))
+# Now "amazng" (typo) still gets partial representation
+
+# Solution 2: Use transformer tokenizers with WordPiece / BPE
+# These split unknown words into known subword units:
+# "cryptocurrency" → ["crypto", "##cur", "##ren", "##cy"]
+# → Zero OOV tokens with BERT/RoBERTa tokenizers
+
+from transformers import BertTokenizer
+tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+tokens = tokenizer.tokenize("unknownword")
+print(tokens)  # Output: ['unknown', '##word'] — handled gracefully
+
+# Production rule: if using bag-of-words models, log OOV rate per request.
+# OOV rate > 10% = domain shift warning.
+```
+
+| Tokenization Approach | OOV Handling | Trade-off |
+|----------------------|--------------|-----------|
+| Word-level (TF-IDF) | ❌ Drops unknown words silently | Fast, interpretable |
+| Character n-grams | ✅ Partial match via character overlap | Higher dimensionality |
+| WordPiece (BERT) | ✅ Splits into known subword units | Requires transformer infrastructure |
+| BPE (GPT) | ✅ Same as WordPiece, byte-level | Best for multilingual text |
+
+### NLP Bias and Fairness
+
+Sentiment models trained on majority-language, Western data inherit systemic biases:
+
+```python
+# Example: naive sentiment model may rate dialects differently
+# "That's bad" (Gen Z slang for "impressive") → negative sentiment
+# "He is a doctor, she is a nurse" → model may assume gender stereotypes
+
+# Production safeguards:
+# 1. Evaluate model accuracy across demographic groups
+# 2. Audit training data for representation balance
+# 3. Test with adversarial examples (dialects, code-switching)
+# 4. Monitor per-segment sentiment drift in production
+```
+
+> **Senior rule**: Before deploying any NLP classifier on customer-facing data, audit performance on subgroups (by region, language variety, product category). A single overall F1 score hides per-segment failure modes that surface as customer complaints.
+
+---
+
+## Glossary
+
+- **Tokenization**: The process of splitting raw text into individual units (tokens), typically words or subwords, as the first step in text preprocessing.
+- **Stemming**: An aggressive text normalization technique that strips suffixes from words to reduce them to a common root form (e.g., "running" → "run", "studies" → "studi"), which may not be a real word.
+- **Lemmatization**: A linguistically aware normalization technique that reduces words to their dictionary base form (lemma) using vocabulary and morphological analysis (e.g., "running" → "run", "better" → "good").
+- **Stop words**: Extremely common words (e.g., "the", "is", "and") that are typically removed before text analysis because they carry little discriminative meaning.
+- **Bag of Words (BoW)**: A text vectorization method that represents a document as a count of how many times each vocabulary word appears, ignoring word order and grammar.
+- **TF-IDF (Term Frequency–Inverse Document Frequency)**: A vectorization method that weights each word's raw frequency by how rare it is across all documents, downweighting common words and highlighting distinctive terms.
+- **Word embedding**: A dense, low-dimensional vector representation of a word that captures semantic meaning, enabling similar words to have similar vectors and supporting arithmetic operations like "king − man + woman ≈ queen".
+- **Named Entity Recognition (NER)**: An NLP task that identifies and classifies named entities in text (e.g., persons, organizations, locations, dates) into predefined categories.
+
+---
+
+## Cross-References
+
+- **Day 38** — Vector math foundations: the dot product and cosine similarity operations that underpin word embedding spaces used in this lesson.
+- **Day 46** — Neural networks: the architecture used for text classifiers and the basis for understanding transformer models applied here.
+- **Day 58** — Transformers and attention mechanisms: the advanced NLP technique that extends the pretrained model approach introduced in this lesson.
+- **Day 60C** — Retrieval-Augmented Generation (RAG): uses the word embeddings and semantic similarity concepts from this lesson to retrieve relevant context for language model prompts.
+
+---
+
 ## Summary
 
 Today you learned:

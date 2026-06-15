@@ -1114,6 +1114,112 @@ Design an end-to-end MLOps system for a fraud detection model that processes 1M 
 
 ---
 
+## Senior-Level Insights: Advanced MLOps Practices
+
+### A/B Testing Framework for Models
+
+The brief A/B mention in the fraud detection case study deserves a proper framework. A/B testing models is fundamentally different from A/B testing UI changes:
+
+```python
+import numpy as np
+from scipy import stats
+
+class ModelABTest:
+    """
+    Tracks online A/B test comparing champion vs challenger model.
+    Traffic split is controlled at the API gateway (e.g., via feature flags).
+    """
+    def __init__(self, champion_name: str, challenger_name: str, split: float = 0.1):
+        self.champion = champion_name
+        self.challenger = challenger_name
+        self.split = split  # Fraction of traffic to challenger
+        self.results = {champion_name: [], challenger_name: []}
+
+    def assign_group(self, user_id: int) -> str:
+        """Deterministic assignment so same user always gets same model."""
+        return self.challenger if (hash(user_id) % 100) < (self.split * 100) else self.champion
+
+    def log_outcome(self, model_name: str, prediction: float, actual: float):
+        """Log a prediction outcome for later statistical testing."""
+        self.results[model_name].append({"prediction": prediction, "actual": actual})
+
+    def compute_significance(self, metric_fn) -> dict:
+        """Run two-sample t-test on accumulated metric values."""
+        champion_scores = [metric_fn(r) for r in self.results[self.champion]]
+        challenger_scores = [metric_fn(r) for r in self.results[self.challenger]]
+
+        t_stat, p_value = stats.ttest_ind(champion_scores, challenger_scores)
+        champion_mean = np.mean(champion_scores)
+        challenger_mean = np.mean(challenger_scores)
+
+        return {
+            "champion_mean": round(champion_mean, 4),
+            "challenger_mean": round(challenger_mean, 4),
+            "lift": round((challenger_mean - champion_mean) / champion_mean * 100, 2),
+            "p_value": round(p_value, 4),
+            "significant": p_value < 0.05,
+            "sample_size": (len(champion_scores), len(challenger_scores)),
+        }
+
+# Usage:
+# ab_test = ModelABTest("rf_v1", "xgb_v2", split=0.05)
+# At request time: model_name = ab_test.assign_group(user_id)
+# After outcome: ab_test.log_outcome(model_name, prediction, actual)
+# After N=500 observations per group: ab_test.compute_significance(lambda r: r["actual"])
+```
+
+**A/B Test decision rules:**
+- Run for minimum 2 weeks to capture weekly seasonality
+- Require p < 0.05 AND practical significance (lift > 2%) before promoting challenger
+- Check for novelty effects: performance sometimes inflates in week 1 due to user curiosity
+- Use sequential testing (e.g., mSPRT) when you need to check daily without inflating Type I error
+
+### Feature Store: The Missing Infrastructure
+
+Feature stores solve the train-serve skew problem: the same feature must be computed identically during training and serving.
+
+| Component | Without Feature Store | With Feature Store |
+|-----------|----------------------|-------------------|
+| Feature computation | Duplicated in notebook + API | Defined once, served everywhere |
+| Training data | Manually joined from raw tables | Point-in-time correct historical features |
+| Serving latency | Custom ETL per model | Shared low-latency feature cache |
+| Feature reuse | Team A rebuilds what Team B built | Shared feature catalog |
+
+**Key concept**: Point-in-time correctness — when creating training data, features must use the values that were available *at the time of prediction*, not future data.
+
+```python
+# WRONG: leaks future information into training
+# feature_df.merge(outcome_df, on='user_id')  # Uses features computed AFTER outcome
+
+# CORRECT: point-in-time join
+# Each training row uses the feature values as of the prediction timestamp
+# Feast, Tecton, and Hopsworks handle this automatically
+```
+
+---
+
+## Glossary
+
+- **Experiment tracking**: The systematic logging of hyperparameters, metrics, artifacts, and code versions for each model training run, enabling reproducibility and comparison across experiments (e.g., using MLflow).
+- **Model versioning**: The practice of assigning unique version identifiers to trained models and storing them in a registry so teams can audit, compare, reproduce, and roll back any version.
+- **Data drift**: A change in the statistical distribution of input features in production compared to training data, which can degrade model performance over time without any change to the model itself.
+- **Concept drift**: A change in the underlying relationship between input features and the target variable (e.g., the meaning of "high risk" shifting after a recession), requiring model retraining even if input distributions appear stable.
+- **CI/CD (Continuous Integration/Continuous Delivery)**: An automated pipeline that tests, validates, and deploys code and model changes; in MLOps it extends traditional software CI/CD to include data validation, model training, and performance gating.
+- **Model registry**: A centralized repository that stores trained model artifacts along with their metadata, staging status (e.g., Staging, Production, Archived), and lineage information.
+- **Canary deployment**: A release strategy where a new model version is exposed to a small percentage of real traffic (e.g., 5–10%) before a full rollout, allowing safe comparison with the incumbent model.
+- **Shadow mode**: A deployment pattern where a new model receives the same real-time requests as the production model but its predictions are logged rather than served, enabling risk-free evaluation on live traffic.
+
+---
+
+## Cross-References
+
+- **Day 40** — Baseline model concepts: the simple benchmark models that MLOps practices help version, track, and eventually replace with improved versions.
+- **Day 45** — Feature engineering pipelines: the upstream data transformation steps that must be versioned and deployed alongside models in an MLOps system.
+- **Day 52** — Ensemble methods: multi-model architectures whose components each require separate versioning, registry entries, and deployment management.
+- **Day 53** — Hyperparameter tuning: the experiment-intensive process whose results are tracked and compared using MLflow, the primary tool introduced in this lesson.
+
+---
+
 ## Summary
 
 Today you learned:

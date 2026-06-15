@@ -1470,6 +1470,109 @@ Today you learned:
 
 ---
 
+## Senior-Level Insights: Transformer Interpretability and Efficiency
+
+### Attention Head Interpretability
+
+Multi-head attention creates 12–96 parallel attention heads, each potentially capturing different linguistic patterns. Analyzing these heads provides model insight without black-box explanations:
+
+```python
+from transformers import BertModel, BertTokenizer
+import torch
+import matplotlib.pyplot as plt
+import numpy as np
+
+def visualize_attention(text: str, layer: int = 11, head: int = 0):
+    """Extract and visualize attention weights from a specific BERT head."""
+    tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
+    model = BertModel.from_pretrained("bert-base-uncased", output_attentions=True)
+    model.eval()
+
+    inputs = tokenizer(text, return_tensors="pt")
+    tokens = tokenizer.convert_ids_to_tokens(inputs["input_ids"][0])
+
+    with torch.no_grad():
+        outputs = model(**inputs)
+
+    # Shape: (n_layers, batch, n_heads, seq_len, seq_len)
+    attention = outputs.attentions[layer][0, head].numpy()  # Layer 11, Head 0
+
+    # Visualize: which tokens attend to which
+    print(f"\nAttention weights (Layer {layer}, Head {head}):")
+    print(f"Tokens: {tokens}")
+    # High attention[i][j] means token i strongly attends to token j
+
+    return attention, tokens
+
+# Research findings on BERT attention heads:
+# - Some heads attend to syntactic relationships (subject → verb)
+# - Some heads specialize in coreference ("it" → "the company")
+# - Layer 1-4 heads: local syntax; Layer 9-12 heads: semantic roles
+# - Head 8-10 in layer 10: long-range dependency capture
+
+# Pruning attention heads (reduces inference cost):
+# - 30-40% of heads can be pruned with < 1% accuracy drop
+# - Use: Michel et al. (2019) "Are Sixteen Heads Really Better than One?"
+```
+
+### When Transformers Are Overkill
+
+Transformers are powerful but carry significant costs. Know when simpler models win:
+
+| Task | Data Size | Recommended Model | Reason |
+|------|----------|-------------------|--------|
+| Binary text classification | < 10K examples | TF-IDF + Logistic Regression | Transformers overfit on small data |
+| Keyword extraction | Any size | TF-IDF or RAKE | No context needed for keywords |
+| Tabular data with text column | Any | Concatenate TF-IDF embedding as feature | Full transformer inference costly |
+| Real-time mobile inference | Any | DistilBERT (6 layers) or MobileBERT | 4× faster, 60% smaller than BERT |
+| Multi-label classification, 100+ labels | 50K+ | BERT fine-tuned | Handles complex label correlations |
+| Intent detection with < 50 intents | < 5K examples | FastText or small LSTM | 100× cheaper with similar accuracy |
+
+```python
+# Quick decision rule:
+# 1. Start with TF-IDF + Logistic Regression baseline
+# 2. If F1 < 0.80 OR you need semantic understanding → try transformer
+# 3. If latency < 50ms required → use distilled/quantized model
+# 4. If training data < 100 examples → use few-shot with GPT API, not fine-tuning
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.pipeline import Pipeline
+
+# Always establish this baseline BEFORE running transformers:
+baseline = Pipeline([
+    ("tfidf", TfidfVectorizer(max_features=10000, ngram_range=(1, 2))),
+    ("lr", LogisticRegression(max_iter=1000)),
+])
+# If this gets F1 > 0.85, question whether transformer cost is justified
+```
+
+---
+
+## Glossary
+
+- **Self-attention**: A mechanism where each element in a sequence attends to all other elements (including itself) to build context-aware representations; the core operation in transformers.
+- **Query/Key/Value (Q, K, V)**: The three learned linear projections used in attention; queries ask "what am I looking for?", keys answer "what do I contain?", and values carry "the information I provide."
+- **Multi-head attention**: Running multiple self-attention operations in parallel with different learned projections, then concatenating results; allows the model to attend to different types of relationships simultaneously.
+- **Positional encoding**: A vector added to each token embedding to inject sequence order information, since the attention mechanism itself is permutation-invariant.
+- **Encoder**: The transformer component that reads an input sequence and produces context-rich representations; used bidirectionally (all tokens see all others), as in BERT.
+- **Decoder**: The transformer component that generates output tokens autoregressively; uses masked self-attention so each position can only attend to earlier positions, as in GPT.
+- **BERT (Bidirectional Encoder Representations from Transformers)**: A pretrained transformer encoder trained via masked language modeling; excels at understanding tasks like classification, named entity recognition, and question answering.
+- **GPT (Generative Pretrained Transformer)**: A pretrained transformer decoder trained via next-token prediction; excels at generation tasks like text completion, summarization, and conversation.
+- **Fine-tuning**: Continuing to train a pretrained model on task-specific labeled data, adapting its weights for a downstream task while retaining general knowledge from pretraining.
+- **Transfer learning**: Leveraging knowledge gained from training on a large general dataset (pretraining) to improve performance on a different, often smaller, task-specific dataset.
+
+---
+
+## Cross-References
+
+- **Day 48 — RNNs and LSTMs**: The sequential architecture that transformers largely replaced; understanding RNN limitations (vanishing gradients, sequential bottleneck) motivates the attention-based design.
+- **Day 49 — NLP Fundamentals**: Tokenization, embeddings, and text preprocessing concepts that are prerequisites for applying transformer models to language tasks.
+- **Day 59 — Generative Models**: Diffusion models and modern image generators incorporate transformer decoder architectures; GPT-style decoders underpin large language model generation.
+- **Day 60B — PEFT and Efficient Fine-Tuning**: Parameter-efficient fine-tuning methods (LoRA, adapters) build on transformer architecture to enable cost-effective adaptation of large pretrained models.
+
+---
+
 ## Optional Build Tracks (Day 49-60 Extension)
 
 Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:

@@ -897,6 +897,106 @@ Meta Layer:
 
 ---
 
+## Senior-Level Insights: Ensemble Engineering
+
+### Why Diversity Requires Negative Correlation
+
+The variance reduction benefit of ensembles is mathematically tied to prediction **diversity**. If all models are correlated, you get zero benefit:
+
+```python
+import numpy as np
+
+# Mathematical foundation: ensemble variance
+# Var(mean of N models) = (1/N²) * [N * σ² + N*(N-1) * ρ * σ²]
+# where ρ = pairwise correlation between models
+# Simplifies to: σ²/N * (1 + (N-1)*ρ)
+
+def ensemble_variance_reduction(individual_variance, n_models, correlation):
+    """Shows how diversity (low correlation) enables variance reduction."""
+    return (individual_variance / n_models) * (1 + (n_models - 1) * correlation)
+
+# Example: 10 models, each with variance 0.04
+ind_var = 0.04
+n = 10
+
+print("Ensemble variance with different correlations:")
+for rho in [0.0, 0.3, 0.5, 0.8, 1.0]:
+    ens_var = ensemble_variance_reduction(ind_var, n, rho)
+    print(f"  ρ = {rho:.1f} → ensemble variance = {ens_var:.4f}  "
+          f"(reduction: {(1 - ens_var/ind_var)*100:.0f}%)")
+
+# Output:
+# ρ = 0.0 → ensemble variance = 0.0040  (reduction: 90%)
+# ρ = 0.3 → ensemble variance = 0.0136  (reduction: 66%)
+# ρ = 0.5 → ensemble variance = 0.0220  (reduction: 45%)
+# ρ = 0.8 → ensemble variance = 0.0352  (reduction: 12%)
+# ρ = 1.0 → ensemble variance = 0.0400  (reduction: 0%)
+
+# Lesson: 10 perfectly correlated models = 0% improvement over a single model
+# 10 independent models = 90% variance reduction
+```
+
+**Production diversity strategies:**
+| Strategy | Implementation | Expected Correlation |
+|----------|---------------|---------------------|
+| Different algorithms | RF + XGBoost + Logistic | ~0.5–0.7 |
+| Different feature sets | Full features vs domain subset | ~0.4–0.6 |
+| Different data samples | Trained on different time windows | ~0.3–0.5 |
+| Different hyperparameters | Shallow vs deep trees | ~0.7–0.9 (less effective) |
+
+### Ensemble Pruning: More Models ≠ Better
+
+At scale, adding models beyond a threshold gives diminishing returns while increasing inference latency and cost:
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
+import numpy as np
+
+# Compute cross-val score at different n_estimators
+n_estimators_range = [1, 5, 10, 25, 50, 100, 200, 500]
+
+for n in n_estimators_range:
+    rf = RandomForestClassifier(n_estimators=n, random_state=42)
+    scores = cross_val_score(rf, X_train, y_train, cv=5, scoring='roc_auc')
+    print(f"n={n:>4}: AUC={scores.mean():.4f} ± {scores.std():.4f}")
+
+# Typical output: AUC plateaus around n=100-200
+# After that: +0.001 AUC per 100 trees → not worth the latency
+
+# Latency comparison:
+# 50 trees:  ~2ms inference
+# 200 trees: ~8ms inference  
+# 500 trees: ~20ms inference
+# If AUC difference is 0.002, choose 50 trees for production
+```
+
+> **Senior rule**: Always plot the n_estimators vs AUC curve and draw a vertical line at "diminishing returns." The 90th percentile of improvement usually happens at 20–30% of the final tree count. Ship the leaner model.
+
+---
+
+## Glossary
+
+- **Bagging (Bootstrap Aggregating)**: An ensemble strategy that trains each base model on an independent bootstrap sample (random sample with replacement) of the training data and averages their predictions, reducing variance without increasing bias.
+- **Boosting**: An ensemble strategy that trains base models sequentially, with each model focusing on the errors made by its predecessor; the final prediction is a weighted combination of all models, reducing both bias and variance.
+- **Random Forest**: A bagging ensemble of decision trees that adds feature randomness — each tree is built using a random subset of features at every split — to further decorrelate trees and improve generalization.
+- **Gradient Boosting**: A boosting algorithm that fits each new tree to the negative gradient (residuals) of a differentiable loss function, allowing it to optimize arbitrary objectives such as log loss or mean squared error.
+- **Out-of-bag (OOB) error**: A free internal validation estimate available in bagging ensembles; each training sample is scored by the trees that did not see it during bootstrap sampling, providing an unbiased accuracy estimate without a separate validation set.
+- **Stacking**: A meta-ensemble technique where predictions from diverse base models are used as input features to train a second-level meta-learner that learns how to best combine the base model outputs.
+- **Meta-learner**: The second-level model in a stacking ensemble that takes base model predictions as input and learns the optimal weighting or combination strategy to produce the final prediction.
+- **Feature importance**: A measure, produced by tree-based models, of how much each feature contributes to reducing prediction error across all splits and trees; used for model interpretation but subject to biases with high-cardinality or correlated features.
+
+---
+
+## Cross-References
+
+- **Day 43** — Decision trees: the fundamental base learner that Random Forest and XGBoost both use; understanding tree splits, depth, and overfitting is prerequisite for tuning ensembles.
+- **Day 51** — Regularized models: a complementary approach to controlling overfitting via coefficient penalties, contrasted with ensemble variance reduction in this lesson.
+- **Day 53** — Hyperparameter tuning: the systematic optimization of ensemble parameters such as `n_estimators`, `max_depth`, and `learning_rate` using grid search, random search, and Bayesian optimization.
+- **Day 54** — Probabilistic modeling: calibration is often required after tree ensembles because their raw `predict_proba` outputs can be poorly calibrated, as discussed in this lesson.
+
+---
+
 ## Summary
 
 Today you learned:

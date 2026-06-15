@@ -1052,6 +1052,28 @@ if actual_FN_rate > target_FN_rate:
 
 ---
 
+## Glossary
+
+- **Prior probability**: The probability assigned to a hypothesis or class before observing any data, encoding existing domain knowledge or the base rate of an event (e.g., P(spam) = 0.3 across all emails).
+- **Likelihood**: The probability of observing the data given a specific hypothesis or model parameters (P(data | class)); in Naive Bayes this is the product of per-feature conditional probabilities.
+- **Posterior probability (Bayes' theorem)**: The updated probability of a hypothesis after incorporating observed evidence, computed as P(class | data) ∝ P(data | class) × P(class); the central quantity in Bayesian inference.
+- **Naive Bayes**: A family of probabilistic classifiers that applies Bayes' theorem with the "naive" assumption that all features are conditionally independent given the class label; fast, interpretable, and surprisingly effective for text.
+- **Calibration**: The alignment between a model's predicted probabilities and the true observed frequencies; a well-calibrated model that says "80% confidence" should be correct roughly 80% of the time.
+- **Gaussian Process**: A non-parametric Bayesian model that places a probability distribution over functions; it provides a mean prediction and a confidence interval at every point, making it ideal for small datasets where uncertainty quantification is critical.
+- **Expected Calibration Error (ECE)**: A scalar metric that measures miscalibration by averaging the absolute difference between predicted confidence and actual accuracy across probability bins; lower ECE indicates better calibration.
+- **Platt scaling**: A post-hoc calibration method (a special case of sigmoid calibration) that fits a logistic regression on the model's raw scores to map them to better-calibrated probabilities; recommended for small calibration sets.
+
+---
+
+## Cross-References
+
+- **Day 37B** — Probability and statistics foundations: the conditional probability, Bayes' theorem, and probability distributions that are the mathematical backbone of every technique in this lesson.
+- **Day 42** — Classification: the supervised learning context in which calibration matters most; a classifier's `predict_proba` output must be calibrated before being used for cost-sensitive or ranking decisions.
+- **Day 43** — Decision trees: tree-based models whose probability outputs are notoriously poorly calibrated (overconfident near 0 and 1), making them a primary use case for the calibration methods covered here.
+- **Day 52** — Ensemble methods: Random Forests and gradient-boosted trees both benefit from post-hoc calibration (isotonic regression or Platt scaling) before their probability outputs are used for business decisions.
+
+---
+
 ## Summary
 
 Today you learned:

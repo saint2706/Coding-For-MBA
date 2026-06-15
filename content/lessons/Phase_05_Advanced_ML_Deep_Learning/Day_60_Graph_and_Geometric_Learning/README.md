@@ -1513,6 +1513,30 @@ You've mastered:
 
 ---
 
+## Glossary
+
+- **Graph**: A mathematical structure consisting of nodes (vertices) and edges (connections between nodes); used to represent relational data such as social networks, molecules, and knowledge bases.
+- **Node (vertex)**: An individual entity in a graph (e.g., a user, atom, or city); nodes can carry feature vectors used as input to GNNs.
+- **Edge**: A connection between two nodes representing a relationship (e.g., friendship, chemical bond, road); edges can be directed or undirected and may carry their own feature weights.
+- **Adjacency matrix**: A square matrix A where A[i][j] = 1 if there is an edge between nodes i and j (0 otherwise); the primary mathematical representation of graph structure.
+- **Node embedding**: A learned dense vector representation of a node that encodes both its features and its position/role in the graph structure.
+- **Message passing**: The core computation paradigm in GNNs where each node aggregates information (messages) from its neighbors to update its own representation, repeated across layers.
+- **Graph Convolutional Network (GCN)**: A GNN architecture that performs spectral-based convolutions on graphs, effectively computing a normalized weighted average of each node's features and its neighbors' features.
+- **Graph Attention Network (GAT)**: A GNN that uses attention mechanisms to assign different importance weights to different neighbors during aggregation, rather than treating all neighbors equally.
+- **Over-smoothing**: A problem in deep GNNs where stacking too many message-passing layers causes all node embeddings to converge to nearly identical vectors, losing discriminative information.
+- **Link prediction**: The task of predicting whether an edge should exist between two nodes; used in applications like friend recommendation, knowledge graph completion, and drug interaction prediction.
+
+---
+
+## Cross-References
+
+- **Day 38 — Linear Algebra Foundations**: Adjacency matrices, eigenvectors, and matrix operations are the mathematical backbone of spectral graph methods and GCN convolutions.
+- **Day 46 — Neural Network Fundamentals**: GNNs are neural networks at their core; backpropagation, layer design, and training loops from this day apply directly to GCN and GAT architectures.
+- **Day 57 — Recommender Systems**: User-item interaction data forms a bipartite graph; GNNs model these relationships more expressively than matrix factorization by propagating information through multi-hop connections.
+- **Day 58 — Transformers and Attention**: Graph Attention Networks (GATs) use the same scaled dot-product attention mechanism as transformers to weight neighbor contributions, directly connecting these two architectures.
+
+---
+
 ## Optional Build Tracks (Day 49-60 Extension)
 
 Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:

@@ -1197,6 +1197,30 @@ Today you learned:
 
 ---
 
+## Glossary
+
+- **DBSCAN (Density-Based Spatial Clustering of Applications with Noise)**: A clustering algorithm that groups together points in dense regions, separating them from low-density areas, without requiring a pre-specified number of clusters.
+- **HDBSCAN**: Hierarchical extension of DBSCAN that builds a cluster hierarchy and automatically selects stable clusters at varying density levels, handling datasets with uneven densities.
+- **Epsilon (ε)**: The neighborhood radius parameter in DBSCAN; two points are considered neighbors if they are within ε distance of each other.
+- **Core point**: A point in DBSCAN that has at least `min_samples` other points within its ε-neighborhood; core points form the dense interior of clusters.
+- **Noise point**: A point in DBSCAN labeled −1 because it falls in a low-density region and cannot be reached from any core point; effectively an outlier.
+- **Isolation Forest**: An anomaly detection algorithm that isolates observations by randomly partitioning features; anomalies require fewer splits to isolate and receive lower anomaly scores.
+- **Anomaly score**: A numeric measure (e.g., from Isolation Forest) indicating how anomalous a data point is; typically higher score = more anomalous.
+- **Autoencoder**: A neural network trained to reconstruct its input through a compressed bottleneck layer, learning a lower-dimensional representation (encoding) of the data.
+- **Reconstruction error**: The difference (e.g., MSE) between an autoencoder's input and its output; high error on unseen data often signals an anomaly or out-of-distribution sample.
+- **t-SNE (t-distributed Stochastic Neighbor Embedding)**: A nonlinear dimensionality reduction technique that maps high-dimensional data to 2D or 3D while preserving local neighborhood structure, primarily used for visualization.
+
+---
+
+## Cross-References
+
+- **Day 44 — K-Means and Basic Unsupervised Learning**: Foundational clustering concepts this lesson extends; DBSCAN and HDBSCAN address the shape and noise limitations of K-Means.
+- **Day 45 — Dimensionality Reduction and Feature Engineering**: Covers PCA and linear feature reduction methods that complement the nonlinear autoencoder and manifold learning techniques taught here.
+- **Day 56 — Time Series and Forecasting**: Extends anomaly detection to temporal data; Isolation Forest ideas from this lesson apply directly to detecting outliers in time series streams.
+- **Day 59 — Generative Models**: Autoencoders introduced here are the conceptual bridge to Variational Autoencoders (VAEs), which add a probabilistic latent space for generation.
+
+---
+
 ## Optional Build Tracks (Day 49-60 Extension)
 
 Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
