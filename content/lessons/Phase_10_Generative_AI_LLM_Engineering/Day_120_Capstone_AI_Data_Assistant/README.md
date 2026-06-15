@@ -41,6 +41,7 @@ Your CEO asks: *"Why do I need to bother the data team every time I want a simpl
 You've been building toward this all of Phase 10. Today, you build the **AI Data Assistant** — a production-ready system that lets any business user ask questions in plain English and get accurate, sourced, cost-optimized, ethically-deployed answers backed by real company data.
 
 By the end of today, you'll have built a complete system with:
+
 - **Knowledge base** (company docs + financial summaries via RAG)
 - **Database query agent** (SQL-capable for live data)
 - **Cost optimization** (caching, model routing)
@@ -658,6 +659,7 @@ for metric, score in result.items():
 ### Exercise 1: System Design Review
 
 Review your implementation and answer:
+
 1. Which component is the most likely to fail in production, and why?
 2. How would you add authentication so only authorized users can query the system?
 3. How would you handle a query that requires BOTH live SQL data AND policy information?
@@ -666,6 +668,7 @@ Review your implementation and answer:
 ### Exercise 2: Scale to Enterprise
 
 Design (without implementing) how you would scale this system to:
+
 - 100,000 documents in the knowledge base (not just 5 text files)
 - 50,000 users per day
 - Multi-tenant (each customer sees only their own data)
@@ -674,6 +677,7 @@ Design (without implementing) how you would scale this system to:
 ### Exercise 3: The Model Card
 
 Write a complete model card (following Day 119's template) for the Data Assistant you just built. Include:
+
 - Intended use and limitations
 - Performance metrics
 - Known biases or failure modes

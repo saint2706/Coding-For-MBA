@@ -84,6 +84,7 @@ phase2_mini_capstone/
 ```
 
 Minimum expectations:
+
 - Clear module responsibilities (`ingest`, `clean`, `aggregate`, orchestration).
 - Reusable functions with docstrings and type hints where appropriate.
 - A single entry point (e.g., `python -m pipeline.run_pipeline`).
@@ -97,6 +98,7 @@ Implement a pipeline that:
 - **Aggregates** to produce a business-ready summary table (e.g., by segment, region, or month).
 
 Required output:
+
 - `data/processed/final_metrics.csv`
 
 ### 3) Exception handling + logging
@@ -108,6 +110,7 @@ Your pipeline must include:
 - Logging to both console and file (`logs/pipeline.log`).
 
 At minimum, log:
+
 - Pipeline start/end
 - Row counts before/after cleaning
 - Number of dropped/invalid records
@@ -139,6 +142,7 @@ Produce:
 - `reports/business_insights.md` (200–400 words)
 
 Your report should include:
+
 - 2–3 key findings from the aggregated dataset
 - 1 business risk/caveat tied to data quality assumptions
 - 2 recommended next actions for stakeholders

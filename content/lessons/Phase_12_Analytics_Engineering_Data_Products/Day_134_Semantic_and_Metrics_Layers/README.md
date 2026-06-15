@@ -235,6 +235,7 @@ Defining metrics isn't the hard part — getting everyone to agree on definition
 ### Exercise 2: Semantic Layer Selection
 
 For each scenario, which semantic layer tool would you recommend?
+
 1. A dbt Cloud shop with 20 analysts using Tableau.
 2. A startup building an embedded analytics product for customers.
 3. A large enterprise standardized on Google Cloud + Looker.

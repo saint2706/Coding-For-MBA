@@ -40,6 +40,7 @@ outcomes:
 When you had 20 customers/day, you could use the best beans, the most expensive espresso machines, and take your time. At 20,000 customers/day, you need: an efficient supply chain, standardized processes for common orders, a "fast lane" for simple drinks (drip coffee vs hand-crafted pour-overs), and wastage tracking.
 
 **LLM Ops** is the "20,000 customers/day" discipline for AI products:
+
 - **Token optimization** = using fewer expensive ingredients
 - **Caching** = not making coffee someone already ordered in the last 10 minutes  
 - **Model routing** = sending simple orders to the barista, complex ones to the master craftsperson
@@ -368,6 +369,7 @@ def analyze_document(text: str) -> str:
 ### The Cost Optimization Playbook
 
 In order of impact (highest first):
+
 1. **Switch to smaller model** for simple tasks — 10-16x cost reduction
 2. **Implement semantic caching** — 20-40% cache hit rate typical for support/FAQ use cases
 3. **Compress system prompts** — 30-70% token reduction with no quality loss

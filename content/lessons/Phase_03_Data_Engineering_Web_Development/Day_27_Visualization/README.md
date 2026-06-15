@@ -61,19 +61,23 @@ Good visualizations don't just display data—they tell stories. They answer que
 Good charts aren't just aesthetically nice — they exploit how the human brain processes visual information. Violating these principles produces misleading or confusing charts:
 
 **1. Humans compare length more accurately than area or angle.**
+
 - Our brains are excellent at judging which bar is taller (length comparison).
 - We are poor at judging which slice of a pie is bigger (angle/area comparison).
 - **Rule:** Prefer bar charts over pie charts for most comparisons.
 
 **2. Truncating axes exaggerates differences.**
+
 - Starting a y-axis at 97 instead of 0 makes a 3% change look like a 100% change.
 - **Rule:** Start continuous y-axes at zero for bar charts. (Line charts showing trends can start at a non-zero baseline, with clear axis labels.)
 
 **3. Too many categories overwhelm pattern recognition.**
+
 - Pie charts become unreadable with more than 5 slices.
 - **Rule:** For >5 categories, use a bar chart or group into "Other."
 
 **4. Color should encode meaning, not decoration.**
+
 - Using 10 random colors for 10 bars adds no information.
 - **Rule:** Use a consistent color for a single series; use different colors only to distinguish different series or highlight a specific data point.
 
@@ -424,11 +428,13 @@ plt.savefig("chart.svg", bbox_inches="tight")
 Good dashboards are readable by everyone, including the ~8% of people with color vision deficiency (color blindness):
 
 - **Use colorblind-safe palettes:** Replace red/green combinations (the most common deficiency) with blue/orange or blue/red.
+
   ```python
   # Colorblind-friendly palette (Okabe-Ito)
   colors = ["#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2"]
   plt.rcParams["axes.prop_cycle"] = plt.cycler(color=colors)
   ```
+
 - **Don't rely on color alone:** Add pattern fills, direct labels, or shape markers to encode information redundantly.
 - **Label data points directly** where possible, rather than requiring legend lookups.
 
@@ -441,6 +447,7 @@ Good dashboards are readable by everyone, including the ~8% of people with color
 **Business Scenario:** The CFO needs a Year-over-Year (YoY) sales trend chart for the upcoming board presentation. She wants a clean line chart for Product A and Product B over 12 months, with the performance gap shaded to visually emphasize Product A's lead.
 
 **Your Task:**
+
 1. Create a multi-line chart showing monthly sales for Product A and Product B
 2. Add a filled area between the two lines to highlight the gap
 3. Add proper title, axis labels, legend, and grid
@@ -535,6 +542,7 @@ create_yoy_comparison(months, sales_2023, sales_2024)
 **Business Scenario:** The VP of Sales wants a regional comparison dashboard. She needs to see which of five regions is performing best this quarter, comparing actual revenue to target. A grouped or stacked bar chart will make it easy to spot over/under-performers at a glance.
 
 **Your Task:**
+
 1. Create a grouped bar chart comparing actual vs. target revenue for 5 regions
 2. Color bars so "actual" and "target" are visually distinct
 3. Annotate bars with their values for easy reading
@@ -617,6 +625,7 @@ create_regional_dashboard(regions, revenue, growth, employees)
 **Business Scenario:** HR wants to understand the distribution of employee salaries by department. Are salaries tightly clustered or widely spread? Are there outliers? A histogram or box plot will reveal the shape of each department's pay distribution.
 
 **Your Task:**
+
 1. Create a histogram for one department's salary distribution
 2. Add a box plot alongside it (use subplots)
 3. Annotate the mean and median lines on the histogram

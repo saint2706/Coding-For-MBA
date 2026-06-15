@@ -133,7 +133,6 @@ $$
 \text{PE}(\text{pos}, 2i+1) = \cos\!\left(\frac{\text{pos}}{10000^{2i/d_{\text{model}}}}\right)
 $$
 
-
 **Intuitive example:**
 
 ```python

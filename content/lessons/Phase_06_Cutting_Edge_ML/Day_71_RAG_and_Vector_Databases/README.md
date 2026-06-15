@@ -40,6 +40,7 @@ outcomes:
 They graduated top of their MBA class. They know finance theory, strategy frameworks, and global market trends. But when the CEO asks: *"What was our EBITDA in Q3 2025 by business unit?"*, they have no idea — because **they haven't read your internal reports**.
 
 Two solutions:
+
 1. **Fine-Tuning**: Have the consultant memorize every internal report. Slow, expensive, and when a new report comes out, you have to retrain them.
 2. **RAG (Retrieval-Augmented Generation)**: Give the consultant a library card. When asked a question, they run to the library, find the relevant pages, and answer based on what they just retrieved.
 
@@ -235,6 +236,7 @@ for i, chunk in enumerate(chunks[:2]):
 ### The "Lost in Context" Problem
 
 LLMs perform worse when relevant info is in the **middle** of a long context — they attend better to beginning and end. Solutions:
+
 1. **Reranking**: Use a cross-encoder model to reorder retrieved chunks by relevance before sending to LLM
 2. **Smaller context**: Retrieve fewer, more targeted chunks (top-3 beats top-10)
 3. **HyDE** (Hypothetical Document Embeddings): Generate a hypothetical answer first, then use that to retrieve real docs

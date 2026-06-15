@@ -150,12 +150,15 @@ self_serve_metrics = {
 ## Hands-on Lab
 
 ### Exercise 1: Self-Serve Assessment
+
 Audit your organization's self-serve maturity level and identify 3 improvements.
 
 ### Exercise 2: Data Catalog Design
+
 Design a data catalog entry for your most important table including business context, column descriptions, data quality scores, and lineage.
 
 ### Exercise 3: Guardrails Policy
+
 Write a 1-page self-serve analytics policy covering who can access what, query limits, and escalation paths.
 
 ---

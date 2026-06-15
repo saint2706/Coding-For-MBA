@@ -113,6 +113,7 @@ docker images                 # Lists available IMAGES on your machine
 ```
 
 **The lifecycle:**
+
 1. Write a `Dockerfile` (recipe for your image)
 2. `docker build` → creates an immutable image
 3. `docker run` → starts a container from that image
@@ -305,6 +306,7 @@ docker run -e API_KEY=$MY_API_KEY my-app
 **Business Scenario:** Your Phase 3 Flask/FastAPI case study app works perfectly on your laptop, but the DevOps team needs to deploy it to a Linux server. Instead of documenting every install step, you'll containerize it — one `docker build` command creates a self-contained unit that runs identically everywhere.
 
 **Your Task:**
+
 1. Create a `Dockerfile` in the project root
 2. Use `python:3.11-slim` as the base image
 3. Set the working directory to `/app`, copy your code, install requirements, and expose port 5000
@@ -313,6 +315,7 @@ docker run -e API_KEY=$MY_API_KEY my-app
 6. Verify: `curl http://localhost:5000/health` should return `{"status": "ok"}`
 
 **Expected Dockerfile:**
+
 ```dockerfile
 FROM python:3.11-slim
 WORKDIR /app
@@ -324,6 +327,7 @@ CMD ["python", "app.py"]
 ```
 
 **Expected terminal output after `docker run`:**
+
 ```
  * Running on http://0.0.0.0:5000
  * Press CTRL+C to quit
@@ -338,6 +342,7 @@ curl http://localhost:5000/health
 **Business Scenario:** Your data pipeline needs three services running together: a Flask API (Python), a MongoDB database, and a Redis cache. Instead of starting each manually, `docker-compose` orchestrates all three with a single command.
 
 **Your Task:**
+
 1. Create `docker-compose.yml` with three services: `api`, `mongo`, `redis`
 2. The `api` service builds from your local `Dockerfile`, exposes port 5000, and depends on `mongo` and `redis`
 3. `mongo` uses `mongo:7.0` image, `redis` uses `redis:alpine`
@@ -345,6 +350,7 @@ curl http://localhost:5000/health
 5. Verify all services start
 
 **Expected `docker-compose.yml` (replace any `pass` stubs — YAML does not support `pass`):**
+
 ```yaml
 version: "3.8"
 
@@ -377,6 +383,7 @@ volumes:
 ```
 
 **Expected folder structure:**
+
 ```
 project/
 ├── app.py
@@ -386,6 +393,7 @@ project/
 ```
 
 **Expected terminal output after `docker-compose up`:**
+
 ```
 [+] Running 3/3
  ✔ Container project-mongo-1  Started
@@ -398,6 +406,7 @@ project/
 **Business Scenario:** A colleague pushed a broken `Dockerfile` that fails to build. You need to diagnose the error from the build output and fix it.
 
 **Broken `Dockerfile`:**
+
 ```dockerfile
 FROM python:3.11-slim
 WORKDIR /app
@@ -409,12 +418,14 @@ CMD python app.py  # BUG 3: Should use exec form ["python", "app.py"] for signal
 ```
 
 **Your Task:**
+
 1. Identify all 3 bugs
 2. Fix them in the corrected Dockerfile
 3. Build successfully: `docker build -t fixed-app .`
 4. Verify the build completes without errors
 
 **Fixed `Dockerfile`:**
+
 ```dockerfile
 FROM python:3.11-slim
 WORKDIR /app
@@ -426,6 +437,7 @@ CMD ["python", "app.py"]          # Fixed: exec form for proper signal handling
 ```
 
 **Expected output after fix:**
+
 ```
 Step 1/7 : FROM python:3.11-slim
  ---> a1b2c3d4e5f6

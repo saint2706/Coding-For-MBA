@@ -106,6 +106,7 @@ print(f"Length: {np.linalg.norm(unit_a):.2f}")  # 1.0
 #### Scale Sensitivity: Why You Must Normalize Before Similarity
 
 When computing similarity between customer vectors, the **scale of features dominates**:
+
 - Customer A: income=$100,000, age=35
 - Customer B: income=$100,500, age=25
 
@@ -277,24 +278,27 @@ $$
 A\mathbf{v} = \lambda \mathbf{v}
 $$
 
-
 #### Linear Algebra Concepts: Business Intuition
 
 **Determinant** — A scalar that measures how much a transformation scales space. For a 2×2 matrix:
+
 - det > 0: the transformation preserves orientation
 - det = 0: the matrix is **singular** — it collapses space to a lower dimension (vectors become linearly dependent). This means the matrix cannot be inverted.
 - **Business consequence**: A singular feature matrix means two or more features are perfect linear combinations of each other (e.g., `revenue = price × quantity`, and you included all three). The regression has no unique solution — coefficients become unreliable.
 
 **Inverse** — The matrix A⁻¹ such that A × A⁻¹ = I (identity). In linear regression, the optimal weights are w = (XᵀX)⁻¹Xᵀy. If XᵀX is singular (or near-singular), the inverse is numerically unstable and weights blow up.
+
 - **Diagnosis**: Check `np.linalg.cond(X)` — condition numbers > 1000 indicate numerical instability.
 - **Fix**: Regularization (Ridge adds λI to XᵀX before inverting, making it always invertible).
 
 **Rank** — The number of linearly independent rows (or columns) of a matrix. A rank-deficient matrix has more columns than independent directions — some features are redundant.
+
 - `np.linalg.matrix_rank(X)` tells you if your feature matrix has full rank.
 
 **Singularity** — A square matrix is singular when its determinant is zero. In practice, near-singularity (condition number > 10⁶) is equally problematic.
 
 **PCA (Principal Component Analysis)** — Finds the directions (principal components) of maximum variance in your data. These are the **eigenvectors** of the covariance matrix.
+
 - The first principal component points in the direction where customers vary most (e.g., overall spending level).
 - The second principal component is orthogonal to the first — it captures the next most variation (e.g., spending pattern: frequent small vs rare large).
 - **Business use**: Reduce 50 correlated customer features to 5 independent components that capture 90% of variance, improving model stability and speed.
@@ -343,6 +347,7 @@ X_reconstructed = U[:, :k] @ np.diag(sigma[:k]) @ Vt[:k, :]
 
 **Condition Number**
 Ratio of largest to smallest singular value. Indicates how much a small input perturbation amplifies output error.
+
 ```python
 cond = np.linalg.cond(X)
 # < 30: well-conditioned
@@ -431,6 +436,7 @@ print(f"Solution: {x_good}")
 **Goal:** Implement and compare Euclidean distance vs cosine similarity for customer similarity.
 
 **Tasks:**
+
 1. Create 5 customer feature vectors (standardized): [spending_electronics, spending_clothing, spending_home]
 2. Compute pairwise cosine similarities
 3. For Customer 1, find the top 2 most similar customers
@@ -475,6 +481,7 @@ for name, score in similar:
 ```
 
 **Expected Output:**
+
 ```
 Cosine similarity matrix (approx):
 Customer 0 ↔ Customer 3: 0.98  (most similar)
@@ -525,6 +532,7 @@ plt.show()
 ```
 
 **Expected Output:**
+
 ```
 Factor scores shape: (n_customers, 3)
 Condition number of factor matrix: ~15.3 (acceptable — below 1000)
@@ -588,6 +596,7 @@ print(f"Variance retained: {eigenvalues.max() / eigenvalues.sum() * 100:.1f}%")
 ```
 
 **Expected Output:**
+
 ```
 Variance explained by component 1: ~52%
 Variance explained by component 2: ~31%

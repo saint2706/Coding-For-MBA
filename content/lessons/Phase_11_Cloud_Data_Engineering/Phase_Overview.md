@@ -322,6 +322,7 @@ By the end of Phase 11, you'll have designed and implemented:
 **Situation**: A 50-person SaaS company has all analytics running in Postgres. The team runs 200 ad-hoc queries per day and the database is buckling under the load.
 
 **Phase 11 Solution**:
+
 1. **Day 121–122**: Provision BigQuery + GCS. Set up streaming export from Postgres → GCS (bronze) using Debezium or Airbyte.
 2. **Day 124**: Build dbt models on BigQuery for the key business metrics (ARR, churn, activation).
 3. **Day 125**: Deploy Airflow on Cloud Composer to run dbt on schedule and alert on failure.
@@ -337,6 +338,7 @@ By the end of Phase 11, you'll have designed and implemented:
 **Situation**: A data team at a scale-up is spending $300K/month on BigQuery. The CFO wants a 30% reduction with no loss of analytical capability.
 
 **Phase 11 Solution**:
+
 1. **Day 130**: Run the BigQuery INFORMATION_SCHEMA.JOBS analysis — identify the top 20 most expensive queries by bytes billed.
 2. **Day 122**: Add clustering and partitioning to the top 5 largest tables. Test partition pruning.
 3. **Day 123**: Add materialized views for the 10 most-run dashboard queries.
@@ -354,6 +356,7 @@ By the end of Phase 11, you'll have designed and implemented:
 **Scenario**: A global e-commerce company (50M orders/day) needs a data platform that: (a) processes real-time order events for fraud detection within 2 seconds, (b) provides nightly batch analytics for the executive dashboard, and (c) must comply with GDPR (EU customer data must not leave EU regions).
 
 **Tasks**:
+
 1. Draw the architecture (text diagram is fine) showing ingestion, storage, transformation, and serving layers.
 2. Select the cloud services for each layer and justify the choice with cost and latency reasoning.
 3. Describe how you would handle GDPR data residency for EU customers.
@@ -376,6 +379,7 @@ By the end of Phase 11, you'll have designed and implemented:
 **Scenario**: You have a 2 TB fact table (`orders`) that receives 500K new rows per day plus ~5K updates to existing rows (status changes). The current full-refresh dbt model takes 4 hours and costs $80/run.
 
 **Task**: Rewrite the dbt model to be incremental. It must:
+
 1. Only process new and updated rows on each run
 2. Handle the case where the pipeline reruns for a historical date
 3. Not miss late-arriving order updates (assume updates arrive up to 3 days late)
@@ -409,6 +413,7 @@ FROM {{ source('raw', 'orders') }}
 **Scenario**: It's Monday morning. The executive dashboard shows "No data for Sunday." The Airflow DAG log shows: `Task 'transform_orders' failed at 03:47 UTC. Retried 3 times. Final error: BigQuery quota exceeded: concurrent queries exceeded.`
 
 **Tasks**:
+
 1. Write the immediate incident response steps (in order, with time estimates).
 2. Identify the root cause and propose a fix that prevents recurrence.
 3. Write a 5-bullet blameless postmortem summary.
@@ -431,6 +436,7 @@ FROM {{ source('raw', 'orders') }}
 **Scenario**: You join a company where the data team's monthly cloud bill is $180K. The breakdown is: BigQuery $90K, GCS $30K, Dataflow $40K, Compute Engine (Airflow) $20K. You have 4 weeks to reduce costs by 25% without degrading pipeline reliability.
 
 **Tasks**:
+
 1. Prioritize which services to optimize first and explain your reasoning.
 2. For BigQuery, list 4 concrete changes with estimated savings for each.
 3. For GCS, propose a lifecycle policy that reduces storage costs without breaking downstream reads.
@@ -453,6 +459,7 @@ FROM {{ source('raw', 'orders') }}
 **Scenario**: A data analyst reports that the daily revenue metric in Looker shows $0 for yesterday, which is clearly wrong. You need to diagnose and fix the data quality issue.
 
 **Tasks**:
+
 1. Write a systematic debugging checklist (10 steps, from source to dashboard).
 2. Where would you add a Great Expectations checkpoint to have caught this earlier?
 3. Write a Soda check (SodaCL) that would alert when daily revenue drops more than 30% vs. the 7-day average.

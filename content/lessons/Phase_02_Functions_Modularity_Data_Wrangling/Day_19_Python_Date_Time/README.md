@@ -282,6 +282,7 @@ for i, date in enumerate(schedule, 1):
 ```
 
 **Expected Output:**
+
 ```
 Report Schedule:
   Report 1: Monday, January 15, 2024
@@ -325,6 +326,7 @@ print(f"Next birthday: {result['next_birthday']} ({result['days_until']} days)")
 ```
 
 **Expected Output (example for birthday 1990-07-15, run in 2026):**
+
 ```
 Age: 35 years
 Next birthday: 2026-07-15 (31 days)
@@ -383,6 +385,7 @@ for event in events:
 ```
 
 **Expected Output (approximate, depends on run time):**
+
 ```
 🏁 Product Launch happened 831 days ago
 ⏳ Team Meeting: 0d 3h 45m remaining

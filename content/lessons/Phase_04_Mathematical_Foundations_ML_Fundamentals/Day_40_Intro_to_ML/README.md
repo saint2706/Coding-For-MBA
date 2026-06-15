@@ -75,18 +75,21 @@ A model *generalizes* when it performs well on new, unseen data — not just on 
 
 **Overfitting**
 A model *overfits* when it learns the training data too specifically — memorizing noise rather than signal. Signs:
+
 - Training accuracy >> test accuracy (large gap)
 - Learning curve: training loss continues dropping while validation loss rises
 - A 15-node decision tree that achieves 99% training accuracy but 72% test accuracy is overfit
 
 **Underfitting**
 A model *underfits* when it is too simple to capture the underlying pattern. Signs:
+
 - Both training and test accuracy are low
 - Learning curve: both training and validation loss plateau at a high value
 - A linear model on clearly nonlinear data is underfit
 
 **Bias–Variance Tradeoff**
 Every model error decomposes into:
+
 - **Bias** (systematic error from wrong assumptions) → underfitting → simple models
 - **Variance** (sensitivity to training data fluctuations) → overfitting → complex models
 - **Irreducible noise** (randomness in the data)
@@ -98,6 +101,7 @@ Every model error decomposes into:
 | Random Forest | Low-Medium | Medium | Well-balanced; popular for tabular data |
 
 **Training, Validation, and Test Sets**
+
 - **Training set**: Data used to fit model parameters (weights)
 - **Validation set**: Data used to tune hyperparameters and select the best model — never used to fit weights
 - **Test set**: Data held out until final evaluation — used exactly once to report unbiased performance. Looking at test performance during development defeats its purpose.
@@ -150,9 +154,9 @@ print(f"Testing samples: {len(X_test)}")
 ```
 
 > **Why 80/20 and 5-fold?**
-> 
+>
 > The 80/20 split is a convention, not a mathematical rule. The right split depends on:
-> 
+>
 > | Factor | Guideline |
 > |--------|----------|
 > | Small dataset (n < 1,000) | 70/30 or use CV only — 20% test may be too small to be reliable |
@@ -160,7 +164,7 @@ print(f"Testing samples: {len(X_test)}")
 > | Time-ordered data | Use chronological split — random splits create temporal leakage |
 > | Grouped data (users, patients) | Split by group — the same user cannot be in both train and test |
 > | Class imbalance | Use stratified split to preserve class ratio |
-> 
+>
 > For 5-fold CV: the choice of 5 folds gives each sample an 80% chance of being in training and 20% in validation. This is practically identical to an 80/20 split but repeated 5 times across different held-out subsets. 10-fold is better for small datasets; 3-fold saves compute for large ones.
 
 ```python
@@ -418,12 +422,14 @@ for train_idx, test_idx in gkf.split(X, y, groups):
 
 **Always Compare to a Baseline**
 Before claiming your model "works," compare to trivial baselines:
+
 - **Regression**: predict the mean; predict the last value; predict by category mean
 - **Classification**: always predict the majority class; random classifier; predict by base rate
 If your model cannot beat a baseline, it has not learned anything useful.
 
 **Class Imbalance**
 If 95% of customers do not churn, a model that always predicts "no churn" gets 95% accuracy while being completely useless. Solutions:
+
 - `class_weight='balanced'` in sklearn: upweights minority class during training
 - SMOTE: synthetic oversampling of minority class
 - Adjust decision threshold: instead of 0.5, use a lower threshold to catch more churners
@@ -433,14 +439,17 @@ A feature that is only available after the target is known will not be available
 
 **Model Calibration**
 A well-calibrated model produces predicted probabilities that match actual frequencies. Check:
+
 ```python
 from sklearn.calibration import calibration_curve
 fraction_of_positives, mean_predicted_value = calibration_curve(y_test, y_prob, n_bins=10)
 ```
+
 A model with AUC=0.85 but poor calibration will mislead business stakeholders who use the probabilities to make decisions.
 
 **Threshold Selection**
 The default 0.5 threshold is rarely optimal. Choose the threshold that minimizes business cost:
+
 ```python
 # For each threshold, compute (FP_cost × FP_count) + (FN_cost × FN_count)
 thresholds = np.linspace(0, 1, 100)
@@ -473,6 +482,7 @@ Before deploying any ML model, verify:
 **Goal:** Build a baseline classification model and understand how to evaluate it beyond accuracy.
 
 **Tasks:**
+
 1. Load the provided customer dataset; split 80/20 with stratification on churn label
 2. Train a LogisticRegression model; report accuracy, precision, recall, F1 on test set
 3. Plot the confusion matrix
@@ -480,6 +490,7 @@ Before deploying any ML model, verify:
 5. Write a 1-sentence interpretation: "Of every 100 customers the model flags, ____ will actually churn."
 
 **Expected Output:**
+
 ```
 Test accuracy: ~0.82 (note: a model predicting "no churn" always gets ~0.80 with 80% non-churners)
 Precision: ~0.58, Recall: ~0.51, F1: ~0.54
@@ -642,12 +653,14 @@ plt.show()
 **Business Scenario:** Predict quarterly sales for RetailCo stores.
 
 **Tasks:**
+
 1. Split data; train LinearRegression
 2. Report RMSE, MAE, R² on test set
 3. Plot predictions vs actuals — examine whether errors are random or systematic
 4. Compare to a baseline: predict mean sales for every store
 
 **Expected Output:**
+
 ```
 Baseline RMSE (predict mean): ~$45,000
 Linear model RMSE: ~$28,000

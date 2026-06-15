@@ -36,11 +36,13 @@ outcomes:
 > **Scenario**: Your data pipeline needs to process 50 million customer transactions. Loading all 50M rows into a list would crash your 16GB RAM server. Generators solve this by processing one row at a time — your server stays alive, your pipeline stays cheap.
 
 The financial reality:
+
 - A list of 50M transaction records might consume 8–12 GB of RAM.
 - With generators, that same pipeline uses under 1 MB — regardless of dataset size.
 - Less RAM means smaller (cheaper) cloud instances. On AWS, that difference can be $500–$2,000/month for always-on analytics workloads.
 
 **Tools you already know that use generators internally:**
+
 - **Pandas `read_csv(chunksize=...)`** — reads CSV files one chunk at a time instead of all at once
 - **Python's `csv.reader`** — yields one row at a time from a file, never loads the whole file
 - **Database cursors** (`psycopg2`, `sqlite3`) — stream query results row by row from the database
@@ -277,6 +279,7 @@ for metric in KPIWindow(["Revenue", "Gross Margin", "CAC", "LTV"]):
 ```
 
 **Expected Output:**
+
 ```
 Revenue
 Gross Margin
@@ -330,6 +333,7 @@ print("Net total:", round(net_total, 2))
 ```
 
 **Expected Output:**
+
 ```
 Preview: [{'id': 480, 'amount': 500, 'channel': 'store', 'fee': 7.5, 'net': 492.5}, {'id': 481, 'amount': 501, 'channel': 'online', 'fee': 7.51, 'net': 493.49}, {'id': 482, 'amount': 502, 'channel': 'online', 'fee': 7.53, 'net': 494.47}, {'id': 483, 'amount': 503, 'channel': 'store', 'fee': 7.54, 'net': 495.46}, {'id': 484, 'amount': 504, 'channel': 'online', 'fee': 7.56, 'net': 496.44}]
 High-value count: 314160
@@ -364,6 +368,7 @@ for category, rows in groupby(combined, key=lambda r: r[0]):
 ```
 
 **Expected Output:**
+
 ```
 Preview rows: [('Accessories', 'Mouse', 40), ('Accessories', 'Keyboard', 20), ('Computers', 'Laptop', 10)]
 Accessories: 60 units

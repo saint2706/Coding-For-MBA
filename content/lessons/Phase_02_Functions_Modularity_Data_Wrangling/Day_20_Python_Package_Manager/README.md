@@ -215,6 +215,7 @@ cat requirements.txt
 ```
 
 **Expected Output (example — actual versions may differ):**
+
 ```
 # Contents of requirements.txt will look like:
 matplotlib==3.8.2
@@ -242,6 +243,7 @@ for pkg in packages:
 ```
 
 **Expected Output (versions vary by environment):**
+
 ```
 Installed Package Versions:
 ----------------------------------------

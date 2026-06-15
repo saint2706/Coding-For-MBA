@@ -202,6 +202,7 @@ Making a model fairer often reduces raw accuracy. This is **expected and accepta
 ### "Fairness Washing"
 
 Beware of companies that publish model cards and fairness metrics but make no actual changes. Responsible AI requires:
+
 1. Measurement (model cards, audits)
 2. **Action** (bias mitigation, retraining, process changes)
 3. Monitoring (ongoing drift detection by demographic group)

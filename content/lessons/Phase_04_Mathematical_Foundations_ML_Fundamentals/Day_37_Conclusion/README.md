@@ -287,6 +287,7 @@ for chunk in chunks:
 **Goal**: Understand NumPy array operations on a correlation matrix.
 
 **Tasks**:
+
 1. Create a 5×5 matrix with values 1–25 (stand-in for the correlation matrix).
 2. Extract the main diagonal (represents each feature's correlation with itself — always 1.0 in a real correlation matrix).
 3. Compute row-wise and column-wise sums to check symmetry and magnitude.
@@ -323,6 +324,7 @@ print(f"Values > {mean_val}: {matrix[indices]}")
 ```
 
 **Expected Output**:
+
 ```
 Matrix:
  [[ 1  2  3  4  5]
@@ -346,6 +348,7 @@ Values > 13.0: [14 15 16 17 18 19 20 21 22 23 24 25]
 **Goal**: Explore and profile a customer DataFrame for ML readiness.
 
 **Tasks**:
+
 1. Run basic exploration — check shape, missing values, and data types to assess data quality before any modeling.
 2. Handle missing income values by filling with the category median (group-aware imputation preserves segment distributions better than a global mean).
 3. Create derived features: `age_group` (binned), `spending_ratio` (spending ÷ income), and temporal features from `signup_date`.
@@ -415,6 +418,7 @@ print(f"\nHigh-value customers: {len(high_value)}")
 ```
 
 **Expected Output (approximate)**:
+
 ```
 Shape: (200, 6)
 Missing values: income    11 ...
@@ -435,6 +439,7 @@ High-value customers: ~12
 **Goal**: Complete end-to-end ML data preparation — from raw simulation to clean `X` and `y` tensors ready for a model.
 
 **Tasks**:
+
 1. Check for data quality issues: missing values and invalid entries (negative incomes from measurement error).
 2. Fix negative income values by replacing them with the column median — a safe, non-leaking imputation.
 3. Visualize the target distribution to check whether it is roughly normal (required by linear regression) or skewed (may need a log transform).
@@ -505,6 +510,7 @@ print(f"Target range: {y.min():.2f} to {y.max():.2f}")
 ```
 
 **Expected Output**:
+
 ```
 Missing values: 0
 Negative incomes: ~3

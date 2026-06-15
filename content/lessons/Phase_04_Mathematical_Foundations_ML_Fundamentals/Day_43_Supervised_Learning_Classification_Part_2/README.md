@@ -65,12 +65,14 @@ A decision tree splits data at each node by finding the feature and threshold th
 
 **Random Forest — Variance Reduction via Ensemble**
 A single decision tree has high variance — it is very sensitive to small changes in training data. Random Forest reduces this by:
+
 1. **Bagging** (Bootstrap Aggregating): Training each tree on a different bootstrapped sample (random sample with replacement). ~37% of samples are "out-of-bag" per tree.
 2. **Feature subsampling**: At each split, consider only a random subset of features (typically √p for classification, p/3 for regression). This decorrelates trees — they make different errors.
 3. **Aggregation**: Average predictions across all trees (regression) or majority vote (classification).
 
 **Out-of-Bag (OOB) Evaluation**
 Each tree is trained on ~63% of data. The remaining ~37% (OOB samples) can be used as a free validation set without a separate train/test split:
+
 ```python
 RandomForestClassifier(oob_score=True)
 print(rf.oob_score_)  # Free estimate of generalization error
@@ -241,6 +243,7 @@ print(f"RF prediction: {'Approved' if rf_model.predict(sample)[0] else 'Denied'}
 ### Gradient Boosting: Conceptual Introduction
 
 While Random Forest builds trees in **parallel** (each tree independent), Gradient Boosting builds trees **sequentially** — each tree corrects the errors of the previous ensemble:
+
 1. Start with a constant prediction (e.g., mean of y)
 2. Compute residuals (actual − predicted)
 3. Fit a small tree to the residuals
@@ -252,16 +255,19 @@ This makes Gradient Boosting more accurate than Random Forest on many tabular da
 ### Feature Importance: What It Means and What to Watch Out For
 
 **MDI Importance (default in sklearn)**: Average impurity decrease across all splits using that feature. Fast, but biased toward:
+
 - High-cardinality features (more possible split points → more chances to appear important)
 - Continuous features over binary ones
 
 **Permutation Importance**: Shuffle one feature at a time; measure how much performance drops. More reliable but slower:
+
 ```python
 from sklearn.inspection import permutation_importance
 result = permutation_importance(rf, X_test, y_test, n_repeats=10)
 ```
 
 **SHAP Values**: Shapley values from game theory — each feature gets credit for its marginal contribution across all orderings:
+
 ```python
 import shap
 explainer = shap.TreeExplainer(rf)
@@ -270,6 +276,7 @@ shap.summary_plot(shap_values[1], X_test)  # Class 1 SHAP values
 ```
 
 **Caveats for SHAP**:
+
 - Highly correlated features split their SHAP values — individually they may look less important than they are jointly
 - SHAP shows model behavior, not causal importance — a feature can have high SHAP but low actual causal effect
 - For business communication, combine SHAP with domain expertise and experimentation
@@ -293,11 +300,11 @@ param_grid = {
 **Why these specific values?** They span the range from "fully grown" to "heavily regularized" for each hyperparameter. The endpoints are chosen to bracket the likely optimum without wasting compute on clearly extreme values.
 
 > **⚠️ Never tune hyperparameters on the test set**
-> 
+>
 > Using the test set to select hyperparameters is a form of overfitting to the test set. The test set exists to estimate *future* performance on data you haven't seen. If you tune on it, your reported test accuracy is optimistic — you've essentially peeked at the answer.
-> 
+>
 > **Correct procedure**: Use nested cross-validation or a dedicated validation set for hyperparameter search; use the test set only for final evaluation.
-> 
+>
 > ```python
 > # WRONG: tune on test set
 > best_params = grid_search_on(X_test, y_test)  # Never do this
@@ -386,11 +393,13 @@ print(f"Best test accuracy: {max(test_scores):.3f}")
 
 **Nested Cross-Validation for Honest Evaluation**
 When both tuning and evaluation happen on the same data, you need nested CV:
+
 - Outer CV: estimates generalization performance
 - Inner CV: tunes hyperparameters within each outer fold
 This prevents hyperparameter selection from leaking into the performance estimate.
 
 **Reproducible Parallel Tuning**
+
 ```python
 GridSearchCV(
     model, param_grid, 
@@ -403,6 +412,7 @@ GridSearchCV(
 
 **Inference Latency**
 Random Forest with 500 trees × max_depth=30 can be 100ms per prediction — unacceptable for real-time APIs. Measure:
+
 ```python
 import time
 start = time.time()
@@ -410,10 +420,12 @@ rf.predict(X_test)
 latency = (time.time() - start) / len(X_test) * 1000  # ms per sample
 print(f"Latency: {latency:.1f} ms/sample")
 ```
+
 If latency is unacceptable: reduce n_estimators, limit max_depth, or use a single calibrated tree for serving.
 
 **Governance Risk of Business Rules from Decision Trees**
 Converting a decision tree's branches into hard business rules (e.g., "deny credit to all customers with income < $30k") codifies model behavior into policy. This is risky:
+
 1. The rule was optimized for accuracy, not necessarily for fairness
 2. Rules do not update when the world changes; models can be retrained
 3. Rules may discriminate against protected groups even when income correlates with a protected attribute
@@ -458,6 +470,7 @@ Always legal-review any model-derived rule before implementing as policy.
 | **Categorical features** | Needs encoding | Can split on categories | Needs encoding | LightGBM handles natively |
 
 **When to choose which:**
+
 - Start with Logistic Regression as your interpretable baseline.
 - If accuracy is insufficient, try Random Forest (less tuning than GBM, robust default).
 - If you need maximum accuracy and have time to tune, use LightGBM or XGBoost.
@@ -470,6 +483,7 @@ Always legal-review any model-derived rule before implementing as policy.
 **Business Scenario:** RetailCo wants to identify high-risk customers (likely to default on store credit) using their purchase history and demographics.
 
 **Tasks:**
+
 1. Train a Decision Tree with default settings; report test accuracy and identify signs of overfitting
 2. Train a Random Forest with n_estimators=100; compare accuracy, recall, F1 vs Decision Tree
 3. Run RandomizedSearchCV on Random Forest hyperparameters; report best params and CV score

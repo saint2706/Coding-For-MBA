@@ -327,6 +327,7 @@ print(f"Total revenue: ${total:,}")
 ```
 
 **Expected Output:**
+
 ```
 Revenues: [4995, 1450, 2370, 4485]
 High-value products: ['Laptop', 'Mouse', 'Keyboard', 'Monitor']
@@ -372,6 +373,7 @@ print("By domain:", dict(by_domain))
 ```
 
 **Expected Output:**
+
 ```
 Cleaned: ['alice@email.com', 'bob@company.org', 'charlie@domain.net', 'invalid-email', 'diana@test.io']
 Valid: ['alice@email.com', 'bob@company.org', 'charlie@domain.net', 'diana@test.io']
@@ -411,6 +413,7 @@ for row in doubled_matrix:
 ```
 
 **Expected Output:**
+
 ```
 Flattened: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 Transposed:

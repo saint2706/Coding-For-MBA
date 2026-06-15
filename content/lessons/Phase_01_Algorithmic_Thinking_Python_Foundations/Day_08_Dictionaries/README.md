@@ -302,6 +302,7 @@ lookup_product("SKU999")
 ```
 
 **Expected Output:**
+
 ```text
 Product: Mechanical Keyboard
 Price: $89.99
@@ -341,6 +342,7 @@ for word, count in sorted_words[:5]:
 ```
 
 **Expected Output:**
+
 ```text
 === WORD FREQUENCY ===
 python: 3
@@ -389,6 +391,7 @@ for category, total in by_category.items():
 ```
 
 **Expected Output:**
+
 ```text
 === SALES BY REGION ===
 North: $2,350.00

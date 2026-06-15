@@ -230,6 +230,7 @@ ORDER BY s.revenue DESC;
 ### Exercise 3: Warehouse Design
 
 For each scenario, choose a warehouse platform and justify:
+
 1. A startup with 5 analysts, unpredictable query volume, and a $500/month budget.
 2. An enterprise with 50 data engineers, heavy ETL, and existing AWS investment.
 3. A data marketplace company that needs to share live datasets with 100+ partners.

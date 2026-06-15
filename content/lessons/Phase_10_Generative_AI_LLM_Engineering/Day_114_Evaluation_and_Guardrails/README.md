@@ -375,6 +375,7 @@ def monitored_rag_call(query: str) -> str:
 4. **Jailbreak**: Adversarial users bypass guardrails via creative prompting.
 
 Each failure mode requires different countermeasures:
+
 - Hallucination → RAG + faithfulness evaluation
 - Refusal → calibrate classifier thresholds
 - Drift → conversation resets, session limits

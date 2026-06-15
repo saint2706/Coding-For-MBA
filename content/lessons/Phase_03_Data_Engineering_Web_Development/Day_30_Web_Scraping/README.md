@@ -91,6 +91,7 @@ CSS selectors are patterns that identify HTML elements. They were originally des
 | Multiple | `s1, s2` | `"h1, h2"` | All `<h1>` and `<h2>` elements |
 
 **Examples:**
+
 ```python
 # Find all elements with class="price"
 prices = soup.select(".price")
@@ -236,10 +237,12 @@ def safe_request(url, retries=3):
 Many modern websites are **Single Page Applications (SPAs)** — they use JavaScript to load content dynamically *after* the initial HTML is delivered. When you use `requests.get(url)`, you receive only the initial HTML shell, and the actual product listings / prices / data are missing because they haven't been loaded yet by JavaScript.
 
 **How to tell if a site uses JavaScript rendering:**
+
 - Right-click → "View Page Source" and the data you see in the browser is NOT in the source
 - The URL doesn't change as you click around, but the content changes
 
 **Solutions:**
+
 | Approach | Tool | When to Use |
 |----------|------|-------------|
 | Static HTML scraping | `requests` + `BeautifulSoup` | Page content is in the raw HTML |
@@ -247,6 +250,7 @@ Many modern websites are **Single Page Applications (SPAs)** — they use JavaSc
 | Official API | `requests` + JSON | Site offers a public API |
 
 **Playwright example (headless browser):**
+
 ```python
 # pip install playwright && playwright install
 from playwright.sync_api import sync_playwright
@@ -272,12 +276,14 @@ with sync_playwright() as p:
 **Business Scenario:** The Marketing team wants to build an internal database of inspirational quotes for use in weekly newsletters and social media posts. They need a script that automatically scrapes the public quotes website `http://quotes.toscrape.com` and returns a structured list of quotes with their authors and tags.
 
 **Your Task:**
+
 1. Fetch the first page of `http://quotes.toscrape.com`
 2. Extract all quote texts, author names, and tags
 3. Store the results in a list of dictionaries (or a DataFrame)
 4. Print the first 3 results in a formatted way
 
 **Expected Output:**
+
 ```
 Quote 1:
   Text: "The world as we have created it is a process of our thinking..."
@@ -330,12 +336,14 @@ print(df)
 **Business Scenario:** Marketing needs ALL quotes from the website (which spans multiple pages), not just the first page. The script must follow pagination links and stop when there are no more pages.
 
 **Your Task:**
+
 1. Start at `http://quotes.toscrape.com`
 2. After scraping each page, look for the "Next" button and follow the link
 3. Continue until there is no "Next" page (or until you've scraped 5 pages max to be polite)
 4. Count total quotes collected and print the unique authors found
 
 **Expected Output:**
+
 ```
 Scraping page 1...
 Scraping page 2...
@@ -400,12 +408,14 @@ print(df.head())
 **Business Scenario:** An analyst needs to extract a financial comparison table from a public webpage and load it into a Pandas DataFrame for further analysis. HTML tables are ubiquitous in financial reporting, economic databases, and Wikipedia — `pd.read_html()` is the fastest way to extract them.
 
 **Your Task:**
+
 1. Use `pd.read_html()` to extract a table from a public URL (you can use `https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)` or any table-heavy page)
 2. Select the most relevant table from the list returned
 3. Clean the column names (strip whitespace, rename as needed)
 4. Display the first 5 rows
 
 **Expected Output:**
+
 ```
 Tables found on page: 4
 Using table index 1 (first main data table):

@@ -7,6 +7,7 @@
 Phase 01 serves as the gold standard for the curriculum. A deep audit reveals that while the core pedagogical narrative (the "Never-Coded" bridge, business framing) is incredibly strong, there is a consistent structural debt across almost all lessons. Specifically, Mastery Check answers lack `<details>` collapsing tags, and there is a systemic omission of Glossary sections and explicit Expected Outputs in the Hands-on Labs. The lessons are fundamentally excellent, but they require systematic structural formatting to achieve the true "Quality Bar".
 
 **Recurring gaps in this phase:**
+
 - [G:Mastery] Mastery Check answers are consistently left un-collapsed.
 - [C:Lab] Hands-on Lab exercises frequently drop bare code or goals without providing exact `Expected Output` blocks.
 - [O:Glossary] Missing explicit `## Glossary` of key terms section across the board.
@@ -22,6 +23,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The lesson opens strong with 'To a computer, code is just text', establishing an excellent conceptual baseline. The 'Coffee Shop Analogy' effectively maps abstract algorithms to real-world tasks. However, it misses the mark on providing a cohesive, structured summary at the end and completely omits the glossary.
 
 **Gap task stubs:**
+
 - [ ] [P1][J:Summary] Missing a cohesive, structured summary at the end.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -35,6 +37,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** While the lesson successfully frames variables as 'labeled storage boxes', the section discussing `type()` and `id()` feels somewhat abrupt. Quotes like 'Python figures it out' could benefit from deeper production context regarding type safety. The hands-on labs are good but lack explicit expected outputs.
 
 **Gap task stubs:**
+
 - [ ] [P1][I:Senior] Add production insight regarding type safety where it states 'Python figures it out'.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -51,6 +54,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The lesson does a great job explaining PEMDAS and modulo (`%`), using practical examples like 'Checking if a number is even'. However, the transition into bitwise operators is thin, simply stating 'You won't use these often' without providing a strong business justification for when you *would*.
 
 **Gap task stubs:**
+
 - [ ] [P2][E:Framing] The transition into bitwise operators is thin ('You won't use these often') and lacks a business justification.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -67,6 +71,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** This is a very strong lesson. The analogy comparing strings to 'a bead necklace' is perfect for beginners. The 'f-strings' section correctly highlights modern formatting, stating 'This is the modern Python way'. It only falls short on the structural Quality Bar items like collapsible mastery checks.
 
 **Gap task stubs:**
+
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
 - [ ] [P1][C:Lab] Line 237: Exercise provides bare code without expected output. Add Expected Output section after goal: `**Goal**: Generate personalized email ad...`
@@ -81,6 +86,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The lesson frames lists effectively as 'dynamic containers', but the discussion on list slicing (e.g., `my_list[1:4]`) is slightly mechanical. Quoting 'It extracts a portion' is accurate but lacks a strong business 'why'—such as extracting the top 3 sales figures from a sorted list.
 
 **Gap task stubs:**
+
 - [ ] [P1][E:Framing] List slicing explanation ('It extracts a portion') lacks a strong business 'why' (e.g., extracting top 3 sales figures).
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -97,6 +103,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** A solid explanation of immutability, using the 'Coordinates on a map' analogy to explain why you wouldn't want data to change. The section contrasting Lists vs Tuples notes 'Tuples are faster', but lacks deeper senior insight on memory allocation differences in large-scale applications.
 
 **Gap task stubs:**
+
 - [ ] [P2][I:Senior] The claim 'Tuples are faster' lacks deeper senior insight on memory allocation differences in large-scale applications.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -113,6 +120,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The business framing here is excellent, particularly the use case for 'Finding unique customers'. The lesson correctly states 'Sets are unordered', but the Venn diagram analogy could be pushed further with a concrete SQL JOIN comparison for MBA students familiar with databases.
 
 **Gap task stubs:**
+
 - [ ] [P1][A:Concept] The Venn diagram analogy could be pushed further with a concrete SQL JOIN comparison.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -129,6 +137,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The 'Phonebook' analogy works well, but the lesson glosses over the `.get()` method. Stating 'Use .get() to avoid errors' is true, but it misses a critical production insight regarding default values and handling missing JSON keys in API responses.
 
 **Gap task stubs:**
+
 - [ ] [P1][I:Senior] Glosses over the `.get()` method ('Use .get() to avoid errors'). Needs critical production insight regarding default values and handling missing JSON keys in API responses.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -145,6 +154,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The logical flow of `if/elif/else` is well-explained using a 'Bouncer at a club' analogy. However, the section on truthy/falsy values simply lists them ('0 is False, empty list is False') without explaining *why* this is a common idiom in Python codebases (e.g., `if not my_list:`).
 
 **Gap task stubs:**
+
 - [ ] [P1][A:Concept] Lists truthy/falsy values but doesn't explain *why* it's a common idiom in Python codebases (e.g., `if not my_list:`).
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -161,6 +171,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The distinction between `for` and `while` loops is clear. The lesson says 'Use a while loop when you don't know how many times to repeat', which is a good rule of thumb. However, it lacks a strong 'Common Pitfalls' callout regarding infinite loops and blocking the main thread.
 
 **Gap task stubs:**
+
 - [ ] [P1][H:Pitfalls] Lacks a strong 'Common Pitfalls' callout regarding infinite loops and blocking the main thread.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -178,6 +189,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The concept of DRY (Don't Repeat Yourself) is introduced effectively. The lesson states 'Functions act as mini-programs', which is conceptually sound. However, the explanation of `*args` and `**kwargs` feels rushed and lacks a concrete business scenario where arbitrary arguments are necessary.
 
 **Gap task stubs:**
+
 - [ ] [P1][E:Framing] Explanation of `*args` and `**kwargs` feels rushed and lacks a concrete business scenario.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -194,6 +206,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** This is a more advanced topic, and the lesson rightly focuses on memory efficiency ('Yielding one item at a time saves RAM'). The explanation of `yield` is good, but the overall framing feels slightly more academic and less 'MBA-focused' than the earlier lessons.
 
 **Gap task stubs:**
+
 - [ ] [P2][E:Framing] Overall framing feels slightly more academic and less 'MBA-focused' than earlier lessons.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
@@ -211,6 +224,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** A highly practical lesson. The framing around 'Debugging is just scientific method' is fantastic. However, the lesson relies heavily on `print()` debugging and only briefly mentions `pdb`. It says 'For complex issues, use a debugger', but doesn't actually show *how* to step through code.
 
 **Gap task stubs:**
+
 - [ ] [P1][A:Concept] States 'For complex issues, use a debugger' but doesn't actually show *how* to step through code.
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.
 - [ ] [P1][G:Mastery] Missing `## Mastery Check` section.
@@ -224,6 +238,7 @@ Phase 01 serves as the gold standard for the curriculum. A deep audit reveals th
 **Assessment:** The lesson effectively pitches list comprehensions as 'Pythonic and concise'. It correctly warns against overly complex comprehensions ('Don't sacrifice readability for brevity'). However, it misses an opportunity to explicitly compare the execution speed of comprehensions vs standard loops.
 
 **Gap task stubs:**
+
 - [ ] [P1][I:Senior] Misses an opportunity to explicitly compare the execution speed of comprehensions vs standard loops.
 - [ ] [P1][G:Mastery] Mastery Check answers are not collapsible (missing `<details>` tags).
 - [ ] [P1][O:Glossary] Missing explicit `## Glossary` section. Append to the bottom of the document.

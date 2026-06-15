@@ -244,6 +244,7 @@ Incremental models assume new rows have higher timestamps. But data sometimes ar
 ### Model Governance at Scale
 
 With 500+ models, you need governance:
+
 - **Model access**: `access: protected` prevents other teams from referencing your staging models
 - **Model groups**: organize models by team ownership
 - **Model versions**: deprecate old model versions while maintaining backward compatibility

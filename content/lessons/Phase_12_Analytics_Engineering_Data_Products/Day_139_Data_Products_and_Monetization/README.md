@@ -165,12 +165,15 @@ monetization_models = {
 ## Hands-on Lab
 
 ### Exercise 1: Identify Data Product Opportunities
+
 For a B2B SaaS company with 5 years of usage data, identify 3 potential data products: 1 internal, 1 embedded analytics, and 1 external API. Define value proposition and target audience.
 
 ### Exercise 2: Pricing Model Design
+
 Design pricing tiers for an embedded analytics dashboard feature in a project management tool. Include free, pro, and enterprise with specific limits and features.
 
 ### Exercise 3: Data Product Roadmap
+
 Create a 6-month roadmap for launching a data product, from MVP to GA, including technical milestones, go-to-market activities, and success metrics.
 
 ---

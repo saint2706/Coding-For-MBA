@@ -41,6 +41,7 @@ Imagine you're managing a customer support desk:
 The async agent is not "working faster" on each ticket—they're just **not wasting idle waiting time**.
 
 That is the async mental model for APIs:
+
 - Keep CPU busy with useful work.
 - Yield when waiting on network/database I/O.
 - Resume when data is ready.
@@ -52,6 +53,7 @@ That is the async mental model for APIs:
 ### 1. Asyncio Mental Model
 
 #### `await`
+
 `await` means: "Pause this coroutine here, and let the event loop run something else until this result is ready."
 
 ```python
@@ -59,22 +61,29 @@ result = await fetch_customer_profile(customer_id)
 ```
 
 #### Event loop
+
 The event loop is the scheduler that:
+
 1. Tracks pending coroutines
 2. Runs any coroutine that is ready
 3. Switches tasks when one hits an `await`
 
 #### Cooperative multitasking
+
 Tasks cooperate by yielding control at `await` points. Unlike preemptive threads, the loop won't forcibly interrupt Python code mid-line.
 
 #### When async helps
+
 Async shines for **I/O-bound** workloads:
+
 - Calling external APIs
 - Waiting on database/network
 - Reading many remote files/services
 
 #### When async does *not* help much
+
 Async usually doesn't speed up **CPU-bound** tasks:
+
 - Heavy Pandas transforms
 - Large model inference on CPU
 - Complex numeric loops
@@ -115,6 +124,7 @@ async def market_snapshot(symbol: str):
 ```
 
 #### Timeout/retry basics
+
 - Always set explicit timeouts.
 - Retry only for transient failures (timeouts, 429, 5xx).
 - Use bounded retries with backoff to avoid retry storms.
@@ -183,6 +193,7 @@ asyncio.run(main())
 ```
 
 **Metrics to capture in your lab notes:**
+
 - Total runtime
 - Requests/second
 - Error count (timeouts, non-200)
@@ -193,18 +204,23 @@ asyncio.run(main())
 ## Senior-Level Insights
 
 ### 1. Blocking I/O inside async handlers
+
 Calling blocking libraries in `async def` endpoints stalls the event loop and hurts all concurrent requests. Use async-native clients or offload blocking tasks.
 
 ### 2. Connection pooling
+
 Creating a new HTTP client per request can waste sockets and TLS handshakes. Prefer shared clients/pools with lifecycle management for high throughput.
 
 ### 3. Backpressure
+
 If inbound traffic exceeds downstream capacity, queue sizes explode and tail latency spikes. Use bounded concurrency (semaphores), timeouts, and admission control.
 
 ### 4. Rate limits
+
 External APIs often enforce QPS limits. Concurrency without limit awareness triggers 429s. Build rate-aware batching, retries with jitter, and circuit-breaker behavior.
 
 ### 5. Throughput vs p95 latency
+
 A higher request-per-second number can hide bad tail latency. Evaluate both throughput and p95/p99 response times when making architecture decisions.
 
 ### `asyncio.gather()` vs `asyncio.create_task()` — When to Use Which
@@ -256,6 +272,7 @@ asyncio.run(run_with_gather())
 **Business Scenario:** Your Day 34 product catalog API currently uses synchronous database calls. Under load testing, it becomes a bottleneck because each request blocks Python while waiting for the database. You need to convert the synchronous handler to async to improve throughput.
 
 **Baseline synchronous code (from Day 34 — convert THIS):**
+
 ```python
 import time
 from fastapi import FastAPI
@@ -275,11 +292,13 @@ def get_product(product_id: int):
 ```
 
 **Your Task:**
+
 1. Convert `fetch_product_from_db` to an async function using `asyncio.sleep` instead of `time.sleep`
 2. Convert the FastAPI endpoint to `async def`
 3. Verify the endpoint still returns the correct response
 
 **Expected converted code:**
+
 ```python
 import asyncio
 from fastapi import FastAPI
@@ -299,6 +318,7 @@ async def get_product(product_id: int):
 ```
 
 **Expected output (curl test):**
+
 ```bash
 curl "http://localhost:8000/products/1"
 # → {"id": 1, "name": "Laptop", "price": 999.99}
@@ -314,12 +334,14 @@ curl "http://localhost:8000/products/1"
 **Business Scenario:** A fintech startup's portfolio dashboard needs to fetch current prices for 12 different stocks. The synchronous approach takes 12 × 0.5s = 6 seconds per request. Using `asyncio.gather()` to fetch all 12 concurrently should bring this down to ~0.5s (one round-trip instead of twelve sequential ones).
 
 **Your Task:**
+
 1. Write a `fetch_stock_price(ticker)` async function that simulates a 0.5s API call
 2. Benchmark **sequential** execution: loop through 12 tickers with `await` one at a time
 3. Benchmark **concurrent** execution: use `asyncio.gather(*[fetch_stock_price(t) for t in tickers])`
 4. Print the elapsed time for both approaches
 
 **Expected code structure:**
+
 ```python
 import asyncio
 import time
@@ -353,10 +375,12 @@ asyncio.run(concurrent_fetch())
 ```
 
 **Expected terminal output:**
+
 ```
 Sequential: 6.01s for 12 stocks
 Concurrent: 0.50s for 12 stocks
 ```
+
 *The concurrent version is ~12× faster because all 12 tasks run simultaneously instead of one at a time.*
 
 1. Run the benchmark script above.
@@ -369,6 +393,7 @@ Concurrent: 0.50s for 12 stocks
 **Business Scenario:** A third-party market data API allows a maximum of 5 requests per second. Your application needs to fetch data for 20 companies but must respect the rate limit — otherwise, the API will return HTTP 429 (Too Many Requests) and block your IP.
 
 **Starter Code Template (complete the TODOs):**
+
 ```python
 import asyncio
 import aiohttp
@@ -429,6 +454,7 @@ print(f"\nCompleted: {successful}/{TOTAL_COMPANIES} successful fetches")
 ```
 
 **Expected terminal output:**
+
 ```
 Batch 1: 5 companies fetched
 Batch 2: 5 companies fetched
@@ -439,6 +465,7 @@ Completed: 20/20 successful fetches
 ```
 
 Add:
+
 - per-request timeout
 - retries with exponential backoff
 - handling for 429 responses (`Retry-After` if present)

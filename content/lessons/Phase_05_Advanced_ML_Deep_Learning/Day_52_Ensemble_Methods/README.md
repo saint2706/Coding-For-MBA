@@ -937,6 +937,7 @@ for rho in [0.0, 0.3, 0.5, 0.8, 1.0]:
 ```
 
 **Production diversity strategies:**
+
 | Strategy | Implementation | Expected Correlation |
 |----------|---------------|---------------------|
 | Different algorithms | RF + XGBoost + Logistic | ~0.5–0.7 |

@@ -40,6 +40,7 @@ outcomes:
 A standard LLM (like ChatGPT alone) is like calling that employee on the phone and reading their response aloud to your team. They give you great advice — but they can't *do* anything themselves.
 
 An **AI Agent** is that same employee — but now they have:
+
 - 🖥️ **A computer** (code execution tool)
 - 📞 **A phone** (API calling tool)
 - 📊 **A spreadsheet** (database query tool)

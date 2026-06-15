@@ -40,6 +40,7 @@ outcomes:
 **Imagine a brilliant historian who knows everything about world history — but your company started yesterday.**
 
 They can't answer *"What was our Q3 revenue?"* because it wasn't in their training data. Two options:
+
 1. **Fine-tuning**: Re-educate them with all your company documents. Months of work. Expensive. They forget old history.
 2. **RAG (Retrieval-Augmented Generation)**: Give them a library card and a very fast research assistant. Before every question, the assistant finds the 5 most relevant pages from your company docs and hands them to the historian. The historian reads those pages and gives you a perfect answer using both their world knowledge AND your company-specific data.
 
@@ -412,6 +413,7 @@ print(response)
 You have a company knowledge base with 50,000 chunks from: policies (10K), product docs (25K), financial reports (15K).
 
 Design a metadata schema and filtering strategy for these queries:
+
 1. "What is our GDPR data deletion process?" (policy)
 2. "Does Product X support OAuth 2.0?" (product, specific product)
 3. "What was EMEA revenue in Q4 2024?" (financial, region, quarter, year)

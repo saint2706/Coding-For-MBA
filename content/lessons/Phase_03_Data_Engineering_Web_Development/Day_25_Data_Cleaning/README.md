@@ -194,6 +194,7 @@ df_unique = df.drop_duplicates(
 Outliers can distort statistics. Detect them with IQR or Z-scores.
 
 **What is IQR?** The **Interquartile Range (IQR)** measures the spread of the middle 50% of your data. It is calculated as Q3 − Q1, where:
+
 - **Q1 (1st quartile / 25th percentile)**: the value below which 25% of data falls
 - **Q3 (3rd quartile / 75th percentile)**: the value below which 75% of data falls
 
@@ -298,6 +299,7 @@ df["revenue_capped"] = df["revenue"].clip(lower=lower_bound, upper=upper_bound)
 **Business Scenario:** The Marketing team has collected customer records from three different CRM systems following a company merger. Each system stored data in different formats — names in ALL CAPS, emails with inconsistent casing, phone numbers with varying punctuation. Before running a re-engagement campaign, Marketing needs a single unified, clean customer list with no duplicates.
 
 **Your Task:**
+
 1. Standardize all customer names to Title Case (strip leading/trailing spaces)
 2. Normalize all email addresses to lowercase
 3. Extract only the numeric digits from phone numbers and flag valid 10-digit numbers
@@ -372,12 +374,14 @@ print(f"\nValid phone numbers: {cleaned['Phone_Valid'].sum()}/{len(cleaned)}")
 ```
 
 **Expected Output:**
+
 ```
    Name               Email             Phone       Signup_Date  Phone_Valid
 0  Alice Johnson      alice@gmail.com   5551234567  2024-01-15   True
 1  Bob Smith          bob@company.org   5552345678  2024-01-20   True
 2  Charlie Brown      charlie@test.com  5553456789  2024-02-01   True
 ```
+
 *Note: The duplicate Alice Johnson row and the null-name row are removed, leaving 3 unique records.*
 
 ---
@@ -387,6 +391,7 @@ print(f"\nValid phone numbers: {cleaned['Phone_Valid'].sum()}/{len(cleaned)}")
 **Business Scenario:** Your e-commerce platform experienced a database sync error during a server migration, causing some order records to be written twice. The finance team can't close the books until duplicate orders are identified and removed — otherwise revenue totals will be inflated.
 
 **Your Task:**
+
 1. Identify all duplicate Order IDs in the dataset
 2. Report how many duplicate records were found and from how many distinct orders
 3. Remove duplicates, keeping the first occurrence of each Order ID
@@ -442,6 +447,7 @@ print(f"\nTotal revenue: ${cleaned_sales['Amount'].sum():,.2f}")
 ```
 
 **Expected Output:**
+
 ```
 Found 4 duplicate records from 2 orders
 Cleaned: 6 → 4 records
@@ -456,6 +462,7 @@ Total revenue: $1,409.96
 **Business Scenario:** The Operations team exports product catalog data from a legacy inventory system that has never been properly validated. The downstream pricing engine cannot accept products with negative prices, invalid stock levels, or duplicate product names. You need to build a complete, reusable cleaning pipeline.
 
 **Your Task:**
+
 1. Drop rows with null product names
 2. Standardize product names to Title Case (strip whitespace)
 3. Strip `$` and `,` from price strings and convert to float
@@ -541,6 +548,7 @@ print(cleaned)
 ```
 
 **Expected Output:**
+
 ```
 Starting with 6 records
 After dropping null names: 5
@@ -554,6 +562,7 @@ Cleaned Data:
 1  Mouse         29.99  electronics  3.8     50
 2  Keyboard      79.99  electronics  4.35    75
 ```
+
 *(Laptop Pro duplicate, negative price Monitor, and negative stock entry are all removed)*
 
 ---

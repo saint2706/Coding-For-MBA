@@ -7,6 +7,7 @@
 Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-coded bridge, business framing, senior insights, three exercises, explained mastery checks, and summaries—but most lessons are concise surveys rather than production-ready instruction. The recurring weaknesses are absent `quiz.json` files and glossaries, labs without supplied datasets or verifiable expected outputs, weak cross-lesson/capstone continuity, and substantial missing modern-practice coverage. `extras/README.md` is a supplementary-materials index and quick-start, not a lesson, so it was reviewed but not counted; Days 68–72 overlap Phase 6 numbering and therefore create a K:Xref/navigation risk.
 
 **Recurring gaps in this phase:**
+
 - Every audited lesson directory lacks `quiz.json`, and every README lacks a dedicated glossary.
 - Most labs provide prompts or completed examples instead of sample data, executable steps, and expected outputs that let learners verify their work.
 - The capstone/recurring project thread appears late rather than carrying a single governed BI product through the phase.
@@ -24,6 +25,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** A strong Phase-1-like opener with a ship-dashboard bridge, business stakes, senior guidance, exercises, and explained mastery answers. However, the lab mostly gives the answer—such as “Definition A,” “Definition B,” and a finished CEO dashboard—rather than letting a learner work from data and verify an output, while the “BI Stack (ELT)” is too compressed to establish production foundations.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Rebuild Exercises 1–3 around a supplied events/sales dataset, explicit setup and execution steps, learner deliverables, and concrete expected metric/dashboard outputs instead of presenting completed answers such as “$1.2M Closed Revenue.”
 - [ ] [P1][M:Coverage] Expand “The BI Stack (ELT)” with source systems, warehouse/lakehouse, orchestration, transformation, semantic layer, BI consumption, observability, and ownership boundaries.
 - [ ] [P1][M:Coverage] Add metric-contract coverage: grain, inclusion/exclusion rules, time zone, late-arriving events, owners, certification, and change approval for the “Active User” example.
@@ -40,6 +42,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The translator analogy and “What decision will you make with that data?” framing are excellent for MBA learners, and the lesson gives practical stakeholder language. Yet its exercises again resolve their own scenarios, and the model-risk “Translation Lab” is an abrupt, unsupported assignment with no sample evidence, rubric, or expected memo.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Supply a realistic stakeholder-request packet, conflicting interview notes, data extract, prioritization rubric, steps, and an example expected one-page decision memo for the Translation Lab.
 - [ ] [P1][M:Coverage] Add stakeholder mapping, decision-rights/RACI, intake SLAs, discovery interviews, requirements documentation, backlog scoring, and adoption measurement.
 - [ ] [P1][A:Concept] Qualify “Behavior (Retention) is usually the most honest signal” by explaining when surveys, support data, and behavior are biased or measure different constructs.
@@ -56,6 +59,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The weight-loss bridge, cohort framing, unit economics, Goodhart’s Law, and seasonality provide a useful conceptual survey. The treatment is nevertheless too formula-driven: “LTV = ARPU / Churn Rate” is presented without assumptions, the cohort exercise has no raw event data, and learners do not practice validating metric definitions against edge cases.
 
 **Gap task stubs:**
+
 - [ ] [P0][A:Concept] Expand the LTV/CAC formulas with assumptions, contribution margin, cohort vs predictive LTV, payback period, annual/monthly churn consistency, and worked counterexamples where `ARPU / Churn Rate` misleads.
 - [ ] [P0][C:Lab] Provide transaction and activity-event sample data, steps to build a cohort matrix and unit-economics model, plus expected retention cells, ratios, and interpretation.
 - [ ] [P1][M:Coverage] Add north-star metrics, guardrail/counter-metrics, metric trees, denominator bias, Simpson’s paradox, survivorship bias, and metric versioning.
@@ -72,6 +76,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The lesson makes OLTP/OLAP, row/column storage, and ELT approachable and includes a useful star-schema prompt. Its “Modern Data Stack” is a narrow happy path, though, and the dbt lab offers only a tiny finished `SELECT` without showing how learners run, test, or inspect it.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Turn “Simple dbt Logic” into an executable mini-project with seed data, environment steps, commands, tests, and expected model rows/documentation output.
 - [ ] [P1][M:Coverage] Add lake, warehouse, lakehouse, data mart, operational store, streaming, federated query, and build-vs-buy decision guidance.
 - [ ] [P1][F:Tables] Add a decision table comparing OLTP, warehouse, lake, and lakehouse by workload, latency, governance, cost, and when not to use each.
@@ -89,6 +94,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** This is one of the more hands-on early lessons: it compares formats and shows API pagination and nested JSON. Still, most code blocks lack a full what/why/expected-result wrapper, and the ingestion pattern omits authentication, retries, incremental state, schema contracts, deduplication, and operational verification.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Provide runnable local API/JSON fixtures and expected flattened rows, page counts, checkpoints, and file-size comparisons for all exercises.
 - [ ] [P1][B:CodeCtx] Add what/why preambles and expected outputs to every code block, especially the initial JSON snippet and pagination loop.
 - [ ] [P1][M:Coverage] Add authentication/secrets, rate-limit backoff, retries, idempotency, incremental extraction/watermarks, CDC, webhooks, streaming, and dead-letter handling.
@@ -106,6 +112,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The lesson gives accessible examples of windows, CTEs, indexing, and common BI calculations, with readable business use cases. But it jumps directly to query fragments; there is no sample schema/data, dialect declaration, execution path, or expected result table, and database-performance coverage is reduced largely to “Indexing.”
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Supply runnable tables and seed rows for leaderboard, MoM growth, and moving average exercises, with exact expected result tables and edge cases for ties, missing months, and nulls.
 - [ ] [P1][B:CodeCtx] Add what/why preambles, SQL dialect notes, and result previews to every SQL block, including the “Bad (Nested)” and “Good (Modular)” comparison.
 - [ ] [P1][M:Coverage] Add query plans, partitioning/clustering, predicate pushdown, join strategies, cardinality, scan cost, materialized views, and warehouse-specific optimization.
@@ -122,6 +129,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The laundry-folding bridge and unpivot/merge/append distinctions are clear and useful for spreadsheet-oriented learners. The lesson remains tool-agnostic to the point of being non-runnable: its exercises lack downloadable dirty data and expected cleaned outputs, while “Replace errors with 0” risks teaching unsafe remediation without business rules.
 
 **Gap task stubs:**
+
 - [ ] [P0][A:Concept] Replace blanket “Replace errors with 0” guidance with a decision framework for null, invalid, unknown, not-applicable, quarantine, imputation, and escalation.
 - [ ] [P0][C:Lab] Add dirty CSV/Excel fixtures, Power Query and SQL/Python paths, step-by-step transformations, and expected cleaned tables/data-quality reports.
 - [ ] [P1][M:Coverage] Add profiling, type inference, standardization, deduplication, entity resolution, reconciliation, lineage, reproducibility, and data-cleaning tests.
@@ -138,6 +146,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The lesson offers memorable principles—“If it doesn't help the user understand the data, delete it,” pre-attentive processing, chart selection, accessibility, and a scoring rubric. It lacks actual before/after visual artifacts and datasets, so the makeover and accessibility exercises cannot be objectively completed or compared.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Provide a flawed dashboard file/image plus source data, tool-specific remake steps, an accessible target artifact, and expected/rubric-scored output.
 - [ ] [P1][M:Coverage] Add dashboard purpose/personas, analytical vs operational dashboards, interaction/filter design, mobile/responsive design, performance, freshness, and adoption telemetry.
 - [ ] [P1][M:Coverage] Add uncertainty, confidence intervals, annotations, small multiples, misleading axes, map pitfalls, and ethical visualization.
@@ -154,6 +163,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** Semantic layers, import/direct query, RLS, headless BI, TCO, and governance are the right platform-selection concepts. However, the exercises are conceptual placeholders—“Write a rule”—and there is no concrete platform comparison, automation implementation, sample identity model, or expected security test.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Create an executable RLS/semantic-model lab with users, roles, sample sales data, setup steps, test cases, and expected visible-row counts per role.
 - [ ] [P1][M:Coverage] Add platform evaluation across Tableau, Power BI, Looker, and open-source/headless options, including licensing, embedding, APIs, governance, deployment, and lock-in.
 - [ ] [P1][M:Coverage] Add CI/CD, version control, environments, service accounts, refresh orchestration, alerting, usage monitoring, and disaster recovery.
@@ -171,6 +181,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The lesson connects marketing, product, sales, finance, and operations metrics to value and strongly reinforces “Don't be a Chart Monkey.” Its formulas and three short exercises are too shallow for domain analytics: definitions, denominators, accounting treatment, attribution, and cross-functional metric conflicts are largely absent.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Supply a cross-functional company dataset and require a metric tree, funnel, inventory turn, churn/NRR calculations, reconciliation, recommendation, and expected outputs.
 - [ ] [P1][M:Coverage] Add finance metrics (gross margin, cash conversion, variance), marketing attribution/ROAS, product activation/retention, sales coverage/win rate, and operations service levels.
 - [ ] [P1][A:Concept] Define formulas with grains, periods, inclusions/exclusions, and caveats; explicitly distinguish logo vs revenue churn and bookings vs revenue.
@@ -187,6 +198,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The courtroom bridge, HiPPO warning, peeking caution, and rubric create an approachable introduction. The lesson risks serious misunderstanding because p-values, significance, forecasting, and correlation are compressed into rules of thumb; the “Significance Test (Excel/Python Logic)” has neither code nor data nor expected computation.
 
 **Gap task stubs:**
+
 - [ ] [P0][A:Concept] Correctly deepen p-values and statistical significance with null/alternative hypotheses, confidence intervals, effect size, power, Type I/II errors, practical significance, and multiple testing.
 - [ ] [P0][C:Lab] Provide experiment and time-series datasets, runnable Excel/Python steps, expected statistics/forecast, and a decision memo with guardrail outcomes.
 - [ ] [P1][M:Coverage] Add randomization, sample-ratio mismatch, novelty/network effects, sequential testing, CUPED/variance reduction, segmentation, and experiment governance.
@@ -204,6 +216,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The narrative arc, Minto-style “So What?” pyramid, managing-up advice, gotcha-question response, and scoring rubric are practical. But the lesson gives no raw analysis or stakeholder context from which to build its makeover, email, or script, and it underplays uncertainty, dissent, and decision follow-through.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Provide a messy analysis packet, audience personas, meeting constraints, and expected executive email/slide/script exemplars scored with the rubric.
 - [ ] [P1][M:Coverage] Add audience segmentation, pre-wiring, decision logs, facilitation, objection handling, uncertainty communication, and post-decision action tracking.
 - [ ] [P1][H:Pitfalls] Add ethical callouts on cherry-picking, overclaiming causality, hiding caveats, and manipulating emotion or axes.
@@ -220,6 +233,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The food-inspection bridge, six quality dimensions, lineage, automated testing, and RACI prompt establish important governance concepts. Yet “Data Governance is about people, not tools” is followed by little operating-model depth, and the lab lacks data, test execution, incident handling, or expected quality results.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Supply a flawed customer dataset and test environment; require profiling, SQL/test implementation, RACI, triage, remediation, and expected failing/passing results.
 - [ ] [P1][M:Coverage] Add governance operating model, data owners/stewards, catalog, classification, access approvals, retention, privacy, policy-as-code, and audit evidence.
 - [ ] [P1][M:Coverage] Add data observability, freshness/volume/schema anomalies, SLOs/SLAs, incident response, root-cause analysis, and postmortems.
@@ -236,6 +250,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** Facts/dimensions, star vs snowflake, OBT, surrogate keys, and grain are correctly prioritized, and “Grain is Everything” is strong senior advice. The lesson stops before the modeling decisions that commonly break production analytics, and the SQL denormalization exercise has no source schema, data, execution steps, or expected table.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Provide normalized source tables and sample rows; require declaring grain, building dimensions/facts/OBT, testing joins, and comparing exact expected outputs.
 - [ ] [P1][M:Coverage] Add slowly changing dimensions, role-playing/conformed dimensions, degenerate/junk dimensions, factless facts, bridges, snapshots, and late-arriving data.
 - [ ] [P1][M:Coverage] Compare Kimball, Inmon, Data Vault, OBT, and lakehouse/medallion patterns with migration and scale trade-offs.
@@ -252,6 +267,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The assembly-line bridge and focus on idempotency, DAGs, backfills, retries, and the “3 AM Test” target the right operational mindset. The only code is a partial function prompt, so learners never build or operate a pipeline, and crucial production concerns such as state, observability, testing, SLAs, and safe deployment remain thin.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Provide a runnable orchestrated pipeline with fixtures and injected failures; require idempotent loads, retries, backfill, alerting, and exact expected row counts/logs after reruns.
 - [ ] [P1][B:CodeCtx] Add a what/why preamble, dependencies, contract, and expected output to `reliable_load.py`, then show and explain a reference implementation after the exercise.
 - [ ] [P1][M:Coverage] Add incremental state/watermarks, CDC, schema changes, transactions, data contracts, quality gates, observability, SLOs, and incident runbooks.
@@ -268,6 +284,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The restaurant analogy, separation of storage/compute, reverse ETL, pruning, FinOps, and zero-copy cloning give learners useful cloud intuitions. The lesson remains a vendor/tool survey without a deployable architecture, measurable cost model, security baseline, or nuanced discussion of when the modern data stack is the wrong choice.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Provide workload, pricing assumptions, sample query plans, and architecture constraints; require a costed design and pruning experiment with expected cost/performance outputs.
 - [ ] [P1][M:Coverage] Add IAM, networking/private connectivity, encryption/KMS, secrets, tenant isolation, backup/DR, regions/residency, and compliance.
 - [ ] [P1][M:Coverage] Add FinOps tagging, budgets, quotas, workload management, autoscaling, caching, chargeback/showback, and cost anomaly alerts.
@@ -285,6 +302,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** The portfolio analogy, impact resume formula, STAR example, capstone brief, and standardized rubric make the phase outcome tangible. But the capstone is only a high-level checklist—“Data: Public E-Commerce Dataset (e.g., Olist or Superstore)”—without a pinned dataset, milestones, acceptance tests, expected artifacts, or integration of the governance and production skills taught throughout the phase.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Turn the capstone into a complete brief with pinned dataset/version, setup, milestones, required repository structure, expected artifacts, acceptance tests, presentation rubric, and reference outputs.
 - [ ] [P1][N:Thread] Connect the capstone explicitly to artifacts built in every prior lesson and provide a phase-long checkpoint map rather than introducing the project only at the end.
 - [ ] [P1][M:Coverage] Require metric contracts, tests, lineage, access/privacy controls, orchestration, CI/CD, monitoring, cost estimate, runbook, and stakeholder adoption plan.
@@ -302,6 +320,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** This is a substantial, code-rich lesson with project structure, models, sources, freshness, tests, commands, materializations, senior trade-offs, and links to the extras scaffold. It still functions more as snippets than a verified walkthrough: several blocks are introduced only by headings, labs omit expected compiled/model/test outputs, and advanced production dbt practices are missing.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Make Exercises 1–3 explicitly use `extras/sample_dbt_project`, list exact commands and files to edit, and show expected rows, DAG/docs artifacts, and passing/failing test output.
 - [ ] [P1][B:CodeCtx] Add what/why preambles and expected effects to every YAML/SQL/command block, especially “Sources and Freshness Checks” and “Built-In Tests.”
 - [ ] [P1][M:Coverage] Add macros/Jinja, packages, documentation/exposures, snapshots/SCDs, incremental models, contracts, unit tests, seeds, and environment-specific configuration.
@@ -319,6 +338,7 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 **Assessment:** This is the phase’s deepest modern-stack lesson, with a clear mail-truck bridge, reverse-ETL design, semantic-layer examples, MBA context, anti-patterns, and architecture decisions. Even here, code blocks often have heading-only context, the Python mock swallows all exceptions, labs are design prompts without runnable systems or expected outputs, and governance/operations of metric and sync changes need depth.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Build an executable local sync/semantic-layer exercise using the extras fixtures, with setup, idempotency/failure tests, metric queries, and expected CRM records/query outputs.
 - [ ] [P1][B:CodeCtx] Add what/why preambles and expected outputs to every Python/YAML/JavaScript/architecture block; explain that the mock’s broad `except Exception` is illustrative and replace it with production-safe handling.
 - [ ] [P1][M:Coverage] Add sync deletes, conflict resolution, API limits, retries, replay/backfill, observability, identity resolution, consent, PII minimization, and audit trails.

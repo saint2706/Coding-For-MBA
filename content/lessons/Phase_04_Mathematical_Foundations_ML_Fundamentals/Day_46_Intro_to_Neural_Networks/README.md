@@ -86,7 +86,6 @@ $$
 \mathbf{a} = \sigma(W \mathbf{x} + \mathbf{b})
 $$
 
-
 ```python
 import numpy as np
 
@@ -138,7 +137,6 @@ The corresponding loss for a one-hot target $\mathbf{y}$ is the **categorical cr
 $$
 \mathcal{L}_{\text{CE}} = -\sum_{k=1}^{K} y_k \log \hat{p}_k
 $$
-
 
 ```python
 import matplotlib.pyplot as plt
@@ -326,21 +324,26 @@ plt.show()
 
 **Weight Initialization**
 How weights are initialized affects whether gradients can flow through the network:
+
 - **Glorot/Xavier uniform** (default for tanh): Variance = 2/(fan_in + fan_out) — prevents vanishing/exploding
 - **He initialization** (default for relu): Variance = 2/fan_in — accounts for ReLU killing half the signal
+
 ```python
 Dense(64, activation='relu', kernel_initializer='he_uniform')
 ```
 
 **Vanishing and Exploding Gradients**
+
 - **Vanishing**: In deep networks, gradients shrink as they propagate backward — early layers learn very slowly. Fix: ReLU activations, residual connections (ResNet), batch normalization.
 - **Exploding**: Gradients grow exponentially — loss becomes NaN. Fix: gradient clipping, lower learning rate.
+
 ```python
 optimizer = Adam(learning_rate=0.001, clipnorm=1.0)  # Clip gradient norm to 1.0
 ```
 
 **Batch Normalization**
 Normalizes layer inputs within each mini-batch to zero mean and unit variance:
+
 ```python
 model = Sequential([
     Dense(128, activation='relu'),
@@ -350,9 +353,11 @@ model = Sequential([
     Dense(1, activation='sigmoid')
 ])
 ```
+
 Benefits: Faster convergence, allows higher learning rates, reduces sensitivity to initialization.
 
 **Reproducibility**
+
 ```python
 import tensorflow as tf
 import numpy as np
@@ -368,6 +373,7 @@ set_seeds(42)  # Call before model creation AND training
 
 **When Neural Networks Are a Poor Choice for Tabular Data**
 Tabular data (structured, with meaningful feature names) is the domain where tree models often outperform neural networks:
+
 - **Gradient Boosting (XGBoost, LightGBM) is usually better** for tabular data with < 100k rows
 - NNs shine on: images, text, audio, sequences — where feature interactions are spatial/temporal
 - For tabular data: NNs need more tuning, more data, and more compute for similar accuracy
@@ -452,6 +458,7 @@ early_stop = keras.callbacks.EarlyStopping(
 Practical rule: Use CPU for development and small experiments; use GPU (Colab free tier, AWS g4dn) for training > 100 epochs on > 10k samples.
 
 **Experiment Tracking**
+
 ```python
 # Log every run with its hyperparameters and results
 import mlflow
@@ -463,6 +470,7 @@ with mlflow.start_run():
 ```
 
 **Checkpointing**
+
 ```python
 from tensorflow.keras.callbacks import ModelCheckpoint
 
@@ -475,11 +483,13 @@ checkpoint = ModelCheckpoint(
 ```
 
 **Model Serving and Monitoring**
+
 - Export model: `model.save('churn_v1.keras')` or `model.export('serving_model')` for TF Serving
 - Monitor: Log input feature distributions, prediction score distributions, and (when labels arrive) actual accuracy
 - Alert when: mean predicted probability shifts > 10% month-over-month
 
 **Responsible Deployment**
+
 - Evaluate on demographic subgroups before deployment
 - Document model limitations (e.g., "trained on data from 2022–2024; may not reflect post-2025 customer behavior")
 - Set a model expiry date and retraining schedule
@@ -509,14 +519,16 @@ checkpoint = ModelCheckpoint(
 **Compute Budget:** < 5 minutes on CPU. If training takes longer, reduce epochs to 30 or batch_size to 64.
 
 **Tasks:**
+
 1. Establish a non-neural baseline: train LogisticRegression and report test AUC
 2. Build a 2-layer neural network (128 → 64 → sigmoid); compile with Adam + binary_crossentropy
 3. Train for 100 epochs with EarlyStopping(patience=10, restore_best_weights=True) and validation_split=0.2
 4. Plot training vs validation loss curves — diagnose: is the model overfitting?
 5. Report test AUC; compare to LogisticRegression baseline
-6. Debug task: Change learning_rate to 10.0 — observe what happens to the loss curve. Report: "The loss curve shows ___ which indicates ___."
+6. Debug task: Change learning_rate to 10.0 — observe what happens to the loss curve. Report: "The loss curve shows ***which indicates***."
 
 **Expected Output:**
+
 ```
 LogisticRegression baseline AUC: ~0.78
 Neural network test AUC: ~0.80–0.84

@@ -292,6 +292,7 @@ discount       0.0% missing
 ## Mastery Check
 
 ### Question 1: Business-First EDA
+
 Why start EDA with business questions instead of jumping to charts?
 
 <details>
@@ -304,12 +305,14 @@ Starting with charts produces beautiful but unfocused analysis. Business questio
 ---
 
 ### Question 2: Outlier Retention
+
 When should outliers be retained rather than removed?
 
 <details>
 <summary>Click for Answer</summary>
 
 Retain outliers when they represent real, meaningful events rather than errors:
+
 - **Fraud signals**: A transaction for $50,000 in a low-value segment is worth investigating, not removing.
 - **VIP behavior**: High-spend customers will always look like outliers but drive disproportionate revenue.
 - **Stockout spikes**: An unusually low order volume in one week might reflect supply disruption, not bad data.
@@ -321,6 +324,7 @@ Only remove outliers when you can document a clear reason (e.g., data entry erro
 ---
 
 ### Question 3: Correlation Caveat
+
 Give one example of why a high correlation might still be non-actionable.
 
 <details>

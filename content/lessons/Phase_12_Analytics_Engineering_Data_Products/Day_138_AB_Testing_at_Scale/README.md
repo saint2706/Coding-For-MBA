@@ -182,12 +182,15 @@ experimentation_pipeline = {
 ## Hands-on Lab
 
 ### Exercise 1: Design an A/B Test
+
 Design a test for making the "Add to Cart" button larger. Define hypothesis, primary metric, sample size, and duration. List 3 guardrail metrics.
 
 ### Exercise 2: Analyze Results
+
 Given: Control (n=50K, 1500 conversions), Treatment (n=50K, 1620 conversions). Calculate lift, p-value, and confidence interval. Should you ship?
 
 ### Exercise 3: Spot the Errors
+
 Review 3 hypothetical A/B test reports and identify the statistical errors in each (peeking, underpowered, multiple comparisons).
 
 ---

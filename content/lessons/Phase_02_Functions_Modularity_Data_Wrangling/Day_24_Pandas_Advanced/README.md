@@ -152,6 +152,7 @@ df.dropna(subset=["important_col"])
 Before you build a polished dashboard, make three **quick validation plots** with `DataFrame.plot()` to catch data issues early.
 
 #### 1) Trend check (time)
+
 Use a **line plot** to verify direction and volatility.
 
 ```python
@@ -161,6 +162,7 @@ sales_by_day.plot(x="date", y="sales", kind="line", title="Daily Sales Trend")
 ```
 
 #### 2) Distribution check (shape + outliers)
+
 Use a **histogram** to inspect spread, skew, and suspicious values.
 
 ```python
@@ -169,6 +171,7 @@ df.plot(y="sales", kind="hist", bins=20, title="Sales Distribution")
 ```
 
 #### 3) Category comparison (ranking)
+
 Use a **bar chart** to compare categories side by side.
 
 ```python
@@ -259,6 +262,7 @@ sales.set_index("date")["revenue"].resample("M").sum()
 ```
 
 **Expected Output (uses random seed 42 — deterministic):**
+
 ```
        sum        mean
 region
@@ -496,6 +500,7 @@ print("✅ Chunked output matches full-load output")
 ## Mastery Check
 
 ### Question 1: GroupBy with Multiple Aggregations
+
 How do you compute both `sum` and `mean` for a column grouped by region?
 
 <details>
@@ -504,6 +509,7 @@ How do you compute both `sum` and `mean` for a column grouped by region?
 ```python
 df.groupby("region")["sales"].agg(["sum", "mean"])
 ```
+
 This returns a DataFrame with one row per region and columns `sum` and `mean`.
 
 </details>
@@ -511,6 +517,7 @@ This returns a DataFrame with one row per region and columns `sum` and `mean`.
 ---
 
 ### Question 2: Merge / Left Join
+
 How do you keep all orders even if some have no matching customer record?
 
 <details>
@@ -519,6 +526,7 @@ How do you keep all orders even if some have no matching customer record?
 ```python
 pd.merge(orders, customers, on="customer_id", how="left")
 ```
+
 A left join retains every row from the left DataFrame (`orders`); unmatched rows from `customers` produce `NaN`.
 
 </details>
@@ -526,6 +534,7 @@ A left join retains every row from the left DataFrame (`orders`); unmatched rows
 ---
 
 ### Question 3: Pivot Table
+
 How do you build a cross-tab of total revenue by region (rows) and month (columns)?
 
 <details>
@@ -540,6 +549,7 @@ pd.pivot_table(df, values="revenue", index="region", columns="date", aggfunc="su
 ---
 
 ### Question 4: Performance Decision
+
 Your optimized pipeline is 24% faster but only saves 8% memory and is less readable for junior analysts. Based on the benchmark decision threshold (speedup > 20% OR memory reduction > 30%), which version do you ship and why?
 
 <details>

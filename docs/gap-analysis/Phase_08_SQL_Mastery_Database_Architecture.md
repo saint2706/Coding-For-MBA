@@ -26,6 +26,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The family-tree and Russian-doll bridges make recursion and JSON approachable, and the lesson includes useful senior warnings about schemaless data and recursion safety. However, it begins with recursive CTEs, JSON operators, and lateral joins before this phase teaches relational foundations, joins, and subqueries; its recursive query is introduced only as “**Syntax**,” several blocks receive no line-by-line explanation, and the labs do not supply complete schemas or expected tabular results. The summary also admits that “**Array Aggregates: Pack rows into lists (not covered in detail, but related to JSON)**” despite listing array aggregates as a concept.
 
 **Gap task stubs:**
+
 - [ ] [P0][K:Xref] Move this lesson after Days 91–96 or add explicit prerequisite links and a remediation path to relational databases, JOINs, CTEs, and subqueries; “Intermediate SQL (Joins, Window Functions)” does not resolve the phase’s inverted sequence.
 - [ ] [P0][M:Coverage] Add the promised array-aggregate lesson content, including `ARRAY_AGG`, ordering, null behavior, use cases, and tradeoffs; the summary explicitly says it is “not covered in detail.”
 - [ ] [P1][B:CodeCtx] Expand the recursive CTE, JSON, and lateral-join blocks into line-by-line walkthroughs explaining anchor/recursive members, alias scope, termination, `->` versus `->>`, and why `LIMIT 3` belongs inside the lateral subquery.
@@ -44,6 +45,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The encyclopedia/filing-cabinet analogy and physical-design tradeoffs provide strong intuition and MBA-relevant cost framing. Still, assertions such as “**Reads only 1/365th of the data. 99.7% cost saving**,” “**BigQuery gives you 2000 ‘Slots’**,” and “**Trade 0.1% accuracy for 99% speed**” are presented as universal facts without assumptions, measurement steps, or vendor distinctions. The labs describe outcomes rather than giving reproducible datasets, execution-plan evidence, and expected results.
 
 **Gap task stubs:**
+
 - [ ] [P0][K:Xref] Re-sequence this lesson after DQL/indexing and relational fundamentals, or link directly to Days 91 and 94 before asking learners to tune scans, clustering, and execution plans.
 - [ ] [P1][A:Concept] Qualify and justify “1/365th,” “99.7%,” “2000 Slots,” 400MB blocks, “0.1% accuracy,” and “99% speed”; explain that results depend on engine, pricing model, data distribution, and query shape.
 - [ ] [P1][F:Tables] Add a decision-guidance table comparing partitioning, clustering, indexes, materialized views, and duplicated projections by workload, selectivity, maintenance cost, and vendor support.
@@ -62,6 +64,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The office-badge bridge clearly distinguishes authentication, authorization, and RLS, while the least-privilege and audit-log sections supply valuable production framing. However, the SQL uses generic or questionable syntax without naming a platform, crypto-shredding is summarized as “**Delete Key X**” and “**No need to find every backup tape**” without legal/operational nuance, and the anonymization lab simply changes PII to fixed strings without addressing uniqueness, re-identification, or verification. Exercises lack setup data and expected results for each role.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Correct and deepen GDPR/deletion coverage: distinguish deletion, anonymization, pseudonymization, legal retention, backups, key lifecycle, and evidence of erasure; qualify “No need to find every backup tape.”
 - [ ] [P1][B:CodeCtx] State the database dialect for `GROUP analysts`, `session_user_id()`, and policy syntax, then explain every GRANT/REVOKE/view line and why a view is not equivalent to native RLS in all threat models.
 - [ ] [P1][C:Lab] Add users/roles, schemas, employee rows, test sessions, expected visible-row sets, denied-operation outputs, and an audit-log verification step for every exercise.
@@ -80,6 +83,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** This lesson offers a useful blueprint analogy, a compact design-document framework, an engine-selection table, and an architecture decision-log requirement. Yet the capstone begins before the phase teaches relational internals and DDL/DML/DQL/JOIN/subquery fundamentals, and the “Hands-on Lab” mostly supplies the solution (“**Real-Time Geolocation: Postgres + PostGIS ... Or Redis**”) instead of a deliverable-driven exercise with evaluation criteria. The recommendation table is helpful but too categorical for architecture decisions.
 
 **Gap task stubs:**
+
 - [ ] [P0][K:Xref] Move the capstone after Day 96C or add a staged prerequisite/remediation checklist; “Phase 8 Concepts (Days 85-87)” excludes the core lessons required to design a defensible schema.
 - [ ] [P1][C:Lab] Turn the ride-sharing brief into an assessed capstone specification with required artifacts, sample workload/data, acceptance tests, expected ERD elements, query SLAs, cost ceiling, and scoring rubric.
 - [ ] [P1][F:Tables] Expand the engine table with decision guidance for consistency, latency, access patterns, operational skills, lock-in, cost, and rejected alternatives; avoid one-engine-per-use-case prescriptions.
@@ -98,6 +102,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The construction analogy, constraints overview, indexing tradeoff, and expand/contract mention are good foundations for production thinking. The implementation is not a complete capstone, though: it creates only `drivers` and `trips`, the Faker script generates drivers rather than the promised “**1M rows**,” and the optimization numbers (“**Cost: 500. Time: 200ms**” to “**Cost: 50. Time: 10ms**”) are asserted without a runnable benchmark or expected plan. It also appears before the dedicated DDL, DML, DQL, JOIN, and subquery lessons.
 
 **Gap task stubs:**
+
 - [ ] [P0][K:Xref] Re-sequence implementation after Days 92–96 or explicitly teach/link every DDL, DML, query-plan, and indexing prerequisite used here.
 - [ ] [P0][C:Lab] Supply a complete runnable capstone: environment setup, full Day 88 schema, deterministic seed script, 1M-row workload, required queries, expected outputs/plans, stress-test steps, and acceptance rubric.
 - [ ] [P1][D:Objectives] Reconcile the outcome “Write a Python Script to seed 1M rows” with the lab goal “Generate 100k rows,” and make the target measurable.
@@ -117,6 +122,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The chef-audition bridge, narration advice, four-S framework, tradeoff emphasis, and STAR exercise make this a practical career lesson. Its SQL interview section is too compressed: `PERCENTILE_CONT`, `LEAD`/`LAG`, and the gaps-and-islands query are shown without schema, walkthrough, expected result set, or dialect caveats, while the title promises “**Technical Interview WorkShop**” and outcomes promise a median calculation but no corresponding lab. Several system-design numbers are ungrounded.
 
 **Gap task stubs:**
+
 - [ ] [P0][K:Xref] Move the workshop after the core SQL lessons or add a preparation map to Days 91–96; interviewing learners on advanced SQL before teaching fundamentals reinforces the sequencing problem.
 - [ ] [P1][C:Lab] Add complete interview drills for median, consecutive logins, gaps/islands, and system design with schemas/data, timeboxes, expected outputs, interviewer rubrics, and explained model solutions.
 - [ ] [P1][B:CodeCtx] Explain the gaps-and-islands query line-by-line, including correlated `NOT EXISTS`, boundary handling, aliases, and why it returns only missing starts rather than arbitrary missing ranges.
@@ -135,6 +141,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The bank-vault and snapshot analogies explain ACID and MVCC clearly, and the deadlock/VACUUM sections introduce meaningful production concerns. However, this foundational relational lesson arrives after the advanced SQL/cloud/governance/capstone sequence, isolation levels are oversimplified, and the labs omit setup schemas, initial values, session configuration, cleanup, and precise expected outputs. Claims such as “**Serializable: Strict Execution. Slowest**” and WAL recovery “**I’ll finish it now**” need technical qualification.
 
 **Gap task stubs:**
+
 - [ ] [P0][K:Xref] Move relational internals before Days 85–90 and add forward links from ACID/MVCC/WAL/isolation to governance, capstone, DML, and query-tuning lessons.
 - [ ] [P1][A:Concept] Correct and deepen isolation/WAL explanations: define anomalies, snapshots, locks, checkpoints, redo/undo behavior, and qualify “Serializable: Strict Execution. Slowest.”
 - [ ] [P1][C:Lab] Provide runnable Postgres setup, initial user/account data, two-session instructions, exact expected values/errors, rollback/cleanup, and observation queries for locks/dead tuples.
@@ -153,6 +160,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The hotel-book analogy effectively motivates exclusion constraints, and the app-vs-database logic discussion gives useful decision guidance. But the lesson is explicitly “Advanced DDL” while requiring only “Basic CREATE TABLE,” and it never teaches the broader DDL/schema fundamentals or normalization needed for database architecture. The three SQL labs provide snippets without complete support tables, seed data, verification queries, expected result sets, or line-by-line explanations.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add foundational schema design and normalization coverage—entities, keys, relationships, 1NF/2NF/3NF, data types, nullability, defaults, naming, and referential actions—before advanced partitioning/triggers.
 - [ ] [P1][B:CodeCtx] Explain every exclusion, trigger, and partition statement line-by-line, including `btree_gist`, `TSTZRANGE`, half-open ranges, `OLD`/`NEW`, trigger timing, and partition routing.
 - [ ] [P1][C:Lab] Add complete `accounts`/`audit_log` schemas and seed rows, exact booking success/failure outputs, partition verification queries, expected audit rows, and cleanup steps.
@@ -171,6 +179,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The guest-list and moving-van analogies are accessible, while modifying CTEs and savepoints expose learners to valuable advanced patterns. The lesson incorrectly implies the shown counter upsert is idempotent—“**Runs safely 100 times**” is safe to execute but increments 100 times—and the recommendation to drop indexes for bulk load is presented without concurrency/constraint/recovery caveats. Labs again lack complete schemas, initial data, expected tables, and operational verification.
 
 **Gap task stubs:**
+
 - [ ] [P0][A:Concept] Correct the idempotency explanation: distinguish retry safety from an incrementing upsert, show an idempotency-key pattern, and revise “Runs safely 100 times.”
 - [ ] [P1][C:Lab] Provide schemas, seed state, transaction/session steps, exact before/after result sets, failure outputs, and verification/cleanup for upsert, archive, and savepoint exercises.
 - [ ] [P1][B:CodeCtx] Walk through `ON CONFLICT`, `EXCLUDED`, modifying CTE execution, `RETURNING`, interval arithmetic, and savepoint state line-by-line.
@@ -189,6 +198,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The librarian analogy gives a strong conceptual comparison of scan types, and the lesson usefully introduces SARGability and covering indexes. It is not a complete DQL lesson, however: learners never receive foundational SELECT/filter/group/order semantics, sample schemas/data, or a method for interpreting a plan tree. The statement “**Cost: Arbitrary units (1.0 = reading one 8kb page)**” and thresholds such as “**> 20%**” are overly exact and need qualification.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add DQL foundations and logical query-processing order (`FROM`, `WHERE`, `GROUP BY`, `HAVING`, `SELECT`, `ORDER BY`, `LIMIT`) before advanced optimization.
 - [ ] [P1][A:Concept] Correct/qualify planner-cost units, 8KB page assumptions, selectivity thresholds, visibility-map requirements for index-only scans, and the phrase “Holy Grail.”
 - [ ] [P1][C:Lab] Supply orders/users schemas, deterministic data with meaningful cardinality, `ANALYZE` steps, expected plans/results, before/after timing protocol, and plan-node interpretation prompts.
@@ -207,6 +217,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The wedding-seating analogy and algorithm tradeoffs help demystify physical joins, and the Cartesian-explosion warning is valuable. Yet the lesson assumes “Basic INNER/LEFT JOIN” without conceptually defining INNER, LEFT, RIGHT, FULL, CROSS, and SELF joins or their result shapes, and its labs do not include schemas, seed data, expected result sets, or a complete zero-sales query. The “Hash Join puts all NULLs into one bucket” explanation is also too broad for SQL equi-joins, where null equality semantics matter.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add conceptual definitions, Venn/result-set examples, and decision guidance for INNER, LEFT, RIGHT, FULL OUTER, CROSS, SEMI, ANTI, and SELF joins before physical algorithms.
 - [ ] [P0][A:Concept] Correct/qualify the NULL-skew explanation and distinguish SQL null matching, distributed partition skew, and engine-specific hash behavior.
 - [ ] [P1][C:Lab] Add complete products/sales/users schemas and seed data, finish the calendar × products × sales query, provide expected rows, and include plan/timing comparison steps.
@@ -225,6 +236,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** The teacher/grading analogy clearly contrasts correlated and uncorrelated subqueries, and the NULL trap is an important topic. The lesson overstates several performance rules—“**Correlated ... Slow. ... O(N^2)**,” “**Always prefer EXISTS**,” and “**Joins are fast**”—without acknowledging optimizer rewrites, indexes, semantics, or cases where `IN` is appropriate. Labs omit full schemas/seed SQL and only one exercise states an expected result.
 
 **Gap task stubs:**
+
 - [ ] [P0][A:Concept] Replace absolute claims (“O(N^2),” “Always prefer EXISTS,” “Joins are fast”) with semantics-first guidance and engine/plan-dependent performance analysis.
 - [ ] [P1][C:Lab] Add runnable products/category/A/B schemas and seed data, expected result sets for both original and rewritten queries, `EXPLAIN ANALYZE` comparison, and a correct `NOT EXISTS` solution.
 - [ ] [P1][B:CodeCtx] Explain correlated references, scalar cardinality, CTE aggregation, join matching, three-valued logic, and `SELECT 1` line-by-line.
@@ -243,6 +255,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** This is one of the phase’s richer lessons: it provides a strong business bridge, substantial MongoDB/Redis/Cassandra examples, a decision framework, and explained mastery answers. Nonetheless, key claims are misleading or overly broad: “**You can only guarantee two**,” “**Redis stores data in-memory — nanosecond latency**,” and the CAP labels for products/configurations need qualification. Code blocks are large but not walked through line-by-line, and coding labs provide starter code without expected outputs, environment setup, or test criteria.
 
 **Gap task stubs:**
+
 - [ ] [P0][A:Concept] Correct and qualify CAP and latency claims: explain CAP under network partitions, consistency models/configurations, PACELC, persistence, and why application-observed Redis latency is not simply “nanosecond.”
 - [ ] [P1][B:CodeCtx] Add what/why preambles and line-by-line explanations for the Mongo aggregation, Redis cache-aside/decorator, and Cassandra partition/clustering-key blocks.
 - [ ] [P1][C:Lab] Provide Docker/setup instructions, dependency versions, seed/load steps, expected aggregation/cache results, automated checks, and cleanup for MongoDB and Redis exercises.
@@ -262,6 +275,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 **Assessment:** This is the most developed lesson in the phase, with a compelling fraud bridge, business-context table, substantial Kafka/ksqlDB examples, senior pitfalls, and explained mastery answers. Even so, large Python and SQL blocks are not explained line-by-line, the labs are mostly design/TODO prompts without runnable infrastructure, sample events, expected output streams, or verification steps, and several magic thresholds (`$200`, 1/5/30-minute windows, 30%/15%, >1,000 events/s) are not justified. The sequence/preview metadata is inconsistent with Day 96B and the stated next phase.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Add a runnable local Kafka/ksqlDB environment, topic creation, sample event fixtures, exact commands, expected output records/windows, automated verification, and teardown for all three exercises.
 - [ ] [P1][B:CodeCtx] Break the producer, consumer, stream/table, and window-query blocks into line-by-line walkthroughs explaining keys, serializers, offsets, commits, partition ordering, `EMIT`, and materialization.
 - [ ] [P1][A:Concept] Define and justify the thresholds and magic numbers in high-value orders, windows, TTL/retention, conversion rates, anomaly limits, and the architecture recommendation function.

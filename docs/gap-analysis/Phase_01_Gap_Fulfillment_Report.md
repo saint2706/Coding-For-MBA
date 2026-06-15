@@ -14,6 +14,7 @@
 Phase 01 serves as the gold standard for the curriculum. The deep audit identified a consistent structural debt across almost all lessons — specifically, Mastery Check answers lacking `<details>` collapsing tags, systemic omission of Glossary sections, and missing Expected Output blocks in Hands-on Labs. All recurring gaps have now been systematically resolved. The lessons were fundamentally excellent and the structural formatting now meets the true Quality Bar.
 
 **Recurring gaps resolved:**
+
 - ✅ [G:Mastery] Mastery Check answers are now consistently collapsed with `<details>` tags across all lessons.
 - ✅ [C:Lab] All Hands-on Lab exercises now include explicit `Expected Output` blocks.
 - ✅ [O:Glossary] Every lesson now has a `## Glossary` section with 8–13 defined terms.
@@ -213,9 +214,9 @@ Phase 01 serves as the gold standard for the curriculum. The deep audit identifi
 |---|----------|-----|-----------------|------------|
 | 1 | P2 | E:Framing | Overall framing felt academic, not MBA-focused | ✅ Added Business Impact section opening with 50M-transaction scenario, RAM/cost ROI framing, and real-tool callouts (Pandas `chunksize`, `csv.reader`, database cursors) |
 | 2 | P1 | G:Mastery | Mastery Check answers not collapsible | ✅ All 5 answers wrapped in `<details>` tags |
-| 3 | P1 | O:Glossary | Missing explicit `## Glossary` section | ✅ Added 12-term Glossary (Iterator, Iterable, Generator, yield, next(), Lazy evaluation, Memory efficiency, __iter__(), __next__(), StopIteration, itertools, Generator expression) |
+| 3 | P1 | O:Glossary | Missing explicit `## Glossary` section | ✅ Added 12-term Glossary (Iterator, Iterable, Generator, yield, next(), Lazy evaluation, Memory efficiency, **iter**(), **next**(), StopIteration, itertools, Generator expression) |
 | 4 | P2 | J:Summary | Missing preview of the next lesson at end of Summary | ✅ Added "What's Coming Next" preview for Day 11C: Debugging Workflows |
-| 5 | P1 | C:Lab | Exercise 1 (__iter__/__next__) missing Expected Output | ✅ Added verified Expected Output |
+| 5 | P1 | C:Lab | Exercise 1 (**iter**/**next**) missing Expected Output | ✅ Added verified Expected Output |
 | 6 | P1 | C:Lab | Exercise 2 (Large Transaction Stream) missing Expected Output | ✅ Added verified Expected Output (corrected id range 480–484, count 314160, net_total $188,608,626.36) |
 | 7 | P1 | C:Lab | Exercise 3 (itertools: chain/islice/groupby) missing Expected Output | ✅ Added verified Expected Output (corrected third group item) |
 

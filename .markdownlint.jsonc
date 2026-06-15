@@ -16,7 +16,7 @@
   // MD033/no-inline-html - Inline HTML
   // Allow certain HTML elements that enhance markdown (details, summary, etc.)
   "MD033": {
-    "allowed_elements": ["details", "summary", "br", "sub", "sup", "parameter"]
+    "allowed_elements": ["details", "summary", "br", "sub", "sup", "parameter", "div"]
   },
   
   // MD036/no-emphasis-as-heading - Emphasis used instead of a heading
@@ -45,5 +45,15 @@
   
   // MD001/heading-increment - Heading levels should only increment by one level at a time
   // Allow flexibility for document structure
-  "MD001": false
+  "MD001": false,
+
+  // MD024/no-duplicate-heading - Allow same heading text in different parent sections
+  // Phase overview docs repeat "ROI by Technique" and "Skills Matrix" under distinct parent headings
+  "MD024": {
+    "siblings_only": true
+  },
+
+  // MD052/reference-links-images - Bracket notation used as categorization tags, not link refs
+  // Gap-analysis docs use [P0][C:Lab] style tags; math notation like [i][j] in lesson content
+  "MD052": false
 }

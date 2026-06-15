@@ -260,6 +260,7 @@ print(f"Errors: {len(report['errors'])}")
 ```
 
 **Expected Output:**
+
 ```
 Total: 5 lines
 Errors: 1
@@ -303,6 +304,7 @@ print(config.get("theme"))  # "dark"
 ```
 
 **Expected Output:**
+
 ```
 dark
 ```
@@ -353,6 +355,7 @@ print(f"Processed {count} rows")
 ```
 
 **Expected Output:**
+
 ```
 Processed 3 rows
 ```

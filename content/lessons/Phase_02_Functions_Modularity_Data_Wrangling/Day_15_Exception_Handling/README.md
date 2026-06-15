@@ -277,6 +277,7 @@ else:
 ```
 
 **Expected Output (simulated - assuming user enters "abc", then "-5", then gives up):**
+
 ```
 Invalid input: could not convert string to float: 'abc'. 2 attempts left.
 Invalid input: Number must be positive. 1 attempts left.
@@ -321,6 +322,7 @@ print(f"Processed: {report['processed']}, Failed: {report['failed']}")
 ```
 
 **Expected Output (assuming data1.txt and data2.txt don't exist):**
+
 ```
 Processed: 0, Failed: 3
 ```
@@ -379,6 +381,7 @@ except InvalidAmountError:
 ```
 
 **Expected Output:**
+
 ```
 ❌ Cannot withdraw $150 from $100
 ```

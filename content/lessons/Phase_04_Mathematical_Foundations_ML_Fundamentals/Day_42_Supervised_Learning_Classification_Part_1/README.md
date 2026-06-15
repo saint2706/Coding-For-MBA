@@ -54,6 +54,7 @@ That's classification: predicting **discrete categories** from input features.
 
 **Decision Threshold**
 A classifier outputs a probability score (0 to 1). The *decision threshold* is the probability cutoff above which we predict "positive." The default is 0.5, but this is rarely optimal for business problems.
+
 - Threshold=0.3: More positives predicted → higher recall, lower precision
 - Threshold=0.7: Fewer positives predicted → higher precision, lower recall
 
@@ -68,6 +69,7 @@ The fraction of positive cases in the dataset. If only 5% of customers churn, a 
 
 **Class Imbalance**
 When one class is rare (fraud: 0.1%, disease: 1%, churn: 5–20%). Effects:
+
 - Accuracy becomes misleading
 - Models biased toward majority class without correction
 - Solutions: `class_weight='balanced'`, SMOTE oversampling, threshold adjustment, use PR-AUC over ROC-AUC
@@ -225,7 +227,6 @@ A more general $F_\beta$ score lets you weight recall more heavily ($\beta > 1$)
 $$
 F_\beta = (1 + \beta^2) \cdot \frac{\text{Precision} \cdot \text{Recall}}{\beta^2 \cdot \text{Precision} + \text{Recall}}
 $$
-
 
 ```python
 from sklearn.metrics import precision_score, recall_score, f1_score
@@ -406,22 +407,27 @@ for name, coef in zip(X.columns, model.coef_[0]):
 
 **PR-AUC (Precision-Recall AUC)**
 ROC-AUC can be optimistic for imbalanced data because it includes true negatives in the denominator. PR-AUC focuses only on the positive class:
+
 ```python
 from sklearn.metrics import average_precision_score, PrecisionRecallDisplay
 pr_auc = average_precision_score(y_test, y_prob)
 PrecisionRecallDisplay.from_predictions(y_test, y_prob)
 ```
+
 Rule of thumb: If positive class < 10% of data, prefer PR-AUC over ROC-AUC.
 
 **Calibration Curves**
+
 ```python
 from sklearn.calibration import calibration_curve, CalibrationDisplay
 CalibrationDisplay.from_predictions(y_test, y_prob, n_bins=10)
 # A perfectly calibrated model follows the diagonal line
 ```
+
 To fix miscalibration: use `CalibratedClassifierCV(model, cv=5, method='isotonic')`.
 
 **Handling Class Imbalance**
+
 ```python
 # Option 1: Class weights (built-in to most sklearn models)
 LogisticRegression(class_weight='balanced')
@@ -436,6 +442,7 @@ X_resampled, y_resampled = SMOTE(random_state=42).fit_resample(X_train, y_train)
 
 **Multiclass Classification Metrics**
 For problems with >2 classes (e.g., product category prediction):
+
 ```python
 from sklearn.metrics import classification_report
 print(classification_report(y_test, y_pred))
@@ -444,12 +451,14 @@ print(classification_report(y_test, y_pred))
 
 **Fairness Across Subgroups**
 Always evaluate model performance separately for key demographic or business subgroups:
+
 ```python
 for group in ['North', 'South', 'East', 'West']:
     mask = test_df['region'] == group
     group_recall = recall_score(y_test[mask], y_pred[mask])
     print(f"{group}: recall={group_recall:.3f}")
 ```
+
 If one subgroup has substantially lower recall (more missed churners), the model is inequitably serving that group.
 
 ### Critical: Threshold Selection Must Use Validation Data
@@ -457,11 +466,13 @@ If one subgroup has substantially lower recall (more missed churners), the model
 **Never select your optimal threshold using the test set.**
 
 The test set is reserved for a single, final, unbiased evaluation. If you tune the threshold on test data:
+
 1. You're fitting a hyperparameter (threshold) to test data
 2. Your reported metrics are optimistically biased
 3. Production performance will be worse than reported
 
 **Correct procedure:**
+
 1. Train model on training set
 2. Use validation set (or CV) to sweep thresholds and find the cost-minimizing threshold
 3. Apply that threshold to the test set for a single final evaluation — report these numbers
@@ -587,14 +598,16 @@ print(importance.to_string(index=False))
 **Business Scenario:** RetailCo loses an average of $800 when a customer churns (FN cost) and spends $60 on a retention campaign sent to a loyal customer (FP cost).
 
 **Tasks:**
+
 1. Train LogisticRegression and a second model of your choice on the churn dataset
 2. Report: accuracy, precision, recall, F1, ROC-AUC for both models on test set
 3. Plot the confusion matrix for the best model
 4. Find the optimal probability threshold using business costs: minimize (800 × FN_count + 60 × FP_count)
-5. Write a stakeholder-facing recommendation: "We recommend setting the model threshold at __%, which will contact __% of customers and retain approximately __ churners per month at a net cost saving of $__."
+5. Write a stakeholder-facing recommendation: "We recommend setting the model threshold at __%, which will contact **% of customers and retain approximately __ churners per month at a net cost saving of $**."
 
 **Expected Outputs:**
 Confusion Matrix (at threshold=0.5, example):
+
 ```
                 Predicted No Churn  Predicted Churn
 Actual No Churn        1,520                80      (FP=80, $60 each = $4,800)
@@ -603,6 +616,7 @@ Total cost at 0.5 threshold: ~$148,800/month
 ```
 
 At optimal threshold (~0.35):
+
 - FN reduced to ~90 (savings: $72,000)
 - FP increased to ~200 (cost: $12,000)
 - Net: ~$102,000 — 31% cost reduction vs default threshold

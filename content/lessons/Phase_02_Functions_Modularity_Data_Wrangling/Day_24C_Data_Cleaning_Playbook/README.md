@@ -253,6 +253,7 @@ Use this file from extras:
 `content/lessons/Phase_02_Functions_Modularity_Data_Wrangling/extras/sample_customers_dirty.csv`
 
 **Sample data characteristics (what you will find):**
+
 - ~200 rows with 8 columns: `customer_id`, `name`, `email`, `age`, `signup_date`, `lifetime_value`, `campaign_source`, `updated_at`
 - ~15% missing `lifetime_value`
 - ~5 duplicate `customer_id` rows with conflicting records
@@ -310,12 +311,14 @@ print("✅ All 5 validation assertions passed")
 ## Mastery Check
 
 ### Question 1: Null Handling Strategy
+
 When would you choose to impute a missing value rather than drop the row?
 
 <details>
 <summary>Click for Answer</summary>
 
 Impute when:
+
 - The column is required for the downstream decision and dropping rows would reduce sample size below acceptable levels.
 - Missingness is NOT random (e.g., concentrated in one segment) — dropping would bias results.
 - A sensible business rule or statistical method (median, mode, forward-fill) can produce a defensible substitute.
@@ -327,6 +330,7 @@ Always add an `_imputed` indicator column so downstream consumers know which val
 ---
 
 ### Question 2: Idempotency
+
 What does it mean for a cleaning script to be idempotent, and why does it matter?
 
 <details>
@@ -341,6 +345,7 @@ Test for idempotency by running your cleaning script twice on the same input and
 ---
 
 ### Question 3: Threshold Decisions
+
 A column has 12% missing values and is required for the KPI. The 5% drop threshold has been exceeded. What are your options?
 
 <details>
@@ -356,12 +361,14 @@ A column has 12% missing values and is required for the KPI. The 5% drop thresho
 ---
 
 ### Question 4: Validation Severity
+
 When should a validation failure block a pipeline entirely versus emit a warning?
 
 <details>
 <summary>Click for Answer</summary>
 
 Use the severity gate framework:
+
 - **P0 (block)**: Violations of hard contracts — primary key not unique, required date columns unparsed, row count = 0. These indicate a fundamental data failure where downstream analysis would be meaningless or dangerous.
 - **P1 (warn)**: Material but tolerable degradation — email validity below threshold, null rate slightly above policy. The pipeline can continue but the owner must be notified and a remediation ticket opened.
 - **P2 (monitor)**: Minor drift that should be tracked — metric logging only, no immediate action.

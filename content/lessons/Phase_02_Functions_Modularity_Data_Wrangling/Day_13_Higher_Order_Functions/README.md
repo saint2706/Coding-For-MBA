@@ -261,6 +261,7 @@ print(f"Total bonus pool: ${total_bonus:,.2f}")
 ```
 
 **Expected Output:**
+
 ```
 Top performers: 3
 Total bonus pool: $1,670.00
@@ -297,6 +298,7 @@ print(results)  # [8, 28, 6]
 ```
 
 **Expected Output:**
+
 ```
 8
 28
@@ -331,6 +333,7 @@ for p in by_value:
 ```
 
 **Expected Output:**
+
 ```
 Best value:
   Mouse: 1.66 rating per $

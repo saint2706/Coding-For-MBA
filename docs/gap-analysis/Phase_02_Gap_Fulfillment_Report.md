@@ -14,6 +14,7 @@
 Phase 02 covers critical intermediate Python, standard libraries, and data wrangling with Pandas. The deep audit identified consistent structural debt across all 15 lessons — specifically, systemic absence of Glossary sections, missing Expected Output blocks in Hands-on Labs, weak "Never-Coded" bridges in later data lessons, and missing concept definitions for core terms like "vectorization" and "idempotent". All recurring and lesson-specific gaps have now been systematically resolved.
 
 **Recurring gaps resolved:**
+
 - ✅ [O:Glossary] Every lesson now has a `## Glossary` section with 8–10 defined terms.
 - ✅ [C:Lab] All Hands-on Lab exercises now include explicit `**Expected Output:**` blocks.
 - ✅ [G:Mastery] Mastery Check answers are now consistently collapsed with `<details>` tags across all lessons (Days 23, 24, 24B previously used bare Q&A format).

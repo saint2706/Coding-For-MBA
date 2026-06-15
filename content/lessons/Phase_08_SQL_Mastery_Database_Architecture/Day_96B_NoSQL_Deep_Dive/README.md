@@ -41,6 +41,7 @@ outcomes:
 **SQL (Relational)**: Every book must fit the same catalog format: Title, Author, ISBN, Genre. Fast lookups. Strict rules. Perfect for structured data that changes predictably.
 
 **But what if...** you also need to catalog:
+
 - Social media posts (vary wildly in structure, millions per minute)
 - User session state (must be retrieved in single milliseconds)
 - IoT sensor logs from 10,000 devices (100M writes/day, never updated)
@@ -249,6 +250,7 @@ Your data is structured and relational?
 The #1 NoSQL mistake: choosing MongoDB because "it's more flexible", then spending months implementing relationships that SQL handles in 3 lines.
 
 **Rule of thumb**:
+
 1. **Start with PostgreSQL** — it can do JSON documents (`jsonb`), time-series (`TimescaleDB`), and more
 2. **Add a specific NoSQL database** only when PostgreSQL genuinely can't meet the requirement
 3. **Most startups never need NoSQL** until Series B+ scale

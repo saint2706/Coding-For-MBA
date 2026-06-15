@@ -130,6 +130,7 @@ print(high_earners)
 ```
 
 **Expected Output:**
+
 ```
 Avg salary: $80,666.67
       name  department  salary
@@ -141,15 +142,18 @@ Avg salary: $80,666.67
 ## Mastery Check
 
 ### Question 1: Column Selection
+
 How do you select multiple columns from a DataFrame?
 
 <details>
 <summary>Click for Answer</summary>
 
 Pass a list of column names inside double brackets:
+
 ```python
 df[["col1", "col2"]]
 ```
+
 A single set of brackets returns a Series; double brackets return a DataFrame.
 
 </details>
@@ -157,12 +161,14 @@ A single set of brackets returns a Series; double brackets return a DataFrame.
 ---
 
 ### Question 2: Multi-Condition Filter
+
 How do you filter rows where department is "Sales" AND salary > 70,000?
 
 <details>
 <summary>Click for Answer</summary>
 
 Use `&` to combine conditions, wrapping each in parentheses:
+
 ```python
 df[(df["department"] == "Sales") & (df["salary"] > 70000)]
 ```
@@ -172,6 +178,7 @@ df[(df["department"] == "Sales") & (df["salary"] > 70000)]
 ---
 
 ### Question 3: Calculated Column
+
 How do you add a `bonus` column equal to 10% of salary?
 
 <details>
@@ -180,6 +187,7 @@ How do you add a `bonus` column equal to 10% of salary?
 ```python
 df["bonus"] = df["salary"] * 0.10
 ```
+
 This is a vectorized operation — it applies to all rows at once without a loop.
 
 </details>
@@ -187,6 +195,7 @@ This is a vectorized operation — it applies to all rows at once without a loop
 ---
 
 ### Question 4: loc vs iloc
+
 What is the difference between `.loc` and `.iloc`?
 
 <details>
@@ -202,6 +211,7 @@ Use `.loc` for named access and `.iloc` for positional slicing.
 ---
 
 ### Question 5: Design Scenario
+
 **Scenario**: You have a sales DataFrame with columns `region`, `product`, `revenue`. Write code to find the total revenue per region, sorted from highest to lowest.
 
 <details>

@@ -2,7 +2,7 @@
 
 # Coding for MBA
 
-### Go from spreadsheets to AI engineering — free, self-paced, no setup required.
+### Go from spreadsheets to AI engineering — free, self-paced, no setup required
 
 A structured 140-day curriculum for business professionals who want to build with data and AI, not just talk about it. Runs entirely in your browser.
 
@@ -96,6 +96,7 @@ Difficulty increases deliberately across phases. You earn each concept before th
 ---
 
 ### Phase 1 — Algorithmic Thinking & Python Foundations
+
 **Days 1–12 · Beginner**
 
 Before writing code, you learn to *think* like a programmer. The three-question framework — input, output, steps — becomes your default approach to breaking down any business problem. Then you work through Python's core toolkit: variables, data types, control flow, functions, error handling, and list comprehensions.
@@ -105,6 +106,7 @@ Before writing code, you learn to *think* like a programmer. The three-question 
 ---
 
 ### Phase 2 — Functions, Modularity & Data Wrangling
+
 **Days 13–24 · Intermediate**
 
 You move from writing scripts to building programs. Higher-order functions, decorators, and object-oriented design turn one-use code into maintainable systems. NumPy and pandas arrive — and processing thousands of rows becomes faster than doing it in Excel. The phase ends with an Exploratory Data Analysis capstone that mirrors what analysts do day-to-day.
@@ -114,6 +116,7 @@ You move from writing scripts to building programs. Higher-order functions, deco
 ---
 
 ### Phase 3 — Data Engineering & Web Development
+
 **Days 25–36 · Intermediate**
 
 The gap between data analysis and software engineering closes here. You build ETL pipelines, create data visualizations with Matplotlib and Plotly, and deploy your first web applications with Flask and FastAPI. You also learn web scraping and the mechanics of how data moves across the internet.
@@ -123,6 +126,7 @@ The gap between data analysis and software engineering closes here. You build ET
 ---
 
 ### Phase 4 — Mathematical Foundations & ML Fundamentals
+
 **Days 37–48 · Intermediate**
 
 The math behind machine learning — taught through the lens of *why it matters for ML*, not for its own sake. Linear algebra, probability, and statistics build the intuition that lets you understand what a model is actually doing. Then you train your first supervised learning models: regression, classification, decision trees, and ensembles.
@@ -132,6 +136,7 @@ The math behind machine learning — taught through the lens of *why it matters 
 ---
 
 ### Phase 5 — Advanced ML & Deep Learning
+
 **Days 49–60 · Advanced**
 
 You cross the threshold from ML practitioner to ML engineer. Neural networks, CNNs, RNNs, and Transformers. Training from scratch versus fine-tuning pre-trained models. The full gap between a notebook experiment and a model that can handle real-world inputs.
@@ -141,6 +146,7 @@ You cross the threshold from ML practitioner to ML engineer. Neural networks, CN
 ---
 
 ### Phase 6 — Cutting-Edge ML
+
 **Days 61–72 · Advanced**
 
 Phase 5 makes you an ML engineer. Phase 6 makes you an ML *architect*. Reinforcement learning, causal inference, generative models (GANs, VAEs, diffusion), model safety, and the thinking required to deploy AI at scale without creating systems that fail silently or cause harm.
@@ -150,6 +156,7 @@ Phase 5 makes you an ML engineer. Phase 6 makes you an ML *architect*. Reinforce
 ---
 
 ### Phase 7 — BI Analytics, Governance & Modern Data Stack
+
 **Days 73–84 · Advanced**
 
 The command center of the modern enterprise. Business intelligence end-to-end: data warehousing, dimensional modeling, dashboards, and the full modern data stack — dbt, Airflow, Snowflake, BigQuery, Looker. You learn not just how to use these tools but how to evaluate which combination makes sense for a given company.
@@ -159,6 +166,7 @@ The command center of the modern enterprise. Business intelligence end-to-end: d
 ---
 
 ### Phase 8 — SQL Mastery & Database Architecture
+
 **Days 85–96 · Advanced**
 
 You stop writing SQL queries and start designing SQL *engines*. Window functions, CTEs, query planning, index architecture, and normalization. The database schema that will outlive a decade of application rewrites — designed correctly from Day 1.
@@ -168,6 +176,7 @@ You stop writing SQL queries and start designing SQL *engines*. Window functions
 ---
 
 ### Phase 9 — Enterprise SQL Performance Engineering
+
 **Days 97–108 · Expert**
 
 Anyone can write a query that works. This phase teaches you to write one that works at 3 AM on Black Friday when the database is under peak load.
@@ -179,6 +188,7 @@ Partitioning, sharding, replication, distributed SQL, and the operational runboo
 ---
 
 ### Phase 10 — Generative AI & LLM Engineering
+
 **Days 109–120 · Advanced**
 
 This is the phase that closes the gap between *talking* about AI and *building* with it.
@@ -192,6 +202,7 @@ Every topic in this phase maps to a concrete gap in the 2025–2026 data profess
 ---
 
 ### Phase 11 — Cloud Data Engineering
+
 **Days 121–132 · Advanced**
 
 From on-premises thinking to cloud-native architecture. You design and operate production data platforms on AWS, GCP, and Azure — with a multi-cloud perspective so your skills transfer across organizations. Cost optimization, security, observability, and the systems that scale from zero to petabytes without requiring constant babysitting.
@@ -201,6 +212,7 @@ From on-premises thinking to cloud-native architecture. You design and operate p
 ---
 
 ### Phase 12 — Analytics Engineering & Data Products
+
 **Days 133–140 · Advanced**
 
 Phase 11 built the engine. Phase 12 teaches you to generate revenue from it.
@@ -355,6 +367,7 @@ Every deploy goes through a full quality gate. Nothing reaches production withou
 **Dependabot** checks both `npm` and `github-actions` dependencies weekly and opens automated PRs for safe updates.
 
 **Live environments:**
+
 - **Production:** [saint2706.github.io/Coding-For-MBA](https://saint2706.github.io/Coding-For-MBA) — auto-deployed from `main`
 - **Preview:** `coding-for-mba.surge.sh` — triggered manually or on published releases
 
