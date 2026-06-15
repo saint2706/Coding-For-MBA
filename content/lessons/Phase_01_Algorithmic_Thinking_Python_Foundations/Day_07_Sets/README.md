@@ -316,6 +316,7 @@ print("Total engaged:", len(all_engaged))
 ```
 
 **Expected Output:**
+
 ```text
 Marketing targets: {'C001', 'C002', 'C005'}
 Upgrade candidates: {'C003', 'C006'}
@@ -351,6 +352,7 @@ print(f"\nReadiness: {len(have)}/{len(required_skills)} skills covered")
 ```
 
 **Expected Output:**
+
 ```text
 === SKILL GAP ANALYSIS ===
 ✅ Covered: {'Python', 'SQL', 'AWS'}
@@ -392,6 +394,7 @@ print(f"Personal emails: {personal_emails}")
 ```
 
 **Expected Output:**
+
 ```text
 Original: 6 → Unique: 4
 Company emails: {'alice@company.com', 'charlie@company.com'}

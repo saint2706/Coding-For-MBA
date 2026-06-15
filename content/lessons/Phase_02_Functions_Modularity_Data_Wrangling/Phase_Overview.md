@@ -473,6 +473,7 @@ print(f"Error spikes detected at: {spikes}")
 ## Common Pitfalls & Solutions
 
 ### Pitfall 1: "My code reads the whole file into memory and crashes"
+
 **Why**: `f.read()` or `pd.read_csv()` loads everything at once.
 **Fix**: Use generators (`yield`) for line-by-line processing, or `pd.read_csv(chunksize=10000)` for chunked Pandas. For 10GB+ files, streaming is non-negotiable.
 
@@ -487,6 +488,7 @@ with open("huge.csv") as f:
 ```
 
 ### Pitfall 2: "My regex works on 90% of data but silently fails on the rest"
+
 **Why**: Regex patterns are often too strict (rejecting valid data) or too loose (accepting invalid data).
 **Fix**: Test with real, messy data — not clean examples. Always handle the `None` case from `re.match()`. Use `re.VERBOSE` for readable complex patterns.
 
@@ -503,6 +505,7 @@ def get_domain(email: str) -> str | None:
 ```
 
 ### Pitfall 3: "My exception handling swallows bugs"
+
 **Why**: `except Exception: pass` hides errors silently.
 **Fix**: Only catch what you can handle. Log the error. Never silence exceptions in production.
 
@@ -524,6 +527,7 @@ except Exception as e:
 ```
 
 ### Pitfall 4: "My Pandas code is slow (applying Python loops over DataFrames)"
+
 **Why**: `df.apply()` with a Python function is 100x slower than vectorized operations.
 **Fix**: Use vectorized Pandas/NumPy operations first. `apply()` is only for complex logic with no vectorized equivalent.
 
@@ -538,6 +542,7 @@ df["discounted"] = df["price"].where(~df["is_member"], df["price"] * 0.9)
 ```
 
 ### Pitfall 5: "My class works but it's tightly coupled — impossible to test"
+
 **Why**: Classes that directly instantiate dependencies (`self.db = Database()`) can't be tested without a real database.
 **Fix**: Inject dependencies through the constructor. This is the Dependency Injection principle — it enables mocking in tests.
 

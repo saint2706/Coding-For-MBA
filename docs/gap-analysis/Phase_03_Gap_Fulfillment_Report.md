@@ -14,6 +14,7 @@
 Phase 03 covers a wide array of data engineering and web development topics across 14 lessons. The deep audit identified systemic gaps across all lessons — specifically, bare lab exercises without business scenarios or Expected Output blocks, undefined jargon (IQR, Z-score, percentile, REST, CSS selectors, Jinja2, MongoDB Collections), missing "When/Why" context for tool selection, and Failure Injection exercises without actionable starter code.
 
 **Recurring gaps resolved:**
+
 - ✅ [C:Lab] All Hands-on Lab exercises across all 14 lessons now have explicit business scenarios, task instructions, and `**Expected Output:**` blocks.
 - ✅ [A:Concept] All undefined jargon and magic numbers are now defined in prose before their first code appearance (IQR Tukey fence, Z-score 3-sigma, percentile, quantile, skew, REST, JSON, CSS selectors, Jinja2, MongoDB Collection/Document/`_id`, Docker Image vs Container).
 - ✅ [C:Lab] All Failure Injection exercises now have concrete starter code containing the intentional bug, replacing text-only instructions.
@@ -33,7 +34,7 @@ Phase 03 covers a wide array of data engineering and web development topics acro
 |---|----------|-----|-----------------|------------|
 | 1 | P0 | A:Concept | "Outlier Detection and Handling": quartile and IQR never defined | ✅ Added "What is IQR?" section defining Q1, Q3, IQR, and the middle-50% concept before the IQR code block |
 | 2 | P0 | A:Concept | `1.5` multiplier used without explanation | ✅ Added Tukey fence explanation: 1.5 captures 99.3% of a normal distribution as "mild" outlier threshold; 3.0 for "extreme" |
-| 3 | P0 | A:Concept | Z-score 3-sigma rule never explained | ✅ Added Z-score definition (`Z = (x − mean) / std`) and the empirical rule: |Z| > 3 means beyond 99.7% of normal data |
+| 3 | P0 | A:Concept | Z-score 3-sigma rule never explained | ✅ Added Z-score definition (`Z = (x − mean) / std`) and the empirical rule: \|Z\| > 3 means beyond 99.7% of normal data |
 | 4 | P0 | A:Concept | No "When to use" comparison for IQR vs Z-score | ✅ Added comparison table: IQR = robust/skewed data; Z-score = assumes normal distribution |
 | 5 | P0 | C:Lab | Exercise 1 (Customer Data Normalization): bare code block | ✅ Added Marketing CRM merger business scenario, 5-step task list, sample input description, and Expected Output showing 3 unique cleaned records |
 | 6 | P0 | C:Lab | Exercise 2 (Sales Data Deduplication): bare code block | ✅ Added finance/server migration scenario, 5-step task list, Expected Output: `"Found 4 duplicate records from 2 orders / Total revenue: $1,409.96"` |

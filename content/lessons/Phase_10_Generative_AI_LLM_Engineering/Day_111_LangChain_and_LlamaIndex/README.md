@@ -36,7 +36,8 @@ outcomes:
 
 **Think about how a McKinsey partner works on a big project.**
 
-They don't write every slide themselves. They have a **system**: 
+They don't write every slide themselves. They have a **system**:
+
 - An Associate reads all the documents and extracts key facts
 - A Consultant structures the analysis and connects the dots
 - The Partner reviews and produces the final deliverable
@@ -294,6 +295,7 @@ DECISION_GUIDE = {
 ### The LangChain Maturity Trap
 
 LangChain is excellent for rapid prototyping but has a reputation for:
+
 - **Frequent breaking changes** between versions (major API redesigns)
 - **Hidden complexity** — abstraction leaks make debugging hard
 - **Over-engineering simple tasks** — a basic prompt chain doesn't need LangChain
@@ -303,6 +305,7 @@ LangChain is excellent for rapid prototyping but has a reputation for:
 ### Embedding Costs Matter
 
 Indexing 1,000 documents at ~5,000 chars each with `text-embedding-3-small` costs:
+
 - 5 million chars ≈ 1.25 million tokens × $0.02/million ≈ **$0.025** — essentially free
 - But querying every second adds up: 1,000 queries/day × 5 retrieved chunks × $0.02/million tokens = ~$0.10/day
 

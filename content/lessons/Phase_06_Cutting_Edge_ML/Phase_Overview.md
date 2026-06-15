@@ -38,24 +38,28 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 ### Week 1: Frontier ML Techniques (Days 61–64)
 
 **Day 61: Reinforcement & Offline Learning**
+
 - RL fundamentals: agents, environments, rewards
 - Q-Learning and policy gradients
 - Offline RL for business applications (no live environment needed)
 - *Why it matters*: Powers game AI, recommendation personalization, robotics
 
 **Day 62: Model Interpretability & Fairness**
+
 - SHAP, LIME, integrated gradients
 - Global vs local explanations
 - Fairness definitions and measurement
 - *Why it matters*: Regulations (EU AI Act, GDPR) require explainability for high-risk decisions
 
 **Day 63: Causal Inference & Uplift Modeling**
+
 - Correlation vs causation in ML
 - Propensity score matching, instrumental variables
 - Uplift modeling for marketing campaigns
 - *Why it matters*: Separates what *predicts* from what *causes* — critical for policy and treatment decisions
 
 **Day 64: Modern NLP Pipelines**
+
 - spaCy for production NLP
 - Named entity recognition, relation extraction
 - LLM-based extraction vs classical NLP
@@ -66,12 +70,14 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 ### Week 2: MLOps & Deployment (Days 65–67)
 
 **Day 65: MLOps Pipelines & CI**
+
 - ML pipelines with Prefect/Airflow
 - Model training as code, experiment tracking
 - CI/CD for ML — automated testing and retraining
 - *Why it matters*: Without MLOps, 80% of models never reach production
 
 **Day 66: Model Deployment & Serving**
+
 - FastAPI for model APIs
 - Docker containerization of ML services
 - Model registry patterns (MLflow)
@@ -79,6 +85,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 - *Why it matters*: A model in a notebook makes $0. A model in production makes millions.
 
 **Day 67: Model Monitoring & Reliability**
+
 - Data drift and concept drift detection (PSI, KS test)
 - Fallback mechanisms and circuit breakers
 - Alerting that matters (business metrics, not just CPU)
@@ -90,6 +97,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 ### Week 3: The AI Age (Days 68–72)
 
 **Day 68: AI Agents & Tool Use**
+
 - ReAct pattern: Reason → Act → Observe → Loop
 - OpenAI function calling schema design
 - LangChain AgentExecutor
@@ -97,6 +105,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 - *Why it matters*: Agents that *act* are 10x more valuable than models that only *talk*
 
 **Day 69: Responsible AI in Practice**
+
 - Fairness metrics: demographic parity, equalized odds
 - Bias auditing with Fairlearn
 - Writing production-ready model cards
@@ -104,6 +113,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 - *Why it matters*: EU AI Act, GDPR, CFPB — compliance is now a technical requirement
 
 **Day 70: LLM Fine-Tuning & PEFT**
+
 - Why PEFT beats full fine-tuning (economics + performance)
 - LoRA: Low-Rank Adaptation — the math and the code
 - QLoRA: fine-tuning 70B models on a single GPU
@@ -111,6 +121,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 - *Why it matters*: Teaches a general LLM your company's specific language, format, and knowledge
 
 **Day 71: RAG & Vector Databases**
+
 - What is RAG and why it dominates enterprise AI
 - Text embeddings and semantic similarity
 - ChromaDB vector store: indexing and querying
@@ -119,6 +130,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 - *Why it matters*: RAG is the most-deployed LLM architecture in 2025–2026 enterprise settings
 
 **Day 72: Multimodal AI**
+
 - Vision-language models (GPT-4o, Gemini, Claude)
 - Document AI: structured extraction from invoices, contracts, receipts
 - Multimodal RAG: indexing images alongside text
@@ -193,6 +205,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 **Challenge**: Employees waste 3+ hours/day searching for policies, procedures, and past analyses.
 
 **Your Phase 6 Solution**:
+
 1. **Day 64 (NLP)**: Extract and clean text from SharePoint, Confluence, PDFs
 2. **Day 71 (RAG)**: Index 50TB of documents into ChromaDB; build semantic search API
 3. **Day 70 (Fine-Tuning)**: Fine-tune a base LLM on internal writing style and terminology
@@ -210,6 +223,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 **Challenge**: Each invoice takes 8–10 minutes of manual data entry. Team of 12 APs staff constantly behind.
 
 **Your Phase 6 Solution**:
+
 1. **Day 72 (Multimodal)**: Claude extracts vendor, line items, amounts from invoice images
 2. **Day 66 (Deployment)**: FastAPI service with async processing queue
 3. **Day 67 (Monitoring)**: Track extraction accuracy by vendor; alert when a new format appears
@@ -226,6 +240,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 **Challenge**: The model has a 12% demographic parity gap between Male and Female applicants.
 
 **Your Phase 6 Solution**:
+
 1. **Day 62 (Interpretability)**: SHAP analysis reveals model over-weights "GitHub commits" (gender-correlated)
 2. **Day 69 (Responsible AI)**: Fairlearn audit, demographic parity constraint training
 3. **Day 63 (Causal Inference)**: Causal model separates job-relevant skills from proxy variables
@@ -238,22 +253,27 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 ## Common Pitfalls & Solutions
 
 ### Pitfall 1: "Our RAG answers are hallucinated"
+
 **Why**: The LLM generates plausible-sounding answers when retrieved context is insufficient.
 **Fix**: Always instruct the model to say "I don't know" if the answer isn't in the context. Use temperature=0. Implement a grounding check — verify key facts appear in retrieved chunks.
 
 ### Pitfall 2: "Our agent is running in an infinite loop"
+
 **Why**: The agent can't reach a final answer and keeps calling tools.
 **Fix**: Always set `max_iterations`. Add a "can I answer yet?" self-evaluation step after each tool call. Include the step count in the prompt context.
 
 ### Pitfall 3: "Fine-tuning made the model worse"
+
 **Why**: Dataset too small, wrong format, or overfitting.
 **Fix**: You need at least 50–100 high-quality examples. Use the same prompt format at inference as in training. Evaluate on a held-out set before deploying.
 
 ### Pitfall 4: "SHAP values are too slow to run in production"
+
 **Why**: TreeSHAP is fast, but KernelSHAP for black-box models is O(samples × features).
 **Fix**: Use TreeSHAP for tree-based models. For neural nets, use GradientSHAP or LIME. Cache SHAP values for batch inference; only compute on-demand for decisions that trigger review.
 
 ### Pitfall 5: "Our bias audit passed, but we got fined anyway"
+
 **Why**: Demographic parity on the *test set* ≠ fairness in deployment. Distribution shift changes the gap.
 **Fix**: Continuously monitor fairness metrics in production — not just at launch. Set automated alerts when the gap exceeds the threshold.
 
@@ -270,6 +290,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 **Scenario**: Your customer support AI agent has started sending apology emails with incorrect refund amounts to customers. The volume of escalations has tripled this week.
 
 **Task**:
+
 1. Identify the 3 most likely failure modes (drift, hallucination, tool error)
 2. Design a monitoring system that would have caught this 24 hours earlier
 3. Implement a HITL guardrail for the "send_email" tool as a code snippet
@@ -292,6 +313,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 **Scenario**: You're building an AI assistant for a law firm. The assistant must answer questions using the firm's 15,000 past case documents and must respond in formal legal writing style.
 
 **Task**:
+
 1. Argue whether this needs fine-tuning, RAG, or both — with reasoning
 2. Describe your chunking strategy for legal case documents (structure-aware vs. fixed-size)
 3. Write pseudocode for the full pipeline from document upload to first answer
@@ -314,6 +336,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 **Scenario**: A CV screening tool uses an image-based model to evaluate video interview submissions. You discover it gives 15% higher scores to candidates who appear to be from certain ethnic backgrounds.
 
 **Task**:
+
 1. Is this demographic parity, equalized odds, or another fairness violation? Justify.
 2. Which fairness metric should govern this use case under EEOC guidelines?
 3. Propose 3 technical mitigations (data, model, or post-processing level)
@@ -336,6 +359,7 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 **Scenario**: A retail company wants to automate processing of 5,000 supplier invoices per day. Each invoice is a scanned PDF (no text layer). They want accurate structured data extracted and validation against their purchase orders system.
 
 **Task**:
+
 1. Design the end-to-end architecture
 2. How would you handle invoices that fail extraction (low confidence)?
 3. How would you monitor extraction accuracy without labeling every invoice?
@@ -363,16 +387,19 @@ You've mastered classical ML and deep learning. Now you step into the frontier: 
 ### Specialization Tracks
 
 **Track A: AI Engineer (LLM Products)**
+
 - Master Days 68, 70, 71, 72
 - Learn LangGraph for complex agent workflows
 - Build: AI-powered SaaS product
 
 **Track B: ML Platform Engineer**
+
 - Master Days 65, 66, 67
 - Learn Kubernetes, Prometheus, Grafana
 - Build: End-to-end ML platform
 
 **Track C: AI Ethics & Governance**
+
 - Master Days 62, 63, 69
 - Learn regulatory frameworks (EU AI Act, ISO 42001)
 - Build: AI governance framework for an organization

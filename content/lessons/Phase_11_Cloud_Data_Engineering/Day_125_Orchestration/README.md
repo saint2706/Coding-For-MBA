@@ -254,6 +254,7 @@ def load(input_path, db):
 ### Exercise 3: Orchestrator Selection
 
 For each scenario, choose Airflow, Prefect, or Dagster and justify:
+
 1. A 3-person startup that needs to schedule 5 dbt jobs and 3 Python scripts.
 2. A bank with 200 data engineers, strict audit requirements, and existing Kubernetes.
 3. A data mesh organization with 10 domain teams each owning their own data products.

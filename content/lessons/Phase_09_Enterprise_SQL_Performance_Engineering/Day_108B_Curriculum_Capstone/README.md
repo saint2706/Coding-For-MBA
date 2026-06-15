@@ -55,6 +55,7 @@ You've completed **108 days** of intensive learning spanning:
 **Company**: Nexus Retail (fictional) — a mid-size retailer with 50 stores across India.
 
 **Business problem**: The analytics team drowns in one-off requests. The CEO wants:
+
 1. A live sales performance dashboard
 2. A demand forecasting model for inventory planning
 3. An automated anomaly detection system that alerts when a store behaves unusually
@@ -420,6 +421,7 @@ build_executive_dashboard(kpi_data, pd.DataFrame(), detect_store_anomalies(df))
 Your completed capstone should include:
 
 ### Code (Python Jupyter Notebook + SQL)
+
 - [ ] `01_data_pipeline.py` — Data loading, cleaning, SQLite ingestion
 - [ ] `02_sql_kpis.sql` — All 5 KPI queries with CTEs and window functions
 - [ ] `03_ml_forecasting.py` — Feature engineering + model training + evaluation
@@ -427,11 +429,13 @@ Your completed capstone should include:
 - [ ] `05_dashboard.py` — Visualization dashboard generation
 
 ### Documentation
+
 - [ ] `README.md` — Project overview, setup instructions, key findings
 - [ ] Inline comments explaining ML modeling decisions
 - [ ] A 1-page "Business Summary" with 3 key insights and recommendations
 
 ### Quality Gates
+
 - [ ] MAPE < 15% on the forecasting model
 - [ ] All SQL queries run without errors
 - [ ] Dashboard renders cleanly with no missing panels
@@ -459,13 +463,14 @@ Rate yourself 1–5 on each dimension:
 
 ---
 
-## 🎓 Congratulations — You Did It!
+## 🎓 Congratulations — You Did It
 
 You have completed **108 days** of the Coding for MBA curriculum.
 
 From `print("Hello, World!")` to building a complete retail analytics intelligence system — you've traveled further than most working data professionals.
 
 **What you've built today:**
+
 - A production-quality ETL pipeline
 - 5 business-critical SQL KPI queries with window functions
 - A demand forecasting model with proper time-series cross-validation
@@ -473,12 +478,14 @@ From `print("Hello, World!")` to building a complete retail analytics intelligen
 - An executive dashboard suitable for a board meeting
 
 **What you should do next:**
+
 1. **Polish this project** — add a README, clean up code, add docstrings
 2. **Push to GitHub** — this is your portfolio centerpiece
 3. **Write a LinkedIn post** about what you built and what you learned
 4. **Apply for roles**: Data Analyst, Analytics Engineer, ML Engineer, BI Developer
 
 **The journey continues.** Pick one of the specialization paths:
+
 - 🤖 **AI Engineer**: Phase 10 (Generative AI)
 - ☁️ **Cloud Data Engineer**: Phase 11 (Cloud Data Engineering)  
 - 📊 **Analytics Engineer**: Phase 12 (Analytics Engineering & Data Products)

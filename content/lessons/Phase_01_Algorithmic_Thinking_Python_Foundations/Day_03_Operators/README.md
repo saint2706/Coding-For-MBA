@@ -315,6 +315,7 @@ print("LOAN ELIGIBLE:", is_eligible)
 ```
 
 **Expected Output:**
+
 ```text
 Revenue Requirement: True
 Experience Requirement: True
@@ -353,6 +354,7 @@ print("Commission: $", commission)
 ```
 
 **Expected Output:**
+
 ```text
 Sales: $ 75000
 Rate: 7.000000000000001 %
@@ -389,6 +391,7 @@ print("NEEDS ATTENTION:", needs_attention)
 ```
 
 **Expected Output:**
+
 ```text
 === INVENTORY ALERT ===
 Product: Widget Pro

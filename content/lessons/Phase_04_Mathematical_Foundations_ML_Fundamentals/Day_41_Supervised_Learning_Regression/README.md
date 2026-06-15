@@ -94,7 +94,6 @@ $$
 \mathbf{w}^\star = (X^\top X)^{-1} X^\top \mathbf{y}
 $$
 
-
 ```python
 import numpy as np
 import pandas as pd
@@ -210,7 +209,6 @@ When relationships aren't straight lines, expand the feature into polynomial bas
 $$
 \hat{y} = w_0 + w_1 x + w_2 x^2 + \cdots + w_d x^d
 $$
-
 
 ```python
 from sklearn.preprocessing import PolynomialFeatures
@@ -431,6 +429,7 @@ X_test_scaled = scaler.transform(X_test)  # Transform test
 ### Advanced Regression Topics
 
 **Prediction Intervals vs Confidence Intervals**
+
 - **Confidence interval**: Range for the *expected mean* response at a given X — "The mean house price for 2,000 sqft homes is $350k ± $15k (95% CI)"
 - **Prediction interval**: Range for an *individual* prediction — "This specific house is predicted at $350k ± $60k (95% PI)"
 Prediction intervals are always wider than confidence intervals because they include irreducible individual variation.
@@ -447,6 +446,7 @@ pred_summary = predictions.summary_frame(alpha=0.05)
 
 **Quantile Regression**
 When you need the 10th or 90th percentile rather than the mean (e.g., worst-case revenue forecast, planning inventory for peak demand):
+
 ```python
 from sklearn.linear_model import QuantileRegressor
 q10 = QuantileRegressor(quantile=0.1).fit(X_train, y_train)
@@ -455,6 +455,7 @@ q90 = QuantileRegressor(quantile=0.9).fit(X_train, y_train)
 
 **Time-Aware Regression Validation**
 Never use random train/test splits for time-series data. Use a chronological split:
+
 ```python
 from sklearn.model_selection import TimeSeriesSplit
 tscv = TimeSeriesSplit(n_splits=5)
@@ -468,25 +469,30 @@ If you create `days_to_next_purchase` as a feature to predict `churn`, but that 
 ### Senior-Level Regression Insights
 
 **Coefficient and Feature Importance Caveats**
+
 - Linear model coefficients are valid only if features are standardized — otherwise they're not comparable
 - Correlated features "share" predictive power unpredictably across coefficients — adding a correlated feature can reverse the sign of an existing one
 - Tree feature importance (MDI) biases toward high-cardinality and high-variance features; prefer permutation importance for unbiased estimates
 
 **Subgroup Error Analysis**
 A model with RMSE=$30k overall may have RMSE=$60k for a specific region or store type. Always segment errors:
+
 ```python
 error_by_region = test_df.assign(error=abs(y_test - y_pred)).groupby('region')['error'].mean()
 ```
+
 Large subgroup errors often indicate missing features for that group.
 
 **Drift Monitoring**
 Production models degrade as the world changes. Monitor:
+
 - Input drift: distribution of features shifts (e.g., income ranges change post-inflation)
 - Concept drift: relationship between features and target changes (e.g., pricing dynamics shift)
 - Track RMSE on new labeled data weekly; set an alert threshold for retraining.
 
 **Baseline-vs-Complexity Deployment Gate**
 Before deploying a complex model, confirm it beats a simple baseline by enough to justify the maintenance cost:
+
 ```python
 baseline_rmse = mean_absolute_error(y_test, np.full_like(y_test, y_train.mean()))
 model_rmse = mean_absolute_error(y_test, model.predict(X_test))
@@ -582,6 +588,7 @@ print(importance.to_string(index=False))
 **Business Scenario:** RetailCo's real estate team wants to estimate store rental costs in new markets. Your model will inform capital allocation decisions.
 
 **Tasks:**
+
 1. Split data 80/20; train LinearRegression, Ridge, and RandomForestRegressor
 2. Report MAE, RMSE, MAPE, and R² on the test set for each model
 3. Plot residuals vs fitted values for the best model
@@ -594,6 +601,7 @@ Ridge Regression: Similar to linear; slightly better when multicollinearity pres
 Random Forest: RMSE ~$20,000–35,000, R² ~0.75–0.88
 
 **Residual Plot Interpretation:**
+
 - Horizontal band of points with no pattern → assumptions met ✅
 - Fan shape (errors grow with fitted value) → heteroscedasticity — try log-transforming target ⚠️
 - Curved pattern → non-linearity not captured — try polynomial features or tree model ⚠️

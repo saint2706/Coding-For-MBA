@@ -14,18 +14,22 @@
 Phase 05 covers Advanced ML and Deep Learning across 14 lessons (Days 49–60, 60B, 60C). The gap audit identified two tiers of issues:
 
 **Tier 1 — Systemic (all 14 lessons):**
+
 - [O:Glossary] No lesson had a glossary — foundational terms were used but never formally defined
 - [K:Xref] No lesson had cross-references — students couldn't trace concept lineage across the phase
 
 **Tier 2 — Structural (Days 60B & 60C):**
+
 - [C:Lab] Both bridge lessons had no hands-on exercises — only pseudocode and concept descriptions
 - [M:Coverage] Both bridge lessons were ~200 lines vs 900–1500 for other days, creating a cliff at the most advanced topics (LLMs, RAG)
 
 **Tier 3 — Coverage (targeted per lesson):**
+
 - [M:Coverage] Missing technical topics: OOV handling (Day 49), A/B testing framework and feature stores (Day 50), negative correlation math and ensemble pruning (Day 52), multivariate forecasting and forecast combination (Day 56), exploration-exploitation and popularity bias (Day 57), attention interpretability and when-not-to-use transformers (Day 58)
 - [I:Senior] Missing production insights across several lessons
 
 **Recurring gaps resolved:**
+
 - ✅ [O:Glossary] 8–12 term glossaries added to ALL 14 lessons
 - ✅ [K:Xref] Cross-reference sections (4–5 links each) added to ALL 14 lessons
 - ✅ [C:Lab] Day 60B: Quick-Start Lab with 5 tasks, expected outputs, no GPU required

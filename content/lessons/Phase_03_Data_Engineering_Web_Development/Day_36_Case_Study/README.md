@@ -362,10 +362,10 @@ services:
       - "5432:5432"
 ```
 
-2. **Async extraction example with bounded concurrency (`httpx`)**
+1. **Async extraction example with bounded concurrency (`httpx`)**
    - Reuse/adapt the Track B extract snippet above.
 
-3. **Minimal runbook**
+2. **Minimal runbook**
    - Local run commands:
      - `python pipeline.py`
      - `python app.py` (or `uvicorn app:app --reload` for async API variant)
@@ -416,12 +416,14 @@ conn.commit()
 **Business Scenario:** A logistics company's route planning team needs daily weather data to optimize delivery schedules. Drivers need to know wind speed and precipitation forecasts for 5 key cities. You'll build a pipeline that fetches weather data from the Open-Meteo API (free, no key required), processes it, and stores it in SQLite.
 
 **Your Task:**
+
 1. Fetch current weather data for 5 cities using the Open-Meteo API: `https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true`
 2. Extract: city name, temperature (°C), windspeed (km/h), and timestamp
 3. Store in SQLite table `weather_log` with columns: city, temperature, windspeed, fetched_at
 4. Print the daily briefing in a formatted table
 
 **City coordinates to use:**
+
 ```python
 cities = [
     {"name": "New York",    "lat": 40.71, "lon": -74.01},
@@ -433,6 +435,7 @@ cities = [
 ```
 
 **Expected Output:**
+
 ```
 === Daily Weather Briefing — 2024-01-15 08:00 UTC ===
 
@@ -493,12 +496,14 @@ print(df)
 **Business Scenario:** The engineering team tracks the health of their top open-source dependencies. Every week, the tech lead wants a report showing stars, open issues, and last push date for the team's 5 most-used repos. This pipeline automates that report.
 
 **Your Task:**
+
 1. Use the GitHub REST API to fetch repo data for at least 5 repos (use public endpoints, no auth needed for basic data)
 2. For each repo: extract name, stars, open issues, last push date
 3. Store in a SQLite database table `github_stats` (upsert to avoid duplicates)
 4. Display as a formatted report
 
 **Repos to use:**
+
 ```python
 repos = [
     "psf/requests",
@@ -510,6 +515,7 @@ repos = [
 ```
 
 **Expected Output:**
+
 ```
 === GitHub Dependency Health Report — 2024-01-15 ===
 
@@ -574,12 +580,14 @@ df = github_pipeline("python")
 **Business Scenario:** The logistics company wants a unified operations dashboard combining the weather data and GitHub dependency stats pipelines into a single internal web page. The Flask app reads from the SQLite databases built in Exercises 1 and 2 and renders styled HTML tables.
 
 **Your Task:**
+
 1. Create a Flask app with route `GET /` that reads from both SQLite databases
 2. Pass `repos` (list of dicts) and `languages` (list of dicts) to `templates/index.html`
 3. Create `templates/index.html` (content provided below) — Flask looks for templates in the `templates/` subdirectory
 4. Run with `flask run` and verify the dashboard renders correctly
 
 **`templates/index.html` (create this file):**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -629,6 +637,7 @@ df = github_pipeline("python")
 ```
 
 **Expected Output:**
+
 - `GET /` renders a styled HTML page with two tables: "Top Repositories by Stars" and "Stars by Language"
 - Each table is populated with live data from `github.db`
 
@@ -682,6 +691,7 @@ if __name__ == "__main__":
 **Business Scenario:** The weather pipeline has been running in production for weeks and silently accumulating duplicate records. The `if_exists="append"` strategy causes the `current_weather` table to grow by 5 rows every run (5→10→15→20…). The data freshness check also never fires because old records are never replaced. Debug and fix both issues.
 
 **Starter Code (Broken — has the duplicate accumulation bug):**
+
 ```python
 import sqlite3
 import pandas as pd
@@ -715,6 +725,7 @@ for i in range(3):
 ```
 
 **Your Debugging Goals:**
+
 1. Run the code 3 times — confirm the table grows from 5 → 10 → 15 rows
 2. Fix Bug 1: update `fetched_at` to use `datetime.utcnow()` (current time)
 3. Fix Bug 2: replace `if_exists="append"` with `if_exists="replace"` so each run resets the table to exactly 5 rows
@@ -722,6 +733,7 @@ for i in range(3):
 5. Verify that after 3 runs of the fixed code, the table still has exactly 5 rows
 
 **Expected Output after fix:**
+
 ```
 After run: table has 5 rows
 After run: table has 5 rows  ← upsert replaced existing records

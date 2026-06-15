@@ -146,6 +146,7 @@ To maximize revenue, you find the price that makes dR/dp = 0:
 dR/dp = 1000 − 10p = 0 → p* = $100
 
 This is exactly what gradient *ascent* does (or descent on the negative revenue):
+
 - At p=50: dR/dp = 500 (revenue increasing — move price up)
 - At p=100: dR/dp = 0 (optimal price — stop)
 - At p=150: dR/dp = −500 (revenue decreasing — move price down)
@@ -356,15 +357,15 @@ experiment_learning_rates([0.01, 0.1, 0.9])
 ```
 
 > **⚠️ Important Qualification**
-> 
+>
 > The learning rate values above are specific to the toy loss `L(w) = (w − 3)²`. A "just right" learning rate depends heavily on:
-> 
+>
 > - **Loss function curvature**: A steep loss landscape needs smaller steps than a flat one
 > - **Feature scale**: If features span very different ranges (age: 18–80 vs income: 10,000–500,000), gradients will be wildly different in magnitude. Standardize features before training.
 > - **Batch size**: Mini-batch gradients are noisier than full-batch — stochastic gradients tolerate higher learning rates
 > - **Optimizer**: Adam, RMSprop, and AdaGrad adapt the effective learning rate per parameter — they're much less sensitive to the initial choice than vanilla gradient descent
 > - **Model architecture**: Deeper networks with many layers often require smaller learning rates due to gradient accumulation
-> 
+>
 > **Practical approach**: Start with 1e-3 for Adam or 0.1 for SGD with momentum; use a learning rate scheduler (e.g., cosine annealing) and monitor the loss curve.
 
 ### The Chain Rule: Foundation of Backpropagation
@@ -416,6 +417,7 @@ print(f"Analytical derivative: {analytical_deriv:.4f}")
 
 **Gradient Checking (Finite Differences)**
 Verify your gradient implementation is correct by comparing to numerical approximation:
+
 ```python
 def numerical_gradient(f, w, epsilon=1e-5):
     """Finite-difference gradient check"""
@@ -430,6 +432,7 @@ def numerical_gradient(f, w, epsilon=1e-5):
 ```
 
 **Stochastic and Mini-Batch Gradient Descent**
+
 | Variant | Update Rule | Pro | Con |
 |---------|------------|-----|-----|
 | Batch GD | All n samples per update | Smooth, stable | Slow for large datasets |
@@ -438,11 +441,13 @@ def numerical_gradient(f, w, epsilon=1e-5):
 
 **Adam Optimizer (Adaptive Moment Estimation)**
 Adam maintains per-parameter adaptive learning rates using estimates of gradient mean (m) and variance (v):
+
 ```
 m_t = β₁ × m_{t-1} + (1 − β₁) × g_t      # Gradient momentum
 v_t = β₂ × v_{t-1} + (1 − β₂) × g_t²    # Gradient variance
 w_{t+1} = w_t − α × m̂_t / (√v̂_t + ε)    # Adaptive update
 ```
+
 Default values (β₁=0.9, β₂=0.999, ε=1e-8) work well for most problems. Adam is the default choice for neural networks.
 
 **Saddle Points**
@@ -523,12 +528,14 @@ plt.show()
 **Business Scenario:** You are pricing manager modeling how total revenue R(p) = p × demand(p) changes with price p. Your loss is mean squared error between predicted and actual revenue across 100 price points.
 
 **Tasks:**
+
 1. Implement gradient descent on L(w) = (w − 3)² with learning_rate=0.1, 50 iterations
 2. Plot the loss curve — it should decrease monotonically
 3. Repeat with learning_rate=0.9 — observe: does it converge or diverge?
 4. Report: final w value, final loss, number of iterations to convergence (loss < 0.01)
 
 **Expected Output (learning_rate=0.1):**
+
 ```
 Iteration 0:  w=0.000, loss=9.000
 Iteration 10: w=2.658, loss=0.117
@@ -539,6 +546,7 @@ Final w ≈ 3.00 (correct: minimum at w=3)
 ```
 
 **Expected Output (learning_rate=0.9):**
+
 ```
 Iteration 0: w=0.000, loss=9.000
 Iteration 1: w=5.400, loss=5.760  ← overshoots!
@@ -613,6 +621,7 @@ plt.show()
 ### Exercise 2: Visualize Loss Landscape
 
 **Expected Output (multi-variable gradient descent):**
+
 ```
 Optimal w0 (intercept) ≈ target intercept ± 0.5
 Optimal w1 (slope) ≈ target slope ± 0.1

@@ -228,6 +228,7 @@ pip list
 ```
 
 **Expected Output (after successful setup):**
+
 ```
 (venv) > pip list
 Package      Version
@@ -259,6 +260,7 @@ pip list
 ```
 
 **Expected Output (environment is fresh, same packages reinstalled):**
+
 ```
 (venv) > pip list
 Package      Version
@@ -306,6 +308,7 @@ if __name__ == "__main__":
 ```
 
 **Expected Output (when run inside an active venv):**
+
 ```
 === Python Environment Info ===
 

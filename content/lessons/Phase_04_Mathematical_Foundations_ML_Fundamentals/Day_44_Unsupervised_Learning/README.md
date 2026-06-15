@@ -53,18 +53,21 @@ outcomes:
 ### Critical: What Clusters Are (and Are Not)
 
 Cluster assignments are **model-dependent constructs**, not discovered ground truth. The same dataset can produce entirely different clusters depending on:
+
 - The algorithm (K-means vs DBSCAN vs hierarchical)
 - The number of clusters (K)
 - The distance metric and feature scaling
 - The random initialization seed
 
 **What this means for business:**
+
 - Customer "segments" from K-means are patterns the algorithm found given your assumptions — not inherent, stable, universal groups
 - Two analysts using different K values will describe the same customers as belonging to completely different segments
 - Overinterpreting cluster labels ("Budget-Conscious Millennials") as definitive customer identities can mislead strategy and reinforce stereotypes
 - **Safeguard**: Always validate that business actions based on segments produce measurable outcomes; treat segments as hypotheses to test, not facts
 
 **Good practices:**
+
 - Run clustering with multiple K values and algorithms; report stability
 - Have domain experts validate whether clusters are meaningful before acting on them
 - Use segments descriptively ("customers in Cluster 2 tend to...") not prescriptively ("Cluster 2 customers are...")
@@ -192,14 +195,14 @@ print(f"Best silhouette score: {max(silhouettes):.3f}")
 ```
 
 > **Justifying the Choice of K**
-> 
+>
 > Selecting K=3 above was based on the elbow in the inertia plot. However, the "elbow" is subjective and often ambiguous. Also consider:
-> 
+>
 > - **Silhouette score**: Average similarity of each point to its cluster vs other clusters (-1 to 1; higher is better)
 > - **Business constraint**: If your marketing team can only run 4 campaigns, try K=4
 > - **Operational capacity**: If you can only service 2 customer tiers, K=2 may be forced
 > - **Stability check**: Does the same cluster structure appear with different random seeds?
-> 
+>
 > ```python
 > from sklearn.metrics import silhouette_score
 > for k in range(2, 8):
@@ -334,12 +337,13 @@ print(f"Variance retained: {pca_2d.explained_variance_ratio_.sum():.1%}")
 ```
 
 > **Justifying the 95% PCA Threshold**
-> 
+>
 > Retaining components that explain 95% of variance is a common convention, but the right threshold depends on:
+>
 > - **Downstream model**: Some models are robust to noisy dimensions (trees); linear models benefit more from noise removal
 > - **Interpretability**: Fewer components are easier to explain; 3 components can be plotted
 > - **Computational budget**: More components → larger model inputs → slower training
-> 
+>
 > Consider visualizing the scree plot and choosing the "knee" where adding components stops helping much, rather than always targeting 95%.
 
 ### Combining PCA and Clustering
@@ -397,10 +401,12 @@ print(f"Adjusted Rand Index: {ari:.3f} (1.0 = perfect match)")
 
 **DBSCAN (Density-Based Spatial Clustering of Applications with Noise)**
 Unlike K-means, DBSCAN:
+
 - Does not require specifying K in advance
 - Finds clusters of arbitrary shape
 - Labels outliers as noise (cluster label = -1)
 - Works poorly in high dimensions
+
 ```python
 from sklearn.cluster import DBSCAN
 db = DBSCAN(eps=0.5, min_samples=5)  # eps: neighborhood radius; min_samples: core point threshold
@@ -412,6 +418,7 @@ print(f"Clusters: {n_clusters}, Noise points: {n_noise}")
 
 **Hierarchical Clustering**
 Builds a tree (dendrogram) of nested clusters without requiring K upfront. Use the dendrogram to choose a meaningful K by eye:
+
 ```python
 from scipy.cluster.hierarchy import dendrogram, linkage
 Z = linkage(X_scaled, method='ward')  # Ward minimizes within-cluster variance
@@ -419,6 +426,7 @@ Z = linkage(X_scaled, method='ward')  # Ward minimizes within-cluster variance
 
 **Gaussian Mixture Models (GMM)**
 Assumes data is drawn from a mixture of Gaussian distributions. Produces soft cluster assignments (probabilities):
+
 ```python
 from sklearn.mixture import GaussianMixture
 gmm = GaussianMixture(n_components=3, random_state=42)
@@ -427,6 +435,7 @@ probabilities = gmm.predict_proba(X_scaled)  # Soft assignments
 
 **PCA Leakage Prevention**
 PCA must be fitted on training data only:
+
 ```python
 # WRONG: fit PCA on all data before splitting
 pca = PCA(n_components=10).fit(X)           # Leaks test statistics into PCA directions
@@ -439,6 +448,7 @@ X_test_pca = pca.transform(X_test)         # Same transformation, not refitted
 
 **Nonlinear Dimensionality Reduction**
 For visualization only (not for creating model inputs or new-point transformation):
+
 - **t-SNE**: Preserves local structure; great for visualizing clusters in 2D; non-deterministic; cannot transform new points
 - **UMAP**: Faster than t-SNE; preserves more global structure; can transform new points
 
@@ -497,6 +507,7 @@ new_clusters = kmeans.predict(new_data)
 
 **Cluster Drift and Stability Monitoring**
 Customer segments are not static. Monitor monthly:
+
 - **Cluster size drift**: Alert if any cluster grows/shrinks > 20% month-over-month
 - **Centroid drift**: Alert if cluster centers shift significantly in feature space
 - **Assignment instability**: Track how many customers change cluster assignment each month
@@ -510,18 +521,21 @@ print(f"Cluster stability (ARI): {stability:.3f}")  # 1.0 = identical; 0.0 = ran
 
 **Cluster Versioning and Reassignment Policy**
 When you retrain the clustering model (e.g., quarterly):
+
 - Version the cluster definitions (Cluster-v1, Cluster-v2)
 - Do not automatically reassign customers — communicate to business that segment membership changed
 - Provide a transition matrix showing what % of Cluster-v1-A became Cluster-v2-B
 
 **Human Validation Before Action**
 Before acting on cluster profiles:
+
 1. Validate with 5–10 representative customer interviews per cluster
 2. Have a domain expert review whether the cluster story is coherent
 3. Run a pilot (A/B test) before full rollout
 
 **Online Scoring Considerations**
 When scoring new customers in real time against static cluster centers:
+
 - Use Euclidean distance to nearest centroid (available in `KMeans.predict()`)
 - Log the distance — customers far from all centroids are outliers
 - Refresh cluster centers periodically; stale centroids misclassify new customer types
@@ -533,6 +547,7 @@ When scoring new customers in real time against static cluster centers:
 **Business Scenario:** RetailCo's marketing team wants to differentiate their customer engagement strategy. They believe distinct customer types should receive different email cadences and offer types.
 
 **Tasks:**
+
 1. Scale features (age, annual_income, total_spend) using StandardScaler
 2. Find optimal K using both inertia elbow and silhouette score (K=2 to 7)
 3. Fit KMeans with chosen K; add cluster labels to DataFrame
@@ -752,12 +767,13 @@ print(f"Recall: {recall_score(y_true, anomaly_pred):.2f}")
 ```
 
 > **Justifying the Anomaly Cutoff**
-> 
+>
 > The "top 10% by distance" cutoff is arbitrary. In practice, the right threshold depends on:
+>
 > - **Operational capacity**: If the fraud team can investigate 50 cases/day and you get 500 transactions/day, your cutoff is ~top 10%. If they can handle 20 cases/day, it's top 4%.
 > - **Error cost asymmetry**: FN (missed fraud) vs FP (false alarm) costs
 > - **Base rate**: If true fraud rate is 0.1%, flagging top 10% means 99% of alerts are false — investigate only the top 1%.
-> 
+>
 > Always connect the threshold to operational reality, not a round number.
 
 ---

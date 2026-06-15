@@ -518,6 +518,7 @@ Standard RAG uses a **bi-encoder** for retrieval: embed query and documents sepa
 A **cross-encoder reranker** processes query + document together, enabling richer relevance signals — but requires one forward pass per candidate document.
 
 **When to add reranking:**
+
 - You retrieve top-20 candidates but inject only top-4 into the prompt (reranker selects the best 4)
 - Your precision@5 is below 0.6 with bi-encoder alone
 - Your domain has jargon or ambiguity that cosine similarity handles poorly
@@ -616,6 +617,7 @@ Engineering cost (one-time): 2–4 weeks × $100–200/hr — this dominates yea
 ## Next Steps
 
 **Go deeper on implementation:**
+
 - 🔗 **Phase 10 → Day 112**: Full RAG pipeline — ChromaDB + LangChain + evaluation
 - 🔗 **Phase 10 → Day 114**: Evaluating RAG quality with RAGAS and TruLens
 - 📖 [RAG paper (Lewis et al., 2020)](https://arxiv.org/abs/2005.11401) — Original Facebook Research paper

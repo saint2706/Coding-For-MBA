@@ -318,6 +318,7 @@ AI demos are always better than production. The demo uses hand-picked examples t
 ### The "AI as Co-Pilot" Design Principle
 
 The most successful AI features position AI as a co-pilot, not autopilot. Users should always feel in control:
+
 - **Co-pilot**: AI drafts an email, user edits and sends → user feels empowered and accountable
 - **Autopilot**: AI sends the email automatically → user feels nervous and distrusts the system
 
@@ -338,9 +339,10 @@ For each of these proposed AI features, score it on the 6-gate framework and giv
 
 ### Exercise 2: Failure Mode Design
 
-You're building an AI feature that suggests the next best action for sales reps (call, email, discount offer, escalate) based on CRM data. 
+You're building an AI feature that suggests the next best action for sales reps (call, email, discount offer, escalate) based on CRM data.
 
 Design the UX for these failure scenarios:
+
 1. The AI suggests a 30% discount for a customer the rep knows is about to sign at full price
 2. The AI suggestion API times out after 15 seconds
 3. The AI gave incorrect advice last week, and a customer was lost as a result

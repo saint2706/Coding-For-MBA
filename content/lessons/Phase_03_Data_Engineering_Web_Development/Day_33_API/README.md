@@ -48,6 +48,7 @@ outcomes: [Consume REST APIs, Parse JSON responses, Handle authentication]
 **REST** stands for **Representational State Transfer** — an architectural style for designing web APIs, introduced by Roy Fielding in his 2000 doctoral dissertation.
 
 **What makes an API RESTful?** Six key constraints:
+
 1. **Stateless:** Each request is independent. The server does not store session state between requests — every call must contain all necessary information (like authentication tokens).
 2. **Standard HTTP Methods:** Uses the standard HTTP verbs to convey intent:
    - `GET` — Read/retrieve data (safe, no side effects)
@@ -60,6 +61,7 @@ outcomes: [Consume REST APIs, Parse JSON responses, Handle authentication]
 4. **Uniform interface:** Consistent URL patterns and response formats (typically JSON).
 
 **REST in practice — GitHub API example:**
+
 | Action | HTTP Method | URL |
 |--------|------------|-----|
 | Get a user's profile | GET | `/users/octocat` |
@@ -222,6 +224,7 @@ def rate_limited_request(urls, delay=1):
 Every production API should have documentation. The modern standard is **OpenAPI** (formerly Swagger), which produces interactive API docs you can explore in a browser.
 
 **How to read Swagger docs:**
+
 1. **Base URL**: At the top — e.g., `https://api.example.com/v1`
 2. **Endpoints**: Listed by HTTP method + path — e.g., `GET /users/{id}`
 3. **Parameters**: Divided into `path` (in the URL), `query` (after `?`), `header`, and `body`
@@ -258,12 +261,14 @@ response = requests.get("https://api.example.com/data?api_key=your_key_here")
 **Business Scenario:** Your engineering team wants an automated script that checks the health of your top open-source dependencies on GitHub — specifically, how recently each project was updated and how many open issues it has. This helps the team decide which dependencies need attention.
 
 **Your Task:**
+
 1. Use the GitHub REST API (`https://api.github.com/repos/{owner}/{repo}`) to fetch info about at least 3 Python repos (e.g., `psf/requests`, `pandas-dev/pandas`, `tiangolo/fastapi`)
 2. For each repo, extract: name, stargazers_count, open_issues_count, updated_at
 3. Print a formatted summary table
 4. Handle the case where the API rate-limits you (status 403 or 429) with a clear error message
 
 **Expected Output:**
+
 ```
 === GitHub Repository Health Check ===
 Repository          | Stars    | Open Issues | Last Updated
@@ -302,12 +307,14 @@ repos = get_user_repos("python")
 **Business Scenario:** You receive a batch of customer order records from a partner company's API as a deeply nested JSON response. Before loading into your database, you need to flatten the structure and extract key fields.
 
 **Your Task:**
+
 1. Define (or receive) a sample JSON payload with nested structure: orders → items → product details
 2. Flatten it: each row should represent one line item (product + quantity + price)
 3. Load into a Pandas DataFrame
 4. Calculate total order value per order_id and print the summary
 
 **Sample JSON input:**
+
 ```python
 api_response = {
     "orders": [
@@ -332,6 +339,7 @@ api_response = {
 ```
 
 **Expected Output:**
+
 ```
 === Flattened Order Items ===
   order_id customer   product  qty    price
@@ -384,6 +392,7 @@ df = analyze_github_org("python")
 **Business Scenario:** You need to retrieve all pages of results from a paginated REST API (e.g., GitHub Issues API returns max 100 results per page). Your script must automatically follow pagination until all records are collected.
 
 **Your Task:**
+
 1. Build a generic `paginate_api(url, params, max_pages)` function
 2. Test it against the GitHub API: fetch all public repos for a user (`/users/{username}/repos`)
 3. Use `?per_page=10&page=1` and increment `page` until fewer than `per_page` results are returned
@@ -391,6 +400,7 @@ df = analyze_github_org("python")
 5. Report the total count and a few field values
 
 **Expected Output:**
+
 ```
 Fetching page 1... 10 results
 Fetching page 2... 10 results

@@ -349,6 +349,7 @@ account.statement()
 ```
 
 **Expected Output:**
+
 ```
 Account: Alice
 ------------------------------
@@ -406,6 +407,7 @@ print(f"Total value: ${inv.total_value():,.2f}")
 ```
 
 **Expected Output:**
+
 ```
 Total value: $6,445.00
 ```
@@ -461,6 +463,7 @@ print(f"Items: {len(order.items)}, Total: ${order.total:.2f}")
 ```
 
 **Expected Output:**
+
 ```
 Order processed. Total: $1,057.00
 Items: 2, Total: $1,057.00

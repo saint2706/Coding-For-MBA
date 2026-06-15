@@ -55,6 +55,7 @@ Use this five-step loop every time:
 ## **Reproduce → Isolate → Inspect State → Fix → Verify**
 
 ### 1. Reproduce
+
 - Run the exact code path that fails.
 - Save the input data and parameters.
 - Confirm you can trigger the bug consistently.
@@ -66,21 +67,25 @@ orders = [120, 250, 90]
 ```
 
 ### 2. Isolate
+
 - Reduce the failing scenario to the smallest snippet possible.
 - Remove unrelated code (file I/O, plotting, extra formatting).
 - Aim for 10–20 lines that still fail.
 
 ### 3. Inspect State
+
 - Print/log key variables or use `breakpoint()`.
 - Inspect assumptions (types, lengths, dictionary keys, loop counters).
 - Compare expected state vs actual state.
 
 ### 4. Fix
+
 - Change one thing at a time.
 - Prefer clear logic over clever logic.
 - Keep your old failing example to test against.
 
 ### 5. Verify
+
 - Re-run the failing case.
 - Run 1–3 nearby cases to catch side effects.
 - Add a tiny regression check so the bug stays fixed.
@@ -103,6 +108,7 @@ ZeroDivisionError: division by zero
 ```
 
 How to read it:
+
 1. Start at the **bottom** (`ZeroDivisionError`).
 2. Read the failing line (`line 9`).
 3. Move upward to understand who called it (`line 21`).
@@ -236,6 +242,7 @@ In `pdb`, repeatedly check expressions at each step:
 ```
 
 Useful watch expressions:
+
 - loop index + current value: `p i, row`
 - list growth: `p len(results)`
 - dict key availability: `p 'customer_id' in row`
@@ -295,10 +302,12 @@ Even if your formatter is simple text, consistently logging these fields massive
 ### When to use logs vs print
 
 Use `print()` when:
+
 - learning basics,
 - debugging a one-off 10-line script.
 
 Use `logging` when:
+
 - script may run repeatedly,
 - multiple people will read output,
 - you need severity levels,
@@ -309,6 +318,7 @@ Use `logging` when:
 ## 5) Bug Clinic (Phase 1 Topic-Based Exercises)
 
 For each exercise:
+
 1. Reproduce failure.
 2. Isolate smallest failing snippet.
 3. Inspect state (`print`, `breakpoint`, or logs).
@@ -328,6 +338,7 @@ print(average_top_3([80, 90]))
 **Symptom:** returns misleading average when list has fewer than 3 items.
 
 **Expected debug steps:**
+
 - Inspect `len(scores)` and `top[:3]`.
 - Identify hard-coded denominator `3`.
 - Fix denominator to `len(top[:3])` with empty-list guard.
@@ -347,6 +358,7 @@ def revenue_by_region(rows):
 **Symptom:** `KeyError` on first region occurrence.
 
 **Expected debug steps:**
+
 - Reproduce with one-row input.
 - Inspect `totals` before update.
 - Replace with initialization pattern:
@@ -366,6 +378,7 @@ print(discount("100", 10))
 **Symptom:** `TypeError` (string math).
 
 **Expected debug steps:**
+
 - Inspect `type(price)` at function entry.
 - Decide conversion policy (`float(price)`) or strict validation.
 - Verify with numeric and string numeric inputs.
@@ -388,6 +401,7 @@ print(large_ids)
 **Symptom:** `KeyError: 'amount'`.
 
 **Expected debug steps:**
+
 - Expand comprehension into loop to inspect each `o`.
 - Detect missing key case.
 - Fix with guard: `if o.get("amount", 0) > 200`.
@@ -408,6 +422,7 @@ def first_negative(nums):
 **Symptom:** returns `None` too early.
 
 **Expected debug steps:**
+
 - Step with debugger and inspect first iteration.
 - Notice `else:return None` runs on first non-negative value.
 - Move `return None` outside loop.

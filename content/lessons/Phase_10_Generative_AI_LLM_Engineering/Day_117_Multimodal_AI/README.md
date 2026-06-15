@@ -41,6 +41,7 @@ outcomes:
 You don't just read the text — you look at the charts, read the tables, check the data in the financial statements, and make sense of the whole picture together. Until 2023, AI couldn't do this.
 
 **Vision-Language Models (VLMs)** can now:
+
 - Read and understand images as naturally as text
 - Extract data from charts without OCR
 - Understand the layout of forms, invoices, contracts

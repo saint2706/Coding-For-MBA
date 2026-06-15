@@ -88,7 +88,6 @@ $$
 P(\text{spam} \mid \text{"free"}) = \frac{P(\text{"free"} \mid \text{spam}) \, P(\text{spam})}{P(\text{"free"})} \approx 0.82
 $$
 
-
 ```python
 import numpy as np
 from scipy import stats
@@ -142,7 +141,6 @@ $$
 $$
 P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}, \qquad \mathbb{E}[X] = \mathrm{Var}(X) = \lambda
 $$
-
 
 ```python
 # --- 1. Normal (Gaussian) Distribution ---
@@ -304,11 +302,13 @@ print(f"  Significant at α=0.05: {'✅ YES' if p_value < 0.05 else '❌ NO'}")
 > **⚠️ What p < 0.05 actually tells you (and what it doesn't)**
 >
 > A p-value of 0.03 means: "If the null hypothesis were true (no difference), there is only a 3% chance of seeing a result this extreme or more extreme by random chance." It does **not** mean:
+>
 > - The effect is large enough to matter to the business
 > - The result will replicate in production
 > - The alternative hypothesis is 97% likely to be true
 >
 > **What you also need:**
+>
 > - **Effect size**: How large is the difference? (e.g., Cohen's d, lift percentage)
 > - **Confidence interval**: A 95% CI of [+0.1%, +15%] conversion rate lift is very different from [+0.5%, +2%]
 > - **Practical significance**: Does the estimated lift justify rollout cost?
@@ -362,12 +362,14 @@ For Day 54 (Probabilistic Modeling), you'll go deep into Bayesian ML.
 **Multiple Testing Problem**
 
 When you test 20 hypotheses at α=0.05, you expect 1 false positive by chance. Solutions:
+
 - **Bonferroni correction**: Divide α by number of tests (α' = 0.05/20 = 0.0025) — conservative but controls family-wise error rate
 - **FDR control (Benjamini-Hochberg)**: Controls expected proportion of false discoveries — better for many simultaneous tests (e.g., feature selection across hundreds of columns)
 
 **Statistical Power and Sample-Size Planning**
 
 Power = P(reject H₀ | H₁ is true) = 1 − β. For A/B tests:
+
 - Define **minimum detectable effect (MDE)**: the smallest lift worth deploying (e.g., +1% conversion = $500K/year — worth rolling out)
 - Choose α (Type I error rate, typically 0.05) and target power (typically 0.80 or 0.90)
 - Use `statsmodels`: `statsmodels.stats.power.TTestIndPower().solve_power(effect_size=..., alpha=0.05, power=0.80)`
@@ -392,6 +394,7 @@ A model is *calibrated* if, among all samples it assigns probability 0.7, roughl
 **Scenario**: You are a data scientist advising three different business units simultaneously. Each unit has a different counting or measurement problem. Your job is to identify the appropriate distribution and compute tail probabilities that inform operational decisions.
 
 **Tasks**:
+
 1. Classify each scenario (Daily revenue / defective products / support tickets / employee heights) as Normal, Binomial, or Poisson, and justify your choice.
 2. For defects in a batch of 200 (p=0.02), compute the probability of seeing more than twice the expected defect count.
 3. For support tickets (avg=8/hour), compute the probability of a surge above twice the hourly average — this drives staffing decisions.
@@ -418,10 +421,12 @@ print(f"Tickets — P(X > {2 * lambda_val}): {1 - poisson.cdf(2 * lambda_val):.4
 ```
 
 **Expected Output**:
+
 ```
 Defects — P(X > 8): ~0.0038
 Tickets — P(X > 16): ~0.0019
 ```
+
 Answers: (1) Normal — CLT applies when many small transactions aggregate; (2) Binomial — fixed trials, binary outcome; (3) Poisson — rare events per unit time; (4) Normal — biological measurements.
 
 ### Exercise 2: Naive Bayes Spam Classifier from Scratch (Medium)
@@ -463,6 +468,7 @@ print(f"P(spam) = {p_spam:.2f}, P(ham) = {p_ham:.2f}")
 ```
 
 **Expected Output (approximate)**:
+
 ```
 Spam probability given ["buy", "now", "winner"]: 0.89
 Ham probability given ["meeting", "schedule", "tomorrow"]: 0.94
@@ -514,6 +520,7 @@ print(f"95% Parametric CI: [${ci_param[0]:.2f}, ${ci_param[1]:.2f}]")
 **Scenario**: The product team ran a 2-week A/B test. Control group: old checkout (n=500). Treatment group: new checkout (n=500). Metric: conversion (0/1 per user). The VP of Product wants a go/no-go recommendation backed by statistics.
 
 **Tasks**:
+
 1. Compute observed conversion rates for both groups.
 2. Run a two-proportion z-test to determine if the difference is statistically significant.
 3. Report: p-value, absolute lift (in percentage points), and 95% confidence interval around the lift.
@@ -558,6 +565,7 @@ print(f"Significant at α=0.05: {'YES' if p_value < 0.05 else 'NO'}")
 ```
 
 **Expected Output**:
+
 ```
 Control conversion: ~0.12, Treatment conversion: ~0.15
 p-value: ~0.03, Absolute lift: ~3 percentage points

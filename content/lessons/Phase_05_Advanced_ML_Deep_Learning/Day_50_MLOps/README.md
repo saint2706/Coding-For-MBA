@@ -1169,6 +1169,7 @@ class ModelABTest:
 ```
 
 **A/B Test decision rules:**
+
 - Run for minimum 2 weeks to capture weekly seasonality
 - Require p < 0.05 AND practical significance (lift > 2%) before promoting challenger
 - Check for novelty effects: performance sometimes inflates in week 1 due to user curiosity

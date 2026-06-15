@@ -48,6 +48,7 @@ outcomes:
 ### Why Fine-Tuning Matters
 
 Pre-trained LLMs are general-purpose. They know world knowledge but not your:
+
 - Internal jargon, product names, or business rules
 - Desired output format (always return JSON, always be concise)
 - Domain-specific tone (medical, legal, financial)
@@ -71,6 +72,7 @@ Each parameter needs: FP32 weights (4B) + gradients (4B) + optimizer state (8B) 
 The key insight behind LoRA (Hu et al., 2021): **weight updates during fine-tuning are inherently low-rank**.
 
 Instead of updating the full weight matrix W (shape d × k), LoRA approximates the update ΔW as a product of two small matrices: ΔW = A × B, where:
+
 - A has shape d × r  (r = rank, typically 4–64)
 - B has shape r × k
 
@@ -121,6 +123,7 @@ print(f"LoRA: {lora_params:,} trainable params ({lora_params/original_params:.2%
 ### QLoRA: Quantization + LoRA
 
 QLoRA pushes further: **quantize** the frozen base model weights to 4-bit integers (from 16-bit floats), then apply LoRA adapters in 16-bit. This reduces the memory footprint by ~4x again:
+
 - A 7B model that needed 14 GB in FP16 → needs ~4 GB in 4-bit + LoRA adapters
 - Enables fine-tuning 7B models on a **single consumer GPU (RTX 3090/4090)**
 
@@ -502,6 +505,7 @@ The engineering cost dominates small training runs. Fine-tuning makes economic s
 ## Next Steps
 
 **Go deeper on implementation:**
+
 - 🔗 **Phase 10 → Day 113**: Full fine-tuning walkthrough with Unsloth (QLoRA on LLaMA 3)
 - 🔗 **Phase 10 → Day 114**: Evaluating your fine-tuned model with RAGAS
 - 📖 [LoRA paper](https://arxiv.org/abs/2106.09685) — Original Hu et al. 2021 paper (accessible)

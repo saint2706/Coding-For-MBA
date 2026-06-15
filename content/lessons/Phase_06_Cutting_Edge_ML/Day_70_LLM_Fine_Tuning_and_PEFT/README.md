@@ -40,6 +40,7 @@ outcomes:
 They know every cuisine, every technique. But you run a **Hyderabad biryani restaurant**. Their knowledge is too general.
 
 Two options:
+
 1. **Full Retraining**: Send them to biryani school for 10 years. Expensive, slow, and they'll mostly learn what they already know.
 2. **Fine-Tuning (PEFT)**: Give them a 2-week crash course on your specific spice blends and plating style. 10x cheaper. They keep all their existing knowledge and add your specialization.
 
@@ -52,6 +53,7 @@ Two options:
 ### 1. Why Not Full Fine-Tuning?
 
 Fine-tuning GPT-3 (175B parameters) from scratch requires:
+
 - **GPU memory**: ~350GB VRAM (you'd need ~40 A100 GPUs)
 - **Time**: Weeks of training
 - **Cost**: $100,000+
@@ -186,6 +188,7 @@ model = AutoModelForCausalLM.from_pretrained(
 ### The Fine-Tuning Trap
 
 Most teams rush to fine-tune when they should first:
+
 1. Try better prompting (system prompt + few-shot examples)
 2. Try RAG (retrieval-augmented generation — tomorrow)
 3. *Then* consider fine-tuning if both fail

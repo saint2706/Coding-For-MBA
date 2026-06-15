@@ -323,6 +323,7 @@ TRAINING_SIGNAL_GUIDE = {
 ### The Fine-Tuning Trap: Overfitting
 
 With only 100 examples, the model will memorize them exactly and fail on new inputs. Signs of overfitting:
+
 - `train_loss` hits 0.01 but `eval_loss` stays at 2.0
 - Model produces near-identical outputs for different inputs
 
@@ -331,6 +332,7 @@ Fixes: More data, data augmentation, reduce training steps, increase regularizat
 ### Data Quality > Data Quantity
 
 100 high-quality, diverse, correctly-labeled examples outperform 10,000 poor-quality examples. Before training:
+
 1. Manually review 50 random samples
 2. Use GPT-4o to check label quality: *"Is this output correct given this instruction?"*
 3. Remove duplicates rigorously

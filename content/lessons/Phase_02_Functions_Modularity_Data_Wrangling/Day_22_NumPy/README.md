@@ -286,6 +286,7 @@ print(f"Average daily revenue: {np.mean(sales):.2f}")
 ```
 
 **Expected Output:**
+
 ```
 Sales Analysis:
 Total sales: 2680
@@ -322,6 +323,7 @@ print(f"Days with positive return: {np.sum(portfolio_returns > 0)}")
 ```
 
 **Expected Output (uses random seed 42 — deterministic):**
+
 ```
 Portfolio Analysis:
 Average daily return: -0.18%
@@ -356,6 +358,7 @@ print(f"Filled data: {filled}")
 ```
 
 **Expected Output:**
+
 ```
 Sensor Statistics:
 Valid readings: 6

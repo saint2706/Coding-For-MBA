@@ -255,6 +255,7 @@ plt.show()
 Using `train_test_split(shuffle=True)` on time-series data is leakage. You would train on Monday's data and predict last Thursday. In production, you only know the past.
 
 **Walk-Forward (Expanding Window) Backtesting**
+
 ```python
 from sklearn.model_selection import TimeSeriesSplit
 
@@ -269,6 +270,7 @@ for fold, (train_idx, val_idx) in enumerate(tscv.split(X)):
 ```
 
 **Leakage-Safe Scaling for Time Series**
+
 ```python
 # WRONG: Fit scaler on full dataset (leaks future statistics)
 scaler = MinMaxScaler().fit(data)  # Uses future max/min to scale the past
@@ -284,6 +286,7 @@ df['scaled'] = (df['value'] - df['value'].rolling(30).mean()) / df['value'].roll
 ```
 
 **Leakage-Safe Windowing**
+
 ```python
 def create_sequences(data, window_size, horizon):
     """Creates (X, y) pairs where X = past window, y = future horizon"""
@@ -299,6 +302,7 @@ def create_sequences(data, window_size, horizon):
 
 **Naive and Seasonal Baselines**
 Always compare to these before claiming your RNN "works":
+
 ```python
 # Naive: predict last observed value
 naive_preds = y_test_shifted_by_1  # yesterday's value predicts today
@@ -321,6 +325,7 @@ print(f"LSTM MAE: {mean_absolute_error(y_test, lstm_preds):.2f}")
 ```
 
 **Seasonality and Forecast Metrics**
+
 ```python
 # Detect seasonality with autocorrelation
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
@@ -342,6 +347,7 @@ mase = mean_absolute_error(y_test, y_pred) / mae_naive
 
 **Uncertainty Intervals**
 Point forecasts are dangerous for business decisions. Always provide a range:
+
 ```python
 # Monte Carlo dropout for uncertainty
 def predict_with_uncertainty(model, X, n_samples=100):
@@ -378,22 +384,26 @@ model_stacked.summary()
 
 **Why 10-step lookback window?**
 The optimal window depends on:
+
 - Business horizon: For daily sales, a 10-day window captures 2 business weeks. For hourly data, 24 hours may be appropriate.
 - Autocorrelation: Check how far back the signal is still correlated with the present (ACF plot)
 - Computational cost: Longer windows → more memory, slower training
 - LSTM can learn which timesteps matter via gating — but only if useful signal exists in the window
 
 **Why this LSTM layer size?**
+
 - Small sequences (< 50 timesteps): 32–64 units usually sufficient
 - Complex patterns (financial, multivariate): 128–256 units
 - Rule: Start small; increase if training loss is high; decrease if overfitting
 
 **Why this train/test split point?**
+
 - Use the most recent data as the test set — this simulates real deployment where you predict after your last training point
 - Never shuffle time-series data before splitting
 - Consider leaving a gap between train end and test start if there's publication lag in your features
 
 **Direct vs Recursive Multi-Step Forecasting**
+
 | Strategy | How | Pro | Con |
 |---------|-----|-----|-----|
 | **Recursive** | Predict t+1; feed as input to predict t+2; etc. | Single model; simple | Errors accumulate across steps |
@@ -408,11 +418,13 @@ Connect to business: "RetailCo needs 7-day forecasts for inventory planning. Dir
 The dominant architecture for sequence modeling since 2017. Instead of processing sequences step-by-step (RNN), transformers process all timesteps simultaneously using *self-attention* — each timestep attends to all others.
 
 Advantages over RNNs:
+
 - Parallelizable (train much faster)
 - Better at capturing long-range dependencies (attention can directly connect t=1 to t=100)
 - Scales with data better
 
 For time series specifically: **Temporal Fusion Transformer (TFT)**, **PatchTST**, **iTransformer** are SOTA. In practice:
+
 ```python
 # Simple self-attention for time series
 from tensorflow.keras.layers import MultiHeadAttention, LayerNormalization
@@ -423,9 +435,11 @@ from pytorch_forecasting import TemporalFusionTransformer
 
 **Temporal CNNs (TCN — Temporal Convolutional Networks)**
 Apply dilated causal convolutions to sequences. Advantages:
+
 - Fully parallelizable (like transformers, not RNNs)
 - Fixed receptive field: 2^L × kernel_size (e.g., 10 layers × 3 kernel = 3072 timesteps with dilation)
 - Often outperform LSTMs with less memory
+
 ```python
 from tcn import TCN  # pip install keras-tcn
 model = Sequential([TCN(nb_filters=64, kernel_size=3, dilations=[1,2,4,8,16], return_sequences=False),
@@ -434,9 +448,11 @@ model = Sequential([TCN(nb_filters=64, kernel_size=3, dilations=[1,2,4,8,16], re
 
 **Including Covariates (External Features)**
 Real-world forecasting includes additional signals:
+
 - Promotional calendar (is it Black Friday?)
 - Macroeconomic indicators
 - Weather
+
 ```python
 # Multi-variate LSTM
 model = Sequential([LSTM(64, input_shape=(window, n_features)),  # n_features = target + covariates
@@ -445,6 +461,7 @@ model = Sequential([LSTM(64, input_shape=(window, n_features)),  # n_features = 
 
 **Concept Drift in Time Series**
 When the data-generating process changes (e.g., COVID changed retail sales patterns):
+
 - Monitor: track rolling forecast error; alert when it rises 50% above historical average
 - Respond: retrain on more recent data; or use an online learning approach that continuously updates weights
 
@@ -530,14 +547,17 @@ model = keras.Sequential(
 
 **Latency and State Management**
 RNNs have hidden state that must be carried between predictions in production:
+
 ```python
 # Stateful LSTM: maintains state between batches (for streaming data)
 LSTM(64, stateful=True, batch_input_shape=(batch_size, timesteps, features))
 # After each batch: model.reset_states() when a sequence ends
 ```
+
 For low-latency applications: precompute embeddings; or switch to TCN/Transformer (no sequential state).
 
 **Retraining Cadence**
+
 | Signal Type | Recommended Cadence | Trigger |
 |------------|--------------------|----|
 | Daily sales forecast | Weekly full retrain | Performance degrades > 10% on last 2 weeks |
@@ -546,12 +566,14 @@ For low-latency applications: precompute embeddings; or switch to TCN/Transforme
 
 **Late-Arriving Data**
 In practice, labels arrive with a delay (e.g., returns data comes 30 days after sale):
+
 - Include a "freshness" feature (days since last confirmed label)
 - Don't train on data points where labels may still change
 - Use a label cutoff: only include transactions from > 45 days ago in training
 
 **Why Bidirectional RNNs Cannot Serve Causal Real-Time Forecasts**
 Bidirectional RNNs process the sequence both forward and backward — the backward pass uses future information to inform past representations. This is:
+
 - **Valid for**: Offline tasks where the full sequence is available (sentiment analysis of a complete review, protein structure prediction)
 - **Invalid for**: Real-time forecasting where you are predicting the next value based only on the past
 
@@ -568,6 +590,7 @@ Bidirectional(LSTM(64))  # Valid when predicting a label for a complete sequence
 
 **Monitoring by Horizon**
 For multi-step forecasters, track performance per horizon separately:
+
 ```python
 # MAE for each of the 7 forecast days
 for h in range(7):
@@ -588,6 +611,7 @@ for h in range(7):
 **Goal:** Build an LSTM forecaster; compare to seasonal naive baseline; evaluate across multiple forecast horizons.
 
 **Tasks:**
+
 1. Compute and report: seasonal naive baseline MAE (predict last week's value for this week)
 2. Create sequences with 10-day lookback; ensure no leakage in scaling
 3. Train LSTM(32 units) → Dense(1) for 50 epochs with EarlyStopping and validation_split=0.15
@@ -820,6 +844,7 @@ Use this decision tree as you exit Phase 04:
 
 **Phase 04 Recurring Dataset Recap (RetailCo)**
 If you built the RetailCo churn model across lessons, you have now:
+
 - Day 37: EDA and data readiness
 - Day 37C: Preprocessing pipeline
 - Day 40–43: Logistic Regression, Random Forest, and GBM classifiers with proper evaluation

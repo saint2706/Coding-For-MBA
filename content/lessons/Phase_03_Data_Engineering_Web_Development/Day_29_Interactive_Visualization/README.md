@@ -39,6 +39,7 @@ outcomes: [Create interactive web-ready charts, Build zoomable visualizations, E
 Before building interactive charts with Plotly Express, you need to understand the data format it expects. This is the #1 stumbling block for beginners.
 
 **Wide format** (how most spreadsheets look): Each variable gets its own column.
+
 ```
 Month  | Product_A | Product_B | Product_C
 -------|-----------|-----------|----------
@@ -47,6 +48,7 @@ Feb    | 15000     | 9000      | 14000
 ```
 
 **Tidy (Long) format** (what Plotly Express prefers): Each row is one observation. Multiple series become a single "value" column with a "category" column identifying which series it belongs to.
+
 ```
 Month  | Product   | Revenue
 -------|-----------|--------
@@ -210,6 +212,7 @@ fig.write_image("chart.png", scale=2)  # Static image (needs kaleido)
 ### Next Step: Dash and Streamlit
 
 Plotly charts are interactive HTML — but they live in Jupyter or static files. To build a **full web application** with dropdowns, sliders, and live data:
+
 - **Dash** (by Plotly): Full web app framework, pure Python. Best for data-heavy analytical apps.
 - **Streamlit**: Simpler syntax, great for prototypes and internal tools. Add `st.plotly_chart(fig)` to embed any Plotly figure in a web app.
 
@@ -222,6 +225,7 @@ Plotly charts are interactive HTML — but they live in Jupyter or static files.
 **Business Scenario:** The Sales Director wants a self-service interactive dashboard showing monthly revenue by product. Unlike a static PNG, this needs to be sharable as an HTML file where stakeholders can hover over data points to see exact values, click the legend to isolate product lines, and zoom into specific months.
 
 **Your Task:**
+
 1. Create an interactive line chart with `plotly.express` showing revenue over 12 months for at least 2 products
 2. Use the tidy (long) format for your data — melt if necessary
 3. Add hover tooltips showing the exact revenue value and date
@@ -264,6 +268,7 @@ fig.show()
 **Business Scenario:** The finance team monitors daily stock prices and needs a chart with built-in time range controls — buttons to toggle between "1 month", "3 months", "6 months", and "1 year" views, plus a range slider at the bottom for custom date selection.
 
 **Your Task:**
+
 1. Generate or use a time series dataset (daily data over 1 year)
 2. Create a Plotly line chart with `rangeselector` buttons: 1M, 3M, 6M, 1Y, All
 3. Add a `rangeslider` at the bottom of the chart
@@ -298,6 +303,7 @@ fig.show()
 **Business Scenario:** The strategy team wants to present how marketing spend vs. revenue has evolved across 5 regions over a 5-year period — similar to a Gapminder "bubble chart" animation. Each frame of the animation represents one year; bubbles move as both variables change.
 
 **Your Task:**
+
 1. Create a dataset with columns: Year, Region, Marketing_Spend, Revenue, Market_Size
 2. Build an animated scatter plot with `animation_frame="Year"`
 3. Map `Marketing_Spend` → x-axis, `Revenue` → y-axis, `Region` → color, `Market_Size` → bubble size

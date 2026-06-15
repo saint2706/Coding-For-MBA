@@ -287,6 +287,7 @@ The shared responsibility model defines what the cloud provider secures (physica
 1. **Check query logs**: Identify which queries scanned the most data — look for `SELECT *` without `WHERE` clauses on large tables.
 2. **Check table partitioning**: Are analysts querying unpartitioned tables and scanning entire datasets? Add date partitioning + clustering.
 3. **Check for recurring queries**: Are expensive queries running on a schedule (e.g., every 5 minutes instead of daily)? Optimize frequency and cache results.
+
 </details>
 
 **Q3**: Why should data engineers avoid using root/admin credentials for daily work?

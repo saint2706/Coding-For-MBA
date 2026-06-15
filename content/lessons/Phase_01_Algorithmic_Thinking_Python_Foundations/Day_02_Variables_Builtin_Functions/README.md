@@ -244,6 +244,7 @@ print("Premium Status:", is_premium)
 ```
 
 **Expected Output:**
+
 ```text
 Customer: Sarah Chen
 ID: 10042
@@ -277,6 +278,7 @@ print("Final Price: $", round(final_price, 2))
 ```
 
 **Expected Output:**
+
 ```text
 Original Price: $ 299.99
 Discount: 15.0 %
@@ -310,6 +312,7 @@ print("Average:", "$" + str(average))
 ```
 
 **Expected Output:**
+
 ```text
 === Q1 Sales Dashboard ===
 Total: $145500

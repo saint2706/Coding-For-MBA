@@ -358,6 +358,7 @@ For this scenario, design a complete fairness audit plan:
 **Scenario**: A law firm wants to deploy an LLM that scores legal briefs for "persuasiveness" (1-10) to help junior associates improve their writing.
 
 Design the audit covering:
+
 1. What demographic attributes should be tested?
 2. What is the counterfactual testing methodology?
 3. What fairness metric would you use and what threshold is acceptable?

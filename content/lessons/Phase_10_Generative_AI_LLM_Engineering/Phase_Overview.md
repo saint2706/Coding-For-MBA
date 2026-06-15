@@ -43,6 +43,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 ### Week 1: Foundations (Days 109–111)
 
 **Day 109: LLM Landscape**
+
 - The model zoo: GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro, Llama 3.1, Mistral
 - Open-source vs closed-source — deployment tradeoffs and data privacy
 - Model selection framework: sensitivity, context, task, budget
@@ -50,6 +51,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: Wrong model choice = 10x the cost or half the quality
 
 **Day 110: Prompt Engineering Mastery**
+
 - Zero-shot, few-shot, chain-of-thought, self-consistency
 - System prompt engineering for persona, constraints, and output format
 - Structured output with JSON mode and Pydantic/instructor
@@ -58,6 +60,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: Better prompts unlock 90% of model capability before spending on fine-tuning
 
 **Day 111: LangChain & LlamaIndex**
+
 - LangChain LCEL: `prompt | llm | parser` composition pattern
 - Document loaders and text splitters for any file format
 - Conversation memory: sliding windows and summary buffers
@@ -70,6 +73,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 ### Week 2: RAG & Fine-Tuning (Days 112–113)
 
 **Day 112: RAG Pipelines**
+
 - What embeddings are: text → vector → cosine similarity
 - The complete RAG stack: chunk → embed → store → retrieve → generate
 - ChromaDB: local persistent vector store with metadata filtering
@@ -79,6 +83,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: RAG is the most deployed LLM architecture in enterprise settings
 
 **Day 113: Fine-Tuning LLMs**
+
 - The decision tree: prompt engineering → RAG → fine-tuning
 - Instruction dataset preparation: Alpaca and ShareGPT formats
 - LoRA math: low-rank decomposition, only 0.5% of params trained
@@ -92,6 +97,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 ### Week 3: Production Systems (Days 114–116)
 
 **Day 114: Evaluation & Guardrails**
+
 - RAGAS: automated RAG quality scoring with numeric thresholds
 - LLM-as-a-judge: scalable quality evaluation without human labelers
 - NeMo Guardrails: Colang configuration for topic restrictions
@@ -101,6 +107,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: Shipping without evaluation is shipping without tests
 
 **Day 115: LLM Agents & Tool Use**
+
 - ReAct loop: Reason → Act → Observe → Reason (with cycles)
 - OpenAI function calling: JSON schema design, multi-tool dispatch
 - LangChain AgentExecutor with custom @tool decorators
@@ -109,6 +116,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: Agents that act are 10x more valuable than models that only talk
 
 **Day 116: LLM Ops & Cost Management**
+
 - Token cost anatomy: why output tokens cost 4x more than input
 - Prompt compression: 30-70% reduction with zero quality loss
 - Semantic caching: 20-40% hit rate for FAQ-type workloads
@@ -122,6 +130,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 ### Week 4: Applications & Responsibility (Days 117–120)
 
 **Day 117: Multimodal AI**
+
 - Vision-language models: GPT-4o, Gemini 1.5 Pro, Claude 3.5 Sonnet
 - Image input: URL references vs base64 encoding; detail settings
 - Document intelligence: invoice extraction, contract analysis, receipt parsing
@@ -131,6 +140,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: 80% of enterprise data is not plain text — VLMs unlock the rest
 
 **Day 118: AI Product Design**
+
 - The 6-gate AI feature decision framework (problem → privacy)
 - Confidence UX patterns: high/medium/low confidence UI flows
 - The AI Feature Spec template: required doc before any AI feature ships
@@ -140,6 +150,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: Technical capability without product judgment yields features no one trusts
 
 **Day 119: AI Ethics in Practice**
+
 - Taxonomy of AI bias: data, prompt framing, retrieval, output, evaluation
 - Counterfactual testing: swap demographic details, measure output stability
 - AIF360 fairness metrics: disparate impact (4/5ths rule), statistical parity
@@ -149,6 +160,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 - *Why it matters*: EU AI Act, EEOC, GDPR — compliance is now a technical requirement
 
 **Day 120: Capstone — AI Data Assistant**
+
 - Full-stack integration: RAG + SQL agent + semantic caching + guardrails
 - Query routing: orchestrator determines RAG vs agent per question type
 - Evaluation pipeline: RAGAS on production sample
@@ -227,6 +239,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 **Challenge**: Employees spend 2.5 hours/day searching for policies, past analyses, and templates. New joiners take 6 months to become productive.
 
 **Phase 10 Solution**:
+
 1. **Day 111 (LangChain)**: Document loaders across SharePoint, Confluence, email archives — clean, deduplicate, structure
 2. **Day 112 (RAG)**: Index 200TB with `text-embedding-3-small`, hybrid search (BM25 + dense), reranking
 3. **Day 113 (Fine-Tuning)**: Fine-tune Llama 3.1 8B on firm's writing style and terminology with LoRA
@@ -245,6 +258,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 **Challenge**: Each document requires 15 minutes of manual data entry. $480,000/month in labor. Error rate: 4.2%.
 
 **Phase 10 Solution**:
+
 1. **Day 117 (Multimodal)**: GPT-4o vision extracts structured data from scanned forms, medical reports, photos
 2. **Day 112 (RAG)**: Policy knowledge base for cross-referencing claim eligibility
 3. **Day 114 (Evaluation)**: RAGAS-style extraction accuracy monitoring; flag low-confidence documents for human review
@@ -262,6 +276,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 **Challenge**: Non-technical users can't answer their own data questions — they queue requests to the data team, which has a 3-day backlog. The CEO received her Q3 revenue breakdown 5 days after Q3 ended.
 
 **Phase 10 Solution**:
+
 1. **Day 115 (Agents)**: SQL agent converts plain-English questions to SQL against the production data warehouse
 2. **Day 112 (RAG)**: Policy and metric definition knowledge base (what is "active user"? how is "churn" calculated?)
 3. **Day 110 (Prompting)**: Few-shot examples for common question patterns; JSON mode for charting output
@@ -276,22 +291,27 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 ## Common Pitfalls & Solutions
 
 ### Pitfall 1: "Our RAG system hallucinates despite having the right documents"
+
 **Why**: Retrieved chunks are correct, but the LLM ignores them and relies on training knowledge instead.
 **Fix**: Strengthen the system prompt: "Answer ONLY from the provided context. If the answer is not in the context, say 'I don't have that information.'" Use temperature=0. Implement RAGAS faithfulness metric — if it drops below 0.85, retune the prompt.
 
 ### Pitfall 2: "Fine-tuning made the model better on training examples but worse in production"
+
 **Why**: Overfitting — the model memorized the training data rather than generalizing. Or: the training distribution doesn't match production queries.
 **Fix**: Always evaluate on a held-out 20% test set (never touch it during training). Collect 20 real production examples and evaluate before/after fine-tuning. If train loss hits 0.01 but eval loss is 2.0, add more training data and/or reduce training steps.
 
 ### Pitfall 3: "Our agent enters an infinite loop and burns $50 in API costs"
+
 **Why**: No `max_iterations` limit. Agent calls the same tool repeatedly when results are ambiguous.
 **Fix**: Always set `max_iterations=5-10`. Add a self-evaluation prompt after each tool call: "Do I have enough information to answer the question now? Yes/No." Log every tool call — loop detection triggers when the same tool is called with the same args 3 times in a row.
 
 ### Pitfall 4: "Semantic caching returns stale answers after data updates"
+
 **Why**: The cache doesn't know that the underlying data has changed. "What is today's revenue?" returns yesterday's cached answer.
 **Fix**: Implement time-to-live (TTL): fresh data questions expire in 1 hour; policy questions in 7 days; historical reports in 30 days. Use metadata tags (`cache_category: "real_time"`) to bypass cache for time-sensitive queries. On significant data refreshes, clear the relevant cache partition.
 
 ### Pitfall 5: "Our bias audit passed at launch but we discovered bias 6 months later"
+
 **Why**: Distribution shift — the user population in production is different from the test set. Or: the model behaved differently in production due to unseen inputs.
 **Fix**: Bias is not a one-time audit — it's a continuous monitoring task. Set a monthly fairness metric review in production. Alert if any demographic gap exceeds the threshold. Include fairness metrics in your regular product health dashboard alongside latency and error rate.
 
@@ -308,6 +328,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 **Scenario**: Your company's internal knowledge assistant is returning accurate answers for 85% of questions — but for 15%, users report: "That information is outdated" or "That's not in our policy." Simultaneously, your LLM API costs have tripled this month because the company hired 200 new employees who all use the assistant.
 
 **Task**:
+
 1. Design a 3-step evaluation process to diagnose WHY retrieval accuracy is 85% (not higher)
 2. Propose two retrieval strategy upgrades based on your diagnosis
 3. Implement a cost optimization plan targeting 50% cost reduction while maintaining quality
@@ -330,6 +351,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 **Scenario**: A hospital wants to deploy an LLM chatbot for patient-facing discharge instructions. The chatbot reads the patient's discharge summary (uploaded by a nurse) and answers patient questions about it.
 
 **Task**:
+
 1. Apply the 6-gate AI feature framework — which gates does this feature need to pass?
 2. Design the guardrail system: what topics must be blocked? What output validation is required?
 3. Write the responsible deployment checklist specific to this HIPAA-regulated use case
@@ -352,6 +374,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 **Scenario**: Your customer analytics agent answers questions like "Which customers are at churn risk this week?" It works well — but each query costs $2 in API calls and takes 45 seconds. At 200 queries/day, that's $400/day ($146,000/year).
 
 **Task**:
+
 1. Profile the cost breakdown (how many tool calls? which model? input vs output token ratio?)
 2. Design a 3-layer optimization strategy to cut costs to <$0.50 per query
 3. How would you verify that cost reduction didn't degrade answer quality?
@@ -374,6 +397,7 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 **Scenario**: A law firm has 50,000 past case documents in PDF format (scanned, non-searchable). They want: (1) semantic search across all documents, (2) automatic identification of key legal clauses, (3) a Q&A assistant that cites specific case precedents.
 
 **Task**:
+
 1. Should they use VLM-based extraction, OCR-first, or another approach? Justify the decision.
 2. Design the chunking strategy for legal documents (hint: legal structure matters)
 3. How would they know if the clause classifier is biased against certain case types?
@@ -392,16 +416,19 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 ## Specialization Tracks
 
 **Track A: LLM Product Engineer**
+
 - Master: Days 110, 112, 115, 118
 - Extend with: LangGraph (stateful multi-agent), Vercel AI SDK, OpenAI Assistants API
 - Build: Production AI-powered SaaS feature with evaluation dashboard
 
 **Track B: AI Infrastructure & Ops**
+
 - Master: Days 113, 114, 116
 - Extend with: vLLM serving, kubernetes + GPU scheduling, LangSmith Enterprise
 - Build: Private LLM serving infrastructure with SLA and cost monitoring
 
 **Track C: Responsible AI Leader**
+
 - Master: Days 118, 119, and EU AI Act study
 - Extend with: ISO 42001 (AI Management Systems), NIST AI RMF
 - Build: AI governance framework + model card governance process for an organization
@@ -452,18 +479,22 @@ This is the phase that closes the gap between where most MBA graduates are (talk
 You've completed the full 120-day curriculum. Depending on your career path:
 
 ### For the Data Analyst / BI Specialist
+
 - Apply Day 110–112 immediately: build an LLM assistant over your team's documentation
 - The most impactful next skill: LangGraph for stateful data workflows
 
 ### For the ML Engineer / Data Scientist
+
 - Apply Day 113 + 115: fine-tune a domain model and deploy it as an agent with tools
 - The most impactful next skill: vLLM for serving open-source models at production scale
 
 ### For the Technical Product Manager / MBA
+
 - Apply Day 118–119: lead an AI feature spec and responsible deployment for your team
 - The most impactful next skill: EU AI Act literacy (compliance is a competitive advantage in 2026)
 
 ### For the Aspiring AI Engineer
+
 - Complete all 12 days, build the Day 120 capstone fully, and ship it publicly
 - The most impactful next skill: LangGraph + LangSmith for observable production agents
 

@@ -237,6 +237,7 @@ benchmarks = {
 ### The Hidden Costs of "Free" Open Source
 
 Running Llama 3.1 70B at production scale requires:
+
 - **Hardware**: 2× A100 80GB GPUs (~$15,000/month on cloud)
 - **Engineering**: Serving infra (vLLM, TGI), load balancing, monitoring
 - **Maintenance**: Model updates, security patches, compliance logging

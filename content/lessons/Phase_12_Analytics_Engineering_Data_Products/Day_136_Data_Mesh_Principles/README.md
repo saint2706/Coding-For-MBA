@@ -165,12 +165,15 @@ adopt_data_mesh_when = {
 ## Hands-on Lab
 
 ### Exercise 1: Domain Boundary Design
+
 Design domain boundaries for a SaaS company with product, billing, support, and marketing teams. For each domain, define 1-2 data products with their interfaces and SLAs.
 
 ### Exercise 2: Data Product Specification
+
 Write a full data product specification for a customer churn prediction dataset, including schema, quality requirements, access policies, and consumer documentation.
 
 ### Exercise 3: Governance Model
+
 Design a federated governance model specifying which decisions are centralized vs. decentralized, and how conflicts are resolved.
 
 ---

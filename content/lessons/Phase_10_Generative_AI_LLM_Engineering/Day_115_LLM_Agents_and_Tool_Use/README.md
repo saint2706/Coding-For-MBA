@@ -41,6 +41,7 @@ outcomes:
 They can answer questions from memory, but can't look up real-time data, can't run code, can't send emails, and certainly can't book your flights.
 
 **Tools** give LLMs hands. With tool use:
+
 - Your LLM can search the web, query a database, call an API, run Python code, or write a file
 - The **ReAct loop** (Reason → Act → Observe → Reason → Act...) is how the LLM decides *which* tool to use, *when*, and what to do next based on the result
 
@@ -355,6 +356,7 @@ def safe_tool_executor(tool_name: str, args: dict, auto_approve: bool = False) -
 ### The Agent Reliability Problem
 
 Agents are powerful but brittle:
+
 - **Loops**: Agents can get stuck calling the same tool repeatedly if the result is ambiguous.
 - **Hallucinated tool calls**: The LLM may call a tool with invalid arguments if the schema is unclear.
 - **Cascading failures**: In multi-agent systems, a bad output from Agent A poisons Agent B.
@@ -380,6 +382,7 @@ Use agents when: The number/type of steps depends on the query.
 ### Exercise 1: Custom Tool Definition
 
 Define proper JSON schemas for these tools:
+
 1. `search_crm(customer_id: str, fields: list[str])` — search customer records
 2. `calculate_churn_risk(company_id: str, window_days: int = 90)` — predict churn for a B2B account
 3. `schedule_meeting(attendees: list[str], duration_minutes: int, title: str, preferred_time: str)` — schedule a calendar event

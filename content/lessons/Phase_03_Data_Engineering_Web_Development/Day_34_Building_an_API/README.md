@@ -45,6 +45,7 @@ outcomes: [Build REST APIs with FastAPI, Validate requests with Pydantic, Handle
 FastAPI is built on two core Python libraries that transform type hints into superpowers:
 
 **Pydantic** (data validation): When you define a function parameter as `price: float`, Pydantic automatically:
+
 - Rejects requests that send a string like `"not a number"` (returns a `422 Unprocessable Entity` error with a clear message)
 - Coerces compatible types: `"42"` → `42.0`
 - Generates a JSON schema showing exactly what the endpoint expects
@@ -75,6 +76,7 @@ def create_product(product: Product):
 **Navigate to `http://127.0.0.1:8000/docs` after starting the server** — you'll see a fully interactive API explorer with no extra setup.
 
 **`dict` vs Pydantic model in responses:**
+
 - Returning a `dict` works but bypasses Pydantic validation on output
 - Defining a `response_model=ProductResponse` in the decorator tells FastAPI to validate the response shape too, automatically filtering out any fields not in the model (useful for hiding internal database IDs or passwords)
 
@@ -310,12 +312,14 @@ async def add_request_context(request: Request, call_next):
 **Business Scenario:** Your team needs a simple task management API as the backend for a project management tool. The MVP needs four endpoints: list all tasks, get one task, create a task, and mark a task as done.
 
 **Your Task:**
+
 1. Build a FastAPI app with an in-memory `todos` list (a Python list of dicts)
 2. Implement: `GET /todos` (list all), `GET /todos/{id}` (get one), `POST /todos` (create), `PATCH /todos/{id}/complete` (mark done)
 3. Use a Pydantic model for the create request body
 4. Run the server: `uvicorn main:app --reload`
 
 **Testing with curl:**
+
 ```bash
 # Create a task
 curl -X POST "http://localhost:8000/todos" \
@@ -330,6 +334,7 @@ curl -X PATCH "http://localhost:8000/todos/1/complete"
 ```
 
 **Expected Output (from `GET /todos` after the above):**
+
 ```json
 [
   {
@@ -397,6 +402,7 @@ def delete_todo(todo_id: int):
 **Business Scenario:** A financial modeling team needs a calculator microservice that other applications (Excel macros, Python scripts, a dashboard) can call via HTTP. The service must accept two numbers and an operation, validate inputs, and return the result with proper error handling for division by zero.
 
 **Your Task:**
+
 1. Create `GET /calculate?a=10&b=5&op=multiply` (use query parameters)
 2. Support operations: `add`, `subtract`, `multiply`, `divide`
 3. Return `{"result": 50}` for valid inputs
@@ -404,6 +410,7 @@ def delete_todo(todo_id: int):
 5. Return `HTTP 422` automatically for non-numeric inputs (handled by FastAPI type hints)
 
 **Expected Output:**
+
 ```bash
 curl "http://localhost:8000/calculate?a=10&b=5&op=multiply"
 # → {"result": 50.0}
@@ -449,6 +456,7 @@ def calculate(operation: str, a: float, b: float):
 **Business Scenario:** You're building the backend for a SaaS application's signup flow. The endpoint must validate that the email is unique (no duplicate registrations), the password meets minimum requirements, and the response never returns the stored password hash.
 
 **Your Task:**
+
 1. Define `UserCreate` Pydantic model: `email: str`, `name: str`, `password: str`
 2. Define `UserResponse` Pydantic model: `id: int`, `email: str`, `name: str` (no password field)
 3. `POST /users` — create a new user; reject if email already exists (HTTP 409)
@@ -456,6 +464,7 @@ def calculate(operation: str, a: float, b: float):
 5. Simulate password hashing: `hashed = "hashed_" + password`
 
 **Expected Output:**
+
 ```bash
 curl -X POST "http://localhost:8000/users" \
      -H "Content-Type: application/json" \
@@ -524,6 +533,7 @@ def get_user(username: str):
 **Business Scenario:** A colleague has written a FastAPI endpoint that is supposed to return product data matching a specific price range. The code has a **contract break** — the Pydantic response model says `price` should be a `float`, but the code returns it as a string. Debug and fix it.
 
 **Starter Code (Broken):**
+
 ```python
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -550,6 +560,7 @@ def get_product(product_id: int):
 ```
 
 **Your Task:**
+
 1. Run the broken code. What happens when you call `GET /products/1`? Does Pydantic coerce the string to float, or does it fail?
 2. What happens when you call `GET /products/99` (non-existent product)? Why is the current error response wrong?
 3. Fix both bugs:
@@ -557,6 +568,7 @@ def get_product(product_id: int):
    - Raise `HTTPException(status_code=404, detail="Product not found")` instead of returning a dict
 
 **Expected Output after fix:**
+
 ```bash
 curl "http://localhost:8000/products/1"
 # → {"id": 1, "name": "Laptop", "price": 999.99}

@@ -7,6 +7,7 @@
 Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA-oriented examples, senior notes, explained mastery answers, and strong quizzes. Its largest quality gap is that it reads as twelve independent surveys rather than a cumulative production curriculum: glossaries, explicit pitfall callouts, cross-references, and a recurring project are mostly absent, while Days 68–72 omit expected lab outputs entirely. Several cutting-edge subjects also need deeper operational coverage and explicit differentiation from overlapping Phase 5/10 material.
 
 **Recurring gaps in this phase:**
+
 - No lesson contains a dedicated glossary, and most jargon is introduced inline without a consolidated reference.
 - No recurring project thread connects the phase's models, pipelines, deployment, monitoring, agents, governance, RAG, and multimodal work.
 - Most comparison tables describe differences but do not turn them into explicit decision rules, thresholds, or escalation choices.
@@ -24,6 +25,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** This is one of the phase's strongest lessons: the dog-training bridge, Q-learning equation, business applications, production considerations, three exercises, explained mastery check, and summary form a useful layered introduction. However, the central coding lab visibly discovers that its world is unsound mid-lesson—“Correction in logic” and “Let's Fix the World for the student”—then supplies only symbolic expected values, which blocks a clean first run; offline RL itself remains much thinner than tabular Q-learning.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Rewrite Exercise 2 into one internally consistent, runnable grid world; remove the mid-lab “Correction in logic” / “Let's Fix the World for the student” detour and provide deterministic or bounded approximate expected Q-values.
 - [ ] [P1][M:Coverage] Expand “Offline RL (Batch RL)” with behavior-policy coverage, out-of-distribution actions, conservatism, off-policy evaluation, and a safe go/no-go deployment workflow.
 - [ ] [P1][A:Concept] Justify the lab's `alpha = 0.1`, `gamma = 0.9`, `epsilon = 0.1`, 500 episodes, and inventory reward constants; explain how changing each affects business behavior.
@@ -40,6 +42,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The loan-rejection bridge and global/local distinction are clear, and the SHAP and bias-detection exercises make abstract ideas tangible. Yet the lesson makes overly broad claims—“SHAP is the gold standard” and GDPR laws “require companies to explain automated decisions”—without discussing method assumptions, correlated-feature failure modes, jurisdictional nuance, or how an executive chooses among competing fairness criteria.
 
 **Gap task stubs:**
+
 - [ ] [P0][A:Concept] Qualify “SHAP is the gold standard” by defining model-specific versus model-agnostic explainers, baseline/background data, correlated-feature caveats, and why an explanation is not a causal account.
 - [ ] [P1][M:Coverage] Add fairness-metric incompatibility, calibration, subgroup sample-size uncertainty, proxy variables, intersectional analysis, and mitigation choices before/after training.
 - [ ] [P1][I:Senior] Replace the blanket GDPR “Right to Explanation” statement with a jurisdiction-aware governance note and a checklist to involve legal/compliance counsel.
@@ -56,6 +59,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The rain/umbrella framing, Simpson's paradox example, “Persuadables” framing, and ROI-oriented uplift discussion are highly MBA-relevant. The lesson nonetheless jumps from identifying confounders to calculating uplift without teaching identification assumptions, uncertainty, validation, or how to estimate effects from real observational data; the Translation Lab requests artifacts but gives no sample dataset or expected deliverable.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add potential outcomes, ATE/CATE, treatment/control assignment, overlap/positivity, ignorability, leakage, and confidence intervals before presenting uplift scores as actionable.
 - [ ] [P1][C:Lab] Turn the Translation Lab's “Your task” list into a reproducible case with sample campaign data, steps, a memo template, and expected charts/KPI conclusions.
 - [ ] [P1][M:Coverage] Add practical estimators and selection guidance: randomized experiments, regression adjustment, propensity scores, difference-in-differences, instrumental variables, and uplift-model evaluation (Qini/AUUC).
@@ -72,6 +76,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The “intern who read every book” bridge, pipeline API examples, and NER/zero-shot/semantic-search labs provide an accessible tour of modern NLP. It is primarily a collection of happy-path Hugging Face calls, though: “one-line magic” obscures model selection, data governance, evaluation, reproducibility, failure handling, and the distinction between a demo pipeline and an operable business pipeline.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add task-specific evaluation and acceptance criteria for NER, classification, and semantic search, including labeled test sets, precision/recall trade-offs, subgroup/language slices, and human review.
 - [ ] [P1][B:CodeCtx] Replace the “one-line magic” framing with what/why preambles that explain model downloads, inference defaults, output schemas, hardware/network requirements, and reproducibility risks.
 - [ ] [P1][C:Lab] Provide pinned dependencies, sample inputs/datasets, offline/failure alternatives, and expected outputs robust to changing hosted model scores.
@@ -88,6 +93,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The McDonald's analogy, three-pillar versioning, training-serving skew, and validation exercises make the operational mindset clear. But Exercise 1 only “Simulate[s] MLflow Tracking,” CI/CD/CT is not implemented, and the Translation Lab asks for a dashboard and decision memo without data or expected output, leaving the lesson short of its “Pipelines & CI” title.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add an actual minimal CI pipeline that runs unit, data-contract, model-performance, fairness, and packaging checks with explicit promotion/failure gates.
 - [ ] [P1][C:Lab] Replace or supplement “Simulate MLflow Tracking” with a real, pinned MLflow/DVC or lightweight equivalent workflow and show expected run/artifact output.
 - [ ] [P1][C:Lab] Give the Translation Lab sample pipeline events, KPI formulas, dashboard acceptance criteria, and an example deploy/rollback memo.
@@ -104,6 +110,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The food-truck/catering analogy and cost-versus-latency table offer a strong architectural bridge, and the FastAPI, Dockerfile, and batch examples are concrete. Still, the “prediction API” merely adds numbers rather than serving a serialized model, Docker is shown but not run, Exercise 2 has no expected output, and production concerns such as authentication, observability, scaling, and safe serialization are absent.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Upgrade Exercise 1 from “adds two numbers (simulating a model)” to loading and serving a small versioned model with validation, error responses, health/readiness endpoints, and exact curl/test output.
 - [ ] [P1][C:Lab] Make Exercise 2 runnable with `requirements.txt`, build/run commands, image-size/security checks, and expected build and API outputs.
 - [ ] [P1][M:Coverage] Cover streaming and edge patterns, autoscaling, concurrency, timeouts, retries, idempotency, authentication, secrets, observability, and GPU/model-server choices.
@@ -120,6 +127,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The “model is a living system” framing, drift distinction, feedback-loop warning, and PSI/fallback/monitor labs are useful foundations. The lesson remains metric-centric rather than operational: thresholds are illustrative but not justified, delayed labels and ground truth are underdeveloped, and the Translation Lab has no supplied alerts, owners, or expected action plan.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add a complete monitoring stack spanning service SLOs, data quality, drift, model quality, business KPIs, fairness, costs, and delayed/absent ground truth.
 - [ ] [P1][A:Concept] Justify PSI bins and alert thresholds rather than presenting fixed cutoffs as universal; explain calibration using baselines, seasonality, and false-alert budgets.
 - [ ] [P1][C:Lab] Supply sample time-series/segment data and expected dashboard, alert, and incident-response outputs for the Translation Lab.
@@ -136,6 +144,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The intern analogy, ReAct loop, tool-schema examples, and “Three Guard Rails” make agents approachable and appropriately risk-aware. However, every exercise lacks expected output, the hand-built agent is not evaluated, and the lesson's provider/framework examples risk aging quickly; it does not cover durable state, permission design, prompt injection, or production traces deeply enough.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Add exact or representative expected traces/output for all three exercises, including safe refusal/error paths and assertions students can use to verify tool selection and arguments.
 - [ ] [P0][M:Coverage] Add prompt injection and indirect injection defenses, least-privilege credentials, sandboxing, approval gates, idempotency, budgets, timeouts, and audit logs.
 - [ ] [P1][M:Coverage] Teach agent evaluation with task-success sets, tool-call accuracy, groundedness, latency/cost, adversarial tests, and regression gates.
@@ -152,6 +161,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** This lesson improves on Day 62 by presenting multiple fairness metrics, a model-card template, and red-team prompts, while “Fairness Washing” is a valuable senior-level warning. Yet “in Practice” overpromises: all labs lack expected output, governance is reduced mostly to fairness/model cards/red teaming, and there is no risk-tiering, control ownership, incident process, or regulatory mapping.
 
 **Gap task stubs:**
+
 - [ ] [P0][M:Coverage] Add an end-to-end responsible-AI governance lifecycle: use-case intake, risk tiering, impact assessment, control owners, approval evidence, deployment conditions, monitoring, incident response, and retirement.
 - [ ] [P1][C:Lab] Provide sample group outcomes, a completed model-card exemplar/rubric, a red-team test set, severity scoring, and expected findings/remediations for all exercises.
 - [ ] [P1][M:Coverage] Expand beyond fairness to privacy, security/misuse, transparency, accessibility, human autonomy, intellectual property, environmental/cost impacts, and vendor risk.
@@ -168,6 +178,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The “specialist training” analogy, LoRA parameter math, PEFT snippet, and “When to Use Each Approach” table give a concise conceptual introduction. The labs stop at parameter counting and data formatting, though—none produces or evaluates a tuned model, no expected outputs are provided, and cost/hardware claims are presented as broadly applicable despite rapid change and overlap with other phases.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Add a small end-to-end PEFT/LoRA lab with pinned model/dataset, hardware-aware fallback, training command, saved adapter, before/after evaluation, and expected outputs.
 - [ ] [P0][M:Coverage] Cover dataset quality/licensing/PII, train-validation-test splits, chat templates, masking, overfitting, catastrophic forgetting, hyperparameter selection, evaluation, safety regression, and adapter deployment/merging.
 - [ ] [P1][A:Concept] Mark “350GB,” “weeks,” “$100,000+,” rank choices, and consumer-GPU claims as illustrative assumptions and teach students to estimate current memory/compute cost.
@@ -184,6 +195,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The open-book-exam bridge, complete pipeline sketch, chunking section, and RAG-versus-fine-tuning comparison form a coherent introduction. Still, all three labs omit expected output, the pipeline is a local happy path, and critical enterprise concerns—retrieval evaluation, permissions, citations, ingestion freshness, hybrid search, reranking, and injection defenses—are missing or shallow.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Add expected search results, chunks, grounding scores, and automated assertions for every exercise; supply a fixed mini-corpus so outputs are reproducible.
 - [ ] [P0][M:Coverage] Add retrieval and answer evaluation using labeled queries, recall@k/MRR/NDCG, faithfulness, answer relevance, abstention, and end-to-end regression tests.
 - [ ] [P1][M:Coverage] Cover ingestion/versioning, metadata filters, ACL-aware retrieval, hybrid search, reranking, deduplication, freshness/deletion, citations, and prompt-injection/data-exfiltration defenses.
@@ -200,6 +212,7 @@ Phase 06 consistently supplies complete frontmatter, approachable analogies, MBA
 **Assessment:** The “multilingual executive” bridge and invoice/receipt use cases communicate immediate business value, and the API examples make multimodal models feel accessible. As the phase finale, however, it has no “Tomorrow”/next-step preview, no expected lab outputs, no culminating recurring-project deliverable, and limited treatment of evaluation, privacy, image-based attacks, accessibility, or non-image modalities.
 
 **Gap task stubs:**
+
 - [ ] [P0][C:Lab] Provide fixture images/documents, expected JSON/output, field-level validation, confidence/review logic, and failure cases for all three exercises.
 - [ ] [P0][M:Coverage] Add multimodal evaluation for OCR/extraction, visual question answering, hallucination, chart reasoning, subgroup/accessibility performance, and human-review thresholds.
 - [ ] [P1][M:Coverage] Cover image/document prompt injection, malicious files, EXIF/PII, copyright/consent, retention, redaction, cost/latency, and secure file handling.

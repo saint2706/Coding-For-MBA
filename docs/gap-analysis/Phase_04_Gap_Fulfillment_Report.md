@@ -14,6 +14,7 @@
 Phase 04 covers mathematical foundations and ML fundamentals across 14 lessons (Days 37–48). The gap audit identified systemic gaps in all lessons: labs were complete worked examples rather than exercises with explicit goals and expected outputs; magic numbers and model defaults were unjustified; key concepts (CLT, p-values, gradient, impurity, leakage categories) were used before being defined; and several critical topics (backtesting, calibration, class imbalance, feature availability, vanishing gradients) were absent or underexplored.
 
 **Recurring gaps resolved:**
+
 - ✅ [C:Lab] All Hands-on Lab exercises across all 14 lessons now have explicit business scenarios, numbered tasks, sample inputs, and `**Expected Output:**` blocks
 - ✅ [A:Concept] All undefined jargon and magic numbers are now defined before first use (vectorization, broadcasting, CLT, p-value, gradient, convexity, impurity, calibration, precision/recall, leakage, logits, hidden state, kernel, receptive field, etc.)
 - ✅ [P0] Corrected two materially incorrect claims: CLT "guarantees" valid CIs for CV scores; p < 0.05 "proves" the treatment is better

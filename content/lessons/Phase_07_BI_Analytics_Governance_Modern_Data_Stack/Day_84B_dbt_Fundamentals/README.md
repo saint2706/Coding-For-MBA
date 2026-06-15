@@ -38,7 +38,7 @@ outcomes:
 
 **Before dbt, analytics SQL looked like this:**
 
-- Sarah writes a revenue query in a Looker dashboard. 
+- Sarah writes a revenue query in a Looker dashboard.
 - Tom writes a slightly different revenue query in a Tableau dashboard.
 - The board sees two different revenue numbers in the same meeting.
 - Nobody knows which is correct.
@@ -46,6 +46,7 @@ outcomes:
 **This is the "Dark Matter" problem of analytics** — queries duplicated everywhere, no tests, no documentation, no single source of truth.
 
 **dbt (data build tool)** applies software engineering principles to SQL:
+
 - **Version control**: All SQL in Git, reviewed via pull requests
 - **Testing**: Automated checks that your data is not null, unique, and referentially consistent
 - **Documentation**: Auto-generated data catalog with lineage graphs
@@ -233,6 +234,7 @@ WHERE created_at > (SELECT MAX(created_at) FROM {{ this }})
 ### The dbt Contract with Stakeholders
 
 When you write a dbt model, you're **making a promise** to downstream dashboard/BI users:
+
 - "This table will exist"
 - "These columns will be here"
 - "The data will be accurate (tested)"
@@ -247,11 +249,13 @@ This is why `schema.yml` with tests is not optional — it's the contract.
 ### Exercise 1: Build a Staging Model
 
 Given this raw table:
+
 ```sql
 -- raw.customers: id, Name, Email, country_code, sign_up_date, is_active
 ```
 
 Write `stg_customers.sql` that:
+
 1. Renames `id` to `customer_id`
 2. Lowercases and trims `Email` → `email`
 3. Title-cases `Name` → `customer_name`  
@@ -270,6 +274,7 @@ Write `stg_customers.sql` that:
 ### Exercise 3: Write schema.yml Tests
 
 For the `fct_monthly_revenue` model from Exercise 2, write a `schema.yml` with:
+
 - `year_month` + `customer_segment` combination must be unique (use `dbt_utils.unique_combination_of_columns`)
 - `total_revenue` must be not null and ≥ 0
 - `customer_segment` must be one of the accepted values

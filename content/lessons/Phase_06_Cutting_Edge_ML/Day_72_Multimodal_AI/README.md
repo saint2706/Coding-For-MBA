@@ -227,6 +227,7 @@ def index_multimodal_content(docs: list, collection) -> None:
 ### The "Context Window as Context" Insight
 
 GPT-4o and Gemini 1.5 Pro support 100K+ token contexts. This means you can:
+
 - Send a **30-page PDF** as a series of images
 - Include **multiple charts** in one prompt
 - Process an **entire dataset** in a single call

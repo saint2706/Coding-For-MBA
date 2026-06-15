@@ -75,6 +75,7 @@ Understanding data distribution is fundamental to statistical analysis.
 **What is a Violin Plot?** A **violin plot** combines a box plot with a kernel density estimate (KDE) to show the full shape of a distribution. Where a box plot only shows you the median, quartiles, and outliers, a violin plot additionally reveals **multimodal distributions** — data with two or more peaks.
 
 **Violin plot anatomy:**
+
 - The **wide part** of the violin shows where most data is concentrated (like a histogram rotated 90°)
 - The **narrow part** shows sparse regions
 - The **white dot** in the center marks the median
@@ -82,6 +83,7 @@ Understanding data distribution is fundamental to statistical analysis.
 - The **thin lines** extend to the whiskers (typically 1.5 × IQR beyond Q1/Q3)
 
 **When to choose violin over box plot:**
+
 | Situation | Prefer |
 |-----------|--------|
 | Data has one peak (unimodal) | Box plot (simpler, easier to read) |
@@ -382,6 +384,7 @@ The most common mistake in business visualization is trying to show too much at 
 - **Cognitive load kills decisions** — if a chart requires more than 5 seconds to interpret, executives will ignore it
 
 **Rules for executive dashboards:**
+
 1. **One key insight per chart** — if you can't state the point in one sentence, split the chart
 2. **Remove chart junk** — eliminate gridlines, borders, tick marks, and legends that don't add information
 3. **Highlight the signal** — use color to draw attention to the one thing that matters (e.g., make the "at-risk" bar red, leave others grey)
@@ -413,6 +416,7 @@ ax.legend()
 **Business Scenario:** HR wants to compare salary distributions across 4 departments (Engineering, Marketing, Sales, Operations). The compensation committee suspects Engineering has two distinct pay bands (junior/senior). A violin plot would make this visible in a way a standard box plot would not.
 
 **Your Task:**
+
 1. Create a violin plot comparing salary distributions across 4 departments
 2. Add a strip plot (or swarm plot) overlay to show individual data points
 3. Use appropriate labels and a title
@@ -496,6 +500,7 @@ distribution_analysis(tips, "total_bill", "day")
 **Business Scenario:** The data science team wants to quickly identify which pairs of numerical variables in a business dataset are strongly correlated — positive or negative — before building a predictive model. A heatmap of the correlation matrix is the standard tool.
 
 **Your Task:**
+
 1. Generate a correlation matrix for a business dataset (you may create synthetic data)
 2. Create a heatmap using Seaborn with diverging color scale (blue = negative, red = positive)
 3. Annotate each cell with the correlation coefficient rounded to 2 decimal places
@@ -577,6 +582,7 @@ create_correlation_dashboard(tips)
 **Business Scenario:** The product team wants to explore the relationship between price, marketing spend, and sales volume across 5 product categories. A scatter plot with color and size encoding can show three dimensions at once: x = price, y = sales, size = marketing spend, color = category.
 
 **Your Task:**
+
 1. Create a scatter plot with price on x-axis and sales on y-axis
 2. Encode marketing spend as point size (larger = higher spend)
 3. Encode product category as point color (use a categorical palette)

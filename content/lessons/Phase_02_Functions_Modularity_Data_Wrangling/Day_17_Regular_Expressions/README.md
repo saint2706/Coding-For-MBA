@@ -261,6 +261,7 @@ for match in re.finditer(pattern, log_entry):
 ```
 
 **Expected Output:**
+
 ```
 Timestamps: ['2024-01-15 10:30:45', '2024-01-15 10:31:02', '2024-01-15 10:32:15']
 Levels: ['ERROR', 'INFO', 'ERROR']
@@ -314,6 +315,7 @@ for email, phone, password in test_data:
 ```
 
 **Expected Output:**
+
 ```
 Email 'alice@email.com': True
 Phone '555-123-4567': True
@@ -380,6 +382,7 @@ print("Masked:", mask_sensitive(sample))
 ```
 
 **Expected Output:**
+
 ```
 Cleaned: Contact us at https example.com or call 555-123-4567. Credit card XXXX-XXXX-XXXX-3456, SSN XXX-XX-6789 Extra spaces and stuff!
 URLs: ['https://example.com']

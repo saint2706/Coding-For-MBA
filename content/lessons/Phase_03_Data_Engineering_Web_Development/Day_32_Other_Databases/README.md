@@ -74,6 +74,7 @@ print(f"Inserted document with _id: {result.inserted_id}")
 ```
 
 **JSON Structure Refresher:** MongoDB documents are stored in **BSON** (Binary JSON). If you're not familiar with JSON:
+
 - `{ "key": "value" }` — an object (maps to Python `dict`)
 - `[ 1, 2, 3 ]` — an array (maps to Python `list`)
 - Values can be strings, numbers, booleans, `null`, nested objects, or arrays
@@ -178,6 +179,7 @@ with engine.connect() as conn:
 **Business Scenario:** Your startup's customer support team stores ticket data in MongoDB because each ticket can have different fields depending on product type (hardware tickets have `serial_number`, software tickets have `error_code`). You need to build a basic CRUD pipeline: insert customers, query by filter, update a document, and delete a record.
 
 **Your Task:**
+
 1. Connect to MongoDB (use `mongomock` for an in-memory test client: `pip install mongomock`)
 2. Insert at least 4 customer documents into a `customers` collection
 3. Query all Premium tier customers
@@ -186,6 +188,7 @@ with engine.connect() as conn:
 6. Count remaining documents
 
 **Expected Output:**
+
 ```
 Inserted 4 customers. IDs:
   - 6507c1f3e9a24b3d8f12ab01
@@ -235,6 +238,7 @@ products.drop()
 **Business Scenario:** The Sales Director wants a regional sales summary: total revenue per region, average deal size, and the number of deals closed. MongoDB's Aggregation Pipeline is the equivalent of SQL's `GROUP BY` + `SUM()` + `AVG()`.
 
 **Your Task:**
+
 1. Insert at least 10 sales documents with fields: `region`, `sales_rep`, `amount`, `product`, `date`
 2. Build an aggregation pipeline that:
    - Groups by `region`
@@ -243,6 +247,7 @@ products.drop()
 3. Print the results in a formatted table
 
 **Expected Output:**
+
 ```
 === Sales by Region (Aggregation Pipeline) ===
 Region      | Total Revenue | Avg Deal Size | Deals
@@ -304,6 +309,7 @@ Match each scenario to the best database:
 **Business Scenario:** You need to debug a broken MongoDB aggregation pipeline. The code below has been intentionally broken in two ways. Your job is to identify and fix both bugs.
 
 **Starter Code (Broken — do not run as-is):**
+
 ```python
 from pymongo import MongoClient
 
@@ -336,11 +342,13 @@ for r in results:
 ```
 
 **Your Task:**
+
 1. Identify Bug 1 (hint: MongoDB field names are case-sensitive)
 2. Identify Bug 2 (hint: the `_id` field in `$group` output)
 3. Fix both bugs and run the corrected pipeline
 
 **Expected Output after fix:**
+
 ```
 Region: West | Total: $12,500.00
 Region: East | Total: $7,200.00

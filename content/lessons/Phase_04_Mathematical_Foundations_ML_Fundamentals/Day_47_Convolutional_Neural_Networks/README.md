@@ -62,6 +62,7 @@ outcomes:
 | **Translation equivariance** | If the object shifts in the image, the feature map shifts accordingly — but the convolution detects it regardless of position | A cat in the top-left vs bottom-right: same filters fire |
 
 **Visualizing shapes through a CNN:**
+
 ```
 Input:          (batch, 28, 28, 1)    ← 28×28 grayscale image
 Conv2D(32, 3):  (batch, 26, 26, 32)  ← 32 filters, no padding, 26=(28-3+1)
@@ -99,7 +100,6 @@ A **max-pooling** layer with $p \times p$ window and stride $s$ takes the maximu
 $$
 \text{MaxPool}(I)(i, j) = \max_{0 \le m, n < p} I\big(s i + m,\, s j + n\big)
 $$
-
 
 ```python
 import numpy as np
@@ -181,31 +181,37 @@ model.compile(
 #### Why These Architectural Choices?
 
 **Why 3×3 kernels?**
+
 - Two 3×3 layers have the same receptive field as one 5×5 layer, but with fewer parameters: 2×(9) = 18 vs 25.
 - 3×3 is the smallest kernel that can capture 2D spatial context.
 - VGG, ResNet, and most modern architectures use only 3×3 convolutions.
 
 **Why 32 filters in first layer, 64 in second?**
+
 - Deeper layers should detect more complex patterns → need more filter capacity.
 - Convention: double filters each time you halve spatial resolution (maintains total computation).
 - 32 filters capture low-level features (edges, textures); 64 capture mid-level (shapes, curves).
 
 **Why MaxPooling instead of strided convolution?**
+
 - MaxPooling adds translation invariance: the exact position of a feature doesn't matter.
 - It aggressively downsamples, reducing computation significantly.
 - Alternative: strided convolution (stride=2) is learned — often preferred in modern architectures.
 
 **Why batch normalization after conv layers?**
+
 - Normalizes feature map distributions across the batch.
 - Allows higher learning rates, faster convergence.
 - Acts as mild regularization.
 
 **Why these epoch counts?**
+
 - MNIST converges quickly (~10 epochs with batch norm, ~20 without).
 - Complex datasets (CIFAR-100, ImageNet) may need 100–300 epochs.
 - Always use EarlyStopping to avoid over- or under-training.
 
 **How choices affect shape, compute, and accuracy:**
+
 ```python
 # Measure parameter counts and training time for different configs
 from tensorflow.keras.utils import plot_model
@@ -343,6 +349,7 @@ print(
 
 **Class Imbalance in Image Classification**
 Image datasets are often imbalanced. Solutions:
+
 ```python
 # Class weights
 class_weight = {0: 1.0, 1: 5.0, 2: 2.0}  # Upweight rare classes
@@ -355,6 +362,7 @@ datagen = ImageDataGenerator(rotation_range=10, horizontal_flip=True)
 
 **Data Augmentation: When It's Valid**
 Augmentation creates synthetic training examples by transforming existing images. Each augmentation must be semantically valid:
+
 - ✅ Horizontal flip: Valid for most objects (dogs, products, scenes)
 - ❌ Horizontal flip: Invalid for text, digits (6 becomes 9), medical imaging (left/right matters)
 - ✅ Small rotations (< 15°): Usually valid
@@ -362,6 +370,7 @@ Augmentation creates synthetic training examples by transforming existing images
 - ✅ Brightness/contrast: Valid unless exact color is the feature
 
 **Transfer Learning and Fine-Tuning Strategy**
+
 ```python
 # Stage 1: Feature extraction (freeze pretrained backbone)
 base_model = MobileNetV2(include_top=False, weights='imagenet', input_shape=(224,224,3))
@@ -376,11 +385,13 @@ model.compile(optimizer=Adam(1e-5))  # Very small lr to avoid destroying pretrai
 
 **Image Leakage and Near-Duplicates**
 If the same physical object appears in both train and test (e.g., different photos of the same product), the model memorizes it — creating a form of leakage. Always:
+
 - Deduplicate by image hash before splitting
 - Split by object/subject ID if multiple images per object exist
 
 **Vision Transformers (ViT) — A Modern Alternative**
 CNNs assume local patterns (nearby pixels relate). Vision Transformers (ViT) treat image patches as sequences and use self-attention:
+
 - **Advantage**: Captures long-range dependencies; scales better with very large datasets
 - **Disadvantage**: Needs much more data to train from scratch; pre-trained ViTs available via Hugging Face
 - **When to use**: Large dataset (> 1M images) or when using pretrained ViT checkpoints
@@ -416,12 +427,14 @@ model = ViTForImageClassification.from_pretrained('google/vit-base-patch16-224')
 ### Senior-Level CNN Considerations
 
 **Dataset Licensing and Privacy**
+
 - ImageNet, COCO, and common datasets have usage licenses — check before commercial deployment
 - If training on customer images (face recognition, medical imaging), ensure privacy compliance (GDPR, HIPAA)
 - Never scrape images for training without verifying licensing
 
 **Subgroup Performance**
 CV models routinely underperform for underrepresented groups. Always audit:
+
 ```python
 for demographic in ['age_group', 'skin_tone', 'region']:
     for group in test_df[demographic].unique():
@@ -432,16 +445,19 @@ for demographic in ['age_group', 'skin_tone', 'region']:
 
 **Adversarial Robustness**
 CNN predictions can be fooled by imperceptible pixel perturbations (adversarial examples):
+
 - A panda misclassified as a gibbon with 99.9% confidence after adding ε noise
 - For business-critical applications (medical, security), test adversarial robustness before deployment
 
 **Domain Shift**
 A model trained on studio product photos will fail on customer-submitted phone photos. Domain shift is the most common cause of production CV model failure:
+
 - Collect real production images during deployment
 - Periodically retrain on production data distribution
 - Monitor confidence score distributions — sharp drops indicate domain shift
 
 **Model Size and Latency**
+
 | Model | Params | Top-1 ImageNet Acc | Inference (CPU) | Use Case |
 |-------|--------|-------------------|----------------|---------|
 | MobileNetV2 | 3.4M | 72.0% | ~50ms | Mobile/edge |
@@ -451,6 +467,7 @@ A model trained on studio product photos will fail on customer-submitted phone p
 
 **Human Review Workflows**
 For high-stakes image decisions (medical, financial, legal):
+
 - Route low-confidence predictions (score between 0.4–0.6) to human review
 - Track human override rate — if > 20%, model needs retraining
 
@@ -465,6 +482,7 @@ For high-stakes image decisions (medical, financial, legal):
 **Goal:** Build a CNN that achieves > 98% test accuracy on digit classification; analyze errors.
 
 **Tasks:**
+
 1. Establish a non-CNN baseline: train a Logistic Regression on flattened 28×28 pixels
 2. Build a CNN with Conv2D(32, 3) → MaxPool → Conv2D(64, 3) → MaxPool → Dense(128) → Dense(10, softmax)
 3. Train for 20 epochs with EarlyStopping and validation_split=0.1
@@ -478,6 +496,7 @@ CNN test accuracy: ~0.990–0.993 (99.0–99.3%)
 Early stopping triggered at: ~12–15 epochs
 
 Confusion Matrix: Most confusions are typically:
+
 - 4 vs 9 (similar upper portions)
 - 3 vs 8 (similar curves)
 - 7 vs 1 (style-dependent)
@@ -573,6 +592,7 @@ for conv_layers, dense_layers in architectures:
 **Goal:** Use transfer learning to achieve > 85% accuracy with limited data.
 
 **Tasks:**
+
 1. Load MobileNetV2 pretrained on ImageNet; freeze all layers
 2. Add a classification head: GlobalAveragePooling → Dense(256, relu) → Dense(5, softmax)
 3. Train the head for 20 epochs; report accuracy

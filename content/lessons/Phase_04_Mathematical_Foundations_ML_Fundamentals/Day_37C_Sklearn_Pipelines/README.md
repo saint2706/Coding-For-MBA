@@ -42,6 +42,7 @@ In a notebook, you might do this over 20 cells: load data → impute missing val
 **Sklearn `Pipeline` is the solution.** It chains all your preprocessing + modeling steps into one object. Train it once. Apply it identically to new data. Serialize it for deployment. No gaps.
 
 **Why this is a production-critical skill:**
+
 - **Amazon SageMaker**, **Google Vertex AI**, and **Azure ML** all deploy sklearn-compatible pipelines
 - Any DS interview at a top firm will ask you to demonstrate pipeline-based workflows
 - Day 50 (MLOps) assumes you're building with pipelines — this is the foundation
@@ -83,14 +84,14 @@ X_test_scaled = scaler.transform(X_test)         # Transform only, no fit
 ```
 
 > **⚠️ What Pipeline does NOT prevent**
-> 
+>
 > A sklearn Pipeline guarantees that `fit()` is never called on test data within the pipeline. However, these leakage sources remain your responsibility:
-> 
+>
 > 1. **Target-derived features**: If you create a feature like `transaction_rank_by_user` using the entire dataset's target before the pipeline, leakage is in the data, not the preprocessing.
 > 2. **Temporal leakage**: Using a feature whose value at prediction time incorporates future information (e.g., a 30-day rolling average that looks forward).
 > 3. **Precomputed global aggregates**: Computing `mean_category_spend` on the full dataset before splitting, then using it as a feature.
 > 4. **Leakage before pipeline entry**: Any transformation applied outside the pipeline (e.g., `pd.get_dummies(df)` on the full dataframe before `train_test_split`) is not protected.
-> 
+>
 > Pipeline is a powerful leakage guard, but it cannot save you from leakage introduced in data collection, feature definition, or preprocessing outside the pipeline.
 
 ### Basic Pipeline
@@ -367,14 +368,17 @@ Parity check (max absolute diff): 0.000
 
 **`set_output(transform="pandas")`** (sklearn ≥ 1.2)
 By default, pipeline transformers return numpy arrays. This loses column names:
+
 ```python
 pipeline.set_output(transform="pandas")
 # Transformers now return DataFrames with feature names preserved
 ```
+
 Caution: Metadata routing (passing `sample_weight` through pipelines) is a newer API that changed significantly in sklearn 1.3+; check the release notes before relying on it.
 
 **Pipeline Caching**
 If preprocessing is expensive, cache intermediate results:
+
 ```python
 from sklearn.pipeline import Pipeline
 from tempfile import mkdtemp
@@ -383,6 +387,7 @@ pipeline = Pipeline([('scaler', StandardScaler()), ('model', LogisticRegression(
 ```
 
 **Unit Testing Custom Transformers**
+
 ```python
 import pytest
 def test_custom_transformer():
@@ -426,6 +431,7 @@ joblib.dump(trained_pipe, f'model_v{version}.pkl')
 
 **Schema Validation**
 Before a pipeline processes new data, validate that incoming features match the training schema:
+
 ```python
 expected_columns = X_train.columns.tolist()
 assert list(X_new.columns) == expected_columns, f"Schema mismatch: {set(X_new.columns) ^ set(expected_columns)}"
@@ -435,13 +441,16 @@ assert list(X_new.columns) == expected_columns, f"Schema mismatch: {set(X_new.co
 `OneHotEncoder(handle_unknown='ignore')` silently drops unseen categories as all zeros. This is usually correct but can mask data quality issues. Log warnings when unknown categories appear in production.
 
 **Feature Name Inspection**
+
 ```python
 pipeline.named_steps['preprocessor'].get_feature_names_out()
 ```
+
 Use this to verify the feature order the model received — critical for debugging and SHAP explanations.
 
 **Model and Data Versioning**
 Tag every saved pipeline with:
+
 - Training data version/hash
 - sklearn version (pipelines can break across minor versions)
 - Training date and dataset size
@@ -481,6 +490,7 @@ for train_idx, test_idx in kf.split(X_scaled):
 ```
 
 **Expected Output / Pass Criteria:**
+
 - Leaky pipeline test accuracy: ~0.95 (suspicious — matches training closely)
 - Fixed pipeline test accuracy: ~0.82 (realistic — gap from training is expected)
 - Confirmed: No StandardScaler.fit() call was made on test data
@@ -584,9 +594,11 @@ To support **method chaining**: `fit_transform(X)` is equivalent to `fit(X).tran
 <details><summary>Answer</summary>
 
 Use the `'step_name__parameter'` syntax:
+
 ```python
 param_grid = {'classifier__n_estimators': [100, 200, 500]}
 ```
+
 The double underscore `__` separates the pipeline step name (`classifier`) from the estimator's parameter (`n_estimators`). This works at any depth: `'preprocessor__num__imputer__strategy'`.
 </details>
 

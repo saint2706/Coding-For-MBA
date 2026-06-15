@@ -292,7 +292,7 @@ By the end of Phase 8, you should be able to:
 
 ---
 
-## Skills Matrix
+## Skills Matrix (Expanded)
 
 ### Foundational Skills (All students)
 

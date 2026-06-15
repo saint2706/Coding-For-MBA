@@ -175,6 +175,7 @@ Percentiles divide your data into 100 equal parts. Essential for benchmarking.
 **What is a Quantile?** A **quantile** is the generalized form. Quantiles divide data into equal-sized groups using proportions (0 to 1) instead of percentages (0 to 100). So the **0.75 quantile** is the same as the **75th percentile**. Pandas uses the 0–1 scale: `df["col"].quantile(0.75)`.
 
 **Business uses of percentiles:**
+
 - **P50 (Median)**: The "typical" value — half the data is above, half below
 - **P75**: The threshold above which the top 25% of values lie (e.g., "top quartile" performers)
 - **P90 / P95**: Common SLA thresholds (e.g., "95% of requests complete under 200ms")
@@ -357,6 +358,7 @@ else:
 **Business Scenario:** You are the CFO's analyst. Monthly revenue data for the past year includes one unusually large month (July) caused by a one-time enterprise contract. The CFO wants to know: (a) how much this outlier inflates the average, (b) what the "normal" baseline revenue looks like, and (c) what number to use for forecasting.
 
 **Your Task:**
+
 1. Compute mean, median, and standard deviation WITH the outlier included
 2. Detect the outlier using the IQR method
 3. Compute the same statistics WITHOUT the outlier
@@ -427,6 +429,7 @@ analyze_revenue(monthly_revenue)
 ```
 
 **Expected Output:**
+
 ```
 === With Outlier ===
 Mean: $97,500.00
@@ -454,6 +457,7 @@ For forecasting, use median ($66,500.00) or exclude one-time contracts
 **Business Scenario:** The marketing team wants to move from "one-size-fits-all" campaigns to targeted messaging. They need customers segmented by three dimensions: **total lifetime spend** (how valuable), **average order value** (what they buy), and **recency** (how recently they purchased). The goal is to identify Champions (high value, recent buyers) vs. At-Risk customers (previously active but gone quiet).
 
 **Your Task:**
+
 1. Compute percentile rank for `total_purchases`, `avg_order_value`, and `days_since_last_order`
 2. Note: for recency, a LOWER `days_since_last_order` means MORE recent — so invert the ranking
 3. Assign each customer to a segment based on the thresholds in `assign_segment()`
@@ -522,6 +526,7 @@ print(f"\nSegment distribution:\n{segmented['segment'].value_counts()}")
 ```
 
 **Expected Output (values are approximate due to random seed):**
+
 ```
 === Customer Segment Summary ===
                    customer_id total_purchases           days_since_last_order
@@ -548,6 +553,7 @@ Recent Customers    5
 **Business Scenario:** The Head of Growth wants to understand which variables actually drive revenue. She suspects marketing spend is the primary driver, but wants to rule out external factors like weather. You have 100 weeks of data covering marketing spend, website traffic, revenue, and average temperature.
 
 **Your Task:**
+
 1. Build a full correlation matrix for all four variables
 2. For each key pair, print the correlation coefficient and classify its strength (Strong/Moderate/Weak)
 3. Identify which variable is the best predictor of revenue
@@ -611,6 +617,7 @@ correlation_analysis(df)
 ```
 
 **Expected Output (values are approximate due to random seed):**
+
 ```
 === Correlation Matrix ===
                   marketing_spend  website_traffic  revenue  temperature

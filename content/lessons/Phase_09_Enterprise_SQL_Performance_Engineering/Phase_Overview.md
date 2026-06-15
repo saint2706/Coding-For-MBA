@@ -321,7 +321,7 @@ By the end of Phase 9, you should be able to:
 
 ---
 
-## Skills Matrix
+## Skills Matrix (Expanded)
 
 ### Foundational Skills (All students)
 
@@ -607,18 +607,21 @@ ALTER TABLE events SET (
 ### Specialization Tracks After Phase 9
 
 **Database Platform Engineer**:
+
 - Learn Citus (distributed PostgreSQL)
 - Learn TimescaleDB (time-series extension)
 - Learn PgBouncer + connection pooling at scale
 - Build: Multi-region DB architecture
 
 **Analytics Engineer (dbt + SQL)**:
+
 - Learn dbt for transformation layer (Day 84B)
 - Learn Snowflake/BigQuery/Redshift cloud warehouses
 - Learn Looker or Metabase semantic layer
 - Build: Analytics engineering pipeline from raw → metrics
 
 **Data Reliability Engineer**:
+
 - Deep-dive on `pg_stat_statements`, slow query alerting
 - Learn Datadog DB monitoring
 - Implement database observability stack

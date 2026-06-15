@@ -227,6 +227,7 @@ python my_script.py
 **The Business Problem**: A retailer wants to calculate the final price a customer pays, given a product price, a percentage discount, and a sales tax rate.
 
 **Your task** (in plain English, no code yet):
+
 1. Write out the three-question framework answers:
    - What is the input?
    - What is the output?
@@ -238,6 +239,7 @@ python my_script.py
 <summary>Click for Answer</summary>
 
 **Three-Question Framework:**
+
 - Input: `price`, `discount_percent`, `tax_rate`
 - Output: `final_price` (a single dollar amount)
 - Steps:
@@ -247,6 +249,7 @@ python my_script.py
   4. Final price = discounted price + tax amount
 
 **Pseudocode:**
+
 ```
 GET price, discount_percent, tax_rate
 CALCULATE discount_amount = price × (discount_percent / 100)
@@ -257,6 +260,7 @@ PRINT final_price
 ```
 
 **Python translation:**
+
 ```python
 price = 120.00
 discount_percent = 15

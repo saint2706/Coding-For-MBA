@@ -353,6 +353,7 @@ print(f"Reason: {reason}")
 ```
 
 **Expected Output:**
+
 ```text
 Decision: APPROVED
 Reason: All criteria met
@@ -398,6 +399,7 @@ print(f"Total Shipping: ${total:.2f}")
 ```
 
 **Expected Output:**
+
 ```text
 Base rate: $25.00
 Weight fee: $5.00
@@ -446,6 +448,7 @@ for name, spend, years in customers:
 ```
 
 **Expected Output:**
+
 ```text
 === CUSTOMER CLASSIFICATION ===
 Alice: $15,000 over 2yr → VIP

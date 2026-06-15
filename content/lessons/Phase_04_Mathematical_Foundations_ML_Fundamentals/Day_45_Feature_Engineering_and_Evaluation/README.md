@@ -57,16 +57,19 @@ outcomes:
 | **Duplicate leakage** | Near-duplicate training and test samples (e.g., augmented images from same source) | Image dataset where the same person appears in train and test | Deduplication before splitting |
 
 **Nominal vs Ordinal Variables**
+
 - **Nominal**: No meaningful order. Color (Red, Blue, Green), Region (North, South). Use **One-Hot Encoding**.
 - **Ordinal**: Natural order exists. Education (High School < Bachelor < Master < PhD), Rating (1–5). Use **Ordinal Encoding** — preserve the order.
 - **High cardinality nominal** (City, Product ID with 1000+ values): One-hot creates huge sparse matrices. Use **Target Encoding**, **Hash Encoding**, or **Embeddings**.
 
 **Skewness**
+
 - **Right skew** (positive): Long tail to the right; mean > median. Common in income, price, transaction amount. Fix: log transform (`np.log1p`) or Box-Cox.
 - **Left skew** (negative): Long tail to the left. Less common. Fix: square or exponential transform.
 - **Why it matters**: Linear models and distance-based models assume approximately symmetric features; extreme skew can cause one feature to dominate.
 
 **Feature Scaling**
+
 - **StandardScaler** (z-score): Mean=0, Std=1. Required for: logistic regression, SVM, KNN, neural networks, PCA, regularized models.
 - **MinMaxScaler**: Scales to [0, 1]. Use when you need bounded range; sensitive to outliers.
 - **RobustScaler**: Uses median and IQR. Best for data with outliers.
@@ -74,6 +77,7 @@ outcomes:
 
 **Feature Availability at Prediction Time**
 A feature is only valid if it would be available when the model needs to make a prediction. Create a feature availability timeline:
+
 ```
 Prediction Time: "Will this customer churn in the next 30 days?"
 ✅ Available: age, historical spending, days_since_last_purchase, num_past_complaints
@@ -250,6 +254,7 @@ pipeline = Pipeline(
 ### Advanced Feature Engineering Topics
 
 **Rare and Unseen Categories**
+
 ```python
 # In production, new categories appear that weren't in training
 encoder = OneHotEncoder(handle_unknown='ignore')  # Unseen → all-zero vector
@@ -259,6 +264,7 @@ encoder = OneHotEncoder(handle_unknown='infrequent_if_exist', min_frequency=10)
 
 **High-Cardinality Encoding**
 For features like City (500+ values) where one-hot creates massive sparse matrices:
+
 ```python
 # Target Encoding: replace category with mean target value
 # ⚠️ LEAKAGE RISK: must be computed on training data only
@@ -270,6 +276,7 @@ X_test['city_encoded'] = te.transform(X_test[['city']])  # Uses training statist
 
 **Missingness Indicators**
 Sometimes the fact that a value is missing is itself informative:
+
 ```python
 df['income_missing'] = df['income'].isna().astype(int)  # Binary flag
 df['income_filled'] = df['income'].fillna(df['income'].median())  # Fill with median
@@ -277,12 +284,14 @@ df['income_filled'] = df['income'].fillna(df['income'].median())  # Fill with me
 ```
 
 **Outlier Features**
+
 ```python
 # Flag extreme values (beyond 3 sigma) as binary feature
 df['income_outlier'] = (np.abs(stats.zscore(df['income'])) > 3).astype(int)
 ```
 
 **Temporal and Grouped Cross-Validation**
+
 ```python
 from sklearn.model_selection import TimeSeriesSplit, GroupKFold
 
@@ -352,6 +361,7 @@ print(f"Nested CV AUC: {nested_scores.mean():.3f} ± {nested_scores.std():.3f}")
 ```
 
 **Confidence Intervals on CV Scores**
+
 ```python
 scores = cross_val_score(model, X, y, cv=10)
 mean, std = scores.mean(), scores.std()
@@ -361,6 +371,7 @@ print(f"95% CI (approximate): [{ci_lower:.3f}, {ci_upper:.3f}]")
 ```
 
 **Statistical Comparison of Models**
+
 ```python
 from scipy import stats
 
@@ -372,6 +383,7 @@ print(f"Model A vs B: p-value={p_value:.4f}")
 ```
 
 **Threshold Tuning and Calibration**
+
 ```python
 from sklearn.calibration import CalibratedClassifierCV, calibration_curve
 from sklearn.metrics import precision_recall_curve
@@ -387,6 +399,7 @@ calibrated.fit(X_train, y_train)
 ```
 
 **Subgroup / Fairness Checks**
+
 ```python
 # Evaluate separately by group
 for group in df['region'].unique():
@@ -426,12 +439,14 @@ for group in df['region'].unique():
 
 **Train/Serve Skew**
 The most common cause of production ML failures: the features computed during training are computed differently in production.
+
 - Training: `income_per_year = income / (age - 17)` (age from database)
 - Production: `income_per_year = income / (current_year - birth_year)` (different age calculation)
 Solution: Put all feature engineering logic in a versioned, tested function called identically during training and serving.
 
 **Feature Lineage**
 For every feature in production, document:
+
 - Where does the raw data come from? (source table, API, stream)
 - How is it transformed? (exact code, version)
 - When was it last updated? (staleness window)
@@ -439,6 +454,7 @@ For every feature in production, document:
 
 **Feature Drift**
 When input distributions shift, model performance degrades silently:
+
 ```python
 # Monitor feature statistics over time
 from scipy.stats import ks_2samp
@@ -451,6 +467,7 @@ for feature in X_train.columns:
 
 **Feature Governance Review**
 Before deploying features, check:
+
 - Are any features proxies for protected attributes (race, gender, age)? Income and zip code can be proxies.
 - Are features reproducible from the same raw data across environments?
 - Have features been reviewed for point-in-time correctness (no future leakage)?
@@ -466,6 +483,7 @@ Before deploying features, check:
 **Goal:** Build a reproducible feature engineering pipeline that a new team member can understand and run.
 
 **Sample Input:**
+
 | customer_id | age | income | tenure |
 |------------|-----|--------|--------|
 | 1 | 34 | 75000 | 365 |
@@ -473,12 +491,14 @@ Before deploying features, check:
 | 3 | 22 | 28000 | 45 |
 
 **Tasks:**
+
 1. Create `log_income` (log1p transform of income) and verify it reduces skewness
 2. Create `income_per_year` = income / (age - 17) — "annual income relative to working years"
 3. Plot histograms of `income` vs `log_income` to visually confirm reduced skew
 4. Check: does the engineered feature make business sense? Is it monotonically related to churn risk?
 
 **Expected Output:**
+
 ```
 Original income skewness: ~2.3 (right-skewed)
 log_income skewness: ~0.4 (much more symmetric)
@@ -514,12 +534,14 @@ print(df.describe())
 **Goal:** Compare KFold vs StratifiedKFold on an imbalanced dataset; observe the practical difference.
 
 **Tasks:**
+
 1. Run KFold(5) and StratifiedKFold(5) on imbalanced dataset (y where only ~12% are class 1)
 2. For each fold, print the fraction of positive cases in the validation set
 3. Report mean F1 ± std for both strategies
 4. Explain in one sentence why the scores differ
 
 **Expected Output:**
+
 ```
 KFold fold positive rates: [0.07, 0.19, 0.11, 0.08, 0.17] (variable — some folds miss positives)
 StratifiedKFold fold positive rates: [0.12, 0.12, 0.12, 0.12, 0.12] (consistent)
@@ -528,6 +550,7 @@ Stratified F1: 0.38 ± 0.03 (more reliable estimate)
 ```
 
 **Leakage/Evaluation Acceptance Criteria:**
+
 - Pass: Stratified F1 std < 0.05 (stable estimate)
 - Fail: If any single fold has < 5% positive rate — class underrepresented
 
@@ -553,12 +576,14 @@ for cv_name, cv in [("KFold", KFold(5)), ("Stratified", StratifiedKFold(5))]:
 **Goal:** Identify the leakage, quantify its impact, and fix it.
 
 **Tasks:**
+
 1. Run the WRONG approach (fit scaler on all data) and report accuracy
 2. Run the CORRECT approach (fit scaler only on training data) and report accuracy
 3. Compute the inflation: (leaky_accuracy - correct_accuracy) / correct_accuracy × 100%
 4. Write a 1-sentence diagnosis explaining WHY the leakage inflated the score
 
 **Expected Output (Leakage Detection):**
+
 ```
 Leaky accuracy: 0.982 (suspiciously high)
 Correct accuracy: 0.856 (realistic)

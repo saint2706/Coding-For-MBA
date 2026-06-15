@@ -197,12 +197,15 @@ engagement_metrics = {
 ## Hands-on Lab
 
 ### Exercise 1: Build a Retention Cohort
+
 Write SQL to create a weekly retention cohort for a mobile app over the last 12 weeks. Identify which cohorts have the best D7 retention and hypothesize why.
 
 ### Exercise 2: Funnel Optimization
+
 Given this funnel: Visit (100K) → Signup (20K) → Onboard (8K) → First Action (3K) → Return Day 7 (1K), identify the biggest drop-offs and suggest 3 product experiments.
 
 ### Exercise 3: North Star Metric
+
 Define the North Star Metric for a B2B SaaS product and design a dashboard showing it alongside 3 supporting metrics with weekly trends.
 
 ---

@@ -284,6 +284,7 @@ if __name__ == "__main__":
 ```
 
 **Expected Output:**
+
 ```
 ROI: 50.0%
 Future value: $16,288.95
@@ -336,6 +337,7 @@ print(format_currency(1234.5))  # "$1,234.50"
 ```
 
 **Expected Output:**
+
 ```
 hello world
 $1,234.50
@@ -373,6 +375,7 @@ print(f"Word frequency: {freq.most_common()}")
 ```
 
 **Expected Output:**
+
 ```
 Square root of 144: 12.0
 Log base 10 of 1000: 3.0
