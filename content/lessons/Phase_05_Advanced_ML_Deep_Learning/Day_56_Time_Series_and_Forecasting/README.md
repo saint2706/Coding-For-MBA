@@ -1232,6 +1232,99 @@ Recommendation: Monitor closely. Retrain if MAE reaches +30%.
 
 ---
 
+## Senior-Level Insights: Advanced Forecasting
+
+### Multivariate Time Series
+
+Most real business forecasting problems involve multiple correlated series. Demand for Product A affects demand for Product B; temperature affects energy consumption which affects grid pricing. Univariate models ignore these cross-series relationships.
+
+```python
+import pandas as pd
+import numpy as np
+from statsmodels.tsa.statespace.varmax import VARMAX
+
+# Example: jointly forecast daily sales for 3 product categories
+# Each category influences the others (substitution + complementarity effects)
+np.random.seed(42)
+n = 200
+dates = pd.date_range("2023-01-01", periods=n, freq="D")
+
+# Simulate correlated product sales
+electronics = np.random.randn(n).cumsum() + 100
+accessories = 0.6 * electronics + np.random.randn(n) * 5  # accessories follow electronics
+software = 0.3 * electronics + 0.4 * accessories + np.random.randn(n) * 3
+
+df = pd.DataFrame(
+    {"electronics": electronics, "accessories": accessories, "software": software},
+    index=dates,
+)
+
+# VAR model: models all series jointly, capturing cross-series dynamics
+train_df = df.iloc[:-30]
+test_df = df.iloc[-30:]
+
+var_model = VARMAX(train_df, order=(2, 0))  # VAR(2) — use 2 lags
+var_fit = var_model.fit(disp=False)
+
+# Forecast next 30 days for all three products simultaneously
+forecast = var_fit.forecast(steps=30)
+forecast.columns = ["electronics", "accessories", "software"]
+
+print("VAR 30-day forecast:")
+print(forecast.head())
+
+# Granger causality: test whether electronics Granger-causes accessories
+from statsmodels.tsa.stattools import grangercausalitytests
+gc_result = grangercausalitytests(df[["accessories", "electronics"]], maxlag=5, verbose=False)
+# If p < 0.05 for lag k, electronics at k days ago helps predict accessories
+```
+
+**When to use multivariate forecasting:**
+
+| Approach | When to use | Example |
+|---------|-------------|---------|
+| Univariate (ARIMA/Prophet) | Single KPI, minimal cross-dependencies | Website traffic forecast |
+| VAR/VARMAX | Multiple correlated KPIs, executive-level planning | Multi-SKU demand planning |
+| LSTM with multiple inputs | Complex nonlinear cross-series relationships | Energy grid load forecasting |
+| Hierarchical forecasting | Forecast at multiple aggregation levels (SKU → category → brand) | Retail inventory allocation |
+
+### Forecast Combination: The Free Lunch
+
+Averaging forecasts from multiple models almost always outperforms any single model — this is the forecasting equivalent of ensemble methods:
+
+```python
+# Forecast combination: simple average (hard to beat)
+arima_forecast = ...   # Your ARIMA predictions
+prophet_forecast = ... # Your Prophet predictions
+lstm_forecast = ...    # Your LSTM predictions
+
+# Simple average (surprisingly effective)
+combined_simple = (arima_forecast + prophet_forecast + lstm_forecast) / 3
+
+# Optimal weights (minimize validation MAE)
+from scipy.optimize import minimize
+
+def portfolio_mae(weights, forecasts, actuals):
+    """Objective: minimize MAE of weighted combination."""
+    combined = sum(w * f for w, f in zip(weights, forecasts))
+    return np.mean(np.abs(combined - actuals))
+
+result = minimize(
+    portfolio_mae,
+    x0=[1/3, 1/3, 1/3],
+    args=([arima_forecast, prophet_forecast, lstm_forecast], val_actuals),
+    constraints={"type": "eq", "fun": lambda w: sum(w) - 1},
+    bounds=[(0, 1)] * 3,
+)
+optimal_weights = result.x
+# Output: e.g., [0.45, 0.30, 0.25] — ARIMA gets more weight if data is stationary
+
+# Rule of thumb: if optimal weight beats equal weight by < 0.5% MAPE,
+# keep equal weight — it's more robust out of sample.
+```
+
+---
+
 ## Summary
 
 Today you learned:
@@ -1245,6 +1338,30 @@ Today you learned:
 - ✅ Production monitoring for concept drift and model degradation
 
 **Tomorrow**: Recommender systems—collaborative filtering, matrix factorization, and content-based recommendations.
+
+---
+
+## Glossary
+
+- **Stationarity**: A property of a time series where mean, variance, and autocorrelation structure do not change over time; required by classical models like ARIMA.
+- **Trend**: The long-term directional movement in a time series (upward, downward, or flat), distinct from short-term fluctuations.
+- **Seasonality**: Regular, repeating patterns in a time series tied to a fixed calendar period (daily, weekly, yearly), such as holiday sales spikes.
+- **Autocorrelation**: The correlation of a time series with a lagged version of itself; used to identify how much past values predict future values.
+- **ARIMA (Autoregressive Integrated Moving Average)**: A classical forecasting model combining autoregressive terms (past values), differencing (to achieve stationarity), and moving average terms (past errors); parameterized as ARIMA(p, d, q).
+- **SARIMAX**: Seasonal ARIMA with eXogenous variables; extends ARIMA with explicit seasonal components (P, D, Q, s) and optional external regressors.
+- **Prophet**: An open-source forecasting library from Meta designed for business time series; handles trends, multiple seasonalities, holidays, and missing data automatically.
+- **Walk-forward validation**: A time-series cross-validation strategy that trains on past data and tests on subsequent windows sequentially, preserving temporal order to avoid data leakage.
+- **Mean Absolute Percentage Error (MAPE)**: A scale-independent forecast accuracy metric: the average absolute percentage difference between forecasted and actual values; useful for comparing across series with different scales.
+- **Horizon**: The number of future time steps a forecast covers; short-horizon forecasts (1–7 days) are generally more accurate than long-horizon forecasts (months).
+
+---
+
+## Cross-References
+
+- **Day 48 — RNNs and LSTMs**: Provides the deep learning foundation for sequential data; LSTMs are the neural alternative to ARIMA/Prophet for complex, nonlinear time series patterns.
+- **Day 55 — Advanced Unsupervised Learning**: Covers anomaly detection methods (Isolation Forest, autoencoders) that complement time series forecasting when detecting outliers in historical series.
+- **Day 57 — Recommender Systems**: Demand forecasting connects directly to inventory optimization, which in turn informs recommendation systems by ensuring popular items are in stock.
+- **Day 50 — MLOps**: Production monitoring concepts apply to detecting forecast drift over time and triggering model retraining when performance degrades.
 
 ---
 

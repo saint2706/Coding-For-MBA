@@ -894,6 +894,28 @@ elastic = ElasticNetCV(l1_ratio=0.5, cv=5)
 
 ---
 
+## Glossary
+
+- **Regularization**: A technique that adds a penalty term to a model's loss function to discourage overly complex coefficient values, improving generalization to unseen data.
+- **L1 norm (Lasso)**: A regularization penalty equal to the sum of the absolute values of coefficients (∑|β|); because its constraint region has corners, it drives some coefficients exactly to zero, performing automatic feature selection.
+- **L2 norm (Ridge)**: A regularization penalty equal to the sum of the squared values of coefficients (∑β²); its circular constraint region shrinks all coefficients toward zero but rarely to exactly zero, making it stable with correlated features.
+- **ElasticNet**: A regularization method that combines L1 and L2 penalties (controlled by the `l1_ratio` parameter), inheriting Lasso's sparsity and Ridge's stability for correlated features.
+- **Shrinkage**: The effect of regularization that pulls coefficient estimates toward zero, reducing model variance at the cost of introducing some bias — the central bias–variance trade-off mechanism.
+- **Bias–variance tradeoff**: The fundamental tension in supervised learning between a model that is too simple (high bias, underfits) and one that is too complex (high variance, overfits); regularization explicitly manages this trade-off.
+- **Feature selection**: The process of identifying and retaining only the most informative predictors; Lasso (L1) achieves implicit feature selection by zeroing out uninformative coefficients.
+- **Multicollinearity**: A condition where two or more features are highly correlated, causing unstable and inflated coefficient estimates in ordinary linear regression; Ridge regression mitigates this by spreading the penalty across correlated features.
+
+---
+
+## Cross-References
+
+- **Day 41** — Linear regression: the unpenalized baseline model that Ridge and Lasso extend by adding a regularization term to the ordinary least-squares cost function.
+- **Day 44** — Unsupervised learning: regularization appears in autoencoders and sparse coding, where L1/L2 penalties constrain the latent representation.
+- **Day 52** — Ensemble methods: an alternative strategy for reducing variance that combines many trees rather than penalizing individual model coefficients.
+- **Day 53** — Feature selection and model tuning: Lasso's sparsity-inducing property is revisited alongside RFE and permutation importance as complementary feature selection approaches.
+
+---
+
 ## Summary
 
 Today you learned:

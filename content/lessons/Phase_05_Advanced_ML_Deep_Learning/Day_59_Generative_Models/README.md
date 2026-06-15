@@ -1400,6 +1400,30 @@ Today you learned:
 
 ---
 
+## Glossary
+
+- **Generator**: The neural network in a GAN responsible for creating synthetic data from random noise; it learns to produce outputs that are indistinguishable from real data.
+- **Discriminator**: The neural network in a GAN that distinguishes real data from generated (fake) data; it provides the training signal that pushes the generator to improve.
+- **Adversarial training**: The minimax game in which the generator and discriminator are trained simultaneously against each other, each improving as the other improves.
+- **Mode collapse**: A failure mode in GAN training where the generator learns to produce only a limited variety of outputs (e.g., only one digit instead of all ten), ignoring much of the data distribution.
+- **KL divergence**: A measure of how one probability distribution differs from another; in VAEs, the KL term regularizes the latent space by penalizing deviation from a standard normal prior.
+- **Latent space**: The compressed, lower-dimensional representation space learned by generative models; points in latent space decode into data samples, and nearby points produce similar outputs.
+- **Variational Autoencoder (VAE)**: A generative model that learns a probabilistic latent space by encoding inputs as distributions (mean and variance) rather than single points, enabling smooth interpolation and sampling.
+- **Reparameterization trick**: A technique that allows gradients to flow through a stochastic sampling step in VAEs by expressing the sample as a deterministic function of the parameters plus independent noise.
+- **Diffusion model**: A generative model that learns to reverse a gradual noising process; training involves predicting the noise added at each step, and generation involves iteratively denoising from pure noise.
+- **Fréchet Inception Distance (FID)**: A metric for evaluating image generation quality that compares the statistical distribution of real and generated images using features from a pretrained Inception network; lower FID indicates better quality and diversity.
+
+---
+
+## Cross-References
+
+- **Day 46 — Neural Network Fundamentals**: Backpropagation, activation functions, and training loops are the building blocks for all generative architectures (GANs, VAEs, diffusion models) covered here.
+- **Day 55 — Advanced Unsupervised Learning**: Autoencoders introduced as compression tools are the direct conceptual predecessor to VAEs; reconstruction error and latent spaces connect both lessons.
+- **Day 58 — Transformers and Attention**: Modern diffusion models (e.g., Stable Diffusion, DALL-E) incorporate transformer-based U-Nets and cross-attention for text conditioning; GPT-style decoders power text generation.
+- **Day 60B — LLM Fine-Tuning**: Fine-tuning large language models builds directly on generative model pretraining principles; RLHF and instruction tuning extend the generative training paradigm.
+
+---
+
 ## Optional Build Tracks (Day 49-60 Extension)
 
 Keep the **core lab tasks** in this lesson common for all learners, then add one optional extension artifact per track:
