@@ -349,3 +349,77 @@ Today you learned:
 * ✅ **The 4 Quadrants**: Focus on **Persuadables**, avoid **Sleeping Dogs**.
 
 **Tomorrow**: We shift gears to **Modern NLP Pipelines** and how to process text at scale.
+
+---
+
+## Potential Outcomes Framework — Causal Foundations
+
+Before running uplift models, you need to understand what you're actually estimating:
+
+* **Potential outcomes**: For each unit, $Y_i(1)$ = outcome if treated, $Y_i(0)$ = outcome if not treated. We only *observe one* of these.
+* **ATE (Average Treatment Effect)**: $E[Y(1) - Y(0)]$ — average causal effect across the whole population.
+* **CATE (Conditional ATE)**: $E[Y(1) - Y(0) | X=x]$ — individual-level causal effect, which is what uplift models estimate.
+* **Positivity/Overlap**: Every unit must have a nonzero probability of receiving either treatment. Violations cause extrapolation errors.
+* **Ignorability (no unmeasured confounding)**: All confounders must be measured and included.
+* **Confidence intervals**: Uplift scores are estimates with uncertainty. Never act on point estimates without confidence bands.
+
+### Practical Estimators
+
+| Method | When to Use | Key Requirement |
+|:-------|:------------|:----------------|
+| **Randomized Experiment (A/B test)** | Gold standard; whenever ethically and logistically feasible | Random assignment; sufficient sample size |
+| **Regression Adjustment** | When confounders are measured and linear relationships hold | All confounders observed |
+| **Propensity Score Matching** | Observational data; reduces confounding bias | Overlap assumption; all confounders observed |
+| **Difference-in-Differences** | Before/after with control group | Parallel trends assumption |
+| **Instrumental Variables** | When unmeasured confounders exist | Valid instrument available |
+| **Uplift Models (S/T/X-learner)** | Heterogeneous treatment effects for targeting | Labeled treatment/control outcomes |
+
+### Uplift Model Evaluation
+
+Use **Qini curve** (uplift equivalent of ROC AUC) or **AUUC (Area Under Uplift Curve)** to rank targeting strategies. A random targeting baseline should show a diagonal line; a good model curves above it.
+
+---
+
+## Pitfalls in Causal Inference
+
+> **Common errors that invalidate causal conclusions:**
+
+* **Post-treatment variables**: Never include features measured *after* the treatment in your model — they may be outcomes themselves.
+* **Selection bias**: If who receives treatment is not random and you didn't control for all selection factors, estimates are biased.
+* **Interference (spillover)**: If treating one person affects another (social networks, household sharing), standard ATE formulas break.
+* **Peeking**: Stopping an A/B test early because results "look significant" inflates Type I error rates by 2–3x.
+* **Heterogeneous effects**: An average positive ATE can hide a negative CATE for a subgroup — always check subgroups.
+* **Sleeping Dogs**: Correctly identified through uplift, not average-outcome models. A churn model that says "high risk → send email" will trigger Sleeping Dogs.
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 63 Milestone
+
+Run an uplift analysis on the RetailOps promotional email campaign: segment customers into Persuadables, Sure Things, Lost Causes, and Sleeping Dogs using the causal framework. Estimate incremental revenue from targeting only Persuadables vs. the naive "target all high-purchase-probability" approach. Connect the causal model output to the monitoring KPIs defined in Day 67.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 37B — Statistics Foundations | Hypothesis testing, p-values, and sample size calculations prerequisite for causal experiments |
+| Day 50 — MLOps Fundamentals | Experiment tracking for A/B tests (logging treatment assignments and outcomes) |
+| Day 62 — Model Interpretability & Fairness | SHAP attribution is correlational; causal inference goes further to ask what happens if we intervene |
+| Day 67 — Model Monitoring & Reliability | Monitor causal model degradation: track uplift scores vs realized incremental conversions over time |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **Confounder** | A variable that causally affects both the treatment assignment and the outcome, creating spurious correlation |
+| **Counterfactual** | The hypothetical outcome for a unit under the treatment it did *not* receive |
+| **Intervention** | An action that changes the value of a variable in the causal system (as opposed to merely observing it) |
+| **ATE** | Average Treatment Effect — the mean causal effect of a treatment across the full population |
+| **CATE** | Conditional Average Treatment Effect — the causal effect for a specific subgroup or individual |
+| **Propensity Score** | The probability of receiving treatment given observed covariates — used to balance treatment and control groups |
+| **Uplift** | The incremental effect of a treatment on an individual: P(outcome\|treated) − P(outcome\|not treated) |
+| **Persuadable** | A person who buys only if treated — the ideal target for marketing interventions |
+| **Sleeping Dog** | A person who would buy if left alone but churns or reacts negatively if contacted |

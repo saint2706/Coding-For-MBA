@@ -328,3 +328,65 @@ Today you learned:
 * ✅ **NER, Sentiment, and Zero-Shot** are powerful, ready-to-use pipelines for business data.
 
 **Tomorrow**: We move from "Model Building" to **MLOps**—how to build professional, automated pipelines for your models.
+
+---
+
+## Production NLP: Beyond "One-Line Magic"
+
+The Hugging Face `pipeline()` call hides real complexity that matters in production:
+
+**What you need to know before deploying a pipeline:**
+* **Model downloads**: First run downloads 400MB–1GB+ weights. Cache them in your container image.
+* **Inference defaults**: `pipeline()` uses the default model for each task (changes over time), a default batch size of 1, and CPU by default. Specify `model=`, `device=`, and `batch_size=` explicitly for reproducibility.
+* **Output schemas change**: If `aggregation_strategy` changes or a new model is released, field names in the output dict may change.
+* **Hardware/network requirements**: CPU inference is 5–20x slower than GPU. A BERT NER pipeline processing 1,000 documents per hour on CPU needs ~8 A10G hours on GPU.
+
+### NLP Task Evaluation — Acceptance Criteria Before Deployment
+
+| Task | Primary Metric | Minimum Bar | Slice to Check |
+|:-----|:---------------|:------------|:---------------|
+| NER | F1 per entity type | F1 > 0.85 on held-out set | Abbreviations, multilingual names |
+| Text Classification | Macro F1 | F1 > 0.80 | Rare classes, high-value intents |
+| Semantic Search | Recall@10, MRR | Recall@10 > 0.75 | Short queries, domain-specific terms |
+
+Never deploy a pipeline based only on demo outputs. Create a labeled evaluation set from real production examples before launch.
+
+### Production Considerations
+
+* **Preprocessing**: Truncate inputs at the model's max token length (typically 512 for BERT-class models). Longer inputs are silently truncated, which can change meaning.
+* **PII handling**: NER pipelines will extract and log names/emails from user text. Ensure PII is masked before logging or passing to third-party APIs.
+* **Model licensing**: Many Hugging Face models have non-commercial licenses (CC-BY-NC). Check before deploying in a revenue-generating product.
+* **When to use classification pipeline vs fine-tuning vs RAG**: Use the pipeline for zero-shot prototyping; fine-tune when F1 on your domain is below threshold; use RAG when the answer requires grounding in private documents.
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 64 Milestone
+
+Deploy an NER pipeline to extract product names, SKUs, and supplier names from customer support tickets. Add a zero-shot classifier to route tickets to the correct team (Billing, Technical, Logistics). Evaluate on 200 manually labeled tickets before connecting to the monitoring pipeline in Day 67.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 49 — Natural Language Processing | Tokenization, TF-IDF, and word embeddings are the foundation of transformer pipelines |
+| Day 58 — Transformers & Attention | Architecture underlying all Hugging Face models (encoder vs decoder, attention mechanism) |
+| Day 70 — LLM Fine-Tuning & PEFT | When zero-shot performance is insufficient, fine-tune the pipeline model using LoRA |
+| Day 71 — RAG & Vector Databases | When classification needs grounding in private documents, replace or augment pipeline with RAG |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **Transformer** | Neural network architecture using self-attention to process entire sequences in parallel |
+| **Encoder** | Transformer component that reads and understands text (BERT-style — good for classification, NER) |
+| **Decoder** | Transformer component that generates text sequentially (GPT-style — good for writing, chat) |
+| **Tokenization** | Breaking raw text into sub-word units (tokens) that the model processes |
+| **Embedding** | A dense vector representation of a token or sentence capturing semantic meaning |
+| **NER** | Named Entity Recognition — identifying and classifying proper nouns (people, organizations, locations) in text |
+| **Zero-Shot Classification** | Classifying text into categories the model was never explicitly trained on, using general language understanding |
+| **Transfer Learning** | Using a model pre-trained on large data as a starting point, then adapting it to a specific task |
+| **Cosine Similarity** | A measure of similarity between two vectors based on the angle between them (ranges −1 to 1; 1 = identical direction) |

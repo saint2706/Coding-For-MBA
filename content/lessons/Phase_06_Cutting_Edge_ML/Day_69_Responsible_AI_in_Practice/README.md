@@ -281,3 +281,121 @@ An attacker embeds malicious instructions in user input or retrieved data that o
 - ✅ **Red-teaming**: Proactively attack your own system before users do.
 
 **Tomorrow → Day 70**: We deep-dive into **LLM Fine-Tuning & PEFT** — teaching a base model new skills without retraining from scratch.
+
+---
+
+## Responsible AI Governance Lifecycle
+
+Day 62 introduced fairness metrics. This lesson operationalizes them in a *governance lifecycle* that applies before, during, and after deployment:
+
+```
+1. USE-CASE INTAKE
+   └─ Document: purpose, affected populations, decision stakes, automation level
+
+2. RISK TIERING
+   ├─ Tier 1 (High risk): Credit, hiring, healthcare, bail, child welfare → mandatory review
+   ├─ Tier 2 (Medium risk): Marketing, content recommendation, pricing → audit on schedule
+   └─ Tier 3 (Low risk): Internal productivity, search ranking → standard monitoring
+
+3. IMPACT ASSESSMENT
+   └─ Who could be harmed? How? At what scale? What are the failure modes?
+
+4. CONTROL DESIGN
+   ├─ Technical controls: fairness metrics, monitoring, explainability, red-team tests
+   └─ Process controls: human review gates, appeals process, override mechanism
+
+5. DEPLOYMENT CONDITIONS
+   └─ Pre-approved: Which metrics must pass before launch? Who signs off?
+
+6. MONITORING (Day 67)
+   └─ Ongoing drift and fairness gap tracking by demographic group
+
+7. INCIDENT RESPONSE
+   └─ What triggers escalation? Who is the decision authority to pause the model?
+
+8. RETIREMENT
+   └─ When and how is the model decommissioned? How are decisions made during the gap?
+```
+
+### Responsible AI Beyond Fairness
+
+Fairness is one dimension. A complete Responsible AI program also covers:
+
+| Dimension | Key Risks | Example Controls |
+|:----------|:----------|:-----------------|
+| **Privacy** | PII in training data; model memorization | Differential privacy; data minimization; right-to-erasure |
+| **Security/Misuse** | Adversarial inputs; jailbreaks; fraud enablement | Red-teaming; content filtering; rate limiting |
+| **Transparency** | Unexplainable decisions; hidden incentives | Model cards; SHAP explanations; disclosure to affected users |
+| **Human autonomy** | Over-reliance; automation bias | Human override; confidence communication; opt-out |
+| **Environmental** | GPU energy consumption | Efficiency-aware model selection; carbon reporting |
+| **IP & Consent** | Training data copyright; model output rights | Data licensing audit; terms of service review |
+
+### Regulatory Landscape (Jurisdiction-Aware)
+
+| Jurisdiction | Regulation | Key AI Obligations |
+|:-------------|:-----------|:------------------|
+| European Union | GDPR Article 22 | Right to human review for automated decisions; meaningful information about logic |
+| European Union | EU AI Act (2025+) | Mandatory requirements for "high-risk" AI systems including transparency, human oversight, and conformity assessment |
+| United States | CFPB/ECOA | Adverse action notices for credit decisions must be explainable |
+| United States | EEOC Guidelines | Employment AI must not produce disparate impact on protected classes |
+| India | DPDP Act 2023 | Consent requirements for automated processing of personal data |
+
+**Always involve legal/compliance counsel before deploying AI in any regulated domain.** A model card and fairness report are evidence of diligence, not a substitute for legal review.
+
+---
+
+## Exercise Expected Outputs
+
+### Exercise 1: Demographic Parity Gap — Solution
+
+```python
+import pandas as pd
+
+results = pd.DataFrame({
+    "gender": ["M", "F", "M", "F", "M", "F", "M", "F", "F", "M"],
+    "hired_pred": [1, 0, 1, 1, 0, 0, 1, 0, 1, 1],
+})
+
+def demographic_parity_gap(df, sensitive_col, prediction_col):
+    rates = df.groupby(sensitive_col)[prediction_col].mean()
+    return rates.max() - rates.min()
+
+gap = demographic_parity_gap(results, "gender", "hired_pred")
+print(f"Demographic Parity Gap: {gap:.2%}")
+# By group: M hired_rate = 4/5 = 0.80, F hired_rate = 2/5 = 0.40
+```
+
+**Expected output**: `Demographic Parity Gap: 40.00%` — far above the 5% threshold; model fails the fairness gate.
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 69 Milestone
+
+Complete a Responsible AI assessment for the RetailOps inventory RL policy: (1) assign a risk tier, (2) write a model card using the template from this lesson, (3) run 5 red-team scenarios (e.g., what if the model recommends not stocking products for low-income zip codes?), (4) define the incident response trigger for fairness violations, (5) obtain sign-off from the compliance owner.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 62 — Model Interpretability & Fairness | Introduces fairness metrics; Day 69 operationalizes them in a governance lifecycle |
+| Day 65 — MLOps Pipelines & CI | Fairness gates in the CI pipeline implement the deployment conditions from this lesson |
+| Day 67 — Model Monitoring & Reliability | Ongoing fairness monitoring implements the "Monitor" stage of the governance lifecycle |
+| Day 68 — AI Agents & Tool Use | Agents require specific governance: audit logs, scope limits, human-in-the-loop for high-risk actions |
+| Day 71 — RAG & Vector Databases | RAG systems have specific risks: data exfiltration via prompt injection, copyright in retrieved content |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **Demographic Parity** | Fairness criterion: equal positive prediction rates across demographic groups |
+| **Equal Opportunity** | Fairness criterion: equal True Positive Rates (recall) across groups |
+| **Predictive Parity** | Fairness criterion: equal precision (PPV) across groups |
+| **Model Card** | A 1–2 page document accompanying a deployed model describing its intended use, performance, limitations, and ethical considerations |
+| **Red Teaming** | Adversarially probing a model to identify harmful, biased, or unsafe behaviors before deployment |
+| **Impact Assessment** | Structured evaluation of potential harms a model could cause to individuals, groups, or society |
+| **Risk Tier** | A classification of an AI use case by its potential for harm — determines the level of governance required |
+| **Fairness Washing** | Publishing fairness metrics without making substantive changes to mitigate identified harms |

@@ -348,3 +348,93 @@ Today you learned:
 * ✅ **Feedback Loops** can poison your training data if you aren't careful.
 
 **Tomorrow**: We shift focus to the broader data world with **BI Analyst Foundations**.
+
+---
+
+## Complete Monitoring Stack
+
+A production model needs more than drift alerts. Monitor across five dimensions:
+
+| Dimension | Signals | Threshold Philosophy |
+|:----------|:--------|:--------------------|
+| **Service SLOs** | P95 latency, error rate, availability | Set from business SLA; alert at 2× baseline |
+| **Data quality** | Null rate, out-of-range values, schema violations | Alert when rate increases by >2× from rolling 7-day baseline |
+| **Feature drift** | PSI per feature, KS test p-value | PSI > 0.2 or KS p < 0.05 after Bonferroni correction |
+| **Model quality** | Accuracy, F1, calibration error (when labels available) | Alert when performance drops > 5% from deployment baseline |
+| **Business KPIs** | Revenue per prediction, conversion rate, fraud capture rate | Business-defined thresholds; align with finance |
+| **Fairness** | Performance gap by demographic group | Alert when gap exceeds governance threshold (typically 5%) |
+| **Delayed ground truth** | Labels may arrive hours/days later — track label lag | Use proxy metrics (upstream signals) when ground truth is delayed |
+
+### Justifying PSI Thresholds
+
+PSI > 0.2 is an industry-standard *starting point* from credit scoring, not a universal law. Calibrate your thresholds using:
+* **Baselines**: Compute PSI on historical splits (train vs. validation) to establish a "normal" range for your data.
+* **Seasonality**: If your data has weekly patterns, compare current week to same week last year, not just last week.
+* **False-alert budget**: Set thresholds such that you don't trigger more than N alerts per month on normal data. Too many alerts cause alert fatigue and on-call burnout.
+
+### Runbooks & Incident Response
+
+Every monitoring alert must have a runbook defining:
+
+```markdown
+## Runbook: PSI Drift Alert
+
+**Trigger**: PSI on `age` feature > 0.2 for 3 consecutive hours
+
+**Severity**: P2 (investigate within 4 hours)
+**Owner**: ML Engineering on-call
+
+### Steps:
+1. Check upstream data pipeline (ETL job) for schema changes or data source issues.
+2. Compare current `age` distribution histogram to training baseline.
+3. If data pipeline is healthy, check if business event explains the shift (e.g., new customer acquisition campaign).
+4. Evaluate model performance on current data using proxy metrics.
+5. Decision gate:
+   - Drift is temporary/explainable → monitor, no action
+   - Drift is persistent + performance degraded → trigger retraining job (link: [retraining runbook])
+   - Drift is persistent + performance stable → update monitoring baseline
+
+**Escalation**: Page P1 if fraud rate simultaneously spikes > 3×
+```
+
+### Monitoring the Monitors
+
+Your monitoring system can also fail:
+* Monitoring job stops running (alert on absence of metrics, not just on threshold violations)
+* Monitoring compares to wrong baseline after schema changes
+* Alert routing fails silently
+
+Run a "monitoring health check" weekly: inject synthetic drift into a test environment and verify the alert fires.
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 67 Milestone
+
+Add a monitoring wrapper to the inventory RL policy API from Day 66. Track: prediction latency (P95), feature drift (PSI on demand forecast feature), order fill rate (business KPI), and fairness gap (order fulfillment rate by customer region). Wire PSI > 0.2 to trigger the CT (continuous training) pipeline from Day 65.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 65 — MLOps Pipelines & CI | CT (continuous training) is the retraining action triggered by monitoring alerts |
+| Day 66 — Model Deployment & Serving | The `/health` and `/ready` endpoints from Day 66 are the first layer of the monitoring stack |
+| Day 69 — Responsible AI in Practice | Fairness monitoring (performance gap by demographic group) connects to the governance framework |
+| Day 63 — Causal Inference & Uplift | Monitor causal effects over time: track whether treatment effects degrade post-deployment |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **Covariate Drift** | Change in the distribution of input features (X) between training and production |
+| **Concept Drift** | Change in the relationship between inputs (X) and outputs (Y) — the world's rules changed |
+| **PSI** | Population Stability Index — measures how much a distribution has shifted from a reference |
+| **KS Test** | Kolmogorov-Smirnov test — statistical test of whether two distributions are different |
+| **SLO** | Service Level Objective — a target for system reliability (e.g., P95 latency < 200ms) |
+| **Alert Fatigue** | When too many non-actionable alerts cause on-call teams to ignore or suppress them |
+| **Feedback Loop** | When model predictions influence future training data, causing the model to amplify its own biases |
+| **Fallback** | A simpler, more reliable backup system that activates when the primary model fails or is uncertain |
+| **Ground Truth** | The actual observed outcome (label) used to evaluate a model's predictions — often delayed in production |

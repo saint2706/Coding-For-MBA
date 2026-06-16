@@ -115,45 +115,101 @@ Upload your code to AWS Lambda / Google Cloud Functions.
 
 ## Hands-on Lab
 
-### Exercise 1: Building a Prediction API
+### Exercise 1: Building a Prediction API with a Real Model
 
-**Goal**: Create a standard FastAPI endpoint.
-
-**Scenario**: A simple endpoint that adds two numbers (simulating a model).
+**Goal**: Serve a trained model (not a math placeholder) via FastAPI, with health/readiness endpoints and proper error responses.
 
 ```python
 # Save as main.py
+# Install: pip install fastapi uvicorn scikit-learn joblib pydantic
+# Train & save model first:
+#   from sklearn.linear_model import LogisticRegression
+#   from sklearn.datasets import make_classification
+#   import joblib
+#   X, y = make_classification(n_samples=500, n_features=2, random_state=42)
+#   model = LogisticRegression().fit(X, y)
+#   joblib.dump(model, "model.joblib")
+#
 # Run with: uvicorn main:app --reload
-from fastapi import FastAPI
-from pydantic import BaseModel
 
-app = FastAPI()
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, Field
+import joblib
+import numpy as np
 
+app = FastAPI(title="RetailOps Churn Classifier", version="1.0.0")
 
-# 1. Define Input Schema (Data Validation)
-class InputData(BaseModel):
-    feature_a: float
-    feature_b: float
-
-
-# 2. Define Endpoint
-@app.post("/predict")
-def predict(data: InputData):
-    # Simulate model
-    prediction = (data.feature_a * 2) + data.feature_b
-    return {"result": prediction, "status": "success"}
+# Load model at startup (not per-request)
+try:
+    MODEL = joblib.load("model.joblib")
+except FileNotFoundError:
+    MODEL = None  # Allows app to start; /health will report not ready
 
 
-# To test (Python client):
-# import requests
-# resp = requests.post("http://localhost:8000/predict", json={"feature_a": 10, "feature_b": 5})
-# print(resp.json())
+class PredictRequest(BaseModel):
+    usage_minutes: float = Field(..., ge=0, description="Weekly app usage in minutes")
+    contract_months: int = Field(..., ge=1, le=24, description="Contract length: 1, 12, or 24")
+
+
+class PredictResponse(BaseModel):
+    churn_probability: float
+    decision: str
+    model_version: str
+
+
+@app.get("/health")
+def health():
+    """Liveness probe — is the service running?"""
+    return {"status": "alive"}
+
+
+@app.get("/ready")
+def readiness():
+    """Readiness probe — is the model loaded and ready?"""
+    if MODEL is None:
+        raise HTTPException(status_code=503, detail="Model not loaded")
+    return {"status": "ready", "model": "model.joblib"}
+
+
+@app.post("/predict", response_model=PredictResponse)
+def predict(data: PredictRequest):
+    if MODEL is None:
+        raise HTTPException(status_code=503, detail="Model not loaded")
+    try:
+        features = np.array([[data.usage_minutes, data.contract_months]])
+        proba = float(MODEL.predict_proba(features)[0][1])
+        decision = "churn_risk" if proba > 0.5 else "low_risk"
+        return PredictResponse(
+            churn_probability=round(proba, 4),
+            decision=decision,
+            model_version="1.0.0"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=f"Prediction failed: {str(e)}")
 ```
 
-**Expected Client Output**:
+**Test with curl**:
 
-```json
-{"result": 25.0, "status": "success"}
+```bash
+# Health check
+curl http://localhost:8000/health
+# {"status":"alive"}
+
+# Readiness check
+curl http://localhost:8000/ready
+# {"status":"ready","model":"model.joblib"}
+
+# Prediction
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"usage_minutes": 5.5, "contract_months": 1}'
+# {"churn_probability":0.7823,"decision":"churn_risk","model_version":"1.0.0"}
+
+# Validation error (negative usage)
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"usage_minutes": -1, "contract_months": 1}'
+# 422 Unprocessable Entity — Input validation fires before model is called
 ```
 
 ---
@@ -348,3 +404,59 @@ Today you learned:
 * ✅ **Shadow Mode** is how pros deploy without breaking things.
 
 **Tomorrow**: We look at what happens *after* deployment with **Model Monitoring & Reliability**.
+
+---
+
+## Production Pitfalls: Security & Reliability
+
+> **These issues are in the top causes of production ML incidents:**
+
+* **Unsafe pickle deserialization**: Never load `.pkl` files from untrusted sources — pickle can execute arbitrary code on load. Use ONNX, PMML, or `joblib` with file-integrity checks for model artifacts from external parties.
+* **Dependency vulnerabilities**: Pin all dependencies in `requirements.txt` with hashes (`pip freeze --require-hashes`). Unpinned packages silently upgrade and break interfaces.
+* **Unbounded inputs**: Without `Field(..., ge=0)` validators, a malicious request can send `usage_minutes=-9999999` or inject a string and crash the model.
+* **Cold starts**: Serverless functions load the model on first request, adding 5–30s latency. Pre-warm with scheduled pings or use provisioned concurrency.
+* **Retry storms**: If your API is slow and clients retry aggressively, retries amplify load. Implement exponential backoff with jitter on the client side, and circuit breakers on the server side.
+
+### Architecture Selection Rubric
+
+| Factor | Serverless | Dedicated Server | Batch Job |
+|:-------|:-----------|:-----------------|:----------|
+| Traffic shape | Spiky, unpredictable | Steady, high volume | Scheduled, offline |
+| P95 latency target | > 500ms tolerable | < 100ms required | Hours acceptable |
+| Freshness required | Near-real-time | Real-time | Daily or weekly |
+| Cost ceiling | Low (pay-per-use) | Higher (idle cost) | Lowest (spot instances) |
+| Outage tolerance | Can fail silently, retry | Must have fallback | Can retry next batch run |
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 66 Milestone
+
+Deploy the inventory RL policy as a FastAPI endpoint. Add `/health` and `/ready` probes. Test the canary deployment pattern: route 10% of order requests to the new RL policy and 90% to the rule-based fallback. Log both predictions for comparison.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 65 — MLOps Pipelines & CI | The CI pipeline promotes a model artifact to the registry; Day 66 shows how to serve it |
+| Day 67 — Model Monitoring & Reliability | Add observability (latency, error rate, prediction distribution) to the API built here |
+| Day 68 — AI Agents & Tool Use | Agents call model APIs exactly like the endpoint built in Exercise 1 |
+| Day 66 ↔ Day 69 | Serving infrastructure must enforce fairness and access controls required by Responsible AI |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **REST** | Representational State Transfer — architectural style for APIs using HTTP verbs (GET, POST, etc.) |
+| **Endpoint** | A specific URL path (e.g., `/predict`) that accepts requests and returns responses |
+| **Serialization** | Converting a model object to a storable byte format (pickle, joblib, ONNX) for later loading |
+| **Container/Image** | A portable, isolated package containing code + dependencies + runtime (Docker) |
+| **Serverless** | A deployment model where the cloud provider manages servers; you pay only per invocation |
+| **Cold Start** | The latency penalty when a serverless function loads for the first time after being idle |
+| **Throughput** | The number of requests a service can handle per unit time (requests/second) |
+| **Latency** | Time from request submission to response receipt (often measured as P50, P95, P99) |
+| **Canary Deployment** | Gradually rolling a new model to a small fraction of traffic to validate before full rollout |
+| **Shadow Mode** | Running a new model on live traffic but discarding its predictions — for silent validation |
