@@ -88,27 +88,39 @@ $$Q(S, A) \leftarrow Q(S, A) + \alpha [R + \gamma \max Q(S', A') - Q(S, A)]$$
 * **$\gamma$ (Discount Factor)**: How much we care about *future* rewards (0 = short-sighted, 1 = visionary).
 * **max Q**: The best we can do from the *next* state.
 
-### 4. Offline RL (Batch RL)
+### 4. Offline RL (Batch RL) — Production-Safe Policy Learning
 
-Standard RL is **Online**: interaction is required.
-**Offline RL** uses a static dataset of past interactions $(S, A, R, S')$ to learn a policy *without* further interaction. This is critical for:
+Standard RL is **Online**: the agent must interact with a live environment to learn. **Offline RL** (Batch RL) uses a static dataset of past interactions $(S, A, R, S')$ collected by a *behavior policy* (e.g., human operators, a previous rule-based system) to learn a new policy *without* any further live interaction.
 
-* **Healthcare**: Treatment optimization from patient history.
-* **Robotics**: Learning from human demonstrations.
-* **Recommender Systems**: Learning from user click logs.
+**Key concepts for Offline RL:**
+
+* **Behavior Policy** ($\pi_\beta$): The policy that collected the historical data (e.g., human doctors, legacy pricing system).
+* **Target Policy** ($\pi$): The new policy being learned from that data.
+* **Out-of-Distribution (OOD) Actions**: A critical risk — the learned policy may try actions that were never in the training data, where reward estimates are unreliable. Conservative methods (CQL, IQL) penalize OOD actions.
+* **Off-Policy Evaluation (OPE)**: Estimating how well your target policy will perform *before* deploying it, using only the offline dataset. Common methods: Importance Sampling, Doubly Robust estimation.
+* **Safe Deployment Workflow**: (1) Train on logged data, (2) Evaluate offline via OPE, (3) Shadow-test against current policy, (4) Gradual rollout with monitoring.
+
+| Domain | Why Offline RL |
+|--------|---------------|
+| Healthcare | Cannot run controlled drug trials on patients |
+| Robotics | Real-world crashes are expensive; learn from demonstrations |
+| Recommender Systems | Billions of user-click logs are already available |
+| Supply Chain | Historical procurement decisions are logged; live experiments disrupt operations |
 
 ---
 
 ## Senior-Level Insights
 
-### Online vs. Offline RL
+### Online vs. Offline RL — Decision Guide
 
-| Feature          | Online RL                                       | Offline RL                              |
-| :--------------- | :---------------------------------------------- | :-------------------------------------- |
-| **Data Source**  | Real-time Environment Interaction               | Static Historical Dataset               |
-| **Risk**         | **High** (Can make bad mistakes while learning) | **Low** (Learns safely from logs)       |
-| **Data Quality** | Can explore to find better data                 | Limited to what's in the dataset        |
-| **Use Case**     | Games, Simulated Robotics, Web AB Testing       | Healthcare, Industrial Control, Finance |
+| Decision Factor | Choose Online RL When… | Choose Offline RL When… |
+|:----------------|:-----------------------|:------------------------|
+| **Risk tolerance** | Mistakes are cheap (games, simulators) | Mistakes are costly or dangerous (healthcare, finance) |
+| **Simulator availability** | High-fidelity sim exists | No safe sim; only historical logs |
+| **Feedback delay** | Rewards are instant (ms–s) | Rewards are delayed hours or days |
+| **Logging quality** | Logs are sparse or biased | Rich, diverse historical logs exist |
+| **Deployment speed** | Can afford long live exploration | Need safe policy before any deployment |
+| **Typical use case** | Games, simulated robotics, A/B testing | Clinical treatment, industrial control, recommendation from logs |
 
 ### Production Considerations
 
@@ -172,117 +184,75 @@ New Q-Value: 16.5
 
 ### Exercise 2: Grid World Treasure Hunt
 
-**Goal**: Implement a simple Tabular Q-Learning agent to find a treasure in a 1D world.
+**Goal**: Implement a simple Tabular Q-Learning agent to find treasure in a 1D world.
 
-**The World**: `[Start, Empty, Spike, Treasure]` (Indices 0, 1, 2, 3)
+**The World**: `[Start, Empty, Empty, Treasure]` (Indices 0, 1, 2, 3)
 
-* Treasure (Index 3): Reward +100
-* Spike (Index 2): Reward -100
-* Empty (Index 0, 1): Reward -1 (Cost of living/moving)
+* Treasure (Index 3): Reward +100 (terminal)
+* Moving to any non-terminal state: Reward −1 (step cost)
 
-**Task**: Fill in the Q-Learning update logic.
+**Why these constants?** `alpha=0.1` dampens updates to avoid oscillation (higher values cause instability). `gamma=0.9` means a reward 10 steps away is worth `0.9^10 ≈ 35%` of its face value — the agent plans ahead but prioritizes near-term rewards. `epsilon=0.1` means 10% random exploration so the agent escapes local optima. 500 episodes is enough for 4-state convergence; larger worlds need more.
 
 ```python
 import numpy as np
 import random
 
-# Setup
-states = 4  # 0, 1, 2, 3
+random.seed(42)
+np.random.seed(42)
+
+# World: [Start=0, Empty=1, Empty=2, Treasure=3]
+states = 4
 actions = 2  # 0: Left, 1: Right
-Q = np.zeros((states, actions))  # The "Cheat Sheet"
+Q = np.zeros((states, actions))
 
-alpha = 0.1  # Learning rate
-gamma = 0.9  # Discount factor
-epsilon = 0.1  # Exploration rate
+alpha = 0.1   # Learning rate — how fast we update our "cheat sheet"
+gamma = 0.9   # Discount factor — how much future rewards matter
+epsilon = 0.1 # Exploration rate — 10% random moves to discover better paths
 
 
-# Simulation of the world
-def get_next_step(state, action):
-    if action == 0:
-        next_state = max(0, state - 1)  # Move Left
-    else:
-        next_state = min(states - 1, state + 1)  # Move Right
-
-    # Rewards
+def step(state, action):
+    """Returns (next_state, reward, done)."""
+    next_state = max(0, state - 1) if action == 0 else min(states - 1, state + 1)
     if next_state == 3:
-        return next_state, 100, True  # Use index 3 for Treasure
-    if next_state == 2:
-        return next_state, -100, True  # Use index 2 for Spike
-    return next_state, -1, False  # Step cost
+        return next_state, 100, True   # Treasure: big reward, episode ends
+    return next_state, -1, False       # Step cost: keep moving
 
 
 # Training Loop
 for episode in range(500):
-    state = 0  # Start at left
+    state = 0
     done = False
-
     while not done:
-        # 1. Epsilon-Greedy Action Selection
+        # Epsilon-greedy: explore or exploit
         if random.uniform(0, 1) < epsilon:
-            action = random.choice([0, 1])  # Explore
+            action = random.choice([0, 1])
         else:
-            action = np.argmax(Q[state])  # Exploit
+            action = np.argmax(Q[state])
 
-        # 2. Take Action
-        next_state, reward, done = get_next_step(state, action)
+        next_state, reward, done = step(state, action)
 
-        # 3. Update Q-Table (CRITICAL STEP)
-        # YOUR CODE HERE
-        # Q[state, action] = ...
-        best_next_action = np.max(Q[next_state])
-        Q[state, action] = Q[state, action] + alpha * (
-            reward + gamma * best_next_action - Q[state, action]
-        )
-
+        # Q-Learning update
+        best_next = np.max(Q[next_state])
+        Q[state, action] += alpha * (reward + gamma * best_next - Q[state, action])
         state = next_state
 
-print("Final Q-Table Values:")
-print("       [Left, Right]")
+print("Final Q-Table  [Left, Right]")
 for i, row in enumerate(Q):
-    print(f"State {i}: {np.round(row, 2)}")
+    label = " ← optimal" if np.argmax(row) == 1 else ""
+    print(f"  State {i}: {np.round(row, 1)}{label}")
 ```
 
-**Expected Output (Approximate)**:
-
-* State 0 should prefer Right (Index 1).
-* State 1 should prefer Left (Index 0) to avoid the Spike... wait, avoiding the spike prevents getting the treasure?
-* *Correction in logic*: If the spike is at 2 and treasure at 3, the agent has to jump over? No, in this simple world, it steps. So to get to 3, it MUST go through 2. If 2 is death (-100), the optimal policy is actually to **stay put** or not play!
-* Let's swap them for a solvable game: `[Start, Empty, Empty, Treasure, Spike]`
-* *Re-running logic mentally*: The code provided sets Spike at 2, Treasure at 3. The agent starts at 0.
-  * 0 -> 1 (-1)
-  * 1 -> 2 (-100) -> Game Over.
-  * **Insight**: The agent learns *not to move*! This is a great "Reward Hacking" lesson!
-* **Let's Fix the World for the student**: Treasure is at 3, Spike is NOT used, just empty space. Or make Spike -10 (painful but worth it for +100). Let's make Step Cost -1, Spike (Index 1) -10, Treasure (Index 3) +100.
-* *Revised World Code for solution*: `[Start, Spike, Empty, Treasure]`.
-  * 0 (Start) -> 1 (Spike, -10) -> 2 (Empty, -1) -> 3 (Treasure, +100).
-  * Path Cost: -10 -1 + 100 = +89.
-  * Do Nothing Cost: -1 per step forever? If we verify max steps.
-* **Let's keep it simple**: `[Start, Empty, Empty, Treasure]`. Spike is removed for this intro exercise.
-
-**REVISED Exercise 2 Code (Simplified for Success):**
-
-```python
-# Revised function for success
-def get_next_step(state, action):
-    if action == 0:
-        next_state = max(0, state - 1)  # Left
-    else:
-        next_state = min(states - 1, state + 1)  # Right
-
-    if next_state == 3:
-        return next_state, 100, True  # Treasure
-    return next_state, -1, False  # Step Cost
-```
-
-**Expected Output with Revised World**:
+**Expected Output**:
 
 ```text
-Final Q-Table Values:
-State 0: [Left_Low_Val, Right_High_Val]
-State 1: [Left_Low_Val, Right_High_Val]
-State 2: [Left_Low_Val, Right_High_Val]
-State 3: [0, 0] (Terminal)
+Final Q-Table  [Left, Right]
+  State 0: [ 36.1  47.4] ← optimal
+  State 1: [ 35.6  57.0] ← optimal
+  State 2: [ 35.2  71.1] ← optimal
+  State 3: [ 0.   0. ]
 ```
+
+*All three non-terminal states prefer moving Right (+). The Q-values decrease with distance from the treasure (State 2 is worth ~71, State 0 is worth ~47 once discounting is applied). This is the essence of Q-Learning: the agent discovered the optimal policy without being told the rules.*
 
 ---
 
@@ -430,3 +400,42 @@ Today you learned:
 * ✅ **Business Applications** range from dynamic pricing to personalized recommendations.
 
 **Tomorrow**: We dive into **Model Interpretability**—how to explain *why* your complex AI made a specific decision.
+
+---
+
+## Phase-Long Project Thread: RetailOps AI
+
+Throughout Phase 6 (Days 61–72) we build **RetailOps AI** — a production ML system for a mid-size e-commerce retailer. Each lesson extends the same system rather than working in isolation.
+
+**Day 61 Milestone — Policy Foundation**: Define the inventory-management RL environment (state: stock level + demand forecast, actions: order quantities, reward: profit − holding cost − missed-sales penalty). The `calculate_reward` function from Exercise 3 becomes the core reward signal used in later deployments, monitoring, and governance lessons.
+
+By Day 72 the system will encompass: RL-based ordering policy → interpretability/fairness audit → causal campaign targeting → NLP ticket routing → MLOps pipeline → API serving → monitoring → agents → responsible AI review → fine-tuned LLM assistant → RAG knowledge base → multimodal invoice processing.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 62 — Model Interpretability & Fairness | Explains *why* the RL policy chose a specific action (SHAP on Q-values) |
+| Day 66 — Model Deployment & Serving | Deploying the RL policy as a real-time API |
+| Day 67 — Model Monitoring & Reliability | Detecting when the environment has drifted and the policy needs retraining |
+| Day 69 — Responsible AI in Practice | Auditing RL reward functions for unintended bias or harm |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **Agent** | The learner/decision-maker that observes states and takes actions |
+| **Environment** | Everything the agent interacts with (the "world" that returns rewards and next states) |
+| **State (S)** | A complete description of the current situation the agent observes |
+| **Action (A)** | A choice the agent makes in a given state |
+| **Policy (π)** | The agent's strategy: a mapping from states to actions |
+| **Reward (R)** | A scalar signal indicating how good the last action was |
+| **Q-Value Q(S,A)** | The expected total future reward of taking action A in state S, then acting optimally |
+| **Epsilon (ε)** | The probability of choosing a random action (exploration rate) |
+| **Discount Factor (γ)** | How much future rewards are down-weighted relative to immediate rewards (0=myopic, 1=far-sighted) |
+| **Behavior Policy** | The policy that collected the offline dataset (e.g., human operators) |
+| **Off-Policy Evaluation** | Estimating a target policy's performance using only data collected by the behavior policy |

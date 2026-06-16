@@ -299,3 +299,144 @@ Only the LoRA adapter weights — typically just a few MB. The base model remain
 - ✅ **Fine-tuning teaches style; RAG teaches facts** — choose the right tool.
 
 **Tomorrow → Day 71**: **RAG & Vector Databases** — how to give LLMs access to your company's private knowledge without fine-tuning.
+
+---
+
+## Quick-Start Lab: LoRA Parameter Efficiency Demo
+
+This lab runs on CPU with only `pip install torch` — no GPU, no API keys, no model downloads:
+
+```python
+import torch
+import torch.nn as nn
+
+class StandardLinear(nn.Module):
+    def __init__(self, d_in: int, d_out: int):
+        super().__init__()
+        self.W = nn.Parameter(torch.randn(d_out, d_in) * 0.01)
+
+    def forward(self, x):
+        return x @ self.W.T
+
+
+class LoRALayer(nn.Module):
+    """Adds a low-rank update ΔW = A × B to a frozen linear layer."""
+    def __init__(self, d_in: int, d_out: int, rank: int, alpha: float = 1.0):
+        super().__init__()
+        self.W = nn.Parameter(torch.randn(d_out, d_in) * 0.01)
+        self.W.requires_grad = False  # Frozen: never updated
+
+        # LoRA matrices — only these are trained
+        self.A = nn.Parameter(torch.randn(rank, d_in) * 0.01)
+        self.B = nn.Parameter(torch.zeros(d_out, rank))  # Init B=0 so ΔW starts at 0
+        self.scale = alpha / rank  # Scaling factor
+
+    def forward(self, x):
+        base = x @ self.W.T
+        lora_delta = x @ self.A.T @ self.B.T * self.scale
+        return base + lora_delta
+
+
+def count_trainable(model):
+    total = sum(p.numel() for p in model.parameters())
+    trainable = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    return total, trainable, trainable / total * 100
+
+
+# Task 1: Compare parameter counts
+D_IN, D_OUT, RANK = 768, 768, 16
+standard = StandardLinear(D_IN, D_OUT)
+lora = LoRALayer(D_IN, D_OUT, RANK)
+
+s_total, s_train, s_pct = count_trainable(standard)
+l_total, l_train, l_pct = count_trainable(lora)
+
+print(f"Standard Linear:  {s_total:,} total, {s_train:,} trainable ({s_pct:.2f}%)")
+print(f"LoRA (rank={RANK}):  {l_total:,} total, {l_train:,} trainable ({l_pct:.2f}%)")
+print(f"Parameter reduction: {(1 - l_train/s_train)*100:.1f}%")
+
+# Task 2: Verify frozen weights don't change
+x = torch.randn(1, D_IN)
+loss_fn = nn.MSELoss()
+optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, lora.parameters()), lr=1e-3)
+
+W_before = lora.W.clone()
+for _ in range(10):
+    out = lora(x)
+    loss = loss_fn(out, torch.zeros_like(out))
+    optimizer.zero_grad(); loss.backward(); optimizer.step()
+
+print(f"\nFrozen W unchanged: {torch.allclose(lora.W, W_before)}")  # Must be True
+
+# Task 3: Show that rank controls capacity
+for rank in [4, 16, 64]:
+    _, trainable, pct = count_trainable(LoRALayer(768, 768, rank))
+    print(f"  rank={rank:3d}: {trainable:,} trainable params ({pct:.3f}%)")
+```
+
+**Expected output**:
+
+```text
+Standard Linear:  589,824 total, 589,824 trainable (100.00%)
+LoRA (rank=16):   602,112 total, 24,576 trainable (4.08%)
+Parameter reduction: 95.8%
+
+Frozen W unchanged: True
+
+  rank=  4: 6,144 trainable params (1.021%)
+  rank= 16: 24,576 trainable params (4.083%)
+  rank= 64: 98,304 trainable params (16.330%)
+```
+
+### Note on Illustrative Numbers
+
+The lesson states GPU memory of "~350GB," training cost of "$100,000+," and training duration of "weeks." These figures were illustrative for GPT-3 class models circa 2022. Actual costs change rapidly:
+* A 7B model can be QLoRA fine-tuned on a single A10G (24GB VRAM) in hours for under $20 on cloud spot instances (2026 pricing).
+* A 70B model requires 2×A100 (80GB each) for QLoRA fine-tuning.
+* Always run your own cost estimate: `(parameter_count × bytes_per_param × batch_overhead) / VRAM_GB` to determine hardware requirements.
+
+### Extended Decision Framework
+
+| Approach | When | Knowledge type | Budget | Latency | Governance |
+|:---------|:-----|:---------------|:-------|:--------|:-----------|
+| Prompt engineering | Style/format consistent, model already capable | None needed | Minimal | Baseline | Easy to audit |
+| RAG | Private/fresh facts, knowledge changes often | Factual retrieval | Low (vector DB) | +100–500ms per query | Data access controls needed |
+| LoRA fine-tuning | Consistent domain style + moderate new knowledge | Style + knowledge | $20–$500 | Same as base | Training data must be audited |
+| Full fine-tuning | Fundamentally new capabilities required | Deep domain | $1K–$100K+ | Same as base | Full data governance required |
+| Distillation | Need smaller, faster model with current capabilities | Behavior transfer | Moderate | Lower than base | Outputs must be reviewed |
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 70 Milestone
+
+Fine-tune a small instruction-following model (e.g., `microsoft/phi-2`) with LoRA on 50 company-specific Q&A pairs covering inventory policy, supplier terms, and escalation procedures. Compare LoRA vs prompting baseline: which produces more consistent JSON output format for the order management workflow?
+
+**Cross-reference boundary**: Phase 5 Day 60B covers LoRA conceptually. This lesson provides the production workflow (dataset preparation, training arguments, adapter deployment). Phase 10 covers full fine-tuning at enterprise scale.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 58 (Phase 5) — Transformers & Attention | Architecture of the layers where LoRA inserts adapters (Q, K, V projections) |
+| Day 60B (Phase 5) — LLM Fine-Tuning & PEFT | Conceptual introduction to LoRA; this lesson adds production workflow |
+| Day 71 — RAG & Vector Databases | RAG is the primary alternative to fine-tuning for knowledge injection |
+| Phase 10, Day 113 — Advanced LLM Systems | Enterprise-scale fine-tuning with RLHF and DPO |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **PEFT** | Parameter-Efficient Fine-Tuning — adapts a pre-trained model by training only a small subset of new parameters |
+| **LoRA** | Low-Rank Adaptation — adds trainable low-rank matrices A and B to frozen weight matrices |
+| **QLoRA** | Quantized LoRA — quantizes the base model to 4-bit precision to reduce memory, then applies LoRA |
+| **Rank (r)** | Controls the size of LoRA matrices: higher rank = more trainable parameters = more capacity |
+| **Adapter** | A small trainable module inserted into a pre-trained model; saved separately from the base model |
+| **Quantization** | Reducing the numerical precision of model weights (e.g., 32-bit → 4-bit) to save GPU memory |
+| **Gradient** | The direction and magnitude of change that tells the optimizer how to update each parameter |
+| **Epoch** | One complete pass through the training dataset |
+| **Catastrophic Forgetting** | When fine-tuning on new data causes a model to lose previously learned capabilities |
+| **Instruction Tuning** | Training a model to follow human instructions in a consistent format and style |

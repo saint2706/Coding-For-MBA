@@ -355,3 +355,101 @@ Today you learned:
 * ✅ **Data Validation** prevents your pipeline from silently failing on bad inputs.
 
 **Tomorrow**: We discuss **Model Deployment & Serving**—how to actually put your model on the internet.
+
+---
+
+## A Minimal CI Pipeline for ML
+
+The lesson's simulated MLflow tracking is a starting point. A production ML CI pipeline runs these checks on every commit before allowing promotion to staging:
+
+```python
+# ci_pipeline.py — a minimal ML CI check suite
+import pytest
+import numpy as np
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+
+# --- Gate 1: Unit test on model class ---
+def test_model_trains_and_predicts():
+    X, y = make_classification(n_samples=200, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+    model = LogisticRegression()
+    model.fit(X_train, y_train)
+    assert model.score(X_test, y_test) > 0.70, "Model accuracy below threshold"
+
+# --- Gate 2: Data contract check ---
+def test_data_contract(df):
+    assert "age" in df.columns, "Required column 'age' missing"
+    assert df["age"].between(0, 120).all(), "Age values out of valid range"
+    assert df["income"].ge(0).all(), "Negative income values found"
+    assert df.duplicated(subset="customer_id").sum() == 0, "Duplicate customer IDs"
+
+# --- Gate 3: Performance regression gate ---
+BASELINE_F1 = 0.82  # Set from last approved model version
+
+def test_no_performance_regression(new_f1: float):
+    assert new_f1 >= BASELINE_F1 * 0.98, (
+        f"F1 {new_f1:.3f} is more than 2% below baseline {BASELINE_F1:.3f} — block promotion"
+    )
+
+# --- Gate 4: Fairness gate ---
+def test_fairness_gate(mf_difference: dict):
+    for metric, gap in mf_difference.items():
+        assert abs(gap) < 0.05, (
+            f"Fairness gap on '{metric}' is {gap:.3f} — exceeds 5% threshold, block release"
+        )
+```
+
+**Promotion/failure rules:**
+* Gates 1–2 (unit + data contract) → block merge if failing
+* Gate 3 (performance regression) → block deployment to staging
+* Gate 4 (fairness) → require compliance sign-off before production release
+
+### Note on Illustrative Numbers
+
+The lesson states "Only ~5%," "10% of experiments," and validation ranges. These are from the Google paper's *illustrative* framing. Your actual ratios depend on team size, data pipeline maturity, and experiment velocity. Track your own baselines; don't set targets from industry folklore.
+
+---
+
+## Senior-Level MLOps: Registry, Lineage, and Secrets
+
+* **Model registry stages**: `Staging` → `Production` → `Archived`. Models should never be deployed by copying files; they must be promoted through the registry with an approval audit trail.
+* **Lineage**: Every production model must have traceable provenance: which code commit, which data snapshot (DVC hash), which environment (Docker image SHA) produced it.
+* **Rollback**: The registry should always retain the previous Production model so a one-click rollback is possible without retraining.
+* **Secrets management**: Credentials (DB passwords, API keys) must come from a secrets manager (AWS Secrets Manager, HashiCorp Vault), never hardcoded or stored in the model artifact.
+* **Cost controls**: Set maximum GPU hours per experiment run and a monthly budget alert; data scientists without guardrails can accidentally spend $10,000 overnight.
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 65 Milestone
+
+Wire the inventory ordering model into an MLflow (or lightweight equivalent) tracking run. Log parameters (reorder threshold, batch size), metrics (fill rate, holding cost reduction), and the serialized model artifact. Add data validation checks for the demand forecast feed. Define the CI gates that must pass before the model is promoted to staging.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 50 — MLOps Fundamentals (Phase 5) | Foundation concepts (experiment tracking, drift, feature stores) expanded here with CI/CD |
+| Day 66 — Model Deployment & Serving | After the CI pipeline promotes a model, Day 66 covers how to serve it via API |
+| Day 67 — Model Monitoring & Reliability | CT (continuous training) is triggered by monitoring signals from Day 67 |
+| Day 69 — Responsible AI in Practice | Fairness gates in the CI pipeline connect to the governance framework from Day 69 |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **CI (Continuous Integration)** | Automatically running tests on every code change to catch regressions early |
+| **CD (Continuous Delivery)** | Automating deployment of validated artifacts to staging/production environments |
+| **CT (Continuous Training)** | Automatically retraining models when data drift or performance degradation is detected |
+| **Lineage** | Full traceable provenance of a model: code → data → environment → artifact |
+| **Artifact** | A versioned output of an ML run: a trained model file, dataset, or evaluation report |
+| **Model Registry** | A versioned store for trained models with stage labels (Staging, Production, Archived) |
+| **Feature Store** | A system that serves the same feature transformation logic to both training and real-time inference |
+| **Data Contract** | A schema agreement between data producers and consumers, enforced at pipeline boundaries |
+| **Skew** | Differences between training-time and serving-time data distributions or feature logic |
+| **Reproducibility** | The ability to re-run an experiment and get the same (or statistically equivalent) result |

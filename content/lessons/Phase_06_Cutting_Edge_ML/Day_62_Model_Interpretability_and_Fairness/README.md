@@ -63,7 +63,17 @@ The bank officer types your info.
 
 ### 2. SHAP (SHapley Additive exPlanations)
 
-SHAP is the gold standard for explanation. It comes from Game Theory: **If a team wins a game, how much credit does each player deserve?**
+SHAP is the most widely-adopted post-hoc explanation method. It comes from Game Theory: **If a team wins a game, how much credit does each player deserve?**
+
+**Caveats to understand before using SHAP in production:**
+
+* SHAP values are *not* causal. A high SHAP value for "Age" means age was predictive, not that age caused the outcome.
+* **Correlated features distort attribution**: if Income and Education are 90% correlated, SHAP may arbitrarily credit one over the other depending on the order of coalitions.
+* **Model-specific vs model-agnostic**: `TreeExplainer` is fast and exact for tree models. `KernelExplainer` is model-agnostic but slow and approximate. Using the wrong explainer on the wrong model yields unreliable values.
+* **Background data matters**: SHAP compares predictions against a baseline computed from a reference dataset. Different baselines produce different SHAP values — document which baseline was used.
+* **Alternatives**: LIME (faster, local, less stable), Integrated Gradients (exact for neural networks), Attention weights (approximate, deprecated as "explanation").
+
+Use SHAP as a debugging and communication tool, not as a legal guarantee of explanation.
 
 In ML:
 
@@ -95,10 +105,30 @@ Models learn bias from data. If you hire mostly men, the model learns that "Woma
 
 > **Pro Tip**: In regulated industries (Finance, Healthcare), you often sacrifice 2% accuracy for 100% interpretability. A slightly less accurate model that is *legal* is infinitely better than a "perfect" illegal one.
 
-### Compliance & GDPR
+### Compliance & Governance — Jurisdiction-Aware Note
 
-* **"Right to Explanation"**: GDPR (Europe) and similar laws require companies to explain automated decisions that affect people.
-* **Debugging**: Interpretability isn't just for regulators. If your model predicts a 20-year-old will buy a retirement home, **SHAP values** will tell you it's because of a data error (e.g., Age=20, Income=$5M).
+**GDPR Article 22** grants EU residents a right to *human review* and *meaningful information* about the logic of automated decisions — but legal scholars debate whether this mandates full algorithmic explanation or just human escalation. **Do not rely on model-cards or SHAP exports alone as your compliance strategy.** Involve legal/compliance counsel before deployment in regulated contexts.
+
+A practical checklist before deploying any automated decision system:
+- [ ] What is the legal basis for automated processing in each jurisdiction?
+- [ ] Does the decision affect credit, employment, healthcare, housing, or criminal justice?
+- [ ] Can a human override the model decision if challenged?
+- [ ] Is the explanation format meaningful to a non-technical person?
+- [ ] Are you subject to GDPR (EU), CCPA (California), ECOA/CFPB (US credit), or EU AI Act?
+
+**Debugging**: Interpretability isn't just for regulators. If your model predicts a 20-year-old will buy a retirement home, **SHAP values** will tell you it's because of a data error (e.g., Age=20, Income=$5M).
+
+### Fairness Metric Incompatibility
+
+You generally **cannot satisfy multiple fairness metrics simultaneously** when base rates differ between groups (Chouldechova 2017 Impossibility Theorem):
+
+| If you optimize for… | You typically sacrifice… |
+|:---------------------|:-------------------------|
+| Demographic Parity | Predictive Parity (PPV differs across groups) |
+| Equalized Odds (TPR + FPR equal) | Calibration (may over/under-predict for one group) |
+| Equal Opportunity (TPR equal) | Equal FPR |
+
+**How to choose**: Match the fairness metric to the harm you most want to prevent. In hiring, disparate impact (demographic parity) is the legal standard. In medical diagnosis, equal recall (TPR) across groups prevents under-detection. Document the choice and its rationale before deployment.
 
 ---
 
@@ -328,3 +358,36 @@ Today you learned:
 * ✅ **Disparate Impact** helps validiate if a model is treating groups equitably.
 
 **Tomorrow**: We explore **Causal Inference**—moving from "X is correlated with Y" to "X *causes* Y."
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 62 Milestone
+
+Apply SHAP to the inventory RL policy from Day 61: which features (current stock level, demand forecast, day-of-week) most influence the ordering decision? Flag any proxy variables that correlate with protected demographics (e.g., zip code → income → protected class). Run a demographic parity check on order approvals across customer segments.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 61 — Reinforcement & Offline Learning | Interpretability of RL policies (which state features drive actions) |
+| Day 63 — Causal Inference & Uplift | Causal attribution vs correlational SHAP attribution |
+| Day 69 — Responsible AI in Practice | Deeper governance, model cards, and multi-metric fairness auditing (this lesson is the conceptual introduction) |
+| Day 65 — MLOps Pipelines & CI | Integrating fairness checks as automated CI gates |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **SHAP** | SHapley Additive exPlanations — a game-theoretic method that assigns each feature a contribution score for a specific prediction |
+| **Shapley Value** | The average marginal contribution of a feature across all possible orderings of features |
+| **LIME** | Local Interpretable Model-agnostic Explanations — approximates any model locally with a linear model |
+| **Global Interpretability** | Understanding how a model behaves on average across all inputs |
+| **Local Interpretability** | Understanding why the model made a specific prediction for one instance |
+| **Disparate Impact** | When a model's positive outcome rate for a protected group is less than 80% of the highest group's rate |
+| **Equal Opportunity** | Fairness criterion requiring equal True Positive Rates across demographic groups |
+| **Protected Class** | A group protected by law from discrimination (e.g., race, gender, age, religion) |
+| **Proxy Variable** | A feature that correlates strongly with a protected attribute (e.g., zip code correlating with race) |

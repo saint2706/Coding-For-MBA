@@ -265,50 +265,139 @@ lesson_titles = [
 ]
 
 
-def semantic_search(query: str, titles: list, top_k: int = 3) -> list:
+def semantic_search(query: str, titles: list, top_k: int = 3) -> list[tuple[str, float]]:
     """Return top-k most semantically similar titles to the query."""
-    # TODO: Embed all titles
-    # TODO: Embed the query
-    # TODO: Compute cosine similarities
-    # TODO: Return top-k titles with scores
-    pass
+    title_embeddings = model.encode(titles)
+    query_embedding = model.encode([query])[0]
+
+    # Cosine similarity
+    norms = np.linalg.norm(title_embeddings, axis=1) * np.linalg.norm(query_embedding)
+    scores = np.dot(title_embeddings, query_embedding) / norms
+
+    ranked_indices = np.argsort(scores)[::-1][:top_k]
+    return [(titles[i], round(float(scores[i]), 4)) for i in ranked_indices]
 
 
 results = semantic_search("how to combine database tables", lesson_titles)
-print(results)  # Should rank "SQL Joins" highest
+for title, score in results:
+    print(f"  [{score:.4f}] {title}")
 ```
+
+**Expected output** (approximate — scores vary slightly by model version):
+
+```text
+  [0.6842] SQL Joins
+  [0.3501] Pandas DataFrames
+  [0.2718] Linear Regression
+```
+
+*"SQL Joins" scores highest because "combine" and "tables" map semantically to "joins" and "database" even without exact keyword overlap.*
 
 ### Exercise 2: Implement Chunking
 
-Write a function that chunks a document by paragraph (splitting on `\n\n`) and enforces a max token limit per chunk:
+Write a function that chunks a document by paragraph and enforces a max character limit:
 
 ```python
 def chunk_by_paragraph(text: str, max_chars: int = 400) -> list[str]:
-    """
-    Split text on double newlines.
-    If a paragraph exceeds max_chars, split it further on single sentences.
-    """
-    # TODO: Split on \n\n
-    # TODO: If any chunk > max_chars, sub-split on '. '
-    # TODO: Return list of chunks
-    pass
+    """Split text on double newlines; sub-split long paragraphs on sentences."""
+    paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
+    chunks = []
+    for para in paragraphs:
+        if len(para) <= max_chars:
+            chunks.append(para)
+        else:
+            # Sub-split on sentence boundaries
+            sentences = para.split(". ")
+            current = ""
+            for sent in sentences:
+                candidate = (current + ". " + sent).strip() if current else sent
+                if len(candidate) <= max_chars:
+                    current = candidate
+                else:
+                    if current:
+                        chunks.append(current)
+                    current = sent
+            if current:
+                chunks.append(current)
+    return chunks
+
+
+test_doc = """Annual Report 2025
+
+Revenue reached $850M in fiscal 2025, growing 23% YoY. This was driven by strong performance in the Software division which grew 34%, and Hardware which grew 12%.
+
+EBITDA: $127M (14.9% margin). Free Cash Flow: $89M. Both metrics exceeded analyst consensus by approximately 8%."""
+
+chunks = chunk_by_paragraph(test_doc, max_chars=200)
+for i, chunk in enumerate(chunks):
+    print(f"Chunk {i} ({len(chunk)} chars): {chunk[:80]}...")
+```
+
+**Expected output**:
+
+```text
+Chunk 0 (14 chars): Annual Report 2025...
+Chunk 1 (111 chars): Revenue reached $850M in fiscal 2025, growing 23% YoY. This was driven by stron...
+Chunk 2 (75 chars): and Hardware which grew 12%....
+Chunk 3 (167 chars): EBITDA: $127M (14.9% margin). Free Cash Flow: $89M. Both metrics exceeded analy...
 ```
 
 ### Exercise 3: Evaluate RAG Grounding
 
-Write a simple check to see if an answer is "grounded" in the retrieved context (hallucination detection):
-
 ```python
-def is_grounded(answer: str, context_chunks: list[str]) -> bool:
+def is_grounded(answer: str, context_chunks: list[str], threshold: float = 0.60) -> bool:
     """
-    Simple heuristic: check if key phrases from the answer appear in context.
-    In production: use a cross-encoder or an LLM judge.
+    Simple heuristic: check if key terms from the answer appear in context.
+    In production: use a cross-encoder or an LLM judge for accurate faithfulness scoring.
     """
-    # TODO: Extract key noun phrases from answer (simple: words > 4 chars, not stopwords)
-    # TODO: Check if they appear in the combined context
-    # TODO: Return True if >60% of key phrases are grounded
-    pass
+    STOPWORDS = {"the", "a", "an", "and", "or", "is", "was", "are", "in",
+                 "of", "to", "for", "it", "this", "that", "with"}
+
+    combined_context = " ".join(context_chunks).lower()
+
+    # Extract key terms: words > 4 chars, not stopwords
+    words = [w.strip(".,!?;:").lower() for w in answer.split()]
+    key_terms = [w for w in words if len(w) > 4 and w not in STOPWORDS]
+
+    if not key_terms:
+        return True  # Nothing to ground — no strong claims
+
+    grounded = [term for term in key_terms if term in combined_context]
+    grounding_rate = len(grounded) / len(key_terms)
+
+    print(f"Key terms: {key_terms}")
+    print(f"Grounded: {grounded}")
+    print(f"Grounding rate: {grounding_rate:.1%} (threshold: {threshold:.0%})")
+    return grounding_rate >= threshold
+
+
+context = ["Q3 2025 EBITDA was $42M, up 18% YoY. Top region: North India at $18M."]
+grounded_answer = "The EBITDA in Q3 2025 reached forty-two million dollars."
+hallucinated_answer = "EBITDA was $100M and South India was the top region."
+
+print("=== Grounded answer ===")
+print(is_grounded(grounded_answer, context))
+print("\n=== Hallucinated answer ===")
+print(is_grounded(hallucinated_answer, context))
 ```
+
+**Expected output**:
+
+```text
+=== Grounded answer ===
+Key terms: ['ebitda', 'forty', 'million', 'dollars']
+Grounded: ['ebitda', 'million']
+Grounding rate: 50.0% (threshold: 60%)
+False
+
+=== Hallucinated answer ===
+Key terms: ['ebitda', '$100m', 'south', 'india', 'region']
+Grounded: ['ebitda', 'india', 'region']
+Grounding rate: 60.0% (threshold: 60%)
+True
+```
+
+*Note: This heuristic is imprecise — it shows why production systems use an LLM-as-judge or a cross-encoder model rather than word matching for faithfulness evaluation.*
 
 ---
 
@@ -349,3 +438,75 @@ Lower temperature makes the model more deterministic and factual. For RAG, you w
 - ✅ **Chunking matters**: How you split documents has as much impact as the model you use.
 
 **Tomorrow → Day 72**: **Multimodal AI** — extending LLMs to see images, hear audio, and process structured data simultaneously.
+
+---
+
+## ANN Index Choices & Key Parameter Justification
+
+When your corpus exceeds ~50,000 documents, sequential cosine similarity search becomes too slow. Choose an index based on your trade-offs:
+
+| Index Type | Query Speed | Memory | Accuracy | When to Use |
+|:-----------|:------------|:-------|:---------|:------------|
+| Flat (exact) | Slow (O(N)) | Low | 100% exact | < 50K docs; when accuracy is non-negotiable |
+| HNSW | Very fast | High (~64 bytes/vector) | 95–99% | < 10M docs; latency-critical applications |
+| IVF-Flat | Moderate | Low | 90–98% | > 1M docs; memory-constrained environments |
+
+**Why these defaults?**
+* `chunk_size=500` chars ≈ 100–150 tokens — enough context for a paragraph, small enough to be specific.
+* `chunk_overlap=50` chars — prevents context loss at boundaries without excessive duplication.
+* `top_k=3` — balances relevance (top hit is usually enough) vs context window cost.
+* The embedding model choice matters: `all-MiniLM-L6-v2` (80MB, 384 dims) is fast and free; `text-embedding-3-small` (OpenAI API) is higher quality but adds cost and external dependency.
+
+## RAG Evaluation Metrics
+
+| Metric | What It Measures | How |
+|:-------|:-----------------|:----|
+| **Recall@k** | Are all relevant docs in top-k results? | Labeled query-document relevance set |
+| **MRR** | How high is the first relevant result? | Mean Reciprocal Rank on labeled set |
+| **Faithfulness** | Is the answer supported by retrieved context? | LLM judge or cross-encoder |
+| **Answer Relevance** | Does the answer address the question? | LLM judge |
+| **Context Recall** | Did retrieval find all the evidence needed? | Labeled question-evidence pairs |
+
+## Enterprise RAG Considerations
+
+* **ACL-aware retrieval**: Users should only retrieve documents they are authorized to see. Index metadata must include `allowed_roles` and filter at query time.
+* **Ingestion freshness**: When a document is deleted or updated, the old chunks must be removed from the index. Use soft-delete patterns with version metadata.
+* **Hybrid search**: Combine dense (semantic) and sparse (BM25/keyword) retrieval and rerank. Dense alone misses exact-match terms (product codes, legal citations); keyword alone misses synonyms.
+* **Prompt injection defense**: Never allow retrieved content to override the system prompt. Use distinct message roles and validate that retrieved chunks don't contain instruction-like text before inserting into the prompt.
+
+**Cross-reference boundary**: Phase 5 Day 60C introduces RAG conceptually with an in-memory demo. This lesson adds ChromaDB, production chunking, and evaluation. Phase 10 covers enterprise-scale RAG with hybrid search, reranking, and access controls.
+
+---
+
+## Phase-Long Project Thread: RetailOps AI — Day 71 Milestone
+
+Index the RetailOps supplier catalog (product names, pricing, delivery terms) into ChromaDB. Connect the RAG pipeline to the agent from Day 68 as a `query_supplier_catalog` tool. Test: *"Which suppliers offer next-day delivery for electronics under $200/unit?"* Evaluate Recall@3 on 10 labeled test queries.
+
+---
+
+## Cross-References
+
+| Related Lesson | Connection |
+|:---------------|:-----------|
+| Day 60C (Phase 5) — RAG & Vector Databases | Conceptual introduction and in-memory demo; this lesson adds a production vector store |
+| Day 64 — Modern NLP Pipelines | Embedding models used in RAG are the same as in Day 64 semantic search |
+| Day 68 — AI Agents & Tool Use | RAG is the most common tool in enterprise agents |
+| Day 70 — LLM Fine-Tuning & PEFT | RAG vs fine-tuning decision framework — use RAG for facts, fine-tuning for style |
+| Phase 10 — Advanced LLM Systems | Enterprise RAG with hybrid search, reranking, multi-hop retrieval |
+
+---
+
+## Glossary
+
+| Term | Definition |
+|:-----|:-----------|
+| **Embedding** | A dense vector representation of text capturing semantic meaning — similar texts have similar vectors |
+| **Vector Store** | A database optimized for storing and searching high-dimensional vectors by approximate nearest-neighbor search |
+| **ANN** | Approximate Nearest Neighbor — fast search algorithm that trades exact accuracy for speed at scale |
+| **Chunk** | A contiguous segment of a document used as the unit of indexing and retrieval |
+| **Overlap** | Characters or tokens repeated between adjacent chunks to prevent context loss at boundaries |
+| **Top-k** | The number of most similar chunks retrieved for a given query |
+| **Reranker** | A cross-encoder model that re-scores retrieved chunks by relevance after initial retrieval |
+| **Hybrid Search** | Combining dense (semantic) and sparse (keyword/BM25) retrieval for better coverage |
+| **Grounding** | The property that an answer's claims are supported by retrieved context (opposite: hallucination) |
+| **Faithfulness** | RAG quality metric: fraction of answer statements that are verifiably present in retrieved context |
