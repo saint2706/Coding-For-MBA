@@ -1,7 +1,7 @@
 ---
 phase: 12
 title: "Analytics Engineering & Data Products"
-days: [133, 134, 135, 136, 137, 138, 139, 140]
+days: [138, 139, 140, 141, 142, 143, 144, 145]
 totalDuration: 480
 difficulty: "advanced"
 tags:
