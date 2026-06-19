@@ -1,0 +1,109 @@
+{
+    "day": 74,
+    "questions": [
+        {
+            "id": "d74q01",
+            "type": "multiple_choice",
+            "question": "A BrightCart customer's region field contains the literal text 'N/A'. According to the decision framework in this lesson, what should happen to it?",
+            "options": [
+                "Convert it to a blank null, identical to a field that was never populated",
+                "Keep it as its own explicit 'Unknown' category, distinct from a true null",
+                "Delete the entire row",
+                "Replace it with the most frequent region with no documentation"
+            ],
+            "answer": 1,
+            "explanation": "'N/A' is a deliberate, explicit signal of 'unknown' -- different from a field that simply was never captured (a true null). Merging the two loses information about why the value is missing. The decision framework keeps 'Unknown' as its own category."
+        },
+        {
+            "id": "d74q02",
+            "type": "multiple_choice",
+            "question": "In the BrightCart products cleaning exercise, product P-400 has cost = 'ten dollars' (text in a numeric column). What is the correct treatment per this lesson?",
+            "options": [
+                "Guess a reasonable number like $10.00 and load it",
+                "Silently convert it to 0",
+                "Quarantine the row and escalate to the source-system owner instead of guessing",
+                "Delete the column entirely from the whole table"
+            ],
+            "answer": 2,
+            "explanation": "A type mismatch (text where a number is expected) is a 'Quarantine' case in this lesson's decision framework: the value can't be reliably interpreted, so it should be routed for review rather than guessed at or silently zeroed, which would fabricate a fact."
+        },
+        {
+            "id": "d74q03",
+            "type": "multiple_choice",
+            "question": "Customer C-03 appears twice in the dirty BrightCart customers fixture: once with a null signup_date and once with signup_date = '2026-02-20'. What does the cleaning lab's deduplication logic do?",
+            "options": [
+                "Keeps both rows because customer_id is not a real key",
+                "Keeps the row with the non-null signup_date (the more complete record) and discards the other",
+                "Averages the two signup_dates",
+                "Deletes both rows because duplicates are always unsafe to resolve"
+            ],
+            "answer": 1,
+            "explanation": "The SQL and pandas solutions both use a tiebreak rule (ROW_NUMBER ordered by whether signup_date is null, or sort_values+drop_duplicates keeping the non-null entry) to retain the most complete row per customer_id rather than arbitrarily keeping either or discarding both."
+        },
+        {
+            "id": "d74q04",
+            "type": "multiple_choice",
+            "question": "Why is unpivoting a wide BrightCart budget table (Q1_Budget, Q2_Budget, Q3_Budget, Q4_Budget columns) into a long [Region, Quarter, Budget] format useful?",
+            "options": [
+                "It makes the file smaller on disk",
+                "SUM(Budget) and similar aggregations work correctly regardless of how many time periods/categories are added later, without rewriting formulas",
+                "It is required before a file can be opened in Excel",
+                "It removes the need for any data types"
+            ],
+            "answer": 1,
+            "explanation": "In wide format, adding a new quarter requires updating every formula that hardcodes column names (Q1+Q2+Q3+Q4...). In long format, a single SUM(Budget) GROUP BY works no matter how many quarters/categories exist -- this is why BI tools expect tidy/long data."
+        },
+        {
+            "id": "d74q05",
+            "type": "multiple_choice",
+            "question": "You have 12 monthly BrightCart order export files with identical columns. Should you Merge or Append them?",
+            "options": [
+                "Merge, because you're combining datasets",
+                "Append, because you are stacking more rows of the same kind of record vertically, not adding new columns",
+                "Neither -- load each file into a separate table",
+                "Merge using a date key to join the 12 files together"
+            ],
+            "answer": 1,
+            "explanation": "Append (UNION ALL) is for stacking tables with the same structure to add more rows of the same kind of record -- exactly the case for 12 months of the same order export schema. Merge (JOIN) is for adding new columns/context from a different table via a shared key."
+        },
+        {
+            "id": "d74q06",
+            "type": "multiple_choice",
+            "question": "Per the 'Push Down' principle, where is the most efficient and most reusable place to clean BrightCart's recurring order data for use by Tableau, Python, and Excel users alike?",
+            "options": [
+                "Inside calculated fields in the dashboard visualization",
+                "In the database/warehouse using SQL or dbt",
+                "Manually in each user's local Excel file",
+                "It does not matter where cleaning happens"
+            ],
+            "answer": 1,
+            "explanation": "Cleaning in the database (SQL/dbt) is reusable by every downstream tool and user, is version-controllable, and runs once rather than being recomputed per dashboard click. Cleaning inside visualization calculated fields is the worst option because it reruns every time a user interacts with the dashboard."
+        },
+        {
+            "id": "d74q07",
+            "type": "multiple_choice",
+            "question": "A BrightCart products column is type-inferred from a sample as numeric, but later rows contain entries like 'ten dollars'. What does this scenario illustrate?",
+            "options": [
+                "Type inference is always 100% reliable and this cannot happen",
+                "Type inference based on a sample can silently miss type mismatches present elsewhere in the full column, breaking downstream calculations",
+                "This is a feature, not a data-quality issue",
+                "Numeric columns automatically reject non-numeric text at ingestion"
+            ],
+            "answer": 1,
+            "explanation": "Tools like Power Query and pandas often infer a column's type from a sample of values. If the sample happens to be clean, a later type-mismatched value (like text in a numeric column) can slip through undetected until it causes an error or silent corruption downstream -- hence the need to verify inferred types against the full column."
+        },
+        {
+            "id": "d74q08",
+            "type": "multiple_choice",
+            "question": "Which factor most strongly favors using Power Query over SQL/dbt for a BrightCart data-cleaning task?",
+            "options": [
+                "The dataset has billions of rows and needs to scale",
+                "The cleaning logic must be deeply version-controlled and tested like production code",
+                "It's a one-off cleanup of a single file performed by a business analyst without SQL fluency",
+                "Multiple teams across the company need to reuse the exact same transformation"
+            ],
+            "answer": 2,
+            "explanation": "Power Query's strength is low required skill and a visual, point-and-click interface -- ideal for one-off or analyst-led cleanup. For high volume, strong governance/reproducibility, or company-wide reuse, SQL/dbt is the better fit per the lesson's decision guide."
+        }
+    ]
+}

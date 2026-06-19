@@ -1,0 +1,109 @@
+{
+    "day": 68,
+    "questions": [
+        {
+            "id": "d68q01",
+            "type": "multiple_choice",
+            "question": "Which question does Descriptive Analytics answer?",
+            "options": [
+                "Why did this happen?",
+                "What happened?",
+                "What will happen?",
+                "How do we fix it?"
+            ],
+            "answer": 1,
+            "explanation": "Descriptive analytics (the core of BI) summarizes the past or present state of the business, e.g. 'Sales were $1.2M last month.' Diagnostic analytics asks 'why,' predictive asks 'what will happen,' and prescriptive asks 'how do we optimize it' — those last two belong to data science, not classic BI."
+        },
+        {
+            "id": "d68q02",
+            "type": "multiple_choice",
+            "question": "In the BI Stack, which layer is responsible for catching a problem like 'yesterday's data sync silently failed' before a stakeholder notices a wrong number on a dashboard?",
+            "options": [
+                "BI Consumption (the dashboard tool)",
+                "Observability",
+                "Semantic Layer",
+                "Source Systems"
+            ],
+            "answer": 1,
+            "explanation": "Observability tools (e.g., dbt tests, Monte Carlo, Elementary) monitor for late, missing, or anomalous data across the pipeline. The dashboard layer just renders whatever numbers it's given — it has no way to know the underlying data is stale or wrong unless an observability layer flags it first."
+        },
+        {
+            "id": "d68q03",
+            "type": "multiple_choice",
+            "question": "A BrightCart dashboard shows 'Revenue dropped to $0 today.' Following the BI Stack mental model, what should you check FIRST?",
+            "options": [
+                "Whether the chart's color scheme is misleading",
+                "Whether the Extract & Load job actually ran and brought in new rows",
+                "Whether the CEO misread the chart",
+                "Whether to switch BI tools entirely"
+            ],
+            "answer": 1,
+            "explanation": "A sudden drop to exactly $0 is almost always a pipeline failure (an Extract & Load job silently stopped) rather than a real business event or a math/visualization error. Checking upstream layers first is faster than re-auditing the dashboard's formulas."
+        },
+        {
+            "id": "d68q04",
+            "type": "multiple_choice",
+            "question": "Using BrightCart's events sample (7 distinct users: 101-107, where 101, 102, 103, 106 have a purchase event), what is the Weekly Active User count under Definition C ('Active' = completed a purchase)?",
+            "options": [
+                "7",
+                "5",
+                "4",
+                "3"
+            ],
+            "answer": 2,
+            "explanation": "Definition C counts only users with a 'purchase' event_type. In the sample, users 101, 102, 103, and 106 each have at least one purchase event — that is 4 distinct users. Definitions A (login) and B (key action) would return different, larger counts because they include browsing-only behavior."
+        },
+        {
+            "id": "d68q05",
+            "type": "multiple_choice",
+            "question": "Why does the SQL query for WAU use `COUNT(DISTINCT user_id)` instead of `COUNT(user_id)`?",
+            "options": [
+                "DISTINCT makes the query run faster on large tables",
+                "Without DISTINCT, a user with multiple qualifying events would be counted once per event, inflating the user count",
+                "DISTINCT is required syntax in all SQL dialects",
+                "COUNT(user_id) would throw an error on NULL values"
+            ],
+            "answer": 1,
+            "explanation": "If User 101 has 2 purchase events in the week, COUNT(user_id) would count them as 2, even though it's 1 unique person. COUNT(DISTINCT user_id) collapses repeats so the metric measures unique users, not total actions — the entire point of an 'Active Users' metric."
+        },
+        {
+            "id": "d68q06",
+            "type": "multiple_choice",
+            "question": "In a metric contract for 'Weekly Active User,' what does the 'late-arriving events' field address?",
+            "options": [
+                "How fast the dashboard loads in the browser",
+                "The fact that mobile app events may sync up to 72 hours after they occur, so the metric must be marked 'provisional' until finalized",
+                "How long the CEO has to read the dashboard",
+                "Which time zone the developer lives in"
+            ],
+            "answer": 1,
+            "explanation": "Offline mobile queueing means an event recorded on a phone might not reach the events table for hours or days. A rigorous metric contract acknowledges this lag, labels recent weeks as 'provisional,' and only finalizes numbers once the late-arrival window has passed — otherwise the same week's WAU number would keep silently changing."
+        },
+        {
+            "id": "d68q07",
+            "type": "multiple_choice",
+            "question": "Why is a central Data Warehouse important for a 'Single Source of Truth'?",
+            "options": [
+                "It is cheaper than Excel",
+                "It ensures everyone uses the same data and definitions, avoiding conflicting reports",
+                "It automatically predicts the future",
+                "It replaces the need for analysts"
+            ],
+            "answer": 1,
+            "explanation": "Consistency, not cost or automation, is the primary value driver of a warehouse. When Marketing and Finance both query the same certified tables with the same metric definitions, they stop arriving at the boardroom with different numbers for 'customers.'"
+        },
+        {
+            "id": "d68q08",
+            "type": "multiple_choice",
+            "question": "What is the 'Semantic Layer' in the BI stack, and why does it matter for metric contracts?",
+            "options": [
+                "It is just a marketing term for any dashboard",
+                "It is where business metrics like 'Revenue' are defined exactly once so every BI tool computes them identically",
+                "It is the layer where raw data first enters the warehouse",
+                "It is a synonym for the data lake"
+            ],
+            "answer": 1,
+            "explanation": "Without a semantic layer, each analyst might re-derive 'Revenue' slightly differently in each tool (one excludes refunds, another doesn't), reintroducing the exact single-source-of-truth problem the metric contract was designed to prevent. The semantic layer (e.g., dbt Semantic Layer, LookML) centralizes the definition once."
+        }
+    ]
+}

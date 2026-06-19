@@ -1,0 +1,109 @@
+{
+  "day": "84C",
+  "questions": [
+    {
+      "id": "d84cq01",
+      "type": "multiple_choice",
+      "question": "In Exercise 0, running the sync against the real `dim_customers` mart twice in a row with no data changes produces 'Synced: 18 | Errors: 0' both times. What property does this demonstrate?",
+      "options": [
+        "The sync is using a full sync strategy",
+        "The sync is idempotent — re-running it does not create duplicate or double-updated records",
+        "The sync failed silently both times",
+        "DuckDB caches query results, so the second run didn't actually execute"
+      ],
+      "answer": 1,
+      "explanation": "Idempotency means re-running the same sync with unchanged data produces the same result with no side effects like duplicate records. The lesson explicitly contrasts this with a real CRM using INSERT instead of UPSERT, which would create 18 duplicate records on the second run."
+    },
+    {
+      "id": "d84cq02",
+      "type": "multiple_choice",
+      "question": "In the lesson's `reverse_etl_sync` mock, what specific problem does the bare `except Exception:` block create, as demonstrated by the Exercise 0 failure test (changing match_field to a nonexistent column)?",
+      "options": [
+        "It causes the function to crash instead of completing",
+        "It catches the resulting KeyError and silently increments the error count for every row, reporting 'Synced: 0 | Errors: 18' with no detail about which exception occurred or why",
+        "It automatically retries the sync with a corrected match_field",
+        "It has no effect — the sync still succeeds"
+      ],
+      "answer": 1,
+      "explanation": "The bare except Exception catches any error identically, including a KeyError from a bad match_field, and reports only a count (Synced: 0 | Errors: 18) with no logged detail. Production code should catch specific exceptions and log enough context to diagnose the actual cause."
+    },
+    {
+      "id": "d84cq03",
+      "type": "multiple_choice",
+      "question": "A Reverse ETL sync pushes warehouse data to Salesforce, but a CSM also manually edits one of the synced fields directly in Salesforce. What governance decision does this scenario require, according to the Coverage section?",
+      "options": [
+        "Reverse ETL tools always prevent any manual edits in the destination",
+        "A documented conflict-resolution rule (warehouse wins vs. destination wins) per field, since the two values will conflict on the next sync",
+        "This scenario is impossible because Reverse ETL only writes to brand-new fields",
+        "The sync should be paused permanently once any manual edit occurs"
+      ],
+      "answer": 1,
+      "explanation": "The Coverage section names conflict resolution explicitly: if a destination value is manually edited, the next sync must have a documented rule for which value wins. 'Warehouse always wins' risks overwriting legitimate manual corrections; 'destination wins' means the curated warehouse value never reliably reaches that field."
+    },
+    {
+      "id": "d84cq04",
+      "type": "multiple_choice",
+      "question": "Why does `extras/metrics_layer_example.yml` model a hypothetical 'BrightCart+' subscription tier instead of using BrightCart's actual seeded order data directly?",
+      "options": [
+        "Subscription metrics cannot be expressed in MetricFlow YAML",
+        "BrightCart's seeded data (`sample_dbt_project`) is one-off e-commerce orders, not subscriptions, so MRR/ARPU concepts require a different (hypothetical) fct_subscriptions mart to demonstrate the semantic-model pattern",
+        "The file is randomly generated and unrelated to BrightCart",
+        "MRR only applies to companies with zero one-off orders"
+      ],
+      "answer": 1,
+      "explanation": "BrightCart's real seed data models one-off orders, which have no natural 'monthly recurring revenue.' The metrics_layer_example.yml file documents the semantic-model/metrics pattern against a hypothetical subscription tier and fct_subscriptions mart, explicitly noting it's a reference fixture, not a model that runs against the existing seed data."
+    },
+    {
+      "id": "d84cq05",
+      "type": "multiple_choice",
+      "question": "What does it mean to 'version' a metric like total_mrr rather than silently redefining it?",
+      "options": [
+        "Versioning means deleting the old metric definition immediately once a new one is needed",
+        "Versioning means creating a distinct name (e.g., total_mrr_v2) or coordinating a single communicated cutover, so historical dashboards built on the old definition don't silently show different numbers with no warning",
+        "Versioning only applies to dbt models, never to metrics",
+        "Metrics cannot be versioned; only models can"
+      ],
+      "answer": 1,
+      "explanation": "Silently changing a metric's definition (e.g., to exclude a new plan type) breaks trust in historical dashboards without warning. The lesson's governance coverage recommends explicit versioning or a coordinated, communicated cutover instead of a silent redefinition."
+    },
+    {
+      "id": "d84cq06",
+      "type": "multiple_choice",
+      "question": "Per the Build vs. Buy decision guide, when is building a custom Reverse ETL script favored over buying a tool like Hightouch or Census?",
+      "options": [
+        "Always — custom scripts are universally cheaper",
+        "When there is small scope: 1-2 destinations and low row volume, where per-row vendor pricing may be overkill for a single low-volume sync",
+        "Only when syncing PII data, which vendors are never allowed to touch",
+        "Never — buying is always correct regardless of scale"
+      ],
+      "answer": 1,
+      "explanation": "The decision guide favors building for small scope (1-2 destinations, low volume) where a scheduled script with proper idempotency/retry logic can work without vendor cost. Buying becomes favored as destinations multiply or schemas change frequently, due to the maintenance burden of custom code."
+    },
+    {
+      "id": "d84cq07",
+      "type": "multiple_choice",
+      "question": "Why must a semantic layer's cache TTL be shorter than the underlying data's freshness SLA, rather than longer?",
+      "options": [
+        "Cache TTL has no relationship to freshness SLA",
+        "A stale cache showing yesterday's MRR as if it were live data recreates the exact 'which number is right' trust problem the semantic layer exists to solve",
+        "Longer cache TTLs are always preferred for performance regardless of staleness",
+        "Caching is incompatible with semantic layers entirely"
+      ],
+      "answer": 1,
+      "explanation": "If a semantic layer caches results longer than the data's actual freshness SLA, a dashboard can show outdated numbers presented as current — the same metric-distrust problem (different numbers for the same metric) that a semantic layer is built to eliminate."
+    },
+    {
+      "id": "d84cq08",
+      "type": "multiple_choice",
+      "question": "Why does the 'Phase 7 Complete!' banner appear at the end of Day 84C specifically, rather than at the end of Day 84 or Day 84B?",
+      "options": [
+        "It is a copy-paste error and should be removed",
+        "Phase_Overview.md's frontmatter lists 84C last in its days: sequence, confirming Day 84C is the actual final lesson of Phase 7's daily content",
+        "Day 84C is the first lesson in Phase 7, so it makes sense to mark completion there",
+        "The banner appears identically at the end of all three lessons (84, 84B, 84C)"
+      ],
+      "answer": 1,
+      "explanation": "Phase_Overview.md's frontmatter days: array lists 84C as the last entry, confirming it is genuinely the final lesson. Day 84's ending is a narrower, separate 'completed the daily content' note specific to the career/capstone lesson, not a duplicate of the phase-completion banner."
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+    "day": 79,
+    "questions": [
+        {
+            "id": "d79q01",
+            "type": "multiple_choice",
+            "question": "According to the Minto Principle applied in the BrightCart executive email exemplar, what should appear in the very first line?",
+            "options": [
+                "The methodology used to analyze the data",
+                "A list of all the raw data points collected",
+                "The bottom-line conclusion and recommendation (BLUF), before any supporting evidence",
+                "A thank-you note to the reader"
+            ],
+            "answer": 2,
+            "explanation": "The Minto Principle/BLUF approach states the answer first ('Returns grew from 10% to 14%, offsetting revenue growth; recommend $15k fix') and follows with evidence — because busy executives need the conclusion before they'll invest time in the supporting detail."
+        },
+        {
+            "id": "d79q02",
+            "type": "multiple_choice",
+            "question": "In the messy analysis packet exercise, why does the exemplar email mention 'wrong size' support tickets being up 35% QoQ alongside the returns data?",
+            "options": [
+                "To pad the email with unrelated facts",
+                "Because it's an independent corroborating signal for the sizing root-cause hypothesis, strengthening the evidence chain beyond the returns numbers alone",
+                "Because support tickets are the primary metric",
+                "It has no analytical purpose"
+            ],
+            "answer": 1,
+            "explanation": "A strong evidence chain uses independent data sources that point to the same conclusion. The support ticket spike corroborates the sizing-defect hypothesis derived from the returns data, making the root-cause claim more credible than either fact alone."
+        },
+        {
+            "id": "d79q03",
+            "type": "multiple_choice",
+            "question": "The messy packet notes 'finance asked if this is seasonal — we don't have enough history to be sure.' How does the expert exemplar email handle this?",
+            "options": [
+                "It omits the caveat entirely to avoid weakening the pitch",
+                "It states the caveat plainly and explains the decision to act despite the uncertainty, rather than waiting for more data",
+                "It delays the email until more historical data exists",
+                "It claims with certainty that the trend is not seasonal"
+            ],
+            "answer": 1,
+            "explanation": "Hiding caveats that would affect the decision is an ethical pitfall. The correct approach states the uncertainty honestly ('only 1 prior year of history') while still making a clear recommendation, letting the audience weigh the risk themselves."
+        },
+        {
+            "id": "d79q04",
+            "type": "multiple_choice",
+            "question": "Why does the exemplar lead with revenue churn (2.5%) context alongside logo churn (8%) rather than only the more alarming logo churn number?",
+            "options": [
+                "To make the situation look as bad as possible to secure budget",
+                "To honestly frame the churn as concentrated in low-value customers, correctly signaling this is a cost/returns problem rather than an urgent high-value retention crisis",
+                "Because logo churn is statistically invalid",
+                "Because revenue churn is always the only number that matters"
+            ],
+            "answer": 1,
+            "explanation": "Cherry-picking only the alarming number (logo churn) would overstate the retention risk. Presenting both numbers accurately frames the real business risk — this is primarily a returns/cost issue, not a high-value customer exodus."
+        },
+        {
+            "id": "d79q05",
+            "type": "multiple_choice",
+            "question": "What ethical pitfall occurs if an analyst says 'the new homepage caused the revenue increase' based only on a before/after comparison with no control group?",
+            "options": [
+                "Hiding caveats",
+                "Manipulating axes",
+                "Overclaiming causality — observational before/after data cannot establish causation without randomization or a valid control group",
+                "Cherry-picking"
+            ],
+            "answer": 2,
+            "explanation": "Without a randomized control group, a before/after comparison only shows correlation in time, which could be driven by seasonality, other concurrent changes, or chance. The correct language is 'associated with' or 'coincided with,' not 'caused.'"
+        },
+        {
+            "id": "d79q06",
+            "type": "multiple_choice",
+            "question": "Why does the senior workflow recommend pre-wiring the CFO one-on-one before presenting a controversial finding to the full leadership team?",
+            "options": [
+                "To hide the finding from other stakeholders",
+                "To surface and resolve objections to methodology or framing privately, so the group meeting focuses on the decision rather than re-litigating data validity",
+                "Because the CFO always has final say regardless of data",
+                "Pre-wiring is purely a courtesy with no analytical benefit"
+            ],
+            "answer": 1,
+            "explanation": "Pre-wiring catches objections before they become public surprises. It protects the credibility of the analysis and keeps the group meeting focused on deciding an action rather than debating whether the numbers are trustworthy."
+        },
+        {
+            "id": "d79q07",
+            "type": "multiple_choice",
+            "question": "Finance defines 'Returns Rate' as dollars-based and Product defines it as unit-based, and they move in different directions some months. What should happen before the executive readout?",
+            "options": [
+                "Show both numbers unreconciled and let executives sort it out live",
+                "Hold a pre-read sync to agree on the 'official' metric for the readout, footnote the other definition, and explicitly flag any unresolved root-cause disagreement rather than forcing fake consensus",
+                "Quietly use whichever number supports the desired conclusion",
+                "Cancel the readout until the two teams fully agree on everything"
+            ],
+            "answer": 1,
+            "explanation": "Reconciling metric definitions ahead of time avoids a credibility-destroying 'which number is right?' derailment. Genuine unresolved disagreements (like root-cause attribution) should be surfaced honestly and recorded in a decision log, not suppressed."
+        },
+        {
+            "id": "d79q08",
+            "type": "multiple_choice",
+            "question": "A decision log entry says: '$15k size-guide budget approved 2026-04-10 by Jane (CFO); Finance and Product still disagree on whether seasonality contributed, flagged for follow-up, not blocking the go-ahead.' What does this entry demonstrate?",
+            "options": [
+                "A failure to reach a real decision",
+                "Recording unresolved dissent alongside an approved decision, so the disagreement isn't hidden but also doesn't block forward progress",
+                "An attempt to blame Finance for the disagreement",
+                "A standard meeting minutes format with no special purpose"
+            ],
+            "answer": 1,
+            "explanation": "A good decision log captures both what was decided and what wasn't resolved. This prevents future 'I don't remember agreeing to that' disputes while being honest that genuine disagreement (here, on seasonality) still exists and deserves follow-up."
+        }
+    ]
+}

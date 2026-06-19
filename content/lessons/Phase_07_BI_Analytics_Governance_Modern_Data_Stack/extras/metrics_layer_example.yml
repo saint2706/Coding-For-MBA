@@ -1,0 +1,97 @@
+# dbt Semantic Layer / MetricFlow example — referenced by Phase 7 Day 84C
+# (Reverse ETL & Semantic Layer), Exercise 2.
+#
+# Scenario: BrightCart is piloting a "BrightCart+" subscription tier
+# (free shipping + early access) on top of its core one-off order business.
+# This file defines the semantic model and three governed metrics so that
+# Looker, Tableau, Metabase, and any Reverse ETL sync all compute
+# "Monthly Recurring Revenue" identically — the metric-consistency problem
+# described in Day 84C's "Semantic Layer" section.
+#
+# This is a documentation/reference fixture, not a runnable model on its own:
+# it assumes a `fct_subscriptions` mart (parallel to this folder's
+# sample_dbt_project/models/marts/fct_revenue.sql) with columns:
+#   subscription_id, customer_id, mrr_amount, status, plan_type, start_date, country
+#
+# To make this runnable, add fct_subscriptions to sample_dbt_project/models/marts/
+# and drop this file's `semantic_models:`/`metrics:` blocks into
+# models/marts/schema.yml (MetricFlow YAML can live alongside model schema.yml).
+
+semantic_models:
+  - name: subscriptions
+    description: "One row per BrightCart+ subscription record."
+    model: ref('fct_subscriptions')
+    defaults:
+      agg_time_dimension: start_date
+
+    entities:
+      - name: subscription_id
+        type: primary
+      - name: customer_id
+        type: foreign
+
+    dimensions:
+      - name: start_date
+        type: time
+        type_params:
+          time_granularity: day
+      - name: plan_type
+        type: categorical
+      - name: status
+        type: categorical
+      - name: country
+        type: categorical
+
+    measures:
+      - name: mrr_amount
+        description: "Monthly recurring revenue contributed by a single subscription row."
+        agg: sum
+        expr: mrr_amount
+      - name: active_subscription_count
+        description: "Count of subscription rows; filtered to status = 'active' at the metric level."
+        agg: count
+        expr: subscription_id
+
+metrics:
+  # 1. total_mrr — simple measure with a status filter.
+  # Business definition: sum of mrr_amount across all subscriptions currently
+  # marked 'active'. This is the number Finance reconciles to the bank
+  # statement and the number Reverse ETL pushes into Salesforce's
+  # "Account Health" field (see Day 84C Exercise 1).
+  - name: total_mrr
+    description: "Total Monthly Recurring Revenue from active BrightCart+ subscriptions."
+    type: simple
+    label: "Total MRR"
+    type_params:
+      measure:
+        name: mrr_amount
+        filter: "{{ Dimension('status') }} = 'active'"
+
+  # 2. subscriber_count — count of active subscriptions.
+  # Business definition: number of subscription records with status = 'active'.
+  # Note this counts *subscriptions*, not unique customers — a customer with
+  # two active plans counts twice. Document this explicitly to avoid the
+  # "which number is right" debate this lesson warns about.
+  - name: subscriber_count
+    description: "Count of active BrightCart+ subscriptions (not unique customers)."
+    type: simple
+    label: "Active Subscriber Count"
+    type_params:
+      measure:
+        name: active_subscription_count
+        filter: "{{ Dimension('status') }} = 'active'"
+
+  # 3. arpu — ratio metric (total_mrr / subscriber_count).
+  # Business definition: Average Revenue Per (active) Subscribing User.
+  # Ratio metrics divide two existing metrics/measures rather than
+  # re-deriving the math in every BI tool — this is the main governance win
+  # of a semantic layer.
+  - name: arpu
+    description: "Average Revenue Per active Subscriber: total_mrr / subscriber_count."
+    type: ratio
+    label: "ARPU"
+    type_params:
+      numerator:
+        name: total_mrr
+      denominator:
+        name: subscriber_count

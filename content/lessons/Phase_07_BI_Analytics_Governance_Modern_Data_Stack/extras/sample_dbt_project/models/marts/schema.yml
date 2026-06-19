@@ -1,0 +1,47 @@
+version: 2
+
+# These tests are the "contract" referenced in Day 84B: anyone querying
+# fct_revenue or dim_customers can trust these guarantees without re-checking
+# the data themselves. Run `dbt test` after `dbt run` to verify them.
+models:
+  - name: fct_revenue
+    description: >
+      BrightCart finance source of truth: one row per completed order, joined
+      to customer attributes. Used by Day 84C's reverse-ETL sync and semantic
+      layer examples.
+    columns:
+      - name: order_id
+        description: "Unique order identifier (one row per completed order)."
+        tests:
+          - unique
+          - not_null
+      - name: amount_usd
+        description: "Order revenue in USD."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+      - name: order_value_tier
+        description: "Bucketed order size: high_value (>=$100), mid_value (>=$50), low_value (<$50)."
+        tests:
+          - accepted_values:
+              values: ['high_value', 'mid_value', 'low_value']
+
+  - name: dim_customers
+    description: >
+      BrightCart customer dimension with lifetime order/revenue rollups.
+      One row per active customer.
+    columns:
+      - name: customer_id
+        description: "Unique customer identifier."
+        tests:
+          - unique
+          - not_null
+      - name: lifetime_revenue_usd
+        description: "Sum of amount_usd across all of this customer's completed orders. 0 (not null) if they have none."
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0

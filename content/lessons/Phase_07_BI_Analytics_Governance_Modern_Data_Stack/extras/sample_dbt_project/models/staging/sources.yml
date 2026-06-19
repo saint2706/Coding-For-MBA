@@ -1,0 +1,57 @@
+version: 2
+
+# In this local DuckDB demo, "raw" sources are actually the seeded CSVs
+# (raw_orders, raw_customers) loaded via `dbt seed`. In a real BrightCart
+# warehouse, this `raw` schema would instead be populated nightly by
+# Fivetran/Airbyte from the production orders database and Stripe (see
+# Phase 7 Day 83 — BI Cloud & Modern Data Stack for the ingestion layer).
+sources:
+  - name: raw
+    schema: main
+    tables:
+      - name: raw_orders
+        description: "Raw BrightCart orders, one row per order, as captured at checkout."
+        freshness:
+          warn_after: {count: 12, period: hour}
+          error_after: {count: 24, period: hour}
+        loaded_at_field: created_at
+        columns:
+          - name: id
+            description: "Unique order identifier."
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: "Foreign key to raw_customers.id."
+            tests:
+              - not_null
+          - name: amount_cents
+            description: "Order total in cents, before refunds."
+            tests:
+              - not_null
+              - dbt_utils.accepted_range:
+                  arguments:
+                    min_value: 0
+          - name: status
+            description: "Order lifecycle status: completed, pending, or cancelled."
+            tests:
+              - accepted_values:
+                  values: ['completed', 'pending', 'cancelled']
+
+      - name: raw_customers
+        description: "Raw BrightCart customer records, one row per signed-up customer."
+        # loaded_at_field must resolve to a TIMESTAMP, not a DATE — `sign_up_date`
+        # is stored as a DATE in this seed, so it is cast here. Forgetting this
+        # cast is a real, common dbt freshness bug (see Day 84B Pitfalls).
+        loaded_at_field: "CAST(sign_up_date AS TIMESTAMP)"
+        freshness:
+          warn_after: {count: 48, period: hour}
+          error_after: {count: 96, period: hour}
+        columns:
+          - name: id
+            description: "Unique customer identifier."
+            tests:
+              - unique
+              - not_null
+          - name: Email
+            description: "Customer email as entered at signup (mixed case, untrimmed)."

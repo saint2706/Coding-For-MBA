@@ -1,0 +1,30 @@
+name: 'brightcart_analytics'
+version: '1.0.0'
+config-version: 2
+
+# This is the project profile name dbt looks up in profiles.yml.
+profile: 'brightcart_analytics'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# BrightCart (Phase 7 running example): a mid-size DTC outdoor/sporting-goods
+# retailer selling through web, mobile app, and a third-party marketplace.
+# This project models raw orders/customers into a small staging -> intermediate
+# -> marts pipeline, matching the layers taught in Day 84B (dbt Fundamentals).
+models:
+  brightcart_analytics:
+    staging:
+      +materialized: view
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      +materialized: table
+

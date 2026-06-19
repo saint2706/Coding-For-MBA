@@ -1,0 +1,109 @@
+{
+    "day": 78,
+    "questions": [
+        {
+            "id": "d78q01",
+            "type": "multiple_choice",
+            "question": "What does a p-value of 0.03 actually mean?",
+            "options": [
+                "There is a 3% chance the alternative hypothesis is true",
+                "The probability of observing a result at least as extreme as this one, assuming the null hypothesis is true, is 3%",
+                "The result is 3% better than the control",
+                "There is a 97% chance the effect is real"
+            ],
+            "answer": 1,
+            "explanation": "A p-value is a statement about the data given the null hypothesis (H0), not a statement about the probability that H0 or the alternative is true. It answers 'how surprising is this data if nothing is actually happening?'"
+        },
+        {
+            "id": "d78q02",
+            "type": "multiple_choice",
+            "question": "In the corrected Exercise 2 two-proportion Z-test (Control: 50/1000, Treatment: 65/1000), what is the correct Z-score and conclusion?",
+            "options": [
+                "Z=2.14, statistically significant",
+                "Z=1.44, NOT statistically significant at the 95% level",
+                "Z=4.50, highly significant",
+                "Z=0.07, not computable"
+            ],
+            "answer": 1,
+            "explanation": "Using the pooled standard error (sqrt(p_pool*(1-p_pool)*(1/n1+1/n2)) with p_pool=5.75%), the correct SE is approximately 1.04%, giving Z = 1.5%/1.04% ≈ 1.44, which is below the 1.96 threshold for 95% significance (p≈0.15)."
+        },
+        {
+            "id": "d78q03",
+            "type": "multiple_choice",
+            "question": "BrightCart's one-click checkout test shows a statistically significant +24% conversion lift (Z=2.33) but support tickets rose 90% and AOV fell 4.1%. What should the decision memo recommend?",
+            "options": [
+                "Ignore guardrails since the primary metric won",
+                "Kill the feature entirely because guardrails were breached",
+                "Ship with mitigation: the net revenue-per-visitor still improved ($5.05 vs $4.25), but add support staffing and re-measure since both guardrails breached typical tolerance",
+                "Re-run the exact same test with no changes"
+            ],
+            "answer": 2,
+            "explanation": "A risk-adjusted decision weighs the primary metric win against guardrail degradation rather than treating either in isolation. Here revenue-per-visitor still favors Treatment, but the support ticket spike is a real operational risk requiring mitigation, not silence."
+        },
+        {
+            "id": "d78q04",
+            "type": "multiple_choice",
+            "question": "In the BrightCart sales forecast backtest, the naive baseline (repeat last value) produced MAE=5.33 while the linear-trend model produced MAE=2.09 on the same held-out 3 months. What does this justify?",
+            "options": [
+                "Discarding the linear-trend model since lower numbers are worse",
+                "Using the linear-trend model in production, since it outperforms the naive baseline it must beat to earn its complexity",
+                "Averaging both models together regardless of performance",
+                "Concluding the data has no trend"
+            ],
+            "answer": 1,
+            "explanation": "MAE is an error metric where lower is better. The linear-trend model produced smaller average errors (2.09 vs 5.33) on data it wasn't trained on (the held-out test set), justifying its added complexity over the simpler naive baseline."
+        },
+        {
+            "id": "d78q05",
+            "type": "multiple_choice",
+            "question": "Why must statistical power and sample size be decided BEFORE an experiment starts, rather than checking results repeatedly and stopping when p<0.05 appears?",
+            "options": [
+                "It saves money on data storage",
+                "Continuous peeking ('p-hacking') inflates the true false-positive rate far above the nominal 5% alpha, because you're effectively running many tests and stopping at the first lucky result",
+                "It has no effect on the validity of the conclusion",
+                "Power calculations are only required for forecasting, not experiments"
+            ],
+            "answer": 1,
+            "explanation": "Standard significance testing assumes a single look at data collected to a pre-determined sample size. Repeated peeking multiplies the chances of crossing the significance threshold purely by chance, invalidating the 5% error guarantee unless a sequential testing method is used instead."
+        },
+        {
+            "id": "d78q06",
+            "type": "multiple_choice",
+            "question": "BrightCart observes a strong correlation between newsletter engagement and average order value. What is the confounding explanation offered in the lesson?",
+            "options": [
+                "Newsletters directly cause higher spending with no other explanation needed",
+                "Customer tenure drives both newsletter engagement and order value, so the newsletter itself may have little independent effect",
+                "There is no possible confounder in this scenario",
+                "AOV causes newsletter engagement"
+            ],
+            "answer": 1,
+            "explanation": "Longer-tenured customers are both more likely to engage with newsletters and more likely to have higher AOV due to accumulated trust and broader purchase history. This shared cause (tenure) can produce a correlation between newsletter engagement and AOV without the newsletter causing the spending."
+        },
+        {
+            "id": "d78q07",
+            "type": "multiple_choice",
+            "question": "What is a Sample Ratio Mismatch (SRM), and why should it be checked before interpreting an experiment's results?",
+            "options": [
+                "A statistic that measures effect size",
+                "A discrepancy between the intended traffic split (e.g., 50/50) and the observed split (e.g., 53/47), which signals a likely bug in randomization or logging that can invalidate the whole test",
+                "The ratio of guardrail metrics to primary metrics",
+                "A type of forecast error metric"
+            ],
+            "answer": 1,
+            "explanation": "If the observed split doesn't match the intended split, something in the randomization or event logging is broken — and a broken pipeline can produce a spuriously 'significant' result that has nothing to do with the actual treatment effect. SRM should be checked before trusting any other result from the test."
+        },
+        {
+            "id": "d78q08",
+            "type": "multiple_choice",
+            "question": "Why shouldn't BrightCart forecast sales for its newly launched marketplace channel using the same Holt-Winters seasonal model as its 5-year-old web channel?",
+            "options": [
+                "Forecasting models only work for web channels",
+                "The new channel lacks enough historical cycles (ideally 2-3 full seasonal cycles) to estimate seasonality reliably, and it just experienced a structural break (channel launch) that invalidates extrapolating from no prior history",
+                "Marketplace channels never have seasonality",
+                "Forecasting always requires exactly 12 months of data, no more, no less"
+            ],
+            "answer": 1,
+            "explanation": "Forecasting assumes the future will resemble a learnable pattern from the past. A brand-new channel has no comparable history, and a recent structural break (like a launch) means old patterns don't apply — this is one of the 'when not to forecast' scenarios covered in the lesson."
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+# DuckDB connection profile — no database server required.
+# dbt-duckdb creates (or reuses) a local file `brightcart.duckdb` in this
+# directory the first time you run `dbt run` or `dbt seed`.
+#
+# Usage:
+#   pip install dbt-duckdb
+#   export DBT_PROFILES_DIR=$(pwd)   # so dbt finds this file
+#   dbt seed
+#   dbt run
+#   dbt test
+#   dbt docs generate && dbt docs serve
+
+brightcart_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: brightcart.duckdb
+      threads: 4
+      schema: main

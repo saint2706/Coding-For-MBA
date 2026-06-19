@@ -1,0 +1,21 @@
+id,Name,Email,country_code,sign_up_date,is_active
+101,alice chen,Alice.Chen@gmail.com,US,2025-01-12,true
+102,bob martinez,bob.martinez@yahoo.com,US,2025-01-15,true
+103,carol singh,Carol.Singh@outlook.com,IN,2025-01-20,true
+104,david okafor,david.okafor@gmail.com,GB,2025-02-02,true
+105,erin walsh,erin.walsh@hotmail.com,US,2025-02-05,true
+106,frank zhao,frank.zhao@gmail.com,US,2025-02-10,false
+107,grace kim,grace.kim@gmail.com,US,2025-02-14,true
+108,hassan ali,hassan.ali@outlook.com,IN,2025-02-18,true
+109,isabel ortiz,isabel.ortiz@gmail.com,US,2025-02-22,true
+110,jack thompson,jack.thompson@yahoo.com,GB,2025-03-01,true
+111,karen lee,karen.lee@gmail.com,US,2025-03-05,true
+112,liam murphy,liam.murphy@gmail.com,GB,2025-03-09,true
+113,maria garcia,maria.garcia@gmail.com,US,2025-03-12,true
+114,noah patel,noah.patel@outlook.com,IN,2025-03-18,true
+115,olivia brown,olivia.brown@gmail.com,US,2025-03-22,false
+116,priya nair,priya.nair@gmail.com,IN,2025-03-25,true
+117,quinn fisher,quinn.fisher@yahoo.com,US,2025-04-01,true
+118,ravi shah,ravi.shah@gmail.com,IN,2025-04-04,true
+119,sara johnson,sara.johnson@gmail.com,US,2025-04-08,true
+120,tomas vidal,tomas.vidal@gmail.com,GB,2025-04-11,true

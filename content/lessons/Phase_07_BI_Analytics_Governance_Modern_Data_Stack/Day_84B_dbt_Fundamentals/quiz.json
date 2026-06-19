@@ -1,0 +1,109 @@
+{
+  "day": "84B",
+  "questions": [
+    {
+      "id": "d84bq01",
+      "type": "multiple_choice",
+      "question": "Running `dbt seed && dbt run` against `extras/sample_dbt_project` with the seed data unmodified, how many rows should `stg_customers` produce, and why?",
+      "options": [
+        "20 rows, because all seeded customers pass through unfiltered",
+        "18 rows, because 2 of the 20 seeded customers (ids 106 and 115) have is_active = false and are filtered out",
+        "25 rows, because stg_customers includes orders too",
+        "0 rows, because dbt seed does not load CSVs automatically"
+      ],
+      "answer": 1,
+      "explanation": "stg_customers.sql filters WHERE is_active = true. Of the 20 seeded customers, ids 106 and 115 have is_active = false, leaving 18 rows — the same number referenced throughout Day 84B and Day 84C as 'the 18 active customers.'"
+    },
+    {
+      "id": "d84bq02",
+      "type": "multiple_choice",
+      "question": "Why does `int_order_items.sql` use `materialized='ephemeral'` instead of `view` or `table`?",
+      "options": [
+        "Ephemeral models are required for any model using a WHERE clause",
+        "Ephemeral models compile inline as a CTE in downstream models with no separate database object — appropriate for intermediate logic that nothing outside dbt needs to query directly",
+        "Ephemeral models are the fastest materialization for marts that BI tools query directly",
+        "Ephemeral is a synonym for incremental"
+      ],
+      "answer": 1,
+      "explanation": "Ephemeral models don't persist as a view or table in the warehouse; dbt inlines their SQL as a CTE wherever they're ref()'d. This fits int_order_items, which exists purely to be consumed by fct_revenue — no BI tool or analyst queries it directly."
+    },
+    {
+      "id": "d84bq03",
+      "type": "multiple_choice",
+      "question": "A teammate sets `loaded_at_field: sign_up_date` for a freshness check, where `sign_up_date` is stored as a DATE column. What happens, and how was this fixed in `extras/sample_dbt_project/models/staging/sources.yml`?",
+      "options": [
+        "Nothing — DATE and TIMESTAMP are interchangeable in dbt freshness checks",
+        "dbt source freshness errors with a type mismatch; the fix was to set loaded_at_field to a cast expression: \"CAST(sign_up_date AS TIMESTAMP)\"",
+        "dbt automatically casts DATE to TIMESTAMP with no configuration needed",
+        "The freshness check silently always passes when given a DATE column"
+      ],
+      "answer": 1,
+      "explanation": "dbt's freshness check expects loaded_at_field to resolve to a TIMESTAMP. A DATE column causes a database error. The documented fix in sources.yml is loaded_at_field: \"CAST(sign_up_date AS TIMESTAMP)\" — described in the lesson as 'a real, common dbt freshness bug.'"
+    },
+    {
+      "id": "d84bq04",
+      "type": "multiple_choice",
+      "question": "You intentionally set one order's amount_cents to a negative number in the seed data and rerun `dbt seed && dbt run && dbt test`. What does the resulting dbt_utils.accepted_range test failure report, and what does it NOT show you by default?",
+      "options": [
+        "It shows the exact bad row's order_id; you don't need to query further",
+        "It reports a result count like 'Got 1 result, configured to fail if != 0' but does not show you the offending row — you must query the model directly to find it",
+        "It automatically fixes the negative value and reruns",
+        "It silently passes because accepted_range only checks upper bounds"
+      ],
+      "answer": 1,
+      "explanation": "dbt test failures report a count ('Got 1 result, configured to fail if != 0'), not the offending rows. Triaging a real failure requires a manual query like SELECT * FROM fct_revenue WHERE amount_usd < 0 — exactly the workflow Exercise 3 has you practice."
+    },
+    {
+      "id": "d84bq05",
+      "type": "multiple_choice",
+      "question": "What is the key difference between a dbt 'contract' and a dbt 'test'?",
+      "options": [
+        "They are the same feature with two names",
+        "A contract pins column names/types and fails the run at compile/build time if violated; a test checks data values/quality and fails at dbt test time",
+        "Contracts only apply to seeds, never to models",
+        "Tests are deprecated in favor of contracts"
+      ],
+      "answer": 1,
+      "explanation": "A contract (config: contract: enforced: true) guarantees structural stability — column names and types — and fails loudly if a model change violates it. Tests (not_null, unique, accepted_range, etc.) check the values within that structure are valid data."
+    },
+    {
+      "id": "d84bq06",
+      "type": "multiple_choice",
+      "question": "What problem does 'Slim CI' (--select state:modified+ combined with --defer) solve?",
+      "options": [
+        "It makes dbt tests run without a database connection",
+        "It rebuilds the entire 500-model project on every CI run for safety",
+        "It rebuilds only models changed in a PR and their downstream dependents, deferring unchanged upstream models to production state, instead of rebuilding the whole DAG from raw sources every time",
+        "It replaces the need for any tests in CI"
+      ],
+      "answer": 2,
+      "explanation": "Slim CI compares a PR's manifest against the last successful prod manifest (--state) to select only modified models and downstream dependents, and defers unchanged upstream models to prod rather than rebuilding them in CI — keeping CI fast on large projects."
+    },
+    {
+      "id": "d84bq07",
+      "type": "multiple_choice",
+      "question": "An incremental model filters `WHERE created_at > (SELECT MAX(created_at) FROM {{ this }})` with no unique_key set. What production risk does this introduce?",
+      "options": [
+        "No risk — this is the recommended pattern for all incremental models",
+        "Late-arriving or updated rows with an older timestamp than the last run's max will be silently missed, and without a unique_key, any reprocessed row would be duplicated rather than updated",
+        "The model will fail to compile",
+        "This pattern only works with ephemeral materializations"
+      ],
+      "answer": 1,
+      "explanation": "Filtering only on MAX(timestamp) misses late-arriving or backfilled rows older than the current max. Without a unique_key, dbt has no way to update an existing row in place, so reprocessing produces duplicates. Both are named pitfalls in this lesson's Production Workflow section."
+    },
+    {
+      "id": "d84bq08",
+      "type": "multiple_choice",
+      "question": "Why might `--full-refresh` be dangerous to run automatically in a CI/CD pipeline against a production incremental model?",
+      "options": [
+        "It is always instant and free, so there's no real risk",
+        "It rebuilds the entire incremental model from scratch, which can be a multi-hour, expensive operation on a multi-billion-row table if triggered accidentally",
+        "It only affects ephemeral models, not incremental ones",
+        "It is required after every single dbt run"
+      ],
+      "answer": 1,
+      "explanation": "--full-refresh discards incremental state and rebuilds the whole table from raw history. On a large production table this can be slow and costly (recall Phase 7 Day 83's bytes-scanned economics), so the lesson recommends gating it behind manual approval rather than an automatic CI flag."
+    }
+  ]
+}
