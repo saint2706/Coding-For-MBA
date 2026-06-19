@@ -6,7 +6,7 @@
 
 A structured 145-day curriculum for business professionals who want to build with data and AI, not just talk about it. Runs entirely in your browser.
 
-[**Begin Day 1 — Free →**](https://saint2706.github.io/Coding-For-MBA/#/lesson/day-1) &nbsp;·&nbsp; [**See All 12 Phases →**](https://saint2706.github.io/Coding-For-MBA/#/curriculum) &nbsp;·&nbsp; [**Open the App →**](https://saint2706.github.io/Coding-For-MBA)
+[**Begin Day 1 — Free →**](https://saint2706.github.io/Coding-For-MBA/#/lesson/1) &nbsp;·&nbsp; [**See All 12 Phases →**](https://saint2706.github.io/Coding-For-MBA/#/curriculum) &nbsp;·&nbsp; [**Open the App →**](https://saint2706.github.io/Coding-For-MBA)
 
 [![Deploy](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/deploy.yml)
 [![CI](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml/badge.svg)](https://github.com/saint2706/Coding-For-MBA/actions/workflows/ci.yml)
