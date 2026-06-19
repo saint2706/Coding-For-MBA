@@ -6,8 +6,8 @@
 --      future `fct_order_items` mart can both build on the same join logic
 --      without recomputing it. This is the seam where you'd plug in a real
 --      `raw.order_items` source if/when BrightCart exposes SKU-level data.
--- Expected effect: one row per completed order (22 of the 25 seed orders —
---      3 are 'pending' or 'cancelled' and are filtered out here).
+-- Expected effect: one row per completed order (21 of the 25 seed orders —
+--      4 are 'pending' (2) or 'cancelled' (2) and are filtered out here).
 {{ config(materialized='ephemeral') }}
 
 SELECT

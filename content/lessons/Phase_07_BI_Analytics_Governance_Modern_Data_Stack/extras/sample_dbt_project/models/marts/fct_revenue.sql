@@ -3,8 +3,9 @@
 -- Why: This is the "single source of truth" table Day 84B and Day 84C labs
 --      query directly (and the table a Reverse ETL sync would read from in
 --      Day 84C, e.g. pushing high-value customers' lifetime revenue to a CRM).
--- Expected effect: 22 rows (one per completed order; cancelled/pending excluded
---      upstream in int_order_items), with no nulls in order_id or amount_usd.
+-- Expected effect: 21 rows (one per completed order; cancelled/pending excluded
+--      upstream in int_order_items), totaling $1,697.79, with no nulls in
+--      order_id or amount_usd.
 {{ config(materialized='table') }}
 
 WITH order_items AS (
