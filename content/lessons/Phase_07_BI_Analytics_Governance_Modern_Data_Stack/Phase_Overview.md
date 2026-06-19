@@ -1,7 +1,7 @@
 ---
 phase: 7
 title: "BI Analytics, Governance & Modern Data Stack"
-days: [68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, "84B", "84C"]
+days: [73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, "89B", "89C"]
 totalDuration: 750
 difficulty: "advanced"
 ---
