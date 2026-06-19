@@ -172,7 +172,7 @@ vi.mock('../../utils/contentLoader', () => ({
     beginner: { color: 'green', bg: 'lightgreen', label: 'Beginner' },
     intermediate: { color: 'orange', bg: 'lightyellow', label: 'Intermediate' },
   },
-  getCurriculumMetadata: vi.fn(() => ({ totalDays: 140 })),
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 145 })),
 }))
 
 // Mock SEOHead as it might have issues rendering in tests due to react-helmet

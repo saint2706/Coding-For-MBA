@@ -135,7 +135,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </span>
             <span className="sidebar-brand-text">
               <span className="sidebar-brand-name">Coding for MBA</span>
-              <span className="sidebar-brand-meta">v1 · 140-day</span>
+              <span className="sidebar-brand-meta">v1 · 145-day</span>
             </span>
           </Link>
           <button

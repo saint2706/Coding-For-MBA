@@ -1,0 +1,109 @@
+{
+  "day": 76,
+  "questions": [
+    {
+      "id": "d76q01",
+      "type": "multiple_choice",
+      "question": "Which database is best for BrightCart's live checkout system (processing one order at a time)?",
+      "options": [
+        "OLAP (Snowflake)",
+        "OLTP (Postgres)",
+        "A Data Lake (S3)",
+        "A spreadsheet"
+      ],
+      "answer": 1,
+      "explanation": "OLTP databases (row-oriented, like Postgres) are optimized for fast single-row reads/writes — exactly what a checkout flow needs. OLAP (column-oriented) systems are optimized for scanning millions of rows for aggregation, and would be slow and overkill for processing one transaction at a time."
+    },
+    {
+      "id": "d76q02",
+      "type": "multiple_choice",
+      "question": "According to the OLTP/Warehouse/Lake/Lakehouse decision table, what is the risk of using a Data Lake alone as your only BI source, with no warehouse or lakehouse layer on top?",
+      "options": [
+        "There is no risk; lakes are always sufficient for BI",
+        "Without schema enforcement and governance, the lake can become an unusable 'data swamp' with slow, ungoverned ad hoc queries",
+        "Lakes are too expensive to use for any purpose",
+        "Lakes cannot store CSV or JSON files"
+      ],
+      "answer": 1,
+      "explanation": "Lakes are cheap and flexible for raw storage but lack schema enforcement by default. Without a structured layer (warehouse or lakehouse) on top, data accumulates without governance, becoming hard to discover, trust, or query efficiently — the classic 'data swamp' failure mode."
+    },
+    {
+      "id": "d76q03",
+      "type": "multiple_choice",
+      "question": "In the medallion architecture, which layer corresponds to the BrightCart dbt mini-project's `silver_orders.sql` model?",
+      "options": [
+        "Bronze — raw, untransformed data exactly as extracted",
+        "Silver — cleaned, typed, conformed data with business rules applied (e.g., casting order_date and flagging is_valid_revenue)",
+        "Gold — final, dashboard-ready aggregated tables",
+        "There is no equivalent layer"
+      ],
+      "answer": 1,
+      "explanation": "silver_orders.sql takes the raw seed (Bronze) and applies typing (CAST to DATE) and a business rule (is_valid_revenue flag based on status) — exactly the definition of the Silver layer: cleaned and conformed, but not yet aggregated into a final business metric like gold_revenue_by_channel is."
+    },
+    {
+      "id": "d76q04",
+      "type": "multiple_choice",
+      "question": "In the dbt mini-project, running `dbt test` against silver_orders checks `accepted_values` on the `status` column. What would cause this test to FAIL?",
+      "options": [
+        "If status contains a value outside ['placed','shipped','delivered','returned','cancelled'], e.g. a typo like 'delvered'",
+        "If the table has more than 10 rows",
+        "If the channel column contains 'marketplace'",
+        "dbt tests never fail once dbt run succeeds"
+      ],
+      "answer": 0,
+      "explanation": "The accepted_values test enforces a data contract: only the listed status values are valid. A typo or an unexpected new status value (e.g., a new 'on_hold' status added upstream without updating the test) would fail this check — which is exactly the point: it catches schema drift before it reaches the Gold layer and dashboards."
+    },
+    {
+      "id": "d76q05",
+      "type": "multiple_choice",
+      "question": "Why is ELT (Extract, Load, Transform) generally preferred over ETL (Extract, Transform, Load) in modern cloud data stacks?",
+      "options": [
+        "It uses less storage overall",
+        "Cloud warehouses are powerful enough to transform data after loading, so raw data is always preserved and transformation logic can change without re-extracting from source",
+        "ETL is not supported by any modern tool",
+        "ELT eliminates the need for a warehouse entirely"
+      ],
+      "answer": 1,
+      "explanation": "ELT loads raw data into the warehouse first, then transforms it there using SQL/dbt. This means raw data is always available for reprocessing, and if transformation logic needs to change, you re-run SQL rather than re-extracting from the (often rate-limited or unavailable) original source."
+    },
+    {
+      "id": "d76q06",
+      "type": "multiple_choice",
+      "question": "What is a 'Data Contract' in the context of BrightCart's checkout team and BI team?",
+      "options": [
+        "A legal document signed by lawyers before any data is collected",
+        "A formal agreement on a table's schema, semantics, and change process — e.g., requiring 2 weeks' notice before renaming a column the BI team depends on",
+        "A SQL query that enforces row-level security",
+        "Another name for a dashboard"
+      ],
+      "answer": 1,
+      "explanation": "A data contract is an agreement between the producer (engineering) and consumer (BI/analytics) of a dataset about its structure and how changes will be communicated. Without one, an engineer renaming a column can silently break dashboards downstream with no warning."
+    },
+    {
+      "id": "d76q07",
+      "type": "multiple_choice",
+      "question": "Why is `SELECT *` considered bad practice on a columnar warehouse like Snowflake?",
+      "options": [
+        "It isn't bad practice at all",
+        "It forces the engine to read every column block to reconstruct full rows, defeating the performance benefit of only scanning the columns you actually need",
+        "It permanently deletes the unread columns",
+        "It only works in row-oriented databases"
+      ],
+      "answer": 1,
+      "explanation": "Columnar storage's speed advantage comes from reading only the column blocks relevant to a query. SELECT * forces a scan of every column, eliminating that advantage — selecting specific columns (e.g., SELECT department, salary) is what realizes columnar storage's performance benefit."
+    },
+    {
+      "id": "d76q08",
+      "type": "multiple_choice",
+      "question": "A junior engineer suggests BrightCart should build its own custom-coded data warehouse from scratch instead of using a managed service like Snowflake. Per the Build vs. Buy guidance, why might this be the wrong call for a mid-size DTC company like BrightCart?",
+      "options": [
+        "Building your own warehouse is always faster than buying",
+        "For most companies without hyperscale requirements or a large platform engineering team, managed/SaaS options ship faster and have lower total cost of ownership than self-managed infrastructure",
+        "Custom warehouses are illegal for retail companies",
+        "Snowflake doesn't support custom SQL"
+      ],
+      "answer": 1,
+      "explanation": "Build vs. Buy guidance: building makes sense only when you have unique scale needs, deep in-house data engineering talent, or regulatory reasons. A mid-size DTC retailer like BrightCart, with a small data team, is better served buying a managed warehouse and ELT tooling so the team can focus on modeling and business logic rather than infrastructure upkeep."
+    }
+  ]
+}

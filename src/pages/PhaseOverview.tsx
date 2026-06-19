@@ -118,7 +118,7 @@ export default function PhaseOverview() {
   const completedPct = Math.round((completedInPhaseCount / Math.max(1, lessons.length)) * 100)
 
   const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
-  const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 140-day Coding for MBA curriculum.`
+  const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 145-day Coding for MBA curriculum.`
   const phasePath = `/phase/${phase.phase}`
 
   return (
@@ -140,7 +140,7 @@ export default function PhaseOverview() {
             url: `https://saint2706.github.io/Coding-For-MBA/#${phasePath}`,
             isPartOf: {
               '@type': 'Course',
-              name: 'Coding for MBA — 140-Day Technical Curriculum',
+              name: 'Coding for MBA — 145-Day Technical Curriculum',
             },
             numberOfItems: lessons.length,
           },

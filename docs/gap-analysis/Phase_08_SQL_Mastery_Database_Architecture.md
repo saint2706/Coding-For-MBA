@@ -4,7 +4,7 @@
 
 ## Phase summary
 
-Phase 08 has consistently complete frontmatter, approachable analogies, business-flavored scenarios, senior callouts, mastery checks, and summaries, but most lessons compress advanced concepts into claims and snippets rather than teaching queries line-by-line or providing reproducible labs. The sequence is the largest structural problem: Advanced SQL, cloud optimization, governance, and two capstone days appear on Days 85–90 before relational internals and the DDL/DML/DQL/JOIN/subquery foundations on Days 91–96. No audited lesson has a `quiz.json`, and none has a glossary; sample schemas/data and expected result sets are also missing from most SQL exercises.
+Phase 08 has consistently complete frontmatter, approachable analogies, business-flavored scenarios, senior callouts, mastery checks, and summaries, but most lessons compress advanced concepts into claims and snippets rather than teaching queries line-by-line or providing reproducible labs. The sequence is the largest structural problem: Advanced SQL, cloud optimization, governance, and two capstone days appear on Days 90–95 before relational internals and the DDL/DML/DQL/JOIN/subquery foundations on Days 96–101. No audited lesson has a `quiz.json`, and none has a glossary; sample schemas/data and expected result sets are also missing from most SQL exercises.
 
 **Recurring gaps in this phase:**
 
@@ -19,15 +19,15 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 85 — Advanced SQL Patterns
+## Day 90 — Advanced SQL Patterns
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_85_Advanced_SQL/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_90_Advanced_SQL/README.md`
 
 **Assessment:** The family-tree and Russian-doll bridges make recursion and JSON approachable, and the lesson includes useful senior warnings about schemaless data and recursion safety. However, it begins with recursive CTEs, JSON operators, and lateral joins before this phase teaches relational foundations, joins, and subqueries; its recursive query is introduced only as “**Syntax**,” several blocks receive no line-by-line explanation, and the labs do not supply complete schemas or expected tabular results. The summary also admits that “**Array Aggregates: Pack rows into lists (not covered in detail, but related to JSON)**” despite listing array aggregates as a concept.
 
 **Gap task stubs:**
 
-- [ ] [P0][K:Xref] Move this lesson after Days 91–96 or add explicit prerequisite links and a remediation path to relational databases, JOINs, CTEs, and subqueries; “Intermediate SQL (Joins, Window Functions)” does not resolve the phase’s inverted sequence.
+- [ ] [P0][K:Xref] Move this lesson after Days 96–101 or add explicit prerequisite links and a remediation path to relational databases, JOINs, CTEs, and subqueries; “Intermediate SQL (Joins, Window Functions)” does not resolve the phase’s inverted sequence.
 - [ ] [P0][M:Coverage] Add the promised array-aggregate lesson content, including `ARRAY_AGG`, ordering, null behavior, use cases, and tradeoffs; the summary explicitly says it is “not covered in detail.”
 - [ ] [P1][B:CodeCtx] Expand the recursive CTE, JSON, and lateral-join blocks into line-by-line walkthroughs explaining anchor/recursive members, alias scope, termination, `->` versus `->>`, and why `LIMIT 3` belongs inside the lateral subquery.
 - [ ] [P1][C:Lab] Make all three exercises runnable with `CREATE TABLE`/seed statements, dialect assumptions, step-by-step tasks, and expected result sets such as the exact three-row Alice → VP → CEO chain.
@@ -38,9 +38,9 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 86 — Cloud Architecture & Optimization
+## Day 91 — Cloud Architecture & Optimization
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_86_BI_Cloud/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_91_BI_Cloud/README.md`
 
 **Assessment:** The encyclopedia/filing-cabinet analogy and physical-design tradeoffs provide strong intuition and MBA-relevant cost framing. Still, assertions such as “**Reads only 1/365th of the data. 99.7% cost saving**,” “**BigQuery gives you 2000 ‘Slots’**,” and “**Trade 0.1% accuracy for 99% speed**” are presented as universal facts without assumptions, measurement steps, or vendor distinctions. The labs describe outcomes rather than giving reproducible datasets, execution-plan evidence, and expected results.
 
@@ -57,9 +57,9 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 87 — Technical Data Governance & Security
+## Day 92 — Technical Data Governance & Security
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_87_Data_Governance/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_92_Data_Governance/README.md`
 
 **Assessment:** The office-badge bridge clearly distinguishes authentication, authorization, and RLS, while the least-privilege and audit-log sections supply valuable production framing. However, the SQL uses generic or questionable syntax without naming a platform, crypto-shredding is summarized as “**Delete Key X**” and “**No need to find every backup tape**” without legal/operational nuance, and the anonymization lab simply changes PII to fixed strings without addressing uniqueness, re-identification, or verification. Exercises lack setup data and expected results for each role.
 
@@ -76,54 +76,54 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 88 — Capstone Part 1: Design & Architecture
+## Day 93 — Capstone Part 1: Design & Architecture
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_88_Capstone_Part_1/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_93_Capstone_Part_1/README.md`
 
 **Assessment:** This lesson offers a useful blueprint analogy, a compact design-document framework, an engine-selection table, and an architecture decision-log requirement. Yet the capstone begins before the phase teaches relational internals and DDL/DML/DQL/JOIN/subquery fundamentals, and the “Hands-on Lab” mostly supplies the solution (“**Real-Time Geolocation: Postgres + PostGIS ... Or Redis**”) instead of a deliverable-driven exercise with evaluation criteria. The recommendation table is helpful but too categorical for architecture decisions.
 
 **Gap task stubs:**
 
-- [ ] [P0][K:Xref] Move the capstone after Day 96C or add a staged prerequisite/remediation checklist; “Phase 8 Concepts (Days 85-87)” excludes the core lessons required to design a defensible schema.
+- [ ] [P0][K:Xref] Move the capstone after Day 101C or add a staged prerequisite/remediation checklist; “Phase 8 Concepts (Days 90-92)” excludes the core lessons required to design a defensible schema.
 - [ ] [P1][C:Lab] Turn the ride-sharing brief into an assessed capstone specification with required artifacts, sample workload/data, acceptance tests, expected ERD elements, query SLAs, cost ceiling, and scoring rubric.
 - [ ] [P1][F:Tables] Expand the engine table with decision guidance for consistency, latency, access patterns, operational skills, lock-in, cost, and rejected alternatives; avoid one-engine-per-use-case prescriptions.
 - [ ] [P1][A:Concept] Define ERD, shard key, hotspot, columnar, spatial index, event stream, and CAP before asking learners to use them.
 - [ ] [P1][M:Coverage] Add normalization and denormalization decisions, data ownership, failure modes, capacity estimates, disaster recovery, migration strategy, and privacy threat modeling.
-- [ ] [P1][N:Thread] Establish the ride-sharing design as the recurring project and explicitly carry its artifacts into Days 89–96C rather than abandoning it after implementation.
+- [ ] [P1][N:Thread] Establish the ride-sharing design as the recurring project and explicitly carry its artifacts into Days 94–101C rather than abandoning it after implementation.
 - [ ] [P2][O:Glossary] Add a glossary for TDD, ERD, sharding, partitioning, hotspot, monolith, columnar store, and CAP theorem.
 - [ ] [P1][L:Quiz] Add `quiz.json` with explained tradeoff questions rather than only single-tool answers.
 
 ---
 
-## Day 89 — Capstone Part 2: Implementation
+## Day 94 — Capstone Part 2: Implementation
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_89_Capstone_Part_2/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_94_Capstone_Part_2/README.md`
 
 **Assessment:** The construction analogy, constraints overview, indexing tradeoff, and expand/contract mention are good foundations for production thinking. The implementation is not a complete capstone, though: it creates only `drivers` and `trips`, the Faker script generates drivers rather than the promised “**1M rows**,” and the optimization numbers (“**Cost: 500. Time: 200ms**” to “**Cost: 50. Time: 10ms**”) are asserted without a runnable benchmark or expected plan. It also appears before the dedicated DDL, DML, DQL, JOIN, and subquery lessons.
 
 **Gap task stubs:**
 
-- [ ] [P0][K:Xref] Re-sequence implementation after Days 92–96 or explicitly teach/link every DDL, DML, query-plan, and indexing prerequisite used here.
-- [ ] [P0][C:Lab] Supply a complete runnable capstone: environment setup, full Day 88 schema, deterministic seed script, 1M-row workload, required queries, expected outputs/plans, stress-test steps, and acceptance rubric.
+- [ ] [P0][K:Xref] Re-sequence implementation after Days 97–101 or explicitly teach/link every DDL, DML, query-plan, and indexing prerequisite used here.
+- [ ] [P0][C:Lab] Supply a complete runnable capstone: environment setup, full Day 93 schema, deterministic seed script, 1M-row workload, required queries, expected outputs/plans, stress-test steps, and acceptance rubric.
 - [ ] [P1][D:Objectives] Reconcile the outcome “Write a Python Script to seed 1M rows” with the lab goal “Generate 100k rows,” and make the target measurable.
 - [ ] [P1][B:CodeCtx] Explain the DDL and Python blocks line-by-line, including `SERIAL`, decimal precision, foreign-key actions, escaping, Faker dependency setup, and why row-at-a-time SQL generation is chosen.
 - [ ] [P1][A:Concept] Justify 100k/1M rows, rating/fare precision, 30k London rows, costs, and timing claims; distinguish planner cost from elapsed milliseconds.
 - [ ] [P1][M:Coverage] Add transactions, batch inserts/COPY, query-plan interpretation, index selectivity, migrations/rollback, backups, monitoring, and load-testing methodology.
-- [ ] [P1][N:Thread] Require implementation of the riders, GPS, historical archive, ingestion, governance, and KPI decisions established on Day 88, not just two tables.
+- [ ] [P1][N:Thread] Require implementation of the riders, GPS, historical archive, ingestion, governance, and KPI decisions established on Day 93, not just two tables.
 - [ ] [P2][O:Glossary] Add a glossary for constraint, DDL, ETL, seed data, selectivity, bitmap scan, migration, and expand/contract.
 - [ ] [P1][L:Quiz] Add `quiz.json`; also correct the mastery typo “`DROP COLUMM`.”
 
 ---
 
-## Day 90 — Technical Interview Workshop
+## Day 95 — Technical Interview Workshop
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_90_Career_Workshop/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_95_Career_Workshop/README.md`
 
 **Assessment:** The chef-audition bridge, narration advice, four-S framework, tradeoff emphasis, and STAR exercise make this a practical career lesson. Its SQL interview section is too compressed: `PERCENTILE_CONT`, `LEAD`/`LAG`, and the gaps-and-islands query are shown without schema, walkthrough, expected result set, or dialect caveats, while the title promises “**Technical Interview WorkShop**” and outcomes promise a median calculation but no corresponding lab. Several system-design numbers are ungrounded.
 
 **Gap task stubs:**
 
-- [ ] [P0][K:Xref] Move the workshop after the core SQL lessons or add a preparation map to Days 91–96; interviewing learners on advanced SQL before teaching fundamentals reinforces the sequencing problem.
+- [ ] [P0][K:Xref] Move the workshop after the core SQL lessons or add a preparation map to Days 96–101; interviewing learners on advanced SQL before teaching fundamentals reinforces the sequencing problem.
 - [ ] [P1][C:Lab] Add complete interview drills for median, consecutive logins, gaps/islands, and system design with schemas/data, timeboxes, expected outputs, interviewer rubrics, and explained model solutions.
 - [ ] [P1][B:CodeCtx] Explain the gaps-and-islands query line-by-line, including correlated `NOT EXISTS`, boundary handling, aliases, and why it returns only missing starts rather than arbitrary missing ranges.
 - [ ] [P1][A:Concept] Justify “1M req/s,” 10-second flushes, “+5000 likes,” first-seven-character hash choice, and “0.1% click rate”; define collision handling and eventual consistency.
@@ -134,15 +134,15 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 91 — Relational Database Internals
+## Day 96 — Relational Database Internals
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_91_Relational_Databases/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_96_Relational_Databases/README.md`
 
 **Assessment:** The bank-vault and snapshot analogies explain ACID and MVCC clearly, and the deadlock/VACUUM sections introduce meaningful production concerns. However, this foundational relational lesson arrives after the advanced SQL/cloud/governance/capstone sequence, isolation levels are oversimplified, and the labs omit setup schemas, initial values, session configuration, cleanup, and precise expected outputs. Claims such as “**Serializable: Strict Execution. Slowest**” and WAL recovery “**I’ll finish it now**” need technical qualification.
 
 **Gap task stubs:**
 
-- [ ] [P0][K:Xref] Move relational internals before Days 85–90 and add forward links from ACID/MVCC/WAL/isolation to governance, capstone, DML, and query-tuning lessons.
+- [ ] [P0][K:Xref] Move relational internals before Days 90–95 and add forward links from ACID/MVCC/WAL/isolation to governance, capstone, DML, and query-tuning lessons.
 - [ ] [P1][A:Concept] Correct and deepen isolation/WAL explanations: define anomalies, snapshots, locks, checkpoints, redo/undo behavior, and qualify “Serializable: Strict Execution. Slowest.”
 - [ ] [P1][C:Lab] Provide runnable Postgres setup, initial user/account data, two-session instructions, exact expected values/errors, rollback/cleanup, and observation queries for locks/dead tuples.
 - [ ] [P1][M:Coverage] Add normalization (1NF–3NF), keys and relationships, transaction boundaries, phantom/nonrepeatable reads, optimistic retries, WAL archiving/PITR, and autovacuum monitoring.
@@ -153,9 +153,9 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 92 — Advanced DDL & Schema
+## Day 97 — Advanced DDL & Schema
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_92_Data_Definition_Language/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_97_Data_Definition_Language/README.md`
 
 **Assessment:** The hotel-book analogy effectively motivates exclusion constraints, and the app-vs-database logic discussion gives useful decision guidance. But the lesson is explicitly “Advanced DDL” while requiring only “Basic CREATE TABLE,” and it never teaches the broader DDL/schema fundamentals or normalization needed for database architecture. The three SQL labs provide snippets without complete support tables, seed data, verification queries, expected result sets, or line-by-line explanations.
 
@@ -172,9 +172,9 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 93 — Advanced DML & Upserts
+## Day 98 — Advanced DML & Upserts
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_93_Data_Manipulation_Language/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_98_Data_Manipulation_Language/README.md`
 
 **Assessment:** The guest-list and moving-van analogies are accessible, while modifying CTEs and savepoints expose learners to valuable advanced patterns. The lesson incorrectly implies the shown counter upsert is idempotent—“**Runs safely 100 times**” is safe to execute but increments 100 times—and the recommendation to drop indexes for bulk load is presented without concurrency/constraint/recovery caveats. Labs again lack complete schemas, initial data, expected tables, and operational verification.
 
@@ -191,9 +191,9 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 94 — Advanced DQL & Optimization
+## Day 99 — Advanced DQL & Optimization
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_94_Data_Query_Language/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_99_Data_Query_Language/README.md`
 
 **Assessment:** The librarian analogy gives a strong conceptual comparison of scan types, and the lesson usefully introduces SARGability and covering indexes. It is not a complete DQL lesson, however: learners never receive foundational SELECT/filter/group/order semantics, sample schemas/data, or a method for interpreting a plan tree. The statement “**Cost: Arbitrary units (1.0 = reading one 8kb page)**” and thresholds such as “**> 20%**” are overly exact and need qualification.
 
@@ -210,9 +210,9 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 95 — Advanced Joins & Algorithms
+## Day 100 — Advanced Joins & Algorithms
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_95_Joins/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_100_Joins/README.md`
 
 **Assessment:** The wedding-seating analogy and algorithm tradeoffs help demystify physical joins, and the Cartesian-explosion warning is valuable. Yet the lesson assumes “Basic INNER/LEFT JOIN” without conceptually defining INNER, LEFT, RIGHT, FULL, CROSS, and SELF joins or their result shapes, and its labs do not include schemas, seed data, expected result sets, or a complete zero-sales query. The “Hash Join puts all NULLs into one bucket” explanation is also too broad for SQL equi-joins, where null equality semantics matter.
 
@@ -229,9 +229,9 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 
 ---
 
-## Day 96 — Advanced Subqueries
+## Day 101 — Advanced Subqueries
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_96_Subqueries/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_101_Subqueries/README.md`
 
 **Assessment:** The teacher/grading analogy clearly contrasts correlated and uncorrelated subqueries, and the NULL trap is an important topic. The lesson overstates several performance rules—“**Correlated ... Slow. ... O(N^2)**,” “**Always prefer EXISTS**,” and “**Joins are fast**”—without acknowledging optimizer rewrites, indexes, semantics, or cases where `IN` is appropriate. Labs omit full schemas/seed SQL and only one exercise states an expected result.
 
@@ -242,15 +242,15 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 - [ ] [P1][B:CodeCtx] Explain correlated references, scalar cardinality, CTE aggregation, join matching, three-valued logic, and `SELECT 1` line-by-line.
 - [ ] [P1][M:Coverage] Add scalar/multirow subquery errors, semi/anti joins, `ANY`/`ALL`, correlated `LATERAL`, duplicate semantics, null-safe alternatives, and optimizer decorrelation limits.
 - [ ] [P1][H:Pitfalls] Cover `NOT EXISTS` correlation mistakes, duplicate multiplication in rewrites, scalar subqueries returning multiple rows, and semantic differences between JOIN and EXISTS.
-- [ ] [P1][K:Xref] Add explicit links back to Day 95 JOIN semantics and Day 94 plan reading before asking learners to rewrite and benchmark subqueries.
+- [ ] [P1][K:Xref] Add explicit links back to Day 100 JOIN semantics and Day 99 plan reading before asking learners to rewrite and benchmark subqueries.
 - [ ] [P2][O:Glossary] Add a glossary for subquery, correlation, scalar, semi-join, anti-join, three-valued logic, unnesting, and short-circuiting.
 - [ ] [P1][L:Quiz] Add `quiz.json` with explained null and rewrite scenarios.
 
 ---
 
-## Day 96B — NoSQL Deep Dive
+## Day 101B — NoSQL Deep Dive
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_96B_NoSQL_Deep_Dive/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_101B_NoSQL_Deep_Dive/README.md`
 
 **Assessment:** This is one of the phase’s richer lessons: it provides a strong business bridge, substantial MongoDB/Redis/Cassandra examples, a decision framework, and explained mastery answers. Nonetheless, key claims are misleading or overly broad: “**You can only guarantee two**,” “**Redis stores data in-memory — nanosecond latency**,” and the CAP labels for products/configurations need qualification. Code blocks are large but not walked through line-by-line, and coding labs provide starter code without expected outputs, environment setup, or test criteria.
 
@@ -264,15 +264,15 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 - [ ] [P1][H:Pitfalls] Add cache stampede, stale reads, split-brain/configuration risk, unbounded document growth, secondary-index limits, and denormalized-write consistency.
 - [ ] [P2][O:Glossary] Add a glossary for document store, BSON, key-value, wide-column, CAP, eventual consistency, partition key, clustering key, TTL, and cache-aside.
 - [ ] [P1][L:Quiz] Add `quiz.json` mirroring the strong README mastery explanations.
-- [ ] [P1][K:Xref] Correct the “Tomorrow → Day 97B” preview to match the actual Day 96C lesson and link it directly.
+- [ ] [P1][K:Xref] Correct the “Tomorrow → Day 97B” preview to match the actual Day 101C lesson and link it directly.
 
 ---
 
-## Day 96C — Streaming SQL Fundamentals
+## Day 101C — Streaming SQL Fundamentals
 
-**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_96C_Streaming_SQL_Fundamentals/README.md`
+**Path:** `content/lessons/Phase_08_SQL_Mastery_Database_Architecture/Day_101C_Streaming_SQL_Fundamentals/README.md`
 
-**Assessment:** This is the most developed lesson in the phase, with a compelling fraud bridge, business-context table, substantial Kafka/ksqlDB examples, senior pitfalls, and explained mastery answers. Even so, large Python and SQL blocks are not explained line-by-line, the labs are mostly design/TODO prompts without runnable infrastructure, sample events, expected output streams, or verification steps, and several magic thresholds (`$200`, 1/5/30-minute windows, 30%/15%, >1,000 events/s) are not justified. The sequence/preview metadata is inconsistent with Day 96B and the stated next phase.
+**Assessment:** This is the most developed lesson in the phase, with a compelling fraud bridge, business-context table, substantial Kafka/ksqlDB examples, senior pitfalls, and explained mastery answers. Even so, large Python and SQL blocks are not explained line-by-line, the labs are mostly design/TODO prompts without runnable infrastructure, sample events, expected output streams, or verification steps, and several magic thresholds (`$200`, 1/5/30-minute windows, 30%/15%, >1,000 events/s) are not justified. The sequence/preview metadata is inconsistent with Day 101B and the stated next phase.
 
 **Gap task stubs:**
 
@@ -282,7 +282,7 @@ Phase 08 has consistently complete frontmatter, approachable analogies, business
 - [ ] [P1][M:Coverage] Add delivery guarantees, idempotent consumers, transactions, consumer lag/rebalancing, dead-letter queues, replay/backfills, schema registry compatibility, state-store recovery, and stream-table joins.
 - [ ] [P1][F:Tables] Enhance the MBA table with decision guidance and measurable ROI assumptions, total operating cost, false-positive risk, and when batch/micro-batch is preferable.
 - [ ] [P1][H:Pitfalls] Turn the commented “Streaming Pitfalls” into operational playbooks with failure symptoms, metrics/alerts, mitigations, and verification steps.
-- [ ] [P1][K:Xref] Reconcile Day 96B’s “Day 97B” preview, Day 96C’s actual numbering, and the “Next: Phase 9” preview; add direct links to prerequisite lessons and the capstone.
-- [ ] [P1][N:Thread] Add a capstone extension that streams the ride-sharing GPS/trip events designed on Days 88–89 and measures the declared KPI/SLA.
+- [ ] [P1][K:Xref] Reconcile Day 101B’s “Day 97B” preview, Day 101C’s actual numbering, and the “Next: Phase 9” preview; add direct links to prerequisite lessons and the capstone.
+- [ ] [P1][N:Thread] Add a capstone extension that streams the ride-sharing GPS/trip events designed on Days 93–94 and measures the declared KPI/SLA.
 - [ ] [P2][O:Glossary] Add a glossary for topic, partition, offset, consumer group, watermark/lateness, window, materialized table, replay, and delivery semantics.
 - [ ] [P1][L:Quiz] Add `quiz.json` mirroring the detailed README mastery explanations.

@@ -16,9 +16,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 133 — The Analytics Engineer Role — Beyond the Data Analyst
+## Day 138 — The Analytics Engineer Role — Beyond the Data Analyst
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_133_Analytics_Engineer_Role/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_138_Analytics_Engineer_Role/README.md`
 **Assessment:** The lesson outlines the role using simplistic pseudo-code rather than realistic infrastructure/DAG scenarios. The lab exercises are exceptionally thin, using comments like `"# Scenario: Marketing and Finance disagree..."` without any starting sample data. The required quiz and glossary are entirely missing.
 
 **Gap task stubs:**
@@ -30,9 +30,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 134 — Semantic and Metrics Layers — Define Once, Use Everywhere
+## Day 139 — Semantic and Metrics Layers — Define Once, Use Everywhere
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_134_Semantic_and_Metrics_Layers/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_139_Semantic_and_Metrics_Layers/README.md`
 **Assessment:** The lesson introduces semantic layers but fails to frame code effectively. Lab exercises are entirely theoretical and lack any actionable data, e.g., using comments like `"# TODO: Define these 5 metrics..."`. It's missing a quiz and a glossary.
 
 **Gap task stubs:**
@@ -44,9 +44,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 135 — Self-Serve Analytics — Empowering Stakeholders Without Chaos
+## Day 140 — Self-Serve Analytics — Empowering Stakeholders Without Chaos
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_135_Self_Serve_Analytics/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_140_Self_Serve_Analytics/README.md`
 **Assessment:** The lesson provides self-serve concepts through Python dictionaries, which feels artificial. The lab exercises are just single-line prompts like `"Audit your organization's self-serve maturity level and identify 3 improvements."`, lacking a realistic scenario, schema, and expected result.
 
 **Gap task stubs:**
@@ -58,9 +58,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 136 — Data Mesh Principles — Domain Ownership and Federated Governance
+## Day 141 — Data Mesh Principles — Domain Ownership and Federated Governance
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_136_Data_Mesh_Principles/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_141_Data_Mesh_Principles/README.md`
 **Assessment:** The lesson explains Data Mesh principles via conceptual Python dictionaries instead of architecture diagrams or code. The lab exercises are too vague, using prompts like `"Design domain boundaries for a SaaS company..."` without any sample data or clear success criteria.
 
 **Gap task stubs:**
@@ -72,9 +72,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 137 — Product Analytics Deep Dive — Retention, Funnels, Cohorts
+## Day 142 — Product Analytics Deep Dive — Retention, Funnels, Cohorts
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_137_Product_Analytics_Deep_Dive/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_142_Product_Analytics_Deep_Dive/README.md`
 **Assessment:** The lesson includes some SQL for cohort and funnel analysis, but fails to provide any preamble explaining why the queries are structured that way. The lab exercises are missing starting sample schemas and expected SQL query outputs.
 
 **Gap task stubs:**
@@ -86,9 +86,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 138 — A/B Testing at Scale — Statistical Rigor and Experimentation Platforms
+## Day 143 — A/B Testing at Scale — Statistical Rigor and Experimentation Platforms
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_138_AB_Testing_at_Scale/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_143_AB_Testing_at_Scale/README.md`
 **Assessment:** The lesson uses `scipy` for statistical calculations but lacks preambles explaining the statistical theory before the code. The lab exercises are overly brief, like `"Design a test for making the 'Add to Cart' button larger."` without providing necessary schemas or constraints.
 
 **Gap task stubs:**
@@ -100,9 +100,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 139 — Data Products and Monetization — Building Revenue from Data
+## Day 144 — Data Products and Monetization — Building Revenue from Data
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_139_Data_Products_and_Monetization/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_144_Data_Products_and_Monetization/README.md`
 **Assessment:** The lesson uses unhelpful Python dictionaries to explain data products. Lab exercises are completely text-based prompts like `"Design pricing tiers for an embedded analytics dashboard feature..."` without any sample data, schemas, or expected outputs.
 
 **Gap task stubs:**
@@ -114,9 +114,9 @@ Phase 12 heavily uses pseudo-code and dictionaries instead of concrete examples 
 
 ---
 
-## Day 140 — Capstone — Design and Pitch a Data Product
+## Day 145 — Capstone — Design and Pitch a Data Product
 
-**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_140_Capstone_Data_Product/README.md`
+**Path:** `content/lessons/Phase_12_Analytics_Engineering_Data_Products/Day_145_Capstone_Data_Product/README.md`
 **Assessment:** The capstone lesson contains several code blocks that lack preambles entirely. Most importantly, it is completely missing a "Hands-on Lab" section, and like the rest of the phase, has no quiz or glossary.
 
 **Gap task stubs:**

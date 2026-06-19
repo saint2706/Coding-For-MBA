@@ -226,7 +226,7 @@ export default function Lesson() {
 
   const diff = difficultyConfig[lesson.difficulty || 'beginner'] || difficultyConfig.beginner!
   const lessonTitle = `Day ${lesson.day}: ${lesson.title}`
-  const lessonDescription = `Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 140-day Coding for MBA curriculum.`
+  const lessonDescription = `Day ${lesson.day} of Phase ${lesson.phase}: ${lesson.title}. Part of the 145-day Coding for MBA curriculum.`
   const lessonPath = `/lesson/${lesson.day}`
   const showSecondaryUi = !readingMode || nearBottom
 

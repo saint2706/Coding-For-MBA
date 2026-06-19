@@ -4,7 +4,7 @@
 
 ## Phase summary
 
-Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-coded bridge, business framing, senior insights, three exercises, explained mastery checks, and summaries—but most lessons are concise surveys rather than production-ready instruction. The recurring weaknesses are absent `quiz.json` files and glossaries, labs without supplied datasets or verifiable expected outputs, weak cross-lesson/capstone continuity, and substantial missing modern-practice coverage. `extras/README.md` is a supplementary-materials index and quick-start, not a lesson, so it was reviewed but not counted; Days 68–72 overlap Phase 6 numbering and therefore create a K:Xref/navigation risk.
+Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-coded bridge, business framing, senior insights, three exercises, explained mastery checks, and summaries—but most lessons are concise surveys rather than production-ready instruction. The recurring weaknesses are absent `quiz.json` files and glossaries, labs without supplied datasets or verifiable expected outputs, weak cross-lesson/capstone continuity, and substantial missing modern-practice coverage. `extras/README.md` is a supplementary-materials index and quick-start, not a lesson, so it was reviewed but not counted; Days 73–77 overlap Phase 6 numbering and therefore create a K:Xref/navigation risk.
 
 **Recurring gaps in this phase:**
 
@@ -18,9 +18,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 68 — BI Analyst Foundations
+## Day 73 — BI Analyst Foundations
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_68_BI_Analyst_Foundations/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_73_BI_Analyst_Foundations/README.md`
 
 **Assessment:** A strong Phase-1-like opener with a ship-dashboard bridge, business stakes, senior guidance, exercises, and explained mastery answers. However, the lab mostly gives the answer—such as “Definition A,” “Definition B,” and a finished CEO dashboard—rather than letting a learner work from data and verify an output, while the “BI Stack (ELT)” is too compressed to establish production foundations.
 
@@ -35,9 +35,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 69 — BI Strategy & Stakeholders
+## Day 74 — BI Strategy & Stakeholders
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_69_BI_Strategy_and_Stakeholders/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_74_BI_Strategy_and_Stakeholders/README.md`
 
 **Assessment:** The translator analogy and “What decision will you make with that data?” framing are excellent for MBA learners, and the lesson gives practical stakeholder language. Yet its exercises again resolve their own scenarios, and the model-risk “Translation Lab” is an abrupt, unsupported assignment with no sample evidence, rubric, or expected memo.
 
@@ -52,9 +52,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 70 — BI Metrics & Data Literacy
+## Day 75 — BI Metrics & Data Literacy
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_70_BI_Metrics_and_Data_Literacy/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_75_BI_Metrics_and_Data_Literacy/README.md`
 
 **Assessment:** The weight-loss bridge, cohort framing, unit economics, Goodhart’s Law, and seasonality provide a useful conceptual survey. The treatment is nevertheless too formula-driven: “LTV = ARPU / Churn Rate” is presented without assumptions, the cohort exercise has no raw event data, and learners do not practice validating metric definitions against edge cases.
 
@@ -69,9 +69,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 71 — BI Data Landscape
+## Day 76 — BI Data Landscape
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_71_BI_Data_Landscape/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_76_BI_Data_Landscape/README.md`
 
 **Assessment:** The lesson makes OLTP/OLAP, row/column storage, and ELT approachable and includes a useful star-schema prompt. Its “Modern Data Stack” is a narrow happy path, though, and the dbt lab offers only a tiny finished `SELECT` without showing how learners run, test, or inspect it.
 
@@ -82,14 +82,14 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 - [ ] [P1][F:Tables] Add a decision table comparing OLTP, warehouse, lake, and lakehouse by workload, latency, governance, cost, and when not to use each.
 - [ ] [P1][M:Coverage] Explain medallion/layered modeling, data contracts, catalog/lineage, observability, and how the named tools interoperate.
 - [ ] [P1][L:Quiz] Add `quiz.json` with explanations.
-- [ ] [P2][K:Xref] Add prerequisites and links to the earlier database lessons and forward links to Days 81–84C.
+- [ ] [P2][K:Xref] Add prerequisites and links to the earlier database lessons and forward links to Days 86–89C.
 - [ ] [P2][O:Glossary] Add a glossary for OLTP, OLAP, row/columnar, lake, warehouse, lakehouse, star schema, and ELT.
 
 ---
 
-## Day 72 — BI Data Formats & Ingestion
+## Day 77 — BI Data Formats & Ingestion
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_72_BI_Data_Formats_and_Ingestion/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_77_BI_Data_Formats_and_Ingestion/README.md`
 
 **Assessment:** This is one of the more hands-on early lessons: it compares formats and shows API pagination and nested JSON. Still, most code blocks lack a full what/why/expected-result wrapper, and the ingestion pattern omits authentication, retries, incremental state, schema contracts, deduplication, and operational verification.
 
@@ -105,9 +105,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 73 — BI SQL & Databases
+## Day 78 — BI SQL & Databases
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_73_BI_SQL_and_Databases/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_78_BI_SQL_and_Databases/README.md`
 
 **Assessment:** The lesson gives accessible examples of windows, CTEs, indexing, and common BI calculations, with readable business use cases. But it jumps directly to query fragments; there is no sample schema/data, dialect declaration, execution path, or expected result table, and database-performance coverage is reduced largely to “Indexing.”
 
@@ -122,9 +122,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 74 — BI Data Preparation & Tools
+## Day 79 — BI Data Preparation & Tools
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_74_BI_Data_Preparation_and_Tools/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_79_BI_Data_Preparation_and_Tools/README.md`
 
 **Assessment:** The laundry-folding bridge and unpivot/merge/append distinctions are clear and useful for spreadsheet-oriented learners. The lesson remains tool-agnostic to the point of being non-runnable: its exercises lack downloadable dirty data and expected cleaned outputs, while “Replace errors with 0” risks teaching unsafe remediation without business rules.
 
@@ -139,9 +139,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 75 — BI Visualization & Dashboard Principles
+## Day 80 — BI Visualization & Dashboard Principles
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_75_BI_Visualization_and_Dashboard_Principles/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_80_BI_Visualization_and_Dashboard_Principles/README.md`
 
 **Assessment:** The lesson offers memorable principles—“If it doesn't help the user understand the data, delete it,” pre-attentive processing, chart selection, accessibility, and a scoring rubric. It lacks actual before/after visual artifacts and datasets, so the makeover and accessibility exercises cannot be objectively completed or compared.
 
@@ -156,9 +156,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 76 — BI Platforms & Automation Tools
+## Day 81 — BI Platforms & Automation Tools
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_76_BI_Platforms_and_Automation_Tools/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_81_BI_Platforms_and_Automation_Tools/README.md`
 
 **Assessment:** Semantic layers, import/direct query, RLS, headless BI, TCO, and governance are the right platform-selection concepts. However, the exercises are conceptual placeholders—“Write a rule”—and there is no concrete platform comparison, automation implementation, sample identity model, or expected security test.
 
@@ -174,9 +174,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 77 — BI Domain Analytics & Value Drivers
+## Day 82 — BI Domain Analytics & Value Drivers
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_82_BI_Domain_Analytics_and_Value_Drivers/README.md`
 
 **Assessment:** The lesson connects marketing, product, sales, finance, and operations metrics to value and strongly reinforces “Don't be a Chart Monkey.” Its formulas and three short exercises are too shallow for domain analytics: definitions, denominators, accounting treatment, attribution, and cross-functional metric conflicts are largely absent.
 
@@ -191,9 +191,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 78 — BI Experimentation & Predictive Insights
+## Day 83 — BI Experimentation & Predictive Insights
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_78_BI_Experimentation_and_Predictive_Insights/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_83_BI_Experimentation_and_Predictive_Insights/README.md`
 
 **Assessment:** The courtroom bridge, HiPPO warning, peeking caution, and rubric create an approachable introduction. The lesson risks serious misunderstanding because p-values, significance, forecasting, and correlation are compressed into rules of thumb; the “Significance Test (Excel/Python Logic)” has neither code nor data nor expected computation.
 
@@ -209,9 +209,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 79 — BI Storytelling & Stakeholder Influence
+## Day 84 — BI Storytelling & Stakeholder Influence
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84_BI_Storytelling_and_Stakeholder_Influence/README.md`
 
 **Assessment:** The narrative arc, Minto-style “So What?” pyramid, managing-up advice, gotcha-question response, and scoring rubric are practical. But the lesson gives no raw analysis or stakeholder context from which to build its makeover, email, or script, and it underplays uncertainty, dissent, and decision follow-through.
 
@@ -226,9 +226,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 80 — BI Data Quality & Governance
+## Day 85 — BI Data Quality & Governance
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_80_BI_Data_Quality_and_Governance/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_85_BI_Data_Quality_and_Governance/README.md`
 
 **Assessment:** The food-inspection bridge, six quality dimensions, lineage, automated testing, and RACI prompt establish important governance concepts. Yet “Data Governance is about people, not tools” is followed by little operating-model depth, and the lab lacks data, test execution, incident handling, or expected quality results.
 
@@ -243,9 +243,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 81 — BI Architecture & Data Modeling
+## Day 86 — BI Architecture & Data Modeling
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_81_BI_Architecture_and_Data_Modeling/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_86_BI_Architecture_and_Data_Modeling/README.md`
 
 **Assessment:** Facts/dimensions, star vs snowflake, OBT, surrogate keys, and grain are correctly prioritized, and “Grain is Everything” is strong senior advice. The lesson stops before the modeling decisions that commonly break production analytics, and the SQL denormalization exercise has no source schema, data, execution steps, or expected table.
 
@@ -260,9 +260,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 82 — BI ETL & Pipeline Automation
+## Day 87 — BI ETL & Pipeline Automation
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_82_BI_ETL_and_Pipeline_Automation/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_87_BI_ETL_and_Pipeline_Automation/README.md`
 
 **Assessment:** The assembly-line bridge and focus on idempotency, DAGs, backfills, retries, and the “3 AM Test” target the right operational mindset. The only code is a partial function prompt, so learners never build or operate a pipeline, and crucial production concerns such as state, observability, testing, SLAs, and safe deployment remain thin.
 
@@ -277,9 +277,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 83 — BI Cloud & Modern Data Stack
+## Day 88 — BI Cloud & Modern Data Stack
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_83_BI_Cloud_and_Modern_Data_Stack/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_88_BI_Cloud_and_Modern_Data_Stack/README.md`
 
 **Assessment:** The restaurant analogy, separation of storage/compute, reverse ETL, pruning, FinOps, and zero-copy cloning give learners useful cloud intuitions. The lesson remains a vendor/tool survey without a deployable architecture, measurable cost model, security baseline, or nuanced discussion of when the modern data stack is the wrong choice.
 
@@ -295,9 +295,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 84 — BI Career Development & Capstone
+## Day 89 — BI Career Development & Capstone
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84_BI_Career_Development_and_Capstone/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_89_BI_Career_Development_and_Capstone/README.md`
 
 **Assessment:** The portfolio analogy, impact resume formula, STAR example, capstone brief, and standardized rubric make the phase outcome tangible. But the capstone is only a high-level checklist—“Data: Public E-Commerce Dataset (e.g., Olist or Superstore)”—without a pinned dataset, milestones, acceptance tests, expected artifacts, or integration of the governance and production skills taught throughout the phase.
 
@@ -313,9 +313,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 84B — dbt Fundamentals
+## Day 89B — dbt Fundamentals
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84B_dbt_Fundamentals/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_89B_dbt_Fundamentals/README.md`
 
 **Assessment:** This is a substantial, code-rich lesson with project structure, models, sources, freshness, tests, commands, materializations, senior trade-offs, and links to the extras scaffold. It still functions more as snippets than a verified walkthrough: several blocks are introduced only by headings, labs omit expected compiled/model/test outputs, and advanced production dbt practices are missing.
 
@@ -331,9 +331,9 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 
 ---
 
-## Day 84C — Reverse ETL & Semantic Layer
+## Day 89C — Reverse ETL & Semantic Layer
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84C_Reverse_ETL_and_Semantic_Layer/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_89C_Reverse_ETL_and_Semantic_Layer/README.md`
 
 **Assessment:** This is the phase’s deepest modern-stack lesson, with a clear mail-truck bridge, reverse-ETL design, semantic-layer examples, MBA context, anti-patterns, and architecture decisions. Even here, code blocks often have heading-only context, the Python mock swallows all exceptions, labs are design prompts without runnable systems or expected outputs, and governance/operations of metric and sync changes need depth.
 
@@ -345,5 +345,5 @@ Phase 07 has unusually consistent scaffolding—complete frontmatter, a never-co
 - [ ] [P1][M:Coverage] Add semantic-layer governance: metric contracts, dimensions/entities, access control, versioning, deprecation, caching, performance, testing, and reconciliation to Finance.
 - [ ] [P1][F:Tables] Upgrade the MBA-context table and tool mentions into decision guidance for reverse ETL and semantic-layer build/buy choices.
 - [ ] [P1][L:Quiz] Add `quiz.json` with explained architecture/configuration questions.
-- [ ] [P2][K:Xref] Clarify ordering among Day 84, 84B, and 84C and ensure “Phase 7 Complete” appears only on the actual final lesson.
+- [ ] [P2][K:Xref] Clarify ordering among Day 89, 84B, and 84C and ensure “Phase 7 Complete” appears only on the actual final lesson.
 - [ ] [P2][O:Glossary] Define reverse ETL, semantic layer, metric store, match key, idempotency, full/incremental sync, entity, measure, and dimension.

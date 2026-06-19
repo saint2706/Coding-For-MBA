@@ -1,0 +1,109 @@
+{
+  "day": 80,
+  "questions": [
+    {
+      "id": "d80q01",
+      "type": "multiple_choice",
+      "question": "In the flawed 'BrightCart Q2 Performance' dashboard critique, the Returns vs. Profit bar chart's Y-axis starts at $900,000 instead of $0. What problem does this cause?",
+      "options": [
+        "No problem -- bars remain perfectly proportional regardless of axis start point",
+        "It exaggerates the visual size of small differences between bars, making minor changes look dramatic",
+        "It is a requirement for rendering bar charts correctly",
+        "It only affects line charts, not bar charts"
+      ],
+      "answer": 1,
+      "explanation": "Truncating a bar chart's Y-axis distorts the visual ratio between bar heights. A real 10% difference in the underlying data can look like a 300% difference on screen when the axis doesn't start at zero -- one of the most common ways a dashboard can mislead without containing a single factually wrong number."
+    },
+    {
+      "id": "d80q02",
+      "type": "multiple_choice",
+      "question": "The flawed BrightCart dashboard uses a dual-axis line chart with two independently scaled Y-axes to compare 'This Quarter vs Last Quarter' revenue. What is the core risk?",
+      "options": [
+        "Dual-axis charts always render incorrectly",
+        "The two lines can be made to visually 'cross' or appear correlated purely by manipulating each axis's scale independently, regardless of the actual relationship in the data",
+        "It uses too much data-ink",
+        "It is the most accessible chart type for color blindness"
+      ],
+      "answer": 1,
+      "explanation": "Because each line in a dual-axis chart has its own independent scale, you can make almost any two series visually cross or appear correlated just by adjusting axis ranges -- creating a misleading impression of a relationship that may not exist in the underlying numbers."
+    },
+    {
+      "id": "d80q03",
+      "type": "multiple_choice",
+      "question": "A BrightCart warehouse operations manager needs to know immediately if the order queue is backing up. What dashboard type and refresh cadence fits this persona?",
+      "options": [
+        "A strategic/analytical dashboard refreshed weekly, with 3-5 BANs",
+        "An operational dashboard ('the Cockpit') refreshed in real-time or every few minutes, dense and alert-driven",
+        "A static PDF emailed monthly",
+        "The same exact dashboard built for the CEO"
+      ],
+      "answer": 1,
+      "explanation": "Operational personas like a warehouse manager need to detect and react to problems happening right now -- this calls for a dense, real-time/near-real-time 'Cockpit' style dashboard, not a slow-refreshing strategic summary meant for board-level narrative."
+    },
+    {
+      "id": "d80q04",
+      "type": "multiple_choice",
+      "question": "Why does the lesson's chart-selection decision matrix recommend a Bar Chart over a Pie Chart for comparing BrightCart's 8+ product categories by revenue?",
+      "options": [
+        "Pie charts cannot display more than 3 categories technically",
+        "Human eyes compare bar length more accurately than pie-slice angles, and many slices become impossible to distinguish",
+        "Bar charts always use less data-ink than pie charts",
+        "Pie charts are not supported in any BI tool"
+      ],
+      "answer": 1,
+      "explanation": "Visual perception research shows people judge length (as in a bar chart) far more accurately than angle or area (as in a pie chart). With many categories, pie slices become too small and similarly sized to distinguish, while a sorted bar chart remains readable."
+    },
+    {
+      "id": "d80q05",
+      "type": "multiple_choice",
+      "question": "What does 'freshness' mean in the context of a BI dashboard, and why does the lesson emphasize displaying it explicitly?",
+      "options": [
+        "How visually modern/new the dashboard's design looks",
+        "How recently the underlying data was updated; without showing it, viewers may wrongly assume they're seeing live data when it's actually a stale batch load",
+        "The font choice used in chart labels",
+        "How many colors are used in the chart palette"
+      ],
+      "answer": 1,
+      "explanation": "Freshness refers to how current the data is. If a dashboard doesn't display an explicit 'Data as of' timestamp, viewers (including executives) may assume they're looking at today's numbers when they're actually looking at yesterday's or last week's batch load, leading to decisions based on stale information."
+    },
+    {
+      "id": "d80q06",
+      "type": "multiple_choice",
+      "question": "A choropleth map shading BrightCart return rates by region makes a huge, sparsely populated region look like the biggest problem area, even though it represents a tiny share of total orders. What is this called, and what's a better alternative?",
+      "options": [
+        "This is accurate and requires no alternative",
+        "Area bias -- a sized-dot map, cartogram, or a paired sortable table better represents true impact regardless of geographic size",
+        "Color blindness -- the fix is to remove all color from the map",
+        "Granularity error -- the fix is to zoom in further"
+      ],
+      "answer": 1,
+      "explanation": "Choropleth maps shade by geographic area, which has no necessary relationship to a region's actual order volume or business importance. This 'area bias' can make a large, low-volume region visually dominate. Sized-dot maps, cartograms, or a sortable table alongside the map better reflect true weight."
+    },
+    {
+      "id": "d80q07",
+      "type": "multiple_choice",
+      "question": "Per the 5-Second Rule, what should you do if a stranger looking at your BrightCart dashboard for 5 seconds cannot answer 'who is this for,' 'is it good or bad,' and 'what should I do'?",
+      "options": [
+        "Add more charts to provide additional context",
+        "Delete half the charts -- the dashboard has too much noise obscuring the core message",
+        "Switch every chart to a 3D pie chart",
+        "Nothing -- the rule only applies to mobile dashboards"
+      ],
+      "answer": 1,
+      "explanation": "The 5-Second Rule is a clarity test. If a viewer can't quickly identify the audience, the verdict (good/bad), and the implied action, the dashboard has too much competing visual noise. The fix is subtraction -- removing charts that don't serve the core message -- not addition."
+    },
+    {
+      "id": "d80q08",
+      "type": "multiple_choice",
+      "question": "Why does the lesson recommend pairing a Red/Green 'Profit vs Returns' color scheme with explicit plus/minus icons or intensity differences?",
+      "options": [
+        "To make the chart more colorful and visually interesting",
+        "Because roughly 8% of men have red-green color blindness (e.g., protanopia) and cannot reliably distinguish the two colors without an additional visual cue",
+        "Red and Green are not allowed in any professional dashboard",
+        "It is purely a stylistic preference with no accessibility basis"
+      ],
+      "answer": 1,
+      "explanation": "Protanopia and other forms of red-green color blindness affect a meaningful share of viewers (especially men), making red and green appear similarly brown/muted. Adding icons (plus/minus) or intensity variation (dark vs. light) ensures the good/bad signal is still readable without relying on color alone."
+    }
+  ]
+}

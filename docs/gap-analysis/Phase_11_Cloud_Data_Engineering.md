@@ -17,9 +17,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 121 — Cloud Fundamentals
+## Day 126 — Cloud Fundamentals
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_121_Cloud_Fundamentals/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_126_Cloud_Fundamentals/README.md`
 **Assessment:** The lesson explains broad cloud concepts and pricing well, but the AWS/GCP/Azure trade-offs are mostly listed in tables without deep conceptual justification. The hands-on labs are merely code stubs, such as `"TODO: Calculate monthly cloud costs broken down by category."`
 
 **Gap task stubs:**
@@ -32,9 +32,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 122 — Object Storage
+## Day 127 — Object Storage
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_122_Object_Storage/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_127_Object_Storage/README.md`
 **Assessment:** Introduces S3 and the medallion architecture well, but code blocks like `table_format_comparison` jump straight into Python dicts without explaining *why* we are defining them this way. Labs are weak; they ask to `"TODO: Design the S3 bucket structure with..."` but provide no actual testing framework or expected JSON.
 
 **Gap task stubs:**
@@ -46,9 +46,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 123 — Cloud Data Warehouses
+## Day 128 — Cloud Data Warehouses
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_123_Cloud_Data_Warehouses/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_128_Cloud_Data_Warehouses/README.md`
 **Assessment:** Explains BigQuery vs Snowflake effectively, but provides minimal "decision guidance" on exactly when to choose which warehouse based on real-world constraints. The code blocks (e.g., BigQuery API usage) begin immediately after headings without proper context.
 
 **Gap task stubs:**
@@ -61,9 +61,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 124 — dbt at Scale
+## Day 129 — dbt at Scale
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_124_dbt_at_Scale/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_129_dbt_at_Scale/README.md`
 **Assessment:** Covers dbt models and incremental logic, but macro and incremental code blocks (like `{% if is_incremental() %}`) are presented abruptly without explaining *why* this specific Jinja syntax is required. The labs provide no sample raw data or expected compiled SQL.
 
 **Gap task stubs:**
@@ -75,9 +75,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 125 — Orchestration
+## Day 130 — Orchestration
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_125_Orchestration/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_130_Orchestration/README.md`
 **Assessment:** Touches on Airflow DAGs appropriately, but fails to provide any Pitfalls callouts regarding Airflow's scheduler limits or the danger of top-level code in DAG files. Labs are merely placeholders with `"pass"`.
 
 **Gap task stubs:**
@@ -89,9 +89,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 126 — Streaming Pipelines
+## Day 131 — Streaming Pipelines
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_126_Streaming_Pipelines/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_131_Streaming_Pipelines/README.md`
 **Assessment:** Good introduction to Kafka and Flink, but code blocks dive into `confluent_kafka` imports immediately. Explanations of why we use streaming vs batch lack clear cut-off metrics (e.g., latency bounds). Labs are empty stubs.
 
 **Gap task stubs:**
@@ -104,9 +104,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 127 — Lakehouse Architecture
+## Day 132 — Lakehouse Architecture
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_127_Lakehouse_Architecture/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_132_Lakehouse_Architecture/README.md`
 **Assessment:** The lesson explains the convergence of lakes and warehouses, but table comparisons between Delta/Iceberg/Hudi lack clear decision guidance on when to choose Hudi over Iceberg. Labs only ask to write pseudo-code.
 
 **Gap task stubs:**
@@ -118,9 +118,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 128 — Data Contracts and Quality
+## Day 133 — Data Contracts and Quality
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_128_Data_Contracts_and_Quality/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_133_Data_Contracts_and_Quality/README.md`
 **Assessment:** Introduces Great Expectations well, but the actual implementation code blocks lack a preamble explaining the `gx` API. There is no business framing on how to convince upstream teams to adopt contracts.
 
 **Gap task stubs:**
@@ -133,9 +133,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 129 — Cloud Security and Compliance
+## Day 134 — Cloud Security and Compliance
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_129_Cloud_Security_and_Compliance/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_134_Cloud_Security_and_Compliance/README.md`
 **Assessment:** Discusses IAM and encryption. However, the `compliance_matrix` is just dumped as a dictionary without preambles. It fails to define key jargon like "Customer Managed Keys" (CMK) thoroughly before using them.
 
 **Gap task stubs:**
@@ -147,9 +147,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 130 — Cost Engineering
+## Day 135 — Cost Engineering
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_130_Cost_Engineering/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_135_Cost_Engineering/README.md`
 **Assessment:** Strong focus on FinOps, but code blocks outlining FinOps pillars lack setup explanations. The lab just asks the user to `"Write a 1-page FinOps policy"`, which provides no expected coding result or metrics to hit.
 
 **Gap task stubs:**
@@ -161,9 +161,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 131 — Platform Engineering
+## Day 136 — Platform Engineering
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_131_Platform_Engineering/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_136_Platform_Engineering/README.md`
 **Assessment:** Discusses Terraform and Infrastructure as Code. The Terraform HCL examples lack detailed line-by-line justification for the resource configurations. Labs are mostly `"TODO"` stubs without provided state outputs.
 
 **Gap task stubs:**
@@ -175,9 +175,9 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 ---
 
-## Day 132 — Capstone Cloud Data Pipeline
+## Day 137 — Capstone Cloud Data Pipeline
 
-**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_132_Capstone_Cloud_Data_Pipeline/README.md`
+**Path:** `content/lessons/Phase_11_Cloud_Data_Engineering/Day_137_Capstone_Cloud_Data_Pipeline/README.md`
 **Assessment:** The capstone successfully outlines an end-to-end project but completely lacks a Glossary or Quiz. As a capstone, it misses a "Real senior/production insight" section explaining how this pipeline would fail in production.
 
 **Gap task stubs:**

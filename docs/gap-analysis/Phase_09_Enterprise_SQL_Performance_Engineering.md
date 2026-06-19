@@ -4,7 +4,7 @@
 
 ## Phase summary
 
-Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consistently delivers analogy-first structure, senior-level insights, and a 5-question mastery check per lesson. However, every lesson is missing a `quiz.json` file and a glossary, lab exercises never supply INSERT seed data or expected result sets, and mastery-check answer explanations are reduced to one-liners. A phase-wide copy-paste of an identical Escalating Incident Drill Track across all 12 regular lessons satisfies the recurring-drill requirement on paper while providing zero building narrative. Two structural sequencing problems undercut coherence: Day 104 (Database Design fundamentals) appears after advanced analytical lessons that depend on normalisation literacy, and Day 108's closing line announces "You have completed Phase 9" while two more lessons follow.
+Phase 9 covers a strong set of enterprise SQL topics (Days 102–113C) and consistently delivers analogy-first structure, senior-level insights, and a 5-question mastery check per lesson. However, every lesson is missing a `quiz.json` file and a glossary, lab exercises never supply INSERT seed data or expected result sets, and mastery-check answer explanations are reduced to one-liners. A phase-wide copy-paste of an identical Escalating Incident Drill Track across all 12 regular lessons satisfies the recurring-drill requirement on paper while providing zero building narrative. Two structural sequencing problems undercut coherence: Day 109 (Database Design fundamentals) appears after advanced analytical lessons that depend on normalisation literacy, and Day 113's closing line announces "You have completed Phase 9" while two more lessons follow.
 
 **Recurring gaps in this phase:**
 
@@ -21,9 +21,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 97 — Materialized Views & Caching
+## Day 102 — Materialized Views & Caching
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_97_Views/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_102_Views/README.md`
 
 **Assessment:** The "Live Stream vs DVD" analogy is effective, and the CONCURRENT refresh mechanism is explained correctly. Senior-level insight on Eventual Consistency is actionable. However, the lab exercises name steps without providing any schema DDL or INSERT data ("Create a table with 1M rows (generate_series)" is an instruction, not a usable script), and no expected result is shown — a learner cannot self-assess. Mastery-check answers reduce to one-phrase tags: "B / Standard views are virtual." The jargon "DAG" and "dbt" appear in Senior Insights without definition. The decision question "when should I use a view, materialized view, or base-table query?" is never answered with a decision table. No glossary, no quiz.json, and the Incident Drill Track is unrelated to this lesson's content.
 
@@ -38,15 +38,15 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 - [ ] [P1][F:Tables] Add a decision table with columns: **Scenario → Standard View vs MView vs Base Table Query** — include rows for real-time dashboards, daily finance reports, ad hoc exploration, and high-frequency OLTP reads.
 - [ ] [P1][E:Framing] Add a business-impact paragraph quantifying the trade-off: e.g., "A dashboard querying a 500M-row fact table 300 times/day at 2s/query vs 5ms/query from an MView saves ~16 hours of DB CPU per day."
 - [ ] [P1][A:Concept] Define "DAG" and "Airflow/dbt" on first use; add a footnote or inline "(see Day X for dbt)".
-- [ ] [P1][N:Thread] Replace the generic Incident Drill Track with a Day 97-specific scenario: "The nightly MView refresh completed but the dashboard still shows yesterday's data — diagnose whether the refresh ran, check `pg_stat_user_tables`, and add a CONCURRENT index to fix the production outage window."
-- [ ] [P2][K:Xref] Add inline cross-reference: "Prereq: B-Tree indexing (Day 98 covers GIN/GiST alternatives)."
+- [ ] [P1][N:Thread] Replace the generic Incident Drill Track with a Day 102-specific scenario: "The nightly MView refresh completed but the dashboard still shows yesterday's data — diagnose whether the refresh ran, check `pg_stat_user_tables`, and add a CONCURRENT index to fix the production outage window."
+- [ ] [P2][K:Xref] Add inline cross-reference: "Prereq: B-Tree indexing (Day 103 covers GIN/GiST alternatives)."
 - [ ] [P2][M:Coverage] Add coverage of **incremental/partial MView patterns** using `WHERE` clause MViews for recency windows — production teams often maintain a "hot" MView of last 30 days rather than the full table.
 
 ---
 
-## Day 98 — Advanced Indexing (GIN, GiST, BRIN)
+## Day 103 — Advanced Indexing (GIN, GiST, BRIN)
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_98_Indexes/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_103_Indexes/README.md`
 
 **Assessment:** The filing-cabinet analogy (phonebook / textbook index / map / chapter summary) is strong and memorable. The three index types are correctly characterised. However, the lab exercises contain no INSERT code — Exercise 1 says "INSERT INTO books (100k rows with random tags)" without supplying the SQL, leaving learners unable to reproduce it. No EXPLAIN plan output is shown, so the "Bitmap Heap Scan" mentioned in Exercise 1 cannot be verified. The write-penalty pitfall for GIN is buried in prose. The decision table comparing all four index types (B-Tree/GIN/GiST/BRIN) by column type, query operator, and write frequency is absent. Hash indexes, partial indexes, covering indexes (`INCLUDE`), and `pg_trgm` for fuzzy search are not covered despite the final mastery question referencing `pg_trgm` in passing.
 
@@ -65,9 +65,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 99 — Distributed Transactions & Concurrency
+## Day 104 — Distributed Transactions & Concurrency
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_99_Transactions/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_104_Transactions/README.md`
 
 **Assessment:** The wedding-vows analogy for 2PC is excellent. CAP Theorem and Sagas are correctly summarised. However, Exercise 2 ("Design failure — Tx1: Lock A on DB1, wait for B on DB2") is a thought experiment with no runnable SQL, and Exercise 3 is explicitly labelled "(Paper)" — neither produces evidence the learner can inspect. The title promises "Distributed Transactions & Concurrency" but standard MVCC isolation levels (READ COMMITTED vs REPEATABLE READ vs SERIALIZABLE), `SELECT FOR UPDATE`, and advisory locks — the bread-and-butter of concurrency for a single database — are entirely absent. The tag `XA` appears in frontmatter but the term is never explained in the lesson body. "WAL" is used without definition. No glossary, no quiz.json, no expected results.
 
@@ -79,7 +79,7 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 - [ ] [P0][C:Lab] Exercise 2: convert the thought experiment into runnable SQL using two Postgres sessions (`SET lock_timeout = '2s'; BEGIN; SELECT * FROM a FOR UPDATE;`) with **Expected result**: error `ERROR: canceling statement due to lock timeout`.
 - [ ] [P1][M:Coverage] Add a new section **"MVCC Isolation Levels"** covering READ COMMITTED (default), REPEATABLE READ, and SERIALIZABLE with a 3-row comparison table and a concrete anomaly example (phantom read, non-repeatable read) for each isolation gap.
 - [ ] [P1][M:Coverage] Add `SELECT FOR UPDATE / SKIP LOCKED` patterns — critical for job-queue implementations and high-concurrency inventory deduction, which are top MBA-level business scenarios.
-- [ ] [P1][A:Concept] Define "WAL" on first use (line 64: "Writes all changes to WAL (Disk)") — add "(Write-Ahead Log: Postgres's sequential change journal, see Day 108 for MVCC)".
+- [ ] [P1][A:Concept] Define "WAL" on first use (line 64: "Writes all changes to WAL (Disk)") — add "(Write-Ahead Log: Postgres's sequential change journal, see Day 113 for MVCC)".
 - [ ] [P1][A:Concept] Define "XA" from the frontmatter tags somewhere in the body — it is the ISO/XA standard name for 2PC across heterogeneous databases and appears on enterprise job descriptions.
 - [ ] [P1][F:Tables] Add a decision table: **Pattern → Consistency level → Latency overhead → Best for** comparing 2PC, Sagas, Eventual Consistency (Kafka), and SERIALIZABLE isolation.
 - [ ] [P1][H:Pitfalls] Promote "In-Doubt Transaction" (buried in the Technical Deep Dive as "The Risk") to a named `> ⚠️ Pitfall: In-Doubt Transaction Lock Starvation` callout with detection (`SELECT * FROM pg_prepared_xacts`) and fix (`ROLLBACK PREPARED 'tx_id'`).
@@ -88,9 +88,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 100 — Advanced Stored Procedures
+## Day 105 — Advanced Stored Procedures
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_100_Stored_Procedures/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_105_Stored_Procedures/README.md`
 
 **Assessment:** The vending-machine analogy cleanly maps control flow to business reality. The SECURITY DEFINER "sudo" pattern is well explained. Code blocks in the lab are unusually complete — the three exercises provide full function DDL. However, the exercises reference an `employees` and `users` table without providing CREATE TABLE / INSERT seed statements, so learners cannot run the code as written. No expected console output is shown for any exercise. The tag `"Dynamic SQL (EXECUTE format)"` appears in the frontmatter but the lesson body uses string concatenation (`||`) rather than the safer `format('TRUNCATE TABLE %I', tbl)` function, which is the current best practice. Cursors, `RETURN NEXT`, `OUT` parameters, and PL/Python as an alternative language are entirely absent.
 
@@ -110,9 +110,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 101 — Triggers & Event-Driven SQL
+## Day 106 — Triggers & Event-Driven SQL
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_101_Triggers/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_106_Triggers/README.md`
 
 **Assessment:** The "Security Guard vs Photographer" analogy is vivid and correctly maps BEFORE/AFTER timing. The three exercises cover sanitisation, audit logging, and NOTIFY — a solid coverage arc. The `NOTIFY`/`LISTEN` pattern is under-explained compared to its importance for event-driven architecture. The JSONB diff operator `to_jsonb(NEW) - to_jsonb(OLD)` in Exercise 2 is used without any preamble explaining what it produces (a JSONB object containing only changed keys), making it opaque to beginners. The trigger cascade pitfall is in Senior Insights prose, not a callout. INSTEAD OF triggers (for updatable views) and event triggers (DDL-level) are absent. No sample data, no expected results.
 
@@ -132,9 +132,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 102 — Advanced CTEs & Recursion
+## Day 107 — Advanced CTEs & Recursion
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_102_Common_Table_Expressions/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_107_Common_Table_Expressions/README.md`
 
 **Assessment:** The family-tree analogy cleanly separates the anchor/recursive members. The three-part lab (org chart, bill of materials, cycle panic) follows a good escalation arc. The full org-chart recursive CTE in the Technical Deep Dive is one of the better code examples in Phase 9 — it is self-contained and well-commented. Key weaknesses: exercises have no seed data and no expected query results, so "Name: Charlie / Path: Alice -> Bob -> Charlie / Level: 3" is stated as a goal but learners cannot verify their output. The `UNION ALL` vs `UNION` choice in recursion is unexplained. Q3's mastery-check answer references "mathematically defined fixed-point" without any explanation of what that means. The Postgres 14 `SEARCH` and `CYCLE` clauses, and the closure-table alternative, are absent.
 
@@ -153,9 +153,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 103 — Pivoting & Crosstabs
+## Day 108 — Pivoting & Crosstabs
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_103_Pivoting_Data/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_108_Pivoting_Data/README.md`
 
 **Assessment:** The tally-mark-to-scoreboard analogy lands well. All three pivot approaches (manual CASE/FILTER, crosstab, JSON aggregation) are covered. The senior insight "Report in DB vs BI Tool" is an important decision that MBA students need. Gaps: the `crosstab` function is shown with only 1-argument form but the production-safe 2-argument form (which specifies category values and prevents column-order bugs) is not covered. No seed data is provided for any exercise. Exercise 2 gives a stub (`SELECT * FROM crosstab(...)`) with no full working example. The "Sparse Matrix Problem" pitfall sits in Senior Insights without quantification. `string_agg` for list pivots and the `MODE()` filter-based approach are absent.
 
@@ -173,11 +173,11 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 104 — Database Design & Normalization
+## Day 109 — Database Design & Normalization
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_104_Database_Design_and_Normalization/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_109_Database_Design_and_Normalization/README.md`
 
-**Assessment:** The address-book analogy for normalisation anomalies is clear. The 1NF/2NF/3NF treatment covers the essential definitions and the anomaly taxonomy (update/insertion/deletion) is correctly characterised. The senior insight on Natural vs Surrogate Keys is practical and actionable. Critical gaps: BCNF is listed as a concept in the frontmatter, appears in the Mastery Check (Q5), but is **never explained in the lesson body** — a learner cannot answer the question from the material provided. The lesson is sequenced at Day 104, *after* Days 97–103 which build advanced analytical patterns on top of relational tables — normalization fundamentals should anchor the phase, not follow it. No expected results, no sample data, no quiz.json, no glossary.
+**Assessment:** The address-book analogy for normalisation anomalies is clear. The 1NF/2NF/3NF treatment covers the essential definitions and the anomaly taxonomy (update/insertion/deletion) is correctly characterised. The senior insight on Natural vs Surrogate Keys is practical and actionable. Critical gaps: BCNF is listed as a concept in the frontmatter, appears in the Mastery Check (Q5), but is **never explained in the lesson body** — a learner cannot answer the question from the material provided. The lesson is sequenced at Day 109, *after* Days 102–108 which build advanced analytical patterns on top of relational tables — normalization fundamentals should anchor the phase, not follow it. No expected results, no sample data, no quiz.json, no glossary.
 
 **Gap task stubs:**
 
@@ -186,7 +186,7 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 - [ ] [P0][A:Concept] **Add a BCNF explanation** in the Technical Deep Dive — the concept appears in both the frontmatter and Mastery Check Q5 but is entirely absent from the lesson content. Minimum: "BCNF (Boyce-Codd Normal Form) is a stricter version of 3NF: for every non-trivial functional dependency X→Y, X must be a superkey. BCNF violations occur when a non-superkey attribute determines another attribute, even when 3NF is satisfied."
 - [ ] [P0][C:Lab] Exercise 1 ("Convert to 1NF"): add `CREATE TABLE orders (id int, items text); INSERT INTO orders VALUES (1,'Apple, Banana');` and show **Expected result**: `CREATE TABLE order_items (order_id int, item text);` with `| order_id | item |` rows `(1,'Apple'),(1,'Banana')`.
 - [ ] [P0][C:Lab] Exercise 2 ("Achieving 3NF"): provide a full before/after schema with sample data and a query demonstrating the anomaly fixed — `SELECT b.isbn, b.title, a.name FROM books b JOIN authors a ON b.author_id = a.id`.
-- [ ] [P1][K:Xref] **Sequencing flag**: Day 104 (normalisation fundamentals) appears after Days 97–103 which use relational schemas and join patterns that presuppose normalisation literacy. Recommend moving Day 104 to Day 97 or creating a forward cross-reference at Day 97: "(For normalisation foundations that underpin this lesson's table design, see Day 104.)"
+- [ ] [P1][K:Xref] **Sequencing flag**: Day 109 (normalisation fundamentals) appears after Days 102–108 which use relational schemas and join patterns that presuppose normalisation literacy. Recommend moving Day 109 to Day 102 or creating a forward cross-reference at Day 102: "(For normalisation foundations that underpin this lesson's table design, see Day 109.)"
 - [ ] [P1][F:Tables] Add a table: **Normal Form → Rule → Violation Example → How to Fix** — covering 1NF through BCNF in a single reference table.
 - [ ] [P1][F:Tables] Add a separate decision table: **OLTP (3NF) vs OLAP (Star Schema) vs Hybrid** — with columns for write frequency, query complexity, join count, and maintenance overhead.
 - [ ] [P1][H:Pitfalls] Convert "Over-Normalization" (Senior Insights) into a named `> ⚠️ Pitfall: Over-Engineering the Schema` callout: "Junior engineers split Address into 8 fields. Senior engineers ask: 'What query would ever filter by Street Suffix?' If the answer is none, keep it as a single text column."
@@ -195,9 +195,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 105 — JSON & NoSQL in SQL
+## Day 110 — JSON & NoSQL in SQL
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_105_JSON_in_SQL/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_110_JSON_in_SQL/README.md`
 
 **Assessment:** The "Form vs Box" analogy accurately captures the schemaless trade-off. JSONB vs JSON, the three key operators (`->`, `->>`, `@>`), and GIN indexing are well described. The senior insight on update write-amplification is a real production concern and is correctly framed. Weaknesses: the mastery-check answer for Q3 references `jsonb_path_ops` (the operator class for GIN indexing) but `jsonb_path_ops` is never introduced in the lesson body — learners cannot connect the answer to the material. Exercise 2 says "Insert 10,000 rows" with no INSERT code. The `?` (key-exists) operator, `jsonb_path_query`, `jsonb_to_recordset`, and JSON schema validation are absent. No expected EXPLAIN output for either the pre-index or post-index state.
 
@@ -216,9 +216,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 106 — XML & Complex Data Types
+## Day 111 — XML & Complex Data Types
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_106_XML_in_SQL/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_111_XML_in_SQL/README.md`
 
 **Assessment:** This lesson bundles XML, Arrays, ENUMs, and Composite Types into one session — an ambitious scope that results in thin coverage of each. The toolbox analogy is charming. The ENUM trap exercise (inserting an invalid value and using `ALTER TYPE`) is a solid practical demonstration. However, `xpath()` in Exercise 1 returns `xml[]` (an array of XML nodes), not plain text — the result requires `::text` casting to be human-readable, which is not mentioned. Composite Types appear only in Mastery Check Q5 and in one line of Senior Insights with no lab exercise at all — they are listed in the frontmatter concepts but effectively uncovered. `hstore`, range types, `tsvector`/`tsquery` (full-text search types), and network types (`inet`/`cidr`) are all absent.
 
@@ -237,9 +237,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 107 — Enterprise Security: RLS & Encryption
+## Day 112 — Enterprise Security: RLS & Encryption
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_107_Security/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_112_Security/README.md`
 
 **Assessment:** The apartment-complex key analogy (front desk / elevator / apartment key / safe) is the best-structured analogy in Phase 9 and precisely maps to Guard/RBAC/RLS/Encryption. The multi-tenancy Pool vs Silo trade-off discussion is essential MBA content. However, Exercise 2 uses `USING (user_name = current_user)` which may fail in many environments because `current_user` returns the database role name, not an application-level username — this requires setup context the lesson doesn't provide. The `CREATE EXTENSION pgcrypto` step is not shown before Exercise 3 uses pgcrypto functions. `pg_audit`, TLS/SSL connection security, column-level privileges, and data masking are absent. No glossary, no quiz.json, no expected results showing the "before RLS" vs "after RLS" visibility difference.
 
@@ -254,16 +254,16 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 - [ ] [P1][H:Pitfalls] Add `> ⚠️ Pitfall: Key Stored Alongside Encrypted Data` callout referencing the Senior Insight's passing mention: "The most common pgcrypto mistake is storing the encryption key in the same database as the ciphertext. An attacker who dumps the DB gets both. Keys belong in environment variables or a secrets manager (Vault, AWS KMS)."
 - [ ] [P1][F:Tables] Add a decision table: **Security Concern → Mechanism → When to Use** — rows for table-level access (GRANT/REVOKE), row-level isolation (RLS), column sensitivity (column GRANT), data-at-rest confidentiality (pgcrypto), and connection confidentiality (TLS).
 - [ ] [P1][M:Coverage] Add a section on **column-level permissions**: `GRANT SELECT (salary) ON employees TO hr_role` — essential for PII compliance; many MBA learners will work in environments where salary/SSN columns must be hidden from most roles.
-- [ ] [P2][M:Coverage] Add a brief section on **`pg_audit`** extension for compliance-grade audit logging (SOC2/PCI) — distinct from the trigger-based audit log in Day 101.
+- [ ] [P2][M:Coverage] Add a brief section on **`pg_audit`** extension for compliance-grade audit logging (SOC2/PCI) — distinct from the trigger-based audit log in Day 106.
 - [ ] [P2][N:Thread] Tailor Incident Drill to this lesson: "A security scan flags that your RLS-protected `orders` table returns data for other tenants when queried via a SECURITY DEFINER function — reproduce the leak, patch the function, and write a regression test proving isolation."
 
 ---
 
-## Day 108 — Performance Tuning & Optimization
+## Day 113 — Performance Tuning & Optimization
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_108_Performance_Tuning/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_113_Performance_Tuning/README.md`
 
-**Assessment:** The traffic-jam analogy for Seq Scan / Index Scan / Bitmap Heap Scan is memorable and technically accurate. The EXPLAIN ANALYZE metric breakdown (cost, actual time, rows, buffers) is the most practically useful table in Phase 9. The VACUUM/MVCC section correctly identifies bloat mechanics. Key gaps: Exercise 1 says "Create a table with 1M users" but provides no DDL or seed SQL. Exercise 2 ("Tune for a 64GB server") is a list of configuration values without a test environment or expected observable difference. The `autovacuum_vacuum_scale_factor` parameter is mentioned as "(default 20%)" without explaining what it means (20% of the table must be dead before autovacuum runs). `pg_stat_statements`, `pg_stat_activity`, table partitioning as a performance tool, and parallel query settings are entirely absent. This lesson's closing sentence — "You have completed Phase 9" — contradicts the existence of Day 108B and 108C, which follow within the same phase.
+**Assessment:** The traffic-jam analogy for Seq Scan / Index Scan / Bitmap Heap Scan is memorable and technically accurate. The EXPLAIN ANALYZE metric breakdown (cost, actual time, rows, buffers) is the most practically useful table in Phase 9. The VACUUM/MVCC section correctly identifies bloat mechanics. Key gaps: Exercise 1 says "Create a table with 1M users" but provides no DDL or seed SQL. Exercise 2 ("Tune for a 64GB server") is a list of configuration values without a test environment or expected observable difference. The `autovacuum_vacuum_scale_factor` parameter is mentioned as "(default 20%)" without explaining what it means (20% of the table must be dead before autovacuum runs). `pg_stat_statements`, `pg_stat_activity`, table partitioning as a performance tool, and parallel query settings are entirely absent. This lesson's closing sentence — "You have completed Phase 9" — contradicts the existence of Day 113B and 108C, which follow within the same phase.
 
 **Gap task stubs:**
 
@@ -272,7 +272,7 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 - [ ] [P0][C:Lab] Exercise 1: add `CREATE TABLE users (id serial, email text); INSERT INTO users SELECT generate_series(1,1000000), 'user'||generate_series(1,1000000)||'@x.com';` and show **Expected result**: EXPLAIN output before index (`Seq Scan ... actual time=50.123..50.125`) and after (`Index Scan ... actual time=0.015..0.017`).
 - [ ] [P0][C:Lab] Exercise 3: add setup `INSERT INTO users SELECT generate_series(1,1000000), 'u'||generate_series(1,1000000); DELETE FROM users WHERE id < 900000;` and show **Expected result** of pg_size_pretty before VACUUM FULL vs after.
 - [ ] [P1][A:Concept] Explain `autovacuum_vacuum_scale_factor = 0.2` (line 76): "This means autovacuum triggers when dead tuples exceed 20% of the table's live row count. For a 10M-row table: 2M dead rows must accumulate before autovacuum runs. For large tables, reduce to 0.01 (1%)."
-- [ ] [P1][K:Xref] Remove or update the "Congratulations! You have completed Phase 9" closing line — Day 108B and Day 108C follow within Phase 9. Replace with "Tomorrow: The Curriculum Capstone (Day 108B) and Cloud-Native SQL (Day 108C) complete the phase."
+- [ ] [P1][K:Xref] Remove or update the "Congratulations! You have completed Phase 9" closing line — Day 113B and Day 113C follow within Phase 9. Replace with "Tomorrow: The Curriculum Capstone (Day 113B) and Cloud-Native SQL (Day 113C) complete the phase."
 - [ ] [P1][H:Pitfalls] Add `> ⚠️ Pitfall: VACUUM FULL in Production` callout: "VACUUM FULL acquires an AccessExclusiveLock — no reads or writes are possible during the rewrite. On a 500GB table this takes hours. Schedule in a maintenance window or use `pg_repack` for a near-zero-downtime alternative."
 - [ ] [P1][M:Coverage] Add a section on **`pg_stat_statements`** — the single most important performance monitoring tool, already referenced in the Escalating Incident Drills but never taught. Include `SELECT query, calls, mean_exec_time FROM pg_stat_statements ORDER BY mean_exec_time DESC LIMIT 10;` as a standard DBA query.
 - [ ] [P1][M:Coverage] Add **table partitioning** (range, list, hash) as a performance tool — partitioning is a top-tier performance technique for large tables and is a natural successor to the MView lesson.
@@ -281,9 +281,9 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 
 ---
 
-## Day 108B — Curriculum Grand Finale Capstone
+## Day 113B — Curriculum Grand Finale Capstone
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_108B_Curriculum_Capstone/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_113B_Curriculum_Capstone/README.md`
 
 **Assessment:** The capstone project is ambitious and the retail analytics scenario is well chosen — it genuinely integrates data engineering (Phases 1–3), SQL analytics (8–9), ML forecasting (Phases 4–5), and anomaly detection (Phase 6). The self-assessment rubric with a 35-point scale is a strong Phase 1-quality element. However, significant portions of the implementation are stubs: Milestone 2 includes only 1 of the 5 promised KPI queries (the other two are `# TODO`), and Milestone 5 visualization has three `# TODO` panels — the capstone deliverables claim "5 KPI queries" but show only one. The dataset generator has a functional bug: the initial `regions` dict is immediately overwritten by the line below it (the comment `# ... (simplified for demo)` is dead code, not a dict). The capstone uses **SQLite** throughout, inconsistent with Phase 9's PostgreSQL focus and preventing learners from applying the RLS, MViews, GIN indexes, and other Postgres-specific skills just taught. No quiz.json, no glossary, no expected ML output benchmarks (what is a "good" vs "acceptable" MAPE for this data?).
 
@@ -297,16 +297,16 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 - [ ] [P1][M:Coverage] The deliverables checklist references `02_sql_kpis.sql` with "All 5 KPI queries" but only 1 is provided in the lesson. Either show all 5 queries or renumber the checklist to match actual content.
 - [ ] [P1][E:Framing] Add an explicit "How this maps to real roles" section: "What you built is a simplified version of what an Analytics Engineer at a retail company builds. The MoM growth query (KPI 1) appears in every retail BI dashboard. The anomaly detection would reduce operations-review time by ~4 hours/week."
 - [ ] [P2][L:Quiz] Add a capstone self-check quiz.json with 5 integration questions spanning phases (e.g., "Why did we use `TimeSeriesSplit` instead of `train_test_split`?", "Which Phase 9 index type would speed up the `WHERE date >= ...` query in the anomaly detection SQL?").
-- [ ] [P2][O:Glossary] Add a Glossary linking back to the source lessons for all cross-phase terms: MAPE, Isolation Forest, Lag Feature, Rolling Average, GradientBoostingRegressor, TimeSeriesSplit, MView (Day 97), GIN Index (Day 98).
+- [ ] [P2][O:Glossary] Add a Glossary linking back to the source lessons for all cross-phase terms: MAPE, Isolation Forest, Lag Feature, Rolling Average, GradientBoostingRegressor, TimeSeriesSplit, MView (Day 102), GIN Index (Day 103).
 - [ ] [P2][N:Thread] Connect the capstone explicitly to the Incident Drill Track: "The anomaly detection system you built in Milestone 4 IS the detection layer in Drill 2 (Severity 1). Extend your capstone to generate a pg_audit log of which analyst ran which query — completing the compliance circle."
 
 ---
 
-## Day 108C — Cloud-Native SQL: BigQuery ML, Snowflake Cortex & Redshift ML
+## Day 113C — Cloud-Native SQL: BigQuery ML, Snowflake Cortex & Redshift ML
 
-**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_108C_Cloud_Native_SQL/README.md`
+**Path:** `content/lessons/Phase_09_Enterprise_SQL_Performance_Engineering/Day_113C_Cloud_Native_SQL/README.md`
 
-**Assessment:** Day 108C is the strongest lesson in Phase 9 by a wide margin. The "Never-Coded" bridge (traditional ML workflow vs a single SQL `CREATE MODEL` statement) is the most compelling analogy in the phase. The BigQuery ML workflow (train → evaluate → predict → explain → forecast) is shown end-to-end with annotated SQL. The platform comparison table is genuine decision-guidance material. The "$ mindset" FinOps section with concrete cost numbers ($291/year reduced to $0.73) is outstanding MBA-framing. Mastery-check answers are 3–6 sentence paragraphs, substantially better than all other lessons. Gaps: no quiz.json, no glossary, lab exercises are SQL scaffolding with no schemas or expected outputs, the `LIMIT` cost myth (buried in a code comment on line 170) deserves a formal pitfall callout, and the BigQuery Reservation/Slot-commitment model vs on-demand pricing is mentioned in Exercise 3 but not explained in the content body.
+**Assessment:** Day 113C is the strongest lesson in Phase 9 by a wide margin. The "Never-Coded" bridge (traditional ML workflow vs a single SQL `CREATE MODEL` statement) is the most compelling analogy in the phase. The BigQuery ML workflow (train → evaluate → predict → explain → forecast) is shown end-to-end with annotated SQL. The platform comparison table is genuine decision-guidance material. The "$ mindset" FinOps section with concrete cost numbers ($291/year reduced to $0.73) is outstanding MBA-framing. Mastery-check answers are 3–6 sentence paragraphs, substantially better than all other lessons. Gaps: no quiz.json, no glossary, lab exercises are SQL scaffolding with no schemas or expected outputs, the `LIMIT` cost myth (buried in a code comment on line 170) deserves a formal pitfall callout, and the BigQuery Reservation/Slot-commitment model vs on-demand pricing is mentioned in Exercise 3 but not explained in the content body.
 
 **Gap task stubs:**
 
@@ -316,7 +316,7 @@ Phase 9 covers a strong set of enterprise SQL topics (Days 97–108C) and consis
 - [ ] [P0][C:Lab] Exercise 2: provide the full Snowflake pipeline SQL (not just descriptions) for the `CREATE TABLE AS` step and the final summary view with the `needs_attention` flag, and show **Expected result** schema.
 - [ ] [P1][H:Pitfalls] Promote the `LIMIT` cost-myth note from a code comment (`-- LIMIT does NOT reduce bytes scanned in BigQuery!`) into a prominent named `> ⚠️ Pitfall: LIMIT Does Not Save Money in BigQuery` callout block — this is the #1 BigQuery misconception for SQL-trained analysts and currently risks being skimmed over.
 - [ ] [P1][A:Concept] Explain **Slot Commitments vs On-Demand pricing** in the content body (not just in Exercise 3): "On-demand: $5–7/TB scanned, pay-as-you-go. Slot commitments: reserve 100–500 compute slots for a flat monthly fee — better for predictable, high-volume workloads. Break-even is typically around 2–3 TB scanned per day."
-- [ ] [P1][K:Xref] Day 108C's prerequisites list `[108, "108B"]` but Day 108 closes with "You have completed Phase 9" — this structural inconsistency in the phase ordering should be resolved by resequencing or updating Day 108's summary line (see Day 108 stub above).
+- [ ] [P1][K:Xref] Day 113C's prerequisites list `[108, "108B"]` but Day 113 closes with "You have completed Phase 9" — this structural inconsistency in the phase ordering should be resolved by resequencing or updating Day 113's summary line (see Day 113 stub above).
 - [ ] [P2][M:Coverage] Add a brief section on **dbt + BigQuery** integration — the combination of dbt (for SQL transformations) and BigQuery ML (for modelling) is the dominant modern analytics stack and directly extends the capstone project's SQL KPI queries.
 - [ ] [P2][E:Framing] The FinOps section is excellent — add a comparable cost case study for Snowflake (warehouse credits) and Redshift (reserved node pricing) so all three platforms are equally framed for MBA budget conversations.
-- [ ] [P2][N:Thread] Connect explicitly to Phase 9 topics: "The Materialized View we built in Day 97 maps directly to BigQuery's `CREATE MATERIALIZED VIEW ... PARTITIONED BY` syntax shown here — the concept is identical, the DDL differs only in partition clause."
+- [ ] [P2][N:Thread] Connect explicitly to Phase 9 topics: "The Materialized View we built in Day 102 maps directly to BigQuery's `CREATE MATERIALIZED VIEW ... PARTITIONED BY` syntax shown here — the concept is identical, the DDL differs only in partition clause."

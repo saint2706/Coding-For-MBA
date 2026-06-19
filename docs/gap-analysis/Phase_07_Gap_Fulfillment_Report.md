@@ -11,7 +11,7 @@
 
 ## Phase Summary
 
-Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 lessons (Days 68–84, plus 84B and 84C). The gap audit identified three tiers of issues:
+Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 lessons (Days 73–89, plus 84B and 84C). The gap audit identified three tiers of issues:
 
 **Tier 1 — Systemic (all 19 lessons):**
 
@@ -21,45 +21,45 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 **Tier 2 — Structural (most lessons):**
 
 - [C:Lab] Most labs gave finished answers, design prompts, or partial code instead of supplied data, runnable steps, and verifiable expected outputs
-- [N:Thread] The phase had no single recurring project carrying a governed BI product across all 19 lessons — the capstone thread appeared only at the very end (Day 84)
-- [K:Xref] No lesson linked forward/backward to related lessons, and Days 68–72 numerically overlap Phase 6, creating a navigation risk
+- [N:Thread] The phase had no single recurring project carrying a governed BI product across all 19 lessons — the capstone thread appeared only at the very end (Day 89)
+- [K:Xref] No lesson linked forward/backward to related lessons, and Days 73–77 numerically overlap Phase 6, creating a navigation risk
 
 **Tier 3 — Content gaps (targeted per lesson):**
 
-- [P0] Day 68: Lab handed learners finished answers instead of letting them compute WAU/metrics from data; BI Stack (ELT) too compressed; no metric-contract example
-- [P0] Day 69: Translation Lab had no sample evidence, rubric, or expected memo
-- [P0] Day 70: LTV/CAC formulas lacked assumptions and counterexamples; cohort exercise had no raw event data
-- [P0] Day 71: "Simple dbt Logic" was an unrunnable snippet, not an executable mini-project
-- [P0] Day 72: Code blocks lacked runnable fixtures, expected rows, and production ingestion concerns (auth, retries, CDC)
-- [P0] Day 73: SQL exercises had no sample schema, dialect, or expected result tables
-- [P0] Day 74: "Replace errors with 0" was unsafe blanket guidance; no dirty-data fixtures
-- [P0] Day 75: No before/after dashboard artifacts to make the makeover exercise objective
-- [P0] Day 76: RLS/semantic-layer lab was a conceptual placeholder ("Write a rule") with no executable identity model
-- [P0] Day 77: Domain-analytics exercises were too shallow for cross-functional metric reconciliation
-- [P0] Day 78: P-values/significance compressed into rules of thumb; no code, data, or computation for the significance test
-- [P0] Day 79: No raw analysis or stakeholder packet to build the storytelling exercises from
-- [P0] Day 80: Governance lab lacked data, test execution, and incident handling
-- [P0] Day 81: Denormalization exercise had no source schema, data, or expected output
-- [P0] Day 82: Only a partial function prompt — no runnable, orchestrated pipeline
-- [P0] Day 83: Cloud lesson was a vendor survey without a costed, deployable design
-- [P0] Day 84: Capstone was a checklist, not a complete brief with milestones and acceptance tests
-- [P0] Day 84B: Exercises 1–3 didn't explicitly use the (then-missing) `extras/sample_dbt_project`
-- [P0] Day 84C: Labs were design prompts, not a runnable local sync/semantic-layer system
+- [P0] Day 73: Lab handed learners finished answers instead of letting them compute WAU/metrics from data; BI Stack (ELT) too compressed; no metric-contract example
+- [P0] Day 74: Translation Lab had no sample evidence, rubric, or expected memo
+- [P0] Day 75: LTV/CAC formulas lacked assumptions and counterexamples; cohort exercise had no raw event data
+- [P0] Day 76: "Simple dbt Logic" was an unrunnable snippet, not an executable mini-project
+- [P0] Day 77: Code blocks lacked runnable fixtures, expected rows, and production ingestion concerns (auth, retries, CDC)
+- [P0] Day 78: SQL exercises had no sample schema, dialect, or expected result tables
+- [P0] Day 79: "Replace errors with 0" was unsafe blanket guidance; no dirty-data fixtures
+- [P0] Day 80: No before/after dashboard artifacts to make the makeover exercise objective
+- [P0] Day 81: RLS/semantic-layer lab was a conceptual placeholder ("Write a rule") with no executable identity model
+- [P0] Day 82: Domain-analytics exercises were too shallow for cross-functional metric reconciliation
+- [P0] Day 83: P-values/significance compressed into rules of thumb; no code, data, or computation for the significance test
+- [P0] Day 84: No raw analysis or stakeholder packet to build the storytelling exercises from
+- [P0] Day 85: Governance lab lacked data, test execution, and incident handling
+- [P0] Day 86: Denormalization exercise had no source schema, data, or expected output
+- [P0] Day 87: Only a partial function prompt — no runnable, orchestrated pipeline
+- [P0] Day 88: Cloud lesson was a vendor survey without a costed, deployable design
+- [P0] Day 89: Capstone was a checklist, not a complete brief with milestones and acceptance tests
+- [P0] Day 89B: Exercises 1–3 didn't explicitly use the (then-missing) `extras/sample_dbt_project`
+- [P0] Day 89C: Labs were design prompts, not a runnable local sync/semantic-layer system
 
 **Recurring gaps resolved:**
 
 - ✅ [L:Quiz] `quiz.json` added to ALL 19 lessons (6–8 explained questions each)
 - ✅ [O:Glossary] Dedicated glossary section added to ALL 19 lessons (5–10 terms each)
-- ✅ [N:Thread] Phase-long **BrightCart** (DTC outdoor/sporting-goods retailer) project introduced in Day 68 and carried through every lesson to the Day 84 capstone, with a Day 84 "Phase 7 Checkpoint Map" tying every lesson's artifact to the final deliverable
-- ✅ [K:Xref] Cross-Reference sections added to ALL 19 lessons, with explicit "Phase 7 Day NN" qualification to resolve the Day 68–72 / Phase 6 numbering collision
-- ✅ [C:Lab] Every flagged lab rebuilt around supplied BrightCart data (or, for Day 84B/84C, the real `extras/sample_dbt_project`), explicit steps, and verifiable expected outputs
+- ✅ [N:Thread] Phase-long **BrightCart** (DTC outdoor/sporting-goods retailer) project introduced in Day 73 and carried through every lesson to the Day 89 capstone, with a Day 89 "Phase 7 Checkpoint Map" tying every lesson's artifact to the final deliverable
+- ✅ [K:Xref] Cross-Reference sections added to ALL 19 lessons, with explicit "Phase 7 Day NN" qualification to resolve the Day 78–77 / Phase 6 numbering collision
+- ✅ [C:Lab] Every flagged lab rebuilt around supplied BrightCart data (or, for Day 89B/84C, the real `extras/sample_dbt_project`), explicit steps, and verifiable expected outputs
 - ✅ [P0] All 19 P0 content gaps resolved with expanded sections, corrected math, or rebuilt labs
 
 ---
 
-## Day 68 — BI Analyst Foundations
+## Day 73 — BI Analyst Foundations
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_68_BI_Analyst_Foundations/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_73_BI_Analyst_Foundations/README.md`
 
 **Line count:** 266 → 419
 
@@ -74,9 +74,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 69 — BI Strategy & Stakeholders
+## Day 74 — BI Strategy & Stakeholders
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_69_BI_Strategy_and_Stakeholders/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_74_BI_Strategy_and_Stakeholders/README.md`
 
 **Line count:** 269 → 460
 
@@ -91,9 +91,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 70 — BI Metrics & Data Literacy
+## Day 75 — BI Metrics & Data Literacy
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_70_BI_Metrics_and_Data_Literacy/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_75_BI_Metrics_and_Data_Literacy/README.md`
 
 **Line count:** 271 → 482
 
@@ -108,9 +108,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 71 — BI Data Landscape
+## Day 76 — BI Data Landscape
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_71_BI_Data_Landscape/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_76_BI_Data_Landscape/README.md`
 
 **Line count:** 289 → 519
 
@@ -121,14 +121,14 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 | 3 | P1 | F:Tables | No decision table for storage architectures | ✅ Added "OLTP vs. Warehouse vs. Lake vs. Lakehouse — Decision Table" with workload, latency, governance, cost, and anti-use-case columns |
 | 4 | P1 | M:Coverage | No medallion/contracts/catalog/lineage coverage | ✅ Added "Medallion (Layered) Modeling, Contracts, Catalog, and Lineage" section |
 | 5 | P1 | L:Quiz | No `quiz.json` | ✅ Added explained `quiz.json` |
-| 6 | P2 | K:Xref | No prerequisite/forward links | ✅ Added Cross-References to earlier database lessons and forward links to Days 81–84C |
+| 6 | P2 | K:Xref | No prerequisite/forward links | ✅ Added Cross-References to earlier database lessons and forward links to Days 86–89C |
 | 7 | P2 | O:Glossary | No glossary | ✅ Added glossary: OLTP, OLAP, row/columnar, lake, warehouse, lakehouse, star schema, ELT |
 
 ---
 
-## Day 72 — BI Data Formats & Ingestion
+## Day 77 — BI Data Formats & Ingestion
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_72_BI_Data_Formats_and_Ingestion/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_77_BI_Data_Formats_and_Ingestion/README.md`
 
 **Line count:** 301 → 537
 
@@ -144,9 +144,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 73 — BI SQL & Databases
+## Day 78 — BI SQL & Databases
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_73_BI_SQL_and_Databases/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_78_BI_SQL_and_Databases/README.md`
 
 **Line count:** 274 → 484
 
@@ -161,9 +161,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 74 — BI Data Preparation & Tools
+## Day 79 — BI Data Preparation & Tools
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_74_BI_Data_Preparation_and_Tools/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_79_BI_Data_Preparation_and_Tools/README.md`
 
 **Line count:** 256 → 548
 
@@ -178,9 +178,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 75 — BI Visualization & Dashboard Principles
+## Day 80 — BI Visualization & Dashboard Principles
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_75_BI_Visualization_and_Dashboard_Principles/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_80_BI_Visualization_and_Dashboard_Principles/README.md`
 
 **Line count:** 250 → 400
 
@@ -195,9 +195,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 76 — BI Platforms & Automation Tools
+## Day 81 — BI Platforms & Automation Tools
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_76_BI_Platforms_and_Automation_Tools/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_81_BI_Platforms_and_Automation_Tools/README.md`
 
 **Line count:** 239 → 402
 
@@ -213,9 +213,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 77 — BI Domain Analytics & Value Drivers
+## Day 82 — BI Domain Analytics & Value Drivers
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_77_BI_Domain_Analytics_and_Value_Drivers/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_82_BI_Domain_Analytics_and_Value_Drivers/README.md`
 
 **Line count:** 240 → 408
 
@@ -230,9 +230,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 78 — BI Experimentation & Predictive Insights
+## Day 83 — BI Experimentation & Predictive Insights
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_78_BI_Experimentation_and_Predictive_Insights/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_83_BI_Experimentation_and_Predictive_Insights/README.md`
 
 **Line count:** 249 → 460
 
@@ -248,9 +248,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 79 — BI Storytelling & Stakeholder Influence
+## Day 84 — BI Storytelling & Stakeholder Influence
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_79_BI_Storytelling_and_Stakeholder_Influence/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84_BI_Storytelling_and_Stakeholder_Influence/README.md`
 
 **Line count:** 252 → 419
 
@@ -265,9 +265,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 80 — BI Data Quality & Governance
+## Day 85 — BI Data Quality & Governance
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_80_BI_Data_Quality_and_Governance/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_85_BI_Data_Quality_and_Governance/README.md`
 
 **Line count:** 233 → 459
 
@@ -282,9 +282,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 81 — BI Architecture & Data Modeling
+## Day 86 — BI Architecture & Data Modeling
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_81_BI_Architecture_and_Data_Modeling/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_86_BI_Architecture_and_Data_Modeling/README.md`
 
 **Line count:** 243 → 422
 
@@ -299,9 +299,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 82 — BI ETL & Pipeline Automation
+## Day 87 — BI ETL & Pipeline Automation
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_82_BI_ETL_and_Pipeline_Automation/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_87_BI_ETL_and_Pipeline_Automation/README.md`
 
 **Line count:** 232 → 410
 
@@ -316,9 +316,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 83 — BI Cloud & Modern Data Stack
+## Day 88 — BI Cloud & Modern Data Stack
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_83_BI_Cloud_and_Modern_Data_Stack/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_88_BI_Cloud_and_Modern_Data_Stack/README.md`
 
 **Line count:** 238 → 348
 
@@ -334,9 +334,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 84 — BI Career Development & Capstone
+## Day 89 — BI Career Development & Capstone
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84_BI_Career_Development_and_Capstone/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_89_BI_Career_Development_and_Capstone/README.md`
 
 **Line count:** 229 → 363
 
@@ -352,9 +352,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 84B — dbt Fundamentals
+## Day 89B — dbt Fundamentals
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84B_dbt_Fundamentals/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_89B_dbt_Fundamentals/README.md`
 
 **Line count:** 321 → 508
 
@@ -370,9 +370,9 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 ---
 
-## Day 84C — Reverse ETL & Semantic Layer
+## Day 89C — Reverse ETL & Semantic Layer
 
-**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_84C_Reverse_ETL_and_Semantic_Layer/README.md`
+**Path:** `content/lessons/Phase_07_BI_Analytics_Governance_Modern_Data_Stack/Day_89C_Reverse_ETL_and_Semantic_Layer/README.md`
 
 **Line count:** 370 → 486
 
@@ -384,7 +384,7 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 | 4 | P1 | M:Coverage | Missing semantic-layer governance | ✅ Expanded "Part 2: The Semantic Layer" with metric contracts, dimensions/entities, access control, versioning, deprecation, caching, performance, testing, reconciliation to Finance |
 | 5 | P1 | F:Tables | MBA-context table lacked decision guidance | ✅ Added "Decision Guide: Build vs. Buy for Reverse ETL and Semantic Layer" |
 | 6 | P1 | L:Quiz | No `quiz.json` | ✅ Added explained architecture/configuration `quiz.json` |
-| 7 | P2 | K:Xref | No clarity on ordering among Day 84/84B/84C | ✅ Added Cross-References clarifying lesson order, confirming "Phase 7 Complete" appears only on this final lesson |
+| 7 | P2 | K:Xref | No clarity on ordering among Day 89/84B/84C | ✅ Added Cross-References clarifying lesson order, confirming "Phase 7 Complete" appears only on this final lesson |
 | 8 | P2 | O:Glossary | No glossary | ✅ Added glossary: reverse ETL, semantic layer, metric store, match key, idempotency, full/incremental sync, entity, measure, dimension |
 
 ---
@@ -395,7 +395,7 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 
 | # | Priority | Tag | Gap Description | Resolution |
 |---|----------|-----|-----------------|------------|
-| 1 | P0 | C:Lab | `extras/README.md` documented a `sample_dbt_project/` and `metrics_layer_example.yml` that did not exist on disk, breaking the Day 84B/84C labs that depend on them | ✅ Built the complete `sample_dbt_project/` (dbt_project.yml, profiles.yml, packages.yml, staging/intermediate/marts models, seeds) and `metrics_layer_example.yml`, verified end-to-end with `dbt deps && dbt seed && dbt run && dbt test` (17/17 tests passing, 18 customers, 21 orders totaling $1,697.79 revenue) |
+| 1 | P0 | C:Lab | `extras/README.md` documented a `sample_dbt_project/` and `metrics_layer_example.yml` that did not exist on disk, breaking the Day 89B/84C labs that depend on them | ✅ Built the complete `sample_dbt_project/` (dbt_project.yml, profiles.yml, packages.yml, staging/intermediate/marts models, seeds) and `metrics_layer_example.yml`, verified end-to-end with `dbt deps && dbt seed && dbt run && dbt test` (17/17 tests passing, 18 customers, 21 orders totaling $1,697.79 revenue) |
 
 ---
 
@@ -426,28 +426,28 @@ Phase 07 covers BI, Analytics, Governance & the Modern Data Stack across 19 less
 |-------------------|--------|
 | All 19 lessons now have `quiz.json` (6–8 explained questions each) | ✅ |
 | All 19 lessons now have a dedicated glossary section | ✅ |
-| All 19 lessons now have a Cross-References section, with explicit "Phase 7 Day NN" qualification to resolve the Day 68–72/Phase 6 numbering collision | ✅ |
-| Phase-long "BrightCart" project thread introduced in Day 68 and carried through to the Day 84 capstone | ✅ |
-| Day 68 Exercises 1–3 rebuilt around supplied `events` data with a deterministic WAU SQL query (expected `wau = 5`) | ✅ |
-| Day 69 Translation Lab rebuilt with a full request packet, data extract, and prioritization rubric | ✅ |
-| Day 70 LTV/CAC formulas expanded with assumptions and a worked counterexample | ✅ |
-| Day 71 "Simple dbt Logic" rebuilt as an executable mini-project with seed data and tests | ✅ |
-| Day 72 ingestion pattern expanded with auth, retries, CDC, schema contracts, and observability | ✅ |
-| Day 73 SQL exercises supplied with seed tables and exact expected result tables | ✅ |
-| Day 74 "Replace errors with 0" replaced with a null/invalid/unknown decision framework | ✅ |
-| Day 75 dashboard makeover given a concrete flawed artifact and rubric-scored target | ✅ |
-| Day 76 RLS lab rebuilt as an executable lab with roles and expected visible-row counts | ✅ |
-| Day 77 added a cross-functional BrightCart Q1 Business Review capstone exercise | ✅ |
-| Day 78 statistical significance deepened; pre-existing Z=2.14 math error corrected to verified Z≈1.44 | ✅ |
-| Day 79 storytelling exercises given a messy analysis packet and audience personas | ✅ |
-| Day 80 governance lab rebuilt with a flawed extract, test execution, and incident RACI | ✅ |
-| Day 81 star-schema exercise given normalized source tables and exact expected output | ✅ |
-| Day 82 pipeline exercises rebuilt as a runnable, idempotent pipeline with injected failures | ✅ |
-| Day 83 added a costed architecture design exercise with pricing assumptions | ✅ |
-| Day 84 capstone pinned to BrightCart with a Phase 7 Checkpoint Map connecting all prior lessons | ✅ |
-| Day 84B Exercises 1–3 rebuilt against the real `extras/sample_dbt_project` with verified outputs | ✅ |
-| Day 84C added a runnable Exercise 0 syncing real `dim_customers` via `reverse_etl_sync()` | ✅ |
+| All 19 lessons now have a Cross-References section, with explicit "Phase 7 Day NN" qualification to resolve the Day 78–77/Phase 6 numbering collision | ✅ |
+| Phase-long "BrightCart" project thread introduced in Day 73 and carried through to the Day 89 capstone | ✅ |
+| Day 73 Exercises 1–3 rebuilt around supplied `events` data with a deterministic WAU SQL query (expected `wau = 5`) | ✅ |
+| Day 74 Translation Lab rebuilt with a full request packet, data extract, and prioritization rubric | ✅ |
+| Day 75 LTV/CAC formulas expanded with assumptions and a worked counterexample | ✅ |
+| Day 76 "Simple dbt Logic" rebuilt as an executable mini-project with seed data and tests | ✅ |
+| Day 77 ingestion pattern expanded with auth, retries, CDC, schema contracts, and observability | ✅ |
+| Day 78 SQL exercises supplied with seed tables and exact expected result tables | ✅ |
+| Day 79 "Replace errors with 0" replaced with a null/invalid/unknown decision framework | ✅ |
+| Day 80 dashboard makeover given a concrete flawed artifact and rubric-scored target | ✅ |
+| Day 81 RLS lab rebuilt as an executable lab with roles and expected visible-row counts | ✅ |
+| Day 82 added a cross-functional BrightCart Q1 Business Review capstone exercise | ✅ |
+| Day 83 statistical significance deepened; pre-existing Z=2.14 math error corrected to verified Z≈1.44 | ✅ |
+| Day 84 storytelling exercises given a messy analysis packet and audience personas | ✅ |
+| Day 85 governance lab rebuilt with a flawed extract, test execution, and incident RACI | ✅ |
+| Day 86 star-schema exercise given normalized source tables and exact expected output | ✅ |
+| Day 87 pipeline exercises rebuilt as a runnable, idempotent pipeline with injected failures | ✅ |
+| Day 88 added a costed architecture design exercise with pricing assumptions | ✅ |
+| Day 89 capstone pinned to BrightCart with a Phase 7 Checkpoint Map connecting all prior lessons | ✅ |
+| Day 89B Exercises 1–3 rebuilt against the real `extras/sample_dbt_project` with verified outputs | ✅ |
+| Day 89C added a runnable Exercise 0 syncing real `dim_customers` via `reverse_etl_sync()` | ✅ |
 | `extras/sample_dbt_project/` built from scratch and verified end-to-end (17/17 dbt tests passing) | ✅ |
 | `extras/metrics_layer_example.yml` built from scratch (total_mrr, subscriber_count, arpu) | ✅ |
-| No existing lesson content modified or removed — all changes are additive (except correcting the Day 78 math error and the Day 84 dangling reference, per the established "fix flawed snippet" exception) | ✅ |
+| No existing lesson content modified or removed — all changes are additive (except correcting the Day 83 math error and the Day 89 dangling reference, per the established "fix flawed snippet" exception) | ✅ |
 | Phase 06 → Phase 07 transition preserved | ✅ |

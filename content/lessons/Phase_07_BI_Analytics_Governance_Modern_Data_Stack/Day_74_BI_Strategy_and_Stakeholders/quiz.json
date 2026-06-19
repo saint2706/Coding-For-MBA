@@ -1,0 +1,109 @@
+{
+  "day": 74,
+  "questions": [
+    {
+      "id": "d74q01",
+      "type": "multiple_choice",
+      "question": "A stakeholder asks: 'Why is the website slow?' What is the FIRST thing you should do?",
+      "options": [
+        "Run a SQL query for page load times immediately",
+        "Ask clarifying questions: 'What do you mean by slow? Which page? For whom?'",
+        "Buy faster servers",
+        "Restart the database"
+      ],
+      "answer": 1,
+      "explanation": "Clarify the question before touching any data. 'Slow' often means something very specific ('the checkout button lags for me on mobile right now') and jumping straight to a broad query wastes time answering the wrong question."
+    },
+    {
+      "id": "d74q02",
+      "type": "scenario",
+      "question": "In the BrightCart Loyalty Program case, the Finance Director and the Regional Sales Manager both raise the same underlying concern in different words. What is that shared concern?",
+      "options": [
+        "The loyalty program's points are too generous",
+        "Selection bias: loyalty members may already have been the best customers before the program started, so the program isn't necessarily causing the higher order volume",
+        "The board meeting is scheduled too soon",
+        "The data extract has missing values"
+      ],
+      "answer": 1,
+      "explanation": "Both raise selection bias in plain language: Finance says 'isn't the pilot region just our most loyal customers anyway?' and the Sales Manager says 'half of them were already our best customers before the points program launched.' The data extract confirms it — loyalty members had higher pre-program order counts than non-members, meaning the comparison is confounded."
+    },
+    {
+      "id": "d74q03",
+      "type": "multiple_choice",
+      "question": "Which of these is a Vanity Metric?",
+      "options": [
+        "Churn Rate",
+        "Customer Acquisition Cost (CAC)",
+        "Cumulative Signups (Total since launch)",
+        "Monthly Recurring Revenue (MRR)"
+      ],
+      "answer": 2,
+      "explanation": "Cumulative signups only ever go up — even if growth stopped years ago, the number keeps climbing, hiding the true trend. Churn, CAC, and MRR are all actionable: when they move, a team should change behavior in response."
+    },
+    {
+      "id": "d74q04",
+      "type": "multiple_choice",
+      "question": "Why is it incomplete to say 'Behavior (retention) is the most honest signal' without qualification?",
+      "options": [
+        "Behavior data is always wrong",
+        "Retention tells you WHAT customers did, but not WHY — a customer might stay due to high switching costs or forgetting to cancel, not satisfaction; meanwhile surveys and support tickets have their own distinct biases (non-response bias, friction-to-complain bias)",
+        "Surveys are always more accurate than behavioral data",
+        "Behavioral data cannot be measured at scale"
+      ],
+      "answer": 1,
+      "explanation": "Each signal measures a different construct and carries a different bias: surveys suffer non-response bias (angry and delighted customers respond, the quiet middle doesn't), support tickets suffer friction-to-complain bias (silent churners generate zero tickets), and behavior/retention tells you 'did they stay' without explaining 'are they happy.' A senior analyst triangulates rather than picking one as universally 'most honest.'"
+    },
+    {
+      "id": "d74q05",
+      "type": "multiple_choice",
+      "question": "In a RACI stakeholder map, what does it mean if the Finance Director is marked 'Consulted' rather than 'Accountable' on a pricing decision?",
+      "options": [
+        "Finance has no role in the decision at all",
+        "Finance's domain expertise must be sought before finalizing, but Finance does not own the final decision or answer for the outcome",
+        "Finance will receive the result after the decision is made, with no input beforehand",
+        "Finance is doing the actual analysis work"
+      ],
+      "answer": 1,
+      "explanation": "Consulted means their input is required input before finalizing a decision, but they aren't the one who owns/approves the final call (that's Accountable) nor merely a passive recipient (that's Informed). Mapping this correctly tells you whose conflicting feedback is a true requirement versus a courtesy update."
+    },
+    {
+      "id": "d74q06",
+      "type": "multiple_choice",
+      "question": "An executive asks, 'Can you just confirm the campaign worked?' before your analysis is finished. What is the textbook pitfall here, and the right defense?",
+      "options": [
+        "There's no pitfall; just say yes to keep things moving",
+        "Executive pressure pre-committing you to a conclusion; defend by separating 'what the data shows' from 'what we should do about it' before answering",
+        "The pitfall is that executives should never ask BI analysts questions",
+        "The pitfall is that the campaign definitely failed"
+      ],
+      "answer": 1,
+      "explanation": "The question is phrased to presume the answer, a classic executive-pressure trap. The right move is to acknowledge the urgency without prematurely agreeing with the conclusion, then report the actual finding once the analysis is complete — even if it contradicts the presumed answer."
+    },
+    {
+      "id": "d74q07",
+      "type": "multiple_choice",
+      "question": "What is the purpose of the '5 Whys' technique?",
+      "options": [
+        "To ask five different people for their opinion",
+        "To find the root cause of a problem rather than reacting to its first symptom",
+        "To validate five separate hypotheses simultaneously",
+        "To stall a stakeholder request"
+      ],
+      "answer": 1,
+      "explanation": "Repeatedly asking 'why' (typically five times) peels back symptom after symptom until you reach a systemic, fixable cause — e.g., 'sales are down' eventually traces back to 'our testing process skipped mobile browsers,' which is what you actually fix."
+    },
+    {
+      "id": "d74q08",
+      "type": "multiple_choice",
+      "question": "A request would take 3 weeks of analyst time to answer a question worth roughly 3 hours of business impact. What is the ethically sound way to say no?",
+      "options": [
+        "Ignore the request and hope it goes away",
+        "Build it anyway to avoid conflict",
+        "Acknowledge the underlying need, explain the time/impact trade-off in the stakeholder's terms, and offer an existing alternative that partially answers the question",
+        "Tell the stakeholder their request is a bad idea and refuse to discuss it further"
+      ],
+      "answer": 2,
+      "explanation": "Saying no well requires three things: validating that the need is real, explaining the cost/benefit trade-off in language the stakeholder cares about (not just 'I'm busy'), and proposing an alternative path. This preserves trust and the analyst's credibility, unlike silently ignoring the request or building something with low ROI just to avoid friction."
+    }
+  ]
+}

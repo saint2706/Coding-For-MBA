@@ -15,7 +15,7 @@ import { buildCanonicalUrl } from '../utils/seoSchemas'
 const SITE_NAME = 'Coding for MBA'
 const DEFAULT_IMAGE = 'https://saint2706.github.io/Coding-For-MBA/og-image.png'
 const DEFAULT_DESCRIPTION =
-  'A structured 140-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.'
+  'A structured 145-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.'
 
 interface BreadcrumbItem {
   name: string

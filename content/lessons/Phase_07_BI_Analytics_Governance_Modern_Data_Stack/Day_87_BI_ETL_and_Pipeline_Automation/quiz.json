@@ -1,0 +1,109 @@
+{
+  "day": 87,
+  "questions": [
+    {
+      "id": "d87q01",
+      "type": "multiple_choice",
+      "question": "BrightCart's orchestrator retries a failed `load_daily_orders('2026-06-18', day1, conn)` task and re-submits the identical fixture a second time. With the reference implementation (DELETE then INSERT inside one transaction, with a row-count verification), what happens to the row count for that date?",
+      "options": [
+        "It doubles to 8 rows",
+        "It stays at 4 rows -- idempotency held",
+        "It throws an error on the second call",
+        "It becomes 0 rows"
+      ],
+      "answer": 1,
+      "explanation": "Idempotency means running the same operation with the same input any number of times leaves the system in the same final state. The DELETE-then-INSERT pattern, wrapped in a transaction, clears exactly that date's rows before re-inserting -- so retrying never accumulates duplicates. The lab's verification step confirms row_count == len(df) every time."
+    },
+    {
+      "id": "d87q02",
+      "type": "multiple_choice",
+      "question": "In the lab's injected-failure scenario, a row with order_id = NULL violates the fact_orders table's NOT NULL constraint mid-load. Because the DELETE and INSERT are wrapped in BEGIN/commit/rollback, what is the row count for that date immediately after the failure?",
+      "options": [
+        "0 -- the transaction rolled back, leaving no partial rows",
+        "1 -- the bad row was inserted anyway",
+        "It depends on how many rows were in the batch before the bad one",
+        "The database crashes and the table is dropped"
+      ],
+      "answer": 0,
+      "explanation": "Wrapping the DELETE and INSERT in a single transaction means a failure partway through causes a full rollback -- the previous state (zero rows for that not-yet-loaded date) is preserved exactly, with no partial writes. This is the core benefit of transactional loads: a crash leaves a clean, retryable state instead of a half-written mess."
+    },
+    {
+      "id": "d87q03",
+      "type": "multiple_choice",
+      "question": "What is the key practical difference between a watermark-based incremental load and CDC (Change Data Capture)?",
+      "options": [
+        "They are identical techniques with different names",
+        "A watermark query (WHERE updated_at > last_watermark) can miss deletes and updates without a reliable updated_at column; CDC reads the transaction log directly and captures every insert/update/delete in order",
+        "CDC is always slower than watermarking",
+        "Watermarking only works with NoSQL databases"
+      ],
+      "answer": 1,
+      "explanation": "A watermark approach filters on a timestamp/ID column, which works well for new inserts but can silently miss row deletions or updates if the source doesn't reliably bump an updated_at field. CDC instead reads the database's transaction log (e.g., via Debezium), capturing every change as an ordered event -- including deletes a WHERE-clause filter could never see -- at the cost of more operational complexity."
+    },
+    {
+      "id": "d87q04",
+      "type": "multiple_choice",
+      "question": "BrightCart's pipeline writes to both fact_orders and an aggregate rollup table in the same load. Why should both writes be wrapped in a single database transaction?",
+      "options": [
+        "Transactions make queries run faster",
+        "So that a mid-load failure can't leave one table updated and the other stale, which is a common cause of 'the dashboard doesn't match the detail report' tickets",
+        "Transactions are required by SQL syntax",
+        "It reduces the storage footprint of both tables"
+      ],
+      "answer": 1,
+      "explanation": "Without a shared transaction boundary, a crash between the two writes leaves the system in an inconsistent state -- one table reflects the new data, the other doesn't. Wrapping both writes in one transaction ensures they succeed or fail together, which is exactly the kind of partial-write bug that causes BI numbers to disagree across reports."
+    },
+    {
+      "id": "d87q05",
+      "type": "multiple_choice",
+      "question": "In the DAG designed for BrightCart's pipeline (extract_orders, extract_order_items, quality_gate_check, load_fact_orders, refresh_obt_extract, alert_on_failure), what should happen if quality_gate_check fails?",
+      "options": [
+        "load_fact_orders should run anyway, since the extracts succeeded",
+        "load_fact_orders should be blocked, and alert_on_failure should fire -- bad data should never be promoted into the BI-facing layer",
+        "The DAG should silently skip the quality_gate_check step",
+        "refresh_obt_extract should run first to mask the issue"
+      ],
+      "answer": 1,
+      "explanation": "Quality gates exist specifically to block promotion of bad data downstream. If quality_gate_check fails (e.g., a Phase 7 Day 80-style uniqueness or completeness test fails), load_fact_orders must not proceed, and alert_on_failure should notify the on-call owner -- this is the DAG-level enforcement of 'fail loudly at the boundary, not silently in a dashboard.'"
+    },
+    {
+      "id": "d87q06",
+      "type": "multiple_choice",
+      "question": "BrightCart's marketplace API returns repeated 500 errors. The pipeline waits 60s, then 120s, then 240s between retry attempts. What is this pattern called, and why use it instead of retrying immediately every time?",
+      "options": [
+        "Linear backoff; it has no real advantage over immediate retries",
+        "Exponential backoff; it gives the failing server time to recover instead of hammering it with immediate repeated requests",
+        "Circuit breaking; it permanently disables the integration",
+        "Rate limiting; it slows down the BrightCart pipeline's own database"
+      ],
+      "answer": 1,
+      "explanation": "Exponential backoff increases the wait time between retries (60s, 120s, 240s...) instead of retrying instantly and repeatedly. This gives a struggling or recovering server breathing room rather than adding more load to it during an outage -- standard API etiquette and a key resilience pattern for any integration."
+    },
+    {
+      "id": "d87q07",
+      "type": "multiple_choice",
+      "question": "Why does idempotency make backfilling safe and mechanical, rather than requiring a special 'backfill mode'?",
+      "options": [
+        "Backfilling always requires a separate codepath regardless of idempotency",
+        "Because an idempotent load function produces the same correct final state no matter how many times or in what order it's called for a given date, simply re-running the normal pipeline for the missed dates is sufficient",
+        "Idempotency has nothing to do with backfilling",
+        "Backfilling is only possible with streaming pipelines"
+      ],
+      "answer": 1,
+      "explanation": "Because load_daily_orders deletes and replaces exactly the rows for a given load_date, re-running it for any past date -- whether to fix a missed day or to apply corrected logic -- produces the same correct result as if it had run on time. This is exactly what makes backfilling 'just call the same function again for the right dates' instead of a manual, error-prone data-surgery process."
+    },
+    {
+      "id": "d87q08",
+      "type": "multiple_choice",
+      "question": "BrightCart wants to send a 'your order shipped' notification the instant orders.status flips to 'shipped'. According to the batch/streaming/event-driven decision criteria, which pattern fits, and what's the trade-off?",
+      "options": [
+        "Batch -- it's always the right default and has no real trade-offs",
+        "Event-driven -- it gives sub-second to seconds latency for triggering an immediate action, at the cost of the highest engineering complexity (event bus, idempotent consumers, ordering guarantees)",
+        "Streaming -- it's identical to event-driven with no differences",
+        "None of these patterns apply to notifications"
+      ],
+      "answer": 1,
+      "explanation": "Event-driven architecture is the right fit when a specific business event must immediately trigger a downstream action (like a shipping notification), but it carries the highest complexity cost: you need an event bus, consumers that handle duplicate/out-of-order events idempotently, and careful ordering guarantees. The lesson's decision rule is to default to batch unless a stakeholder can name a decision that genuinely needs faster-than-batch latency -- and a real-time customer notification is exactly that kind of decision."
+    }
+  ]
+}

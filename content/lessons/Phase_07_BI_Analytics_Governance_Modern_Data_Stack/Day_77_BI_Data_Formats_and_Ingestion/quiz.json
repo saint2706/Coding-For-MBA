@@ -1,0 +1,109 @@
+{
+  "day": 77,
+  "questions": [
+    {
+      "id": "d77q01",
+      "type": "multiple_choice",
+      "question": "Why is Parquet faster for analytics queries than CSV?",
+      "options": [
+        "It is text-based and human readable",
+        "It is column-oriented, so the engine can skip reading unnecessary columns",
+        "It is owned by a major cloud vendor",
+        "It always uses fewer rows"
+      ],
+      "answer": 1,
+      "explanation": "Analytics queries typically need a few specific columns (e.g., AVG(price)), not every column in every row. Parquet's columnar layout lets the query engine skip columns it doesn't need, while CSV/JSON (row-oriented) must read full rows regardless."
+    },
+    {
+      "id": "d77q02",
+      "type": "multiple_choice",
+      "question": "An API call to the BrightCart orders endpoint returns HTTP 429. What should the ingestion script do?",
+      "options": [
+        "Immediately retry as fast as possible in a tight loop",
+        "Crash and alert an engineer",
+        "Wait using exponential backoff (with jitter) before retrying",
+        "Switch to a different API key and ignore the limit"
+      ],
+      "answer": 2,
+      "explanation": "429 means 'Too Many Requests' (rate limit exceeded). Production pipelines use exponential backoff with jitter -- waiting progressively longer between retries, with some randomness -- to avoid overwhelming the API and to avoid many clients retrying in lockstep ('thundering herd')."
+    },
+    {
+      "id": "d77q03",
+      "type": "multiple_choice",
+      "question": "In the BrightCart pagination exercise, the loop fetches pages until `next_page` is null. If the engineer forgets to update `current_page` inside the loop, what happens?",
+      "options": [
+        "The loop fetches each page exactly once and stops correctly",
+        "The loop becomes infinite, repeatedly fetching the same page",
+        "The script raises a syntax error",
+        "The API automatically advances the page for you"
+      ],
+      "answer": 1,
+      "explanation": "If `current_page` never changes, the while-loop condition (`current_page is not None`) stays true forever, and the same page is fetched repeatedly -- an infinite loop. This is why pagination loops must always reassign the loop variable from the response's `next_page` field."
+    },
+    {
+      "id": "d77q04",
+      "type": "multiple_choice",
+      "question": "A nested JSON record for one BrightCart customer contains an `events` array with 3 events. After flattening, how many rows should that customer produce?",
+      "options": [
+        "1 row, with the array stored as a single JSON column",
+        "3 rows, one per event, all sharing the customer's other fields",
+        "0 rows, because arrays cannot be flattened",
+        "Exactly as many rows as there are total customers in the dataset"
+      ],
+      "answer": 1,
+      "explanation": "Flattening (unnesting/exploding) a nested array produces one output row per array element, with the parent record's fields (like `user`) repeated on each row. A customer with 3 events becomes 3 rows."
+    },
+    {
+      "id": "d77q05",
+      "type": "multiple_choice",
+      "question": "A BrightCart order record arrives missing the required `order_id` field. Per the schema-contract/validation pattern in this lesson, what is the best handling?",
+      "options": [
+        "Silently drop the record with no trace",
+        "Crash the entire ingestion pipeline so no other records load",
+        "Route it to a quarantine table/dead-letter queue and continue processing the rest",
+        "Auto-generate a random order_id and load it as if nothing happened"
+      ],
+      "answer": 2,
+      "explanation": "Quarantining invalid records preserves them for review/audit while letting the pipeline keep processing valid records. Silently dropping loses the audit trail; crashing the whole pipeline turns one bad record into a total outage; inventing data corrupts the warehouse."
+    },
+    {
+      "id": "d77q06",
+      "type": "multiple_choice",
+      "question": "What is the main difference between polling an API on a schedule and using a webhook for ingestion?",
+      "options": [
+        "Webhooks require no authentication at all",
+        "Polling pushes data to you; webhooks require you to ask for it",
+        "Webhooks push events to your endpoint as they happen; polling requires you to repeatedly ask the source if anything is new",
+        "There is no practical difference"
+      ],
+      "answer": 2,
+      "explanation": "Polling means your pipeline calls the API on a schedule (e.g., every hour) to check for new data, adding latency. A webhook means the source system pushes an event to your endpoint the instant something happens (e.g., an order ships), reducing latency but requiring you to run a reliable always-on receiver."
+    },
+    {
+      "id": "d77q07",
+      "type": "multiple_choice",
+      "question": "Why is an incremental extraction 'watermark' useful for nightly BrightCart order loads?",
+      "options": [
+        "It encrypts the data in transit",
+        "It lets the pipeline only request records updated since the last successful run, instead of re-pulling the full history",
+        "It compresses the JSON payload automatically",
+        "It is required by every REST API regardless of use case"
+      ],
+      "answer": 1,
+      "explanation": "A watermark (the last successfully ingested timestamp/ID) lets you query for only new/changed records (`updated_since=watermark`). Without it, every run would have to re-extract the entire dataset, which is slow and costly at scale."
+    },
+    {
+      "id": "d77q08",
+      "type": "multiple_choice",
+      "question": "Storing 100 GB of BrightCart order_items as Snappy-compressed Parquet instead of raw CSV typically results in roughly what storage reduction?",
+      "options": [
+        "No meaningful reduction -- formats use about the same space",
+        "About 95% smaller (e.g., 100 GB down to roughly 5 GB)",
+        "Exactly 50% smaller, always",
+        "It becomes larger because Parquet stores schema metadata"
+      ],
+      "answer": 1,
+      "explanation": "Columnar dictionary/run-length encoding (e.g., a repeated 'web' channel value) plus Snappy compression typically shrinks data by roughly 10x from columnar encoding and another ~2x from compression -- around a 95% total reduction versus raw CSV, which directly reduces cloud storage cost."
+    }
+  ]
+}

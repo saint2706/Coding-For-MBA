@@ -37,7 +37,7 @@ export default function ContentStats() {
     <div className="content-stats-page">
       <SEOHead
         title="Content Statistics"
-        description="Comprehensive content analytics for the 140-day Coding for MBA curriculum — word counts, reading times, difficulty distributions, tag clouds, and phase breakdowns."
+        description="Comprehensive content analytics for the 145-day Coding for MBA curriculum — word counts, reading times, difficulty distributions, tag clouds, and phase breakdowns."
         path="/stats"
         breadcrumbs={[
           { name: 'Home', url: '/' },

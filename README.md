@@ -4,7 +4,7 @@
 
 ### Go from spreadsheets to AI engineering — free, self-paced, no setup required
 
-A structured 140-day curriculum for business professionals who want to build with data and AI, not just talk about it. Runs entirely in your browser.
+A structured 145-day curriculum for business professionals who want to build with data and AI, not just talk about it. Runs entirely in your browser.
 
 [**Begin Day 1 — Free →**](https://saint2706.github.io/Coding-For-MBA/#/lesson/day-1) &nbsp;·&nbsp; [**See All 12 Phases →**](https://saint2706.github.io/Coding-For-MBA/#/curriculum) &nbsp;·&nbsp; [**Open the App →**](https://saint2706.github.io/Coding-For-MBA)
 
@@ -24,7 +24,7 @@ A structured 140-day curriculum for business professionals who want to build wit
 - [Who This Is For](#who-this-is-for)
 - [What You Walk Away With](#what-you-walk-away-with)
 - [Common Questions](#common-questions)
-- [The Curriculum](#the-curriculum-12-phases-140-days)
+- [The Curriculum](#the-curriculum-12-phases-145-days)
 - [The Learning Platform](#the-learning-platform)
 - [Quick Start](#quick-start)
 - [Project Structure](#project-structure)
@@ -64,7 +64,7 @@ You need no prior programming experience. The program assumes you can think anal
 
 The curriculum is one connected path — not a collection of unrelated topics. Each phase builds on the last.
 
-| Where You Start | Where Day 140 Puts You |
+| Where You Start | Where Day 145 Puts You |
 |-----------------|------------------------|
 | Excel formulas and Tableau dashboards | Python, pandas, NumPy, and pipelines that process millions of rows |
 | "I know what a machine learning model is" | Training, evaluating, and deploying models in production |
@@ -79,7 +79,7 @@ The curriculum is one connected path — not a collection of unrelated topics. E
 
 **Do I need a technical background?** No. The program starts at zero and defines every concept as it appears. Business and analytical thinking is the only prerequisite.
 
-**How long does each day take?** Lessons are designed for 45–90 minute focused sessions. The curriculum is self-paced — "140 days" is a goal, not a deadline.
+**How long does each day take?** Lessons are designed for 45–90 minute focused sessions. The curriculum is self-paced — "145 days" is a goal, not a deadline.
 
 **Do I need to install anything?** No. The learning platform runs in your browser, including the Python code runner. Open the app and start Day 1 immediately.
 
@@ -89,7 +89,7 @@ The curriculum is one connected path — not a collection of unrelated topics. E
 
 ---
 
-## The Curriculum: 12 Phases, 140 Days
+## The Curriculum: 12 Phases, 145 Days
 
 Difficulty increases deliberately across phases. You earn each concept before the next one arrives.
 
@@ -157,7 +157,7 @@ Phase 5 makes you an ML engineer. Phase 6 makes you an ML *architect*. Reinforce
 
 ### Phase 7 — BI Analytics, Governance & Modern Data Stack
 
-**Days 73–84 · Advanced**
+**Days 73–89 · Advanced**
 
 The command center of the modern enterprise. Business intelligence end-to-end: data warehousing, dimensional modeling, dashboards, and the full modern data stack — dbt, Airflow, Snowflake, BigQuery, Looker. You learn not just how to use these tools but how to evaluate which combination makes sense for a given company.
 
@@ -167,7 +167,7 @@ The command center of the modern enterprise. Business intelligence end-to-end: d
 
 ### Phase 8 — SQL Mastery & Database Architecture
 
-**Days 85–96 · Advanced**
+**Days 90–101 · Advanced**
 
 You stop writing SQL queries and start designing SQL *engines*. Window functions, CTEs, query planning, index architecture, and normalization. The database schema that will outlive a decade of application rewrites — designed correctly from Day 1.
 
@@ -177,7 +177,7 @@ You stop writing SQL queries and start designing SQL *engines*. Window functions
 
 ### Phase 9 — Enterprise SQL Performance Engineering
 
-**Days 97–108 · Expert**
+**Days 102–113 · Expert**
 
 Anyone can write a query that works. This phase teaches you to write one that works at 3 AM on Black Friday when the database is under peak load.
 
@@ -189,7 +189,7 @@ Partitioning, sharding, replication, distributed SQL, and the operational runboo
 
 ### Phase 10 — Generative AI & LLM Engineering
 
-**Days 109–120 · Advanced**
+**Days 114–125 · Advanced**
 
 This is the phase that closes the gap between *talking* about AI and *building* with it.
 
@@ -203,7 +203,7 @@ Every topic in this phase maps to a concrete gap in the 2025–2026 data profess
 
 ### Phase 11 — Cloud Data Engineering
 
-**Days 121–132 · Advanced**
+**Days 126–137 · Advanced**
 
 From on-premises thinking to cloud-native architecture. You design and operate production data platforms on AWS, GCP, and Azure — with a multi-cloud perspective so your skills transfer across organizations. Cost optimization, security, observability, and the systems that scale from zero to petabytes without requiring constant babysitting.
 
@@ -213,7 +213,7 @@ From on-premises thinking to cloud-native architecture. You design and operate p
 
 ### Phase 12 — Analytics Engineering & Data Products
 
-**Days 133–140 · Advanced**
+**Days 138–145 · Advanced**
 
 Phase 11 built the engine. Phase 12 teaches you to generate revenue from it.
 
@@ -237,7 +237,7 @@ The in-browser Python runner, powered by Pyodide (Python compiled to WebAssembly
 
 Your progress saves locally. Open the app on any device and continue from your last lesson without logging in or syncing anything.
 
-Per-phase completion percentages let you see exactly where you stand across all 140 lessons at a glance.
+Per-phase completion percentages let you see exactly where you stand across all 145 lessons at a glance.
 
 ### Stay Motivated Without Gimmicks
 

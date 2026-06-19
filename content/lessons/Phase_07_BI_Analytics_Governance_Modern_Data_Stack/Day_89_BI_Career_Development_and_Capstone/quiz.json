@@ -1,0 +1,109 @@
+{
+  "day": 89,
+  "questions": [
+    {
+      "id": "d89q01",
+      "type": "multiple_choice",
+      "question": "Why is the capstone pinned to the BrightCart dataset (`extras/sample_dbt_project/seeds/raw_orders.csv` and `raw_customers.csv`) instead of letting every student pick any e-commerce dataset they like?",
+      "options": [
+        "Pinned datasets are required by dbt and cannot be changed",
+        "A pinned dataset and schema means an instructor, peer reviewer, or hiring manager can run the project and get the same numbers, making the work consistently gradable and reproducible",
+        "BrightCart's dataset is the only one small enough for a laptop",
+        "Public datasets like Olist are not allowed in portfolios"
+      ],
+      "answer": 1,
+      "explanation": "A capstone graded against 'any dataset you like' cannot be consistently reviewed, because reference outputs differ for everyone. Pinning to BrightCart's seed files lets the lesson publish exact reference outputs ($1,697.79 total revenue, 21 completed orders, 18 active customers) that any student's run should match."
+    },
+    {
+      "id": "d89q02",
+      "type": "multiple_choice",
+      "question": "Using the seed data as-is, what should `fct_revenue` total, and why are only 21 of the 25 seeded orders included?",
+      "options": [
+        "$1,697.79 across 21 orders; 4 orders are excluded because 2 are cancelled and 2 are pending",
+        "$1,697.79 across all 25 orders; no orders are excluded",
+        "$0.00 because the seed data has not been loaded yet",
+        "It varies randomly each time `dbt run` executes"
+      ],
+      "answer": 0,
+      "explanation": "The capstone brief's reference output is $1,697.79 across 21 completed orders. The other 4 of 25 seeded orders are excluded by design: 2 are status='cancelled' and 2 are status='pending', and only completed orders represent recognized revenue."
+    },
+    {
+      "id": "d89q03",
+      "type": "multiple_choice",
+      "question": "A reviewer opens your capstone repo and cannot find an owner, a freshness SLA, or any documented failure mode. Which acceptance test does this fail?",
+      "options": [
+        "The dbt test acceptance test",
+        "The new-metric business-definition acceptance test",
+        "The runbook acceptance test, which requires naming an owner, a freshness SLA, and one failure mode with a response step",
+        "The dashboard-reconciliation acceptance test"
+      ],
+      "answer": 2,
+      "explanation": "The capstone's acceptance tests explicitly require the runbook to name an owner, a freshness SLA, and at least one failure mode with a response step. A repo with code but no runbook content fails this specific check even if `dbt test` passes."
+    },
+    {
+      "id": "d89q04",
+      "type": "multiple_choice",
+      "question": "What distinguishes a 'metric contract' for your new governed metric from simply writing the SQL formula?",
+      "options": [
+        "A metric contract is identical to the SQL formula, just renamed",
+        "A metric contract additionally states the grain, the filter conditions (what's excluded and why), and the owner who can change the definition — not just the math",
+        "A metric contract is only required for ratio metrics, not simple metrics",
+        "A metric contract replaces the need for any dbt tests"
+      ],
+      "answer": 1,
+      "explanation": "The lesson's 'What Production-Ready Means' section is explicit: a metric without a written grain, filter conditions, and owner is just a SQL snippet with a brand name. The acceptance test requires a written business definition, not just a formula."
+    },
+    {
+      "id": "d89q05",
+      "type": "multiple_choice",
+      "question": "Which resume bullet best follows the 'Action -> Metric' Impact Resume formula taught in this lesson?",
+      "options": [
+        "\"Responsible for creating dashboards in Tableau.\"",
+        "\"Automated weekly reporting using Tableau, saving 5 hours/week and identifying a $50k revenue leak.\"",
+        "\"Knows SQL, Python, and Tableau.\"",
+        "\"Worked on a team that used BI tools.\""
+      ],
+      "answer": 1,
+      "explanation": "The formula is [Action Verb] + [Task] + [Result/Metric]. Option B names the action (automated), the task (weekly reporting), and two quantified results (5 hours/week saved, $50k leak identified) — exactly the weak-vs-strong contrast the lesson draws."
+    },
+    {
+      "id": "d89q06",
+      "type": "multiple_choice",
+      "question": "An applicant is deciding whether to lead their resume/portfolio with the dbt project or with the executive dashboard. According to the BI career-paths guidance, which choice fits an Analytics Engineer role versus a BI/Data Analyst role?",
+      "options": [
+        "Both roles should always lead with the dashboard",
+        "Both roles should always lead with the dbt project",
+        "Analytics Engineer should lead with the dbt project (modeling, tests, mart design); BI/Data Analyst should lead with the dashboard and the business insight found",
+        "The choice makes no difference to hiring managers"
+      ],
+      "answer": 2,
+      "explanation": "The BI Career Paths table maps Analytics Engineer to the transformation layer (dbt models, test coverage, mart design) and BI/Data Analyst to dashboarding and stakeholder communication. Framing your capstone's lead story to match the target role is the point of knowing the distinction."
+    },
+    {
+      "id": "d89q07",
+      "type": "multiple_choice",
+      "question": "If a student uses the Public Dataset alternative (e.g., Olist) for their capstone, what does the lesson say about ethical use of that data in an interview?",
+      "options": [
+        "It's fine to imply the findings came from a real job if the analysis is good enough",
+        "Public datasets cannot be used for portfolios at all",
+        "Credit the dataset's source explicitly and never present public-dataset findings as if they came from real proprietary work — misrepresenting this is an integrity red flag",
+        "Public dataset use must be kept secret from interviewers"
+      ],
+      "answer": 2,
+      "explanation": "The lesson is explicit: state the dataset's origin plainly in your README, and never claim public/synthetic portfolio data is from a past employer. Misrepresenting this can end an interview immediately, regardless of how good the analysis is."
+    },
+    {
+      "id": "d89q08",
+      "type": "multiple_choice",
+      "question": "Per the Phase 7 Checkpoint Map, where should a student's star schema design (`fact_orders`/`dim_customers`) for the capstone come from?",
+      "options": [
+        "It should be designed from scratch on Day 84",
+        "It was already built in Phase 7 Day 81 and should be reused, not redesigned",
+        "It comes pre-built inside the quiz.json file",
+        "Star schema design is optional and can be skipped entirely"
+      ],
+      "answer": 1,
+      "explanation": "The Checkpoint Map's core point is that the capstone was never a Day-84-only assignment: the star schema was already designed in Phase 7 Day 81, and Day 84's job is to assemble and extend prior artifacts, not start from zero."
+    }
+  ]
+}
