@@ -181,6 +181,65 @@ A junior analyst builds the deck and presents it. A senior analyst runs this ali
 4. "Clicking here (Drill Down) shows the cause: The 'Atlanta Hub' was flooded."
 5. "Recommendation: Re-route packages through Nashville until Monday."
 
+### Exercise 4: Capstone — Turning a Messy Analysis Packet into an Executive Readout
+
+**Goal**: Take a realistic, unpolished analysis packet (the kind an analyst actually receives — half-finished, inconsistent, no narrative) and produce all three deliverables: an executive email, a slide outline, and a verbal script — scored against the rubric below.
+
+**The Messy Packet** (as delivered, unedited, from a junior analyst's notes):
+
+```text
+Q1 returns analysis - draft notes
+
+- returns $ up from 64000 (jan) to 93139 (mar)
+- gross rev also up 640000 -> 665280
+- net rev basically flat (576000 -> 572141)
+- tenure analysis shows long-tenure customers have higher AOV (also higher
+  newsletter open rate, not sure if related)
+- 3 SKUs (hiking boots model B, trail jacket, daypack XL) account for
+  most of the increase in returns - sizing complaints in support tickets
+- logo churn 8%, revenue churn 2.5% - not sure which one to lead with
+- fix would cost about 15k for new size-guide photography + copy
+- could take 3-4 weeks to ship and see results
+- finance asked if this is "seasonal" - we don't have enough history to
+  be sure (only 1 prior year)
+- support ticket volume for "wrong size" tickets up 35% qoq
+```
+
+**Audience personas**:
+
+* **Jane (CFO)**: Numbers-first, low patience for ambiguity, will ask "what's the dollar impact and what's the ask?" in the first 60 seconds.
+* **Marcus (VP Product)**: Wants root cause and a roadmap slot, will push back if the fix isn't scoped.
+* **Priya (Head of CX)**: Owns the support team feeling the ticket-volume pain; needs to know the timeline so she can staff around it.
+
+**Meeting constraints**: 15-minute slot in a Monday leadership sync, one slide allowed, Jane has a hard stop.
+
+**Task**: Produce the BLUF email, a 1-slide outline, and a 90-second verbal script.
+
+**Expected exemplar — Executive email**:
+
+> **Subject**: Returns rate increase — $15k fix recommended, decision needed by Friday
+>
+> **BLUF**: Q1 returns grew from 10% to 14% of gross revenue, fully offsetting our 4% gross revenue growth (net revenue is flat). Root cause is sizing inaccuracy on 3 SKUs. Recommend approving a $15k size-guide photography refresh, shipping in 3-4 weeks.
+>
+> **Evidence**: (1) 3 SKUs — hiking boots, trail jacket, daypack XL — drive most of the returns increase. (2) "Wrong size" support tickets are up 35% QoQ, confirming the sizing hypothesis independently of the returns data. (3) Customer impact: logo churn is 8% but revenue churn is only 2.5% — the customers leaving skew low-value, so this is a returns/cost problem first, not an urgent retention crisis.
+>
+> **Caveat**: We can't yet confirm whether this is seasonal — we only have 1 prior year of history, so we're treating it as a real trend until proven otherwise rather than waiting for more data to act.
+>
+> **Ask**: Approve $15k for size-guide photography this week so Product can ship within the month.
+
+**Expected exemplar — 1-slide outline**:
+
+* **Headline (top of slide)**: "Sizing errors on 3 SKUs are erasing Q1's revenue growth — $15k fix proposed."
+* **Visual**: A simple two-bar comparison — Gross Revenue growth (+4%) vs. Net Revenue growth (~0%) — with the gap labeled "Returns: 10%→14% of gross."
+* **Supporting bullets** (max 3): "Root cause: 3 SKUs, sizing complaints (+35% QoQ tickets)." / "Customer impact: low-value churn (8% logo / 2.5% revenue) — not a VIP retention issue." / "Caveat: seasonality unconfirmed (only 1 prior year)."
+* **Bottom strip**: "Decision needed: Approve $15k size-guide refresh — ships in 3-4 weeks."
+
+**Expected exemplar — 90-second verbal script**:
+
+> "Jane, Marcus, Priya — fast version first. Our Q1 returns rate grew enough to completely cancel out our revenue growth. We dug in: it's not broad-based, it's 3 specific SKUs with sizing problems, and we know that independently because wrong-size support tickets are up 35% this quarter. [Pause for Priya] Priya, that's also why your team's ticket volume has felt heavier — expect that to continue for another month until the fix ships. The customers churning are mostly low-value, so this isn't a five-alarm retention fire — it's a cost-and-conversion fix. The ask is $15k for better size-guide photography, ready in 3-4 weeks. One honest caveat: we can't yet rule out seasonality since we only have one prior year — we're proposing to act now rather than wait for a second data point we don't have. Can we get a yes today so Product can start this sprint?"
+
+**Self-scoring against the rubric** (using the Standardized Scoring Rubric below): Evidence Chain = 5 (every claim ties to a specific number or independent corroborating signal); Decision Framing = 5 (one clear ask, clear cost, clear timeline); Risk Disclosure = 4 (seasonality caveat stated plainly, though the "what if the fix doesn't work" downside isn't quantified — room to improve).
+
 ---
 
 ## Standardized Scoring Rubric (Storytelling Quality)
