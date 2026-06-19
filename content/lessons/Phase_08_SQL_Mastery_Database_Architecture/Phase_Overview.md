@@ -1,7 +1,7 @@
 ---
 phase: 8
 title: "SQL Mastery & Database Architecture"
-days: [85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, "96B", "96C"]
+days: [90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, "101B", "101C"]
 totalDuration: 750
 difficulty: "advanced"
 ---
