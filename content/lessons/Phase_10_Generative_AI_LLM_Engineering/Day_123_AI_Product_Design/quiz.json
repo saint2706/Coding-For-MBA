@@ -1,0 +1,70 @@
+{
+    "day": 118,
+    "questions": [
+        {
+            "id": "d118q01",
+            "type": "multiple_choice",
+            "question": "What is the 6-gate AI feature decision framework?",
+            "options": [
+                "A model evaluation pipeline with 6 metrics",
+                "A structured checklist evaluating problem fit, data, privacy, failure severity, alternatives, and success metrics before building an AI feature",
+                "A 6-layer neural network architecture",
+                "A deployment pipeline with 6 stages"
+            ],
+            "answer": 1,
+            "explanation": "The 6-gate framework evaluates: (1) Is this a real problem? (2) Do we have the data? (3) What are the privacy implications? (4) How severe are failures? (5) Are there simpler alternatives? (6) How do we measure success? A feature must pass all gates before development begins."
+        },
+        {
+            "id": "d118q02",
+            "type": "multiple_choice",
+            "question": "What is the difference between 'co-pilot' and 'autopilot' AI features?",
+            "options": [
+                "Co-pilot is open-source; autopilot is proprietary",
+                "Co-pilot assists humans who make final decisions; autopilot acts autonomously",
+                "Co-pilot runs locally; autopilot runs in the cloud",
+                "Co-pilot uses small models; autopilot uses large models"
+            ],
+            "answer": 1,
+            "explanation": "Co-pilot mode assists humans (suggestions, drafts, highlights) while humans retain decision authority. Autopilot mode acts autonomously (auto-classification, auto-routing). Use co-pilot when failure cost is high; autopilot when tasks are low-risk and high-volume."
+        },
+        {
+            "id": "d118q03",
+            "type": "multiple_choice",
+            "question": "What is a confidence UX pattern in AI product design?",
+            "options": [
+                "Showing users the model's training accuracy percentage",
+                "Adapting the UI flow based on the model's confidence level — showing disclaimers for low confidence, acting directly for high confidence",
+                "A loading animation that shows model processing stages",
+                "A user survey that measures trust in AI features"
+            ],
+            "answer": 1,
+            "explanation": "Confidence UX adapts the interface based on prediction confidence: high confidence (>0.9) → act directly; medium (0.7-0.9) → show with disclaimer; low (<0.7) → flag for human review. This builds user trust and prevents bad outputs from reaching users unchecked."
+        },
+        {
+            "id": "d118q04",
+            "type": "multiple_choice",
+            "question": "What is an AI Feature Spec?",
+            "options": [
+                "A technical specification for the model architecture",
+                "A required document covering problem, solution, failure modes, evaluation plan, and launch criteria before any AI feature ships",
+                "An API specification for LLM endpoints",
+                "A dataset specification for training data"
+            ],
+            "answer": 1,
+            "explanation": "An AI Feature Spec is a pre-development document that defines the problem, proposed solution, data requirements, expected failure modes and mitigations, evaluation metrics, and launch criteria. No AI feature should ship without one."
+        },
+        {
+            "id": "d118q05",
+            "type": "multiple_choice",
+            "question": "Which of these is a common AI product design failure?",
+            "options": [
+                "Using too many evaluation metrics",
+                "Shipping an AI feature that works technically but erodes user trust because there's no transparency about when it might be wrong",
+                "Using too small a model for the task",
+                "Having too many human-in-the-loop checkpoints"
+            ],
+            "answer": 1,
+            "explanation": "Technical capability without product judgment yields features no one trusts. Users need transparency (how confident is this?), controllability (can I override it?), and predictability (will it behave consistently?). Missing these leads to low adoption regardless of model quality."
+        }
+    ]
+}

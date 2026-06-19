@@ -1,0 +1,70 @@
+{
+    "day": 109,
+    "questions": [
+        {
+            "id": "d109q01",
+            "type": "multiple_choice",
+            "question": "What is the primary advantage of open-source LLMs like Llama 3.1 over closed-source models like GPT-4o?",
+            "options": [
+                "They always produce higher-quality outputs",
+                "They can be downloaded, fine-tuned, and deployed on private infrastructure",
+                "They have larger context windows",
+                "They are always faster at inference"
+            ],
+            "answer": 1,
+            "explanation": "Open-source models like Llama 3.1 can be self-hosted, giving full control over data privacy and customization. However, they require significant infrastructure investment and are not inherently better in quality."
+        },
+        {
+            "id": "d109q02",
+            "type": "multiple_choice",
+            "question": "A company processes 50,000 simple classification tasks per day. Which model tier is most cost-effective?",
+            "options": [
+                "GPT-4o for maximum accuracy",
+                "Claude 3.5 Sonnet for long-context understanding",
+                "GPT-4o mini, Gemini 1.5 Flash, or Claude 3 Haiku",
+                "Llama 3.1 70B self-hosted"
+            ],
+            "answer": 2,
+            "explanation": "For high-volume simple tasks like classification, small/cheap models (GPT-4o mini, Flash, Haiku) deliver sufficient quality at a fraction of the cost. Self-hosting 70B would be more expensive at this scale given infrastructure overhead."
+        },
+        {
+            "id": "d109q03",
+            "type": "multiple_choice",
+            "question": "What does the 'lost in the middle' phenomenon refer to in LLMs?",
+            "options": [
+                "Models forget their system prompt after long conversations",
+                "Models perform worse on information placed in the middle of very long contexts",
+                "Models lose accuracy when processing multiple languages",
+                "Models cannot retrieve embeddings from middle-indexed vector stores"
+            ],
+            "answer": 1,
+            "explanation": "Research shows LLMs attend more strongly to information at the beginning and end of their context window, while information buried in the middle is more likely to be missed — even in models with very large context windows like Gemini's 1M tokens."
+        },
+        {
+            "id": "d109q04",
+            "type": "multiple_choice",
+            "question": "What does RLHF stand for and why is it important for LLM selection?",
+            "options": [
+                "Recursive Language Hyperparameter Fitting — it optimizes training speed",
+                "Reinforcement Learning from Human Feedback — it makes models more helpful and aligned",
+                "Randomized Layer Hierarchical Fusion — it improves model architecture",
+                "Real-time Language Hallucination Fixing — it reduces incorrect outputs"
+            ],
+            "answer": 1,
+            "explanation": "RLHF fine-tunes models based on human preference labels to be more helpful, harmless, and honest. A well-aligned smaller model can outperform an unaligned larger model on real-world tasks, making alignment quality a critical selection criterion."
+        },
+        {
+            "id": "d109q05",
+            "type": "multiple_choice",
+            "question": "When is self-hosting open-source LLMs typically MORE expensive than using API-based models?",
+            "options": [
+                "When processing more than 1 million tokens per day",
+                "When monthly API costs would be under ~$500/month",
+                "When data privacy is a concern",
+                "When using quantized models"
+            ],
+            "answer": 1,
+            "explanation": "Running a 70B model in production requires GPU hardware ($10K-15K/month), engineering time, and maintenance. Below ~$500/month in API costs, the infrastructure and engineering overhead of self-hosting makes it more expensive than simply paying for API access."
+        }
+    ]
+}
