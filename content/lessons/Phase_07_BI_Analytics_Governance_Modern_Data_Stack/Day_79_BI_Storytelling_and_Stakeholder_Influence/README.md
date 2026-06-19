@@ -334,6 +334,75 @@ D) More data.
 Data is useless without Action. Tell them what to *do*.
 </details>
 
+### Question 6: Ethical Pitfalls
+
+A presenter truncates a bar chart's Y-axis to start at 90 instead of 0, making a 2% change look dramatic. What ethical pitfall does this illustrate?
+
+A) Cherry-picking.
+B) Manipulating axes to inflate the visual magnitude of a small change beyond its statistical magnitude.
+C) Overclaiming causality.
+D) Hiding caveats.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: B**
+Truncated axes are a classic manipulation: the visual impression (a tall, dramatic bar gap) no longer matches the real statistical magnitude (a small percentage change), misleading viewers who scan charts quickly.
+</details>
+
+### Question 7: Pre-Wiring
+
+Why does a senior analyst walk the CFO through a controversial finding one-on-one before the full executive readout?
+
+A) To get extra credit.
+B) To surface objections to the methodology privately, so the meeting becomes about the decision rather than a public debate over data validity.
+C) To avoid telling other stakeholders the finding at all.
+D) Pre-wiring is unnecessary if the data is correct.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: B**
+Pre-wiring lets you catch and fix objections before they become a public derailment. It is a credibility-protection technique, not a way to hide information from anyone.
+</details>
+
+### Question 8: Aligning Finance and Product
+
+BrightCart's Finance team defines "Returns Rate" as dollars-based (`Returns $ / Gross Revenue $`) while Product defines it as unit-based (`Returns count / Orders count`). What is the senior-level way to handle this before an executive readout?
+
+A) Pick whichever number looks better and don't mention the other.
+B) Let the disagreement play out live in front of the executives.
+C) Reconcile definitions in a pre-read sync, agree on an "official" number with the other footnoted, and explicitly surface any unresolved root-cause disagreement rather than forcing fake consensus.
+D) Average the two definitions into a new metric.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: C**
+Reconciling metric definitions before the meeting (and recording any genuine unresolved disagreement in a decision log) prevents a credibility-destroying "which number is right?" derailment in front of executives, while still being honest about real disagreements.
+</details>
+
+---
+
+## Cross-References
+
+* **Phase 7 Day 70 — BI Metrics & Data Literacy**: the metric-definition rigor (grain, period) that must be settled before a story can be told consistently.
+* **Phase 7 Day 77 — BI Domain Analytics & Value Drivers**: the source of this lesson's BrightCart returns-rate findings (logo vs. revenue churn, metric tree) used throughout the storytelling lab.
+* **Phase 7 Day 78 — BI Experimentation & Predictive Insights**: how to responsibly state uncertainty and avoid overclaiming causality when presenting experiment or forecast results.
+* **Phase 7 Day 75 — BI Visualization & Dashboard Principles**: the chart-design fundamentals (avoiding manipulated axes, choosing the right chart type) that underlie the ethical pitfalls section here.
+* **Phase 7 Day 80 — BI Data Quality & Governance**: the governance practices (certified metrics, lineage) that make the underlying numbers worth telling a story about in the first place.
+
+## Glossary
+
+* **Narrative arc**: The Setup → Conflict → Resolution structure that gives a data presentation a memorable, persuasive shape instead of a flat list of facts.
+* **Minto Principle**: A communication framework that puts the main answer/recommendation first, followed by supporting evidence — the opposite of a step-by-step methodology walkthrough.
+* **Managing up**: Proactively communicating concise, decision-relevant summaries to senior stakeholders rather than making them dig through raw dashboards.
+* **Call to action**: The specific recommendation, decision, or request a presentation asks the audience to make — the mandatory ending of any business data story.
+* **Pre-wire**: A private, one-on-one conversation with a key stakeholder before a group meeting, used to surface objections and build buy-in ahead of time.
+* **Decision log**: A written record of what was decided, by whom, on what evidence, and what dissent (if any) remained unresolved.
+* **BLUF (Bottom Line Up Front)**: A writing convention that states the conclusion or recommendation in the first sentence, before any supporting detail.
+* **Guardrail metric**: A secondary metric monitored to catch unintended harm from a change, even when the primary metric looks positive (see Phase 7 Day 78).
+
 ---
 
 ## Summary
@@ -344,5 +413,7 @@ Today you learned:
 * ✅ **The Minto Pyramid**: Answer first, details later.
 * ✅ **Active Headlines**: Slide titles should state the insight, not just the topic.
 * ✅ **Influence**: Data is a tool for persuasion, not just information.
+* ✅ **Ethical Guardrails**: Cherry-picking, overclaiming causality, hidden caveats, and manipulated axes cross the line from framing into deception.
+* ✅ **Cross-Functional Alignment**: Reconcile Finance/Product metric definitions before the room, and record unresolved dissent rather than hiding it.
 
 **Tomorrow**: We focus on **Data Quality & Governance**—Ensuring your data is credible enough to tell these stories.
