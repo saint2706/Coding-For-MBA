@@ -75,6 +75,24 @@ Every good data story follows this structure:
 * **Action**: Delete it.
 * **Rule**: If a chart does not advance the narrative, it is distraction.
 
+### 4. Know Your Audience: Segmentation and Pre-Wiring
+
+The same BrightCart finding ("Returns rate increased to 14% of gross revenue") needs a *different* story for each audience:
+
+| Audience | What they care about | How to frame the same finding |
+|---|---|---|
+| **CFO** | Cash impact, margin | "Returns are eroding $20k/month in net revenue — here's the cash impact on Q2 guidance." |
+| **VP Product** | Root cause, roadmap | "Sizing-guide accuracy on 3 SKUs is driving 60% of the increase — here's the fix and the sprint cost." |
+| **CEO / Board** | One number, one decision | "We need to approve a $15k sizing-photography refresh to stop a $240k annualized revenue leak." |
+| **Customer Support Lead** | Operational load | "Expect return-related ticket volume to stay elevated for 4-6 weeks until the fix ships." |
+
+* **Pre-wiring**: Before the formal meeting, walk the most skeptical or most senior stakeholder (often the CFO or a peer in Finance) through the headline finding *one-on-one*. If they object to the methodology or the framing, you fix it *before* it becomes a public surprise in the executive readout — pre-wiring prevents a meeting from becoming a debate about data validity instead of a decision about action.
+* **Decision log**: After every readout, record: the decision made, who made it, the date, the evidence cited, and any **dissent** that wasn't resolved (e.g., "Finance still disputes whether the $240k estimate should be gross or net of the fix cost — flagged for follow-up, not blocking the go-ahead"). A decision log prevents "I don't remember agreeing to that" three months later.
+* **Facilitation**: In the room, your job shifts from presenter to facilitator — read the silence, call on the quiet skeptic by name ("Priya, does this match what Finance is seeing?"), and don't let one loud voice dominate before others weigh in.
+* **Objection handling**: When someone says "I don't believe this number," don't get defensive — ask "What would convince you?" and offer to walk through the source data live. Most objections are really requests for an audit trail, not actual disagreement with the conclusion.
+* **Uncertainty communication**: Say "we estimate a $240k annualized impact, with a likely range of $180k-$300k depending on whether the sizing fix fully resolves the issue" rather than presenting a single number as false precision. Executives make better decisions when they know how confident you actually are.
+* **Post-decision action tracking**: A decision without an owner and a date is a wish. Close every readout with an explicit owner, deadline, and the metric that will confirm success (e.g., "Product owns the sizing-guide fix, ships by April 15, success = returns rate back under 11% by May 30").
+
 ---
 
 ## Senior-Level Insights
@@ -93,6 +111,25 @@ Every good data story follows this structure:
 * **Stakeholder**: "I don't believe this number. My gut says sales are up."
 * **Defense**: "That's a fair hypothesis. Use the 'Yes, And' technique."
   * "Yes, Sales *feel* up because store traffic is high. *However*, the data shows Average Transaction Value dropped. So more people are buying cheaper things."
+
+### Ethical Pitfalls in Data Storytelling
+
+Persuasion is the job — but there is a hard line between *framing* and *manipulating*. Watch for these failure modes, in your own work and in others':
+
+* **Cherry-picking**: Showing only the 2 months where a metric looked good and silently dropping the 4 months where it didn't, to make a flat trend look like growth. *Test*: would the story survive showing the full time window?
+* **Overclaiming causality**: Saying "the new homepage *caused* the revenue increase" when you only ran an observational before/after comparison, with no control group and no randomization. Use "associated with" or "coincided with" unless you actually ran (or can point to) a controlled experiment.
+* **Hiding caveats**: Quietly omitting that the "20% conversion lift" was measured during a holiday week with unusually high traffic, because the caveat weakens your pitch. If a caveat would change the decision, it must be in the room, not in a footnote nobody reads.
+* **Manipulating emotion or axes**: Truncating a bar chart's Y-axis to start at 90 instead of 0 to make a 2% change look like a 200% change; using alarming red/green color coding on a metric that hasn't actually crossed any real threshold; or using a dramatic stock photo to imply crisis where the data shows routine variation. *Rule*: a chart's visual magnitude should match its statistical magnitude.
+
+### Senior Workflow: Aligning Finance and Product Before an Executive Readout
+
+A junior analyst builds the deck and presents it. A senior analyst runs this alignment sequence *first*, because executives losing confidence in your numbers in the room is far more costly than spending an extra two days beforehand:
+
+1. **Identify the conflicting definitions early**: BrightCart's Finance team defines "Returns Rate" as `Returns $ / Gross Revenue $` (a dollar-weighted view). Product defines it as `Returns count / Orders count` (a unit-weighted view). These can move in different directions in the same period if average order value shifts — and showing both numbers unreconciled in the same meeting invites a credibility-destroying "which number is right?" derailment.
+2. **Schedule a 20-minute pre-read sync** with one Finance and one Product stakeholder, 2-3 days before the readout. Walk through the metric definitions side by side and agree on which one is the "official" number for this readout (with the other footnoted, not hidden).
+3. **Surface — don't suppress — unresolved disagreement**: If Finance and Product still disagree on the *root cause* attribution (Finance thinks it's pricing-driven mix shift; Product thinks it's a sizing-guide defect) after the sync, do not force a fake consensus slide. Present the agreed facts, then explicitly state: "Finance and Product have different hypotheses on root cause; both are testable, and we recommend running the Day 78-style experiment to resolve it rather than debating it today."
+4. **Record the dissent in the decision log** from the start of this section, tagged with who holds which view and what evidence would resolve it — so the executive readout can make a *provisional* decision (e.g., approve the sizing-guide budget) without pretending the underlying disagreement is settled.
+5. **Close the loop after the meeting**: send the decision log excerpt to both Finance and Product within 24 hours, so neither side can later claim they weren't heard.
 
 ---
 

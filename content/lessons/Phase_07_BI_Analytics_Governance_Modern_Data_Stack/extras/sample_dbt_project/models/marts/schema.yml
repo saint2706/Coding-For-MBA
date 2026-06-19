@@ -20,7 +20,8 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
+              arguments:
+                min_value: 0
       - name: order_value_tier
         description: "Bucketed order size: high_value (>=$100), mid_value (>=$50), low_value (<$50)."
         tests:
@@ -42,4 +43,5 @@ models:
         tests:
           - not_null
           - dbt_utils.accepted_range:
-              min_value: 0
+              arguments:
+                min_value: 0

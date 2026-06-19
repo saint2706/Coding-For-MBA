@@ -6,13 +6,23 @@ This folder contains supplementary materials for Phase 7: BI Analytics, Governan
 
 ### `sample_dbt_project/`
 
-A scaffold dbt project matching the structure introduced in Day 84B (dbt Fundamentals) and Day 84C (Reverse ETL & Semantic Layer).
+A real, runnable dbt-duckdb project for **BrightCart** (the Phase 7 running-example
+DTC outdoor/sporting-goods retailer) matching the structure introduced in Day 84B
+(dbt Fundamentals) and Day 84C (Reverse ETL & Semantic Layer). It was built and
+verified end-to-end with `dbt-duckdb` 1.10 / dbt-core 1.11: `dbt deps`, `dbt seed`,
+`dbt run`, `dbt test`, `dbt source freshness`, and `dbt docs generate` all succeed
+(or, for `dbt source freshness`, fail in the documented, intentional way — see
+Day 84B Pitfalls).
 
 **Use this to:**
 
-- Run a real dbt project locally (requires dbt-core + a DuckDB or Postgres connection)
+- Run a real dbt project locally (requires `dbt-core` + `dbt-duckdb` — no database server needed)
 - Understand the recommended folder structure for staging → intermediate → marts
 - See working examples of `schema.yml` tests and source definitions
+- Reproduce the exact row counts and outputs referenced in Day 84B and Day 84C:
+  20 seeded customers (2 inactive, filtered in staging → 18), 25 seeded orders
+  (21 `completed`, 2 `cancelled`, 2 `pending` → 21 rows in `fct_revenue`), 17/17
+  passing data tests
 
 ### `metrics_layer_example.yml`
 

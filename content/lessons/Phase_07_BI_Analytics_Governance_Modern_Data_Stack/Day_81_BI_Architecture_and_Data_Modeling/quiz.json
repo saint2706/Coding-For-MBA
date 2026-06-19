@@ -1,0 +1,109 @@
+{
+    "day": 81,
+    "questions": [
+        {
+            "id": "d81q01",
+            "type": "multiple_choice",
+            "question": "BrightCart's `order_items` table has 4 rows (one per product per order). After joining `orders`, `order_items`, `dim_customers`, and `dim_products` into `fact_orders`, the result has 6 rows instead of 4. What almost certainly happened?",
+            "options": [
+                "The grain was declared correctly and this is expected",
+                "Fanout — a join matched more than one dimension row per fact row, multiplying the result",
+                "The data was deduplicated correctly",
+                "Net revenue was calculated wrong"
+            ],
+            "answer": 1,
+            "explanation": "If the declared grain is 'one row per product per order' (matching order_items), the joined result should have exactly as many rows as order_items. Getting more rows than that signals fanout: a join (often to dim_customers if SCD Type 2 history wasn't filtered to is_current, or a many-to-many relationship) matched multiple rows per input row, silently inflating any downstream SUM()."
+        },
+        {
+            "id": "d81q02",
+            "type": "multiple_choice",
+            "question": "A BrightCart customer moves from the 'West' region to the 'East' region. Marketing needs every historical order to still attribute to 'West' (the region at time of purchase), while new orders attribute to 'East'. Which SCD type does this require?",
+            "options": [
+                "SCD Type 1 (overwrite in place)",
+                "SCD Type 2 (new row with valid_from/valid_to and a new surrogate key)",
+                "SCD Type 3 (add a previous_region column)",
+                "No SCD handling is needed; just store the customer's current region"
+            ],
+            "answer": 1,
+            "explanation": "SCD Type 2 preserves full history by inserting a new dimension row with a new surrogate key when an attribute changes, marking the old row as no longer current. Historical fact rows keep pointing to the old surrogate key (so they still report 'West'), while new fact rows point to the new one ('East'). Type 1 would overwrite history; Type 3 only remembers one prior value."
+        },
+        {
+            "id": "d81q03",
+            "type": "multiple_choice",
+            "question": "BrightCart wants to analyze 'Customer Lifetime Value' (from fact_orders) against 'Support Ticket Volume' (from a separate fact_support_tickets), joining both to the same customer definition. What pattern enables this?",
+            "options": [
+                "A junk dimension",
+                "A factless fact table",
+                "A conformed dimension — the same dim_customers table reused unchanged across both fact tables",
+                "A degenerate dimension"
+            ],
+            "answer": 2,
+            "explanation": "A conformed dimension is the same physical dimension table (with the same keys and definitions) reused across multiple fact tables. This is what lets BI tools join metrics from different business processes (orders, support tickets) on a single, consistent definition of 'customer.'"
+        },
+        {
+            "id": "d81q04",
+            "type": "multiple_choice",
+            "question": "BrightCart's finance system tracks shipping_cost at the order grain ($10 flat per order). Order O100 has 2 line items in the item-grain fact_orders table. If you join shipping_cost directly onto fact_orders by order_id and SUM it, what do you get, and why is it wrong?",
+            "options": [
+                "$10, which is correct",
+                "$20, because the $10 flat cost gets duplicated onto both line-item rows — a mixed-grain error",
+                "$5, correctly allocated per item",
+                "An error, because SQL doesn't allow this join"
+            ],
+            "answer": 1,
+            "explanation": "This is the mixed-grain pitfall: shipping_cost lives at the order grain, but fact_orders lives at the order-item grain. Joining it in directly duplicates the flat fee onto every line item belonging to that order, so SUM() returns $20 for an order that only incurred $10 of shipping. The fix is either to allocate the cost across items explicitly, or to keep it in a separate order-grain fact table queried independently."
+        },
+        {
+            "id": "d81q05",
+            "type": "multiple_choice",
+            "question": "A new BrightCart marketplace order arrives in fact_orders before the corresponding customer record has synced into dim_customers, so customer_key is NULL. Using an INNER JOIN to dim_customers in the revenue report, what happens to that order's revenue?",
+            "options": [
+                "It correctly shows as 'Unknown Customer' revenue",
+                "It throws a SQL error and stops the report",
+                "It silently disappears from the report entirely, even though the revenue happened",
+                "It automatically gets allocated proportionally across all known customers"
+            ],
+            "answer": 2,
+            "explanation": "This is the null-key pitfall. An INNER JOIN drops any fact row whose foreign key doesn't match a dimension row — including NULLs. The revenue is real but invisible in any inner-joined report. The fix is to use a placeholder 'Unknown Member' surrogate key (e.g., -1) instead of NULL, so the row still joins and appears as an explicit, auditable 'Unknown' bucket rather than vanishing."
+        },
+        {
+            "id": "d81q06",
+            "type": "multiple_choice",
+            "question": "Which statement best characterizes the real-world relationship between Kimball (dimensional), Inmon (normalized EDW), Data Vault, and lakehouse/medallion architecture?",
+            "options": [
+                "They are mutually exclusive — a team must pick exactly one and use it for every layer of the warehouse",
+                "Inmon and Kimball are obsolete; only lakehouse/medallion architecture is used in 2026",
+                "They are often complementary layers in the same pipeline — e.g., normalized/vault-like staging feeds a Kimball star schema, which feeds OBT extracts for specific dashboards",
+                "Data Vault replaces the need for any dimensional modeling entirely"
+            ],
+            "answer": 2,
+            "explanation": "In practice, these approaches are frequently combined at different layers: raw/staging data may be normalized or vault-modeled for auditability, while the BI-facing 'Gold' layer is typically a Kimball star schema, with OBT extracts built on top for specific self-service use cases. The 2000s-era 'Kimball vs. Inmon' debate is largely resolved by using both, in sequence, for different audiences."
+        },
+        {
+            "id": "d81q07",
+            "type": "multiple_choice",
+            "question": "What is a 'factless fact table' used for, and which BrightCart example fits the pattern?",
+            "options": [
+                "A fact table with no foreign keys, used only for testing",
+                "A fact table recording that an event occurred with no numeric measures — e.g., fact_product_views(customer_key, product_key, date_key), useful for finding products viewed but never purchased",
+                "A dimension table mistakenly named as a fact table",
+                "A fact table where all measures have been deleted due to a data quality issue"
+            ],
+            "answer": 1,
+            "explanation": "A factless fact table records the occurrence of an event with no associated measures — just the keys describing who/what/when. fact_product_views is the classic example: it has no 'amount,' but lets you answer coverage questions like 'which products are viewed frequently but rarely purchased,' which a measure-bearing fact table can't answer on its own."
+        },
+        {
+            "id": "d81q08",
+            "type": "multiple_choice",
+            "question": "BrightCart's dim_products.category for product P10 changes from 'Footwear' to 'Footwear & Boots.' Compare the update cost in the star schema (dim_products) vs. the OBT (obt_brightcart_orders).",
+            "options": [
+                "Both require the same single-row update",
+                "The star schema requires updating every historical OBT-style row; the OBT requires only one row",
+                "The star schema requires one row update in dim_products; the OBT requires rewriting every historical row that referenced P10",
+                "Neither needs to be updated, since category is immutable"
+            ],
+            "answer": 2,
+            "explanation": "This is the core storage-vs-maintenance trade-off of denormalization. In the star schema, dim_products is normalized, so a category rename is a single UPDATE statement on one row. In the OBT, category is denormalized (copied) into every order row that touched P10, so the same rename requires rewriting every historical row — exactly the update-complexity cost called out as an OBT downside."
+        }
+    ]
+}

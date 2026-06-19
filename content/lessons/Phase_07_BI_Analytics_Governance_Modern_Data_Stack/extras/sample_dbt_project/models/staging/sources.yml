@@ -7,7 +7,7 @@ version: 2
 # Phase 7 Day 83 — BI Cloud & Modern Data Stack for the ingestion layer).
 sources:
   - name: raw
-    schema: raw
+    schema: main
     tables:
       - name: raw_orders
         description: "Raw BrightCart orders, one row per order, as captured at checkout."
@@ -30,7 +30,8 @@ sources:
             tests:
               - not_null
               - dbt_utils.accepted_range:
-                  min_value: 0
+                  arguments:
+                    min_value: 0
           - name: status
             description: "Order lifecycle status: completed, pending, or cancelled."
             tests:
@@ -39,7 +40,10 @@ sources:
 
       - name: raw_customers
         description: "Raw BrightCart customer records, one row per signed-up customer."
-        loaded_at_field: sign_up_date
+        # loaded_at_field must resolve to a TIMESTAMP, not a DATE — `sign_up_date`
+        # is stored as a DATE in this seed, so it is cast here. Forgetting this
+        # cast is a real, common dbt freshness bug (see Day 84B Pitfalls).
+        loaded_at_field: "CAST(sign_up_date AS TIMESTAMP)"
         freshness:
           warn_after: {count: 48, period: hour}
           error_after: {count: 96, period: hour}

@@ -74,13 +74,19 @@ Your brain processes visuals *before* you consciously think.
 * **Position**: Top-Left is "Most Important" (in LTR languages).
 * **Design Hack**: Put your **BAN (Big Angry Number)** in the Top Left. "Revenue: $1.2M".
 
-### 3. Chart Selection Framework
+### 3. Chart Selection: Decision Matrix
 
-* **Comparison**: "Who is winning?" -> **Bar Chart**.
-* **Trend**: "Are we growing?" -> **Line Chart**.
-* **Composition**: "What is the mix?" -> **Stacked Bar** (or Pie if < 3 slices).
-* **Distribution**: "Is this normal?" -> **Histogram**.
-* **Relationship**: "Does price affect sales?" -> **Scatter Plot**.
+A one-line mapping ("Trend → Line Chart") is a starting point, not a complete answer — the right chart also depends on data shape, audience, and what could go wrong. Use this expanded matrix when choosing a chart for a BrightCart dashboard:
+
+| Question Type    | Example                                              | Data Shape Needed                          | Best Chart(s)                  | Best Audience               | Caveats                                                                 | Anti-Pattern                                            |
+| :---------------- | :----------------------------------------------------- | :-------------------------------------------- | :-------------------------------- | :----------------------------- | :------------------------------------------------------------------------ | :---------------------------------------------------------- |
+| **Comparison**     | "Which BrightCart category sold the most?"             | 1 category dim + 1 measure                    | Bar Chart                          | Any                              | Sort bars by value, not alphabetically, unless order itself is meaningful | Pie chart with 8+ categories — angles are hard to compare |
+| **Trend**          | "Is BrightCart revenue growing month over month?"       | 1 time dim + 1 measure                        | Line Chart                         | Any, especially execs            | Don't truncate the Y-axis to exaggerate a trend (see "Misleading Axes" below) | Bar chart for daily data over 2 years (too many bars)     |
+| **Composition**    | "What % of orders come from each channel?"              | 1 category dim (few levels) + 1 measure (parts of a whole) | Stacked Bar (or Pie only if ≤ 3 slices) | Any                              | Composition only makes sense if parts genuinely sum to a meaningful whole  | Pie chart with 15 slices (Exercise 1 below)               |
+| **Distribution**   | "How are BrightCart order values spread out?"           | 1 continuous measure, many observations       | Histogram, Box Plot                | Analysts > Executives            | Bin size changes the story — too few bins hides detail, too many hides the pattern | Bar chart of raw transaction-level data (too granular for a summary view) |
+| **Relationship**   | "Does discount % affect order quantity?"                 | 2 continuous measures                          | Scatter Plot                       | Analysts                         | Correlation ≠ causation — a scatter plot showing a relationship doesn't prove one variable causes the other | Dual-axis line chart pretending to show correlation (see Question 4) |
+| **Part-to-Part Ranking** | "Top 5 products by revenue, per category"           | 1 category dim + 1 ranked measure              | Bar Chart (sorted, sometimes faceted/small multiples) | Merchandising managers           | Watch for ties — explain the tiebreak rule used                          | Table with 200 rows when 5 bars would communicate it instantly |
+| **Geographic**      | "Which BrightCart regions have the highest return rate?" | Geographic dim + 1 measure                     | Choropleth Map (with caution)      | Regional managers                | Map area ≠ population/sales weight — a huge, sparsely-populated region looks "important" purely from its size (see Map Pitfalls below) | Map as the *only* view — pair with a sortable table for precision |
 
 ---
 
@@ -102,19 +108,113 @@ If they can't answer all 3, **delete half the charts.**
 * **Blue/Grey**: Use for neutral categories.
 * **Consistent**: If "Sales" is Green on Page 1, it *must* be Green on Page 2.
 
+### Dashboard Purpose & Personas
+
+Before picking a single chart, answer: **who is this dashboard for, and what decision will they make from it?** BrightCart serves at least three distinct personas from the *same underlying data*, but each needs a different dashboard:
+
+| Persona                     | Dashboard type | Refresh cadence | What they need                                                    |
+| :----------------------------- | :-------------- | :----------------- | :-------------------------------------------------------------------- |
+| **Warehouse Ops Manager**      | Operational (the Cockpit) | Real-time / minutes | "Is the order queue backing up right now?" — dense, alert-driven      |
+| **Regional Sales Director**    | Analytical (mix of both) | Daily               | "Which products/regions need attention this week?" — trends + drill-down |
+| **CEO / Board**                | Strategic (the Movie Screen) | Weekly / monthly    | "Is the business healthy?" — 3-5 BANs, minimal noise, a clear narrative |
+
+**Analytical vs. operational dashboards**: an *operational* dashboard answers "what is happening right now and do I need to act" (e.g., live order-fulfillment queue depth); an *analytical* dashboard answers "what happened, why, and what's the trend" (e.g., last quarter's channel mix shift). Building one when the audience needs the other is a common, expensive mistake — a CEO doesn't want a live ticker of every order, and a warehouse manager can't wait for a "weekly trend" to know a conveyor belt has stopped.
+
+### Interaction, Filters, and Mobile/Responsive Design
+
+* **Interaction/filter design**: Filters should default to the most common view (e.g., "This Quarter," "All Regions") and clearly show *what's currently filtered* — a dashboard with an invisible active filter ("why does my number not match the report?") is a top source of stakeholder distrust.
+* **Mobile/responsive design**: A BrightCart regional manager checking the dashboard on a phone needs vertically stacked BANs and fewer simultaneous charts — dense desktop layouts with 12 small multiples become unreadable on a 6-inch screen. Design the mobile view as a deliberate subset, not a shrunken copy.
+* **Performance**: A dashboard that takes 8 seconds to load a filter change will be abandoned. Push aggregation into the warehouse (Phase 7 Day 73/74) and use materialized/pre-aggregated tables for default views; let drill-downs query live detail only when requested.
+* **Freshness**: State the data's "as of" timestamp directly on the dashboard. A board member assuming "today's revenue" is actually "yesterday's batch load" leads to bad decisions — freshness must be visible, not assumed.
+* **Adoption telemetry**: Track who actually opens the dashboard, how often, and which filters they use. A beautifully designed dashboard nobody opens after week one is a failure regardless of its data-ink ratio — measure usage, not just build it and hope.
+
+### Uncertainty, Annotations, and Honest Visualization
+
+* **Uncertainty & confidence intervals**: A single point estimate ("Q3 forecast: $4.2M") hides how confident that number is. Where forecasts or sampled data are shown, add a shaded confidence band or error bars — a flat line implies false precision.
+* **Annotations**: Mark known events directly on a trend line (e.g., "Site outage, June 10" on a traffic chart) — otherwise viewers invent their own (wrong) explanations for a dip or spike.
+* **Small multiples**: Instead of one cluttered chart with 8 overlapping lines (one per BrightCart region), use 8 small identical mini-charts side by side. Harder to overlay precisely, but dramatically easier to scan and compare shapes.
+* **Misleading axes**: Truncating a Y-axis (starting at 90 instead of 0) makes a 2% change look like a 200% change. Always default to a zero-based axis for bar charts; for line charts where the absolute baseline isn't meaningful, label the axis range explicitly so the distortion is visible, not hidden.
+* **Map pitfalls**: A choropleth map shades by geographic area, but large rural regions can dominate the visual even if they represent a tiny fraction of BrightCart's order volume — "area bias." Prefer a cartogram, a sized-dot map, or pair the map with a sortable table.
+* **Ethical visualization**: Cherry-picking a time window that flatters a metric, omitting a category that would change the conclusion, or choosing a chart type specifically because it exaggerates a small effect are all forms of dishonest visualization — even if every individual number on the chart is technically correct. The standard to hold yourself to: would the conclusion change if you showed the full, unfiltered picture?
+
 ---
 
 ## Hands-on Lab
 
-### Exercise 1: The Makeover
+### Exercise 1: The Makeover — A Flawed BrightCart Dashboard
 
-**Goal**: Identify 3 flaws in a "Bad Chart".
+**What/Why**: You cannot fix a bad dashboard you can't precisely describe. This exercise gives you a textual/ASCII mockup of a real flawed BrightCart executive dashboard — gradable without needing an actual image file — so you can practice diagnosing and rewriting it.
 
-**Scenario**: A 3D Pie Chart with 15 slices, a gradient background, and a legend with tiny text.
+**The Flawed Artifact — "BrightCart Q2 Performance" (as currently shipped)**:
 
-1. **3D Distortion**: Angles are hard to compare; 3D makes front slices look bigger. -> **Flatten it.**
-2. **Too Many Slices**: 15 is impossible. -> **Group into "Top 5 + Others".**
-3. **Gradient/Legend**: Distracting. -> **Label slices directly.**
+```text
+┌──────────────────────────────────────────────────────────────────┐
+│   🌈 BRIGHTCART Q2 DASHBOARD 🌈   (gradient purple-to-orange bg)  │
+│                                                                    │
+│           ╭─────── 3D PIE CHART ───────╮                          │
+│          ╱  Tents 22% ╲  Footwear 18%   ╲   <- 15 slices total,   │
+│         │  Backpacks 14% │ Apparel 11%    │     legend in 6pt     │
+│          ╲  Accessories 9% ╱ + 10 more... ╱    font, bottom-right │
+│           ╰─────────────────────────────╯                         │
+│                                                                    │
+│   Revenue This Quarter vs Last Quarter (dual-axis line chart)     │
+│   ┌────────────────────────────────────────────┐                  │
+│   │ Left axis: $2.0M-$2.4M    Right axis: $1.8M-$2.5M│            │
+│   │  ___---***  (two lines drawn to cross dramatically) │          │
+│   └────────────────────────────────────────────┘                  │
+│                                                                    │
+│   Returns vs Profit (Red/Green bars, no axis starting at 0,       │
+│   Y-axis starts at $900K instead of $0)                           │
+│                                                                    │
+│   [Tiny footer, 4pt font: "Data as of: unknown"]                  │
+│   [No filter indicator -- unclear if this is Web+App+Marketplace  │
+│    or Web only]                                                   │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+**Labeled problems** (use these as your grading rubric):
+
+1. **3D pie chart with 15 slices** — angles are nearly impossible to compare, and 3D perspective makes front-facing slices look artificially larger.
+2. **Gradient background** — pure decoration, zero data-ink value, actively reduces contrast for the data itself.
+3. **6pt legend font** — illegible at a glance, fails the "5-Second Rule" immediately.
+4. **Dual-axis line chart with independently scaled axes** — the two lines are drawn to visually "cross" by manipulating each axis's range independently, implying a relationship that may not exist in the underlying numbers.
+5. **Truncated Y-axis on the Returns vs. Profit bar chart** (starts at $900K, not $0) — exaggerates the visual size of small differences.
+6. **Red/Green color usage** — acceptable here (good/bad semantics), but combined with the truncated axis, it amplifies the misleading effect.
+7. **No freshness indicator** — "Data as of: unknown" means a viewer cannot tell if they're looking at live data or a stale snapshot from last week.
+8. **No active filter indicator** — the viewer cannot tell which BrightCart sales channel(s) the numbers represent.
+
+**Your task**: Redesign this into an accessible target artifact. Required remake steps (tool-agnostic — applies whether you build this in Tableau, Power BI, or matplotlib):
+
+1. Flatten the pie chart and reduce to **Top 5 categories + "Other"** (6 slices max), with direct labels (no legend needed).
+2. Remove the gradient background; use white/light-gray.
+3. Replace the dual-axis chart with **two separate small-multiple line charts** stacked vertically, each with its own correctly zero-based or explicitly labeled axis.
+4. Set the Returns vs. Profit bar chart's Y-axis to start at $0.
+5. Add a visible "Data as of: [timestamp]" freshness label and a visible active-filter chip (e.g., "Channel: All").
+6. Keep Red/Green for the Returns vs. Profit good/bad signal (this part was already correct) but pair it with explicit "+"/"-" labels for colorblind accessibility (see Exercise 3).
+
+**Target Artifact — Accessible Remake (described in layout terms)**:
+
+```text
+┌──────────────────────────────────────────────────────────────────┐
+│  BrightCart Q2 Performance        Data as of: 2026-06-19 06:00   │
+│  Channel: All ▾                                                   │
+│                                                                    │
+│  Top-Left BAN: Revenue $2.2M (+5% QoQ)   Top-Mid: Margin 41%      │
+│  Top-Right BAN: Active Customers 62k                              │
+│                                                                    │
+│  [Bar chart, sorted descending, Top 5 categories + Other,         │
+│   direct data labels, no legend needed]                           │
+│                                                                    │
+│  [Line chart: Revenue trend, single axis, zero-based]             │
+│  [Line chart: Returns trend, single axis, zero-based]             │
+│   (stacked vertically as small multiples instead of one dual-axis)│
+│                                                                    │
+│  [Bar chart: Returns vs Profit, Y-axis starts at $0,              │
+│   Green = Profit, Red+"-" icon = Returns]                         │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+**Expected/Rubric-Scored Output**: Score your remake (or a classmate's) using the Standardized Scoring Rubric below. A correct remake should score ≥ 4/5 on Clarity and Bias Risk specifically, since those are the two dimensions the original artifact violated most severely (truncated axis, dual independent axes, illegible legend).
 
 ### Exercise 2: The BAN Layout
 

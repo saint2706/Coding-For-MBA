@@ -126,59 +126,183 @@ The star schema above is the simple case. Real BrightCart data has history, ambi
   * Result: `SUM(Sales)` works, `SUM(Budget)` counts x30 times.
 * **Fix**: Create separate Fact Tables (`fact_sales_daily`, `fact_budget_monthly`).
 
+### Pitfalls: How Star Schemas Silently Lie
+
+These five mistakes don't crash your query — they just quietly produce a *wrong but plausible-looking* number, which is the worst kind of bug.
+
+* **Fanout (Join Multiplication)**: Joining two fact-like tables (or a fact to a dimension with a one-to-many relationship you didn't expect) multiplies rows. If `order_items` (multiple rows per order) is joined to a `fact_returns` table also at the order grain without care, `SUM(revenue)` silently multiplies by however many line items each order had.
+* **Mixed Grain**: Mixing "per order item" rows with "per order" rows in the same fact table (e.g., adding a flat `shipping_cost` row at order grain into a fact table that's otherwise at order-item grain) makes `SUM()` wrong the moment anyone aggregates without knowing to divide first. This is the Exercise 2 problem below.
+* **Duplicate Facts**: A retried ETL job re-inserts the same `order_id` twice because the load wasn't idempotent (see Phase 7 Day 82). Every revenue total is now inflated by however many rows got duplicated.
+* **Null Keys**: A `fact_orders` row with `customer_key = NULL` (because the customer dimension hadn't loaded yet) silently disappears from any `INNER JOIN`-based report — the revenue still happened, but it's invisible in the dashboard. Use a placeholder "Unknown Member" surrogate key (e.g., `-1`) instead of NULL, so the row still joins and shows up as an explicit "Unknown" bucket.
+* **Referential-Integrity Gaps**: A `product_key` in `fact_orders` that doesn't exist in `dim_products` (e.g., a discontinued product purged from the dimension but not from history) causes the same silent disappearance under an inner join, or a crash under a strict foreign key constraint.
+* **Double-Counting from Bad Grain Joins**: The general case of fanout — joining a table at a finer grain into a report expecting a coarser grain without first aggregating. Always ask "what is one row of this join result actually representing?" before trusting a `SUM`.
+
 ---
 
-## Hands-on Lab
+## Hands-on Lab: Modeling BrightCart's OLTP Data into a Star Schema
 
-### Exercise 1: Star Schema Design
+### The Source: BrightCart's Normalized OLTP Tables
 
-**Goal**: Design `fact_orders` for an Uber-like app.
+This is the live transactional schema powering BrightCart's checkout system. It's correctly normalized for fast `INSERT`s — and slow for analytics, which is exactly why we're about to remodel it.
 
-**Fact**: `fact_trips`
+**`customers`**
 
-* `trip_id` (PK)
-* `driver_key` (FK) -> connects to `dim_driver`
-* `rider_key` (FK) -> connects to `dim_rider`
-* `date_key` (FK) -> connects to `dim_date`
-* **Metrics**: `distance_miles`, `duration_minutes`, `fare_amount`.
+| customer_id | signup_date | region | acquisition_channel |
+| :--- | :--- | :--- | :--- |
+| C001 | 2024-01-10 | West | paid_search |
+| C002 | 2024-02-22 | East | organic |
+| C003 | 2024-03-05 | West | referral |
 
-**Dimension**: `dim_driver`
+**`orders`**
 
-* `driver_key`
-* `name`
-* `rating`
-* `car_model`
+| order_id | customer_id | order_date | status | channel |
+| :--- | :--- | :--- | :--- | :--- |
+| O100 | C001 | 2024-06-01 | delivered | web |
+| O101 | C002 | 2024-06-02 | delivered | app |
+| O102 | C001 | 2024-06-03 | returned | web |
 
-### Exercise 2: Grain Check
+**`order_items`**
 
-**Problem**: You have `fact_sales` (Grain: Product) and `shipping_cost` (Grain: Order).
+| order_id | product_id | quantity | unit_price | discount_pct |
+| :--- | :--- | :--- | :--- | :--- |
+| O100 | P10 | 2 | 50.00 | 0.10 |
+| O100 | P11 | 1 | 30.00 | 0.00 |
+| O101 | P10 | 1 | 50.00 | 0.00 |
+| O102 | P12 | 1 | 80.00 | 0.00 |
 
-* Order 101 contains 3 Products. Shipping is $10 flat.
-* Row 1: Product A, Ship $10.
-* Row 2: Product B, Ship $10.
-* Row 3: Product C, Ship $10.
-* **Query**: `SUM(Shipping)` returns $30. **Wrong.**
-* **Task**: Allocate shipping? (Divide by count? $3.33 each) OR separate table?
+**`products`**
 
-### Exercise 3: Modern OBT
+| product_id | category | subcategory | cost | list_price |
+| :--- | :--- | :--- | :--- | :--- |
+| P10 | Footwear | Hiking Boots | 22.00 | 50.00 |
+| P11 | Apparel | Base Layers | 12.00 | 30.00 |
+| P12 | Footwear | Trail Runners | 35.00 | 80.00 |
 
-**Goal**: Denormalize using SQL.
+### Exercise 1: Declare the Grain, Then Build the Star
+
+**Goal**: Before writing any SQL, declare the grain in one sentence. Getting this wrong invalidates everything downstream (see the Grain pitfalls above).
+
+> **Grain declaration**: "One row of `fact_orders` represents one product, in one order, on one day." (i.e., the grain of `order_items`, enriched with order- and date-level attributes — NOT the grain of `orders` alone, because an order can contain multiple products.)
+
+**`dim_customers`** (one row per customer, SCD Type 2 ready)
 
 ```sql
-CREATE TABLE obt_sales AS
-SELECT
-    f.sale_id,
-    f.revenue,
-    d.date,
-    p.product_name,
-    c.customer_city
-FROM fact_sales AS f
-INNER JOIN dim_date AS d ON f.date_key = d.date_key
-INNER JOIN dim_product AS p ON f.product_key = p.product_key
-INNER JOIN dim_customer AS c ON f.customer_key = c.customer_key;
+CREATE TABLE dim_customers (
+    customer_key      INTEGER PRIMARY KEY,  -- surrogate key
+    customer_id       VARCHAR,              -- natural key from OLTP
+    region            VARCHAR,
+    acquisition_channel VARCHAR,
+    signup_date       DATE,
+    valid_from        DATE,
+    valid_to          DATE,
+    is_current        BOOLEAN
+);
 ```
 
-* *Result*: One wide table ready for Tableau/Power BI Import Mode.
+**`dim_products`** (one row per product)
+
+```sql
+CREATE TABLE dim_products (
+    product_key   INTEGER PRIMARY KEY,
+    product_id    VARCHAR,
+    category      VARCHAR,
+    subcategory   VARCHAR,
+    cost          NUMERIC,
+    list_price    NUMERIC
+);
+```
+
+**`fact_orders`** (one row per order line item — the declared grain)
+
+```sql
+CREATE TABLE fact_orders (
+    order_id        VARCHAR,        -- degenerate dimension (no attributes of its own)
+    customer_key    INTEGER,        -- FK -> dim_customers
+    product_key     INTEGER,        -- FK -> dim_products
+    date_key        INTEGER,        -- FK -> dim_date
+    order_status    VARCHAR,        -- placed | shipped | delivered | returned | cancelled
+    channel         VARCHAR,        -- web | app | marketplace
+    quantity        INTEGER,
+    unit_price      NUMERIC,
+    discount_pct    NUMERIC,
+    net_revenue     NUMERIC         -- quantity * unit_price * (1 - discount_pct)
+);
+```
+
+**Load query** (joining the normalized sources at the declared grain):
+
+```sql
+INSERT INTO fact_orders
+SELECT
+    oi.order_id,
+    dc.customer_key,
+    dp.product_key,
+    CAST(STRFTIME('%Y%m%d', o.order_date) AS INTEGER) AS date_key,
+    o.status,
+    o.channel,
+    oi.quantity,
+    oi.unit_price,
+    oi.discount_pct,
+    oi.quantity * oi.unit_price * (1 - oi.discount_pct) AS net_revenue
+FROM order_items AS oi
+JOIN orders AS o          ON oi.order_id = o.order_id
+JOIN dim_customers AS dc  ON o.customer_id = dc.customer_id AND dc.is_current = TRUE
+JOIN dim_products AS dp   ON oi.product_id = dp.product_id;
+```
+
+**Expected output** (`fact_orders`, 4 rows — matching the 4 `order_items` rows above, confirming the grain held):
+
+| order_id | customer_key | product_key | order_status | channel | quantity | net_revenue |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| O100 | 1 | 10 | delivered | web | 2 | 90.00 |
+| O100 | 1 | 11 | delivered | web | 1 | 30.00 |
+| O101 | 2 | 10 | delivered | app | 1 | 50.00 |
+| O102 | 1 | 12 | returned | web | 1 | 80.00 |
+
+**Test the join**: `SELECT COUNT(*) FROM fact_orders` must equal `SELECT COUNT(*) FROM order_items` (4 = 4). If it's higher, you have fanout. If it's lower, you have a referential-integrity gap (an order_item whose order_id or product_id didn't match).
+
+### Exercise 2: Grain Check — The Shipping Cost Trap
+
+**Problem**: BrightCart's finance system tracks `shipping_cost` at the **order** grain ($10 flat per order, not per item). Order O100 has 2 line items in `fact_orders` (grain: order item).
+
+* Naively joining `shipping_cost` onto `fact_orders` by `order_id` duplicates the $10 onto *both* rows.
+* **Query**: `SELECT SUM(shipping_cost) FROM fact_orders WHERE order_id = 'O100'` returns **$20**. **Wrong** — BrightCart only paid $10 once.
+* **Fix options**:
+  1. **Allocate**: Divide $10 across the 2 line items ($5 each) — correct for "shipping cost per item" analysis, but introduces an allocation assumption.
+  2. **Separate fact table**: Create `fact_order_shipping(order_id, shipping_cost)` at the order grain, and `SUM` it independently — never join it directly into the item-grain fact for a revenue total.
+* **Expected correct output**: `SUM(shipping_cost)` from `fact_order_shipping` for O100 = **$10.00** (queried at the correct grain, not joined into the item-level fact).
+
+### Exercise 3: Modern OBT — Denormalize for Self-Service
+
+**Goal**: Build the wide, join-free table that a marketing analyst can drop straight into Power BI Import Mode, without needing to understand the star schema underneath.
+
+```sql
+CREATE TABLE obt_brightcart_orders AS
+SELECT
+    f.order_id,
+    f.order_status,
+    f.channel,
+    dc.region,
+    dc.acquisition_channel,
+    dp.category,
+    dp.subcategory,
+    f.quantity,
+    f.net_revenue
+FROM fact_orders AS f
+JOIN dim_customers AS dc ON f.customer_key = dc.customer_key
+JOIN dim_products AS dp ON f.product_key = dp.product_key;
+```
+
+**Expected output** (4 rows, one per `fact_orders` row, no joins needed downstream):
+
+| order_id | order_status | channel | region | category | net_revenue |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| O100 | delivered | web | West | Footwear | 90.00 |
+| O100 | delivered | web | West | Apparel | 30.00 |
+| O101 | delivered | app | East | Footwear | 50.00 |
+| O102 | returned | web | West | Footwear | 80.00 |
+
+*Trade-off reminder*: if `dim_products.category` for P10 is later renamed from "Footwear" to "Footwear & Boots," the star schema needs a 1-row UPDATE in `dim_products`; the OBT needs every historical row touching P10 rewritten. That's the storage-vs-maintenance trade-off from the architecture table above, made concrete.
 
 ---
 
@@ -261,6 +385,28 @@ If a Product Name changes, you have to update millions of rows in OBT, vs 1 row 
 
 ---
 
+## Cross-References
+
+* Phase 7 Day 73 — BI SQL & Databases (the join mechanics used to build `fact_orders` from normalized sources).
+* Phase 7 Day 80 — BI Data Quality & Governance (the source tables modeled here must pass quality tests *before* they're trustworthy inputs to a star schema).
+* Phase 7 Day 82 — BI ETL & Pipeline Automation (operationalizes the load query in Exercise 1 into a scheduled, idempotent, re-runnable pipeline).
+* Phase 7 Day 83 — BI Cloud & Modern Data Stack (where Bronze/Silver/Gold medallion architecture and warehouse-native modeling tools like dbt live).
+* Phase 7 Day 84B — dbt Fundamentals (the modern tooling for building and testing these exact dimension/fact models as version-controlled SQL).
+
+## Glossary
+
+* **Fact**: A row recording a measurable business event, holding numeric measures and foreign keys to dimensions.
+* **Dimension**: A table providing descriptive context (the "who/what/where") for facts.
+* **Grain**: The precise definition of what one row of a fact table represents — must be declared before modeling and never mixed within one table.
+* **Surrogate Key**: A warehouse-generated, meaningless integer key (vs. a natural key from the source system) used to join facts to dimensions and to support history tracking.
+* **Star Schema**: A fact table joined directly to denormalized dimension tables, minimizing joins for fast reads.
+* **Snowflake Schema**: A star schema whose dimensions are further normalized into sub-dimensions, trading query speed for storage efficiency.
+* **OBT (One Big Table)**: A fully denormalized, pre-joined wide table requiring no joins at query time.
+* **SCD (Slowly Changing Dimension)**: A pattern for handling changes to dimension attributes over time (Type 1 overwrites, Type 2 versions with new rows, Type 3 adds a "previous value" column).
+* **Conformed Dimension**: A dimension table reused unchanged across multiple fact tables so cross-process analysis (e.g., orders vs. support tickets) shares one definition of "customer."
+* **Factless Fact Table**: A fact table that records an event occurred with no numeric measures, used for tracking coverage/occurrence (e.g., product views).
+* **Fanout**: Unintended row multiplication from a join that doesn't respect grain, silently inflating `SUM()`/`COUNT()` results.
+
 ## Summary
 
 Today you learned:
@@ -269,5 +415,8 @@ Today you learned:
 * ✅ **Facts measure Verbs, Dimensions describe Nouns**.
 * ✅ **OBT**: The modern "Power BI Import" standard.
 * ✅ **Grain**: The level of detail defines what questions you can answer.
+* ✅ **Advanced Patterns**: SCDs, conformed/role-playing dimensions, factless facts, bridges, snapshots, and late-arriving data.
+* ✅ **Architecture Trade-offs**: Kimball, Inmon, Data Vault, OBT, and lakehouse/medallion approaches are complementary layers, not rival religions.
+* ✅ **Pitfalls**: Fanout, mixed grain, duplicate facts, null keys, and referential-integrity gaps all produce wrong-but-plausible numbers.
 
 **Tomorrow**: We automate the movement of data in **BI ETL & Pipeline Automation**.

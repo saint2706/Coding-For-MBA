@@ -70,14 +70,61 @@ outcomes:
 * Column: Month 1, Month 2, Month 3.
 * If the numbers drop faster in lower rows, your product is getting *worse*.
 
-### 2. Unit Economics (LTV vs CAC)
+### 2. Unit Economics (LTV vs CAC) — With the Assumptions Made Explicit
 
-Can you afford to buy a customer?
+Can you afford to buy a customer? The formulas look simple, but every one of them hides an assumption that
+can flip the conclusion if you don't state it.
 
 * **CAC (Customer Acquisition Cost)**: Total Marketing Spend / # New Customers.
-* **LTV (Lifetime Value)**: Average Profit from a customer before they leave.
-* **Golden Rule**: LTV must be > 3x CAC.
-  * If you pay $\$100$ to get a customer (CAC) and they pay you $\$105$ (LTV), you will go bankrupt (overhead/salaries).
+  * *Hidden assumption*: which costs count? Fully-loaded CAC includes sales salaries, tooling, and overhead;
+    "marketing-only" CAC just divides ad spend. The two numbers can differ by 2-3x for the same company —
+    always state which one you're reporting.
+* **LTV (Lifetime Value)**: Average **profit** (not revenue) from a customer before they leave.
+  * *Hidden assumption*: LTV must use **contribution margin**, not gross revenue. If a BrightCart customer
+    generates $200 in lifetime orders but cost of goods + fulfillment + payment processing eats 70% of that,
+    the real LTV is $60, not $200. Skipping this step is the single most common LTV overstatement in industry.
+
+#### Two kinds of LTV — don't mix them up
+
+| Type | How it's computed | When to use it |
+|---|---|---|
+| **Cohort (historical) LTV** | Take a cohort that joined 24+ months ago; sum their *actual* contribution margin to date | Most defensible. Only works once a cohort has "matured" — too new a cohort understates LTV because they haven't had time to churn or re-purchase yet |
+| **Predictive (formula) LTV** | `ARPU × Gross Margin % / Churn Rate` — extrapolates from current behavior | Needed for new cohorts/products with no mature history, but is only as good as the assumption that churn rate stays constant — which is rarely true (see counterexample below) |
+
+#### The classic counterexample: `ARPU / Churn Rate` misleads when churn isn't constant
+
+The formula `LTV = ARPU / Churn Rate` assumes churn is constant every period (a "flat hazard rate"). In
+reality, most subscription and retail businesses have **declining churn over time** — customers who survive
+the first 90 days churn much less afterward than brand-new signups. Concretely:
+
+* BrightCart signs up 1,000 new customers. Month 1 churn is 15% (lots of one-time buyers never return).
+  Among the 850 who return, month 2-12 churn drops to 3%/month (these are the genuinely loyal repeat buyers).
+* If you naively apply Month 1's 15% churn to the whole formula: `LTV = $40 ARPU / 0.15 = $267`.
+* If you use the blended, more realistic 12-month churn of roughly 5%: `LTV = $40 / 0.05 = $800`.
+* The "true" cohort LTV, computed by actually tracking the cohort, lands close to the second number — the
+  naive formula using early-tenure churn **understated LTV by 3x**, which would have made BrightCart wrongly
+  reject acquisition channels that were actually profitable on a longer horizon.
+
+**Rule of thumb**: never apply a single churn rate from an early period to the whole customer lifetime.
+Either use a cohort's actual blended/matured churn rate, or build a separate curve for early vs. steady-state
+churn.
+
+#### Payback Period — the metric LTV:CAC ratio hides
+
+LTV:CAC > 3:1 can still bankrupt a company if the payback period is too long. **Payback period** = CAC ÷
+(monthly contribution margin per customer) = how many months until a customer's margin repays their
+acquisition cost. A SaaS company with LTV:CAC of 5:1 but an 18-month payback period can run out of cash
+*before* the value is realized, even though the ratio looks excellent on a spreadsheet. Always report payback
+period alongside the ratio, especially for cash-constrained or high-growth companies.
+
+#### Keep your time units consistent
+
+Churn rate, ARPU, and CAC must all use the **same time unit**. A common, costly error: using **monthly**
+churn (e.g., 2%/month) inside a formula that expects **annual** churn. Converting monthly to annual churn is
+NOT simply `2% × 12 = 24%` — that overstates it, because some of the same customers who would have churned in
+month 2 already churned in month 1. The correct approximation is `1 - (1 - monthly_churn)^12`, which for 2%
+monthly gives `1 - 0.98^12 ≈ 21.5%` annual churn, not 24%. Always double-check which time unit a churn number
+is already in before plugging it into LTV.
 
 ### 3. Stickiness (DAU / MAU)
 
@@ -107,48 +154,188 @@ How addictive is your app?
 * **The Literacy**: "February has 28 days. January has 31. That is a 10% drop automatically. And Monday was a holiday."
 * **Advice**: Always compare "Year over Year" (Feb 2023 vs Feb 2022), not "Month over Month" for seasonal businesses.
 
+### North-Star Metrics and Guardrail (Counter) Metrics
+
+A **north-star metric** is the single number that best captures the core value your product delivers — for
+BrightCart, something like "Repeat Purchase Rate" might be the north star, because it captures both product
+satisfaction and revenue durability better than raw signups or even total revenue. But optimizing a single
+metric in isolation is dangerous — which is why every north star needs **guardrail metrics** (also called
+counter-metrics) that catch the ways the north star could be gamed or could improve while the business gets
+worse. If BrightCart's north star is Repeat Purchase Rate, guardrails should include: refund rate
+(are reps gaming repeats by overselling?), customer support cost per order (are we buying repeats with
+unsustainable service?), and gross margin (are we discounting our way to repeat purchases?).
+
+### Metric Trees
+
+A **metric tree** decomposes a single high-level metric into the operational levers that drive it, so a team
+knows *which lever to pull*, not just that the top number moved. For BrightCart revenue:
+
+```
+Revenue
+├── Orders
+│   ├── Site Visitors (Traffic)
+│   └── Conversion Rate
+└── Average Order Value (AOV)
+    ├── Units per Order
+    └── Price per Unit
+```
+
+If Revenue drops, the tree tells you where to look first: did Traffic drop, did Conversion drop, or did AOV
+drop? Each branch belongs to a different team (Marketing owns Traffic, Product owns Conversion, Merchandising
+owns AOV) — the metric tree is also an ownership map.
+
+### Denominator Bias
+
+A ratio metric can improve for a bad reason: the denominator shrank. "Conversion Rate went up 5 points!" is
+good news if traffic (the denominator) stayed flat or grew — but if a botched ad campaign cut low-intent
+traffic in half, conversion rate rises mechanically even though *absolute* orders may have fallen. Always
+check whether a ratio improved because the numerator grew or because the denominator shrank — they require
+opposite responses.
+
+### Simpson's Paradox
+
+A trend can reverse direction when you aggregate vs. segment the data. Classic BrightCart example: overall
+conversion rate might be flat year-over-year, while *every single channel* (web, app, marketplace) improved
+individually — because the mix shifted toward a lower-converting channel (e.g., marketplace, which converts
+worse but grew fastest). Reporting only the blended number would hide three genuine wins. Whenever a headline
+trend looks surprising, check whether segment-level trends agree with it.
+
+### Survivorship Bias
+
+Measuring "average satisfaction of current customers" ignores everyone who churned and is no longer there to
+answer the survey. If BrightCart's unhappiest customers leave fastest, the remaining customer base will
+always look artificially satisfied — not because the product improved, but because the discontented have
+already exited the sample. Any metric computed only on "still here" customers needs a churn-adjusted view to
+be trustworthy.
+
+### Metric Versioning
+
+When a metric's definition changes (e.g., BrightCart redefines "Active Customer" to exclude marketplace
+buyers), the historical trend line breaks — a chart that looks like a sudden 30% drop might just be a
+definition change, not a business change. Senior BI teams **version** metric definitions: `Active Customer
+v1` (2024-2025) vs. `Active Customer v2` (2026+), with the change documented and, where possible, the
+historical series **restated** under the new definition so trends remain comparable. Never silently redefine
+a metric in place.
+
+### Production Metric Review Workflow
+
+Once a metric (like LTV:CAC or Repeat Purchase Rate) is certified and feeding an executive dashboard, treat
+its upkeep like a production system, not a one-time calculation:
+
+1. **Owner of record**: One named team (e.g., BI Analytics) owns the metric's SQL definition and is the only
+   group authorized to change it.
+2. **Scheduled reconciliation**: Periodically (e.g., monthly) reconcile the BI number against a source-of-truth
+   system — e.g., does BrightCart's BI-reported revenue match Finance's general ledger within an agreed
+   tolerance? Discrepancies above tolerance trigger an investigation, not a shrug.
+3. **Backfills**: When a pipeline bug is found, historical data must be recomputed (backfilled) for the
+   affected date range — and every dashboard relying on it should be flagged "data corrected on [date]."
+4. **Restatements**: When a metric definition changes (see Metric Versioning above), past periods are
+   restated under the new definition, with a public changelog entry so nobody mistakes a definition change
+   for a business change.
+5. **Executive sign-off**: Material changes to a certified metric's definition or a material restatement of
+   historical numbers requires sign-off from the metric's business owner (e.g., VP of Finance for revenue
+   metrics) before it ships to the board — the same change-approval discipline introduced in the Phase 7 Day
+   68 metric contract.
+
 ---
 
 ## Hands-on Lab
 
-### Exercise 1: Cohort Logic
+### Setup: BrightCart `customers` and `orders` Sample Data
 
-**Goal**: Calculate Month 1 Retention.
+This lab uses BrightCart's relational schema introduced in Phase 7 Day 68. Two tables are relevant here:
+`customers(customer_id, signup_date, region, acquisition_channel)` and `orders(order_id, customer_id,
+order_date, status, channel)`. Paste both samples into a SQL sandbox or pandas before starting.
 
-**Scenario**:
+```text
+-- customers
+customer_id,signup_date,region,acquisition_channel
+C01,2026-01-05,West,paid_search
+C02,2026-01-08,West,organic
+C03,2026-01-12,East,paid_social
+C04,2026-01-20,East,organic
+C05,2026-02-02,West,paid_search
+C06,2026-02-10,West,organic
+C07,2026-02-15,East,paid_social
+C08,2026-02-20,East,organic
+C09,2026-03-01,West,paid_search
+C10,2026-03-05,East,organic
+```
 
-* January Cohort: 100 Signups.
-* In February (Month 1), 60 of them are still active.
-* February Cohort: 200 Signups.
-* In March (Month 1), 80 of them are still active.
+```text
+-- orders (status: placed|shipped|delivered|returned|cancelled)
+order_id,customer_id,order_date,status,channel
+O001,C01,2026-01-06,delivered,web
+O002,C01,2026-02-10,delivered,web
+O003,C02,2026-01-09,delivered,web
+O004,C03,2026-01-15,delivered,app
+O005,C03,2026-02-18,delivered,app
+O006,C03,2026-03-20,delivered,app
+O007,C04,2026-01-22,delivered,web
+O008,C05,2026-02-03,delivered,marketplace
+O009,C06,2026-02-12,delivered,web
+O010,C06,2026-03-14,delivered,web
+O011,C07,2026-02-16,delivered,app
+O012,C08,2026-02-21,delivered,web
+O013,C08,2026-03-25,delivered,web
+O014,C09,2026-03-02,delivered,marketplace
+O015,C10,2026-03-06,delivered,web
+O016,C02,2026-02-09,cancelled,web
+```
 
-**Task**: Calculate Retention for both. Is it getting better or worse?
+### Exercise 1: Building a Cohort Retention Matrix
 
-1. **Jan Retention**: $60 / 100 = 60\%$
-2. **Feb Retention**: $80 / 200 = 40\%$
+**Goal**: Build the same "Triangle Chart" cohort matrix described in the Technical Deep Dive, using real
+BrightCart signup and order data instead of pre-computed numbers.
 
-* *Conclusion*: **Worse**. We doubled our marketing (200 signups), but the quality of users (or product) dropped massively.
+**Steps**:
+1. Assign each customer to a signup cohort by month: C01-C04 = **Jan cohort** (4 customers), C05-C08 = **Feb
+   cohort** (4 customers), C09-C10 = **Mar cohort** (2 customers).
+2. For each cohort, determine which customers placed at least one `delivered` order in each subsequent
+   calendar month after their signup month (Month 0 = signup month, Month 1 = the next month, etc.).
+3. Build the retention matrix (% of cohort with at least 1 delivered order that month).
 
-### Exercise 2: The Death Spiral (Unit Economics)
+**Expected output**:
 
-**Goal**: Identify a failing business.
+| Cohort | Size | Month 0 | Month 1 | Month 2 |
+|---|---|---|---|---|
+| Jan (C01-C04) | 4 | 100% (4/4 ordered in Jan) | 25% (1/4: only C01 ordered in Feb) | 25% (1/4: only C03 ordered in Mar) |
+| Feb (C05-C08) | 4 | 100% (4/4 ordered in Feb) | 50% (2/4: C06 and C08 ordered in Mar) | — (no data yet) |
+| Mar (C09-C10) | 2 | 100% (2/2 ordered in Mar) | — (no data yet) | — (no data yet) |
 
-**Scenario**:
+**Interpretation**: Month 1 retention improved from 25% (Jan cohort) to 50% (Feb cohort) — a genuine
+improvement signal, though with only 4 customers per cohort this sample is too small to be statistically
+meaningful in a real business (use this lab to practice the *mechanics*; a real cohort analysis needs
+hundreds of customers per cohort minimum before you'd act on a 25-point swing).
 
-* Marketing Spend: $50,000$
-* New Customers: 500
-* Subscription Price: $10/month$
-* Average Lifetime: 6 months
-* Gross Margin: 80% (Server costs take 20%)
+### Exercise 2: BrightCart Unit Economics — Is Paid Search Worth It?
 
-**Calculation**:
+**Goal**: Use the `orders` and `customers` tables to compute a real CAC and a *cohort-based* LTV for one
+acquisition channel, and decide whether BrightCart should keep spending on it.
 
-1. **CAC**: $50,000 / 500 = \$100$
-2. **Revenue per User**: $\$10 \times 6 = \$60$
-3. **LTV (Profit)**: $\$60 \times 80\% = \$48$
-4. **Ratio**: LTV (\$48) vs CAC (\$100).
+**Scenario**: BrightCart spent **$1,200** on paid search marketing this quarter. Customers C01, C05, and C09
+were acquired via `paid_search` (3 new customers). Assume BrightCart's gross margin is 75% (25% goes to cost
+of goods + fulfillment).
 
-* *Conclusion*: **You lose $52 every time you sign a customer.** Stop marketing immediately. Fix retention or pricing.
+**Steps**:
+1. **CAC** = Marketing Spend ÷ New Customers = `$1,200 / 3 = $400` per customer.
+2. From the `orders` table, sum the delivered order revenue for C01, C05, and C09 specifically. (For this
+   exercise, assume each `delivered` order has a flat order value of $150 — in a real BrightCart query you'd
+   join to `order_items` to compute this precisely.)
+   - C01: 2 delivered orders → $300
+   - C05: 1 delivered order → $150
+   - C09: 1 delivered order → $150
+   - Total revenue from this paid_search cohort so far: $600 across 3 customers = $200 average revenue per
+     customer **so far** (this is a partial-period cohort LTV, not a mature one — see the Glossary note on
+     Cohort LTV).
+3. **LTV (Profit) so far** = $200 × 75% gross margin = **$150 per customer**.
+4. **Ratio**: LTV ($150) vs. CAC ($400) → **0.375 : 1**.
+
+**Expected conclusion**: At this early stage, paid search is running at a loss (LTV:CAC well below the 3:1
+healthy benchmark). But — critically — this is only 1-3 months of cohort history; per the LTV section above,
+judging a channel's LTV from an immature cohort is exactly the mistake the `ARPU / Churn Rate` counterexample
+warns against. **Correct next step**: don't kill the channel yet — let the cohort mature 6-12 months and
+re-run this calculation before making a final call, while watching the payback period in the interim.
 
 ### Exercise 3: Leading Indicators
 
@@ -256,6 +443,30 @@ D) No, data is wrong.
 **Answer: B**
 Context (Holidays) is critical for interpreting data.
 </details>
+
+---
+
+## Cross-References
+
+* Phase 7 Day 68 — BI Analyst Foundations (metric contracts and certified datasets underpin every metric defined here)
+* Phase 7 Day 69 — BI Strategy & Stakeholders (the selection-bias confound in the Loyalty Program lab is the same Simpson's/cohort-immaturity trap covered here)
+* Phase 7 Day 78 — BI Experimentation & Predictive Insights (extends cohort/predictive LTV into formal experimentation)
+* Phase 7 Day 80 — BI Data Quality & Governance (formalizes the production metric review workflow's backfill/restatement process)
+* Phase 6 Day 63 — Causal Inference & Uplift (rigorous treatment of the confounding issues behind Simpson's paradox and survivorship bias)
+
+## Glossary
+
+* **Cohort** — A group of customers who share a starting event (typically signup month), tracked together over time.
+* **Retention** — The percentage of a cohort still active (or still ordering) in a later period.
+* **ARPU (Average Revenue Per User)** — Total revenue divided by number of users in a period.
+* **CAC (Customer Acquisition Cost)** — Total acquisition spend divided by number of new customers acquired.
+* **LTV (Lifetime Value)** — The total profit (contribution margin, not revenue) expected from a customer over their relationship with the business.
+* **Churn** — The rate at which customers stop buying/subscribing in a given period.
+* **Leading Indicator** — A metric that predicts future outcomes and can still be acted on (e.g., qualified opportunities).
+* **Lagging Indicator** — A metric that reports a past outcome and can no longer be changed (e.g., last quarter's revenue).
+* **Goodhart's Law** — "When a measure becomes a target, it ceases to be a good measure" — incentivizing a metric too hard invites gaming.
+* **Simpson's Paradox** — A trend that reverses direction when data is aggregated versus segmented.
+* **Survivorship Bias** — Distortion from measuring only the population that "survived" (e.g., current customers), ignoring those who churned out of the sample.
 
 ---
 

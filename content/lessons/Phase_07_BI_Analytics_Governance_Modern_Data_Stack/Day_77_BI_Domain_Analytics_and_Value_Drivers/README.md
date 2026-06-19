@@ -321,6 +321,77 @@ D) The math is wrong.
 The "Holy Grail" of SaaS.
 </details>
 
+### Question 6: Logo vs. Revenue Churn
+
+BrightCart loses 8% of its customer logos in Q1 but only 2.5% of trailing revenue. What's the correct way to report this?
+
+A) Report only logo churn — it's the bigger, more alarming number.
+B) Report only revenue churn — it makes the business look healthier.
+C) Report both explicitly, since they tell different stories: a high volume of low-value customers is leaving, but high-value accounts are intact.
+D) Average the two numbers into one churn figure.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: C**
+Logo churn and revenue churn answer different questions (how many customers vs. how much money). Collapsing them into one number, or reporting only the flattering one, hides the real risk profile from decision-makers.
+</details>
+
+### Question 7: Bookings vs. Revenue
+
+BrightCart's wholesale sales team signs a $120,000, 12-month supply contract in March. How much Q1 *revenue* (not bookings) should be recognized from this deal, assuming even delivery?
+
+A) $120,000 in March (all of it).
+B) $0, since revenue recognition depends on delivery, not contract signing.
+C) Roughly $10,000 — one month's worth, recognized as goods are delivered in March.
+D) $60,000 — half the contract value.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: C**
+Bookings (the signed commitment) and revenue (recognized as delivered, e.g., under ASC 606) are different numbers. Only the March delivery's portion (~1/12th = $10,000) counts as Q1 revenue; the rest remains bookings/backlog.
+</details>
+
+### Question 8: Metric Tree Diagnosis
+
+In the BrightCart Q1 capstone, Net Revenue is nearly flat even though Gross Revenue grew ~4% and Sessions grew 20%. What does the metric tree decomposition reveal as the dominant driver?
+
+A) A drop in Average Order Value.
+B) A decline in marketing spend.
+C) Returns growing from 10% to 14% of gross revenue, offsetting the gross revenue gains.
+D) A change in the inventory turn ratio.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: C**
+Decomposing the metric tree isolates each lever. Here, Orders and Gross Revenue moved favorably, but Returns Rate grew enough to erase nearly all of the gain — the kind of finding only visible by tracing the tree rather than looking at Net Revenue alone.
+</details>
+
+---
+
+## Cross-References
+
+* **Phase 7 Day 70 — BI Metrics & Data Literacy**: the foundational metric-definition discipline (grain, period, inclusions) extended here into domain-specific formulas.
+* **Phase 7 Day 73 — BI SQL & Databases**: where the `orders`/`order_items`/`support_tickets` tables used in this lab's queries actually live.
+* **Phase 7 Day 78 — BI Experimentation & Predictive Insights**: how to test whether a metric tree driver (e.g., rising returns) is *causally* linked to a specific change, not just correlated.
+* **Phase 7 Day 80 — BI Data Quality & Governance**: how to certify that domain metrics like NRR and Inventory Turn are computed consistently across Finance, Product, and Sales.
+* **Phase 6 Day 63 — Causal Inference & Uplift**: the potential-outcomes framework for proving a driver (like a sizing-guide fix) actually caused the returns rate to improve, not just correlated with it.
+
+## Glossary
+
+* **AARRR**: The "Pirate Metrics" funnel — Acquisition, Activation, Retention, Referral, Revenue — a framework for diagnosing where users drop off.
+* **CAC (Customer Acquisition Cost)**: Total acquisition spend divided by the number of new customers acquired in the period.
+* **Activation**: The first moment a user experiences real product value (e.g., adding an item to a cart), distinct from simply signing up or installing.
+* **Pipeline velocity**: The rate at which sales opportunities convert to closed revenue, calculated as `(Leads × Win Rate × Deal Size) / Sales Cycle Length`.
+* **MRR (Monthly Recurring Revenue)**: The predictable revenue a subscription business expects to collect each month from active subscriptions.
+* **ARR (Annual Recurring Revenue)**: MRR annualized (`MRR × 12`), used for board-level and investor reporting.
+* **NRR (Net Revenue Retention)**: The percentage of revenue retained from existing customers after churn and expansion, excluding new sales; `(Start − Churn + Expansion) / Start`.
+* **Inventory turn**: How many times inventory is sold and replaced over a period, calculated as `COGS / Average Inventory Value`.
+* **Logo churn**: The percentage of *customers* (accounts) lost in a period, regardless of their revenue size.
+* **Revenue churn**: The percentage of *revenue* lost in a period, weighting churn by customer value rather than customer count.
+
 ---
 
 ## Summary
@@ -331,5 +402,7 @@ Today you learned:
 * ✅ **SaaS Magic Numbers**: NRR, MRR, Churn.
 * ✅ **Inventory Turn**: Cash flow is king in retail.
 * ✅ **Domain Expertise**: Speak the language of your stakeholder.
+* ✅ **Metric Trees**: Decompose a top-line miss into the specific operational lever that caused it.
+* ✅ **Logo vs. Revenue Churn, Bookings vs. Revenue**: Two pairs of metrics that look similar but answer different business questions — never collapse them into one number.
 
 **Tomorrow**: We dive into **Advanced Experimentation & A/B Testing**—proving causality in business.

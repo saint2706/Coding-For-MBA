@@ -28,6 +28,3 @@ models:
     marts:
       +materialized: table
 
-seeds:
-  brightcart_analytics:
-    +schema: raw

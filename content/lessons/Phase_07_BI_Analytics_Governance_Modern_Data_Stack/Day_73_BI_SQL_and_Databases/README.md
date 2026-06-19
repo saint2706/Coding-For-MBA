@@ -433,6 +433,43 @@ B) `SELECT * FROM users WHERE created_at >= '2023-01-01' AND created_at < '2024-
 B is "SARGable" (Search ARGument ABLE). It allows the index on `created_at` to work. A function like `YEAR()` forces a full scan because every row must be calculated.
 </details>
 
+### Question 6: Fanout
+
+You join BrightCart `orders` (1 row per order) to `order_items` (multiple rows per order) and then run `SUM(orders.total)` without aggregating `order_items` first. What happens?
+
+A) Nothing — totals are unaffected by the join.
+B) The order total is double (or triple, etc.) counted once per matching `order_items` row — a fanout bug.
+C) The query throws a syntax error.
+D) SQL automatically deduplicates before summing.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: B**
+Joining a one-row table to a many-row table multiplies each "one" row once per match on the "many" side. Summing a column from the one-side after that join inflates the total. Fix: aggregate the many-side first (one row per order), then join — or sum at the correct grain.
+</details>
+
+---
+
+## Cross-References
+
+* **Phase 7 Day 72 — BI Data Formats & Ingestion** (the `orders`/`order_items` tables queried here are the flattened, validated output of yesterday's ingestion pipeline).
+* **Phase 7 Day 74 — BI Data Preparation & Tools** (the "Push Down Logic" principle there says clean/aggregate in SQL first — exactly what the CTEs in this lesson do).
+* **Phase 7 Day 76 — BI Architecture & Data Modeling** (the star-schema design there determines how easily these joins/window functions perform at scale).
+* **Phase 2 Day 19 — Python Date/Time** (the time-zone and date-arithmetic concepts there underpin the "missing dates" and "time zones" pitfalls in this lesson).
+* **Phase 7 Day 81 — BI Performance & Query Optimization** (this lesson's query-plan and indexing basics are the foundation for that lesson's deeper warehouse tuning).
+
+## Glossary
+
+* **Window function**: A SQL function that computes a value across a set of rows related to the current row, without collapsing those rows into one (unlike `GROUP BY`).
+* **Partition**: The subgroup of rows a window function operates on, defined by `PARTITION BY` — analogous to a `GROUP BY` group, but rows stay visible.
+* **Frame**: The specific slice of rows within a partition that a window function considers, defined by `ROWS BETWEEN ... AND ...` (e.g., "2 preceding rows through the current row").
+* **CTE (Common Table Expression)**: A named, temporary result set defined with `WITH name AS (...)` and referenced later in the same query, improving readability over nested subqueries.
+* **Index**: A separate data structure (commonly a B-Tree) that lets the database find matching rows without scanning the entire table.
+* **N+1 (query problem)**: An anti-pattern where an application/dashboard issues one query per item (or per filter click) instead of one batched query — causing excessive database load.
+* **Query plan**: The database engine's chosen execution strategy for a query (e.g., Index Scan vs. Seq Scan), inspectable via `EXPLAIN`.
+* **Cardinality**: The number of distinct values in a column; low-cardinality columns (e.g., a boolean flag) rarely benefit from an index.
+
 ---
 
 ## Summary
