@@ -1,7 +1,7 @@
 ---
 phase: 9
 title: "Enterprise SQL Performance Engineering"
-days: [97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, "108B", "108C"]
+days: [102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, "113B", "113C"]
 totalDuration: 750
 difficulty: "expert"
 ---
