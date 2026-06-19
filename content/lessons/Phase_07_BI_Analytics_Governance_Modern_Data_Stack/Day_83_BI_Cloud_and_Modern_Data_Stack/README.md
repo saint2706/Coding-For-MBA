@@ -316,6 +316,24 @@ dbt allows you to write SQL with software engineering best practices (Tests, Ver
 
 ---
 
+## Cross-References
+
+* **Phase 7 Day 73** — BI SQL & Databases: the query patterns (window functions, indexing) you're now optimizing for cost.
+* **Phase 7 Day 82** — BI ETL & Pipeline Automation: the pipelines that load data into the warehouse you're costing here.
+* **Phase 7 Day 84B** — dbt Fundamentals: builds the transformation layer that runs *inside* the warehouse compute you're budgeting for.
+* **Phase 7 Day 84C** — Reverse ETL & Semantic Layer: the "Activate" stage of the Modern Data Stack introduced in this lesson.
+* **Phase 7 Day 80** — BI Data Quality & Governance: the compliance/access-control obligations that pair with this lesson's IAM and encryption baseline.
+
+## Glossary
+
+* **Separation of compute/storage**: The cloud-warehouse design where data sits on cheap object storage (S3-style) while compute (queries) is billed and scaled independently and elastically.
+* **Pruning (partition pruning)**: A query optimizer skipping files/partitions that cannot contain matching rows, based on a filter (commonly a date), dramatically reducing bytes scanned.
+* **Reverse ETL**: Syncing curated, governed data from the warehouse back into operational tools (CRM, marketing platforms) so non-technical users can act on it without querying SQL.
+* **FinOps**: The operating discipline (tagging, budgets, quotas, alerts) that gives teams visibility and guardrails over cloud spend, instead of Finance discovering the bill after the fact.
+* **Zero-copy clone**: A warehouse feature (e.g., Snowflake) that creates an instant, storage-free copy of a database by pointing to the same underlying files and only storing future deltas.
+* **IAM (Identity & Access Management)**: The system of roles, permissions, and policies controlling which identities can access which data and compute resources.
+* **Egress**: The fee a cloud vendor charges to move data *out* of their platform — often the hidden cost in a "cheap to get in" vendor pitch.
+
 ## Summary
 
 Today you learned:
@@ -324,5 +342,7 @@ Today you learned:
 * ✅ **Cloud Economics**: Rent compute only when you need it.
 * ✅ **FinOps**: Optimizing queries saves real money.
 * ✅ **Reverse ETL**: Activating data back into business tools.
+* ✅ **Security baseline**: IAM, networking, encryption, secrets, and compliance are part of "production," not an afterthought.
+* ✅ **When NOT to use the MDS**: small, simple data does not need Snowflake and Fivetran.
 
 **Tomorrow**: We wrap up with **BI Career Development & Capstone**—Building your portfolio.

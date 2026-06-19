@@ -145,6 +145,18 @@ Before picking a single chart, answer: **who is this dashboard for, and what dec
 
 **What/Why**: You cannot fix a bad dashboard you can't precisely describe. This exercise gives you a textual/ASCII mockup of a real flawed BrightCart executive dashboard — gradable without needing an actual image file — so you can practice diagnosing and rewriting it.
 
+**Source data** (what the dashboard *should* be built from — BrightCart Q2 2026, all channels):
+
+| Category    | Revenue   | Q1 Revenue | Returns | Profit  |
+| :---------- | --------: | ---------: | ------: | ------: |
+| Tents       |  $484,000 |   $460,000 | $19,000 | $198,000 |
+| Footwear    |  $396,000 |   $375,000 | $31,000 | $142,000 |
+| Backpacks   |  $308,000 |   $295,000 | $11,000 | $129,000 |
+| Apparel     |  $242,000 |   $238,000 | $14,000 |  $97,000 |
+| Accessories |  $198,000 |   $190,000 |  $6,000 |  $84,000 |
+| (10 smaller categories, combined) | $572,000 | $548,000 | $42,000 | $211,000 |
+| **Total**   | **$2,200,000** | **$2,106,000** | **$123,000** | **$861,000** |
+
 **The Flawed Artifact — "BrightCart Q2 Performance" (as currently shipped)**:
 
 ```text
@@ -335,6 +347,44 @@ D) Code Level.
 **Answer: B**
 Execs need trends and summaries to make big decisions.
 </details>
+
+### Question 6: The Flawed Dashboard Critique
+
+In the "BrightCart Q2 Performance" flawed dashboard (Exercise 1), the Returns vs. Profit bar chart's Y-axis starts at $900,000 instead of $0. What is the effect?
+
+A) No effect — the bars are still proportionally accurate.
+B) It exaggerates the visual size of small differences between bars, making minor changes look dramatic.
+C) It makes the chart load faster.
+D) It is required for bar charts to render correctly.
+
+<details>
+<summary>Click for Answer</summary>
+
+**Answer: B**
+A truncated (non-zero-based) Y-axis on a bar chart distorts the visual ratio between bars. A bar that is "10% taller" in the data can appear "300% taller" on screen if the axis starts close to the smallest value instead of zero — this is one of the most common ways dashboards mislead without using a single incorrect number.
+</details>
+
+---
+
+## Cross-References
+
+* **Phase 7 Day 73 — BI SQL & Databases** (the aggregated, performant queries from that lesson are what feed the pre-aggregated views this lesson recommends for dashboard performance).
+* **Phase 7 Day 74 — BI Data Preparation & Tools** (clean, deduplicated BrightCart data is a prerequisite — a beautifully designed dashboard built on dirty data is still misleading).
+* **Phase 7 Day 76 — BI Architecture & Data Modeling** (the star schema covered there is what makes the fast filter/drill-down interactions described in this lesson's performance section possible).
+* **Phase 6 Day 62 — Model Interpretability & Fairness** (the ethical-visualization principles here — not cherry-picking a flattering window — mirror that lesson's fairness-reporting caveats).
+* **Phase 7 Day 82 — Executive Communication & Storytelling with Data** (this lesson's chart-selection and 5-Second Rule are the visual foundation for that lesson's narrative techniques).
+
+## Glossary
+
+* **Data-ink ratio**: Tufte's concept of the proportion of a chart's "ink" (or pixels) that conveys actual data, versus decoration; higher ratios mean less clutter.
+* **Pre-attentive attribute**: A visual property (color, size, position) the brain processes before conscious thought, used to direct attention instantly.
+* **BAN (Big Angry/Ass Number)**: A large, prominent single-metric display (e.g., "Revenue: $2.2M") used to anchor a dashboard's headline message.
+* **Dual axis**: A chart with two separate Y-axis scales sharing one X-axis; powerful but easily manipulated to imply a false relationship between two series.
+* **Granularity**: The level of detail in displayed data — transaction-level (fine) vs. monthly aggregate (coarse); executive dashboards typically use coarser granularity.
+* **Accessibility (in viz)**: Designing charts so they remain interpretable for users with color blindness or other visual constraints (e.g., using icons/intensity alongside color).
+* **Small multiples**: A series of similar small charts shown side by side (one per category/region) instead of overlaying all series on a single chart.
+* **Choropleth map**: A map where regions are shaded by a data value; prone to "area bias" where large regions visually dominate regardless of their actual data weight.
+* **Freshness**: How recently a dashboard's underlying data was updated; should be displayed explicitly, not assumed by the viewer.
 
 ---
 
