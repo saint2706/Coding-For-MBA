@@ -1,0 +1,109 @@
+{
+    "day": 80,
+    "questions": [
+        {
+            "id": "d80q01",
+            "type": "multiple_choice",
+            "question": "BrightCart's customers extract has customer_id 1004 appearing twice with identical values in every column. Which data quality dimension does this violate?",
+            "options": [
+                "Validity",
+                "Uniqueness",
+                "Timeliness",
+                "Consistency"
+            ],
+            "answer": 1,
+            "explanation": "Uniqueness means each real-world entity should appear exactly once. A duplicated customer_id row will double-count that customer in any SUM/COUNT aggregation, inflating revenue or customer-count metrics."
+        },
+        {
+            "id": "d80q02",
+            "type": "multiple_choice",
+            "question": "A BrightCart customer row has signup_date = '2099-01-01'. Which dimension does this violate, and what does it usually signal?",
+            "options": [
+                "Completeness — a missing value was defaulted incorrectly",
+                "Accuracy — an impossible real-world value, often signaling a broken upstream control like unvalidated form input",
+                "Uniqueness — the date is duplicated elsewhere",
+                "Consistency — the date format differs from other rows"
+            ],
+            "answer": 1,
+            "explanation": "Accuracy asks whether a value reflects reality, not just whether it's well-formatted. A future signup date is impossible and is a Sev1-style signal: it often means a source system (e.g., a signup form) is missing date validation, which could be corrupting many other rows too."
+        },
+        {
+            "id": "d80q03",
+            "type": "multiple_choice",
+            "question": "In the Governance Operating Model, who is typically ACCOUNTABLE for the business definition of 'customer churn,' even though they don't write the SQL?",
+            "options": [
+                "The Data Custodian (platform engineer)",
+                "The Data Owner (e.g., VP of Customer Success)",
+                "The Data Steward",
+                "The BI tool vendor"
+            ],
+            "answer": 1,
+            "explanation": "The Data Owner is the accountable executive who defines what the data should mean and approves access/policy. The Steward handles day-to-day quality and definitions; the Custodian implements technical controls. Confusing Owner with Custodian is a common governance failure — it makes IT accountable for business logic it can't approve."
+        },
+        {
+            "id": "d80q04",
+            "type": "multiple_choice",
+            "question": "Two BrightCart rows encode the same segment as 'West'/'paid_search' and 'west'/'Paid_Search'. A naive GROUP BY will treat these as different segments. Which dimension is failing, and where should the fix live?",
+            "options": [
+                "Validity; fix it with a one-off WHERE clause in this one query",
+                "Consistency; fix it with a normalization step (e.g., LOWER(TRIM())) in the transform layer so it doesn't recur",
+                "Timeliness; fix it by re-running the extract sooner",
+                "Completeness; fix it by deleting the row"
+            ],
+            "answer": 1,
+            "explanation": "Consistency means the same fact should be represented the same way everywhere. Casing/format drift like this should be fixed centrally in the transform layer (normalize once, for every consumer), not patched ad hoc in individual queries, or it will keep resurfacing."
+        },
+        {
+            "id": "d80q05",
+            "type": "multiple_choice",
+            "question": "Which of the following correctly distinguishes a 'data test' from 'monitoring' (data observability)?",
+            "options": [
+                "They are the same thing with different names",
+                "A data test checks a known rule on a schedule (e.g., unique(customer_id)); monitoring continuously watches for unexpected shape changes (freshness, volume, schema, distribution) that nobody wrote an explicit rule for",
+                "Monitoring only applies to ML models, not data pipelines",
+                "Data tests run continuously; monitoring runs only once a year"
+            ],
+            "answer": 1,
+            "explanation": "Data tests are deterministic checks against known failure modes (e.g., dbt/Great Expectations assertions). Data observability/monitoring catches the unknown failure modes — anomalies in freshness, volume, schema, or distribution that no one anticipated well enough to write an explicit rule for."
+        },
+        {
+            "id": "d80q06",
+            "type": "multiple_choice",
+            "question": "BrightCart's orders pipeline normally finishes loading by 6 AM ET. The team commits internally to hitting that target with <0.1% row-level test failures, and separately promises stakeholders the Executive Revenue Dashboard reflects data no more than 24 hours old. Which of these is the SLO and which is the SLA?",
+            "options": [
+                "The 6 AM/0.1% target is the SLA; the 24-hour promise is the SLO",
+                "The 6 AM/0.1% target is the SLO (internal engineering target); the 24-hour promise is the SLA (external commitment to stakeholders)",
+                "Both are SLAs",
+                "Both are SLOs"
+            ],
+            "answer": 1,
+            "explanation": "An SLO is the internal target the data team manages against to keep its promises true. An SLA is the externally-facing commitment made to stakeholders. The SLO (pipeline completes by 6 AM, <0.1% failures) exists specifically to make the SLA (dashboard data is never more than 24 hours stale) achievable."
+        },
+        {
+            "id": "d80q07",
+            "type": "multiple_choice",
+            "question": "An incident is detected: the `orders` table hasn't updated in 14 hours (normally hourly). Put these incident-response steps in the correct order: (1) root-cause, (2) contain, (3) postmortem, (4) detect, (5) remediate, (6) triage.",
+            "options": [
+                "Detect, Triage, Contain, Root-cause, Remediate, Postmortem",
+                "Triage, Detect, Remediate, Contain, Root-cause, Postmortem",
+                "Detect, Remediate, Triage, Contain, Postmortem, Root-cause",
+                "Postmortem, Detect, Triage, Contain, Root-cause, Remediate"
+            ],
+            "answer": 0,
+            "explanation": "The standard data incident workflow is: Detect (a test/observability check fires) -> Triage (assign severity, route to on-call) -> Contain (stop bad data from reaching dashboards/models) -> Root-cause (trace lineage upstream) -> Remediate (fix and backfill) -> Postmortem (blameless write-up plus a new check so it can't silently recur)."
+        },
+        {
+            "id": "d80q08",
+            "type": "multiple_choice",
+            "question": "Restricted PII data like BrightCart's customers.email should be access-controlled with which pattern?",
+            "options": [
+                "Self-service — any analyst can query it immediately once they have a warehouse login",
+                "Permanent access once granted, since asking again is inefficient",
+                "Request, with a stated business reason -> Owner/Steward approval -> time-boxed grant -> periodic re-certification",
+                "No access controls are needed if the warehouse itself is encrypted"
+            ],
+            "answer": 2,
+            "explanation": "Restricted data should never be self-service. The standard governance pattern is a request with a business justification, approval from the Data Owner or delegated Steward, a time-boxed grant (e.g., 90 days), and periodic re-certification (e.g., quarterly review) to revoke access that's no longer justified."
+        }
+    ]
+}
