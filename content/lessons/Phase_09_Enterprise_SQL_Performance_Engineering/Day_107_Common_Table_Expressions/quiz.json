@@ -1,0 +1,109 @@
+{
+  "day": 107,
+  "questions": [
+    {
+      "id": "d107q01",
+      "type": "multiple_choice",
+      "question": "What is the role of the Anchor Member in a recursive CTE?",
+      "options": [
+        "It runs on every iteration of the recursion",
+        "It is the non-recursive SELECT that runs exactly once to seed the recursion's starting rows",
+        "It defines the maximum recursion depth",
+        "It always returns the final result set"
+      ],
+      "answer": 1,
+      "explanation": "The Anchor Member is the first SELECT in a WITH RECURSIVE block, and it runs only once -- it establishes the starting point (e.g., the CEO with no manager). The Recursive Member, joined via UNION ALL, then repeatedly references the CTE's own name to walk outward from that starting point until no new rows are found."
+    },
+    {
+      "id": "d107q02",
+      "type": "multiple_choice",
+      "question": "Why should a recursive CTE almost always use UNION ALL instead of UNION?",
+      "options": [
+        "UNION is not valid syntax inside WITH RECURSIVE",
+        "UNION's de-duplication check on every iteration is both incorrect for graphs with multiple valid paths and computationally expensive",
+        "UNION ALL automatically sorts the output",
+        "UNION ALL is required for the CYCLE clause to work"
+      ],
+      "answer": 1,
+      "explanation": "UNION would de-duplicate rows across every iteration, which can incorrectly drop legitimately distinct paths through a graph, and forces an expensive comparison of each new row against the entire accumulated result set on every pass. UNION ALL just appends, relying on the join condition to bound each iteration to genuinely new rows; if duplicates are a symptom, the real fix is better cycle detection, not switching to UNION."
+    },
+    {
+      "id": "d107q03",
+      "type": "multiple_choice",
+      "question": "How does the cycle-detection pattern `WHERE NOT (e.id = ANY(path))` prevent infinite recursion?",
+      "options": [
+        "It limits the query to 100 rows",
+        "It stops the recursive member from rejoining to a node whose id already appears in the accumulated path array, so a cyclic chain produces zero new rows and recursion ends",
+        "It sorts the path array alphabetically",
+        "It deletes cyclic rows from the source table"
+      ],
+      "answer": 1,
+      "explanation": "Each iteration extends a path array tracking every node visited so far. By filtering out any candidate row whose id is already in that path, the recursive member refuses to revisit a node, so a cycle (A -> B -> C -> A) produces an empty result set the moment it would loop back -- triggering the natural termination condition instead of running forever."
+    },
+    {
+      "id": "d107q04",
+      "type": "multiple_choice",
+      "question": "In the Bill-of-Materials pattern, how is total weight calculated for a multi-level assembly?",
+      "options": [
+        "By summing unit_weight_g once per distinct part type, ignoring quantity",
+        "By multiplying quantities down the recursion (parent quantity x part quantity at each level) and summing unit_weight_g x total_quantity across all rows",
+        "By taking the maximum unit_weight_g found at any level",
+        "BOM totals cannot be computed with recursive CTEs"
+      ],
+      "answer": 1,
+      "explanation": "Each recursive step multiplies the accumulated quantity from the parent by the current part's quantity-per-parent, so a Machine containing 2 Gears each containing 5 Screws correctly yields 10 total Screws. Multiplying that running total by each part's unit_weight_g and summing across all rows in the recursion gives the correct total weight (e.g., 2 x 5 x 10g = 100g)."
+    },
+    {
+      "id": "d107q05",
+      "type": "multiple_choice",
+      "question": "What happens by default if a recursive CTE in Postgres encounters a cycle with no cycle-detection guard?",
+      "options": [
+        "Postgres automatically caps recursion at 100 levels, matching SQL Server's default",
+        "Postgres has no built-in recursion depth limit, so the query can run indefinitely and consume CPU/memory until manually cancelled",
+        "Postgres raises an immediate syntax error",
+        "The query silently returns an empty result"
+      ],
+      "answer": 1,
+      "explanation": "Unlike some other database engines that impose a default recursion depth cap, Postgres has no such failsafe. A recursive CTE over cyclic data with no path-array guard (or the Postgres 14+ CYCLE clause) will keep finding 'new' rows forever, consuming CPU and memory until the operator manually cancels the backend."
+    },
+    {
+      "id": "d107q06",
+      "type": "multiple_choice",
+      "question": "Which scenario is the best fit for a Closure Table instead of a recursive CTE?",
+      "options": [
+        "A shallow 3-level org chart queried once a month",
+        "A deep, 50,000-employee hierarchy queried on every page load, where read latency matters more than write-time overhead",
+        "A one-time ad-hoc data exploration query",
+        "Closure tables are never preferable to recursive CTEs"
+      ],
+      "answer": 1,
+      "explanation": "A closure table precomputes every ancestor-descendant pair, turning a hierarchy lookup into a single indexed join instead of a multi-level recursive traversal. That trade -- extra write-time maintenance cost in exchange for fast, predictable read-time performance -- pays off specifically when the same large hierarchy is queried frequently, such as a 50k-employee org chart rendered on every page load."
+    },
+    {
+      "id": "d107q07",
+      "type": "multiple_choice",
+      "question": "What does the Postgres 14+ `CYCLE` clause do in a recursive CTE?",
+      "options": [
+        "It forces the query to run in a loop indefinitely for testing purposes",
+        "It automatically tracks visited keys and sets a boolean flag instead of looping forever, replacing the manual path-array cycle-detection pattern",
+        "It converts a recursive CTE into a materialized view",
+        "It is only usable with the SEARCH BREADTH FIRST clause"
+      ],
+      "answer": 1,
+      "explanation": "`CYCLE id SET is_cycle USING path` is Postgres 14+ syntax that performs the same job as manually maintaining a path array and checking `WHERE NOT (e.id = ANY(path))`, but with less boilerplate -- Postgres tracks visited values itself and exposes a boolean column indicating whether a cycle was detected, rather than the query running forever."
+    },
+    {
+      "id": "d107q08",
+      "type": "multiple_choice",
+      "question": "Why would a team choose a graph database (e.g., Neo4j) over a recursive CTE for fraud-ring detection?",
+      "options": [
+        "Postgres cannot store relationship data at all",
+        "Fraud-ring detection requires efficient traversal of dense, cyclic graphs with pattern matching across relationship types, which graph engines are purpose-built for, whereas unbounded SQL recursion over such data is slow and risky",
+        "Recursive CTEs are deprecated in modern Postgres",
+        "Graph databases do not support SQL syntax at all, making them strictly worse for this use case"
+      ],
+      "answer": 1,
+      "explanation": "Fraud rings typically involve dense, highly interconnected, and often cyclic relationship graphs where you need to match complex multi-hop patterns across different relationship types. Graph database engines are optimized natively for exactly this kind of traversal and pattern matching, while reimplementing it as unbounded recursive SQL is both slower and more prone to runaway recursion than the same logic in a graph-native engine."
+    }
+  ]
+}

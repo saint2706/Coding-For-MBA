@@ -1,0 +1,109 @@
+{
+  "day": 105,
+  "questions": [
+    {
+      "id": "d105q01",
+      "type": "multiple_choice",
+      "question": "What is the key difference between SECURITY DEFINER and SECURITY INVOKER functions?",
+      "options": [
+        "DEFINER functions run faster than INVOKER functions",
+        "DEFINER functions execute with the creator's privileges; INVOKER functions execute with the caller's privileges (the default)",
+        "DEFINER functions can only be called by superusers",
+        "There is no functional difference, only naming convention"
+      ],
+      "answer": 1,
+      "explanation": "SECURITY DEFINER lets a function run with the privileges of whoever created it, which is how you build a controlled 'sudo' wrapper that lets a low-privilege user perform a narrowly-scoped privileged action. SECURITY INVOKER, the default, runs with the caller's own privileges, so the caller needs direct grants on every object the function touches."
+    },
+    {
+      "id": "d105q02",
+      "type": "multiple_choice",
+      "question": "Why is `EXECUTE format('DROP TABLE %I', tbl)` preferred over `EXECUTE 'DROP TABLE ' || tbl`?",
+      "options": [
+        "format() runs in parallel and is faster",
+        "The %I specifier automatically double-quotes and escapes the value as a SQL identifier, preventing SQL injection from crafted table names",
+        "Concatenation with || is deprecated in Postgres 14",
+        "format() does not require the plpgsql language"
+      ],
+      "answer": 1,
+      "explanation": "Manual string concatenation interpolates the raw value with no escaping, so a maliciously crafted identifier like 'users; DROP TABLE orders;--' can execute arbitrary SQL. format()'s %I specifier safely quotes and escapes identifiers, while %L does the same for literal values, making injection far harder to introduce by accident."
+    },
+    {
+      "id": "d105q03",
+      "type": "multiple_choice",
+      "question": "What happens when an error occurs inside a PL/pgSQL block that has no EXCEPTION clause?",
+      "options": [
+        "The error is logged but execution continues silently",
+        "Only the failing statement is rolled back; everything else commits",
+        "The function/procedure block aborts immediately and the entire enclosing transaction rolls back",
+        "Postgres automatically retries the statement up to 3 times"
+      ],
+      "answer": 2,
+      "explanation": "Without a local EXCEPTION clause, an error propagates upward and aborts the current block immediately, and that abort cascades to roll back the entire enclosing transaction, undoing every change made since the last COMMIT. Wrapping the risky statement in its own BEGIN...EXCEPTION...END block catches the error locally instead, letting the rest of the transaction proceed."
+    },
+    {
+      "id": "d105q04",
+      "type": "multiple_choice",
+      "question": "Can you call COMMIT inside a PL/pgSQL FUNCTION?",
+      "options": [
+        "Yes, COMMIT is always legal inside any PL/pgSQL block",
+        "No — functions run inside the caller's transaction; only a PROCEDURE invoked with CALL can COMMIT/ROLLBACK internally",
+        "Yes, but only if the function is marked SECURITY DEFINER",
+        "No, COMMIT is never legal anywhere in Postgres PL/pgSQL"
+      ],
+      "answer": 1,
+      "explanation": "A Postgres FUNCTION executes inside the transaction of its caller and has no autonomous-transaction escape hatch, so issuing COMMIT raises 'invalid transaction termination'. PROCEDUREs (Postgres 11+), invoked with CALL, are explicitly allowed to COMMIT/ROLLBACK mid-execution, which is essential for long-running batch jobs that need to persist partial progress."
+    },
+    {
+      "id": "d105q05",
+      "type": "multiple_choice",
+      "question": "Why might row-by-row looping over 100,000 rows inside a stored procedure be a costly architectural choice?",
+      "options": [
+        "PL/pgSQL cannot loop more than 10,000 times",
+        "It consumes expensive, hard-to-scale database CPU that could instead be a single set-based query, potentially 10x more DB CPU-seconds than an app-side loop over one returned result set",
+        "Loops inside procedures are not transactional",
+        "It is not possible to use RAISE NOTICE inside a loop"
+      ],
+      "answer": 1,
+      "explanation": "Database compute is usually a single scale-up box that is far more expensive to scale than stateless app servers. A procedure that performs 100,000 row-by-row round-trips of interpreted PL/pgSQL can burn roughly 10x the DB CPU-seconds of a single set-based query that returns the result set once for the application to iterate over in memory."
+    },
+    {
+      "id": "d105q06",
+      "type": "multiple_choice",
+      "question": "What is the main advantage of declaring a function with `RETURNS TABLE(...)` over using `RAISE NOTICE` to report results?",
+      "options": [
+        "RETURNS TABLE functions run without any LANGUAGE clause",
+        "RAISE NOTICE messages are stored permanently in the database",
+        "RETURNS TABLE lets callers do `SELECT * FROM my_function(...)` and treat the result like an ordinary multi-row table, which is what real application code needs",
+        "RETURNS TABLE functions cannot use loops"
+      ],
+      "answer": 2,
+      "explanation": "RAISE NOTICE only prints text to the client console/log and cannot be consumed programmatically by an application. RETURNS TABLE (along with RETURN QUERY) hands back a genuine structured result set that can be queried, joined, and filtered like any other table — the production-standard way to return multi-row data from a function."
+    },
+    {
+      "id": "d105q07",
+      "type": "multiple_choice",
+      "question": "A nightly archiving procedure has been running since midnight and is still active at 6 AM, blocking morning queries. What is the recommended first diagnostic step?",
+      "options": [
+        "Immediately DROP the orders table and recreate it",
+        "Query pg_stat_activity and pg_locks to find the backend's elapsed runtime, wait event, and any locks it holds or is blocking",
+        "Restart the entire Postgres server",
+        "Rewrite the procedure in Python and redeploy without investigating"
+      ],
+      "answer": 1,
+      "explanation": "pg_stat_activity reveals the offending backend's PID, query_start (to calculate elapsed runtime), and current wait event, while joining to pg_locks shows whether it holds a long-running lock blocking other sessions. This diagnosis should precede any mitigation, such as patching the procedure to COMMIT every 10,000 rows so locks are released incrementally."
+    },
+    {
+      "id": "d105q08",
+      "type": "multiple_choice",
+      "question": "When would PL/Python or PL/R be a better fit than PL/pgSQL for a stored procedure?",
+      "options": [
+        "Whenever you need to use a FOR loop",
+        "For numeric-heavy or ML-style scoring logic where libraries like numpy or scikit-learn running colocated with the data are valuable, while keeping heavy computation in the app layer for anything larger",
+        "For any function that uses SECURITY DEFINER",
+        "PL/Python should always replace PL/pgSQL for new development"
+      ],
+      "answer": 1,
+      "explanation": "PL/pgSQL excels at control flow and set-based data manipulation but is a poor fit for numeric-heavy or ML-style logic. PL/Python and PL/R let you write functions using Python or R libraries running inside the database process, useful for lightweight scoring functions colocated with data — but for anything beyond a small scoring function, the heavy computation generally belongs in the application layer."
+    }
+  ]
+}

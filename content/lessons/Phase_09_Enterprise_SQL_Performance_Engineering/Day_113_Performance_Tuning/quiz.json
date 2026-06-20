@@ -1,0 +1,109 @@
+{
+    "day": 113,
+    "questions": [
+        {
+            "id": "d113q01",
+            "type": "multiple_choice",
+            "question": "In `EXPLAIN ANALYZE` output, what does `Buffers: shared read=500` indicate compared to `shared hit=500`?",
+            "options": [
+                "They mean the same thing — both indicate cache hits",
+                "`shared read` means 500 blocks had to be fetched from disk (or OS cache), which is far more expensive than `shared hit`, where the blocks were already in Postgres's `shared_buffers` RAM cache",
+                "`shared read` only appears for INSERT statements",
+                "`shared read` indicates a query error"
+            ],
+            "answer": 1,
+            "explanation": "`shared hit` counts blocks already present in `shared_buffers`, requiring no disk I/O. `shared read` counts blocks that had to be pulled in from disk or the OS file cache, which is significantly slower. A plan dominated by `shared read` on a query that runs frequently is a strong signal to investigate `shared_buffers`/`effective_cache_size` sizing or to recognize the working set genuinely exceeds available RAM."
+        },
+        {
+            "id": "d113q02",
+            "type": "multiple_choice",
+            "question": "A query returns 30% of a table's rows. The table has an index on the filtered column. Why might the planner choose a Seq Scan over an Index Scan anyway?",
+            "options": [
+                "The planner is malfunctioning",
+                "Above roughly 10-20% selectivity, the cumulative cost of random-access index lookups exceeds the cost of one sequential pass through the table, so Seq Scan is genuinely faster",
+                "Indexes only work below 1000 rows",
+                "Seq Scan is always faster regardless of selectivity"
+            ],
+            "answer": 1,
+            "explanation": "Index Scans do random I/O — jumping around the table fetching rows wherever the index points. Seq Scans do sequential I/O, reading the file straight through in physical order, which is far more efficient per-block. Once a query needs a large enough fraction of the table, sequential reads of everything beats randomly hopping to a third of the rows, so the planner deliberately ignores an available index for broad, low-selectivity queries."
+        },
+        {
+            "id": "d113q03",
+            "type": "multiple_choice",
+            "question": "What happens when `work_mem` is too small for a sort operation, and how do you detect it?",
+            "options": [
+                "The query fails with an out-of-memory error",
+                "The sort spills to temporary disk files instead of completing in RAM; detected by seeing `Sort Method: external merge Disk` instead of `quicksort Memory` in EXPLAIN ANALYZE",
+                "Postgres automatically raises work_mem for that one query",
+                "The query silently returns incomplete results"
+            ],
+            "answer": 1,
+            "explanation": "Each sort or hash operation gets up to `work_mem` of RAM. If the data exceeds that budget, Postgres writes intermediate batches to disk and merges them — visible in EXPLAIN ANALYZE as `Sort Method: external merge Disk` rather than the much faster `quicksort Memory`. This disk spill is one of the most common, fixable causes of slow sort/aggregation-heavy queries, but work_mem must be raised cautiously since it's allocated per operation per concurrent query and can exhaust server RAM if set too high."
+        },
+        {
+            "id": "d113q04",
+            "type": "multiple_choice",
+            "question": "Why does plain `VACUUM` not shrink a table's file size on disk, while `VACUUM FULL` does?",
+            "options": [
+                "VACUUM only works on indexes, never on tables",
+                "VACUUM marks dead tuple space as reusable for future inserts within the existing file, while VACUUM FULL rewrites the entire table into a new, compact file — but requires an AccessExclusiveLock for the duration",
+                "VACUUM and VACUUM FULL are functionally identical",
+                "VACUUM only runs on system catalogs"
+            ],
+            "answer": 1,
+            "explanation": "MVCC means UPDATEs/DELETEs don't remove rows immediately — they mark old versions dead. Plain VACUUM reclaims that dead space so Postgres can reuse it for new rows, but it leaves the file's physical size unchanged. VACUUM FULL actually rewrites every live row into a brand-new, smaller file, which is why it physically shrinks disk usage — at the cost of an exclusive lock that blocks all reads and writes until the rewrite completes, making it dangerous to run on a large production table outside a maintenance window."
+        },
+        {
+            "id": "d113q05",
+            "type": "multiple_choice",
+            "question": "What does `autovacuum_vacuum_scale_factor = 0.2` (the default) mean in practice for a 10-million-row table?",
+            "options": [
+                "Autovacuum runs every 20 minutes regardless of table activity",
+                "Autovacuum triggers a vacuum once dead tuples exceed roughly 20% of the table's live row count — about 2 million dead rows must accumulate on a 10M-row table before it fires",
+                "20% of the table is permanently reserved as free space",
+                "The table can only grow to 20% larger than its original size"
+            ],
+            "answer": 1,
+            "explanation": "This parameter expresses the dead-tuple threshold as a percentage of the table's live rows, not a time interval. For a 10M-row table, the default 0.2 (20%) means roughly 2 million dead rows must pile up before autovacuum kicks in — on a high-churn table, that's a lot of bloat sitting around in the interim. Lowering this to 0.01 (1%) on large, write-heavy tables makes autovacuum run more often in smaller, cheaper increments."
+        },
+        {
+            "id": "d113q06",
+            "type": "multiple_choice",
+            "question": "Why is PgBouncer (connection pooling) often more impactful for latency than query-level tuning under high concurrency?",
+            "options": [
+                "PgBouncer caches query results so the database is never queried twice",
+                "Postgres uses a process-per-connection model where each connection (even idle) consumes a backend process and ~10MB RAM; PgBouncer multiplexes thousands of app connections onto a small fixed pool of real backend connections, eliminating connection-thrashing overhead",
+                "PgBouncer rewrites slow queries automatically",
+                "PgBouncer encrypts connections, which speeds up TLS handshakes"
+            ],
+            "answer": 1,
+            "explanation": "Every raw Postgres connection — even one sitting idle — costs a dedicated backend process and meaningful memory, and the OS must context-switch among all of them under load. An application opening thousands of direct connections is thrashing the server regardless of how well-tuned individual queries are. PgBouncer sits in front of Postgres, accepting many lightweight client connections but funneling them through a small, fixed pool of real backend connections, which is why introducing it can drop latency dramatically even with zero query changes."
+        },
+        {
+            "id": "d113q07",
+            "type": "multiple_choice",
+            "question": "After a migration backfills two new columns across a 500M-row table, every query against that table — even ones not touching the new columns — becomes 5x slower. What is the most likely first diagnostic step?",
+            "options": [
+                "Drop and recreate every index on the table",
+                "Check pg_stat_user_tables for n_mod_since_analyze and last_analyze to confirm stale planner statistics, then run ANALYZE on the table",
+                "Increase max_connections",
+                "Switch the table to a different storage engine"
+            ],
+            "answer": 1,
+            "explanation": "A mass backfill touching every row is exactly the kind of write burst that invalidates the query planner's statistics (row count estimates, value distributions) faster than autovacuum's automatic ANALYZE may catch up, especially on a 500M-row table. Running ANALYZE explicitly is cheap, takes no exclusive locks, and is the standard low-risk first step — it often restores the previous (good) query plans without touching indexes or queries at all."
+        },
+        {
+            "id": "d113q08",
+            "type": "multiple_choice",
+            "question": "Why does range-partitioning a large time-series table (e.g., by `created_at` month) improve query performance for date-filtered queries?",
+            "options": [
+                "Partitioning automatically creates indexes on every column",
+                "Partition pruning lets the planner eliminate entire partitions outside the query's date range before execution, so a query for one month scans only that month's partition instead of the whole table's history",
+                "Partitioned tables are always stored in RAM",
+                "Partitioning replaces the need for VACUUM entirely"
+            ],
+            "answer": 1,
+            "explanation": "When a table is partitioned by range on a column like `created_at`, a query filtering `WHERE created_at >= '2026-02-01'` lets the planner recognize that only the relevant partition(s) could possibly contain matching rows, and it skips scanning the others entirely — visible in EXPLAIN as the irrelevant partitions never appearing in the plan at all. This effectively shrinks a 500M-row table to whatever single month is being queried, and as a side benefit, old partitions can be dropped instantly instead of run through a slow DELETE."
+        }
+    ]
+}

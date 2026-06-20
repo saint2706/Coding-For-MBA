@@ -1,0 +1,109 @@
+{
+    "day": 112,
+    "questions": [
+        {
+            "id": "d112q01",
+            "type": "multiple_choice",
+            "question": "If Row Level Security is enabled on a table but no policy has been created, what do regular (non-superuser) roles see when they query it?",
+            "options": [
+                "Everyone sees every row, since RLS has no policy to restrict it",
+                "No rows at all — RLS defaults to deny-all until an explicit policy grants access",
+                "Only the rows the role itself inserted",
+                "Postgres throws a syntax error on every query"
+            ],
+            "answer": 1,
+            "explanation": "Enabling RLS flips the table's default behavior to implicit deny: without a matching `CREATE POLICY`, no non-owner, non-superuser role can see any row, even with a table-level `GRANT SELECT`. This fail-closed design is intentional — a missing policy is a much safer failure mode than a missing policy silently exposing every row."
+        },
+        {
+            "id": "d112q02",
+            "type": "multiple_choice",
+            "question": "Does Row Level Security apply to the Postgres superuser (e.g., the `postgres` role) by default?",
+            "options": [
+                "Yes, superusers are filtered exactly like any other role",
+                "No — superusers and table owners bypass RLS by default, which is why production applications should never connect as a superuser",
+                "Only if `force_row_security` is set in `postgresql.conf`",
+                "RLS applies to superusers but not to table owners"
+            ],
+            "answer": 1,
+            "explanation": "RLS is designed to protect against application-level bugs and untrusted roles, not against administrators who already have full database access. Superusers (and by default, table owners) bypass RLS entirely, which means your application must connect through a restricted, non-superuser role for RLS policies to mean anything in practice."
+        },
+        {
+            "id": "d112q03",
+            "type": "multiple_choice",
+            "question": "Which function should be used to store user passwords, and why?",
+            "options": [
+                "`pgp_sym_encrypt`, because passwords need to be reversible for password-reset emails",
+                "`crypt()` with `gen_salt('bf')` (bcrypt), because password verification only ever needs a one-way, salted comparison — the plaintext password should never be recoverable",
+                "`md5()`, because it is the fastest hashing option",
+                "Plain `text`, relying on TLS to protect it in transit"
+            ],
+            "answer": 1,
+            "explanation": "Passwords should never be stored in a reversible form, which rules out `pgp_sym_encrypt` (designed for data you need to read back later, like credit card numbers). `crypt()` with a bcrypt salt produces a one-way, salted hash: you verify a login attempt by re-hashing the input and comparing hashes, never by decrypting anything. `md5()` is also one-way but is considered cryptographically weak and fast to brute-force, which is exactly the wrong property for password hashing."
+        },
+        {
+            "id": "d112q04",
+            "type": "multiple_choice",
+            "question": "Can different RLS policies be defined for `SELECT` versus `UPDATE` on the same table?",
+            "options": [
+                "No, one policy must cover all commands",
+                "Yes — `CREATE POLICY ... FOR SELECT` and `CREATE POLICY ... FOR UPDATE` can have entirely different `USING`/`WITH CHECK` expressions",
+                "Only if the table has no primary key",
+                "Only via BEFORE triggers, not native RLS policies"
+            ],
+            "answer": 1,
+            "explanation": "RLS policies can be scoped per-command (`SELECT`, `INSERT`, `UPDATE`, `DELETE`, or `ALL`), so it's common to allow broad read access (e.g., everyone in a department can view records) while restricting writes to only the record's owner. This command-level granularity is what makes RLS expressive enough for real multi-tenant and ownership-based access models."
+        },
+        {
+            "id": "d112q05",
+            "type": "multiple_choice",
+            "question": "Why does a `SECURITY DEFINER` function pose a risk to RLS-protected tables?",
+            "options": [
+                "It does not pose any risk — RLS always applies regardless of function security mode",
+                "It executes with the privileges (and RLS exemptions) of the function's owner rather than the caller, so if the owner bypasses RLS, the function silently leaks rows to any caller",
+                "It only affects `INSERT` statements, not `SELECT`",
+                "It disables RLS permanently for the entire database"
+            ],
+            "answer": 1,
+            "explanation": "A `SECURITY DEFINER` function runs as its owner, not as the calling role. If the owner is a superuser or otherwise bypasses RLS, any caller of that function — even an unprivileged tenant — can retrieve rows the caller's own RLS policy would have hidden. The fix is either marking the function `SECURITY INVOKER` (so it respects the caller's RLS) or explicitly re-checking the tenant/user filter inside the function body."
+        },
+        {
+            "id": "d112q06",
+            "type": "multiple_choice",
+            "question": "What is the single most common mistake when using `pgcrypto` for column encryption, and why is it dangerous?",
+            "options": [
+                "Using `pgp_sym_encrypt` instead of `crypt()` — there is no real downside to this",
+                "Storing the encryption key in the same database as the ciphertext (e.g., in a config table or hardcoded in a function) — an attacker who dumps the database gets both the locked data and the key to unlock it",
+                "Encrypting too many columns, which slows down the database",
+                "Using bcrypt for credit card numbers instead of AES"
+            ],
+            "answer": 1,
+            "explanation": "Encryption only protects data if the key is kept separate from the ciphertext. If the key lives in the same database (or repository) as the encrypted column, a single backup leak or SQL injection exposes both, making the encryption purely cosmetic. Keys belong in environment variables or a managed secrets store (Vault, AWS KMS) that the application fetches at runtime and never persists in SQL source."
+        },
+        {
+            "id": "d112q07",
+            "type": "multiple_choice",
+            "question": "Does encrypting a column with `pgcrypto` protect against SQL injection attacks?",
+            "options": [
+                "Yes, encryption inherently blocks malicious SQL from executing",
+                "No — encryption protects data at rest/confidentiality; SQL injection is prevented by parameterized queries, an entirely separate concern",
+                "Only if the injected code itself is encrypted text",
+                "Yes, but only for `INSERT` statements"
+            ],
+            "answer": 1,
+            "explanation": "These are two unrelated security layers solving different problems. `pgcrypto` makes stored values unreadable without the decryption key (confidentiality of data at rest), while SQL injection is about untrusted input being executed as code rather than treated as a bound parameter. Parameterized queries (not encryption) are the correct defense against injection."
+        },
+        {
+            "id": "d112q08",
+            "type": "multiple_choice",
+            "question": "When should you use column-level `GRANT` (e.g., `GRANT SELECT (id, name) ON employees TO hr_role`) instead of, or alongside, Row Level Security?",
+            "options": [
+                "Column-level GRANT replaces RLS entirely in all cases",
+                "When a role should see most of a row but specific sensitive columns (like salary or SSN) must be hidden, while RLS still controls which rows are visible — they solve different axes of the same access-control problem and can be combined",
+                "Column-level GRANT only works on views, never on base tables",
+                "RLS automatically hides sensitive columns, so column GRANT is redundant"
+            ],
+            "answer": 1,
+            "explanation": "RLS controls which *rows* a role can see; column-level GRANT controls which *columns* of those visible rows a role can read. A support-staff role might legitimately need to see most fields of an employee record for ticket handling but must never see `salary` — that's a column-level GRANT problem, not a row-level one. Combining both is the standard pattern when a role should see only some rows and only some columns of those rows."
+        }
+    ]
+}

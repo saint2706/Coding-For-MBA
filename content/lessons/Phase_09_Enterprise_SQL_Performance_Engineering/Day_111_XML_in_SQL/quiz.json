@@ -1,0 +1,109 @@
+{
+    "day": 111,
+    "questions": [
+        {
+            "id": "d111q01",
+            "type": "multiple_choice",
+            "question": "What data type does `xpath('//title/text()', doc)` return, even when only one node matches?",
+            "options": [
+                "A plain text string",
+                "An `xml[]` array",
+                "A JSONB object",
+                "An integer count of matches"
+            ],
+            "answer": 1,
+            "explanation": "`xpath()` always returns an `xml[]` array, never a scalar, because XPath expressions can match zero, one, or many nodes. To get a human-readable string you must index into the array (`[1]`) and cast it with `::text`, which surprises most learners expecting a plain string back on the first try."
+        },
+        {
+            "id": "d111q02",
+            "type": "multiple_choice",
+            "question": "What is the relationship between `unnest()` and `array_agg()`?",
+            "options": [
+                "They are unrelated aggregate functions",
+                "`unnest()` expands an array into rows; `array_agg()` collapses rows back into an array — they are inverses",
+                "`unnest()` only works on JSONB, `array_agg()` only works on arrays",
+                "`array_agg()` must run before `unnest()` in every query"
+            ],
+            "answer": 1,
+            "explanation": "`unnest(tags)` is a set-returning function that turns a single array value into one row per element. `array_agg(col)` does the opposite: it aggregates multiple rows into a single array. Together they let you round-trip between the relational (row) and array representations of the same data."
+        },
+        {
+            "id": "d111q03",
+            "type": "multiple_choice",
+            "question": "Why can't you enforce a foreign key on individual elements of an `int[]` column like `order_ids int[]`?",
+            "options": [
+                "Postgres disables FK syntax on array-typed columns entirely",
+                "Postgres has no mechanism to validate each array element against another table's primary key — the array is just an opaque list of integers to the database",
+                "FK constraints only work with TEXT arrays",
+                "You can enforce it, but only with a BEFORE trigger, never a constraint"
+            ],
+            "answer": 1,
+            "explanation": "A standard `FOREIGN KEY` constraint validates a single scalar column against a referenced table's key. Postgres has no built-in syntax to validate every element inside an array column the same way, so `order_ids int[]` can silently contain IDs for rows that were deleted or never existed. This is the core argument for using a junction table instead of an array whenever referential integrity matters."
+        },
+        {
+            "id": "d111q04",
+            "type": "multiple_choice",
+            "question": "What happens when you try to insert a value not in an ENUM's defined list, e.g. `INSERT INTO person VALUES ('angry')` when `mood` only allows `'happy'`/`'sad'`?",
+            "options": [
+                "Postgres silently coerces it to NULL",
+                "Postgres raises an error: invalid input value for enum",
+                "Postgres automatically adds the new value to the ENUM",
+                "The insert succeeds but the value is stored as text"
+            ],
+            "answer": 1,
+            "explanation": "ENUMs enforce a fixed, closed set of allowed labels at the type level, so an out-of-list value is rejected outright with an 'invalid input value for enum' error. To allow the new value, you must explicitly run `ALTER TYPE mood ADD VALUE 'angry'` — this rigidity is the trade-off for the type's compactness (4-byte internal storage) and integrity guarantees."
+        },
+        {
+            "id": "d111q05",
+            "type": "multiple_choice",
+            "question": "When should you choose a Composite Type over a JSONB column for structured data like an address?",
+            "options": [
+                "Always — Composite Types are strictly better in every scenario",
+                "When the structure is fixed and known at design time and you want strong per-field typing; JSONB is better when the structure is variable, sparse, or evolves per-row without a migration",
+                "Never — JSONB always outperforms Composite Types",
+                "Only when the data needs to be queried with GIN indexes"
+            ],
+            "answer": 1,
+            "explanation": "Composite Types give you compile-time-like guarantees: each field has a declared type (e.g., `zip text`) and the shape is consistent across every row, which is ideal when you know the schema in advance. JSONB trades that structure for flexibility — useful when different rows might have different fields or the shape changes over time without a `ALTER TYPE`/migration step."
+        },
+        {
+            "id": "d111q06",
+            "type": "multiple_choice",
+            "question": "Which Postgres range-type operator checks whether two ranges (e.g., two booking time slots) overlap?",
+            "options": [
+                "`@>` (contains)",
+                "`&&` (overlap)",
+                "`<@` (contained by)",
+                "`=` (equality)"
+            ],
+            "answer": 1,
+            "explanation": "The `&&` operator returns true if two range values share any point in common, which is exactly the check a booking or scheduling system needs before confirming a new reservation. `@>` and `<@` instead test full containment (one range entirely inside or around another), which is a stricter and different condition."
+        },
+        {
+            "id": "d111q07",
+            "type": "multiple_choice",
+            "question": "Why is `tsvector`/`tsquery` generally preferred over `LIKE '%pattern%'` for searching large text columns?",
+            "options": [
+                "`LIKE` is faster but less accurate",
+                "`tsvector` stores a normalized, indexed list of word stems that can be searched efficiently via a GIN index, whereas `LIKE '%pattern%'` cannot use a standard B-Tree index and forces a full scan",
+                "`tsquery` only works on XML columns",
+                "There is no performance difference; it's purely a syntax preference"
+            ],
+            "answer": 1,
+            "explanation": "A leading-wildcard `LIKE '%pattern%'` cannot use a standard index because the match could start anywhere in the string, forcing Postgres to scan every row. `tsvector` pre-processes text into normalized lexemes (word stems) that a GIN index can search directly via `@@` against a `tsquery`, making full-text search dramatically faster at scale."
+        },
+        {
+            "id": "d111q08",
+            "type": "multiple_choice",
+            "question": "Can XML content be indexed in Postgres for fast querying?",
+            "options": [
+                "No, XML can never be indexed",
+                "Yes, but only with GIN indexes like JSONB",
+                "Yes, using a functional index on the result of an `xpath()` expression cast to text",
+                "Only Oracle databases support indexing XML"
+            ],
+            "answer": 2,
+            "explanation": "Postgres supports functional (expression) indexes, so you can index the *result* of a deterministic expression like `xpath('//title/text()', doc)::text` rather than the raw XML column itself. This lets a query filtering on that extracted value use an Index Scan instead of re-parsing the XML document on every row during a Seq Scan."
+        }
+    ]
+}

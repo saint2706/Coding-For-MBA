@@ -1,0 +1,109 @@
+{
+  "day": 102,
+  "questions": [
+    {
+      "id": "d102q01",
+      "type": "multiple_choice",
+      "question": "What is the core difference between a standard VIEW and a MATERIALIZED VIEW?",
+      "options": [
+        "A standard view is faster to query than a materialized view",
+        "A standard view stores only the SQL query text and re-runs it on every read; a materialized view stores the actual result set on disk",
+        "A materialized view cannot be indexed",
+        "There is no difference in PostgreSQL"
+      ],
+      "answer": 1,
+      "explanation": "A standard VIEW is purely virtual — Postgres substitutes its saved SQL into your query and recomputes the result every time, using zero extra storage but full CPU cost. A MATERIALIZED VIEW physically writes the computed result set to disk like a regular table, so reads are near-instant but the data is a frozen snapshot until explicitly refreshed."
+    },
+    {
+      "id": "d102q02",
+      "type": "multiple_choice",
+      "question": "What must exist on a Materialized View before you can run REFRESH MATERIALIZED VIEW CONCURRENTLY on it?",
+      "options": [
+        "A foreign key constraint",
+        "A UNIQUE index",
+        "A trigger",
+        "Nothing extra is required"
+      ],
+      "answer": 1,
+      "explanation": "CONCURRENTLY works by building a new version of the MView in the background and diffing it row-by-row against the old version to compute a minimal set of changes; Postgres needs a UNIQUE index to match rows between the old and new versions unambiguously. Without one, `REFRESH MATERIALIZED VIEW CONCURRENTLY` fails with an explicit error telling you to create one."
+    },
+    {
+      "id": "d102q03",
+      "type": "multiple_choice",
+      "question": "Why does a Materialized View become 'stale' even though the underlying base table is being actively updated?",
+      "options": [
+        "PostgreSQL automatically syncs MViews every second",
+        "MViews are a one-time snapshot with no live link back to the base tables; only an explicit REFRESH pulls in new changes",
+        "Stale MViews are a bug and should be reported",
+        "MViews only go stale if you forget to add an index"
+      ],
+      "answer": 1,
+      "explanation": "Unlike a standard view, a Materialized View does not re-run its defining query on each access — it stores a frozen result set. Inserts, updates, and deletes to the base tables have no effect on that stored snapshot until you run REFRESH MATERIALIZED VIEW (manually, via a cron job, or via an orchestrator like Airflow/dbt)."
+    },
+    {
+      "id": "d102q04",
+      "type": "multiple_choice",
+      "question": "Why is it possible to put a B-Tree index on a Materialized View but not on a standard VIEW?",
+      "options": [
+        "Materialized Views are smaller in size",
+        "Standard views are read-only and indexes only work on writable objects",
+        "A Materialized View is a real physical table with heap pages on disk, while a standard view stores no data at all to index",
+        "PostgreSQL disables indexing on views for licensing reasons"
+      ],
+      "answer": 2,
+      "explanation": "An index points at physical row locations on disk. A standard view has no physical rows of its own — only a saved query string — so there's nothing for an index to reference. A Materialized View, by contrast, physically writes its result set to disk exactly like a normal table, which means CREATE INDEX works on it identically to any other table."
+    },
+    {
+      "id": "d102q05",
+      "type": "multiple_choice",
+      "question": "A company's finance team needs a 15-table join report each morning, where 'yesterday's data' is acceptable. What is the best refresh strategy?",
+      "options": [
+        "Refresh the MView on every page load",
+        "Schedule a nightly REFRESH (or REFRESH CONCURRENTLY) via cron/Airflow/dbt so the heavy join runs once, off-peak",
+        "Avoid MViews entirely and run the raw 15-table join live each time",
+        "Refresh once per minute regardless of business need"
+      ],
+      "answer": 1,
+      "explanation": "Since the report can tolerate T-1 freshness, the heavy 15-table join should run exactly once, during an off-peak scheduled window, rather than once per page view. This is the classic 'eventual consistency is a feature' pattern: it converts a high-CPU, high-latency live query into a near-instant read against pre-computed results, at the cost of bounded staleness that the business has already accepted."
+    },
+    {
+      "id": "d102q06",
+      "type": "multiple_choice",
+      "question": "What is the specific danger of the 'Dependency Chain' (Refresh Ordering) pitfall described in this lesson?",
+      "options": [
+        "It causes a syntax error in the REFRESH command",
+        "If View A depends on View B and A is refreshed before B picks up its own latest source data, A silently bakes in stale data with no error raised",
+        "It only affects standard views, not MViews",
+        "It prevents the database from starting up"
+      ],
+      "answer": 1,
+      "explanation": "When MViews are layered (A depends on B depends on Table C), refreshing them out of order means a 'successful' refresh of A can still contain outdated values inherited from an unrefreshed B — and because the refresh command itself succeeds, no error is raised to flag the problem. The fix is to use an orchestrator (Airflow or dbt) that walks the dependency DAG and refreshes objects in topological order, and to use pg_depend to audit the chain."
+    },
+    {
+      "id": "d102q07",
+      "type": "multiple_choice",
+      "question": "Why might a team maintain a 'hot' Materialized View filtered to WHERE order_date >= now() - interval '30 days' instead of materializing the entire orders history?",
+      "options": [
+        "PostgreSQL does not allow materializing more than 30 days of data",
+        "A partial/incremental MView refreshes much faster because it only recomputes a small recent window, while a separate, less-frequently refreshed MView or the base table covers historical queries",
+        "Filtering with WHERE is required syntax for all materialized views",
+        "It has no performance benefit, it's purely a style preference"
+      ],
+      "answer": 1,
+      "explanation": "Materializing only the recent window means the refresh job processes a small slice of data (fast, frequent refreshes, e.g., every 15 minutes) instead of re-scanning a billion-row history each time. Production teams typically pair this 'hot' MView with a separate nightly full-history rebuild or fall back to the base table for queries that need data outside the recent window."
+    },
+    {
+      "id": "d102q08",
+      "type": "multiple_choice",
+      "question": "A dashboard queries a 500M-row fact table 300 times/day. Each query takes 2 seconds against the base table but only 5ms against a Materialized View. Roughly how much daily query time does the MView save?",
+      "options": [
+        "About 1 minute",
+        "About 10 minutes",
+        "About 2 hours",
+        "No measurable difference"
+      ],
+      "answer": 1,
+      "explanation": "300 queries/day at 2 seconds each = 600 seconds (10 minutes) of cumulative query time against the base table. The same 300 queries against the MView at 5ms each total just 1.5 seconds — so the MView saves nearly all of that ~10 minutes of query time daily. Multiply this pattern across hundreds of dashboard widgets and report queries company-wide, and the cumulative DB CPU savings from materializing expensive joins becomes one of the highest-leverage cost reductions a database team can make."
+    }
+  ]
+}

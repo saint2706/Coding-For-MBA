@@ -1,0 +1,70 @@
+{
+  "day": "113B",
+  "questions": [
+    {
+      "id": "d113Bq01",
+      "type": "multiple_choice",
+      "question": "Why did Task 3.1 use `TimeSeriesSplit` instead of a standard `train_test_split` for cross-validating the demand forecasting model?",
+      "options": [
+        "TimeSeriesSplit is faster to compute than train_test_split on large datasets",
+        "train_test_split shuffles rows randomly, which would let validation folds contain dates earlier than some training rows, leaking future information into the model; TimeSeriesSplit always keeps validation folds chronologically after training folds",
+        "TimeSeriesSplit is required by scikit-learn for any GradientBoostingRegressor model",
+        "There is no real difference — either would produce identical MAPE scores"
+      ],
+      "answer": 1,
+      "explanation": "A standard train_test_split shuffles rows randomly, so a validation fold could easily contain dates earlier than rows in the training fold — the model would effectively be allowed to 'see the future' to predict the past, producing an optimistic MAPE that won't hold up in production. TimeSeriesSplit instead always orders folds chronologically, so every validation fold comes strictly after its corresponding training fold, mirroring how the model will actually be used: predicting forward from known history."
+    },
+    {
+      "id": "d113Bq02",
+      "type": "multiple_choice",
+      "question": "Which Phase 9 index type would most directly speed up the `WHERE date >= date('now', '-30 days')` filter used in the Milestone 4 anomaly detection query, if this capstone were migrated to PostgreSQL?",
+      "options": [
+        "A GIN index on the date column",
+        "A composite B-tree index on (store_id, date), matching the query's filter and GROUP BY pattern",
+        "A full-text search index on the revenue column",
+        "No index would help — date filters cannot be indexed"
+      ],
+      "answer": 1,
+      "explanation": "The anomaly detection query filters on a date range and groups by store_id, so a composite B-tree index on (store_id, date) — the standard Day 103 index type for equality/range filters on ordered columns — directly matches the query's access pattern. GIN indexes are optimized for composite/array/JSONB data (useful elsewhere in this capstone if the category column were stored as JSONB), not for simple date range filters, which is why the Postgres migration note in the dataset section recommends a composite B-tree here instead."
+    },
+    {
+      "id": "d113Bq03",
+      "type": "multiple_choice",
+      "question": "The dataset generator originally defined a `regions` dict with two hand-written entries (\"STORE_001\": \"North\", \"STORE_002\": \"North\") immediately followed by a dict comprehension that reassigned `regions` entirely. What was the actual functional impact of the first definition?",
+      "options": [
+        "It set the default region for any store not covered by the comprehension",
+        "It caused a runtime error because regions was defined twice",
+        "It had zero functional impact — the dict comprehension on the next line completely overwrote it, making the hand-written entries dead code",
+        "It made STORE_001 and STORE_002 immune to being reassigned by the comprehension"
+      ],
+      "answer": 2,
+      "explanation": "In Python, reassigning a variable name simply replaces the reference — it does not merge with or protect any part of the prior value. Because `regions = {s: random.choice(...) for s in stores}` reassigns the entire `regions` name, the previous hand-written dict (including its STORE_001 and STORE_002 entries) is discarded outright with no effect on the final output. This was dead code that misled readers about how region assignment actually works, which is why the fix removes the hand-written dict entirely and keeps only the single dict comprehension."
+    },
+    {
+      "id": "d113Bq04",
+      "type": "multiple_choice",
+      "question": "Why does `SELECT STDEV(revenue) FROM sales` fail when run against the capstone's SQLite database, and what is the fix used in Milestone 4?",
+      "options": [
+        "STDEV requires a NUMERIC column type, and revenue is stored as TEXT",
+        "SQLite has no built-in standard-deviation aggregate function at all, so the query raises an OperationalError; the fix computes it manually via SQRT(AVG(x*x) - AVG(x)*AVG(x))",
+        "STDEV only works inside a window function, not a plain GROUP BY aggregate",
+        "The fix is to upgrade to a newer version of SQLite, which adds native STDEV support"
+      ],
+      "answer": 1,
+      "explanation": "Unlike PostgreSQL, which has a native STDDEV() aggregate, SQLite ships with no built-in standard-deviation function at all — calling STDEV() or STDDEV() raises `sqlite3.OperationalError: no such function`. The fix used in Milestone 4 computes the population standard deviation manually from the statistical identity sigma = sqrt(E[X^2] - E[X]^2), implemented in SQL as SQRT(AVG(revenue*revenue) - AVG(revenue)*AVG(revenue)). If the capstone is migrated to PostgreSQL, this manual computation can be replaced with the native STDDEV(revenue) call."
+    },
+    {
+      "id": "d113Bq05",
+      "type": "multiple_choice",
+      "question": "If your forecasting model's mean MAPE across the 5 TimeSeriesSplit folds comes out to 24%, what does the capstone's benchmark table suggest you check first?",
+      "options": [
+        "Nothing — 24% MAPE is within the expected 8-12% range for this synthetic dataset",
+        "Switch from GradientBoostingRegressor to a deep neural network, since tree models cannot achieve low MAPE on time series",
+        "Check for data leakage: confirm no training fold contains dates after its validation fold, and confirm lag/rolling features used .shift() so they only reference past values, never the current or future row",
+        "Increase n_splits to 50 — more folds will automatically reduce MAPE regardless of the underlying features"
+      ],
+      "answer": 2,
+      "explanation": "The benchmark table flags anything above 20% MAPE as 'likely a bug, most often data leakage' — a well-tuned model on this dataset's noise floor should land in the 8-12% range, so a result nearly double the acceptable ceiling points to a methodology error rather than a modeling-capacity problem. The two specific checks called out are whether TimeSeriesSplit folds are genuinely chronological (no future-into-past leakage) and whether revenue_lag_* / revenue_7d_avg features were computed with .shift() so they reference only past values — a rolling average without a preceding .shift(1) would let a row's features include its own current-day value, which is a leakage bug that paradoxically can push MAPE both unrealistically low (during training) or oddly high (during validation) depending on how the leak manifests across folds."
+    }
+  ]
+}

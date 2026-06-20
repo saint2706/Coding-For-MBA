@@ -1,0 +1,70 @@
+{
+  "day": "113C",
+  "questions": [
+    {
+      "id": "d113Cq01",
+      "type": "multiple_choice",
+      "question": "What is the key difference between ML in BigQuery and traditional sklearn ML?",
+      "options": [
+        "BigQuery ML can only run unsupervised clustering, never classification or regression",
+        "Data never leaves BigQuery in BQML — training, evaluation, and prediction all happen via SQL in the warehouse, unlike sklearn where data is exported to a Python environment",
+        "Sklearn models are always more accurate than BQML models on the same data",
+        "BigQuery ML requires a separate Python environment to deploy trained models"
+      ],
+      "answer": 1,
+      "explanation": "In sklearn, you export data to a Python environment, train there, then deploy separately, creating a data-movement and handoff gap. In BigQuery ML, data never leaves BigQuery — training, evaluation, and prediction all happen via SQL in the warehouse, eliminating data transfer costs, Python environment management, and deployment gaps. The trade-off is less modeling flexibility than custom Python models, so BQML is best for standard algorithms like logistic regression, XGBoost, and ARIMA rather than bespoke architectures."
+      },
+    {
+      "id": "d113Cq02",
+      "type": "multiple_choice",
+      "question": "What is Snowflake Cortex and what makes it different from calling a separate LLM API?",
+      "options": [
+        "Cortex is a third-party plugin that must be installed outside Snowflake and bills separately",
+        "Cortex brings LLM functions (COMPLETE, SENTIMENT, CLASSIFY_TEXT, SUMMARIZE, EXTRACT_ANSWER) directly into SQL, so data never leaves Snowflake and billing stays in Snowflake credits",
+        "Cortex only works with Snowflake's own proprietary data formats and cannot query regular tables",
+        "Cortex is identical to calling OpenAI's API, just renamed for marketing purposes"
+      ],
+      "answer": 1,
+      "explanation": "Cortex brings LLM functions directly into SnowSQL, meaning no data leaves Snowflake (critical for PII/compliance), no Python or ETL pipeline is required, and billing is unified in Snowflake credits rather than a separate API invoice. It also scales with the warehouse instead of hitting a separate external API's rate limits. The trade-off is fewer model choices compared to calling OpenAI or Anthropic directly."
+    },
+    {
+      "id": "d113Cq03",
+      "type": "multiple_choice",
+      "question": "Why does adding a `WHERE DATE(event_timestamp) = '2026-02-22'` filter NOT reduce cost in BigQuery if the table isn't partitioned on `event_timestamp`?",
+      "options": [
+        "BigQuery ignores all WHERE clauses unless you also add a LIMIT",
+        "Without partitioning, BigQuery must read every row's event_timestamp column to evaluate the filter, resulting in a full table scan regardless of the filter",
+        "Date filters are only supported on tables smaller than 1 TB",
+        "The query syntax is invalid without an explicit CAST to DATE"
+      ],
+      "answer": 1,
+      "explanation": "BigQuery's columnar storage means that without a PARTITION BY clause on event_timestamp, the engine must read every row's timestamp column to evaluate the filter, which is a full table scan regardless of how selective the filter looks. With partitioning, BigQuery physically stores each day's data in separate files, so the same filter triggers partition pruning and the engine opens only the matching day's files. Since BigQuery cost is proportional to bytes scanned, partition pruning is the single biggest cost lever available."
+    },
+    {
+      "id": "d113Cq04",
+      "type": "multiple_choice",
+      "question": "How does Redshift ML differ architecturally from BigQuery ML?",
+      "options": [
+        "Redshift ML trains models entirely inside Redshift with no external services, just like BigQuery ML",
+        "Redshift ML delegates training to SageMaker Autopilot via S3, requiring IAM role and bucket setup and longer training latency, while BigQuery ML trains natively inside BigQuery",
+        "BigQuery ML requires an IAM role and S3 bucket, while Redshift ML has no setup requirements at all",
+        "There is no architectural difference; both platforms use the identical training pipeline under the hood"
+      ],
+      "answer": 1,
+      "explanation": "BigQuery ML trains inside BigQuery using Google's own infrastructure, which is fast and seamless with no external services involved. Redshift ML instead delegates training to SageMaker Autopilot: you define the model in SQL, Redshift sends the data to S3, SageMaker trains it (which can take 30-90 minutes), and the resulting model is deployed back to Redshift as a callable SQL function. This means Redshift ML requires IAM role and S3 bucket setup and has longer training latency, but benefits from SageMaker's AutoML capabilities and deep AWS ecosystem integration."
+    },
+    {
+      "id": "d113Cq05",
+      "type": "multiple_choice",
+      "question": "A CFO asks you: \"We spend $8,000/month on BigQuery. Is that a lot?\" How do you answer?",
+      "options": [
+        "Yes, any cloud spend over $5,000/month is automatically excessive and should be cut immediately",
+        "No, cloud costs are fixed overhead and cannot be optimized, so the question is moot",
+        "It depends on the ROI the spend is generating — audit INFORMATION_SCHEMA.JOBS for top-cost queries and unpartitioned scans, then propose concrete optimizations before judging the number in isolation",
+        "Switch to Snowflake immediately, since it is always cheaper than BigQuery regardless of workload"
+      ],
+      "answer": 2,
+      "explanation": "The right answer reframes the question around context and ROI rather than a yes/no verdict: if $8,000/month is powering 50 analysts making $10M+ in data-driven decisions, it is very ROI-positive, but that needs to be established first. The professional move is to query INFORMATION_SCHEMA.JOBS to see top-cost queries by user, identify unpartitioned table scans, and propose concrete quick wins such as partition keys, materialized views, and slot reservations for predictable workloads. This lets you present a credible, numbers-backed plan (e.g., reducing the bill to $2,000/month with two weeks of optimization work) instead of a vague reassurance or alarm."
+    }
+  ]
+}

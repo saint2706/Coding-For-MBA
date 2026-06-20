@@ -52,6 +52,8 @@ Done. The model lives in the warehouse. The same SQL your BI team uses to build 
 
 This is the direction every major cloud platform is moving. **BigQuery ML**, **Snowflake Cortex**, and **Redshift ML** are already in production at thousands of companies. As an MBA data professional, understanding these platforms is your competitive advantage.
 
+> **Sequencing note**: this lesson's prerequisites are Day 113 (Performance Tuning) and Day 113B (the Curriculum Capstone) — both of which now correctly point forward to this lesson rather than declaring Phase 9 finished early. Day 113C is the true close of Phase 9.
+
 ---
 
 ## The Technical Deep Dive
@@ -168,9 +170,16 @@ ORDER BY product_id, forecast_timestamp;
 
 -- 1. Use LIMIT to explore before full runs
 SELECT * FROM huge_table LIMIT 1000;  -- only scans what it returns? NO.
--- LIMIT does NOT reduce bytes scanned in BigQuery!
 
 -- 2. Use query cost preview (dry run via API, or check "This query will process X MB")
+```
+
+> ⚠️ **Pitfall: LIMIT Does Not Save Money in BigQuery**
+> This is the #1 BigQuery misconception for SQL-trained analysts coming from Postgres or MySQL, where `LIMIT` can short-circuit a scan. BigQuery is a **columnar, distributed** engine: `SELECT * FROM huge_table LIMIT 1000` still reads every byte of every selected column across the whole table before truncating the result set to 1,000 rows for display. A 40 TB table queried this way bills for 40 TB scanned — full price — even though you only ever see 1,000 rows.
+> **Detection**: Before running, check the BigQuery console's "This query will process X GB/TB when run" estimate (or use a dry run via the API: `bigquery.QueryJobConfig(dry_run=True)`). If that number is large, `LIMIT` will not shrink it.
+> **Fix**: Reduce bytes scanned at the source — select only needed columns (BigQuery is columnar, so `SELECT col1, col2` instead of `SELECT *` already cuts cost), add a `WHERE` clause on a **partitioned** column, and use `TABLESAMPLE SYSTEM` if you genuinely just want a statistical sample rather than the first N rows.
+
+```sql
 
 -- 3. PARTITION PRUNING — the single biggest cost lever:
 -- Costs $6.00: full table scan
@@ -197,6 +206,21 @@ FROM `project.dataset.orders`
 GROUP BY 1, 2;
 -- Refreshed automatically. Queries on this view cost a fraction of the base table.
 ```
+
+> **Note**: The `daily_revenue_mv` materialized view above is the BigQuery equivalent of the **Materialized View** you built in Day 102. The concept — pre-compute an expensive aggregation once, read it cheaply many times — is identical; only the DDL differs (`PARTITIONED BY` instead of Postgres's `CONCURRENTLY` refresh syntax, and BigQuery auto-refreshes incrementally instead of requiring `REFRESH MATERIALIZED VIEW`).
+
+#### On-Demand Pricing vs Slot Commitments
+
+BigQuery offers two billing models, and choosing the wrong one is a common source of surprise invoices:
+
+- **On-demand pricing**: $5–7 per TB scanned, pay-as-you-go, no upfront commitment. Best for unpredictable, spiky, or low-volume workloads — most small teams and ad hoc analytics start here.
+- **Slot commitments (capacity pricing)**: you reserve a fixed pool of compute (100–500+ "slots") for a flat monthly or annual fee, regardless of how many bytes you scan. Best for predictable, high-volume workloads — dashboards refreshing hourly, ETL pipelines running on a schedule, or many analysts querying continuously throughout the business day.
+- **Break-even point**: as a rule of thumb, teams scanning roughly **2–3 TB per day or more** on a sustained basis tend to save money switching from on-demand to a slot commitment, because the flat fee starts to undercut the per-byte on-demand rate. Below that volume, on-demand is usually cheaper since you aren't paying for idle reserved capacity.
+- **Decision rule for an MBA data leader**: track your team's `INFORMATION_SCHEMA.JOBS` bytes-scanned trend for 30 days. If it's flat or growing and crosses the 2–3 TB/day threshold, propose a slot commitment to Finance — it converts a variable, unpredictable line item into a fixed, budgetable one.
+
+#### dbt + BigQuery: The Modern Analytics Stack
+
+A brief but important pairing: **dbt** (data build tool) handles SQL-based transformations — turning raw ingested tables into clean, tested, documented analytics tables — while **BigQuery ML** handles the modelling layer on top of those same tables. In practice, a modern analytics team's stack looks like: raw data lands in BigQuery → dbt models transform it into curated marts (the same kind of KPI tables you built in the Day 113B capstone's `02_sql_kpis.sql`) → `CREATE MODEL` trains directly on a dbt-managed mart. This dbt-plus-BQML combination is the dominant modern analytics stack because it keeps the entire pipeline — transformation, testing, and modelling — inside one SQL-based toolchain with no separate Python ML infrastructure required for standard algorithms.
 
 ---
 
@@ -426,7 +450,26 @@ BigQuery cost per Monday morning CEO dashboard re-run:
 That's a 400x cost reduction — a simple DDL change, zero performance loss.
 ```
 
-**The FinOps mindset**: query efficiency = direct dollar savings. Senior data professionals are expected to own their team's cloud spend, set up resource monitors, and regularly audit top-cost queries in the query history.
+The same discipline applies to Snowflake and Redshift — the cost lever just moves from "bytes scanned" to "compute time" or "reserved capacity":
+
+```
+Snowflake cost per analytics team running a MEDIUM warehouse all day:
+  Without auto-suspend: warehouse stays "running" 24 hrs/day × $4/credit-hr × 365 = $14,600/year
+  With AUTO_SUSPEND=60s + AUTO_RESUME: warehouse only billed during actual query time,
+    ~3 active hrs/day × $4/credit-hr × 365 = $4,380/year
+
+That's a ~70% reduction — purely from one ALTER WAREHOUSE statement, zero code changes.
+
+Redshift cost per 10 TB analytics cluster:
+  On-demand (ra3.4xlarge, pay-as-you-go): ~$3.26/hr × 24 × 365 = $28,558/year
+  1-year Reserved Instance (same node type): ~$1.80/hr equivalent × 24 × 365 = $15,768/year
+
+That's a ~45% reduction for predictable, steady-state workloads — the trade-off is a
+1-3 year commitment, so Reserved Instances only make sense once usage is stable and
+forecastable (the same logic as a BigQuery slot commitment, above).
+```
+
+**The FinOps mindset**: query efficiency = direct dollar savings. Senior data professionals are expected to own their team's cloud spend, set up resource monitors, and regularly audit top-cost queries in the query history — whether that's BigQuery's `INFORMATION_SCHEMA.JOBS`, Snowflake's `ACCOUNT_USAGE.WAREHOUSE_METERING_HISTORY`, or Redshift's `STL_QUERY` system tables.
 
 ---
 
@@ -435,15 +478,41 @@ That's a 400x cost reduction — a simple DDL change, zero performance loss.
 ### Exercise 1: BigQuery ML Churn Prediction (Easy)
 
 ```sql
--- Given a BigQuery table `ml_dataset.telecom_customers` with columns:
--- customer_id, tenure_months, monthly_charges, total_charges,
--- contract_type (varchar), tech_support (bool), churned (bool)
+-- Setup: create the table and load sample rows so you can verify syntax
+-- without needing a live BigQuery project.
+CREATE TABLE ml_dataset.telecom_customers (
+  customer_id     STRING,
+  tenure_months   INT64,
+  monthly_charges FLOAT64,
+  total_charges   FLOAT64,
+  contract_type   STRING,
+  tech_support    BOOL,
+  churned         BOOL
+);
+
+INSERT INTO ml_dataset.telecom_customers VALUES
+  ('C001', 2,  85.50,  171.00, 'month-to-month', FALSE, TRUE),
+  ('C002', 34, 56.95,  1937.30, 'one-year',       TRUE,  FALSE),
+  ('C003', 1,  90.10,  90.10,  'month-to-month', FALSE, TRUE),
+  ('C004', 58, 42.30,  2453.40, 'two-year',       TRUE,  FALSE),
+  ('C005', 5,  70.20,  351.00, 'month-to-month', FALSE, TRUE),
+  ('C006', 72, 38.10,  2743.20, 'two-year',       TRUE,  FALSE),
+  ('C007', 8,  95.00,  760.00, 'month-to-month', FALSE, NULL),
+  ('C008', 22, 61.40,  1350.80, 'one-year',       TRUE,  NULL),
+  ('C009', 45, 49.90,  2245.50, 'two-year',       TRUE,  NULL),
+  ('C010', 3,  88.75,  266.25, 'month-to-month', FALSE, NULL);
 
 -- 1. Train a logistic regression model named `ml_dataset.churn_lr`
 -- 2. Evaluate it — report precision, recall, and AUC
 -- 3. Predict churn probability for all customers where churned IS NULL
 -- 4. Export the top 20 highest-risk customers (customer_id + probability)
 ```
+
+**Expected result** of `SELECT * FROM ML.EVALUATE(MODEL ml_dataset.churn_lr);` — a one-row table with these column headers (values will vary by random split):
+
+| precision | recall | accuracy | f1_score | roc_auc |
+| --------- | ------ | -------- | -------- | ------- |
+| 0.83      | 0.79   | 0.81     | 0.81     | 0.88    |
 
 ### Exercise 2: Snowflake Cortex Sentiment Pipeline (Medium)
 
@@ -460,6 +529,52 @@ That's a 400x cost reduction — a simple DDL change, zero performance loss.
 
 -- Write the complete Snowflake SQL (CREATE TABLE AS + final summary query)
 ```
+
+**Full solution:**
+
+```sql
+-- Step 1: Score sentiment + classify each review into a working table
+CREATE OR REPLACE TABLE scored_reviews AS
+SELECT
+  review_id,
+  product_id,
+  review_text,
+  rating,
+  SNOWFLAKE.CORTEX.SENTIMENT(review_text) AS sentiment_score,
+  SNOWFLAKE.CORTEX.CLASSIFY_TEXT(
+    review_text,
+    ['quality_issue', 'shipping_issue', 'price_feedback', 'positive']
+  ):label::VARCHAR AS category
+FROM customer_reviews;
+
+-- Step 2: Build the per-product summary view
+CREATE OR REPLACE VIEW product_review_summary AS
+SELECT
+  product_id,
+  AVG(sentiment_score)                              AS avg_sentiment,
+  AVG(rating)                                        AS avg_rating,
+  MODE(category)                                     AS most_common_category,
+  COUNT(*)                                           AS review_count,
+  CASE
+    WHEN AVG(sentiment_score) < -0.3 AND AVG(rating) < 3.0
+      THEN TRUE ELSE FALSE
+  END                                                AS needs_attention
+FROM scored_reviews
+GROUP BY product_id;
+
+-- Step 3: Surface the flagged products
+SELECT * FROM product_review_summary
+WHERE needs_attention = TRUE
+ORDER BY avg_sentiment ASC;
+```
+
+**Expected result** of `SELECT * FROM product_review_summary LIMIT 3;` — schema:
+
+| product_id | avg_sentiment | avg_rating | most_common_category | review_count | needs_attention |
+| ---------- | -------------- | ---------- | --------------------- | ------------- | ---------------- |
+| SKU-1042   | -0.52           | 2.1        | quality_issue          | 38            | TRUE              |
+| SKU-2090   | 0.61            | 4.6        | positive               | 112           | FALSE             |
+| SKU-3311   | -0.08           | 3.4        | shipping_issue         | 27            | FALSE             |
 
 ### Exercise 3: Cost Engineering Design (Hard)
 
@@ -523,6 +638,28 @@ BigQuery ML trains **inside BigQuery** using Google's infrastructure — fast, s
 
 You need context, not a yes/no. Answer: "It depends on what decisions that $8,000 is powering. If it's supporting 50 analysts making $10M+ in data-driven decisions, it's very ROI-positive. Let me audit what's actually driving the cost." Then: query `INFORMATION_SCHEMA.JOBS` to see top-cost queries by user, identify unpartitioned table scans, and propose 3 quick wins (partition keys, materialized views, slot reservations for predictable workloads). Present: "We can likely reduce this to $2,000/month with 2 weeks of optimization work."
 </details>
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **BigQuery ML (BQML)** | Google BigQuery's built-in feature for training, evaluating, and deploying ML models using standard SQL (`CREATE MODEL`), without exporting data or writing Python. |
+| **ML.EVALUATE** | BQML function that scores a trained model against a held-out test set, returning precision, recall, accuracy, F1, and ROC-AUC. |
+| **ML.PREDICT** | BQML function that applies a trained model to new rows and returns predicted labels/probabilities. |
+| **ML.EXPLAIN_PREDICT** | BQML function that returns per-feature attribution for a prediction — answers "why did the model predict this?" |
+| **ARIMA+** | BQML's enhanced AutoRegressive Integrated Moving Average time-series model type; supports multi-series forecasting and automatic seasonality/trend decomposition. |
+| **Partition Pruning** | The query optimizer skipping entire partitions (e.g., days) that cannot match a `WHERE` filter, so only relevant files are scanned — the single biggest cost lever in BigQuery. |
+| **Clustering (BigQuery)** | Sorting data within each partition by one or more columns so that filtered queries on those columns scan even fewer bytes than partitioning alone provides. |
+| **Snowflake Cortex** | Snowflake's suite of built-in LLM functions (sentiment, classification, completion, summarization, extraction) callable directly from SQL. |
+| **CORTEX.SENTIMENT** | Cortex function that scores text from -1 (very negative) to 1 (very positive). |
+| **CORTEX.COMPLETE** | Cortex function that sends a prompt to a hosted LLM (e.g., `mistral-7b`) and returns the generated text — LLM completion as a SQL function call. |
+| **Redshift ML** | Amazon Redshift's ML feature that delegates model training to SageMaker Autopilot; you define the model in SQL, Redshift orchestrates training in S3/SageMaker, and a callable SQL prediction function is generated automatically. |
+| **SageMaker Autopilot** | AWS's AutoML service that Redshift ML uses under the hood — automatically tries multiple model types and hyperparameters to find the best performer. |
+| **Slot Commitment** | A Bigquery flat-fee billing model where you reserve a fixed pool of compute capacity ("slots") for predictable, high-volume workloads, instead of paying per byte scanned. |
+| **On-Demand Pricing** | Pay-as-you-go billing (e.g., BigQuery's $5–7/TB scanned) with no upfront reservation — best for unpredictable or low-volume usage. |
+| **FinOps** | The discipline of treating cloud spend as a managed, continuously-optimized budget line — combining engineering, finance, and operations practices to track and reduce cloud cost. |
 
 ---
 

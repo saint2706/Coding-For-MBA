@@ -1,0 +1,110 @@
+{
+  "day": 109,
+  "questions": [
+    {
+      "id": "d109q01",
+      "type": "multiple_choice",
+      "question": "A table `order_items(order_id, product_id, product_name, qty)` has the composite primary key `(order_id, product_id)`. `product_name` depends only on `product_id`. What normal form does this violate?",
+      "options": [
+        "1NF, because product_name is not atomic",
+        "2NF, because product_name is a Partial Dependency on only part of the composite key",
+        "3NF, because product_name is a Transitive Dependency",
+        "BCNF, because product_id is not a superkey"
+      ],
+      "answer": 1,
+      "explanation": "2NF requires that every non-key attribute depend on the entire primary key, not just part of it. Here, product_name depends only on product_id (part of the composite key), not on the full (order_id, product_id) pair — this is the textbook definition of a Partial Dependency. The fix is to move product_name into its own products table keyed by product_id alone, leaving order_items to store only the relationship and quantity."
+
+    },
+    {
+      "id": "d109q02",
+      "type": "multiple_choice",
+      "question": "Why does SQL forbid storing a list like `['red', 'blue']` directly in a single column under 1NF?",
+      "options": [
+        "Because lists take up more disk space than single values",
+        "Because non-atomic values make filtering, indexing, and aggregating by individual list members unreliable, typically forcing slow pattern-matching like LIKE",
+        "Because Postgres has no array data type",
+        "Because 1NF only applies to numeric columns"
+      ],
+      "answer": 1,
+      "explanation": "1NF requires every column value to be atomic (a single, indivisible value) so the relational model's core operations -- equality filtering, grouping, indexing -- work correctly. A packed list like 'red,blue' can only be searched with a fragile LIKE '%blue%' pattern, which is both slow (no useful index) and can produce false positives (matching 'skyblue'). Splitting into a child table with one row per list element restores clean WHERE/GROUP BY/JOIN semantics."
+    },
+    {
+      "id": "d109q03",
+      "type": "multiple_choice",
+      "question": "A table `enrollments(student_id, course_id, instructor)` has primary key `(student_id, course_id)`. Each course has exactly one instructor, so `course_id -> instructor`. Why does this fail BCNF even though it may pass 3NF?",
+      "options": [
+        "Because instructor is not an atomic value",
+        "Because course_id, the determinant of the dependency course_id -> instructor, is not by itself a candidate key (superkey) of the table",
+        "Because student_id and course_id should never be combined into one key",
+        "Because BCNF requires every table to have exactly one column"
+      ],
+      "answer": 1,
+      "explanation": "BCNF's rule is stricter than 3NF: for every functional dependency X -> Y, X must be a superkey -- capable of determining every column in the table on its own. Here course_id determines instructor, but course_id alone cannot determine student_id, so course_id is not a superkey of this table. This is exactly the gap BCNF closes that 3NF's transitive-dependency check (which only examines non-key-to-non-key dependencies) can miss. The fix is decomposing into courses(course_id, instructor) and enrollments(student_id, course_id)."
+    },
+    {
+      "id": "d109q04",
+      "type": "multiple_choice",
+      "question": "Why is a surrogate key (auto-increment ID or UUID) generally preferred over a natural key (like email) as a table's PRIMARY KEY?",
+      "options": [
+        "Surrogate keys are always shorter in storage",
+        "Surrogate keys never change, so foreign keys referencing them never need to cascade-update when real-world attributes change",
+        "Natural keys cannot be made UNIQUE",
+        "Surrogate keys make JOINs run faster on every database engine, with no exceptions"
+      ],
+      "answer": 1,
+      "explanation": "A surrogate key has no business meaning, so nothing in the outside world ever forces it to change -- it is purely an internal handle. A natural key like email can change (marriage, rebranding, typo correction), and if every foreign key referencing that user is built on the email value itself, a single email change would need to cascade through every child table. The standard pattern is to use a surrogate key as the PK for stability while still enforcing the natural key's uniqueness with a UNIQUE constraint."
+    },
+    {
+      "id": "d109q05",
+      "type": "multiple_choice",
+      "question": "Why do data warehouses (OLAP) deliberately denormalize into a Star Schema instead of keeping everything in 3NF?",
+      "options": [
+        "Because analysts cannot write JOIN syntax",
+        "Because aggregation queries over millions of rows become slower as join depth increases, and flattening dimension hierarchies into the fact table reduces the number of joins needed",
+        "Because 3NF tables cannot store numeric data",
+        "Because Star Schemas use less disk space than 3NF tables"
+      ],
+      "answer": 1,
+      "explanation": "OLAP workloads run large aggregations (SUM/GROUP BY) across huge fact tables, and every additional join in the query plan adds I/O and CPU cost that multiplies at scale. By denormalizing dimension hierarchies (e.g., product -> subcategory -> category) into a single category_name column on the fact table or a flat dimension table, a 'revenue by category' query touches far fewer tables. The anomaly risk this reintroduces is acceptable because warehouse data is refreshed via controlled ETL/ELT pipelines from upstream 3NF source-of-truth systems, not live ad hoc writes."
+    },
+    {
+      "id": "d109q06",
+      "type": "multiple_choice",
+      "question": "A `sales.product_id` foreign key is defined `ON DELETE CASCADE`. What happens when someone deletes a row from `products`, and why is this often the wrong choice for a sales/products relationship?",
+      "options": [
+        "The delete is blocked with an error; CASCADE never allows deletion",
+        "All matching sales rows for that product are automatically deleted too, silently destroying historical revenue records",
+        "The product_id column in sales is set to NULL, preserving the sales rows",
+        "Nothing happens until VACUUM runs"
+      ],
+      "answer": 1,
+      "explanation": "ON DELETE CASCADE means deleting the parent row automatically deletes every child row that references it. For a products-to-sales relationship, this is usually wrong: deleting a discontinued product would silently erase the historical sales records tied to it, understating revenue in any report run afterward. ON DELETE RESTRICT is the safer choice here -- it blocks the deletion outright unless the dependent sales rows are explicitly archived or reassigned first, forcing a deliberate decision instead of an accidental data loss."
+    },
+    {
+      "id": "d109q07",
+      "type": "multiple_choice",
+      "question": "When is ON DELETE SET NULL the correct referential integrity strategy?",
+      "options": [
+        "Whenever a table has more than one foreign key",
+        "When the child row should be preserved for historical/compliance reasons but no longer needs to be tied to a deleted parent -- e.g., orders surviving a GDPR-driven customer erasure",
+        "When the parent table is append-only",
+        "It is never correct in production systems"
+      ],
+      "answer": 1,
+      "explanation": "ON DELETE SET NULL keeps the child row but clears the foreign key column when the parent is deleted -- ideal when the child record has independent value (like financial/tax history) but the link to the now-erased parent must be severed. The canonical example is a GDPR/soft-delete scenario: erasing a customer's PII should not erase their order history, so orders.customer_id becomes NULL while the order itself, and its tax-relevant totals, remain intact for compliance reporting."
+    },
+    {
+      "id": "d109q08",
+      "type": "multiple_choice",
+      "question": "Per the 'Over-Normalization' pitfall, when should you NOT split a column like Address into Street_Number, Street_Name, Suffix, and Apartment?",
+      "options": [
+        "Never split addresses under any circumstance",
+        "When no query in the system ever needs to filter, aggregate, or join on the individual address components -- a single text column (or JSONB) is the correct, senior-level choice",
+        "Only when the address is for a residential customer rather than a business",
+        "Always split it, because more normalization is always better design"
+      ],
+      "answer": 1,
+      "explanation": "Normalization is a tool for eliminating redundancy and preventing anomalies, not an aesthetic end in itself. If nothing in the application ever runs WHERE street_suffix = 'Ave' or aggregates by apartment number, decomposing the address into five columns only adds insertion complexity and more places for a NULL or typo to creep in, with zero query benefit. The senior-level judgment call is to normalize exactly what you need to filter, aggregate, or constrain via foreign key, and leave the rest as a single opaque field."
+    }
+  ]
+}

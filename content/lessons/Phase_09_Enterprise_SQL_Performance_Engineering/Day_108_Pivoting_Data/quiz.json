@@ -1,0 +1,109 @@
+{
+  "day": 108,
+  "questions": [
+    {
+      "id": "d108q01",
+      "type": "multiple_choice",
+      "question": "What is the key difference between `SUM(amount) FILTER (WHERE month = 'Jan')` and `SUM(CASE WHEN month = 'Jan' THEN amount ELSE 0 END)`?",
+      "options": [
+        "FILTER is slower because it is non-standard SQL",
+        "They are functionally equivalent; FILTER is the SQL:2003-standard, more readable syntax for the same conditional aggregation",
+        "FILTER only works with COUNT, not SUM",
+        "CASE WHEN cannot be used inside aggregate functions"
+      ],
+      "answer": 1,
+      "explanation": "Both expressions restrict which rows an aggregate considers before summing. FILTER (WHERE ...) is the SQL:2003-standard syntax and is generally considered cleaner because it separates the filter condition from the value expression, but under the hood Postgres executes essentially the same conditional aggregation. CASE WHEN remains more portable to older or non-Postgres SQL dialects."
+    },
+    {
+      "id": "d108q02",
+      "type": "multiple_choice",
+      "question": "Why must you define the output column list (`AS (region text, jan int, feb int, ...)`) when calling `crosstab()`?",
+      "options": [
+        "Because crosstab() requires alphabetically sorted columns",
+        "SQL is statically typed at parse time, so the engine must know exact column names/types before execution; it cannot infer a dynamic schema from row data",
+        "It is optional and only needed for performance tuning",
+        "crosstab() automatically infers columns unless told otherwise"
+      ],
+      "answer": 1,
+      "explanation": "Unlike a spreadsheet, SQL must know the shape of a result set before it runs the query, since downstream tooling (ORMs, drivers, query planners) all expect a fixed schema. crosstab() therefore requires the caller to spell out every output column's name and type in the AS (...) clause — there is no way to make this dynamic at the SQL level alone."
+    },
+    {
+      "id": "d108q03",
+      "type": "multiple_choice",
+      "question": "A region is missing its 'Feb' sales row when using the 1-argument form of crosstab(). What happens to the output?",
+      "options": [
+        "Postgres throws an error and the query fails",
+        "The missing month becomes NULL and all other columns remain correctly aligned",
+        "Every category value after the missing one silently shifts one column to the left, corrupting later months' data",
+        "crosstab() automatically inserts a zero for the missing category"
+      ],
+      "answer": 2,
+      "explanation": "The 1-argument crosstab() assumes each row supplies categories in the same fixed order/count. If a category is missing for one row, the remaining values shift left to fill the gap, silently misaligning every subsequent column for that row. This is exactly why production code must use the 2-argument form, which explicitly enumerates expected categories so a missing value produces NULL in the correct slot instead of shifting everything else."
+    },
+    {
+      "id": "d108q04",
+      "type": "multiple_choice",
+      "question": "Why would you choose `jsonb_object_agg(subject, score)` over `crosstab()` when new subjects are added frequently?",
+      "options": [
+        "jsonb_object_agg runs faster on all dataset sizes",
+        "jsonb_object_agg builds keys dynamically at query time, so new categories appear automatically without changing the query's column definition",
+        "crosstab() cannot handle numeric values",
+        "jsonb_object_agg is the only option that works without the tablefunc extension being installed"
+      ],
+      "answer": 1,
+      "explanation": "jsonb_object_agg constructs a key-value map per group on the fly — if a new subject like 'History' appears in tomorrow's data, it simply becomes a new key in the resulting JSONB object, with no schema change needed. crosstab(), in contrast, requires its output column list to be edited any time a new category is introduced, which is a maintenance burden in fast-changing reporting domains."
+    },
+    {
+      "id": "d108q05",
+      "type": "multiple_choice",
+      "question": "When should pivoting be done in SQL rather than offloaded to a BI tool like Tableau or PowerBI?",
+      "options": [
+        "Always — SQL pivots are inherently faster than BI tool pivots",
+        "Never — BI tools should always own presentation logic",
+        "When a downstream application or chart library specifically requires the fixed wide format as its input contract, not merely for human viewing",
+        "Only when the dataset has fewer than 100 rows"
+      ],
+      "answer": 2,
+      "explanation": "Pivoting is a presentation transformation, and presentation transformations are usually cheapest and most flexible closest to the consumer. If a human is the consumer, a BI tool's native pivot engine adapts to new categories automatically and requires no code change. SQL-side pivoting earns its complexity only when a downstream system (an app, a chart library, an exported CSV contract) needs that exact wide shape as structured input."
+    },
+    {
+      "id": "d108q06",
+      "type": "multiple_choice",
+      "question": "A report pivots 1,000 products against 1,000 stores, and most product-store combinations have zero sales. What is the primary performance risk?",
+      "options": [
+        "The query will return incorrect results due to floating-point rounding",
+        "Postgres must materialize roughly 1 million cells in memory regardless of how many are actually non-zero, consuming RAM proportional to the full matrix, not the sparse data",
+        "crosstab() will refuse to run on sparse data",
+        "The GIN index on the sales table will become corrupted"
+      ],
+      "answer": 1,
+      "explanation": "A dense pivot output allocates a cell for every row-key/category combination whether or not real data exists there — 1,000 x 1,000 = 1,000,000 cells, each consuming memory even when the value is zero or NULL. Run this from many concurrent dashboard sessions and the RAM cost multiplies, as quantified in the Pivot Memory Explosion pitfall: roughly 8 MB per report execution, or 400 MB across 50 concurrent users."
+    },
+    {
+      "id": "d108q07",
+      "type": "multiple_choice",
+      "question": "Which extension must be enabled before `crosstab()` is available in a Postgres database?",
+      "options": [
+        "pg_trgm",
+        "tablefunc",
+        "hstore",
+        "postgis"
+      ],
+      "answer": 1,
+      "explanation": "crosstab() lives in the tablefunc contrib extension, which ships with standard Postgres distributions but is not enabled by default — it requires CREATE EXTENSION tablefunc; in each database that needs it. pg_trgm is for fuzzy text search, hstore is a legacy flat key-value type, and postgis is for geospatial data; none provide pivot functionality."
+    },
+    {
+      "id": "d108q08",
+      "type": "multiple_choice",
+      "question": "What does `string_agg(subject, ', ' ORDER BY subject)` provide that `crosstab()` does not, for a report listing 'which subjects each student takes'?",
+      "options": [
+        "Faster execution on all datasets, with no trade-offs",
+        "A single readable text column per group, without needing a fixed, predefined output schema for every possible subject",
+        "The ability to update the underlying table directly",
+        "Automatic indexing of the result set"
+      ],
+      "answer": 1,
+      "explanation": "string_agg collapses a variable-length list of values into one delimited string per group, which is ideal when the goal is a human-readable summary rather than a strict matrix of columns. Unlike crosstab(), it requires no predefined column list — it naturally handles however many distinct values exist per group, making it a lightweight choice for list-style pivots common in MBA reporting (e.g., 'products purchased', 'tags applied')."
+    }
+  ]
+}

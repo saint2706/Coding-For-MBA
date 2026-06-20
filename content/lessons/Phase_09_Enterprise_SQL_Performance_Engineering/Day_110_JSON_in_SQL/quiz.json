@@ -1,0 +1,109 @@
+{
+  "day": 110,
+  "questions": [
+    {
+      "id": "d110q01",
+      "type": "multiple_choice",
+      "question": "Why does Postgres recommend JSONB over JSON for almost all use cases?",
+      "options": [
+        "JSONB preserves the original text formatting exactly as typed",
+        "JSONB decomposes the document into a parsed binary tree, removing whitespace and sorting keys, which enables GIN indexing and faster repeated queries",
+        "JSONB is the only type that can store nested objects",
+        "JSONB documents are always smaller than JSON documents on disk"
+      ],
+      "answer": 1,
+      "explanation": "JSON stores the literal text you inserted and must be re-parsed from scratch on every query, with no support for indexing. JSONB decomposes the document into a binary tree at insert time -- stripping insignificant whitespace and sorting keys -- which both avoids repeated re-parsing and exposes a structure that GIN indexes can operate on for fast containment and key-existence queries."
+    },
+    {
+      "id": "d110q02",
+      "type": "multiple_choice",
+      "question": "What is the practical difference between `info->'specs'` and `info->>'name'`?",
+      "options": [
+        "There is no difference; both always return text",
+        "`->` returns the value still wrapped as JSON/JSONB (useful for chaining further into nested objects), while `->>` returns the value as plain TEXT (useful for direct comparisons)",
+        "`->>` only works on arrays, not objects",
+        "`->` is faster than `->>` in every case"
+      ],
+      "answer": 1,
+      "explanation": "`->` extracts a value but keeps it as a JSON/JSONB type, which is exactly what you want when drilling further into a nested structure, e.g. `info->'specs'->>'res'`. `->>` extracts a value and casts it directly to TEXT, which is what you need for equality comparisons like `WHERE info->>'name' = 'TV'` since comparing a quoted JSON string against an unquoted text literal would otherwise fail to match."
+    },
+    {
+      "id": "d110q03",
+      "type": "multiple_choice",
+      "question": "Your queries against a JSONB column exclusively use the `@>` containment operator. Which GIN operator class should you choose and why?",
+      "options": [
+        "jsonb_ops, because jsonb_path_ops does not support @> at all",
+        "jsonb_path_ops, because it indexes only the values reachable by path, producing a smaller and typically faster index for containment-only workloads",
+        "Neither -- B-Tree is required for @> queries",
+        "It does not matter; both operator classes produce identical index sizes"
+      ],
+      "answer": 1,
+      "explanation": "jsonb_path_ops indexes only the values reachable through their path in the document (not every key separately), which produces an index roughly 40% smaller than the default jsonb_ops and is typically faster for @> containment lookups. The trade-off is that jsonb_path_ops supports @> only -- it cannot accelerate key-existence operators (?, ?|, ?&). If your workload needs those too, jsonb_ops is the right default despite its larger size."
+    },
+    {
+      "id": "d110q04",
+      "type": "multiple_choice",
+      "question": "A GIN index was created as `USING GIN(info jsonb_path_ops)`. A new query uses `WHERE info ? 'beta_opt_in'`. What happens?",
+      "options": [
+        "The query uses the existing index efficiently",
+        "Postgres throws a syntax error",
+        "The planner falls back to a sequential scan, because jsonb_path_ops does not support the `?` key-existence operator",
+        "The index is automatically rebuilt with jsonb_ops"
+      ],
+      "answer": 2,
+      "explanation": "jsonb_path_ops only supports the @> containment operator -- it does not index keys in a way that the ? (key-existence) operator can use. When a query uses an operator unsupported by the available index's operator class, the Postgres planner correctly falls back to a Seq Scan rather than silently returning wrong results. The fix is to add a second GIN index using the default jsonb_ops operator class alongside the existing jsonb_path_ops index, since Postgres can maintain multiple indexes on the same column for different operator needs."
+    },
+    {
+      "id": "d110q05",
+      "type": "multiple_choice",
+      "question": "Why does updating a single key inside a large JSONB document cause 'write amplification'?",
+      "options": [
+        "Because JSONB documents are compressed and decompression corrupts unrelated keys",
+        "Because Postgres's MVCC model never edits rows in place -- every UPDATE writes an entirely new row version, so changing one key forces the entire document to be rewritten to disk",
+        "Because GIN indexes must be dropped and recreated on every UPDATE",
+        "Because JSONB columns are stored as multiple separate rows internally"
+      ],
+      "answer": 1,
+      "explanation": "Postgres uses MVCC (Multi-Version Concurrency Control), meaning UPDATE never modifies bytes in place -- it always creates a new row version and marks the old one as a dead tuple for later vacuuming. For a JSONB column, this means even a one-key change requires writing out the full document again, not just the changed bytes. A 50 KB profile updated 1,000 times a day therefore writes roughly 50 MB of new data daily purely from that one column's churn, which is why frequently-updated fields should be pulled out into dedicated columns instead."
+    },
+    {
+      "id": "d110q06",
+      "type": "multiple_choice",
+      "question": "What does the `?` operator test for, and when is it useful?",
+      "options": [
+        "It tests whether a value is NULL anywhere in the document",
+        "It tests whether a specific top-level key exists in the JSONB document, regardless of that key's value -- useful for optional-field queries in schema-less designs",
+        "It is a wildcard match operator equivalent to LIKE '%pattern%'",
+        "It tests whether the document is valid JSON syntax"
+      ],
+      "answer": 1,
+      "explanation": "The ? operator checks purely for the presence of a top-level key, independent of what value (if any) that key holds. This is the natural tool for 'has this optional field ever been set' queries -- e.g., WHERE info ? 'discount' finds every product that has a discount field at all, whether its value is 0.10 or 0.99, as opposed to @> which requires matching a specific value."
+    },
+    {
+      "id": "d110q07",
+      "type": "multiple_choice",
+      "question": "What does `jsonb_to_recordset` allow you to do, and why is it useful for reporting?",
+      "options": [
+        "It converts a relational table into a single JSONB document",
+        "It explodes a JSONB array of objects into a relational result set with one row per array element, enabling normal SQL aggregates over previously nested data",
+        "It validates a JSONB document against a JSON schema",
+        "It deletes all keys from a JSONB document except the ones listed"
+      ],
+      "answer": 1,
+      "explanation": "Event payloads and API responses often arrive as a JSONB array of objects (e.g., an order's line items). jsonb_to_recordset takes that array and produces one row per object, with columns matching the fields you specify -- letting you run ordinary GROUP BY, SUM, or JOIN operations against data that was previously locked inside a single nested JSONB column, without altering how the data is stored."
+    },
+    {
+      "id": "d110q08",
+      "type": "multiple_choice",
+      "question": "When is JSONB the appropriate column type, according to the hybrid schema pattern?",
+      "options": [
+        "For every column in every table, to maximize flexibility",
+        "For the genuinely variable, read-mostly, schema-evolving portion of a record (preferences, event payloads, config), while frequently-filtered or frequently-updated fields stay as dedicated relational columns",
+        "Only for columns smaller than 1 KB",
+        "Never -- JSONB should be avoided entirely in production Postgres schemas"
+      ],
+      "answer": 1,
+      "explanation": "The senior pattern is hybrid: keep fields that are frequently filtered, joined, indexed with B-Tree, or updated often as dedicated typed columns -- they get proper constraints and avoid write amplification. Reserve JSONB for the part of the record that is genuinely variable or evolves faster than a migration process can track, such as user preferences or third-party API payloads whose shape you don't control. Using JSONB for everything forfeits type safety and foreign keys; avoiding it entirely forfeits the flexibility that makes it valuable in the first place."
+    }
+  ]
+}

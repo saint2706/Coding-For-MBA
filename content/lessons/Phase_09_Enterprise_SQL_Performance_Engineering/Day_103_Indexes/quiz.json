@@ -1,0 +1,109 @@
+{
+  "day": 103,
+  "questions": [
+    {
+      "id": "d103q01",
+      "type": "multiple_choice",
+      "question": "You need to query `WHERE 'urgent' = ANY(tags)` on a column of type `text[]`. Which index type should you use?",
+      "options": [
+        "B-Tree",
+        "GIN",
+        "BRIN",
+        "Hash"
+      ],
+      "answer": 1,
+      "explanation": "GIN (Generalized Inverted Index) is designed for composite values like arrays and JSONB, mapping each individual array element back to the rows that contain it. A B-Tree sorts the whole array as a single value and cannot see inside it, so it cannot accelerate a 'contains element' search."
+    },
+    {
+      "id": "d103q02",
+      "type": "multiple_choice",
+      "question": "For a BRIN index to provide meaningful query pruning, what must be true about the indexed column's data?",
+      "options": [
+        "The column must contain only integers",
+        "The data must be physically sorted or highly correlated with disk storage order",
+        "The table must have fewer than 1,000 rows",
+        "The column must have a UNIQUE constraint"
+      ],
+      "answer": 1,
+      "explanation": "BRIN stores only a Min/Max summary per block of disk pages. If the data is naturally ordered (e.g., an auto-incrementing timestamp inserted in sequence), each block's Min/Max range is narrow and non-overlapping, so Postgres can skip whole blocks that fall outside a query's range. If the data is randomly distributed across blocks, every block's range covers nearly the full dataset, so BRIN can't rule out any block and provides no speedup."
+    },
+    {
+      "id": "d103q03",
+      "type": "multiple_choice",
+      "question": "A table receives 10,000 inserts/second, each row carrying a 20-element tags array indexed with GIN. Why does this create more index write load than a single-column B-Tree on the same table?",
+      "options": [
+        "GIN indexes are always slower regardless of data shape",
+        "GIN writes one inverted-index entry per array element, so 10,000 inserts/sec with 20 tags each produces roughly 200,000 entry writes/sec versus ~10,000 for a B-Tree",
+        "GIN indexes cannot accept concurrent writes at all",
+        "GIN requires a full table rewrite on every insert"
+      ],
+      "answer": 1,
+      "explanation": "A B-Tree writes one index entry per row (one leaf update). GIN, however, decomposes each row's composite value into its individual keys and writes an entry per key - so a 20-tag array means 20 entry writes for a single row insert. This write amplification is the central trade-off of GIN: excellent read performance for 'contains' queries at the cost of significantly higher write overhead."
+    },
+    {
+      "id": "d103q04",
+      "type": "multiple_choice",
+      "question": "What does setting `fastupdate = on` (the GIN default) actually do to mitigate write amplification?",
+      "options": [
+        "It disables the index temporarily during bulk loads",
+        "It buffers new key entries in a small unordered pending list, merging them into the main GIN structure in batches instead of inserting each key individually",
+        "It converts the GIN index into a B-Tree automatically",
+        "It skips indexing rows with more than 10 array elements"
+      ],
+      "answer": 1,
+      "explanation": "Fast Update appends new keys to a temporary 'pending list' rather than immediately inserting each one into the main tree structure. Periodically - or during VACUUM, or when the list fills - the pending list is merged into the index in one batch operation, which is far cheaper than thousands of individual tree insertions. The trade-off is that reads must also check the pending list, so a very large unmerged list can slightly slow queries until the next cleanup."
+    },
+    {
+      "id": "d103q05",
+      "type": "multiple_choice",
+      "question": "Which index type is best suited for `WHERE booking_range && '[2024-01-01 10:00, 11:00)'` (range overlap queries)?",
+      "options": [
+        "BRIN",
+        "Hash",
+        "GiST",
+        "B-Tree"
+      ],
+      "answer": 2,
+      "explanation": "GiST (Generalized Search Tree) uses a hierarchy of bounding shapes to quickly discard ranges or geometric regions that cannot possibly overlap the query target, making it the standard choice for range-overlap queries and spatial data (PostGIS). B-Tree cannot evaluate the && (overlap) operator efficiently because it only understands strict ordering, not geometric or range containment."
+    },
+    {
+      "id": "d103q06",
+      "type": "multiple_choice",
+      "question": "You suspect an index is bloated after years of updates and deletes. Which production-safe command rebuilds it without blocking reads and writes?",
+      "options": [
+        "DROP INDEX then CREATE INDEX",
+        "REINDEX CONCURRENTLY",
+        "VACUUM FULL",
+        "ALTER INDEX REBUILD"
+      ],
+      "answer": 1,
+      "explanation": "REINDEX CONCURRENTLY rebuilds the index from scratch in parallel with normal operation, avoiding the exclusive lock that a plain REINDEX (or a DROP+CREATE) would take. Dropping the index first would leave queries running without it (and unprotected) until the rebuild finishes, which is far riskier in production."
+    },
+    {
+      "id": "d103q07",
+      "type": "multiple_choice",
+      "question": "A table has a `status` column where 95% of rows are 'inactive' and queries almost always filter `WHERE status = 'active'`. What index pattern minimizes size while still speeding up these queries?",
+      "options": [
+        "A full B-Tree index on status covering all rows",
+        "A partial index: CREATE INDEX ... ON users(email) WHERE status = 'active'",
+        "A BRIN index on status",
+        "No index is possible on boolean-like columns"
+      ],
+      "answer": 1,
+      "explanation": "A partial index only indexes rows matching the WHERE clause, so indexing just the 5% of 'active' rows produces a dramatically smaller, faster-to-maintain index than indexing the entire table - especially valuable for soft-delete or status-flag tables where queries consistently filter to one value."
+    },
+    {
+      "id": "d103q08",
+      "type": "multiple_choice",
+      "question": "An overnight `CREATE INDEX` on a 500M-row table appears to have died mid-build. What is the correct diagnostic and recovery sequence?",
+      "options": [
+        "Immediately re-run CREATE INDEX with the same name and ignore any errors",
+        "Check pg_stat_progress_create_index for an active build, check pg_index for an invalid leftover entry, drop it if invalid, then rebuild using CREATE INDEX CONCURRENTLY",
+        "Restart the entire Postgres server to clear the lock",
+        "Run VACUUM FULL on the table to force the index to complete"
+      ],
+      "answer": 1,
+      "explanation": "pg_stat_progress_create_index reveals whether a build is still active and how far it progressed. If the backend died, pg_index may show an invalid (indisvalid = false) leftover index that should be dropped before retrying. Rebuilding with CREATE INDEX CONCURRENTLY (rather than a plain CREATE INDEX) avoids taking an ACCESS EXCLUSIVE lock that would block all writes to the table for the multi-hour duration of indexing 500M rows."
+    }
+  ]
+}

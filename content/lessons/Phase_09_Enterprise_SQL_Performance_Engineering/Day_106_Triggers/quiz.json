@@ -1,0 +1,109 @@
+{
+  "day": 106,
+  "questions": [
+    {
+      "id": "d106q01",
+      "type": "multiple_choice",
+      "question": "If you run `UPDATE users SET active = true` affecting 1000 rows, how many times does a `FOR EACH ROW` trigger on `users` fire?",
+      "options": [
+        "Once for the whole statement",
+        "1000 times, once per affected row",
+        "Zero times, because it was a bulk update",
+        "Twice — once before and once after the statement"
+      ],
+      "answer": 1,
+      "explanation": "A FOR EACH ROW trigger fires once per row affected by the statement, so a 1000-row UPDATE fires it 1000 times. This is why bulk updates on heavily-triggered tables can be much slower than expected — a FOR EACH STATEMENT trigger, by contrast, would fire exactly once regardless of row count."
+    },
+    {
+      "id": "d106q02",
+      "type": "multiple_choice",
+      "question": "Which trigger timing can prevent invalid data from ever being written to the table?",
+      "options": [
+        "AFTER, because it can still undo the write",
+        "BEFORE, because raising an exception there aborts the write before it happens",
+        "INSTEAD OF, but only on plain tables",
+        "FOR EACH STATEMENT triggers cannot validate data"
+      ],
+      "answer": 1,
+      "explanation": "A BEFORE trigger runs prior to the row being written, so it can inspect or modify NEW and, if it raises an exception, abort the INSERT/UPDATE entirely before any data hits the table. AFTER triggers run once the row is already committed within the transaction, so they're suited to logging/propagation, not prevention."
+    },
+    {
+      "id": "d106q03",
+      "type": "multiple_choice",
+      "question": "What does `to_jsonb(NEW) - to_jsonb(OLD)` produce inside an audit trigger?",
+      "options": [
+        "A JSONB array of every column in the row",
+        "A JSONB object containing only the keys whose values differ between NEW and OLD",
+        "A boolean indicating whether any column changed",
+        "An error, because JSONB objects cannot be subtracted"
+      ],
+      "answer": 1,
+      "explanation": "The JSONB minus operator applied to two JSONB objects returns a new object containing only the keys from the left operand whose value doesn't match the right operand (or is missing from it) -- effectively the changed fields. This is far more storage-efficient than logging both full rows on every update."
+    },
+    {
+      "id": "d106q04",
+      "type": "multiple_choice",
+      "question": "When is a `NOTIFY` payload actually delivered to a `LISTEN`-ing client?",
+      "options": [
+        "The instant the NOTIFY statement executes, regardless of transaction state",
+        "Only after the issuing transaction successfully COMMITs; if it rolls back, the notification is discarded",
+        "Only when the listening client polls for new messages",
+        "Immediately, but it is re-sent again on COMMIT"
+      ],
+      "answer": 1,
+      "explanation": "NOTIFY (and pg_notify()) is queued transactionally like any other write -- the payload is delivered to listeners only after the issuing transaction commits. If the transaction rolls back, the notification never goes out, which makes NOTIFY safe to call from inside triggers without risking phantom events for writes that didn't happen."
+    },
+    {
+      "id": "d106q05",
+      "type": "multiple_choice",
+      "question": "What is the value of `OLD` inside an `INSERT` trigger?",
+      "options": [
+        "The row as it existed one transaction ago",
+        "NULL, because there is no prior version of a brand-new row",
+        "An empty JSONB object",
+        "The same as NEW"
+      ],
+      "answer": 1,
+      "explanation": "OLD represents the row before the change, which only makes sense for UPDATE and DELETE. Since an INSERT creates a row that didn't exist before, OLD is NULL in that context -- only NEW (the row being inserted) is meaningful."
+    },
+    {
+      "id": "d106q06",
+      "type": "multiple_choice",
+      "question": "How can you detect and break a trigger cascade where Table A's trigger updates Table B, and Table B's trigger updates Table A back?",
+      "options": [
+        "Triggers cannot cascade in Postgres, so this scenario is impossible",
+        "Check `pg_trigger_depth() > 1` inside the trigger function and return early if the call is already nested",
+        "Always use BEFORE triggers instead of AFTER triggers",
+        "Disable all triggers on Table B permanently"
+      ],
+      "answer": 1,
+      "explanation": "pg_trigger_depth() returns how many trigger levels deep the current execution is (0 if called directly). Guarding with `IF pg_trigger_depth() > 1 THEN RETURN NEW; END IF;` stops the cascade once it re-enters a trigger that's already inside another trigger's call chain. The better long-term fix is architectural: avoid bidirectional write-back relationships between tables altogether."
+    },
+    {
+      "id": "d106q07",
+      "type": "multiple_choice",
+      "question": "Why should you avoid sending an email or calling an external HTTP API directly inside a trigger function?",
+      "options": [
+        "Triggers cannot make network calls at all",
+        "Triggers execute synchronously within the same transaction, so external I/O latency or failures block and can corrupt the write the trigger was attached to",
+        "It is a syntax error to call PERFORM inside a trigger",
+        "Emails sent from triggers are always duplicated"
+      ],
+      "answer": 1,
+      "explanation": "Triggers run synchronously inside the same transaction as the write that fired them. A slow or failing external call (SMTP timeout, webhook failure) blocks that transaction, and a subsequent ROLLBACK can leave you having already sent an email for a write that never actually happened. The fix is to INSERT into a queue table and let an async worker handle the external call outside the transaction."
+    },
+    {
+      "id": "d106q08",
+      "type": "multiple_choice",
+      "question": "What distinguishes an INSTEAD OF trigger from a BEFORE or AFTER trigger?",
+      "options": [
+        "INSTEAD OF triggers only work on plain tables, never views",
+        "INSTEAD OF triggers apply only to views and replace the attempted DML with custom logic instead of running it",
+        "INSTEAD OF triggers can only fire on DELETE statements",
+        "INSTEAD OF triggers run twice, before and after the write"
+      ],
+      "answer": 1,
+      "explanation": "INSTEAD OF triggers apply exclusively to views (which are otherwise read-only once they involve joins or aggregation) and must be FOR EACH ROW. Rather than allowing or modifying a write, they intercept the DML entirely and let the trigger function decide what real multi-table writes should happen -- the standard pattern for building updatable views."
+    }
+  ]
+}

@@ -69,21 +69,42 @@ Restricts a column to a fixed list.
 * **Benefit**: Data Integrity. Uses 4 bytes (int) internally, saves space vs Text.
 * **Downside**: Adding a new value requires `ALTER TYPE`.
 
+### 4. Composite Types (Structs)
+
+A Composite Type lets a single column hold a *structured group of fields*, like a lightweight struct, rather than just one scalar value.
+
+* **Create**: `CREATE TYPE address AS (street text, city text, zip text);`
+* **Use in a table**: `CREATE TABLE customers (id serial, home_addr address);`
+* **Insert**: `INSERT INTO customers(home_addr) VALUES (ROW('123 Main St', 'New York', '10001'));`
+* **Field access**: `SELECT (home_addr).city FROM customers;` — note the parentheses around the column name; without them Postgres parses `home_addr.city` as a table-qualified column reference and throws an error.
+* **Composite Type vs JSONB**: use a Composite Type when the structure is fixed, known at design time, and you want strong typing on each field (e.g., `zip` could be constrained separately). Use JSONB when the structure is variable, sparse, or evolves per-row without a migration.
+
 ---
 
 ## Senior-Level Insights
-
-### The "Array vs Join" Debate
-
-* **Junior**: "I'll store `order_ids` as an array `[1, 2, 5]` in the User table to avoid a Join!"
-* **Senior**: "Don't."
-  * *Why*: You lose Foreign Key constraints. You can't ensure Order 5 actually exists.
-  * *Exception*: Tags. It's okay if a tag doesn't exist in a master list.
 
 ### XML: The Legacy Burden
 
 * **Reality**: You will eventually inherit a DB with a `config_xml` column.
 * **Strategy**: Don't convert it to JSON unless you have to. Postgres treats XML as a first-class citizen. Index it with Functional Indexes if needed.
+
+---
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **XML (in SQL)** | A native Postgres type that stores well-formed XML and validates syntax on insert; queried via `xpath()`. |
+| **xpath** | A function that evaluates an XPath expression against an XML value and returns an `xml[]` array of matching nodes. |
+| **unnest** | A set-returning function that expands an array into one row per element — the inverse of `array_agg`. |
+| **array_agg** | An aggregate function that collapses multiple rows into a single array value. |
+| **ENUM Type** | A user-defined type restricting a column to a fixed, ordered list of string labels, stored internally as a 4-byte integer. |
+| **Composite Type** | A user-defined struct-like type combining multiple named fields into one column value, created with `CREATE TYPE ... AS (...)`. |
+| **hstore** | A Postgres extension type storing simple flat key-value text pairs in a single column — a precursor to JSONB for unstructured data. |
+| **Range Type** | A type representing a contiguous range of values (e.g., `daterange`, `int4range`, `tsrange`) with built-in overlap (`&&`) and containment (`@>`) operators. |
+| **tsvector** | A Postgres full-text-search type storing a normalized, sorted list of lexemes (word stems) for fast text search. |
+| **tsquery** | A Postgres full-text-search type representing a parsed search query, matched against a `tsvector` with the `@@` operator. |
+| **GIN (for text search)** | A Generalized Inverted Index used to make `tsvector @@ tsquery` and array/JSONB containment lookups fast. |
 
 ---
 
@@ -93,9 +114,14 @@ Restricts a column to a fixed list.
 
 **Goal**: Parse legacy data.
 
+> 📦 **Preamble**: The `xpath()` function returns an `xml[]` array — *even for a single result*. Access the first element with `[1]` and cast to text with `::text`. This surprises most learners expecting a plain string back.
+
 1. `CREATE TABLE library (id serial, doc xml)`.
 2. `INSERT INTO library(doc) VALUES ('<book><title>SQL 101</title></book>')`.
 3. Query: `SELECT xpath('//title/text()', doc) FROM library`.
+4. **Expected result**: `{SQL 101}` — this is Postgres's text rendering of a one-element `xml[]` array, *not* a plain string.
+5. To get a clean string, cast: `SELECT xpath('//title/text()', doc)[1]::text FROM library;`
+6. **Expected result**: `SQL 101`.
 
 ### Exercise 2: Array Math
 
@@ -105,6 +131,11 @@ Restricts a column to a fixed list.
 2. `INSERT INTO vectors(coords) VALUES (ARRAY[1, 2, 3]), (ARRAY[4, 5, 6])`.
 3. **Task**: Find vectors where the 2nd coordinate is 5.
     * `SELECT * FROM vectors WHERE coords[2] = 5`.
+4. **Expected result**:
+
+    | id | coords |
+    |---|---|
+    | 2 | {4,5,6} |
 
 ### Exercise 3: The ENUM Trap
 
@@ -115,6 +146,36 @@ Restricts a column to a fixed list.
 3. `INSERT INTO person VALUES ('happy')`.
 4. **Fail**: `INSERT INTO person VALUES ('angry')`. (Error: invalid input value for enum mood: "angry").
 5. **Fix**: `ALTER TYPE mood ADD VALUE 'angry'`.
+6. **Expected result**: `INSERT INTO person VALUES ('angry')` now succeeds; `SELECT * FROM person` returns both rows: `happy` and `angry`.
+
+### Exercise 4: Composite Types (Structs)
+
+**Goal**: Store a structured address as a single typed column instead of three loose text columns or a JSONB blob.
+
+1. `CREATE TYPE address AS (street text, city text, zip text);`
+2. `CREATE TABLE customers (id serial, home_addr address);`
+3. `INSERT INTO customers(home_addr) VALUES (ROW('123 Main St', 'New York', '10001'));`
+4. Query: `SELECT (home_addr).city FROM customers;`
+5. **Expected result**:
+
+    | city |
+    |---|
+    | New York |
+
+> ⚠️ **Pitfall: Arrays Break Referential Integrity**
+> Storing `order_ids int[]` in a Users table means you can reference order ID 999 that doesn't exist — Postgres provides **no FK constraint on array elements**. The array is just a blob of integers from the database's point of view; it has no idea those integers are supposed to point at rows in another table.
+> **Detection**: Run `SELECT unnest(order_ids) FROM users EXCEPT SELECT id FROM orders;` — any rows returned are dangling references.
+> **Fix**: Use a junction table (`user_orders(user_id, order_id)` with a real FK) for anything that must stay referentially valid. Reserve arrays for loosely-coupled data like free-form tags, where a missing master-list match is harmless.
+
+### Exercise 5 (Optional): Range Types for Scheduling
+
+**Goal**: Model a booking window without two separate `start`/`end` columns.
+
+1. `CREATE TABLE bookings (id serial, room text, slot tsrange);`
+2. `INSERT INTO bookings(room, slot) VALUES ('Room A', '[2026-06-20 09:00, 2026-06-20 10:00)');`
+3. **Task**: Check whether a new booking overlaps an existing one using `&&` (overlap):
+    * `SELECT * FROM bookings WHERE room = 'Room A' AND slot && '[2026-06-20 09:30, 2026-06-20 10:30)'::tsrange;`
+4. **Expected result**: the Room A row is returned (since 09:30–10:30 overlaps the existing 09:00–10:00 booking) — this is exactly the check a conference-room or hotel booking system runs before confirming a reservation.
 
 ---
 
@@ -205,67 +266,58 @@ Today you learned:
 * ✅ **Arrays**: Lists in a cell. Good for Tags, bad for Relationships.
 * ✅ **ENUMs**: Strict, static, efficient categorization.
 * ✅ **Unnest**: Exploding arrays into rows.
+* ✅ **Composite Types**: Structs for fixed, strongly-typed groups of fields.
+* ✅ **Range Types**: Native overlap/containment checks for scheduling and booking logic.
 
-**Tomorrow**: We lock down the fortress with **Enterprise Security**.
+**Tomorrow**: We lock down the fortress with **Enterprise Security**. (Composite Types and Arrays from today will reappear when we model role/permission structures — see Day 112.)
 
 ---
 
-## 🚨 Escalating Incident Drill Track (Days 97–108)
+## 🚨 Escalating Incident Drill Track: Legacy XML Integration (Day 111)
 
-Use these three drills as a connected simulation sequence. Each drill is intentionally harder than the previous one and must be completed with production-style evidence.
+Use these three drills as a connected simulation sequence specific to today's legacy-data theme. Each drill is intentionally harder than the previous one and must be completed with production-style evidence.
 
-### Drill 1 (Severity 2): Performance degradation under peak load
+### Drill 1 (Severity 3): Slow queries against a legacy SOAP integration table
 
-**Scenario**: During peak checkout traffic, API latency jumps from 120ms to 2.8s, and dashboards show CPU saturation on the primary database.
-
-**Required outputs**:
-
-1. **Root-cause analysis using query plans and schema objects**
-   * Capture `EXPLAIN (ANALYZE, BUFFERS)` for the top 3 slow statements from `pg_stat_statements`.
-   * Identify the dominant bottleneck (e.g., sequential scans, stale stats, sort spill, lock waits).
-   * Map the issue to schema objects (specific index, table, materialized view, partition, or join path).
-2. **Mitigation patch strategy and rollback criteria**
-   * Propose a low-risk patch (index change, query rewrite, refresh strategy, stats maintenance, or connection throttling).
-   * Define rollout steps, canary checks, and explicit rollback triggers (p95 latency, error rate, lock queue depth, CPU threshold).
-3. **Post-incident report**
-   * Summarize business impact (checkout conversion, order delay, SLA breach duration).
-   * Document prevention controls (capacity threshold alerting, index review checklist, load-test gate before release).
-   * Add monitoring updates (query-plan drift alert, wait-event dashboard, incident runbook links).
-
-### Drill 2 (Severity 1): Security policy breach involving row-level access
-
-**Scenario**: A regional sales manager can query customer rows from another region due to a row-level security policy regression.
+**Scenario**: A nightly batch job ingests 10MB XML documents from a legacy SOAP partner integration into a single `xml` column. Reporting queries that filter on an embedded order-status field are now taking 8+ seconds each.
 
 **Required outputs**:
 
 1. **Root-cause analysis using query plans and schema objects**
-   * Reproduce the leak using a least-privilege role and capture relevant SQL.
-   * Inspect policy definitions (`pg_policies`), grants, security-definer functions, and view ownership chains.
-   * Use query plans to show where policy filters are bypassed or pushed incorrectly.
+   * Run `EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM legacy_orders WHERE (xpath('//status/text()', doc))[1]::text = 'SHIPPED';` and confirm it is a full `Seq Scan` re-parsing every XML document on every query.
+   * Quantify the cost: document size × row count × XML parse overhead per row.
 2. **Mitigation patch strategy and rollback criteria**
-   * Provide an emergency containment patch (policy fix, revoke path, view hardening, function privilege correction).
-   * Define validation tests for allowed vs denied row sets per role.
-   * Set rollback criteria tied to false-deny rate, support-ticket spike, and audit-log anomalies.
+   * Propose a functional index on the xpath expression: `CREATE INDEX idx_order_status ON legacy_orders ((xpath('//status/text()', doc)::text));`
+   * Define rollback criteria: if index creation (`CONCURRENTLY`) stalls write throughput beyond an agreed threshold, drop and retry off-peak.
 3. **Post-incident report**
-   * Quantify business/compliance impact (records exposed, jurisdictions affected, notification obligations).
-   * List prevention controls (policy-as-code review, CI policy simulation, privileged object inventory).
-   * Add monitoring updates (cross-tenant access detectors, policy-change alerts, immutable audit retention).
+   * Propose a JSON migration path: extract the handful of frequently-queried fields into real JSONB or relational columns, keeping the raw XML only as an audit/compliance archive.
 
-### Drill 3 (Severity 1 / Executive Escalation): Data correctness regression from trigger/procedure change
+### Drill 2 (Severity 2): ENUM rigidity blocks an urgent business change
 
-**Scenario**: A trigger/procedure deployment silently double-counts revenue in month-end reporting and breaks finance reconciliation.
+**Scenario**: Sales needs a new order status, `"backordered"`, added today to support a new vendor relationship, but the `order_status` column is an ENUM and the migration is queued behind a long-running transaction.
 
 **Required outputs**:
 
 1. **Root-cause analysis using query plans and schema objects**
-   * Diff trigger/procedure versions and execution order; trace writes across dependent tables/views.
-   * Use plans and dependency metadata (`pg_trigger`, `pg_proc`, `pg_depend`) to locate duplicate or missing mutations.
-   * Build a minimal reproducible dataset proving the correctness gap.
+   * Inspect `pg_type` / `pg_enum` to confirm the current allowed labels and identify the blocking transaction via `pg_stat_activity`.
+   * Explain why `ALTER TYPE ... ADD VALUE` requires a brief lock and cannot run inside the existing long transaction in older Postgres versions.
 2. **Mitigation patch strategy and rollback criteria**
-   * Deliver a hotfix plan (procedure correction + backfill/reconciliation script) with idempotency guarantees.
-   * Include data repair strategy for already-corrupted records and freeze windows for risky writes.
-   * Define rollback criteria based on reconciliation deltas, financial control checks, and downstream report parity.
+   * Provide the safe sequence: confirm no open transaction holds the type, run `ALTER TYPE order_status ADD VALUE 'backordered';`, verify with a test insert.
+   * Rollback criteria: if the ALTER TYPE blocks beyond a defined wait window, kill the blocking session only after sign-off (ENUM additions cannot be transactionally rolled back once committed).
 3. **Post-incident report**
-   * Summarize business impact (close-delay, misstated KPI exposure, executive communication timeline).
-   * Document prevention controls (change contracts for triggers, shadow writes, dual-run verification, release checklist).
-   * Add monitoring updates (data quality assertions, ledger-vs-fact drift alarms, automated reconciliation jobs).
+   * Recommend a longer-term fix: if status values change frequently, model `order_status` as a foreign key to a lookup table instead of an ENUM, trading a small join cost for migration-free flexibility.
+
+### Drill 3 (Severity 1 / Executive Escalation): Array-based order references corrupt a financial report
+
+**Scenario**: A junior engineer's `users.recent_order_ids int[]` column (added to "avoid a join") now contains IDs for orders that were deleted during a data-retention cleanup. The monthly revenue-by-customer report silently undercounts because it joins against `unnest(recent_order_ids)` and gets no match for the deleted rows.
+
+**Required outputs**:
+
+1. **Root-cause analysis using query plans and schema objects**
+   * Run `SELECT u.id, unnest(u.recent_order_ids) AS oid FROM users u EXCEPT SELECT u.id, o.id FROM users u JOIN orders o ON o.id = ANY(u.recent_order_ids);` to enumerate dangling array references.
+   * Confirm there is no FK constraint on array elements (the root architectural cause) — this is the Pitfall called out above.
+2. **Mitigation patch strategy and rollback criteria**
+   * Migrate `recent_order_ids` to a proper `user_orders(user_id, order_id)` junction table with a real `FOREIGN KEY ... ON DELETE CASCADE`, backfilling from the array data before dropping the column.
+   * Rollback criteria: keep the old array column read-only (not dropped) until the new junction table's row counts reconcile exactly with the report for two consecutive month-end closes.
+3. **Post-incident report**
+   * Quantify the financial impact (revenue undercount $ and affected customer count) and document the architectural rule going forward: arrays are for loosely-coupled, optional data (tags); anything requiring guaranteed referential integrity gets a junction table.

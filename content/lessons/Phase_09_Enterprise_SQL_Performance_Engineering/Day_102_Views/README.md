@@ -76,12 +76,38 @@ The data is now "Frozen". If you add a sale to `orders`, the `summary` MView doe
 
 ### 3. Indexing the View
 
-Because an MView is a real table on disk, you can index it!
+Because an MView is a real table on disk, you can index it! (Prereq: B-Tree indexing — Day 103 covers the GIN/GiST/BRIN alternatives for non-scalar columns.)
 
 * **Base Table**: `orders` (1 Billion rows). Scrambled order.
 * **MView**: `recent_orders` `WHERE date > '2024-01-01'`.
 * **Index**: `CREATE INDEX idx_recent_client ON recent_orders(client_id)`.
 * *Benefit*: You query a tiny, perfectly indexed table instead of the massive heap.
+
+### 4. Incremental / Partial Materialized Views
+
+Most teams don't materialize the *entire* fact table — they materialize a "hot" window.
+
+* **Pattern**: `CREATE MATERIALIZED VIEW mv_recent_orders AS SELECT * FROM orders WHERE order_date >= now() - interval '30 days';`
+* **Why**: A 30-day MView refreshes in seconds; the full 5-year history would take minutes. Most dashboards only need the recent window anyway.
+* **Trade-off**: Queries needing historical data (e.g., "compare this March to last March") must fall back to the base table or a second, larger MView refreshed less frequently (e.g., nightly full rebuild + hourly hot-window rebuild).
+* **Production pattern**: Pair a `mv_recent_orders` (refreshed every 15 min) with `mv_orders_archive` (refreshed nightly) — together they cover both "live-ish" and "historical" needs without ever re-scanning the full 1B-row table during business hours.
+
+---
+
+## Business Impact: Quantifying the Trade-off
+
+A dashboard querying a 500M-row fact table 300 times/day at 2 seconds/query consumes 600,000 seconds (~166 hours) of cumulative DB CPU time per day. Reading the same result from a Materialized View at 5ms/query consumes just 1,500 seconds (~0.4 hours) — a saving of roughly **165 hours of DB CPU per day**. That headroom is the difference between provisioning a bigger (costlier) database server and running comfortably on your current one. The "cost" is staleness: the dashboard shows data as of the last `REFRESH`, not the live state — which is why the business decision (not just the technical one) is *how stale is acceptable*.
+
+---
+
+## Decision Table: View vs Materialized View vs Base Table Query
+
+| Scenario | Recommended Approach | Why |
+|---|---|---|
+| Real-time operational dashboard (e.g., live order queue) | Standard View or direct query | Freshness matters more than speed; data changes every second so an MView would be stale almost immediately. |
+| Daily finance / executive report (e.g., monthly revenue rollup) | Materialized View, refreshed nightly | Heavy joins/aggregations run once at 3 AM instead of on every page load; T-1 freshness is acceptable for finance close. |
+| Ad hoc data-science exploration | Base Table Query (with sampling/LIMIT) | Analysts need flexibility to change filters and joins on the fly — a frozen MView schema would block iteration. |
+| High-frequency OLTP reads (e.g., "get my account balance") | Base Table Query, indexed | These reads must reflect the latest committed write; correctness trumps the marginal speed gain of an MView. |
 
 ---
 
@@ -93,11 +119,13 @@ Because an MView is a real table on disk, you can index it!
 * **Senior**: "Why? Can the warehouse ship it in 1 second? Can the CEO fire them in 1 second?"
 * **Reality**: Most orgs run on T-1 (Yesterday's data). An MView refreshed at 3 AM is perfect.
 
-### The "Dependency Chain" Horror
+> ⚠️ Pitfall: Refresh Ordering
+>
+> **Failure mode**: View A is built `SELECT ... FROM view_B`, and View B is built `SELECT ... FROM table_C`. If an orchestration job refreshes A *before* B has picked up C's latest changes, A silently bakes in stale data — and because A "succeeded," nothing alerts you.
+> **Detection**: Query `pg_depend` to map the dependency chain (`SELECT * FROM pg_depend WHERE refobjid = 'view_b'::regclass;`) before scheduling refresh order, and check `pg_matviews.last_refresh` (or your own audit table) to confirm B refreshed more recently than A.
+> **Fix**: Use an orchestration tool (Airflow or dbt) that builds and refreshes objects in topological order based on the DAG (Directed Acyclic Graph, see below) — never schedule MView refreshes as independent cron jobs with guessed timings.
 
-* **Setup**: View A depends on View B depends on Table C.
-* **Risk**: Refreshing A *before* B is refreshed means A contains stale data from B.
-* **Solution**: Use an orchestration tool (Airflow/dbt) to manage the DAG (Directed Acyclic Graph) of refreshes.
+A **DAG** is a graph of tasks where edges point only "forward" (no cycles) — in this context, each node is a refresh job (View B depends on Table C; View A depends on View B), and the orchestrator walks the graph so dependencies always refresh before their dependents. **dbt** ("data build tool") and **Airflow** are the two most common tools that manage this DAG in production: dbt focuses on SQL transformation dependencies, Airflow on general task scheduling (dbt runs are often *triggered by* an Airflow DAG).
 
 ---
 
@@ -107,27 +135,79 @@ Because an MView is a real table on disk, you can index it!
 
 **Goal**: Observe the speed difference.
 
-1. Create a table with 1M rows (`generate_series`).
-2. Run `SELECT count(*) FROM table` (Seq Scan). Time it.
-3. `CREATE MATERIALIZED VIEW mv_count AS SELECT count(*) FROM table`.
-4. Run `SELECT * FROM mv_count`. Time it. (Should be 0.00ms).
+```sql
+-- Step 1: Create and seed a 1M-row table
+CREATE TABLE big_table AS
+SELECT generate_series(1, 1000000) AS id;
+
+-- Step 2: Time the raw aggregation (Seq Scan)
+EXPLAIN ANALYZE
+SELECT count(*) FROM big_table;
+
+-- Step 3: Materialize it
+CREATE MATERIALIZED VIEW mv_count AS
+SELECT count(*) FROM big_table;
+
+-- Step 4: Time the MView read
+EXPLAIN ANALYZE
+SELECT * FROM mv_count;
+```
+
+**Expected result**:
+
+```
+-- Step 2 (base table):
+Aggregate  (cost=14425.00..14425.01 rows=1 width=8) (actual time=89.214..89.215 rows=1 loops=1)
+  ->  Seq Scan on big_table  (cost=0.00..14425.00 rows=1000000 width=0) (actual time=0.010..45.123 rows=1000000 loops=1)
+Planning Time: 0.085 ms
+Execution Time: 89.241 ms
+
+-- Step 4 (materialized view):
+Seq Scan on mv_count  (cost=0.00..1.01 rows=1 width=8) (actual time=0.015..0.017 rows=1 loops=1)
+Planning Time: 0.020 ms
+Execution Time: 0.020 ms
+```
+
+The base-table aggregation costs ~14,425 query-planner cost units and takes ~89ms; the MView read costs ~1 unit and takes ~0.02ms — roughly **4,000x faster** because the answer was already computed and stored.
 
 ### Exercise 2: The Refresh
 
 **Goal**: See the staleness.
 
-1. Insert 1 row into the Base Table.
-2. Query the MView. (Count is still old).
-3. Run `REFRESH MATERIALIZED VIEW mv_count`.
-4. Query the MView. (Count is now new).
+```sql
+-- Insert 1 row into the base table
+INSERT INTO big_table VALUES (1000001);
+
+-- Query the MView: still shows the OLD count
+SELECT * FROM mv_count;
+-- count = 1000000  (stale — does not see the new row)
+
+-- Refresh it
+REFRESH MATERIALIZED VIEW mv_count;
+
+-- Query again: now correct
+SELECT * FROM mv_count;
+-- count = 1000001
+```
+
+**Expected result**: the first `SELECT * FROM mv_count` returns `1000000` (stale), and only after `REFRESH MATERIALIZED VIEW mv_count` does the second `SELECT` return `1000001`.
 
 ### Exercise 3: Concurrent Refresh
 
-**Goal**: Production-grade refresh.
+**Goal**: Production-grade refresh with zero downtime for readers.
 
-1. `CREATE UNIQUE INDEX idx_mv ON mv_count(count)`. (Need a unique key).
-2. `REFRESH MATERIALIZED VIEW CONCURRENTLY mv_count`.
-    * *Note*: While this runs, run a `SELECT` in another window. It works! (No locking).
+```sql
+-- CONCURRENTLY requires a UNIQUE index on the MView first
+CREATE UNIQUE INDEX idx_mv_count ON mv_count(count);
+
+-- Insert another row to create fresh staleness
+INSERT INTO big_table VALUES (1000002);
+
+-- Refresh without blocking readers
+REFRESH MATERIALIZED VIEW CONCURRENTLY mv_count;
+```
+
+**Expected result**: while the `REFRESH MATERIALIZED VIEW CONCURRENTLY` is running, open a second `psql` session and run `SELECT * FROM mv_count;` — it returns immediately with the *old* row count (no blocking, no "still waiting" lock). Once the refresh completes, that same query returns `1000002`. Compare this to a plain `REFRESH MATERIALIZED VIEW mv_count` (no `CONCURRENTLY`), where the second session's `SELECT` would hang until the refresh finishes, because the non-concurrent refresh takes an `ACCESS EXCLUSIVE` lock.
 
 ---
 
@@ -145,7 +225,7 @@ D) Depends on the moon phase.
 <summary>Click for Answer</summary>
 
 **Answer: B**
-Standard views are virtual.
+A standard `VIEW` stores nothing but the SQL text you wrote in `CREATE VIEW ... AS SELECT ...`. No rows, no computed results, and no extra disk pages are allocated for it. Every time you query the view, Postgres substitutes that saved SQL into your query (a process called "unfolding" or "view expansion") and re-executes the underlying joins and aggregations from scratch against the live base tables. Contrast this with a Materialized View, which actually runs the query once and writes the *result set* to a physical table on disk — that's why an MView has a real size in `pg_relation_size()` and a standard view's size is effectively zero.
 </details>
 
 ### Question 2: Locking
@@ -160,7 +240,7 @@ D) The view updates instantly.
 <summary>Click for Answer</summary>
 
 **Answer: B**
-Exclusive locks are dangerous in prod.
+A plain `REFRESH MATERIALIZED VIEW` takes an `ACCESS EXCLUSIVE` lock on the MView for the entire duration of the rebuild. Any query trying to `SELECT` from that view — including your production dashboard — must wait in a queue until the lock is released, because Postgres won't let readers see a half-rebuilt table. If the refresh takes 5 minutes on a large aggregation, every dashboard user experiences a 5-minute freeze, which looks to them like the application is down. The fix is `REFRESH MATERIALIZED VIEW CONCURRENTLY`, which builds the new version in a separate temporary structure and atomically swaps it in, so readers keep seeing the *old* (still consistent) data right up until the swap.
 </details>
 
 ### Question 3: Freshness
@@ -175,7 +255,7 @@ D) Yes, but slowly.
 <summary>Click for Answer</summary>
 
 **Answer: B**
-It is a snapshot.
+A Materialized View is a one-time snapshot — Postgres does not maintain a live link back to the base tables the way a standard view does. When you `INSERT`, `UPDATE`, or `DELETE` rows in `orders`, the `summary` MView has no trigger or listener that detects the change automatically. You (or your scheduler) must explicitly run `REFRESH MATERIALIZED VIEW summary` — typically via a cron job, an Airflow DAG, or a `pg_cron` schedule — to pull in the latest base-table state. Until that refresh runs, the MView will confidently and silently serve stale data with no warning.
 </details>
 
 ### Question 4: Indexing
@@ -190,7 +270,7 @@ D) Requires a plugin.
 <summary>Click for Answer</summary>
 
 **Answer: B**
-(Unless it's an "Indexed View" in SQL Server, but in Postgres/Standard SQL, No). MViews essentially allow this.
+A standard view has no physical storage of its own — it's just a saved query string — so there is no data for an index to point at; Postgres can only index real heap pages on disk. (SQL Server's "Indexed View" feature is a different product-specific exception that materializes the view automatically, which is conceptually closer to a Postgres Materialized View than a Postgres standard view.) In Postgres, if you need an indexed, fast-reading view, you create a `MATERIALIZED VIEW` instead — because it writes its result set to a real table, you can run `CREATE INDEX` on it exactly as you would on `orders` or any other table.
 </details>
 
 ### Question 5: Use Case
@@ -205,8 +285,23 @@ D) For small tables.
 <summary>Click for Answer</summary>
 
 **Answer: B**
-Heavy joins + low freshness requirement = MView sweet spot.
+A "Monthly Sales Report" joining 15 tables is the textbook MView use case because it combines two conditions that justify materialization: the query is *expensive* (many joins/aggregations means high CPU per execution) and the *freshness requirement is low* (a monthly report doesn't need to reflect a sale from 30 seconds ago). Materializing it means the 15-table join runs once, on a schedule, and every report viewer afterward reads a flat, pre-computed table in milliseconds. A "Forgot Password" lookup (option A) is the opposite profile — cheap to query but must be 100% real-time, so a standard query (or even a simple indexed base-table read) is correct there, and an MView would actually introduce a dangerous staleness bug (a user resets their password but the MView still shows the old token state).
 </details>
+
+---
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Materialized View** | A database object that stores the *results* of a query physically on disk, like a regular table, rather than re-running the query each time. |
+| **Standard View** | A saved SQL query (just text) that is re-executed in full every time it is queried; stores no data of its own. |
+| **Exclusive Lock** | A lock that prevents any other session from reading or writing the locked object until it is released — the cause of dashboard "freezes" during a non-concurrent refresh. |
+| **DAG (Directed Acyclic Graph)** | A graph of tasks/dependencies where edges only point forward (no loops) — used by orchestrators to determine the correct order to refresh dependent views/tables. |
+| **Staleness** | The gap between the data shown by a Materialized View and the current state of its base tables; grows until the next `REFRESH`. |
+| **Concurrent Refresh** | `REFRESH MATERIALIZED VIEW CONCURRENTLY` — rebuilds the MView in the background and atomically swaps it in, so readers are never blocked. Requires a `UNIQUE` index on the MView. |
+| **dbt** | "data build tool" — an open-source framework for managing SQL transformations (including MView refresh order) as version-controlled, testable code, organized as a DAG. |
+| **Airflow** | A general-purpose workflow orchestrator that schedules and sequences tasks (including dbt runs or raw `REFRESH` commands) according to a DAG. |
 
 ---
 
@@ -225,7 +320,19 @@ Today you learned:
 
 ## 🚨 Escalating Incident Drill Track (Days 97–108)
 
-Use these three drills as a connected simulation sequence. Each drill is intentionally harder than the previous one and must be completed with production-style evidence.
+### Day 102 Spotlight Drill: The Frozen Dashboard
+
+**Scenario**: The nightly MView refresh job reports "SUCCESS" in the scheduler logs at 3:05 AM, but at 9 AM the sales dashboard still shows yesterday's totals. The on-call analyst escalates: "Is the data wrong, or is the dashboard broken?"
+
+**Required steps**:
+
+1. Confirm whether the refresh actually ran and updated the underlying storage: `SELECT schemaname, matviewname, last_refresh FROM pg_matviews WHERE matviewname = 'mv_daily_sales';` (note: Postgres does not natively track `last_refresh` pre-15 without an extension — pair this with your own audit trigger or check `pg_stat_user_tables` activity timestamps as a proxy).
+2. Cross-check `pg_stat_user_tables` for the MView's underlying table OID — look at `n_tup_ins`/`n_tup_upd` to see whether a refresh actually wrote new rows around 3 AM, or whether the job silently no-op'd (e.g., crashed before swapping in new data, or hit a permissions error that got swallowed by the scheduler).
+3. If the refresh *did* run but a downstream View-on-MView in the dependency chain wasn't refreshed in the correct order (see the Refresh Ordering pitfall above), use `pg_depend` to trace the chain and confirm which object is actually stale.
+4. Once root-caused, add a `CREATE UNIQUE INDEX` if missing (required for `CONCURRENTLY`) and switch the nightly job from blocking `REFRESH` to `REFRESH MATERIALIZED VIEW CONCURRENTLY` so a slow or retried refresh never causes a multi-hour production outage window for dashboard readers.
+5. Write a one-paragraph post-incident note: what masked the failure (a scheduler that reports "success" on a no-op refresh), and what monitoring you're adding (e.g., row-count delta alert comparing MView count to expected base-table count).
+
+Use the three drills below as a connected simulation sequence spanning the rest of the phase. Each drill is intentionally harder than the previous one and must be completed with production-style evidence.
 
 ### Drill 1 (Severity 2): Performance degradation under peak load
 

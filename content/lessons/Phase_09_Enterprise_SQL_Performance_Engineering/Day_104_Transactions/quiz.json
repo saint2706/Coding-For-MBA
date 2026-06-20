@@ -1,0 +1,109 @@
+{
+  "day": 104,
+  "questions": [
+    {
+      "id": "d104q01",
+      "type": "multiple_choice",
+      "question": "In Two-Phase Commit, what happens during Phase 1 (Prepare) before the global Commit is issued?",
+      "options": [
+        "All participants immediately make their changes visible to other readers",
+        "Each participant writes its changes to WAL, holds locks, votes Yes/No, but does not make the change visible yet",
+        "The coordinator deletes all participant data as a safety measure",
+        "Nothing happens until Phase 2 begins"
+      ],
+      "answer": 1,
+      "explanation": "During Prepare, each participant durably writes its intended changes to the WAL and holds the necessary locks, then votes Yes (ready to commit) or No (cannot commit) to the coordinator -- but critically, the changes remain invisible to other transactions until the coordinator's final global Commit arrives in Phase 2. This is what allows a clean abort: if any participant votes No, none of the changes were ever exposed."
+    },
+    {
+      "id": "d104q02",
+      "type": "multiple_choice",
+      "question": "A 2PC coordinator crashes after sending Prepare requests but before sending the final Commit decision. What is the resulting state called, and what is its danger?",
+      "options": [
+        "A 'phantom transaction' -- it is automatically rolled back after 30 seconds",
+        "An 'in-doubt transaction' -- locks are held indefinitely until a human or automated process issues COMMIT PREPARED or ROLLBACK PREPARED",
+        "A 'ghost commit' -- the data is permanently lost",
+        "A 'soft lock' -- only read queries are blocked, writes proceed normally"
+      ],
+      "answer": 1,
+      "explanation": "This is the In-Doubt Transaction problem: the participant has already voted Yes and is holding locks durably (written to WAL), but with no coordinator to tell it whether to commit or abort, it waits forever by default. Detection uses SELECT * FROM pg_prepared_xacts, and resolution requires manually issuing COMMIT PREPARED or ROLLBACK PREPARED once the correct outcome is determined."
+    },
+    {
+      "id": "d104q03",
+      "type": "multiple_choice",
+      "question": "During an actual network partition, why does the CAP theorem say you must choose either Consistency or Availability, but not both?",
+      "options": [
+        "Because of poorly written database software that can be fixed with better code",
+        "Because if both sides of the partition keep accepting writes (stay Available), they cannot synchronize and will inevitably diverge (lose Consistency) -- it's a logical/physical constraint, not a coding bug",
+        "Because CAP theorem only applies to NoSQL databases, not relational databases",
+        "Because Availability and Consistency mean the same thing in distributed systems"
+      ],
+      "answer": 1,
+      "explanation": "A network partition means the two sides genuinely cannot communicate. If both sides remain available for writes, they will independently accept different requests and diverge -- there is no way to keep them synchronized without communication. The only way to avoid divergence is for at least one side to refuse writes until the partition heals, which is why traditional RDBMSs like Postgres choose CP (Consistency + Partition Tolerance) over AP."
+    },
+    {
+      "id": "d104q04",
+      "type": "multiple_choice",
+      "question": "In the Sagas pattern, what is a Compensating Transaction?",
+      "options": [
+        "A database ROLLBACK executed before the original transaction commits",
+        "A new, separate transaction that semantically reverses the business effect of an already-committed step, since the original cannot be rolled back after commit",
+        "A monetary fee charged to the customer for a failed transaction",
+        "An automatic retry of the exact same failed operation"
+      ],
+      "answer": 1,
+      "explanation": "Because each Saga step commits independently and becomes visible immediately, there is no global rollback available once a later step fails. Instead, the system runs forward-only compensating logic -- for example, issuing a refund to reverse a payment charge that already succeeded -- which achieves the equivalent business outcome of 'undoing' the step without literally erasing the committed record."
+    },
+    {
+      "id": "d104q05",
+      "type": "multiple_choice",
+      "question": "With 5 total nodes in a quorum-based cluster, what is the minimum number of nodes that must agree to accept a write, and why does this prevent Split Brain?",
+      "options": [
+        "1 node -- any single node can act independently",
+        "3 nodes (floor(5/2)+1) -- because two disjoint groups of 3+ nodes cannot both exist among only 5 total nodes, at most one side of any partition can reach quorum",
+        "5 nodes -- all nodes must always agree, with zero fault tolerance",
+        "2 nodes -- a simple majority of any size works"
+      ],
+      "answer": 1,
+      "explanation": "Quorum requires floor(N/2)+1 nodes, which for N=5 is 3. Since 3+3=6 exceeds the total of 5 nodes, it is mathematically impossible for two separate groups of 3 to exist simultaneously without overlapping -- so during a partition, only one side (at most) can ever reach quorum and accept writes, while the minority side correctly refuses writes to avoid divergence."
+    },
+    {
+      "id": "d104q06",
+      "type": "multiple_choice",
+      "question": "Which Postgres isolation level is the default, and what anomaly does it still permit within a single transaction?",
+      "options": [
+        "SERIALIZABLE is the default; it permits dirty reads",
+        "READ COMMITTED is the default; it permits non-repeatable reads (a value can change between two reads in the same transaction)",
+        "REPEATABLE READ is the default; it permits dirty reads",
+        "READ UNCOMMITTED is the default; it permits phantom reads only"
+      ],
+      "answer": 1,
+      "explanation": "READ COMMITTED is Postgres's default isolation level. It prevents dirty reads (you never see another transaction's uncommitted changes), but it does not freeze a snapshot for the whole transaction -- so if you read the same row twice and another transaction commits a change in between, your second read will see the new value, which is a non-repeatable read."
+    },
+    {
+      "id": "d104q07",
+      "type": "multiple_choice",
+      "question": "Two concurrent checkout requests both run SELECT quantity FROM inventory WHERE sku = 'X' (no locking) and both see quantity = 1, then both decrement it, overselling the last unit. Which pattern prevents this?",
+      "options": [
+        "Running the SELECT inside a SERIALIZABLE transaction with no other changes",
+        "SELECT quantity FROM inventory WHERE sku = 'X' FOR UPDATE -- locking the row so the second transaction must wait until the first commits or rolls back",
+        "Adding a UNIQUE constraint on the quantity column",
+        "Increasing statement_timeout to a higher value"
+      ],
+      "answer": 1,
+      "explanation": "SELECT ... FOR UPDATE locks the selected row for the duration of the transaction, so a second concurrent transaction attempting the same FOR UPDATE select must wait until the first transaction commits (and sees the updated quantity) or rolls back. Without this lock, both transactions read the same stale quantity before either writes, causing an overselling race condition."
+    },
+    {
+      "id": "d104q08",
+      "type": "multiple_choice",
+      "question": "A job-queue system has multiple worker processes that need to each grab a different pending job without waiting on each other. Which SQL pattern is designed exactly for this?",
+      "options": [
+        "SELECT ... FOR UPDATE (without SKIP LOCKED)",
+        "SELECT ... FOR UPDATE SKIP LOCKED -- skips rows already locked by another transaction instead of waiting for them",
+        "SELECT ... FOR SHARE",
+        "A plain SELECT with no locking at all"
+      ],
+      "answer": 1,
+      "explanation": "FOR UPDATE SKIP LOCKED locks the row it selects but, unlike plain FOR UPDATE, does not block waiting for rows that are already locked by another transaction -- it simply skips past them. This lets multiple workers concurrently poll the same jobs table and each claim a distinct pending job instead of queuing up behind one another."
+    }
+  ]
+}
