@@ -1,0 +1,109 @@
+{
+  "day": 90,
+  "questions": [
+    {
+      "id": "d90q01",
+      "type": "multiple_choice",
+      "question": "What are the two required parts of a `WITH RECURSIVE` CTE?",
+      "options": [
+        "The Head and the Tail",
+        "The Anchor Member (runs once) and the Recursive Member (loops)",
+        "The Left table and the Right table",
+        "The SELECT and the WHERE clause"
+      ],
+      "answer": 1,
+      "explanation": "The anchor member produces the starting row set and runs exactly once; the recursive member re-joins against the previous iteration's output until no new rows appear. 'Head and Tail' and 'Left and Right' are not SQL terms for this construct."
+    },
+    {
+      "id": "d90q02",
+      "type": "multiple_choice",
+      "question": "In `WITH RECURSIVE chain AS (... UNION ALL SELECT e.id FROM employees e JOIN chain c ON e.id = c.manager_id)`, what does the alias `c` refer to inside the recursive member?",
+      "options": [
+        "The entire accumulated result of `chain` across all iterations so far",
+        "Only the rows produced in the immediately preceding iteration",
+        "The original employees table",
+        "A materialized view that is refreshed nightly"
+      ],
+      "answer": 1,
+      "explanation": "Within the recursive member, the CTE alias refers only to the most recently produced batch of rows, not the full accumulated history. This is why some recursive queries need the `visited_path` array trick to check against the whole path so far -- the recursive term alone can't see further back."
+    },
+    {
+      "id": "d90q03",
+      "type": "multiple_choice",
+      "question": "Why does `UNION ALL` get used instead of `UNION` in a recursive CTE?",
+      "options": [
+        "UNION ALL is required syntax; UNION is illegal in WITH RECURSIVE",
+        "UNION ALL avoids the cost of deduplication and avoids masking cycle-detection logic that depends on seeing duplicate rows",
+        "UNION ALL automatically sorts the output by level",
+        "There is no difference; either works identically"
+      ],
+      "answer": 1,
+      "explanation": "UNION is legal but deduplicates rows on every iteration, which is both slower and can hide a cycle that your guard logic was meant to catch (since UNION would silently collapse a repeated row instead of triggering your visited-path check)."
+    },
+    {
+      "id": "d90q04",
+      "type": "multiple_choice",
+      "question": "Without an `ORDER BY` inside the call, what order does `ARRAY_AGG(name)` guarantee for the resulting array's elements?",
+      "options": [
+        "Alphabetical order",
+        "Insertion (INSERT) order",
+        "No guaranteed order -- it depends on scan/join execution order and can vary between runs",
+        "Reverse primary key order"
+      ],
+      "answer": 2,
+      "explanation": "Postgres makes no ordering guarantee for ARRAY_AGG without ORDER BY inside the aggregate call. If element order matters, always write ARRAY_AGG(col ORDER BY col) explicitly."
+    },
+    {
+      "id": "d90q05",
+      "type": "multiple_choice",
+      "question": "A row has `info = '{\"city\": \"NY\"}'` (no `zip` key). What does `info ->> 'zip'` return?",
+      "options": [
+        "An error, because the key does not exist",
+        "An empty string ''",
+        "NULL",
+        "The string 'undefined'"
+      ],
+      "answer": 2,
+      "explanation": "Both `->` and `->>` return NULL for a missing key rather than raising an error. This is convenient but can hide malformed records -- a query succeeding doesn't mean the key was actually present."
+    },
+    {
+      "id": "d90q06",
+      "type": "multiple_choice",
+      "question": "You want the 3 most recent orders per user using a LATERAL join. Where must `LIMIT 3` be placed?",
+      "options": [
+        "On the outermost SELECT, after the lateral join completes",
+        "Inside the lateral subquery, so it re-applies on each per-user execution",
+        "In a HAVING clause on the outer query",
+        "It cannot be combined with LATERAL at all"
+      ],
+      "answer": 1,
+      "explanation": "The lateral subquery re-executes once per outer row, so a LIMIT inside it caps results per user. A LIMIT on the outside caps the entire combined result set across all users -- e.g., 3 orders total, not 3 per user."
+    },
+    {
+      "id": "d90q07",
+      "type": "multiple_choice",
+      "question": "Why might a `LATERAL` join with `LIMIT` inside be faster than the equivalent `ROW_NUMBER() OVER (PARTITION BY ...)` rewrite?",
+      "options": [
+        "LATERAL always runs in parallel across all CPU cores automatically",
+        "With a supporting index like (post_id, created_at), the planner can fetch only the needed top-N rows per group directly, rather than ranking the full partition first",
+        "ROW_NUMBER() is deprecated in PostgreSQL 14+",
+        "LATERAL joins never touch disk"
+      ],
+      "answer": 1,
+      "explanation": "Given a supporting composite index, the planner can satisfy the inner LATERAL query with an index scan that stops after LIMIT rows are found per outer row, avoiding the need to materialize and rank the entire partition first."
+    },
+    {
+      "id": "d90q08",
+      "type": "multiple_choice",
+      "question": "What is the main risk of relying only on `WHERE level < 20` to guard against cycles in a recursive CTE, instead of a visited-path check?",
+      "options": [
+        "It is syntactically invalid in PostgreSQL",
+        "It still wastes up to 20 iterations of wasted work before stopping, and doesn't pinpoint where the cycle occurred",
+        "It changes the data type of the level column",
+        "It prevents the anchor member from running"
+      ],
+      "answer": 1,
+      "explanation": "A depth guard is a safety net, not a detection mechanism -- it lets the query run (and waste resources) for up to 20 iterations before halting, and gives no diagnostic information about which rows formed the cycle. A visited-path array (WHERE NOT e.id = ANY(visited_path)) detects and stops a cycle on the exact iteration it occurs."
+    }
+  ]
+}

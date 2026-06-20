@@ -1,0 +1,109 @@
+{
+  "day": 92,
+  "questions": [
+    {
+      "id": "d92q01",
+      "type": "multiple_choice",
+      "question": "A table owner connects directly and runs `SELECT * FROM employees`, even though a `CREATE POLICY` restricts row visibility. What happens by default in PostgreSQL?",
+      "options": [
+        "The policy applies; the owner only sees their own rows",
+        "RLS does not apply by default to the table owner (or to roles with BYPASSRLS) -- the owner sees all rows",
+        "The query fails outright with a permission error",
+        "Postgres automatically revokes ownership"
+      ],
+      "answer": 1,
+      "explanation": "Native RLS exempts the table owner and BYPASSRLS roles by default. Testing RLS policies from a superuser or owner session can give a false sense of security -- always test as the actual application/least-privilege role."
+    },
+    {
+      "id": "d92q02",
+      "type": "multiple_choice",
+      "question": "Why is a `CREATE VIEW ... WHERE id = current_user_id()` restriction NOT equivalent to native Row Level Security in all threat models?",
+      "options": [
+        "Views are always slower to execute than RLS policies",
+        "A user with separate direct SELECT access to the base table can bypass the view's filter entirely by querying the table directly",
+        "Views cannot contain WHERE clauses in PostgreSQL",
+        "Native RLS does not support filtering by user identity"
+      ],
+      "answer": 1,
+      "explanation": "A view only restricts the path it represents. If the same role also has a grant on the underlying base table -- intentionally or by leftover/accidental grant -- they can query the base table directly and see everything, since the view enforces nothing at the storage layer. Native RLS is enforced by the engine on the table itself regardless of access path."
+    },
+    {
+      "id": "d92q03",
+      "type": "multiple_choice",
+      "question": "What is the central limitation of summarizing GDPR crypto-shredding as 'no need to find every backup tape'?",
+      "options": [
+        "Crypto-shredding doesn't actually make backup data unreadable",
+        "It makes ciphertext unreadable quickly, but auditors/regulators still expect documented, timestamped evidence of erasure and a retention/destruction policy for the now-useless encrypted bytes",
+        "It is illegal to use crypto-shredding under GDPR",
+        "Crypto-shredding requires physically destroying the storage media"
+      ],
+      "answer": 1,
+      "explanation": "Crypto-shredding genuinely solves the operational problem of scrubbing PII across many backups quickly, but it doesn't eliminate governance obligations: you still need a logged record of what key was destroyed, when, for whom, plus a policy for eventually purging the now-unreadable backup files."
+    },
+    {
+      "id": "d92q04",
+      "type": "multiple_choice",
+      "question": "An employee's record must have name/email removed for a GDPR erasure request, but a related payroll_runs table references employee_id via a foreign key and must be retained for tax law. What is the correct action?",
+      "options": [
+        "DELETE the employee row entirely, accepting that the foreign key will simply be set to NULL",
+        "Anonymize the name/email fields in place (UPDATE), keeping the same id so the foreign key relationship and tax records remain valid",
+        "DELETE both the employee row and all payroll_runs rows referencing it",
+        "Do nothing, since GDPR does not apply to employee records"
+      ],
+      "answer": 1,
+      "explanation": "Deleting the employee row would either be blocked by the foreign key constraint or, with CASCADE, destroy legally-required payroll history. Anonymizing the identifying fields while keeping the same primary key id preserves referential integrity with payroll_runs and satisfies erasure for the personal-identity fields without violating tax retention law."
+    },
+    {
+      "id": "d92q05",
+      "type": "multiple_choice",
+      "question": "Why is overwriting every anonymized person's name with the literal string 'REDACTED' (no distinguishing suffix) a real risk?",
+      "options": [
+        "PostgreSQL does not permit duplicate text values in a column",
+        "Two different anonymized people become indistinguishable from each other, and an automated join/dedup process could incorrectly merge their records",
+        "It uses excessive storage space",
+        "It is a GDPR violation to use the word REDACTED"
+      ],
+      "answer": 1,
+      "explanation": "A fixed placeholder collapses every anonymized record into one indistinguishable value. Beyond display confusion, a later process that groups or joins on that field could wrongly treat two different anonymized people as the same entity. A per-row distinguishing suffix (e.g., 'REDACTED-' + id) avoids the collision while still removing identity."
+    },
+    {
+      "id": "d92q06",
+      "type": "multiple_choice",
+      "question": "An analyst cannot see raw salary values due to masking, but can run `AVG(salary) WHERE region = 'North'` and then `AVG(salary) WHERE region = 'North' AND id != 4`. What risk does this illustrate?",
+      "options": [
+        "No risk -- masking fully prevents any information leakage through aggregates",
+        "An inference attack: subtracting the two averages can reveal employee 4's exact salary, even without direct row access",
+        "This combination of queries is syntactically invalid",
+        "Masking automatically blocks all aggregate functions"
+      ],
+      "answer": 1,
+      "explanation": "Masking and row restrictions protect direct row-level access, but aggregate functions can still leak individual values through arithmetic, especially in small groups. Comparing an aggregate with and without one member present lets an analyst back out that member's exact value -- a classic inference/disclosure-control problem, mitigated by minimum group-size thresholds."
+    },
+    {
+      "id": "d92q07",
+      "type": "multiple_choice",
+      "question": "Why does pseudonymization NOT satisfy GDPR's 'right to be forgotten' on its own?",
+      "options": [
+        "Pseudonymization is not recognized as a legal concept under GDPR",
+        "The data remains 'personal data' under GDPR as long as re-identification is possible by anyone, including via a securely held key or lookup table",
+        "Pseudonymization is identical to full deletion",
+        "GDPR only applies to encrypted data"
+      ],
+      "answer": 1,
+      "explanation": "GDPR distinguishes pseudonymized data (re-identification possible with additional information) from anonymized data (re-identification impossible for anyone). Because pseudonymized data is still personal data in scope, merely pseudonymizing a record does not fulfill an erasure request -- true anonymization or deletion is required for full compliance."
+    },
+    {
+      "id": "d92q08",
+      "type": "multiple_choice",
+      "question": "A reporting_bot service account is shared by three different analysts who all log in with the same credential. What does this break?",
+      "options": [
+        "Nothing -- shared service accounts are a best practice for audit logging",
+        "Audit log attribution: the log shows 'reporting_bot did X' but cannot identify which specific person performed the action, undermining incident response",
+        "It improves security by reducing the number of credentials to manage",
+        "It automatically triggers GDPR violations"
+      ],
+      "answer": 1,
+      "explanation": "Audit logs are only useful for incident response if they can attribute an action to a specific accountable person. A shared credential collapses multiple humans into one logged identity, so 'who actually ran this query at 3 AM' becomes unanswerable -- exactly the kind of question an audit log is supposed to resolve."
+    }
+  ]
+}

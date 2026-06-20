@@ -1,0 +1,109 @@
+{
+  "day": 97,
+  "questions": [
+    {
+      "id": "d97q01",
+      "type": "multiple_choice",
+      "question": "In a bookings_flat table that stores room_type alongside every booking row, what normalization violation exists, and what's the risk?",
+      "options": [
+        "1NF violation -- room_type holds multiple values",
+        "3NF violation -- room_type depends on room_number (a non-key column), not directly on booking_id, so updating a room's type requires updating every booking row for that room or risking inconsistency",
+        "No violation -- this is a normal denormalized reporting table",
+        "2NF violation because booking_id is a composite key"
+      ],
+      "answer": 1,
+      "explanation": "room_type is transitively dependent on room_number rather than the booking's own key. The fix is moving room_type into a separate rooms table referenced by foreign key, so it's stored exactly once per room."
+    },
+    {
+      "id": "d97q02",
+      "type": "multiple_choice",
+      "question": "Why is the btree_gist extension required before creating EXCLUDE USING gist (room_id WITH =, during WITH &&)?",
+      "options": [
+        "It speeds up the query planner for unrelated joins",
+        "GiST indexes natively support range types but need btree_gist to also index ordinary scalar types like the integer room_id, so the equality and overlap checks can be combined in one index",
+        "It is required to use the TSTZRANGE data type at all",
+        "It enables row-level security on the bookings table"
+      ],
+      "answer": 1,
+      "explanation": "Without btree_gist, Postgres raises 'data type integer has no default operator class for access method gist' because GiST doesn't know how to index a plain integer for equality comparison until the extension supplies that operator class."
+    },
+    {
+      "id": "d97q03",
+      "type": "multiple_choice",
+      "question": "A booking is stored as '[2024-01-01 10:00, 2024-01-01 12:00)' and another booking for the same room is '[2024-01-01 12:00, 2024-01-01 14:00)'. Does the exclusion constraint reject the second insert?",
+      "options": [
+        "Yes, because both ranges contain 12:00",
+        "No, because the half-open [) convention excludes 12:00 from the first range, so the two ranges share no overlapping instant",
+        "Yes, but only if the rows are inserted in the same transaction",
+        "It depends on the server's timezone setting"
+      ],
+      "answer": 1,
+      "explanation": "Half-open ranges include the lower bound and exclude the upper bound. This lets back-to-back bookings share a boundary timestamp without being treated as overlapping -- exactly the behavior a scheduling system needs."
+    },
+    {
+      "id": "d97q04",
+      "type": "multiple_choice",
+      "question": "In the audit trigger example, why does the trigger use a WHEN (OLD.balance IS DISTINCT FROM NEW.balance) clause?",
+      "options": [
+        "To make the trigger run faster on large tables",
+        "To prevent the trigger body from inserting an audit row when an UPDATE touches the accounts table but doesn't actually change the balance value",
+        "Because triggers cannot reference OLD and NEW without a WHEN clause",
+        "To convert the trigger into a STATEMENT-level trigger"
+      ],
+      "answer": 1,
+      "explanation": "Without the WHEN guard, any UPDATE to accounts -- even one only changing the owner name -- would fire the trigger and write a spurious audit row claiming the balance changed (with old_balance equal to new_balance). The WHEN clause scopes the trigger to only the relevant case."
+    },
+    {
+      "id": "d97q05",
+      "type": "multiple_choice",
+      "question": "A sales table is PARTITION BY LIST (region) with explicit partitions for 'US' and 'EU' only, and no DEFAULT partition. What happens when you INSERT a row with region = 'APAC'?",
+      "options": [
+        "It is silently dropped",
+        "It is automatically routed to a new partition created on the fly",
+        "The INSERT fails with an error like 'no partition of relation \"sales\" found for row'",
+        "It is stored in the US partition as a fallback"
+      ],
+      "answer": 2,
+      "explanation": "Without a DEFAULT partition, any row whose partition key doesn't match an existing bound has nowhere to go and the INSERT fails outright. Creating a DEFAULT partition during initial design is the standard safety net against this."
+    },
+    {
+      "id": "d97q06",
+      "type": "multiple_choice",
+      "question": "Per the decision table in this lesson, which mechanism is recommended for 'no two rows with overlapping time ranges per room' specifically because constraints vs triggers differ in concurrency safety?",
+      "options": [
+        "An application-level check before INSERT",
+        "An EXCLUDE constraint, because it is enforced atomically by the database engine itself, closing the race condition that two concurrent transactions checking-then-inserting would otherwise hit",
+        "A STATEMENT-level AFTER trigger",
+        "A CHECK constraint with a subquery"
+      ],
+      "answer": 1,
+      "explanation": "Application-level 'check then insert' logic has a race condition: two concurrent requests can both pass the check before either writes. An EXCLUDE constraint pushes the conflict detection into the atomic INSERT operation itself, where no race window exists."
+    },
+    {
+      "id": "d97q07",
+      "type": "multiple_choice",
+      "question": "Why does this lesson warn that EXCLUDE constraints have a portability caveat across SQL dialects?",
+      "options": [
+        "EXCLUDE constraints are deprecated in newer Postgres versions",
+        "EXCLUDE constraints are a PostgreSQL-specific feature relying on GiST indexes and range types; migrating the same overlap-prevention logic to MySQL or SQL Server requires a different implementation (e.g., triggers or computed-column unique indexes)",
+        "EXCLUDE constraints only work with integer columns",
+        "EXCLUDE constraints require a paid Postgres license"
+      ],
+      "answer": 1,
+      "explanation": "EXCLUDE is not part of the ANSI SQL standard. Some managed cloud Postgres offerings also restrict the btree_gist extension needed alongside it, so teams should verify extension availability before designing around this pattern."
+    },
+    {
+      "id": "d97q08",
+      "type": "multiple_choice",
+      "question": "What privilege risk does a trigger function marked SECURITY DEFINER introduce?",
+      "options": [
+        "It runs slower than a normal function",
+        "It executes with the privileges of the function's owner rather than the caller, so a bug or injected input in that function runs with elevated access -- search_path should be set explicitly to prevent schema-spoofing",
+        "It cannot access the OLD or NEW row variables",
+        "It automatically grants the caller superuser access"
+      ],
+      "answer": 1,
+      "explanation": "SECURITY DEFINER is sometimes necessary (e.g., letting a low-privilege role write to a restricted audit table), but it means the function's code runs with elevated rights regardless of who calls it -- a real privilege-escalation risk if the function isn't carefully written and search_path-pinned."
+    }
+  ]
+}

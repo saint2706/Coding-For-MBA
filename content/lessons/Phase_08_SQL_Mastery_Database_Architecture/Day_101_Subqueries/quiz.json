@@ -1,0 +1,109 @@
+{
+  "day": 101,
+  "questions": [
+    {
+      "id": "d101q01",
+      "type": "multiple_choice",
+      "question": "Why does `WHERE id NOT IN (SELECT id FROM table_b)` return zero rows when table_b contains any NULL in its id column, regardless of other values?",
+      "options": [
+        "Because 5 != NULL evaluates to TRUE for every comparison",
+        "Because 5 != NULL evaluates to UNKNOWN (three-valued logic), and ANDing that UNKNOWN into every row's overall condition makes the whole condition UNKNOWN, which WHERE discards just like FALSE",
+        "Because NULL values are invisible to the database and get skipped automatically",
+        "Because NOT IN converts NULL to 0 before comparing"
+      ],
+      "answer": 1,
+      "explanation": "NOT IN expands to a chain of != comparisons ANDed together. Any single NULL in the list makes one comparison UNKNOWN, and UNKNOWN AND anything is at best UNKNOWN -- which WHERE treats as false. This poisons the result for every outer row, not just ones that would have matched the NULL."
+    },
+    {
+      "id": "d101q02",
+      "type": "multiple_choice",
+      "question": "Which statement best reflects this lesson's guidance on correlated subqueries versus JOINs?",
+      "options": [
+        "Correlated subqueries are always O(N^2) and should never be used",
+        "Modern optimizers often rewrite (decorrelate) correlated subqueries into single-pass semi-/grouped-joins automatically; real performance must be verified with EXPLAIN ANALYZE rather than assumed from the query's surface syntax",
+        "JOINs are always faster than subqueries on every database engine",
+        "EXISTS should always be preferred over every other construct in every situation"
+      ],
+      "answer": 1,
+      "explanation": "The naive 'runs once per outer row' mental model describes one possible execution strategy, not a guarantee. Decorrelation often eliminates the performance gap for common patterns; LIMIT-bearing or volatile-function subqueries are where per-row execution is more likely unavoidable."
+    },
+    {
+      "id": "d101q03",
+      "type": "multiple_choice",
+      "question": "Does `EXISTS (SELECT * FROM big_table WHERE ...)` need to scan every matching row in big_table?",
+      "options": [
+        "Yes, it must count all matches first before returning a result",
+        "No -- it stops as soon as it finds one matching row (short-circuiting), regardless of how many more matches exist",
+        "It always reads exactly half the table",
+        "It depends on whether an index exists on the filtered column"
+      ],
+      "answer": 1,
+      "explanation": "EXISTS only needs a yes/no answer, so the engine can stop scanning the instant it finds a single qualifying row. This is why EXISTS is typically cheaper than COUNT(*) > 0, which must finish counting before comparing."
+    },
+    {
+      "id": "d101q04",
+      "type": "multiple_choice",
+      "question": "A scalar subquery slot, such as `WHERE price = (SELECT price FROM products WHERE category_id = 5)`, is run against data where category_id 5 has 2 products. What happens?",
+      "options": [
+        "It silently returns the first matching row found",
+        "It silently returns NULL",
+        "It raises a runtime error: more than one row returned by a subquery used as an expression",
+        "It automatically averages the two prices"
+      ],
+      "answer": 2,
+      "explanation": "A scalar subquery slot requires exactly one row and one column. If the inner query returns more than one row, the engine raises a runtime error rather than guessing -- this can pass testing on data with coincidentally unique groups and fail later in production."
+    },
+    {
+      "id": "d101q05",
+      "type": "multiple_choice",
+      "question": "A developer writes `SELECT * FROM table_a a WHERE NOT EXISTS (SELECT 1 FROM table_b)`, omitting any reference to `a` inside the subquery. If table_b has any rows, what happens?",
+      "options": [
+        "It behaves identically to a correctly correlated NOT EXISTS",
+        "The subquery becomes a single global TRUE/FALSE check independent of a's value; since table_b is non-empty, EXISTS is always true and NOT EXISTS is always false, returning zero rows for every row in table_a",
+        "It raises a syntax error, since EXISTS subqueries must always be correlated",
+        "It only returns rows from table_a that also exist in table_b"
+      ],
+      "answer": 1,
+      "explanation": "Without a correlation condition, the subquery answers one global question instead of a per-row question. If table_b is non-empty, EXISTS is always true and NOT EXISTS is always false for every outer row -- a silent, all-or-nothing bug distinct from the NOT IN NULL trap."
+    },
+    {
+      "id": "d101q06",
+      "type": "multiple_choice",
+      "question": "`WHERE category_id IN (SELECT category_id FROM products WHERE price > 1000)` is rewritten as an INNER JOIN against that same subquery, without deduplicating it. If 3 expensive products share category_id = 1, what happens to Electronics rows in the output?",
+      "options": [
+        "Nothing changes; the rewrite is always row-count-safe",
+        "Each Electronics product row gets duplicated 3 times, once per matching subquery row, because the JOIN multiplies rows while the original IN/semi-join never did",
+        "The query returns an error",
+        "Electronics products disappear entirely from the result"
+      ],
+      "answer": 1,
+      "explanation": "IN/EXISTS are semi-joins: each outer row appears at most once regardless of match count. A naive JOIN rewrite without DISTINCT/GROUP BY on the subquery side reintroduces fanout -- exactly the duplication semi-join semantics were designed to avoid."
+    },
+    {
+      "id": "d101q07",
+      "type": "multiple_choice",
+      "question": "Why does `EXISTS (SELECT 1 FROM table_b b WHERE b.id = a.id)` use the literal 1 instead of a real column name?",
+      "options": [
+        "1 is required syntax and nothing else is valid",
+        "EXISTS only checks whether any row is returned by the subquery -- it never inspects the selected values, so the literal is a readability convention signaling that only existence matters",
+        "Using 1 makes the query run in constant time regardless of data size",
+        "SELECT * would produce a different, larger result set"
+      ],
+      "answer": 1,
+      "explanation": "EXISTS discards whatever the subquery's SELECT list returns; it only cares about row existence. SELECT 1, SELECT id, and SELECT * are functionally equivalent here and typically produce the same plan -- SELECT 1 is idiomatic, not a performance requirement."
+    },
+    {
+      "id": "d101q08",
+      "type": "multiple_choice",
+      "question": "Why can't the optimizer flatten a 'top 2 most recent orders per customer' LATERAL query into a single grouped JOIN the way it can for a simple correlated AVG() subquery?",
+      "options": [
+        "LATERAL queries are always slower by definition and cannot be optimized at all",
+        "A per-group LIMIT depends on per-group ordering and a row-count cutoff with no equivalent single aggregate function -- there is no aggregate that produces 'the top 2 rows,' so per-group evaluation is structurally required",
+        "LATERAL is deprecated syntax that should never be used",
+        "The optimizer always decorrelates every subquery, including this one"
+      ],
+      "answer": 1,
+      "explanation": "Simple correlated aggregates (AVG, SUM, COUNT) have a direct GROUP BY equivalent, which is why they decorrelate easily. 'Top N per group' has no single-aggregate equivalent -- it requires ranking and limiting within each group, which is exactly what LATERAL is designed to express directly."
+    }
+  ]
+}

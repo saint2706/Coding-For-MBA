@@ -1,0 +1,109 @@
+{
+  "day": 95,
+  "questions": [
+    {
+      "id": "d95q01",
+      "type": "multiple_choice",
+      "question": "An interviewer states 'design for 1M requests/sec' for a feature on a platform with 50M daily active users averaging 20 actions/day each. What is the senior response?",
+      "options": [
+        "Accept the number and start designing immediately",
+        "Derive an expected average and peak rate from the stated DAU and behavior, and question the 1M figure if it doesn't match (50M x 20 / 86400 seconds is roughly 11,500 req/s average, far below 1M)",
+        "Refuse to answer until the interviewer provides exact numbers",
+        "Assume 1M req/s is always correct because interviewers never make mistakes"
+      ],
+      "answer": 1,
+      "explanation": "The lesson's 'Justifying the Numbers' section stresses deriving scale from stated user counts and behavior rather than accepting ungrounded figures. Doing this math out loud is itself a strong interview signal -- it shows you don't take requirements at face value."
+    },
+    {
+      "id": "d95q02",
+      "type": "multiple_choice",
+      "question": "In the median SQL drill, why does the Engineering department's median (110000) differ so much from its average (136000)?",
+      "options": [
+        "There is a calculation error in the lesson",
+        "One outlier salary (250000) pulls the AVG upward, but the median -- being the middle value of the sorted, odd-count list -- is unaffected by extreme values",
+        "PERCENTILE_CONT always returns a higher value than AVG",
+        "Median and average are mathematically identical and should always match"
+      ],
+      "answer": 1,
+      "explanation": "With 5 sorted salaries (95000, 105000, 110000, 120000, 250000), the median is simply the middle value (110000), regardless of how extreme the largest value is. AVG, by contrast, is pulled upward by the 250000 outlier to 136000 -- exactly why median is preferred for skewed compensation data."
+    },
+    {
+      "id": "d95q03",
+      "type": "multiple_choice",
+      "question": "In the consecutive-logins query, what does subtracting a ROW_NUMBER() (ordered by date, partitioned by user) from the login_date accomplish?",
+      "options": [
+        "It sorts the dates in descending order",
+        "It produces the same constant value for every date inside one unbroken consecutive run and a different constant for each separate run, allowing GROUP BY to isolate each streak",
+        "It removes duplicate dates from the table",
+        "It converts the date to a Unix timestamp"
+      ],
+      "answer": 1,
+      "explanation": "This is the classic 'islands' trick: for a run of consecutive dates, date minus its position-in-sequence is constant across the whole run (since both increase by exactly 1 together), but jumps to a new constant after any gap -- letting GROUP BY treat each constant as one streak's identifier."
+    },
+    {
+      "id": "d95q04",
+      "type": "multiple_choice",
+      "question": "Why does the gaps-and-islands query need the condition `id < (SELECT MAX(id) FROM numbers)`?",
+      "options": [
+        "Without it, the query would throw a syntax error",
+        "Without it, the table's highest id would be incorrectly reported as the start of a phantom gap, since checking for 'id+1' beyond the max trivially returns NOT EXISTS even though there's no real gap there",
+        "It improves query performance with no semantic effect",
+        "It is only needed in MySQL, not Postgres"
+      ],
+      "answer": 1,
+      "explanation": "Boundary handling matters: the last row in the table will always satisfy 'no row with id+1 exists' since nothing exists beyond the known data -- but that's the end of the dataset, not a gap. The MAX(id) condition explicitly excludes this false positive."
+    },
+    {
+      "id": "d95q05",
+      "type": "multiple_choice",
+      "question": "The gaps-and-islands query returns only the START of each missing range (e.g., 4 and 7), not the full extent of multi-row gaps. Why?",
+      "options": [
+        "The query is broken and needs to be rewritten entirely",
+        "The query's logic specifically identifies each id whose immediate successor is missing and reports that successor -- it was never designed to report a gap's full range, only its start, by construction",
+        "Gaps can never span more than one missing value in SQL",
+        "PostgreSQL does not support reporting ranges"
+      ],
+      "answer": 1,
+      "explanation": "The query checks 'does id+1 exist?' for each row and reports id+1 when it doesn't -- this is inherently a 'find the start of the next gap' check, not a 'find the full extent of the gap' check. Reporting a full range requires an additional step, such as also finding the next existing id after the gap."
+    },
+    {
+      "id": "d95q06",
+      "type": "multiple_choice",
+      "question": "In the Like Counter system design, what does buffering likes in Redis and flushing to Postgres every 10 seconds make the displayed count?",
+      "options": [
+        "Always perfectly real-time accurate",
+        "Eventually consistent -- it may lag the true count by up to the flush interval, an acceptable tradeoff here but not for something like a financial balance",
+        "Permanently incorrect with no way to fix it",
+        "Strongly consistent, identical to a synchronous write"
+      ],
+      "answer": 1,
+      "explanation": "Buffering and periodic flushing trades immediate consistency for write efficiency. The displayed count converges to correctness after the flush interval -- this eventual-consistency tradeoff is fine for a like counter, but would be unacceptable for a use case requiring strict correctness at every instant."
+    },
+    {
+      "id": "d95q07",
+      "type": "multiple_choice",
+      "question": "Why must a URL shortener using a 7-character hash prefix still handle hash collisions explicitly, even though 62^7 is about 3.5 trillion combinations?",
+      "options": [
+        "62^7 combinations make collisions mathematically impossible, so no handling is needed",
+        "A large keyspace makes collisions rare, not impossible -- a robust system still checks for an existing code before committing and has a fallback (retry or extend the hash) for when a collision does occur",
+        "Collisions only happen in NoSQL databases, never in this kind of system",
+        "The number of combinations is irrelevant to collision risk"
+      ],
+      "answer": 1,
+      "explanation": "A large hash space reduces collision probability but never eliminates it. Production systems still check for an existing row with that code before committing a new one, and have an explicit fallback path (retry with a different slice of the hash, or lengthen the code) rather than assuming collisions can't happen."
+    },
+    {
+      "id": "d95q08",
+      "type": "multiple_choice",
+      "question": "The lesson asks learners to turn a UrbanHop capstone decision (from Days 93-94) into a STAR story. Why is this preferred over a generic, made-up interview example?",
+      "options": [
+        "Generic examples are always factually wrong",
+        "A real, specific decision (with a named rejected alternative and a measured result) is far more credible and detailed under interviewer follow-up questions than a generic or hypothetical story",
+        "STAR stories are only valid if they involve a database",
+        "UrbanHop stories are required by law for technical interviews"
+      ],
+      "answer": 1,
+      "explanation": "Interviewers probe behavioral answers with follow-up questions ('what would you do differently?', 'how did the team react?'). A real story grounded in an actual decision you made and can defend in detail holds up far better under that scrutiny than a generic or fabricated example."
+    }
+  ]
+}

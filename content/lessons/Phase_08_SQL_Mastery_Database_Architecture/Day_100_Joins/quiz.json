@@ -1,0 +1,109 @@
+{
+  "day": 100,
+  "questions": [
+    {
+      "id": "d100q01",
+      "type": "multiple_choice",
+      "question": "A LEFT JOIN between customers (4 rows) and orders (4 rows, one referencing a nonexistent customer) returns how many rows if one customer has 2 matching orders, one has 1, and two have 0?",
+      "options": [
+        "4 rows, one per customer",
+        "5 rows: every customer at least once, the 2-order customer appearing twice, the 0-order customers once each with NULLs",
+        "8 rows, the full Cartesian product",
+        "1 row, only the perfect matches"
+      ],
+      "answer": 1,
+      "explanation": "LEFT JOIN preserves every left-table row at least once. A customer with 2 matches appears twice; customers with 0 matches appear once with NULLs in the right table's columns. The orphaned order does not appear, since the LEFT JOIN is anchored on customers."
+    },
+    {
+      "id": "d100q02",
+      "type": "multiple_choice",
+      "question": "Why is 'Hash Join puts all NULLs into one bucket, causing slow matches' misleading as a blanket explanation?",
+      "options": [
+        "It's false; NULLs are never hashed at all",
+        "NULL join-key rows never actually match anything in a standard equi-join (NULL = NULL is UNKNOWN), so the real skew problem is any heavily duplicated key value overloading a bucket -- not something NULL-specific",
+        "NULLs always cause a runtime error in a Hash Join",
+        "The statement is entirely correct as written"
+      ],
+      "answer": 1,
+      "explanation": "The myth conflates bucketing (true for any duplicated key, NULL included) with matching (false for NULL, since NULL = NULL is UNKNOWN, not TRUE). NULL keys never produce a match, so a NULL-heavy bucket wastes bucketing/comparison work rather than producing wrong matches."
+    },
+    {
+      "id": "d100q03",
+      "type": "multiple_choice",
+      "question": "In `SELECT u1.name, u2.name FROM users u1 JOIN users u2 ON u1.email = u2.email WHERE u1.id < u2.id`, what does `u1.id < u2.id` accomplish that `u1.id != u2.id` would not?",
+      "options": [
+        "Nothing different -- they are equivalent",
+        "It eliminates both self-matches AND the redundant mirror pair (e.g., keeping only (Alice,Carla), not also (Carla,Alice))",
+        "It is required syntax for any self-join",
+        "It sorts the final output alphabetically"
+      ],
+      "answer": 1,
+      "explanation": "!= removes self-matches but still returns both orderings of every duplicate pair. < keeps exactly one canonical direction per pair while also excluding self-matches, since a row's id is never less than itself."
+    },
+    {
+      "id": "d100q04",
+      "type": "multiple_choice",
+      "question": "A query does `customers c LEFT JOIN orders o ON c.id = o.customer_id WHERE o.amount > 10`. Why does this silently exclude customers with zero orders?",
+      "options": [
+        "LEFT JOIN syntax does not support WHERE clauses",
+        "Unmatched rows get NULL for o.amount, and NULL > 10 evaluates to UNKNOWN, which WHERE treats as false -- discarding the rows the LEFT JOIN was meant to preserve",
+        "The condition should be written as o.amount IS NOT NULL instead",
+        "RIGHT JOIN must be used instead of LEFT JOIN for this query"
+      ],
+      "answer": 1,
+      "explanation": "A filter on the nullable side's column placed in WHERE runs after the join and discards exactly the NULL-filled rows LEFT JOIN preserved -- effectively turning it into an INNER JOIN. The fix is moving the condition into the JOIN...ON clause."
+    },
+    {
+      "id": "d100q05",
+      "type": "multiple_choice",
+      "question": "What happens when a Hash Join's build-side hash table exceeds work_mem in PostgreSQL?",
+      "options": [
+        "The query immediately fails with an out-of-memory error",
+        "Postgres spills batches of the hash table to temporary disk files, visible as Disk Usage in EXPLAIN (ANALYZE, BUFFERS), which is markedly slower than staying in memory",
+        "The database automatically and silently switches to a Merge Join with no performance cost",
+        "work_mem has no real effect on Hash Join behavior"
+      ],
+      "answer": 1,
+      "explanation": "Hash Joins need the build side to fit in work_mem for in-memory performance. When it doesn't, Postgres spills to disk in batches, which is a strong signal in EXPLAIN ANALYZE output to raise work_mem or reduce the build side's size."
+    },
+    {
+      "id": "d100q06",
+      "type": "multiple_choice",
+      "question": "Why is `SET enable_hashjoin = OFF` described as diagnostic-only and never a production fix?",
+      "options": [
+        "It has no actual effect on query plans",
+        "It disables an entire planner algorithm for every query on that session until reset, so forgetting to RESET it can silently degrade unrelated future queries",
+        "It requires superuser privileges and cannot be used by analysts",
+        "It is removed in PostgreSQL 14 and later"
+      ],
+      "answer": 1,
+      "explanation": "Disabling an algorithm forces a controlled comparison against a worse plan. Left enabled afterward, it removes a tool from the optimizer for every subsequent query on that connection -- a classic accidental regression after debugging."
+    },
+    {
+      "id": "d100q07",
+      "type": "multiple_choice",
+      "question": "`SELECT * FROM customers c WHERE EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id)` is run against a customer with 5 matching orders. How many rows does that customer produce?",
+      "options": [
+        "5 rows, one per matching order",
+        "1 row -- EXISTS only answers a yes/no existence question and never multiplies rows the way a JOIN would",
+        "0 rows, because EXISTS requires exactly one match",
+        "An error, because EXISTS is not allowed in WHERE"
+      ],
+      "answer": 1,
+      "explanation": "A semi-join (EXISTS) checks whether at least one match exists, returning only left-table columns and at most one row per left row, regardless of match count. This is the key semantic difference from an INNER JOIN, which would fan out to 5 rows."
+    },
+    {
+      "id": "d100q08",
+      "type": "multiple_choice",
+      "question": "`SELECT * FROM A, B` is run where A has 2,000 rows and B has 3,000 rows, with no WHERE or ON condition. What is the result?",
+      "options": [
+        "5,000 rows, the sum of both tables",
+        "6,000,000 rows (2,000 x 3,000) -- a comma-join with no condition is a Cartesian product pairing every row of A with every row of B",
+        "0 rows, since there is no join condition to satisfy",
+        "3,000 rows, the size of the larger table"
+      ],
+      "answer": 1,
+      "explanation": "Without an ON/WHERE condition, a comma-separated FROM list (equivalent to CROSS JOIN) produces every possible row pairing -- the product of both row counts. This is the most common accidental cause of a runaway query."
+    }
+  ]
+}

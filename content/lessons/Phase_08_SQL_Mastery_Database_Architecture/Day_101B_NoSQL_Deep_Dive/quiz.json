@@ -1,0 +1,109 @@
+{
+  "day": "101B",
+  "questions": [
+    {
+      "id": "d101bq01",
+      "type": "multiple_choice",
+      "question": "When does the CAP theorem's trade-off actually apply?",
+      "options": [
+        "At all times, for every distributed database, regardless of network state",
+        "Only during an actual network partition — outside of a partition, a system can provide both Consistency and Availability",
+        "Only for single-node deployments",
+        "Only when using Cassandra or another AP-leaning database"
+      ],
+      "answer": 1,
+      "explanation": "CAP is frequently misquoted as a permanent 'pick two of three' menu. In reality, the theorem only forces a choice between Consistency and Availability when an actual network partition has occurred. When the network is healthy, a well-built distributed system can serve both consistent and available responses simultaneously."
+    },
+    {
+      "id": "d101bq02",
+      "type": "multiple_choice",
+      "question": "What does PACELC add to the CAP theorem that makes it more practically useful day-to-day?",
+      "options": [
+        "It replaces Partition Tolerance with a fourth property called Performance",
+        "It describes the Latency-vs-Consistency trade-off that applies during normal operation, when there is NO partition",
+        "It proves that CAP theorem is incorrect",
+        "It only applies to relational databases, not NoSQL"
+      ],
+      "answer": 1,
+      "explanation": "PACELC (Abadi, 2012) extends CAP: 'if Partition, choose Availability or Consistency; Else (no partition), choose Latency or Consistency.' Since partitions are rare but every request pays a latency/consistency cost, PACELC describes the trade-off that governs system behavior most of the time."
+    },
+    {
+      "id": "d101bq03",
+      "type": "multiple_choice",
+      "question": "A Redis GET call from an application server typically takes about 0.3ms end-to-end. Why is this NOT 'nanosecond latency' even though Redis is in-memory?",
+      "options": [
+        "Redis is actually disk-backed, not in-memory",
+        "The in-memory lookup itself is nanosecond-scale, but application-observed latency also includes the network round-trip, serialization, and connection overhead, which dominate the total time",
+        "Redis always replicates synchronously to disk before responding",
+        "0.3ms is actually slower than a typical SQL query"
+      ],
+      "answer": 1,
+      "explanation": "In-memory data structure access inside the Redis process is nanosecond-to-low-microsecond scale. But the client never observes that number directly — it observes the full round trip, which includes network transit, TCP/connection handling, and serialization. That total is typically sub-millisecond, not nanosecond."
+    },
+    {
+      "id": "d101bq04",
+      "type": "multiple_choice",
+      "question": "Why is it inaccurate to say 'MongoDB is CP' or 'Cassandra is AP' without qualification?",
+      "options": [
+        "Both databases are actually always strictly consistent",
+        "Both databases let you tune the consistency/availability trade-off per query (writeConcern/readConcern in MongoDB, consistency levels in Cassandra), so a single product can behave differently depending on configuration",
+        "CAP labels only apply to relational databases",
+        "Neither database supports replication, so CAP doesn't apply to them"
+      ],
+      "answer": 1,
+      "explanation": "MongoDB's writeConcern/readConcern settings and Cassandra's per-query consistency levels (ONE, QUORUM, ALL) mean the same database can lean more toward C or more toward A depending on how a specific query or deployment is configured. A fixed CAP label describes a configuration, not an immutable property of the product."
+    },
+    {
+      "id": "d101bq05",
+      "type": "multiple_choice",
+      "question": "In a Cassandra table with `PRIMARY KEY ((customer_id), order_date, order_id)`, what is the role of `customer_id` versus `order_date`?",
+      "options": [
+        "Both are clustering keys that sort data within a partition",
+        "customer_id is the partition key (determines which node owns the row); order_date and order_id are clustering keys (determine sort order within that partition)",
+        "customer_id is just a regular column with no special meaning",
+        "order_date is the partition key because it appears in the CLUSTERING ORDER clause"
+      ],
+      "answer": 1,
+      "explanation": "The parentheses around customer_id mark it as the partition key — Cassandra hashes it to decide which node(s) store the row. order_date and order_id, listed afterward without their own parentheses, are clustering keys that determine the on-disk sort order of rows within that partition, enabling fast sorted range reads for a single customer."
+    },
+    {
+      "id": "d101bq06",
+      "type": "multiple_choice",
+      "question": "What is a 'cache stampede' and what is a common mitigation?",
+      "options": [
+        "A cache that fills up too quickly with unrelated keys; mitigated by increasing maxmemory",
+        "A popular cache key expires and many concurrent requests simultaneously miss and hit the database at once; mitigated by request coalescing/locking or TTL jitter",
+        "A Redis cluster losing quorum during a network partition; mitigated by adding more replicas",
+        "A MongoDB document growing past the 16MB limit; mitigated by sharding"
+      ],
+      "answer": 1,
+      "explanation": "Cache stampede happens when a hot key expires and a burst of concurrent requests all miss the cache at the same instant, overwhelming the backing database. Common mitigations include having only the first request refresh the cache while others wait (request coalescing/locking) or randomizing TTLs (jitter) so popular keys don't all expire simultaneously."
+    },
+    {
+      "id": "d101bq07",
+      "type": "multiple_choice",
+      "question": "Why are secondary indexes on non-partition-key columns risky in Cassandra at scale?",
+      "options": [
+        "Cassandra does not support secondary indexes at all",
+        "A secondary index query typically requires querying every node and filtering locally, effectively becoming a full cluster scan for high-cardinality or frequently filtered columns",
+        "Secondary indexes are automatically converted into partition keys",
+        "They only work if the table has no clustering key"
+      ],
+      "answer": 1,
+      "explanation": "Unlike a partition-key query, which routes directly to the owning node(s), a secondary index query has to fan out across the whole cluster and filter locally on each node. This works fine for very low-cardinality columns but becomes a serious performance problem at scale — the common production fix is to build a denormalized table keyed by the column you actually need to query."
+    },
+    {
+      "id": "d101bq08",
+      "type": "multiple_choice",
+      "question": "What is the cache-aside pattern, and what risk does it introduce that pure TTL expiry alone does not fully solve?",
+      "options": [
+        "The cache proactively pushes updates to the application; the risk is over-fetching",
+        "The application checks the cache first, falls back to the source of truth on a miss, and populates the cache afterward; the risk is serving stale data for up to the TTL window after the underlying data changes",
+        "Redis automatically synchronizes with the database on every write; there is no staleness risk",
+        "Cache-aside requires no TTL at all since the cache is always authoritative"
+      ],
+      "answer": 1,
+      "explanation": "In cache-aside, the application owns the cache-population logic: check cache, fall back to source on miss, populate cache, return. Because the cache is only invalidated by TTL expiry by default, a write to the underlying data source does not automatically refresh the cache — strategies like write-through invalidation or versioned keys are needed to bound the staleness window more tightly."
+    }
+  ]
+}

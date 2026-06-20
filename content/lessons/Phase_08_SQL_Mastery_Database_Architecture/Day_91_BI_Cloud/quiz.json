@@ -1,0 +1,109 @@
+{
+  "day": 91,
+  "questions": [
+    {
+      "id": "d91q01",
+      "type": "multiple_choice",
+      "question": "A table is partitioned by `event_date`. A query filters `WHERE user_id = 5` with no date filter. Does partition pruning occur?",
+      "options": [
+        "Yes, every engine automatically infers the date range from the user_id",
+        "No -- the engine must scan every partition because the filter doesn't reference the partition key",
+        "Only on weekends",
+        "Yes, but only on the first partition"
+      ],
+      "answer": 1,
+      "explanation": "Pruning only works when the filter constrains the partition key itself. Filtering on an unrelated column (user_id) gives the planner no information about which date partitions can be skipped, so it must scan all of them."
+    },
+    {
+      "id": "d91q02",
+      "type": "multiple_choice",
+      "question": "Why is 'reads only 1/365th of the data, 99.7% cost saving' not a universal fact?",
+      "options": [
+        "It is always exactly true for any partitioned table",
+        "It assumes uniform daily partition sizes, a single-partition filter, and a per-byte pricing model -- none of which hold universally across engines or query shapes",
+        "Partition pruning never actually reduces scanned bytes",
+        "Only Snowflake supports this kind of math"
+      ],
+      "answer": 1,
+      "explanation": "The 1/365th figure is a theoretical ceiling under specific assumptions: 365 equal-sized partitions and an exact single-day filter. Real partitions are rarely perfectly uniform, queries often add other predicates, and not every engine bills by bytes scanned (Postgres and Snowflake's per-second compute billing don't directly reward bytes-scanned reduction the way BigQuery on-demand pricing does)."
+    },
+    {
+      "id": "d91q03",
+      "type": "multiple_choice",
+      "question": "What is the main difference between Postgres `CLUSTER` and Snowflake `CLUSTER BY`?",
+      "options": [
+        "They behave identically",
+        "Postgres CLUSTER is a one-time manual reorder that decays as new rows are inserted; Snowflake CLUSTER BY is maintained continuously by an automated background service at ongoing cost",
+        "Snowflake clustering is always free",
+        "Postgres automatically re-clusters after every transaction"
+      ],
+      "answer": 1,
+      "explanation": "Postgres requires re-running CLUSTER manually as inserts accumulate outside sorted order ('decay'). Snowflake's clustering service continuously re-sorts micro-partitions in the background, consuming credits proportional to write volume -- a real ongoing cost, just billed differently than Postgres's manual maintenance windows."
+    },
+    {
+      "id": "d91q04",
+      "type": "multiple_choice",
+      "question": "A materialized view aggregates 1 billion rows. After 5 new rows are inserted into the source table, what determines whether the view updates cheaply?",
+      "options": [
+        "All materialized views update cheaply regardless of engine or query shape",
+        "Whether the engine and view definition support true incremental refresh for that specific aggregate/query shape -- not every materialized view qualifies",
+        "The size of the source table only",
+        "Materialized views never need to be refreshed"
+      ],
+      "answer": 1,
+      "explanation": "Incremental refresh is conditional: it depends on the engine supporting it and the query being eligible (e.g., SUM/COUNT often qualify; certain DISTINCT or window-function patterns may force a full recompute). A materialized view that isn't eligible for incremental refresh falls back to a full, expensive recompute on every refresh."
+    },
+    {
+      "id": "d91q05",
+      "type": "multiple_choice",
+      "question": "What is the risk of partitioning a table by minute instead of by day for a moderate-volume table?",
+      "options": [
+        "No risk -- finer partitions are always better",
+        "Too many tiny partitions add metadata/planning overhead that can outweigh the scan-time savings",
+        "Minute-level partitions are illegal in SQL",
+        "It makes clustering impossible"
+      ],
+      "answer": 1,
+      "explanation": "Each partition carries fixed overhead (catalog entries, planning cost to enumerate candidates). Past a few thousand partitions, the cost of just planning the query can exceed the savings from pruning -- the classic 'too many tiny partitions' pitfall."
+    },
+    {
+      "id": "d91q06",
+      "type": "multiple_choice",
+      "question": "90% of rows in a clustered/partitioned table have a NULL or default key value. What problem does this cause in a distributed engine?",
+      "options": [
+        "No problem -- NULLs are always handled efficiently",
+        "Data skew: the worker handling that key/partition does 90% of the work while others sit idle, and total runtime is bound by the slowest worker",
+        "The query will return incorrect results",
+        "It automatically gets filtered out"
+      ],
+      "answer": 1,
+      "explanation": "Distributed processing parallelizes by partition/key. A skewed distribution means one worker carries a disproportionate share of the data, so the job's wall-clock time is bound by that slowest worker rather than the average across workers."
+    },
+    {
+      "id": "d91q07",
+      "type": "multiple_choice",
+      "question": "Why can comparing a 'before' query immediately followed by an 'after' (optimized) query overstate the improvement?",
+      "options": [
+        "It never overstates anything -- back-to-back comparisons are always fair",
+        "The second query benefits from cache warmth left behind by the first run, making the comparison biased in the optimized query's favor",
+        "SQL engines always run the second query slower deliberately",
+        "EXPLAIN ANALYZE always lies about timing"
+      ],
+      "answer": 1,
+      "explanation": "Running the baseline first warms the cache (buffer pool, OS page cache, etc.), so the immediately following optimized query gets an unfair advantage. Fair comparisons require alternating run order, discarding cold first runs, or comparing buffer/IO counts rather than wall-clock time alone."
+    },
+    {
+      "id": "d91q08",
+      "type": "multiple_choice",
+      "question": "When is `APPROX_COUNT_DISTINCT` (HyperLogLog) an appropriate choice?",
+      "options": [
+        "For financial audits requiring exact penny-level accuracy",
+        "For high-traffic analytics like weekly active users, where a small bounded error is an acceptable trade for large compute/cost savings",
+        "Never -- approximate functions should not be used in production",
+        "Only on tables smaller than 1,000 rows"
+      ],
+      "answer": 1,
+      "explanation": "HLL trades a small, bounded error rate (commonly cited around 1-2% relative error at typical precision settings, not a fixed 0.1%) for large reductions in compute cost on high-cardinality distinct counts. It is inappropriate wherever exact counts are legally or financially required, such as billing or audits."
+    }
+  ]
+}

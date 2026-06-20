@@ -1,0 +1,109 @@
+{
+  "day": 93,
+  "questions": [
+    {
+      "id": "d93q01",
+      "type": "multiple_choice",
+      "question": "In this lesson, 'TDD' stands for Technical Design Doc. Why is this disambiguation important?",
+      "options": [
+        "It isn't important — TDD always means the same thing everywhere",
+        "Because 'TDD' also commonly means Test-Driven Development, a software engineering practice, and confusing the two in a design review or interview signals a gap in vocabulary",
+        "Because TDD is a deprecated term no one uses anymore",
+        "Because Technical Design Docs are only used in database architecture, never in other engineering contexts"
+      ],
+      "answer": 1,
+      "explanation": "Test-Driven Development (write a failing test, then code to pass it) is a widely known software practice with the same acronym. An architecture design doc is a different artifact entirely. Using the acronym without context in an interview or design review can create real confusion."
+    },
+    {
+      "id": "d93q02",
+      "type": "multiple_choice",
+      "question": "UrbanHop's 'find nearest available driver' query must run in well under a second, thousands of times per minute. Which factor matters MOST when picking the engine for this specific query, per the lesson's decision table?",
+      "options": [
+        "Whichever engine has the cheapest list price",
+        "The query's latency and access-pattern requirements (spatial nearest-neighbor lookups), not just a generic 'NoSQL is fast' heuristic",
+        "Whichever engine the lesson lists first",
+        "Whichever engine supports the most programming languages"
+      ],
+      "answer": 1,
+      "explanation": "The lesson's decision table stresses matching engine choice to the actual access pattern and latency budget (e.g., PostGIS or Redis geo commands for spatial nearest-neighbor) rather than picking from category stereotypes like 'NoSQL = fast, SQL = slow.'"
+    },
+    {
+      "id": "d93q03",
+      "type": "multiple_choice",
+      "question": "Why does the lesson reject using DynamoDB as UrbanHop's only database, even though DynamoDB scales writes very well?",
+      "options": [
+        "DynamoDB is always more expensive than every alternative",
+        "DynamoDB doesn't support ad hoc multi-row aggregation/joins as naturally as a relational or columnar engine, which UrbanHop needs for finance/ops reporting queries like 'total miles by city by month'",
+        "DynamoDB cannot be used outside AWS",
+        "DynamoDB has no concept of a primary key"
+      ],
+      "answer": 1,
+      "explanation": "The rejection is access-pattern-specific: DynamoDB is excellent for high-throughput key-based reads/writes but awkward for the kind of ad hoc, multi-dimension aggregation that monthly reporting needs. This is presented as a tradeoff, not a blanket dismissal of DynamoDB."
+    },
+    {
+      "id": "d93q04",
+      "type": "multiple_choice",
+      "question": "What is the difference between sharding and partitioning as defined in this lesson?",
+      "options": [
+        "They are exactly the same technique with different names",
+        "Sharding splits data across separate database server instances; partitioning splits one logical table into physical sub-tables within a single instance. They can be combined.",
+        "Partitioning is only used for backups, sharding is only used for security",
+        "Sharding is deprecated in favor of partitioning"
+      ],
+      "answer": 1,
+      "explanation": "Sharding addresses horizontal scale across machines (e.g., a city-based shard per region). Partitioning addresses query pruning and maintenance within one database instance (e.g., monthly range partitions on the trips table within the NY shard). UrbanHop's example combines both."
+    },
+    {
+      "id": "d93q05",
+      "type": "multiple_choice",
+      "question": "UrbanHop adds a denormalized `current_city` column to the `drivers` table to speed up nearby-driver lookups. What ongoing cost does this introduce?",
+      "options": [
+        "None — denormalization has no downsides",
+        "Every code path that updates a driver's location must also remember to update `current_city`, or the cached value drifts out of sync with reality",
+        "It removes the need for any indexes on the table",
+        "It automatically improves write performance as a side effect"
+      ],
+      "answer": 1,
+      "explanation": "Denormalization trades write-side consistency risk for read-side speed. If even one update path forgets to refresh the cached column, the data becomes silently wrong — exactly the kind of tradeoff that belongs in an Architecture Decision Log entry, not treated as a free win."
+    },
+    {
+      "id": "d93q06",
+      "type": "multiple_choice",
+      "question": "UrbanHop must support a GDPR-style 'right to erasure' for rider data, but must also retain anonymized trip counts and revenue for financial reporting. What does the lesson recommend?",
+      "options": [
+        "Hard-delete all rows referencing the rider immediately upon request",
+        "Ignore the deletion request since finance data takes priority",
+        "Anonymize the rider's personally identifying data while preserving aggregate counts/revenue figures needed for financial reporting",
+        "Move the data to a different country to avoid the regulation"
+      ],
+      "answer": 2,
+      "explanation": "The acceptance tests require explicitly resolving the conflict between 'right to erasure' and financial retention requirements — typically via anonymization (severing the link to the identified individual) rather than a hard delete that would also destroy required financial records."
+    },
+    {
+      "id": "d93q07",
+      "type": "multiple_choice",
+      "question": "Why does the lesson ask for a capacity estimate (e.g., '10,000 drivers x 1 ping/5 sec = 2,000 writes/sec') rather than just picking an engine?",
+      "options": [
+        "Capacity math is just busywork with no real use",
+        "Because the right engine and indexing strategy depend on actual projected load — a number you can defend, not an arbitrary round figure — and this estimate also informs the cost ceiling",
+        "Because every engine performs identically regardless of load",
+        "Because capacity estimates replace the need for an ERD"
+      ],
+      "answer": 1,
+      "explanation": "Architecture decisions are only defensible when grounded in real, shown arithmetic. Knowing you need to sustain ~2,000 writes/sec (and the resulting ~6TB/year before archival) changes which engines and sharding strategies are even viable, and lets you set a realistic cost ceiling."
+    },
+    {
+      "id": "d93q08",
+      "type": "multiple_choice",
+      "question": "What must every entry in the Architecture Decision Log (ADL) include, per the capstone requirement?",
+      "options": [
+        "Only the final decision — alternatives don't need to be documented",
+        "Decision and context, tradeoffs, at least two rejected alternatives with reasons, and expected operational impact",
+        "A cost estimate only, with no mention of tradeoffs",
+        "A signature from the CEO"
+      ],
+      "answer": 1,
+      "explanation": "The ADL format requires four parts: the decision/context, the tradeoffs accepted, at least two specifically rejected alternatives with concise reasons, and the expected operational impact (reliability, on-call burden, recovery time, cost). Skipping rejected alternatives is one of the most common shortcuts learners take — and exactly what the rubric checks for."
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "day": 96,
+  "questions": [
+    {
+      "id": "d96q01",
+      "type": "multiple_choice",
+      "question": "A denormalized orders table stores customer_email alongside every order row for that customer. What normalization rule does this violate, and why?",
+      "options": [
+        "1NF, because email addresses are not atomic values",
+        "3NF, because customer_email is transitively dependent on customer_name (a non-key column) rather than directly on the order's primary key",
+        "2NF, because order_id is not a composite key",
+        "No rule is violated as long as the email is spelled consistently"
+      ],
+      "answer": 1,
+      "explanation": "customer_email depends on which customer placed the order, not on the order itself -- that's a transitive dependency through a non-key column, the defining 3NF violation. It creates an update-anomaly risk: if email changes, every order row for that customer must be updated or the data becomes inconsistent."
+    },
+    {
+      "id": "d96q02",
+      "type": "multiple_choice",
+      "question": "Session 1 runs BEGIN; UPDATE accounts SET balance = 999 WHERE id = 1; and does not commit. Session 2 immediately runs SELECT balance FROM accounts WHERE id = 1; under the default Read Committed isolation level. What happens?",
+      "options": [
+        "Session 2 blocks until Session 1 commits or rolls back",
+        "Session 2 returns immediately with the old balance, because its snapshot doesn't include Session 1's uncommitted change",
+        "Session 2 raises a deadlock error",
+        "Session 2 returns NULL because the row is locked"
+      ],
+      "answer": 1,
+      "explanation": "MVCC means readers never block on writers. Session 2's SELECT reads the most recent committed version of the row -- it doesn't wait for or see Session 1's in-progress, uncommitted update."
+    },
+    {
+      "id": "d96q03",
+      "type": "multiple_choice",
+      "question": "Two sessions each update a different row, then each tries to update the OTHER session's row in the opposite order. After about a second, what does Postgres do?",
+      "options": [
+        "Both transactions hang forever until manually killed",
+        "Postgres detects the deadlock, picks one transaction as a victim, and rolls it back with a 'deadlock detected' error; the other proceeds",
+        "Both transactions are automatically committed in the order they started",
+        "Postgres merges the two transactions into one"
+      ],
+      "answer": 1,
+      "explanation": "Postgres runs periodic deadlock detection (default ~1s). When it finds a circular wait, it aborts one transaction (the victim) so the other can proceed. The victim's session must still issue ROLLBACK to reset client-side transaction state."
+    },
+    {
+      "id": "d96q04",
+      "type": "multiple_choice",
+      "question": "Why is the claim 'Serializable: Strict Execution. Slowest' an overstatement for PostgreSQL specifically?",
+      "options": [
+        "Serializable doesn't exist in Postgres",
+        "Postgres implements Serializable using optimistic Serializable Snapshot Isolation (SSI), which runs transactions concurrently and only aborts on detected hazards -- so its overhead scales with contention, not a fixed 'slowest' penalty",
+        "Serializable is actually the fastest isolation level in all cases",
+        "Postgres ignores the SERIALIZABLE keyword and silently uses Read Committed"
+      ],
+      "answer": 1,
+      "explanation": "SSI doesn't lock everything up front; it tracks read/write dependencies and aborts only the transactions involved in a genuine serialization hazard. Under low contention, overhead is modest. Under high contention, the cost shows up as retries, not necessarily as higher per-attempt latency than other approaches."
+    },
+    {
+      "id": "d96q05",
+      "type": "multiple_choice",
+      "question": "A report runs the same range query (WHERE status = 'pending') twice in one transaction and gets a different set of rows the second time because another session inserted a new pending row in between. What anomaly is this?",
+      "options": [
+        "Dirty read",
+        "Phantom read",
+        "Deadlock",
+        "Lost update"
+      ],
+      "answer": 1,
+      "explanation": "A changing ROW SET for the same range predicate (not just a changing value in an existing row) is specifically a phantom read. Postgres's Repeatable Read isolation level prevents this by taking one snapshot for the whole transaction, even though the SQL standard only mandates phantom-read prevention at Serializable."
+    },
+    {
+      "id": "d96q06",
+      "type": "multiple_choice",
+      "question": "A psql session runs BEGIN; SELECT 1; and the developer forgets to COMMIT or ROLLBACK, leaving it open for six hours. What production risk does this create?",
+      "options": [
+        "None -- a read-only SELECT can't cause problems",
+        "It can block autovacuum from reclaiming dead tuples database-wide, because VACUUM cannot remove row versions that any open transaction's snapshot might still need to see",
+        "It automatically times out after 5 minutes by default",
+        "It only affects the table the SELECT referenced"
+      ],
+      "answer": 1,
+      "explanation": "VACUUM must keep any dead tuple visible to the OLDEST open transaction's snapshot, even a read-only one. A long-idle-in-transaction session can stall vacuum cleanup across the whole database, leading to bloat and, in extreme cases, contributing to transaction ID wraparound risk."
+    },
+    {
+      "id": "d96q07",
+      "type": "multiple_choice",
+      "question": "What actually happens if a database administrator disables fsync (not just synchronous_commit) for a performance boost, and the server loses power?",
+      "options": [
+        "Only the last few seconds of commits are lost, otherwise the database starts up fine",
+        "The OS/disk write cache may not have flushed WAL data at all, and Postgres can find a corrupted, partially-written data file on restart -- recovery can fail outright, requiring a restore from backup",
+        "Nothing changes; fsync only affects read performance",
+        "Postgres automatically re-enables fsync after a crash"
+      ],
+      "answer": 1,
+      "explanation": "Disabling fsync removes the guarantee that WAL writes physically reach durable storage before Postgres considers them safe. This is riskier than disabling synchronous_commit (which only risks losing the most recent commits) -- fsync=off can leave data files in a corrupted state that crash recovery cannot cleanly repair."
+    },
+    {
+      "id": "d96q08",
+      "type": "multiple_choice",
+      "question": "Which workload should generally use Serializable isolation with an application-level retry loop, per the decision guide in this lesson?",
+      "options": [
+        "High-throughput event ingestion with no cross-row invariants",
+        "Read-only analytical reporting dashboards",
+        "Checkout/payment processing where invariants like 'don't oversell inventory' must hold under concurrent writes",
+        "A one-off ad hoc SELECT run by an analyst"
+      ],
+      "answer": 2,
+      "explanation": "Checkout/payment flows have correctness invariants that span multiple rows (e.g., inventory counts) where write-skew anomalies under weaker isolation could cause overselling. Serializable plus a retry loop on serialization_failure errors trades occasional retries for guaranteed correctness -- a good trade given the cost of a money-correctness bug."
+    }
+  ]
+}

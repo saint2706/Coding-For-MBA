@@ -1,0 +1,109 @@
+{
+  "day": "101C",
+  "questions": [
+    {
+      "id": "d101cq01",
+      "type": "multiple_choice",
+      "question": "Why does keying a Kafka message by customer_id matter beyond just load distribution?",
+      "options": [
+        "It has no effect beyond choosing which partition stores the message",
+        "Kafka hashes the key to choose a partition, and Kafka only guarantees message ordering WITHIN a partition — so keying by customer_id ensures one customer's events are processed in the order they occurred",
+        "Keys are only used for compression, not partitioning",
+        "Keys determine which consumer group reads the message"
+      ],
+      "answer": 1,
+      "explanation": "Kafka guarantees ordering only within a single partition, not across the whole topic. By keying messages with customer_id, all of one customer's events are hashed to the same partition, which is what actually preserves their relative order — critical for correctness in stream processing, not just an optimization."
+    },
+    {
+      "id": "d101cq02",
+      "type": "multiple_choice",
+      "question": "What is the risk of using enable_auto_commit=True on a Kafka consumer for a workload like payment processing?",
+      "options": [
+        "Auto-commit makes consumption slower with no other downside",
+        "The consumer can commit (mark as 'read') an offset before your business logic for that message has actually finished, so a crash between consuming and finishing work silently skips that message on restart",
+        "Auto-commit is only available for producers, not consumers",
+        "It causes duplicate messages to be produced"
+      ],
+      "answer": 1,
+      "explanation": "Auto-commit periodically saves the consumer's offset on a timer, independent of whether your downstream processing (e.g., writing to a database) for the most recent message actually succeeded. If the process crashes after the offset commits but before the side effect completes, that message is effectively lost on restart. Production systems handling money typically commit manually only after the downstream write succeeds."
+    },
+    {
+      "id": "d101cq03",
+      "type": "multiple_choice",
+      "question": "In ksqlDB, what is the key difference between EMIT CHANGES and EMIT FINAL on a windowed aggregation?",
+      "options": [
+        "EMIT CHANGES is for streams and EMIT FINAL is for tables; they cannot be used on the same query type",
+        "EMIT CHANGES emits a new result every time the aggregate updates within the still-open window (noisy, good for live dashboards); EMIT FINAL emits once, only when the window closes (clean, good for one alert per window)",
+        "EMIT FINAL is deprecated in favor of EMIT CHANGES",
+        "There is no functional difference, only a naming convention"
+      ],
+      "answer": 1,
+      "explanation": "EMIT CHANGES produces a growing stream of partial results as new events arrive inside an open window, which suits live dashboards wanting up-to-the-second numbers. EMIT FINAL waits until the window closes (respecting configured allowed lateness) and emits exactly one final result per window per group, which is preferable for anomaly detection or reporting where one clean alert is wanted instead of a flood of partial updates."
+    },
+    {
+      "id": "d101cq04",
+      "type": "multiple_choice",
+      "question": "Why is Kafka's default at-least-once delivery guarantee not sufficient on its own for an idempotent business operation like charging a customer?",
+      "options": [
+        "At-least-once delivery means messages can be lost, which is the real concern",
+        "At-least-once delivery means a message can be delivered/processed more than once on retry; an idempotent PRODUCER only prevents the broker from writing duplicate messages — it doesn't make a consumer's downstream side effect (like an API charge call) safe to repeat unless the consumer logic separately checks an idempotency key",
+        "At-least-once is only relevant to consumers, not producers",
+        "Kafka has no way to retry failed sends, so duplicates cannot occur"
+      ],
+      "answer": 1,
+      "explanation": "At-least-once means duplicates are possible but loss is not. An idempotent producer (enable_idempotence=True) stops the broker from writing duplicate copies caused by producer-side retries, but if a duplicate message still reaches the consumer (e.g., from a different failure mode), the consumer's own side effects need an idempotency-key check to avoid double-charging — the same pattern covered for SQL upserts on Day 98."
+    },
+    {
+      "id": "d101cq05",
+      "type": "multiple_choice",
+      "question": "A team wants to derive the 'high-value order' threshold for a fraud-detection stream instead of hardcoding $200. What is the recommended approach from this lesson?",
+      "options": [
+        "Always use $200 since it is an industry-standard threshold",
+        "Analyze the actual order-value distribution (e.g., using percentile functions) and pick a threshold tied to a specific business goal, such as flagging the top 5% of orders for review; re-derive it when average order value shifts materially",
+        "Pick a number at random since fraud is unpredictable anyway",
+        "Use the same threshold as the cart-abandonment alert window"
+      ],
+      "answer": 1,
+      "explanation": "The lesson stresses that every magic number (the $200 threshold, window sizes, conversion rates, the >1,000 events/s cutoff) should be derived from real business data and a stated goal, not copied as a fixed constant. For a high-value-order threshold, that means examining your actual order-value distribution and tying the cutoff to a specific business objective, then revisiting it as conditions change."
+    },
+    {
+      "id": "d101cq06",
+      "type": "multiple_choice",
+      "question": "What does rising consumer-group lag indicate, and why is it the most important streaming health metric to alert on?",
+      "options": [
+        "Lag measures network latency between brokers and has no relation to consumer performance",
+        "Lag is the gap between the latest offset in a partition and the consumer group's committed offset; rising lag means consumers cannot keep up with producers, signaling a real-time pipeline is falling behind in practice even if no errors are being thrown",
+        "Lag only matters for batch jobs, not streaming consumers",
+        "Lag is always zero unless a consumer crashes"
+      ],
+      "answer": 1,
+      "explanation": "Lag quantifies how far behind a consumer group is from the most recent data in a partition. A consumer can be running with no errors at all and still be falling further behind every minute if it can't process messages as fast as they arrive — which silently turns a 'real-time' system into a delayed one. This is why lag, not just error rates, is the primary metric to alert on."
+    },
+    {
+      "id": "d101cq07",
+      "type": "multiple_choice",
+      "question": "Why does a stream-table join in ksqlDB look up the table's CURRENT value rather than performing a point-in-time historical join?",
+      "options": [
+        "ksqlDB tables only store the most recent value per key by design (a materialized view), so a join against a table always reflects 'now', not the table's state at some past moment",
+        "Stream-table joins in ksqlDB are not actually supported",
+        "Tables in ksqlDB store full historical versions of every row automatically",
+        "This behavior can be changed with a configuration flag to make it historical by default"
+      ],
+      "answer": 0,
+      "explanation": "A ksqlDB TABLE is a materialized, continuously-updated current-state view derived from a stream (e.g., via GROUP BY). When a stream event joins against a table, it looks up whatever the table's value is at the moment the join executes — there's no built-in mechanism to ask 'what was this table's value an hour ago.' This is fundamentally different from a stream-stream join, which uses an explicit time window because two streams have no shared 'current state.'"
+    },
+    {
+      "id": "d101cq08",
+      "type": "multiple_choice",
+      "question": "For the UrbanHop trip-safety capstone extension, why is a SESSION window (rather than a TUMBLING or HOPPING window) the right choice for detecting 'no GPS ping for 15 minutes'?",
+      "options": [
+        "Session windows are required whenever GPS data is involved",
+        "A session window's boundary is defined by a gap of inactivity (here, 15 minutes of silence) rather than a fixed clock boundary, which directly encodes the business rule 'alert when pings stop for 15 minutes' as the window-closing condition itself",
+        "Tumbling and hopping windows cannot be used with GROUP BY",
+        "Session windows are faster to compute than tumbling windows"
+      ],
+      "answer": 1,
+      "explanation": "Tumbling and hopping windows are anchored to fixed calendar boundaries regardless of activity. A session window closes specifically after a configured gap of inactivity for a given key (here, trip_id) — which is exactly the shape of the safety SLA: 'this trip has gone quiet for 15 minutes.' Using EMIT FINAL on that session window means the alert fires precisely when that 15-minute silence is confirmed, rather than waiting for an arbitrary fixed-interval check."
+    }
+  ]
+}

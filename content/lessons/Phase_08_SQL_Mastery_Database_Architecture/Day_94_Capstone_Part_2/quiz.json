@@ -1,0 +1,109 @@
+{
+  "day": 94,
+  "questions": [
+    {
+      "id": "d94q01",
+      "type": "multiple_choice",
+      "question": "Why does this lesson set the seed target at 100,000 rows for drivers, rather than the 1,000,000 rows mentioned as a stretch goal?",
+      "options": [
+        "Postgres cannot store more than 100,000 rows in a table",
+        "100,000 rows is large enough to observe Seq Scan vs. Index Scan behavior while staying runnable in a reasonable time on a laptop with the naive row-at-a-time seeding script; 1M rows is a separate, optional production-scale goal that needs faster loading (COPY/batching) to be practical",
+        "Faker only supports generating up to 100,000 fake records",
+        "1,000,000 rows would not fit in a Postgres database"
+      ],
+      "answer": 1,
+      "explanation": "The lesson explicitly reconciles a prior inconsistency by picking ONE measurable local-demo target (100k rows) and treating 1M rows as a clearly separated stretch goal that requires faster bulk-loading techniques (COPY, batched transactions) rather than the naive per-row INSERT script."
+    },
+    {
+      "id": "d94q02",
+      "type": "multiple_choice",
+      "question": "In `gps_pings`, the foreign key to `drivers` uses `ON DELETE CASCADE`, while in `trips` the foreign keys use `ON DELETE RESTRICT`. Why the difference?",
+      "options": [
+        "It's arbitrary and has no functional effect",
+        "GPS pings have no independent financial/business record value, so deleting a driver should also remove their raw location history; trips are financial/historical records that must not silently disappear if a driver is deleted",
+        "CASCADE is required syntax for BIGSERIAL columns",
+        "RESTRICT is deprecated in Postgres 14+"
+      ],
+      "answer": 1,
+      "explanation": "The choice of ON DELETE behavior should reflect business meaning: trips are financial/audit records that must block a driver deletion (RESTRICT) until they're handled, whereas raw GPS pings are operational exhaust with no independent value once the driver record is gone, so cascading their deletion is safe (CASCADE)."
+    },
+    {
+      "id": "d94q03",
+      "type": "multiple_choice",
+      "question": "In an EXPLAIN ANALYZE plan node `(cost=0.00..2334.00 rows=33300 width=44) (actual time=0.020..18.412 rows=33352 loops=1)`, which value is measured in real milliseconds?",
+      "options": [
+        "2334.00",
+        "18.412",
+        "33300",
+        "Both 2334.00 and 18.412 represent the same unit"
+      ],
+      "answer": 1,
+      "explanation": "The 'cost' figures are arbitrary planner-cost units only comparable to other cost figures on the same system. The 'actual time' figures, present only because ANALYZE actually executed the query, are real measured milliseconds -- the number to report when comparing before/after performance."
+    },
+    {
+      "id": "d94q04",
+      "type": "multiple_choice",
+      "question": "Why does DECIMAL(10,2) get used for `fare` instead of a FLOAT type?",
+      "options": [
+        "DECIMAL is always faster than FLOAT in every database",
+        "DECIMAL stores exact fixed-point values, avoiding floating-point rounding error that could misstate financial amounts -- critical for money fields",
+        "FLOAT cannot store numbers larger than 100",
+        "DECIMAL is required by the SQL standard for all numeric columns"
+      ],
+      "answer": 1,
+      "explanation": "Floating-point types can introduce small rounding errors (e.g., 4.30 stored and later displayed as 4.2999999) that are unacceptable for money. DECIMAL/NUMERIC types store exact fixed-point values, which is why financial columns like fare use DECIMAL rather than FLOAT/DOUBLE."
+    },
+    {
+      "id": "d94q05",
+      "type": "multiple_choice",
+      "question": "After adding an index on `current_city` (which matches about 33% of rows for 'London'), Postgres chose a Bitmap Heap Scan instead of a plain Index Scan. Why?",
+      "options": [
+        "Bitmap scans are always used regardless of how many rows match",
+        "For moderate-to-high selectivity (a large fraction of rows matching), gathering matching locations into a bitmap and reading them in physical order is typically cheaper than per-row random index lookups",
+        "The index was created with the wrong syntax",
+        "Bitmap Heap Scans only apply to foreign-key columns"
+      ],
+      "answer": 1,
+      "explanation": "The planner picks a scan strategy based on estimated selectivity. A 33%-selectivity filter is too broad for an efficient row-by-row Index Scan but still benefits from index information -- a Bitmap Heap Scan batches matching row locations and reads them in physical table order, beating both a pure Index Scan and a full Sequential Scan for this selectivity range."
+    },
+    {
+      "id": "d94q06",
+      "type": "multiple_choice",
+      "question": "What is wrong with the row-at-a-time INSERT seeding script used in Exercise 2, as a strategy for loading 1,000,000+ rows?",
+      "options": [
+        "Nothing -- it scales identically regardless of row count",
+        "Each INSERT statement pays per-statement SQL parsing/planning overhead, making it dramatically slower than batch techniques like COPY at large scale, even though it's fine for the 100k-row local demo",
+        "Faker cannot generate more than 100,000 names",
+        "Row-at-a-time inserts are illegal in PostgreSQL"
+      ],
+      "answer": 1,
+      "explanation": "Row-at-a-time INSERTs are explicitly called out as the 'naive baseline' -- fine for a 100k-row local demo, but the per-statement overhead compounds badly at 1M+ rows. The lesson's Coverage section introduces batch transactions and COPY as the production-appropriate alternative."
+    },
+    {
+      "id": "d94q07",
+      "type": "multiple_choice",
+      "question": "The mastery check asks whether `DROP COLUMN` (corrected from an earlier typo, 'DROP COLUMM') is safe to run directly in production. What is the correct answer?",
+      "options": [
+        "Yes, DROP COLUMN is always instant and safe",
+        "No -- code that still reads/writes that column (including via SELECT *) will break the moment the column is dropped, unless you've already migrated all readers/writers off it first",
+        "Only if you rename the column first",
+        "DROP COLUMN cannot be reversed under any circumstances, so it should never be used"
+      ],
+      "answer": 1,
+      "explanation": "The safe approach mirrors the expand/contract pattern: confirm no application code depends on the column anymore (deploy and verify that change first), then drop it. Dropping a column still in active use breaks any query referencing it directly or via SELECT *."
+    },
+    {
+      "id": "d94q08",
+      "type": "multiple_choice",
+      "question": "Why does this lesson require implementing `riders` and `gps_pings` tables, not just `drivers` and `trips`?",
+      "options": [
+        "Extra tables are required by PostgreSQL configuration",
+        "Day 93's design doc explicitly called for riders, GPS/location data, and historical archival as part of UrbanHop's architecture -- implementing only two of those entities would not actually validate the design that was specified",
+        "gps_pings is required to make foreign keys work at all",
+        "riders and gps_pings are needed only for the quiz, not the real schema"
+      ],
+      "answer": 1,
+      "explanation": "The Day 93 carry-forward contract specifically requires the implementation to cover riders and a GPS/location-supporting table beyond the original two-table drivers/trips slice, so that the capstone actually tests the design produced on Day 93 rather than a simplified subset of it."
+    }
+  ]
+}

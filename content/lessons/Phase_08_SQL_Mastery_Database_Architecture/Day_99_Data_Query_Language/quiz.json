@@ -1,0 +1,109 @@
+{
+  "day": 99,
+  "questions": [
+    {
+      "id": "d99q01",
+      "type": "multiple_choice",
+      "question": "Why does `SELECT price * qty AS total FROM items WHERE total > 50` fail in PostgreSQL?",
+      "options": [
+        "Multiplication is not allowed in SELECT",
+        "WHERE executes before SELECT in the logical processing order, so the alias does not exist yet",
+        "total is a reserved keyword",
+        "You must use HAVING instead of WHERE for any computed column"
+      ],
+      "answer": 1,
+      "explanation": "The logical order is FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY -> LIMIT. WHERE filters raw rows before SELECT has computed any aliases, so total is unresolved at that point. ORDER BY, which runs after SELECT, CAN reference the alias."
+      },
+    {
+      "id": "d99q02",
+      "type": "multiple_choice",
+      "question": "In `EXPLAIN` output, the cost shown as `cost=0.00..15.00` represents what?",
+      "options": [
+        "15 milliseconds of execution time",
+        "15 arbitrary, engine-internal units used only to compare plan options against each other",
+        "15 US dollars of estimated cloud compute spend",
+        "Exactly 15 rows that will be returned"
+      ],
+      "answer": 1,
+      "explanation": "Cost is a relative score the optimizer uses to rank candidate plans. In Postgres it is calibrated against seq_page_cost = 1.0 per 8KB page by default, but that calibration is Postgres-specific -- other engines use different units and page sizes entirely, so costs are never comparable across engines or to real time/money."
+    },
+    {
+      "id": "d99q03",
+      "type": "multiple_choice",
+      "question": "A plan node shows `Index Only Scan` but `Heap Fetches: 980000` right after a 1-million-row bulk load with no VACUUM run yet. What explains this?",
+      "options": [
+        "The index is corrupted and must be rebuilt",
+        "The visibility map has not been updated for the new pages, so the engine still has to check row visibility on the heap for almost every row",
+        "Heap Fetches always equals the total row count by definition",
+        "The query has a silent syntax error"
+      ],
+      "answer": 1,
+      "explanation": "An Index Only Scan can only skip the heap when a page is marked all-visible in the visibility map. Freshly inserted pages are not yet marked all-visible until VACUUM runs, so the engine falls back to the heap to verify visibility -- erasing most of the performance benefit until vacuuming catches up."
+    },
+    {
+      "id": "d99q04",
+      "type": "multiple_choice",
+      "question": "Which WHERE predicate is SARGable against a standard B-Tree index on `order_date` (a timestamp column)?",
+      "options": [
+        "WHERE order_date::text LIKE '2023-06-01%'",
+        "WHERE date_trunc('month', order_date) = '2023-06-01'",
+        "WHERE order_date >= '2023-06-01' AND order_date < '2023-07-01'",
+        "WHERE order_date + interval '0 days' = '2023-06-01'"
+      ],
+      "answer": 2,
+      "explanation": "A direct range comparison on the raw column lets the B-Tree index be used as-is. Casting to text, wrapping in date_trunc(), or adding an interval all force the engine to compute a transformed value for every row before it can compare, defeating the index."
+    },
+    {
+      "id": "d99q05",
+      "type": "multiple_choice",
+      "question": "A query filters `WHERE order_date BETWEEN '2023-01-01' AND '2023-12-31'` on a TIMESTAMP column. What is the risk?",
+      "options": [
+        "BETWEEN is never SARGable, so this always forces a sequential scan",
+        "Rows with a December 31 timestamp later than midnight (e.g., 2023-12-31 14:30:00) are silently excluded, because BETWEEN's upper bound is the exact literal '2023-12-31 00:00:00'",
+        "BETWEEN automatically rounds the upper bound up to the next day",
+        "This syntax is a parse error in PostgreSQL"
+      ],
+      "answer": 1,
+      "explanation": "BETWEEN is inclusive on both bounds, and an unqualified date literal compared to a TIMESTAMP column is interpreted as midnight. Any row timestamped later that same day falls outside the range. The fix is a half-open range: >= start AND < (end + 1 day)."
+    },
+    {
+      "id": "d99q06",
+      "type": "multiple_choice",
+      "question": "A Hash Join's top-level plan node shows estimated `rows=300` but `EXPLAIN ANALYZE` reports `actual rows=42`. What is the most useful next step?",
+      "options": [
+        "Ignore it -- estimate/actual gaps are always cosmetic and never affect plan choice",
+        "Re-run ANALYZE on the underlying tables, since a 7x overestimate suggests stale or insufficiently granular statistics that may have caused a suboptimal plan choice",
+        "Rewrite the query to avoid all joins",
+        "Conclude the query returned incorrect results"
+      ],
+      "answer": 1,
+      "explanation": "Large estimate-vs-actual gaps indicate the planner's cost comparisons were based on inaccurate row-count assumptions, which can lead it to pick the wrong join algorithm or scan type for the real data volume. Refreshing statistics with ANALYZE is the standard first diagnostic step."
+    },
+    {
+      "id": "d99q07",
+      "type": "multiple_choice",
+      "question": "A table has 8 indexes, and a profiling query against pg_stat_user_indexes shows 3 of them have idx_scan = 0 after a representative week of production traffic. What is the implication?",
+      "options": [
+        "Those 3 indexes are providing free performance with no cost",
+        "Those 3 indexes are pure write overhead -- they are never used for reads but still must be updated on every INSERT/UPDATE/DELETE to their columns",
+        "idx_scan = 0 means the index is corrupted",
+        "The table should be dropped entirely"
+      ],
+      "answer": 1,
+      "explanation": "Every index must be maintained on every write to its indexed columns (write amplification). An index with zero scans over a representative period delivers no read benefit while still paying that write cost on every relevant insert/update/delete -- a strong candidate for removal."
+    },
+    {
+      "id": "d99q08",
+      "type": "multiple_choice",
+      "question": "Why is it risky to benchmark query performance using only a single EXPLAIN ANALYZE run immediately after creating a new index?",
+      "options": [
+        "EXPLAIN ANALYZE never reports real timing",
+        "The first run after a schema change often reflects a cold OS/shared-buffer cache, making it artificially slow compared to subsequent cached runs -- a single run does not separate cache effects from real plan-quality differences",
+        "Indexes cannot be benchmarked with EXPLAIN ANALYZE",
+        "ANALYZE must be run after every single query, not just after bulk loads"
+      ],
+      "answer": 1,
+      "explanation": "Page caching (OS cache and Postgres shared_buffers) means later executions of the same query are typically faster than the first cold execution, independent of plan quality. A sound timing protocol discards the first cold run and compares the median of several subsequent runs."
+    }
+  ]
+}
