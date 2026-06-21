@@ -50,6 +50,19 @@ This is the difference between a chatbot and an **autonomous AI agent that gets 
 
 ## The Technical Deep Dive
 
+### 0. What an "Agent" Actually Is
+
+Strip away the hype: an LLM agent is a **loop**, not a new kind of model. The model itself doesn't change between "chatbot mode" and "agent mode" — what changes is the *control flow* wrapped around it.
+
+**A plain chatbot call is one round-trip:** prompt in, text out, done. An agent turns that into a `while` loop: prompt in → model responds → if the response says "I need to call a tool," your code executes that tool in the real world (a database query, an API call, a calculation) → the tool's result gets appended to the conversation → the loop runs again, now with that new information available → repeat until the model produces a final answer instead of another tool call. That's it. There's no separate "agent architecture" inside the model — the LLM is just being asked, repeatedly, "given everything so far, what's the next step?"
+
+**The ReAct pattern names the three things happening in each loop iteration:**
+- **Reason** — the model's internal next-step thinking ("I need Q3 and Q2 revenue to answer this")
+- **Act** — the model requests a tool call instead of a final answer (it cannot execute code itself — it can only ask your code to)
+- **Observe** — your code runs the requested tool and feeds the real-world result back into the conversation as new context
+
+The reason this loop is powerful: each iteration gives the model fresh, *grounded* information it didn't have at the start, letting it correct course based on real results rather than guessing everything up front in one shot. The reason it's risky: the model is now triggering real actions (API calls, writes, sends) based on its own judgment about what to do next — which is exactly why Section 5 (human-in-the-loop) exists.
+
 ### 1. The ReAct Loop
 
 ```
@@ -375,6 +388,32 @@ Use agents when: The number/type of steps depends on the query.
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Vague tool descriptions.** The model selects tools purely from the `description` field — it never sees your implementation. `"get data"` gives it nothing to decide on; describe exactly when to use the tool and what each parameter means.
+- ⚠️ **No `max_iterations` cap.** Without a hard limit, a confused agent can loop indefinitely (and expensively) calling the same tool with slightly different arguments hoping for a different result. Always cap iterations (5-10 is typical) and fail loudly when the cap is hit.
+- ⚠️ **Letting agents take irreversible actions with no approval gate.** `send_email`, `delete_record`, `update_database` should always require human confirmation until the agent has demonstrated high reliability in production — a single hallucinated tool call can cause real damage in seconds.
+- ⚠️ **Forgetting that tool results are still just text appended to context.** Large tool outputs (a 500-row SQL result, a full document) consume tokens just like everything else, and can blow your context budget or trigger "lost in the middle" issues in long agent runs. Summarize or truncate large tool outputs before appending them.
+- ⚠️ **Assuming the model will catch its own tool-call errors.** If you don't catch exceptions when executing a tool and feed a structured error back, the agent loop crashes instead of reasoning about the failure and trying an alternative — defeating the entire point of the loop's self-correction.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Agent** | A control-flow loop around an LLM that lets the model request real-world actions (tool calls) and incorporate their results before producing a final answer. |
+| **ReAct (Reasoning + Acting)** | A pattern of interleaving model reasoning, tool-call actions, and observation of tool results across multiple loop iterations. |
+| **Tool / function calling** | An LLM API feature where the model can respond with a structured request to invoke a named function with specific arguments, instead of (or in addition to) plain text. |
+| **Tool schema** | The JSON Schema description of a tool's name, description, and parameters that tells the model when and how to call it. |
+| **tool_choice** | An API parameter controlling whether the model may, must, or must not call a tool on a given turn (`"auto"`, `"required"`, a specific function, or `"none"`). |
+| **Agentic loop** | The `while` loop that repeatedly sends the conversation (including tool results) back to the model until it returns a final answer instead of another tool call. |
+| **Multi-agent orchestration** | Structuring a task as a pipeline or graph of specialized agents (e.g., data retrieval → analysis → writing), each with its own system prompt and toolset. |
+| **Human-in-the-loop (HITL)** | A safety pattern requiring explicit human approval before an agent executes a high-stakes or irreversible action. |
+| **Max iterations** | A hard cap on how many reasoning/tool-call cycles an agent loop may run before being forced to stop, preventing runaway loops. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Custom Tool Definition
@@ -385,6 +424,26 @@ Define proper JSON schemas for these tools:
 3. `schedule_meeting(attendees: list[str], duration_minutes: int, title: str, preferred_time: str)` — schedule a calendar event
 
 For each: write the full function object JSON with name, description, parameters (with types and required fields).
+
+**EXPECTED RESULT** (schema for tool #2, as a reference for the level of detail expected on all three):
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "calculate_churn_risk",
+    "description": "Predict the churn risk for a B2B account based on recent activity. Use when asked about a customer's likelihood to cancel, renewal risk, or account health.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "company_id": {"type": "string", "description": "Unique identifier for the B2B account"},
+        "window_days": {"type": "integer", "description": "Lookback window in days for activity analysis", "default": 90}
+      },
+      "required": ["company_id"]
+    }
+  }
+}
+```
+Tools #1 and #3 should follow the same shape: a specific `description` stating *when* to call the tool (not just what it does), every parameter typed and described, `list[str]` parameters represented as `{"type": "array", "items": {"type": "string"}}`, and only truly mandatory fields in `required` (e.g., `preferred_time` for `schedule_meeting` is reasonably optional if your design allows a default).
 
 ### Exercise 2: Handle Tool Errors
 
@@ -401,6 +460,19 @@ def run_robust_agent(user_query: str) -> str:
        truncate old messages keeping only the last 4 in history.
     """
     pass
+
+# EXPECTED RESULT (behavioral test cases):
+#   1. A tool that raises ValueError("invalid ticker") should result in the
+#      agent receiving {"error": "invalid ticker"} as the tool message content
+#      (not an unhandled exception crashing run_robust_agent), and the next
+#      model turn should attempt a different approach or ask for clarification.
+#   2. If query_sales_database is called 3 times in a row with the EXACT same
+#      arguments, run_robust_agent should return the literal string
+#      "Agent stuck in loop — human review required." instead of calling a 4th time.
+#   3. Simulate a long-running conversation (15+ tool round-trips); once the
+#      summed message length crosses ~10,000 tokens, only the system message
+#      + last 4 messages should remain in `messages` before the next API call —
+#      verify with len(messages) <= 5 at that point.
 ```
 
 ### Exercise 3: Build a Data Analysis Agent
@@ -429,6 +501,24 @@ SALES_DATA = {
 # "In which quarter did we grow the fastest, and by how much?"
 # "What is the average monthly revenue in Q3?"
 # "Is our churn rate improving?"
+
+# EXPECTED RESULT:
+#   "In which quarter did we grow the fastest, and by how much?"
+#     -> Q1→Q2 growth = (9.2M-8.2M)/8.2M = 12.2%
+#        Q2→Q3 growth = (12.4M-9.2M)/9.2M = 34.8%
+#        Correct answer: "Q3 grew fastest, up 34.8% from Q2."
+#   "What is the average monthly revenue in Q3?"
+#     -> Q3 quarterly revenue is $12.4M / 3 months = ~$4.13M/month
+#        (the agent must derive this — there's no monthly field in the data,
+#        so it should reason: quarterly_revenue / 3, not fabricate a number)
+#   "Is our churn rate improving?"
+#     -> churn_rate: 0.05 (Q1) -> 0.04 (Q2) -> 0.03 (Q3): consistently
+#        decreasing -> "Yes, churn improved from 5% to 3% over the last
+#        two quarters."
+# If your agent's find_best_quarter or calculate_growth tools return raw
+# numbers without the agent contextualizing them in the final answer, the
+# tool design is fine but the system prompt needs to instruct it to always
+# explain the "why" behind the numbers, not just restate them.
 ```
 
 ---

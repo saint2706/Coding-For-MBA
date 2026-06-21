@@ -379,6 +379,33 @@ Never use GPT-4o for a task that GPT-4o-mini handles correctly. A/B test your pr
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Mixing instructions and data in the same block.** If user-supplied text sits in the same paragraph as your instructions, the model can't reliably tell them apart — this is the root cause of most prompt injection. Always fence data with clear delimiters (e.g., `---` or XML-style tags) and tell the model explicitly to treat it as data, not commands.
+- ⚠️ **Forgetting that `temperature=0` is not 100% deterministic.** Even at temperature 0, floating-point non-determinism and provider-side load balancing across hardware can cause small output variation. Don't build tests that assert byte-for-byte equality on LLM output — assert on structure/content instead.
+- ⚠️ **Asking for JSON without JSON mode or schema enforcement.** Telling a model "return JSON" in plain text still lets it occasionally add a markdown code fence, a leading sentence, or a trailing comma. Use `response_format={"type": "json_object"}` or a Pydantic + `instructor` model so malformed output fails loudly instead of breaking downstream parsing silently.
+- ⚠️ **Tuning a prompt against a single example.** A prompt rewritten until it works on one test case often overfits the phrasing of that case and breaks on the next one. Always validate prompt changes against a held-out set of 5–10 varied examples before shipping.
+- ⚠️ **Stacking too many few-shot examples.** More examples isn't always better — beyond ~5-8 examples you mostly just burn tokens and money for diminishing accuracy gains, and very long few-shot blocks can dilute attention away from the actual instruction.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Zero-shot prompting** | Asking the model to perform a task with no examples, relying entirely on its pretrained knowledge and instruction-following ability. |
+| **Few-shot prompting** | Including a handful of input→output example pairs in the prompt so the model can infer the exact pattern, format, or category definitions you want. |
+| **Chain-of-thought (CoT)** | A prompting technique that asks the model to reason step by step before giving a final answer, which measurably improves accuracy on arithmetic, logic, and multi-step problems. |
+| **Temperature** | A sampling parameter (typically 0–2) that controls randomness in next-token selection. Lower = more deterministic/focused; higher = more diverse/creative. |
+| **top_p (nucleus sampling)** | An alternative (or complement) to temperature: the model only samples from the smallest set of tokens whose cumulative probability is ≥ `top_p` (e.g., `top_p=0.9` considers the top 90% of probability mass). Lower `top_p` narrows the choices similarly to lower temperature. |
+| **System prompt** | The instruction block sent with a special "system" role that sets persona, rules, and output format — generally given higher priority by the model than user-turn text. |
+| **JSON mode** | An API feature (e.g., OpenAI's `response_format={"type": "json_object"}`) that constrains the model's output to be syntactically valid JSON. |
+| **Prompt injection** | An attack where untrusted input (e.g., from a user or a scraped document) contains text designed to override or hijack the system prompt's instructions. |
+| **Self-consistency** | Sampling a model multiple times at non-zero temperature and taking the majority-vote answer, trading extra API calls for reduced output variance. |
+| **Prompt chaining** | Breaking a complex task into multiple sequential LLM calls, where each step's output feeds the next step's input — often mixing cheap and expensive models by step difficulty. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Prompt Rewriting
@@ -407,6 +434,18 @@ def solve_with_cot(client, problem: str) -> str:
     Return the full reasoning + final answer.
     """
     pass
+
+# EXPECTED RESULT (using: churn → new signups → expansion, applied fresh each
+# month, with expanded users billed at 1.5x for that month only):
+#   Month 1: 1000 → 950 (churn) → 1030 (signups) → ~1009 @ $50 + ~21 @ $75
+#            = MRR ≈ $52,015 | users ≈ 1,030
+#   Month 2: 1030 → 978.5 → 1058.5 → MRR ≈ $53,454 | users ≈ 1,058.5
+#   Month 3: 1058.5 → 1005.6 → 1085.6 → MRR ≈ $54,821 | users ≈ 1,085.6
+#   => Projected MRR at end of Month 3 ≈ $54,800–$55,000
+# A correct CoT solution should land in this range. If your model's answer is
+# off by more than ~10%, check whether it applied churn/signup/expansion in a
+# different order, or compounded the "expanded" segment across months — both
+# are reasonable alternate readings, but state your assumption explicitly.
 ```
 
 ### Exercise 3: Structured Extraction Pipeline
@@ -438,6 +477,23 @@ class JobPosting(BaseModel):
 
 # TODO: Use instructor + GPT-4o to extract a validated JobPosting from job_posting
 # Handle the case where fields are missing (should be None, not hallucinated)
+
+# EXPECTED RESULT:
+# JobPosting(
+#     company="TechCorp",
+#     title="Senior Data Scientist",
+#     min_salary_usd=150000,
+#     max_salary_usd=200000,
+#     location="San Francisco, CA",
+#     remote_type="hybrid",
+#     years_experience_required=5,
+#     required_skills=["Python", "SQL", "ML"],
+#     deadline="2026-03-31",
+#     contact_email="jobs@techcorp.com",
+# )
+# Note: "preferably PhD" is a preference, not a hard requirement — it should
+# NOT appear in required_skills. If your extraction includes it there, tighten
+# your field description to clarify "required" vs. "preferred."
 ```
 
 ---

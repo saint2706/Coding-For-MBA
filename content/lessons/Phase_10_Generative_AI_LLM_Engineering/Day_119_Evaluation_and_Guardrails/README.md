@@ -79,6 +79,15 @@ EVALUATION_DIMENSIONS = {
 
 ### 2. RAGAS — The RAG Evaluation Standard
 
+**How these metrics are actually calculated** (not just "a number RAGAS gives you"): RAGAS metrics are themselves computed by using an LLM as a structured extraction-and-judgment tool — they are not classical statistical formulas like precision/recall on labels.
+
+- **Faithfulness** works by first asking an LLM to break the generated answer down into a list of individual factual claims (e.g., "TechCorp was founded in 2019" + "TechCorp's founders are Alice Chen and Bob Martinez" as two separate claims). Then, for each claim, a second LLM call checks: "Is this claim directly inferable from the retrieved context?" Faithfulness = (number of claims marked supported) / (total claims). This is why faithfulness can fail even on a "correct" answer — if the model added a true-but-unsupported fact from its own training knowledge rather than the context, it still counts against faithfulness, because the point is grounding, not just truth.
+- **Answer relevancy** works differently: an LLM is asked to generate several plausible *questions* that the given answer would be a good response to. Those generated questions are then embedded and compared (cosine similarity) against the embedding of the *original* question. If the answer is genuinely on-topic, the LLM-generated reverse-questions should closely resemble the original question; if the answer rambled off-topic, the reverse-engineered questions will diverge from what was actually asked. The score is the mean cosine similarity across these generated questions.
+- **Context recall** compares each statement in the ground-truth answer against the retrieved context and checks whether it can be attributed to a retrieved chunk; the fraction attributable is the score.
+- **Context precision** checks, for each retrieved chunk (ranked by position), whether it was actually relevant to answering the question, weighted so that relevant chunks ranked higher contribute more (similar in spirit to a ranking metric like MAP).
+
+The common thread: every RAGAS metric uses an LLM call (or an embedding comparison) as the actual measurement instrument — which means RAGAS scores inherit some of the same imprecision and cost as the system they're evaluating. Treat RAGAS scores as a strong directional signal, not as ground truth with decimal-point precision.
+
 ```python
 # pip install ragas datasets langchain-openai
 from ragas import evaluate
@@ -386,6 +395,34 @@ You can't evaluate every query in production. Sample 1% and run LLM-as-judge nig
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Using the same model as both generator and judge without checking for self-preference bias.** GPT-4o judging GPT-4o output tends to score it more favorably than a human would. Where possible, use a different model family (or a human spot-check sample) to validate the judge's calibration.
+- ⚠️ **Treating RAGAS scores as exact ground truth.** Since faithfulness/relevancy are themselves computed via LLM calls, the scores carry their own measurement noise (typically ±5-10%). Don't chase a 0.91 → 0.93 improvement; focus on large, statistically meaningful shifts and trends over time.
+- ⚠️ **Setting guardrail thresholds without a held-out test set.** A toxicity threshold tuned only on the few examples you happened to think of will both over-block benign content and under-block real attacks. Build a test suite with known-safe and known-unsafe inputs before deploying any guardrail.
+- ⚠️ **No human-in-the-loop for the "review" queue.** Logging suspicious responses for review is useless if nobody actually reviews them. Assign explicit ownership and an SLA for the review queue, or the safety net becomes purely cosmetic.
+- ⚠️ **Evaluating once at launch and never again.** Model providers silently update API-served models (e.g., `gpt-4o` resolves to different underlying checkpoints over time), and your own prompts/retrieval pipeline will drift. Evaluation needs to be continuous, not a one-time launch gate.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Faithfulness** | A RAGAS metric measuring the fraction of claims in a generated answer that can be directly attributed to (supported by) the retrieved context. |
+| **Answer relevancy** | A RAGAS metric measuring how directly an answer addresses the original question, computed by comparing the original question to LLM-generated reverse-engineered questions from the answer. |
+| **Context recall** | A RAGAS metric measuring what fraction of the ground-truth answer's content is actually present in the retrieved context. |
+| **Context precision** | A RAGAS metric measuring whether retrieved chunks are relevant, weighted by their rank position. |
+| **LLM-as-a-judge** | Using a capable LLM to score another LLM's output against criteria (accuracy, completeness, relevance) instead of relying solely on human annotators. |
+| **Self-preference bias** | The tendency of an LLM judge to rate outputs from the same model family more favorably than outputs from other models. |
+| **Guardrail** | A rule, classifier, or validator that constrains LLM input/output to prevent unsafe, off-topic, or non-compliant behavior. |
+| **Hallucination** | An LLM output that states something plausible-sounding but false or unsupported by the available context/training data. |
+| **Jailbreak** | An adversarial prompting technique designed to bypass a model's safety guardrails or instructions. |
+| **Colang** | The declarative configuration language used by NVIDIA NeMo Guardrails to define conversational flows and restricted topics. |
+| **Drift** | Gradual, unintended change in a model's behavior over a long conversation, across prompt variations, or due to silent upstream model updates. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Hallucination Detection
@@ -419,6 +456,19 @@ for r in responses:
     result = detect_hallucination(context, r, client)
     print(f"Response: {r[:60]}...")
     print(f"Result: {result}\n")
+
+# EXPECTED RESULT:
+#   responses[0] -> {"hallucinated": False, "unsupported_claims": [],
+#                     "confidence": "high"}
+#     (every claim — founded 2019, by Alice Chen and Bob Martinez — is in context)
+#   responses[1] -> {"hallucinated": True,
+#                     "unsupported_claims": ["They have 3 offices worldwide"],
+#                     "confidence": "high"}
+#     (founding claim is supported; the "3 offices" claim has no support in context)
+#   responses[2] -> {"hallucinated": True,
+#                     "unsupported_claims": ["founded in 2020", "$15M revenue"],
+#                     "confidence": "high"}
+#     (context says founded 2019 with $12.4M revenue — both figures are wrong)
 ```
 
 ### Exercise 2: Design a Guardrail System
@@ -461,6 +511,23 @@ eval_cases = [
 # 3. Returns a summary dict: {"avg_faithfulness", "avg_completeness", "flagged_cases"}
 def run_eval_dashboard(cases: list[dict], client) -> dict:
     pass
+
+# EXPECTED RESULT:
+#   Case 1 (Q3 revenue): faithfulness ≈ 5, completeness ≈ 5 — answer is fully
+#     supported by context and complete.
+#   Case 2 (employee count): faithfulness ≈ 3-4 — answer rounds 312 down to
+#     "approximately 300," which is a judgment call (acceptable rounding vs.
+#     a factual distortion); a strict judge may flag this as a minor
+#     unsupported claim. completeness ≈ 5 (it does answer the question).
+#   Case 3 (refund policy): faithfulness ≈ 5 (everything stated is true and
+#     in context) but completeness ≈ 2 — it omits the enterprise refund
+#     terms entirely, answering only half the policy.
+#   Aggregate: avg_faithfulness ≈ 4.3, avg_completeness ≈ 4.0,
+#     flagged_cases = [] if your faithfulness<4 threshold is per-case >=4,
+#     OR flagged_cases may include case 2 if its faithfulness scores below 4 —
+#     either is a defensible judge outcome; the key check is that case 3 is
+#     NOT flagged for hallucination (it's faithful, just incomplete), proving
+#     your dashboard distinguishes "wrong" from "incomplete."
 ```
 
 ---

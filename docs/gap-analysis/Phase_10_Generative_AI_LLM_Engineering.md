@@ -24,8 +24,8 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P0][A:Concept] The introduction states models are "powerful" but doesn't define what an LLM actually is (transformers, next-token prediction) under "The Technical Deep Dive".
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P0][A:Concept] The introduction states models are "powerful" but doesn't define what an LLM actually is (transformers, next-token prediction) under "The Technical Deep Dive".
 
 ---
 
@@ -36,8 +36,8 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
 
 ---
 
@@ -48,9 +48,9 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P1][A:Concept] Explain the architectural concepts of Chains and Memory before jumping into framework usage.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P1][A:Concept] Explain the architectural concepts of Chains and Memory before jumping into framework usage.
 
 ---
 
@@ -61,9 +61,9 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P1][A:Concept] Define vector embeddings conceptually before showing the ChromaDB code.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P1][A:Concept] Define vector embeddings conceptually before showing the ChromaDB code.
 
 ---
 
@@ -74,9 +74,9 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P1][A:Concept] Define the PEFT (Parameter-Efficient Fine-Tuning) workflow conceptually before the Unsloth demonstration.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P1][A:Concept] Define the PEFT (Parameter-Efficient Fine-Tuning) workflow conceptually before the Unsloth demonstration.
 
 ---
 
@@ -87,9 +87,9 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P1][A:Concept] Explain how evaluation metrics like Answer Relevance are actually calculated conceptually.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P1][A:Concept] Explain how evaluation metrics like Answer Relevance are actually calculated conceptually.
 
 ---
 
@@ -100,9 +100,9 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P0][A:Concept] Define agent systems conceptually (ReAct, reasoning loops) rather than just demonstrating tool use.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P0][A:Concept] Define agent systems conceptually (ReAct, reasoning loops) rather than just demonstrating tool use.
 
 ---
 
@@ -113,9 +113,9 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P1][F:Tables] Provide a decision matrix/table for when to use Prompt Compression vs Semantic Caching.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P1][F:Tables] Provide a decision matrix/table for when to use Prompt Compression vs Semantic Caching.
 
 ---
 
@@ -126,8 +126,8 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
 
 ---
 
@@ -138,10 +138,10 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P0][C:Lab] Exercise 1: Feature Evaluation lacks any concrete scenario. "Exercise 1: Feature Evaluation..."
-* [ ] [P0][C:Lab] Exercise 3: Write an AI Feature Spec lacks instructions. "Exercise 3: Write an AI Feature Spec..."
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P0][C:Lab] Exercise 1: Feature Evaluation lacks any concrete scenario. "Exercise 1: Feature Evaluation..."
+* [x] [P0][C:Lab] Exercise 3: Write an AI Feature Spec lacks instructions. "Exercise 3: Write an AI Feature Spec..."
 
 ---
 
@@ -152,10 +152,10 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P0][C:Lab] Exercise 1 lacks problem statement and data. "Exercise 1: Design a Fairness Audit..."
-* [ ] [P0][C:Lab] Exercise 3 lacks problem statement. "Exercise 3: Write a Model Card..."
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P0][C:Lab] Exercise 1 lacks problem statement and data. "Exercise 1: Design a Fairness Audit..."
+* [x] [P0][C:Lab] Exercise 3 lacks problem statement. "Exercise 3: Write a Model Card..."
 
 ---
 
@@ -166,9 +166,9 @@ Phase 10 provides a solid technical overview of Generative AI, moving from basic
 
 **Gap task stubs:**
 
-* [ ] [P2][O:Glossary] Add a Glossary section to define key jargon.
-* [ ] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
-* [ ] [P0][C:Lab] The Capstone lacks explicit 'EXPECTED RESULT' criteria for the final assistant's performance.
-* [ ] [P2][K:Xref] Add a Phase 11 preview cross-reference at the end of the phase summary.
+* [x] [P2][O:Glossary] Add a Glossary section to define key jargon.
+* [x] [P1][H:Pitfalls] Add a Pitfalls callout section to highlight common implementation errors.
+* [x] [P0][C:Lab] The Capstone lacks explicit 'EXPECTED RESULT' criteria for the final assistant's performance.
+* [x] [P2][K:Xref] Add a Phase 11 preview cross-reference at the end of the phase summary.
 
 ---

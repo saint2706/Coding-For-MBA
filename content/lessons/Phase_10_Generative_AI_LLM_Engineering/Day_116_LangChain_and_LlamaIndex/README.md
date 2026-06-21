@@ -48,6 +48,16 @@ They don't write every slide themselves. They have a **system**:
 
 ## The Technical Deep Dive
 
+### 0. Architectural Concepts: What "Chains" and "Memory" Actually Are
+
+Before touching the framework, understand the two ideas LangChain is built around — both are simple concepts wrapped in convenient syntax.
+
+**A chain is just function composition.** An LLM call is fundamentally a function: `text in → text out`. A "chain" is nothing more than wiring the output of one LLM (or transformation) call into the input of the next, the same way you'd pipe `f(g(x))` in any programming language. `prompt | llm | parser` is LangChain's syntax for "format the prompt, send it to the model, parse the result" — there's no hidden magic, just composition. The reason this matters architecturally: each link in the chain can use a *different* model. Cheap steps (extraction, formatting) can run on a small model; the one step that needs real reasoning runs on a bigger one. A chain is a cost/quality routing tool as much as a plumbing tool.
+
+**Memory solves a structural fact about LLMs: they are stateless.** Every API call to GPT-4o, Claude, or Llama is independent — the model has no idea a previous call ever happened. There is no session, no server-side conversation state, unless *you* resend it. "Memory" in LangChain is not the model remembering anything; it's a client-side data structure (a list of prior messages) that gets re-sent, in full, as part of every new prompt. This has a direct cost consequence: a 20-turn conversation re-transmits (and re-bills) all 20 turns' worth of tokens on turn 21, unless you actively trim or summarize. Understanding this — that "memory" is just "resending history" — explains why long conversations get expensive and why context windows eventually get exceeded.
+
+With those two ideas — composition and resent-history — everything below is just syntax for expressing them.
+
 ### 1. LangChain: The Orchestration Framework
 
 LangChain provides composable building blocks (the **LCEL** — LangChain Expression Language) for building multi-step LLM pipelines.
@@ -310,6 +320,33 @@ Open-source embeddings (sentence-transformers, BAAI/bge) are free to run locally
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Reaching for LangChain on a 1-step task.** If your "chain" is a single prompt → single LLM call, the raw SDK is simpler to debug and has fewer dependency/version risks. Add a framework only once you have ≥2 composed steps, memory, or multiple tools.
+- ⚠️ **Assuming memory is free.** Every message you keep in `self.history` gets re-sent (and re-billed) on every subsequent turn. A forgotten sliding window or summary step means costs grow linearly — sometimes quadratically — with conversation length.
+- ⚠️ **Wrong `chunk_size`/`chunk_overlap` for the embedding model.** If your chunk size in characters wildly mismatches your embedding model's token limit (e.g., `text-embedding-3-small` caps at 8,191 tokens), large chunks get silently truncated, and you lose the tail of every chunk without any error.
+- ⚠️ **Pinning to no version at all.** LangChain has a documented history of breaking API changes between minor versions. Always pin exact versions (`langchain==0.3.x`) in `requirements.txt`/`pyproject.toml` — "it worked in the tutorial" often means "it worked on a different version."
+- ⚠️ **Re-indexing on every run.** Calling `VectorStoreIndex.from_documents()` re-embeds (and re-bills) the entire corpus every time your script starts. Persist the index (`index.storage_context.persist(...)`) and load from disk unless the source documents have actually changed.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Chain** | A composed sequence of steps (prompt → LLM → parser → ...) where each step's output feeds the next step's input, built using the `\|` operator in LCEL. |
+| **LCEL** | LangChain Expression Language — the syntax (`\|` for composition) for declaratively building chains out of `Runnable` components. |
+| **Runnable** | The base LangChain interface implemented by prompts, models, parsers, and retrievers, allowing them to be composed, invoked, streamed, or batched uniformly. |
+| **Document loader** | A LangChain/LlamaIndex component that reads a specific file format (PDF, CSV, HTML, DOCX, etc.) and converts it into a list of `Document` objects with text + metadata. |
+| **Text splitter / chunking** | The process of breaking a long document into smaller overlapping pieces so each piece fits within an embedding model's or LLM's context limit. |
+| **Conversation memory** | A client-side list of prior messages that is resent with each new request to simulate a model "remembering" earlier turns — the model itself is stateless. |
+| **RunnableParallel** | A LangChain construct that runs multiple chains concurrently on the same input and returns their results as a dictionary, reducing wall-clock latency. |
+| **Vector index** | A data structure that stores document chunks as embedding vectors, enabling semantic similarity search instead of exact keyword matching. |
+| **Query engine** | LlamaIndex's abstraction for turning a natural-language question into: retrieve relevant chunks → synthesize an answer from them. |
+| **Response mode** | A LlamaIndex setting (`compact`, `tree`, `simple`) controlling how multiple retrieved chunks are combined into a single answer. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Document Summarization Chain
@@ -343,6 +380,16 @@ def build_financial_health_chain(client_llm):
 
 chain = build_financial_health_chain(ChatOpenAI(model="gpt-4o-mini"))
 print(chain.invoke({"text": sample_text}))
+
+# EXPECTED RESULT: "CONCERNING"
+# Reasoning a correct chain should surface: revenue grew 200% YoY ($3.4B) which
+# is a strong positive signal, BUT operating expenses ($4.1B) exceed revenue
+# ($3.4B) by ~$700M, the company is explicitly "unprofitable," and headcount
+# nearly doubled (3,000 → 5,500) faster than revenue scaled efficiency. This
+# is not CRITICAL (revenue is growing fast and guidance points to 2026
+# profitability) but it is not HEALTHY (currently burning cash). If your chain
+# returns HEALTHY, check whether step 1 is actually passing the expense figures
+# through to step 2.
 ```
 
 ### Exercise 2: Adding Memory to a Chatbot
@@ -368,6 +415,19 @@ print(bot.chat("Hi, I'm Sarah and my order #1234 hasn't arrived"))
 print(bot.chat("It's been 3 weeks"))
 print(bot.chat("Can you escalate this for me?"))
 # Should remember: user is Sarah, order #1234, 3-week delay
+
+# EXPECTED RESULT (illustrative — exact wording will vary by model/temperature):
+# Turn 1 -> "I'm sorry to hear that, Sarah. Let me look into order #1234 right
+#            away. Can you confirm your shipping address so I can check carrier
+#            status?"
+# Turn 2 -> "Thank you for confirming it's been 3 weeks — that's well beyond
+#            our standard delivery window for order #1234. I'd like to escalate
+#            this for you."
+# Turn 3 -> "I've escalated order #1234 to our logistics team, Sarah. You
+#            should hear back within 24 hours."
+# The critical check: by turn 3, the bot references "Sarah" and "#1234" WITHOUT
+# the user repeating them — that's proof memory (not just the last message) is
+# being passed into the chain.
 ```
 
 ### Exercise 3: LlamaIndex Knowledge Base
@@ -404,6 +464,22 @@ with open("./kb/shipping.txt", "w") as f:
 # 3. Create a query engine
 # 4. Answer: "What is the refund policy for damaged enterprise products?"
 # 5. Answer: "How much does express international shipping cost?"
+
+# EXPECTED RESULT:
+# Q4 -> Should synthesize BOTH the "Enterprise contracts" line (prorated
+#       refund with 30-day notice) AND the "Damaged goods" line (full refund
+#       including shipping within 14 days) — a correct answer notes that
+#       damaged enterprise products qualify for the damaged-goods full refund
+#       (14-day window), not just the standard enterprise prorated refund.
+#       This is the right test case precisely because the answer isn't in any
+#       single sentence — it requires combining two retrieved chunks.
+# Q5 -> "Express international shipping" doesn't exist as a single line item
+#       in the source docs (only "Express shipping" $14.99 domestic and
+#       "International" $24.99 generic exist) — a good answer should say the
+#       data doesn't specify a combined express+international rate rather
+#       than fabricating one. If your query engine confidently invents a
+#       number, that's a hallucination — tighten the query engine prompt to
+#       say "if the answer isn't in the context, say so."
 ```
 
 ---

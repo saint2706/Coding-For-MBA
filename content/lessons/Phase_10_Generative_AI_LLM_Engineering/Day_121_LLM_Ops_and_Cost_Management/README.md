@@ -379,6 +379,46 @@ In order of impact (highest first):
 
 Note that output tokens are typically 3-4x more expensive than input tokens (e.g., GPT-4o: $2.50 input vs $10 output per million tokens). For extraction tasks, forcing shorter outputs (constrain with `max_tokens=100`) saves more money than trimming prompts.
 
+### Decision Matrix: Prompt Compression vs. Semantic Caching
+
+These two techniques attack different cost problems and are not interchangeable — most production systems eventually need both.
+
+| Situation | Use Prompt Compression | Use Semantic Caching |
+|---|---|---|
+| Every request has genuinely unique content (e.g., per-document summarization) | ✅ Yes — shrinks the unique payload itself | ❌ No — there's nothing to reuse across calls |
+| High volume of near-duplicate queries (FAQ bots, support chat) | ⚠️ Helps a little | ✅ Yes — skip the LLM call entirely on a cache hit |
+| Long, static system prompts / few-shot examples repeated every call | ✅ Yes — audit and trim, or use provider prompt caching | ⚠️ Doesn't address repeated *queries*, only repeated *context* |
+| Latency matters as much as cost | ⚠️ Still pays full LLM round-trip | ✅ Yes — cache hits return in milliseconds, no LLM call |
+| Conversation history grows unboundedly (multi-turn chat) | ✅ Yes — `smart_trim_history()` keeps token count flat | ❌ No — each conversation's history is unique |
+| Answers must always reflect the latest data | ✅ Yes — no staleness risk | ⚠️ Risk — a cached answer can go stale if underlying data changes |
+| Budget is the primary constraint and traffic is repetitive | ⚠️ Reduces cost per call | ✅ Yes — best ROI when cache hit rate exceeds ~20-30% |
+
+**Rule of thumb:** compression reduces the cost of *every* call; caching eliminates the cost of *repeated* calls. Apply compression first (it helps 100% of traffic), then layer semantic caching on top for the subset of queries that recur.
+
+## Pitfalls
+
+- ⚠️ **Trimming history by message count, not tokens.** Dropping "the oldest 2 messages" doesn't bound cost — a single long message can dominate. Trim by token budget (as `smart_trim_history()` does), not message count.
+- ⚠️ **Treating semantic cache hits as exact-match cache hits.** A cosine-similarity threshold that's too loose returns a cached answer for a *different* question that merely sounds similar (e.g., "What was Q3 revenue?" vs "What was Q3 expenses?"). Tune and test the threshold against real query logs before trusting it in production.
+- ⚠️ **Caching answers that depend on freshness.** Semantic caching is great for stable FAQ-style answers, dangerous for anything tied to live data (account balances, today's stock price, current inventory). Set a short TTL or exclude these query types from the cache entirely.
+- ⚠️ **Optimizing input tokens while ignoring output tokens.** Output tokens cost 3-4x more per token than input on most providers. A verbose system prompt asking for "detailed explanations" can cost more in output than an unoptimized input prompt — set `max_tokens` and ask for concise answers explicitly.
+- ⚠️ **No cost monitoring until the bill arrives.** Without per-request token logging (e.g., via LangSmith tracing or a simple cost-logging wrapper), a runaway loop or an unexpectedly verbose model output can run for days before anyone notices. Log token usage and cost per call from day one, not after the first surprise invoice.
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| Token | The basic unit LLM providers bill by; roughly ¾ of an English word on average, but punctuation, code, and rare words can cost more tokens per character. |
+| tiktoken | OpenAI's open-source tokenizer library used to count tokens locally before sending a request, so you can estimate cost without an API call. |
+| Prompt compression | Reducing the token count of a prompt (shorter system prompts, summarized history, tools like LLMLingua) while preserving the meaning the model needs to respond correctly. |
+| LLMLingua | A compression library that uses a small model to identify and drop low-information tokens from a prompt, achieving large reductions with minimal quality loss. |
+| Semantic cache | A cache keyed by embedding similarity rather than exact string match, so paraphrased queries ("What's our churn rate?" vs "How many customers are we losing?") can still hit the cache. |
+| Cosine similarity threshold | The minimum similarity score (0-1) a new query's embedding must have against a cached query before the cached answer is reused; too low risks wrong-answer reuse, too high yields few cache hits. |
+| Model routing | Sending a request to a cheaper/faster model for simple tasks and reserving the most capable (and expensive) model for complex ones, based on query characteristics. |
+| Prompt caching (prefix caching) | A provider-side feature (OpenAI, Anthropic) that bills the static, repeated prefix of a prompt at a steep discount as long as it's byte-identical across calls — which is why dynamic content must go at the end of the prompt, not the start. |
+| LangSmith trace | A recorded timeline of every LLM call, tool call, and chain step in a single request, used to debug latency, cost, and incorrect outputs in agentic or chained systems. |
+| Cost attribution | Tracking which feature, user, or request type is responsible for LLM spend, so optimization effort goes toward the highest-cost paths first. |
+| Token budget | A cap on the total tokens (and therefore cost) a session, user, or feature is allowed to consume before behavior changes (e.g., switching to a cheaper model or refusing further calls). |
+
 ---
 
 ## Hands-on Lab
@@ -409,6 +449,17 @@ conversation = [
 # 3. Trim to 500 tokens max and recalculate
 def audit_conversation_cost(conversation: list[dict], model: str = "gpt-4o-mini") -> dict:
     pass
+
+# EXPECTED RESULT:
+# Summing tiktoken counts for the 9 messages above (using the gpt-4o-mini
+# encoding) gives roughly 245 tokens for the full history.
+# - Cost for one call with this history as input: (245 / 1_000_000) * $0.15 ≈ $0.0000368
+# - Monthly cost at 1000 sessions/day, 30 days: $0.0000368 * 1000 * 30 ≈ $1.10/month
+# - This conversation is already under both the 2000-token and 500-token
+#   trim thresholds mentioned in the exercise, so smart_trim_history() leaves
+#   it untouched — the "after trimming" cost is the same ≈$1.10/month.
+#   The teaching point: trimming only saves money once history grows past
+#   the threshold; short conversations like this one don't benefit yet.
 ```
 
 ### Exercise 2: Implement Prefix Caching
@@ -468,6 +519,20 @@ class TokenBudgetManager:
         5. Return the response
         """
         pass
+
+# EXPECTED RESULT — behavior to verify with a few test calls:
+# manager = TokenBudgetManager(budget_tokens=10_000, model="gpt-4o")
+# - Call 1 (used=0, ~5% of budget): self.model stays "gpt-4o" for this call.
+# - After several calls push self.used past 5,000 tokens (50% of budget):
+#   the next call() should switch to "gpt-4o-mini" for that call onward,
+#   even though self.model attribute may still say "gpt-4o" — the routing
+#   decision happens inside call_llm, not by mutating self.model permanently.
+# - Once self.used exceeds 9,000 tokens (90% of budget): call_llm returns
+#   the literal string "Budget limit approaching. Please start a new
+#   session." WITHOUT making an API call (no further tokens are spent).
+# - self.used must increase by prompt_tokens + completion_tokens after
+#   every real call, so a budget of 10,000 is reliably exhausted after a
+#   bounded number of calls rather than growing unbounded.
 ```
 
 ---

@@ -323,6 +323,29 @@ The most successful AI features position AI as a co-pilot, not autopilot. Users 
 
 Co-pilot wins on trust. Autopilot wins on efficiency. Choose based on the stakes of the task.
 
+## Pitfalls
+
+- ⚠️ **Building the feature spec after the demo, not before.** Teams that prototype first and write the spec retroactively tend to skip the failure-mode and privacy gates entirely, because the prototype already "works" on hand-picked examples. Run the 6-gate framework before writing any code.
+- ⚠️ **Confusing model confidence with correctness.** A model's stated `confidence: 0.95` is the model's *own estimate*, not a calibrated probability of being right — it can be wrong, especially on out-of-distribution inputs. Validate confidence-vs-accuracy on a held-out labeled set before wiring it into UX decisions like "show directly" vs "ask for confirmation."
+- ⚠️ **Shipping autopilot because co-pilot "felt slower" in the demo.** Demos favor automation because there's no real accountability at stake. In production, an autopilot mistake (wrong email sent, wrong invoice auto-approved) costs far more in trust than the time saved — default to co-pilot until accuracy and stakes justify removing the human.
+- ⚠️ **No plan for what happens when the AI is wrong in front of the user.** Every AI feature needs a designed failure state (timeout message, low-confidence fallback, correction path) before launch — not improvised after the first angry support ticket.
+- ⚠️ **Treating the launch checklist as a one-time gate.** Accuracy and behavior can drift as the model is upgraded by the provider or as user input patterns shift. Re-run the accuracy and safety checks periodically, not just before initial launch.
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| 6-gate framework | A pre-build checklist (user pain point, task clarity, failure severity, success metrics, alternatives considered, privacy risk) used to decide whether an AI feature should be built at all. |
+| Confidence-gated UX | A design pattern where the interface shown to the user changes based on the model's reported confidence score — direct answer when high, suggestion-with-alternatives when medium, explicit "not sure" when low. |
+| Co-pilot pattern | An AI design where the model drafts or suggests and a human reviews/approves before any action takes effect — preserves user control and accountability. |
+| Autopilot pattern | An AI design where the model takes action without human review — higher efficiency, but requires very high proven accuracy and low-cost failure modes to be safe. |
+| Failure mode | A specific way an AI feature can go wrong in production (hallucination, refusal overreach, latency spike, stale knowledge, context loss), each requiring its own UX mitigation. |
+| AI feature spec | A required pre-launch document covering problem statement, AI approach, success metrics, user flows (happy/uncertainty/failure paths), edge cases, evaluation plan, and rollout plan. |
+| Magical demo trap | The risk of judging an AI feature's readiness by curated demo examples instead of messy, representative production data. |
+| Red-teaming | Deliberately attempting to misuse or break an AI feature (adversarial prompts, edge cases, policy violations) before launch to find failure modes early. |
+| Guard rail | A rule-based or model-based check that constrains AI output (e.g., topic restriction, PII filtering, output format validation) independent of the core model's own judgment. |
+| Rollout plan | A phased launch strategy (internal → beta → full) that limits blast radius while accuracy and UX are validated against real usage. |
+
 ---
 
 ## Hands-on Lab
@@ -335,6 +358,12 @@ For each of these proposed AI features, score it on the 6-gate framework and giv
 2. **Auto-reply to customer emails** — AI reads support emails and sends responses automatically (no human review).
 3. **Meeting notes summarizer** — AI transcribes and summarizes meeting recordings into structured action items.
 4. **Salary negotiation advisor** — AI recommends salary offers based on candidate resume and market data.
+
+**EXPECTED RESULT** — verdicts to check your reasoning against (yours may differ in detail, but should land on the same call):
+1. **Performance reviews**: CAUTION, not outright BLOCK — high failure severity (reputational/career impact) but mitigated because a manager edits the draft before it's used (co-pilot, not autopilot). Requires a privacy review since it processes employee PII, plus a bias check on the generated language.
+2. **Auto-reply with no human review**: BLOCK — this is autopilot on customer-facing communication with no review gate. Failure severity is high (wrong info sent to a paying customer, no chance to catch it first). Redesign as co-pilot: AI drafts, human sends.
+3. **Meeting notes summarizer**: APPROVED — clear task, low failure severity (a missed action item gets caught in the next meeting), straightforward success metric (action items correctly extracted), no PII concerns beyond normal meeting content.
+4. **Salary negotiation advisor**: BLOCK — catastrophic failure severity (legal exposure from pay-equity/discrimination claims if recommendations encode bias), requires PII and market data handling, and "recommends an offer" is a decision with real financial and legal consequences. Redesign as AI providing market-rate context only, with humans making the actual offer decision.
 
 ### Exercise 2: Failure Mode Design
 
@@ -353,6 +382,17 @@ Write a complete AI feature spec (using the template from Section 3) for:
 **Intelligent Invoice Approval Assistant** — a tool that reads invoice images, validates against purchase orders, flags discrepancies, and routes for approval or auto-approves low-value invoices within policy.
 
 Include: problem statement, AI approach, success metrics, user flows, edge cases, evaluation plan, and rollout plan.
+
+**EXPECTED RESULT** — a passing spec should, at minimum, contain:
+- **Problem statement**: names the manual cost today (e.g., "AP staff spend 20 min/invoice manually matching to POs").
+- **AI approach**: vision-based extraction (per Day 122) + structured comparison against PO data, not freeform generation; explicit model choice with a reason (e.g., GPT-4o for layout/table reading).
+- **Success metrics**: a measurable extraction accuracy threshold (e.g., ">98% field-level accuracy on a 200-invoice test set") AND a business metric (e.g., "average approval time reduced from 2 days to 2 hours").
+- **User flows**: happy path (low-value, in-policy invoice → auto-approved), uncertainty path (discrepancy found → routed to human with the specific mismatch highlighted), failure path (extraction confidence low or OCR fails → routed to manual entry, never silently auto-approved).
+- **Edge cases**: at minimum, handwritten invoices, multi-currency invoices, duplicate invoice submissions, and invoices missing a PO reference.
+- **Evaluation plan**: an offline accuracy test before launch, plus an explicit rule that *auto-approval* (the catastrophic-failure path, since it touches money) requires a human-in-the-loop review during the beta phase even if individual extractions look accurate.
+- **Rollout plan**: starts with extraction-and-flag-only (no auto-approval) before graduating to auto-approval for low-value invoices under a defined dollar threshold — mirroring the co-pilot → autopilot trust progression from this lesson's Senior-Level Insights.
+
+If your spec is missing the human-in-the-loop gate on auto-approval, revisit Gate 3 of the 6-gate framework — approving payments is exactly the kind of high-failure-severity action that shouldn't go fully autonomous on day one.
 
 ---
 

@@ -609,6 +609,22 @@ print(f"\n=== SYSTEM STATS ===")
 print(assistant.get_stats())
 ```
 
+### EXPECTED RESULT — What "Working" Looks Like
+
+Run `run_demo.py` against the `test_questions` list above and check your output against these criteria before moving on. A correct implementation should show:
+
+| Question | Expected `source` | Expected `cached` | Notes |
+|---|---|---|---|
+| "What is our refund policy for software licenses?" | `rag` | `False` | Should answer "Non-refundable after download/activation" — this is in the knowledge base verbatim. |
+| "How long does international shipping take?" | `rag` | `False` | Should cite "10-15 business days" (Standard) from the shipping policy doc. |
+| "Who founded TechCorp and when?" | `rag` | `False` | Should name Alice Chen and Bob Martinez, founded 2019. |
+| "What was total revenue in Q3 2025 for all products in the Americas?" | `sql` | `False` | Should sum the three `revenue_monthly` rows for Sept 2025, Americas: $1.75M + $1.4M + $1.1M = **$4.25M**. |
+| "Which product had the highest revenue in 2025?" | `sql` | `False` | Summing the seeded rows, **ProSuite** has the highest cumulative revenue across the three months loaded. |
+| "Can I get a refund for a software product I already downloaded?" | `rag` (cached) | `True` | This is semantically close to the first question — should be a **cache hit**, not a fresh RAG call. If `cached` is `False`, your similarity threshold (0.92) may be too strict, or the embedding call in `_check_cache` isn't running before routing. |
+| "What are your competitors' salaries?" | `guardrail` | `False` | Should be blocked before any LLM call, returning the "outside my scope" message — verify this never reaches `_route_question`. |
+
+After the run, `assistant.get_stats()` should show `total_queries` matching the number of non-cached, non-guardrailed questions (5 in this set, since one hits cache and one is blocked before logging), and `cache_hit_rate` reflecting at least 1 hit out of those queries. If your guardrail-blocked or cache-hit queries are appearing in `query_log`, you've wired the logging step before the early returns instead of after — check the order of operations in `ask()`.
+
 ### Part 6: Evaluation
 
 ```python
@@ -650,6 +666,27 @@ for metric, score in result.items():
     status = "✅" if score > 0.85 else "⚠️"
     print(f"  {status} {metric}: {score:.3f}")
 ```
+
+## Pitfalls
+
+- ⚠️ **Routing before checking the cache.** If `_route_question` runs before `_check_cache`, every query pays for a routing LLM call even on a cache hit, defeating the purpose of caching. Always check cache first, route only on a miss — this is the order the `ask()` method above uses; verify your own implementation preserves it.
+- ⚠️ **Letting the SQL agent execute anything other than SELECT.** The system prompt asks the model to only generate SELECT statements, but a prompt-level instruction is not a security boundary — an adversarial or malformed query could still ask for `DROP TABLE`. Always validate the generated SQL against an allowlist (or use a read-only DB connection) before executing it, never trust the LLM's own restraint.
+- ⚠️ **No fallback when the SQL agent returns nothing.** If the database doesn't have the requested data, the current implementation just returns "Query executed but returned no results" — a dead end for the user. Production systems should fall back to RAG (the same fact may exist in a policy/summary document) before giving up.
+- ⚠️ **Caching guardrail-blocked or empty answers.** Only cache genuinely useful answers — caching "I can't answer that" or "no results found" wastes cache slots and can return a stale non-answer to a question that would later succeed (e.g., after the database is updated).
+- ⚠️ **Treating this demo's in-memory SQLite and 5 text files as representative of production scale.** This capstone proves the *architecture* works; running it against 100,000 documents or a real production database requires the scaling considerations in Exercise 2 (chunking strategy, multi-tenancy, indexing performance) — don't mistake "it works on the demo" for "it's production-ready."
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| Orchestrator | The component that decides which downstream tool (RAG, SQL agent, calculation agent) should handle a given user question, based on the question's characteristics. |
+| Semantic cache | A cache keyed by embedding similarity rather than exact text match, allowing differently-worded but semantically equivalent questions to reuse a previous answer. |
+| Guardrail layer | A pre-processing check (topic filtering, input sanitization) that blocks out-of-scope or unsafe questions before they reach any LLM call, saving cost and reducing risk. |
+| Routing | Classifying a user question into a category (e.g., "rag" vs "sql") so it's handled by the tool best suited to answer it correctly. |
+| Response synthesizer | The step that combines results from one or more tools (RAG context, SQL results) into a single coherent, sourced answer for the user. |
+| Cache hit rate | The fraction of queries answered from cache rather than a fresh LLM/tool call — a key cost and latency metric for a deployed assistant. |
+| Model card | A standardized documentation artifact (Day 124) describing a deployed system's intended use, performance, limitations, and known biases — required for responsible deployment of this capstone. |
+| End-to-end evaluation | Testing the full pipeline (routing + retrieval/query + synthesis) against a golden Q&A set, rather than evaluating each component in isolation, since errors can compound across stages. |
 
 ---
 
@@ -740,3 +777,5 @@ You've completed the **Generative AI & LLM Engineering** phase. In 12 days, you'
 | 120 | Capstone                | End-to-end AI data assistant                     |
 
 🎓 **You've now completed a 120-day journey from Python basics to production AI engineering. The skills you've built represent the cutting edge of what the most sought-after data professionals know in 2026.**
+
+**Tomorrow → Day 126: Cloud Fundamentals** — Phase 11 shifts from building AI applications to engineering the cloud data infrastructure (storage, warehouses, orchestration, and dbt at scale) that production AI and analytics systems like the assistant you just built actually run on.
