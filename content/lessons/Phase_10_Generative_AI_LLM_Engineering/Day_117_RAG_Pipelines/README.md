@@ -72,6 +72,10 @@ User Query
 
 ### 2. Understanding Embeddings
 
+**What a vector space actually represents.** An embedding model takes a piece of text and places it as a single point in a high-dimensional space (1536 dimensions for `text-embedding-3-small`) — think of it as a vastly expanded version of plotting words on a 2D map by topic. The model is trained so that texts with *similar meaning* end up as *nearby points*, regardless of whether they share any actual words. "I'd like a refund" and "Can I get my money back?" land close together in this space even though they share zero vocabulary, because the model learned the semantic relationship between them during training — not a keyword overlap.
+
+**Why this enables semantic search.** Traditional keyword search (like SQL `LIKE` or a basic full-text index) matches strings. Vector search matches *meaning*, by measuring the distance between two points in this space. "Distance" between two embedding vectors is what cosine similarity computes — the smaller the angle between two vectors, the more semantically related the underlying text. This is the entire trick behind RAG: instead of asking "which documents contain these exact words," you ask "which documents live near this question's point in meaning-space."
+
 ```python
 from openai import OpenAI
 import numpy as np
@@ -357,6 +361,35 @@ EMBEDDING_MODELS = {
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Chunking by a fixed character count with no regard for structure.** Splitting mid-sentence or mid-table destroys the semantic unit the embedding model is trying to represent, producing chunks that retrieve poorly. Prefer splitting at paragraph/section boundaries first (as `RecursiveCharacterTextSplitter`'s separator list does), and validate chunk boundaries on a sample of your actual documents.
+- ⚠️ **Re-embedding the same documents on every app restart.** This burns API cost and time for no benefit. Persist the vector store (`persist_directory=...`) and only re-embed chunks whose source content actually changed (track a content hash per chunk).
+- ⚠️ **Using a different embedding model for indexing vs. querying.** Embeddings from different models (or even different versions of the same model) are NOT comparable — cosine similarity between them is meaningless. Always use the exact same embedding model for both indexing and querying.
+- ⚠️ **Trusting retrieval without checking it.** A RAG system can return a fluent, confident-sounding answer built from the *wrong* retrieved chunks. Always log which chunks were retrieved for each answer in production, and spot-check retrieval quality separately from generation quality.
+- ⚠️ **No fallback for "not in the knowledge base."** If the prompt doesn't explicitly instruct the model to say "I don't know" when context is insufficient, RAG systems will happily hallucinate an answer that sounds grounded but isn't.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **RAG (Retrieval-Augmented Generation)** | An architecture that retrieves relevant text chunks from an external knowledge base at query time and inserts them into the LLM's prompt as context, instead of relying solely on the model's trained-in knowledge. |
+| **Embedding** | A fixed-length vector of floats that represents the semantic meaning of a piece of text, produced by an embedding model. |
+| **Vector space** | The high-dimensional space (e.g., 1536 dimensions) in which embeddings live; texts with similar meaning are placed at nearby points. |
+| **Cosine similarity** | A measure of the angle between two vectors (ranging -1 to 1, typically 0 to 1 for text embeddings); higher values indicate more similar meaning, independent of vector magnitude. |
+| **Vector store / vector database** | A database (e.g., ChromaDB, Pinecone, Weaviate) optimized for storing embeddings and performing fast nearest-neighbor similarity search. |
+| **Dense retrieval** | Retrieval based purely on embedding similarity — captures semantic/paraphrase matches but can miss exact keyword matches. |
+| **BM25** | A classic keyword-based ranking algorithm (the "traditional search" baseline) that scores documents by term frequency, used as the keyword half of hybrid search. |
+| **Hybrid search** | Combining dense (semantic) retrieval and BM25 (keyword) retrieval, usually via weighted ensemble, to capture both paraphrase matches and exact-term matches. |
+| **MMR (Maximum Marginal Relevance)** | A retrieval re-ranking method that selects results balancing relevance to the query against diversity from already-selected results, avoiding near-duplicate chunks. |
+| **Reranking** | A second-pass scoring step (often with a cross-encoder model) applied to an initial set of retrieved candidates to reorder them by more precise relevance before sending to the LLM. |
+| **Chunking** | Splitting a long document into smaller overlapping pieces so each piece fits within an embedding model's or LLM's context limit. |
+| **Faithfulness** | A RAGAS evaluation metric measuring whether an LLM's generated answer is actually supported by (grounded in) the retrieved context, as opposed to hallucinated. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Build RAG from Scratch
@@ -405,6 +438,19 @@ index = build_index(DOCS)
 results = retrieve("Who invented Python?", index, top_k=2)
 response = answer("Who invented Python and when?", results)
 print(response)
+
+# EXPECTED RESULT:
+# retrieve("Who invented Python?", index, top_k=2) should return d1 as the
+# top result (cosine similarity ≈ 0.7-0.85 — it directly answers the query)
+# and d3 as a plausible #2 (also about Python, but a much weaker match,
+# cosine similarity ≈ 0.2-0.3). d2 and d4 should NOT appear in the top 2 —
+# they're about unrelated Python topics (threading, web frameworks).
+# answer(...) should produce something like:
+#   "Python was created by Guido van Rossum in 1991."
+# grounded only in d1. If the answer mentions FastAPI or the GIL, your
+# retrieve() function is likely returning irrelevant chunks — check that
+# cosine_sim is computed correctly (dot product over norms, not squared
+# Euclidean distance).
 ```
 
 ### Exercise 2: Metadata Filtering Strategy
@@ -445,6 +491,21 @@ def evaluate_retrieval(retriever, eval_set: list, k: int = 5) -> dict:
     Return mean precision and recall across all queries.
     """
     pass
+
+# EXPECTED RESULT (k=5):
+#   Query 1 ("refund policy"): 2 relevant chunks exist (policy_refund_001/002).
+#     If both are retrieved in the top 5 -> Precision@5 = 2/5 = 0.40,
+#     Recall@5 = 2/2 = 1.0
+#   Query 2 ("Q3 revenue"): 1 relevant chunk exists (finance_q3_001).
+#     If it's retrieved in the top 5 -> Precision@5 = 1/5 = 0.20,
+#     Recall@5 = 1/1 = 1.0
+#   Mean precision@5 ≈ 0.30, Mean recall@5 = 1.0 (assuming a well-tuned
+#   retriever finds all relevant chunks within the top 5).
+# Note: precision will mechanically look low whenever a query has fewer
+# relevant chunks than k — that's expected, not a bug. Recall is the more
+# meaningful metric here; if recall is below 1.0, your retriever is
+# genuinely missing relevant chunks and you should investigate chunking or
+# the embedding model.
 ```
 
 ---

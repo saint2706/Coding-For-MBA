@@ -149,7 +149,17 @@ DATASET_SIZE_GUIDE = {
 }
 ```
 
-### 3. Fine-Tuning with Unsloth (2x Faster QLoRA)
+### 3. The PEFT Workflow, Conceptually
+
+Before running any Unsloth code, understand what PEFT (Parameter-Efficient Fine-Tuning) is actually doing, because the code below is just an implementation of this idea.
+
+**The problem PEFT solves.** A 7B-parameter model has 7 billion individual numbers. "Full fine-tuning" means recomputing gradients for and updating all 7 billion of them — which requires storing the weights, the gradients, AND the optimizer state (Adam keeps two extra numbers per weight) simultaneously in GPU memory. That's roughly 4x the model size in VRAM just for training math, before you even load any data — well over 100GB for a 7B model. Most people don't have that hardware.
+
+**The PEFT insight: you don't need to change all the weights.** Adapting a model to a new task turns out to require only a small, low-rank "correction" on top of the existing weights — not a wholesale rewrite. Concretely, LoRA freezes the original weight matrix `W` (size `d × d`) completely, and instead learns two small matrices `A` (size `d × r`) and `B` (size `r × d`), where `r` (the "rank") is small — typically 4 to 64. At inference time, the effective weight becomes `W + A·B`. Since `r ≪ d`, the number of trainable parameters collapses from `d²` to `2 × d × r` — for `d=4096, r=16`, that's a >99% reduction in trainable parameters.
+
+**Why this changes what hardware you need.** Because only `A` and `B` need gradients and optimizer state, and the frozen `W` can sit in memory at reduced precision, the entire training memory footprint drops by an order of magnitude. QLoRA pushes this further by storing the frozen base model in 4-bit instead of 16-bit. The net effect: fine-tuning that once needed an 8-GPU cluster now fits on a single consumer GPU. The mechanics in the code below (Unsloth, `r=16`, `target_modules`) are just configuring where these `A`/`B` pairs get inserted — into the attention and feed-forward projection matrices of each transformer layer.
+
+### 4. Fine-Tuning with Unsloth (2x Faster QLoRA)
 
 ```python
 # Unsloth is a drop-in replacement for HuggingFace PEFT
@@ -265,7 +275,7 @@ model.push_to_hub("username/my-finance-llama-lora")
 tokenizer.push_to_hub("username/my-finance-llama-lora")
 ```
 
-### 4. Running the Fine-Tuned Model
+### 5. Running the Fine-Tuned Model
 
 ```python
 # Inference with the fine-tuned adapter
@@ -291,7 +301,7 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 # → BULLISH
 ```
 
-### 5. Monitoring Training
+### 6. Monitoring Training
 
 ```python
 # Key metrics to watch during training
@@ -345,6 +355,34 @@ Fixes: More data, data augmentation, reduce training steps, increase regularizat
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Forgetting the EOS token in training data.** If `tokenizer.eos_token` isn't appended to every example, the model never learns when to stop generating — it will ramble past the intended output in production. This is one of the most common silent bugs in fine-tuning pipelines.
+- ⚠️ **Judging success by `train_loss` alone.** A model can hit a near-zero training loss while its `eval_loss` stays high — that's overfitting/memorization, not learning. Always hold out 10-20% of data for evaluation and watch both numbers.
+- ⚠️ **Setting LoRA rank too high "to be safe."** A higher `r` means more trainable parameters and a higher risk of overfitting on small datasets, plus slower training — it does not automatically mean better quality. Start at `r=8` or `r=16` and only increase if evaluation shows underfitting.
+- ⚠️ **Skipping dataset validation before a multi-hour training run.** Empty instructions, mismatched formats, or heavy duplication will silently degrade the trained model — and you won't find out until after paying for a full training run. Always run a dataset quality check (see Exercise 1) first.
+- ⚠️ **Fine-tuning when the real problem is prompting.** If you haven't tried a well-engineered system prompt and a few-shot example set first, you can't know fine-tuning was actually necessary — and you've taken on the ongoing cost of retraining every time requirements change.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Fine-tuning** | Continuing to train a pretrained model's weights on a smaller, task-specific dataset, so the model internalizes a particular style, format, or domain. |
+| **PEFT (Parameter-Efficient Fine-Tuning)** | A family of techniques (LoRA, QLoRA, prefix tuning, etc.) that fine-tune a model by training only a small subset of parameters instead of the full weight set. |
+| **LoRA (Low-Rank Adaptation)** | A PEFT method that freezes the original weight matrix and learns two small low-rank matrices (`A`, `B`) whose product is added to it, drastically reducing trainable parameter count. |
+| **Rank (r)** | The inner dimension of the LoRA `A`/`B` matrices; controls the capacity of the adaptation — higher rank means more trainable parameters and (usually) more expressiveness, at higher overfitting risk. |
+| **QLoRA** | LoRA applied on top of a 4-bit quantized frozen base model, reducing memory requirements further so larger models can be fine-tuned on consumer-grade GPUs. |
+| **Quantization (NF4)** | Compressing model weights to a lower-precision numeric format (4-bit NormalFloat in QLoRA) to reduce memory footprint with minimal quality loss. |
+| **Alpaca format** | An instruction-tuning dataset format with `instruction`, `input`, and `output` fields for single-turn tasks. |
+| **ShareGPT format** | An instruction-tuning dataset format structured as a list of multi-turn `conversations` with `from`/`value` roles. |
+| **EOS token** | "End of Sequence" — the special token that signals to the model where generated text should stop; must be included at the end of every training example. |
+| **Catastrophic forgetting** | The degradation of a model's general capabilities that can occur when full fine-tuning on a narrow task overwrites previously learned weights. |
+| **Train loss vs. eval loss** | Train loss measures fit to the training data; eval loss measures fit to held-out data. A growing gap between them (low train loss, high eval loss) is the signature of overfitting. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Dataset Quality Check
@@ -368,6 +406,19 @@ sample_dataset = [
 # 3. Add 5 more high-quality samples to reach 11 total
 def fix_dataset(samples: list[dict]) -> list[dict]:
     pass
+
+# EXPECTED RESULT — at minimum, fix_dataset() should resolve these 4 issues:
+#   1. Inconsistent label vocabulary: rows use "Bad"/"Good" while others use
+#      "BULLISH"/"BEARISH"/"NEUTRAL" — pick ONE label set and apply it to all.
+#   2. Missing instruction text: row 5 has instruction="" — every row must
+#      restate the full task instruction, not rely on positional context.
+#   3. Instructions too generic: "Classify" (rows 1-4) doesn't tell the model
+#      what categories exist — should read like row 6's full instruction.
+#   4. Insufficient size and class imbalance: 6 samples is far below the
+#      "100-500 examples per class" guideline in DATASET_SIZE_GUIDE, and
+#      labels skew toward only 2 classes (no NEUTRAL examples at all).
+# After fixing, validate_dataset(fixed_samples) should return is_valid=True
+# with issues=[] and dedup_ratio >= 0.8.
 ```
 
 ### Exercise 2: LoRA Parameter Sensitivity
@@ -381,6 +432,16 @@ For a model with `d_model=4096`, fill in this table:
 | 64            | ?                    | 32×2                         | ?                 | ?             |
 
 Formula: params per layer = 2 × d_model × r (A matrix + B matrix)
+
+**EXPECTED RESULT** (d_model=4096, 32 layers × 2 target matrices = 64 adapted matrices, 7B base model):
+
+| LoRA Rank (r) | Parameters per Layer | Total Layers | Total LoRA Params | % of 7B model |
+| ------------- | --------------------- | ------------- | ------------------ | -------------- |
+| 4             | 2×4096×4 = 32,768      | 64            | 2,097,152 (~2.1M)   | ~0.030%        |
+| 16            | 2×4096×16 = 131,072    | 64            | 8,388,608 (~8.4M)   | ~0.120%        |
+| 64            | 2×4096×64 = 524,288    | 64            | 33,554,432 (~33.6M) | ~0.480%        |
+
+Even at rank 64, LoRA trains under 0.5% of the model's total parameters — this is the core PEFT efficiency argument made concrete.
 
 ### Exercise 3: Evaluate Two Model Variants
 
@@ -406,6 +467,19 @@ v2_predictions = ["BEARISH", "BULLISH", "NEUTRAL", "BEARISH", "NEUTRAL"]
 
 # TODO: Calculate accuracy for both models and declare a winner
 # Discuss: what does a low training_loss but lower accuracy tell you?
+
+# EXPECTED RESULT:
+#   v1_predictions vs expected: ["BEARISH","BULLISH","NEUTRAL","BEARISH","BULLISH"]
+#     vs ["BEARISH","BULLISH","NEUTRAL","BEARISH","NEUTRAL"] -> 4/5 correct = 80%
+#   v2_predictions vs expected: ["BEARISH","BULLISH","NEUTRAL","BEARISH","NEUTRAL"]
+#     vs expected -> 5/5 correct = 100%
+#   Winner: v2 (rank=16, 200 steps, lr=1e-4), accuracy 100% vs v1's 80%.
+# Discussion takeaway: both models report the same training_loss (0.15), but
+# v1's identical training loss with worse held-out accuracy suggests v1
+# overfit faster (fewer steps, higher LR, lower rank = less capacity, so it
+# memorized the training set's surface patterns quickly without generalizing
+# as well to the eval set's NEUTRAL case). This is exactly why train_loss
+# alone cannot be used to pick a winner — always compare on held-out eval data.
 ```
 
 ---

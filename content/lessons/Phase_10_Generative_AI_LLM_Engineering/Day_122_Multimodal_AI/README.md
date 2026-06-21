@@ -366,6 +366,29 @@ Always force JSON/Pydantic schema output for document intelligence — never par
 
 Gemini's 1M token context means you can send an entire book. Its native PDF support (no conversion needed) makes it excellent for very long document processing. Use Gemini when document length exceeds ~20 pages.
 
+## Pitfalls
+
+- ⚠️ **Sending full-resolution images when "low" detail would do.** GPT-4o's `detail="high"` mode tiles the image into multiple sub-images, multiplying token cost. For tasks like "is this a receipt or invoice?" `detail="low"` is far cheaper and usually sufficient — reserve `"high"` for reading small text or fine chart values.
+- ⚠️ **Letting the model return freeform prose instead of structured output.** "The total appears to be around $45" is not parseable. Always force a Pydantic schema (`Invoice`, `Receipt`) so a missing or malformed field raises a validation error immediately instead of silently corrupting downstream calculations.
+- ⚠️ **Assuming vision models read numbers as reliably as text.** VLMs can misread visually similar digits (e.g., "8" vs "3", "1" vs "7") in low-resolution or skewed photos, especially in dense tables. For financial documents, add a validation pass (e.g., do line items sum to the stated subtotal?) rather than trusting extracted numbers blindly.
+- ⚠️ **Using vision for documents that are pure, clean digital text.** A native PDF with selectable text doesn't need an image model at all — extracting text directly (or with a lightweight PDF parser) is faster, cheaper, and more accurate than rendering it as an image and asking a VLM to "read" it.
+- ⚠️ **Ignoring image orientation and resolution limits.** A rotated photo or a chart compressed below readable resolution will produce confident-sounding but wrong extractions. Validate image quality (orientation, minimum resolution) before sending to the API, not after getting bad results back.
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| VLM (Vision-Language Model) | A model trained to take both images and text as input and produce text output, e.g., GPT-4o, Gemini 1.5, Claude 3.5 — used for image description, extraction, and visual question answering. |
+| Detail level | A vision API parameter (`"low"`/`"high"` in GPT-4o) controlling whether the image is downsampled before analysis or tiled at full resolution — directly affects both accuracy and token cost. |
+| Base64 encoding | A way to embed binary image data as text inside a JSON API request, used when sending local image files (as opposed to a public image URL) to a vision API. |
+| Structured extraction | Forcing a model's output into a predefined schema (e.g., a Pydantic model) rather than freeform text, so the result can be validated and processed programmatically. |
+| `instructor` | A Python library that wraps LLM API calls so the response is automatically parsed and validated into a Pydantic model, retrying the call if the output doesn't fit the schema. |
+| Document intelligence | The broader task of extracting structured data (fields, tables, totals) from semi-structured documents like invoices, receipts, and forms. |
+| OCR (Optical Character Recognition) | Traditional text-extraction technology that converts an image of text into machine-readable text, without understanding layout or meaning — often a cheaper first step before LLM analysis on long documents. |
+| Multi-page processing | Running vision extraction independently per page (or per chunk of pages) and then synthesizing the per-page results into one coherent answer, needed because most vision APIs cap how many images can go in a single call. |
+| Vision pricing | The token cost of sending an image, which scales with resolution and detail level — a "high" detail image can cost 10-20x more tokens than a "low" detail one of the same content. |
+| Hallucinated extraction | A confidently-stated but incorrect value (a misread number, an invented field) returned by a VLM — the reason extracted financial data needs validation, not blind trust. |
+
 ---
 
 ## Hands-on Lab
@@ -402,6 +425,28 @@ class Receipt(BaseModel):
 # 3. Write the system prompt that maximizes extraction accuracy
 def extract_receipt(image_path: str) -> Receipt:
     pass
+
+# EXPECTED RESULT — for a typical grocery receipt photo containing:
+#   Whole Foods Market, 2 x "Organic Bananas" @ $0.69 = $1.38,
+#   1 x "Sourdough Bread" @ $4.99, 1 x "Milk 1gal" @ $3.49,
+#   Subtotal $9.86, Tax $0.59, Total $10.45, paid by credit card
+#
+# extract_receipt(...) should return something equivalent to:
+# Receipt(
+#     store_name="Whole Foods Market",
+#     store_address=None,            # OK to be None if not visible in photo
+#     date="2024-03-15", time="14:32",
+#     items=[
+#         ReceiptItem(name="Organic Bananas", quantity=2, unit_price=0.69, total_price=1.38, category="produce"),
+#         ReceiptItem(name="Sourdough Bread", quantity=1, unit_price=4.99, total_price=4.99, category="bakery"),
+#         ReceiptItem(name="Milk 1gal", quantity=1, unit_price=3.49, total_price=3.49, category="dairy"),
+#     ],
+#     subtotal=9.86, tax=0.59, total=10.45, payment_method="credit",
+# )
+# calculate_category_totals() on this receipt should return:
+#   {"produce": 1.38, "bakery": 4.99, "dairy": 3.49}
+# Sanity check: sum(category totals) == subtotal == 9.86. If your extraction
+# doesn't satisfy that equality, the model misread a price or quantity.
 ```
 
 ### Exercise 2: Chart Validation
@@ -422,6 +467,23 @@ def validate_chart_extraction(chart_data: dict) -> list[str]:
     issues = []
     # TODO: Implement validation checks
     return issues
+
+# EXPECTED RESULT — given this deliberately-flawed extracted chart_data:
+# chart_data = {
+#     "chart_type": "pie",
+#     "segments": [
+#         {"label": "North", "value": 35}, {"label": "South", "value": 28},
+#         {"label": "East", "value": 22}, {"label": "North", "value": 20},
+#     ],
+#     "key_insights": "South region shows the strongest growth this quarter",
+# }
+# validate_chart_extraction(chart_data) should return issues including:
+#   - "Percentages sum to 105%, expected ~100%"
+#   - "Duplicate label found: 'North' appears twice"
+#   - "key_insights claims 'South' is strongest, but largest segment is 'North' (35%)"
+# A clean, internally-consistent chart_data (percentages summing to 100,
+# no duplicate labels, insights matching the actual largest segment) should
+# return an empty list — that's the pass case to test against too.
 ```
 
 ### Exercise 3: Compare VLM Performance
@@ -442,6 +504,20 @@ def compare_visions(image_path: str, question: str) -> dict:
     and why based on Day 109 learnings.
     """
     pass
+
+# EXPECTED RESULT — comparison dict shape and realistic expectations:
+# {
+#     "gpt4o": {"response": "...", "tokens": 850, "latency_ms": 2100, "estimated_cost": 0.0091},
+#     "gemini_flash": {"response": "...", "tokens": 850, "latency_ms": 900, "estimated_cost": 0.0006},
+#     "agreement": True,  # do the two models extract the same key fields?
+# }
+# If you only have one API available, document the expected qualitative
+# differences instead of real numbers: Gemini 1.5 Flash is typically
+# faster and far cheaper per image, while GPT-4o tends to be more
+# reliable on dense, small-text tables. Either model can still occasionally
+# misread a single digit — note any such discrepancy as the "agreement"
+# check, since invoice/receipt totals are exactly where a one-digit
+# misread is most costly downstream.
 ```
 
 ---

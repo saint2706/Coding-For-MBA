@@ -50,7 +50,21 @@ Understanding the LLM landscape means knowing which firm to call.
 
 ### 1. What Makes an LLM an LLM?
 
-LLMs are **autoregressive transformer models** trained on massive text corpora to predict the next token. Key architectural properties that define capability:
+Before comparing models, you need to know what's actually happening under the hood — otherwise "GPT-4o is powerful" is just marketing copy.
+
+**The transformer architecture.** Every model in this lesson — GPT-4o, Claude, Gemini, Llama — is built from the same core block introduced in the 2017 paper *"Attention Is All You Need."* A transformer processes a whole sequence of tokens at once and uses a mechanism called **self-attention** to let every token "look at" every other token and decide how relevant each one is. This is what lets a model connect "it" in sentence 10 back to "the invoice" in sentence 2 — attention assigns that pair a high relevance weight. Stack dozens of these attention layers on top of each other (GPT-4o-class models use well over 100), and the network builds up increasingly abstract representations of meaning, not just word order.
+
+**Next-token prediction.** Despite the sophistication, the training objective is almost embarrassingly simple: given a sequence of tokens, predict the single most probable next token. That's it — there is no separate "reasoning module." The model is trained on trillions of tokens of text, repeatedly asked "what comes next?", and gradient descent adjusts its weights until its predictions match what actually came next in the training data.
+
+**From next-token prediction to a full answer.** At inference time, the model:
+1. Converts your prompt into tokens (sub-word chunks, not whole words).
+2. Runs a forward pass through the transformer to produce a probability distribution over its entire vocabulary (every possible next token).
+3. Samples one token from that distribution (the `temperature` setting controls how random vs. greedy this sampling is).
+4. Appends that token to the sequence and repeats — one token at a time — until it produces a stop token or hits `max_tokens`.
+
+This is why LLMs can "hallucinate" with total confidence: each token is statistically the most plausible continuation given everything before it, not a fact looked up in a database. There is no built-in mechanism that checks the output against ground truth — fluency and correctness are two different things the model does not distinguish between.
+
+Key architectural properties that define capability:
 
 | Property             | What It Means                                               | Why It Matters                              |
 | -------------------- | ----------------------------------------------------------- | ------------------------------------------- |
@@ -260,6 +274,33 @@ Route traffic intelligently: use small models for simple tasks, large models onl
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Benchmarking on vendor-published numbers only.** Published MMLU/HumanEval scores are run under ideal conditions and can shift between model snapshots. Always run a small evaluation set built from *your* real data before standardizing on a model.
+- ⚠️ **Treating context window size as "memory."** A 1M-token context window does not mean the model recalls everything equally well — "lost in the middle" degradation is real. Don't assume long-context models retrieve buried facts as reliably as facts near the start/end.
+- ⚠️ **Ignoring data residency requirements.** Sending regulated data (PHI, PII, financial records) to a closed API can violate HIPAA/GDPR/SOC 2 obligations even if the vendor offers a "no training on your data" policy. Confirm data processing agreements before sending real customer data.
+- ⚠️ **Defaulting to the biggest model "to be safe."** Using GPT-4o for a task a $0.15/million-token model handles just as well burns budget for no quality gain. Match model tier to task complexity (see Cost Optimization Ladder above).
+- ⚠️ **Comparing models only on accuracy, not latency/cost.** A model that's 2% more accurate but 10x the cost and 3x the latency is often the wrong choice for production traffic — always weigh all three dimensions together.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Transformer** | The neural network architecture (introduced in "Attention Is All You Need," 2017) that underlies all modern LLMs; uses self-attention to weigh relationships between all tokens in a sequence simultaneously. |
+| **Self-attention** | The mechanism that lets each token in a sequence assign a relevance weight to every other token, enabling the model to track context like pronoun references across long passages. |
+| **Autoregressive** | A generation style where the model produces output one token at a time, feeding each generated token back in as input for predicting the next one. |
+| **Token** | A sub-word unit of text (roughly ¾ of a word on average in English) that is the basic unit an LLM processes and bills by. |
+| **Parameters** | The learnable numeric weights inside a model (e.g., 70B = 70 billion); a rough proxy for model capacity, not a guarantee of quality. |
+| **Context window** | The maximum number of tokens (input + output combined) a model can process in a single call. |
+| **RLHF** | Reinforcement Learning from Human Feedback — a fine-tuning stage where human preference rankings adjust the model to be more helpful, harmless, and honest. |
+| **Quantization** | Compressing model weights from full precision (e.g., 16-bit) down to 4-bit or 8-bit representations to reduce memory footprint, enabling local/edge deployment. |
+| **Temperature** | A sampling parameter (0–2) controlling randomness in next-token selection; 0 is near-deterministic, higher values increase diversity (and risk of incoherence). |
+| **Lost in the middle** | A documented LLM failure pattern where information located in the middle of a long context is recalled less reliably than information at the start or end. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: API Cost Calculator
@@ -295,6 +336,14 @@ def calculate_monthly_cost(
 for model in PRICING:
     cost = calculate_monthly_cost(model, 500, 200, 500)
     # TODO: print model name and monthly total cost
+
+# EXPECTED RESULT (15,000 monthly requests; 7.5M input tokens, 3M output tokens):
+#   gpt-4o            -> total_monthly ≈ $48.75   (7.5M*2.50/1M + 3M*10.00/1M)
+#   gpt-4o-mini        -> total_monthly ≈ $2.93
+#   claude-3.5-sonnet  -> total_monthly ≈ $67.50
+#   claude-3-haiku     -> total_monthly ≈ $5.625
+#   gemini-1.5-pro     -> total_monthly ≈ $57.75
+#   gemini-1.5-flash   -> total_monthly ≈ $1.46
 ```
 
 ### Exercise 2: Model Selection Justification
@@ -333,6 +382,11 @@ def evaluate_model(model_fn, test_cases: list) -> dict:
     Return: {"accuracy": float, "results": list of {text, expected, predicted, correct}}
     """
     pass
+
+# EXPECTED RESULT: a well-instructed GPT-4o-mini or Claude 3 Haiku should score
+# 4/5 (80%) on this set — the "mixed" case (#2) is the one models most often
+# mislabel as "negative" or "positive" since the prompt only offers those two
+# anchors implicitly. accuracy == 0.8 is a normal, healthy result here.
 ```
 
 ---
