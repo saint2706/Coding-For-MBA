@@ -1,0 +1,70 @@
+{
+    "day": 143,
+    "questions": [
+        {
+            "id": "d143q01",
+            "type": "multiple_choice",
+            "question": "What does a p-value of 0.03 actually mean in an A/B test result?",
+            "options": [
+                "There is a 3% chance the treatment is worse than control",
+                "There is a 97% chance the treatment causes the observed effect",
+                "If there were truly no difference between control and treatment (the null hypothesis is true), there's only a 3% chance of seeing a result this extreme by random chance",
+                "The treatment improved the metric by exactly 3%"
+            ],
+            "answer": 2,
+            "explanation": "The p-value is a statement about the probability of the observed data under the null hypothesis — it is not the probability that the treatment works, and it says nothing about effect size."
+        },
+        {
+            "id": "d143q02",
+            "type": "multiple_choice",
+            "question": "Why is 'peeking' (checking results daily and stopping as soon as p < 0.05) statistically dangerous?",
+            "options": [
+                "It isn't dangerous — checking more often just gives you more information",
+                "Each peek is effectively a new test; checking repeatedly inflates the true false-positive rate well above the nominal 5% (e.g., to ~26% after 10 daily checks)",
+                "Peeking is only a problem if the sample size is very large",
+                "Peeking makes the test run faster, which is the only downside"
+            ],
+            "answer": 1,
+            "explanation": "Pre-committing to a single analysis date (or using sequential testing methods designed for repeated looks) avoids this inflation. Stopping the moment you see significance is a form of multiple testing in disguise."
+        },
+        {
+            "id": "d143q03",
+            "type": "multiple_choice",
+            "question": "A test reports Sample Ratio Mismatch (SRM) — 46% of traffic landed in control, 54% in treatment, instead of the expected 50/50. What should happen?",
+            "options": [
+                "Proceed with the analysis as normal — small imbalances don't matter",
+                "Stop the test and investigate the randomization bug before trusting any result, since SRM means the two groups may not be comparable",
+                "Just scale up the smaller group's metrics proportionally and continue",
+                "SRM only matters for tests with fewer than 1,000 users"
+            ],
+            "answer": 1,
+            "explanation": "SRM indicates the assignment mechanism itself is broken (e.g., a bug causing certain users to be systematically excluded), which invalidates the comparison regardless of what the primary metric shows."
+        },
+        {
+            "id": "d143q04",
+            "type": "multiple_choice",
+            "question": "A team tests 20 secondary metrics alongside their primary metric and finds exactly 1 with p < 0.05. What should they conclude?",
+            "options": [
+                "They found a real, statistically meaningful effect on that metric and should announce it",
+                "Finding ~1 false positive among 20 metrics at a 5% significance level is the expected base rate of noise, not necessarily a real effect — apply a correction (e.g., Bonferroni) or treat it as a hypothesis to retest, not a finding",
+                "20 metrics is too few to draw any conclusion at all",
+                "They should immediately ship a change based on that one metric"
+            ],
+              "answer": 1,
+            "explanation": "With 20 independent tests at alpha=0.05, you expect about 1 false positive purely by chance. This is exactly the multiple-comparisons pitfall described in the lesson — designate a single primary metric in advance, or correct for multiple comparisons."
+        },
+        {
+            "id": "d143q05",
+            "type": "multiple_choice",
+            "question": "Why should sample size be calculated BEFORE running an A/B test rather than just running it 'until it looks done'?",
+            "options": [
+                "Pre-calculating sample size is only a regulatory formality with no statistical purpose",
+                "Without a pre-determined sample size, teams either under-power the test (false negatives — real effects go undetected) or are tempted to peek and stop early (inflated false positives)",
+                "Sample size doesn't affect test validity, only test duration",
+                "It's required only for tests with more than 2 variants"
+            ],
+            "answer": 1,
+            "explanation": "Sample size calculation, done upfront from baseline rate + minimum detectable effect + alpha/power, is what lets you commit to a stopping rule that controls both false positive and false negative rates."
+        }
+    ]
+}

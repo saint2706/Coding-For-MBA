@@ -1,0 +1,70 @@
+{
+    "day": 141,
+    "questions": [
+        {
+            "id": "d141q01",
+            "type": "multiple_choice",
+            "question": "How does data mesh differ from a centralized data team model?",
+            "options": [
+                "Data mesh eliminates the need for any data engineers",
+                "Data mesh decentralizes data ownership to domain teams, who own and publish their own data as products, instead of one central team owning all data",
+                "Data mesh means every team buys its own separate data warehouse with no shared standards",
+                "Data mesh is just a rebranding of data lakes"
+            ],
+            "answer": 1,
+            "explanation": "The core shift in data mesh is organizational: domain teams (marketing, finance, product) take end-to-end ownership of their data, supported by a platform team and bound by federated standards — not a purely technical architecture change."
+        },
+        {
+            "id": "d141q02",
+            "type": "multiple_choice",
+            "question": "Which of these is NOT one of the 'data as a product' requirements in the lesson?",
+            "options": [
+                "Discoverable — listed in a catalog",
+                "Trustworthy — tested, documented, SLA-backed",
+                "Free of any access control, so anyone can query it instantly",
+                "Self-describing — schema, documentation, and lineage included"
+            ],
+            "answer": 2,
+            "explanation": "Security (access-controlled, compliant) is explicitly one of the six 'data as a product' requirements — the opposite of removing access control. The other three listed are genuine requirements from the lesson."
+        },
+        {
+            "id": "d141q03",
+            "type": "multiple_choice",
+            "question": "In a data mesh, what does the self-serve platform team provide — and explicitly NOT provide?",
+            "options": [
+                "It writes every domain's business-specific transformation logic for them",
+                "It provides shared infrastructure (pipeline provisioning, storage/compute, quality tooling, monitoring) but does NOT write domain-specific transformations or own domain data quality",
+                "It owns all the data products across every domain",
+                "It only handles billing for cloud infrastructure"
+            ],
+            "answer": 1,
+            "explanation": "The platform team is infrastructure-as-a-service — think 'the cloud provider for internal data teams.' Domain teams retain ownership of their own transformations and data quality."
+        },
+        {
+            "id": "d141q04",
+            "type": "multiple_choice",
+            "question": "A 35-person startup with one small data team is debating data mesh. Based on the lesson's adoption criteria, what's the right call?",
+            "options": [
+                "Adopt data mesh immediately — more domain ownership is always better",
+                "Data mesh is a bad fit at this size — the overhead of distributed ownership outweighs the benefit; a centralized model with good practices is more appropriate until the org and data team grow",
+                "Data mesh only applies to non-profit organizations",
+                "Adopt data mesh, but only for the marketing domain"
+            ],
+            "answer": 1,
+            "explanation": "The lesson's 'bad fit' criteria explicitly include companies under 50 employees — the coordination overhead of domain ownership outweighs the benefit until the org is large enough to have a real central-team bottleneck."
+        },
+        {
+            "id": "d141q05",
+            "type": "multiple_choice",
+            "question": "What is federated computational governance, and why is it necessary in a data mesh?",
+            "options": [
+                "It means every decision must be approved by a central committee, eliminating domain autonomy",
+                "It means domains make local decisions (metric definitions, pipeline timing) while centralized standards (PII policy, naming conventions, minimum test coverage) ensure interoperability across domains",
+                "It is an optional nice-to-have with no real consequences if skipped",
+                "It refers only to financial governance of cloud spend"
+            ],
+            "answer": 1,
+            "explanation": "Without federated governance, distributing ownership across domains turns into chaos — every domain inventing its own formats, naming, and quality bar. Federated governance keeps domains interoperable while preserving their autonomy on local decisions."
+        }
+    ]
+}

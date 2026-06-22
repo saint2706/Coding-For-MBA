@@ -43,6 +43,8 @@ outcomes:
 
 ### 1. The Product Analytics Framework
 
+Product analytics is usually organized around the AARRR ("pirate metrics") funnel: a user moves through acquisition, activation, engagement, retention, and revenue, and each stage answers a different question with different metrics. The dictionary below is the map you'll use for the rest of this lesson — sections 2-4 dig into the engagement and retention stages specifically, since they're the hardest to get right and the easiest to ignore.
+
 ```python
 product_analytics_framework = {
     "acquisition": {
@@ -69,6 +71,8 @@ product_analytics_framework = {
 ```
 
 ### 2. Cohort Retention Analysis
+
+A retention cohort groups users by *when they first showed up* (their cohort month), then tracks what fraction of each cohort is still active 1, 2, 3... months later. This SQL builds that table from a raw `events` log: first find each user's cohort month, then their monthly activity, then express activity as "months since signup" so cohorts of different ages can be compared on the same x-axis.
 
 ```sql
 -- Build a monthly retention cohort from raw events
@@ -119,6 +123,8 @@ ORDER BY cd.cohort_month, cd.months_since_signup;
 
 ### 3. Funnel Analysis
 
+A funnel measures how many sessions make it through each step of a flow, and — more importantly — what fraction is lost at each transition. The query below pivots one row per session into "did this session reach step N" flags, then aggregates those flags into a step-by-step conversion and drop-off report, which is what makes it possible to spot exactly where users abandon the flow (see Mastery Check Q4).
+
 ```sql
 -- E-commerce conversion funnel: Visit → Product View → Add to Cart → Checkout → Purchase
 
@@ -166,6 +172,8 @@ FROM funnel_steps;
 
 ### 4. Engagement Metrics
 
+Retention tells you whether users come back *at all*; engagement metrics tell you how *habitual* their usage is once they do. The four metrics below — most notably DAU/MAU — are the standard vocabulary for that, with benchmark ranges so you can judge whether a number is healthy or a warning sign (see Mastery Check Q3 for the B2B vs. B2C caveat).
+
 ```python
 engagement_metrics = {
     "DAU_MAU_ratio": {
@@ -194,16 +202,103 @@ engagement_metrics = {
 
 ---
 
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Cohort** | A group of users who share a starting point in time (e.g., signed up the same month), tracked together to compare survival/retention over time. |
+| **Retention Curve** | A chart of % of a cohort still active at month 0, 1, 2... — used to judge whether a product has found durable value. |
+| **D1/D7/D30 Retention** | The percentage of a cohort still active 1, 7, or 30 days after signup — common short-horizon retention checkpoints. |
+| **Funnel** | An ordered sequence of steps a user takes toward a goal (e.g., Visit → Cart → Purchase), analyzed for conversion and drop-off at each step. |
+| **Drop-off Rate** | The percentage of users who do not advance from one funnel step to the next. |
+| **DAU/MAU Ratio** | Daily Active Users divided by Monthly Active Users — a measure of how habitual (daily) vs. occasional (monthly-only) usage is. |
+| **Stickiness** | The average number of days per period a user is active, divided by the total days in that period — a finer-grained habituality measure than DAU/MAU. |
+| **Power User** | A user active on a high threshold of days per month (commonly 21+); tracked as a % of MAU. |
+| **North Star Metric** | The single metric that best represents the core value a product delivers to users, chosen because it correlates with long-term retention and revenue. |
+| **AARRR Framework** | "Pirate metrics": Acquisition, Activation, Retention, Referral (Engagement in this lesson's variant), Revenue — a standard product-analytics funnel structure. |
+| **Cart Abandonment Rate** | The percentage of shoppers who add an item to cart but never complete checkout; typically ~70% in e-commerce. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Build a Retention Cohort
-Write SQL to create a weekly retention cohort for a mobile app over the last 12 weeks. Identify which cohorts have the best D7 retention and hypothesize why.
+
+```sql
+-- Scenario: a mobile fitness app. Source table: events
+-- (user_id, event_type, event_timestamp), event_type IN
+-- ('app_open','workout_logged','signup'). 12 weeks of history available.
+--
+-- Sample weekly cohort sizes and D7-active counts (already aggregated):
+-- | cohort_week | cohort_size | active_at_d7 |
+-- |-------------|-------------|---------------|
+-- | 2025-01-06  | 1200        | 540           |
+-- | 2025-01-13  | 1100        | 396           |
+-- | 2025-01-20  | 1500        | 690           |  -- launched a new onboarding flow this week
+-- | 2025-01-27  | 1050        | 410           |
+
+-- TODO: Write SQL to create a weekly retention cohort for a mobile app over
+-- the last 12 weeks. Identify which cohorts have the best D7 retention and
+-- hypothesize why.
+
+-- EXPECTED RESULT:
+-- D7 retention % = active_at_d7 / cohort_size * 100
+-- | cohort_week | d7_retention_pct |
+-- |-------------|------------------|
+-- | 2025-01-06  | 45.0%            |
+-- | 2025-01-13  | 36.0%            |
+-- | 2025-01-20  | 46.0%            |  <- best D7 retention
+-- | 2025-01-27  | 39.0%            |
+-- Hypothesis: the 2025-01-20 cohort's D7 retention jump (36% -> 46%) lines
+-- up with the new onboarding flow shipped that week — worth confirming with
+-- an A/B test (Day 143) rather than attributing the lift to the cohort alone.
+```
 
 ### Exercise 2: Funnel Optimization
-Given this funnel: Visit (100K) → Signup (20K) → Onboard (8K) → First Action (3K) → Return Day 7 (1K), identify the biggest drop-offs and suggest 3 product experiments.
+
+```markdown
+Given this funnel: Visit (100K) → Signup (20K) → Onboard (8K) → First Action
+(3K) → Return Day 7 (1K), identify the biggest drop-offs and suggest 3
+product experiments.
+
+EXPECTED RESULT:
+- Step conversion rates: Visit->Signup 20%, Signup->Onboard 40%,
+  Onboard->First Action 37.5%, First Action->Return D7 33.3%.
+- Biggest absolute drop-off: Visit -> Signup (80K lost, 80%) — but this is
+  expected for top-of-funnel traffic and lower leverage per user reached.
+- Biggest *relative* leverage drop-off: Onboard -> First Action (5K lost,
+  62.5% of onboarded users never take a first action) — these are users who
+  already invested in onboarding, making them the highest-value group to
+  recover.
+- 3 experiments: (1) Add a guided "do this one thing" prompt immediately
+  after onboarding completes, targeting the Onboard->First Action gap.
+  (2) Simplify the signup form (fewer fields) to test Visit->Signup lift.
+  (3) Send a triggered email/push 24h after first action if no D7 return,
+  reminding users of the value they got from their first action.
+```
 
 ### Exercise 3: North Star Metric
-Define the North Star Metric for a B2B SaaS product and design a dashboard showing it alongside 3 supporting metrics with weekly trends.
+
+```markdown
+# Scenario: a B2B SaaS project-management product (think: a lightweight
+# Asana competitor) with 5,000 paying teams.
+
+Define the North Star Metric for a B2B SaaS product and design a dashboard
+showing it alongside 3 supporting metrics with weekly trends.
+
+EXPECTED RESULT:
+- North Star Metric: "Weekly Active Tasks Completed per Team" — captures
+  the core value (work getting done) better than "logins" or "signups,"
+  and correlates with renewal likelihood.
+- Supporting metrics (weekly trend lines): (1) DAU/MAU ratio (engagement
+  health), (2) % of teams with 3+ active members (adoption depth within an
+  account, predicts expansion), (3) average time-to-first-task-completed
+  for new teams (activation speed).
+- Dashboard layout: North Star as a large weekly trend line at the top;
+  the 3 supporting metrics as smaller trend cards below, each annotated
+  with the week any major product change shipped, so trend shifts can be
+  attributed to specific releases.
+```
 
 ---
 

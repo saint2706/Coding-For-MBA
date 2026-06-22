@@ -1,0 +1,70 @@
+{
+    "day": 140,
+    "questions": [
+        {
+            "id": "d140q01",
+            "type": "multiple_choice",
+            "question": "What is the biggest risk of rolling out self-serve analytics without guardrails?",
+            "options": [
+                "Stakeholders will ask the data team too many questions",
+                "Users will query raw/staging data, invent their own metric definitions, and publish dashboards with wrong numbers — and the data team gets blamed for 'bad data'",
+                "The BI tool license costs will increase",
+                "There is no real risk; more access is always better"
+            ],
+            "answer": 1,
+            "explanation": "Without guardrails (gold-only access, governed definitions), self-serve users can produce confidently wrong analyses from incomplete raw data, which is worse than no self-serve because it drives bad decisions while looking authoritative."
+        },
+        {
+            "id": "d140q02",
+            "type": "multiple_choice",
+            "question": "Why should business users typically only have access to gold-layer tables, not raw or staging tables?",
+            "options": [
+                "Gold tables are always smaller and load faster",
+                "Raw/staging tables contain incomplete, undeduplicated data with internal naming that business users will misinterpret; gold tables are curated, tested, and documented",
+                "Raw tables are more expensive to query",
+                "It's a licensing requirement of most BI tools"
+            ],
+            "answer": 1,
+            "explanation": "Gold tables have already passed through cleaning, deduplication, business-logic transformation, and testing — exactly the trust guarantees a non-technical user needs to draw correct conclusions."
+        },
+        {
+            "id": "d140q03",
+            "type": "multiple_choice",
+            "question": "A company is at Level 1 ('Menu' — pre-built dashboards only) on the self-serve maturity model. What is the next concrete step to reach Level 2?",
+            "options": [
+                "Immediately give everyone raw database credentials",
+                "Expose curated gold tables through a BI tool so users can build their own charts against trusted data, instead of only viewing fixed dashboards",
+                "Hire more data analysts to build more fixed dashboards",
+                "Skip straight to a full semantic layer and catalog"
+            ],
+            "answer": 1,
+            "explanation": "Level 2 ('Salad Bar') is defined by users querying curated gold tables directly via a BI tool — the step up from view-only dashboards is letting users build their own views against trusted, governed data."
+        },
+        {
+            "id": "d140q04",
+            "type": "multiple_choice",
+            "question": "What role do 'office hours' play in a self-serve analytics model?",
+            "options": [
+                "They replace the need for any documentation",
+                "They provide a scalable support mechanism — scheduled time for AEs to help stuck users — instead of unpredictable 1:1 ticket interruptions",
+                "They are mandatory training sessions all employees must attend weekly",
+                "They are used only to onboard new data engineers"
+            ],
+            "answer": 1,
+            "explanation": "Office hours batch support into predictable, recurring blocks, which scales better than ad-hoc tickets while still providing human expertise for the edge cases self-serve tooling and docs can't cover."
+        },
+        {
+            "id": "d140q05",
+            "type": "multiple_choice",
+            "question": "A self-serve initiative shows declining data-team ticket volume AND declining stakeholder trust survey scores at the same time. What does this combination most likely indicate?",
+            "options": [
+                "The initiative is working perfectly — fewer tickets is always good news",
+                "Users have stopped asking the data team for help, but they are using self-serve tools incorrectly or without proper guardrails — the data team should investigate before declaring success",
+                "The BI tool needs to be replaced immediately",
+                "This combination is statistically impossible"
+            ],
+            "answer": 1,
+            "explanation": "Falling tickets alone is not a success signal — it can mean users are self-serving correctly, or that they've simply stopped asking and are building incorrect analyses unsupervised. Trust dropping alongside it points to the latter."
+        }
+    ]
+}

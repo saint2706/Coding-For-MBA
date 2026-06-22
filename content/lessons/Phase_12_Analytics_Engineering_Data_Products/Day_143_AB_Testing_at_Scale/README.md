@@ -43,6 +43,8 @@ outcomes:
 
 ### 1. A/B Testing Fundamentals
 
+A rigorous A/B test follows four steps in strict order: state a hypothesis, calculate the required sample size *before* collecting any data, run the test for that long, then analyze with a statistical test — never the reverse. The code below walks through all four steps for a checkout-flow test, using `scipy.stats` to both size the test (via a power calculation) and analyze the result (via a chi-square test of independence).
+
 ```python
 from scipy import stats
 import numpy as np
@@ -92,6 +94,8 @@ print(f"Result:    {'✅ Significant' if p_value < 0.05 else '❌ Not significan
 
 ### 2. Common Pitfalls
 
+Most A/B test failures aren't bad luck — they're one of a handful of well-known statistical traps. The dictionary below names each pitfall, why it produces a wrong conclusion, and the concrete fix, so you can audit a test report (like Lab Exercise 3) against this checklist before trusting its result.
+
 ```python
 ab_test_pitfalls = {
     "peeking": {
@@ -123,6 +127,8 @@ ab_test_pitfalls = {
 ```
 
 ### 3. Experimentation Pipeline
+
+Scaling A/B testing beyond ad-hoc scripts requires a repeatable pipeline that any team can follow without re-deriving the statistics each time. The five stages below — design, implement, monitor, analyze, ship-or-kill — map directly onto the pitfalls above (e.g., "monitor" exists specifically to catch SRM and guardrail violations before they corrupt the analysis).
 
 ```python
 experimentation_pipeline = {
@@ -179,16 +185,119 @@ experimentation_pipeline = {
 
 ---
 
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Null Hypothesis (H0)** | The default assumption that there is no difference between control and treatment; the test looks for evidence to reject it. |
+| **p-value** | The probability of observing a result this extreme (or more) if the null hypothesis were true; not the probability the treatment "works." |
+| **Statistical Power** | The probability of correctly detecting a real effect when one exists (commonly targeted at 80%). |
+| **Minimum Detectable Effect (MDE)** | The smallest relative lift you want the test to reliably detect; smaller MDEs require larger sample sizes. |
+| **Sample Ratio Mismatch (SRM)** | When the observed control/treatment split deviates from the intended split (e.g., 46/54 instead of 50/50), signaling a randomization bug. |
+| **Peeking** | Repeatedly checking test results before the planned sample size is reached and stopping as soon as significance appears, which inflates the false-positive rate. |
+| **Multiple Comparisons Problem** | The increased chance of a false positive when testing many metrics or variants simultaneously, without correcting the significance threshold. |
+| **Novelty Effect** | A temporary lift in a metric because users react to something new, which fades once the change is no longer novel. |
+| **Simpson's Paradox** | When an aggregate result (treatment wins overall) reverses or disappears within every individual segment, often due to uneven segment traffic allocation. |
+| **Guardrail Metric** | A secondary metric monitored during a test to ensure the primary metric's improvement isn't coming at the cost of something critical (e.g., latency, revenue, error rate). |
+| **A/A Test** | A test that randomly splits users into two groups that both see the *same* experience, used to validate that the randomization and measurement pipeline itself is unbiased. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Design an A/B Test
-Design a test for making the "Add to Cart" button larger. Define hypothesis, primary metric, sample size, and duration. List 3 guardrail metrics.
+
+```python
+# Scenario: a product manager proposes making the "Add to Cart" button 50%
+# larger on the product detail page. Current baseline add-to-cart rate: 8%
+# of product-page sessions. ~40,000 product-page sessions/day.
+
+# TODO: Design a test for making the "Add to Cart" button larger.
+# Define hypothesis, primary metric, sample size, and duration.
+# List 3 guardrail metrics.
+
+# EXPECTED RESULT:
+# H0: Button size has no effect on add-to-cart rate.
+# H1: A larger button increases add-to-cart rate.
+# Primary metric: add-to-cart rate (clicks / product-page sessions).
+# MDE: detect a 10% relative lift (8% -> 8.8%), alpha=0.05, power=0.80.
+from scipy import stats
+import numpy as np
+
+def calculate_sample_size(baseline_rate, mde, alpha=0.05, power=0.80):
+    p1 = baseline_rate
+    p2 = baseline_rate * (1 + mde)
+    effect_size = (p2 - p1) / np.sqrt(p1 * (1 - p1))
+    z_alpha = stats.norm.ppf(1 - alpha / 2)
+    z_beta = stats.norm.ppf(power)
+    return int(np.ceil(((z_alpha + z_beta) / effect_size) ** 2))
+
+n = calculate_sample_size(baseline_rate=0.08, mde=0.10)
+# n ≈ 19,400 sessions per group (38,800 total)
+# At ~40,000 sessions/day split 50/50, that's ~1 day of traffic minimum —
+# round up to a full week to average out day-of-week effects.
+#
+# Guardrail metrics: (1) overall page load time (a bigger button shouldn't
+# slow rendering), (2) checkout completion rate (more carts shouldn't mean
+# more abandoned carts downstream), (3) revenue per session (a UI change
+# shouldn't tank revenue even if add-to-cart ticks up).
+```
 
 ### Exercise 2: Analyze Results
-Given: Control (n=50K, 1500 conversions), Treatment (n=50K, 1620 conversions). Calculate lift, p-value, and confidence interval. Should you ship?
+
+```python
+# Given: Control (n=50K, 1500 conversions), Treatment (n=50K, 1620 conversions).
+# TODO: Calculate lift, p-value, and confidence interval. Should you ship?
+
+from scipy import stats
+
+control = {"users": 50000, "conversions": 1500}     # 3.0%
+treatment = {"users": 50000, "conversions": 1620}   # 3.24%
+
+contingency_table = [
+    [control["conversions"], control["users"] - control["conversions"]],
+    [treatment["conversions"], treatment["users"] - treatment["conversions"]],
+]
+chi2, p_value, dof, expected = stats.chi2_contingency(contingency_table)
+c_rate = control["conversions"] / control["users"]
+t_rate = treatment["conversions"] / treatment["users"]
+lift = (t_rate - c_rate) / c_rate * 100
+
+# EXPECTED RESULT:
+# Control:   3.00%
+# Treatment: 3.24%
+# Lift:      +8.0%
+# p-value:   ≈ 0.146  (NOT significant at p < 0.05)
+# Decision: Do NOT ship based on this result alone. The 8% lift is directionally
+# positive but not statistically distinguishable from noise at this sample
+# size — either run longer to accumulate more data, or treat this as a
+# promising signal worth a follow-up test with a larger sample.
+```
 
 ### Exercise 3: Spot the Errors
-Review 3 hypothetical A/B test reports and identify the statistical errors in each (peeking, underpowered, multiple comparisons).
+
+```markdown
+# Review 3 hypothetical A/B test reports and identify the statistical
+# errors in each.
+
+Report A: "We checked results every morning for 2 weeks and stopped on day
+9 when p dropped to 0.04, so we shipped it."
+  -> ERROR: Peeking. Checking daily and stopping at the first p<0.05 sighting
+     inflates the true false-positive rate far above 5%.
+
+Report B: "We ran the test for 3 days with only 800 users per group and got
+p=0.31, so we concluded the change has no effect."
+  -> ERROR: Underpowered test. 800 users/group is likely far below the
+     sample size needed to detect a realistic effect — "not significant"
+     here means "we couldn't tell," not "there is no effect" (false negative risk).
+
+Report C: "We tracked 15 metrics and found 'time on page' was significant
+at p=0.04, so that's our big win."
+  -> ERROR: Multiple comparisons. With 15 metrics tested at alpha=0.05,
+     finding ~1 false positive by chance is expected; without a pre-
+     designated primary metric or a correction (e.g., Bonferroni: alpha/15
+     ≈ 0.0033), this "win" is likely noise.
+```
 
 ---
 
