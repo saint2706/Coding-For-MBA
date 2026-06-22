@@ -1,0 +1,70 @@
+{
+    "day": 145,
+    "questions": [
+        {
+            "id": "d145q01",
+            "type": "multiple_choice",
+            "question": "What makes a great data product pitch different from a technical demo?",
+            "options": [
+                "A pitch should focus entirely on dbt model internals to prove technical rigor",
+                "A pitch leads with the business problem and quantified impact, saving technical details (like dbt models) for the appendix — a demo only shows what the product does, not why it matters",
+                "Pitches and demos are the same thing; the words are interchangeable",
+                "A pitch should never mention risks or limitations"
+            ],
+            "answer": 1,
+            "explanation": "Executives evaluating a data product pitch care about ROI and risk first. The lesson is explicit: lead with the problem and impact, and keep the dbt model details for the appendix, not the opening slides."
+        },
+        {
+            "id": "d145q02",
+            "type": "multiple_choice",
+            "question": "What is the recommended way to validate demand for a data product BEFORE investing in building it at scale?",
+            "options": [
+                "Build the full automated version first, then ask users if they like it",
+                "Interview potential users about their pain points, build a manual/MVP version (e.g., an Excel report), and get design partners who commit to using and giving feedback on it",
+                "Skip validation — if the data is interesting, customers will want it",
+                "Survey the engineering team about technical feasibility only"
+            ],
+            "answer": 1,
+            "explanation": "If nobody uses a free, manual version of the product, they won't pay for the automated one either. Design partners who commit ahead of time provide the strongest signal that real demand exists."
+        },
+        {
+            "id": "d145q03",
+            "type": "multiple_choice",
+            "question": "Which of the following is NOT listed among the lesson's most common reasons data products fail?",
+            "options": [
+                "No real user need — a solution built looking for a problem",
+                "Poor data quality, which erodes user trust quickly",
+                "Using a cloud-native warehouse instead of an on-premises database",
+                "Wrong pricing — too expensive for the value delivered, or free with no budget for maintenance"
+            ],
+            "answer": 2,
+            "explanation": "Warehouse choice (cloud vs. on-prem) isn't one of the lesson's failure modes. The real causes named are: no real user need, poor data quality, excessive complexity for the target user, no ongoing maintenance plan, and mispriced offerings."
+        },
+        {
+            "id": "d145q04",
+            "type": "multiple_choice",
+            "question": "A stakeholder objects: 'We can just keep doing this in Excel.' What's the most effective response according to the lesson?",
+            "options": [
+                "Insist Excel is always wrong without further explanation",
+                "Acknowledge Excel works at small scale, then quantify the hidden cost (e.g., hours/week spent maintaining it) and contrast it with the automated product's cost and added capabilities (faster refresh, automatic quality checks, scalability)",
+                "Avoid the objection and change the subject to the architecture diagram",
+                "Concede immediately and cancel the data product proposal"
+            ],
+            "answer": 1,
+            "explanation": "The lesson's example response translates manual maintenance time into a dollar cost and compares it directly to the automated solution's cost — turning a vague preference into a concrete ROI comparison."
+        },
+        {
+            "id": "d145q05",
+            "type": "multiple_choice",
+            "question": "According to the capstone's closing takeaway, what is the ultimate purpose of analytics engineering skills like dbt, SQL, and cloud pipelines?",
+            "options": [
+                "To demonstrate technical sophistication for its own sake",
+                "They are necessary but not sufficient — the goal is to package data into trusted products that drive better business decisions; technology serves the business, not the other way around",
+                "To replace business stakeholders' decision-making entirely with automated systems",
+                "To minimize headcount on the data team as much as possible"
+            ],
+            "answer": 1,
+            "explanation": "The capstone's final message is explicit: technical skills are necessary but not sufficient. The AE who succeeds combines them with business context, trust-building, and product judgment — technology in service of better decisions."
+        }
+    ]
+}

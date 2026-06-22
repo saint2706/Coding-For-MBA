@@ -81,6 +81,8 @@ Before analytics engineering existed, data analysts wrote ad-hoc SQL queries tha
 
 ### 3. The Analytics Engineer's Day
 
+The workflow diagram above is the textbook version. In practice, an AE's day is a mix of reactive triage (did anything break overnight?) and proactive modeling work (building the next dbt PR). The dictionary below maps a realistic day to those two modes so you can see how the 6-step workflow actually plays out hour by hour.
+
 ```python
 # A typical day for an analytics engineer:
 
@@ -107,6 +109,8 @@ daily_tasks = {
 
 ### 4. When You Need an Analytics Engineer
 
+Not every team needs a dedicated AE on day one — hiring one too early just adds headcount with no problem to solve. The two lists below are a practical litmus test: the first names the symptoms that mean you're already paying the cost of *not* having an AE; the second names what that hire actually fixes.
+
 ```python
 # Signs your data team needs analytics engineers:
 
@@ -131,6 +135,8 @@ ae_value = {
 ```
 
 ### 5. Data Team Structures
+
+There's no single "correct" way to organize a data team — the right structure depends on company size and how independent each business domain is. The dictionary below compares the three common structures so you can match a structure to a company's stage rather than copying whatever your last employer did.
 
 ```python
 team_structures = {
@@ -169,6 +175,25 @@ Your impact as an AE is measured by: (1) time-to-insight for stakeholders, (2) n
 
 ---
 
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Analytics Engineer (AE)** | Role that builds, tests, and documents the transformation layer (raw → trusted models) using software engineering practices. |
+| **Single Source of Truth** | One authoritative, version-controlled definition for a metric (e.g., "revenue") that every dashboard queries from, instead of each team writing its own SQL. |
+| **dbt (data build tool)** | The standard transformation tool for analytics engineers — turns SQL `SELECT` statements into version-controlled, tested, documented models. |
+| **T-Shaped Skills** | Deep expertise in one area (SQL/dbt) combined with broad working knowledge across adjacent areas (business domains, infra, stakeholder management). |
+| **Centralized Team Structure** | One data team serves the whole company; consistent but can bottleneck past ~50 employees. |
+| **Embedded Team Structure** | Data people sit inside each business function (marketing, finance); fast and domain-aware but inconsistent across teams. |
+| **Hub-and-Spoke** | A central platform/standards team ("hub") plus analytics engineers embedded in each domain ("spokes"); the common structure at 100+ person companies. |
+| **Data Quality Incident** | A case where wrong, missing, or stale data reached a dashboard or decision-maker; AE teams track this count and aim to drive it toward zero. |
+| **Self-Serve Adoption** | The percentage of stakeholder queries run directly against curated ("gold") models rather than routed through a data team ticket. |
+| **CI/CD for Analytics** | Applying continuous integration/deployment (automated tests + review gates on every dbt model PR) to analytics code, not just application code. |
+| **Data Dictionary** | A searchable reference of column names, business definitions, and ownership, usually auto-generated from dbt docs. |
+| **Office Hours** | Scheduled, recurring time blocks where AEs help analysts unblock themselves — a scalable alternative to ad-hoc 1:1 support requests. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Role Mapping
@@ -176,12 +201,28 @@ Your impact as an AE is measured by: (1) time-to-insight for stakeholders, (2) n
 ```python
 # Scenario: A 200-person e-commerce company is hiring their first 5 data people.
 # Currently: 2 analysts writing ad-hoc SQL, 1 engineer maintaining a Postgres DB.
+# Known pain points: dashboards disagree on "active customers," the engineer is
+# the only person who can add new tables, and the CFO doesn't trust the numbers.
 
 # TODO: Design the ideal 5-person data team:
 # 1. What roles would you hire? (How many DE, AE, DA, DS?)
 # 2. What structure (centralized, embedded, hub-and-spoke)?
 # 3. What tools would you standardize on?
 # 4. What's the 90-day plan for the team?
+
+# EXPECTED RESULT (reference solution):
+# Roles: 2 Data Engineers (own ingestion + warehouse), 2 Analytics Engineers
+#   (own dbt staging→marts, tests, docs), 1 Data Analyst (BI layer, stakeholder
+#   liaison) — no Data Scientist yet at this scale/maturity.
+# Structure: Centralized for now (5 people, single warehouse) — note that
+#   hub-and-spoke becomes the target structure once headcount > ~15-20 and
+#   domains (marketing/finance/ops) want embedded AEs.
+# Tools: Snowflake/BigQuery (warehouse), dbt Core (transformation), Airflow or
+#   Fivetran (ingestion), Looker/Metabase (BI), GitHub (version control + CI).
+# 90-day plan: Days 1-30 — stand up the warehouse + ingest the 3 highest-value
+#   sources; Days 31-60 — build staging models + tests for those sources, ship
+#   one trusted "active customers" definition; Days 61-90 — migrate the top 5
+#   existing dashboards onto the new gold models, retire the conflicting SQL.
 ```
 
 ### Exercise 2: Metric Definition
@@ -190,12 +231,50 @@ Your impact as an AE is measured by: (1) time-to-insight for stakeholders, (2) n
 -- Scenario: Marketing and Finance disagree on "Monthly Active Users (MAU)."
 -- Marketing: any login event → count user
 -- Finance: any purchase or login lasting >30s → count user
+--
+-- Sample source table: raw.events
+-- | event_id | user_id | event_type        | session_duration_sec | event_ts            |
+-- |----------|---------|--------------------|-----------------------|----------------------|
+-- | 1        | 101     | login              | 5                     | 2025-01-03 09:00:00  |
+-- | 2        | 101     | purchase           | 120                   | 2025-01-03 09:02:00  |
+-- | 3        | 102     | login              | 8                     | 2025-01-05 14:10:00  |
+-- | 4        | 103     | login              | 45                    | 2025-01-10 11:00:00  |
+-- | 5        | 104     | login              | 3                     | 2025-01-15 08:00:00  |
 
 -- TODO: Write a dbt model that:
 -- 1. Codifies the agreed definition of MAU
 -- 2. Handles both definitions as separate metrics
 -- 3. Documents the business context and decision
 -- 4. Tests for no duplicate user counts per month
+
+-- EXPECTED RESULT: models/marts/fct_mau.sql
+-- {{ config(materialized='table') }}
+--
+-- -- Two distinct, explicitly-named metrics so neither team's number is
+-- -- silently overwritten by the other's definition.
+-- with monthly_events as (
+--     select
+--         user_id,
+--         date_trunc('month', event_ts) as activity_month,
+--         event_type,
+--         session_duration_sec
+--     from {{ ref('stg_events') }}
+-- )
+-- select
+--     activity_month,
+--     count(distinct case when event_type = 'login'
+--           then user_id end) as mau_marketing_definition,
+--     count(distinct case when event_type = 'purchase'
+--           or (event_type = 'login' and session_duration_sec > 30)
+--           then user_id end) as mau_finance_definition
+-- from monthly_events
+-- group by activity_month
+--
+-- -- Applied to the 5 sample rows above (all in Jan 2025):
+-- --   mau_marketing_definition = 4   (users 101,102,103,104 all logged in)
+-- --   mau_finance_definition   = 2   (user 101 purchased; user 103's 45s login qualifies)
+-- -- A schema.yml test (`dbt_utils.unique_combination_of_columns` on
+-- -- [activity_month]) guarantees no duplicate row per month.
 ```
 
 ### Exercise 3: Career Path Planning
@@ -209,6 +288,22 @@ Your impact as an AE is measured by: (1) time-to-insight for stakeholders, (2) n
 
 Include: technical skills, business skills, tools to learn, certifications,
 and one portfolio project per quarter.
+
+EXPECTED RESULT (reference plan):
+- Months 1-3 (Foundation): Advanced SQL (window functions, CTEs), dbt Fundamentals
+  cert, Git basics. Portfolio project: rebuild one messy BI-tool query as a
+  tested dbt model.
+- Months 4-6 (Intermediate): Incremental models, dbt tests/docs, basic data
+  modeling (star schema). Business skill: run a stakeholder requirements
+  interview. Portfolio project: a 3-layer (staging/intermediate/mart) dbt
+  project on a public dataset with CI.
+- Months 7-9 (Advanced): Semantic layer (dbt Semantic Layer or Cube), data
+  quality framework (Great Expectations/Soda), orchestration (Airflow basics).
+  Portfolio project: add a semantic layer + quality checks to the Month 4-6 project.
+- Months 10-12 (Leadership/specialization): Metric governance facilitation,
+  mentoring a junior analyst, choosing a specialization (platform AE vs.
+  embedded/domain AE). Portfolio project: write and present a data product
+  proposal (ties directly into Day 144/145).
 ```
 
 ---

@@ -71,6 +71,8 @@ WHERE date >= '2025-01-01' AND status NOT IN ('refunded', 'cancelled')
 
 ### 2. dbt Semantic Layer with MetricFlow
 
+MetricFlow is the engine behind the dbt Semantic Layer. You describe your data once as a **semantic model** (entities, dimensions, measures pointing at a dbt mart) and then layer **metrics** on top of those measures. The YAML below fixes the three-query problem above: `revenue` is defined exactly once, with its refund/cancellation filter baked in, and `gross_margin` and `average_order_value` are *derived* from it so they can never drift out of sync.
+
 ```yaml
 # models/semantic/sem_orders.yml
 # dbt Semantic Layer: define metrics as code
@@ -144,6 +146,8 @@ metrics:
 ```
 
 ### 3. Cube.js — Headless BI Semantic Layer
+
+Where MetricFlow pushes computation down to the warehouse on every query, Cube.js adds an API layer with its own caching ("Cube Store") in front of the warehouse — useful when a customer-facing product needs sub-second responses and can't wait for a fresh warehouse query every time. The schema below defines the same `revenue`/AOV logic as a Cube `measure`, plus a `preAggregations` block that pre-computes daily-by-region rollups so the API can answer most queries from cache.
 
 ```javascript
 // schema/Orders.js — Cube.js semantic model
@@ -219,17 +223,66 @@ Defining metrics isn't the hard part — getting everyone to agree on definition
 
 ---
 
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Semantic Layer** | A layer that defines business metrics once (with their logic, filters, and dimensions) so every downstream tool queries the same definition. |
+| **MetricFlow** | The open-source query engine behind the dbt Semantic Layer; compiles metric requests into warehouse-native SQL on demand. |
+| **Semantic Model** | A dbt Semantic Layer building block that maps entities, dimensions, and measures onto a single mart model. |
+| **Measure** | A raw aggregation (e.g., `sum(total_amount)`) that metrics are built from. |
+| **Simple Metric** | A metric defined directly from one measure, optionally with a filter (e.g., `revenue` = sum of `total_amount` where not refunded/cancelled). |
+| **Derived Metric** | A metric computed from other metrics (e.g., `AOV = revenue / order_count`), so it stays consistent when the underlying metrics change. |
+| **Pushdown** | Computing a query on the warehouse itself (where the data lives) rather than copying data into a separate engine. |
+| **Pre-Aggregation** | A cached, pre-computed rollup (e.g., daily revenue by region) that a tool like Cube.js serves instead of re-querying the warehouse every time. |
+| **Headless BI** | A BI architecture that separates the semantic/metrics layer (API) from the visualization layer, so any front end can consume the same metrics. |
+| **Metric Governance** | The ongoing process of getting stakeholders to agree on, document, and enforce a single metric definition. |
+| **Vendor Lock-In** | The risk of a metric definition being unusable outside one platform (e.g., LookML only runs inside Looker). |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Define 5 Core Metrics
 
 ```yaml
+# Scenario: an e-commerce company's data warehouse has these marts already built:
+#   fct_orders(order_id, customer_id, order_date, total_amount, status)
+#   fct_sessions(session_id, user_id, session_date, duration_sec)
+#   dim_customers(customer_id, first_order_date, is_new_this_month)
+#   fct_marketing_spend(spend_date, channel, amount)
+#
 # TODO: Define these 5 metrics for an e-commerce company using dbt Semantic Layer:
 # 1. Monthly Active Users (MAU) — users with at least 1 session in 30 days
 # 2. Revenue — net revenue excluding refunds
 # 3. Customer Acquisition Cost (CAC) — total marketing spend / new customers
 # 4. Retention Rate — (returning customers / total customers last month) × 100
 # 5. Gross Margin % — (revenue - COGS) / revenue × 100
+
+# EXPECTED RESULT (metrics: block, abbreviated — semantic_models omitted for brevity):
+# metrics:
+#   - name: mau
+#     type: simple
+#     type_params: { measure: distinct_active_users_30d }
+#   - name: revenue
+#     type: simple
+#     type_params: { measure: total_revenue }
+#     filter: ["{{ Dimension('order_status') }} != 'refunded'"]
+#   - name: cac
+#     type: derived
+#     type_params:
+#       expr: marketing_spend / new_customers
+#       metrics: [{name: marketing_spend}, {name: new_customers}]
+#   - name: retention_rate
+#     type: derived
+#     type_params:
+#       expr: (returning_customers / total_customers_last_month) * 100
+#       metrics: [{name: returning_customers}, {name: total_customers_last_month}]
+#   - name: gross_margin_pct
+#     type: derived
+#     type_params:
+#       expr: (revenue - total_cogs) / revenue * 100
+#       metrics: [{name: revenue}, {name: total_cogs}]
 ```
 
 ### Exercise 2: Semantic Layer Selection
@@ -238,6 +291,11 @@ For each scenario, which semantic layer tool would you recommend?
 1. A dbt Cloud shop with 20 analysts using Tableau.
 2. A startup building an embedded analytics product for customers.
 3. A large enterprise standardized on Google Cloud + Looker.
+
+**Expected result:**
+1. **dbt Semantic Layer** — they're already dbt-centric; MetricFlow integrates directly and Tableau can connect via the dbt Semantic Layer's JDBC/ODBC driver. No new infrastructure needed.
+2. **Cube.js** — embedded, customer-facing analytics needs an API-first tool with pre-aggregation caching for fast response times; Cube is purpose-built for this, and being open source avoids per-seat licensing at scale.
+3. **LookML** — already standardized on Looker, so LookML is the path of least resistance; the trade-off (documented in the comparison table) is higher lock-in risk if they ever want to leave Looker.
 
 ### Exercise 3: Metric Governance Meeting
 
@@ -248,6 +306,22 @@ For each scenario, which semantic layer tool would you recommend?
 - How do you handle disagreements?
 - What documentation is produced?
 - How often should the committee meet?
+
+EXPECTED RESULT (reference agenda):
+- Attendees: 1 analytics engineer (facilitator/owner), 1 representative each from
+  Marketing, Finance, and Product (the teams with competing definitions), plus
+  the data team lead as tie-breaker.
+- Most urgent: "Monthly Active Users" and "Revenue" — the two metrics actively
+  shown with different numbers on 3+ dashboards this quarter.
+- Disagreement handling: each team states their definition and *why* (the
+  business reason, not just the SQL); if no consensus in one meeting, ship
+  both as explicitly-named separate metrics (e.g., `mau_marketing_definition`,
+  `mau_finance_definition`) rather than blocking indefinitely.
+- Documentation: a 1-page decision record per metric (definition, owner,
+  filter logic, decision date, dissenting views) committed to the dbt repo
+  alongside the YAML that implements it.
+- Cadence: monthly for the first quarter while the backlog of undefined
+  metrics is large, then quarterly once the core 15-20 metrics are stable.
 ```
 
 ---

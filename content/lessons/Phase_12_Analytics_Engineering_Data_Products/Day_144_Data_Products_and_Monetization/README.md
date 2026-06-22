@@ -43,6 +43,8 @@ outcomes:
 
 ### 1. Types of Data Products
 
+Before designing a data product, it helps to know which of three broad categories it falls into, since each has a different value story and a different bar for quality. The dictionary below contrasts internal products (operational value, no external SLA risk) against external and embedded products (direct revenue, but customer-facing reliability expectations).
+
 ```python
 data_product_types = {
     "internal_data_products": {
@@ -78,6 +80,8 @@ data_product_types = {
 ```
 
 ### 2. Data Product Design Canvas
+
+A design canvas forces you to answer the questions a data product needs before any code gets written: who has the problem, what's the interface, what's the SLA, and how is it priced. The filled-in example below ("Customer Intelligence API") shows what a complete canvas looks like end-to-end — use it as the template for Lab Exercise 1.
 
 ```python
 data_product_canvas = {
@@ -119,6 +123,8 @@ data_product_canvas = {
 ```
 
 ### 3. Monetization Strategies
+
+Once you know what type of data product you're building, you still need a revenue model — and the right model depends heavily on how the customer wants to consume the data (a subscription, an embedded feature, a marketplace listing, or raw API access). The dictionary below lines up five common models against real-world examples and how each is typically priced.
 
 ```python
 monetization_models = {
@@ -162,16 +168,92 @@ monetization_models = {
 
 ---
 
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Internal Data Product** | A dataset/API/dashboard built to improve operations within the organization (e.g., a churn-prediction model for the retention team). |
+| **External Data Product** | A data offering sold to customers outside the organization, either standalone (Bloomberg Terminal) or embedded in another product. |
+| **Embedded Analytics** | Analytics features built directly into an existing software product (e.g., Shopify's merchant dashboard) rather than a separate tool. |
+| **Data Product Design Canvas** | A one-page template (problem, solution, value proposition, data sources, interface, SLA, pricing) used to scope a data product before building it. |
+| **Data-as-a-Service (DaaS)** | Delivering data or insights via an API or subscription rather than a one-time export or report. |
+| **Data Marketplace** | A platform (e.g., Snowflake Marketplace, AWS Data Exchange) where organizations list, discover, and access shared or sold datasets, often without copying data. |
+| **Usage-Based Pricing** | A pricing model that charges per unit of consumption (e.g., per API call), common for data-as-a-service products. |
+| **Build vs. Buy** | The decision of whether to build a capability in-house (more control, more cost/time) or purchase a vendor platform (faster, less customizable). |
+| **Design Partner** | An early customer who commits to using and giving feedback on a product before it's fully built, used to validate demand. |
+| **Quality SLA (for data products)** | A measurable commitment on accuracy, freshness, and availability that a data product promises its consumers. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Identify Data Product Opportunities
-For a B2B SaaS company with 5 years of usage data, identify 3 potential data products: 1 internal, 1 embedded analytics, and 1 external API. Define value proposition and target audience.
+
+```python
+# Scenario: a B2B SaaS project-management company with 5 years of usage
+# data: task completion events, time tracking, team membership, and billing
+# history across 8,000 customer accounts.
+
+# TODO: identify 3 potential data products: 1 internal, 1 embedded
+# analytics, and 1 external API. Define value proposition and target audience.
+
+# EXPECTED RESULT:
+opportunities = {
+    "internal": {
+        "product": "Account Health Score (churn risk model)",
+        "value_proposition": "Flags at-risk accounts 60 days before renewal so CS can intervene",
+        "audience": "Customer Success team",
+    },
+    "embedded_analytics": {
+        "product": "Team Productivity Insights dashboard (premium tier add-on)",
+        "value_proposition": "Managers see task velocity and bottlenecks without exporting to Excel",
+        "audience": "Customer-side team managers, sold as a $20/user/month upsell",
+    },
+    "external_api": {
+        "product": "Project Benchmarking API — compare a customer's task velocity to anonymized industry peers",
+        "value_proposition": "Lets customers answer 'are we slower than similar teams?' — a question Excel can't answer",
+        "audience": "VP-level customer stakeholders, priced as an enterprise-tier feature",
+    },
+}
+```
 
 ### Exercise 2: Pricing Model Design
-Design pricing tiers for an embedded analytics dashboard feature in a project management tool. Include free, pro, and enterprise with specific limits and features.
+
+```markdown
+Design pricing tiers for an embedded analytics dashboard feature in a
+project management tool. Include free, pro, and enterprise with specific
+limits and features.
+
+EXPECTED RESULT:
+- Free: Read-only "this week" summary view, no historical trends, no export.
+- Pro ($15/user/month add-on): Full historical trends (12 months), CSV
+  export, 3 saved custom views, email digest weekly.
+- Enterprise (custom pricing, ~$30/user/month at volume): Unlimited history,
+  API access to the underlying metrics, custom branding for client-facing
+  reports, dedicated Slack support channel, SSO-gated access controls.
+```
 
 ### Exercise 3: Data Product Roadmap
-Create a 6-month roadmap for launching a data product, from MVP to GA, including technical milestones, go-to-market activities, and success metrics.
+
+```markdown
+Create a 6-month roadmap for launching a data product, from MVP to GA,
+including technical milestones, go-to-market activities, and success metrics.
+
+EXPECTED RESULT (Team Productivity Insights dashboard):
+- Month 1-2 (MVP build): stand up fct_task_events + fct_team_velocity dbt
+  models, basic Metabase dashboard, ship to 5 design-partner customers.
+- Month 3 (Beta): collect design-partner feedback, add the "bottleneck
+  detection" view they requested, fix data quality issues found in real usage.
+- Month 4 (GA prep): add billing-tier gating, write customer-facing docs,
+  load-test the dashboard query against the full 8,000-account dataset.
+- Month 5 (GA launch): roll out to all Pro-tier customers, in-app
+  announcement + email campaign, support team trained on FAQs.
+- Month 6 (Iterate): review adoption metrics, prioritize next feature based
+  on usage data from the dashboard itself.
+- Success metrics: 30% of Pro customers view the dashboard weekly by month 6;
+  feature-attributed churn reduction tracked via a holdout cohort that
+  doesn't get early access.
+```
 
 ---
 

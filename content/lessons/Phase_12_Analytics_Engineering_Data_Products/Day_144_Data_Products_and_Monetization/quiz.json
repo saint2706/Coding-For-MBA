@@ -1,0 +1,70 @@
+{
+    "day": 144,
+    "questions": [
+        {
+            "id": "d144q01",
+            "type": "multiple_choice",
+            "question": "What distinguishes a 'data product' from just a table sitting in a database?",
+            "options": [
+                "A data product must always generate direct external revenue",
+                "A data product has a defined consumer, quality guarantees (SLA), documentation/discoverability, an access interface, an accountable owner, and versioning — a table is just raw material",
+                "A data product must be built with a REST API, while a table can be queried with SQL",
+                "There's no real difference; the terms are interchangeable"
+            ],
+            "answer": 1,
+            "explanation": "The lesson's framing: 'A table is raw material; a product is the finished good.' The defining traits are consumer-orientation, SLA-backed quality, documentation, an access interface, ownership, and change management — not the underlying storage technology."
+        },
+        {
+            "id": "d144q02",
+            "type": "multiple_choice",
+            "question": "A pre-product-market-fit startup needs an embedded analytics dashboard shipped in 4 weeks and lacks dataviz engineering expertise. Should they build or buy?",
+            "options": [
+                "Build in-house — analytics dashboards should always be custom-built",
+                "Buy a platform (e.g., Looker, Sigma, Cube) — fast time-to-market and lower upfront cost outweigh the customization they'd gain from building, especially pre-PMF",
+                "Neither — skip analytics entirely until later",
+                "Build, because buying is always more expensive long-term regardless of stage"
+            ],
+            "answer": 1,
+            "explanation": "The build-vs-buy table favors buying when analytics is a feature (not the core product), fast time-to-market matters, and the team lacks specialized expertise — exactly this startup's situation."
+        },
+        {
+            "id": "d144q03",
+            "type": "multiple_choice",
+            "question": "How does Snowflake's data marketplace model avoid the staleness and licensing complexity of traditional data sharing?",
+            "options": [
+                "It emails a CSV export to the buyer every night",
+                "The provider shares a live reference to their data (no copying); the consumer queries it using their own Snowflake compute, so data never moves and is never stale",
+                "It requires both parties to migrate to a third, neutral cloud provider",
+                "It only works for free, open datasets"
+            ],
+            "answer": 1,
+            "explanation": "Because no data is physically copied or transferred, the consumer always sees live data, and the provider retains control over access — eliminating the staleness and duplication problems of file-based data sharing."
+        },
+        {
+            "id": "d144q04",
+            "type": "multiple_choice",
+            "question": "What is the recommended approach for pricing a data API product?",
+            "options": [
+                "Always price strictly at your infrastructure cost plus a small margin",
+                "Price based on the value delivered to the customer, not your cost of providing it — e.g., a $0.10 API call that saves a salesperson 30 minutes is worth far more than $0.10",
+                "Charge a single flat fee regardless of usage volume",
+                "Never charge for API calls; only charge for the dashboard UI"
+            ],
+            "answer": 1,
+            "explanation": "Value-based pricing captures the customer's willingness to pay based on the outcome the data enables, rather than anchoring price to your own cost structure, which often dramatically undervalues the product."
+        },
+        {
+            "id": "d144q05",
+            "type": "multiple_choice",
+            "question": "What is the single biggest risk called out when launching a new data product?",
+            "options": [
+                "Choosing the wrong cloud provider",
+                "Building something nobody needs — having interesting data doesn't mean customers will pay for it; demand should be validated before building at scale",
+                "Spending too much time on the pitch deck",
+                "Using SQL instead of Python for the data models"
+            ],
+            "answer": 1,
+            "explanation": "The lesson's mitigation: validate demand first via customer interviews, a manual/MVP version, and design partners who commit to using and paying for it — before investing in the fully automated version."
+        }
+    ]
+}

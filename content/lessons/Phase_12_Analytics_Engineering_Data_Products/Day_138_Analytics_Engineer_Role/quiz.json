@@ -1,0 +1,70 @@
+{
+    "day": 138,
+    "questions": [
+        {
+            "id": "d138q01",
+            "type": "multiple_choice",
+            "question": "What is the core difference between an analytics engineer and a data analyst?",
+            "options": [
+                "Analytics engineers only write Python; data analysts only write SQL",
+                "Analytics engineers build, test, and document the data models that analysts query — analysts consume those models to answer business questions",
+                "There is no real difference; it's just a fancier title for the same job",
+                "Analytics engineers report to engineering; data analysts report to finance"
+            ],
+            "answer": 1,
+            "explanation": "Data analysts are consumers of data models — they query, visualize, and answer business questions. Analytics engineers are producers — they apply software engineering practices (version control, testing, CI/CD) to build the trusted, transformed data models that analysts query."
+        },
+        {
+            "id": "d138q02",
+            "type": "multiple_choice",
+            "question": "A 30-person startup has 1 data analyst writing all their own SQL directly against a stable warehouse. Should they hire an analytics engineer?",
+            "options": [
+                "Yes, every company needs an AE regardless of size",
+                "No — at this scale, the analyst can likely handle modeling themselves; AEs add the most value once there are 3+ analysts or fragmented metric definitions",
+                "Yes, but only if they also adopt Looker",
+                "No, analytics engineers are only useful for data scientists, not analysts"
+            ],
+            "answer": 1,
+            "explanation": "AEs solve coordination problems that emerge at scale — multiple analysts writing inconsistent SQL, no single source of truth for metrics. A single analyst against a stable warehouse doesn't yet have that problem."
+        },
+        {
+            "id": "d138q03",
+            "type": "multiple_choice",
+            "question": "Which data team structure is described as 'the industry standard' for companies with 100+ people?",
+            "options": [
+                "Fully centralized — one data team serves everyone",
+                "Fully embedded — every domain hires its own independent data people",
+                "Hub-and-spoke — a central platform team plus analytics engineers embedded per domain",
+                "No structure — analysts self-organize ad hoc"
+            ],
+            "answer": 2,
+            "explanation": "Hub-and-spoke balances standardization (shared platform, tooling, quality bar from the hub) with domain expertise (embedded AEs who understand their business area), which is why it scales better than pure centralized or pure embedded models."
+        },
+        {
+            "id": "d138q04",
+            "type": "multiple_choice",
+            "question": "Marketing counts MAU as 'any login event' while Finance counts it as 'login lasting >30s OR a purchase.' What is the analytics engineer's job here?",
+            "options": [
+                "Pick whichever definition is easier to query and use it for everyone",
+                "Ignore the disagreement — it's not a technical problem",
+                "Facilitate agreement between the stakeholders, then codify the agreed (or both, clearly labeled) definitions as tested, documented dbt models so every dashboard pulls from the same source",
+                "Let each team keep querying raw tables with their own SQL"
+            ],
+            "answer": 2,
+            "explanation": "This is the single-source-of-truth problem. The AE's job is part facilitation (get the definitions agreed or explicitly distinguished) and part engineering (codify the result once, in version-controlled, tested dbt models, so it can't silently drift between dashboards)."
+        },
+        {
+            "id": "d138q05",
+            "type": "multiple_choice",
+            "question": "Which metric is the WEAKEST indicator of an analytics engineering team's impact?",
+            "options": [
+                "Number of data quality incidents per month (trending toward zero)",
+                "Self-serve adoption: % of queries against gold models vs. raw tables",
+                "Total number of dbt models created, regardless of usage",
+                "Stakeholder trust survey scores"
+            ],
+            "answer": 2,
+            "explanation": "Raw model count says nothing about value delivered — an AE could create 200 unused models. The other three all tie directly to outcomes: fewer incidents, more self-serve usage of curated data, and higher stakeholder trust."
+        }
+    ]
+}

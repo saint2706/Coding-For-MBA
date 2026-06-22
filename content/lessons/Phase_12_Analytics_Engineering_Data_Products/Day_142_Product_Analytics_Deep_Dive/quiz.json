@@ -1,0 +1,70 @@
+{
+    "day": 142,
+    "questions": [
+        {
+            "id": "d142q01",
+            "type": "multiple_choice",
+            "question": "Why is 'total users' described as the most dangerous metric in product analytics?",
+            "options": [
+                "Because it's too expensive to calculate",
+                "Because it hides growth, churn, engagement, and whether anyone finds real value — a product can have rising total users while quietly dying on retention",
+                "Because it's not available in most analytics tools",
+                "Because it only applies to B2B products"
+            ],
+            "answer": 1,
+            "explanation": "Total users is a cumulative, never-decreasing count — it can mask a shrinking active base, since churned users still count toward the total. Retention and engagement metrics reveal the trend that 'total users' conceals."
+        },
+        {
+            "id": "d142q02",
+            "type": "multiple_choice",
+            "question": "In the cohort retention SQL, what does `months_since_signup` represent, and why is it computed relative to `cohort_month` rather than using a fixed calendar month?",
+            "options": [
+                "It's the user's age in months; calendar month would give the same result",
+                "It's how many months after a user's first activity month a given activity occurred, so cohorts signed up in different months can be compared on the same x-axis (month 0, 1, 2...) regardless of calendar date",
+                "It's a typo and should be `days_since_signup`",
+                "It only matters for users who churned"
+            ],
+            "answer": 1,
+            "explanation": "Aligning cohorts on 'months since signup' rather than calendar month lets you overlay a January cohort and a June cohort on the same retention curve to compare their survival rates directly."
+        },
+        {
+            "id": "d142q03",
+            "type": "multiple_choice",
+            "question": "What does a 'flattening' retention curve indicate, and what does a curve that never flattens indicate?",
+            "options": [
+                "Flattening always means the product is failing; never-flattening always means success",
+                "A flattening curve indicates you've found a core user base with product-market fit for that segment; a curve that keeps declining without flattening suggests no segment has found durable value",
+                "Both patterns mean exactly the same thing",
+                "Retention curves cannot flatten by definition"
+            ],
+            "answer": 1,
+            "explanation": "The flattening point is where remaining users have integrated the product into their routine and are likely to stick around long-term — it's a leading indicator of product-market fit for that cohort segment."
+        },
+        {
+            "id": "d142q04",
+            "type": "multiple_choice",
+            "question": "In a typical e-commerce funnel (Visit → Product View → Add to Cart → Checkout → Purchase), where is the highest-leverage drop-off usually found, and why?",
+            "options": [
+                "Visit → Product View, because nobody ever clicks on products",
+                "Add to Cart → Checkout, because cart abandonment is typically ~70%, so even a small improvement here recovers significant revenue",
+                "Checkout → Purchase, because payment processors always fail",
+                "There is no typical pattern; it varies randomly by company"
+            ],
+            "answer": 1,
+            "explanation": "Cart abandonment is a well-documented, large, and addressable drop-off (guest checkout, saved payment methods, transparent pricing, abandoned-cart emails), making it the highest-leverage point in most e-commerce funnels."
+        },
+        {
+            "id": "d142q05",
+            "type": "multiple_choice",
+            "question": "A B2B SaaS product has a DAU/MAU ratio of 0.08. According to the lesson's benchmarks, what does this suggest?",
+            "options": [
+                "This is exceptional performance, on par with the best B2C social apps",
+                "This is concerning for B2B — users aren't incorporating the product into daily workflow; B2B SaaS should typically target 0.3-0.5",
+                "DAU/MAU doesn't apply to B2B products at all",
+                "0.08 is impossible to compute and indicates a tracking bug"
+            ],
+            "answer": 1,
+            "explanation": "For B2B SaaS, healthy daily engagement is typically 0.3-0.5; below 0.1 signals users treat the product as occasional rather than a daily workflow tool. (Note: B2C benchmarks differ — marketplace apps can be healthy at low ratios since purchases are naturally infrequent.)"
+        }
+    ]
+}

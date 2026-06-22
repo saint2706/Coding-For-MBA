@@ -42,6 +42,8 @@ outcomes:
 
 ### Choose Your Track
 
+Each track corresponds to one of the data product types from Day 144 (internal, embedded, external) and changes how you'll frame value in your business case below — Track A's value is cost savings, Track B's and C's is revenue. Pick the track closest to your own work experience so your business case numbers feel grounded rather than invented.
+
 Select ONE of these three capstone tracks:
 
 ```python
@@ -107,6 +109,8 @@ What's the user experience?]
 
 ### Deliverable 2: Technical Architecture
 
+This deliverable turns the Product Brief's "solution" sentence into something an engineer could actually build. Walk through the five layers in order — sources feed the processing layer, which feeds the serving layer, all wrapped in infrastructure and security choices — the same Bronze → Silver → Gold pattern from Phase 11's lakehouse architecture.
+
 ```
 ## Architecture Diagram
 
@@ -139,6 +143,8 @@ TODO: Draw a complete architecture including:
 
 ### Deliverable 3: Data Models
 
+This is where the architecture diagram becomes concrete dbt models. The customer-LTV example below shows the typical staging → intermediate → mart progression (Day 138's workflow); your own capstone should name an equivalent chain for whatever your data product actually computes.
+
 ```sql
 -- List 3-5 key dbt models that power your data product
 
@@ -160,6 +166,8 @@ TODO: Draw a complete architecture including:
 ```
 
 ### Deliverable 4: Business Case
+
+Every data product pitch lives or dies on this section — it converts the architecture into dollars an executive will actually evaluate. The structure below has three parts: what it costs to build (investment), what it returns (track-specific, since internal/embedded/external products earn money differently), and an honest accounting of what could go wrong (risks/mitigations).
 
 ```python
 business_case = {
@@ -245,6 +253,134 @@ business_case = {
 - [ ] README.md with project overview
 - [ ] Architecture diagram (publishable quality)
 - [ ] Business case (suitable for interview presentations)
+```
+
+---
+
+## Glossary
+
+| Term | Definition |
+|---|---|
+| **Data Product Brief** | A 1-page executive summary of a data product's problem, solution, target users, value proposition, and success metrics. |
+| **Technical Architecture (Data Product)** | The diagram and description of how data flows from sources through processing to a serving layer, including infrastructure and security choices. |
+| **Business Case** | The investment-vs-return analysis (cost, revenue/savings, risks, mitigations) used to justify building a data product. |
+| **ROI (Return on Investment)** | The ratio of net benefit to cost, used here to compare a data product's projected returns against its Year-1 investment. |
+| **Design Partner** | An early customer or internal stakeholder who commits to using and giving feedback on a data product before it's fully built. |
+| **MVP (Minimum Viable Product)** | The smallest version of a data product that can be shipped to validate demand and gather feedback before investing in the full build. |
+| **GA (General Availability)** | The point at which a data product is released to all intended users, beyond the initial beta/design-partner group. |
+| **Pitch Deck** | A short slide deck (problem, solution, demo, market, technical approach, business case, risks, ask) used to present a data product proposal to stakeholders. |
+| **Guardrail Metric (Business Case)** | A risk or mitigation explicitly named in the business case so the audience sees the proposal accounts for what could go wrong. |
+| **Track (Capstone)** | One of three data-product archetypes (internal, embedded, external) the capstone asks you to choose, each with a different value story. |
+
+---
+
+## Hands-on Lab
+
+The five deliverables above are templates — this lab walks through a fully worked example on **Track A (Internal Data Product)** so you can see what "filled in," not just "described," looks like before building your own capstone submission.
+
+### Exercise 1: Worked Product Brief
+
+```markdown
+# Scenario: a 500-person e-commerce company loses ~$1.2M/year to stockouts
+# and overstock because inventory planning is done in a weekly spreadsheet
+# using a 4-week trailing average — no seasonality, no promo awareness.
+
+## Data Product Brief: Demand Forecasting for Inventory Optimization
+
+### Problem Statement
+Inventory planners manually forecast demand using a 4-week trailing average
+in Excel, missing seasonality and promotional spikes. This causes ~$1.2M/year
+in stockouts (lost sales) and overstock (markdown losses) combined.
+
+### Solution
+A daily-refreshed SKU-level demand forecast (14-day horizon) served as a
+dashboard + CSV export, using 2 years of sales history plus promo calendar
+as inputs, replacing the manual spreadsheet process.
+
+### Target Users
+- Primary: 6 inventory planners (daily use to set reorder points)
+- Secondary: Finance (monthly accuracy review), Merchandising (promo planning)
+
+### Value Proposition
+- Quantified impact: Reduce stockout/overstock losses by an estimated 30%
+  (based on a 6-week pilot on 50 SKUs showing 28% forecast error reduction)
+- Revenue opportunity: ~$360K/year in recovered margin
+
+### Success Metrics
+1. Forecast MAPE (Mean Absolute Percentage Error) < 20% at SKU level
+2. Planner adoption: 100% of reorder decisions sourced from the tool by month 3
+3. $360K annualized margin recovery, tracked quarterly vs. pre-launch baseline
+
+EXPECTED RESULT: a brief like this should let an executive who has never
+seen the underlying data answer "should we fund this?" in under 2 minutes.
+```
+
+### Exercise 2: Worked Data Models with Sample Schema
+
+```sql
+-- Sample source schema (what the architecture's "DATA SOURCES" layer feeds in):
+-- raw.order_line_items(order_id, sku, quantity, order_date, store_id)
+-- raw.promo_calendar(sku, promo_start, promo_end, discount_pct)
+
+-- Model 1: stg_daily_sku_sales (staging)
+-- One row per SKU per day, gaps filled with 0 (no sale that day != missing data)
+select
+    sku,
+    order_date as sale_date,
+    sum(quantity) as units_sold
+from {{ ref('raw_order_line_items') }}
+group by sku, order_date
+
+-- Model 2: int_sku_sales_with_promo (intermediate)
+-- Joins in promo flag — forecasts must know which historical spikes were promo-driven
+select
+    s.sku,
+    s.sale_date,
+    s.units_sold,
+    case when p.sku is not null then true else false end as was_promo_day
+from {{ ref('stg_daily_sku_sales') }} s
+left join {{ ref('stg_promo_calendar') }} p
+    on s.sku = p.sku and s.sale_date between p.promo_start and p.promo_end
+
+-- Model 3: fct_demand_forecast (mart)
+-- Output of the forecasting model (trained outside dbt), landed back as a table
+-- Columns: sku, forecast_date, forecasted_units, lower_bound_80pct, upper_bound_80pct
+
+-- EXPECTED RESULT: querying fct_demand_forecast for one SKU should return
+-- exactly 14 rows (the forecast horizon) with forecasted_units always >= 0
+-- and lower_bound_80pct <= forecasted_units <= upper_bound_80pct — these are
+-- the dbt tests (`dbt_utils.expression_is_true`) you'd add to this model.
+```
+
+### Exercise 3: Worked Business Case Sanity Check
+
+```python
+# Use this worked Track A example to sanity-check your own capstone's numbers
+# before presenting — if your ROI looks dramatically higher than this without
+# a clear reason why, double-check your assumptions.
+
+demand_forecasting_business_case = {
+    "investment": {
+        "engineering": "1 data engineer + 1 analytics engineer, 3 months to MVP",
+        "cost": "$120,000 (salary-months) + $15,000 (cloud + forecasting tool licensing)",
+        "total_year_1": "$135,000",
+    },
+    "returns": {
+        "cost_savings": "$360,000/year (30% reduction of the $1.2M stockout/overstock loss)",
+        "roi": "(360,000 - 135,000) / 135,000 = 167% ROI in Year 1",
+    },
+    "risks": [
+        "Forecast accuracy may be lower for new/low-history SKUs",
+        "Planners may not trust the tool's recommendations initially",
+    ],
+    "mitigations": [
+        "Use a simple trailing-average fallback for SKUs with <8 weeks of history",
+        "Run a 6-week shadow period where planners compare tool output to their own forecast before relying on it fully",
+    ],
+}
+# EXPECTED RESULT: this is the level of specificity (named %, named $ figures
+# tied back to the brief's stated $1.2M problem, a fallback for the obvious
+# edge case) your own capstone's Deliverable 4 should match.
 ```
 
 ---

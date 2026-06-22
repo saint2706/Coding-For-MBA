@@ -1,0 +1,70 @@
+{
+    "day": 139,
+    "questions": [
+        {
+            "id": "d139q01",
+            "type": "multiple_choice",
+            "question": "What core problem does a semantic layer solve?",
+            "options": [
+                "It makes SQL queries run faster by caching results",
+                "It provides one authoritative definition for each business metric, so every tool computes the same number instead of each team writing its own SQL",
+                "It replaces the data warehouse entirely",
+                "It automatically cleans dirty data before it reaches the warehouse"
+            ],
+            "answer": 1,
+            "explanation": "The semantic layer's job is consistency, not performance or storage. It defines metrics (with their filters and business logic) once, so 'revenue' means the same thing in Looker, Python, and the API."
+        },
+        {
+            "id": "d139q02",
+            "type": "multiple_choice",
+            "question": "In the dbt Semantic Layer / MetricFlow, how does a query for 'revenue by region' actually get executed?",
+            "options": [
+                "MetricFlow pre-computes and stores every possible aggregation in a separate database",
+                "MetricFlow translates the metric + dimension request into SQL with the correct filters and GROUP BY, then pushes that SQL down to run on the warehouse — no data is duplicated",
+                "It calls an external API that has no connection to the warehouse",
+                "It requires the user to write the SQL manually every time"
+            ],
+            "answer": 1,
+            "explanation": "MetricFlow is a query compiler: it takes your YAML-defined semantic models and metrics and generates warehouse-native SQL on demand (pushdown), rather than maintaining a separate copy of pre-aggregated data."
+        },
+        {
+            "id": "d139q03",
+            "type": "multiple_choice",
+            "question": "A startup is building a customer-facing embedded analytics product and needs sub-second response times via pre-aggregation caching. Which tool from the lesson is the best fit?",
+            "options": [
+                "dbt Semantic Layer, because it's free",
+                "LookML, because Looker is the most mature BI tool",
+                "Cube.js, because of its built-in pre-aggregations and API-first design for embedding in customer-facing apps",
+                "None of these — semantic layers can't serve customer-facing products"
+            ],
+            "answer": 2,
+            "explanation": "Cube.js is explicitly designed for headless, API-first delivery with pre-aggregation caching — exactly the profile needed for embedding fast analytics into an external-facing product."
+        },
+        {
+            "id": "d139q04",
+            "type": "multiple_choice",
+            "question": "What is a 'derived metric,' and why does defining Average Order Value (AOV) as one (Revenue / Order Count) matter?",
+            "options": [
+                "A derived metric is just a renamed raw column; it has no relationship to other metrics",
+                "A derived metric is computed from other already-defined metrics, so if the underlying Revenue definition changes, AOV updates automatically everywhere instead of drifting out of sync",
+                "Derived metrics can only be used in LookML, not dbt or Cube",
+                "Derived metrics are always less accurate than simple metrics"
+            ],
+            "answer": 1,
+            "explanation": "Deriving AOV from the `revenue` and `order_count` metrics (rather than hardcoding a separate SQL expression) means a single source of truth: change the revenue filter once, and AOV is automatically consistent with it."
+        },
+        {
+            "id": "d139q05",
+            "type": "multiple_choice",
+            "question": "Why is metric governance described as '70% people work, 30% technical'?",
+            "options": [
+                "Because writing the YAML for a metric takes most of the effort",
+                "Because the hard part is getting marketing and finance to agree on a shared definition (e.g., what counts as an 'active user'); the YAML to encode the agreed definition is comparatively simple",
+                "Because technical work is always harder than meetings",
+                "Because governance has nothing to do with technical implementation"
+            ],
+            "answer": 1,
+            "explanation": "Writing `type: simple` or `type: derived` metrics in YAML is mechanical. The genuinely hard work is facilitating agreement across stakeholders who have legitimate, different reasons for measuring something differently."
+        }
+    ]
+}
