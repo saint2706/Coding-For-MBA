@@ -1,0 +1,65 @@
+{
+    "day": 126,
+    "questions": [
+        {
+            "id": "d126q01",
+            "type": "multiple_choice",
+            "question": "A team wants to deploy custom application code without managing servers, operating systems, or runtimes. Which cloud computing model fits best?",
+            "options": ["IaaS", "PaaS", "SaaS", "On-premises"],
+            "answer": 1,
+            "explanation": "PaaS (e.g., AWS Lambda, Cloud Run) manages the OS and runtime for you — you just deploy code. IaaS still requires you to manage the OS; SaaS means you don't write or deploy any code at all; on-premises means you manage everything."
+        },
+        {
+            "id": "d126q02",
+            "type": "multiple_choice",
+            "question": "Under the shared responsibility model, which of the following is typically the CUSTOMER's responsibility, not the cloud provider's?",
+            "options": [
+                "Physical security of the data centre",
+                "Maintaining the hypervisor",
+                "Configuring IAM policies and S3 bucket permissions",
+                "Physical network infrastructure between data centres"
+            ],
+            "answer": 2,
+            "explanation": "The provider secures physical infrastructure, the hypervisor, and the network. The customer is responsible for configuring access controls like IAM policies and bucket permissions — misconfigurations here are the leading cause of cloud data breaches."
+        },
+        {
+            "id": "d126q03",
+            "type": "multiple_choice",
+            "question": "Following the principle of least privilege, how should a data engineer's IAM permissions typically be structured?",
+            "options": [
+                "Grant admin/root access so they never get blocked by permission errors",
+                "Grant only the specific permissions needed for their current tasks, via roles rather than individual user grants",
+                "Grant all S3 and database permissions but restrict compute permissions",
+                "Grant permissions based on seniority level only"
+            ],
+            "answer": 1,
+            "explanation": "Least privilege means granting the minimum permissions necessary to do the job, assigned via roles (not ad-hoc individual grants), and reviewed/audited regularly — not broad admin access for convenience."
+        },
+        {
+            "id": "d126q04",
+            "type": "multiple_choice",
+            "question": "Why does deploying a data platform across multiple Availability Zones (AZs) within a region matter?",
+            "options": [
+                "It is required by law in all cloud regions",
+                "It eliminates all egress data transfer costs",
+                "It protects against a single data centre failure, since each AZ is a physically separate facility",
+                "It automatically reduces compute pricing"
+            ],
+            "answer": 2,
+            "explanation": "AZs are physically separate data centres within a region. Spreading workloads across 2+ AZs protects against power outages, network issues, or hardware failures in any single facility, at a small cross-AZ transfer cost (~$0.01/GB)."
+        },
+        {
+            "id": "d126q05",
+            "type": "multiple_choice",
+            "question": "A data platform team runs Airflow workers 24/7 with predictable, steady utilization. Which pricing model would minimize cost?",
+            "options": [
+                "On-demand pricing, for maximum flexibility",
+                "Spot instances, since they are always cheapest",
+                "Reserved Instances, since the workload is steady and predictable",
+                "Free tier, since Airflow is open source"
+            ],
+            "answer": 2,
+            "explanation": "Reserved Instances offer 40-72% discounts in exchange for a 1-3 year commitment, making them ideal for steady, predictable workloads like always-on Airflow workers. On-demand suits variable workloads; spot instances can be reclaimed at any time, which is risky for critical infrastructure."
+        }
+    ]
+}

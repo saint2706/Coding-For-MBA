@@ -26,7 +26,7 @@ outcomes:
   - "Document architecture decisions and operational runbooks"
 ---
 
-# 🏆 Day 132: Capstone — Cloud Data Pipeline End-to-End
+# 🏆 Day 137: Capstone — Cloud Data Pipeline End-to-End
 
 > *"This capstone integrates every Phase 11 concept: cloud infrastructure, object storage, warehousing, dbt transformations, orchestration, quality gates, security, and cost monitoring — into one production-ready pipeline."*
 
@@ -262,6 +262,37 @@ GROUP BY event_date, region
 # 4. Cost: Daily cloud spend with budget line
 # 5. Volume: Records processed per day trend
 ```
+
+---
+
+## Senior-Level Insights
+
+### How This Exact Pipeline Fails in Production
+
+The milestones above describe what to build. Here's what breaks after it's been running for three months, drawn from the exact components this capstone uses:
+
+- **Milestone 2 (ingestion) — silent record loss on retry.** `ingest_api_data` handles pagination and retries 3x on failure, but if a multi-page pull fails on page 4 of 10 and the retry re-requests the *whole* date range rather than resuming from a per-page checkpoint, you either duplicate pages 1-3 or — worse — the retry logic dedupes by date and skips re-fetching, permanently dropping page 4's records. Idempotency has to be enforced **per page**, not just per run: track which pages succeeded, not just which dates were attempted.
+- **Milestone 3 (dbt incremental) — no lookback window means late data vanishes.** `stg_api_events` filters `WHERE event_timestamp > MAX(event_at)`. A mobile client that batches events offline and uploads them hours or days late will have `event_timestamp` values in the past relative to the watermark — they get silently filtered out forever, because the next run's watermark has already moved past them. The fix is a lookback window (e.g., re-process the last 3-7 days on every run) so late-arriving data has a chance to land.
+- **Milestone 4 (orchestration) — top-level code in the DAG file is a scheduler-wide tax.** Airflow re-parses every DAG file on a fixed interval (the DAG file processing loop) to detect changes. A DB connection check, an API call, or a `Variable.get()` call placed at module level (outside a task/operator) executes on *every parse* of *every scheduler heartbeat* — not once per run. One slow top-level call in this capstone's DAG can measurably slow down scheduling for every other DAG in the same Airflow deployment, not just this pipeline.
+- **Milestone 5 (quality gates) — threshold checks don't catch silent volume collapse.** A Soda check like `row_count > 0` is satisfied even if the upstream API quietly stopped sending 90% of expected events (e.g., a broken auth token that returns an empty-but-valid 200 response for most users). The pipeline reports "healthy," the gate passes, and `fct_daily_metrics` quietly understates revenue for days. Catching this requires an anomaly/baseline check (row count vs. a 30-day rolling average, with a tolerance band) in addition to the simple existence check.
+- **Cost creep — forgotten non-prod copies.** The most common silent budget leak with an architecture like this one isn't a single expensive query — it's a dev or staging Redshift Serverless workgroup and Airflow environment that was spun up to test Milestone 1, sized the same as prod, and left running 24/7 after the project shipped. Nobody notices because it's a small fraction of total spend each month, but it compounds for as long as nobody tears it down — exactly the kind of waste a budget alert (Day 135) is designed to surface, if someone is tagged to actually look at it.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **ADR (Architecture Decision Record)** | A short document capturing a significant architectural choice, the alternatives considered, and the reasoning — so future engineers understand "why" not just "what." |
+| **Idempotency** | The property that re-running an operation produces the same end state as running it once, even after failures and retries — essential for safe pipeline re-runs. |
+| **Quality Gate** | An automated check (e.g., via Soda or Great Expectations) that blocks data from propagating downstream if it fails validation rules like freshness, null checks, or anomaly detection. |
+| **Runbook** | A documented, step-by-step procedure for diagnosing and resolving common operational failures, used by on-call engineers during incidents. |
+| **SLA** | Service Level Agreement — a measurable commitment (e.g., "dashboards refresh within 2 hours of source data") that defines acceptable reliability and is monitored against. |
+| **Medallion Architecture** | The bronze (raw) → silver (cleaned) → gold (business-ready aggregates) data modeling pattern used to progressively refine data through a pipeline. |
+| **CDC (Change Data Capture)** | A technique for capturing only the rows that changed in a source database since the last extraction, rather than re-reading the entire table. |
+| **Checkpoint** | A saved marker (timestamp, offset, or page number) indicating how far a pipeline has successfully processed, used to resume correctly after a failure. |
+| **Lookback Window** | A deliberate re-processing of recent historical data (e.g., the last 7 days) on every incremental run, so late-arriving records aren't permanently missed. |
+| **Schema-on-Read** | Storing raw data without enforcing a strict schema at write time, deferring structure/validation to query or transformation time — buffers downstream consumers from upstream schema changes. |
 
 ---
 

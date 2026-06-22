@@ -27,7 +27,7 @@ outcomes:
   - "Design a cost-effective warehouse strategy for different workloads"
 ---
 
-# 🏗️ Day 123: Cloud Data Warehouses — BigQuery, Snowflake, Redshift
+# 🏗️ Day 128: Cloud Data Warehouses — BigQuery, Snowflake, Redshift
 
 > *"A cloud data warehouse isn't just a database in the sky — it's a query engine that reads terabytes in seconds, and bills you for every byte it touches."*
 
@@ -58,6 +58,8 @@ The key innovation is **separating storage from compute**. Your data sits in che
 | **Best For**      | Ad-hoc analytics, cost-optimized | Mixed workloads, data sharing | AWS-heavy shops, predictable |
 
 ### 2. BigQuery Deep Dive
+
+Because BigQuery bills by bytes scanned rather than by time spent, the cost of a query is knowable *before* you run it. Running a dry run first — and inspecting `total_bytes_processed` — is a core FinOps habit: it turns "how much will this cost?" from a guess into a number you check before hitting execute, the same way you'd check a price tag before checkout.
 
 ```python
 from google.cloud import bigquery
@@ -189,6 +191,34 @@ BigQuery on-demand ($6.25/TB) is cheapest for sporadic usage. But at scale (>1TB
 
 Snowflake's data sharing lets you share live data with partners, vendors, or other business units **without copying it**. The consumer pays for compute on their own account. This is transformative for organizations with multiple teams or B2B data products.
 
+### Snowflake vs. BigQuery: The Real Trade-offs
+
+The "Flat Rate vs Pay-Per-Query" and "Data Sharing" points above are just the headline differences. The deeper trade-offs that actually drive a platform decision:
+
+- **Multi-cloud portability**: Snowflake runs unmodified on AWS, GCP, and Azure — useful for organizations with multi-cloud mandates, M&A integration (inheriting infrastructure from an acquired company), or regulatory requirements to avoid vendor lock-in. BigQuery only runs on GCP; moving off it means re-platforming.
+- **Workload isolation**: Snowflake's Virtual Warehouses give each team (ETL, analytics, ML) fully independent compute — one team's heavy query cannot slow down another's, and each warehouse can be sized, suspended, and billed separately. BigQuery's on-demand model draws from a shared slot pool; a single runaway query can contend with everyone else's workloads unless you've purchased dedicated flat-rate/reservation capacity.
+- **Governance and data-sharing maturity**: Snowflake's Secure Data Sharing and the Snowflake Marketplace are purpose-built, mature products for exposing live data to partners or monetizing data externally. BigQuery has Analytics Hub as a comparable feature, but it's newer and has a smaller ecosystem of consumers and pre-built listings.
+- **Ecosystem and tooling**: BigQuery integrates most deeply with the rest of GCP (Looker, Vertex AI, Dataflow) and has the edge for teams already standardized on GCP. Snowflake has built a broader third-party ecosystem (Fivetran, dbt, Tableau, Sigma) precisely because it must work well across all three clouds, which can mean more flexibility for heterogeneous tool stacks.
+
+In short: choose BigQuery when you're GCP-native and want serverless simplicity; choose Snowflake when you need multi-cloud flexibility, hard workload isolation between teams, or mature external data-sharing.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **MPP (Massively Parallel Processing)** | An architecture where a query is split across many compute nodes that process data in parallel, enabling fast scans of terabytes of data. |
+| **Columnar Storage** | A storage layout that groups data by column rather than by row, allowing queries to read only the columns they need — key to both performance and cost in warehouses like BigQuery. |
+| **Slot** | BigQuery's unit of compute capacity; queries consume slots dynamically (on-demand) or from a reserved pool (flat-rate). |
+| **Virtual Warehouse** | Snowflake's unit of compute — an independently sized, scalable cluster that can be suspended/resumed and billed separately from storage. |
+| **Compute-Storage Separation** | An architecture where data is stored independently of the compute that processes it, allowing each to scale (and be billed) independently. |
+| **Materialized View** | A precomputed, automatically maintained query result stored as a table, so repeated expensive queries hit the precomputed result instead of recomputing from scratch. |
+| **Partition Pruning** | The query engine's ability to skip entire partitions (e.g., date ranges) that can't match the WHERE clause, avoiding unnecessary scans. |
+| **Clustering** | Sorting data within partitions by specified columns so the engine reads fewer blocks when filtering on those columns. |
+| **Data Sharing** | Exposing live data to another account or organization without physically copying it — the consumer queries the same underlying data and pays for their own compute. |
+| **Concurrency Scaling** | A feature (e.g., in Redshift) that automatically spins up additional transient compute capacity to handle bursts of concurrent queries. |
+
 ---
 
 ## Hands-on Lab
@@ -211,6 +241,34 @@ def compare_warehouse_costs(
     - Snowflake Medium: $4/credit, ~8 credits/hour
     """
     pass
+
+# EXPECTED RESULT
+# Scenario: 200 queries/day, 500 GB scanned/query, assume avg_query_seconds = 30
+#           and a 30-day month.
+#
+# Arithmetic:
+#   Total GB scanned/day   = 200 queries * 500 GB           = 100,000 GB/day
+#   Total TB scanned/month = 100,000 GB/day * 30 days / 1024 = 2,929.69 TB/month
+#
+#   BigQuery on-demand = 2,929.69 TB * $6.25/TB             = $18,310.56/mo
+#   BigQuery flat-rate  = $2,000/mo (100 slots, fixed regardless of volume)
+#
+#   Snowflake Medium:
+#     total query-seconds/month = 200 queries/day * 30 sec/query * 30 days
+#                                = 180,000 seconds = 50 compute-hours
+#     credits consumed          = 50 hours * 8 credits/hour = 400 credits
+#     cost                      = 400 credits * $4/credit   = $1,600.00/mo
+#
+# compare_warehouse_costs(200, 500, 30) ->
+# {
+#     "bigquery_on_demand": 18310.56,
+#     "bigquery_flat_rate": 2000.00,
+#     "snowflake_medium": 1600.00,
+# }
+#
+# Takeaway: at this volume (~2,930 TB/mo scanned), BOTH flat-rate BigQuery and
+# Snowflake crush pay-per-scan pricing — this is exactly the "Flat Rate vs
+# Pay-Per-Query" decision point described in Senior-Level Insights above.
 ```
 
 ### Exercise 2: Optimization Audit
@@ -275,4 +333,4 @@ Choose Snowflake when: (1) you need data sharing with external partners without 
 - ✅ **Optimization**: Partition + cluster, avoid SELECT *, use materialized views, right-size compute
 - ✅ **Cost**: Separate compute from storage, auto-suspend, monitor continuously
 
-**Tomorrow → Day 124**: **dbt at Scale** — incremental models, snapshots, macros, and patterns that turn your warehouse into a maintainable analytics engine.
+**Tomorrow → Day 129**: **dbt at Scale** — incremental models, snapshots, macros, and patterns that turn your warehouse into a maintainable analytics engine.

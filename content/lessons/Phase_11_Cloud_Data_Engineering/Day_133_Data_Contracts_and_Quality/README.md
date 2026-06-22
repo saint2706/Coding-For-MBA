@@ -27,7 +27,7 @@ outcomes:
   - "Define and monitor data SLAs for production pipelines"
 ---
 
-# ✅ Day 128: Data Contracts and Quality — Great Expectations, Soda, SLAs
+# ✅ Day 133: Data Contracts and Quality — Great Expectations, Soda, SLAs
 
 > *"Bad data doesn't just produce wrong reports — it erodes trust. And once business users stop trusting the data, they stop using it. That's the real cost."*
 
@@ -96,6 +96,8 @@ contract:
 ```
 
 ### 2. Great Expectations — Build Expectation Suites
+
+Great Expectations follows a consistent workflow regardless of the data source: you get a **Context** (the project configuration), register a **datasource** pointing at your data, attach an **expectation suite** (a named collection of rules), and then **validate** a batch of data against that suite. The code below walks through each of those four steps in order — context, datasource, suite, validate — building up the suite one expectation at a time before running it.
 
 ```python
 import great_expectations as gx
@@ -238,9 +240,35 @@ def check_freshness_sla(table: str, last_updated: datetime) -> dict:
 
 Data contracts aren't just technical documents — they're agreements between teams. The producing team commits to quality guarantees; the consuming team agrees on change notification periods. Breaking changes need 14-day notice. This reduces the "I changed the column name and broke 5 dashboards" problem.
 
+### Getting Organizational Buy-In for Data Contracts
+
+Data contracts fail to gain traction when they're pitched as an abstract "data quality initiative" — engineering leadership doesn't fund abstractions. Make the pitch concrete instead:
+
+- **Start with a pilot, not a mandate.** Pick the single table with the highest incident rate (check your incident tracker or Slack #data-alerts channel) and write one contract for it. A working example beats a company-wide policy doc nobody reads.
+- **Frame the pitch in hours, not quality scores.** Don't say "this improves data quality." Say "analysts spent 12 hours last month debugging a schema change that a contract would have caught in CI." Dollars and hours move budget conversations; abstract quality scores don't.
+- **Get ownership written into sprint commitments.** A contract with no enforcement is a wish list. Push to get "maintain `orders` contract SLA" written into the producing team's OKRs or sprint capacity — otherwise it's the first thing dropped under deadline pressure.
+- **Use a recent incident as the forcing function.** If a dashboard broke last week because a column was silently renamed, that incident is your leverage — reference it directly when asking for contract sign-off. Lessons attached to real pain land; lessons attached to hypotheticals don't.
+
 ### Quality as a Feature, Not a Tax
 
 Teams that treat data quality as an afterthought build "data quality tax" — cleaning bad data becomes 60% of analysts' time. Teams that build quality into the pipeline (expectations in DLT, Soda checks in CI/CD) spend 10% on quality and 90% on insights.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Data Contract** | A formal, version-controlled agreement between a data producer and its consumers specifying schema, quality guarantees, freshness, and change-management policy. |
+| **SLA/SLO** | Service Level Agreement / Service Level Objective — a measurable commitment (e.g., "99.5% availability," "fresh within 2 hours") that defines acceptable performance for a data asset. |
+| **Expectation Suite** | A named, reusable collection of Great Expectations rules (e.g., not-null, uniqueness, value ranges) applied together to validate a dataset. |
+| **Freshness** | A measure of how recent the data in a table is relative to when it should have been updated, typically monitored against a maximum allowed delay. |
+| **Completeness** | A data quality dimension measuring whether expected rows and non-null values are present (e.g., minimum row count, maximum null rate). |
+| **Accuracy** | A data quality dimension measuring whether values are correct and free of duplication or error (e.g., duplicate rate below a threshold). |
+| **Schema Drift** | An unexpected change in a table's structure (added/removed/renamed/retyped columns) that can silently break downstream consumers. |
+| **Soda** | A SQL-native, YAML-configured data quality tool used to define and run checks (freshness, volume, nulls, anomalies) against warehouse tables. |
+| **Great Expectations** | A Python-based data validation framework providing hundreds of built-in "expectations" for asserting properties of a dataset. |
+| **Breaking Change Notice Period** | The minimum advance notice (e.g., 14 days) a data producer must give consumers before making a change that could break downstream pipelines or dashboards. |
 
 ---
 
@@ -263,6 +291,34 @@ Teams that treat data quality as an afterthought build "data quality tax" — cl
 # 3. Currency must be one of: USD, EUR, GBP, JPY
 # 4. Transaction_date must be within last 365 days
 # 5. Row count anomaly detection (compare to 7-day average)
+
+# Sample data to validate against (assume "today" = 2026-06-22, 7-day avg row count = 6):
+sample_transactions = [
+    {"transaction_id": "TXN1001", "amount": 250.00,      "currency": "USD", "transaction_date": "2026-06-20"},
+    {"transaction_id": "TXN1002", "amount": -75.50,       "currency": "EUR", "transaction_date": "2026-06-21"},
+    {"transaction_id": None,      "amount": 1200.00,      "currency": "GBP", "transaction_date": "2026-06-19"},
+    {"transaction_id": "TXN1004", "amount": 2_500_000.00, "currency": "USD", "transaction_date": "2026-06-18"},
+    {"transaction_id": "TXN1005", "amount": 99.99,        "currency": "BTC", "transaction_date": "2026-06-15"},
+    {"transaction_id": "TXN1006", "amount": 42.00,        "currency": "JPY", "transaction_date": "2023-01-10"},
+]
+```
+
+```python
+# EXPECTED RESULT — pass/fail per expectation
+#
+# | transaction_id | not_null + unique | amount in [-1M, 1M] | currency in {USD,EUR,GBP,JPY} | date within 365 days | Notes                         |
+# |-----------------|--------------------|----------------------|----------------------------------|------------------------|--------------------------------|
+# | TXN1001         | PASS               | PASS                 | PASS                              | PASS                   | Fully valid record             |
+# | TXN1002         | PASS               | PASS                 | PASS                              | PASS                   | Valid refund (negative amount) |
+# | None            | FAIL (null id)     | PASS                 | PASS                              | PASS                   | Null transaction_id            |
+# | TXN1004         | PASS               | FAIL (out of range)  | PASS                              | PASS                   | Amount exceeds 1M cap          |
+# | TXN1005         | PASS               | PASS                 | FAIL (invalid currency)           | PASS                   | "BTC" not in allowed list      |
+# | TXN1006         | PASS               | PASS                 | PASS                              | FAIL (stale date)      | Date is >365 days old (2023)   |
+#
+# Row-count anomaly check: 6 rows received vs. a 7-day average of 6 -> 0% deviation -> PASS (no anomaly).
+# If only 2 rows had arrived instead of 6, that's a ~67% deviation -> FAIL (anomaly flagged, likely an upstream ingestion gap).
+#
+# Overall suite result: FAILED (3 of 6 records violate at least one expectation: null id, amount range, invalid currency, and stale date).
 ```
 
 ### Exercise 3: SLA Dashboard Design
@@ -314,4 +370,4 @@ Data quality checks are deterministic rules: "this column must not be null," "va
 - ✅ **Data SLAs** define freshness, completeness, and accuracy guarantees with monitoring
 - ✅ **Quality is a feature**: Build it into the pipeline, don't bolt it on afterward
 
-**Tomorrow → Day 129**: **Cloud Security and Compliance** — VPC, encryption, PII handling, and the regulations every data engineer must know.
+**Tomorrow → Day 134**: **Cloud Security and Compliance** — VPC, encryption, PII handling, and the regulations every data engineer must know.

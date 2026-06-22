@@ -1,0 +1,70 @@
+{
+    "day": 131,
+    "questions": [
+        {
+            "id": "d131q01",
+            "type": "multiple_choice",
+            "question": "A Kafka topic has 6 partitions and a consumer group has 3 consumers. What happens, and what happens if a consumer fails?",
+            "options": [
+                "Each consumer reads all 6 partitions; on failure, nothing changes",
+                "Each consumer is assigned 2 partitions; if one consumer fails, its partitions are reassigned to the surviving consumers (rebalancing)",
+                "Only one consumer is active at a time; the other two are idle standbys",
+                "Partitions are split evenly only if the consumer count divides evenly into the partition count, otherwise the group fails to start"
+            ],
+            "answer": 1,
+            "explanation": "A consumer group divides partitions across its members for parallel processing. If a consumer dies, the group rebalances and reassigns its partitions to the remaining consumers, providing both parallelism and fault tolerance."
+        },
+        {
+            "id": "d131q02",
+            "type": "multiple_choice",
+            "question": "Why does exactly-once delivery typically have higher latency than at-least-once delivery?",
+            "options": [
+                "Exactly-once always requires a slower network protocol",
+                "Exactly-once requires transactional coordination (idempotent producer, transactional writes, read-committed consumers, atomic offset commits) that adds overhead at-least-once doesn't need",
+                "Exactly-once is only available with at-most-once semantics, which inherently doubles latency",
+                "There is no latency difference; the difference is only in storage cost"
+            ],
+            "answer": 1,
+            "explanation": "Exactly-once relies on Kafka transactions and idempotent producers plus read-committed isolation, adding coordination overhead. At-least-once with idempotent consumers is simpler and faster, which is why most pipelines prefer it."
+        },
+        {
+            "id": "d131q03",
+            "type": "multiple_choice",
+            "question": "A team is on GCP, wants zero infrastructure management, and doesn't have in-house Kafka expertise. Which should they choose, and why?",
+            "options": [
+                "Kafka, because it has the largest open-source community",
+                "Google Pub/Sub, because it's fully serverless/managed, integrates natively with GCP, and requires no broker administration",
+                "Kafka, because Pub/Sub cannot guarantee message ordering under any configuration",
+                "Neither — they should build a custom queue on top of Cloud Storage"
+            ],
+            "answer": 1,
+            "explanation": "Pub/Sub is a fully managed, serverless messaging service well suited to teams that want to avoid operating Kafka brokers themselves and are already on GCP. Kafka is preferable when exactly-once semantics, very low latency, or fine-grained replication control are required."
+        },
+        {
+            "id": "d131q04",
+            "type": "multiple_choice",
+            "question": "A partition key of `user_id` is used for clickstream events, but one celebrity user generates 90% of all traffic. What problem does this create and how is it typically solved?",
+            "options": [
+                "This is the 'cold partition' problem; solved by increasing replication_factor",
+                "This is the 'hot partition' problem; solved by adding a random suffix to the key, using a composite key (e.g., user_id + hour), or using a key-less/random partitioning strategy when ordering isn't required",
+                "This is a consumer group rebalancing bug; solved by adding more brokers",
+                "This is expected behavior and requires no remediation since Kafka auto-balances hot keys"
+            ],
+            "answer": 1,
+            "explanation": "A hot partition occurs when one key dominates traffic, overloading the single partition (and its consumer) that key maps to. Common fixes include salting the key, using a composite key, or dropping strict per-key ordering in favor of even distribution."
+        },
+        {
+            "id": "d131q05",
+            "type": "multiple_choice",
+            "question": "What is the key difference between a tumbling window and a session window in stream processing?",
+            "options": [
+                "Tumbling windows overlap; session windows never overlap",
+                "Tumbling windows have a fixed, non-overlapping duration (e.g., every 60 seconds); session windows have a dynamic duration based on activity, closing after a period of inactivity (e.g., 30 minutes of no events)",
+                "Session windows are only used for batch processing, not streaming",
+                "There is no difference; both terms describe the same windowing strategy"
+            ],
+            "answer": 1,
+            "explanation": "Tumbling windows are fixed-size, non-overlapping intervals (e.g., 'count events per minute'). Session windows have variable length, closing a session once a gap of inactivity (the session gap) is exceeded — ideal for grouping bursty user activity."
+        }
+    ]
+}

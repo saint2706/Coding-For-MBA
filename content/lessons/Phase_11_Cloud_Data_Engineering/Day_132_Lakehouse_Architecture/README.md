@@ -27,7 +27,7 @@ outcomes:
   - "Build a declarative ETL pipeline with Delta Live Tables"
 ---
 
-# 🏠 Day 127: Lakehouse Architecture — Databricks, Unity Catalog, Delta Live Tables
+# 🏠 Day 132: Lakehouse Architecture — Databricks, Unity Catalog, Delta Live Tables
 
 > *"The lakehouse ended the data lake vs. data warehouse debate — by combining the best of both into a single platform."*
 
@@ -56,6 +56,17 @@ The **lakehouse** is both: store everything cheaply in open formats (like a data
 | **Unstructured Data**  | ✅ Yes                    | ❌ No               | ✅ Yes                 |
 | **Cost**               | 💰 Low                    | 💰💰💰 High           | 💰💰 Medium             |
 | **Governance**         | ❌ Manual                 | ✅ Built-in         | ✅ Unity Catalog       |
+
+### Choosing a Table Format: Delta Lake vs. Iceberg vs. Apache Hudi
+
+The table above names "Delta Lake / Iceberg" as the open storage format for a lakehouse, but doesn't say which one to pick — or where Apache Hudi fits in. The three open table formats overlap heavily but optimize for different workloads:
+
+| Dimension | Delta Lake | Apache Iceberg | Apache Hudi |
+| --- | --- | --- | --- |
+| **Primary strength** | Deep integration with ACID transactions, time travel, and DLT-style declarative pipelines | Multi-engine interoperability and flexible partition evolution without rewriting data | Fast, incremental upserts and native change-data-capture (CDC) |
+| **Best engine/ecosystem fit** | Databricks / Spark-first shops | Engine-agnostic: Trino, Snowflake, BigQuery, Spark, Flink | Spark/Flink shops doing heavy streaming writes |
+| **Write pattern** | Batch-heavy, with good streaming reads | Batch-heavy, schema/partition evolution over time | Streaming-upsert-heavy, frequent small writes |
+| **Choose this when...** | You're standardized on Databricks/Spark and want batch + streaming reads from one format. | You need multiple query engines reading the same tables and expect partitioning schemes to change. | You're ingesting high-frequency CDC streams and need the most efficient incremental upserts (e.g., near-real-time database replication into the lake). |
 
 ### 2. Databricks Architecture
 
@@ -187,6 +198,25 @@ Databricks uses Delta Lake (open source) on open storage (S3/GCS/ADLS). Your dat
 
 ---
 
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Lakehouse** | An architecture that combines data lake storage (cheap, open formats) with data warehouse features (ACID transactions, schema enforcement, fast SQL) in a single platform. |
+| **Delta Lake** | An open-source storage layer that adds ACID transactions, schema enforcement, and time travel on top of Parquet files in object storage. |
+| **Unity Catalog** | Databricks' centralized governance layer providing a three-level namespace, fine-grained access control, lineage tracking, and data discovery across workspaces. |
+| **Delta Live Tables (DLT)** | A declarative framework for building ETL pipelines in Databricks; you define the desired tables and Databricks handles incremental processing and quality checks. |
+| **Photon Engine** | Databricks' native C++ vectorized query engine that accelerates SQL and DataFrame workloads 3-12x over standard Spark, at no extra cost on supported clusters. |
+| **ACID Transaction** | A database operation guaranteed to be Atomic, Consistent, Isolated, and Durable — ensuring concurrent reads/writes don't corrupt or partially apply data. |
+| **Schema Enforcement** | The system rejects writes that don't match the expected table schema, preventing silent data corruption from malformed or unexpected columns. |
+| **Medallion Architecture** | A data design pattern with three layers — bronze (raw), silver (cleaned/validated), gold (business-ready aggregates) — used to progressively refine data quality. |
+| **Row-Level Security** | An access control mechanism that filters which rows a user can see in a table based on their identity or group membership (e.g., analysts only see their own region). |
+| **Column Masking** | A governance technique that obscures or redacts sensitive column values (e.g., emails, SSNs) for users who lack the required permission group. |
+| **Auto Loader** | A Databricks feature (`cloudFiles` format) that incrementally and efficiently processes new files landing in cloud storage using cloud-native notifications instead of file listing. |
+| **Three-Level Namespace** | Unity Catalog's `catalog.schema.table` addressing scheme, which allows the same governance model to span multiple workspaces and environments. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Design a Unity Catalog Namespace
@@ -201,6 +231,32 @@ Databricks uses Delta Lake (open source) on open storage (S3/GCS/ADLS). Your dat
 # TODO: Design the catalog/schema hierarchy and access matrix
 # Include: which teams can read/write which schemas
 # Consider: PII columns, row-level security by region
+```
+
+```python
+# EXPECTED RESULT — Access matrix (schema x team -> permission)
+#
+# Catalog: prod_retail
+# Schemas: bronze, silver, gold, finance, features
+#
+# | Schema    | Data Engineering | Marketing Analytics | Finance        | ML Team        |
+# |-----------|------------------|----------------------|----------------|----------------|
+# | bronze    | ALL PRIVILEGES   | NO ACCESS            | NO ACCESS      | SELECT         |
+# | silver    | ALL PRIVILEGES   | SELECT (row-filtered)| SELECT (full)  | SELECT         |
+# | gold      | ALL PRIVILEGES   | SELECT (row-filtered)| SELECT (full)  | SELECT         |
+# | finance   | SELECT           | NO ACCESS            | ALL PRIVILEGES | NO ACCESS      |
+# | features  | ALL PRIVILEGES   | NO ACCESS            | NO ACCESS      | ALL PRIVILEGES |
+#
+# Row-level security by region:
+# - silver.customers and gold.daily_revenue have a ROW FILTER on `region`.
+# - Marketing Analytics sees only their assigned region's rows (e.g., "NA-analysts" -> region = 'NA').
+# - Finance and Data Engineering are in the 'global-analysts' group and bypass the filter (see all regions).
+#
+# PII column masking:
+# - silver.customers.email, silver.customers.phone, silver.customers.ssn use MASK functions.
+# - Only Finance (in the 'pii-access' group) sees unmasked values; Marketing Analytics and ML Team see masked values.
+# - bronze schema is considered pre-validation and is restricted entirely from Marketing Analytics
+#   to avoid exposure to unmasked, unvalidated PII.
 ```
 
 ### Exercise 2: DLT Quality Expectations
@@ -268,4 +324,4 @@ A traditional warehouse (Snowflake, BigQuery) may be better when: (1) your data 
 - ✅ **Delta Live Tables** provides declarative ETL with built-in data quality expectations
 - ✅ **Photon engine** delivers 3-12x SQL performance improvement over vanilla Spark
 
-**Tomorrow → Day 128**: **Data Contracts and Quality** — Great Expectations, Soda, and the discipline of treating data like a product.
+**Tomorrow → Day 133**: **Data Contracts and Quality** — Great Expectations, Soda, and the discipline of treating data like a product.

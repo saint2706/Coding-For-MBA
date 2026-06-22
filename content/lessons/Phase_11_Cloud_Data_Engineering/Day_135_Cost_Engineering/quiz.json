@@ -1,0 +1,70 @@
+{
+    "day": 135,
+    "questions": [
+        {
+            "id": "d135q01",
+            "type": "multiple_choice",
+            "question": "What does 'unit economics' measure for a data platform, and why is it more useful than a raw monthly bill?",
+            "options": [
+                "Cost per unit of business value (e.g., cost per pipeline run, cost per GB processed) — it converts abstract spend into an actionable, comparable metric",
+                "The total dollar amount spent on cloud infrastructure each month, regardless of usage",
+                "The number of engineers required to operate the data platform",
+                "The price charged to customers for each dashboard they view"
+            ],
+            "answer": 0,
+            "explanation": "Unit economics normalizes cost against a unit of output (per pipeline run, per TB processed, per query). A rising total bill might just mean more usage, but a rising cost *per unit* signals real inefficiency worth investigating."
+        },
+        {
+            "id": "d135q02",
+            "type": "multiple_choice",
+            "question": "Your team spends $10,000/month on BigQuery on-demand, scanning 1.6 TB/day. BigQuery flat-rate starts at ~$2,000/month for 100 slots. What's the correct decision process?",
+            "options": [
+                "Switch to flat-rate immediately since $2,000 is always cheaper than $10,000",
+                "Never switch — on-demand is always cheaper for analytics workloads",
+                "Run a side-by-side test to confirm 100 slots provide enough concurrency for your query volume before committing, since flat-rate has a fixed capacity ceiling",
+                "Switch to flat-rate only if your data is stored in Parquet format"
+            ],
+            "answer": 2,
+            "explanation": "The dollar comparison looks favorable, but flat-rate slots are a fixed concurrency resource. If 100 slots can't handle your query volume/concurrency, queries queue or slow down. Testing before committing avoids trading cost savings for a performance regression."
+        },
+        {
+            "id": "d135q03",
+            "type": "multiple_choice",
+            "question": "Which workload is the best fit for spot instances?",
+            "options": [
+                "A production PostgreSQL database serving live application traffic",
+                "An Airflow scheduler that must run continuously",
+                "A checkpointed Spark batch job that can resume if interrupted",
+                "A user-facing API with strict latency SLAs"
+            ],
+            "answer": 2,
+            "explanation": "Spot instances can be reclaimed with ~2 minutes' notice, so they're only safe for fault-tolerant or checkpoint-capable workloads like batch Spark jobs, CI/CD, and dev/test — never for production databases or always-on, user-facing services."
+        },
+        {
+            "id": "d135q04",
+            "type": "multiple_choice",
+            "question": "What is the single most impactful optimization for reducing BigQuery costs, and why?",
+            "options": [
+                "Switching to a different cloud provider",
+                "Partitioning tables by date and filtering on the partition column, which can prune scanned data by 80-95%",
+                "Increasing the number of columns selected in each query",
+                "Running queries more frequently to take advantage of caching"
+            ],
+            "answer": 1,
+            "explanation": "Partition pruning means a query on a year of data can scan one day's partition instead of all 365 — a potential 365x reduction in scanned bytes, which directly drives BigQuery's per-TB-scanned pricing."
+        },
+        {
+            "id": "d135q05",
+            "type": "multiple_choice",
+            "question": "Why should cost impact be reviewed as part of pull requests for data pipeline code, the same way correctness and style are reviewed?",
+            "options": [
+                "Because finance teams require a sign-off line in every PR description",
+                "Because a single inefficient query or missing WHERE clause can silently cost thousands of dollars per month once it's running in production on a schedule",
+                "Because it makes the PR diff easier to read",
+                "Because cloud providers require cost annotations before deployment"
+            ],
+            "answer": 1,
+            "explanation": "An inefficient pattern (full table scan, missing partition filter, unnecessary materialization) that runs on a schedule compounds daily. Reviewing cost impact in PRs catches these issues before they hit production, just as code review catches bugs before they ship."
+        }
+    ]
+}

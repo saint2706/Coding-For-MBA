@@ -1,0 +1,70 @@
+{
+    "day": 129,
+    "questions": [
+        {
+            "id": "d129q01",
+            "type": "multiple_choice",
+            "question": "A staging model processes a 100M-row orders table. Why would you choose an incremental model over a full refresh?",
+            "options": [
+                "Incremental models are easier to write in Jinja",
+                "Incremental models only process new/changed rows, drastically reducing run time and bytes scanned on each run",
+                "Incremental models automatically generate dbt tests",
+                "Full refresh models cannot use the merge strategy"
+            ],
+            "answer": 1,
+            "explanation": "Incremental models scan and process only the rows that changed since the last run (e.g., 10K new rows vs. 100M), which saves both runtime and warehouse compute cost (e.g., bytes scanned in BigQuery)."
+        },
+        {
+            "id": "d129q02",
+            "type": "multiple_choice",
+            "question": "What do dbt snapshots add to a source table to implement SCD Type 2 history tracking?",
+            "options": [
+                "A single 'is_current' boolean column",
+                "dbt_valid_from and dbt_valid_to columns that record when each row version was active",
+                "A surrogate key generated from dbt_utils.generate_surrogate_key",
+                "A materialized view that overwrites old rows with new values"
+            ],
+            "answer": 1,
+            "explanation": "dbt snapshots use the SCD Type 2 pattern: each time a tracked column changes, the old row is closed out with a dbt_valid_to timestamp and a new row is inserted with dbt_valid_from set, preserving full history."
+        },
+        {
+            "id": "d129q03",
+            "type": "multiple_choice",
+            "question": "In the macro below, what does `{% if not loop.last %} UNION ALL {% endif %}` accomplish inside a Jinja for-loop over regions?",
+            "options": [
+                "It unions every region's table twice for redundancy",
+                "It adds UNION ALL between SELECT statements but omits a trailing UNION ALL after the final region",
+                "It deletes duplicate rows across regions",
+                "It only runs the loop once regardless of region count"
+            ],
+            "answer": 1,
+            "explanation": "loop.last is a Jinja loop variable that is True only on the final iteration. Skipping UNION ALL on the last iteration avoids generating invalid trailing SQL after the last SELECT."
+        },
+        {
+            "id": "d129q04",
+            "type": "multiple_choice",
+            "question": "A model has `config: contract: enforced: true` with a defined column list. What happens if a column is renamed in the model's SELECT statement without updating the contract?",
+            "options": [
+                "dbt silently renames the column in the warehouse to match",
+                "The build fails at compile/run time because the model's output no longer matches the declared contract",
+                "dbt automatically updates the YAML contract to match the new column name",
+                "Nothing — contracts are only checked during dbt docs generate"
+            ],
+            "answer": 1,
+            "explanation": "Data contracts enforce that a model's actual output (column names, types, constraints) matches what's declared in the YAML. A mismatch causes the build to fail, preventing silent schema drift from breaking downstream consumers."
+        },
+        {
+            "id": "d129q05",
+            "type": "multiple_choice",
+            "question": "Why does the late-arriving data pattern use `MAX(_loaded_at) - INTERVAL '3 days'` instead of just `MAX(_loaded_at)` in the incremental WHERE clause?",
+            "options": [
+                "It makes the query run faster by scanning fewer partitions",
+                "It re-checks a window of already-loaded data to catch rows that arrived late (e.g., a payment settling days after the order), which a plain MAX(_loaded_at) cutoff would miss",
+                "It is required syntax for the merge incremental_strategy",
+                "It prevents the model from ever being fully refreshed"
+            ],
+            "answer": 1,
+            "explanation": "A lookback window re-scans recent history (e.g., the last 3 days) on every incremental run so that rows which arrive late relative to their logical event time are still picked up and merged in, not silently dropped."
+        }
+    ]
+}

@@ -1,0 +1,70 @@
+{
+    "day": 136,
+    "questions": [
+        {
+            "id": "d136q01",
+            "type": "multiple_choice",
+            "question": "Why is provisioning cloud infrastructure by clicking through the AWS console considered a problem for data teams, even if it works?",
+            "options": [
+                "Console clicks are slower to type than writing code",
+                "Console-provisioned infrastructure isn't reproducible, can't be reviewed in a PR, and creates 'snowflake' environments that drift from each other",
+                "AWS charges extra for console-based provisioning",
+                "The console cannot create S3 buckets or Redshift clusters"
+            ],
+            "answer": 1,
+            "explanation": "Infrastructure as Code treats infrastructure like application code: versioned, reviewable, and reproducible. Console clicks leave no reviewable trail and produce environments that can't be reliably rebuilt or kept consistent with each other."
+        },
+        {
+            "id": "d136q02",
+            "type": "multiple_choice",
+            "question": "What is Terraform state, and why does remote state (e.g., an S3 backend) matter for a team?",
+            "options": [
+                "State is a log of past terraform commands; remote state just backs it up for auditing",
+                "State tracks the mapping between your Terraform code and real cloud resources; remote, shared state lets a team collaborate safely and avoid losing the only copy",
+                "State is only used for billing reports and has no effect on deployments",
+                "State is automatically regenerated from the cloud provider on every apply, so storage location doesn't matter"
+            ],
+            "answer": 1,
+            "explanation": "Without state, Terraform doesn't know what already exists and would try to recreate everything. Remote state (typically S3, ideally with DynamoDB locking) prevents losing a local-only state file and prevents two people applying changes simultaneously and corrupting infrastructure."
+        },
+        {
+            "id": "d136q03",
+            "type": "multiple_choice",
+            "question": "What is the key difference between `terraform plan` and `terraform apply`?",
+            "options": [
+                "`plan` and `apply` do the same thing; `plan` is just a deprecated alias",
+                "`plan` shows what would change without making changes (a dry run); `apply` actually creates/modifies/destroys resources",
+                "`plan` only works for AWS resources, while `apply` works for any provider",
+                "`apply` must always run before `plan` in a valid workflow"
+            ],
+            "answer": 1,
+            "explanation": "`terraform plan` is a dry run for review; `terraform apply` executes the change. The standard workflow runs `plan` on a PR for human review, then `apply` only after merge/approval."
+        },
+        {
+            "id": "d136q04",
+            "type": "multiple_choice",
+            "question": "Why should data pipelines have a staging environment instead of testing changes directly in production?",
+            "options": [
+                "Staging is required by cloud providers for billing purposes",
+                "Staging environments are always cheaper to run than production",
+                "Staging catches schema changes, performance regressions, and data quality issues before they corrupt production data or break downstream dashboards/models",
+                "Staging environments don't require IAM permissions"
+            ],
+            "answer": 2,
+            "explanation": "Without staging, every change is tested directly against production data. A bad deploy can corrupt reporting data, break ML models, or drive incorrect business decisions — staging exists to catch these issues first."
+        },
+        {
+            "id": "d136q05",
+            "type": "multiple_choice",
+            "question": "What is platform engineering, in the context of a data organization?",
+            "options": [
+                "A team that exclusively writes dbt models for other teams on request",
+                "Building a self-serve internal platform/catalog so domain teams can provision databases, pipelines, and environments themselves, with guardrails for cost, security, and quality built in",
+                "A rebranding of the DevOps title with no functional change",
+                "The practice of manually approving every infrastructure ticket submitted by domain teams"
+            ],
+            "answer": 1,
+            "explanation": "Platform engineering shifts data engineers from being ticket-takers to platform builders: domain teams self-serve through a catalog (new pipeline, new database, new dashboard) while the platform team enforces guardrails like cost limits, encryption/tagging standards, and quality requirements."
+        }
+    ]
+}

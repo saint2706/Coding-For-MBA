@@ -28,7 +28,7 @@ outcomes:
   - "Map compliance requirements to technical controls"
 ---
 
-# 🔒 Day 129: Cloud Security and Compliance — VPC, Encryption, PII
+# 🔒 Day 134: Cloud Security and Compliance — VPC, Encryption, PII
 
 > *"Security isn't a feature you add at the end — it's a constraint you design around from day one. The cost of a data breach is $4.88M average (IBM 2024). The cost of doing it right is a fraction of that."*
 
@@ -179,6 +179,8 @@ def tokenize_ssn(ssn: str) -> str:
 
 ### 4. Compliance Frameworks
 
+Each regulatory framework has its own scope, requirements, and technical controls — but the underlying infrastructure (encryption, access control, audit logging) is shared across all of them. Mapping each framework into a single structure lets you cross-check one technical control, like encryption, against every applicable regulation at once, instead of researching each framework's requirements from scratch every time an auditor asks.
+
 ```python
 compliance_matrix = {
     "GDPR": {
@@ -246,6 +248,25 @@ db_password = os.environ["DB_PASSWORD"]
 
 ---
 
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **VPC** | Virtual Private Cloud — an isolated, software-defined network within a cloud provider where you control IP ranges, subnets, and routing. |
+| **Subnet** | A subdivision of a VPC's IP range, typically scoped to public (internet-facing) or private (internal-only) resources. |
+| **Security Group** | A virtual firewall attached to resources (e.g., EC2 instances, RDS) that controls inbound and outbound traffic at the instance level. |
+| **CMK (Customer Managed Keys)** | Encryption keys that the customer creates, owns, and controls the lifecycle/rotation/permissions of (as opposed to provider-managed default keys), used for encrypting data at rest via services like AWS KMS or GCP CMEK. |
+| **SSE-KMS** | Server-Side Encryption with AWS Key Management Service — an S3 encryption mode where AWS manages encryption using a KMS key (which can be a CMK) instead of leaving data unencrypted or using only the default S3 key. |
+| **TLS** | Transport Layer Security — the cryptographic protocol that encrypts data in transit between clients and servers (e.g., HTTPS, database SSL connections). |
+| **PII** | Personally Identifiable Information — any data that can identify a specific individual, such as name, SSN, email, or phone number. |
+| **Quasi-Identifier** | A data attribute (e.g., name, email, DOB, zip code) that isn't uniquely identifying alone but can identify a person when combined with other quasi-identifiers. |
+| **Tokenization** | Replacing sensitive data with a non-sensitive placeholder token (e.g., showing only the last 4 digits of an SSN) that has no exploitable value if exposed. |
+| **GDPR/DSAR** | General Data Protection Regulation — EU privacy law; a DSAR (Data Subject Access Request) is a formal request from an individual to access, correct, or delete their personal data. |
+| **SOC 2** | A compliance framework (Service Organization Control 2) auditing a company's controls across security, availability, confidentiality, processing integrity, and privacy. |
+| **Secrets Manager** | A dedicated service (e.g., AWS Secrets Manager, HashiCorp Vault) for securely storing, rotating, and auditing access to credentials instead of hardcoding them in code or config files. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: VPC Security Design
@@ -257,6 +278,55 @@ db_password = os.environ["DB_PASSWORD"]
 # - Redshift cluster (accessible from Airflow + BI tool on VPN)
 # - S3 access (via VPC endpoint, no internet traversal)
 # Draw the subnet layout and security group rules.
+```
+
+```python
+# EXPECTED RESULT — subnet / security group layout (mirrors the vpc_architecture pattern above)
+expected_vpc_design = {
+    "vpc": {"cidr": "10.0.0.0/16"},
+    "subnets": {
+        "public": {
+            "cidr": "10.0.1.0/24",
+            "purpose": "NAT Gateway only (no compute placed here)",
+            "internet_access": True,
+        },
+        "private_app": {
+            "cidr": "10.0.10.0/24",
+            "purpose": "Airflow workers (need outbound internet for PyPI via NAT)",
+            "internet_access": "Via NAT Gateway only (outbound)",
+        },
+        "private_data": {
+            "cidr": "10.0.20.0/24",
+            "purpose": "PostgreSQL metadata DB, Redshift cluster",
+            "internet_access": False,
+        },
+    },
+    "security_groups": {
+        "airflow_sg": {
+            "outbound": [
+                {"port": 5432, "destination": "postgres_sg"},   # metadata DB
+                {"port": 5439, "destination": "redshift_sg"},   # Redshift
+                {"port": 443, "destination": "0.0.0.0/0"},      # PyPI via NAT
+            ],
+        },
+        "postgres_sg": {
+            "inbound": [{"port": 5432, "source": "airflow_sg"}],
+            "outbound": [],  # no internet access at all
+        },
+        "redshift_sg": {
+            "inbound": [
+                {"port": 5439, "source": "airflow_sg"},
+                {"port": 5439, "source": "vpn_cidr"},  # BI tool over VPN
+            ],
+            "outbound": [],
+        },
+    },
+    "vpc_endpoints": {
+        "s3_gateway_endpoint": "Attached to private_app and private_data route tables; S3 traffic never leaves the AWS network or touches the NAT Gateway.",
+    },
+}
+# Key result: PostgreSQL and Redshift have zero direct internet exposure;
+# only Airflow's outbound PyPI traffic and the BI tool's VPN access cross a controlled boundary.
 ```
 
 ### Exercise 2: PII Handling Pipeline
@@ -275,6 +345,30 @@ def classify_and_mask(df, pii_config: dict):
     pass
 ```
 
+```python
+# Sample input rows
+sample_rows = [
+    {"email": "john.doe@company.com", "phone": "555-123-4567", "name": "John Doe",   "ssn": "123-45-6789", "address": "12 Main St, Springfield"},
+    {"email": "amy.lee@company.com",  "phone": "555-987-6543", "name": "Amy Lee",    "ssn": "987-65-4321", "address": "45 Oak Ave, Riverdale"},
+    {"email": "raj.patel@company.com","phone": "555-222-3333", "name": "Raj Patel",  "ssn": "456-78-9012", "address": "9 Elm St, Lakeview"},
+]
+
+# EXPECTED RESULT — masked output for each row
+expected_output = [
+    {"email": "j***e@company.com", "phone": "***-***-4567", "name": "J***",  "ssn": "***-**-6789", "address": "a1b2c3d4e5f60718"},  # hash_pii(address)
+    {"email": "a***e@company.com", "phone": "***-***-6543", "name": "A***",  "ssn": "***-**-4321", "address": "f9e8d7c6b5a40392"},
+    {"email": "r***l@company.com", "phone": "***-***-3333", "name": "R***",  "ssn": "***-**-9012", "address": "3c4d5e6f7a8b9c0d"},
+]
+# Notes:
+# - email uses mask_email(): first + last char of local part kept, rest replaced with ***
+# - phone shows only last 4 digits, rest replaced with ***-***- prefix
+# - name keeps first initial + "***" (no last-name leakage)
+# - ssn uses tokenize_ssn(): last 4 digits visible, rest replaced
+# - address is one-way hashed via hash_pii() — same input always produces the same hash,
+#   so rows can still be grouped/joined on address without exposing the raw value
+#   (actual hex digests above are illustrative; real output depends on the salt used)
+```
+
 ### Exercise 3: GDPR Deletion Request
 
 ```python
@@ -285,6 +379,39 @@ def classify_and_mask(df, pii_config: dict):
 # 3. Handles Delta Lake time travel (historical versions still contain PII)
 # 4. Logs the deletion for compliance audit trail
 # 5. Notifies downstream consumers
+```
+
+```python
+# EXPECTED RESULT — 5-step deletion checklist applied to a concrete example
+#
+# Example user: customer_id = 88231, email = "jane.smith@example.com"
+#
+# 1. DISCOVER:
+#    Search bronze.raw_orders, silver.clean_orders, gold.daily_revenue (aggregated — no row-level PII),
+#    silver.customers, and features.customer_embeddings for customer_id = 88231.
+#    Result: found in bronze.raw_orders (3 rows), silver.clean_orders (3 rows), silver.customers (1 row),
+#    features.customer_embeddings (1 row). gold.daily_revenue is pre-aggregated, no action needed.
+#
+# 2. DELETE OR ANONYMIZE:
+#    DELETE FROM silver.customers WHERE customer_id = 88231;
+#    UPDATE bronze.raw_orders SET customer_email = NULL, customer_name = NULL WHERE customer_id = 88231;
+#    DELETE FROM features.customer_embeddings WHERE customer_id = 88231;
+#
+# 3. HANDLE TIME TRAVEL (Delta Lake):
+#    Old versions of silver.customers still contain customer_id 88231's row.
+#    Run: VACUUM silver.customers RETAIN 0 HOURS (after disabling the safety check),
+#    which permanently removes historical file versions containing the deleted record.
+#
+# 4. LOG FOR AUDIT:
+#    Insert a record into compliance.deletion_log:
+#    {"request_id": "DSAR-2026-0417", "customer_id": 88231, "requested_at": "2026-06-20",
+#     "completed_at": "2026-06-22", "tables_affected": ["bronze.raw_orders", "silver.clean_orders",
+#     "silver.customers", "features.customer_embeddings"], "method": "delete+vacuum"}
+#
+# 5. NOTIFY DOWNSTREAM CONSUMERS:
+#    Send an event/webhook to Marketing Analytics and ML Team (consumers of silver/gold/features)
+#    confirming customer_id 88231 has been purged, so cached extracts or model training sets
+#    referencing that ID are invalidated/refreshed.
 ```
 
 ---
@@ -326,4 +453,4 @@ Code repositories are shared, forked, and sometimes accidentally made public —
 - ✅ **Compliance**: GDPR (erasure + consent), SOC 2 (controls audit), HIPAA (PHI encryption)
 - ✅ **Secrets**: Never in code — use Secrets Manager, Vault, or KMS
 
-**Tomorrow → Day 130**: **Cost Engineering** — optimizing cloud spend, query costs, and building a FinOps practice.
+**Tomorrow → Day 135**: **Cost Engineering** — optimizing cloud spend, query costs, and building a FinOps practice.

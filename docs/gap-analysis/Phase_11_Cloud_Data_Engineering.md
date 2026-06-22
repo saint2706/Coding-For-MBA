@@ -24,11 +24,11 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab lacks sample inputs and expected outputs. Example quote: `"TODO: Calculate monthly cloud costs..."`
-- [ ] [P2][B:CodeCtx] Provide a what/why preamble for the `estimate_monthly_cost` block.
-- [ ] [P0][F:Tables] Cloud provider table lacks deep decision guidance. Define AWS/GCP/Azure trade-offs conceptually.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab lacks sample inputs and expected outputs. Example quote: `"TODO: Calculate monthly cloud costs..."`
+- [x] [P2][B:CodeCtx] Provide a what/why preamble for the `estimate_monthly_cost` block.
+- [x] [P0][F:Tables] Cloud provider table lacks deep decision guidance. Define AWS/GCP/Azure trade-offs conceptually.
 
 ---
 
@@ -39,10 +39,10 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab lacks expected result. Example quote: `"TODO: Design the S3 bucket structure with..."`
-- [ ] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"table_format_comparison = {..."`
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab lacks expected result. Example quote: `"TODO: Design the S3 bucket structure with..."`
+- [x] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"table_format_comparison = {..."`
 
 ---
 
@@ -53,11 +53,11 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab lacks a clear scenario and expected output. Example quote: `"TODO: Write a query that..."`
-- [ ] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"from google.cloud import bigquery..."`
-- [ ] [P1][A:Concept] Elaborate on the specific trade-offs when choosing Snowflake over BigQuery.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab lacks a clear scenario and expected output. Example quote: `"TODO: Write a query that..."`
+- [x] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"from google.cloud import bigquery..."`
+- [x] [P1][A:Concept] Elaborate on the specific trade-offs when choosing Snowflake over BigQuery.
 
 ---
 
@@ -68,10 +68,10 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Provide sample schemas and expected result. Example quote: `"TODO: Build an incremental model..."`
-- [ ] [P2][B:CodeCtx] Explain the syntax before the code block: `"{% if is_incremental() %}..."`
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Provide sample schemas and expected result. Example quote: `"TODO: Build an incremental model..."`
+- [x] [P2][B:CodeCtx] Explain the syntax before the code block: `"{% if is_incremental() %}..."`
 
 ---
 
@@ -82,10 +82,10 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab exercises lack clear expected results. Example quote: `"def create_dag(): ... pass"`
-- [ ] [P0][H:Pitfalls] Add a pitfalls callout about Airflow top-level code and scheduler bottlenecks.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab exercises lack clear expected results. Example quote: `"def create_dag(): ... pass"`
+- [x] [P0][H:Pitfalls] Add a pitfalls callout about Airflow top-level code and scheduler bottlenecks.
 
 ---
 
@@ -96,11 +96,11 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab lacks realistic schema/scenario. Example quote: `"TODO: Implement a Kafka producer..."`
-- [ ] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"from confluent_kafka import Producer..."`
-- [ ] [P0][A:Concept] Justify the "magic numbers" for when streaming is actually necessary over micro-batching.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab lacks realistic schema/scenario. Example quote: `"TODO: Implement a Kafka producer..."`
+- [x] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"from confluent_kafka import Producer..."`
+- [x] [P0][A:Concept] Justify the "magic numbers" for when streaming is actually necessary over micro-batching.
 
 ---
 
@@ -111,10 +111,10 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab lacks expected result. Example quote: `"TODO: Design a Lakehouse architecture..."`
-- [ ] [P0][F:Tables] Add decision guidance (when to choose) to the table comparing Delta, Iceberg, and Hudi.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab lacks expected result. Example quote: `"TODO: Design a Lakehouse architecture..."`
+- [x] [P0][F:Tables] Add decision guidance (when to choose) to the table comparing Delta, Iceberg, and Hudi.
 
 ---
 
@@ -125,11 +125,11 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab lacks sample data to test expectations on. Example quote: `"TODO: Add expectations for..."`
-- [ ] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"import great_expectations as gx..."`
-- [ ] [P1][E:Framing] Add business framing on organizational adoption of data contracts.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab lacks sample data to test expectations on. Example quote: `"TODO: Add expectations for..."`
+- [x] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"import great_expectations as gx..."`
+- [x] [P1][E:Framing] Add business framing on organizational adoption of data contracts.
 
 ---
 
@@ -140,10 +140,10 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon like CMK.
-- [ ] [P1][C:Lab] Lab exercises lack clear expected results. Example quote: `"TODO: Write an IAM policy..."`
-- [ ] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"compliance_matrix = {..."`
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon like CMK.
+- [x] [P1][C:Lab] Lab exercises lack clear expected results. Example quote: `"TODO: Write an IAM policy..."`
+- [x] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"compliance_matrix = {..."`
 
 ---
 
@@ -154,10 +154,10 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab asks for a text policy rather than a measurable exercise. Provide an expected result metric. Example quote: `"TODO: Write a 1-page FinOps policy..."`
-- [ ] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"finops_pillars = {..."`
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab asks for a text policy rather than a measurable exercise. Provide an expected result metric. Example quote: `"TODO: Write a 1-page FinOps policy..."`
+- [x] [P2][B:CodeCtx] Code block lacks what/why preamble. Example: `"finops_pillars = {..."`
 
 ---
 
@@ -168,10 +168,10 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][C:Lab] Lab lacks clear expected result/Terraform output. Example quote: `"TODO: Write a Terraform module..."`
-- [ ] [P1][A:Concept] Justify the resource configurations in the Terraform code block.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][C:Lab] Lab lacks clear expected result/Terraform output. Example quote: `"TODO: Write a Terraform module..."`
+- [x] [P1][A:Concept] Justify the resource configurations in the Terraform code block.
 
 ---
 
@@ -182,8 +182,8 @@ Phase 11 systematically introduces foundational Cloud Data Engineering concepts 
 
 **Gap task stubs:**
 
-- [ ] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
-- [ ] [P1][O:Glossary] Add a Glossary section to define jargon.
-- [ ] [P1][I:Senior] Add a "Real senior/production insight" section covering common production failures for this specific architecture.
+- [x] [P0][L:Quiz] Missing `quiz.json` file in lesson directory.
+- [x] [P1][O:Glossary] Add a Glossary section to define jargon.
+- [x] [P1][I:Senior] Add a "Real senior/production insight" section covering common production failures for this specific architecture.
 
 ---

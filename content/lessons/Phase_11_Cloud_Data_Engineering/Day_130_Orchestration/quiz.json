@@ -1,0 +1,70 @@
+{
+    "day": 130,
+    "questions": [
+        {
+            "id": "d130q01",
+            "type": "multiple_choice",
+            "question": "Why must a workflow orchestration graph be a DAG (Directed Acyclic Graph) rather than allowing cycles?",
+            "options": [
+                "Cycles use too much memory in the scheduler database",
+                "A cycle (A depends on B depends on A) creates a deadlock — no task could ever start because each is waiting on the other, so the acyclic constraint guarantees a valid execution order exists",
+                "Airflow's UI cannot render graphs with cycles",
+                "Cycles are allowed, but only in Prefect and Dagster, not Airflow"
+            ],
+            "answer": 1,
+            "explanation": "The 'acyclic' constraint exists because cyclic dependencies have no valid topological execution order — each task would wait on the other indefinitely."
+        },
+        {
+            "id": "d130q02",
+            "type": "multiple_choice",
+            "question": "A load task does `db.execute(\"INSERT INTO sales VALUES (%s)\", data)` with no dedup logic. Why is this NOT idempotent?",
+            "options": [
+                "INSERT statements always fail on the second run",
+                "Re-running the task after a retry or backfill will insert the same data again, creating duplicate rows instead of producing the same end state",
+                "INSERT is idempotent by default in all SQL databases",
+                "It is idempotent because it uses parameterized queries"
+            ],
+            "answer": 1,
+            "explanation": "Idempotency means running a task once or many times yields the same result. A plain INSERT with no MERGE/UPSERT or delete-then-insert pattern duplicates rows every time the task is retried or re-run."
+        },
+        {
+            "id": "d130q03",
+            "type": "multiple_choice",
+            "question": "A task has `retries=3` and `retry_delay=timedelta(minutes=5)` but no `execution_timeout`. What risk does this leave unaddressed?",
+            "options": [
+                "The task will retry too quickly and overwhelm the source system",
+                "If the task hangs (e.g., a stuck API call) it can run indefinitely, blocking downstream tasks and tying up a worker slot — execution_timeout is needed to force a failure so retries can kick in",
+                "Retries will not be logged without execution_timeout",
+                "The DAG will fail to parse"
+            ],
+            "answer": 1,
+            "explanation": "retries/retry_delay only help after a task fails. Without execution_timeout, a hung task never fails on its own — it can occupy a worker slot and block downstream tasks indefinitely."
+        },
+        {
+            "id": "d130q04",
+            "type": "multiple_choice",
+            "question": "A DAG has `start_date=datetime(2024,1,1)` and is deployed today with `catchup=True` left at its default. What happens?",
+            "options": [
+                "Airflow only runs the DAG for today's interval",
+                "Airflow queues a run for every missed scheduled interval since the start_date — potentially hundreds of historical runs — which can overwhelm the scheduler and workers",
+                "Airflow ignores start_date entirely when catchup is True",
+                "The DAG fails to deploy until catchup is set explicitly"
+            ],
+            "answer": 1,
+            "explanation": "catchup=True (Airflow's default) backfills every missed interval since start_date. For most analytics pipelines that should only process current data, this causes an unexpected backfill storm — set catchup=False."
+        },
+        {
+            "id": "d130q05",
+            "type": "multiple_choice",
+            "question": "A bank with 200 data engineers, strict audit requirements, and an existing Kubernetes platform needs to pick an orchestrator. Which is the best fit and why?",
+            "options": [
+                "Prefect, because it is the fastest to set up for a small team",
+                "Airflow, because of its maturity, large enterprise adoption, extensive auditability/logging ecosystem, and strong Kubernetes-native deployment options (e.g., KubernetesExecutor)",
+                "Dagster, because software-defined assets are required by financial regulators",
+                "No orchestrator is needed; cron jobs are sufficient at this scale"
+            ],
+            "answer": 1,
+            "explanation": "Airflow's market dominance, mature ecosystem, and native Kubernetes executor support make it the standard choice for large, compliance-heavy enterprises with existing K8s infrastructure."
+        }
+    ]
+}
