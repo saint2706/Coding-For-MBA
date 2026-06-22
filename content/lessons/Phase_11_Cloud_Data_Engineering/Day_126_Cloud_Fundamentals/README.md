@@ -27,7 +27,7 @@ outcomes:
   - "Estimate monthly cloud costs for a data platform"
 ---
 
-# ☁️ Day 121: Cloud Fundamentals — AWS, GCP, Azure
+# ☁️ Day 126: Cloud Fundamentals — AWS, GCP, Azure
 
 > *"The cloud isn't someone else's computer — it's someone else's data centre that bills you by the second."*
 
@@ -85,6 +85,12 @@ For data engineers, the cloud isn't optional — it's where 85% of new enterpris
 | **Market Share (2025)** | ~32%                     | ~12%                          | ~23%                         |
 | **Strength**            | Broadest service catalog | Best for analytics/AI         | Best for enterprises on M365 |
 | **Pricing Model**       | Pay-per-use, reserved    | Sustained-use discounts, flat | Enterprise agreements        |
+
+**AWS** wins on breadth: if you need a niche managed service — IoT, satellite ground stations, quantum computing — AWS probably already shipped it. That breadth has a tax, though: AWS's IAM model and service sprawl (200+ services) mean more surface area for misconfiguration, more decisions per project, and a steeper ramp for new hires. Teams choose AWS when they need "a service for everything" and have the platform engineering maturity to manage the complexity.
+
+**GCP** wins on analytics economics: BigQuery's serverless, pay-per-query model and genuinely excellent query optimizer make it the cheapest path to "ask a question of 50TB of data right now" for most mid-size teams. The trade-off is ecosystem depth — GCP has fewer third-party integrations, a smaller bench of consultants and systems integrators, and noticeably thinner enterprise support compared to AWS or Azure, which can matter when something breaks at 2 a.m. and you need a vendor on the phone.
+
+**Azure** wins when the organization already lives in Microsoft's world: Entra ID (AAD) becomes your single IAM source of truth across Office 365, on-prem Active Directory, and cloud resources, and Power BI/Synapse integrate natively with tools business users already know. The cost is on the analytics-native side — Synapse and its surrounding tooling are generally considered less mature and less performant than BigQuery or Snowflake for pure large-scale analytical workloads, so Azure-first data teams often end up bolting on Databricks or Snowflake anyway.
 
 ### 3. Regions and Availability Zones
 
@@ -221,9 +227,30 @@ The answer is never "because cloud is expensive." It's always: "Here's the query
 
 ---
 
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **IaaS** | Infrastructure as a Service — the provider manages physical hardware, virtualization, and networking; you manage the OS, runtime, and everything above it (e.g., EC2, GCE). |
+| **PaaS** | Platform as a Service — the provider also manages the OS and runtime; you just deploy code (e.g., Lambda, Cloud Run). |
+| **SaaS** | Software as a Service — fully managed application; you just use it (e.g., Snowflake, dbt Cloud). |
+| **Shared Responsibility Model** | The split between what the cloud provider secures (physical infrastructure, hypervisor, network) and what the customer secures (data, IAM, application config, encryption). |
+| **IAM** | Identity and Access Management — the system for defining who (or what service) can do what, on which resources. |
+| **Region** | A geographic area containing multiple data centres, chosen for data residency, latency, and cost. |
+| **Availability Zone (AZ)** | A physically separate data centre within a region; deploying across 2+ AZs protects against single-data-centre failures. |
+| **Reserved Instance** | Compute capacity purchased with a 1-3 year commitment in exchange for a 40-72% discount over on-demand pricing. |
+| **Spot Instance** | Spare compute capacity sold at a steep discount, which the provider can reclaim with little notice — good for fault-tolerant, interruptible workloads. |
+| **FinOps** | The discipline of continuously tracking, attributing, and optimizing cloud spend across engineering and finance teams. |
+| **Egress** | Data transferred *out* of a cloud provider's network (e.g., to the internet or another cloud); typically the most expensive type of data transfer. |
+| **Least Privilege** | The security principle of granting only the minimum permissions needed to perform a task, nothing more. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Cost Calculator
+
+FinOps teams don't reconstruct cost math in a spreadsheet every time a stakeholder asks "what would 10 more instances cost us?" — they build a single reusable function that takes the cost drivers as parameters and returns a structured breakdown, so the same logic powers budgeting, alerting, and "what-if" scenarios. The function below is that pattern in miniature: every pricing dimension (compute, storage, query, egress) becomes a parameter rather than a hardcoded number.
 
 ```python
 def estimate_monthly_cost(
@@ -244,6 +271,23 @@ def estimate_monthly_cost(
 
 # Test: 5 instances at $0.20/hr, 20TB storage at $0.023/GB,
 #        10TB queried at $5/TB, 1TB egress at $0.09/GB
+
+# EXPECTED RESULT
+# Arithmetic:
+#   compute = 5 instances * $0.20/hr * 730 hr/mo        = $730.00
+#   storage = 20 TB * 1024 GB/TB * $0.023/GB             = $471.04
+#   query   = 10 TB * $5/TB                              = $50.00
+#   egress  = 1 TB * 1024 GB/TB * $0.09/GB                = $92.16
+#   total   = 730.00 + 471.04 + 50.00 + 92.16            = $1,343.20
+#
+# estimate_monthly_cost(5, 0.20, 20, 0.023, 10, 5, 1024) ->
+# {
+#     "compute": 730.00,
+#     "storage": 471.04,
+#     "query": 50.00,
+#     "egress": 92.16,
+#     "total": 1343.20,
+# }
 ```
 
 ### Exercise 2: IAM Policy Design
@@ -326,4 +370,4 @@ On-demand: pay by the hour/second with no commitment, full flexibility. Reserved
 - ✅ **Cost management**: Reserved instances, storage tiers, query optimization, billing alerts
 - ✅ **Regions**: Choose by data residency, latency, cost, and service availability
 
-**Tomorrow → Day 122**: **Object Storage** — S3, GCS, Delta Lake, and Iceberg — the foundation of every modern data platform.
+**Tomorrow → Day 127**: **Object Storage** — S3, GCS, Delta Lake, and Iceberg — the foundation of every modern data platform.

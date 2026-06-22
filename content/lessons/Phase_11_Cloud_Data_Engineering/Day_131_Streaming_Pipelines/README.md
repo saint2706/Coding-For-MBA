@@ -27,7 +27,7 @@ outcomes:
   - "Implement windowed aggregations for real-time analytics"
 ---
 
-# 🌊 Day 126: Streaming Pipelines — Kafka, Pub/Sub, Kinesis
+# 🌊 Day 131: Streaming Pipelines — Kafka, Pub/Sub, Kinesis
 
 > *"Batch is an answer to yesterday's question. Streaming is an answer in real-time — while the question still matters."*
 
@@ -58,6 +58,8 @@ Kafka, Pub/Sub, and Kinesis are the messaging highways that let you build real-t
 ```
 
 ### 2. Apache Kafka Deep Dive
+
+The example below uses `confluent-kafka`, the most widely used Python client for Apache Kafka (a thin wrapper over the high-performance C `librdkafka` library). It shows the two halves of every Kafka integration: a `Producer` that publishes events to a topic, and a `Consumer` that reads them back as part of a consumer group — the same pattern you'll reuse for any real-time pipeline.
 
 ```python
 from confluent_kafka import Producer, Consumer
@@ -214,9 +216,28 @@ def process_session(event, gap_seconds=1800):
 
 Most organizations need **both**: streaming for real-time use cases (alerts, dashboards, ML inference) and batch for complex analytics (training, reporting, reconciliation).
 
+In practice, the decision usually comes down to a concrete freshness number rather than a qualitative feel. If the end-to-end freshness requirement is **under 60 seconds**, true streaming (Kafka/Flink, or Kafka Streams/ksqlDB) is necessary — nothing else can hit that latency. If **1–15 minutes** is tolerable, Spark Structured Streaming in micro-batch mode (e.g., a 5-minute trigger interval) is usually sufficient and far simpler to operate than a fully streaming stack. If **more than 15 minutes** is acceptable, plain scheduled batch is simpler and cheaper — don't reach for streaming infrastructure you don't need. The reasoning is operational: streaming infrastructure (brokers, consumer groups, exactly-once coordination, 24/7 on-call) carries a fixed cost and complexity overhead that only pays for itself once the latency requirement can no longer be met by amortizing work over a batch window.
+
 ### The Lambda Architecture Trap
 
 Don't build two separate pipelines (batch + streaming) that compute the same metrics differently. Instead, use the **Kappa architecture**: stream events into a data lake, then use batch queries on the historical stream data for complex analytics.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Topic** | A named, durable stream of events in Kafka/Pub/Sub — conceptually similar to a table, but append-only and consumed via subscription. |
+| **Partition** | A topic is split into ordered, independently consumable partitions to enable parallelism; events with the same key are routed to the same partition. |
+| **Offset** | The position of a message within a partition; consumers track their offset to know what has already been processed. |
+| **Consumer Group** | A set of consumers that share the work of reading a topic — each partition is assigned to exactly one consumer within the group at a time. |
+| **Producer/Broker** | The producer publishes events into the system; the broker (a Kafka server) stores, replicates, and serves those events to consumers. |
+| **At-Least-Once / Exactly-Once delivery** | At-least-once guarantees a message is delivered at least once (possible duplicates); exactly-once guarantees no loss and no duplicates, at the cost of additional coordination and latency. |
+| **Tumbling/Sliding/Session Window** | Tumbling windows are fixed, non-overlapping time buckets; sliding windows are fixed-size but overlapping; session windows are dynamically sized based on activity gaps. |
+| **Backpressure** | The condition where consumers can't keep up with producer throughput, requiring buffering, throttling, or scaling to avoid data loss or unbounded queue growth. |
+| **Idempotent Producer** | A Kafka producer configuration that prevents duplicate messages from being written even if the producer retries a send (e.g., after a network blip). |
+| **Lambda/Kappa Architecture** | Lambda runs separate batch and streaming pipelines for the same metrics (risking inconsistency); Kappa unifies them by treating the stream as the single source of truth, replaying it for batch-style analytics. |
 
 ---
 
@@ -234,6 +255,37 @@ Don't build two separate pipelines (batch + streaming) that compute the same met
 # TODO: Design the topic structure, partition keys,
 # consumer groups, and delivery guarantees for each use case
 streaming_design = {}
+```
+
+```python
+# EXPECTED RESULT
+
+streaming_design = {
+    "fraud_detection": {
+        "topic": "payments",
+        "partition_key": "account_id",  # keeps a single account's events ordered
+        "consumer_group": "fraud-detection-service",
+        "delivery_guarantee": "exactly-once",  # money is involved; duplicates/loss are unacceptable
+    },
+    "live_dashboard": {
+        "topic": "orders",
+        "partition_key": "region",  # enables per-region aggregation in parallel
+        "consumer_group": "dashboard-aggregator",
+        "delivery_guarantee": "at-least-once",  # dashboards tolerate occasional double-counts, fixed on next refresh
+    },
+    "inventory_updates": {
+        "topic": "orders",  # same topic as dashboard, different consumer group
+        "partition_key": "product_id",  # ensures stock decrements for a product are ordered
+        "consumer_group": "inventory-service",
+        "delivery_guarantee": "at-least-once",  # idempotent decrement logic absorbs duplicates
+    },
+    "recommendations": {
+        "topic": "user-clicks",
+        "partition_key": "session_id",  # keeps a user's session events together for the recommender
+        "consumer_group": "recommendation-engine",
+        "delivery_guarantee": "at-most-once",  # losing an occasional click event doesn't materially hurt recommendation quality
+    },
+}
 ```
 
 ### Exercise 2: Partition Key Selection
@@ -258,6 +310,28 @@ streaming_design = {}
 def tumbling_window_counter(events: list, window_seconds: int = 60, grace_seconds: int = 10):
     """Process a list of events and return per-window, per-type counts."""
     pass
+```
+
+```python
+# Sample input events (window_seconds=60, grace_seconds=10)
+# Window 0 covers t=[0, 60); Window 1 covers t=[60, 120)
+events = [
+    {"timestamp": 5,  "event_type": "page_view"},
+    {"timestamp": 30, "event_type": "click"},
+    {"timestamp": 58, "event_type": "page_view"},
+    {"timestamp": 65, "event_type": "click"},
+    # Late-arriving event: logically belongs to window 0 (t=55) but is
+    # processed/arrives at t=63 — still within the 10s grace period
+    # after window 0 closes at t=60, so it is still counted in window 0.
+    {"timestamp": 55, "event_type": "page_view", "arrival_time": 63},
+]
+
+# EXPECTED RESULT
+tumbling_window_counter(events, window_seconds=60, grace_seconds=10)
+# {
+#     0: {"page_view": 3, "click": 1},   # includes the late event at t=55 (arrived at t=63, within grace)
+#     1: {"click": 1},                   # event at t=65
+# }
 ```
 
 ---
@@ -299,4 +373,4 @@ A tumbling window has a fixed, non-overlapping duration (e.g., "count per 1-minu
 - ✅ **Windowing**: Tumbling (fixed), sliding (overlapping), session (activity-based) — for streaming aggregations
 - ✅ **Decision**: Use streaming for <1s latency needs; batch for complex analytics; most platforms need both
 
-**Tomorrow → Day 127**: **Lakehouse Architecture** — Databricks, Unity Catalog, Delta Live Tables — merging the best of data lakes and warehouses.
+**Tomorrow → Day 132**: **Lakehouse Architecture** — Databricks, Unity Catalog, Delta Live Tables — merging the best of data lakes and warehouses.

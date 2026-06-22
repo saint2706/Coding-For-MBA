@@ -27,7 +27,7 @@ outcomes:
   - "Reduce data warehouse query costs by 50-80%"
 ---
 
-# 💰 Day 130: Cost Engineering — FinOps for Data Platforms
+# 💰 Day 135: Cost Engineering — FinOps for Data Platforms
 
 > *"The cloud is only expensive if you don't manage it. The most successful data teams treat cost as a first-class metric alongside latency and quality."*
 
@@ -44,6 +44,8 @@ FinOps (Financial Operations) is the discipline that brings engineering, finance
 ## The Technical Deep Dive
 
 ### 1. FinOps Principles
+
+The FinOps Foundation's Inform → Optimize → Operate model is the industry-standard framework for organizing cost discipline across an engineering org — it's the same maturity progression used by FinOps practitioners at companies of every size. The dict below mirrors that structure directly: each top-level key is a pillar, each `principle` is the goal of that pillar, and each `actions` list is the concrete practice that makes the principle real rather than aspirational.
 
 ```python
 finops_pillars = {
@@ -203,6 +205,23 @@ storage_optimization = {
 
 ---
 
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **FinOps** | The operating model that brings engineering, finance, and business together to treat cloud spend as a managed, optimizable metric rather than a fixed overhead line item. |
+| **Unit Economics** | Cost expressed per unit of business value — e.g., cost per pipeline run, cost per GB processed, cost per dashboard query — so spend can be compared apples-to-apples as usage grows. |
+| **Reserved Instance** | A 1- or 3-year compute commitment that trades flexibility for a 40-72% discount versus on-demand pricing; best for predictable, 24/7 workloads. |
+| **Spot Instance** | Spare cloud capacity sold at a 60-90% discount that can be reclaimed with as little as 2 minutes' notice; suitable only for fault-tolerant or checkpointed workloads. |
+| **Auto-Scaling** | Automatically adjusting compute capacity (up or down) to match real-time demand, avoiding paying for idle resources during off-peak hours. |
+| **Cost Attribution / Tagging** | Labeling every cloud resource with metadata (team, project, environment, cost center) so spend can be traced back to the owning team or initiative. |
+| **Partition Pruning** | A query engine skipping irrelevant partitions (e.g., other dates) when a query filters on the partition column, dramatically reducing scanned data and cost. |
+| **Materialized View** | A pre-computed, stored query result that the warehouse automatically routes matching queries to, avoiding repeated full computation. |
+| **Storage Tiering** | Moving data through progressively cheaper storage classes (e.g., S3 Standard → Standard-IA → Glacier) as it ages and is accessed less frequently. |
+| **Budget Alert** | An automated notification triggered when spend crosses a defined threshold (e.g., 80% of budget), enabling intervention before a hard overage. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Cost Analysis
@@ -219,6 +238,20 @@ monthly_bill = {
     "Data transfer (egress)": 2000,# 20TB/month cross-region
 }
 # Total: $36,000/month
+
+# EXPECTED RESULT — top 3 optimization opportunities (ranked by estimated savings):
+# 1. Right-size the EC2 fleet (40% avg utilization): consolidating/downsizing
+#    20 instances to match real load typically saves 30-50% of the EC2 line
+#    → ~$4,000-6,000/month saved.
+# 2. Fix BigQuery SELECT * + add partitioning/clustering (1.3 TB/day scanned):
+#    partition pruning + column selection commonly cuts scanned bytes 80-90%
+#    → BigQuery line drops from $8,000 to roughly $1,000-1,600/month
+#    (~$6,400-7,000/month saved).
+# 3. Archive the cold 80% of S3 Standard data (160 TB untouched in 90+ days):
+#    moving it to S3 Glacier Instant/Deep Archive cuts that portion's storage
+#    cost by 80-95% → ~$3,000-3,500/month saved on the $5,000 S3 line.
+# Combined estimated savings: roughly $13,000-16,500/month (~40-45% of the
+# $36,000 total bill) before touching Redshift, NAT, or egress.
 ```
 
 ### Exercise 2: Unit Economics Dashboard
@@ -232,6 +265,13 @@ monthly_bill = {
 # 5. Reserved vs on-demand utilization
 ```
 
+**Expected result:** a dashboard spec (mockup or wireframe is fine) with these concrete fields per panel —
+- **Cost per pipeline run**: a table/bar chart with columns `pipeline_name | compute_cost | storage_cost | query_cost | total_cost | run_timestamp`, refreshed daily.
+- **Cost per 1M records**: a single trend line of `total_cost / (records_processed / 1_000_000)`, so a spike is visible even if total volume also grew.
+- **30-day cost trend**: a time series with a shaded anomaly band (e.g., ±2 standard deviations from a 30-day rolling mean) so deviations are visually flagged, not just listed.
+- **Top 10 expensive queries**: a ranked table with `query_id | bytes_scanned | cost | run_count | avg_cost_per_run`, sorted descending by weekly total cost.
+- **Reserved vs on-demand utilization**: a stacked bar or gauge showing `% reserved capacity used` vs `% on-demand spend`, with a target line (e.g., 80%+ reserved coverage for steady-state workloads).
+
 ### Exercise 3: FinOps Culture Implementation
 
 ```markdown
@@ -242,6 +282,13 @@ monthly_bill = {
 4. Monthly review cadence (who attends? What do we review?)
 5. Optimization targets (what's our cost efficiency goal?)
 ```
+
+**Expected result — minimum content checklist with measurable targets:**
+1. **Mandatory tag fields** explicitly named: `team`, `project`, `environment`, `cost_center` (at minimum) on every provisioned resource, enforced via policy (e.g., an SCP that denies untagged resource creation).
+2. **Budget alert thresholds** stated as specific percentages with named recipient roles — e.g., 80% of monthly budget triggers a warning to the team's eng lead; 100% triggers a hard alert to the eng lead **and** the FinOps/finance partner.
+3. **A PR-review cost-impact rule** with a concrete, numeric trigger — e.g., "any new or modified scheduled query estimated to scan >100 GB/run, or any new always-on compute resource, requires explicit cost sign-off in the PR before merge."
+4. **A monthly review cadence** naming actual attendees (e.g., data eng lead, finance/FinOps partner, platform lead) and what's reviewed (top 10 cost movers, unit economics trend, budget-vs-actual per team).
+5. **At least one numeric optimization target for the quarter** — e.g., "reduce cost-per-TB-scanned by 30% by end of Q1" or "reach 85%+ reserved-instance coverage for 24/7 workloads by end of quarter."
 
 ---
 
@@ -283,4 +330,4 @@ A single inefficient query can cost $10,000/month if it runs hourly. A full tabl
 - ✅ **Storage**: Lifecycle policies + compression + cleanup = 60-90% savings
 - ✅ **Culture**: Cost in PRs, budget alerts, monthly reviews, unit economics dashboards
 
-**Tomorrow → Day 131**: **Platform Engineering** — Terraform, IaC, and building self-serve data infrastructure.
+**Tomorrow → Day 136**: **Platform Engineering** — Terraform, IaC, and building self-serve data infrastructure.

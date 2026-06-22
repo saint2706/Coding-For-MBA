@@ -27,7 +27,7 @@ outcomes:
   - "Implement retry logic, alerting, and idempotent tasks"
 ---
 
-# 🎼 Day 125: Orchestration — Apache Airflow, Prefect, Dagster
+# 🎼 Day 130: Orchestration — Apache Airflow, Prefect, Dagster
 
 > *"An orchestrator doesn't run your code faster — it runs it reliably, on schedule, and wakes you up when something breaks."*
 
@@ -209,6 +209,35 @@ Airflow is over-engineering for: (1) simple cron jobs that run one script, (2) r
 
 ---
 
+## Pitfalls
+
+- ⚠️ **Top-level code in DAG files runs on every scheduler heartbeat.** Any DB query, API call, or heavy import placed at the top level of a DAG file (outside a task function) executes every time the scheduler parses the DAG folder — roughly every ~30 seconds by default — for every DAG in the folder, not just when the DAG actually runs. A single slow API call at import time can grind the entire scheduler to a halt.
+- ⚠️ **Scheduler and DAG-parsing bottlenecks.** Hundreds of DAG files with slow top-level code, or a handful of DAGs with thousands of tasks each, slow down the parsing loop and can delay scheduling decisions across the whole deployment, not just the offending DAG.
+- ⚠️ **Forgetting `catchup=False` causes backfill storms.** If `start_date` is in the past and `catchup` is left at its default (`True`), Airflow queues a run for every missed interval since `start_date` — easily hundreds of historical runs firing at once and overwhelming workers.
+- ⚠️ **Sensors in default "poke" mode waste worker slots.** A sensor in poke mode occupies a full worker slot for its entire wait duration, repeatedly checking a condition. Use `mode="reschedule"` or a deferrable operator so the sensor releases the worker slot between checks.
+- ⚠️ **Missing `execution_timeout` lets a hung task block everything downstream.** Without a timeout, a stuck task (e.g., a network call that never returns) can occupy its worker slot indefinitely, starving downstream tasks and other DAGs of capacity. Always set `execution_timeout` on tasks that call external systems.
+
+---
+
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **DAG** | Directed Acyclic Graph — the set of tasks and their dependencies, with no cycles, that defines a pipeline's execution order. |
+| **Operator** | A template for a single unit of work in Airflow (e.g., `PythonOperator`, `BigQueryInsertJobOperator`); instantiating one creates a task. |
+| **Sensor** | A special operator that waits/polls for a condition (a file landing, a partition appearing) before letting downstream tasks proceed. |
+| **Task Instance** | A specific run of a task for a specific DAG run/execution date — the unit that has its own state (running, success, failed, retry). |
+| **Scheduler** | The orchestrator process that parses DAG files, evaluates schedules, and decides which task instances to queue for execution. |
+| **Idempotency** | The property that running a task once or many times with the same input produces the same end state — critical for safe retries and re-runs. |
+| **Retry / retry_delay** | Configuration controlling how many times a failed task is automatically retried and how long to wait between attempts. |
+| **SLA** | Service Level Agreement — a deadline by which a task or DAG run is expected to complete; breaches can trigger alerts. |
+| **Backfill** | Running a DAG for historical (past) schedule intervals, typically to populate data that predates the DAG's deployment. |
+| **catchup** | A DAG-level setting controlling whether Airflow automatically backfills every missed interval since `start_date` (`True`) or only runs going forward (`False`). |
+| **Trigger Rule** | A task setting (e.g., `all_success`, `all_done`) that determines under what upstream conditions a task is allowed to run. |
+| **XCom** | "Cross-communication" — Airflow's mechanism for passing small pieces of data between tasks in a DAG run. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Design a Pipeline DAG
@@ -228,6 +257,32 @@ Airflow is over-engineering for: (1) simple cron jobs that run one script, (2) r
 # TODO: Write this as an Airflow DAG with proper dependencies
 # TODO: Add retry logic (3 retries, 5 min delay) for extract tasks
 # TODO: Add an SLA of 2 hours for the entire DAG
+```
+
+```python
+# EXPECTED RESULT
+
+extract_args = {
+    "retries": 3,
+    "retry_delay": timedelta(minutes=5),
+}
+
+with DAG(
+    dag_id="customer_analytics_pipeline",
+    sla_miss_callback=alert_on_sla_miss,  # fires if the DAG run exceeds the SLA
+    ...
+) as dag:
+
+    extract_orders = PythonOperator(task_id="extract_orders", default_args=extract_args, ...)
+    extract_customers = PythonOperator(task_id="extract_customers", default_args=extract_args, ...)
+    join_data = PythonOperator(task_id="join_data", sla=timedelta(hours=2), ...)
+    compute_metrics = PythonOperator(task_id="compute_metrics", ...)
+    run_ml_model = PythonOperator(task_id="run_ml_model", ...)
+    update_dashboard = PythonOperator(task_id="update_dashboard", ...)
+    send_report = PythonOperator(task_id="send_report", ...)
+
+    # Dependency chain:
+    [extract_orders, extract_customers] >> join_data >> [compute_metrics, run_ml_model] >> update_dashboard >> send_report
 ```
 
 ### Exercise 2: Make It Idempotent
@@ -251,12 +306,53 @@ def load(input_path, db):
         db.execute("INSERT INTO orders VALUES (%s)", row)  # Bug 3: ???
 ```
 
+```python
+# EXPECTED RESULT — all 3 bugs identified and fixed
+
+# Bug 1: open(output_path, "a") APPENDS to the existing file on every run.
+# Re-running `extract` after a retry or backfill duplicates the raw JSON
+# on disk instead of replacing it. Fix: open in write mode ("w").
+def extract(api_url, output_path):
+    data = requests.get(api_url).json()
+    with open(output_path, "w") as f:  # FIXED: "w" overwrites instead of appending
+        json.dump(data, f)
+
+# Bug 2: Same append bug in transform — re-running appends another copy
+# of the cleaned records to output_path. Fix: also use "w".
+def transform(input_path, output_path):
+    data = json.load(open(input_path))
+    clean = [d for d in data if d["status"] != "cancelled"]
+    with open(output_path, "w") as f:  # FIXED: "w" overwrites instead of appending
+        json.dump(clean, f)
+
+# Bug 3: Plain INSERT with no dedup — re-running `load` inserts duplicate
+# rows for the same orders. Fix: delete-then-insert or upsert on conflict.
+def load(input_path, db):
+    data = json.load(open(input_path))
+    for row in data:
+        db.execute(
+            """
+            INSERT INTO orders VALUES (%s)
+            ON CONFLICT (order_id) DO UPDATE SET
+                customer_id = EXCLUDED.customer_id,
+                total_amount = EXCLUDED.total_amount,
+                status = EXCLUDED.status
+            """,
+            row,
+        )  # FIXED: upsert makes re-runs idempotent
+```
+
 ### Exercise 3: Orchestrator Selection
 
 For each scenario, choose Airflow, Prefect, or Dagster and justify:
 1. A 3-person startup that needs to schedule 5 dbt jobs and 3 Python scripts.
 2. A bank with 200 data engineers, strict audit requirements, and existing Kubernetes.
 3. A data mesh organization with 10 domain teams each owning their own data products.
+
+**Expected result:**
+1. **Prefect** — a tiny team needs the fastest path to a working schedule with minimal infrastructure overhead; Prefect's decorator-based flows and managed Prefect Cloud option get 5 dbt jobs and 3 scripts running with almost no operational burden.
+2. **Airflow** — the bank's scale (200 engineers), strict audit/compliance needs, and existing Kubernetes investment favor Airflow's mature ecosystem, extensive logging/auditability, and native KubernetesExecutor support.
+3. **Dagster** — a data mesh with many domain teams benefits from Dagster's software-defined assets model, which lets each team own and reason about its data products as first-class, testable assets rather than opaque task scripts.
 
 ---
 
@@ -297,4 +393,4 @@ Separate warehouses provide: (1) cost attribution — each team's compute is tra
 - ✅ **Dagster**: Software-defined assets, best for data mesh and domain-oriented architectures
 - ✅ **Idempotency**: The golden rule — every task must produce the same result on re-run
 
-**Tomorrow → Day 126**: **Streaming Pipelines** — Kafka, Pub/Sub, Kinesis — when batch isn't fast enough.
+**Tomorrow → Day 131**: **Streaming Pipelines** — Kafka, Pub/Sub, Kinesis — when batch isn't fast enough.

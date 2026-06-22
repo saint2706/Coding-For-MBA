@@ -28,7 +28,7 @@ outcomes:
   - "Enforce data contracts and quality tests in the DAG"
 ---
 
-# 🔧 Day 124: dbt at Scale — Incremental Models, Snapshots, Advanced Patterns
+# 🔧 Day 129: dbt at Scale — Incremental Models, Snapshots, Advanced Patterns
 
 > *"dbt is the tool that turns your data warehouse from a pile of SQL files into a tested, documented, version-controlled analytics engine."*
 
@@ -81,6 +81,8 @@ FROM {{ source('raw', 'orders') }}
     WHERE _loaded_at > (SELECT MAX(_loaded_at) FROM {{ this }})
 {% endif %}
 ```
+
+dbt compiles this model differently depending on whether the table already exists. On the very first run there is nothing to compare against, so `is_incremental()` evaluates to `False` and dbt compiles a plain `CREATE TABLE AS SELECT` over the full source — no `WHERE` clause is added. On every subsequent run the table already exists, so `is_incremental()` evaluates to `True` and dbt compiles a `MERGE` that filters the source down to only the new rows, using `{{ this }}` to refer to the model's own already-built table so it can look up the current max `_loaded_at`.
 
 ```yaml
 # Why incremental matters:
@@ -250,9 +252,37 @@ With 500+ models, you need governance:
 
 ---
 
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Incremental Model** | A dbt materialization that, after the first run, only processes new or changed rows instead of rebuilding the full table. |
+| **unique_key** | The column (or combination of columns) dbt uses to identify a row when merging incremental updates, ensuring no duplicates. |
+| **Merge Strategy** | The `incremental_strategy` (e.g., `merge`, `append`, `delete+insert`) that determines how new rows are combined with the existing table. `merge` updates matching rows and inserts new ones. |
+| **on_schema_change** | A config that tells dbt what to do when the source schema changes between runs (e.g., `sync_all_columns` to add/remove columns automatically). |
+| **Snapshot** | A dbt feature that captures the state of a mutable source table over time, recording when each row version was valid. |
+| **SCD Type 2** | "Slowly Changing Dimension Type 2" — a modeling pattern that preserves full history of a record by adding new rows (with valid_from/valid_to) instead of overwriting old values. |
+| **Jinja Macro** | A reusable, parameterized block of Jinja templating logic (similar to a function) that generates SQL at compile time. |
+| **Data Contract (`contract: enforced`)** | A dbt 1.5+ feature where a model's declared column names/types/constraints are validated against its actual output at build time, failing the build on mismatch. |
+| **Surrogate Key** | A generated, warehouse-internal key (often a hash of natural key columns via `dbt_utils.generate_surrogate_key`) used to uniquely identify a row when no reliable natural key exists. |
+| **Staging/Intermediate/Marts layering** | dbt's standard project structure: staging models clean raw sources 1:1, intermediate models apply business logic/joins, and marts models produce final business-facing fact/dimension tables. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Build an Incremental Model
+
+Sample raw source table `raw.events` (a clickstream events table):
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `event_id` | string | unique identifier per event |
+| `event_date` | date | calendar date the event occurred, used for daily partitioning |
+| `user_id` | string | identifies the user who triggered the event |
+| `event_type` | string | e.g., `page_view`, `click`, `purchase` |
+| `properties` | json/struct | event-specific payload (page, button_id, amount, etc.) |
+| `_loaded_at` | timestamp | when the row landed in the raw table — used to detect "new" rows |
 
 ```sql
 -- TODO: Write an incremental model for a clickstream events table.
@@ -261,6 +291,38 @@ With 500+ models, you need governance:
 -- 2. Partition by event_date (daily)
 -- 3. Use a 2-day lookback window for late-arriving events
 -- 4. Add a test to verify no duplicate event_ids
+```
+
+```sql
+# EXPECTED RESULT — compiled SQL on a subsequent (incremental) run:
+
+{{
+    config(
+        materialized='incremental',
+        unique_key='event_id',
+        incremental_strategy='merge',
+        partition_by={"field": "event_date", "data_type": "date", "granularity": "day"}
+    )
+}}
+
+SELECT
+    event_id,
+    event_date,
+    user_id,
+    event_type,
+    properties,
+    _loaded_at
+FROM {{ source('raw', 'events') }}
+
+{% if is_incremental() %}
+    -- 2-day lookback window: re-scan the last 2 days so late-arriving
+    -- events are still picked up, then let the merge on unique_key
+    -- de-duplicate against rows already in the table.
+    WHERE _loaded_at > (SELECT MAX(_loaded_at) - INTERVAL '2 days' FROM {{ this }})
+{% endif %}
+
+-- Plus, in the model's .yml: a `dbt_utils.unique_combination_of_columns`
+-- or a plain `unique` test on `event_id` to assert no duplicate event_ids.
 ```
 
 ### Exercise 2: Snapshot Customer Changes
@@ -321,4 +383,4 @@ A data contract (`contract: enforced: true`) specifies exact column names, types
 - ✅ **Data contracts**: Enforce schema stability for downstream consumers
 - ✅ **Project structure**: staging → intermediate → marts with clear naming conventions
 
-**Tomorrow → Day 125**: **Orchestration** — Apache Airflow, Prefect, Dagster — scheduling and managing your data pipelines.
+**Tomorrow → Day 130**: **Orchestration** — Apache Airflow, Prefect, Dagster — scheduling and managing your data pipelines.

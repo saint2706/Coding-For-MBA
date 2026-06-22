@@ -26,7 +26,7 @@ outcomes:
   - "Implement lifecycle policies for cost optimization"
 ---
 
-# 📦 Day 122: Object Storage — S3, GCS, Delta Lake, Iceberg
+# 📦 Day 127: Object Storage — S3, GCS, Delta Lake, Iceberg
 
 > *"Object storage is the foundation of every modern data platform — cheap, durable, infinitely scalable, and deceptively simple until you need to manage 10 million files."*
 
@@ -158,6 +158,8 @@ lifecycle_policy = {
 
 ### 4. Open Table Formats — Delta Lake vs Iceberg
 
+Before reaching for a PySpark code example, it helps to compare the two leading table formats side by side as plain data — their creators, transaction-log mechanics, and ecosystems differ in ways that drive real architecture decisions (which engines you can use, how partitioning evolves, whether upserts are cheap). The dictionary below captures that comparison so you can reason about the trade-offs before seeing how Delta Lake's API actually looks in practice.
+
 ```python
 # The problem: Parquet files in a data lake have no ACID transactions,
 # no schema evolution, no time travel. Open table formats add these.
@@ -226,6 +228,23 @@ Over-partition (e.g., by `customer_id` with 1M customers) and you get millions o
 
 ---
 
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **Object Storage** | A flat, key-value storage system (e.g., S3, GCS) with no real directory hierarchy — objects are retrieved by a unique key, not a filesystem path. |
+| **Bucket / Key / Prefix** | A bucket is the top-level container; a key is an object's full unique identifier; a prefix is the leading portion of a key used to simulate folder-like grouping. |
+| **Medallion Architecture (Bronze/Silver/Gold)** | A layered data lake pattern: Bronze holds raw, unmodified data; Silver holds cleaned/deduplicated/typed data; Gold holds business-ready aggregates for BI and ML. |
+| **Lifecycle Policy** | A rule that automatically transitions or expires objects based on age (e.g., move to cheaper storage after 30 days, delete after 7). |
+| **Storage Class / Tier** | A pricing/performance category for stored data (e.g., S3 Standard, Standard-IA, Glacier) trading off retrieval speed against cost. |
+| **ACID Transaction** | A write operation that is Atomic, Consistent, Isolated, and Durable — guarantees that table formats like Delta Lake and Iceberg add on top of plain Parquet files. |
+| **Schema Evolution** | The ability to add, remove, or change columns in a table over time without rewriting all existing data. |
+| **Time Travel** | Querying a table as it existed at a previous point in time or version, enabled by a table format's transaction log. |
+| **Z-ORDER** | A Delta Lake technique that co-locates related data within files by sorting on specified columns, speeding up filtered queries. |
+| **Small Files Problem** | The performance degradation caused by having too many tiny files (< 128MB) in object storage, due to per-file metadata and I/O overhead. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Design a Data Lake Structure
@@ -244,6 +263,34 @@ Over-partition (e.g., by `customer_id` with 1M customers) and you get millions o
 # 4. Lifecycle policy for cost optimization
 
 data_lake_design = {}
+
+# EXPECTED RESULT (one reasonable, concrete design)
+# data_lake_design = {
+#     "clickstream": {
+#         "bronze": {"path": "raw/clickstream/year=/month=/day=/", "format": "JSON", "partitioning": "daily (year/month/day)"},
+#         "silver": {"path": "cleaned/clickstream/year=/month=/day=/", "format": "Parquet", "partitioning": "daily, deduplicated + typed"},
+#         "gold":   {"path": "curated/clickstream/sessions/", "format": "Parquet", "partitioning": "by month, session-level aggregates"},
+#         "lifecycle": "Bronze -> Standard-IA after 30 days, Glacier after 90 days (high volume, rarely re-read raw)",
+#     },
+#     "orders": {
+#         "bronze": {"path": "raw/orders/year=/month=/day=/", "format": "JSON/CDC log", "partitioning": "daily"},
+#         "silver": {"path": "cleaned/orders/year=/month=/", "format": "Delta Lake (needs upserts from CDC)", "partitioning": "monthly"},
+#         "gold":   {"path": "curated/orders/revenue_by_region/", "format": "Parquet", "partitioning": "by month + region"},
+#         "lifecycle": "Bronze -> Standard-IA after 90 days (regulatory retention 7 years, rarely accessed after first month)",
+#     },
+#     "product_catalog": {
+#         "bronze": {"path": "raw/products/snapshot_date=/", "format": "JSON", "partitioning": "weekly snapshot"},
+#         "silver": {"path": "cleaned/products/", "format": "Parquet", "partitioning": "none (small, 10K rows)"},
+#         "gold":   {"path": "curated/products/catalog_current/", "format": "Delta Lake (supports MERGE for weekly updates)", "partitioning": "none"},
+#         "lifecycle": "Keep all snapshots in Standard (tiny dataset, cost is negligible)",
+#     },
+#     "reviews": {
+#         "bronze": {"path": "raw/reviews/year=/month=/day=/", "format": "JSON (unstructured text)", "partitioning": "daily"},
+#         "silver": {"path": "cleaned/reviews/year=/month=/", "format": "Parquet (+ extracted sentiment/score column)", "partitioning": "monthly"},
+#         "gold":   {"path": "curated/reviews/product_sentiment/", "format": "Parquet", "partitioning": "by product category"},
+#         "lifecycle": "Bronze -> Standard-IA after 60 days, Glacier after 1 year",
+#     },
+# }
 ```
 
 ### Exercise 2: Cost Comparison
@@ -307,4 +354,4 @@ Lifecycle policies automatically move data to cheaper tiers based on age. Recent
 - ✅ **Delta Lake**: Best for Databricks/Spark-first shops — ACID, time travel, Z-ORDER
 - ✅ **Apache Iceberg**: Best for multi-engine environments — hidden partitioning, partition evolution, engine-agnostic
 
-**Tomorrow → Day 123**: **Cloud Data Warehouses** — BigQuery, Snowflake, Redshift — how they actually work under the hood.
+**Tomorrow → Day 128**: **Cloud Data Warehouses** — BigQuery, Snowflake, Redshift — how they actually work under the hood.

@@ -1,0 +1,70 @@
+{
+    "day": 128,
+    "questions": [
+        {
+            "id": "d128q01",
+            "type": "multiple_choice",
+            "question": "What does 'compute-storage separation' mean in cloud data warehouses, and why does it matter for cost?",
+            "options": [
+                "Storage and compute must always be purchased together as a bundle",
+                "Data is stored independently of compute resources, so you pay for storage continuously but only pay for compute while queries actually run",
+                "It means data is replicated across compute nodes to avoid using storage at all",
+                "It eliminates the need to pay for storage entirely"
+            ],
+            "answer": 1,
+            "explanation": "Compute-storage separation lets data sit cheaply in object storage 24/7, while compute resources spin up only when a query runs and shut down afterward. This avoids paying for idle compute and allows each to scale independently."
+        },
+        {
+            "id": "d128q02",
+            "type": "multiple_choice",
+            "question": "Why is `SELECT *` particularly expensive in BigQuery compared to a traditional row-oriented database?",
+            "options": [
+                "BigQuery charges a flat fee per query regardless of columns selected, so it doesn't matter",
+                "BigQuery uses columnar storage and bills per TB scanned, so `SELECT *` reads and bills for every column even if only a few are needed",
+                "`SELECT *` triggers a full table lock in BigQuery",
+                "BigQuery does not support `SELECT *` syntax"
+            ],
+            "answer": 1,
+            "explanation": "BigQuery's columnar storage means each column can be scanned independently. SELECT * forces a scan of every column, and since billing is per TB scanned, this can be 10-50x more expensive than selecting only needed columns."
+        },
+        {
+            "id": "d128q03",
+            "type": "multiple_choice",
+            "question": "A table is partitioned by DATE(order_date) and clustered by region, category. How do partitioning and clustering work together to reduce scanned bytes?",
+            "options": [
+                "Partitioning sorts rows within each cluster; clustering skips entire date ranges",
+                "They do the same thing — using both is redundant",
+                "Partitioning lets the engine skip entire date partitions outside the WHERE clause; clustering then sorts data within each partition so fewer blocks are read for region/category filters",
+                "Clustering only works on numeric columns, not strings like region"
+            ],
+            "answer": 2,
+            "explanation": "Partitioning prunes whole partitions (coarse filtering, typically by date). Clustering sorts data within each partition by the clustering columns, allowing the engine to skip blocks within a partition too (fine filtering) — using both together compounds the savings."
+        },
+        {
+            "id": "d128q04",
+            "type": "multiple_choice",
+            "question": "A company needs to share live data with 100+ external partners without copying it, and wants the option to run on AWS, GCP, or Azure depending on the client. Which warehouse is the better fit, and why?",
+            "options": [
+                "BigQuery, because Analytics Hub is the most mature data-sharing product on the market",
+                "Redshift, because Concurrency Scaling supports external sharing natively",
+                "Snowflake, because of its mature Secure Data Sharing/Marketplace and multi-cloud portability across AWS, GCP, and Azure",
+                "Any warehouse works equally well since data sharing is a commodity feature"
+            ],
+            "answer": 2,
+            "explanation": "Snowflake's Secure Data Sharing and Marketplace are purpose-built and mature for external data sharing, and Snowflake runs unmodified across all three major clouds — both directly address the stated requirements. BigQuery only runs on GCP and its sharing tooling (Analytics Hub) is newer."
+        },
+        {
+            "id": "d128q05",
+            "type": "multiple_choice",
+            "question": "A team's BigQuery bill jumped from $1,000/month to $9,000/month with no change in business activity. What should be investigated FIRST?",
+            "options": [
+                "Immediately switch to Snowflake without further analysis",
+                "Query logs/job history for recently run queries that scan unusually large amounts of data (e.g., new SELECT * queries or unpartitioned table scans), and check if any queries are now running on a much more frequent schedule",
+                "Delete all data older than 30 days",
+                "Increase the on-demand pricing tier"
+            ],
+            "answer": 1,
+            "explanation": "The standard cost investigation starts with query/job history: identify which queries scan the most data (often SELECT * on large unpartitioned tables) and check whether previously-occasional queries are now running on a much tighter schedule. This pinpoints the root cause before reaching for a platform change."
+        }
+    ]
+}

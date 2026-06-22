@@ -1,0 +1,70 @@
+{
+    "day": 127,
+    "questions": [
+        {
+            "id": "d127q01",
+            "type": "multiple_choice",
+            "question": "What is the key structural difference between object storage (like S3) and a traditional filesystem?",
+            "options": [
+                "Object storage supports random byte-level writes within a file; filesystems do not",
+                "Object storage uses a flat namespace with key-value pairs, simulating folders via key prefixes, rather than real nested directories",
+                "Object storage cannot store files larger than 1GB",
+                "Object storage requires a database engine to list files"
+            ],
+            "answer": 1,
+            "explanation": "Object storage has a flat namespace — there are no real directories, just keys that can contain '/' characters to simulate folder structure. Traditional filesystems support real directories and in-place, random-access file modification."
+        },
+        {
+            "id": "d127q02",
+            "type": "multiple_choice",
+            "question": "In the medallion (Bronze/Silver/Gold) architecture, what is the primary purpose of the Bronze layer?",
+            "options": [
+                "Store business-ready aggregates for BI dashboards",
+                "Preserve raw, unmodified data as received, enabling reprocessing without re-ingesting from source systems",
+                "Store only deduplicated and type-cast data",
+                "Cache materialized views for faster queries"
+            ],
+            "answer": 1,
+            "explanation": "Bronze preserves raw data as-is (append-only, immutable) for auditability and so that Silver/Gold can be reprocessed from scratch if a bug is found, without re-querying the original source system."
+        },
+        {
+            "id": "d127q03",
+            "type": "multiple_choice",
+            "question": "A lifecycle policy transitions objects in the 'raw/' prefix to STANDARD_IA after 30 days and GLACIER_IR after 90 days. What is the main benefit of this approach?",
+            "options": [
+                "It increases query performance on recent data",
+                "It automatically reduces storage costs for aging data that is accessed less frequently, without manual intervention",
+                "It converts files from JSON to Parquet automatically",
+                "It enforces schema validation on older files"
+            ],
+            "answer": 1,
+            "explanation": "Lifecycle policies move data to progressively cheaper storage tiers as it ages and is accessed less often, cutting storage costs by 80%+ with no impact on the performance of queries against recent, frequently accessed data."
+        },
+        {
+            "id": "d127q04",
+            "type": "multiple_choice",
+            "question": "A multi-engine environment uses Trino for interactive queries and Spark for batch ETL, and the team frequently needs to change partitioning strategy as query patterns evolve. Which open table format is the better fit, and why?",
+            "options": [
+                "Delta Lake, because it has the best Spark integration",
+                "Apache Iceberg, because it is engine-agnostic and supports partition evolution without rewriting data",
+                "Neither — plain Parquet is sufficient for multi-engine setups",
+                "Delta Lake, because it requires a single engine for consistency"
+            ],
+            "answer": 1,
+            "explanation": "Iceberg was designed to be engine-agnostic (Spark, Trino, Flink, Dremio) and supports partition evolution, letting teams change partitioning strategy over time without rewriting historical data — a strong fit for diverse, multi-engine environments."
+        },
+        {
+            "id": "d127q05",
+            "type": "multiple_choice",
+            "question": "A teammate proposes partitioning a 100M-row table by `customer_id`, where there are 500K unique customers. What is the main pitfall?",
+            "options": [
+                "Partitioning by a non-date column is not supported by any table format",
+                "It creates roughly 500K partitions with tiny files each, causing excessive metadata overhead and per-file I/O — the small files problem",
+                "It will cause schema evolution errors",
+                "It eliminates the need for a transaction log"
+            ],
+            "answer": 1,
+            "explanation": "With 500K unique customer_id values, this creates ~500K partitions of roughly 200 rows each — far too many small files. Most queries are time-bounded anyway, so partitioning by date (and filtering by customer_id within partitions) is the better strategy."
+        }
+    ]
+}

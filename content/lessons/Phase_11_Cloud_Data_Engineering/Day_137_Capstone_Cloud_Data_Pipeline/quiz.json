@@ -1,0 +1,70 @@
+{
+    "day": 137,
+    "questions": [
+        {
+            "id": "d137q01",
+            "type": "multiple_choice",
+            "question": "Why is idempotency considered the single most important principle in designing a production data pipeline?",
+            "options": [
+                "It makes the code run faster than non-idempotent alternatives",
+                "Pipelines will inevitably fail and be retried; without idempotency, re-runs create duplicate data, corrupted aggregates, and incorrect business metrics",
+                "It is required by most cloud providers' terms of service",
+                "It eliminates the need for any data quality checks"
+            ],
+            "answer": 1,
+            "explanation": "Failures and retries are a certainty in production, not an edge case. Idempotent design (MERGE/UPSERT loads, partition overwrites, checkpoint-based ingestion) ensures a re-run produces the same correct result instead of duplicating or corrupting data."
+        },
+        {
+            "id": "d137q02",
+            "type": "multiple_choice",
+            "question": "You're presenting this capstone pipeline to a VP with 5 minutes of attention. Which 3 metrics should you lead with?",
+            "options": [
+                "Lines of code written, number of Airflow tasks, and number of dbt models",
+                "Freshness SLA compliance, data quality score, and cost efficiency (cost per unit of volume)",
+                "The specific Python libraries used and the Terraform provider version",
+                "Number of git commits and number of code reviewers"
+            ],
+            "answer": 1,
+            "explanation": "Business leaders care about reliability (is data on time?), accuracy (can it be trusted?), and cost (is it efficient?) — not implementation details. Freshness SLA, quality score, and cost-per-unit metrics translate engineering work into business-relevant terms."
+        },
+        {
+            "id": "d137q03",
+            "type": "multiple_choice",
+            "question": "How does the bronze layer's 'schema-on-read' approach help the pipeline survive an upstream API schema change?",
+            "options": [
+                "It rejects any record that doesn't match a strict predefined schema, forcing the source team to fix it immediately",
+                "It ingests raw data as-is regardless of shape, deferring schema enforcement to the silver layer — so an upstream schema change doesn't break ingestion, only downstream transforms that need updating",
+                "It automatically rewrites the source API's schema to match the warehouse",
+                "It only works if the source system never changes its schema"
+            ],
+            "answer": 1,
+            "explanation": "Bronze stores data close to its raw form, so ingestion keeps working even when the source schema shifts. The blast radius is contained to the staging/silver transformation layer (e.g., needing `on_schema_change` handling in dbt), rather than breaking the entire pipeline."
+        },
+        {
+            "id": "d137q04",
+            "type": "multiple_choice",
+            "question": "If data volume grew from 10GB/day to 10TB/day, what would most likely need to change in this pipeline's implementation?",
+            "options": [
+                "Nothing — the same Python scripts and batch API polling would scale linearly without modification",
+                "Move from single-machine Python ingestion to parallel processing (Spark/Dataflow), consider streaming ingestion, and add partition pruning/clustering and auto-scaling compute — the architecture stays the same, only the implementation scales",
+                "Switch the entire pipeline from a medallion architecture to a single flat table",
+                "Remove all data quality checks to keep up with throughput"
+            ],
+            "answer": 1,
+            "explanation": "At 1000x volume, single-threaded batch ingestion and unpartitioned queries become the bottleneck. The architectural pattern (bronze/silver/gold, orchestration, quality gates) doesn't change — but the implementation must scale: parallel/streaming ingestion, partitioned storage formats (Iceberg/Delta), and auto-scaling compute."
+        },
+        {
+            "id": "d137q05",
+            "type": "multiple_choice",
+            "question": "What role do quality gates (Soda, Great Expectations) play in this pipeline, and what's a key limitation to be aware of?",
+            "options": [
+                "They replace the need for any human review of dbt models",
+                "They automatically check data correctness (freshness, nulls, row counts, anomalies) before data reaches consumers, but a simple threshold check like `row_count > 0` can still pass even if volume silently dropped 90% — anomaly detection against a historical baseline is needed to catch that",
+                "They only check for SQL syntax errors in dbt models",
+                "They are only useful in the bronze layer and provide no value in gold tables"
+            ],
+            "answer": 1,
+            "explanation": "Quality gates act as automated checkpoints that block bad data from propagating to dashboards. But a naive threshold check (row_count > 0) is satisfied by a sharp volume drop — only a baseline/anomaly-detection check catches a silent 90% drop in expected rows."
+        }
+    ]
+}

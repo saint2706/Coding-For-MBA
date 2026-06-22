@@ -1,0 +1,70 @@
+{
+    "day": 132,
+    "questions": [
+        {
+            "id": "d132q01",
+            "type": "multiple_choice",
+            "question": "Which combination of capabilities does the lakehouse architecture add on top of cheap, open object storage to compete with a traditional data warehouse?",
+            "options": [
+                "Proprietary file formats and vendor-managed compute only",
+                "ACID transactions, schema enforcement, and fast SQL performance",
+                "Unlimited free storage with no governance layer",
+                "Manual schema validation scripts run nightly"
+            ],
+            "answer": 1,
+            "explanation": "The lakehouse combines data lake cost/flexibility with data warehouse-grade ACID transactions, schema enforcement, and fast SQL (via engines like Photon) — without needing a proprietary storage format."
+        },
+        {
+            "id": "d132q02",
+            "type": "multiple_choice",
+            "question": "In Delta Live Tables, what does `@dlt.expect_or_drop(\"valid_amount\", \"total_amount > 0\")` do?",
+            "options": [
+                "Halts the entire pipeline if any row fails the check",
+                "Logs a warning but keeps rows that fail the check",
+                "Silently drops only the rows that fail the check, keeping the pipeline running",
+                "Converts failing rows to null values instead of dropping them"
+            ],
+            "answer": 2,
+            "explanation": "expect_or_drop removes (drops) rows that violate the expectation while letting the rest of the pipeline continue. expect just warns and keeps the row; expect_or_fail halts the whole pipeline."
+        },
+        {
+            "id": "d132q03",
+            "type": "multiple_choice",
+            "question": "What does Unity Catalog provide that simple database-level GRANT statements do not?",
+            "options": [
+                "Faster SQL query execution via the Photon engine",
+                "Centralized cross-workspace governance, column masking, row-level security, lineage, and audit logging",
+                "The ability to run GRANT statements without SQL syntax",
+                "Automatic conversion of CSV files into Delta tables"
+            ],
+            "answer": 1,
+            "explanation": "Unity Catalog acts as a governance layer above individual databases/workspaces: one set of permissions spans dev/staging/prod, plus features like row filters, column masks, and lineage that plain GRANT statements lack."
+        },
+        {
+            "id": "d132q04",
+            "type": "multiple_choice",
+            "question": "Why is Databricks Auto Loader (the `cloudFiles` format) preferred over manually listing files in cloud storage for streaming ingestion?",
+            "options": [
+                "It compresses files before loading them to save storage costs",
+                "It uses cloud-native notifications (e.g., S3 SNS/SQS) for constant-time new-file detection instead of slow, expensive directory listing at scale",
+                "It automatically writes data in JSON instead of Parquet",
+                "It eliminates the need for any schema definition"
+            ],
+            "answer": 1,
+            "explanation": "Auto Loader relies on cloud notification services to detect new files as they land, which scales to millions/billions of files. Manual file listing gets slower and more expensive as file counts grow."
+        },
+        {
+            "id": "d132q05",
+            "type": "multiple_choice",
+            "question": "In which scenario would a traditional cloud data warehouse (e.g., Snowflake, BigQuery) likely be a better fit than a lakehouse?",
+            "options": [
+                "The team needs to run both ML feature engineering and BI dashboards off the same raw data",
+                "The data is a mix of structured tables, images, and unstructured logs",
+                "The data is 100% structured/tabular, there are no ML workloads, and the team wants a fully managed system with no Spark expertise required",
+                "The company needs fine-grained row-level and column-level governance across many teams"
+            ],
+            "answer": 2,
+            "explanation": "A traditional warehouse shines for purely structured data, no ML need, no in-house Spark skills, and a preference for a fully managed, zero-ops system. The lakehouse advantage emerges with mixed data types, ML+BI on one copy of data, or large-scale governance needs."
+        }
+    ]
+}

@@ -27,7 +27,7 @@ outcomes:
   - "Design a self-serve data platform for domain teams"
 ---
 
-# 🏗️ Day 131: Platform Engineering — Terraform, IaC, Self-Serve Infrastructure
+# 🏗️ Day 136: Platform Engineering — Terraform, IaC, Self-Serve Infrastructure
 
 > *"If you can't reproduce your infrastructure from code, you don't have infrastructure — you have a snowflake that will melt at the worst possible time."*
 
@@ -106,6 +106,8 @@ resource "aws_redshiftserverless_workgroup" "analytics" {
   base_capacity  = 32  # RPUs
 }
 ```
+
+Every configuration choice in the block above is deliberate, not default. `aws_s3_bucket_versioning` is enabled so that an accidental overwrite or delete of a raw data file doesn't mean permanent data loss — it pairs naturally with the lifecycle policies from Day 127, since older versions can themselves be transitioned to cheaper storage tiers or expired on a schedule rather than kept forever. Encryption uses `aws:kms` (SSE-KMS) instead of the simpler AWS-managed SSE-S3 because KMS gives you a customer-managed key: you control key rotation policy, can revoke access independently of S3 permissions, and get a CloudTrail audit log of every encrypt/decrypt call — important for any data lake holding data with compliance requirements. The Terraform `backend "s3"` block stores state remotely for durability (a laptop disk failure shouldn't mean losing the only record of what infrastructure exists) and so the whole team reads and writes the same state file; in practice you'd add a DynamoDB table for state locking so two people can't run `apply` at the same time and corrupt the state. Finally, `base_capacity = 32` RPUs for the Redshift Serverless workgroup is sized for a typical baseline analytics workload — enough concurrency for routine dashboard and ad hoc queries without paying for idle peak capacity — and Redshift Serverless auto-scales beyond that base when query demand spikes, so 32 is a starting point tuned by observed usage, not a hard ceiling.
 
 ### 2. CI/CD for Data Pipelines
 
@@ -222,6 +224,24 @@ locals {
 
 ---
 
+## Glossary
+
+| Term | Definition |
+| --- | --- |
+| **IaC (Infrastructure as Code)** | Defining infrastructure (servers, networks, databases) in versioned code files instead of manual console actions, so it can be reviewed, tested, and reproduced. |
+| **Terraform State** | The file Terraform uses to track the mapping between your code and the real cloud resources it manages — required so Terraform knows what already exists. |
+| **`terraform plan` / `apply`** | `plan` previews changes as a dry run with no side effects; `apply` executes those changes against real infrastructure. |
+| **HCL** | HashiCorp Configuration Language — the declarative syntax used to write Terraform resource definitions (`.tf` files). |
+| **Provider** | A Terraform plugin (e.g., `hashicorp/aws`) that knows how to create, read, update, and delete resources for a specific platform. |
+| **Resource** | A single infrastructure object managed by Terraform, such as `aws_s3_bucket` or `aws_redshiftserverless_workgroup`. |
+| **Module** | A reusable, packaged set of Terraform resources that can be called with different inputs across environments or projects. |
+| **GitOps** | Using the same Git PR review/merge workflow for infrastructure and pipeline changes as for application code — the repo state is the source of truth. |
+| **Remote State Locking** | Using a shared backend (e.g., S3 + DynamoDB) to store Terraform state centrally and prevent two people from applying changes concurrently and corrupting it. |
+| **Self-Serve Platform** | An internal catalog that lets domain teams provision their own infrastructure (pipelines, databases, dashboards) without filing tickets to a central team. |
+| **Guardrail** | An automated constraint (cost limit, encryption requirement, quality check) built into a self-serve platform so teams move fast without bypassing standards. |
+
+---
+
 ## Hands-on Lab
 
 ### Exercise 1: Terraform Data Infrastructure
@@ -233,6 +253,28 @@ locals {
 -- 3. A Redshift Serverless workgroup
 -- 4. Budget alert at $500/month
 -- All resources must have team/project/environment tags
+```
+
+```text
+# EXPECTED RESULT — a representative `terraform plan` summary after writing
+# the configuration above (exact counts depend on how resources are split,
+# but this is the expected shape):
+#
+#   # aws_s3_bucket.data_lake will be created
+#   # aws_s3_bucket_versioning.data_lake will be created
+#   # aws_s3_bucket_server_side_encryption_configuration.data_lake will be created
+#   # aws_s3_bucket_lifecycle_configuration.data_lake will be created
+#   # aws_iam_role.data_engineer will be created
+#   # aws_redshiftserverless_namespace.analytics will be created
+#   # aws_redshiftserverless_workgroup.analytics will be created
+#   # aws_budgets_budget.monthly_alert will be created
+#
+#   Plan: 8 to add, 0 to change, 0 to destroy.
+#
+# Use this as a sanity check: if your plan shows a wildly different resource
+# count (e.g., only 3-4 resources), you likely combined the IAM role/policy
+# into one resource or omitted the lifecycle/budget resources — go back and
+# check the requirements list above.
 ```
 
 ### Exercise 2: CI/CD Pipeline Design
@@ -294,4 +336,4 @@ Platform engineering builds internal infrastructure platforms so domain teams ca
 - ✅ **Environments**: Dev → Staging → Prod with environment-specific sizing and configs
 - ✅ **GitOps**: Infrastructure and pipeline changes go through the same PR review process
 
-**Tomorrow → Day 132**: **Capstone — Cloud Data Pipeline** — build an end-to-end pipeline from ingestion to dashboard.
+**Tomorrow → Day 137**: **Capstone — Cloud Data Pipeline** — build an end-to-end pipeline from ingestion to dashboard.

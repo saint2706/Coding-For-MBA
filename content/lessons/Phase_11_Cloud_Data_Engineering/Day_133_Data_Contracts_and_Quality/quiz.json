@@ -1,0 +1,70 @@
+{
+    "day": 133,
+    "questions": [
+        {
+            "id": "d133q01",
+            "type": "multiple_choice",
+            "question": "Who should own a data contract for a given table?",
+            "options": [
+                "Only the consuming analytics team, since they define the requirements",
+                "Co-owned: the producing team commits to the guarantees, and consuming teams specify their requirements, version-controlled and validated in CI/CD",
+                "No one — data contracts are informal and don't need an owner",
+                "The platform/infrastructure team, regardless of who produces or consumes the data"
+            ],
+            "answer": 1,
+            "explanation": "A data contract is a co-owned agreement: the producing team commits to meeting schema/quality/freshness guarantees, while consuming teams specify what they need. Best practice is to version-control it in Git and validate it automatically in CI/CD."
+        },
+        {
+            "id": "d133q02",
+            "type": "multiple_choice",
+            "question": "When should you prefer Great Expectations over dbt tests for a data quality check?",
+            "options": [
+                "Always — Great Expectations should fully replace dbt tests in every pipeline",
+                "Never — dbt tests cover every validation use case",
+                "For complex validations before data enters the warehouse, such as schema drift detection, distribution checks, anomaly detection, and non-dbt environments",
+                "Only when the table has fewer than 1,000 rows"
+            ],
+            "answer": 2,
+            "explanation": "dbt tests are ideal for in-warehouse checks that live inside the transformation DAG (uniqueness, not-null, referential integrity). Great Expectations is better suited for richer pre-warehouse validation like schema drift, distribution checks, anomaly detection, and environments outside dbt."
+        },
+        {
+            "id": "d133q03",
+            "type": "multiple_choice",
+            "question": "How is a freshness SLA typically monitored?",
+            "options": [
+                "By manually checking the table once a week",
+                "By comparing MAX(updated_at) or similar timestamp against the current time and alerting if the gap exceeds the SLA threshold",
+                "By counting the total number of rows in the table",
+                "By checking whether the table's schema has changed"
+            ],
+            "answer": 1,
+            "explanation": "Freshness SLAs guarantee how recent data should be (e.g., 'updated within 2 hours'). Monitoring compares the latest timestamp in the data against the current time; if the gap exceeds the SLA, an alert fires. Soda's freshness() check or a custom query implements this."
+        },
+        {
+            "id": "d133q04",
+            "type": "multiple_choice",
+            "question": "What is the key difference between deterministic data quality checks and anomaly detection?",
+            "options": [
+                "Deterministic checks only work on numeric columns; anomaly detection only works on text columns",
+                "Deterministic checks are rule-based and catch known failure modes (e.g., 'must not be null'); anomaly detection uses statistical methods to catch unknown/unexpected issues (e.g., row count deviating from a historical baseline)",
+                "Anomaly detection replaces the need for any rule-based checks",
+                "There is no meaningful difference; both terms describe the same technique"
+            ],
+            "answer": 1,
+            "explanation": "Rule-based checks catch known, well-defined problems (nulls, ranges, duplicates). Anomaly detection uses statistics (e.g., standard deviations from a rolling average) to flag unexpected patterns that no one explicitly wrote a rule for. Both are needed together."
+        },
+        {
+            "id": "d133q05",
+            "type": "multiple_choice",
+            "question": "Your data quality dashboard shows a sudden 15% spike in null email addresses for a customer table. What is the correct triage approach?",
+            "options": [
+                "Silently filter out the null records so the dashboard looks clean again",
+                "Ignore it since it's a small percentage increase",
+                "Investigate the source system and ETL pipeline for recent changes, check whether the producing team is aware via the data contract, and avoid silently hiding the records while you investigate",
+                "Immediately delete the affected rows from the production table"
+            ],
+            "answer": 2,
+            "explanation": "The correct response is to investigate root cause (source app change, ETL bug), check contract awareness with the producing team, and only apply a temporary, visible fix (not a silent filter) while the real issue is resolved. Hiding the problem masks a signal you need to fix it permanently."
+        }
+    ]
+}

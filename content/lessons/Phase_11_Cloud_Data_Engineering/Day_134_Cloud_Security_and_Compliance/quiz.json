@@ -1,0 +1,70 @@
+{
+    "day": 134,
+    "questions": [
+        {
+            "id": "d134q01",
+            "type": "multiple_choice",
+            "question": "What is the difference between encryption at rest and encryption in transit?",
+            "options": [
+                "They are the same thing implemented with different algorithms",
+                "Encryption at rest protects stored data (e.g., on disk); encryption in transit protects data moving between systems (e.g., API calls); both are required for compliance",
+                "Encryption in transit is only needed for internal traffic, not external APIs",
+                "Encryption at rest replaces the need for encryption in transit"
+            ],
+            "answer": 1,
+            "explanation": "At-rest encryption (e.g., SSE-KMS, AES-256 on RDS) protects data stored on disk from being read if the storage medium is compromised. In-transit encryption (TLS) protects data moving across networks from interception. Compliance frameworks typically require both."
+        },
+        {
+            "id": "d134q02",
+            "type": "multiple_choice",
+            "question": "A public S3 bucket containing customer data is discovered. What is the correct first step in incident response?",
+            "options": [
+                "Wait until the next scheduled security review to address it",
+                "Immediately remove public access (block public access at the bucket level), then investigate access logs and notify security/legal",
+                "Delete the entire bucket immediately without investigation",
+                "Email the affected customers before doing anything else"
+            ],
+            "answer": 1,
+            "explanation": "The immediate priority is to stop the exposure by blocking public access, then use access logs (e.g., CloudTrail) to assess whether data was accessed by unauthorized parties before notifying security/legal teams, who may need to meet GDPR's 72-hour breach notification requirement."
+        },
+        {
+            "id": "d134q03",
+            "type": "multiple_choice",
+            "question": "How should you handle a GDPR 'right to erasure' request when the affected table is stored in Delta Lake with time travel enabled?",
+            "options": [
+                "Deleting from the current table version is sufficient; old versions don't matter",
+                "Delete/anonymize the current table, then run VACUUM with zero retention (or use pseudonymization with a deletable key mapping) to remove the data from historical versions too",
+                "GDPR erasure requests cannot be honored if time travel is enabled",
+                "Simply rename the table to hide the data from auditors"
+            ],
+            "answer": 1,
+            "explanation": "Delta Lake's time travel retains old versions that still contain the deleted user's data. A full erasure requires deleting/anonymizing the current data AND running VACUUM with zero retention to purge historical file versions, or using a pseudonymization scheme where deleting the key mapping anonymizes all historical references."
+        },
+        {
+            "id": "d134q04",
+            "type": "multiple_choice",
+            "question": "What problem do VPC endpoints solve for data platforms accessing services like S3 or Secrets Manager?",
+            "options": [
+                "They reduce the cost of compute instances",
+                "They provide private connectivity to AWS services without traffic leaving the AWS network, avoiding the latency, cost, and security exposure of routing through a NAT Gateway and the public internet",
+                "They automatically encrypt all data at rest",
+                "They replace the need for IAM permissions entirely"
+            ],
+            "answer": 1,
+            "explanation": "Without a VPC endpoint, private-subnet resources reach S3 via a NAT Gateway and the public internet, adding cost, latency, and exposure. Gateway-type VPC endpoints for services like S3 are free and keep traffic entirely within the AWS network."
+        },
+        {
+            "id": "d134q05",
+            "type": "multiple_choice",
+            "question": "Why should secrets (database passwords, API keys) never be hardcoded in application code or committed to Git, even temporarily?",
+            "options": [
+                "It only matters if the repository is public from the start",
+                "Git history permanently retains old commits, so a secret committed once remains exposed even after later removal, unless the repo history itself is rewritten; dedicated secrets managers provide rotation, access control, and audit logging instead",
+                "Hardcoded secrets are fine as long as they're in environment variables inside the Docker image",
+                "Secrets managers are more expensive than hardcoding and provide no real security benefit"
+            ],
+            "answer": 1,
+            "explanation": "Even if a secret is later deleted from the current code, it remains accessible in Git history indefinitely unless history is rewritten. Dedicated secrets managers (AWS Secrets Manager, Vault) avoid this entirely by providing encryption, rotation, fine-grained access control, and audit logging outside of source code."
+        }
+    ]
+}
