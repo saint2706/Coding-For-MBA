@@ -165,6 +165,80 @@
   margin-bottom: 0;
 }
 
+/* Callouts — GitHub-style alert blockquotes: > [!NOTE], [!TIP], [!IMPORTANT], [!WARNING], [!DANGER] */
+.markdown-body .callout {
+  margin: 1.5rem 0;
+  padding: 0.85rem 1rem 0.9rem 1.1rem;
+  border: 1px solid var(--border-card);
+  border-left: 3px solid var(--callout-accent, var(--accent-primary));
+  border-radius: var(--radius-md);
+  background: var(--callout-bg, var(--bg-secondary));
+  font-style: normal;
+}
+
+.markdown-body .callout p {
+  margin: 0.35rem 0 0;
+  color: var(--text-primary);
+}
+
+.markdown-body .callout p:first-child {
+  margin-top: 0;
+}
+
+.markdown-body .callout::before {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--callout-accent, var(--accent-primary));
+}
+
+.markdown-body .callout-note {
+  --callout-accent: #3b82f6;
+  --callout-bg: rgba(59, 130, 246, 0.08);
+}
+
+.markdown-body .callout-note::before {
+  content: 'ℹ️ Note';
+}
+
+.markdown-body .callout-tip {
+  --callout-accent: #22c55e;
+  --callout-bg: rgba(34, 197, 94, 0.08);
+}
+
+.markdown-body .callout-tip::before {
+  content: '💡 Tip';
+}
+
+.markdown-body .callout-important {
+  --callout-accent: #a855f7;
+  --callout-bg: rgba(168, 85, 247, 0.08);
+}
+
+.markdown-body .callout-important::before {
+  content: '📌 Important';
+}
+
+.markdown-body .callout-warning {
+  --callout-accent: #f59e0b;
+  --callout-bg: rgba(245, 158, 11, 0.08);
+}
+
+.markdown-body .callout-warning::before {
+  content: '⚠️ Warning';
+}
+
+.markdown-body .callout-danger {
+  --callout-accent: #ef4444;
+  --callout-bg: rgba(239, 68, 68, 0.08);
+}
+
+.markdown-body .callout-danger::before {
+  content: '🚫 Danger';
+}
+
 .markdown-body hr {
   border: none;
   border-top: 1px solid var(--border-card);

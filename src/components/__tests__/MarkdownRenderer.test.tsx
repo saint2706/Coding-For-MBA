@@ -333,8 +333,49 @@ It prints:
 
     const glossaryTerm = container.querySelector('.glossary-term')
     expect(glossaryTerm).toBeTruthy()
+    expect(glossaryTerm?.tagName).toBe('BUTTON')
     expect(glossaryTerm?.textContent).toBe('function')
     expect(glossaryTerm?.getAttribute('data-definition')).toBeTruthy()
+  })
+
+  it('toggles a glossary tooltip open and closed on tap, for touch devices', () => {
+    const content = 'This is a function.'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const glossaryTerm = container.querySelector<HTMLButtonElement>('.glossary-term')!
+    expect(glossaryTerm.getAttribute('aria-expanded')).toBe('false')
+
+    act(() => {
+      glossaryTerm.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+    expect(glossaryTerm.getAttribute('aria-expanded')).toBe('true')
+    expect(glossaryTerm.classList.contains('glossary-term-active')).toBe(true)
+
+    act(() => {
+      glossaryTerm.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+    expect(glossaryTerm.getAttribute('aria-expanded')).toBe('false')
+    expect(glossaryTerm.classList.contains('glossary-term-active')).toBe(false)
+  })
+
+  it('closes an open glossary tooltip on outside pointerdown', () => {
+    const content = 'This is a function.'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const glossaryTerm = container.querySelector<HTMLButtonElement>('.glossary-term')!
+    act(() => {
+      glossaryTerm.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+    expect(glossaryTerm.getAttribute('aria-expanded')).toBe('true')
+
+    act(() => {
+      document.body.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }))
+    })
+    expect(glossaryTerm.getAttribute('aria-expanded')).toBe('false')
   })
 
   it('renders glossary tooltips identically for repeated mixed-case terms', () => {
@@ -358,8 +399,48 @@ It prints:
       root.render(<MarkdownRenderer content={content} />)
     })
 
-    expect(container.querySelector('p')?.innerHTML).toBe(
-      'A <span class="glossary-term" data-definition="A reusable block of code that performs a specific task.">function</span> takes an <span class="glossary-term" data-definition="A value passed to a function when it is called.">argument</span> and another function.',
+    const paragraph = container.querySelector('p')
+    expect(paragraph?.textContent).toBe('A function takes an argument and another function.')
+
+    const glossaryTerms = paragraph?.querySelectorAll('.glossary-term')
+    expect(glossaryTerms).toHaveLength(2)
+    expect(glossaryTerms?.[0]?.tagName).toBe('BUTTON')
+    expect(glossaryTerms?.[0]?.textContent).toBe('function')
+    expect(glossaryTerms?.[0]?.getAttribute('data-definition')).toBe(
+      'A reusable block of code that performs a specific task.',
+    )
+    expect(glossaryTerms?.[1]?.tagName).toBe('BUTTON')
+    expect(glossaryTerms?.[1]?.textContent).toBe('argument')
+    expect(glossaryTerms?.[1]?.getAttribute('data-definition')).toBe(
+      'A value passed to a function when it is called.',
+    )
+  })
+
+  it('renders GitHub-style alert blockquotes as styled callouts', () => {
+    const content = ['> [!WARNING]', '> Watch out for this edge case.'].join('\n')
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    expect(container.querySelector('blockquote')).toBeNull()
+
+    const callout = container.querySelector('.callout')
+    expect(callout).toBeTruthy()
+    expect(callout?.tagName).toBe('DIV')
+    expect(callout?.classList.contains('callout-warning')).toBe(true)
+    expect(callout?.getAttribute('data-callout')).toBe('warning')
+    expect(callout?.textContent?.trim()).toBe('Watch out for this edge case.')
+  })
+
+  it('renders a plain blockquote unchanged when there is no callout marker', () => {
+    const content = '> Just a regular pull quote.'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    expect(container.querySelector('.callout')).toBeNull()
+    expect(container.querySelector('blockquote')?.textContent?.trim()).toBe(
+      'Just a regular pull quote.',
     )
   })
 })
