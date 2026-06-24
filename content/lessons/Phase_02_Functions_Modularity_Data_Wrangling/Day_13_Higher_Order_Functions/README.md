@@ -146,6 +146,20 @@ total_plus_10 = reduce(lambda acc, x: acc + x, numbers, 10)
 # 25
 ```
 
+### Chaining Them Into a Pipeline
+
+`map`, `filter`, and `reduce` compose into a data pipeline, where each stage transforms the output of the one before it:
+
+```mermaid
+flowchart LR
+    A[Raw sales records] --> B["filter(): keep amount >= 4000"]
+    B --> C["map(): attach 10% bonus"]
+    C --> D["reduce(): sum all bonuses"]
+    D --> E[Total bonus pool]
+```
+
+This is exactly the shape of Exercise 1 below — filter the rows you care about, transform each one, then collapse to a single number.
+
 ### Lambda Functions
 
 Anonymous, inline functions:

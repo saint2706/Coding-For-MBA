@@ -35,6 +35,15 @@ by_region.to_csv("summary.csv")        # Save results
 
 A DataFrame is like a SQL table or an Excel sheet in memory: rows have numeric indices, columns have named headers, and you can query, join, and transform data using Python instead of clicking around a spreadsheet. The key difference is that your entire analysis is a script you can re-run on next month's data in seconds.
 
+```mermaid
+flowchart LR
+    A["Load: pd.read_csv()"] --> B["Filter: df[condition]"]
+    B --> C["Aggregate: groupby().sum()"]
+    C --> D["Save: df.to_csv()"]
+```
+
+This load → filter → aggregate → save chain is the backbone of nearly every Pandas script you'll write — the sections below cover each stage in detail.
+
 ---
 
 ## The Technical Deep Dive

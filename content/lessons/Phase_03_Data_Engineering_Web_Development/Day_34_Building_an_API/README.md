@@ -75,6 +75,28 @@ def create_product(product: Product):
 
 **Navigate to `http://127.0.0.1:8000/docs` after starting the server** — you'll see a fully interactive API explorer with no extra setup.
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant FastAPI
+    participant Pydantic
+    participant Endpoint as create_product()
+
+    Client->>FastAPI: POST /products {"price": "not a number"}
+    FastAPI->>Pydantic: Parse & validate body against Product model
+    alt Validation fails
+        Pydantic-->>FastAPI: ValidationError
+        FastAPI-->>Client: 422 Unprocessable Entity
+    else Validation passes
+        Pydantic-->>FastAPI: Validated Product instance
+        FastAPI->>Endpoint: create_product(product)
+        Endpoint-->>FastAPI: return response dict
+        FastAPI-->>Client: 200 OK + JSON
+    end
+```
+
+Validation happens *before* your endpoint function ever runs — by the time `create_product()` executes, `product.price` is guaranteed to be a `float`.
+
 **`dict` vs Pydantic model in responses:**
 
 - Returning a `dict` works but bypasses Pydantic validation on output

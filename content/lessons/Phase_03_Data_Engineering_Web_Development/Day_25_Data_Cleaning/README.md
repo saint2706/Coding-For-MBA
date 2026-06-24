@@ -55,6 +55,24 @@ This is the reality of business data. It's messy, inconsistent, and riddled with
 
 ## The Technical Deep Dive
 
+```mermaid
+flowchart TD
+    A[Detect missing values: isnull().sum()] --> B{Any missing?}
+    B -- No --> Z[Continue to type conversion / dedup]
+    B -- Yes --> C{Choose a strategy}
+    C --> D[Drop rows: dropna]
+    C --> E[Fill with mean/median/mode]
+    C --> F[Forward/backward fill]
+    C --> G[Flag as Unknown]
+    D --> H[Validate: assert no unexpected nulls remain]
+    E --> H
+    F --> H
+    G --> H
+    H --> Z
+```
+
+Every cleaning pipeline below follows this same shape: detect, decide on a strategy per column, apply it, then validate before moving on.
+
 ### Handling Missing Data
 
 Missing data is inevitable. The key is choosing the right strategy.
