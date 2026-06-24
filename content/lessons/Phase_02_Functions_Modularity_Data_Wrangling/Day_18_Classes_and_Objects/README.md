@@ -201,6 +201,24 @@ for animal in animals:
     print(animal.speak())
 ```
 
+```mermaid
+classDiagram
+    class Animal {
+        +String name
+        +speak()
+    }
+    class Dog {
+        +speak()
+    }
+    class Cat {
+        +speak()
+    }
+    Animal <|-- Dog
+    Animal <|-- Cat
+```
+
+`Dog` and `Cat` both inherit from `Animal` and override `speak()` — the same method call produces different behavior depending on the instance (polymorphism).
+
 ### Dunder (Magic) Methods
 
 ```python
@@ -461,6 +479,26 @@ order.add_item("Mouse", 2, 29)
 print(order.process())
 print(f"Items: {len(order.items)}, Total: ${order.total:.2f}")
 ```
+
+```mermaid
+classDiagram
+    class Order {
+        +String customer
+        +String status
+        +add_item()
+        +total()
+        +process()
+    }
+    class OrderItem {
+        +String product_name
+        +int quantity
+        +float unit_price
+        +subtotal()
+    }
+    Order "1" *-- "many" OrderItem : items
+```
+
+An `Order` *owns* its `OrderItem`s (composition) — they can't meaningfully exist without the order they belong to, which is why `Order.add_item()` is the only way to create one.
 
 **Expected Output:**
 

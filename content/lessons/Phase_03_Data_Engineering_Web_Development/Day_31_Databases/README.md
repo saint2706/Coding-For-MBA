@@ -168,6 +168,41 @@ FROM employees e
 JOIN departments d ON e.department_id = d.id;
 ```
 
+### Entity Relationships
+
+The tables across this lesson's examples relate to each other like this:
+
+```mermaid
+erDiagram
+    DEPARTMENTS ||--o{ EMPLOYEES : employs
+    PRODUCTS ||--o{ SALES : "sold in"
+
+    DEPARTMENTS {
+        int id
+        string department_name
+    }
+    EMPLOYEES {
+        int id
+        string name
+        string department
+        float salary
+        string hire_date
+    }
+    PRODUCTS {
+        int id
+        string name
+        float price
+    }
+    SALES {
+        int id
+        int product_id
+        int quantity
+        string sale_date
+    }
+```
+
+A `DEPARTMENTS` row has many `EMPLOYEES` (one-to-many); a `PRODUCTS` row has many `SALES` line items. This is the relationship the `JOIN` query above walks across.
+
 ---
 
 ## Senior-Level Insights

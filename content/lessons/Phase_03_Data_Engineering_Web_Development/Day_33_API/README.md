@@ -172,6 +172,24 @@ def safe_api_call(url, params=None):
 data = safe_api_call("https://api.github.com/users/octocat")
 ```
 
+```mermaid
+sequenceDiagram
+    participant Client
+    participant API as API Server
+    Client->>API: GET /users/octocat (Authorization header)
+    API->>API: Validate auth token
+    alt Token valid
+        API->>API: Process request
+        API-->>Client: 200 OK + JSON body
+    else Token invalid/expired
+        API-->>Client: 401 Unauthorized
+    else Too many requests
+        API-->>Client: 429 Too Many Requests (Retry-After)
+    end
+```
+
+`safe_api_call()` above is the client-side half of this exchange — it has to handle all three branches the server might take.
+
 ---
 
 ## Senior-Level Insights

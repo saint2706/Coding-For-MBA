@@ -107,6 +107,21 @@ print(f"Grade: {grade}")  # Grade: B
 
 **Important**: Only ONE branch executes. Python stops at the first `True` condition.
 
+```mermaid
+flowchart TD
+    A[score] --> B{score >= 90?}
+    B -- Yes --> C[grade = A]
+    B -- No --> D{score >= 80?}
+    D -- Yes --> E[grade = B]
+    D -- No --> F{score >= 70?}
+    F -- Yes --> G[grade = C]
+    F -- No --> H{score >= 60?}
+    H -- Yes --> I[grade = D]
+    H -- No --> J[grade = F]
+```
+
+Each diamond is one `elif` check. Python walks down the chain and stops at the first `True` branch — that's why **order matters** (see Mastery Check Question 2).
+
 ### Multiple Conditions
 
 ```python

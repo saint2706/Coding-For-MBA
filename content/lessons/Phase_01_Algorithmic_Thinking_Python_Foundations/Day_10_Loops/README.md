@@ -187,6 +187,23 @@ for i in range(5):
     print(i)  # 0, 1, 3, 4
 ```
 
+```mermaid
+flowchart TD
+    A[i = 0] --> B{i < 5?}
+    B -- No --> Z[Loop ends]
+    B -- Yes --> C{i == 2?}
+    C -- Yes --> D[continue: skip rest of body]
+    D --> H[i += 1]
+    C -- No --> E{i == 4?}
+    E -- Yes --> F[break: exit loop now]
+    F --> Z
+    E -- No --> G[print i]
+    G --> H
+    H --> B
+```
+
+`continue` jumps straight back to the loop condition; `break` exits the loop entirely, skipping any remaining iterations.
+
 ### Else Clause on Loops
 
 ```python

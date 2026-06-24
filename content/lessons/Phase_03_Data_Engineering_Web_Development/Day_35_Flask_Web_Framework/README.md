@@ -206,6 +206,19 @@ def dashboard(user):
 </form>
 ```
 
+```mermaid
+flowchart TD
+    A[GET /login] --> B[Flask routes to login view]
+    B --> C["render_template('login.html')"]
+    C --> D[User submits form: POST /login]
+    D --> E["request.form: read username/password"]
+    E --> F{Credentials valid?}
+    F -- Yes --> G["redirect to /dashboard/&lt;user&gt;"]
+    F -- No --> C
+```
+
+The same view function handles both `GET` (show the form) and `POST` (process the submission) — that's why `request.method` is checked at the top of `login()`.
+
 ### Dynamic Routes
 
 ```python
