@@ -57,10 +57,7 @@ export function remarkCodeMeta() {
 
       node.data = {
         ...node.data,
-        hProperties: {
-          ...(node.data?.hProperties as Record<string, unknown> | undefined),
-          ...hProperties,
-        },
+        hProperties,
       }
     })
   }
