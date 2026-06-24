@@ -409,6 +409,57 @@
   }
 }
 
+/* Mermaid diagrams */
+.mermaid-diagram-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.mermaid-diagram-loading {
+  padding: 1rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.mermaid-diagram {
+  width: 100%;
+}
+
+.mermaid-diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.mermaid-diagram-error {
+  padding: 1rem;
+  color: var(--text-secondary);
+}
+
+.mermaid-diagram-error pre {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: var(--bg-code);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.markdown-body .mermaid-source {
+  margin: 0 !important;
+  padding: 1rem !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.75;
+}
+
 /* Tables — financial-report aesthetic */
 .markdown-body .table-wrapper {
   overflow-x: auto;

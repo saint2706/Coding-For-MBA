@@ -30,6 +30,12 @@ vi.mock('../MasteryCheck', () => ({
   },
 }))
 
+vi.mock('../MermaidDiagram', () => ({
+  default: function MockMermaidDiagram(props: Record<string, unknown>) {
+    return <div data-testid="mermaid-diagram">{props.code as React.ReactNode}</div>
+  },
+}))
+
 const syntaxHighlighterMock = vi.fn(
   ({ children, wrapLongLines, codeTagProps, customStyle }: Record<string, unknown>) => {
     const safeCodeTagProps = codeTagProps as
@@ -258,6 +264,44 @@ describe('MarkdownRenderer', () => {
 
     const tryBtn = container.querySelector('.code-block-try-btn')
     expect(tryBtn).toBeNull()
+  })
+
+  it('renders a mermaid diagram block instead of a syntax-highlighted code block', async () => {
+    const content = '```mermaid\ngraph TD;\nA-->B;\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const mermaidBlock = container.querySelector('.mermaid-block')
+    expect(mermaidBlock).toBeTruthy()
+    expect(mermaidBlock?.querySelector('.code-block-lang')?.textContent).toBe('mermaid')
+    expect(container.querySelector('.syntax-highlighter')).toBeNull()
+
+    await waitFor(() => {
+      expect(container.querySelector('[data-testid="mermaid-diagram"]')).toBeTruthy()
+    })
+    expect(container.querySelector('[data-testid="mermaid-diagram"]')?.textContent).toBe(
+      'graph TD;\nA-->B;',
+    )
+  })
+
+  it('toggles a mermaid block to show raw source text', async () => {
+    const content = '```mermaid\ngraph TD;\nA-->B;\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    await waitFor(() => {
+      expect(container.querySelector('[data-testid="mermaid-diagram"]')).toBeTruthy()
+    })
+
+    const sourceBtn = container.querySelector('.mermaid-block .code-block-copy')
+    act(() => {
+      sourceBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(container.querySelector('[data-testid="mermaid-diagram"]')).toBeNull()
+    expect(container.querySelector('.mermaid-source')?.textContent).toBe('graph TD;\nA-->B;')
   })
 
   it('renders ExerciseWidget for exercise blocks', async () => {
