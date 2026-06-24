@@ -44,6 +44,7 @@ import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import TableOfContents from '../components/TableOfContents'
 import PrerequisitePills from '../components/PrerequisitePills'
+import LessonCodeActions from '../components/LessonCodeActions'
 import RelatedLessons from '../components/RelatedLessons'
 import { useSwipe } from '../hooks/useSwipe'
 import { toastInfo, toastSuccess } from '../utils/toast'
@@ -331,6 +332,8 @@ export default function Lesson() {
                   ))}
                 </div>
               )}
+
+              <LessonCodeActions content={lesson.content} day={String(lesson.day)} />
 
               <PrerequisitePills lesson={lesson} />
             </div>

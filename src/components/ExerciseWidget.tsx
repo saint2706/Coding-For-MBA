@@ -203,6 +203,12 @@ export default function ExerciseWidget({
           🧪
         </span>
         <h3 className="exercise-widget__title">{title}</h3>
+        <CopyButton
+          text={starterCode}
+          className="exercise-widget__copy-starter-btn"
+          ariaLabel="Copy starter code for this exercise"
+          label="Copy starter code"
+        />
       </div>
 
       {goal && (

@@ -276,6 +276,25 @@
   color: var(--text-heading);
 }
 
+.exercise-widget__copy-starter-btn {
+  margin-left: auto;
+  padding: 0.3rem 0.6rem;
+  background: transparent;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.exercise-widget__copy-starter-btn:hover {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
 .exercise-widget__goal {
   padding: 0.5rem 0.75rem 0;
   font-size: 0.8125rem;

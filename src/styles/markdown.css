@@ -684,6 +684,45 @@
   word-break: normal !important;
 }
 
+/* ===== CODE BLOCK: DIFF + LINE HIGHLIGHTING ===== */
+/* Driven by fence meta conventions: ` ```diff `, ` ```python diff `, ` ```python {3,7-9} ` */
+
+.code-block-diff-badge {
+  margin-left: 0.4rem;
+  padding: 0.05rem 0.35rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-tertiary);
+  background: color-mix(in srgb, var(--accent-tertiary) 12%, transparent);
+}
+
+.code-block-line--highlighted {
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  background: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+  border-left: 2px solid var(--accent-primary);
+}
+
+.code-block-line--diff-add {
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  background: rgba(34, 197, 94, 0.14);
+  border-left: 2px solid #22c55e;
+}
+
+.code-block-line--diff-remove {
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  background: rgba(239, 68, 68, 0.14);
+  border-left: 2px solid #ef4444;
+}
+
 /* ===== IMAGE ZOOM / LIGHTBOX ===== */
 
 .zoomable-image {

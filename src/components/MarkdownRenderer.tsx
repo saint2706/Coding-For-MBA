@@ -11,7 +11,17 @@
  * - Render code blocks with syntax highlighting and copy buttons.
  */
 
-import { useState, useEffect, memo, JSX, useMemo, type ComponentProps, lazy, Suspense } from 'react'
+import {
+  useState,
+  useEffect,
+  useCallback,
+  memo,
+  JSX,
+  useMemo,
+  type ComponentProps,
+  lazy,
+  Suspense,
+} from 'react'
 import { createPortal } from 'react-dom'
 import ReactMarkdown, { Components, ExtraProps } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -31,6 +41,7 @@ import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 import { getSecureLinkAttributes } from '../utils/linkSafety'
 import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
 import { remarkCallouts } from '../utils/remark-callouts'
+import { remarkCodeMeta } from '../utils/remark-code-meta'
 
 const COLLAPSE_THRESHOLD = 20
 const COLLAPSED_LINE_COUNT = 15
@@ -53,7 +64,17 @@ const customTheme = {
   },
 }
 
-function CodeBlock({ className, children }: { className?: string; children: React.ReactNode }) {
+function CodeBlock({
+  className,
+  children,
+  isDiff,
+  highlightLines,
+}: {
+  className?: string
+  children: React.ReactNode
+  isDiff?: boolean
+  highlightLines?: number[]
+}) {
   const match = /language-(\w+)/.exec(className || '')
   const lang = match ? match[1]! : ''
   const code = String(children).replace(/\n$/, '')
@@ -64,6 +85,27 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
   const isLong = lines.length > COLLAPSE_THRESHOLD
   const [collapsed, setCollapsed] = useState(isLong)
   const [wrapLines, setWrapLines] = useState(true)
+
+  const highlightLineSet = useMemo(() => new Set(highlightLines ?? []), [highlightLines])
+
+  const getLineProps = useCallback(
+    (lineNumber: number): { className?: string } => {
+      const lineClasses: string[] = []
+      if (highlightLineSet.has(lineNumber)) {
+        lineClasses.push('code-block-line--highlighted')
+      }
+      if (isDiff) {
+        const sourceLine = lines[lineNumber - 1] ?? ''
+        if (sourceLine.startsWith('+') && !sourceLine.startsWith('+++')) {
+          lineClasses.push('code-block-line--diff-add')
+        } else if (sourceLine.startsWith('-') && !sourceLine.startsWith('---')) {
+          lineClasses.push('code-block-line--diff-remove')
+        }
+      }
+      return lineClasses.length > 0 ? { className: lineClasses.join(' ') } : {}
+    },
+    [highlightLineSet, isDiff, lines],
+  )
 
   if (!match) {
     return <code className={className}>{children}</code>
@@ -78,7 +120,10 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
       data-wrap={wrapLines ? 'true' : 'false'}
     >
       <div className="code-block-header">
-        <span className="code-block-lang">{lang}</span>
+        <span className="code-block-lang">
+          {lang}
+          {isDiff && lang !== 'diff' && <span className="code-block-diff-badge">diff</span>}
+        </span>
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
           <button
             type="button"
@@ -108,6 +153,8 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
           language={lang}
           PreTag="div"
           wrapLongLines={wrapLines}
+          wrapLines
+          lineProps={getLineProps}
           showLineNumbers={lines.length > 3}
           lineNumberStyle={{
             minWidth: '2.5em',
@@ -172,10 +219,21 @@ function CodeBlock({ className, children }: { className?: string; children: Reac
 }
 
 const CodeComponent = (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
-  const { children, className, ...rest } = props
+  const { children, className, node, ...rest } = props
   const match = /language-(\w+)/.exec(className || '')
   if (match) {
-    return <CodeBlock className={className}>{children}</CodeBlock>
+    const properties = node?.properties as Record<string, unknown> | undefined
+    const isDiff = properties?.dataDiff === 'true'
+    const highlightLinesAttr = properties?.dataHighlightLines
+    const highlightLines =
+      typeof highlightLinesAttr === 'string' && highlightLinesAttr.length > 0
+        ? highlightLinesAttr.split(',').map((n) => parseInt(n, 10))
+        : undefined
+    return (
+      <CodeBlock className={className} isDiff={isDiff} highlightLines={highlightLines}>
+        {children}
+      </CodeBlock>
+    )
   }
   return (
     <code className={className} {...rest}>
@@ -689,7 +747,7 @@ const lessonSanitizerSchema: RehypeSanitizeOptions = {
   ],
   attributes: {
     a: ['href', 'title', 'target', 'rel'],
-    code: ['className'],
+    code: ['className', 'dataDiff', 'dataHighlightLines'],
     div: ['className', 'dataCallout'],
     img: [
       'src',
@@ -725,7 +783,7 @@ const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlu
   rehypeKatex,
 ]
 
-const remarkPlugins = [remarkGfm, remarkMath, remarkCallouts]
+const remarkPlugins = [remarkGfm, remarkMath, remarkCallouts, remarkCodeMeta]
 
 function InteractiveContent({
   content,
