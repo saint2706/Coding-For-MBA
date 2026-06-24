@@ -11,15 +11,16 @@ permissions:
 
 jobs:
   dependency-review:
+    # Disabled: this action requires Dependency graph / GitHub Advanced
+    # Security, which isn't enabled for this repo (Settings > Security >
+    # Code security and analysis). It errors out before checking anything,
+    # so it can't function as a gate. Remove this `if: false` once that
+    # setting is turned on.
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - name: Dependency Review
-        # Repo-wide Dependency graph / GitHub Advanced Security isn't enabled
-        # (Settings > Security > Code security and analysis), so this action
-        # currently errors out before it can check anything. Don't let that
-        # block PRs; re-enable as a blocking gate once the setting is on.
-        continue-on-error: true
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
