@@ -26,9 +26,11 @@ import type { Content, Heading, Html, Nodes, Paragraph, Root, Strong } from 'mda
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import CopyButton from './CopyButton'
+import GlossaryTerm from './GlossaryTerm'
 import { glossaryTerms, getGlossaryRegex } from '../utils/glossary'
 import { getSecureLinkAttributes } from '../utils/linkSafety'
 import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
+import { remarkCallouts } from '../utils/remark-callouts'
 
 const COLLAPSE_THRESHOLD = 20
 const COLLAPSED_LINE_COUNT = 15
@@ -335,11 +337,7 @@ function addGlossaryTooltips(text: string): (string | JSX.Element)[] {
       const definition = glossaryDefinitionsByLowerTerm[termLower]
 
       if (definition) {
-        parts.push(
-          <span key={`gl-${keyIdx++}`} className="glossary-term" data-definition={definition}>
-            {match[0]}
-          </span>,
-        )
+        parts.push(<GlossaryTerm key={`gl-${keyIdx++}`} text={match[0]} definition={definition} />)
       } else {
         parts.push(match[0])
       }
@@ -692,7 +690,7 @@ const lessonSanitizerSchema: RehypeSanitizeOptions = {
   attributes: {
     a: ['href', 'title', 'target', 'rel'],
     code: ['className'],
-    div: ['className'],
+    div: ['className', 'dataCallout'],
     img: [
       'src',
       'alt',
@@ -727,7 +725,7 @@ const rehypePlugins: NonNullable<ComponentProps<typeof ReactMarkdown>['rehypePlu
   rehypeKatex,
 ]
 
-const remarkPlugins = [remarkGfm, remarkMath]
+const remarkPlugins = [remarkGfm, remarkMath, remarkCallouts]
 
 function InteractiveContent({
   content,

@@ -357,9 +357,16 @@
 /* --- Glossary Tooltips --- */
 .glossary-term {
   position: relative;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
   border-bottom: 1px dashed var(--accent-tertiary);
-  cursor: help;
+  border-radius: 0;
+  background: transparent;
+  font: inherit;
   color: inherit;
+  cursor: help;
 }
 
 .glossary-term::after {
@@ -387,7 +394,8 @@
     transform var(--transition-fast);
 }
 
-.glossary-term:hover::after {
+.glossary-term:hover::after,
+.glossary-term.glossary-term-active::after {
   opacity: 1;
   transform: translateX(-50%) translateY(0) scale(1);
 }
@@ -398,8 +406,16 @@
   transform: translateX(0) translateY(4px) scale(0.95);
 }
 
-.glossary-term:first-child:hover::after {
+.glossary-term:first-child:hover::after,
+.glossary-term:first-child.glossary-term-active::after {
   transform: translateX(0) translateY(0) scale(1);
+}
+
+/* Touch devices can't hover — make the tap target's intent clear */
+@media (hover: none) {
+  .glossary-term {
+    cursor: pointer;
+  }
 }
 
 @media (max-width: 768px) {
