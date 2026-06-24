@@ -49,6 +49,7 @@ const COLLAPSED_LINE_COUNT = 15
 const CodePlayground = lazy(() => import('./CodePlayground'))
 const ExerciseWidget = lazy(() => import('./ExerciseWidget'))
 const MasteryCheck = lazy(() => import('./MasteryCheck'))
+const MermaidDiagram = lazy(() => import('./MermaidDiagram'))
 
 const customTheme = {
   ...oneDark,
@@ -218,10 +219,48 @@ function CodeBlock({
   )
 }
 
+function MermaidBlock({ code }: { code: string }) {
+  const [showSource, setShowSource] = useState(false)
+
+  return (
+    <div className="code-block-wrapper code-block--wrapped mermaid-block">
+      <div className="code-block-header">
+        <span className="code-block-lang">mermaid</span>
+        <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
+          <button
+            type="button"
+            className="code-block-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            onClick={() => setShowSource((s) => !s)}
+            aria-label={showSource ? 'Show rendered diagram' : 'View diagram source'}
+          >
+            {showSource ? '◇ Diagram' : '⌗ Source'}
+          </button>
+          <CopyButton text={code} ariaLabel="Copy diagram source to clipboard" />
+        </div>
+      </div>
+      {showSource ? (
+        <pre className="mermaid-source">
+          <code>{code}</code>
+        </pre>
+      ) : (
+        <Suspense
+          fallback={<div className="mermaid-diagram-loading">Loading diagram renderer...</div>}
+        >
+          <MermaidDiagram code={code} />
+        </Suspense>
+      )}
+    </div>
+  )
+}
+
 const CodeComponent = (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
   const { children, className, node, ...rest } = props
   const match = /language-(\w+)/.exec(className || '')
   if (match) {
+    const lang = match[1]!
+    if (lang === 'mermaid') {
+      return <MermaidBlock code={String(children).replace(/\n$/, '')} />
+    }
     const properties = node?.properties as Record<string, unknown> | undefined
     const isDiff = properties?.dataDiff === 'true'
     const highlightLinesAttr = properties?.dataHighlightLines

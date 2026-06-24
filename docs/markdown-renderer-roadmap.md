@@ -30,13 +30,20 @@ likely read on phones. Glossary terms are now rendered via a small
 `<button>` supporting tap-to-toggle (with outside-tap/Escape dismiss), while
 still supporting `:hover` on pointer devices.
 
-## Mermaid diagrams 🔲
+## Mermaid diagrams ✅
 
-No diagram support exists today, yet phases like Data Engineering / Cloud /
-Analytics Engineering would benefit from architecture and pipeline diagrams.
-Add a `mermaid` code-block detector in `CodeComponent` (parallel to the
-existing Python/Pyodide path) that lazy-loads `mermaid` and renders sanitized
-SVG client-side.
+Implemented via a `mermaid` code-block detector in `CodeComponent` (parallel
+to the existing Python/Pyodide path): a ` ```mermaid ` fence renders through
+`MermaidBlock` instead of the syntax-highlighted `CodeBlock`, with a header
+toggle to flip between the rendered diagram and the raw source (plus the
+usual copy button). The actual diagram rendering is lazy-loaded via
+`src/components/MermaidDiagram.tsx` (`React.lazy` + dynamic `import('mermaid')`),
+so the library only enters the bundle for lessons that use it. Mermaid runs
+with `securityLevel: 'strict'` and renders sanitized SVG client-side via
+`mermaid.render()`; the diagram theme (`dark`/`default`) tracks the app's
+`data-palette-type` attribute via a `MutationObserver`, and parse/render
+failures fall back to an inline error message with the raw diagram source
+instead of crashing the lesson.
 
 ## Runnable SQL blocks 🔲
 

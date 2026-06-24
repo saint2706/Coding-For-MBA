@@ -11,6 +11,12 @@ permissions:
 
 jobs:
   dependency-review:
+    # Disabled: this action requires Dependency graph / GitHub Advanced
+    # Security, which isn't enabled for this repo (Settings > Security >
+    # Code security and analysis). It errors out before checking anything,
+    # so it can't function as a gate. Remove this `if: false` once that
+    # setting is turned on.
+    if: false
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
