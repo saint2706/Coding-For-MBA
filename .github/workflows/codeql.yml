@@ -43,6 +43,11 @@ jobs:
         run: npm run build
 
       - name: Perform CodeQL Analysis
+        # Code scanning / GitHub Advanced Security isn't enabled for this repo
+        # (Settings > Security > Code security and analysis), so SARIF upload
+        # currently errors out regardless of the scan results. Don't let that
+        # block PRs; re-enable as a blocking gate once the setting is on.
+        continue-on-error: true
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:${{ matrix.language }}"

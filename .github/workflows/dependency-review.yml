@@ -15,6 +15,11 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Dependency Review
+        # Repo-wide Dependency graph / GitHub Advanced Security isn't enabled
+        # (Settings > Security > Code security and analysis), so this action
+        # currently errors out before it can check anything. Don't let that
+        # block PRs; re-enable as a blocking gate once the setting is on.
+        continue-on-error: true
         uses: actions/dependency-review-action@v4
         with:
           fail-on-severity: high
