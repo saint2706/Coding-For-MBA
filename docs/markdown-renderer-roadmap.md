@@ -56,15 +56,27 @@ extension point:
 - Surface lessons with low mastery scores for revisiting (lightweight
   spaced-repetition nudge) on the home/progress pages.
 
-## Code block QoL 🔲
+## Code block QoL ✅
 
-- **Diff highlighting**: support ` ```python diff ` or `+`/`-` prefixed lines
-  rendered with green/red backgrounds — useful for refactor-style lessons.
-- **Download/copy whole lesson's code**: a "Copy all snippets" or "Download
-  as .py" button per lesson.
-- **Per-exercise "copy starter code"**, prefilling the playground directly.
-- **Line highlighting** via a ` ```python {3,7-9} ` meta string convention to
-  draw attention to specific lines in Deep Dive sections.
+- **Diff highlighting**: a remark plugin (`src/utils/remark-code-meta.ts`)
+  reads the fence's meta string for a `diff` keyword (or a bare ` ```diff `
+  language) and tags the mdast `code` node with `data-diff`. `CodeBlock` (in
+  `MarkdownRenderer.tsx`) uses `react-syntax-highlighter`'s `lineProps` to
+  color `+`/`-` prefixed lines green/red (skipping unified-diff `+++`/`---`
+  file headers) and shows a small "diff" badge when the language itself isn't
+  `diff`.
+- **Download/copy whole lesson's code**: `src/utils/lessonCodeBlocks.ts`
+  extracts every runnable `python`/`py` fence from a lesson's markdown
+  (skipping `diff`-flagged ones), and `LessonCodeActions`
+  (`src/components/LessonCodeActions.tsx`) renders "Copy all snippets" and
+  "Download as .py" buttons in the lesson header.
+- **Per-exercise "copy starter code"**: `ExerciseWidget` now has a "Copy
+  starter code" button (via the shared `CopyButton`) that copies the original
+  `starterCode` prop, independent of any live edits in the playground.
+- **Line highlighting**: the same `remarkCodeMeta` plugin parses a
+  ` ```python {3,7-9} ` meta range and tags the node with
+  `data-highlight-lines`, which `CodeBlock` turns into highlighted lines via
+  `lineProps`.
 
 ## Reading-mode / navigation polish 🔲
 

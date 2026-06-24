@@ -20,6 +20,8 @@ interface CopyButtonProps {
   showEmoji?: boolean
   /** Optional aria-label for accessibility. */
   ariaLabel?: string
+  /** Optional custom button label, shown instead of the default "Copy" text. */
+  label?: string
 }
 
 /**
@@ -37,11 +39,12 @@ export default function CopyButton({
   className = 'code-block-copy',
   showEmoji = false,
   ariaLabel,
+  label,
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
   const timeoutRef = useRef<number | null>(null)
 
-  const label = ariaLabel || (showEmoji ? 'Copy to clipboard' : 'Copy code')
+  const accessibleLabel = ariaLabel || (showEmoji ? 'Copy to clipboard' : 'Copy code')
 
   const handleCopy = useCallback(() => {
     navigator.clipboard
@@ -76,8 +79,8 @@ export default function CopyButton({
       type="button"
       className={`${className} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`}
       onClick={handleCopy}
-      aria-label={copied ? 'Code copied to clipboard' : label}
-      title={label}
+      aria-label={copied ? 'Code copied to clipboard' : accessibleLabel}
+      title={accessibleLabel}
     >
       {copied ? (
         <>
@@ -85,10 +88,10 @@ export default function CopyButton({
         </>
       ) : showEmoji ? (
         <>
-          <span aria-hidden="true">📋</span> Copy
+          <span aria-hidden="true">📋</span> {label ?? 'Copy'}
         </>
       ) : (
-        'Copy'
+        (label ?? 'Copy')
       )}
       <span className="sr-only" aria-live="polite" aria-atomic="true">
         {copied ? 'Code copied to clipboard' : ''}

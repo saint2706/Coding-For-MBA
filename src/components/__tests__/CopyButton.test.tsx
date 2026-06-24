@@ -169,4 +169,22 @@ describe('CopyButton', () => {
     const button = container.querySelector('button')
     expect(button?.textContent).toContain('📋 Copy')
   })
+
+  it('renders a custom label when provided', () => {
+    act(() => {
+      root?.render(<CopyButton text="some code" label="Copy all snippets" />)
+    })
+
+    const button = container.querySelector('button')
+    expect(button?.textContent).toContain('Copy all snippets')
+  })
+
+  it('renders a custom label alongside the emoji', () => {
+    act(() => {
+      root?.render(<CopyButton text="some code" showEmoji label="Copy starter code" />)
+    })
+
+    const button = container.querySelector('button')
+    expect(button?.textContent).toContain('📋 Copy starter code')
+  })
 })

@@ -163,6 +163,70 @@ describe('MarkdownRenderer', () => {
     expect(highlighterProps?.customStyle?.overflowX).toBe('hidden')
   })
 
+  it('shows a diff badge and colors +/- lines for `diff`-flagged fences', () => {
+    const content = '```python diff\n print("a")\n+print("b")\n-print("c")\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const codeBlock = container.querySelector('.code-block-wrapper')
+    expect(codeBlock?.querySelector('.code-block-diff-badge')?.textContent).toBe('diff')
+
+    const [highlighterPropsRaw] = syntaxHighlighterMock.mock.calls.at(-1) ?? []
+    const lineProps = (highlighterPropsRaw as { lineProps?: (n: number) => { className?: string } })
+      .lineProps
+    expect(lineProps).toBeTruthy()
+    expect(lineProps?.(1)).toEqual({})
+    expect(lineProps?.(2).className).toBe('code-block-line--diff-add')
+    expect(lineProps?.(3).className).toBe('code-block-line--diff-remove')
+  })
+
+  it('treats a bare ```diff fence as diff mode without showing a badge', () => {
+    const content = '```diff\n+print("b")\n-print("c")\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const codeBlock = container.querySelector('.code-block-wrapper')
+    expect(codeBlock?.querySelector('.code-block-diff-badge')).toBeNull()
+
+    const [highlighterPropsRaw] = syntaxHighlighterMock.mock.calls.at(-1) ?? []
+    const lineProps = (highlighterPropsRaw as { lineProps?: (n: number) => { className?: string } })
+      .lineProps
+    expect(lineProps?.(1).className).toBe('code-block-line--diff-add')
+    expect(lineProps?.(2).className).toBe('code-block-line--diff-remove')
+  })
+
+  it('does not color unified-diff file header lines (+++/---)', () => {
+    const content = '```diff\n+++ b/file.py\n--- a/file.py\n+print("b")\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const [highlighterPropsRaw] = syntaxHighlighterMock.mock.calls.at(-1) ?? []
+    const lineProps = (highlighterPropsRaw as { lineProps?: (n: number) => { className?: string } })
+      .lineProps
+    expect(lineProps?.(1)).toEqual({})
+    expect(lineProps?.(2)).toEqual({})
+    expect(lineProps?.(3).className).toBe('code-block-line--diff-add')
+  })
+
+  it('highlights specified lines via a `{a,b-c}` meta range', () => {
+    const content = '```python {2,4-5}\nline1\nline2\nline3\nline4\nline5\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const [highlighterPropsRaw] = syntaxHighlighterMock.mock.calls.at(-1) ?? []
+    const lineProps = (highlighterPropsRaw as { lineProps?: (n: number) => { className?: string } })
+      .lineProps
+    expect(lineProps?.(1)).toEqual({})
+    expect(lineProps?.(2).className).toBe('code-block-line--highlighted')
+    expect(lineProps?.(3)).toEqual({})
+    expect(lineProps?.(4).className).toBe('code-block-line--highlighted')
+    expect(lineProps?.(5).className).toBe('code-block-line--highlighted')
+  })
+
   it('renders "Try It" button for Python code blocks', async () => {
     const content = '```python\nprint("hello")\n```'
     act(() => {
