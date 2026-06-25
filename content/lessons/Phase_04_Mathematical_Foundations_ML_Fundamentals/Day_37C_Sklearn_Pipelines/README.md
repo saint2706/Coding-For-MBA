@@ -198,6 +198,25 @@ full_pipeline.fit(X_train, y_train)
 print(f"Full pipeline accuracy: {full_pipeline.score(X_test, y_test):.3f}")
 ```
 
+```mermaid
+flowchart TD
+    A[Raw Data] --> B[ColumnTransformer]
+    B --> C[Numeric Columns]
+    B --> D[Categorical Columns]
+    B --> E[Binary Columns]
+    C --> C1[SimpleImputer median]
+    C1 --> C2[StandardScaler]
+    D --> D1["SimpleImputer constant='unknown'"]
+    D1 --> D2[OneHotEncoder]
+    E --> E1[Passthrough]
+    C2 --> F[Merged Feature Matrix]
+    D2 --> F
+    E1 --> F
+    F --> G[Classifier]
+```
+
+Each branch applies the transformations appropriate to its feature type before `ColumnTransformer` merges them back into a single matrix the model can consume.
+
 ### Custom Transformers
 
 When off-the-shelf transformers aren't enough, build your own.

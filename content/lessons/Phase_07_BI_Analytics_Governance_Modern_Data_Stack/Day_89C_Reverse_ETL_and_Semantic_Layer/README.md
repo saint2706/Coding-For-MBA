@@ -224,14 +224,17 @@ cube(`Orders`, {
 
 #### Architecture
 
+```mermaid
+flowchart TD
+    A[Warehouse] --> B[dbt transformations]
+    B --> C[Semantic Layer - dbt Metrics / Cube.js]
+    C --> D[Looker Dashboard]
+    C --> E[Tableau Dashboard]
+    C --> F[Metabase Self-serve]
+    C --> G[Custom API - Partner Portal]
 ```
-Warehouse → dbt transformations → Semantic Layer (dbt Metrics / Cube.js)
-                                         │
-         ┌───────────┬──────────┬────────┴──────────┐
-         ▼           ▼          ▼                   ▼
-      Looker      Tableau   Metabase          Custom API
-    Dashboard   Dashboard  Self-serve       Partner Portal
-```
+
+Every downstream tool queries the same semantic layer, so they all compute metrics like MRR identically.
 
 ---
 

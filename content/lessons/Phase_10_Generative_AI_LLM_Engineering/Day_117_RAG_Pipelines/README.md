@@ -51,24 +51,19 @@ They can't answer *"What was our Q3 revenue?"* because it wasn't in their traini
 
 ### 1. The RAG Architecture
 
+```mermaid
+flowchart TD
+    A[User Query] --> B[Embedding Model]
+    B --> C["Query Vector (1536-dim)"]
+    C --> D[Vector Store]
+    D --> E["Top-K Similar Chunks"]
+    E --> F["Reranker (optional)"]
+    F --> G["Re-ordered, highest-quality chunks"]
+    G --> H[LLM]
+    H --> I["Answer (grounded in your documents)"]
 ```
-User Query
-    │
-    ▼
-[Embedding Model] ──→ Query Vector (1536-dim float array)
-    │
-    ▼
-[Vector Store] ──→ Top-K Most Similar Document Chunks
-    │
-    ▼
-[Reranker] (Optional) ──→ Re-ordered, highest-quality chunks
-    │
-    ▼
-[LLM] ← Prompt = "Given context: [chunks], answer: [query]"
-    │
-    ▼
-   Answer (grounded in your documents)
-```
+
+Each stage narrows or reorders the candidate context before it ever reaches the LLM, so retrieval quality upstream caps answer quality downstream.
 
 ### 2. Understanding Embeddings
 

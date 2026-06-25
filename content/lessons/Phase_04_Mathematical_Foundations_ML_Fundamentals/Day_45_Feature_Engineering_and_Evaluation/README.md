@@ -360,6 +360,25 @@ nested_scores = cross_val_score(grid, X, y, cv=outer_cv, scoring='roc_auc')
 print(f"Nested CV AUC: {nested_scores.mean():.3f} ± {nested_scores.std():.3f}")
 ```
 
+```mermaid
+flowchart TD
+    A[Full Dataset] --> B[Outer Fold Split]
+    B --> C[Outer Training Set]
+    B --> D[Outer Test Set]
+    C --> E[Inner Fold Split]
+    E --> F[Inner Train]
+    E --> G[Inner Validation]
+    F --> H[GridSearchCV: Try Hyperparameters]
+    G --> H
+    H --> I[Best Hyperparameters]
+    I --> J[Refit on Outer Training Set]
+    J --> K[Evaluate on Outer Test Set]
+    D --> K
+    K --> L[Unbiased Generalization Estimate]
+```
+
+The inner loop selects hyperparameters without ever touching the outer test set, so the outer loop's score is an unbiased estimate of how the tuned model will generalize.
+
 **Confidence Intervals on CV Scores**
 
 ```python

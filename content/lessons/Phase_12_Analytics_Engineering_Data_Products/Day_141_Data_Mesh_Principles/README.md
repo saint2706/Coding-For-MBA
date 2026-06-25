@@ -142,6 +142,26 @@ domains = {
 }
 ```
 
+```mermaid
+graph LR
+    OrdersDomain[Orders Domain] -->|publishes| dp_orders["dp_orders"]
+    CustomerDomain[Customer Domain] -->|publishes| dp_customers["dp_customers"]
+    MarketingDomain[Marketing Domain] -->|publishes| dp_campaign["dp_campaign_performance"]
+
+    dp_orders --> Finance[Finance]
+    dp_orders --> Marketing[Marketing]
+    dp_orders --> Product[Product]
+
+    dp_customers --> Marketing
+    dp_customers --> Support[Support]
+    dp_customers --> Product
+
+    dp_campaign --> FinanceCAC["Finance (CAC calculation)"]
+    dp_campaign --> Executive[Executive Team]
+```
+
+Each domain publishes one data product as a defined interface, and consumers across other domains subscribe to it rather than rebuilding the same data themselves.
+
 ### 3. When to (and NOT to) Adopt Data Mesh
 
 Data mesh is an organizational change, not a tool purchase, so the decision to adopt it should rest on org-readiness criteria rather than technology trends. The lists below give the concrete signals for "good fit" vs. "bad fit," plus a middle path for organizations that aren't a clean match for either.

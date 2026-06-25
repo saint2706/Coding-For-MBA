@@ -95,6 +95,14 @@ workspace = {
 # 4. Data discovery (search across all catalogs)
 ```
 
+```mermaid
+flowchart TD
+    A["Bronze: raw_orders (append-only, as-ingested)"] -->|incremental read| B["Silver: clean_orders (deduplicated, typed, merge)"]
+    B -->|incremental read| C["Gold: daily_revenue (aggregated, dashboard-ready)"]
+```
+
+Each layer only reads the new rows from the layer below, so incremental processing flows forward without ever re-scanning the full upstream table.
+
 ### 3. Delta Live Tables (DLT) — Declarative Pipelines
 
 ```python

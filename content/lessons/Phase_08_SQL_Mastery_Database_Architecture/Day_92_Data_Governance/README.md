@@ -59,6 +59,18 @@ The directory stays at Day 92; this is a pointer, not a reorder. The RLS and GDP
 
 **Data Security** applies these layers to SQL tables.
 
+```mermaid
+flowchart TD
+    A[Query arrives] --> B{Authentication: Are you Bob?}
+    B -- No --> X[Rejected]
+    B -- Yes --> C{RBAC: Does Bob's role allow this table?}
+    C -- No --> Y[Permission denied]
+    C -- Yes --> D[RLS: Filter rows to Bob's region]
+    D --> E[Result set returned]
+```
+
+A query must pass authentication, then RBAC's table-level check, then RLS's row-level filter before any data comes back.
+
 ---
 
 ## The Technical Deep Dive

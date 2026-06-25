@@ -133,6 +133,35 @@ CREATE TABLE order_items (
 
 Now `customers.email` exists in exactly one row per customer. Updating Asha's email is one `UPDATE` statement touching one row, and every order automatically reflects the new email via the foreign key — there is no way for the data to become inconsistent. This is **why** ACID's Consistency guarantee is even achievable: a normalized schema turns "keep two copies of a fact in sync" into "there is only one copy," which removes an entire class of update anomalies before a single transaction runs.
 
+```mermaid
+erDiagram
+    CUSTOMERS ||--o{ ORDERS : places
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    PRODUCTS ||--o{ ORDER_ITEMS : "ordered in"
+    CUSTOMERS {
+        int customer_id PK
+        string name
+        string email
+    }
+    ORDERS {
+        int order_id PK
+        int customer_id FK
+        date order_date
+    }
+    ORDER_ITEMS {
+        int order_id PK_FK
+        int product_id PK_FK
+        int quantity
+    }
+    PRODUCTS {
+        int product_id PK
+        string name
+        decimal price
+    }
+```
+
+Splitting the denormalized table into four entities removes duplicate `customer_email` and `product_price` values, which is what makes the 3NF schema consistent by construction.
+
 **Keys glossary in context:**
 - **Primary key**: `customer_id`, `product_id`, `order_id` — uniquely identifies a row.
 - **Foreign key**: `orders.customer_id` references `customers.customer_id` — enforces that an order can't point to a nonexistent customer.

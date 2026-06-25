@@ -71,6 +71,30 @@ Ensures ACID (see Day 91 for the ACID overview) across *two different databases*
 > **Detection**: `SELECT * FROM pg_prepared_xacts;` — any row with a `prepared` timestamp older than a few minutes (let alone hours) is almost certainly abandoned. Cross-check against your application's transaction log to see if the originating coordinator process is still alive.
 > **Fix**: `ROLLBACK PREPARED 'tx_id';` (or `COMMIT PREPARED 'tx_id';` if you can confirm from the coordinator's logs that the transaction *should* have succeeded). In production, alert on any `pg_prepared_xacts` entry older than a defined SLA (e.g., 5 minutes) so an in-doubt transaction triggers a page instead of silently starving locks for hours.
 
+```mermaid
+sequenceDiagram
+    participant C as Coordinator
+    participant A as Participant A
+    participant B as Participant B
+
+    C->>A: PREPARE TRANSACTION
+    C->>B: PREPARE TRANSACTION
+    A-->>C: Vote: Yes (locks held)
+    B-->>C: Vote: Yes (locks held)
+
+    alt All votes Yes
+        C->>A: COMMIT PREPARED
+        C->>B: COMMIT PREPARED
+    else Any vote No / Coordinator crashes
+        C->>A: ROLLBACK PREPARED
+        C->>B: ROLLBACK PREPARED
+    end
+
+    Note over A,B: If the Coordinator crashes after Prepare but<br/>before sending Commit/Abort, locks stay held<br/>indefinitely — the "In-Doubt Transaction" state.
+```
+
+The Prepare phase collects votes and locks resources; only after every participant votes Yes does the Coordinator issue the global Commit, otherwise it issues a global Abort — and a crash between those two phases is what produces an in-doubt transaction.
+
 ### 2. CAP Theorem
 
 You can only have 2 of 3:

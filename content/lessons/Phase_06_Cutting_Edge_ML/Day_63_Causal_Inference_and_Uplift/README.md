@@ -128,6 +128,14 @@ Alcohol -> Shoes on
 Alcohol -> Headache
 ```
 
+```mermaid
+graph TD
+    Alcohol --> ShoesOn[Shoes On]
+    Alcohol --> Headache
+```
+
+Alcohol is the confounder causally driving both observed variables, which is why "Shoes On" and "Headache" appear correlated despite neither causing the other.
+
 **Task**: Define the variable `Z` (Confounder) in Python terms.
 
 ```python

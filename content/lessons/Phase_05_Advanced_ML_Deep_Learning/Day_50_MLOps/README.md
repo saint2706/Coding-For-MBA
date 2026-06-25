@@ -485,6 +485,20 @@ jobs:
           # Blue-green deployment or canary release
 ```
 
+```mermaid
+flowchart TD
+    A[Data Validation] -->|Pass| B[Train Model]
+    A -->|Fail| X1[Block Pipeline]
+    B --> C[Evaluate Model]
+    C -->|"Accuracy > Threshold"| D[Deploy to Staging]
+    C -->|Below Threshold| X2[Block Promotion]
+    D --> E[Integration Tests]
+    E -->|Pass| F[Deploy to Production]
+    E -->|Fail| X3[Block Promotion]
+```
+
+Each promotion gate must pass before the pipeline advances — a failure at any stage blocks the model from reaching production.
+
 ---
 
 ## Senior-Level Insights

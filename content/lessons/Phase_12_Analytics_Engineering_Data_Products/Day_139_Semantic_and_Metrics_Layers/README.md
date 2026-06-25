@@ -69,6 +69,18 @@ WHERE date >= '2025-01-01' AND status NOT IN ('refunded', 'cancelled')
 # Every tool (Looker, Superset, Python, API) queries the same definition
 ```
 
+```mermaid
+flowchart TD
+    A[Marketing dashboard query] --> D{{Semantic layer: revenue metric}}
+    B[Finance report query] --> D
+    C[Executive dashboard query] --> D
+    D --> E[Looker]
+    D --> F[Superset]
+    D --> G[Python / API]
+```
+
+Three teams stop writing their own SQL and instead all query the same governed `revenue` definition, so every tool reports the same number.
+
 ### 2. dbt Semantic Layer with MetricFlow
 
 MetricFlow is the engine behind the dbt Semantic Layer. You describe your data once as a **semantic model** (entities, dimensions, measures pointing at a dbt mart) and then layer **metrics** on top of those measures. The YAML below fixes the three-query problem above: `revenue` is defined exactly once, with its refund/cancellation filter baked in, and `gross_margin` and `average_order_value` are *derived* from it so they can never drift out of sync.

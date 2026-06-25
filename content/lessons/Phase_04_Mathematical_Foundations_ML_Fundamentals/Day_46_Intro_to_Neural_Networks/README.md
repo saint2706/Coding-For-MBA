@@ -320,6 +320,23 @@ plt.grid(True, alpha=0.3)
 plt.show()
 ```
 
+```mermaid
+flowchart LR
+    subgraph Forward Propagation
+        I[Input] --> H1[Hidden Layer 1]
+        H1 --> H2[Hidden Layer 2]
+        H2 --> O[Output / Prediction]
+    end
+    subgraph Backpropagation
+        O2[Loss Gradient] --> G2[Hidden Layer 2 Gradient]
+        G2 --> G1[Hidden Layer 1 Gradient]
+        G1 --> GI[Input Gradient]
+    end
+    O -.-> O2
+```
+
+Forward propagation pushes data left-to-right to produce a prediction; backpropagation then runs right-to-left, using the chain rule to compute how much each layer's weights contributed to the error.
+
 ### Neural Network Engineering: Critical Concepts
 
 **Weight Initialization**

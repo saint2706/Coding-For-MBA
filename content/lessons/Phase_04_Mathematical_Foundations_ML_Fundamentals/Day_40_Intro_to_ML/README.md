@@ -196,6 +196,19 @@ All Data (100%)
     └── Final evaluation on truly unseen data
 ```
 
+```mermaid
+flowchart TD
+    A[Prepare Data] --> B[Train/Test Split]
+    B --> C[Train Model]
+    C --> D[Evaluate on Test Set]
+    D --> E{Train vs Test Gap?}
+    E -- "Train low, Test low" --> F[Underfitting: High Bias]
+    E -- "Train high, Test high, small gap" --> G[Good Fit]
+    E -- "Train high, Test low, large gap" --> H[Overfitting: High Variance]
+```
+
+This flow ties the workflow to the bias-variance framing: a small train/test gap signals a well-fit model, while a large gap or uniformly poor scores point to overfitting or underfitting respectively.
+
 **The critical rule:** Never use test data for training or model selection. It must remain "unseen" until final evaluation.
 
 ```python

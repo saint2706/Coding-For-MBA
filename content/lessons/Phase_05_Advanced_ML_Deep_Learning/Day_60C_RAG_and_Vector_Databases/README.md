@@ -100,6 +100,21 @@ Query: "What was our Q3 revenue?"
 5. VERIFY (optional): Check that answer is grounded in context (with RAGAS — Day 114)
 ```
 
+```mermaid
+sequenceDiagram
+    participant User
+    participant Embedder
+    participant VectorDB as Vector Database
+    participant LLM
+    User->>Embedder: Query
+    Embedder->>VectorDB: Embed
+    VectorDB->>LLM: Retrieve top-k chunks
+    LLM->>LLM: Augment prompt with context
+    LLM->>User: Generate answer
+```
+
+This sequence shows the five RAG steps as actor interactions: the query is embedded, used to retrieve relevant chunks, those chunks augment the prompt, and the LLM generates the final grounded answer.
+
 ### Vector Databases: What They Are and Why They're Different
 
 Traditional databases search by exact match or range (SQL WHERE clauses). Vector databases search by **semantic similarity** across millions of high-dimensional vectors — efficiently.

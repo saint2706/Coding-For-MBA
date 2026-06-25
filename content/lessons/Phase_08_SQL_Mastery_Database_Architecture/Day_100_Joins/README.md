@@ -109,6 +109,23 @@ Alice appears **once**, even though she has 2 matching orders — `EXISTS` only 
 
 The customers with zero orders — the exact complement of the semi-join.
 
+```mermaid
+flowchart TD
+    A[customers row] --> B{Match in orders?}
+    B -- Yes --> C[INNER: kept]
+    B -- No --> D[INNER: dropped]
+    B -- Yes --> E[LEFT: kept with values]
+    B -- No --> F[LEFT: kept with NULLs]
+    B -- Yes --> G[FULL: kept with values]
+    B -- No --> H[FULL: kept with NULLs]
+    B -- Yes --> I[SEMI: kept once, left cols only]
+    B -- No --> J[SEMI: dropped]
+    B -- Yes --> K[ANTI: dropped]
+    B -- No --> L[ANTI: kept]
+```
+
+INNER and SEMI drop unmatched rows, LEFT/FULL preserve them with NULLs, and ANTI keeps only the rows that have no match at all.
+
 ### Decision guidance: which logical join do you need?
 
 | Question you're asking | Join to use |

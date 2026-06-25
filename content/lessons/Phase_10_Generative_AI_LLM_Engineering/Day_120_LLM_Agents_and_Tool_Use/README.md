@@ -80,6 +80,16 @@ REASON: I have everything needed. Composing the final answer.
 ANSWER: "Q3 2025 sales were $12.4M, up 34.8% from Q2's $9.2M."
 ```
 
+```mermaid
+flowchart TD
+    A[Reason] --> B[Act]
+    B --> C[Observe]
+    C --> A
+    A --> D[Final Answer]
+```
+
+Reason, Act, and Observe form a feedback loop that repeats until the model has enough grounded information to exit with a final answer instead of another tool call.
+
 ### 2. OpenAI Function Calling
 
 ```python

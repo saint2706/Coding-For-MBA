@@ -112,6 +112,16 @@ with DAG(
     extract >> transform >> load >> test >> notify
 ```
 
+```mermaid
+flowchart TD
+    A[extract_from_source] --> B[transform_and_clean]
+    B --> C[load_to_bigquery]
+    C --> D[run_data_tests]
+    D --> E[notify_slack]
+```
+
+Each node is a task instance; the arrows are the dependency edges the scheduler enforces — nothing downstream runs until its upstream task succeeds.
+
 ### 2. Prefect — The Modern Alternative
 
 ```python

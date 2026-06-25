@@ -128,6 +128,16 @@ def load_daily_sales(date, df, db_engine):
 * **Converge**: `unify_ads` waits for BOTH.
 * **Sequential**: `calculate_roi` -> `email_ceo`.
 
+```mermaid
+flowchart TD
+    A[extract_fb_ads] --> C[unify_ads]
+    B[extract_google_ads] --> C
+    C --> D[calculate_roi]
+    D --> E[email_ceo]
+```
+
+The two extract tasks run in parallel, but `unify_ads` cannot start until both finish.
+
 ### Exercise 3: Handling Failure
 
 **Goal**: Design logic for API Failure.

@@ -133,6 +133,18 @@ We spent 10 years getting data *out* of Salesforce into Snowflake. Why put it ba
 3. **Reverse ETL** (Hightouch) syncs table to **Mailchimp** (Tag: `VIP_Abandon`).
 4. **Mailchimp** triggers email.
 
+```mermaid
+flowchart LR
+    A[Salesforce] --> B[Fivetran]
+    B --> C[Snowflake]
+    C --> D[dbt]
+    D --> E[Looker/Tableau]
+    D --> F[Reverse ETL - Census/Hightouch]
+    F --> A
+```
+
+Data flows forward through the stack to BI tools, while Reverse ETL closes the loop by pushing curated metrics back into Salesforce.
+
 ### Exercise 3: Partition Pruning
 
 **Goal**: Optimize a query.

@@ -70,6 +70,16 @@ User Question
 Answer (grounded in your documents)
 ```
 
+```mermaid
+flowchart TD
+    A[Embed Query] --> B[Search Vector DB]
+    B --> C[Retrieve Chunks]
+    C --> D[Augment Prompt]
+    D --> E[Generate Answer]
+```
+
+This pipeline mirrors the 5-step RAG architecture: each stage's output becomes the input to the next, ending in an answer grounded in retrieved context.
+
 ### 2. Text Embeddings — The Core Primitive
 
 An **embedding** maps text to a point in high-dimensional space where semantically similar texts are geometrically close:

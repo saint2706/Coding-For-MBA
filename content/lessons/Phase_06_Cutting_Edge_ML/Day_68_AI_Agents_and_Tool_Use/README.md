@@ -69,6 +69,19 @@ Observation: 30-day average is $188.92
 Final Answer: AAPL trades at $189.45, which is above its 30-day average of $188.92. Slightly bullish signal.
 ```
 
+```mermaid
+sequenceDiagram
+    participant Agent
+    participant Tool
+    Agent->>Agent: Thought
+    Agent->>Tool: Action
+    Tool->>Agent: Observation
+    Agent->>Agent: Thought
+    Agent->>Agent: Final Answer
+```
+
+The agent alternates between reasoning and acting, feeding each tool's observation back into its next thought until it has enough information to produce a final answer.
+
 ### 2. OpenAI Function Calling
 
 The cleanest way to give an LLM tools is via **function calling** (supported by GPT-4, Gemini, Claude):

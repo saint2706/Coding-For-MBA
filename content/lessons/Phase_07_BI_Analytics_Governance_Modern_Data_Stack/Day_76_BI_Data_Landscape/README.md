@@ -73,6 +73,20 @@ outcomes:
     * **Tech**: Snowflake, BigQuery.
     * **Optimization**: Column-oriented.
 
+```mermaid
+flowchart TD
+    subgraph OLTP["OLTP - Postgres, MySQL"]
+        A1[Single user action] --> A2[Insert 1 row]
+        A2 --> A3[Row-oriented storage]
+    end
+    subgraph OLAP["OLAP - Snowflake, BigQuery"]
+        B1[Aggregation query] --> B2[Scan millions of rows]
+        B2 --> B3[Column-oriented storage]
+    end
+```
+
+OLTP optimizes for fast single-row writes; OLAP optimizes for fast column scans across millions of rows.
+
 ### 2. Row vs. Columnar Storage
 
 * **Row-Oriented (Postgres)**: Data is stored like: `[ID, Name, Age], [ID, Name, Age]`.
@@ -88,6 +102,15 @@ The standard startup architecture:
 2. **Store**: Snowflake (The Warehouse).
 3. **Transform**: dbt (SQL scripts that clean data *inside* Snowflake).
 4. **Visualize**: Looker/Tableau.
+
+```mermaid
+flowchart LR
+    A[Ingest - Fivetran] --> B[Store - Snowflake]
+    B --> C[Transform - dbt]
+    C --> D[Visualize - Looker/Tableau]
+```
+
+This is the standard Modern Data Stack pipeline: raw data flows in, gets stored, is cleaned with SQL, then reaches dashboards.
 
 ---
 

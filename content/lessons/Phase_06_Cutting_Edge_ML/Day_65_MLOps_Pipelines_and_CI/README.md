@@ -74,6 +74,18 @@ In standard software, you version Code (Git). In ML, you must version **three** 
 
 If you miss one, you cannot reproduce your model.
 
+```mermaid
+flowchart TD
+    A[Code Version] --> D[Training]
+    B[Data Version] --> D
+    C[Environment Version] --> D
+    D --> E[Model Registry: Staging]
+    E --> F[Model Registry: Production]
+    F --> G[Model Registry: Archived]
+```
+
+Code, data, and environment versions all feed the training step, and the resulting model then moves through the registry's promotion stages.
+
 ### 3. CI/CD vs. CT (Continuous Training)
 
 * **CI (Continuous Integration)**: Test code updates (Unit Tests).

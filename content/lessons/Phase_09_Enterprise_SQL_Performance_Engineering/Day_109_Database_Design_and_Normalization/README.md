@@ -232,6 +232,29 @@ JOIN authors a ON b.author_id = a.id;
 
 Updating the author's birthdate now requires touching exactly one row in `authors`, regardless of how many books they've written.
 
+```mermaid
+erDiagram
+    BOOKS_UNNORMALIZED {
+        text isbn PK
+        text title
+        text author_name
+        date author_birthdate
+    }
+    AUTHORS {
+        int id PK
+        text name
+        date birthdate
+    }
+    BOOKS {
+        text isbn PK
+        text title
+        int author_id FK
+    }
+    AUTHORS ||--o{ BOOKS : writes
+```
+
+The unnormalized table repeats `author_birthdate` on every book row (a 3NF transitive dependency); splitting it into `authors`/`books` moves that fact to one row per author, eliminating the update anomaly.
+
 ### Exercise 3: Strategic Denormalization
 
 **Goal**: Speed up a report by trading normalization for read performance.

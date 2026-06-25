@@ -49,27 +49,27 @@ For data engineers, the cloud isn't optional — it's where 85% of new enterpris
 
 ### 1. Cloud Computing Models
 
+```mermaid
+flowchart TD
+    subgraph A["On-Premises"]
+        A1["You manage: Apps, Data, Runtime, OS, Virtualization, Servers, Storage, Networking"]
+    end
+    subgraph B["IaaS (EC2, GCE, VMs)"]
+        B1["You manage: Apps, Data, Runtime, OS"]
+        B2["Provider manages: Servers, Storage, Networking"]
+    end
+    subgraph C["PaaS (Lambda, Cloud Run)"]
+        C1["You manage: Apps, Data"]
+        C2["Provider manages: Runtime, OS, Servers, Storage, Networking"]
+    end
+    subgraph D["SaaS (Snowflake, dbt)"]
+        D1["You manage: Data (partially)"]
+        D2["Provider manages: everything else"]
+    end
+    A --> B --> C --> D
 ```
-┌─────────────────────────────────────────────────────────┐
-│         You Manage ↑    │    Cloud Provider Manages ↓   │
-├─────────────────────────┼───────────────────────────────┤
-│ On-Premises             │ (Nothing — you manage all)    │
-│  - Apps, Data, Runtime  │                               │
-│  - OS, Virtualization   │                               │
-│  - Servers, Storage     │                               │
-│  - Networking           │                               │
-├─────────────────────────┼───────────────────────────────┤
-│ IaaS (EC2, GCE, VMs)   │ Servers, Storage, Networking  │
-│  - Apps, Data, Runtime  │                               │
-│  - OS                   │                               │
-├─────────────────────────┼───────────────────────────────┤
-│ PaaS (Lambda, Cloud Run)│ Everything below + Runtime/OS │
-│  - Apps, Data           │                               │
-├─────────────────────────┼───────────────────────────────┤
-│ SaaS (Snowflake, dbt)   │ Everything — you just use it  │
-│  - Data (partially)     │                               │
-└─────────────────────────┴───────────────────────────────┘
-```
+
+As you move from on-premises to SaaS, the slice of the stack you're responsible for shrinks and the provider's slice grows.
 
 ### 2. The Big Three — Comparison for Data Engineers
 

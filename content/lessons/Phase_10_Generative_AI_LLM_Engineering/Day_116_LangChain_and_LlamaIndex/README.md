@@ -221,6 +221,21 @@ result = analyzer.invoke({"document": "Q3 earnings report text..."})
 # Runs in ~3-5 seconds vs ~10-15 seconds sequentially
 ```
 
+```mermaid
+flowchart TD
+    A[Document Input] --> B[Risk Chain]
+    A --> C[Opportunity Chain]
+    A --> D[Summary Chain]
+    M[("Conversation Memory<br/>(resent history)")] -.-> B
+    M -.-> C
+    M -.-> D
+    B --> E["Synthesized Output (dict)"]
+    C --> E
+    D --> E
+```
+
+The three analysis chains branch off the same input and run concurrently, with conversation memory resent into each branch as needed, before their results converge into one combined output.
+
 ### 5. LlamaIndex: The Knowledge Graph Framework
 
 LlamaIndex specializes in building **persistent, searchable knowledge bases** from your documents.

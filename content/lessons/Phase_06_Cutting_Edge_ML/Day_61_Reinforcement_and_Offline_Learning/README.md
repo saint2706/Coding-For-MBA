@@ -63,6 +63,16 @@ The core of RL is a loop:
 3. **Reward ($R_{t+1}$)**: The environment gives feedback (e.g., "+10 points for finding a coin").
 4. **Next State ($S_{t+1}$)**: The environment updates (e.g., "Now I'm in the middle of the maze").
 
+```mermaid
+stateDiagram-v2
+    State --> Action: agent chooses
+    Action --> Reward: environment responds
+    Reward --> NextState: environment updates
+    NextState --> State: loop continues
+```
+
+The agent cycles through this state-action-reward loop continuously, updating its policy after each step using the observed reward.
+
 ### 2. The Trade-off: Explore vs. Exploit
 
 The biggest dilemma in RL:
