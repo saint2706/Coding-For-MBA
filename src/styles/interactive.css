@@ -1,7 +1,8 @@
 /* ===== Interactive Code Components ===== */
 
-/* --- Python Runner --- */
-.python-runner {
+/* --- Python / SQL Runner --- */
+.python-runner,
+.sql-runner {
   margin-top: 0.5rem;
   display: flex;
   flex-wrap: wrap;
@@ -9,7 +10,8 @@
   gap: 0.5rem;
 }
 
-.python-runner__btn {
+.python-runner__btn,
+.sql-runner__btn {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -25,23 +27,27 @@
   transition: all var(--motion-duration-active-fast) var(--motion-easing-standard);
 }
 
-.python-runner__btn:hover:not(:disabled) {
+.python-runner__btn:hover:not(:disabled),
+.sql-runner__btn:hover:not(:disabled) {
   box-shadow: 0 2px 10px rgba(34, 197, 94, 0.3);
 }
 
 .python-runner__btn:active:not(:disabled),
+.sql-runner__btn:active:not(:disabled),
 .code-playground__btn:active,
 .exercise-widget__solution-btn:active,
 .code-block-copy:active {
   transform: scale(0.97);
 }
 
-.python-runner__btn:disabled {
+.python-runner__btn:disabled,
+.sql-runner__btn:disabled {
   opacity: 0.7;
   cursor: not-allowed;
 }
 
-.python-runner__shortcut {
+.python-runner__shortcut,
+.sql-runner__shortcut {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   padding: 0.1rem 0.35rem;
@@ -50,11 +56,13 @@
   opacity: 0.9;
 }
 
-.python-runner__icon {
+.python-runner__icon,
+.sql-runner__icon {
   display: block;
 }
 
-.python-runner__spinner {
+.python-runner__spinner,
+.sql-runner__spinner {
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -70,7 +78,8 @@
   }
 }
 
-.python-runner__output {
+.python-runner__output,
+.sql-runner__output {
   width: 100%;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
@@ -78,7 +87,8 @@
   background: var(--bg-code);
 }
 
-.python-runner__output-header {
+.python-runner__output-header,
+.sql-runner__output-header {
   padding: 0.25rem 0.6rem;
   font-size: 0.625rem;
   font-weight: 700;
@@ -90,7 +100,9 @@
 }
 
 .python-runner__stdout,
-.python-runner__error {
+.python-runner__error,
+.sql-runner__stdout,
+.sql-runner__error {
   margin: 0;
   padding: 0.5rem 0.6rem;
   font-family: var(--font-mono);
@@ -100,18 +112,71 @@
   word-break: break-word;
 }
 
-.python-runner__stdout {
+.python-runner__stdout,
+.sql-runner__stdout {
   color: var(--teal-500);
 }
 
-.python-runner__stdout--empty {
+.python-runner__stdout--empty,
+.sql-runner__stdout--empty {
   color: var(--text-muted);
   font-style: italic;
 }
 
-.python-runner__error {
+.python-runner__error,
+.sql-runner__error {
   color: var(--ruby-500);
   background: color-mix(in srgb, var(--ruby-500) 6%, transparent);
+}
+
+/* --- SQL result tables --- */
+.sql-runner__table-wrapper {
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sql-runner__table-wrapper:last-child {
+  border-bottom: none;
+}
+
+.sql-runner__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.sql-runner__table th,
+.sql-runner__table td {
+  padding: 0.35rem 0.6rem;
+  text-align: left;
+  white-space: nowrap;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sql-runner__table th {
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.sql-runner__table tr:last-child td {
+  border-bottom: none;
+}
+
+.sql-runner__cell--null {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.sql-runner__truncated {
+  margin: 0;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 /* --- Code Playground --- */
@@ -218,7 +283,8 @@
   background: var(--bg-code);
 }
 
-.code-playground .python-runner {
+.code-playground .python-runner,
+.code-playground .sql-runner {
   padding: 0.4rem 0.6rem;
 }
 
@@ -538,6 +604,7 @@
   }
 
   .python-runner__btn,
+  .sql-runner__btn,
   .code-playground__btn,
   .exercise-widget__solution-btn,
   .mastery-check,

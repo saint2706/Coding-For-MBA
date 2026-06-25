@@ -17,6 +17,7 @@ import markdown from 'react-syntax-highlighter/dist/esm/languages/prism/markdown
 import typescript from 'react-syntax-highlighter/dist/esm/languages/prism/typescript'
 import javascript from 'react-syntax-highlighter/dist/esm/languages/prism/javascript'
 import diff from 'react-syntax-highlighter/dist/esm/languages/prism/diff'
+import sql from 'react-syntax-highlighter/dist/esm/languages/prism/sql'
 
 SyntaxHighlighter.registerLanguage('python', python)
 SyntaxHighlighter.registerLanguage('bash', bash)
@@ -25,11 +26,12 @@ SyntaxHighlighter.registerLanguage('markdown', markdown)
 SyntaxHighlighter.registerLanguage('typescript', typescript)
 SyntaxHighlighter.registerLanguage('javascript', javascript)
 SyntaxHighlighter.registerLanguage('diff', diff)
+SyntaxHighlighter.registerLanguage('sql', sql)
 
 /**
  * A configured instance of `react-syntax-highlighter` using PrismLight.
  * This exported component has language definitions for python, bash, json,
- * markdown, typescript, javascript, and diff pre-registered to minimize bundle size.
+ * markdown, typescript, javascript, diff, and sql pre-registered to minimize bundle size.
  *
  * @type {React.ComponentType}
  * @returns {React.ComponentType} The SyntaxHighlighter component.

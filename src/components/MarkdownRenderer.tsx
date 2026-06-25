@@ -47,6 +47,7 @@ const COLLAPSE_THRESHOLD = 20
 const COLLAPSED_LINE_COUNT = 15
 
 const CodePlayground = lazy(() => import('./CodePlayground'))
+const SqlPlayground = lazy(() => import('./SqlPlayground'))
 const ExerciseWidget = lazy(() => import('./ExerciseWidget'))
 const MasteryCheck = lazy(() => import('./MasteryCheck'))
 const MermaidDiagram = lazy(() => import('./MermaidDiagram'))
@@ -81,6 +82,8 @@ function CodeBlock({
   const code = String(children).replace(/\n$/, '')
   const [showPlayground, setShowPlayground] = useState(false)
   const isPython = lang === 'python' || lang === 'py'
+  const isSql = lang === 'sql'
+  const isRunnable = isPython || isSql
 
   const lines = code.split('\n')
   const isLong = lines.length > COLLAPSE_THRESHOLD
@@ -135,7 +138,7 @@ function CodeBlock({
           >
             {wrapLines ? '↔ Unwrap' : '↩ Wrap'}
           </button>
-          {isPython && (
+          {isRunnable && (
             <button
               type="button"
               className="code-block-try-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
@@ -202,7 +205,7 @@ function CodeBlock({
             : '▲ Collapse'}
         </button>
       )}
-      {showPlayground && (
+      {showPlayground && isPython && (
         <div className="code-block-inline-playground">
           <Suspense
             fallback={
@@ -212,6 +215,19 @@ function CodeBlock({
             }
           >
             <CodePlayground initialCode={code} />
+          </Suspense>
+        </div>
+      )}
+      {showPlayground && isSql && (
+        <div className="code-block-inline-playground">
+          <Suspense
+            fallback={
+              <div style={{ padding: '1rem', color: 'var(--text-muted)' }}>
+                Loading SQL engine...
+              </div>
+            }
+          >
+            <SqlPlayground initialCode={code} />
           </Suspense>
         </div>
       )}

@@ -45,12 +45,20 @@ with `securityLevel: 'strict'` and renders sanitized SVG client-side via
 failures fall back to an inline error message with the raw diagram source
 instead of crashing the lesson.
 
-## Runnable SQL blocks 🔲
+## Runnable SQL blocks ✅
 
-The Python "▶ Try It" playground (via Pyodide) is a flagship feature, but
-Phases 7–9 are SQL-heavy with zero interactivity for SQL snippets. `sql.js`
-(WASM SQLite) could power an equivalent "▶ Try It" for ` ```sql ` blocks,
-reusing the existing `CodeBlock` UI shell.
+Implemented via `sql.js` (WASM SQLite), bundled through npm rather than CDN
+so no CSP changes were needed. `src/hooks/useSqlJs.ts` lazily initializes the
+WASM module behind a module-level singleton promise (mirroring the
+`usePyodide` loading pattern) and exposes a `runSql` helper that opens a
+fresh in-memory database per query and closes it afterwards. `CodeBlock`'s
+"▶ Try It" button now triggers for ` ```sql ` fences as well as Python,
+rendering a lazy-loaded `SqlPlayground` (`React.lazy` + dynamic import, same
+code-splitting approach as `MermaidDiagram`/`CodePlayground`) with an editable
+textarea, syntax highlighting (`sql` registered in `src/utils/prism.ts`), and
+Shift/Ctrl/Cmd+Enter execution. Results render through `SqlRunner` as one
+table per statement, with `NULL` cells styled distinctly and large result
+sets capped at 200 displayed rows.
 
 ## Mastery Check upgrade: from "click to reveal" to actual self-test 🔲
 
