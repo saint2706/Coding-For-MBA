@@ -81,9 +81,6 @@ vi.mock('../../components/TableOfContents', () => ({ default: () => null }))
 vi.mock('../../components/ReadingTime', () => ({ default: () => null }))
 vi.mock('../../components/PrerequisitePills', () => ({ default: () => null }))
 vi.mock('../../components/RelatedLessons', () => ({ default: () => null }))
-vi.mock('../../hooks/useSwipe', () => ({
-  useSwipe: () => ({ current: null }),
-}))
 vi.mock('../../utils/seoSchemas', () => ({
   buildLessonSchema: () => ({}),
 }))

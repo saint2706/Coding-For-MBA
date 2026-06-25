@@ -3,7 +3,7 @@
  *
  * This page displays a single lesson's content with full navigation, progress tracking,
  * table of contents, and related lesson recommendations. Supports keyboard shortcuts
- * and swipe gestures for navigation between lessons.
+ * for navigation between lessons.
  *
  * @module pages/Lesson
  */
@@ -46,7 +46,6 @@ import TableOfContents from '../components/TableOfContents'
 import PrerequisitePills from '../components/PrerequisitePills'
 import LessonCodeActions from '../components/LessonCodeActions'
 import RelatedLessons from '../components/RelatedLessons'
-import { useSwipe } from '../hooks/useSwipe'
 import { toastInfo, toastSuccess } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { useGamificationStore } from '../stores/gamificationStore'
@@ -66,7 +65,6 @@ import {
  * - Breadcrumb navigation and lesson metadata (difficulty, duration, tags)
  * - Completion tracking toggle
  * - Keyboard navigation (← previous, → next)
- * - Swipe gestures for mobile navigation
  * - Table of contents sidebar
  * - Prerequisite and related lesson recommendations
  * - Previous/next lesson navigation buttons
@@ -199,17 +197,6 @@ export default function Lesson() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [prev, next, navigate])
 
-  // Swipe gestures for mobile prev/next
-  const handleSwipeLeft = useMemo(
-    () => (next ? () => navigate(`/lesson/${next.day}`) : undefined),
-    [next, navigate],
-  )
-  const handleSwipeRight = useMemo(
-    () => (prev ? () => navigate(`/lesson/${prev.day}`) : undefined),
-    [prev, navigate],
-  )
-  const swipeRef = useSwipe({ onSwipeLeft: handleSwipeLeft, onSwipeRight: handleSwipeRight })
-
   if (!lesson) {
     return (
       <div className="page-container">
@@ -260,7 +247,6 @@ export default function Lesson() {
   return (
     <div
       className={`page-container lesson-with-toc ${readingMode && readingComfortTheme ? 'lesson-reading-surface' : ''} ${readingMode ? 'reading-mode' : ''}`}
-      ref={swipeRef}
     >
       <SEOHead
         title={lessonTitle}
