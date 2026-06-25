@@ -10,6 +10,12 @@ vi.mock('../CodePlayground', () => ({
   },
 }))
 
+vi.mock('../SqlPlayground', () => ({
+  default: function MockSqlPlayground(props: Record<string, unknown>) {
+    return <div data-testid="sql-playground">{props.initialCode as React.ReactNode}</div>
+  },
+}))
+
 vi.mock('../ExerciseWidget', () => ({
   default: function MockExerciseWidget(props: Record<string, unknown>) {
     return (
@@ -256,7 +262,7 @@ describe('MarkdownRenderer', () => {
     expect(playground?.textContent).toBe('print("hello")')
   })
 
-  it('does not render "Try It" button for non-Python code blocks', () => {
+  it('does not render "Try It" button for non-Python/SQL code blocks', () => {
     const content = '```javascript\nconsole.log("hello")\n```'
     act(() => {
       root.render(<MarkdownRenderer content={content} />)
@@ -264,6 +270,29 @@ describe('MarkdownRenderer', () => {
 
     const tryBtn = container.querySelector('.code-block-try-btn')
     expect(tryBtn).toBeNull()
+  })
+
+  it('renders "Try It" button for SQL code blocks', async () => {
+    const content = '```sql\nSELECT 1;\n```'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const tryBtn = container.querySelector('.code-block-try-btn')
+    expect(tryBtn).toBeTruthy()
+    expect(tryBtn?.textContent).toContain('Try It')
+
+    // Click it to open playground
+    act(() => {
+      tryBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    await waitFor(() => {
+      const playground = container.querySelector('[data-testid="sql-playground"]')
+      expect(playground).toBeTruthy()
+    })
+    const playground = container.querySelector('[data-testid="sql-playground"]')
+    expect(playground?.textContent).toBe('SELECT 1;')
   })
 
   it('renders a mermaid diagram block instead of a syntax-highlighted code block', async () => {
