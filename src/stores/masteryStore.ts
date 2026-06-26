@@ -95,7 +95,10 @@ export const useMasteryStore = create<MasteryStore>()(
       },
       setQuestionStatus: (lessonId, questionNumber, status) => {
         set((state) => ({
-          questionStatus: { ...state.questionStatus, [questionKey(lessonId, questionNumber)]: status },
+          questionStatus: {
+            ...state.questionStatus,
+            [questionKey(lessonId, questionNumber)]: status,
+          },
         }))
       },
       getQuestionStatus: (lessonId, questionNumber) =>

@@ -103,8 +103,9 @@ export default function ProgressDashboard() {
         .getState()
         .getLessonsNeedingReview()
         .map((entry) => ({ lesson: getLesson(entry.lessonId), reviewCount: entry.reviewCount }))
-        .filter((entry): entry is { lesson: NonNullable<typeof entry.lesson>; reviewCount: number } =>
-          Boolean(entry.lesson),
+        .filter(
+          (entry): entry is { lesson: NonNullable<typeof entry.lesson>; reviewCount: number } =>
+            Boolean(entry.lesson),
         )
         .slice(0, 5),
     [masteryQuestionStatus],

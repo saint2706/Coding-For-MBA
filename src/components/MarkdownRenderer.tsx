@@ -979,7 +979,11 @@ function MarkdownRenderer({ content, precomputedBlocks, lessonId }: MarkdownRend
 
   return (
     <div className="markdown-body">
-      <InteractiveContent content={content} precomputedBlocks={precomputedBlocks} lessonId={lessonId} />
+      <InteractiveContent
+        content={content}
+        precomputedBlocks={precomputedBlocks}
+        lessonId={lessonId}
+      />
     </div>
   )
 }
