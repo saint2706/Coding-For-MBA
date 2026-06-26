@@ -3,11 +3,22 @@ import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import Lesson from '../Lesson'
 
-const { mockSetLastVisited, mockToastSuccess, mockToastInfo } = vi.hoisted(() => ({
-  mockSetLastVisited: vi.fn(),
-  mockToastSuccess: vi.fn(),
-  mockToastInfo: vi.fn(),
-}))
+const { mockSetLastVisited, mockToastSuccess, mockToastInfo, mockFindInteractiveBlocks } =
+  vi.hoisted(() => ({
+    mockSetLastVisited: vi.fn(),
+    mockToastSuccess: vi.fn(),
+    mockToastInfo: vi.fn(),
+    mockFindInteractiveBlocks: vi.fn(
+      (): Array<{
+        type: string
+        startIndex: number
+        endIndex: number
+        data: { questionText: string; answer: string }
+      }> => [],
+    ),
+  }))
+
+const mockGetLessonStats = vi.fn(() => ({ gotIt: 0, reviewAgain: 0, total: 0 }))
 
 const mockToggleLessonComplete = vi.fn()
 const mockGetCompletedLessons = vi.fn(() => [])
@@ -73,7 +84,15 @@ vi.mock('../../utils/toast', () => ({
 vi.mock('../../components/SEOHead', () => ({ default: () => null }))
 vi.mock('../../components/MarkdownRenderer', () => ({
   default: () => null,
-  findInteractiveBlocks: () => [],
+  findInteractiveBlocks: mockFindInteractiveBlocks,
+}))
+vi.mock('../../components/LessonSearch', () => ({ default: () => null }))
+vi.mock('../../stores/masteryStore', () => ({
+  useMasteryStore: Object.assign(
+    (selector: (state: { getLessonStats: typeof mockGetLessonStats }) => unknown) =>
+      selector({ getLessonStats: mockGetLessonStats }),
+    { getState: () => ({ getLessonStats: mockGetLessonStats }) },
+  ),
 }))
 vi.mock('../../components/Breadcrumb', () => ({ default: () => null }))
 vi.mock('../../components/BackToTop', () => ({ default: () => null }))
@@ -83,6 +102,7 @@ vi.mock('../../components/PrerequisitePills', () => ({ default: () => null }))
 vi.mock('../../components/RelatedLessons', () => ({ default: () => null }))
 vi.mock('../../utils/seoSchemas', () => ({
   buildLessonSchema: () => ({}),
+  buildFAQSchema: () => ({}),
 }))
 vi.mock('../../stores/gamificationStore', () => ({
   useGamificationStore: Object.assign(() => ({}), {
@@ -94,6 +114,8 @@ describe('Lesson completion toasts', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockGetCompletedLessons.mockReturnValue([])
+    mockFindInteractiveBlocks.mockReturnValue([])
+    mockGetLessonStats.mockReturnValue({ gotIt: 0, reviewAgain: 0, total: 0 })
   })
 
   it('toggles reading mode via the preferences store and click', async () => {
@@ -128,6 +150,54 @@ describe('Lesson completion toasts', () => {
       root.unmount()
     })
     document.body.removeChild(container)
+  })
+
+  it('shows a sticky mastery mini progress bar in reading mode before reaching the bottom', async () => {
+    const { useUserPreferencesStore } = await import('../../stores/userPreferencesStore')
+    useUserPreferencesStore.setState({ readingMode: true })
+
+    mockFindInteractiveBlocks.mockReturnValue([
+      { type: 'mastery', startIndex: 0, endIndex: 1, data: { questionText: 'Q1', answer: 'A1' } },
+      { type: 'mastery', startIndex: 2, endIndex: 3, data: { questionText: 'Q2', answer: 'A2' } },
+    ])
+    mockGetLessonStats.mockReturnValue({ gotIt: 1, reviewAgain: 0, total: 2 })
+
+    const originalScrollHeight = Object.getOwnPropertyDescriptor(
+      Document.prototype,
+      'scrollHeight',
+    )
+    const originalInnerHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight')
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
+      configurable: true,
+      value: 2000,
+    })
+    Object.defineProperty(window, 'innerHeight', { configurable: true, value: 800 })
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    await act(async () => {
+      root.render(<Lesson />)
+    })
+
+    const bar = container.querySelector('.mastery-mini-progress')
+    expect(bar).toBeTruthy()
+    expect(bar?.querySelector('.mastery-mini-progress-label')?.textContent).toBe(
+      '1/2 mastery checks answered',
+    )
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+    if (originalScrollHeight) {
+      Object.defineProperty(document.documentElement, 'scrollHeight', originalScrollHeight)
+    }
+    if (originalInnerHeight) {
+      Object.defineProperty(window, 'innerHeight', originalInnerHeight)
+    }
+    useUserPreferencesStore.setState({ readingMode: false })
   })
 
   it('shows completion/incomplete toasts and debounces rapid duplicate clicks', async () => {

@@ -98,15 +98,15 @@ review count, as a lightweight spaced-repetition nudge.
   `data-highlight-lines`, which `CodeBlock` turns into highlighted lines via
   `lineProps`.
 
-## Reading-mode / navigation polish 🔲
+## Reading-mode / navigation polish ✅
 
-- **Heading anchor click-to-copy**: make `.heading-anchor-link` copy the full
-  URL and fire the existing `toastSuccess` (pattern already used in
-  `Lesson.tsx`), instead of just navigating the hash.
+- **Heading anchor click-to-copy**: `.heading-anchor-link` now copies the full
+  URL via the Clipboard API and fires the existing `toastSuccess` (pattern
+  already used in `Lesson.tsx`), instead of just navigating the hash.
 - **Sticky "answered X/Y mastery checks" mini progress bar** while scrolling,
   complementing the existing `nearBottom`/`reading-mode` logic.
 - **In-page search ("/" to search this lesson)** with match highlighting and
-  next/prev jump.
+  next/prev jump, implemented in `src/components/LessonSearch.tsx`.
 
 ## Table & image polish 🔲
 

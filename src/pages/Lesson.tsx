@@ -43,6 +43,7 @@ import MarkdownRenderer, {
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import TableOfContents from '../components/TableOfContents'
+import LessonSearch from '../components/LessonSearch'
 import PrerequisitePills from '../components/PrerequisitePills'
 import LessonCodeActions from '../components/LessonCodeActions'
 import RelatedLessons from '../components/RelatedLessons'
@@ -82,6 +83,7 @@ export default function Lesson() {
   const setReadingModePreference = useUserPreferencesStore((state) => state.setReadingMode)
   const [readingMode, setReadingMode] = useState(readingModePreference)
   const [nearBottom, setNearBottom] = useState(false)
+  const articleRef = useRef<HTMLElement>(null)
 
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completed = dayNum ? completedLessons.includes(dayTokenToProgressId(dayNum)) : false
@@ -249,6 +251,10 @@ export default function Lesson() {
   const masteredCount = useMasteryStore((state) =>
     masteryTotal > 0 ? state.getLessonStats(lesson.day, masteryTotal).gotIt : 0,
   )
+  const reviewAgainCount = useMasteryStore((state) =>
+    masteryTotal > 0 ? state.getLessonStats(lesson.day, masteryTotal).reviewAgain : 0,
+  )
+  const masteryAnsweredCount = masteredCount + reviewAgainCount
 
   return (
     <div
@@ -277,6 +283,24 @@ export default function Lesson() {
           >
             Exit reading mode
           </button>
+        )}
+
+        {readingMode && !nearBottom && masteryTotal > 0 && (
+          <div
+            className="mastery-mini-progress"
+            role="status"
+            aria-label={`${masteryAnsweredCount} of ${masteryTotal} mastery checks answered`}
+          >
+            <span className="mastery-mini-progress-track">
+              <span
+                className="mastery-mini-progress-fill"
+                style={{ width: `${Math.round((masteryAnsweredCount / masteryTotal) * 100)}%` }}
+              />
+            </span>
+            <span className="mastery-mini-progress-label">
+              {masteryAnsweredCount}/{masteryTotal} mastery checks answered
+            </span>
+          </div>
         )}
 
         <div className={`lesson-header ${showSecondaryUi ? '' : 'reading-muted'}`}>
@@ -341,8 +365,10 @@ export default function Lesson() {
           )}
         </div>
 
+        <LessonSearch containerRef={articleRef} />
+
         {/* Markdown content wrapped in semantic article tag */}
-        <article>
+        <article ref={articleRef}>
           <MarkdownRenderer
             content={lesson.content}
             precomputedBlocks={interactiveBlocks}
