@@ -7,6 +7,7 @@
  */
 
 import { useEffect, useId, useRef, useState } from 'react'
+import DOMPurify from 'dompurify'
 
 let mermaidModulePromise: Promise<typeof import('mermaid')> | null = null
 
@@ -74,7 +75,7 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
       .then(({ svg }) => {
         if (cancelled) return
         if (containerRef.current) {
-          containerRef.current.innerHTML = svg
+          containerRef.current.innerHTML = DOMPurify.sanitize(svg)
         }
         setLoading(false)
       })
