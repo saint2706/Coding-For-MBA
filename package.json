@@ -67,6 +67,9 @@
     "esbuild": "^0.28.1",
     "lighthouse": {
       "ws": "^7.5.11"
+    },
+    "@lhci/cli": {
+      "chrome-launcher": "^1.2.1"
     }
   },
   "devDependencies": {
