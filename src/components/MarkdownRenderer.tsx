@@ -19,6 +19,7 @@ import {
   JSX,
   useMemo,
   type ComponentProps,
+  type MouseEvent,
   lazy,
   Suspense,
 } from 'react'
@@ -42,6 +43,7 @@ import { getSecureLinkAttributes } from '../utils/linkSafety'
 import { rehypeSlugCustom } from '../utils/rehype-slug-custom'
 import { remarkCallouts } from '../utils/remark-callouts'
 import { remarkCodeMeta } from '../utils/remark-code-meta'
+import { toastSuccess, toastError } from '../utils/toast'
 
 const COLLAPSE_THRESHOLD = 20
 const COLLAPSED_LINE_COUNT = 15
@@ -390,6 +392,16 @@ const LinkComponent = ({ href, children, ...props }: JSX.IntrinsicElements['a'] 
   )
 }
 
+function handleHeadingAnchorClick(event: MouseEvent<HTMLAnchorElement>, id: string) {
+  event.preventDefault()
+  const url = `${window.location.origin}${window.location.pathname}#${id}`
+  window.history.replaceState(null, '', `#${id}`)
+  navigator.clipboard
+    .writeText(url)
+    .then(() => toastSuccess('Link copied to clipboard 🔗'))
+    .catch(() => toastError('Could not copy link'))
+}
+
 function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
   return ({
     children,
@@ -407,7 +419,12 @@ function createHeadingComponent(Tag: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') {
       >
         {children}
         {id && (
-          <a href={`#${id}`} className="heading-anchor-link" aria-label="Link to this section" />
+          <a
+            href={`#${id}`}
+            className="heading-anchor-link"
+            aria-label="Copy link to this section"
+            onClick={(event) => handleHeadingAnchorClick(event, id)}
+          />
         )}
       </Tag>
     )

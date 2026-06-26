@@ -37,6 +37,8 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if (location.pathname === '/search') return
+      // Lesson pages own the "/" shortcut for in-page search (see LessonSearch).
+      if (location.pathname.startsWith('/lesson/')) return
 
       if (event.key === '/' && !event.metaKey && !event.ctrlKey && !event.altKey) {
         if (isTypingInEditableElement(event.target)) return

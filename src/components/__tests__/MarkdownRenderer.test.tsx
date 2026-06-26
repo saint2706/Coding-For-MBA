@@ -106,6 +106,16 @@ vi.mock('../CopyButton', () => ({
   default: () => <button>Copy</button>,
 }))
 
+const { mockToastSuccess, mockToastError } = vi.hoisted(() => ({
+  mockToastSuccess: vi.fn(),
+  mockToastError: vi.fn(),
+}))
+
+vi.mock('../../utils/toast', () => ({
+  toastSuccess: mockToastSuccess,
+  toastError: mockToastError,
+}))
+
 describe('MarkdownRenderer', () => {
   let container: HTMLDivElement
   let root: Root
@@ -132,6 +142,30 @@ describe('MarkdownRenderer', () => {
 
     expect(container.querySelector('h1')?.textContent).toBe('Hello World')
     expect(container.querySelector('p')?.textContent).toBe('This is a paragraph.')
+  })
+
+  it('copies the heading link to the clipboard and toasts on anchor click', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined)
+    Object.assign(navigator, { clipboard: { writeText } })
+    mockToastSuccess.mockClear()
+
+    const content = '## Hello World'
+    act(() => {
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const anchor = container.querySelector('.heading-anchor-link') as HTMLAnchorElement
+    expect(anchor).toBeTruthy()
+    expect(anchor.getAttribute('href')).toBe('#hello-world')
+
+    await act(async () => {
+      anchor.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
+      await Promise.resolve()
+    })
+
+    expect(writeText).toHaveBeenCalledWith(expect.stringContaining('#hello-world'))
+    expect(mockToastSuccess).toHaveBeenCalledWith('Link copied to clipboard 🔗')
+    expect(window.location.hash).toBe('#hello-world')
   })
 
   it('renders code blocks with syntax highlighting', () => {
