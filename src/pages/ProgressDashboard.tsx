@@ -29,6 +29,7 @@ import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAna
 import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
 import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
 import { useProgressStore } from '../stores/progressStore'
+import { useMasteryStore } from '../stores/masteryStore'
 
 /**
  * Progress dashboard page component.
@@ -94,6 +95,21 @@ export default function ProgressDashboard() {
   }, [achievementsUnlocked])
 
   const challengeLesson = getLesson(dailyChallenge.day)
+
+  const masteryQuestionStatus = useMasteryStore((state) => state.questionStatus)
+  const reviewLessons = useMemo(
+    () =>
+      useMasteryStore
+        .getState()
+        .getLessonsNeedingReview()
+        .map((entry) => ({ lesson: getLesson(entry.lessonId), reviewCount: entry.reviewCount }))
+        .filter(
+          (entry): entry is { lesson: NonNullable<typeof entry.lesson>; reviewCount: number } =>
+            Boolean(entry.lesson),
+        )
+        .slice(0, 5),
+    [masteryQuestionStatus],
+  )
 
   useEffect(() => {
     refreshDailyChallenge()
@@ -380,6 +396,28 @@ export default function ProgressDashboard() {
           })}
         </svg>
       </section>
+
+      {reviewLessons.length > 0 && (
+        <section className="mastery-review-card" aria-labelledby="mastery-review-heading">
+          <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
+            <h2 id="mastery-review-heading">Needs Review</h2>
+            <p>Mastery Check questions you marked "Review again" — revisit these lessons.</p>
+          </div>
+
+          <ul className="mastery-review-list">
+            {reviewLessons.map(({ lesson, reviewCount }) => (
+              <li className="mastery-review-row" key={lesson.day}>
+                <Link to={`/lesson/${lesson.day}`} className="mastery-review-link">
+                  Day {lesson.day}: {lesson.title}
+                </Link>
+                <span className="mastery-review-count">
+                  {reviewCount} {reviewCount === 1 ? 'question' : 'questions'}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       <div className="settings-callout glass-card">
         <div>

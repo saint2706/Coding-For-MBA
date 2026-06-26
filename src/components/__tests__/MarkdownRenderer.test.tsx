@@ -29,7 +29,11 @@ vi.mock('../ExerciseWidget', () => ({
 vi.mock('../MasteryCheck', () => ({
   default: function MockMasteryCheck(props: Record<string, unknown>) {
     return (
-      <div data-testid="mastery-check" data-title={props.title as string}>
+      <div
+        data-testid="mastery-check"
+        data-title={props.title as string}
+        data-lesson-id={props.lessonId as string | number | undefined}
+      >
         {props.questionText as React.ReactNode}
       </div>
     )
@@ -79,7 +83,11 @@ vi.mock('../ExerciseWidget', () => ({
 
 vi.mock('../MasteryCheck', () => ({
   default: (props: Record<string, unknown>) => (
-    <div data-testid="mastery-check" data-title={props.title as string}>
+    <div
+      data-testid="mastery-check"
+      data-title={props.title as string}
+      data-lesson-id={props.lessonId as string | number | undefined}
+    >
       {props.questionText as React.ReactNode}
     </div>
   ),
@@ -368,7 +376,7 @@ It is a test.
 </details>
     `
     act(() => {
-      root.render(<MarkdownRenderer content={content} />)
+      root.render(<MarkdownRenderer content={content} lessonId="5" />)
     })
 
     await waitFor(() => {
@@ -378,6 +386,7 @@ It is a test.
     const check = container.querySelector('[data-testid="mastery-check"]')
     expect(check?.getAttribute('data-title')).toBe('Test Question')
     expect(check?.textContent).toContain('What is it?')
+    expect(check?.getAttribute('data-lesson-id')).toBe('5')
   })
 
   it('parses exercise headings with variant spacing and nested formatting', () => {

@@ -60,16 +60,21 @@ Shift/Ctrl/Cmd+Enter execution. Results render through `SqlRunner` as one
 table per statement, with `NULL` cells styled distinctly and large result
 sets capped at 200 displayed rows.
 
-## Mastery Check upgrade: from "click to reveal" to actual self-test 🔲
+## Mastery Check upgrade: from "click to reveal" to actual self-test ✅
 
-Mastery Check questions are currently just `<details>` reveal toggles. Since
-`progressStore`/`gamificationStore` already exist, this is a natural
-extension point:
-
-- Track per-question "got it / review again" feedback, persisted to a store.
-- Surface a small "3/5 mastered" badge in the TOC or lesson header.
-- Surface lessons with low mastery scores for revisiting (lightweight
-  spaced-repetition nudge) on the home/progress pages.
+Mastery Check questions now track real self-assessment instead of just
+reveal toggles. A new persisted Zustand store, `src/stores/masteryStore.ts`,
+records a "got it" / "review again" status per lesson/question pair (keyed
+by `normalizeDayToken(lessonId)`, matching the identifier scheme already
+used to resolve lessons via `contentLoader`). `MasteryCheck.tsx` accepts an
+optional `lessonId` prop — threaded through `MarkdownRenderer` from
+`Lesson.tsx` — and renders "Got it 👍" / "Review again 🔁" buttons once the
+answer is revealed, persisting the choice when a `lessonId` is present and
+falling back to local component state otherwise. The lesson header in
+`Lesson.tsx` shows a "🎯 N/M mastered" badge next to the existing "Mark
+complete" control, and `ProgressDashboard.tsx` surfaces a "Needs Review"
+section listing lessons with outstanding "review again" answers, sorted by
+review count, as a lightweight spaced-repetition nudge.
 
 ## Code block QoL ✅
 
