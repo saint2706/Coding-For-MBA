@@ -21,6 +21,7 @@ import { hydrateQuizStore } from './stores/quizStore'
 import { useUserPreferencesStore } from './stores/userPreferencesStore'
 import { useLearningAnalytics } from './hooks/useLearningAnalytics'
 import { hydrateGamificationStore } from './stores/gamificationStore'
+import { hydrateMasteryStore } from './stores/masteryStore'
 import { preloadSearchIndex } from './utils/searchIndex'
 
 const Home = lazy(() => import('./pages/Home'))
@@ -61,6 +62,7 @@ export default function App() {
     hydrateProgressStore()
     hydrateQuizStore()
     hydrateGamificationStore()
+    hydrateMasteryStore()
   }, [])
 
   useEffect(() => {

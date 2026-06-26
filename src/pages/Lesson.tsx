@@ -50,6 +50,7 @@ import { toastInfo, toastSuccess } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { useGamificationStore } from '../stores/gamificationStore'
 import { useProgressStore } from '../stores/progressStore'
+import { useMasteryStore } from '../stores/masteryStore'
 import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 import {
   triggerSparkle,
@@ -244,6 +245,11 @@ export default function Lesson() {
     jsonLdSchemas.push(buildFAQSchema(masteryQuestions))
   }
 
+  const masteryTotal = masteryQuestions.length
+  const masteredCount = useMasteryStore((state) =>
+    masteryTotal > 0 ? state.getLessonStats(lesson.day, masteryTotal).gotIt : 0,
+  )
+
   return (
     <div
       className={`page-container lesson-with-toc ${readingMode && readingComfortTheme ? 'lesson-reading-surface' : ''} ${readingMode ? 'reading-mode' : ''}`}
@@ -309,6 +315,15 @@ export default function Lesson() {
                 {completed ? 'Completed' : 'Mark complete'}
               </button>
 
+              {masteryTotal > 0 && (
+                <span
+                  className="mastery-progress-badge"
+                  aria-label={`${masteredCount} of ${masteryTotal} mastery checks mastered`}
+                >
+                  <span aria-hidden="true">🎯</span> {masteredCount}/{masteryTotal} mastered
+                </span>
+              )}
+
               {lesson.tags && lesson.tags.length > 0 && (
                 <div className="lesson-tags-row">
                   {lesson.tags.map((tag) => (
@@ -328,7 +343,11 @@ export default function Lesson() {
 
         {/* Markdown content wrapped in semantic article tag */}
         <article>
-          <MarkdownRenderer content={lesson.content} precomputedBlocks={interactiveBlocks} />
+          <MarkdownRenderer
+            content={lesson.content}
+            precomputedBlocks={interactiveBlocks}
+            lessonId={lesson.day}
+          />
         </article>
 
         {/* Prev/Next navigation */}

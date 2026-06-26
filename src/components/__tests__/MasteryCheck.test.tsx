@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { createRoot, Root } from 'react-dom/client'
 import { act } from 'react'
 import MasteryCheck from '../MasteryCheck'
+import { useMasteryStore } from '../../stores/masteryStore'
 
 // Mock CodePlayground
 vi.mock('../CodePlayground', () => ({
@@ -15,6 +16,8 @@ describe('MasteryCheck', () => {
   let root: Root
 
   beforeEach(() => {
+    localStorage.clear()
+    useMasteryStore.setState({ questionStatus: {}, hasHydrated: false })
     container = document.createElement('div')
     document.body.appendChild(container)
     root = createRoot(container)
@@ -114,5 +117,66 @@ describe('MasteryCheck', () => {
 
     const answerRegion = container.querySelector('[role="region"]')
     expect(answerRegion).toBeNull()
+  })
+
+  it('persists self-assessment to the mastery store when lessonId is provided', () => {
+    act(() => {
+      root.render(
+        <MasteryCheck
+          questionNumber={2}
+          title="Persisted"
+          questionText="Does it persist?"
+          answer="Yes"
+          lessonId="7"
+        />,
+      )
+    })
+
+    const revealBtn = container.querySelector('.mastery-check__check-btn')
+    act(() => {
+      revealBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const gotItBtn = container.querySelector('.mastery-check__assess-btn--got-it')
+    act(() => {
+      gotItBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(useMasteryStore.getState().getQuestionStatus(7, 2)).toBe('got-it')
+    expect(container.textContent).toContain('Mastered')
+
+    const reviewBtn = container.querySelector('.mastery-check__assess-btn--review-again')
+    act(() => {
+      reviewBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(useMasteryStore.getState().getQuestionStatus(7, 2)).toBe('review-again')
+    expect(container.textContent).toContain('Review again')
+  })
+
+  it('tracks self-assessment locally without crashing when lessonId is absent', () => {
+    act(() => {
+      root.render(
+        <MasteryCheck
+          questionNumber={1}
+          title="No Lesson Id"
+          questionText="Still works?"
+          answer="Yes"
+        />,
+      )
+    })
+
+    const revealBtn = container.querySelector('.mastery-check__check-btn')
+    act(() => {
+      revealBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const gotItBtn = container.querySelector('.mastery-check__assess-btn--got-it')
+    act(() => {
+      gotItBtn?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    expect(container.textContent).toContain('Mastered')
+    expect(useMasteryStore.getState().questionStatus).toEqual({})
   })
 })

@@ -481,6 +481,51 @@
   background: var(--bg-card);
 }
 
+.mastery-review-card {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--ruby-500) 20%, transparent);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.mastery-review-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mastery-review-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+}
+
+.mastery-review-link {
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.mastery-review-link:hover {
+  text-decoration: underline;
+}
+
+.mastery-review-count {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ruby-500);
+}
+
 .gamification-summary-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

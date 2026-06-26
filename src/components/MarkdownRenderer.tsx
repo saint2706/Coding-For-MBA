@@ -843,9 +843,11 @@ const remarkPlugins = [remarkGfm, remarkMath, remarkCallouts, remarkCodeMeta]
 function InteractiveContent({
   content,
   precomputedBlocks,
+  lessonId,
 }: {
   content: string
   precomputedBlocks?: InteractiveBlock[]
+  lessonId?: string | number
 }) {
   const blocks = useMemo(
     () => precomputedBlocks || findInteractiveBlocks(content),
@@ -924,6 +926,7 @@ function InteractiveContent({
             questionText={mq.questionText}
             codeSnippet={mq.codeSnippet}
             answer={mq.answer}
+            lessonId={lessonId}
           />
         </Suspense>,
       )
@@ -954,6 +957,7 @@ function InteractiveContent({
 interface MarkdownRendererProps {
   content: string
   precomputedBlocks?: InteractiveBlock[]
+  lessonId?: string | number
 }
 
 /**
@@ -964,7 +968,7 @@ interface MarkdownRendererProps {
  * @param {string} props.content - The raw markdown content string to be rendered.
  * @returns {React.ReactElement} The rendered markdown content wrapped in a responsive container.
  */
-function MarkdownRenderer({ content, precomputedBlocks }: MarkdownRendererProps) {
+function MarkdownRenderer({ content, precomputedBlocks, lessonId }: MarkdownRendererProps) {
   if (!content) {
     return (
       <div className="markdown-body">
@@ -975,7 +979,7 @@ function MarkdownRenderer({ content, precomputedBlocks }: MarkdownRendererProps)
 
   return (
     <div className="markdown-body">
-      <InteractiveContent content={content} precomputedBlocks={precomputedBlocks} />
+      <InteractiveContent content={content} precomputedBlocks={precomputedBlocks} lessonId={lessonId} />
     </div>
   )
 }
