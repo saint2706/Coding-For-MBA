@@ -45,6 +45,10 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    env:
+      # actions/deploy-pages bundles a require() of Node's deprecated builtin
+      # `punycode` module, which logs a DEP0040 warning on every run.
+      NODE_OPTIONS: --disable-warning=DEP0040
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
