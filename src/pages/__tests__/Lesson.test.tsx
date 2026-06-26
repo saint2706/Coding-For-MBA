@@ -162,10 +162,7 @@ describe('Lesson completion toasts', () => {
     ])
     mockGetLessonStats.mockReturnValue({ gotIt: 1, reviewAgain: 0, total: 2 })
 
-    const originalScrollHeight = Object.getOwnPropertyDescriptor(
-      Document.prototype,
-      'scrollHeight',
-    )
+    const originalScrollHeight = Object.getOwnPropertyDescriptor(Document.prototype, 'scrollHeight')
     const originalInnerHeight = Object.getOwnPropertyDescriptor(window, 'innerHeight')
     Object.defineProperty(document.documentElement, 'scrollHeight', {
       configurable: true,

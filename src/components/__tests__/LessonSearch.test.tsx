@@ -4,7 +4,9 @@ import { createRoot, type Root } from 'react-dom/client'
 import LessonSearch from '../LessonSearch'
 
 function dispatchKeyDown(target: EventTarget, key: string, init: KeyboardEventInit = {}) {
-  target.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true, ...init }))
+  target.dispatchEvent(
+    new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true, ...init }),
+  )
 }
 
 function setInputValue(input: HTMLInputElement, value: string) {
