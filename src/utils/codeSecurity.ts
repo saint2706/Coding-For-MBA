@@ -63,10 +63,76 @@ export function stripPythonCommentsAndStrings(code: string): string {
     return (prefix || '') + '""'
   })
 
-  // Remove comments (after string processing to avoid stripping # inside preserved f-strings)
-  stripped = stripped.replace(/#.*/g, '')
+  // Remove comments carefully, avoiding those inside preserved f-strings.
+  // We parse the string to know if we are inside quotes before stripping a comment.
+  let result = ''
+  let inString = false
+  let stringQuote = ''
+  let escape = false
+  let i = 0
 
-  return stripped
+  while (i < stripped.length) {
+    const char = stripped[i]
+
+    if (escape) {
+      escape = false
+      result += char
+      i++
+      continue
+    }
+
+    if (char === '\\') {
+      escape = true
+      result += char
+      i++
+      continue
+    }
+
+    // Check for triple quotes
+    if (!inString) {
+      if (stripped.substring(i, i + 3) === '"""' || stripped.substring(i, i + 3) === "'''") {
+        inString = true
+        stringQuote = stripped.substring(i, i + 3)
+        result += stringQuote
+        i += 3
+        continue
+      }
+      if (char === '"' || char === "'") {
+        inString = true
+        stringQuote = char
+        result += char
+        i++
+        continue
+      }
+    } else {
+      if (stringQuote.length === 3 && stripped.substring(i, i + 3) === stringQuote) {
+        inString = false
+        result += stringQuote
+        i += 3
+        continue
+      }
+      if (stringQuote.length === 1 && char === stringQuote) {
+        inString = false
+        result += char
+        i++
+        continue
+      }
+    }
+
+    if (!inString && char === '#') {
+      const nextNewline = stripped.indexOf('\n', i)
+      if (nextNewline === -1) {
+        break // Rest of the line is a comment, end of string
+      }
+      i = nextNewline // Skip to newline
+      continue
+    }
+
+    result += char
+    i++
+  }
+
+  return result
 }
 
 /**
