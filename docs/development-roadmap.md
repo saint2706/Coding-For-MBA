@@ -30,7 +30,7 @@ Work is organized into four pillars. Each slips independently — a quarter runn
 **Year 1 goal:** Keep the core 145 days fresh and add the first elective track for learners who finish the main path.
 - Audit all 12 phases for library/API drift (e.g., pandas/sklearn/LLM API syntax) and fix stale examples — content correctness regresses silently as dependencies move.
 - Design and ship one **elective/advanced track** (e.g., "Agentic AI & MLOps" or "Cloud Data Platforms" — pick based on which Phase 9-12 topics get the most learner engagement) as a clearly-marked optional branch off the main sequence, not a renumbering of existing days.
-- Add 3-5 new case studies (`content/case-studies/`) drawing on real, attributed business datasets, rotating out any that have gone stale.
+- ~~Add 3-5 new case studies (`content/case-studies/`) drawing on real, attributed business datasets, rotating out any that have gone stale.~~ **Done (2026-07):** added 5 case studies (11-15) built on real, cited public datasets — UCI Online Retail II, UCI Bank Marketing, NYC TLC taxi trip records, the ULB/Kaggle credit card fraud dataset, and World Bank macro indicators. Audited the original 10 (all synthetic-data-generator based) for staleness — no dead links or deprecated APIs found, so none were rotated out.
 
 **Year 2 goal:** A second elective track plus a capstone structure.
 - Ship a second elective track.
