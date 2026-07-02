@@ -1,266 +1,347 @@
-# Graph Report - src  (2026-06-24)
+# Graph Report - src  (2026-07-02)
 
 ## Corpus Check
-- 190 files · ~89,279 words
+- 200 files · ~89,279 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 753 nodes · 1478 edges · 58 communities (41 shown, 17 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- 966 nodes · 1916 edges · 79 communities (56 shown, 23 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 34 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Code Playground & UI Utilities|Code Playground & UI Utilities]]
-- [[_COMMUNITY_HomeCurriculum Pages & SEO|Home/Curriculum Pages & SEO]]
-- [[_COMMUNITY_Spaced Repetition Review System|Spaced Repetition Review System]]
-- [[_COMMUNITY_Search System|Search System]]
-- [[_COMMUNITY_Learning Analytics Dashboard|Learning Analytics Dashboard]]
-- [[_COMMUNITY_Navigation & Shortcuts|Navigation & Shortcuts]]
-- [[_COMMUNITY_Content Loader Immutability Helpers|Content Loader Immutability Helpers]]
-- [[_COMMUNITY_Notebook Viewer & Notes|Notebook Viewer & Notes]]
-- [[_COMMUNITY_Exercises & Quiz Store|Exercises & Quiz Store]]
-- [[_COMMUNITY_Markdown Renderer Core|Markdown Renderer Core]]
-- [[_COMMUNITY_Python Runner & Pyodide Sandbox|Python Runner & Pyodide Sandbox]]
-- [[_COMMUNITY_Table of Contents & Slugs|Table of Contents & Slugs]]
 - [[_COMMUNITY_App Routing|App Routing]]
-- [[_COMMUNITY_Progress Store & Phase Overview|Progress Store & Phase Overview]]
-- [[_COMMUNITY_Lesson Page & Day Tokens|Lesson Page & Day Tokens]]
-- [[_COMMUNITY_Gamification Store|Gamification Store]]
-- [[_COMMUNITY_User Preferences Store|User Preferences Store]]
-- [[_COMMUNITY_Case Studies & Content Stats|Case Studies & Content Stats]]
-- [[_COMMUNITY_Progress Tracker Utility|Progress Tracker Utility]]
-- [[_COMMUNITY_Frontmatter Parsing|Frontmatter Parsing]]
-- [[_COMMUNITY_Sidebar Navigation|Sidebar Navigation]]
-- [[_COMMUNITY_Theme Context|Theme Context]]
-- [[_COMMUNITY_Related Lessons|Related Lessons]]
-- [[_COMMUNITY_Confetti Effects|Confetti Effects]]
-- [[_COMMUNITY_Day Token Core Logic|Day Token Core Logic]]
-- [[_COMMUNITY_Exercise Extractor|Exercise Extractor]]
-- [[_COMMUNITY_Reading Time & Lesson Header|Reading Time & Lesson Header]]
-- [[_COMMUNITY_Markdown Block Parsing Helpers|Markdown Block Parsing Helpers]]
-- [[_COMMUNITY_Link Safety|Link Safety]]
-- [[_COMMUNITY_Settings Page|Settings Page]]
-- [[_COMMUNITY_Curriculum Config|Curriculum Config]]
-- [[_COMMUNITY_MapList Toggle|Map/List Toggle]]
-- [[_COMMUNITY_Swipe Hook|Swipe Hook]]
-- [[_COMMUNITY_Exercise Card|Exercise Card]]
-- [[_COMMUNITY_Loading Skeleton|Loading Skeleton]]
+- [[_COMMUNITY_Interactive Block Extraction|Interactive Block Extraction]]
 - [[_COMMUNITY_Main Entry Tests|Main Entry Tests]]
-- [[_COMMUNITY_Remark Code Meta Plugin|Remark Code Meta Plugin]]
-- [[_COMMUNITY_Content Loader Lesson Helpers|Content Loader Lesson Helpers]]
 - [[_COMMUNITY_Custom Cursor|Custom Cursor]]
+- [[_COMMUNITY_Back to Top & Breadcrumbs|Back to Top & Breadcrumbs]]
+- [[_COMMUNITY_Case Studies Page|Case Studies Page]]
+- [[_COMMUNITY_Copy Button & Exercise Widget|Copy Button & Exercise Widget]]
 - [[_COMMUNITY_Prerequisite Pills|Prerequisite Pills]]
-- [[_COMMUNITY_Scroll Progress|Scroll Progress]]
-- [[_COMMUNITY_Glossary|Glossary]]
-- [[_COMMUNITY_Lesson Tests|Lesson Tests]]
+- [[_COMMUNITY_Editorial Cover|Editorial Cover]]
+- [[_COMMUNITY_Editorial Lesson Header|Editorial Lesson Header]]
+- [[_COMMUNITY_Exercise Card & Empty States|Exercise Card & Empty States]]
+- [[_COMMUNITY_Error Boundary|Error Boundary]]
 - [[_COMMUNITY_Glossary Term|Glossary Term]]
-- [[_COMMUNITY_Glossary Tooltips|Glossary Tooltips]]
-- [[_COMMUNITY_Test Setup|Test Setup]]
-- [[_COMMUNITY_Content Validation Script Tests|Content Validation Script Tests]]
+- [[_COMMUNITY_Keyboard Shortcuts|Keyboard Shortcuts]]
+- [[_COMMUNITY_Lesson Code Actions|Lesson Code Actions]]
+- [[_COMMUNITY_Swipe Hook|Swipe Hook]]
+- [[_COMMUNITY_Markdown Renderer Core|Markdown Renderer Core]]
+- [[_COMMUNITY_Link Safety|Link Safety]]
+- [[_COMMUNITY_Exercise Widget Tests|Exercise Widget Tests]]
+- [[_COMMUNITY_Gamification Store|Gamification Store]]
+- [[_COMMUNITY_Mobile Nav & Route Prefetch|Mobile Nav & Route Prefetch]]
+- [[_COMMUNITY_Navbar & Status Ticker|Navbar & Status Ticker]]
+- [[_COMMUNITY_Progress Bar|Progress Bar]]
+- [[_COMMUNITY_Related Lessons|Related Lessons]]
+- [[_COMMUNITY_Python Runner & Pyodide Sandbox|Python Runner & Pyodide Sandbox]]
+- [[_COMMUNITY_Content Stats|Content Stats]]
+- [[_COMMUNITY_SEO Head & Not Found|SEO Head & Not Found]]
+- [[_COMMUNITY_Search Palette & Debounce|Search Palette & Debounce]]
+- [[_COMMUNITY_Sidebar Navigation|Sidebar Navigation]]
+- [[_COMMUNITY_Sidebar Phase Group|Sidebar Phase Group]]
+- [[_COMMUNITY_Table of Contents|Table of Contents]]
+- [[_COMMUNITY_Terminal Dashboard|Terminal Dashboard]]
+- [[_COMMUNITY_Remark Code Meta Plugin|Remark Code Meta Plugin]]
+- [[_COMMUNITY_Community 69|Community 69]]
+- [[_COMMUNITY_Spaced Repetition Review System|Spaced Repetition Review System]]
+- [[_COMMUNITY_Theme Context|Theme Context]]
+- [[_COMMUNITY_Animated Counter|Animated Counter]]
+- [[_COMMUNITY_Learning Analytics Hook|Learning Analytics Hook]]
+- [[_COMMUNITY_Mastery Check|Mastery Check]]
+- [[_COMMUNITY_Curriculum & Home Pages|Curriculum & Home Pages]]
+- [[_COMMUNITY_Confetti Effects|Confetti Effects]]
+- [[_COMMUNITY_Lesson & Day Token Core|Lesson & Day Token Core]]
+- [[_COMMUNITY_Phase Overview & Progress Store|Phase Overview & Progress Store]]
+- [[_COMMUNITY_Exercise Widget Tests|Exercise Widget Tests]]
+- [[_COMMUNITY_Lesson Page Tests|Lesson Page Tests]]
+- [[_COMMUNITY_Progress Dashboard Tests|Progress Dashboard Tests]]
+- [[_COMMUNITY_Code Playground|Code Playground]]
+- [[_COMMUNITY_Learning Analytics Store|Learning Analytics Store]]
+- [[_COMMUNITY_Test Setup  localStorage Mock|Test Setup / localStorage Mock]]
+- [[_COMMUNITY_Exercise Extractor|Exercise Extractor]]
+- [[_COMMUNITY_Frontmatter Parsing|Frontmatter Parsing]]
+- [[_COMMUNITY_Glossary|Glossary]]
+- [[_COMMUNITY_Route Prefetching Tests|Route Prefetching Tests]]
+- [[_COMMUNITY_Curriculum Config|Curriculum Config]]
+- [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 71|Community 71]]
+- [[_COMMUNITY_SEO Schemas|SEO Schemas]]
+- [[_COMMUNITY_Content Validation Script|Content Validation Script]]
+- [[_COMMUNITY_Content Loader|Content Loader]]
+- [[_COMMUNITY_MapList Toggle|Map/List Toggle]]
+- [[_COMMUNITY_Day Token Core Logic|Day Token Core Logic]]
+- [[_COMMUNITY_Community 72|Community 72]]
 - [[_COMMUNITY_Frontmatter Types|Frontmatter Types]]
-- [[_COMMUNITY_Remark Callouts Plugin|Remark Callouts Plugin]]
+- [[_COMMUNITY_SQL Playground & Runner|SQL Playground & Runner]]
+- [[_COMMUNITY_Remark Callouts|Remark Callouts]]
+- [[_COMMUNITY_Lesson Search|Lesson Search]]
+- [[_COMMUNITY_Mermaid Diagram|Mermaid Diagram]]
+- [[_COMMUNITY_Progress Dashboard|Progress Dashboard]]
 - [[_COMMUNITY_Markdown Renderer Tests|Markdown Renderer Tests]]
-- [[_COMMUNITY_Search Index Perf Tests|Search Index Perf Tests]]
-- [[_COMMUNITY_Search Index Tests|Search Index Tests]]
-- [[_COMMUNITY_Sidebar Perf Tests|Sidebar Perf Tests]]
-- [[_COMMUNITY_Exercise Extractor Types|Exercise Extractor Types]]
+- [[_COMMUNITY_Lesson Page Tests|Lesson Page Tests]]
+- [[_COMMUNITY_Progress Dashboard Tests|Progress Dashboard Tests]]
+- [[_COMMUNITY_Route Prefetching Tests|Route Prefetching Tests]]
+- [[_COMMUNITY_Community 73|Community 73]]
+- [[_COMMUNITY_Community 74|Community 74]]
+- [[_COMMUNITY_Content Validation Script|Content Validation Script]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `useProgressStore` - 21 edges
-2. `initializeContent()` - 17 edges
-3. `getAllPhases()` - 17 edges
-4. `getLessonsByPhase()` - 14 edges
-5. `dayTokenToProgressId()` - 14 edges
-6. `getLesson()` - 13 edges
-7. `getCurriculumMetadata()` - 13 edges
-8. `ensureHydrated()` - 13 edges
-9. `Lesson()` - 12 edges
-10. `Home()` - 11 edges
+1. `useProgressStore` - 25 edges
+2. `initializeContent()` - 19 edges
+3. `getAllPhases()` - 18 edges
+4. `getLessonsByPhase()` - 15 edges
+5. `dayTokenToProgressId()` - 15 edges
+6. `getLesson()` - 14 edges
+7. `getCurriculumMetadata()` - 14 edges
+8. `toastSuccess()` - 14 edges
+9. `Lesson()` - 13 edges
+10. `ensureHydrated()` - 13 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `getLegacyPalette()` --calls--> `getStoredString()`  [EXTRACTED]
-  stores/userPreferencesStore.ts → utils/safeStorage.ts
-- `App()` --calls--> `useUserPreferencesStore`  [EXTRACTED]
-  App.tsx → stores/userPreferencesStore.ts
 - `ExerciseWidget()` --calls--> `useQuizStore`  [EXTRACTED]
   components/ExerciseWidget.tsx → stores/quizStore.ts
-- `LinkComponent()` --calls--> `getSecureLinkAttributes()`  [EXTRACTED]
-  components/MarkdownRenderer.tsx → utils/linkSafety.ts
-- `MasteryCheck()` --calls--> `buildFAQSchema()`  [EXTRACTED]
-  components/MasteryCheck.tsx → utils/seoSchemas.ts
+- `Navbar()` --calls--> `createRoutePrefetchHandlers()`  [EXTRACTED]
+  components/Navbar.tsx → utils/prefetchRoutes.ts
+- `NotFound()` --calls--> `getAllPhases()`  [EXTRACTED]
+  pages/NotFound.tsx → utils/contentLoader.ts
+- `getLegacyPalette()` --calls--> `getStoredString()`  [EXTRACTED]
+  stores/userPreferencesStore.ts → utils/safeStorage.ts
+- `normalizeDayToken()` --calls--> `questionKey()`  [EXTRACTED]
+  utils/dayToken.ts → stores/masteryStore.ts
 
 ## Import Cycles
 - None detected.
 
-## Communities (58 total, 17 thin omitted)
+## Communities (79 total, 23 thin omitted)
 
-### Community 0 - "Code Playground & UI Utilities"
-Cohesion: 0.06
-Nodes (28): CodePlayground, CodePlaygroundHandle, CodePlaygroundProps, highlightTheme, SubmissionResult, CopyButton(), CopyButtonProps, ErrorBoundary (+20 more)
-
-### Community 1 - "Home/Curriculum Pages & SEO"
+### Community 2 - "App Routing"
 Cohesion: 0.07
-Nodes (25): EditorialCover, MasteryCheck(), MasteryCheckProps, BreadcrumbItem, buildBreadcrumbSchema(), SEOHead(), SEOHeadProps, TerminalDashboard (+17 more)
+Nodes (36): Home, Lesson, PhaseOverview, Curriculum, SearchResults, ProgressDashboard, Exercises, NotebookViewer (+28 more)
 
-### Community 2 - "Spaced Repetition Review System"
-Cohesion: 0.10
-Nodes (32): useProgressStoreMock, getAllReviewCardSeeds(), DayExerciseMap, DayExerciseMapSchema, getMap(), markExerciseComplete(), addDays(), clampEase() (+24 more)
-
-### Community 3 - "Search System"
-Cohesion: 0.09
-Nodes (32): SearchPalette(), SearchPaletteProps, useDebounce(), SearchResults(), lessons, mockNavigate, TestComponent(), highlightText() (+24 more)
-
-### Community 4 - "Learning Analytics Dashboard"
-Cohesion: 0.07
-Nodes (29): App(), AnimatedCounter(), AnimatedCounterProps, ProgressBarProps, useLearningAnalytics(), ProgressDashboard(), ACHIEVEMENTS, addElapsed() (+21 more)
-
-### Community 5 - "Navigation & Shortcuts"
-Cohesion: 0.07
-Nodes (26): MobileNav(), Navbar(), NavbarProps, formatPath(), StatusTicker(), streakBlocks(), useGamificationStore, toastInfoMock (+18 more)
-
-### Community 6 - "Content Loader Immutability Helpers"
-Cohesion: 0.07
-Nodes (26): CaseStudy, caseStudyFiles, ExtraFile, extrasFiles, freezeDayTokenArray(), freezeLesson(), freezePhase(), freezeStringArray() (+18 more)
-
-### Community 7 - "Notebook Viewer & Notes"
-Cohesion: 0.09
-Nodes (16): BreadcrumbItem, BreadcrumbProps, CellOutputsProps, mergeCells(), MergedBlock, MergedBlockRendererProps, NotebookViewer(), formatRelative() (+8 more)
-
-### Community 8 - "Exercises & Quiz Store"
-Cohesion: 0.12
-Nodes (16): ExercisesEmptyIllustration(), FreshStartIllustration(), IllustrationProps, SearchEmptyIllustration(), ExerciseWidget(), Exercises(), hydrateQuizStore(), QuizAttempt (+8 more)
-
-### Community 9 - "Markdown Renderer Core"
-Cohesion: 0.08
-Nodes (14): CodePlayground, customTheme, ExerciseWidget, glossaryDefinitionsByLowerTerm, InteractiveBlock, lessonSanitizerSchema, markdownComponents, MarkdownNodeWithPosition (+6 more)
-
-### Community 10 - "Python Runner & Pyodide Sandbox"
-Cohesion: 0.12
-Nodes (14): PythonRunner, PythonRunnerHandle, PythonRunnerProps, PyodideInterface, PyodideRunResult, RunPythonOptions, usePyodide(), Window (+6 more)
-
-### Community 11 - "Table of Contents & Slugs"
-Cohesion: 0.12
-Nodes (11): TableOfContents, TableOfContentsProps, TocItem, TocItemProps, MockIntersectionObserver, rehypeSlugCustom(), createSlugger(), extractTextFromReactNode() (+3 more)
-
-### Community 12 - "App Routing"
-Cohesion: 0.10
-Nodes (19): CaseStudies, ContentStats, Curriculum, CustomCursor, Exercises, Home, KeyboardShortcutsOverlay, Lesson (+11 more)
-
-### Community 13 - "Progress Store & Phase Overview"
-Cohesion: 0.17
-Nodes (14): PhaseOverview(), calculateStreakDays(), mergeLegacyLastVisited(), normalizePersistedState(), parseValidCompletionDates(), parseValidDays(), PersistedProgressSchema, PhaseProgress (+6 more)
-
-### Community 14 - "Lesson Page & Day Tokens"
-Cohesion: 0.25
-Nodes (14): ExerciseWidgetProps, solutionTheme, Lesson(), getAdjacentLessons(), getLesson(), initializeContent(), compareDayTokens(), dayTokenFromPath() (+6 more)
-
-### Community 15 - "Gamification Store"
-Cohesion: 0.13
-Nodes (12): AchievementId, AchievementMeta, DailyChallenge, DailyChallengeSchema, GamificationStore, hydrateGamificationStore(), LeaderboardEntry, LeaderboardEntrySchema (+4 more)
-
-### Community 16 - "User Preferences Store"
-Cohesion: 0.12
-Nodes (11): CodeLanguagePreference, CodeLanguagePreferenceSchema, ColorPaletteSchema, DensityPreference, DensityPreferenceSchema, FontSizePreference, FontSizePreferenceSchema, getLegacyPalette() (+3 more)
-
-### Community 17 - "Case Studies & Content Stats"
-Cohesion: 0.19
-Nodes (9): CaseStudies(), Tab, ContentStats(), getAllCaseStudies(), getAllLessons(), getAllProjects(), getContentStats(), getTotalReadingTime() (+1 more)
-
-### Community 18 - "Progress Tracker Utility"
-Cohesion: 0.36
-Nodes (13): clearAllProgress(), ensureHydrated(), getCompletedCount(), getCompletedForPhase(), getCompletedLessons(), getLastVisited(), getPhaseProgress(), getStreakDays() (+5 more)
-
-### Community 19 - "Frontmatter Parsing"
-Cohesion: 0.32
-Nodes (10): BLOCKED_KEYS, coerceScalar(), normalizeMarkdownLineEndings(), parseMarkdown(), parseNormalizedMarkdown(), Frontmatter, normalizeMarkdownLineEndings(), ParsedMarkdown (+2 more)
-
-### Community 20 - "Sidebar Navigation"
-Cohesion: 0.21
-Nodes (7): PrimaryItemProps, Sidebar(), SidebarProps, propsAreEqual(), SidebarPhaseGroup(), resolveChallengeCandidates(), getLessonsByPhase()
-
-### Community 21 - "Theme Context"
-Cohesion: 0.33
-Nodes (6): ThemeContext, ThemeContextType, DARK_PALETTES, ThemeProvider(), useTheme(), ColorPalette
-
-### Community 22 - "Related Lessons"
-Cohesion: 0.24
-Nodes (8): RelatedLessons(), SidebarPhaseGroupProps, getRelatedLessons(), Lesson, Phase, ReviewCardSeed, DayToken, SearchDocument
-
-### Community 23 - "Confetti Effects"
-Cohesion: 0.40
-Nodes (7): prefersReducedMotion(), safeConfetti(), triggerCurriculumFireworks(), triggerDayExercisesCompleteConfetti(), triggerPhaseUnlockConfetti(), triggerQuizAcedConfetti(), triggerSparkle()
-
-### Community 24 - "Day Token Core Logic"
-Cohesion: 0.36
-Nodes (9): compareDayTokens(), dayTokenFromPath(), dayTokenFromReference(), dayTokenToProgressId(), extractDayToken(), normalizeDayToken(), parseCache, parseDayToken() (+1 more)
-
-### Community 25 - "Exercise Extractor"
-Cohesion: 0.31
-Nodes (6): Assert, Equal, ExtractedExerciseShape, typeAssertions, extractExercisesFromContent(), extractExercises()
-
-### Community 26 - "Reading Time & Lesson Header"
+### Community 44 - "Interactive Block Extraction"
 Cohesion: 0.48
+Nodes (4): App(), TestComponent(), useLearningAnalytics(), TestComponent()
+
+### Community 60 - "Main Entry Tests"
+Cohesion: 0.40
+Nodes (3): renderMock, toasterMarker, appMarker
+
+### Community 9 - "Back to Top & Breadcrumbs"
+Cohesion: 0.08
+Nodes (15): BreadcrumbItem, BreadcrumbProps, MergedBlock, mergeCells(), CellOutputsProps, MergedBlockRendererProps, NotebookViewer(), formatRelative() (+7 more)
+
+### Community 13 - "Case Studies Page"
+Cohesion: 0.12
+Nodes (13): highlightTheme, CodePlaygroundHandle, SubmissionResult, CodePlaygroundProps, CodePlayground, mockRunFn, MockPythonRunnerProps, mockRunFn (+5 more)
+
+### Community 33 - "Copy Button & Exercise Widget"
+Cohesion: 0.31
+Nodes (5): CopyButtonProps, CopyButton(), solutionTheme, ExerciseWidgetProps, ExerciseWidget()
+
+### Community 38 - "Editorial Lesson Header"
+Cohesion: 0.46
 Nodes (3): EditorialLessonHeaderProps, ReadingTime(), getReadingTime()
 
-### Community 27 - "Markdown Block Parsing Helpers"
-Cohesion: 0.33
-Nodes (7): extractCodeBlock(), extractLabeledTextFromParagraph(), findInteractiveBlocks(), getHeadingText(), getNodeEndOffset(), getNodeStartOffset(), isLabeledParagraph()
+### Community 5 - "Exercise Card & Empty States"
+Cohesion: 0.10
+Nodes (16): IllustrationProps, SearchEmptyIllustration(), ExercisesEmptyIllustration(), FreshStartIllustration(), ExerciseCardProps, Exercises(), QuizAttemptSchema, QuizAttempt (+8 more)
 
-### Community 28 - "Link Safety"
+### Community 12 - "Error Boundary"
+Cohesion: 0.19
+Nodes (6): ErrorBoundaryProps, ErrorBoundaryState, ErrorBoundary, TOAST_DEFAULT_OPTIONS, toastError(), toastInfo()
+
+### Community 30 - "Keyboard Shortcuts"
+Cohesion: 0.33
+Nodes (3): ShortcutScope, ShortcutDefinition, isTypingInEditableElement()
+
+### Community 21 - "Lesson Code Actions"
+Cohesion: 0.32
+Nodes (6): LessonCodeActionsProps, LessonCodeActions(), maybeCelebrateAchievement(), extractLessonCodeBlocks(), joinLessonCodeBlocks(), toastSuccess()
+
+### Community 51 - "Swipe Hook"
+Cohesion: 0.33
+Nodes (3): ViewProps, ToggleProps, MapListToggle
+
+### Community 6 - "Markdown Renderer Core"
+Cohesion: 0.06
+Nodes (19): CodePlayground, ExerciseWidget, MasteryCheck, customTheme, glossaryDefinitionsByLowerTerm, addGlossaryTooltips(), processGlossaryChildren(), ParagraphWithGlossary() (+11 more)
+
+### Community 40 - "Link Safety"
 Cohesion: 0.43
-Nodes (5): LinkComponent(), getSecureLinkAttributes(), LinkProps, normalizeAndValidateHref(), SAFE_SCHEMES
+Nodes (5): LinkComponent(), SAFE_SCHEMES, normalizeAndValidateHref(), LinkProps, getSecureLinkAttributes()
 
-### Community 29 - "Settings Page"
+### Community 45 - "Exercise Widget Tests"
 Cohesion: 0.33
-Nodes (3): PALETTES, SettingsPage(), useUserPreferencesStore
+Nodes (7): extractCodeBlock(), getNodeStartOffset(), getNodeEndOffset(), getHeadingText(), isLabeledParagraph(), extractLabeledTextFromParagraph(), findInteractiveBlocks()
 
-### Community 30 - "Curriculum Config"
+### Community 15 - "Gamification Store"
+Cohesion: 0.17
+Nodes (12): MasteryCheckProps, MasteryCheck(), buildFAQSchema(), MasteryStatus, LessonMasteryStats, LessonNeedingReview, safeStorage, PersistedMasterySchema (+4 more)
+
+### Community 35 - "Mobile Nav & Route Prefetch"
+Cohesion: 0.28
+Nodes (5): MobileNav(), routePrefetchers, prefetchedRoutes, prefetchRoute(), createRoutePrefetchHandlers()
+
+### Community 27 - "Navbar & Status Ticker"
+Cohesion: 0.24
+Nodes (7): NavbarProps, Navbar(), formatPath(), streakBlocks(), StatusTicker(), toastInfoMock, toastInfoMock
+
+### Community 4 - "Python Runner & Pyodide Sandbox"
+Cohesion: 0.09
+Nodes (17): PythonRunnerHandle, PythonRunnerProps, PythonRunner, MockPyodide, Window, TestComponent(), PyodideRunResult, RunPythonOptions (+9 more)
+
+### Community 28 - "SEO Head & Not Found"
+Cohesion: 0.20
+Nodes (5): BreadcrumbItem, SEOHeadProps, buildBreadcrumbSchema(), SEOHead(), NotFound()
+
+### Community 1 - "Search Palette & Debounce"
+Cohesion: 0.08
+Nodes (38): SearchPaletteProps, SearchPalette(), mockNavigate, TestComponent(), useDebounce(), SearchResults(), lessons, Lesson (+30 more)
+
+### Community 36 - "Sidebar Navigation"
+Cohesion: 0.22
+Nodes (5): SidebarProps, PrimaryItemProps, Sidebar(), useProgressStoreMock, useProgressStoreMock
+
+### Community 22 - "Sidebar Phase Group"
+Cohesion: 0.23
+Nodes (7): SidebarPhaseGroupProps, SidebarPhaseGroup(), propsAreEqual(), Phase, getLessonsByPhase(), ReviewCardSeed, DayToken
+
+### Community 7 - "Table of Contents"
+Cohesion: 0.09
+Nodes (12): TocItemProps, TocItem, TableOfContentsProps, TableOfContents, MockIntersectionObserver, rehypeSlugCustom(), stripMarkdownInlineFormatting(), extractTextFromReactNode() (+4 more)
+
+### Community 48 - "Remark Code Meta Plugin"
 Cohesion: 0.29
-Nodes (6): DifficultyConfig, difficultyConfigSchema, DifficultyInfo, difficultyInfoSchema, PhaseIcons, phaseIconsSchema
+Nodes (6): mockSetCode, mockRecordAttempt, mockGetQuizStats, mockGetRecentAttempts, mockAwardExerciseCompletion, mockAwardPerfectQuiz
 
-### Community 31 - "Map/List Toggle"
-Cohesion: 0.33
-Nodes (3): MapListToggle, ToggleProps, ViewProps
+### Community 0 - "Spaced Repetition Review System"
+Cohesion: 0.09
+Nodes (34): useProgressStoreMock, getAllReviewCardSeeds(), freezeReviewCardSeed(), DayExerciseMap, DayExerciseMapSchema, getMap(), markExerciseComplete(), ReviewRating (+26 more)
 
-### Community 32 - "Swipe Hook"
+### Community 3 - "Theme Context"
+Cohesion: 0.10
+Nodes (20): ThemeContextType, ThemeContext, DARK_PALETTES, ThemeProvider(), useTheme(), PALETTES, SettingsPage(), ColorPaletteSchema (+12 more)
+
+### Community 52 - "Animated Counter"
 Cohesion: 0.47
-Nodes (3): SwipeConfig, useSwipe(), SwipeTestComponent()
+Nodes (3): SwipeTestComponent(), SwipeConfig, useSwipe()
 
-### Community 35 - "Main Entry Tests"
+### Community 43 - "Learning Analytics Hook"
+Cohesion: 0.32
+Nodes (4): Tab, CaseStudies(), getAllCaseStudies(), getAllProjects()
+
+### Community 16 - "Mastery Check"
+Cohesion: 0.21
+Nodes (12): ContentStats(), PhaseOverview(), getPhase(), getAllLessons(), parseNotebooks(), parseNotebookEntry(), getTotalReadingTime(), getContentStats() (+4 more)
+
+### Community 20 - "Curriculum & Home Pages"
+Cohesion: 0.32
+Nodes (9): Curriculum(), pad(), formatIssueDate(), Home(), { mockGetLastVisited, mockGetCompletedCount }, getAllPhases(), getCurriculumMetadata(), buildProductSchema() (+1 more)
+
+### Community 29 - "Confetti Effects"
+Cohesion: 0.35
+Nodes (7): prefersReducedMotion(), safeConfetti(), triggerSparkle(), triggerQuizAcedConfetti(), triggerDayExercisesCompleteConfetti(), triggerPhaseUnlockConfetti(), triggerCurriculumFireworks()
+
+### Community 17 - "Lesson & Day Token Core"
+Cohesion: 0.35
+Nodes (12): Lesson(), initializeContent(), getLesson(), getAdjacentLessons(), ParsedDayToken, normalizeDayToken(), parseDayToken(), compareDayTokens() (+4 more)
+
+### Community 11 - "Phase Overview & Progress Store"
+Cohesion: 0.16
+Nodes (13): MotionProps, safeStorage, PhaseProgress, PersistedProgressSchema, ProgressStore, toDayKey(), parseValidDays(), parseValidCompletionDates() (+5 more)
+
+### Community 47 - "Exercise Widget Tests"
+Cohesion: 0.48
+Nodes (4): ProgressDashboard(), ACHIEVEMENTS, formatDuration(), useLearningAnalyticsStore
+
+### Community 61 - "Lesson Page Tests"
+Cohesion: 0.50
+Nodes (3): { mockSetLastVisited, mockToastSuccess, mockToastInfo }, mockToggleLessonComplete, mockGetCompletedLessons
+
+### Community 25 - "Progress Dashboard Tests"
+Cohesion: 0.17
+Nodes (11): mockClearAllProgress, mockRefreshDailyChallenge, mockSetPalette, mockSetFontSize, mockSetDensity, mockSetCodeLanguage, mockSetSidebarDefaultOpen, mockSetReadingMode (+3 more)
+
+### Community 14 - "Code Playground"
+Cohesion: 0.14
+Nodes (13): AchievementId, AchievementMeta, XP_MILESTONES, safeStorage, LeaderboardEntry, DailyChallenge, LeaderboardEntrySchema, DailyChallengeSchema (+5 more)
+
+### Community 31 - "Learning Analytics Store"
+Cohesion: 0.27
+Nodes (8): safeStorage, PersistedAnalyticsSchema, LearningAnalyticsStore, asDayKey(), parsePositiveRecord(), normalizePersistedState(), addElapsed(), streakDaysForThreshold()
+
+### Community 18 - "Exercise Extractor"
+Cohesion: 0.19
+Nodes (10): Equal, Assert, ExtractedExerciseShape, typeAssertions, extractExercisesFromContent(), extractExercises(), Equal, Assert (+2 more)
+
+### Community 19 - "Frontmatter Parsing"
+Cohesion: 0.36
+Nodes (10): BLOCKED_KEYS, coerceScalar(), normalizeMarkdownLineEndings(), parseNormalizedMarkdown(), parseMarkdown(), Frontmatter, ParsedMarkdown, normalizeMarkdownLineEndings() (+2 more)
+
+### Community 24 - "Route Prefetching Tests"
+Cohesion: 0.17
+Nodes (11): mockHome, mockCurriculum, mockPhaseOverview, mockLesson, mockProgressDashboard, mockExercises, mockNotebookViewer, mockSearchResults (+3 more)
+
+### Community 37 - "SEO Schemas"
+Cohesion: 0.61
+Nodes (6): buildCanonicalUrl(), buildWebSiteSchema(), buildItemListSchema(), buildCollectionPageSchema(), buildCourseSchema(), buildLessonSchema()
+
+### Community 8 - "Content Loader"
+Cohesion: 0.08
+Nodes (31): ExtraFile, lessonFiles, phaseFiles, extrasFiles, normalizeIdPart(), getLessonIdPrefix(), extractExercisesFromLesson(), extractHeadingsFromLessonContent() (+23 more)
+
+### Community 50 - "Map/List Toggle"
+Cohesion: 0.29
+Nodes (6): difficultyInfoSchema, difficultyConfigSchema, phaseIconsSchema, DifficultyInfo, DifficultyConfig, PhaseIcons
+
+### Community 32 - "Day Token Core Logic"
+Cohesion: 0.36
+Nodes (9): parseCache, progressIdCache, normalizeDayToken(), parseDayToken(), compareDayTokens(), dayTokenFromPath(), extractDayToken(), dayTokenFromReference() (+1 more)
+
+### Community 10 - "SQL Playground & Runner"
+Cohesion: 0.10
+Nodes (16): highlightTheme, SqlPlaygroundHandle, SqlPlaygroundProps, SqlPlayground, SqlRunnerHandle, SqlRunnerProps, SqlRunner, mockRunFn (+8 more)
+
+### Community 41 - "Mermaid Diagram"
+Cohesion: 0.29
+Nodes (5): usePaletteType(), MermaidDiagramProps, MermaidDiagram(), renderMock, initializeMock
+
+### Community 46 - "Progress Dashboard"
+Cohesion: 0.29
+Nodes (6): mockSetCode, mockRecordAttempt, mockGetQuizStats, mockGetRecentAttempts, mockAwardExerciseCompletion, mockAwardPerfectQuiz
+
+### Community 58 - "Lesson Page Tests"
 Cohesion: 0.40
-Nodes (3): appMarker, renderMock, toasterMarker
+Nodes (4): { mockSetLastVisited, mockToastSuccess, mockToastInfo, mockFindInteractiveBlocks }, mockGetLessonStats, mockToggleLessonComplete, mockGetCompletedLessons
 
-### Community 37 - "Content Loader Lesson Helpers"
-Cohesion: 0.50
-Nodes (5): buildReviewCardsFromLesson(), extractExercisesFromLesson(), extractHeadingsFromLessonContent(), getLessonIdPrefix(), normalizeIdPart()
+### Community 23 - "Progress Dashboard Tests"
+Cohesion: 0.17
+Nodes (11): mockClearAllProgress, mockRefreshDailyChallenge, mockSetPalette, mockSetFontSize, mockSetDensity, mockSetCodeLanguage, mockSetSidebarDefaultOpen, mockSetReadingMode (+3 more)
 
-### Community 42 - "Lesson Tests"
-Cohesion: 0.50
-Nodes (3): mockGetCompletedLessons, { mockSetLastVisited, mockToastSuccess, mockToastInfo }, mockToggleLessonComplete
-
-### Community 44 - "Glossary Tooltips"
-Cohesion: 0.67
-Nodes (3): addGlossaryTooltips(), ParagraphWithGlossary(), processGlossaryChildren()
+### Community 26 - "Route Prefetching Tests"
+Cohesion: 0.17
+Nodes (11): mockHome, mockCurriculum, mockPhaseOverview, mockLesson, mockProgressDashboard, mockExercises, mockNotebookViewer, mockSearchResults (+3 more)
 
 ## Knowledge Gaps
-- **220 isolated node(s):** `Home`, `Lesson`, `PhaseOverview`, `Curriculum`, `SearchResults` (+215 more)
+- **294 isolated node(s):** `Home`, `Lesson`, `PhaseOverview`, `Curriculum`, `SearchResults` (+289 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **23 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `useProgressStore` connect `Progress Store & Phase Overview` to `Home/Curriculum Pages & SEO`, `Learning Analytics Dashboard`, `Navigation & Shortcuts`, `Lesson Page & Day Tokens`, `Gamification Store`, `Progress Tracker Utility`, `Sidebar Navigation`, `Confetti Effects`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `useUserPreferencesStore` connect `Settings Page` to `Learning Analytics Dashboard`, `App Routing`, `Lesson Page & Day Tokens`, `User Preferences Store`, `Theme Context`, `Confetti Effects`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `createRoutePrefetchHandlers()` connect `Mobile Nav & Route Prefetch` to `Route Prefetching Tests`, `Route Prefetching Tests`, `Navbar & Status Ticker`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `CopyButton()` connect `Copy Button & Exercise Widget` to `Lesson Code Actions`, `SQL Playground & Runner`, `Case Studies Page`, `Markdown Renderer Core`?**
+  _High betweenness centrality (0.021) - this node is a cross-community bridge._
+- **Why does `toastSuccess()` connect `Lesson Code Actions` to `Copy Button & Exercise Widget`, `Markdown Renderer Core`, `Error Boundary`, `Case Studies Page`, `Code Playground`, `Progress Dashboard`, `Remark Code Meta Plugin`, `Confetti Effects`?**
+  _High betweenness centrality (0.020) - this node is a cross-community bridge._
+- **Are the 2 inferred relationships involving `initializeContent()` (e.g. with `freezeLesson()` and `freezePhase()`) actually correct?**
+  _`initializeContent()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Home`, `Lesson`, `PhaseOverview` to the rest of the system?**
-  _220 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Code Playground & UI Utilities` be split into smaller, more focused modules?**
-  _Cohesion score 0.0611764705882353 - nodes in this community are weakly interconnected._
-- **Should `Home/Curriculum Pages & SEO` be split into smaller, more focused modules?**
-  _Cohesion score 0.07183673469387755 - nodes in this community are weakly interconnected._
-- **Should `Spaced Repetition Review System` be split into smaller, more focused modules?**
-  _Cohesion score 0.09805735430157261 - nodes in this community are weakly interconnected._
-- **Should `Search System` be split into smaller, more focused modules?**
-  _Cohesion score 0.09302325581395349 - nodes in this community are weakly interconnected._
+  _294 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `App Routing` be split into smaller, more focused modules?**
+  _Cohesion score 0.07088989441930618 - nodes in this community are weakly interconnected._
+- **Should `Back to Top & Breadcrumbs` be split into smaller, more focused modules?**
+  _Cohesion score 0.07956989247311828 - nodes in this community are weakly interconnected._
