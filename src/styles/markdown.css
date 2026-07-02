@@ -704,6 +704,16 @@
   background: var(--bg-card-hover);
 }
 
+/* react-syntax-highlighter renders each line as `display: flex` whenever both
+   `showLineNumbers` and `wrapLongLines` are active (see its `createLineElement`).
+   That turns every syntax token span into its own flex item, so long lines wrap
+   token-by-token into misaligned columns instead of wrapping as continuous text.
+   Force line wrappers back to block flow so wrapped text stays inline. */
+.code-block-content code > span[style*='display: flex'],
+.code-block-content code > span[style*='display:flex'] {
+  display: block !important;
+}
+
 /* ===== CODE BLOCK: UNWRAP MODE (horizontal scroll) ===== */
 
 .code-block--wrapped[data-wrap='false'] {
