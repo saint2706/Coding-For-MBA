@@ -270,8 +270,7 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
           break
         }
       }
-      const closingNode =
-        closingNodeIndex >= 0 ? sectionNodes[closingNodeIndex]! : detailsStartNode
+      const closingNode = closingNodeIndex >= 0 ? sectionNodes[closingNodeIndex]! : detailsStartNode
       const start = getNodeStartOffset(detailsStartNode)
       const end = getNodeEndOffset(closingNode)
       if (start !== null && end !== null) {
