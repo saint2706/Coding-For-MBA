@@ -96,26 +96,9 @@ You learned the art of functions—encapsulating logic into reusable blocks. You
    - `calculate_total(cart, products)` — returns subtotal
    - `apply_discount(total, membership_tier)` — tiers: bronze (5%), silver (10%), gold (15%)
 
-**Sample Data**:
+**Sample Data**: `products = {"laptop": {"name": "Laptop Pro", "price": 999.99, "stock": 10}, "mouse": {"name": "Wireless Mouse", "price": 29.99, "stock": 50}, "keyboard": {"name": "Mechanical Keyboard", "price": 79.99, "stock": 25}}`
 
-```python
-products = {
-    "laptop": {"name": "Laptop Pro", "price": 999.99, "stock": 10},
-    "mouse": {"name": "Wireless Mouse", "price": 29.99, "stock": 50},
-    "keyboard": {"name": "Mechanical Keyboard", "price": 79.99, "stock": 25},
-}
-```
-
-**Expected Behavior**:
-
-```python
-cart = []
-add_to_cart(cart, "laptop", 2)
-add_to_cart(cart, "mouse", 3)
-total = calculate_total(cart, products)
-final = apply_discount(total, "silver")
-# Should correctly calculate: (999.99*2 + 29.99*3) * 0.90
-```
+**Expected Behavior**: After `add_to_cart(cart, "laptop", 2)` and `add_to_cart(cart, "mouse", 3)`, `calculate_total(cart, products)` should return the subtotal, and `apply_discount(total, "silver")` should correctly calculate `(999.99*2 + 29.99*3) * 0.90`.
 
 <details>
 <summary>💡 Hints</summary>
@@ -274,19 +257,9 @@ class PasswordPolicy:
 
 **Expected Behavior**:
 
-```python
-policy = PasswordPolicy(min_length=10, require_special=True)
-
-valid, errors = policy.validate("short")
-# (False, ["Password must be at least 10 characters",
-#          "Password must contain a special character"])
-
-valid, errors = policy.validate("SecureP@ss123")
-# (True, [])
-
-score = policy.strength_score("SecureP@ssw0rd!")
-# 85 (example score)
-```
+- `PasswordPolicy(min_length=10, require_special=True).validate("short")` → `(False, ["Password must be at least 10 characters", "Password must contain a special character"])`
+- `policy.validate("SecureP@ss123")` → `(True, [])`
+- `policy.strength_score("SecureP@ssw0rd!")` → `85` (example score)
 
 <details>
 <summary>💡 Hints</summary>

@@ -251,16 +251,9 @@ class Product(BaseModel):
 
 **Expected Behavior**:
 
-```python
-# POST /products with {"name": "  laptop  ", "price": 999.999, "category": "electronics"}
-# Should return: {"id": 1, "name": "Laptop", "price": 999.99, "category": "electronics", "stock": 0}
-
-# GET /products?category=electronics
-# Should return only electronics products
-
-# GET /products/stats
-# Should return: {"electronics": {"count": 5, "total_value": 4500.00}, ...}
-```
+- `POST /products` with `{"name": "  laptop  ", "price": 999.999, "category": "electronics"}` should return `{"id": 1, "name": "Laptop", "price": 999.99, "category": "electronics", "stock": 0}`
+- `GET /products?category=electronics` should return only electronics products
+- `GET /products/stats` should return `{"electronics": {"count": 5, "total_value": 4500.00}, ...}`
 
 <details>
 <summary>💡 Hints</summary>
