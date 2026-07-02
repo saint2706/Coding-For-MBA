@@ -47,6 +47,7 @@ import LessonSearch from '../components/LessonSearch'
 import PrerequisitePills from '../components/PrerequisitePills'
 import LessonCodeActions from '../components/LessonCodeActions'
 import RelatedLessons from '../components/RelatedLessons'
+import NotePanel from '../components/NotePanel'
 import { toastInfo, toastSuccess } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { useGamificationStore } from '../stores/gamificationStore'
@@ -397,6 +398,7 @@ export default function Lesson() {
         </nav>
 
         <div className={showSecondaryUi ? '' : 'reading-muted'}>
+          <NotePanel day={String(lesson.day)} />
           <RelatedLessons lesson={lesson} />
         </div>
 

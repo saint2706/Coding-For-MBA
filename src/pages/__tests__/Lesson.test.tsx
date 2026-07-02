@@ -118,6 +118,27 @@ describe('Lesson completion toasts', () => {
     mockGetLessonStats.mockReturnValue({ gotIt: 0, reviewAgain: 0, total: 0 })
   })
 
+  it('renders the note panel for the current lesson', async () => {
+    const { useNotesStore } = await import('../../stores/notesStore')
+    useNotesStore.setState({ notes: {} })
+
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    await act(async () => {
+      root.render(<Lesson />)
+    })
+
+    expect(container.querySelector('.lesson-note-panel')).toBeTruthy()
+    expect(container.textContent).toContain('Add a note')
+
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
   it('toggles reading mode via the preferences store and click', async () => {
     // Arrange
     const { useUserPreferencesStore } = await import('../../stores/userPreferencesStore')
