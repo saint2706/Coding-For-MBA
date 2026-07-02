@@ -25,6 +25,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import CodePlayground, { type CodePlaygroundHandle } from './CodePlayground'
 import CopyButton from './CopyButton'
+import { MarkdownFragment } from './MarkdownFragment'
 import { useLocation } from 'react-router-dom'
 import { getAllExercises } from '../utils/contentLoader'
 import { markExerciseComplete } from '../utils/exerciseProgress'
@@ -219,9 +220,7 @@ export default function ExerciseWidget({
 
       {instructions && (
         <div className="exercise-widget__instructions">
-          {instructions.split('\n').map((line, i) => (
-            <p key={i}>{line}</p>
-          ))}
+          <MarkdownFragment content={instructions} />
         </div>
       )}
 

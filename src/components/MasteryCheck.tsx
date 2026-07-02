@@ -13,6 +13,7 @@
 
 import { useState, useId } from 'react'
 import CodePlayground from './CodePlayground'
+import { MarkdownFragment } from './MarkdownFragment'
 import { buildFAQSchema } from '../utils/seoSchemas'
 import { useMasteryStore, type MasteryStatus } from '../stores/masteryStore'
 
@@ -88,7 +89,7 @@ export default function MasteryCheck({
       </div>
 
       <div className="mastery-check__question">
-        {questionText.split('\n').map((line, i) => (line.trim() ? <p key={i}>{line}</p> : null))}
+        <MarkdownFragment content={questionText} />
       </div>
 
       {hasRunnableCode && (
@@ -125,9 +126,7 @@ export default function MasteryCheck({
         >
           <div className="mastery-check__answer-label">Answer</div>
           <div className="mastery-check__answer-body">
-            {answer.split('\n').map((line, i) => (
-              <p key={i}>{line}</p>
-            ))}
+            <MarkdownFragment content={answer} />
           </div>
 
           <div className="mastery-check__self-assess" role="group" aria-label="Self-assessment">
