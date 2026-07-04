@@ -52,4 +52,33 @@ describe('MarkdownRenderer Images', () => {
     expect(img?.getAttribute('fetchPriority')).toBe('high')
     expect(img?.getAttribute('loading')).toBe('eager')
   })
+
+  it('renders a standalone image inside a figure with a visible figcaption', async () => {
+    const content = '![A diagram of the sales funnel](https://example.com/funnel.png)'
+
+    await act(async () => {
+      const root = createRoot(container!)
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const figure = container?.querySelector('figure.markdown-image-figure')
+    expect(figure).not.toBeNull()
+    expect(figure?.querySelector('img')).not.toBeNull()
+
+    const figcaption = figure?.querySelector('figcaption')
+    expect(figcaption?.textContent).toBe('A diagram of the sales funnel')
+  })
+
+  it('omits the figcaption when the image has no alt text', async () => {
+    const content = '![](https://example.com/decorative.png)'
+
+    await act(async () => {
+      const root = createRoot(container!)
+      root.render(<MarkdownRenderer content={content} />)
+    })
+
+    const figure = container?.querySelector('figure.markdown-image-figure')
+    expect(figure).not.toBeNull()
+    expect(figure?.querySelector('figcaption')).toBeNull()
+  })
 })

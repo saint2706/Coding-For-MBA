@@ -108,12 +108,24 @@ review count, as a lightweight spaced-repetition nudge.
 - **In-page search ("/" to search this lesson)** with match highlighting and
   next/prev jump, implemented in `src/components/LessonSearch.tsx`.
 
-## Table & image polish 🔲
+## Table & image polish ✅
 
-- Add a subtle fade/gradient edge indicator when a table overflows
-  horizontally inside `TableComponent`'s scroll wrapper.
-- Render `ImageWithZoom`'s `alt` text as a visible `<figcaption>` below the
-  image — many lesson diagrams currently have no visible caption at all.
+- `TableComponent` (`src/components/MarkdownFragment.tsx`) now renders a
+  two-layer wrapper: an outer `.table-wrapper` that hosts `::before`/`::after`
+  gradient fades pinned to the left/right edges, and an inner `.table-scroll`
+  that actually scrolls (keeping the fade fixed instead of scrolling away
+  with the table). A `ResizeObserver` plus scroll/resize listeners track
+  whether the table overflows on each side and toggle
+  `data-overflow-left`/`data-overflow-right` attributes that drive the fade
+  opacity in `markdown.css`.
+- Standalone `![alt](src)` images are promoted from a plain paragraph to a
+  `<figure>` with a visible `<figcaption>` showing the alt text below the
+  image. Since remark always wraps a solo image in a `<p>`, and a `<figure>`
+  can't nest inside a `<p>`, `ParagraphWithGlossary` detects when its only
+  child is the `ImageWithZoom` component and renders `<figure>` instead of
+  `<p>` in that case, rather than wrapping figure/figcaption around the img
+  itself. Images with no alt text (or mixed with other inline content) fall
+  back to the previous plain rendering with no caption.
 
 ## Content-authoring safety nets 🔲
 

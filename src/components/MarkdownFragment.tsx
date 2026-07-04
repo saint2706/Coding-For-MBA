@@ -12,10 +12,14 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   JSX,
   useMemo,
+  isValidElement,
   type ComponentProps,
   type MouseEvent,
+  type ReactElement,
+  type ReactNode,
   lazy,
   Suspense,
 } from 'react'
@@ -291,9 +295,43 @@ const CodeComponent = (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
 }
 
 const TableComponent = ({ children }: { children?: React.ReactNode }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const [overflowLeft, setOverflowLeft] = useState(false)
+  const [overflowRight, setOverflowRight] = useState(false)
+
+  const updateOverflow = useCallback(() => {
+    const el = wrapperRef.current
+    if (!el) return
+    const maxScrollLeft = el.scrollWidth - el.clientWidth
+    setOverflowLeft(el.scrollLeft > 1)
+    setOverflowRight(el.scrollLeft < maxScrollLeft - 1)
+  }, [])
+
+  useEffect(() => {
+    const el = wrapperRef.current
+    if (!el) return
+    updateOverflow()
+    const resizeObserver =
+      typeof ResizeObserver !== 'undefined' ? new ResizeObserver(updateOverflow) : undefined
+    resizeObserver?.observe(el)
+    el.addEventListener('scroll', updateOverflow, { passive: true })
+    window.addEventListener('resize', updateOverflow)
+    return () => {
+      resizeObserver?.disconnect()
+      el.removeEventListener('scroll', updateOverflow)
+      window.removeEventListener('resize', updateOverflow)
+    }
+  }, [updateOverflow])
+
   return (
-    <div className="table-wrapper">
-      <table>{children}</table>
+    <div
+      className="table-wrapper"
+      data-overflow-left={overflowLeft ? 'true' : 'false'}
+      data-overflow-right={overflowRight ? 'true' : 'false'}
+    >
+      <div className="table-scroll" ref={wrapperRef}>
+        <table>{children}</table>
+      </div>
     </div>
   )
 }
@@ -496,9 +534,35 @@ function processGlossaryChildren(children: React.ReactNode): React.ReactNode {
   return children
 }
 
-const ParagraphWithGlossary = ({ children, ...props }: JSX.IntrinsicElements['p'] & ExtraProps) => (
-  <p {...props}>{processGlossaryChildren(children)}</p>
-)
+/**
+ * A standalone `![alt](src)` image is parsed as a `<p>` containing only an
+ * `<img>`. Wrapping that img in a `<figure>`/`<figcaption>` would nest a
+ * `<figure>` inside a `<p>`, which is invalid HTML — so instead the
+ * paragraph itself becomes the `<figure>` in that case.
+ */
+function findSoleImageChild(children: ReactNode): ReactElement<{ alt?: string }> | undefined {
+  const kids = Array.isArray(children) ? children : [children]
+  const meaningful = kids.filter((child) => !(typeof child === 'string' && child.trim() === ''))
+  if (meaningful.length !== 1) return undefined
+  const [only] = meaningful
+  return isValidElement(only) && only.type === ImageWithZoom
+    ? (only as ReactElement<{ alt?: string }>)
+    : undefined
+}
+
+const ParagraphWithGlossary = ({ children, ...props }: JSX.IntrinsicElements['p'] & ExtraProps) => {
+  const soleImage = findSoleImageChild(children)
+  if (soleImage) {
+    const caption = (soleImage.props.alt ?? '').trim()
+    return (
+      <figure className="markdown-image-figure">
+        {children}
+        {caption && <figcaption className="markdown-image-caption">{caption}</figcaption>}
+      </figure>
+    )
+  }
+  return <p {...props}>{processGlossaryChildren(children)}</p>
+}
 
 export const markdownComponents: Components = {
   code: CodeComponent,
