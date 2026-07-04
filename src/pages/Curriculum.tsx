@@ -11,6 +11,7 @@
 
 import { useRef, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import SEOHead from '../components/SEOHead'
 import { buildItemListSchema, buildProductSchema } from '../utils/seoSchemas'
@@ -200,7 +201,11 @@ export default function Curriculum() {
             variants={phaseVariants}
             transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}
           >
-            <Link to={`/phase/${phase.phase}`} className="curriculum-phase-header">
+            <Link
+              to={`/phase/${phase.phase}`}
+              className="curriculum-phase-header"
+              {...createRoutePrefetchHandlers(`/phase/${phase.phase}`)}
+            >
               <span className="curriculum-phase-num display-numeral" aria-hidden="true">
                 {phase.phaseLabel}
               </span>
@@ -258,6 +263,7 @@ export default function Curriculum() {
                     <Link
                       to={`/lesson/${lesson.day}`}
                       className={`curriculum-day-link ${isDone ? 'curriculum-day-link--done' : ''}`}
+                      {...createRoutePrefetchHandlers(`/lesson/${lesson.day}`)}
                     >
                       <span className="curriculum-day-marker" aria-hidden="true">
                         {isDone ? '✓' : String(index + 1).padStart(2, '0')}

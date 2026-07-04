@@ -10,6 +10,7 @@
 
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import SEOHead from '../components/SEOHead'
 import EditorialLessonHeader from '../components/EditorialLessonHeader'
 /**
@@ -380,7 +381,11 @@ export default function Lesson() {
         {/* Prev/Next navigation */}
         <nav className="lesson-nav" aria-label="Lesson navigation">
           {prev && (
-            <Link to={`/lesson/${prev.day}`} className="lesson-nav-btn prev">
+            <Link
+              to={`/lesson/${prev.day}`}
+              className="lesson-nav-btn prev"
+              {...createRoutePrefetchHandlers(`/lesson/${prev.day}`)}
+            >
               <span className="lesson-nav-label">← Previous</span>
               <span className="lesson-nav-title">
                 Day {prev.day}: {prev.title}
@@ -388,7 +393,11 @@ export default function Lesson() {
             </Link>
           )}
           {next && (
-            <Link to={`/lesson/${next.day}`} className="lesson-nav-btn next">
+            <Link
+              to={`/lesson/${next.day}`}
+              className="lesson-nav-btn next"
+              {...createRoutePrefetchHandlers(`/lesson/${next.day}`)}
+            >
               <span className="lesson-nav-label">Next →</span>
               <span className="lesson-nav-title">
                 Day {next.day}: {next.title}

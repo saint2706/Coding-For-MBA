@@ -10,6 +10,7 @@
  */
 
 import { useParams, Link } from 'react-router-dom'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import { motion, useReducedMotion } from 'motion/react'
 import { useMemo } from 'react'
 import SEOHead from '../components/SEOHead'
@@ -91,6 +92,7 @@ export default function PhaseOverview() {
             <Link
               to={`/lesson/${lesson.day}`}
               className={`lesson-row ${isDone ? 'lesson-row--done' : ''}`}
+              {...createRoutePrefetchHandlers(`/lesson/${lesson.day}`)}
             >
               <span className="lesson-row-marker" aria-hidden="true">
                 {isDone ? '✓' : String(index + 1).padStart(2, '0')}
@@ -208,7 +210,11 @@ export default function PhaseOverview() {
               Complete reference solutions with explanations — run them in your browser.
             </p>
           </header>
-          <Link to={`/solutions/${phase.phase}`} className="action-secondary">
+          <Link
+            to={`/solutions/${phase.phase}`}
+            className="action-secondary"
+            {...createRoutePrefetchHandlers(`/solutions/${phase.phase}`)}
+          >
             Open Phase {phase.phase} solutions
             <span aria-hidden="true">→</span>
           </Link>
