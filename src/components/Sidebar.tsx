@@ -13,6 +13,7 @@ import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracke
 import { normalizeDayToken, dayTokenToProgressId } from '../utils/dayToken'
 import { useProgressStore } from '../stores/progressStore'
 import SidebarPhaseGroup from './SidebarPhaseGroup'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
 interface SidebarProps {
   isOpen: boolean
@@ -34,6 +35,7 @@ function PrimaryItem({ to, active, glyph, label, onClick }: PrimaryItemProps) {
       className={`tree-item tree-item--primary ${active ? 'active' : ''}`}
       onClick={onClick}
       aria-current={active ? 'page' : undefined}
+      {...createRoutePrefetchHandlers(to)}
     >
       <span className="tree-glyph" aria-hidden="true">
         {glyph}
@@ -129,7 +131,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         aria-label="Lesson navigation"
       >
         <div className="sidebar-header">
-          <Link to="/" className="sidebar-brand" onClick={onClose}>
+          <Link to="/" className="sidebar-brand" onClick={onClose} {...createRoutePrefetchHandlers('/')}>
             <span className="sidebar-brand-mark" aria-hidden="true">
               C/M
             </span>

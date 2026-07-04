@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { getLessonsByPhase, getLesson, type Phase } from '../utils/contentLoader'
 import { dayTokenToProgressId } from '../utils/dayToken'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
 interface SidebarPhaseGroupProps {
   phase: Phase
@@ -106,6 +107,7 @@ function SidebarPhaseGroup({
                 className={`day-link day-link--overview ${currentPath === `/phase/${phase.phase}` ? 'active' : ''}`}
                 onClick={onClose}
                 aria-current={currentPath === `/phase/${phase.phase}` ? 'page' : undefined}
+                {...createRoutePrefetchHandlers(`/phase/${phase.phase}`)}
               >
                 <span className="day-link-prefix" aria-hidden="true">
                   ▸
@@ -128,6 +130,7 @@ function SidebarPhaseGroup({
                   className={`day-link ${currentPath === `/lesson/${lesson.day}` ? 'active' : ''}`}
                   onClick={onClose}
                   aria-current={currentPath === `/lesson/${lesson.day}` ? 'page' : undefined}
+                  {...createRoutePrefetchHandlers(`/lesson/${lesson.day}`)}
                 >
                   <span
                     className={`day-link-prefix ${completedSet.has(dayTokenToProgressId(lesson.day)) ? 'completed' : ''}`}

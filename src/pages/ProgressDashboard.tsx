@@ -12,6 +12,7 @@
 
 import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import SEOHead from '../components/SEOHead'
 import {
   getAllPhases,
@@ -308,7 +309,7 @@ export default function ProgressDashboard() {
                 Day {challengeLesson.day}: {challengeLesson.title}
               </p>
             </div>
-            <Link className="continue-banner-cta" to={`/lesson/${challengeLesson.day}`}>
+            <Link className="continue-banner-cta" to={`/lesson/${challengeLesson.day}`} {...createRoutePrefetchHandlers(`/lesson/${challengeLesson.day}`)}>
               Start challenge
             </Link>
           </div>
@@ -407,7 +408,7 @@ export default function ProgressDashboard() {
           <ul className="mastery-review-list">
             {reviewLessons.map(({ lesson, reviewCount }) => (
               <li className="mastery-review-row" key={lesson.day}>
-                <Link to={`/lesson/${lesson.day}`} className="mastery-review-link">
+                <Link to={`/lesson/${lesson.day}`} className="mastery-review-link" {...createRoutePrefetchHandlers(`/lesson/${lesson.day}`)}>
                   Day {lesson.day}: {lesson.title}
                 </Link>
                 <span className="mastery-review-count">

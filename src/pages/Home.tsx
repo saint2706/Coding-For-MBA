@@ -12,6 +12,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import SEOHead from '../components/SEOHead'
 import { buildWebSiteSchema, buildCourseSchema, buildProductSchema } from '../utils/seoSchemas'
 import {
@@ -119,7 +120,7 @@ export default function Home() {
         const phasePct = Math.round((completedInPhase / Math.max(1, lessons.length)) * 100)
 
         return (
-          <Link to={`/phase/${phase.phase}`} className="phase-card-editorial" key={phase.phase}>
+          <Link to={`/phase/${phase.phase}`} className="phase-card-editorial" key={phase.phase} {...createRoutePrefetchHandlers(`/phase/${phase.phase}`)}>
             <div className="phase-card-numeral display-numeral" aria-hidden="true">
               {pad(phase.phase)}
             </div>
@@ -205,13 +206,14 @@ export default function Home() {
           <Link
             to={lastVisitedLesson ? `/lesson/${lastVisitedLesson.day}` : '/lesson/1'}
             className="action-primary"
+            {...createRoutePrefetchHandlers(lastVisitedLesson ? `/lesson/${lastVisitedLesson.day}` : '/lesson/1')}
           >
             <span className="action-glyph" aria-hidden="true">
               ›
             </span>
             {lastVisitedLesson ? `Resume Day ${lastVisitedLesson.day}` : 'Begin Day 01'}
           </Link>
-          <Link to="/curriculum" className="action-secondary">
+          <Link to="/curriculum" className="action-secondary" {...createRoutePrefetchHandlers('/curriculum')}>
             See the full curriculum
           </Link>
         </EditorialCover.Actions>
@@ -224,7 +226,7 @@ export default function Home() {
           <TerminalDashboard.TileHeader label="LAST OPEN" symbol="·" />
           <TerminalDashboard.TileValue>
             {lastVisitedLesson ? (
-              <Link to={`/lesson/${lastVisitedLesson.day}`} className="dashboard-tile-link">
+              <Link to={`/lesson/${lastVisitedLesson.day}`} className="dashboard-tile-link" {...createRoutePrefetchHandlers(`/lesson/${lastVisitedLesson.day}`)}>
                 Day {lastVisitedLesson.day}
               </Link>
             ) : (

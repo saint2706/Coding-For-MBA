@@ -11,6 +11,7 @@
 
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import { motion } from 'motion/react'
 import { ExercisesEmptyIllustration } from '../components/EmptyStateIllustrations'
 import SEOHead from '../components/SEOHead'
@@ -134,7 +135,7 @@ export default function Exercises() {
             const icon = phaseIcons[p - 1] || '📖'
             const hasNotebook = notebookPhases.has(p)
             return hasNotebook ? (
-              <Link key={p} to={`/solutions/${p}`} className="exercises-notebook-link">
+              <Link key={p} to={`/solutions/${p}`} className="exercises-notebook-link" {...createRoutePrefetchHandlers(`/solutions/${p}`)}>
                 <span aria-hidden="true">{icon}</span> Phase {p} Solutions
               </Link>
             ) : null
