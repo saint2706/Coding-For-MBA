@@ -445,11 +445,49 @@
 
 /* Tables — financial-report aesthetic */
 .markdown-body .table-wrapper {
-  overflow-x: auto;
+  position: relative;
   margin: 1.5rem 0;
   max-width: 100%;
+}
+
+.markdown-body .table-scroll {
+  overflow-x: auto;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-card);
+  background: var(--surface-paper);
+}
+
+/* Fade indicator overlaid on the wrapper (not the scrolling element itself)
+   so it stays pinned to the edge instead of scrolling with the table. */
+.markdown-body .table-wrapper::before,
+.markdown-body .table-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 1;
+}
+
+.markdown-body .table-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--surface-paper), transparent);
+}
+
+.markdown-body .table-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--surface-paper), transparent);
+}
+
+.markdown-body .table-wrapper[data-overflow-left='true']::before {
+  opacity: 1;
+}
+
+.markdown-body .table-wrapper[data-overflow-right='true']::after {
+  opacity: 1;
 }
 
 .markdown-body table {
@@ -606,7 +644,7 @@
 }
 
 .lesson-reading-surface .markdown-body .code-block--wrapped,
-.lesson-reading-surface .markdown-body .table-wrapper,
+.lesson-reading-surface .markdown-body .table-scroll,
 .lesson-reading-surface .markdown-body details {
   border-color: color-mix(in srgb, var(--border-card) 84%, transparent);
   box-shadow: none;
@@ -768,6 +806,20 @@
 }
 
 /* ===== IMAGE ZOOM / LIGHTBOX ===== */
+
+.markdown-image-figure {
+  margin: 1.5rem 0;
+}
+
+.markdown-image-caption {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: var(--leading-snug);
+  color: var(--text-muted);
+  text-align: center;
+  letter-spacing: var(--tracking-mono);
+}
 
 .zoomable-image {
   cursor: zoom-in;
