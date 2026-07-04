@@ -131,7 +131,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         aria-label="Lesson navigation"
       >
         <div className="sidebar-header">
-          <Link to="/" className="sidebar-brand" onClick={onClose} {...createRoutePrefetchHandlers('/')}>
+          <Link
+            to="/"
+            className="sidebar-brand"
+            onClick={onClose}
+            {...createRoutePrefetchHandlers('/')}
+          >
             <span className="sidebar-brand-mark" aria-hidden="true">
               C/M
             </span>

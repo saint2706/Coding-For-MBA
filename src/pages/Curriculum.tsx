@@ -201,7 +201,11 @@ export default function Curriculum() {
             variants={phaseVariants}
             transition={{ duration: prefersReducedMotion ? 0 : 0.28 }}
           >
-            <Link to={`/phase/${phase.phase}`} className="curriculum-phase-header" {...createRoutePrefetchHandlers(`/phase/${phase.phase}`)}>
+            <Link
+              to={`/phase/${phase.phase}`}
+              className="curriculum-phase-header"
+              {...createRoutePrefetchHandlers(`/phase/${phase.phase}`)}
+            >
               <span className="curriculum-phase-num display-numeral" aria-hidden="true">
                 {phase.phaseLabel}
               </span>

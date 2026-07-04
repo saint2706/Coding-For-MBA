@@ -210,7 +210,11 @@ export default function PhaseOverview() {
               Complete reference solutions with explanations — run them in your browser.
             </p>
           </header>
-          <Link to={`/solutions/${phase.phase}`} className="action-secondary" {...createRoutePrefetchHandlers(`/solutions/${phase.phase}`)}>
+          <Link
+            to={`/solutions/${phase.phase}`}
+            className="action-secondary"
+            {...createRoutePrefetchHandlers(`/solutions/${phase.phase}`)}
+          >
             Open Phase {phase.phase} solutions
             <span aria-hidden="true">→</span>
           </Link>

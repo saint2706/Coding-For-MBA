@@ -135,7 +135,12 @@ export default function Exercises() {
             const icon = phaseIcons[p - 1] || '📖'
             const hasNotebook = notebookPhases.has(p)
             return hasNotebook ? (
-              <Link key={p} to={`/solutions/${p}`} className="exercises-notebook-link" {...createRoutePrefetchHandlers(`/solutions/${p}`)}>
+              <Link
+                key={p}
+                to={`/solutions/${p}`}
+                className="exercises-notebook-link"
+                {...createRoutePrefetchHandlers(`/solutions/${p}`)}
+              >
                 <span aria-hidden="true">{icon}</span> Phase {p} Solutions
               </Link>
             ) : null
