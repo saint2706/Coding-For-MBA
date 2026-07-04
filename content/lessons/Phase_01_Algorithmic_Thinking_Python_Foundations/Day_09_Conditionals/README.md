@@ -86,6 +86,12 @@ else:
     print("You cannot vote yet")
 ```
 
+This is exactly what an `if`/`else` statement looks like as a flowchart — the diamond is the condition, and the path you follow (True or False) decides which box runs:
+
+![Flowchart of an if-else decision: a diamond checks "age > 17"; the True branch displays "You can vote," the False branch displays "You can't vote."](images/phase-01/if-else-flowchart.jpg)
+
+*Flowchart if then else by Kenneth Leroy Busbee, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Flowchart_if_then_else.jpg), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0).*
+
 ### if-elif-else Chains
 
 ```python

@@ -31,6 +31,10 @@ outcomes:
 
 > *"Every expert was once a beginner. Today, you take your first step."*
 
+<img src="images/phase-01/python-logo.svg" alt="The Python programming language logo" width="88" height="88" />
+
+*The Python logo. Python Software Foundation, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Python-logo-notext.svg) — used under the [PSF trademark usage policy](https://www.python.org/psf/trademarks/) for educational reference.*
+
 ---
 
 ## The "Never-Coded" Bridge
