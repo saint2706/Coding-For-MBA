@@ -1,3 +1,0 @@
-## 2024-07-04 - [Manual Route Prefetching Omissions]
-**Learning:** The codebase relies on a custom manual prefetching mechanism (`createRoutePrefetchHandlers` in `prefetchRoutes.ts`) to preemptively load Vite code splits for routes. While properly implemented in `Navbar`, it was omitted in many core content navigation elements (`Sidebar`, `Curriculum`, `Home`, `Lesson` pagination, etc.), leading to delayed chunk loading on interaction.
-**Action:** Always ensure that new `react-router-dom` `<Link>` components in this codebase are wrapped with `{...createRoutePrefetchHandlers(to)}` to leverage the custom prefetching architecture and eliminate perceived loading delays.
