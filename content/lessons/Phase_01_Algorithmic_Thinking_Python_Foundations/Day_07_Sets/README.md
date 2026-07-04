@@ -113,6 +113,14 @@ item = skills.pop()  # Remove and return arbitrary element
 
 ### Set Operations (The Magic)
 
+Python's set operations are the same ones you may remember from a Venn diagram — two overlapping circles, where the shading shows which region you're asking for:
+
+![Venn diagram showing set A, set B, their intersection A∩B, and the complement of their union](images/phase-01/venn-diagram-sets.png)
+
+*A: circle A only · B: circle B only · A∩B: the shaded overlap (intersection) · (A∪B)ᶜ: everything outside both circles (complement of the union). Venn Diagram by Gandalfxviv, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Venn_Diagram.png), [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).*
+
+Below, `team_a` is circle A and `team_b` is circle B — union is "everything in either circle," intersection is "the shaded overlap," and difference is "circle A with the overlap cut out."
+
 ```python
 team_a = {"Alice", "Bob", "Charlie", "Diana"}
 team_b = {"Charlie", "Diana", "Eve", "Frank"}

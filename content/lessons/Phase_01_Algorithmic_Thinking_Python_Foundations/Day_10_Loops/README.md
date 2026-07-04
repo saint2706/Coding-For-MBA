@@ -149,6 +149,12 @@ while queue:  # While list is not empty
     print(f"Processing: {task}")
 ```
 
+A `while` loop always follows the same shape: check the condition (`Q`), and if it's still true, run the loop body (`A`, then `B`) and go check the condition again. Only when the condition becomes false does the loop end.
+
+![Flowchart of a while loop: Start leads to condition Q; if True, run steps A and B and return to Q; if False, go to End.](images/phase-01/while-loop-flowchart.svg)
+
+*Flowchart-While by みそがい (Misogai), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Flowchart-While.svg), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0).*
+
 ### Common Pitfalls
 
 > ⚠️ **Common Pitfalls**

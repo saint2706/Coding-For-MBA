@@ -70,6 +70,12 @@ Now if the tax rate changes, you update ONE line.
 
 ## The Technical Deep Dive
 
+Every function you write follows the same simple shape: something goes in, the function does its work, and a result comes out.
+
+![Diagram of a function machine: an arrow labeled "INPUT x" feeds into a box labeled "FUNCTION f:", which outputs an arrow labeled "OUTPUT f(x)"](images/phase-01/function-machine.svg)
+
+*Function machine by Wvbailey, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Function_machine2.svg) (public domain).*
+
 ### Basic Function Definition
 
 ```python
