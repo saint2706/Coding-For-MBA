@@ -1,4 +1,0 @@
-## 2024-06-29 - [Fix comment stripping bypass in code security]
-**Vulnerability:** Command injection bypass in Python code validation. The regex `/#.*/g` stripped comments blindly, including `#` inside preserved f-strings. This allowed attackers to hide malicious payloads like `f"# {eval('__import__(\"os\").system(\"echo exploited\")')}"` from the security scanner, because the scanner would see it as a comment and strip the payload before validation.
-**Learning:** Regex is often insufficient for robust parsing of code structures, especially when strings and comments can interleave. A state-machine parser is required to accurately distinguish strings from comments.
-**Prevention:** Avoid relying solely on regex for sanitizing or stripping code before security validation. Use AST parsing or state machines to accurately handle strings, comments, and other language features.
