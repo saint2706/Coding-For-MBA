@@ -178,5 +178,70 @@ This is a sample lesson body with enough content to pass validation checks becau
       const exitCode = runValidation('/test-dir')
       expect(exitCode).toBe(0)
     })
+
+    function mockSingleReadme(content: string) {
+      vi.spyOn(fs, 'existsSync').mockReturnValue(true)
+      vi.spyOn(fs, 'readdirSync').mockImplementation(
+        (pathStr: fs.PathLike, options?: { withFileTypes?: boolean }) => {
+          const p = pathStr.toString().replace(/\\/g, '/')
+          if (p.endsWith('/test-dir') && options?.withFileTypes) {
+            return [{ name: 'phase1', isDirectory: () => true }] as unknown as fs.Dirent[]
+          }
+          if (p.endsWith('/test-dir/phase1') && options?.withFileTypes) {
+            return [{ name: 'README.md', isDirectory: () => false }] as unknown as fs.Dirent[]
+          }
+          return []
+        },
+      )
+      vi.spyOn(fs, 'readFileSync').mockReturnValue(content)
+    }
+
+    const lessonWithBrokenExercise = `---
+day: 1
+title: Sample Lesson
+phase: 1
+difficulty: beginner
+duration: 30
+---
+This is a sample lesson body with enough content to pass validation checks because it clearly exceeds one hundred characters in total length.
+
+### Exercise 1: Missing Goal
+
+\`\`\`python
+print("hi")
+\`\`\`
+`
+
+    const lessonWithBrokenQuestion = `---
+day: 1
+title: Sample Lesson
+phase: 1
+difficulty: beginner
+duration: 30
+---
+This is a sample lesson body with enough content to pass validation checks because it clearly exceeds one hundred characters in total length.
+
+## Mastery Check
+
+### Question 1: No Answer
+
+What happens here?
+`
+
+    it('does not fail by default when an exercise is missing a **Goal** paragraph', () => {
+      mockSingleReadme(lessonWithBrokenExercise)
+      expect(runValidation('/test-dir')).toBe(0)
+    })
+
+    it('fails in strict mode when an exercise is missing a **Goal** paragraph', () => {
+      mockSingleReadme(lessonWithBrokenExercise)
+      expect(runValidation('/test-dir', { strict: true })).toBe(1)
+    })
+
+    it('always fails when a mastery question is missing a <details> answer block', () => {
+      mockSingleReadme(lessonWithBrokenQuestion)
+      expect(runValidation('/test-dir')).toBe(1)
+      expect(runValidation('/test-dir', { strict: true })).toBe(1)
+    })
   })
 })

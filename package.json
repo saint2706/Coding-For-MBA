@@ -15,6 +15,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\"",
     "validate-content": "node scripts/validate-content.js",
+    "validate-content:strict": "node scripts/validate-content.js --strict",
     "predeploy": "npm run build",
     "optimize:images": "node scripts/optimize-images.js",
     "deploy": "gh-pages -d dist",
