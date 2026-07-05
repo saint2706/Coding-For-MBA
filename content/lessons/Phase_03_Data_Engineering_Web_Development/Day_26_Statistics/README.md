@@ -53,6 +53,12 @@ Suddenly you realize—a few whale customers spending $10,000+ are pulling that 
 - **Insurance**: Standard deviation to price risk
 - **HR**: Salary benchmarking with percentiles (P25, P50, P75)
 
+Standard deviation and z-scores make sense once you see how data actually piles up around the mean — the "empirical rule" says about 68% of values fall within 1 standard deviation (σ) of the mean, 95% within 2σ, and 99.7% within 3σ:
+
+![Bell curve of a normal distribution with vertical lines at -3σ, -2σ, -1σ, the mean (0), 1σ, 2σ, and 3σ, labeled with the percentage of data in each band: 0.1%, 2.1%, 13.6%, 34.1%, 34.1%, 13.6%, 2.1%, 0.1%](images/phase-03/standard-deviation-diagram.svg)
+
+*Standard deviation diagram by M. W. Toews, based on a figure by Jeremy Kemp, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Standard_deviation_diagram.svg), [CC BY 2.5](https://creativecommons.org/licenses/by/2.5/).*
+
 ---
 
 ## The Technical Deep Dive
