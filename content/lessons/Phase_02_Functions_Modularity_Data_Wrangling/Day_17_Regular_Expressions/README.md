@@ -49,6 +49,12 @@ valid = [e for e in emails if re.match(pattern, e)]
 # ['alice@email.com', 'bob@company.org']
 ```
 
+A regex pattern like the one above can be drawn as a "railroad diagram" — follow any path through the tracks and you get a string the pattern matches:
+
+![Railroad diagram of an email-matching regular expression: word characters, an optional run of `.`, `+`, or `-`, then `@`, more word characters, then `.`, then 2-4 lowercase letters, bounded by word boundaries](images/phase-02/regex-email-diagram.png)
+
+*Email regex diagram by regexper.com (Jeff Avallone), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Regexper;_email.png), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*
+
 ---
 
 ## The Technical Deep Dive

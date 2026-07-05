@@ -80,6 +80,12 @@ df["pct_of_region"] = df["sales"] / df["region_total"]
 
 ### Merging DataFrames
 
+A `merge()` is the same operation as a SQL join — which rows survive depends on which join type you pick:
+
+![Diagram of six SQL join types shown as Venn diagrams of table A and table B: inner join (overlap only), left join, right join, their "exclusive" variants (left/right only, excluding the overlap), and full outer join (everything)](images/phase-02/sql-joins-venn.svg)
+
+*SQL Joins diagram by Arbeck, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:SQL_Joins.svg), [CC BY 3.0](https://creativecommons.org/licenses/by/3.0).*
+
 ```python
 orders = pd.DataFrame(
     {"order_id": [1, 2, 3], "customer_id": [101, 102, 101], "amount": [250, 150, 300]}

@@ -45,6 +45,12 @@ result = salaries * 1.10  # Applied to all 10,000 values at once
 
 Why is it faster? Python loops carry per-iteration overhead (type checking, memory allocation, interpreter dispatch). NumPy operations delegate to pre-compiled C routines operating on contiguous memory blocks — no Python overhead per element. For large datasets, vectorized operations are typically **10–100× faster** than equivalent Python loops.
 
+A 2D array like `X` below isn't really a grid in memory — it's one flat, contiguous block of numbers plus a little metadata (shape, data type, and "strides") that tells NumPy how far to jump to reach the next row or column:
+
+![Diagram of a NumPy array data structure: a 4x3 matrix X is shown alongside its underlying flat data buffer, data type (8-byte integer), shape (4, 3), and strides (24, 8), which record how many bytes to skip to move one element or one row](images/phase-02/numpy-array-structure.webp)
+
+*Figure from Harris, C.R., Millman, K.J., van der Walt, S.J. et al. "Array programming with NumPy." Nature 585, 357–362 (2020), via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:The_NumPy_array_data_structure_and_its_associated_metadata_fields.webp), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/).*
+
 ---
 
 ## The "Never-Coded" Bridge
