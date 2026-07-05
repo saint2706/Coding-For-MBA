@@ -46,6 +46,12 @@ discounted = list(map(lambda p: p * 0.9, prices))
 # [9.0, 18.0, 27.0]
 ```
 
+`map()` is exactly this: hand it one function (the "recipe") and a collection, and it applies that function to every item without you writing a loop:
+
+![Cartoon of a purple monster handing a recipe book to three green monster bakers, who each frost one cupcake the same way, labeled "map(cupcakes, frost, vanilla)"](images/phase-02/purrr-map-cupcakes.png)
+
+*Illustration by [Allison Horst](https://allisonhorst.com/), from the [stats-illustrations](https://github.com/allisonhorst/stats-illustrations) repository, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). (Drawn for R's `purrr::map()`, but the same one-function-many-items idea applies to Python's `map()`.)*
+
 ---
 
 ## The Technical Deep Dive

@@ -38,6 +38,12 @@ outcomes: [Fetch web pages with requests, Parse HTML with BeautifulSoup, Extract
 - Don't overload servers
 - Check terms of service
 
+"Parsing HTML" means turning that page into a tree of nested tags you can search and navigate — this is what BeautifulSoup builds behind the scenes:
+
+![Tree diagram of a simple HTML page's Document Object Model: HTML branches into HEAD and BODY; BODY branches into H1 ("This is an header") and P ("This is some text")](images/phase-03/html-dom-tree.svg)
+
+*Simple HTML page DOM diagram by Ramac, via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Simpe_HTML_page_DOM.svg), public domain.*
+
 ---
 
 ## The Technical Deep Dive
