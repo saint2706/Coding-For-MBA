@@ -31,12 +31,18 @@ export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgr
 
   useEffect(() => {
     let ticking = false
+    // ⚡ Bolt: Cache DOM node to prevent expensive querySelector calls on every scroll frame
+    let cachedElement: HTMLElement | null = null
 
     const updateProgress = () => {
       let calcProgress = 0
 
       if (targetSelector) {
-        const element = document.querySelector<HTMLElement>(targetSelector)
+        let element = cachedElement
+        if (!element || !document.body.contains(element)) {
+          element = document.querySelector<HTMLElement>(targetSelector)
+          cachedElement = element
+        }
         if (element) {
           const rect = element.getBoundingClientRect()
           const elementHeight = element.clientHeight
