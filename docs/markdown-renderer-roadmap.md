@@ -127,10 +127,17 @@ review count, as a lightweight spaced-repetition nudge.
   itself. Images with no alt text (or mixed with other inline content) fall
   back to the previous plain rendering with no caption.
 
-## Content-authoring safety nets 🔲
+## Content-authoring safety nets ✅
 
-A lint rule (could live in `scripts/validate-content`) that checks every
-`### Exercise N` has a `**Goal**` and code block, and every `### Question N`
-has a `<details>` block — `findInteractiveBlocks` already encodes these
-structural assumptions; validating them at build time would prevent silently
-unparsed exercises.
+Implemented via `src/utils/content-structure-core.js`'s `findStructuralIssues`,
+a remark-AST scan that mirrors the heading/boundary and label-detection rules
+`findInteractiveBlocks` (`MarkdownRenderer.tsx`) relies on, so a section that
+would silently render with an empty Goal/code/answer panel gets flagged
+instead. `scripts/validate-content.js` runs it over every lesson body: a
+`### Question N` missing a `<details>` answer block always fails validation
+(no lesson currently omits one, so this is a safe hard gate); a
+`### Exercise N` missing its `**Goal**` paragraph or python code block is
+printed as a non-blocking warning by default, since a large share of existing
+exercises are intentionally code-free discussion prompts. Pass `--strict`
+(`npm run validate-content:strict`) to promote those exercise warnings to
+failures once content is cleaned up incrementally.

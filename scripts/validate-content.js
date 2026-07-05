@@ -38,6 +38,7 @@ import {
   normalizeDayToken,
 } from '../src/utils/dayToken-core.js'
 import { extractExercisesFromContent } from '../src/utils/exercise-extractor-core.js'
+import { findStructuralIssues } from '../src/utils/content-structure-core.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const LESSONS_DIR = path.join(__dirname, '..', 'content', 'lessons')
@@ -131,17 +132,52 @@ export function validateLessonContent(rawContent, fileName = 'README.md') {
 }
 
 /**
+ * Checks a lesson body's `### Exercise N` / `### Question N` sections against
+ * the structural assumptions `findInteractiveBlocks` relies on to parse them.
+ * A missing `<details>` answer block always fails validation (no lesson in
+ * the curriculum currently omits one, so this is a safe hard gate). Missing
+ * `**Goal**` paragraphs or code blocks on exercises are reported as
+ * non-blocking warnings by default — a large share of existing exercises are
+ * intentionally code-free discussion prompts — and only fail validation when
+ * `strict` is enabled, so the check can be tightened once content is cleaned
+ * up incrementally.
+ *
+ * @param {string} body - The lesson's Markdown body (frontmatter stripped).
+ * @param {boolean} strict - Whether to treat exercise structural issues as errors too.
+ * @returns {{ errors: string[], warnings: string[] }}
+ */
+function checkStructuralIssues(body, strict) {
+  const issues = findStructuralIssues(body)
+  const errors = []
+  const warnings = []
+
+  for (const issue of issues) {
+    const message = `${issue.type === 'exercise' ? 'Exercise' : 'Question'} ${issue.message}`
+    if (issue.type === 'mastery' || strict) {
+      errors.push(message)
+    } else {
+      warnings.push(message)
+    }
+  }
+
+  return { errors, warnings }
+}
+
+/**
  * Executes the main validation pipeline for all curriculum files.
  * Validates frontmatter, extracts exercises, and cross-checks phase metadata against the filesystem.
  *
  * @param {string} [lessonsDir=LESSONS_DIR] - The root directory of the curriculum to validate.
+ * @param {{ strict?: boolean }} [options] - `strict: true` also fails validation on exercises
+ *   missing a **Goal** paragraph or code block (see `checkStructuralIssues`).
  * @returns {number} An exit code: 0 if all validations pass, 1 if any file fails.
  */
-export function runValidation(lessonsDir = LESSONS_DIR) {
+export function runValidation(lessonsDir = LESSONS_DIR, { strict = false } = {}) {
   const files = findReadmes(lessonsDir, lessonsDir).sort()
   const totalFiles = files.length
   const fileResults = new Map()
   const crossCheckFailures = []
+  const structuralWarningsByFile = new Map()
 
   console.log(`\n📋 Validating ${totalFiles} lesson files...\n`)
 
@@ -169,6 +205,15 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
         if (!result.success) {
           fileErrors.push(...formatZodIssues(result.error, 'Invalid exercise'))
         }
+      }
+
+      const { errors: structuralErrors, warnings: structuralWarnings } = checkStructuralIssues(
+        body,
+        strict,
+      )
+      fileErrors.push(...structuralErrors)
+      if (structuralWarnings.length > 0) {
+        structuralWarningsByFile.set(relativePath, structuralWarnings)
       }
     }
 
@@ -226,6 +271,15 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
   console.log(`✅ Passed files: ${passCount}/${totalFiles}`)
   console.log(`❌ Failed files: ${failCount}/${totalFiles}`)
   console.log(`🔎 Cross-check failures: ${crossCheckFailures.length}`)
+  if (structuralWarningsByFile.size > 0) {
+    const warningCount = [...structuralWarningsByFile.values()].reduce(
+      (sum, warnings) => sum + warnings.length,
+      0,
+    )
+    console.log(
+      `⚠️  Structural warnings (non-blocking, use --strict to enforce): ${warningCount} in ${structuralWarningsByFile.size} file(s)`,
+    )
+  }
 
   if (failCount > 0) {
     console.log('\n📄 File-level failures:\n')
@@ -251,6 +305,17 @@ export function runValidation(lessonsDir = LESSONS_DIR) {
     return 1
   }
 
+  if (structuralWarningsByFile.size > 0) {
+    console.log('\n📄 Structural warnings:\n')
+    for (const [file, warnings] of structuralWarningsByFile.entries()) {
+      console.log(`  📄 ${file}`)
+      for (const warning of warnings) {
+        console.log(`     ⚠ ${warning}`)
+      }
+      console.log()
+    }
+  }
+
   console.log('\n🎉 All lessons have valid frontmatter and metadata!\n')
   return 0
 }
@@ -259,5 +324,6 @@ const isMainModule =
   process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href
 
 if (isMainModule) {
-  process.exit(runValidation())
+  const strict = process.argv.includes('--strict')
+  process.exit(runValidation(LESSONS_DIR, { strict }))
 }
