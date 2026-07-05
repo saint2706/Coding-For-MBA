@@ -49,6 +49,12 @@ is_open = True
 
 Now, whenever you need that information, you just use the label. Change the value once, and everywhere that uses the label sees the update. No more find-and-replace across spreadsheets!
 
+A variable is best pictured as a sticky note pointing at a value, not a box that stores it — the name is just a label you can move to a different value later:
+
+![Two labeled sticky notes, "weight_kg" and "weight_lb", each pointing at its own boxed value (65.0 and 143.0)](images/phase-01/variable-sticky-notes.svg)
+
+*Adapted from "Programming with Python," © [The Carpentries](https://carpentries.org/), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*
+
 ---
 
 ## The Technical Deep Dive

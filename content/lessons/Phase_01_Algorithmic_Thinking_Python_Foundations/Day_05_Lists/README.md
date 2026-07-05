@@ -92,6 +92,10 @@ print(products[::2])  # ["Laptop", "Tablet", "Earbuds"]
 print(products[::-1])  # Reversed list
 ```
 
+![Diagram of list indexing and slicing: a row of boxed values labeled with their index positions 0-3; a slicing example showing data[1:3] selecting the gap between positions 1 and 3; and a step-slicing example showing data[::3] keeping every 3rd element](images/phase-01/list-indexing-slicing.svg)
+
+*Adapted from "Programming with Python," © [The Carpentries](https://carpentries.org/), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*
+
 Slicing lets you extract exactly the sub-list you need without writing a loop. For example, after sorting a sales leaderboard, `top_reps = sales_figures[:3]` instantly extracts the top 3 performers for the weekly award email — no loops required. Analysts rely on this constantly: to pull Q1 data from a full-year list, `q1 = monthly_revenue[:3]` is all it takes; similarly, `recent = log_entries[-10:]` retrieves the most recent 10 records from an event log without touching the rest of the data.
 
 ### Modifying Lists

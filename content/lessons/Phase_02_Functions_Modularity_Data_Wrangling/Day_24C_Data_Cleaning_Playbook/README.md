@@ -35,6 +35,12 @@ This playbook gives you a **repeatable and idempotent** workflow you can run bef
 
 ## Step 1) Profiling Checklist (Always First)
 
+Before you can profile a dataset, it helps to agree on what "well-structured" even means. The standard is **tidy data**: each variable is a column, each observation is a row, and each cell holds one value.
+
+![Illustration explaining tidy data: a quote from Hadley Wickham reading "Tidy data is a standard way of mapping the meaning of a dataset to its structure," next to a table where arrows label each column as a variable and each row as an observation](images/phase-02/tidy-data-concept.jpg)
+
+*Illustration from the Openscapes blog "Tidy Data for reproducibility, efficiency, and collaboration" by Julia Lowndes and [Allison Horst](https://allisonhorst.com/), via the [stats-illustrations](https://github.com/allisonhorst/stats-illustrations) repository, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).*
+
 Run this checklist before editing values:
 
 ### Structural checks
