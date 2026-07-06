@@ -75,7 +75,14 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
       .then(({ svg }) => {
         if (cancelled) return
         if (containerRef.current) {
-          containerRef.current.innerHTML = DOMPurify.sanitize(svg)
+          // Mermaid renders node/edge labels as HTML inside <foreignObject> (an SVG/HTML
+          // namespace boundary). DOMPurify's default namespace check only treats
+          // <annotation-xml> as a valid HTML integration point, so without this config
+          // it silently empties every <foreignObject>, stripping all diagram text.
+          containerRef.current.innerHTML = DOMPurify.sanitize(svg, {
+            ADD_TAGS: ['foreignObject'],
+            HTML_INTEGRATION_POINTS: { foreignobject: true },
+          })
         }
         setLoading(false)
       })
