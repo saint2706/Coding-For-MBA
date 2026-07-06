@@ -449,6 +449,41 @@ starter
     expect(widget?.textContent).toContain('Practice parsing headings')
   })
 
+  it('captures instructions through to the section end for exercises with no starter code block', async () => {
+    const content = `
+### Exercise 2: Designing a DAG
+**Goal**: Draw the dependencies.
+
+* **Parallel**: A and B can run at the same time.
+* **Converge**: C waits for both.
+
+\`\`\`mermaid
+flowchart TD
+    A --> C
+    B --> C
+\`\`\`
+
+The two tasks run in parallel, but C cannot start until both finish.
+
+### Exercise 3: Next
+**Goal**: Unrelated goal.
+\`\`\`python
+print('ok')
+\`\`\`
+    `
+
+    const { findInteractiveBlocks } = await import('../MarkdownRenderer')
+    const blocks = findInteractiveBlocks(content)
+    const exercise2 = blocks.find(
+      (b) => b.type === 'exercise' && (b.data as { title: string }).title === 'Designing a DAG',
+    )
+    expect(exercise2).toBeTruthy()
+    const instructions = (exercise2!.data as { instructions: string }).instructions
+    expect(instructions).toContain('Converge')
+    expect(instructions).toContain('```mermaid')
+    expect(instructions).toContain('The two tasks run in parallel')
+  })
+
   it('parses mastery questions with nested heading formatting and details answers', () => {
     const content = `
 ### Question 2 : **Cash** *Flow* Check

@@ -208,8 +208,13 @@ function findInteractiveBlocks(content: string): InteractiveBlock[] {
         }
       }
 
-      if (firstCodeNodeIndex > goalNodeIndex) {
-        const instructionNodes = sectionNodes.slice(goalNodeIndex + 1, firstCodeNodeIndex)
+      // Exercises with no Python/py starter code (e.g. conceptual design or SQL-only
+      // exercises) leave `firstCodeNodeIndex` at -1; fall back to the section end so
+      // their instructions (explanations, diagrams, tables) still render instead of
+      // being silently dropped.
+      const instructionEndIndex = firstCodeNodeIndex >= 0 ? firstCodeNodeIndex : sectionNodes.length
+      if (instructionEndIndex > goalNodeIndex) {
+        const instructionNodes = sectionNodes.slice(goalNodeIndex + 1, instructionEndIndex)
         const instructionParts: string[] = []
         for (const instructionNode of instructionNodes) {
           const nodeStart = getNodeStartOffset(instructionNode)

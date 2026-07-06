@@ -62,6 +62,27 @@ describe('MermaidDiagram', () => {
     expect(container.textContent).toContain('not a valid diagram')
   })
 
+  it('preserves foreignObject-based node labels through sanitization', async () => {
+    renderMock.mockResolvedValue({
+      svg:
+        '<svg xmlns="http://www.w3.org/2000/svg"><g class="node">' +
+        '<rect></rect>' +
+        '<foreignObject><div xmlns="http://www.w3.org/1999/xhtml">' +
+        '<span class="nodeLabel">Detect missing values</span>' +
+        '</div></foreignObject>' +
+        '</g></svg>',
+    })
+
+    act(() => {
+      root.render(<MermaidDiagram code="flowchart TD;\nA-->B;" />)
+    })
+
+    await waitFor(() => {
+      expect(container.querySelector('.mermaid-diagram svg')).toBeTruthy()
+    })
+    expect(container.textContent).toContain('Detect missing values')
+  })
+
   it('initializes mermaid with the dark theme when the dark palette is active', async () => {
     document.documentElement.setAttribute('data-palette-type', 'dark')
     renderMock.mockResolvedValue({ svg: '<svg></svg>' })

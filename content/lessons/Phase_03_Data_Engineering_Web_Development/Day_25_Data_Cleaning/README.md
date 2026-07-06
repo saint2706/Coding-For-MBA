@@ -57,7 +57,7 @@ This is the reality of business data. It's messy, inconsistent, and riddled with
 
 ```mermaid
 flowchart TD
-    A[Detect missing values: isnull().sum()] --> B{Any missing?}
+    A["Detect missing values: isnull().sum()"] --> B{Any missing?}
     B -- No --> Z[Continue to type conversion / dedup]
     B -- Yes --> C{Choose a strategy}
     C --> D[Drop rows: dropna]
