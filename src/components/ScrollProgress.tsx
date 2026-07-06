@@ -31,15 +31,20 @@ export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgr
 
   useEffect(() => {
     let ticking = false
+    let cachedElement: HTMLElement | null = null
 
     const updateProgress = () => {
       let calcProgress = 0
 
       if (targetSelector) {
-        const element = document.querySelector<HTMLElement>(targetSelector)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          const elementHeight = element.clientHeight
+        // Cache DOM element and check its presence to prevent repeated queries
+        if (!cachedElement || !document.body.contains(cachedElement)) {
+          cachedElement = document.querySelector<HTMLElement>(targetSelector)
+        }
+
+        if (cachedElement) {
+          const rect = cachedElement.getBoundingClientRect()
+          const elementHeight = cachedElement.clientHeight
           const windowHeight = window.innerHeight
 
           const scrollableDistance = elementHeight - windowHeight
