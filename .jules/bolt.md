@@ -1,0 +1,3 @@
+## 2024-07-08 - Scroll Event DOM Query Bottleneck
+**Learning:** Calling `document.querySelector` inside a scroll event handler (even if throttled by `requestAnimationFrame`) is a significant performance anti-pattern. It forces the browser to evaluate the DOM structure repeatedly during scroll, increasing the risk of scroll jank.
+**Action:** Always cache DOM lookups (`document.querySelector`) in a `useRef` when used inside frequent event handlers like scroll or mousemove. Use `element.isConnected` to invalidate the cache if the element might unmount, and clear the ref if the target selector changes.
