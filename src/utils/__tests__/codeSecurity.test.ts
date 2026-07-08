@@ -251,7 +251,9 @@ print("bad")
   })
 
   it('should block carriage return comment bypasses', () => {
-    expect(validatePythonCode('# comment \r__import__(\'os\')')).toEqual(expect.objectContaining({ valid: false }))
+    expect(validatePythonCode("# comment \r__import__('os')")).toEqual(
+      expect.objectContaining({ valid: false }),
+    )
   })
 
   it('should block line continuations bypassing checks', () => {

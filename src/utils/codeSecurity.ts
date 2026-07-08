@@ -122,7 +122,9 @@ export function stripPythonCommentsAndStrings(code: string): string {
     if (!inString && char === '#') {
       const nextNewlineStr = stripped.indexOf('\n', i)
       const nextReturnStr = stripped.indexOf('\r', i)
-      const nextNewline = [nextNewlineStr, nextReturnStr].filter(idx => idx !== -1).sort((a, b) => a - b)[0]
+      const nextNewline = [nextNewlineStr, nextReturnStr]
+        .filter((idx) => idx !== -1)
+        .sort((a, b) => a - b)[0]
       if (nextNewline === undefined) {
         break // Rest of the line is a comment, end of string
       }
