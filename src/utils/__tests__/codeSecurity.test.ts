@@ -250,6 +250,10 @@ print("bad")
     expect(validatePythonCode('getattr(f, "__globals__")').valid).toBe(false)
   })
 
+  it('should block carriage return comment bypasses', () => {
+    expect(validatePythonCode('# comment \r__import__(\'os\')')).toEqual(expect.objectContaining({ valid: false }))
+  })
+
   it('should block line continuations bypassing checks', () => {
     expect(validatePythonCode('import \\\njs').valid).toBe(false)
     expect(validatePythonCode('from \\\njs import window').valid).toBe(false)
