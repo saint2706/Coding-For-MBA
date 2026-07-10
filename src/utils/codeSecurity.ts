@@ -121,10 +121,20 @@ export function stripPythonCommentsAndStrings(code: string): string {
 
     if (!inString && char === '#') {
       const nextNewline = stripped.indexOf('\n', i)
-      if (nextNewline === -1) {
+      const nextCR = stripped.indexOf('\r', i)
+
+      let endOfLine = stripped.length
+      if (nextNewline !== -1 && nextCR !== -1) {
+        endOfLine = Math.min(nextNewline, nextCR)
+      } else if (nextNewline !== -1) {
+        endOfLine = nextNewline
+      } else if (nextCR !== -1) {
+        endOfLine = nextCR
+      } else {
         break // Rest of the line is a comment, end of string
       }
-      i = nextNewline // Skip to newline
+
+      i = endOfLine
       continue
     }
 
