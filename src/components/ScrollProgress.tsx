@@ -39,10 +39,10 @@ export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgr
       let calcProgress = 0
 
       if (targetSelector) {
-        let element = targetRef.current;
+        let element = targetRef.current
         if (!element || !element.isConnected) {
-          element = document.querySelector<HTMLElement>(targetSelector);
-          targetRef.current = element;
+          element = document.querySelector<HTMLElement>(targetSelector)
+          targetRef.current = element
         }
         if (element) {
           const rect = element.getBoundingClientRect()
