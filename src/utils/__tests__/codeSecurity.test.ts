@@ -309,4 +309,9 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+  it('should handle carriage returns hiding malicious code', () => {
+    // A comment followed by a carriage return, then malicious code
+    const code = '# comment\ros.system("ls")';
+    expect(validatePythonCode(code).valid).toBe(false);
+  })
 })
