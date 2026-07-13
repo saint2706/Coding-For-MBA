@@ -311,7 +311,7 @@ print("bad")
   })
   it('should handle carriage returns hiding malicious code', () => {
     // A comment followed by a carriage return, then malicious code
-    const code = '# comment\ros.system("ls")';
-    expect(validatePythonCode(code).valid).toBe(false);
+    const code = '# comment\ros.system("ls")'
+    expect(validatePythonCode(code).valid).toBe(false)
   })
 })
