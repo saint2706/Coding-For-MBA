@@ -6,7 +6,7 @@
  * mono glyphs only (per ui-ux-pro-max: no-emoji-icons).
  */
 
-import { useMemo, useEffect, useRef, useState } from 'react'
+import { useMemo, useEffect, useRef, useState, useCallback } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
@@ -112,9 +112,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return () => clearTimeout(timer)
   }, [location.pathname])
 
-  const togglePhase = (phaseNum: number) => {
+  const togglePhase = useCallback((phaseNum: number) => {
     setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
-  }
+  }, [])
 
   return (
     <>

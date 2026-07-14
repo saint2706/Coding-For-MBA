@@ -9,7 +9,7 @@
  * - Initialize global providers (Theme, etc.).
  */
 
-import { useState, useEffect, useLayoutEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useLayoutEffect, lazy, Suspense, useCallback } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SkipToContent from './components/SkipToContent'
@@ -52,6 +52,7 @@ export default function App() {
   const sidebarDefaultOpen = useUserPreferencesStore((state) => state.sidebarDefaultOpen)
   const customCursorEnabled = useUserPreferencesStore((state) => state.customCursorEnabled)
   const [sidebarOpen, setSidebarOpen] = useState(sidebarDefaultOpen)
+  const handleSidebarClose = useCallback(() => setSidebarOpen(false), [])
   const location = useLocation()
 
   useLearningAnalytics(location.pathname)
@@ -92,7 +93,7 @@ export default function App() {
         <SkipToContent />
         <ScrollProgress isLesson={isLesson} targetSelector={isLesson ? 'article' : undefined} />
         <Suspense fallback={null}>
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          <Sidebar isOpen={sidebarOpen} onClose={handleSidebarClose} />
         </Suspense>
         <Navbar sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
         <main className="main-content" id="main-content" tabIndex={-1}>
