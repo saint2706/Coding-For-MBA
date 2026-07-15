@@ -59,12 +59,12 @@ export function prefetchRoute(path: string) {
  * @param {string} path - The target route path.
  * @returns {{onMouseEnter: () => void, onFocus: () => void, onTouchStart: () => void}} The event handlers.
  */
-let idleTimeout: ReturnType<typeof setTimeout> | null = null;
+let idleTimeout: ReturnType<typeof setTimeout> | null = null
 export function createRoutePrefetchHandlers(path: string) {
   const handler = () => {
-    if (idleTimeout) clearTimeout(idleTimeout);
-    idleTimeout = setTimeout(() => prefetchRoute(path), 50);
-  };
+    if (idleTimeout) clearTimeout(idleTimeout)
+    idleTimeout = setTimeout(() => prefetchRoute(path), 50)
+  }
   return {
     onMouseEnter: handler,
     onFocus: handler,
