@@ -1,0 +1,3 @@
+## 2024-07-16 - ScrollProgress Optimization
+**Learning:** `document.querySelector` is executed on every animation frame during scrolling when a `targetSelector` is provided. This forces the browser to evaluate the selector repeatedly, causing main thread blocking and unnecessary work, especially since the element structure is static for a given page.
+**Action:** Caching the DOM query inside a `useRef` drastically reduces DOM lookups. Combined with an `element.isConnected` check, it avoids stale reference issues while delivering significant scrolling performance improvements without breaking the functionality.
