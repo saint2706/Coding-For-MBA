@@ -44,6 +44,13 @@ describe('stripPythonCommentsAndStrings', () => {
 })
 
 describe('validatePythonCode', () => {
+  it('should not allow malicious code hidden behind carriage returns (\r)', () => {
+    // Malicious payload hidden behind a carriage return instead of a newline
+    const code = "# comment\rimport js"
+    expect(validatePythonCode(code).valid).toBe(false)
+    expect(validatePythonCode(code).error).toContain('js')
+  })
+
   it('should allow safe code', () => {
     expect(validatePythonCode('print("Hello")').valid).toBe(true)
     expect(validatePythonCode('import json').valid).toBe(true)
