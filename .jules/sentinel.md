@@ -1,0 +1,5 @@
+
+## 2024-07-17 - [CRITICAL] Fixed carriage return comment stripping bypass in code validation
+**Vulnerability:** Attackers could bypass code sanitization and execute unauthorized internal code (e.g. `js`, `sys`) by exploiting the carriage return (`\r`) character.
+**Learning:** `stripPythonCommentsAndStrings` parsed code character-by-character to remove `#` comments, but only stopped at `\n`. The Python interpreter treats both `\n` and `\r` as independent newlines. Thus, an attacker could write `import os # \r import js`, which the regex saw as a single comment ending in `\r import js`, while python evaluated it as a comment ending on the `\r` and correctly parsed `import js` on the next line.
+**Prevention:** When building custom AST parsers or scanners to mimic interpreter behavior for security boundaries, the parser MUST perfectly align with all whitespace and newline definitions used by the target interpreter. Specifically, Python handles CRLF `\r\n`, LF `\n`, and CR `\r` interchangeably for logical line endings.
