@@ -1,0 +1,3 @@
+## 2024-07-18 - Caching document.querySelector in Scroll Event Handlers
+**Learning:** Calling `document.querySelector` inside a scroll event handler (even if debounced or throttled with `requestAnimationFrame`) can cause unnecessary main-thread overhead as it traverses the DOM on every tick.
+**Action:** When a React component needs to track a specific external DOM element during scroll events, cache the result of `document.querySelector` using `useRef`. Always verify the element is still in the DOM using `element.isConnected` to prevent holding onto stale references if the element is unmounted. Reset the ref in a `useEffect` if the selector prop changes.
