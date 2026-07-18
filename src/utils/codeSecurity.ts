@@ -120,7 +120,15 @@ export function stripPythonCommentsAndStrings(code: string): string {
     }
 
     if (!inString && char === '#') {
-      const nextNewline = stripped.indexOf('\n', i)
+      const nextLF = stripped.indexOf('\n', i)
+      const nextCR = stripped.indexOf('\r', i)
+      let nextNewline = -1
+      if (nextLF !== -1 && nextCR !== -1) {
+        nextNewline = Math.min(nextLF, nextCR)
+      } else {
+        nextNewline = Math.max(nextLF, nextCR)
+      }
+
       if (nextNewline === -1) {
         break // Rest of the line is a comment, end of string
       }
@@ -156,6 +164,8 @@ export function validatePythonCode(code: string): ValidationResult {
 
   // Normalize code to NFKC (matching Python's internal identifier normalization)
   // and handle line continuations
+  // We only replace literal backslash followed by a newline, NOT standard newlines,
+  // as standard newlines are needed to properly terminate comments in the strip step.
   const normalizedCode = code.normalize('NFKC').replace(/\\(\r\n|\r|\n)/g, '')
 
   // Strip safe strings and comments to focus on logic
