@@ -1,0 +1,4 @@
+## 2025-02-23 - Carriage Return Comment Stripper Bypass in Python Security Validator
+**Vulnerability:** The `stripPythonCommentsAndStrings` utility functions failed to recognize carriage returns (`\r`) as valid line endings for Python comments. Attackers could hide malicious code like `# comment\rimport os\nos.system(...)` which the security validator would treat entirely as a comment and thus allow, but the Python runtime would execute the code on the second line.
+**Learning:** Python (and its AST) considers `\r`, `\n`, and `\r\n` all as valid line terminators. A security validation routine that manually processes strings must account for all possible newline characters when parsing single-line structures like comments.
+**Prevention:** Always use regex or explicitly test for `\r` as well as `\n` when finding the end of a comment in a custom parser, or ideally, rely on the runtime's own AST parser if available to avoid implementation mismatches.

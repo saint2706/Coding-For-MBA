@@ -309,4 +309,12 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+
+
+  it('should prevent newline bypass within comments', () => {
+    // The carriage return (\r) was previously bypassing the comment stripper,
+    // allowing the rest of the line (e.g. import os) to be evaluated as valid code.
+    expect(validatePythonCode('# comment\rimport os').valid).toBe(false)
+  })
+
 })
