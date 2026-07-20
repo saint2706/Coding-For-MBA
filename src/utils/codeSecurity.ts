@@ -120,11 +120,22 @@ export function stripPythonCommentsAndStrings(code: string): string {
     }
 
     if (!inString && char === '#') {
-      const nextNewline = stripped.indexOf('\n', i)
+      const nextN = stripped.indexOf('\n', i)
+      const nextR = stripped.indexOf('\r', i)
+
+      let nextNewline = -1
+      if (nextN !== -1 && nextR !== -1) {
+        nextNewline = Math.min(nextN, nextR)
+      } else if (nextN !== -1) {
+        nextNewline = nextN
+      } else if (nextR !== -1) {
+        nextNewline = nextR
+      }
+
       if (nextNewline === -1) {
         break // Rest of the line is a comment, end of string
       }
-      i = nextNewline // Skip to newline
+      i = nextNewline // Skip to newline (leave the newline char to be processed)
       continue
     }
 
@@ -245,7 +256,7 @@ export function validatePythonCode(code: string): ValidationResult {
   // Pattern 1: `import ... module ...`
   // Matches "import", then anything up to the module name, as long as it doesn't cross a newline or semicolon.
   // We use `\b` to ensure we match the exact module name.
-  const importRegex = new RegExp(`\\bimport\\b[^;\\n]*\\b(${dangerousModulesStr})\\b`)
+  const importRegex = new RegExp(`\\bimport\\b[^;\\n]*?\\b(${dangerousModulesStr})\\b`)
 
   // Pattern 2: `from module ...`
   // Matches "from", then the module name.
