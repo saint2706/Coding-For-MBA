@@ -1,0 +1,4 @@
+## 2025-02-18 - [Fix Python Comment Stripping Bypass]
+**Vulnerability:** The Python comment stripper (`stripPythonCommentsAndStrings` in `src/utils/codeSecurity.ts`) only checked for the `\n` character to terminate a comment. Since the Python runtime treats `\r` as a valid newline, an attacker could hide executable code like `eval('import js')` immediately after a `\r` character inside a comment. The scanner would consider it a comment and allow it, but Python would execute it.
+**Learning:** When sanitizing or validating code across environments, we must align our parser's understanding of structural boundaries (like newlines) with the target runtime's interpreter (in this case, Pyodide's Python runtime).
+**Prevention:** Always check for all valid line terminator characters (both `\n` and `\r`) when implementing custom parsing or comment-stripping logic for security checks.
