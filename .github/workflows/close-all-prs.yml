@@ -1,0 +1,68 @@
+name: Close All Open PRs
+
+# Manual-only cleanup tool: closes every open pull request against this repo
+# and deletes its head branch (skipped for branches that live on a fork).
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type CLOSE-ALL to confirm closing every open PR and deleting its branch'
+        required: true
+      dry_run:
+        description: 'Dry run: list what would happen without making changes'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  close-and-cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Guard confirmation
+        if: ${{ github.event.inputs.confirm != 'CLOSE-ALL' }}
+        run: |
+          echo "::error::Input 'confirm' must be exactly CLOSE-ALL. Aborting."
+          exit 1
+
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Close all open PRs and delete branches
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          set -euo pipefail
+
+          mapfile -t prs < <(gh pr list --repo "$REPO" --state open --limit 1000 \
+            --json number,headRefName,isCrossRepository \
+            --jq '.[] | @base64')
+
+          echo "Found ${#prs[@]} open PR(s)."
+
+          for row in "${prs[@]}"; do
+            pr=$(echo "$row" | base64 --decode)
+            number=$(echo "$pr" | jq -r '.number')
+            branch=$(echo "$pr" | jq -r '.headRefName')
+            cross=$(echo "$pr" | jq -r '.isCrossRepository')
+
+            if [ "$DRY_RUN" = "true" ]; then
+              echo "[dry-run] Would close PR #$number and delete branch '$branch' (fork: $cross)"
+              continue
+            fi
+
+            echo "Closing PR #$number (branch: $branch)"
+            if [ "$cross" = "true" ]; then
+              gh pr close "$number" --repo "$REPO"
+              echo "  Branch '$branch' lives on a fork; not deleted."
+            else
+              gh pr close "$number" --repo "$REPO" --delete-branch \
+                || echo "  Warning: failed to delete branch '$branch' for PR #$number"
+            fi
+          done
