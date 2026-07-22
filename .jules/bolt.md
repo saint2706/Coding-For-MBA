@@ -1,0 +1,3 @@
+## 2024-07-22 - Debouncing Rapid Prefetch Events
+**Learning:** Attaching heavy event handlers (like route prefetching) to `onMouseEnter`, `onFocus`, or `onTouchStart` across hundreds of DOM elements simultaneously (e.g., links in a large Sidebar) can cause rapid bursts of events. This leads to main-thread churn as the user scrolls or hovers, due to consecutive immediate state or network deduplication checks.
+**Action:** Consolidate rapid bursts of events by debouncing the calls using a shared/global timeout variable. This allows the application to batch prefetch requests, reducing main thread blocking and optimizing resource loading.

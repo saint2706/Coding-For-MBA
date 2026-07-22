@@ -38,18 +38,35 @@ const prefetchedRoutes = new Set<string>()
  * @param {string} path - The route path to prefetch (e.g., '/lesson/1').
  * @returns {void}
  */
+// ⚡ Bolt: Global debounce state to batch rapid consecutive prefetch requests
+// (e.g. triggered by scrolling through the Sidebar).
+let prefetchTimeout: ReturnType<typeof setTimeout> | null = null
+const pendingPrefetches = new Set<string>()
+
 export function prefetchRoute(path: string) {
   if (prefetchedRoutes.has(path)) {
     return
   }
 
-  const route = routePrefetchers.find(({ match }) => match(path))
-  if (!route) {
-    return
-  }
+  pendingPrefetches.add(path)
 
-  prefetchedRoutes.add(path)
-  void route.load()
+  if (prefetchTimeout) clearTimeout(prefetchTimeout)
+
+  // ⚡ Bolt: Batch prefetch resolution after a 50ms idle window
+  // to prevent main-thread churn during bursts of hover/focus events.
+  prefetchTimeout = setTimeout(() => {
+    const pathsToFetch = Array.from(pendingPrefetches)
+    pendingPrefetches.clear()
+
+    pathsToFetch.forEach(p => {
+      if (prefetchedRoutes.has(p)) return
+      const route = routePrefetchers.find(({ match }) => match(p))
+      if (route) {
+        prefetchedRoutes.add(p)
+        void route.load()
+      }
+    })
+  }, 50)
 }
 
 /**
