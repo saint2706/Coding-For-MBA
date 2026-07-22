@@ -58,7 +58,7 @@ export function prefetchRoute(path: string) {
     const pathsToFetch = Array.from(pendingPrefetches)
     pendingPrefetches.clear()
 
-    pathsToFetch.forEach(p => {
+    pathsToFetch.forEach((p) => {
       if (prefetchedRoutes.has(p)) return
       const route = routePrefetchers.find(({ match }) => match(p))
       if (route) {
