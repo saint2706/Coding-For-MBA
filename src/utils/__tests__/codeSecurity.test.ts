@@ -309,4 +309,9 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+
+  it('handles carriage returns in comments', () => {
+    const maliciousCode = "# comment \r import os \n print(1)"
+    expect(validatePythonCode(maliciousCode).valid).toBe(false)
+  })
 })
