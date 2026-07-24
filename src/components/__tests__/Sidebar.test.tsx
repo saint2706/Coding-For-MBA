@@ -232,7 +232,7 @@ describe('Sidebar', () => {
     try {
       act(() => {
         root?.render(
-          <MemoryRouter initialEntries={['/']}>
+          <MemoryRouter initialEntries={['/notes']}>
             <Sidebar isOpen={true} onClose={vi.fn()} />
           </MemoryRouter>,
         )

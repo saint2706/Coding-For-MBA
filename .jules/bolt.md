@@ -1,0 +1,3 @@
+## 2024-07-24 - Avoiding Redundant Scroll Effects in React
+**Learning:** Automatically scrolling an active link into view using a naive `useEffect` on every location change can cause UI layout jumping or performance hits when the user is explicitly navigating deep pages. If the element is already scrolled to or intentionally skipped, scrolling it again is redundant and interrupts standard navigation flow.
+**Action:** Prevent redundant execution of scrolling effects by using a `useRef` to track whether it's the very first render and specifically skipping top-level or unneeded scrolling actions, only running the side-effect when actually required by the deep link layout.

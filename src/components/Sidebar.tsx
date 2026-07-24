@@ -98,9 +98,20 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
 
+  const isFirstRender = useRef(true)
   useEffect(() => {
     const nav = navRef.current
     if (!nav) return
+
+    // Only scroll into view if this is NOT the very first render,
+    // OR if we're on a deep link that needs initial scrolling.
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      if (location.pathname === '/' || location.pathname === '/curriculum') {
+        return // Skip initial scroll for top-level pages
+      }
+    }
+
     const timer = setTimeout(() => {
       const activeLink = nav.querySelector(
         '.day-link.active, .tree-item.active',
