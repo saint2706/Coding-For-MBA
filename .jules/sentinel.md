@@ -1,0 +1,4 @@
+## 2025-02-27 - [CRITICAL] Fix Carriage Return Bypass in Code Security Scanner
+**Vulnerability:** The Python code security scanner (`stripPythonCommentsAndStrings` in `src/utils/codeSecurity.ts`) failed to account for carriage returns (`\r`) when stripping comments. An attacker could start a line with a `#`, insert a `\r`, and append malicious code, effectively hiding it from the security scanner but still allowing Pyodide to execute it.
+**Learning:** Always consider all types of line terminators (`\n`, `\r`, `\r\n`) when performing text parsing for security validation, as different parsers and interpreters handle them differently, potentially leading to differential parser vulnerabilities.
+**Prevention:** Explicitly check for both `\n` and `\r` when seeking the end of a line in security scanners.
