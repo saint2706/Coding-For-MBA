@@ -120,16 +120,16 @@ export function stripPythonCommentsAndStrings(code: string): string {
     }
 
     if (!inString && char === '#') {
-      const nextNewlineLf = stripped.indexOf('\n', i);
-      const nextNewlineCr = stripped.indexOf('\r', i);
-      let nextNewline = -1;
+      const nextNewlineLf = stripped.indexOf('\n', i)
+      const nextNewlineCr = stripped.indexOf('\r', i)
+      let nextNewline = -1
 
       if (nextNewlineLf !== -1 && nextNewlineCr !== -1) {
-        nextNewline = Math.min(nextNewlineLf, nextNewlineCr);
+        nextNewline = Math.min(nextNewlineLf, nextNewlineCr)
       } else if (nextNewlineLf !== -1) {
-        nextNewline = nextNewlineLf;
+        nextNewline = nextNewlineLf
       } else {
-        nextNewline = nextNewlineCr;
+        nextNewline = nextNewlineCr
       }
       if (nextNewline === -1) {
         break // Rest of the line is a comment, end of string
