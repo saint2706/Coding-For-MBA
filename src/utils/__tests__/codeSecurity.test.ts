@@ -21,7 +21,6 @@ describe('stripPythonCommentsAndStrings', () => {
     expect(stripPythonCommentsAndStrings(code)).toContain('print(2)')
   })
 
-
   it('should handle strings with comments inside', () => {
     const code = 'print("# not a comment")'
     expect(stripPythonCommentsAndStrings(code)).toBe('print("")')
