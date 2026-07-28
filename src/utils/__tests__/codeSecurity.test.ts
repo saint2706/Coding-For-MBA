@@ -16,6 +16,11 @@ describe('stripPythonCommentsAndStrings', () => {
     const code = 'print(1) # this is a comment'
     expect(stripPythonCommentsAndStrings(code).trim()).toBe('print(1)')
   })
+  it('should handle carriage return in comments', () => {
+    const code = 'print(1) # this is a comment \r print(2)'
+    expect(stripPythonCommentsAndStrings(code)).toContain('print(2)')
+  })
+
 
   it('should handle strings with comments inside', () => {
     const code = 'print("# not a comment")'
