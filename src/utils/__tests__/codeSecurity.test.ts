@@ -309,4 +309,10 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+
+  it('should treat carriage return as newline when stripping comments', () => {
+    // Malicious code hidden behind \r in a comment. Python treats \r as a newline.
+    // So the parser needs to stop the comment at \r.
+    expect(validatePythonCode('x = 1 # harmless comment\r__import__("os")').valid).toBe(false)
+  })
 })
