@@ -1,0 +1,3 @@
+## 2026-07-29 - Optimizing React scroll event handlers by caching DOM queries
+**Learning:** Calling `document.querySelector` inside a highly frequent event like `scroll` can cause performance issues (jank and layout thrashing), even if debounced or within `requestAnimationFrame`.
+**Action:** Always cache the result of DOM queries using `useRef` when used inside scroll event handlers. Ensure the cache validity is checked using `!ref.current || !ref.current.isConnected` to gracefully handle elements dynamically added or removed from the DOM, and reset the ref inside a `useEffect` when the target selector prop changes to avoid stale references.
