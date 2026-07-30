@@ -59,10 +59,22 @@ export function prefetchRoute(path: string) {
  * @param {string} path - The target route path.
  * @returns {{onMouseEnter: () => void, onFocus: () => void, onTouchStart: () => void}} The event handlers.
  */
+// Global debounce to prevent rapid prefetch spam when sweeping cursor across multiple links
+let prefetchTimeout: ReturnType<typeof setTimeout> | null = null
+
 export function createRoutePrefetchHandlers(path: string) {
+  const handlePrefetch = () => {
+    if (prefetchTimeout) {
+      clearTimeout(prefetchTimeout)
+    }
+    prefetchTimeout = setTimeout(() => {
+      prefetchRoute(path)
+    }, 50)
+  }
+
   return {
-    onMouseEnter: () => prefetchRoute(path),
-    onFocus: () => prefetchRoute(path),
-    onTouchStart: () => prefetchRoute(path),
+    onMouseEnter: handlePrefetch,
+    onFocus: handlePrefetch,
+    onTouchStart: handlePrefetch,
   }
 }
