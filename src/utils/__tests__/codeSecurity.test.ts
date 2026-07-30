@@ -278,6 +278,12 @@ print("bad")
     })
   })
 
+  it('should treat both \n and \r as comment terminators to prevent malicious code hiding', () => {
+    // If \r is not handled, the rest of the line is stripped as a comment, bypassing the exec check.
+    const malicious = '# harmless \r exec("import js")'
+    expect(validatePythonCode(malicious).valid).toBe(false)
+  })
+
   describe('Pyodide Internals', () => {
     it('should block import pyodide', () => {
       expect(validatePythonCode('import pyodide').valid).toBe(false)
