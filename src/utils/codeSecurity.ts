@@ -121,7 +121,11 @@ export function stripPythonCommentsAndStrings(code: string): string {
 
     if (!inString && char === '#') {
       let endOfComment = i
-      while (endOfComment < stripped.length && stripped[endOfComment] !== '\n' && stripped[endOfComment] !== '\r') {
+      while (
+        endOfComment < stripped.length &&
+        stripped[endOfComment] !== '\n' &&
+        stripped[endOfComment] !== '\r'
+      ) {
         endOfComment++
       }
       if (endOfComment === stripped.length) {
