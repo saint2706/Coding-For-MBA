@@ -1,0 +1,4 @@
+## 2025-01-01 - Python Comment Stripping Carriage Return Bypass
+**Vulnerability:** The `stripPythonCommentsAndStrings` function in `src/utils/codeSecurity.ts` only looked for `\n` to identify the end of a comment. This meant that a comment ending in a carriage return (`\r`) followed by dangerous code on the same physical line (from the perspective of the basic string search) would incorrectly strip the dangerous code.
+**Learning:** Python treats both `\n` and `\r` as newline characters when parsing comments. Relying solely on `\n` allows attackers to hide malicious code behind a `\r`, which the Python runtime will execute.
+**Prevention:** Always use an AST or a state-machine parser that correctly considers all language-specific newline variations (`\n` and `\r`) to accurately distinguish string literals and comments when sanitizing code.
