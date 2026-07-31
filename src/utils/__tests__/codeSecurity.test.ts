@@ -250,7 +250,6 @@ print("bad")
     expect(validatePythonCode('getattr(f, "__globals__")').valid).toBe(false)
   })
 
-
   it('should block carriage returns in comments bypassing checks', () => {
     expect(validatePythonCode('# comment \rimport js').valid).toBe(false)
   })
