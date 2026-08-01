@@ -309,4 +309,9 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+
+  it('should block sandbox escape via carriage return in comments', () => {
+    expect(validatePythonCode('# comment\rimport js').valid).toBe(false)
+    expect(validatePythonCode('# comment\r\nimport js').valid).toBe(false)
+  })
 })

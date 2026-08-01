@@ -1,0 +1,4 @@
+## 2025-02-14 - Fix Comment Stripping Carriage Return Bypass
+**Vulnerability:** The Python comment stripper only recognized `\n` as a newline terminator for comments, ignoring carriage returns (`\r`). This allowed a sandbox bypass where malicious code injected immediately after a `\r` (e.g., `# comment\rimport os`) would be stripped out of validation checks but executed by the Python runtime (which accepts `\r` as a newline).
+**Learning:** When sanitizing code (e.g., Python) before security validation, avoid relying solely on simple regular expressions (like `/#.*/g`) or single character checks for comment stripping. This can inadvertently strip malicious payloads disguised as comments inside strings, or allow bypasses by using alternative newline characters.
+**Prevention:** Always ensure parsers handling newlines treat both carriage return (`\r`) and line feed (`\n`) characters as valid line terminators to accurately distinguish comments from executable code.
