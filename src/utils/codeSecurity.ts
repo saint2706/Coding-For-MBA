@@ -120,11 +120,22 @@ export function stripPythonCommentsAndStrings(code: string): string {
     }
 
     if (!inString && char === '#') {
-      const nextNewline = stripped.indexOf('\n', i)
+      const nextN = stripped.indexOf('\n', i)
+      const nextR = stripped.indexOf('\r', i)
+
+      let nextNewline = -1
+      if (nextN !== -1 && nextR !== -1) {
+        nextNewline = Math.min(nextN, nextR)
+      } else if (nextN !== -1) {
+        nextNewline = nextN
+      } else {
+        nextNewline = nextR
+      }
+
       if (nextNewline === -1) {
         break // Rest of the line is a comment, end of string
       }
-      i = nextNewline // Skip to newline
+      i = nextNewline // DO NOT skip over the newline. Leave it to be processed on the next loop iteration.
       continue
     }
 

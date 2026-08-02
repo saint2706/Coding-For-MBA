@@ -1,0 +1,4 @@
+## 2025-02-18 - [Fix code injection via CR comments in codeSecurity]
+**Vulnerability:** The custom Python comment stripping function `stripPythonCommentsAndStrings` in `src/utils/codeSecurity.ts` only treated `\n` as the end of a comment. It failed to account for `\r` (carriage return).
+**Learning:** Python runtime will happily treat `\r` as a newline terminator for comments, executing code on the next line. If a custom parser only checks for `\n`, an attacker can write a payload like `import math # comment \r import os` to bypass the scanner because `import os` is treated as part of the comment by the scanner, but executed by the interpreter.
+**Prevention:** When building state machines or parsers that attempt to model an interpreter's behavior, always ensure you match the exact set of valid token delimiters (such as newlines, which can be `\n`, `\r`, or `\r\n`).
