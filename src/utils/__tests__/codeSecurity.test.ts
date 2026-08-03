@@ -309,4 +309,7 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+  it('should not be bypassed with carriage return inside comment', () => {
+    expect(validatePythonCode('import sys\n# this is a comment \rimport os').valid).toBe(false)
+  })
 })
