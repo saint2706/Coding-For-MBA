@@ -79,10 +79,13 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
           // namespace boundary). DOMPurify's default namespace check only treats
           // <annotation-xml> as a valid HTML integration point, so without this config
           // it silently empties every <foreignObject>, stripping all diagram text.
+          // Add RETURN_TRUSTED_TYPE: true to properly protect against XSS if TrustedTypes are supported
+          // DOMPurify 3.x bypass vulnerability fix: https://github.com/advisories/GHSA-c2j3-45gr-mqc4
           containerRef.current.innerHTML = DOMPurify.sanitize(svg, {
             ADD_TAGS: ['foreignObject'],
             HTML_INTEGRATION_POINTS: { foreignobject: true },
-          })
+            RETURN_TRUSTED_TYPE: true,
+          }) as unknown as string
         }
         setLoading(false)
       })
