@@ -9,7 +9,7 @@
  * - Provide accessible progress role attributes.
  */
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 
 interface ScrollProgressProps {
   targetSelector?: string
@@ -28,6 +28,12 @@ interface ScrollProgressProps {
  */
 export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgressProps) {
   const [progress, setProgress] = useState(0)
+  const targetElementRef = useRef<HTMLElement | null>(null)
+
+  // Reset the cached element when the selector changes
+  useEffect(() => {
+    targetElementRef.current = null
+  }, [targetSelector])
 
   useEffect(() => {
     let ticking = false
@@ -36,7 +42,11 @@ export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgr
       let calcProgress = 0
 
       if (targetSelector) {
-        const element = document.querySelector<HTMLElement>(targetSelector)
+        let element = targetElementRef.current
+        if (!element || !element.isConnected) {
+          element = document.querySelector<HTMLElement>(targetSelector)
+          targetElementRef.current = element
+        }
         if (element) {
           const rect = element.getBoundingClientRect()
           const elementHeight = element.clientHeight
