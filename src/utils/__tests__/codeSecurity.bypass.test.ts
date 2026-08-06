@@ -105,12 +105,10 @@ except Exception as e:
     expect(validatePythonCode('z = f_code').valid).toBe(false)
   })
 
-
   it('should block comment bypass using carriage returns', () => {
     // If the comment stripper only looks for newline, it will strip the CR and everything after it as a comment.
     // Python will execute what is after CR.
     expect(validatePythonCode('# comment\reval(1)').valid).toBe(false)
     expect(validatePythonCode('print(1)\n# comment\rimport js').valid).toBe(false)
   })
-
 })
