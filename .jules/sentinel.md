@@ -1,0 +1,4 @@
+## 2025-02-15 - CRITICAL: Python Comment Stripping Bypass using Carriage Return (\r)
+**Vulnerability:** The `stripPythonCommentsAndStrings` function in `src/utils/codeSecurity.ts` only looked for `\n` when stripping comments. An attacker could provide a payload like `# \rimport os` which would bypass the comment removal, but when executed by Python, Python treats `\r` as a newline, thereby executing the `import os` command hidden behind a comment.
+**Learning:** Python's AST parser treats both line feed (`\n`) and carriage return (`\r`) as valid newlines, but naive regex or string scanning often only accounts for `\n`.
+**Prevention:** Always consider both `\n` and `\r` when determining line boundaries in code security validation routines, or use an actual AST parser instead of manual string parsing.

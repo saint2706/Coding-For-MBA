@@ -145,6 +145,12 @@ print("bad")
     expect(validatePythonCode('exec("im" + "port js")').valid).toBe(false)
   })
 
+  it('should prevent carriage return comment bypass (Security Fix)', () => {
+    // Attackers might use \r instead of \n to hide malicious code in a comment
+    expect(validatePythonCode('# comment \rimport os').valid).toBe(false)
+    expect(validatePythonCode('# harmless \r import js').valid).toBe(false)
+  })
+
   it('should block eval/exec assignment (Bypass Fix)', () => {
     expect(validatePythonCode('e = exec').valid).toBe(false)
     expect(validatePythonCode('my_eval = eval').valid).toBe(false)
