@@ -52,6 +52,17 @@ export function prefetchRoute(path: string) {
   void route.load()
 }
 
+let prefetchTimeout: ReturnType<typeof setTimeout> | null = null
+
+export function prefetchRouteDebounced(path: string) {
+  if (prefetchTimeout) {
+    clearTimeout(prefetchTimeout)
+  }
+  prefetchTimeout = setTimeout(() => {
+    prefetchRoute(path)
+  }, 50)
+}
+
 /**
  * Creates event handlers for prefetching on hover, focus, or touch.
  * Spread these props onto a Link or Button element.
@@ -61,8 +72,8 @@ export function prefetchRoute(path: string) {
  */
 export function createRoutePrefetchHandlers(path: string) {
   return {
-    onMouseEnter: () => prefetchRoute(path),
-    onFocus: () => prefetchRoute(path),
-    onTouchStart: () => prefetchRoute(path),
+    onMouseEnter: () => prefetchRouteDebounced(path),
+    onFocus: () => prefetchRouteDebounced(path),
+    onTouchStart: () => prefetchRouteDebounced(path),
   }
 }
