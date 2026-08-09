@@ -316,6 +316,9 @@ print("bad")
   })
 
   it('should block eval hidden after carriage return comment', () => {
-    expect(validatePythonCode('print(1) # a comment \reval(1)')).toEqual({ valid: false, error: 'Security Error: Usage of dangerous built-in functions is restricted.' })
+    expect(validatePythonCode('print(1) # a comment \reval(1)')).toEqual({
+      valid: false,
+      error: 'Security Error: Usage of dangerous built-in functions is restricted.',
+    })
   })
 })
