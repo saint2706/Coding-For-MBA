@@ -41,6 +41,11 @@ describe('stripPythonCommentsAndStrings', () => {
     const code = 'print(r"raw")'
     expect(stripPythonCommentsAndStrings(code)).toBe('print(r"")')
   })
+
+  it('should handle carriage returns in comments', () => {
+    const code = 'print(1) # a comment \reval(1)'
+    expect(stripPythonCommentsAndStrings(code).trim()).toBe('print(1) \reval(1)')
+  })
 })
 
 describe('validatePythonCode', () => {
@@ -308,5 +313,9 @@ print("bad")
   it('should handle complex f-strings', () => {
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
+  })
+
+  it('should block eval hidden after carriage return comment', () => {
+    expect(validatePythonCode('print(1) # a comment \reval(1)')).toEqual({ valid: false, error: 'Security Error: Usage of dangerous built-in functions is restricted.' })
   })
 })
