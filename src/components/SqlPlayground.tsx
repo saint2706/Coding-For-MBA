@@ -96,13 +96,20 @@ const SqlPlayground = forwardRef<SqlPlaygroundHandle, SqlPlaygroundProps>(
       }
     }, [code])
 
+    const isScrolling = useRef(false)
     const handleScroll = useCallback(() => {
-      const ta = textareaRef.current
-      const pre = preRef.current
-      if (ta && pre) {
-        pre.scrollTop = ta.scrollTop
-        pre.scrollLeft = ta.scrollLeft
-      }
+      if (isScrolling.current) return
+      isScrolling.current = true
+
+      requestAnimationFrame(() => {
+        const ta = textareaRef.current
+        const pre = preRef.current
+        if (ta && pre) {
+          pre.scrollTop = ta.scrollTop
+          pre.scrollLeft = ta.scrollLeft
+        }
+        isScrolling.current = false
+      })
     }, [])
 
     const handleKeyDown = useCallback((e: React.KeyboardEvent) => {

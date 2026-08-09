@@ -176,13 +176,20 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
     /**
      * Handles scroll synchronization between textarea and highlight layer.
      */
+    const isScrolling = useRef(false)
     const handleScroll = useCallback(() => {
-      const ta = textareaRef.current
-      const pre = preRef.current
-      if (ta && pre) {
-        pre.scrollTop = ta.scrollTop
-        pre.scrollLeft = ta.scrollLeft
-      }
+      if (isScrolling.current) return
+      isScrolling.current = true
+
+      requestAnimationFrame(() => {
+        const ta = textareaRef.current
+        const pre = preRef.current
+        if (ta && pre) {
+          pre.scrollTop = ta.scrollTop
+          pre.scrollLeft = ta.scrollLeft
+        }
+        isScrolling.current = false
+      })
     }, [])
 
     /**
