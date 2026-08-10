@@ -1,0 +1,4 @@
+## 2024-08-10 - [CRITICAL] Code Injection Bypass via \r in Comments
+**Vulnerability:** Python code validation logic in `stripPythonCommentsAndStrings` (`src/utils/codeSecurity.ts`) only checked for `\n` to terminate comment lines. An attacker could hide malicious code by inserting a carriage return (`\r`) in a comment (e.g., `# harmless comment\rimport os`). The validator treated the entire line as a comment and skipped scanning it, while the Python interpreter treated `\r` as a newline and executed the subsequent code.
+**Learning:** Security validation parsers must account for all possible newline sequences (e.g., `\r`, `\n`, `\r\n`) that the underlying execution engine recognizes.
+**Prevention:** Always check for both `\r` and `\n` when determining line endings for comments in code sanitizers.

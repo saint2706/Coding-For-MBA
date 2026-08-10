@@ -309,4 +309,8 @@ print("bad")
     expect(validatePythonCode('f"{1+1}"').valid).toBe(true)
     expect(validatePythonCode('f"{eval(1)} "').valid).toBe(false)
   })
+
+  it('should block malicious code hidden behind \\r in comments', () => {
+    expect(validatePythonCode('# malicious comment\rimport os').valid).toBe(false)
+  })
 })
