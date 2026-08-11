@@ -1,0 +1,3 @@
+## 2024-05-18 - Caching document.querySelector in Scroll Event Handlers
+**Learning:** `document.querySelector` can be a significant bottleneck when called on every scroll event, especially in a component like `ScrollProgress` where it's executed frequently. The results should be cached, but care must be taken to ensure the cached element is still attached to the DOM, as elements might unmount (e.g., in SPAs).
+**Action:** Always cache the result of `document.querySelector` when used inside high-frequency event handlers like scroll. Use `useRef` to store the element and verify its presence using `element.isConnected` (or `document.body.contains`). Ensure the cache is reset when dependencies (like the target selector prop) change.
