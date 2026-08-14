@@ -1,0 +1,3 @@
+## 2025-01-07 - React Scroll Performance and Stale References
+**Learning:** When caching `document.querySelector` inside a frequent event listener (like `onScroll` in `ScrollProgress`), checking `element.isConnected` is crucial because DOM changes might detach the cached element, leading to calculations based on stale layout metrics. Furthermore, it's essential to reset the cache reference when the underlying target prop changes.
+**Action:** Always validate cached DOM element references using `isConnected` inside high-frequency listeners and reset the `useRef` cache when selector props change.
