@@ -96,4 +96,21 @@ describe('MermaidDiagram', () => {
     })
     expect(initializeMock.mock.calls[0]?.[0]).toMatchObject({ theme: 'dark' })
   })
+
+  it('adds target="_blank" and rel="noopener noreferrer" to links to prevent reverse tabnabbing', async () => {
+    renderMock.mockResolvedValue({
+      svg: '<svg><a href="https://example.com">Link</a></svg>'
+    })
+
+    act(() => {
+      root.render(<MermaidDiagram code="graph TD;\nA-->B;" />)
+    })
+
+    await waitFor(() => {
+      const link = container.querySelector('a')
+      expect(link).toBeTruthy()
+      expect(link?.getAttribute('target')).toBe('_blank')
+      expect(link?.getAttribute('rel')).toBe('noopener noreferrer')
+    })
+  })
 })
