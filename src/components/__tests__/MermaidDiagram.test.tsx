@@ -99,7 +99,7 @@ describe('MermaidDiagram', () => {
 
   it('adds target="_blank" and rel="noopener noreferrer" to links to prevent reverse tabnabbing', async () => {
     renderMock.mockResolvedValue({
-      svg: '<svg><a href="https://example.com">Link</a></svg>'
+      svg: '<svg><a href="https://example.com">Link</a></svg>',
     })
 
     act(() => {
