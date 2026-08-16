@@ -79,7 +79,19 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
           // namespace boundary). DOMPurify's default namespace check only treats
           // <annotation-xml> as a valid HTML integration point, so without this config
           // it silently empties every <foreignObject>, stripping all diagram text.
-          containerRef.current.innerHTML = DOMPurify.sanitize(svg, {
+
+          // Use a local DOMPurify instance to add hooks safely without polluting global scope
+          const localPurify = DOMPurify(window)
+
+          // Prevent reverse tabnabbing on links rendered within the diagram
+          localPurify.addHook('afterSanitizeAttributes', (node) => {
+            if (node.tagName && node.tagName.toLowerCase() === 'a') {
+              node.setAttribute('target', '_blank')
+              node.setAttribute('rel', 'noopener noreferrer')
+            }
+          })
+
+          containerRef.current.innerHTML = localPurify.sanitize(svg, {
             ADD_TAGS: ['foreignObject'],
             HTML_INTEGRATION_POINTS: { foreignobject: true },
           })
