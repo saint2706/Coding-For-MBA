@@ -29,11 +29,11 @@ interface ScrollProgressProps {
 export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgressProps) {
   const [progress, setProgress] = useState(0)
   // ⚡ Bolt: Cache DOM queries to prevent layout thrashing on high-frequency scroll events
-  const elementRef = useRef<HTMLElement | null>(null);
+  const elementRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
-    elementRef.current = null;
-  }, [targetSelector]);
+    elementRef.current = null
+  }, [targetSelector])
 
   useEffect(() => {
     let ticking = false
@@ -44,9 +44,9 @@ export default function ScrollProgress({ targetSelector, isLesson }: ScrollProgr
       if (targetSelector) {
         // ⚡ Bolt: Only query DOM if cache is empty or element was removed from document
         if (!elementRef.current || !document.body.contains(elementRef.current)) {
-          elementRef.current = document.querySelector<HTMLElement>(targetSelector);
+          elementRef.current = document.querySelector<HTMLElement>(targetSelector)
         }
-        const element = elementRef.current;
+        const element = elementRef.current
         if (element) {
           const rect = element.getBoundingClientRect()
           const elementHeight = element.clientHeight
