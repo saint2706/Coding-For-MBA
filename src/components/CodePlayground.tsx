@@ -179,18 +179,18 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
      */
     const handleScroll = useCallback(() => {
       if (!isScrollingRef.current) {
-        isScrollingRef.current = true;
+        isScrollingRef.current = true
         requestAnimationFrame(() => {
-          const ta = textareaRef.current;
-          const pre = preRef.current;
+          const ta = textareaRef.current
+          const pre = preRef.current
           if (ta && pre) {
-            pre.scrollTop = ta.scrollTop;
-            pre.scrollLeft = ta.scrollLeft;
+            pre.scrollTop = ta.scrollTop
+            pre.scrollLeft = ta.scrollLeft
           }
-          isScrollingRef.current = false;
-        });
+          isScrollingRef.current = false
+        })
       }
-    }, []);
+    }, [])
 
     /**
      * Handles keyboard shortcuts for running code.
