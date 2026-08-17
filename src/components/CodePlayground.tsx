@@ -116,6 +116,7 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
     const runnerRef = useRef<PythonRunnerHandle>(null)
     const runCountRef = useRef(0)
     const resetTimeoutRef = useRef<number | null>(null)
+    const isScrollingRef = useRef(false)
 
     /**
      * Resets the code editor to its initial state.
@@ -174,16 +175,22 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
     }, [code])
 
     /**
-     * Handles scroll synchronization between textarea and highlight layer.
+     * Throttles scroll synchronization to prevent layout thrashing
      */
     const handleScroll = useCallback(() => {
-      const ta = textareaRef.current
-      const pre = preRef.current
-      if (ta && pre) {
-        pre.scrollTop = ta.scrollTop
-        pre.scrollLeft = ta.scrollLeft
+      if (!isScrollingRef.current) {
+        isScrollingRef.current = true;
+        requestAnimationFrame(() => {
+          const ta = textareaRef.current;
+          const pre = preRef.current;
+          if (ta && pre) {
+            pre.scrollTop = ta.scrollTop;
+            pre.scrollLeft = ta.scrollLeft;
+          }
+          isScrollingRef.current = false;
+        });
       }
-    }, [])
+    }, []);
 
     /**
      * Handles keyboard shortcuts for running code.

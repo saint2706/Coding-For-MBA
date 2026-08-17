@@ -1,0 +1,3 @@
+## 2023-08-17 - Throttling Scroll Event Handlers
+**Learning:** React \`onScroll\` event handlers that fire frequently can cause severe layout thrashing and drop frames, especially when performing multiple synchronous DOM operations (like reading \`scrollTop\`/\`scrollLeft\` and immediately writing them to another element).
+**Action:** When synchronizing scroll positions or performing high-frequency DOM manipulations inside React event handlers, always throttle the updates using \`requestAnimationFrame\` combined with a \`useRef\` guard flag (e.g., \`isScrolling\`) to lock execution to the display refresh rate and prevent layout thrashing.

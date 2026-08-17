@@ -50,6 +50,7 @@ const SqlPlayground = forwardRef<SqlPlaygroundHandle, SqlPlaygroundProps>(
     const preRef = useRef<HTMLDivElement>(null)
     const runnerRef = useRef<SqlRunnerHandle>(null)
     const resetTimeoutRef = useRef<number | null>(null)
+    const isScrollingRef = useRef(false)
 
     const handleReset = useCallback(() => {
       setCode(initialCode)
@@ -96,14 +97,23 @@ const SqlPlayground = forwardRef<SqlPlaygroundHandle, SqlPlaygroundProps>(
       }
     }, [code])
 
+    /**
+     * Throttles scroll synchronization to prevent layout thrashing
+     */
     const handleScroll = useCallback(() => {
-      const ta = textareaRef.current
-      const pre = preRef.current
-      if (ta && pre) {
-        pre.scrollTop = ta.scrollTop
-        pre.scrollLeft = ta.scrollLeft
+      if (!isScrollingRef.current) {
+        isScrollingRef.current = true;
+        requestAnimationFrame(() => {
+          const ta = textareaRef.current;
+          const pre = preRef.current;
+          if (ta && pre) {
+            pre.scrollTop = ta.scrollTop;
+            pre.scrollLeft = ta.scrollLeft;
+          }
+          isScrollingRef.current = false;
+        });
       }
-    }, [])
+    }, []);
 
     const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
       if ((e.shiftKey || e.ctrlKey || e.metaKey) && e.key === 'Enter') {
