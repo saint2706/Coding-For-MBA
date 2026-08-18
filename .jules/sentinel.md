@@ -1,0 +1,4 @@
+## 2025-02-14 - Python Scanner Bypass via Carriage Returns
+**Vulnerability:** The custom Python security scanner (`stripPythonCommentsAndStrings` in `codeSecurity.ts`) stripped comments by looking only for the `\n` (Line Feed) character as the end-of-line terminator.
+**Learning:** Python's parser strictly adheres to cross-platform newline handling, treating both `\n` and `\r` (Carriage Return) as valid statement terminators. Attackers could evade the scanner by using a `\r` immediately after a comment symbol (`#`) followed by malicious payload (e.g., `# comment\ros.system("id")`). The scanner would incorrectly assume the malicious payload was still part of the comment and ignore it.
+**Prevention:** When building custom AST parsers or comment strippers, always validate terminators against the exact specification of the target language runtime, explicitly handling both `\n` and `\r`.
