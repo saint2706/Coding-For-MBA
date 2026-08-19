@@ -85,7 +85,10 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
           localPurify.addHook('afterSanitizeAttributes', function (node) {
             if (node.tagName && node.tagName.toLowerCase() === 'a') {
               const href = node.getAttribute('href')
-              if (href && (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//'))) {
+              if (
+                href &&
+                (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('//'))
+              ) {
                 node.setAttribute('target', '_blank')
                 node.setAttribute('rel', 'noopener noreferrer')
               }
