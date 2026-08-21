@@ -50,6 +50,7 @@ const SqlPlayground = forwardRef<SqlPlaygroundHandle, SqlPlaygroundProps>(
     const preRef = useRef<HTMLDivElement>(null)
     const runnerRef = useRef<SqlRunnerHandle>(null)
     const resetTimeoutRef = useRef<number | null>(null)
+    const isScrollingRef = useRef(false)
 
     const handleReset = useCallback(() => {
       setCode(initialCode)
@@ -97,11 +98,19 @@ const SqlPlayground = forwardRef<SqlPlaygroundHandle, SqlPlaygroundProps>(
     }, [code])
 
     const handleScroll = useCallback(() => {
-      const ta = textareaRef.current
-      const pre = preRef.current
-      if (ta && pre) {
-        pre.scrollTop = ta.scrollTop
-        pre.scrollLeft = ta.scrollLeft
+      // Use requestAnimationFrame to throttle synchronous DOM layout reads/writes
+      // (scrollTop/Left) to 60fps, preventing layout thrashing during fast scrolling.
+      if (!isScrollingRef.current) {
+        isScrollingRef.current = true
+        requestAnimationFrame(() => {
+          const ta = textareaRef.current
+          const pre = preRef.current
+          if (ta && pre) {
+            pre.scrollTop = ta.scrollTop
+            pre.scrollLeft = ta.scrollLeft
+          }
+          isScrollingRef.current = false
+        })
       }
     }, [])
 
