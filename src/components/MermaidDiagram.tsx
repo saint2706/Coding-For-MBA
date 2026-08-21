@@ -18,7 +18,6 @@ localPurify.addHook('afterSanitizeAttributes', (node) => {
   }
 })
 
-
 let mermaidModulePromise: Promise<typeof import('mermaid')> | null = null
 
 /** Load and initialize the mermaid module once, sharing the in-flight promise across renders. */
