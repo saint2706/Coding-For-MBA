@@ -9,6 +9,16 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import DOMPurify from 'dompurify'
 
+// We configure a localized DOMPurify to prevent reverse tabnabbing in mermaid diagrams.
+// The ADD_ATTR is required since DOMPurify strips target by default.
+const localPurify = DOMPurify(window)
+localPurify.addHook('afterSanitizeAttributes', (node) => {
+  if (node.tagName.toUpperCase() === 'A' && node.getAttribute('target') === '_blank') {
+    node.setAttribute('rel', 'noopener noreferrer')
+  }
+})
+
+
 let mermaidModulePromise: Promise<typeof import('mermaid')> | null = null
 
 /** Load and initialize the mermaid module once, sharing the in-flight promise across renders. */
@@ -79,7 +89,8 @@ function MermaidDiagram({ code }: MermaidDiagramProps) {
           // namespace boundary). DOMPurify's default namespace check only treats
           // <annotation-xml> as a valid HTML integration point, so without this config
           // it silently empties every <foreignObject>, stripping all diagram text.
-          containerRef.current.innerHTML = DOMPurify.sanitize(svg, {
+          containerRef.current.innerHTML = localPurify.sanitize(svg, {
+            ADD_ATTR: ['target'],
             ADD_TAGS: ['foreignObject'],
             HTML_INTEGRATION_POINTS: { foreignobject: true },
           })

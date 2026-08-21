@@ -1,0 +1,4 @@
+## 2024-05-24 - Reverse Tabnabbing via Mermaid Labels
+**Vulnerability:** External links generated inside Mermaid diagrams lacked `rel="noopener noreferrer"`.
+**Learning:** Mermaid passes node/edge labels directly into `<foreignObject>` inside the SVG. When sanitized using DOMPurify, attributes like `target="_blank"` might be kept if added to the config, but `rel` needs explicit secure defaults to prevent reverse tabnabbing (where the newly opened tab can manipulate the original `window.opener`).
+**Prevention:** Always implement a localized DOMPurify hook (`afterSanitizeAttributes`) for HTML injected via third-party visualization libraries that allow external linking, explicitly enforcing `rel="noopener noreferrer"` when `target="_blank"` is present. Avoid mutating the global `DOMPurify` object to prevent cross-component pollution.
