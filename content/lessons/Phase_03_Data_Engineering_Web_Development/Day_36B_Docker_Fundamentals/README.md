@@ -114,6 +114,15 @@ docker images                 # Lists available IMAGES on your machine
 
 **The lifecycle:**
 
+```mermaid
+flowchart LR
+    D[Dockerfile] -->|docker build| I["Image (immutable)"]
+    I -->|docker run| C1[Container 1]
+    I -->|docker run| C2[Container 2]
+    C1 -->|docker stop| S1[Stopped]
+    S1 -->|docker rm| Gone1["Removed (image untouched)"]
+```
+
 1. Write a `Dockerfile` (recipe for your image)
 2. `docker build` → creates an immutable image
 3. `docker run` → starts a container from that image

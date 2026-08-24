@@ -264,6 +264,15 @@ plt.show()
 
 Iteratively remove least important features.
 
+```mermaid
+flowchart TD
+    A["Fit model on all remaining features"] --> B["Rank features by importance"]
+    B --> C["Drop the least important feature(s)"]
+    C --> D{"Reached target feature count?"}
+    D -- No --> A
+    D -- Yes --> E["Final selected feature set"]
+```
+
 ```python
 from sklearn.feature_selection import RFE, RFECV
 

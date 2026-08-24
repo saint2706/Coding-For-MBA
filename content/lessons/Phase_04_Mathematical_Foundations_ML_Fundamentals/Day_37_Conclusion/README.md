@@ -246,6 +246,17 @@ Before any ML project, ensure your data is ready:
 | **Balance**      | Class imbalance?                 | `df["target"].value_counts(normalize=True)` |
 | **Correlations** | Features correlated with target? | `df.corr()["target"]`                       |
 
+```mermaid
+flowchart TD
+    A[Raw DataFrame] --> B["Check shape: df.shape"]
+    B --> C["Check dtypes: df.dtypes"]
+    C --> D["Check nulls: df.isnull().sum()"]
+    D --> E["Check duplicates: df.duplicated().sum()"]
+    E --> F["Check target balance: value_counts(normalize=True)"]
+    F --> G["Check correlations: df.corr()"]
+    G --> H[Ready for modeling]
+```
+
 ### EDA Best Practices for ML
 
 Exploratory Data Analysis is not just clicking through a notebook — it is a disciplined, reproducible process with real consequences for model quality.

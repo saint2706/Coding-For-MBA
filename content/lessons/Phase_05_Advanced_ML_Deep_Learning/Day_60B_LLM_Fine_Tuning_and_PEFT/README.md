@@ -78,6 +78,16 @@ Instead of updating the full weight matrix W (shape d × k), LoRA approximates t
 
 During fine-tuning, only A and B are trained. W is frozen. This reduces trainable parameters from d×k to r×(d+k) — often a **10,000x reduction**.
 
+```mermaid
+flowchart LR
+    X["Input x"] --> W["Frozen pretrained W\n(d × k)"]
+    X --> A["Trainable A\n(d × r)"]
+    A --> B["Trainable B\n(r × k)"]
+    W --> Sum["+"]
+    B --> Sum
+    Sum --> Y["Output: Wx + BAx"]
+```
+
 ```python
 # Conceptual LoRA: what's happening under the hood
 import torch

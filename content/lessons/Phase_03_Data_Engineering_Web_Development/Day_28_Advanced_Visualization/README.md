@@ -318,6 +318,23 @@ plt.show()
 | Explore all relationships     | `pairplot`                        | `hue=category`                  |
 | Same plot across categories   | `FacetGrid`, `relplot`, `catplot` | `col=`, `row=`                  |
 
+```mermaid
+flowchart TD
+    N["How many variables?"] --> One[One variable]
+    N --> Two[Two variables]
+    N --> Many[Many variables]
+
+    One --> OneCat{Numeric or categorical?}
+    OneCat -- Numeric --> Hist["histplot / kdeplot"]
+    OneCat -- "Split by category" --> Box["boxplot / violinplot"]
+
+    Two --> Rel["scatterplot / regplot"]
+    Two --> Corr["heatmap (correlation matrix)"]
+
+    Many --> Pair["pairplot"]
+    Many --> Facet["FacetGrid / relplot / catplot"]
+```
+
 ### Statistical Annotation Best Practices
 
 ```python

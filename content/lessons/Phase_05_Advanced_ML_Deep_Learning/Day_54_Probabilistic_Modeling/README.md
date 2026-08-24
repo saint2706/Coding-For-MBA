@@ -81,6 +81,13 @@ P(Y) = Prior probability of class Y (class distribution)
 P(X) = Probability of features X (normalization constant)
 ```
 
+```mermaid
+flowchart LR
+    Prior["Prior: P(Y)\n(class distribution)"] --> Update["Bayes update"]
+    Like["Likelihood: P(X|Y)\n(learned from data)"] --> Update
+    Update --> Post["Posterior: P(Y|X)\n(prediction)"]
+```
+
 ```python
 from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
 from sklearn.datasets import load_iris, fetch_20newsgroups

@@ -492,6 +492,19 @@ The training set may have 15% churn rate, but production may shift to 8% after a
 | Model probabilities used for decisions | Calibration (Brier score) | Accurate probability estimates matter |
 | Must explain to stakeholders | Confusion matrix + business cost | Most transparent |
 
+```mermaid
+flowchart TD
+    Q{What matters most?} --> Cost{Is one error type costlier?}
+    Cost -- "False negatives (fraud, disease)" --> Recall[Maximize Recall]
+    Cost -- "False positives (spam, alerts)" --> Precision[Maximize Precision]
+    Cost -- Roughly equal --> F1[F1 Score]
+    Q --> Rank{Need to rank/score, no fixed threshold?}
+    Rank -- Yes, balanced classes --> ROC[ROC-AUC]
+    Rank -- "Yes, imbalanced (<10% positive)" --> PR[PR-AUC]
+    Q --> Explain{Explaining to stakeholders?}
+    Explain -- Yes --> CM["Confusion matrix + business cost"]
+```
+
 ---
 
 ## Hands-on Lab

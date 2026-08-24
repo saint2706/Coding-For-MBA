@@ -85,15 +85,18 @@ Generative models don't just recognize cats—they **create** realistic cat imag
 
 **The game:** Generator vs Discriminator
 
+```mermaid
+flowchart LR
+    Z["Random noise z"] --> G["Generator"]
+    G --> Fake["Fake image"]
+    Real["Real image"] --> D["Discriminator"]
+    Fake --> D
+    D --> Verdict{"Real or fake?"}
+    Verdict -- "Wrong guess" --> G
+    Verdict -- "Feedback" --> D
 ```
-Generator: Creates fake images from random noise
-Discriminator: Distinguishes real from fake
 
-Training: Two players in adversarial game
-- Generator tries to fool Discriminator
-- Discriminator tries to catch fakes
-- Both improve until Generator creates perfect fakes
-```
+Both networks improve through this adversarial loop until the Generator's fakes are good enough to fool the Discriminator.
 
 **Simple GAN for MNIST:**
 

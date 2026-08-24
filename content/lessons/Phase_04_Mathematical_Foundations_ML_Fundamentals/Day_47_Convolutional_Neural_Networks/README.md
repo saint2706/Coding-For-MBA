@@ -254,6 +254,17 @@ print(f"\nTest accuracy: {test_acc:.3f}")
 
 ### Understanding CNN Layers
 
+```mermaid
+flowchart TD
+    A["Input (28×28×1)"] --> B["Conv2D 32 filters, 3×3\n→ (26×26×32)"]
+    B --> C["MaxPooling2D 2×2\n→ (13×13×32)"]
+    C --> D["Conv2D 64 filters, 3×3\n→ (11×11×64)"]
+    D --> E["MaxPooling2D 2×2\n→ (5×5×64)"]
+    E --> F["Flatten → 1600 values"]
+    F --> G["Dense(64)"]
+    G --> H["Dense(10), softmax\n→ class probabilities"]
+```
+
 ```python
 """
 CNN Architecture:

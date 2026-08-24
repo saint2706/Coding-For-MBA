@@ -262,6 +262,15 @@ print(f"\nItem-based predicted rating for User 1, Movie 5: {predicted_item_based
 
 **Idea:** Decompose user-item matrix into latent factors.
 
+```mermaid
+flowchart LR
+    R["Ratings matrix R\n(users × items, mostly empty)"] --> F["Factorize"]
+    F --> U["User factors\n(users × k latent dims)"]
+    F --> I["Item factors\n(k latent dims × items)"]
+    U --> M["U @ I ≈ R\n(fills in missing ratings)"]
+    I --> M
+```
+
 ```python
 from surprise import SVD, Dataset, Reader, accuracy
 from surprise.model_selection import train_test_split

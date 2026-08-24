@@ -366,6 +366,25 @@ plt.show()
 | How do two+ variables relate?            | Heatmap      | Shows correlation matrix              |
 | What's the range and outliers?           | Box plot     | Statistical summary                   |
 
+The same table, as a decision path:
+
+```mermaid
+flowchart TD
+    Q["What are you trying to show?"] --> T[Change over time]
+    Q --> C[Comparison across groups]
+    Q --> D[Distribution of one variable]
+    Q --> R[Relationship between two variables]
+    Q --> P["Part-to-whole (≤5 categories)"]
+    Q --> M[Correlation across many variables]
+
+    T --> LC[Line chart]
+    C --> BC[Bar chart]
+    D --> H[Histogram]
+    R --> S[Scatter plot]
+    P --> PC[Pie chart]
+    M --> HM[Heatmap]
+```
+
 ### Design Best Practices
 
 **Do:**

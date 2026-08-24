@@ -263,6 +263,19 @@ print(f"Attention weights shape: {weights.shape}")
 
 **Full transformer block:**
 
+```mermaid
+flowchart TD
+    X["Input embeddings + positional encoding"] --> A["Multi-head self-attention"]
+    X --> Add1["+"]
+    A --> Add1
+    Add1 --> LN1["LayerNorm"]
+    LN1 --> F["Feed-forward network"]
+    LN1 --> Add2["+"]
+    F --> Add2
+    Add2 --> LN2["LayerNorm"]
+    LN2 --> Out["Block output\n(stack N of these)"]
+```
+
 ```python
 class TransformerBlock(nn.Module):
     def __init__(self, embed_dim, num_heads, ff_dim, dropout=0.1):

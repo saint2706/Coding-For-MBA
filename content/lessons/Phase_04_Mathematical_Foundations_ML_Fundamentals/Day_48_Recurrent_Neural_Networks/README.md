@@ -75,6 +75,21 @@ The same weight matrices $W_x, W_h$ are reused at every step (parameter sharing 
 
 The **vanishing-gradient problem** of vanilla RNNs comes from backpropagating through time: $\partial \mathbf{h}_t / \partial \mathbf{h}_0 \approx \prod_{k=1}^{t} W_h \cdot \mathrm{diag}(\tanh'(\cdot))$. When eigenvalues of $W_h$ are below $1$ this product collapses to zero exponentially fast — the network forgets long-range dependencies.
 
+Unrolled across time, the same cell (and the same weights) repeats at every step:
+
+```mermaid
+flowchart LR
+    H0["h₀"] --> C1["RNN cell\n(Wx, Wh)"]
+    X1["x₁"] --> C1
+    C1 --> H1["h₁"]
+    H1 --> C2["RNN cell\n(Wx, Wh)"]
+    X2["x₂"] --> C2
+    C2 --> H2["h₂"]
+    H2 --> C3["RNN cell\n(Wx, Wh)"]
+    X3["x₃"] --> C3
+    C3 --> H3["h₃ → ŷ₃"]
+```
+
 ```python
 import numpy as np
 

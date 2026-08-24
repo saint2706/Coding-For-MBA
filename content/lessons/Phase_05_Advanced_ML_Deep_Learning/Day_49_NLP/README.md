@@ -58,6 +58,15 @@ NLP automates this. It teaches machines to:
 
 Raw text is messy. Before analysis, we clean and normalize.
 
+```mermaid
+flowchart LR
+    A["Raw text"] --> B["Lowercase + strip special chars"]
+    B --> C["Tokenize\n(word_tokenize)"]
+    C --> D["Remove stopwords"]
+    D --> E["Stem / lemmatize"]
+    E --> F["Clean tokens\n(ready for vectorization)"]
+```
+
 ```python
 import re
 import nltk

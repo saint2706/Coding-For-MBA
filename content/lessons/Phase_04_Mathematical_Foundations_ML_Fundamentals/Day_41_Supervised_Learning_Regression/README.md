@@ -396,6 +396,19 @@ print(f"Best Lasso alpha: {best_lasso_alpha:.4f}")
 | Outliers in data               | Huber Regression          | Robust to outliers         |
 | Very large datasets            | SGDRegressor              | Efficient gradient descent |
 
+```mermaid
+flowchart TD
+    A{Relationship shape?} -- Non-linear --> P[Polynomial or tree-based]
+    A -- Linear --> B{Outliers present?}
+    B -- Yes --> H[Huber Regression]
+    B -- No --> C{Feature count?}
+    C -- "Many, some irrelevant" --> L[Lasso]
+    C -- "Many, correlated" --> R[Ridge]
+    C -- Few --> D{Dataset size?}
+    D -- Very large --> S[SGDRegressor]
+    D -- Normal --> LR[Linear Regression]
+```
+
 ### Common Pitfalls
 
 ```python

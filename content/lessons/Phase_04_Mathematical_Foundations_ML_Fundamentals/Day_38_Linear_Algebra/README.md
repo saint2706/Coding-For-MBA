@@ -235,6 +235,14 @@ $$
 \mathbf{h} = \sigma(XW + \mathbf{b})
 $$
 
+```mermaid
+flowchart LR
+    X["X\n(n_samples × n_features)"] --> MM["@ W\n(n_features × n_neurons)"]
+    MM --> Add["+ b\n(broadcast)"]
+    Add --> Act["σ(·) activation"]
+    Act --> H["h\n(n_samples × n_neurons)"]
+```
+
 ```python
 # Linear regression: y = Xw + b
 # X: data matrix (n_samples x n_features)

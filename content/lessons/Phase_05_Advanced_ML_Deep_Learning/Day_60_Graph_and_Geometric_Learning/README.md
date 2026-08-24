@@ -298,6 +298,16 @@ print(f"Test Accuracy: {test_acc:.4f}")
 
 **How GNNs work:** Nodes send messages to neighbors
 
+```mermaid
+flowchart TD
+    N1["Neighbor A features"] --> Agg["Aggregate\n(sum / mean / max)"]
+    N2["Neighbor B features"] --> Agg
+    N3["Neighbor C features"] --> Agg
+    Self["Node's own features"] --> Combine["Combine"]
+    Agg --> Combine
+    Combine --> Update["Update: new node embedding"]
+```
+
 ```python
 class MessagePassingGNN(nn.Module):
     def __init__(self, num_features, hidden_dim, num_classes):

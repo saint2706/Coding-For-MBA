@@ -250,6 +250,15 @@ print(f"\nTheoretical SE (σ/√n): ${theoretical_se:.2f}")
 
 ### Hypothesis Testing for Business Decisions
 
+```mermaid
+flowchart TD
+    A["State H0: no difference between groups"] --> B[Collect control & treatment data]
+    B --> C[Compute test statistic and p-value]
+    C --> D{p-value < alpha?}
+    D -- Yes --> E["Reject H0 — effect is statistically significant"]
+    D -- No --> F["Fail to reject H0 — could be random noise"]
+```
+
 For a two-proportion test comparing conversion rates $\hat{p}_C$ (control) and $\hat{p}_T$ (treatment), the pooled estimate and z-statistic are:
 
 $$

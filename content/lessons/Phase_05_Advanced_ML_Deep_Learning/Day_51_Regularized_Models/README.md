@@ -306,6 +306,15 @@ print(results_elastic_df.to_string(index=False))
 
 ### Cross-Validation for Hyperparameter Tuning
 
+```mermaid
+flowchart TD
+    A["Training data"] --> B["Split into 5 folds"]
+    B --> C["For each candidate alpha:\ntrain on 4 folds, validate on 1\n(repeat for all 5 folds)"]
+    C --> D["Average validation error per alpha"]
+    D --> E["Pick alpha with lowest average error"]
+    E --> F["Refit on full training data with best alpha"]
+```
+
 ```python
 from sklearn.linear_model import RidgeCV, LassoCV, ElasticNetCV
 

@@ -77,6 +77,15 @@ Every time series has 4 components:
 3. **Cyclical**: Irregular ups/downs (business cycles)
 4. **Residual/Noise**: Random fluctuations
 
+```mermaid
+flowchart LR
+    O["Observed series"] --> T[Trend]
+    O --> S[Seasonality]
+    O --> C[Cyclical]
+    O --> R["Residual / noise"]
+    T & S & C & R --> D["seasonal_decompose()\nreconstructs: Observed = Trend + Seasonal + Residual"]
+```
+
 ```python
 import pandas as pd
 import numpy as np

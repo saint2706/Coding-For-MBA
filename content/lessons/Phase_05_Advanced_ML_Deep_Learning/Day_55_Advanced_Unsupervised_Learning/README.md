@@ -256,6 +256,15 @@ plt.show()
 
 **Idea**: Neural network that learns to compress data through a bottleneck.
 
+```mermaid
+flowchart LR
+    A["Input (784-d)"] --> B["Encoder\n(shrinking layers)"]
+    B --> C["Bottleneck (32-d)\ncompressed representation"]
+    C --> D["Decoder\n(growing layers)"]
+    D --> E["Reconstructed output (784-d)"]
+    A -.->|"compare"| E
+```
+
 ```python
 import tensorflow as tf
 from tensorflow.keras.models import Model

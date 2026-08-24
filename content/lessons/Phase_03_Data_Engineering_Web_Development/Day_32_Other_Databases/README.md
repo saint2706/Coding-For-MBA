@@ -155,6 +155,17 @@ with engine.connect() as conn:
 | Scale            | Vertical (bigger box)  | Horizontal (more boxes) |
 | Query complexity | Complex queries easy   | Simple queries fast     |
 
+```mermaid
+flowchart TD
+    Q{Does the data need strict, cross-record consistency?}
+    Q -- "Yes: money, inventory, bookings" --> SQL["SQL (Postgres, MySQL)"]
+    Q -- No --> Q2{Does the schema vary a lot per record?}
+    Q2 -- "Yes: user profiles, CMS content" --> Doc["Document store (MongoDB)"]
+    Q2 -- No --> Q3{Is it mostly reads at massive scale?}
+    Q3 -- "Yes: logs, real-time analytics" --> Doc
+    Q3 -- No --> SQL
+```
+
 ### When to Choose NoSQL
 
 ✅ **Good for:**

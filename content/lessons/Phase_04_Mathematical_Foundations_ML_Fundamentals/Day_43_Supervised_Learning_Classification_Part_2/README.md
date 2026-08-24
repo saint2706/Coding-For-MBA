@@ -218,14 +218,17 @@ print(rf_importance.to_string(index=False))
 
 ### How Random Forests Work
 
-```
-Random Forest (100 trees):
-├── Tree 1: Trained on random sample, random features → Vote
-├── Tree 2: Trained on different sample, different features → Vote
-├── Tree 3: ...
-└── Tree 100: ...
-
-Final prediction = Majority vote (or average probability)
+```mermaid
+flowchart LR
+    D["Training data\n(bootstrap sampled)"] --> T1["Tree 1\n(random features)"]
+    D --> T2["Tree 2\n(random features)"]
+    D --> T3["Tree 3\n(random features)"]
+    D --> T100["... Tree 100\n(random features)"]
+    T1 --> V["Majority vote\n(or average probability)"]
+    T2 --> V
+    T3 --> V
+    T100 --> V
+    V --> P[Final prediction]
 ```
 
 ```python

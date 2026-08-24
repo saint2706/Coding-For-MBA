@@ -189,6 +189,17 @@ plt.show()
 
 **Idea**: Train models sequentially, each correcting the previous model's mistakes.
 
+```mermaid
+flowchart LR
+    D["Training data"] --> T1["Weak learner 1"]
+    T1 --> R1["Residual errors"]
+    R1 --> T2["Weak learner 2\n(focuses on errors)"]
+    T2 --> R2["Remaining errors"]
+    R2 --> T3["Weak learner 3\n(focuses on errors)"]
+    T3 --> Sum["Weighted sum of all learners"]
+    Sum --> P[Final prediction]
+```
+
 ```python
 from sklearn.ensemble import GradientBoostingClassifier
 

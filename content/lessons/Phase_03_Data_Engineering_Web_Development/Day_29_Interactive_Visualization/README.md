@@ -60,6 +60,18 @@ Feb    | Product_A | 15000
 
 **Why Plotly Express prefers long format:** Long format lets you pass one column name to `color=`, `size=`, `facet_col=`, and `animation_frame=` parameters, and Plotly automatically creates a separate trace for each unique value.
 
+```mermaid
+flowchart LR
+    subgraph Wide["Wide: one column per product"]
+        W["Month | Product_A | Product_B"]
+    end
+    subgraph Long["Long: one row per observation"]
+        L["Month | Product | Revenue"]
+    end
+    Wide -- "df.melt(id_vars='Month')" --> Long
+    Long -- "color='Product'" --> Fig[One trace per product, automatically]
+```
+
 ```python
 # Convert wide to long (melt) before using Plotly Express
 import pandas as pd

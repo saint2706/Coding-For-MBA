@@ -153,6 +153,22 @@ async def get_with_retry(client: httpx.AsyncClient, url: str, retries: int = 3):
 
 Goal: compare throughput and latency under equivalent workloads.
 
+```mermaid
+gantt
+    dateFormat X
+    axisFormat %s
+    section Sequential
+    Request 1 :0, 1
+    Request 2 :1, 2
+    Request 3 :2, 3
+    Request 4 :3, 4
+    section Batched (asyncio.gather, batch=4)
+    Request 1 :0, 1
+    Request 2 :0, 1
+    Request 3 :0, 1
+    Request 4 :0, 1
+```
+
 ```python
 import asyncio
 import time

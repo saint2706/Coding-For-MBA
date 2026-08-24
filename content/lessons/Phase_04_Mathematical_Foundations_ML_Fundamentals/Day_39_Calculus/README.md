@@ -196,6 +196,15 @@ $$
 
 For our quadratic loss with $\mathcal{L}'(w) = 2(w - 3)$ and $\eta = 0.1$ starting from $w_0 = 0$, each step shrinks the gap to $w^\star = 3$ by a factor of $1 - 2\eta = 0.8$.
 
+```mermaid
+flowchart TD
+    A["Initialize w"] --> B["Compute gradient: ∇L(w)"]
+    B --> C["Update: w ← w − η·∇L(w)"]
+    C --> D{Converged or max steps?}
+    D -- No --> B
+    D -- Yes --> E["Return w (minimum found)"]
+```
+
 ```python
 def gradient_descent(start, learning_rate, n_steps):
     """Find minimum of loss(w) = (w-3)² starting from 'start'."""

@@ -89,6 +89,15 @@ The algorithm alternates two steps until convergence:
 
 The objective is non-convex, so multiple random restarts (`n_init`) help avoid bad local minima. The final value of $\mathcal{J}$ is reported by sklearn as `inertia_`.
 
+```mermaid
+flowchart TD
+    A["Initialize K centroids randomly"] --> B["Assignment: give each point to its nearest centroid"]
+    B --> C["Update: recompute each centroid as the mean of its points"]
+    C --> D{Centroids changed?}
+    D -- Yes --> B
+    D -- No --> E[Converged — clusters finalized]
+```
+
 ```python
 import numpy as np
 import pandas as pd

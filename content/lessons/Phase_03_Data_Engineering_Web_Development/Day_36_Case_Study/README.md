@@ -53,12 +53,13 @@ If you are short on time, finish Track A first, then extend to Track B as your s
 
 ### Pipeline Architecture
 
-```
-API Source → Extract → Transform → Load → Database → Dashboard
-               ↓           ↓          ↓
-            requests    pandas    sqlite3
-               ↓           ↓          ↓
-            raw JSON   cleaned DF  stored data
+```mermaid
+flowchart LR
+    A[API Source] -->|requests| B["Extract\n(raw JSON)"]
+    B -->|pandas| C["Transform\n(cleaned DataFrame)"]
+    C -->|sqlite3| D["Load\n(stored data)"]
+    D --> E[(Database)]
+    E --> F[Dashboard]
 ```
 
 ### Step 1: Extract
