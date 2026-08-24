@@ -47,7 +47,7 @@ print(2 + 3)
     expect(issues[0]?.message).toMatch(/Goal/)
   })
 
-  it('flags an exercise missing a python code block', () => {
+  it('flags an exercise missing a code block', () => {
     const markdown = `
 ### Exercise 1: Compute Sum
 
@@ -58,6 +58,28 @@ print(2 + 3)
     expect(issues).toHaveLength(1)
     expect(issues[0]).toMatchObject({ type: 'exercise' })
     expect(issues[0]?.message).toMatch(/code block/)
+  })
+
+  it('accepts non-Python code blocks (SQL, shell, etc.) as satisfying the code requirement', () => {
+    const markdown = `
+### Exercise 1: Query Top Customers
+
+**Goal**: Write a SQL query.
+
+\`\`\`sql
+SELECT * FROM customers;
+\`\`\`
+
+### Exercise 2: Set Up the Environment
+
+**Goal**: Create and activate a virtual environment.
+
+\`\`\`bash
+python -m venv venv
+\`\`\`
+`
+
+    expect(findStructuralIssues(markdown)).toEqual([])
   })
 
   it('flags both missing pieces when neither is present', () => {

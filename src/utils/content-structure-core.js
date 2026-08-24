@@ -4,7 +4,9 @@
  * that `findInteractiveBlocks` (src/components/MarkdownRenderer.tsx) relies
  * on to parse exercises and mastery-check questions, so authoring mistakes
  * that would otherwise silently render as an empty Goal/code/answer panel
- * get surfaced instead.
+ * get surfaced instead. The code-block check accepts Python as well as the
+ * other languages exercises legitimately use (SQL, shell, Docker, config
+ * formats, etc.) — see NON_PYTHON_CODE_LANGS.
  */
 
 import { unified } from 'unified'
@@ -23,6 +25,48 @@ function getInlineNodeText(node) {
 function getHeadingText(node) {
   return node.children.map((child) => getInlineNodeText(child)).join('').trim()
 }
+
+/**
+ * Fenced code languages accepted in place of `python`/`py` for an exercise's
+ * code block. Many exercises are legitimately about another stack entirely
+ * (SQL phases, shell/CLI workflows, Dockerfiles, config files) — requiring
+ * Python there would be wrong, not just strict.
+ */
+const NON_PYTHON_CODE_LANGS = new Set([
+  'sql',
+  'bash',
+  'sh',
+  'shell',
+  'zsh',
+  'powershell',
+  'ps1',
+  'cmd',
+  'batch',
+  'text',
+  'txt',
+  'plaintext',
+  'json',
+  'yaml',
+  'yml',
+  'toml',
+  'ini',
+  'html',
+  'css',
+  'javascript',
+  'js',
+  'jsx',
+  'typescript',
+  'ts',
+  'tsx',
+  'dockerfile',
+  'docker',
+  'hcl',
+  'csv',
+  'xml',
+  'graphql',
+  'mermaid',
+  'gitignore',
+])
 
 function isLabeledParagraph(node, label) {
   if (!node || node.type !== 'paragraph') return false
@@ -84,10 +128,11 @@ export function findStructuralIssues(content) {
 
     if (exerciseMatch) {
       const hasGoal = sectionNodes.some((sectionNode) => isLabeledParagraph(sectionNode, 'Goal'))
-      const hasCode = sectionNodes.some(
-        (sectionNode) =>
-          sectionNode.type === 'code' && (sectionNode.lang === 'python' || sectionNode.lang === 'py'),
-      )
+      const hasCode = sectionNodes.some((sectionNode) => {
+        if (sectionNode.type !== 'code') return false
+        const lang = sectionNode.lang?.toLowerCase()
+        return lang === 'python' || lang === 'py' || NON_PYTHON_CODE_LANGS.has(lang)
+      })
 
       if (!hasGoal) {
         issues.push({
@@ -102,7 +147,7 @@ export function findStructuralIssues(content) {
           type: 'exercise',
           heading: headingText,
           line,
-          message: `"${headingText}" is missing a python code block`,
+          message: `"${headingText}" is missing a code block`,
         })
       }
       continue
