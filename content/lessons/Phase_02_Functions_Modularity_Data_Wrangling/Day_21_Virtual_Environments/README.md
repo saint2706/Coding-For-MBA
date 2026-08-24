@@ -208,6 +208,8 @@ which python  # macOS/Linux
 
 ### Exercise 1: Create Project Environment
 
+**Goal**: Create and activate a virtual environment for a new project, install packages into it, and capture them in `requirements.txt`.
+
 ```bash
 # Step 1: Create project
 mkdir weather_app
@@ -239,6 +241,8 @@ requests     2.31.0
 ```
 
 ### Exercise 2: Recreate Environment
+
+**Goal**: Simulate a new developer's setup by deleting the venv and rebuilding it from `requirements.txt` alone, confirming reproducibility.
 
 ```bash
 # Simulate a new developer joining the project
@@ -272,6 +276,8 @@ requests     2.31.0
 ```
 
 ### Exercise 3: Environment Info Script
+
+**Goal**: Write a diagnostic script that reports the active Python interpreter and whether it's running inside a virtual environment.
 
 ```python
 # env_info.py

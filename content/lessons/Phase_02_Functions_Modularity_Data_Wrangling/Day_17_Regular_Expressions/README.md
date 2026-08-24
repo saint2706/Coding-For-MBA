@@ -237,6 +237,8 @@ re.findall(r"(?<=\$)\d+", "Price: $100")
 
 ### Exercise 1: Data Extractor
 
+**Goal**: Pull timestamps, log levels, and emails out of raw log text with `findall`, then parse full structured entries with `finditer` and capture groups.
+
 ```python
 import re
 
@@ -280,6 +282,8 @@ Time: 2024-01-15 10:32:15, Level: ERROR, Message: Database timeout for query id:
 ---
 
 ### Exercise 2: Data Validator
+
+**Goal**: Write regex-based validators for email, phone, and password format, returning a reason string for password failures.
 
 ```python
 import re
@@ -335,6 +339,8 @@ Password: (False, 'Too short')
 ---
 
 ### Exercise 3: Text Cleaner
+
+**Goal**: Use `re.sub` to strip HTML, normalize whitespace, and mask sensitive numbers, while `re.findall` pulls out embedded URLs.
 
 ```python
 import re

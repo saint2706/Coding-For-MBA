@@ -322,6 +322,8 @@ class CreditCardProcessor(PaymentProcessor):
 
 ### Exercise 1: Bank Account System
 
+**Goal**: Model a bank account as a class with a read-only `balance` property, validated deposit/withdraw methods, and a transaction log.
+
 ```python
 class BankAccount:
     def __init__(self, owner, balance=0):
@@ -381,6 +383,8 @@ Balance      $   1300.00
 
 ### Exercise 2: Product Inventory
 
+**Goal**: Model products with a `dataclass` and manage them through an `Inventory` class that supports stock updates and low-stock reporting.
+
 ```python
 from dataclasses import dataclass
 from typing import List
@@ -433,6 +437,8 @@ Total value: $6,445.00
 ---
 
 ### Exercise 3: Order Processing System
+
+**Goal**: Compose two dataclasses (`OrderItem`, `Order`) where the order computes its total from nested items and transitions status on processing.
 
 ```python
 from datetime import datetime

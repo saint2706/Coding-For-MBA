@@ -217,6 +217,8 @@ def atomic_write(path, content):
 
 ### Exercise 1: Log File Analyzer
 
+**Goal**: Parse a log file line by line, tally entries by severity level, and collect the error messages separately.
+
 ```python
 from collections import Counter
 from datetime import datetime
@@ -270,6 +272,8 @@ Errors: 1
 
 ### Exercise 2: Configuration Manager
 
+**Goal**: Build a class that loads settings from a JSON file, and persists updates back to disk whenever a value is set.
+
 ```python
 import json
 from pathlib import Path
@@ -312,6 +316,8 @@ dark
 ---
 
 ### Exercise 3: CSV Data Transformer
+
+**Goal**: Read a raw sales CSV with `DictReader`, derive revenue/tax/total columns per row, and write the enhanced rows back out with `DictWriter`.
 
 ```python
 import csv

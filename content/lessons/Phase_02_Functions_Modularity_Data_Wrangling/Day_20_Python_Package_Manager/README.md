@@ -199,6 +199,8 @@ pip install --index-url https://private.registry.com/simple/ mypackage
 
 ### Exercise 1: Project Setup
 
+**Goal**: Set up a new project directory, install packages with `pip`, and freeze the installed set into a `requirements.txt`.
+
 ```bash
 # 1. Create project directory
 mkdir my_project
@@ -225,6 +227,8 @@ pandas==2.1.4
 ```
 
 ### Exercise 2: Version Management
+
+**Goal**: Query the installed version of each package programmatically, reporting when one isn't installed at all.
 
 ```python
 # version_check.py
@@ -253,6 +257,8 @@ requests             2.31.0
 ```
 
 ### Exercise 3: Requirements File
+
+**Goal**: Write a well-organized `requirements.txt` with version constraints, grouped by purpose (data, viz, ML, dev-only).
 
 ```text
 # requirements.txt for a data science project

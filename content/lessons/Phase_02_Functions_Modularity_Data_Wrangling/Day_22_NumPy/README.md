@@ -268,6 +268,8 @@ print(f"NumPy: {time.time() - start:.4f}s")
 
 ### Exercise 1: Sales Analysis
 
+**Goal**: Use axis-aware `np.sum`/`np.mean`/`np.argmax` on a 2D sales array to find totals, the best day, and the best product.
+
 ```python
 import numpy as np
 
@@ -307,6 +309,8 @@ Average daily revenue: 107.20
 
 ### Exercise 2: Portfolio Returns
 
+**Goal**: Combine per-stock daily returns with portfolio weights via vectorized multiplication to compute weighted daily returns and volatility.
+
 ```python
 import numpy as np
 
@@ -342,6 +346,8 @@ Days with positive return: 4
 ---
 
 ### Exercise 3: Data Cleaning
+
+**Goal**: Replace sentinel error values with `NaN` using `np.where`, compute NaN-aware statistics, then fill the gaps with the mean.
 
 ```python
 import numpy as np

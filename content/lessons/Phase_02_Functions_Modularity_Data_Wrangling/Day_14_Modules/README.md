@@ -251,6 +251,8 @@ def get_heavy_module():
 
 ### Exercise 1: Create a Finance Module
 
+**Goal**: Build a standalone `finance.py` module of reusable calculation functions, guarded by a `__main__` self-test block.
+
 ```python
 # finance.py
 """Financial calculation utilities."""
@@ -294,6 +296,8 @@ Break-even: 5000 units
 ---
 
 ### Exercise 2: Build a Utils Package
+
+**Goal**: Split helper functions across two submodules, then expose them under one clean package import via `__init__.py`.
 
 ```
 utils/
@@ -346,6 +350,8 @@ $1,234.50
 ---
 
 ### Exercise 3: Working with Standard Library
+
+**Goal**: Combine `math`, `random`, `datetime`, and `collections` in one script to solve small, unrelated data tasks.
 
 ```python
 import math

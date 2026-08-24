@@ -250,6 +250,8 @@ for item in items:
 
 ### Exercise 1: Report Scheduler
 
+**Goal**: Generate a sequence of future dates at a given frequency (daily/weekly/monthly) by repeatedly adding a `timedelta`.
+
 ```python
 from datetime import datetime, timedelta
 
@@ -295,6 +297,8 @@ Report Schedule:
 
 ### Exercise 2: Age Calculator
 
+**Goal**: Compute a person's current age and the number of days until their next birthday, handling the year-rollover case correctly.
+
 ```python
 from datetime import date
 
@@ -335,6 +339,8 @@ Next birthday: 2026-07-15 (31 days)
 ---
 
 ### Exercise 3: Event Countdown
+
+**Goal**: Build a class that computes time remaining until an event and formats a human-readable countdown, including past-event handling.
 
 ```python
 from datetime import datetime

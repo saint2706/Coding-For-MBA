@@ -249,6 +249,8 @@ except SpecificError as e:
 
 ### Exercise 1: Safe Input Handler
 
+**Goal**: Retry invalid input up to a limit, catching both conversion and validation errors, and fall back to a default when attempts run out.
+
 ```python
 def get_positive_number(prompt, max_attempts=3):
     """Safely get a positive number from user input."""
@@ -288,6 +290,8 @@ Using default price
 ---
 
 ### Exercise 2: File Processing with Error Recovery
+
+**Goal**: Process a batch of files where some will fail, catching specific exceptions per file so one bad file doesn't stop the batch.
 
 ```python
 def process_data_files(file_paths):
@@ -330,6 +334,8 @@ Processed: 0, Failed: 3
 ---
 
 ### Exercise 3: Transaction System with Custom Exceptions
+
+**Goal**: Define a hierarchy of custom exceptions for a bank account's failure modes, and handle each one distinctly at the call site.
 
 ```python
 class TransactionError(Exception):

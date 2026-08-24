@@ -257,6 +257,8 @@ print(cube(5))  # 125
 
 ### Exercise 1: Data Transformation Pipeline
 
+**Goal**: Chain `filter`, `map`, and `reduce` into a pipeline that isolates top performers and totals their bonuses.
+
 ```python
 sales = [
     {"rep": "Alice", "amount": 5000},
@@ -290,6 +292,8 @@ Total bonus pool: $1,670.00
 ---
 
 ### Exercise 2: Building a Calculator Factory
+
+**Goal**: Write a factory function that returns the right arithmetic operation as a closure, then apply the returned functions dynamically.
 
 ```python
 def create_operation(operator):
@@ -328,6 +332,8 @@ print(results)  # [8, 28, 6]
 ---
 
 ### Exercise 3: Sorting Complex Data
+
+**Goal**: Use `sorted()` with different `key` lambdas to rank a list of dicts by price, rating, and a computed value ratio.
 
 ```python
 products = [
