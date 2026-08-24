@@ -30,7 +30,7 @@ jobs:
           exit 1
 
       - name: Check out repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Close all open PRs and delete branches
         env:
