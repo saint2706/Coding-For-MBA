@@ -17,11 +17,6 @@ dist-ssr
 *.tsbuildinfo
 public/sitemap.xml
 
-# Agent skills should be committed
-!.agents/
-!.agents/skills/
-!.agents/skills/**
-
 # Locally-installed Claude Code skills — do NOT commit. Only the
 # repo-native session-start-hook is tracked.
 .claude/skills/banner-design/
