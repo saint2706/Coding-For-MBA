@@ -86,7 +86,7 @@
     "@types/sql.js": "^1.4.11",
     "@vitejs/plugin-react": "^5.1.4",
     "@vitest/coverage-v8": "^4.1.9",
-    "beasties": "^0.4.2",
+    "beasties": "^0.4.3",
     "gh-pages": "^6.3.0",
     "globals": "^17.5.0",
     "husky": "^9.1.7",
