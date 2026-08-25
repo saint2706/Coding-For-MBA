@@ -12,6 +12,7 @@
  */
 
 import { useState, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
+import { Play } from '@phosphor-icons/react'
 import { usePyodide } from '../hooks/usePyodide'
 import { validatePythonCode } from '../utils/codeSecurity'
 
@@ -139,16 +140,7 @@ const PythonRunner = forwardRef<PythonRunnerHandle, PythonRunnerProps>(
               </>
             ) : (
               <>
-                <svg
-                  className="python-runner__icon"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  width="16"
-                  height="16"
-                  aria-hidden="true"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+                <Play className="python-runner__icon" size={16} weight="fill" aria-hidden="true" />
                 Run
                 <kbd className="python-runner__shortcut">Shift+Enter</kbd>
               </>

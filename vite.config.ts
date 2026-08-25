@@ -13,7 +13,7 @@
 
 import { defineConfig, type HtmlTagDescriptor, type PluginOption, type UserConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import criticalCss from './scripts/vite-plugin-critical-css'
+import criticalCss from './scripts/vite-plugin-critical-css.ts'
 
 // https://vite.dev/config/
 export default defineConfig(async ({ mode }) => {
@@ -93,7 +93,7 @@ export default defineConfig(async ({ mode }) => {
             })
         },
       },
-      rollupOptions: {
+      rolldownOptions: {
         output: {
           manualChunks(id: string) {
             // Normalize path separators for Windows

@@ -9,6 +9,7 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { CaretRight } from '@phosphor-icons/react'
 import { getLessonsByPhase, getLesson, type Phase } from '../utils/contentLoader'
 import { dayTokenToProgressId } from '../utils/dayToken'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
@@ -52,18 +53,7 @@ function SidebarPhaseGroup({
         aria-label={`Toggle phase ${phase.phase}`}
       >
         <span className="phase-toggle-arrow" aria-hidden="true">
-          <svg
-            width="10"
-            height="10"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M9 18l6-6-6-6" />
-          </svg>
+          <CaretRight size={10} weight="bold" />
         </span>
         <span className="phase-toggle-num" aria-hidden="true">
           {phaseLabel}

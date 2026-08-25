@@ -12,6 +12,7 @@
 
 import { useState, useEffect } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import { CaretUp } from '@phosphor-icons/react'
 
 /**
  * Back to Top Component
@@ -65,19 +66,7 @@ export default function BackToTop() {
           exit={prefersReducedMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 22 }}
           transition={{ duration: prefersReducedMotion ? 0 : 0.22 }}
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M18 15l-6-6-6 6" />
-          </svg>
+          <CaretUp size={20} weight="bold" aria-hidden="true" />
         </motion.button>
       )}
     </AnimatePresence>

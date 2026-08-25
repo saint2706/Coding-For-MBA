@@ -8,6 +8,7 @@
 
 import { useMemo, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { X } from '@phosphor-icons/react'
 import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
 import { normalizeDayToken, dayTokenToProgressId } from '../utils/dayToken'
@@ -153,17 +154,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             aria-expanded={isOpen}
             aria-controls="app-sidebar"
           >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              aria-hidden="true"
-            >
-              <path d="M18 6L6 18M6 6l12 12" />
-            </svg>
+            <X size={16} weight="bold" aria-hidden="true" />
           </button>
         </div>
 

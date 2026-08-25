@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { MagnifyingGlass, X } from '@phosphor-icons/react'
 import {
   getSearchSnippet,
   getSearchIndexStatus,
@@ -207,17 +208,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
         aria-modal="true"
       >
         <div className="search-input-wrapper">
-          <svg
-            className="search-icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
-          </svg>
+          <MagnifyingGlass className="search-icon" aria-hidden="true" />
           <input
             ref={inputRef}
             type="text"
@@ -239,18 +230,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
             onClick={onClose}
             aria-label="Close search"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+            <X weight="bold" aria-hidden="true" />
           </button>
         </div>
 
@@ -270,18 +250,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
 
         {debouncedQuery.trim().length >= 2 && results.length === 0 && indexStatus.isReady && (
           <div className="search-empty">
-            <svg
-              className="search-empty-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35" />
-              <path d="M8 11h8" strokeLinecap="round" />
-            </svg>
+            <MagnifyingGlass className="search-empty-icon" aria-hidden="true" />
             <p>No results found for &ldquo;{debouncedQuery}&rdquo;</p>
           </div>
         )}

@@ -11,6 +11,7 @@
  */
 
 import { useState, useCallback, forwardRef, useImperativeHandle } from 'react'
+import { Play } from '@phosphor-icons/react'
 import type { QueryExecResult, SqlValue } from 'sql.js'
 import { useSqlJs, type SqlRunResult } from '../hooks/useSqlJs'
 
@@ -133,16 +134,7 @@ const SqlRunner = forwardRef<SqlRunnerHandle, SqlRunnerProps>(
               </>
             ) : (
               <>
-                <svg
-                  className="sql-runner__icon"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  width="16"
-                  height="16"
-                  aria-hidden="true"
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+                <Play className="sql-runner__icon" size={16} weight="fill" aria-hidden="true" />
                 Run
                 <kbd className="sql-runner__shortcut">Shift+Enter</kbd>
               </>

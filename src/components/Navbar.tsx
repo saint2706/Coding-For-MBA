@@ -10,6 +10,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { List } from '@phosphor-icons/react'
 import { toastInfo } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
@@ -89,16 +90,7 @@ export default function Navbar({ onToggleSidebar, sidebarOpen }: NavbarProps) {
             aria-expanded={sidebarOpen}
             aria-controls="app-sidebar"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
-            >
-              <path d="M3 7h18M3 12h18M3 17h18" />
-            </svg>
+            <List aria-hidden="true" />
           </button>
           <Link to="/" className="navbar-brand" {...createRoutePrefetchHandlers('/')}>
             <span className="brand-mark" aria-hidden="true">
