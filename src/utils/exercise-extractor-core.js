@@ -30,7 +30,7 @@ export function extractExercisesFromContent(content) {
     }
 
     const expectedMatch = body.match(
-      /\*\*Expected Output[:\s]*\*\*[\s\S]*?```(?:text|)\s*\n([\s\S]*?)```/
+      /\*\*Expected Output[:\s]*\*\*[\s\S]*?```(?:text|)\s*\n([\s\S]*?)```/,
     )
     const expectedOutput = expectedMatch?.[1]?.trim()
 

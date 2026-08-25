@@ -32,16 +32,36 @@ function findFiles(dir, filename) {
 const lines = ['# Site Architecture']
 
 // Static pages
-lines.push(`- ${BASE_URL}/#/: Home page - The primary landing page introducing the comprehensive 140-day MBA technical curriculum covering Python, Data Science, Machine Learning, and Enterprise SQL. User Intent: Provide a broad overview and entry point to the course.`)
-lines.push(`- ${BASE_URL}/#/curriculum: Curriculum overview - A complete architectural roadmap and timeline of all 9 learning phases, from basic programming to advanced data products. User Intent: See the full structure and timeline of what is taught.`)
-lines.push(`- ${BASE_URL}/#/exercises: Practice exercises - A centralized repository of interactive, hands-on coding exercises to test Python and SQL proficiency. User Intent: Practice coding skills directly in the browser.`)
-lines.push(`- ${BASE_URL}/#/progress: Learning progress - A personalized dashboard to track completed lessons, daily learning streaks, and overall curriculum completion metrics. User Intent: Monitor personal learning advancement and gamification stats.`)
-lines.push(`- ${BASE_URL}/#/notes: My Notes - A personal notes board for jotting down key takeaways from any lesson, stored locally on the device. User Intent: Save and revisit personal notes tied to specific lessons.`)
-lines.push(`- ${BASE_URL}/#/settings: Settings - Customize appearance (color palette, font size, density), reading preferences, and behavior settings. User Intent: Personalize the learning environment.`)
-lines.push(`- ${BASE_URL}/#/stats: Learning statistics - Detailed quantitative analytics regarding the curriculum, including total reading time, lesson counts, and historical performance data. User Intent: View aggregate metrics about the curriculum content.`)
-lines.push(`- ${BASE_URL}/#/search: Search - A full-text semantic search interface to quickly find specific lessons, topics, or definitions within the curriculum. User Intent: Quickly look up specific terms, concepts, or lessons.`)
-lines.push(`- ${BASE_URL}/#/review: Spaced Repetition Review - An intelligent flashcard system utilizing spaced repetition to reinforce memory retention of key technical terms and concepts. User Intent: Reinforce memory of key concepts through active recall.`)
-lines.push(`- ${BASE_URL}/#/case-studies: Case Studies - In-depth, real-world business case studies applying data engineering and machine learning principles to practical enterprise problems. User Intent: See real-world business applications of the technical skills learned.`)
+lines.push(
+  `- ${BASE_URL}/#/: Home page - The primary landing page introducing the comprehensive 140-day MBA technical curriculum covering Python, Data Science, Machine Learning, and Enterprise SQL. User Intent: Provide a broad overview and entry point to the course.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/curriculum: Curriculum overview - A complete architectural roadmap and timeline of all 9 learning phases, from basic programming to advanced data products. User Intent: See the full structure and timeline of what is taught.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/exercises: Practice exercises - A centralized repository of interactive, hands-on coding exercises to test Python and SQL proficiency. User Intent: Practice coding skills directly in the browser.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/progress: Learning progress - A personalized dashboard to track completed lessons, daily learning streaks, and overall curriculum completion metrics. User Intent: Monitor personal learning advancement and gamification stats.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/notes: My Notes - A personal notes board for jotting down key takeaways from any lesson, stored locally on the device. User Intent: Save and revisit personal notes tied to specific lessons.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/settings: Settings - Customize appearance (color palette, font size, density), reading preferences, and behavior settings. User Intent: Personalize the learning environment.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/stats: Learning statistics - Detailed quantitative analytics regarding the curriculum, including total reading time, lesson counts, and historical performance data. User Intent: View aggregate metrics about the curriculum content.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/search: Search - A full-text semantic search interface to quickly find specific lessons, topics, or definitions within the curriculum. User Intent: Quickly look up specific terms, concepts, or lessons.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/review: Spaced Repetition Review - An intelligent flashcard system utilizing spaced repetition to reinforce memory retention of key technical terms and concepts. User Intent: Reinforce memory of key concepts through active recall.`,
+)
+lines.push(
+  `- ${BASE_URL}/#/case-studies: Case Studies - In-depth, real-world business case studies applying data engineering and machine learning principles to practical enterprise problems. User Intent: See real-world business applications of the technical skills learned.`,
+)
 
 // Phase overviews
 const phaseFiles = findFiles(LESSONS_DIR, 'Phase_Overview.md')
@@ -52,7 +72,7 @@ for (const file of phaseFiles) {
     phases.push({
       phase: Number(fm.phase),
       title: fm.title || `Phase ${fm.phase}`,
-      description: fm.description || `Phase ${fm.phase} covering ${fm.title || 'various topics'}.`
+      description: fm.description || `Phase ${fm.phase} covering ${fm.title || 'various topics'}.`,
     })
   }
 }
@@ -76,7 +96,7 @@ for (const file of lessonFiles) {
       dayStr: dayStr,
       dayNum: dayNum,
       title: fm.title || `Day ${dayStr}`,
-      description: fm.description || `Lesson covering ${fm.title || `Day ${dayStr}`}.`
+      description: fm.description || `Lesson covering ${fm.title || `Day ${dayStr}`}.`,
     })
   }
 }

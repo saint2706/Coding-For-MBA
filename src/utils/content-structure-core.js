@@ -23,7 +23,10 @@ function getInlineNodeText(node) {
 }
 
 function getHeadingText(node) {
-  return node.children.map((child) => getInlineNodeText(child)).join('').trim()
+  return node.children
+    .map((child) => getInlineNodeText(child))
+    .join('')
+    .trim()
 }
 
 /**

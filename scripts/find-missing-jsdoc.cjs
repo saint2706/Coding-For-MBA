@@ -1,40 +1,40 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 function findMissingJSDoc(dir) {
-  let files = [];
+  let files = []
   try {
-    const list = fs.readdirSync(dir);
+    const list = fs.readdirSync(dir)
     list.forEach((file) => {
-      file = path.join(dir, file);
-      const stat = fs.statSync(file);
+      file = path.join(dir, file)
+      const stat = fs.statSync(file)
       if (stat && stat.isDirectory() && !file.includes('__tests__')) {
-        files = files.concat(findMissingJSDoc(file));
+        files = files.concat(findMissingJSDoc(file))
       } else {
         if (file.endsWith('.ts') || file.endsWith('.tsx')) {
-          files.push(file);
+          files.push(file)
         }
       }
-    });
-  } catch(e) {}
-  return files;
+    })
+  } catch (e) {}
+  return files
 }
 
-const allFiles = findMissingJSDoc('src');
+const allFiles = findMissingJSDoc('src')
 
-const missing = [];
+const missing = []
 
 for (const file of allFiles) {
-  const content = fs.readFileSync(file, 'utf8');
-  const lines = content.split('\n');
+  const content = fs.readFileSync(file, 'utf8')
+  const lines = content.split('\n')
   for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
+    const line = lines[i]
     if (line.match(/^export (function|const|interface|type) [A-Za-z0-9_]+/)) {
-      if (i === 0 || !lines[i-1].includes('*/')) {
-        missing.push(`${file}:${i+1}:${line}`);
+      if (i === 0 || !lines[i - 1].includes('*/')) {
+        missing.push(`${file}:${i + 1}:${line}`)
       }
     }
   }
 }
 
-console.log(missing.join('\n'));
+console.log(missing.join('\n'))

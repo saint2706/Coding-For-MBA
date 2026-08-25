@@ -1,27 +1,27 @@
 version: 2
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "thursday"
-      time: "13:00"
-      timezone: "Asia/Kolkata"
+      interval: 'weekly'
+      day: 'thursday'
+      time: '13:00'
+      timezone: 'Asia/Kolkata'
     open-pull-requests-limit: 15
-    labels: ["dependencies"]
+    labels: ['dependencies']
     groups:
       react-stack:
-        patterns: ["react*", "@types/react*", "react-router-dom"]
+        patterns: ['react*', '@types/react*', 'react-router-dom']
       test-tooling:
-        patterns: ["vitest*", "@vitest/*", "@playwright/test", "jsdom"]
+        patterns: ['vitest*', '@vitest/*', '@playwright/test', 'jsdom']
       lint-tooling:
-        patterns: ["eslint*", "@eslint/*", "@typescript-eslint/*", "typescript-eslint", "prettier"]
+        patterns: ['eslint*', '@eslint/*', '@typescript-eslint/*', 'typescript-eslint', 'prettier']
 
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "thursday"
-      time: "13:00"
-      timezone: "Asia/Kolkata"
-    labels: ["dependencies", "github-actions"]
+      interval: 'weekly'
+      day: 'thursday'
+      time: '13:00'
+      timezone: 'Asia/Kolkata'
+    labels: ['dependencies', 'github-actions']
