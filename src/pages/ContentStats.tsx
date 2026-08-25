@@ -11,7 +11,7 @@
 
 import { Link } from 'react-router-dom'
 import { ChartBar } from '@phosphor-icons/react'
-import { getContentStats } from '../utils/contentLoader'
+import { getContentStats, getCurriculumMetadata } from '../utils/contentLoader'
 import SEOHead from '../components/SEOHead'
 import AnimatedCounter from '../components/AnimatedCounter'
 import PhaseIcon from '../components/PhaseIcon'
@@ -32,6 +32,7 @@ import PhaseIcon from '../components/PhaseIcon'
  */
 export default function ContentStats() {
   const stats = getContentStats()
+  const { totalDays } = getCurriculumMetadata()
 
   const maxTagCount = stats.tagCloud[0]?.[1] || 1
 
@@ -39,7 +40,7 @@ export default function ContentStats() {
     <div className="content-stats-page">
       <SEOHead
         title="Content Statistics"
-        description="Comprehensive content analytics for the 145-day Coding for MBA curriculum — word counts, reading times, difficulty distributions, tag clouds, and phase breakdowns."
+        description={`Comprehensive content analytics for the ${totalDays}-day Coding for MBA curriculum — word counts, reading times, difficulty distributions, tag clouds, and phase breakdowns.`}
         path="/stats"
         breadcrumbs={[
           { name: 'Home', url: '/' },

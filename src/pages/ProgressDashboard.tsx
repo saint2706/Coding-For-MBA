@@ -40,7 +40,7 @@ import { useMasteryStore } from '../stores/masteryStore'
  * Displays comprehensive progress tracking including:
  * - Overall completion statistics (percentage, completed count, remaining)
  * - Visual progress bar for entire curriculum
- * - Lesson heatmap showing all 145 days with completion status
+ * - Lesson heatmap showing all curriculum days with completion status
  * - Per-phase progress breakdown with links to each phase
  * - Option to clear all progress (with confirmation)
  *
@@ -193,7 +193,7 @@ export default function ProgressDashboard() {
     <div className="page-container">
       <SEOHead
         title="Your Progress"
-        description="Track your progress through the 145-day Coding for MBA curriculum. View completion statistics, lesson heatmap, and per-phase breakdowns."
+        description={`Track your progress through the ${totalLessons}-day Coding for MBA curriculum. View completion statistics, lesson heatmap, and per-phase breakdowns.`}
         path="/progress"
         breadcrumbs={[
           { name: 'Home', url: '/' },

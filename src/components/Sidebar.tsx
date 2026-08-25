@@ -9,7 +9,7 @@
 import { useMemo, useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { X } from '@phosphor-icons/react'
-import { getAllPhases, getLessonsByPhase } from '../utils/contentLoader'
+import { getAllPhases, getLessonsByPhase, getCurriculumMetadata } from '../utils/contentLoader'
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
 import { normalizeDayToken, dayTokenToProgressId } from '../utils/dayToken'
 import { useProgressStore } from '../stores/progressStore'
@@ -56,6 +56,7 @@ function PrimaryItem({ to, active, glyph, label, onClick }: PrimaryItemProps) {
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const location = useLocation()
   const phases = getAllPhases()
+  const { totalDays } = getCurriculumMetadata()
   const navRef = useRef<HTMLDivElement>(null)
 
   const derivedOpenPhase = useMemo(() => {
@@ -143,7 +144,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             </span>
             <span className="sidebar-brand-text">
               <span className="sidebar-brand-name">Coding for MBA</span>
-              <span className="sidebar-brand-meta">v1 · 145-day</span>
+              <span className="sidebar-brand-meta">v1 · {totalDays}-day</span>
             </span>
           </Link>
           <button

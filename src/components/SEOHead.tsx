@@ -11,11 +11,20 @@
 
 import { Helmet } from '@dr.pogodin/react-helmet'
 import { buildCanonicalUrl } from '../utils/seoSchemas'
+import { getCurriculumMetadata } from '../utils/contentLoader'
 
 const SITE_NAME = 'Coding for MBA'
 const DEFAULT_IMAGE = 'https://saint2706.github.io/Coding-For-MBA/og-image.png'
-const DEFAULT_DESCRIPTION =
-  'A structured 145-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.'
+
+/**
+ * Builds the fallback meta description. Computed lazily (not at module
+ * load) so importing this component never requires curriculum content to
+ * be available — every current call site passes an explicit `description`
+ * anyway, so this only runs as a true fallback.
+ */
+function getDefaultDescription(): string {
+  return `A structured ${getCurriculumMetadata().totalDays}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.`
+}
 
 interface BreadcrumbItem {
   name: string
@@ -79,7 +88,7 @@ function buildBreadcrumbSchema(items: BreadcrumbItem[]): Record<string, unknown>
  */
 export default function SEOHead({
   title,
-  description = DEFAULT_DESCRIPTION,
+  description,
   path,
   ogType = 'website',
   image = DEFAULT_IMAGE,
@@ -89,6 +98,7 @@ export default function SEOHead({
   articlePublished,
   articleModified,
 }: SEOHeadProps) {
+  const resolvedDescription = description ?? getDefaultDescription()
   const fullTitle = title.includes(SITE_NAME) ? title : `${title} — ${SITE_NAME}`
   const canonicalUrl = buildCanonicalUrl(path)
 
@@ -101,14 +111,14 @@ export default function SEOHead({
     <Helmet>
       {/* Primary Meta Tags */}
       <title>{fullTitle}</title>
-      <meta name="description" content={description} />
+      <meta name="description" content={resolvedDescription} />
       <link rel="canonical" href={canonicalUrl} />
       {noIndex && <meta name="robots" content="noindex, nofollow" />}
 
       {/* Open Graph */}
       <meta property="og:type" content={ogType} />
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={resolvedDescription} />
       <meta property="og:image" content={image} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content={SITE_NAME} />
@@ -116,7 +126,7 @@ export default function SEOHead({
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={resolvedDescription} />
       <meta name="twitter:image" content={image} />
 
       {/* Article-specific meta */}

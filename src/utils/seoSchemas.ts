@@ -10,10 +10,22 @@
  * - Ensure valid JSON-LD structure.
  */
 
+import { getCurriculumMetadata } from './contentLoader'
+
 const SITE_URL = 'https://saint2706.github.io/Coding-For-MBA'
 const SITE_NAME = 'Coding for MBA'
-const DEFAULT_DESCRIPTION =
-  'A structured 145-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.'
+
+/**
+ * Total curriculum days, read lazily (not at module load) so importing
+ * this module never requires curriculum content to be available.
+ */
+function getCurriculumTotalDays(): number {
+  return getCurriculumMetadata().totalDays
+}
+
+function getDefaultDescription(): string {
+  return `A structured ${getCurriculumTotalDays()}-day curriculum covering Python, Data Science, Machine Learning, Business Intelligence, and Enterprise SQL — designed for MBA professionals.`
+}
 
 /**
  * Build a full canonical URL from a hash path.
@@ -38,7 +50,7 @@ export function buildWebSiteSchema(): Record<string, unknown> {
     '@type': 'WebSite',
     name: SITE_NAME,
     url: `${SITE_URL}/`,
-    description: DEFAULT_DESCRIPTION,
+    description: getDefaultDescription(),
     image: `${SITE_URL}/og-image.png`,
     potentialAction: {
       '@type': 'SearchAction',
@@ -121,15 +133,15 @@ export function buildCourseSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'Course',
-    name: 'Coding for MBA — 145-Day Technical Curriculum',
-    description: DEFAULT_DESCRIPTION,
+    name: `Coding for MBA — ${getCurriculumTotalDays()}-Day Technical Curriculum`,
+    description: getDefaultDescription(),
     url: `${SITE_URL}/`,
     provider: {
       '@type': 'Organization',
       name: SITE_NAME,
       url: `${SITE_URL}/`,
     },
-    numberOfCredits: 145,
+    numberOfCredits: getCurriculumTotalDays(),
     educationalLevel: 'Professional',
     teaches: [
       'Python Programming',
@@ -139,7 +151,7 @@ export function buildCourseSchema(): Record<string, unknown> {
       'SQL',
       'Data Engineering',
     ],
-    timeRequired: 'P145D',
+    timeRequired: `P${getCurriculumTotalDays()}D`,
     hasCourseInstance: {
       '@type': 'CourseInstance',
       courseMode: 'Online',
@@ -240,7 +252,7 @@ export function buildLessonSchema(
     image: `${SITE_URL}/og-image.png`,
     isPartOf: {
       '@type': 'Course',
-      name: 'Coding for MBA — 145-Day Technical Curriculum',
+      name: `Coding for MBA — ${getCurriculumTotalDays()}-Day Technical Curriculum`,
       url: `${SITE_URL}/`,
     },
     position: day,

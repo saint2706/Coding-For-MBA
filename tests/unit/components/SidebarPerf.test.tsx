@@ -9,6 +9,7 @@ import * as contentLoader from '../../../src/utils/contentLoader'
 vi.mock('../../../src/utils/contentLoader', () => ({
   getAllPhases: vi.fn(),
   getLessonsByPhase: vi.fn(),
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 163, totalPhases: 12, totalLevels: 4 })),
   phaseIcons: ['A', 'B'],
 }))
 

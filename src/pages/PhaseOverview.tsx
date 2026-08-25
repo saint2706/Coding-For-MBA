@@ -14,7 +14,13 @@ import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import { motion, useReducedMotion } from 'motion/react'
 import { useMemo } from 'react'
 import SEOHead from '../components/SEOHead'
-import { getPhase, getLessonsByPhase, getNotebook, difficultyConfig } from '../utils/contentLoader'
+import {
+  getPhase,
+  getLessonsByPhase,
+  getNotebook,
+  difficultyConfig,
+  getCurriculumMetadata,
+} from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import { useProgressStore } from '../stores/progressStore'
@@ -119,8 +125,9 @@ export default function PhaseOverview() {
 
   const completedPct = Math.round((completedInPhaseCount / Math.max(1, lessons.length)) * 100)
 
+  const { totalDays } = getCurriculumMetadata()
   const phaseTitle = `Phase ${phase.phase}: ${phase.title}`
-  const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the 145-day Coding for MBA curriculum.`
+  const phaseDescription = `Phase ${phase.phase}: ${phase.title}. ${lessons.length} lessons in the ${totalDays}-day Coding for MBA curriculum.`
   const phasePath = `/phase/${phase.phase}`
 
   return (
@@ -142,7 +149,7 @@ export default function PhaseOverview() {
             url: `https://saint2706.github.io/Coding-For-MBA/#${phasePath}`,
             isPartOf: {
               '@type': 'Course',
-              name: 'Coding for MBA — 145-Day Technical Curriculum',
+              name: `Coding for MBA — ${totalDays}-Day Technical Curriculum`,
             },
             numberOfItems: lessons.length,
           },

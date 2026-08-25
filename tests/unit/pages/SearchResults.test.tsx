@@ -34,6 +34,7 @@ vi.mock('../../../src/utils/contentLoader', () => ({
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
   },
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 163, totalPhases: 12, totalLevels: 4 })),
 }))
 
 describe('SearchResults', () => {

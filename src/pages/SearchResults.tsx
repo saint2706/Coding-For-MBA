@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { SearchEmptyIllustration } from '../components/EmptyStateIllustrations'
 import SEOHead from '../components/SEOHead'
-import { difficultyConfig } from '../utils/contentLoader'
+import { difficultyConfig, getCurriculumMetadata } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 import { useDebounce } from '../hooks/useDebounce'
 import { highlightText } from '../utils/searchHighlight'
@@ -127,7 +127,7 @@ export default function SearchResults() {
     <div className="page-container">
       <SEOHead
         title={query ? `Search: ${query}` : 'Search'}
-        description="Search the 145-day Coding for MBA curriculum by title, concepts, tags, phase, or content."
+        description={`Search the ${getCurriculumMetadata().totalDays}-day Coding for MBA curriculum by title, concepts, tags, phase, or content.`}
         path="/search"
         noIndex
       />

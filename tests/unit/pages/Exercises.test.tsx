@@ -23,6 +23,7 @@ vi.mock('../../../src/components/EmptyStateIllustrations', () => ({
 vi.mock('../../../src/utils/contentLoader', () => ({
   getAllExercises: vi.fn(),
   getAllNotebooks: vi.fn(),
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 163, totalPhases: 12, totalLevels: 4 })),
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
     advanced: { label: 'Advanced', color: '#222', bg: '#333' },

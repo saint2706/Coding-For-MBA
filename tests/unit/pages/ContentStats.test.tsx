@@ -28,7 +28,8 @@ vi.mock('../../../src/components/AnimatedCounter', () => ({
 
 vi.mock('../../../src/utils/contentLoader', () => ({
   getContentStats: vi.fn(),
-  phaseIcons: ['📊', '🐍'],
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 163, totalPhases: 12, totalLevels: 4 })),
+  phaseIcons: ['ChartBar', 'Code'],
 }))
 
 describe('ContentStats', () => {

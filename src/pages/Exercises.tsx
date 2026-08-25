@@ -19,7 +19,12 @@ import SEOHead from '../components/SEOHead'
 import ExerciseCard from '../components/ExerciseCard'
 import PhaseIcon from '../components/PhaseIcon'
 import { buildCollectionPageSchema } from '../utils/seoSchemas'
-import { getAllExercises, getAllNotebooks, difficultyConfig } from '../utils/contentLoader'
+import {
+  getAllExercises,
+  getAllNotebooks,
+  difficultyConfig,
+  getCurriculumMetadata,
+} from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 import { compareDayTokens } from '../utils/dayToken'
 import { useQuizStore } from '../stores/quizStore'
@@ -41,6 +46,7 @@ import { useQuizStore } from '../stores/quizStore'
 export default function Exercises() {
   const exercises = getAllExercises()
   const notebooks = getAllNotebooks()
+  const { totalDays } = getCurriculumMetadata()
   const [phaseFilter, setPhaseFilter] = useState<number | ''>('')
   const [difficultyFilter, setDifficultyFilter] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
@@ -98,7 +104,7 @@ export default function Exercises() {
 
   const collectionSchema = buildCollectionPageSchema(
     'Exercises Browser',
-    'Browse and filter all exercises across the 145-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises.',
+    `Browse and filter all exercises across the ${totalDays}-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises.`,
     '/exercises',
     exercises.slice(0, 10).map((ex) => ({
       name: ex.title,
@@ -111,7 +117,7 @@ export default function Exercises() {
     <div className="page-container">
       <SEOHead
         title="Exercises"
-        description="Browse and filter all exercises across the 145-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises."
+        description={`Browse and filter all exercises across the ${totalDays}-day curriculum. Practice Python, SQL, and data science with hands-on coding exercises.`}
         path="/exercises"
         breadcrumbs={[
           { name: 'Home', url: '/' },

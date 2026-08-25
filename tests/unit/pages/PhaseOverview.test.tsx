@@ -18,10 +18,11 @@ vi.mock('../../../src/utils/contentLoader', () => ({
   getPhase: vi.fn(),
   getLessonsByPhase: vi.fn(),
   getNotebook: vi.fn(),
+  getCurriculumMetadata: vi.fn(() => ({ totalDays: 163, totalPhases: 12, totalLevels: 4 })),
   difficultyConfig: {
     beginner: { label: 'Beginner', color: '#000', bg: '#fff' },
   },
-  phaseIcons: ['📊', '🐍'],
+  phaseIcons: ['ChartBar', 'Code'],
 }))
 
 vi.mock('../../../src/stores/progressStore', () => ({
