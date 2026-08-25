@@ -17,7 +17,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       - name: Bootstrap Node workspace
         uses: ./.github/actions/node-bootstrap
@@ -29,7 +31,7 @@ jobs:
           VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Install Surge
-        run: npm install --global surge@0.27.3
+        run: npm install --global surge@0.43.1
 
       - name: Deploy to Surge
         run: surge --project ./dist --domain coding-for-mba.surge.sh
