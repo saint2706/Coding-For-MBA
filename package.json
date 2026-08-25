@@ -60,7 +60,7 @@
     "unified": "^11.0.5",
     "unist-util-visit": "^5.1.0",
     "zod": "^4.3.6",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.15"
   },
   "overrides": {
     "tmp": "^0.2.4",
