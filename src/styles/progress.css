@@ -30,7 +30,9 @@
 }
 
 .progress-mobile-stat-icon {
-  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--accent-primary);
 }
 
 .progress-mobile-stat-value {

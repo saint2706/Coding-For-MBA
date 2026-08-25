@@ -56,11 +56,7 @@ export default function NotePanel({ day }: NotePanelProps) {
           <span aria-hidden="true">✎</span> My note
         </h2>
         {!editing && !note && (
-          <button
-            type="button"
-            className="note-action-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-            onClick={startEditing}
-          >
+          <button type="button" className="note-action-btn" onClick={startEditing}>
             + Add a note
           </button>
         )}
@@ -68,7 +64,7 @@ export default function NotePanel({ day }: NotePanelProps) {
           <div className="note-card-actions">
             <button
               type="button"
-              className="note-action-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              className="note-action-btn"
               onClick={startEditing}
               aria-label="Edit note"
             >
@@ -76,7 +72,7 @@ export default function NotePanel({ day }: NotePanelProps) {
             </button>
             <button
               type="button"
-              className="note-action-btn note-action-btn--delete focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              className="note-action-btn note-action-btn--delete"
               onClick={() => deleteNote(day)}
               aria-label="Delete note"
             >
@@ -98,18 +94,10 @@ export default function NotePanel({ day }: NotePanelProps) {
             aria-label="Note content"
           />
           <div className="note-editor-actions">
-            <button
-              type="button"
-              className="note-save-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              onClick={save}
-            >
+            <button type="button" className="note-save-btn" onClick={save}>
               Save
             </button>
-            <button
-              type="button"
-              className="note-cancel-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              onClick={cancel}
-            >
+            <button type="button" className="note-cancel-btn" onClick={cancel}>
               Cancel
             </button>
           </div>

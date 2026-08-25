@@ -8,6 +8,7 @@
  * - Display time in a "min read" format with an icon.
  */
 
+import { BookOpen } from '@phosphor-icons/react'
 import { getReadingTime } from '../utils/contentLoader'
 
 /**
@@ -26,7 +27,7 @@ export default function ReadingTime({ content }: { content: string }) {
       className="meta-pill reading-time"
       title={`Estimated reading time: ${minutes} minute${minutes !== 1 ? 's' : ''}`}
     >
-      <span aria-hidden="true">📖</span> {minutes} min read
+      <BookOpen aria-hidden="true" /> {minutes} min read
     </span>
   )
 }

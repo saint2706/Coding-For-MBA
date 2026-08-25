@@ -10,9 +10,11 @@
  */
 
 import { Link } from 'react-router-dom'
-import { phaseIcons, getContentStats } from '../utils/contentLoader'
+import { ChartBar } from '@phosphor-icons/react'
+import { getContentStats } from '../utils/contentLoader'
 import SEOHead from '../components/SEOHead'
 import AnimatedCounter from '../components/AnimatedCounter'
+import PhaseIcon from '../components/PhaseIcon'
 
 /**
  * Content statistics page component.
@@ -45,7 +47,7 @@ export default function ContentStats() {
         ]}
       />
       <h1>
-        <span aria-hidden="true">📊</span> Content Statistics
+        <ChartBar aria-hidden="true" /> Content Statistics
       </h1>
       <p className="stats-subtitle">
         An overview of the entire curriculum's content, structure, and coverage.
@@ -108,7 +110,9 @@ export default function ContentStats() {
           {stats.phaseStats.map((p) => (
             <Link to={`/phase/${p.phase}`} className="stats-phase-card" key={p.phase}>
               <div className="stats-phase-header">
-                <span className="stats-phase-icon">{phaseIcons[p.phase - 1]}</span>
+                <span className="stats-phase-icon">
+                  <PhaseIcon phase={p.phase} />
+                </span>
                 <span className="stats-phase-num">Phase {p.phase}</span>
               </div>
               <div className="stats-phase-title">{p.title}</div>

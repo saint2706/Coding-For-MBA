@@ -21,6 +21,15 @@
 import { useState, useId, useRef, useMemo, useCallback, useEffect } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
+import {
+  TestTube,
+  CheckCircle,
+  XCircle,
+  CaretDown,
+  Lightbulb,
+  Warning,
+  Rocket,
+} from '@phosphor-icons/react'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import CodePlayground, { type CodePlaygroundHandle } from './CodePlayground'
@@ -200,9 +209,7 @@ export default function ExerciseWidget({
   return (
     <div className="exercise-widget">
       <div className="exercise-widget__header">
-        <span className="exercise-widget__icon" aria-hidden="true">
-          🧪
-        </span>
+        <TestTube className="exercise-widget__icon" aria-hidden="true" />
         <h3 className="exercise-widget__title">{title}</h3>
         <CopyButton
           text={starterCode}
@@ -239,8 +246,25 @@ export default function ExerciseWidget({
             {quizStats.incorrect}
           </small>
           {recentAttempts.length > 0 && (
-            <small>
-              Recent: {recentAttempts.map((attempt) => (attempt.correct ? '✅' : '❌')).join(' ')}
+            <small className="exercise-widget__recent-attempts">
+              Recent:{' '}
+              {recentAttempts.map((attempt) =>
+                attempt.correct ? (
+                  <CheckCircle
+                    key={attempt.id}
+                    weight="fill"
+                    color="#22c55e"
+                    aria-label="correct attempt"
+                  />
+                ) : (
+                  <XCircle
+                    key={attempt.id}
+                    weight="fill"
+                    color="#ef4444"
+                    aria-label="incorrect attempt"
+                  />
+                ),
+              )}
             </small>
           )}
         </div>
@@ -250,7 +274,7 @@ export default function ExerciseWidget({
         <div className="exercise-widget__solution">
           <button
             type="button"
-            className="exercise-widget__solution-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="exercise-widget__solution-btn"
             onClick={handleToggleSolution}
             aria-expanded={showSolution}
             aria-controls={solutionId}
@@ -258,15 +282,15 @@ export default function ExerciseWidget({
           >
             {showSolution ? (
               <>
-                <span aria-hidden="true">🔽</span> Hide Solution
+                <CaretDown aria-hidden="true" /> Hide Solution
               </>
             ) : hasSubmitted ? (
               <>
-                <span aria-hidden="true">💡</span> Show Solution (Review Mode)
+                <Lightbulb aria-hidden="true" /> Show Solution (Review Mode)
               </>
             ) : (
               <>
-                <span aria-hidden="true">💡</span> Show Solution
+                <Lightbulb aria-hidden="true" /> Show Solution
               </>
             )}
           </button>
@@ -301,7 +325,7 @@ export default function ExerciseWidget({
                     >
                       <button
                         type="button"
-                        className={`code-block-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isConfirmingSolution ? 'confirm-destructive' : ''}`}
+                        className={`code-block-copy ${isConfirmingSolution ? 'confirm-destructive' : ''}`}
                         onClick={handleTrySolution}
                         aria-label={
                           isConfirmingSolution
@@ -320,18 +344,18 @@ export default function ExerciseWidget({
                       >
                         {isConfirmingSolution ? (
                           <>
-                            <span aria-hidden="true">⚠️</span> Confirm?
+                            <Warning aria-hidden="true" /> Confirm?
                           </>
                         ) : (
                           <>
-                            <span aria-hidden="true">🚀</span> Try Solution
+                            <Rocket aria-hidden="true" /> Try Solution
                           </>
                         )}
                       </button>
                       <CopyButton
                         text={solution}
                         className="code-block-copy"
-                        showEmoji={true}
+                        showIcon={true}
                         ariaLabel="Copy solution code to clipboard"
                       />
                     </div>

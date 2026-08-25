@@ -57,11 +57,11 @@ export default function LessonCodeActions({ content, day }: LessonCodeActionsPro
         className="lesson-code-action-btn"
         ariaLabel="Copy all code snippets from this lesson"
         label="Copy all snippets"
-        showEmoji
+        showIcon
       />
       <button
         type="button"
-        className="lesson-code-action-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        className="lesson-code-action-btn"
         onClick={handleDownload}
         aria-label="Download all code snippets from this lesson as a .py file"
         title="Download as .py"

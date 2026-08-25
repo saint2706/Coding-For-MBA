@@ -12,6 +12,7 @@
 
 import { useState } from 'react'
 import { motion } from 'motion/react'
+import { FolderOpen, Buildings, Hammer } from '@phosphor-icons/react'
 import SEOHead from '../components/SEOHead'
 import Breadcrumb from '../components/Breadcrumb'
 import MarkdownRenderer from '../components/MarkdownRenderer'
@@ -79,7 +80,7 @@ export default function CaseStudies() {
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
         <h1>
-          <span aria-hidden="true">📂</span> Case Studies &amp; Projects
+          <FolderOpen aria-hidden="true" /> Case Studies &amp; Projects
         </h1>
         <p>
           {caseStudies.length} case studies · {projects.length} capstone projects — apply your
@@ -94,26 +95,26 @@ export default function CaseStudies() {
           role="tab"
           aria-controls="cs-panel"
           aria-selected={activeTab === 'case-studies'}
-          className={`cs-tab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${activeTab === 'case-studies' ? 'cs-tab--active' : ''}`}
+          className={`cs-tab ${activeTab === 'case-studies' ? 'cs-tab--active' : ''}`}
           onClick={() => {
             setActiveTab('case-studies')
             setExpandedSlug(null)
           }}
         >
-          <span aria-hidden="true">🏢</span> Case Studies ({caseStudies.length})
+          <Buildings aria-hidden="true" /> Case Studies ({caseStudies.length})
         </button>
         <button
           type="button"
           role="tab"
           aria-controls="cs-panel"
           aria-selected={activeTab === 'projects'}
-          className={`cs-tab focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${activeTab === 'projects' ? 'cs-tab--active' : ''}`}
+          className={`cs-tab ${activeTab === 'projects' ? 'cs-tab--active' : ''}`}
           onClick={() => {
             setActiveTab('projects')
             setExpandedSlug(null)
           }}
         >
-          <span aria-hidden="true">🔨</span> Projects ({projects.length})
+          <Hammer aria-hidden="true" /> Projects ({projects.length})
         </button>
       </div>
 
@@ -180,7 +181,7 @@ export default function CaseStudies() {
               <div className="cs-card__footer">
                 <button
                   type="button"
-                  className="cs-card__expand-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+                  className="cs-card__expand-btn"
                   aria-expanded={isExpanded}
                   aria-label={isExpanded ? 'Hide details' : 'View details'}
                   aria-controls={`cs-content-${item.slug}`}

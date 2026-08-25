@@ -15,6 +15,7 @@ import {
   useImperativeHandle,
   useDeferredValue,
 } from 'react'
+import { Code, Warning } from '@phosphor-icons/react'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import SyntaxHighlighter from '../utils/prism'
 import PythonRunner, { type PythonRunnerHandle } from './PythonRunner'
@@ -229,17 +230,19 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
     return (
       <div className="code-playground">
         <div className="code-playground__toolbar">
-          <span className="code-playground__label">🐍 Python Playground</span>
+          <span className="code-playground__label">
+            <Code aria-hidden="true" /> Python Playground
+          </span>
           <div className="code-playground__actions">
             <CopyButton
               text={code}
               className="code-playground__btn"
-              showEmoji={true}
+              showIcon={true}
               ariaLabel="Copy code"
             />
             <button
               type="button"
-              className={`code-playground__btn code-playground__btn--reset focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isConfirmingReset ? 'code-playground__btn--confirm' : ''}`}
+              className={`code-playground__btn code-playground__btn--reset ${isConfirmingReset ? 'code-playground__btn--confirm' : ''}`}
               onClick={handleResetClick}
               aria-label={
                 isConfirmingReset
@@ -250,7 +253,7 @@ const CodePlayground = forwardRef<CodePlaygroundHandle, CodePlaygroundProps>(
             >
               {isConfirmingReset ? (
                 <>
-                  <span aria-hidden="true">⚠️</span> Confirm?
+                  <Warning aria-hidden="true" /> Confirm?
                 </>
               ) : (
                 <>

@@ -8,7 +8,8 @@
 import { memo } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'motion/react'
-import { difficultyConfig, phaseIcons, type Exercise } from '../utils/contentLoader'
+import { difficultyConfig, type Exercise } from '../utils/contentLoader'
+import PhaseIcon from './PhaseIcon'
 
 interface ExerciseCardProps {
   exercise: Exercise
@@ -16,7 +17,6 @@ interface ExerciseCardProps {
 
 function ExerciseCard({ exercise }: ExerciseCardProps) {
   const diff = difficultyConfig[exercise.difficulty] || difficultyConfig.beginner!
-  const icon = phaseIcons[exercise.phase - 1] || '📖'
   const prefersReducedMotion = useReducedMotion()
 
   return (
@@ -29,7 +29,7 @@ function ExerciseCard({ exercise }: ExerciseCardProps) {
     >
       <div className="exercise-card__header">
         <span className="exercise-card__phase">
-          <span aria-hidden="true">{icon}</span> Phase {exercise.phase}
+          <PhaseIcon phase={exercise.phase} /> Phase {exercise.phase}
         </span>
         <span className="difficulty-badge" style={{ color: diff.color, background: diff.bg }}>
           {diff.label}

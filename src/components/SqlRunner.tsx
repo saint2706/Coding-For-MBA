@@ -110,7 +110,7 @@ const SqlRunner = forwardRef<SqlRunnerHandle, SqlRunnerProps>(
         <div className="sql-runner__controls">
           <button
             type="button"
-            className="sql-runner__btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="sql-runner__btn"
             onClick={handleRun}
             disabled={isLoading}
             aria-label={

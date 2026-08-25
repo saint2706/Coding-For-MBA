@@ -128,7 +128,7 @@ function CodeBlock({
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
           <button
             type="button"
-            className="code-block-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="code-block-copy"
             onClick={() => setWrapLines((w) => !w)}
             aria-label={wrapLines ? 'Disable line wrapping' : 'Enable line wrapping'}
             title={wrapLines ? 'Unwrap long lines' : 'Wrap long lines'}
@@ -138,7 +138,7 @@ function CodeBlock({
           {isRunnable && (
             <button
               type="button"
-              className="code-block-try-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              className="code-block-try-btn"
               onClick={() => setShowPlayground((p) => !p)}
               aria-label={showPlayground ? 'Close playground' : 'Try this code'}
             >
@@ -192,7 +192,7 @@ function CodeBlock({
       {isLong && (
         <button
           type="button"
-          className="code-block-expand-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="code-block-expand-btn"
           onClick={() => setCollapsed((c) => !c)}
           aria-expanded={!collapsed}
           aria-label={collapsed ? 'Expand code block' : 'Collapse code block'}
@@ -242,7 +242,7 @@ function MermaidBlock({ code }: { code: string }) {
         <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
           <button
             type="button"
-            className="code-block-copy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="code-block-copy"
             onClick={() => setShowSource((s) => !s)}
             aria-label={showSource ? 'Show rendered diagram' : 'View diagram source'}
           >
@@ -382,7 +382,7 @@ const ImageWithZoom = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
           >
             <button
               type="button"
-              className="image-zoom-close focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              className="image-zoom-close"
               onClick={(e) => {
                 e.stopPropagation()
                 setZoomed(false)
@@ -427,7 +427,7 @@ function handleHeadingAnchorClick(event: MouseEvent<HTMLAnchorElement>, id: stri
   window.history.replaceState(null, '', `#${id}`)
   navigator.clipboard
     .writeText(url)
-    .then(() => toastSuccess('Link copied to clipboard 🔗'))
+    .then(() => toastSuccess('Link copied to clipboard'))
     .catch(() => toastError('Could not copy link'))
 }
 

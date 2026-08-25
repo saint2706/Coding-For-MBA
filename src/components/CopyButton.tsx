@@ -10,14 +10,15 @@
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { ClipboardText } from '@phosphor-icons/react'
 
 interface CopyButtonProps {
   /** The text content to be copied. */
   text: string
   /** Optional custom class names. */
   className?: string
-  /** Whether to display a clipboard emoji icon. */
-  showEmoji?: boolean
+  /** Whether to display a clipboard icon. */
+  showIcon?: boolean
   /** Optional aria-label for accessibility. */
   ariaLabel?: string
   /** Optional custom button label, shown instead of the default "Copy" text. */
@@ -30,21 +31,21 @@ interface CopyButtonProps {
  * @param {CopyButtonProps} props - The component properties.
  * @param {string} props.text - The text content to be copied.
  * @param {string} [props.className='code-block-copy'] - Optional custom class names.
- * @param {boolean} [props.showEmoji=false] - Whether to display a clipboard emoji icon.
+ * @param {boolean} [props.showIcon=false] - Whether to display a clipboard icon.
  * @param {string} [props.ariaLabel] - Optional aria-label for accessibility.
  * @returns {React.ReactElement} The rendered button component.
  */
 export default function CopyButton({
   text,
   className = 'code-block-copy',
-  showEmoji = false,
+  showIcon = false,
   ariaLabel,
   label,
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
   const timeoutRef = useRef<number | null>(null)
 
-  const accessibleLabel = ariaLabel || (showEmoji ? 'Copy to clipboard' : 'Copy code')
+  const accessibleLabel = ariaLabel || (showIcon ? 'Copy to clipboard' : 'Copy code')
 
   const handleCopy = useCallback(() => {
     navigator.clipboard
@@ -77,7 +78,7 @@ export default function CopyButton({
   return (
     <button
       type="button"
-      className={`${className} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2`}
+      className={className}
       onClick={handleCopy}
       aria-label={copied ? 'Code copied to clipboard' : accessibleLabel}
       title={accessibleLabel}
@@ -86,9 +87,9 @@ export default function CopyButton({
         <>
           <span aria-hidden="true">✓</span> Copied
         </>
-      ) : showEmoji ? (
+      ) : showIcon ? (
         <>
-          <span aria-hidden="true">📋</span> {label ?? 'Copy'}
+          <ClipboardText aria-hidden="true" /> {label ?? 'Copy'}
         </>
       ) : (
         (label ?? 'Copy')

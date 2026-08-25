@@ -164,7 +164,7 @@ describe('MarkdownRenderer', () => {
     })
 
     expect(writeText).toHaveBeenCalledWith(expect.stringContaining('#hello-world'))
-    expect(mockToastSuccess).toHaveBeenCalledWith('Link copied to clipboard 🔗')
+    expect(mockToastSuccess).toHaveBeenCalledWith('Link copied to clipboard')
     expect(window.location.hash).toBe('#hello-world')
   })
 

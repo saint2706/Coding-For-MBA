@@ -12,6 +12,7 @@
  */
 
 import { useState, useId } from 'react'
+import { CaretDown, CheckCircle, ThumbsUp, ArrowClockwise } from '@phosphor-icons/react'
 import CodePlayground from './CodePlayground'
 import { MarkdownFragment } from './MarkdownFragment'
 import { buildFAQSchema } from '../utils/seoSchemas'
@@ -100,7 +101,7 @@ export default function MasteryCheck({
 
       <button
         type="button"
-        className={`mastery-check__check-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${revealed ? 'mastery-check__check-btn--revealed' : ''}`}
+        className={`mastery-check__check-btn ${revealed ? 'mastery-check__check-btn--revealed' : ''}`}
         onClick={() => setRevealed((r) => !r)}
         aria-expanded={revealed}
         aria-label={revealed ? 'Hide Answer' : 'Show Answer'}
@@ -108,11 +109,11 @@ export default function MasteryCheck({
       >
         {revealed ? (
           <>
-            <span aria-hidden="true">🔽</span> Hide Answer
+            <CaretDown aria-hidden="true" /> Hide Answer
           </>
         ) : (
           <>
-            <span aria-hidden="true">✅</span> Check Answer
+            <CheckCircle aria-hidden="true" /> Check Answer
           </>
         )}
       </button>
@@ -133,19 +134,19 @@ export default function MasteryCheck({
             <span className="mastery-check__self-assess-prompt">How did you do?</span>
             <button
               type="button"
-              className={`mastery-check__assess-btn mastery-check__assess-btn--got-it focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${status === 'got-it' ? 'mastery-check__assess-btn--active' : ''}`}
+              className={`mastery-check__assess-btn mastery-check__assess-btn--got-it ${status === 'got-it' ? 'mastery-check__assess-btn--active' : ''}`}
               onClick={() => handleSetStatus('got-it')}
               aria-pressed={status === 'got-it'}
             >
-              <span aria-hidden="true">👍</span> Got it
+              <ThumbsUp aria-hidden="true" /> Got it
             </button>
             <button
               type="button"
-              className={`mastery-check__assess-btn mastery-check__assess-btn--review-again focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${status === 'review-again' ? 'mastery-check__assess-btn--active' : ''}`}
+              className={`mastery-check__assess-btn mastery-check__assess-btn--review-again ${status === 'review-again' ? 'mastery-check__assess-btn--active' : ''}`}
               onClick={() => handleSetStatus('review-again')}
               aria-pressed={status === 'review-again'}
             >
-              <span aria-hidden="true">🔁</span> Review again
+              <ArrowClockwise aria-hidden="true" /> Review again
             </button>
           </div>
         </div>

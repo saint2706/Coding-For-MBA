@@ -157,7 +157,7 @@ export default function NotesPage() {
           <div style={{ marginTop: '3rem', textAlign: 'center' }}>
             <button
               type="button"
-              className="progress-clear-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+              className="progress-clear-btn"
               onClick={handleClear}
               aria-label="Delete all notes"
             >

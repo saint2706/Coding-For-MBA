@@ -43,7 +43,10 @@ export type AchievementMeta = {
   id: AchievementId
   label: string
   description: string
+  /** Icon name, looked up from `iconRegistry.tsx`. */
   icon: string
+  /** Optional icon color override (e.g. to distinguish medal tiers). */
+  color?: string
 }
 
 /**
@@ -54,49 +57,52 @@ export const ACHIEVEMENTS: AchievementMeta[] = [
     id: 'first-lesson',
     label: 'First Lesson',
     description: 'Complete your first lesson.',
-    icon: '🎯',
+    icon: 'Target',
   },
   {
     id: 'streak-7',
     label: '7-Day Streak',
     description: 'Keep a 7-day lesson completion streak.',
-    icon: '🔥',
+    icon: 'Flame',
   },
   {
     id: 'night-owl',
     label: 'Night Owl',
     description: 'Study after 10pm local time.',
-    icon: '🦉',
+    icon: 'Moon',
   },
   {
     id: 'speed-runner',
     label: 'Speed Runner',
     description: 'Complete 3 lessons in one calendar day.',
-    icon: '⚡',
+    icon: 'Lightning',
   },
   {
     id: 'quiz-master',
     label: 'Quiz Master',
     description: 'Ace 3 unique quizzes with 100% accuracy.',
-    icon: '🧠',
+    icon: 'Brain',
   },
   {
     id: 'xp-50',
     label: 'Bronze Learner',
     description: 'Reach 50 XP.',
-    icon: '🥉',
+    icon: 'Medal',
+    color: '#b08d57',
   },
   {
     id: 'xp-150',
     label: 'Silver Learner',
     description: 'Reach 150 XP.',
-    icon: '🥈',
+    icon: 'Medal',
+    color: '#a8a8a8',
   },
   {
     id: 'xp-300',
     label: 'Gold Learner',
     description: 'Reach 300 XP.',
-    icon: '🥇',
+    icon: 'Medal',
+    color: '#d4af37',
   },
 ]
 
@@ -231,7 +237,7 @@ function maybeCelebrateAchievement(id: AchievementId): void {
   if (!meta) return
 
   triggerSparkle()
-  toastSuccess(`${meta.icon} Badge unlocked: ${meta.label}`)
+  toastSuccess(`Badge unlocked: ${meta.label}`)
 }
 
 /**

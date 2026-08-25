@@ -57,7 +57,7 @@ export default function BackToTop() {
       {visible && (
         <motion.button
           type="button"
-          className="back-to-top visible focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="back-to-top visible"
           onClick={scrollToTop}
           aria-label="Back to top"
           title="Back to top"

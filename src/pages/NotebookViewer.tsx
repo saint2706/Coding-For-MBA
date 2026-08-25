@@ -11,11 +11,12 @@
 
 import { useParams, Link } from 'react-router-dom'
 import SEOHead from '../components/SEOHead'
-import { getNotebook, getPhase, phaseIcons, type NotebookCell } from '../utils/contentLoader'
+import { getNotebook, getPhase, type NotebookCell } from '../utils/contentLoader'
 import MarkdownRenderer from '../components/MarkdownRenderer'
 import Breadcrumb from '../components/Breadcrumb'
 import BackToTop from '../components/BackToTop'
 import CodePlayground from '../components/CodePlayground'
+import PhaseIcon from '../components/PhaseIcon'
 
 // --- Cell merging logic ---
 // Groups consecutive code cells into a single merged block so that
@@ -221,7 +222,6 @@ export default function NotebookViewer() {
   const { phaseNum } = useParams<{ phaseNum: string }>()
   const notebook = phaseNum ? getNotebook(phaseNum) : undefined
   const phase = phaseNum ? getPhase(phaseNum) : undefined
-  const icon = phaseIcons[Number(phaseNum) - 1] || '📖'
 
   if (!notebook || notebook.cells.length === 0) {
     return (
@@ -263,7 +263,7 @@ export default function NotebookViewer() {
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
         <h2>
-          {icon} {title} — Solutions
+          <PhaseIcon phase={Number(phaseNum)} /> {title} — Solutions
         </h2>
         <p>
           Complete solutions notebook — edit any code and click ▶ Run to execute in your browser.

@@ -10,9 +10,11 @@
  */
 
 import { Link } from 'react-router-dom'
+import { Lightbulb } from '@phosphor-icons/react'
 import SEOHead from '../components/SEOHead'
-import { getAllPhases, phaseIcons } from '../utils/contentLoader'
+import { getAllPhases } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
+import PhaseIcon from '../components/PhaseIcon'
 
 /**
  * 404 Not Found page component.
@@ -51,24 +53,18 @@ export default function NotFound() {
         <div className="not-found-suggestions">
           <h2>Quick Links</h2>
           <div className="not-found-phases">
-            {phases.map((phase) => {
-              const icon = phaseIcons[phase.phase - 1] || '📖'
-              return (
-                <Link
-                  to={`/phase/${phase.phase}`}
-                  className="not-found-phase-link"
-                  key={phase.phase}
-                >
-                  <span>{icon}</span>
-                  <span>
-                    Phase {phase.phase}: {phase.title}
-                  </span>
-                </Link>
-              )
-            })}
+            {phases.map((phase) => (
+              <Link to={`/phase/${phase.phase}`} className="not-found-phase-link" key={phase.phase}>
+                <PhaseIcon phase={phase.phase} />
+                <span>
+                  Phase {phase.phase}: {phase.title}
+                </span>
+              </Link>
+            ))}
           </div>
           <p className="not-found-tip">
-            💡 Tip: Press <kbd>/</kbd> to search or <kbd>⌘K</kbd> to open the command palette.
+            <Lightbulb aria-hidden="true" /> Tip: Press <kbd>/</kbd> to search or <kbd>⌘K</kbd> to
+            open the command palette.
           </p>
         </div>
       </div>

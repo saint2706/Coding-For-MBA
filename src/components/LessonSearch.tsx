@@ -14,6 +14,7 @@ import {
   type RefObject,
   type KeyboardEvent as ReactKeyboardEvent,
 } from 'react'
+import { MagnifyingGlass } from '@phosphor-icons/react'
 import { isTypingInEditableElement } from '../utils/shortcuts'
 
 const MATCH_CLASS = 'lesson-search-match'
@@ -179,9 +180,7 @@ export default function LessonSearch({ containerRef }: LessonSearchProps) {
 
   return (
     <div className="lesson-search-bar" role="search" aria-label="Search this lesson">
-      <span className="lesson-search-icon" aria-hidden="true">
-        🔎
-      </span>
+      <MagnifyingGlass className="lesson-search-icon" aria-hidden="true" />
       <input
         ref={inputRef}
         type="text"
@@ -197,7 +196,7 @@ export default function LessonSearch({ containerRef }: LessonSearchProps) {
       </span>
       <button
         type="button"
-        className="lesson-search-nav-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        className="lesson-search-nav-btn"
         onClick={goToPrev}
         disabled={matchCount === 0}
         aria-label="Previous match"
@@ -206,7 +205,7 @@ export default function LessonSearch({ containerRef }: LessonSearchProps) {
       </button>
       <button
         type="button"
-        className="lesson-search-nav-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        className="lesson-search-nav-btn"
         onClick={goToNext}
         disabled={matchCount === 0}
         aria-label="Next match"
@@ -215,7 +214,7 @@ export default function LessonSearch({ containerRef }: LessonSearchProps) {
       </button>
       <button
         type="button"
-        className="lesson-search-close-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        className="lesson-search-close-btn"
         onClick={closeSearch}
         aria-label="Close search"
       >

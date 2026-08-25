@@ -117,6 +117,7 @@ describe('ExerciseCard', () => {
     const unknownPhaseExercise = { ...mockExercise, phase: 99 }
     renderCard(unknownPhaseExercise)
 
-    expect(container?.textContent).toContain('📖 Phase 99')
+    expect(container?.querySelector('.exercise-card__phase svg')).toBeTruthy()
+    expect(container?.textContent).toContain('Phase 99')
   })
 })

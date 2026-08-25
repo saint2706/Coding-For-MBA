@@ -226,7 +226,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
           <kbd className="search-kbd">ESC</kbd>
           <button
             type="button"
-            className="search-close-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="search-close-btn"
             onClick={onClose}
             aria-label="Close search"
           >

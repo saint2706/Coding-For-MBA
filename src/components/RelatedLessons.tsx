@@ -10,6 +10,7 @@
  */
 
 import { Link } from 'react-router-dom'
+import { LinkSimple } from '@phosphor-icons/react'
 import { Lesson, getRelatedLessons, difficultyConfig } from '../utils/contentLoader'
 
 /**
@@ -30,7 +31,9 @@ export default function RelatedLessons({ lesson }: { lesson: Lesson }) {
 
   return (
     <section className="related-lessons" aria-label="Related lessons">
-      <h2 className="related-lessons-title">🔗 Related Lessons</h2>
+      <h2 className="related-lessons-title">
+        <LinkSimple aria-hidden="true" /> Related Lessons
+      </h2>
       <div className="related-lessons-grid">
         {related.map((r) => {
           const diff = difficultyConfig[r.difficulty || 'beginner'] || difficultyConfig.beginner!

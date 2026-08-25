@@ -11,18 +11,15 @@
 
 import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { TestTube, Notebook, TrendDown } from '@phosphor-icons/react'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import { motion } from 'motion/react'
 import { ExercisesEmptyIllustration } from '../components/EmptyStateIllustrations'
 import SEOHead from '../components/SEOHead'
 import ExerciseCard from '../components/ExerciseCard'
+import PhaseIcon from '../components/PhaseIcon'
 import { buildCollectionPageSchema } from '../utils/seoSchemas'
-import {
-  getAllExercises,
-  getAllNotebooks,
-  difficultyConfig,
-  phaseIcons,
-} from '../utils/contentLoader'
+import { getAllExercises, getAllNotebooks, difficultyConfig } from '../utils/contentLoader'
 import Breadcrumb from '../components/Breadcrumb'
 import { compareDayTokens } from '../utils/dayToken'
 import { useQuizStore } from '../stores/quizStore'
@@ -49,7 +46,16 @@ export default function Exercises() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortOrder, setSortOrder] = useState<'phase-asc' | 'phase-desc' | 'title-asc'>('phase-asc')
 
-  const lowScoringTopics = useQuizStore((state) => state.getLowScoringTopics(60, 2).slice(0, 5))
+  // `getLowScoringTopics` builds a fresh array of freshly-computed stats
+  // objects on every call, so calling it directly inside the Zustand
+  // selector returns a new reference every render and triggers an infinite
+  // update loop. Subscribe to the stable `attempts` array instead and
+  // recompute only when it actually changes.
+  const attempts = useQuizStore((state) => state.attempts)
+  const lowScoringTopics = useMemo(
+    () => useQuizStore.getState().getLowScoringTopics(60, 2).slice(0, 5),
+    [attempts],
+  )
 
   // Derive available phases from exercises
   const phases = useMemo(() => {
@@ -117,7 +123,7 @@ export default function Exercises() {
 
       <div className="section-header" style={{ marginBottom: '1.5rem' }}>
         <h1>
-          <span aria-hidden="true">🧪</span> Exercise Browser
+          <TestTube aria-hidden="true" /> Exercise Browser
         </h1>
         <p>
           {exercises.length} exercises across {phases.length} phases — filter by topic, difficulty,
@@ -128,11 +134,10 @@ export default function Exercises() {
       {/* Solution Notebooks Banner */}
       <div className="exercises-notebooks">
         <h2 className="exercises-notebooks__title">
-          <span aria-hidden="true">📓</span> Phase Solution Notebooks
+          <Notebook aria-hidden="true" /> Phase Solution Notebooks
         </h2>
         <div className="exercises-notebooks__grid">
           {phases.map((p) => {
-            const icon = phaseIcons[p - 1] || '📖'
             const hasNotebook = notebookPhases.has(p)
             return hasNotebook ? (
               <Link
@@ -141,7 +146,7 @@ export default function Exercises() {
                 className="exercises-notebook-link"
                 {...createRoutePrefetchHandlers(`/solutions/${p}`)}
               >
-                <span aria-hidden="true">{icon}</span> Phase {p} Solutions
+                <PhaseIcon phase={p} /> Phase {p} Solutions
               </Link>
             ) : null
           })}
@@ -151,7 +156,7 @@ export default function Exercises() {
       {lowScoringTopics.length > 0 && (
         <div className="exercises-low-scoring">
           <h2>
-            <span aria-hidden="true">📉</span> Spaced Repetition Focus
+            <TrendDown aria-hidden="true" /> Spaced Repetition Focus
           </h2>
           <p>Revisit these lower-scoring quiz topics to improve retention:</p>
           <ul>

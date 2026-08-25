@@ -161,13 +161,14 @@ describe('CopyButton', () => {
     consoleSpy.mockRestore()
   })
 
-  it('renders emoji when showEmoji is true', () => {
+  it('renders an icon when showIcon is true', () => {
     act(() => {
-      root?.render(<CopyButton text="some code" showEmoji />)
+      root?.render(<CopyButton text="some code" showIcon />)
     })
 
     const button = container.querySelector('button')
-    expect(button?.textContent).toContain('📋 Copy')
+    expect(button?.querySelector('svg')).toBeTruthy()
+    expect(button?.textContent).toContain('Copy')
   })
 
   it('renders a custom label when provided', () => {
@@ -179,12 +180,13 @@ describe('CopyButton', () => {
     expect(button?.textContent).toContain('Copy all snippets')
   })
 
-  it('renders a custom label alongside the emoji', () => {
+  it('renders a custom label alongside the icon', () => {
     act(() => {
-      root?.render(<CopyButton text="some code" showEmoji label="Copy starter code" />)
+      root?.render(<CopyButton text="some code" showIcon label="Copy starter code" />)
     })
 
     const button = container.querySelector('button')
-    expect(button?.textContent).toContain('📋 Copy starter code')
+    expect(button?.querySelector('svg')).toBeTruthy()
+    expect(button?.textContent).toContain('Copy starter code')
   })
 })

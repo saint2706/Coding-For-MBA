@@ -12,13 +12,13 @@
 
 import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import { ChartPie, Flame, Clock, Star } from '@phosphor-icons/react'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import SEOHead from '../components/SEOHead'
 import {
   getAllPhases,
   getLessonsByPhase,
   getLesson,
-  phaseIcons,
   difficultyConfig,
   getCurriculumMetadata,
 } from '../utils/contentLoader'
@@ -26,6 +26,8 @@ import { dayTokenToProgressId } from '../utils/dayToken'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
+import PhaseIcon from '../components/PhaseIcon'
+import { AppIcon } from '../utils/iconRegistry'
 import { formatDuration, useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
 import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
 import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
@@ -120,11 +122,10 @@ export default function ProgressDashboard() {
     () =>
       phases.map((phase) => {
         const lessons = getLessonsByPhase(phase.phase)
-        const icon = phaseIcons[phase.phase - 1] || '📖'
         return (
           <div className="heatmap-phase" key={phase.phase}>
             <div className="heatmap-phase-label">
-              <span>{icon}</span> P{phase.phase}
+              <PhaseIcon phase={phase.phase} /> P{phase.phase}
             </div>
             <div className="heatmap-cells">
               {(lessons || []).map((lesson) => {
@@ -161,13 +162,14 @@ export default function ProgressDashboard() {
             }
           }
         }
-        const icon = phaseIcons[phase.phase - 1] || '📖'
         const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
 
         return (
           <Link to={`/phase/${phase.phase}`} className="progress-phase-row" key={phase.phase}>
             <div className="progress-phase-info">
-              <span className="progress-phase-icon">{icon}</span>
+              <span className="progress-phase-icon">
+                <PhaseIcon phase={phase.phase} />
+              </span>
               <div>
                 <span className="progress-phase-name">
                   Phase {phase.phase}: {phase.title}
@@ -219,34 +221,26 @@ export default function ProgressDashboard() {
       {/* Mobile glassmorphism stat cards grid */}
       <div className="progress-mobile-stats-grid">
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon" aria-hidden="true">
-            📊
-          </span>
+          <ChartPie className="progress-mobile-stat-icon" aria-hidden="true" />
           <p className="progress-mobile-stat-value">
             <AnimatedCounter value={overallPct} suffix="%" />
           </p>
           <p className="progress-mobile-stat-label">Completed</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon" aria-hidden="true">
-            🔥
-          </span>
+          <Flame className="progress-mobile-stat-icon" aria-hidden="true" />
           <p className="progress-mobile-stat-value">
             <AnimatedCounter value={completionStreak} />
           </p>
           <p className="progress-mobile-stat-label">Day Streak</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon" aria-hidden="true">
-            ⏱️
-          </span>
+          <Clock className="progress-mobile-stat-icon" aria-hidden="true" />
           <p className="progress-mobile-stat-value">{formatDuration(totalLearningMs)}</p>
           <p className="progress-mobile-stat-label">Study Time</p>
         </div>
         <div className="progress-mobile-stat-card glass-card">
-          <span className="progress-mobile-stat-icon" aria-hidden="true">
-            ⭐
-          </span>
+          <Star className="progress-mobile-stat-icon" aria-hidden="true" />
           <p className="progress-mobile-stat-value">{xpTotal}</p>
           <p className="progress-mobile-stat-label">Total XP</p>
         </div>
@@ -327,7 +321,7 @@ export default function ProgressDashboard() {
           ) : (
             earnedBadges.map((badge) => (
               <div className="badge-chip" key={badge.id} title={badge.description}>
-                <span aria-hidden="true">{badge.icon}</span>
+                <AppIcon name={badge.icon} weight="fill" color={badge.color} />
                 <span>{badge.label}</span>
               </div>
             ))
@@ -457,7 +451,7 @@ export default function ProgressDashboard() {
       <div style={{ marginTop: '3rem', textAlign: 'center' }}>
         <button
           type="button"
-          className="progress-clear-btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="progress-clear-btn"
           onClick={handleClearProgress}
           aria-label="Clear all progress"
         >

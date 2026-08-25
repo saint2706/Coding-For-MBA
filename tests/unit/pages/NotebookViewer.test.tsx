@@ -32,7 +32,7 @@ vi.mock('../../../src/components/BackToTop', () => ({
 vi.mock('../../../src/utils/contentLoader', () => ({
   getNotebook: vi.fn(),
   getPhase: vi.fn(),
-  phaseIcons: ['📊'],
+  phaseIcons: ['ChartBar'],
 }))
 
 describe('NotebookViewer', () => {
@@ -107,7 +107,9 @@ describe('NotebookViewer', () => {
       </MemoryRouter>,
     )
 
-    expect(screen.getByText('📊 Phase 1: Phase 1 Title — Solutions')).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2 }).textContent).toContain(
+      'Phase 1: Phase 1 Title — Solutions',
+    )
     expect(screen.getByTestId('markdown-renderer')).toHaveTextContent('# Hello')
 
     // The two code cells should be merged into one CodePlayground

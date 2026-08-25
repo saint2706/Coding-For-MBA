@@ -11,7 +11,7 @@ vi.mock('../../../src/components/SEOHead', () => ({
 
 vi.mock('../../../src/utils/contentLoader', () => ({
   getAllPhases: vi.fn(),
-  phaseIcons: ['📊', '🐍'],
+  phaseIcons: ['ChartBar'],
 }))
 
 describe('NotFound', () => {
@@ -69,6 +69,9 @@ describe('NotFound', () => {
     expect(container?.innerHTML).toContain("page you're looking for doesn't exist")
     expect(container?.innerHTML).toContain('Phase 1: Foundations')
     expect(container?.innerHTML).toContain('Phase 3: Data')
-    expect(container?.innerHTML).toContain('📖') // testing default fallback icon
+    // Phase 3 has no entry in the mocked phaseIcons array, so it should fall
+    // back to a default icon instead of rendering nothing.
+    const phaseLinks = container?.querySelectorAll('.not-found-phase-link svg')
+    expect(phaseLinks?.length).toBe(2)
   })
 })

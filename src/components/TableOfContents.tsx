@@ -126,7 +126,7 @@ const TableOfContents = memo(function TableOfContents({ content }: TableOfConten
       {isCompact && (
         <button
           type="button"
-          className="toc-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+          className="toc-toggle"
           aria-expanded={isCompactOpen}
           aria-controls={tocListId}
           aria-label={isCompactOpen ? 'Close table of contents' : 'Open table of contents'}

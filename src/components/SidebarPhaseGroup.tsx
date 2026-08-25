@@ -46,7 +46,7 @@ function SidebarPhaseGroup({
     <div className="phase-group">
       <button
         type="button"
-        className={`phase-toggle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${isActive ? 'open active' : ''}`}
+        className={`phase-toggle ${isActive ? 'open active' : ''}`}
         onClick={() => onToggle(phase.phase)}
         aria-expanded={isActive}
         aria-controls={`phase-${phase.phase}-days`}

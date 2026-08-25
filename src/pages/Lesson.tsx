@@ -10,6 +10,7 @@
 
 import { useEffect, useState, useCallback, useMemo, useRef } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import { Target } from '@phosphor-icons/react'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import SEOHead from '../components/SEOHead'
 import EditorialLessonHeader from '../components/EditorialLessonHeader'
@@ -180,7 +181,7 @@ export default function Lesson() {
       const totalLessonCount = getCurriculumMetadata().totalDays
       if (afterCompleted.length === totalLessonCount) {
         triggerCurriculumFireworks()
-        toastSuccess('🎓 Curriculum complete! Incredible work.')
+        toastSuccess('Curriculum complete! Incredible work.')
       }
       return
     }
@@ -279,7 +280,7 @@ export default function Lesson() {
         {readingMode && (
           <button
             type="button"
-            className="reading-mode-exit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="reading-mode-exit"
             onClick={() => handleReadingMode(false)}
             aria-label="Exit reading mode"
           >
@@ -346,7 +347,7 @@ export default function Lesson() {
                   className="mastery-progress-badge"
                   aria-label={`${masteredCount} of ${masteryTotal} mastery checks mastered`}
                 >
-                  <span aria-hidden="true">🎯</span> {masteredCount}/{masteryTotal} mastered
+                  <Target aria-hidden="true" /> {masteredCount}/{masteryTotal} mastered
                 </span>
               )}
 

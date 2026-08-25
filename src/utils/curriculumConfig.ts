@@ -19,7 +19,7 @@ const difficultyInfoSchema = z.object({
 })
 
 const difficultyConfigSchema = z.record(z.string().min(1), difficultyInfoSchema)
-const phaseIconsSchema = z.array(z.string().min(1)).length(9)
+const phaseIconsSchema = z.array(z.string().min(1)).length(12)
 
 /**
  * Visual styling information mapped to a specific difficulty level.
@@ -52,19 +52,22 @@ export const difficultyConfig: DifficultyConfig = difficultyConfigSchema.parse({
 })
 
 /**
- * Ordered array of icons representing the 9 curriculum phases.
- * Validated against `phaseIconsSchema`.
+ * Ordered array of icon names (see `iconRegistry.tsx`) representing the 12
+ * curriculum phases. Validated against `phaseIconsSchema`.
  *
  * @type {PhaseIcons}
  */
 export const phaseIcons: PhaseIcons = phaseIconsSchema.parse([
-  '🐍',
-  '🔧',
-  '🌐',
-  '📐',
-  '🧠',
-  '🚀',
-  '📊',
-  '🗄️',
-  '⚡',
+  'Code', // 1: Algorithmic Thinking & Python Foundations
+  'Function', // 2: Functions, Modularity & Data Wrangling
+  'Globe', // 3: Data Engineering & Web Development
+  'MathOperations', // 4: Mathematical Foundations & ML Fundamentals
+  'Brain', // 5: Advanced ML & Deep Learning
+  'Rocket', // 6: Cutting-Edge ML
+  'ChartBar', // 7: BI Analytics, Governance & Modern Data Stack
+  'Database', // 8: SQL Mastery & Database Architecture
+  'Lightning', // 9: Enterprise SQL Performance Engineering
+  'Sparkle', // 10: Generative AI & LLM Engineering
+  'CloudArrowUp', // 11: Cloud Data Engineering
+  'Package', // 12: Analytics Engineering & Data Products
 ])

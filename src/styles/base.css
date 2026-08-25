@@ -65,6 +65,15 @@ img {
   border-radius: var(--radius-sm);
 }
 
+/* Phosphor icons default to size="1em" (rendered as width/height="1em") when
+   sitting inline with text — align them to the text baseline instead of the
+   SVG default. Doesn't match decorative/data SVGs, which use fixed pixel
+   sizes. */
+svg[width='1em'] {
+  vertical-align: -0.125em;
+  flex-shrink: 0;
+}
+
 /* Tabular numerals on any element with mono or .num class — required for
    data tiles, tickers, prices, timers (ui-ux-pro-max: number-tabular). */
 .num,
