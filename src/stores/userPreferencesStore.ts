@@ -18,13 +18,9 @@ import { getStoredString } from '../utils/safeStorage'
 const ColorPaletteSchema = z.enum([
   'terminal-dark',
   'bone-light',
-  'peach-sorbet',
-  'gradient-blues',
-  'neon-party',
-  'deep-ocean-blue',
-  'pastel-dreamland',
-  'golden-summer-fields',
-  'light-steel',
+  'signal-rose',
+  'signal-cyan',
+  'high-contrast',
 ])
 
 const FontSizePreferenceSchema = z.enum(['sm', 'md', 'lg'])
@@ -142,7 +138,7 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
     }),
     {
       name: STORAGE_KEY,
-      version: 6,
+      version: 7,
       storage: createJSONStorage(() => safeStorage),
       partialize: (state) => ({
         palette: state.palette,
@@ -169,6 +165,23 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
         let palette = (raw.palette ?? legacyPalette) as ColorPalette | undefined
         if (version < 6 && palette === 'gradient-blues') {
           palette = 'terminal-dark'
+        }
+
+        // v6→v7: the 7 legacy candy-colored palettes were replaced with 3
+        // on-brand palettes (signal-rose, signal-cyan, high-contrast). Remap
+        // anyone still on a removed id to a same-mood replacement instead of
+        // silently falling back to the default.
+        const LEGACY_PALETTE_REMAP: Record<string, ColorPalette> = {
+          'peach-sorbet': 'bone-light',
+          'gradient-blues': 'signal-cyan',
+          'neon-party': 'signal-rose',
+          'deep-ocean-blue': 'signal-cyan',
+          'pastel-dreamland': 'high-contrast',
+          'golden-summer-fields': 'bone-light',
+          'light-steel': 'high-contrast',
+        }
+        if (version < 7 && typeof palette === 'string' && palette in LEGACY_PALETTE_REMAP) {
+          palette = LEGACY_PALETTE_REMAP[palette]
         }
 
         const dataToParse = { ...raw, palette }

@@ -6,7 +6,7 @@ describe('userPreferencesStore', () => {
   beforeEach(() => {
     window.localStorage.clear()
     useUserPreferencesStore.setState({
-      palette: 'gradient-blues',
+      palette: 'signal-cyan',
       sidebarDefaultOpen: false,
       fontSize: 'md',
       codeLanguage: 'python',
@@ -20,7 +20,7 @@ describe('userPreferencesStore', () => {
   it('starts with expected defaults', () => {
     const state = useUserPreferencesStore.getState()
 
-    expect(state.palette).toBe('gradient-blues')
+    expect(state.palette).toBe('signal-cyan')
     expect(state.sidebarDefaultOpen).toBe(false)
     expect(state.fontSize).toBe('md')
     expect(state.codeLanguage).toBe('python')
@@ -33,7 +33,7 @@ describe('userPreferencesStore', () => {
   it('updates each preference via actions', () => {
     const store = useUserPreferencesStore.getState()
 
-    store.setPalette('neon-party')
+    store.setPalette('signal-rose')
     store.setSidebarDefaultOpen(true)
     store.setFontSize('lg')
     store.setCodeLanguage('sql')
@@ -45,7 +45,7 @@ describe('userPreferencesStore', () => {
     const updated = useUserPreferencesStore.getState()
 
     expect(updated).toMatchObject({
-      palette: 'neon-party',
+      palette: 'signal-rose',
       sidebarDefaultOpen: true,
       fontSize: 'lg',
       codeLanguage: 'sql',
@@ -57,7 +57,7 @@ describe('userPreferencesStore', () => {
   })
 
   it('persists preferences to localStorage', () => {
-    useUserPreferencesStore.getState().setPalette('pastel-dreamland')
+    useUserPreferencesStore.getState().setPalette('high-contrast')
     useUserPreferencesStore.getState().setSidebarDefaultOpen(true)
 
     const raw = window.localStorage.getItem(STORAGE_KEY)
@@ -67,7 +67,7 @@ describe('userPreferencesStore', () => {
       state: { palette: string; sidebarDefaultOpen: boolean }
     }
 
-    expect(parsed.state.palette).toBe('pastel-dreamland')
+    expect(parsed.state.palette).toBe('high-contrast')
     expect(parsed.state.sidebarDefaultOpen).toBe(true)
   })
 

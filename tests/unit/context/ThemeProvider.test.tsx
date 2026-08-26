@@ -18,7 +18,7 @@ describe('ThemeProvider', () => {
 
   const setupMockStore = (overrides = {}) => {
     const defaultState = {
-      palette: 'gradient-blues',
+      palette: 'terminal-dark',
       setPalette: mockSetPalette,
       fontSize: 'md',
       density: 'comfortable',
@@ -68,7 +68,7 @@ describe('ThemeProvider', () => {
   })
 
   it('provides the correct context values', () => {
-    setupMockStore({ palette: 'neon-party' })
+    setupMockStore({ palette: 'signal-rose' })
 
     let contextValue: React.ContextType<typeof ThemeContext> | undefined
 
@@ -89,15 +89,15 @@ describe('ThemeProvider', () => {
       </ThemeProvider>,
     )
 
-    expect(contextValue?.palette).toBe('neon-party')
+    expect(contextValue?.palette).toBe('signal-rose')
 
-    contextValue?.setPalette('deep-ocean-blue')
-    expect(mockSetPalette).toHaveBeenCalledWith('deep-ocean-blue')
+    contextValue?.setPalette('signal-cyan')
+    expect(mockSetPalette).toHaveBeenCalledWith('signal-cyan')
   })
 
   describe('Palette injection', () => {
     it('applies dark palette type for dark palettes', () => {
-      setupMockStore({ palette: 'neon-party' }) // neon-party is a dark palette
+      setupMockStore({ palette: 'signal-rose' }) // signal-rose is a dark palette
 
       render(
         <ThemeProvider>
@@ -105,7 +105,7 @@ describe('ThemeProvider', () => {
         </ThemeProvider>,
       )
 
-      expect(document.documentElement.getAttribute('data-palette')).toBe('neon-party')
+      expect(document.documentElement.getAttribute('data-palette')).toBe('signal-rose')
       expect(document.documentElement.getAttribute('data-palette-type')).toBe('dark')
     })
 

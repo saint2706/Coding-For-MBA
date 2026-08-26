@@ -112,7 +112,7 @@ vi.mock('../../../src/stores/gamificationStore', () => ({
 vi.mock('../../../src/stores/userPreferencesStore', () => ({
   useUserPreferencesStore: Object.assign(
     vi.fn(() => ({
-      palette: 'gradient-blues',
+      palette: 'terminal-dark',
       sidebarDefaultOpen: true,
       fontSize: 'md',
       codeLanguage: 'python',
@@ -131,7 +131,7 @@ vi.mock('../../../src/stores/userPreferencesStore', () => ({
     })),
     {
       getState: () => ({
-        palette: 'gradient-blues',
+        palette: 'terminal-dark',
         sidebarDefaultOpen: true,
         fontSize: 'md',
         codeLanguage: 'python',

@@ -21,7 +21,7 @@ import { ThemeContext } from './ThemeContext'
  * @example
  * ```tsx
  * const { palette, setPalette } = useTheme()
- * return <button onClick={() => setPalette('neon-party')}>Current: {palette}</button>
+ * return <button onClick={() => setPalette('signal-rose')}>Current: {palette}</button>
  * ```
  */
 export function useTheme() {

@@ -28,20 +28,6 @@
   color: var(--text-muted);
 }
 
-.cover-issue {
-  color: var(--accent-primary);
-  background: var(--bg-card-hover);
-  border: 1px solid var(--border-active);
-  padding: 0.25rem 0.5rem;
-  font-weight: 700;
-  border-radius: var(--radius-sm);
-}
-
-.cover-divider {
-  color: var(--text-muted);
-  opacity: 0.5;
-}
-
 .cover-title {
   font-family: var(--font-display);
   font-weight: 360;

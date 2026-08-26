@@ -4,39 +4,29 @@ import { useUserPreferencesStore, type ColorPalette } from '../stores/userPrefer
 
 const PALETTES: { id: ColorPalette; label: string; swatches: string[] }[] = [
   {
-    id: 'peach-sorbet',
-    label: 'Peach Sorbet',
-    swatches: ['#f08080', '#f4978e', '#f8ad9d', '#fbc4ab', '#ffdab9'],
+    id: 'terminal-dark',
+    label: 'Terminal Dark',
+    swatches: ['#0b0b0c', '#131316', '#1b1b20', '#d4ff3f'],
   },
   {
-    id: 'gradient-blues',
-    label: 'Gradient Blues',
-    swatches: ['#7400b8', '#5e60ce', '#48bfe3', '#72efdd', '#80ffdb'],
+    id: 'bone-light',
+    label: 'Bone Light',
+    swatches: ['#faf6ec', '#f1ece0', '#0b0b0c', '#a8cc0f'],
   },
   {
-    id: 'neon-party',
-    label: 'Neon Party',
-    swatches: ['#00ccff', '#00ffcc', '#ffff00', '#ff00cc', '#cc00ff'],
+    id: 'signal-rose',
+    label: 'Signal Rose',
+    swatches: ['#0b0b0c', '#131316', '#1b1b20', '#ff4f86'],
   },
   {
-    id: 'deep-ocean-blue',
-    label: 'Deep Ocean Blue',
-    swatches: ['#006466', '#0b525b', '#212f45', '#312244', '#4d194d'],
+    id: 'signal-cyan',
+    label: 'Signal Cyan',
+    swatches: ['#0b0b0c', '#131316', '#1b1b20', '#22cdfa'],
   },
   {
-    id: 'pastel-dreamland',
-    label: 'Pastel Dreamland',
-    swatches: ['#cdb4db', '#ffc8dd', '#ffafcc', '#bde0fe', '#a2d2ff'],
-  },
-  {
-    id: 'golden-summer-fields',
-    label: 'Golden Summer Fields',
-    swatches: ['#ccd5ae', '#e9edc9', '#fefae0', '#faedcd', '#d4a373'],
-  },
-  {
-    id: 'light-steel',
-    label: 'Light Steel',
-    swatches: ['#f8f9fa', '#ced4da', '#adb5bd', '#6c757d', '#212529'],
+    id: 'high-contrast',
+    label: 'High Contrast',
+    swatches: ['#ffffff', '#000000'],
   },
 ]
 

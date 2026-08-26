@@ -23,9 +23,9 @@ export interface ThemeContextType {
 
 /**
  * React context for palette state management.
- * Provides default values (gradient-blues palette with no-op setter).
+ * Provides default values (terminal-dark palette with no-op setter).
  */
 export const ThemeContext = createContext<ThemeContextType>({
-  palette: 'gradient-blues',
+  palette: 'terminal-dark',
   setPalette: () => {},
 })

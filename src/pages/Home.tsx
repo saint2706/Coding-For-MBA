@@ -33,24 +33,6 @@ function pad(n: number, width = 2): string {
   return String(n).padStart(width, '0')
 }
 
-function formatIssueDate(d = new Date()): string {
-  const months = [
-    'JAN',
-    'FEB',
-    'MAR',
-    'APR',
-    'MAY',
-    'JUN',
-    'JUL',
-    'AUG',
-    'SEP',
-    'OCT',
-    'NOV',
-    'DEC',
-  ]
-  return `${months[d.getMonth()]} ${pad(d.getDate())} · ${d.getFullYear()}`
-}
-
 /**
  * Home page component serving as the landing page or dashboard.
  * It displays curriculum phases, user progress, study streaks, and metrics.
@@ -187,14 +169,6 @@ export default function Home() {
 
       <EditorialCover>
         <EditorialCover.Eyebrow>
-          <span className="cover-issue">ISSUE 01</span>
-          <span className="cover-divider" aria-hidden="true">
-            ·
-          </span>
-          <span>{formatIssueDate()}</span>
-          <span className="cover-divider" aria-hidden="true">
-            ·
-          </span>
           <span>The Analyst&apos;s Terminal</span>
         </EditorialCover.Eyebrow>
         <EditorialCover.Title>

@@ -9,13 +9,13 @@ describe('useTheme', () => {
   it('returns the default context value when not wrapped in a provider', () => {
     const { result } = renderHook(() => useTheme())
 
-    expect(result.current.palette).toBe('gradient-blues')
+    expect(result.current.palette).toBe('terminal-dark')
     expect(typeof result.current.setPalette).toBe('function')
   })
 
   it('returns the provided context value when wrapped in a provider', () => {
     const mockSetPalette = vi.fn()
-    const customPalette: ColorPalette = 'neon-party'
+    const customPalette: ColorPalette = 'signal-rose'
 
     const wrapper = ({ children }: { children: ReactNode }) => (
       <ThemeContext.Provider value={{ palette: customPalette, setPalette: mockSetPalette }}>
@@ -28,7 +28,7 @@ describe('useTheme', () => {
     expect(result.current.palette).toBe(customPalette)
 
     // Test the setPalette function
-    result.current.setPalette('pastel-dreamland')
-    expect(mockSetPalette).toHaveBeenCalledWith('pastel-dreamland')
+    result.current.setPalette('high-contrast')
+    expect(mockSetPalette).toHaveBeenCalledWith('high-contrast')
   })
 })

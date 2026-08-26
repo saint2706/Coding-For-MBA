@@ -13,15 +13,7 @@ type ThemeAuditResult = {
 }
 
 function contrastAuditScript() {
-  const palettes = [
-    'peach-sorbet',
-    'gradient-blues',
-    'neon-party',
-    'deep-ocean-blue',
-    'pastel-dreamland',
-    'golden-summer-fields',
-    'light-steel',
-  ]
+  const palettes = ['terminal-dark', 'bone-light', 'signal-rose', 'signal-cyan', 'high-contrast']
 
   const parseColor = (value: string) => {
     const probe = document.createElement('span')
