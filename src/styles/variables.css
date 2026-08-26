@@ -2,8 +2,10 @@
    Three-layer token architecture (per design-system skill):
    Primitive  →  Semantic  →  Component
    Default palette: terminal-dark. Light alternative: bone-light.
-   Legacy palettes (gradient-blues, neon-party, etc.) are preserved
-   below for backward compatibility with saved user preferences. */
+   Three additional palettes (signal-rose, signal-cyan, high-contrast)
+   extend the same ink/bone system with a different accent or contrast
+   level; they replaced the original 7 pre-rebrand candy-colored
+   palettes (see git history / userPreferencesStore's migration). */
 
 /* --- Reset --- */
 *,

@@ -159,10 +159,17 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
               ? 'terminal-dark'
               : undefined
 
+        // Note: `palette` holds untrusted, pre-validation input here (it may
+        // be any legacy string ever persisted to localStorage), not a valid
+        // ColorPalette — that's only guaranteed after the zod parse below.
+        // Keep it typed as `string | undefined` so comparisons against
+        // removed/legacy ids don't get flagged as impossible by TS once
+        // those ids are no longer part of the ColorPalette union.
+
         // v5→v6: redesign migration. Anyone still on the previous default
         // (gradient-blues) gets the new default (terminal-dark). Users who
         // explicitly picked a non-default palette keep their choice.
-        let palette = (raw.palette ?? legacyPalette) as ColorPalette | undefined
+        let palette = (raw.palette ?? legacyPalette) as string | undefined
         if (version < 6 && palette === 'gradient-blues') {
           palette = 'terminal-dark'
         }
@@ -180,7 +187,7 @@ export const useUserPreferencesStore = create<UserPreferencesStore>()(
           'golden-summer-fields': 'bone-light',
           'light-steel': 'high-contrast',
         }
-        if (version < 7 && typeof palette === 'string' && palette in LEGACY_PALETTE_REMAP) {
+        if (version < 7 && palette !== undefined && palette in LEGACY_PALETTE_REMAP) {
           palette = LEGACY_PALETTE_REMAP[palette]
         }
 
