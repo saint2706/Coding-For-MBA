@@ -13,55 +13,86 @@ vi.mock('motion/react', () => ({
 
 describe('EmptyStateIllustrations', () => {
   describe('SearchEmptyIllustration', () => {
-    it('renders with reduced motion disabled by default', () => {
+    it('renders a terminal prompt with a blinking cursor by default', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(false)
-      const { container } = render(<SearchEmptyIllustration className="test-class" />)
-      expect(container.querySelector('svg')).toBeDefined()
+      const { container, getByText } = render(<SearchEmptyIllustration className="test-class" />)
+      expect(container.querySelector('.empty-state-illustration')).toBeDefined()
       expect(container.querySelector('.test-class')).toBeDefined()
-      expect(container.querySelector('.empty-state-line')).toBeDefined()
+      expect(getByText('no results found')).toBeDefined()
+      const cursor = container.querySelector('.empty-state-cursor')
+      expect(cursor).not.toBeNull()
+      expect(cursor?.classList.contains('empty-state-cursor--static')).toBe(false)
     })
 
-    it('renders with reduced motion enabled', () => {
+    it('echoes the query text in the prompt line', () => {
+      vi.mocked(motion.useReducedMotion).mockReturnValue(false)
+      const { getByText } = render(<SearchEmptyIllustration query="cash flow" />)
+      expect(getByText('no results for "cash flow"')).toBeDefined()
+    })
+
+    it('collapses the cursor to static under reduced motion', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(true)
       const { container } = render(<SearchEmptyIllustration />)
-      expect(container.querySelector('svg')).toBeDefined()
-      expect(container.querySelector('.empty-state-line')).toBeNull()
+      const cursor = container.querySelector('.empty-state-cursor')
+      expect(cursor).not.toBeNull()
+      expect(cursor?.classList.contains('empty-state-cursor--static')).toBe(true)
+    })
+
+    it('is decorative and does not duplicate the caller-provided accessible text', () => {
+      vi.mocked(motion.useReducedMotion).mockReturnValue(false)
+      const { container } = render(<SearchEmptyIllustration />)
+      expect(
+        container.querySelector('.empty-state-illustration')?.getAttribute('aria-hidden'),
+      ).toBe('true')
+    })
+
+    it('uses no hardcoded off-brand colors', () => {
+      vi.mocked(motion.useReducedMotion).mockReturnValue(false)
+      const { container } = render(<SearchEmptyIllustration />)
+      expect(container.innerHTML).not.toMatch(/rgba\(99,102,241|rgba\(167,139,250/)
     })
   })
 
   describe('ExercisesEmptyIllustration', () => {
-    it('renders with reduced motion disabled by default', () => {
+    it('renders a terminal prompt describing the filtered-out state', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(false)
-      const { container } = render(<ExercisesEmptyIllustration className="test-class" />)
-      expect(container.querySelector('svg')).toBeDefined()
+      const { container, getByText } = render(<ExercisesEmptyIllustration className="test-class" />)
+      expect(container.querySelector('.empty-state-illustration')).toBeDefined()
       expect(container.querySelector('.test-class')).toBeDefined()
-      expect(container.querySelector('.empty-state-dot')).toBeDefined()
+      expect(getByText('no exercises match these filters')).toBeDefined()
+      expect(container.querySelector('.empty-state-cursor')).not.toBeNull()
     })
 
-    it('renders with reduced motion enabled', () => {
+    it('collapses the cursor to static under reduced motion', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(true)
       const { container } = render(<ExercisesEmptyIllustration />)
-      expect(container.querySelector('svg')).toBeDefined()
-      expect(container.querySelector('.empty-state-dot')).toBeNull()
+      expect(
+        container
+          .querySelector('.empty-state-cursor')
+          ?.classList.contains('empty-state-cursor--static'),
+      ).toBe(true)
     })
   })
 
   describe('FreshStartIllustration', () => {
-    it('renders with reduced motion disabled by default', () => {
+    it('renders a distinct boot-style prompt', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(false)
-      const { container } = render(<FreshStartIllustration className="test-class" />)
-      expect(container.querySelector('svg')).toBeDefined()
+      const { container, getByText } = render(<FreshStartIllustration className="test-class" />)
+      expect(container.querySelector('.empty-state-illustration')).toBeDefined()
+      expect(container.querySelector('.empty-state-illustration--boot')).toBeDefined()
       expect(container.querySelector('.test-class')).toBeDefined()
-      expect(container.querySelector('.empty-state-dot')).toBeDefined()
-      expect(container.querySelector('.empty-state-line')).toBeDefined()
+      expect(getByText('ready to start')).toBeDefined()
+      expect(container.querySelector('.empty-state-cursor')).not.toBeNull()
     })
 
-    it('renders with reduced motion enabled', () => {
+    it('collapses the cursor to static under reduced motion', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(true)
       const { container } = render(<FreshStartIllustration />)
-      expect(container.querySelector('svg')).toBeDefined()
-      expect(container.querySelector('.empty-state-dot')).toBeNull()
-      expect(container.querySelector('.empty-state-line')).toBeNull()
+      expect(
+        container
+          .querySelector('.empty-state-cursor')
+          ?.classList.contains('empty-state-cursor--static'),
+      ).toBe(true)
     })
   })
 })

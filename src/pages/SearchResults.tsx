@@ -163,7 +163,7 @@ export default function SearchResults() {
         <div className="search-results-list">{renderedResults}</div>
       ) : debouncedQuery.trim().length >= 2 ? (
         <div className="search-empty-page glass-card">
-          <SearchEmptyIllustration />
+          <SearchEmptyIllustration query={debouncedQuery} />
           <p>No lessons matched your search.</p>
           <p>Try broader or different keywords.</p>
         </div>

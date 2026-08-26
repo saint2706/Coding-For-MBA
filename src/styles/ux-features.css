@@ -588,51 +588,69 @@
   }
 }
 
-/* ---------- Empty-state Illustrations ---------- */
+/* ---------- Empty-state Illustrations ----------
+   Terminal-prompt-style empty states: a mono `$ ...` row with a blinking
+   cursor block. Every color resolves through a design token so this is
+   automatically correct across all palettes — no hardcoded hex/rgba. */
 
 .empty-state-illustration {
-  width: min(220px, 100%);
-  height: auto;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.5em;
+  width: min(320px, 100%);
   margin: 0 auto 0.75rem;
-  display: block;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: transparent;
 }
 
-.empty-state-line {
-  stroke: rgba(148, 163, 184, 0.65);
-  stroke-width: 5;
-  stroke-linecap: round;
-  animation: emptyStatePulse 1.9s ease-in-out infinite;
+.empty-state-illustration--boot {
+  border-color: var(--accent-primary);
 }
 
-.empty-state-dot {
-  animation: emptyStateFloat 2.4s ease-in-out infinite;
+.empty-state-prompt-glyph {
+  color: var(--accent-primary);
+  font-weight: 600;
 }
 
-@keyframes emptyStatePulse {
+.empty-state-prompt-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.empty-state-cursor {
+  display: inline-block;
+  width: 0.55em;
+  height: 1.1em;
+  background: var(--accent-primary);
+  animation: emptyStateBlink 1.1s step-end infinite;
+}
+
+.empty-state-cursor--static {
+  animation: none;
+}
+
+@keyframes emptyStateBlink {
   0%,
-  100% {
-    opacity: 0.42;
-  }
-
-  50% {
+  49% {
     opacity: 1;
   }
-}
 
-@keyframes emptyStateFloat {
-  0%,
+  50%,
   100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-4px);
+    opacity: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .empty-state-line,
-  .empty-state-dot {
+  .empty-state-cursor {
     animation: none !important;
+    opacity: 1;
   }
 }

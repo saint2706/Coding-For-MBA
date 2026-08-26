@@ -72,15 +72,15 @@ test.describe('prefers-reduced-motion: reduce', () => {
     }
   })
 
-  test('empty-state floating dots have no animation', async ({ page }) => {
+  test('empty-state cursor has no blink animation', async ({ page }) => {
     await page.goto('/#/search', { waitUntil: 'domcontentloaded' })
     await expect(page.getByRole('heading', { name: /Search lessons/i }).first()).toBeVisible({
       timeout: 15000,
     })
 
-    const dot = page.locator('.empty-state-dot').first()
-    if (await dot.isVisible({ timeout: 2000 }).catch(() => false)) {
-      const animDuration = await dot.evaluate((el) => {
+    const cursor = page.locator('.empty-state-cursor').first()
+    if (await cursor.isVisible({ timeout: 2000 }).catch(() => false)) {
+      const animDuration = await cursor.evaluate((el) => {
         return window.getComputedStyle(el).animationDuration
       })
       expect(animDuration).toMatch(/^(0s|0ms||0s, 0s|none)$/)
