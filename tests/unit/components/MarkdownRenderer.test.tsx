@@ -643,7 +643,18 @@ It prints:
     expect(callout?.tagName).toBe('DIV')
     expect(callout?.classList.contains('callout-warning')).toBe(true)
     expect(callout?.getAttribute('data-callout')).toBe('warning')
-    expect(callout?.textContent?.trim()).toBe('Watch out for this edge case.')
+
+    // The callout type has no aria-label (a bare div's implicit ARIA role is
+    // `generic`, which is barred from aria-label/aria-labelledby); instead a
+    // visually-hidden `.sr-only` span carries the type as real text content.
+    const srOnly = callout?.querySelector('.sr-only')
+    expect(srOnly?.tagName).toBe('SPAN')
+    expect(srOnly?.textContent).toBe('warning callout')
+    expect(callout?.hasAttribute('aria-label')).toBe(false)
+
+    expect(callout?.textContent?.replace(srOnly?.textContent ?? '', '').trim()).toBe(
+      'Watch out for this edge case.',
+    )
   })
 
   it('renders a plain blockquote unchanged when there is no callout marker', () => {

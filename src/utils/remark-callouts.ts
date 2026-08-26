@@ -10,8 +10,12 @@ const CALLOUT_MARKER = /^\[!(NOTE|TIP|IMPORTANT|WARNING|DANGER)\]\s*/i
  * re-tags them as `<div class="callout callout-{type}" data-callout="{type}">`
  * so they render as styled boxes instead of plain pull-quotes. The visible
  * label is added entirely in CSS via the `data-callout` attribute (CSS
- * generated content isn't exposed to assistive tech), so an `aria-label` is
- * set here to give screen reader users the callout type.
+ * generated content isn't exposed to assistive tech), so a visually-hidden
+ * text node naming the callout type is injected as the div's first child —
+ * NOT an `aria-label`, because a bare `<div>`'s implicit ARIA role is
+ * `generic`, and `generic` elements are prohibited from having an accessible
+ * name via `aria-label`/`aria-labelledby` (ARIA 1.2): browsers/AT drop it.
+ * Real text content has no such restriction.
  */
 export function remarkCallouts() {
   return (tree: Root) => {
@@ -33,13 +37,21 @@ export function remarkCallouts() {
         node.children.shift()
       }
 
+      node.children.unshift({
+        type: 'paragraph',
+        data: {
+          hName: 'span',
+          hProperties: { className: ['sr-only'] },
+        },
+        children: [{ type: 'text', value: `${type} callout` }],
+      } as Paragraph)
+
       node.data = {
         ...node.data,
         hName: 'div',
         hProperties: {
           className: ['callout', `callout-${type}`],
           dataCallout: type,
-          ariaLabel: `${type} callout`,
         },
       }
     })

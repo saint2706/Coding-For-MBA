@@ -100,6 +100,18 @@
   margin-bottom: 0.5rem;
 }
 
+/* Below 1200px the real lesson page's `.lesson-with-toc` grid collapses to a
+   single column (see navigation.css) and `.toc` itself becomes a floating
+   sticky bottom bar (`.toc-compact`) rather than a 260px column — so the
+   skeleton's `.toc` placeholder, which exists only to reserve that column,
+   must not render there either. Without this it shows as an orphaned
+   full-width card pinned to the bottom of the viewport during loading. */
+@media (max-width: 1200px) {
+  .lesson-skeleton .toc {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .skeleton::after {
     animation: none !important;
@@ -664,6 +676,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  /* Flex items default to min-width: auto, which lets a nowrap text node
+     grow to its full min-content width and overflow the bordered box
+     instead of truncating. min-width: 0 lets it shrink so the ellipsis
+     actually fires for long (user-controlled) search queries. */
+  min-width: 0;
 }
 
 .empty-state-cursor {
