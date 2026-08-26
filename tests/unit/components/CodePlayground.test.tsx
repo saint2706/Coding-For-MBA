@@ -31,8 +31,7 @@ vi.mock('../../../src/utils/confetti', () => ({
 
 // Mock PythonRunner to capture onExecutionComplete
 let capturedOnExecutionComplete:
-  | ((result: { output: string | null; error: string | null }) => void)
-  | undefined
+  ((result: { output: string | null; error: string | null }) => void) | undefined
 const mockRunFn = vi.fn()
 
 interface MockPythonRunnerProps {

@@ -49,8 +49,7 @@ vi.mock('../../../src/components/MermaidDiagram', () => ({
 const syntaxHighlighterMock = vi.fn(
   ({ children, wrapLongLines, codeTagProps, customStyle }: Record<string, unknown>) => {
     const safeCodeTagProps = codeTagProps as
-      | { style?: { whiteSpace?: string; overflowWrap?: string } }
-      | undefined
+      { style?: { whiteSpace?: string; overflowWrap?: string } } | undefined
     const safeCustomStyle = customStyle as { overflowX?: string } | undefined
     return (
       <div
