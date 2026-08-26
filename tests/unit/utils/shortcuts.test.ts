@@ -13,6 +13,14 @@ describe('shortcuts utils', () => {
         expect(shortcut).toHaveProperty('scope')
       })
     })
+
+    it('includes the command palette shortcut in the Global scope', () => {
+      expect(SHORTCUTS).toContainEqual({
+        keys: '⌘K / Ctrl+K',
+        description: 'Open command palette',
+        scope: 'Global',
+      })
+    })
   })
 
   describe('isTypingInEditableElement', () => {

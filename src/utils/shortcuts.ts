@@ -34,6 +34,11 @@ export const SHORTCUTS = [
     scope: 'Global',
   },
   {
+    keys: '⌘K / Ctrl+K',
+    description: 'Open command palette',
+    scope: 'Global',
+  },
+  {
     keys: '/',
     description: 'Focus search input in the navbar',
     scope: 'Search',

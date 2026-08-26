@@ -42,6 +42,7 @@ const Sidebar = lazy(() => import('./components/Sidebar'))
 const MobileNav = lazy(() => import('./components/MobileNav'))
 const KeyboardShortcutsOverlay = lazy(() => import('./components/KeyboardShortcutsOverlay'))
 const CustomCursor = lazy(() => import('./components/CustomCursor'))
+const SearchPalette = lazy(() => import('./components/SearchPalette'))
 
 /**
  * Main application component that sets up routing, layout, and global context providers.
@@ -52,6 +53,7 @@ export default function App() {
   const sidebarDefaultOpen = useUserPreferencesStore((state) => state.sidebarDefaultOpen)
   const customCursorEnabled = useUserPreferencesStore((state) => state.customCursorEnabled)
   const [sidebarOpen, setSidebarOpen] = useState(sidebarDefaultOpen)
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
   const location = useLocation()
 
   useLearningAnalytics(location.pathname)
@@ -86,6 +88,18 @@ export default function App() {
     }
   }, [sidebarOpen])
 
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      const isCmdK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k'
+      if (isCmdK) {
+        event.preventDefault()
+        setCommandPaletteOpen((prev) => !prev)
+      }
+    }
+    window.addEventListener('keydown', handler)
+    return () => window.removeEventListener('keydown', handler)
+  }, [])
+
   return (
     <ThemeProvider>
       <div className="app-layout">
@@ -119,6 +133,7 @@ export default function App() {
           <MobileNav />
           <KeyboardShortcutsOverlay />
           {customCursorEnabled && <CustomCursor />}
+          <SearchPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
         </Suspense>
       </div>
     </ThemeProvider>

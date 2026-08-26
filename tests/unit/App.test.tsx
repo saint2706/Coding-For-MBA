@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { render, screen, act, waitFor } from '@testing-library/react'
+import { render, screen, act, waitFor, fireEvent } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 import App from '../../src/App'
@@ -45,6 +45,16 @@ vi.mock('../../src/components/KeyboardShortcutsOverlay', () => ({
 }))
 vi.mock('../../src/components/CustomCursor', () => ({
   default: () => <div data-testid="custom-cursor">Cursor</div>,
+}))
+vi.mock('../../src/components/SearchPalette', () => ({
+  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+    isOpen ? (
+      <div data-testid="search-palette">
+        <button onClick={onClose} data-testid="close-search-palette">
+          Close
+        </button>
+      </div>
+    ) : null,
 }))
 
 vi.mock('../../src/utils/progressTracker', () => ({ hydrateProgressStore: vi.fn() }))
@@ -360,6 +370,103 @@ describe('App isLesson prop actual', () => {
     })
 
     expect(screen.getByTestId('scroll-progress')).toHaveAttribute('data-is-lesson', 'false')
+  })
+})
+
+describe('App command palette shortcut', () => {
+  it('opens the command palette on Ctrl+K', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    expect(screen.queryByTestId('search-palette')).not.toBeInTheDocument()
+
+    await act(async () => {
+      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+    })
+
+    expect(screen.getByTestId('search-palette')).toBeInTheDocument()
+  })
+
+  it('opens the command palette on Cmd+K (metaKey)', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    await act(async () => {
+      fireEvent.keyDown(window, { key: 'K', metaKey: true })
+    })
+
+    expect(screen.getByTestId('search-palette')).toBeInTheDocument()
+  })
+
+  it('closes the command palette when Ctrl+K is pressed again (toggle)', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    await act(async () => {
+      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+    })
+    expect(screen.getByTestId('search-palette')).toBeInTheDocument()
+
+    await act(async () => {
+      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+    })
+    expect(screen.queryByTestId('search-palette')).not.toBeInTheDocument()
+  })
+
+  it('opens the command palette even while focus is inside an editable element', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    const input = document.createElement('input')
+    document.body.appendChild(input)
+    input.focus()
+
+    await act(async () => {
+      fireEvent.keyDown(input, { key: 'k', ctrlKey: true })
+    })
+
+    expect(screen.getByTestId('search-palette')).toBeInTheDocument()
+    input.remove()
+  })
+
+  it('closes the command palette via its own onClose callback', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    await act(async () => {
+      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+    })
+    expect(screen.getByTestId('search-palette')).toBeInTheDocument()
+
+    await act(async () => {
+      screen.getByTestId('close-search-palette').click()
+    })
+    expect(screen.queryByTestId('search-palette')).not.toBeInTheDocument()
   })
 })
 
