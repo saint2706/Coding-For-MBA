@@ -8,8 +8,10 @@ const CALLOUT_MARKER = /^\[!(NOTE|TIP|IMPORTANT|WARNING|DANGER)\]\s*/i
 /**
  * Detects GitHub-style alert blockquotes (`> [!NOTE]`, `> [!TIP]`, etc.) and
  * re-tags them as `<div class="callout callout-{type}" data-callout="{type}">`
- * so they render as styled boxes instead of plain pull-quotes. The label and
- * icon are added entirely in CSS via the `data-callout` attribute.
+ * so they render as styled boxes instead of plain pull-quotes. The visible
+ * label is added entirely in CSS via the `data-callout` attribute (CSS
+ * generated content isn't exposed to assistive tech), so an `aria-label` is
+ * set here to give screen reader users the callout type.
  */
 export function remarkCallouts() {
   return (tree: Root) => {
@@ -37,6 +39,7 @@ export function remarkCallouts() {
         hProperties: {
           className: ['callout', `callout-${type}`],
           dataCallout: type,
+          'aria-label': `${type} callout`,
         },
       }
     })

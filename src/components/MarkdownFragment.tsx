@@ -615,7 +615,7 @@ const lessonSanitizerSchema: RehypeSanitizeOptions = {
   attributes: {
     a: ['href', 'title', 'target', 'rel'],
     code: ['className', 'dataDiff', 'dataHighlightLines'],
-    div: ['className', 'dataCallout'],
+    div: ['className', 'dataCallout', 'ariaLabel'],
     img: [
       'src',
       'alt',

@@ -169,10 +169,10 @@
 .markdown-body .callout {
   margin: 1.5rem 0;
   padding: 0.85rem 1rem 0.9rem 1.1rem;
-  border: 1px solid var(--border-card);
+  border: var(--rule-hairline);
   border-left: 3px solid var(--callout-accent, var(--accent-primary));
-  border-radius: var(--radius-md);
-  background: var(--callout-bg, var(--bg-secondary));
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
   font-style: normal;
 }
 
@@ -187,56 +187,53 @@
 
 .markdown-body .callout::before {
   display: block;
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-mono);
   text-transform: uppercase;
   color: var(--callout-accent, var(--accent-primary));
+  margin-bottom: 0.35rem;
 }
 
 .markdown-body .callout-note {
-  --callout-accent: #3b82f6;
-  --callout-bg: rgba(59, 130, 246, 0.08);
+  --callout-accent: var(--accent-primary);
 }
 
 .markdown-body .callout-note::before {
-  content: 'ℹ️ Note';
+  content: '# NOTE:';
 }
 
 .markdown-body .callout-tip {
-  --callout-accent: #22c55e;
-  --callout-bg: rgba(34, 197, 94, 0.08);
+  --callout-accent: var(--teal-500);
 }
 
 .markdown-body .callout-tip::before {
-  content: '💡 Tip';
+  content: '# TIP:';
 }
 
 .markdown-body .callout-important {
-  --callout-accent: #a855f7;
-  --callout-bg: rgba(168, 85, 247, 0.08);
+  --callout-accent: var(--accent-primary);
 }
 
 .markdown-body .callout-important::before {
-  content: '📌 Important';
+  content: '# IMPORTANT:';
 }
 
 .markdown-body .callout-warning {
-  --callout-accent: #f59e0b;
-  --callout-bg: rgba(245, 158, 11, 0.08);
+  --callout-accent: var(--amber-500);
 }
 
 .markdown-body .callout-warning::before {
-  content: '⚠️ Warning';
+  content: '# WARNING:';
 }
 
 .markdown-body .callout-danger {
-  --callout-accent: #ef4444;
-  --callout-bg: rgba(239, 68, 68, 0.08);
+  --callout-accent: var(--ruby-500);
 }
 
 .markdown-body .callout-danger::before {
-  content: '🚫 Danger';
+  content: '# DANGER:';
 }
 
 .markdown-body hr {
