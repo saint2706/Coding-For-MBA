@@ -150,6 +150,25 @@ describe('LessonSkeleton', () => {
     expect(srOnly?.textContent).toBe('Loading lesson…')
   })
 
+  it('uses the same page-container/lesson-with-toc box-model classes and a TOC-column placeholder as the real lesson layout, so the container width and 2-column grid do not shift when real content swaps in', () => {
+    act(() => {
+      root?.render(<LessonSkeleton />)
+    })
+
+    const skeletonRoot = container.querySelector('.page-container')
+    expect(skeletonRoot).toBeTruthy()
+    expect(skeletonRoot?.classList.contains('lesson-with-toc')).toBe(true)
+    expect(skeletonRoot?.classList.contains('lesson-skeleton')).toBe(true)
+
+    // Two grid children reserve the same 2-column track layout the real
+    // .lesson-with-toc grid uses (main content + 260px TOC column), instead of
+    // collapsing to a single column while loading.
+    expect(container.querySelector('.lesson-main-content')).toBeTruthy()
+    const tocPlaceholder = container.querySelector('aside.toc')
+    expect(tocPlaceholder).toBeTruthy()
+    expect(tocPlaceholder?.getAttribute('aria-hidden')).toBe('true')
+  })
+
   it('renders every line with the boot-sequence class and a strictly increasing --index', () => {
     act(() => {
       root?.render(<LessonSkeleton />)

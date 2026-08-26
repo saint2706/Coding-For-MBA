@@ -121,9 +121,18 @@ export function PageSkeleton() {
  *
  * Lines are shaped and ordered to roughly match `EditorialLessonHeader`
  * (kicker, headline, deck, byline) plus the header controls row and the
- * markdown article that follow it, so swapping in the real content doesn't
- * shift the page. Each line fades in top-to-bottom with a staggered delay
- * (terminal "boot print" feel) instead of the generic shimmer sweep.
+ * markdown article that follow it. Each line fades in top-to-bottom with a
+ * staggered delay (terminal "boot print" feel) instead of the generic
+ * shimmer sweep.
+ *
+ * The root uses the same `page-container lesson-with-toc` classes as the
+ * real lesson page (`src/pages/Lesson.tsx`) — not the generic `page-skeleton`
+ * wrapper `PageSkeleton` uses — and includes a TOC-column placeholder, so the
+ * container width and 2-column grid are identical between the loading and
+ * loaded states. Without this, the skeleton (single-column, `--content-max-width`
+ * wide) would be ~292px narrower than the real `.lesson-with-toc` layout
+ * (`--content-max-width` + 260px sidebar + gap), producing a width jump and a
+ * 1→2 column reflow the instant real content mounts.
  *
  * @returns {JSX.Element} A lesson-shaped loading skeleton
  */
@@ -136,45 +145,112 @@ export function LessonSkeleton() {
   }
 
   return (
-    <div className="page-skeleton lesson-skeleton" role="status" aria-label="Loading lesson">
-      {/* Breadcrumb */}
-      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="32%" height="12px" />
-      {/* Kicker (Phase N · Phase title) */}
-      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="40%" height="12px" />
-      {/* Headline */}
-      <Skeleton
-        variant="heading"
-        bootSequence
-        bootIndex={nextIndex()}
-        width="72%"
-        height="2.25rem"
-      />
-      {/* Deck (one-sentence objective), two lines */}
-      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="92%" height="18px" />
-      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="58%" height="18px" />
-      {/* Byline (Day · Level · Run time · Read) */}
-      <div style={{ display: 'flex', gap: '1.75rem', marginTop: '0.875rem' }}>
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50px" height="14px" />
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="60px" height="14px" />
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="70px" height="14px" />
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="60px" height="14px" />
+    <div
+      className="page-container lesson-with-toc lesson-skeleton"
+      role="status"
+      aria-label="Loading lesson"
+    >
+      <div className="lesson-main-content">
+        {/* Breadcrumb */}
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="32%" height="12px" />
+        {/* Kicker (Phase N · Phase title) */}
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="40%" height="12px" />
+        {/* Headline */}
+        <Skeleton
+          variant="heading"
+          bootSequence
+          bootIndex={nextIndex()}
+          width="72%"
+          height="2.25rem"
+        />
+        {/* Deck (one-sentence objective), two lines */}
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="92%" height="18px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="58%" height="18px" />
+        {/* Byline (Day · Level · Run time · Read) */}
+        <div style={{ display: 'flex', gap: '1.75rem', marginTop: '0.875rem' }}>
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex()}
+            width="50px"
+            height="14px"
+          />
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex()}
+            width="60px"
+            height="14px"
+          />
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex()}
+            width="70px"
+            height="14px"
+          />
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex()}
+            width="60px"
+            height="14px"
+          />
+        </div>
+        {/* Header controls (complete button, mastery badge, tags) */}
+        <div
+          style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', alignItems: 'center' }}
+        >
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex()}
+            width="140px"
+            height="40px"
+          />
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex()}
+            width="120px"
+            height="24px"
+          />
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex()}
+            width="70px"
+            height="24px"
+          />
+        </div>
+        {/* Article content */}
+        <Skeleton variant="block" bootSequence bootIndex={nextIndex()} height="180px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex(4)} count={4} />
+        <Skeleton variant="block" bootSequence bootIndex={nextIndex()} height="120px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex(3)} count={3} />
+        {/* Prev/next lesson nav */}
+        <div style={{ display: 'flex', gap: '1px', marginTop: '1.5rem' }}>
+          <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50%" height="80px" />
+          <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50%" height="80px" />
+        </div>
       </div>
-      {/* Header controls (complete button, mastery badge, tags) */}
-      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', alignItems: 'center' }}>
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="140px" height="40px" />
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="120px" height="24px" />
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="70px" height="24px" />
-      </div>
-      {/* Article content */}
-      <Skeleton variant="block" bootSequence bootIndex={nextIndex()} height="180px" />
-      <Skeleton variant="text" bootSequence bootIndex={nextIndex(4)} count={4} />
-      <Skeleton variant="block" bootSequence bootIndex={nextIndex()} height="120px" />
-      <Skeleton variant="text" bootSequence bootIndex={nextIndex(3)} count={3} />
-      {/* Prev/next lesson nav */}
-      <div style={{ display: 'flex', gap: '1px', marginTop: '1.5rem' }}>
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50%" height="80px" />
-        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50%" height="80px" />
-      </div>
+      {/* Table-of-contents column placeholder — reserves the real layout's
+          260px sidebar track so the grid stays 2-column through the swap to
+          real content, even though the real TOC (`src/components/TableOfContents.tsx`)
+          may end up rendering nothing if the lesson has too few headings. */}
+      <aside className="toc" aria-hidden="true">
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="55%" height="12px" />
+        <div style={{ marginTop: '0.75rem', display: 'grid', gap: '0.5rem' }}>
+          <Skeleton
+            variant="text"
+            bootSequence
+            bootIndex={nextIndex(4)}
+            count={4}
+            width="85%"
+            height="12px"
+          />
+        </div>
+      </aside>
       <span className="sr-only">Loading lesson…</span>
     </div>
   )

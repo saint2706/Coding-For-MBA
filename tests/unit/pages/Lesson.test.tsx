@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import Lesson from '../../../src/pages/Lesson'
+import { LessonSkeleton } from '../../../src/components/Skeleton'
 
 const { mockSetLastVisited, mockToastSuccess, mockToastInfo, mockFindInteractiveBlocks } =
   vi.hoisted(() => ({
@@ -261,5 +262,53 @@ describe('Lesson completion toasts', () => {
       root.unmount()
     })
     document.body.removeChild(container)
+  })
+})
+
+describe('Lesson / LessonSkeleton layout parity', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockGetCompletedLessons.mockReturnValue([])
+    mockFindInteractiveBlocks.mockReturnValue([])
+    mockGetLessonStats.mockReturnValue({ gotIt: 0, reviewAgain: 0, total: 0 })
+  })
+
+  it('shares the page-container/lesson-with-toc box-model classes with the real lesson page, so the Suspense fallback does not shift width or collapse the 2-column grid when real content swaps in', async () => {
+    const lessonContainer = document.createElement('div')
+    document.body.appendChild(lessonContainer)
+    const lessonRoot = createRoot(lessonContainer)
+
+    await act(async () => {
+      lessonRoot.render(<Lesson />)
+    })
+
+    // .page-container.lesson-with-toc is what src/styles/base.css uses to widen
+    // the container by the 260px TOC column, and what src/styles/navigation.css
+    // uses to switch the container to a 2-column grid.
+    const realRoot = lessonContainer.querySelector('.page-container')
+    expect(realRoot).toBeTruthy()
+    expect(realRoot?.classList.contains('lesson-with-toc')).toBe(true)
+
+    await act(async () => {
+      lessonRoot.unmount()
+    })
+    document.body.removeChild(lessonContainer)
+
+    const skeletonContainer = document.createElement('div')
+    document.body.appendChild(skeletonContainer)
+    const skeletonRoot = createRoot(skeletonContainer)
+
+    act(() => {
+      skeletonRoot.render(<LessonSkeleton />)
+    })
+
+    const skeletonRootEl = skeletonContainer.querySelector('.page-container')
+    expect(skeletonRootEl).toBeTruthy()
+    expect(skeletonRootEl?.classList.contains('lesson-with-toc')).toBe(true)
+
+    act(() => {
+      skeletonRoot.unmount()
+    })
+    document.body.removeChild(skeletonContainer)
   })
 })
