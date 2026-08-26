@@ -14,7 +14,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SkipToContent from './components/SkipToContent'
 import ScrollProgress from './components/ScrollProgress'
-import { PageSkeleton } from './components/Skeleton'
+import { PageSkeleton, LessonSkeleton } from './components/Skeleton'
 import { ThemeProvider } from './context/ThemeProvider'
 import { hydrateProgressStore } from './utils/progressTracker'
 import { hydrateQuizStore } from './stores/quizStore'
@@ -96,7 +96,7 @@ export default function App() {
         </Suspense>
         <Navbar sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
         <main className="main-content" id="main-content" tabIndex={-1}>
-          <Suspense fallback={<PageSkeleton />}>
+          <Suspense fallback={isLesson ? <LessonSkeleton /> : <PageSkeleton />}>
             <Routes location={location}>
               <Route path="/" element={<Home />} />
               <Route path="/curriculum" element={<Curriculum />} />

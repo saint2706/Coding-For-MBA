@@ -26,6 +26,7 @@ vi.mock('../../src/components/ScrollProgress', () => ({
 }))
 vi.mock('../../src/components/Skeleton', () => ({
   PageSkeleton: () => <div data-testid="page-skeleton">Skeleton</div>,
+  LessonSkeleton: () => <div data-testid="lesson-skeleton">LessonSkeleton</div>,
 }))
 vi.mock('../../src/components/Sidebar', () => ({
   default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
@@ -359,5 +360,38 @@ describe('App isLesson prop actual', () => {
     })
 
     expect(screen.getByTestId('scroll-progress')).toHaveAttribute('data-is-lesson', 'false')
+  })
+})
+
+describe('App Suspense fallback', () => {
+  // Each test resets the module registry and re-imports App so the lazy-loaded
+  // route chunks haven't already resolved from an earlier test — otherwise the
+  // fallback never has a chance to render before the "page" mock swaps in.
+  it('shows the lesson boot-sequence skeleton as the Suspense fallback on a lesson route', async () => {
+    vi.resetModules()
+    const AppDynamic = (await import('../../src/App')).default
+
+    render(
+      <MemoryRouter initialEntries={['/lesson/1']}>
+        <AppDynamic />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByTestId('lesson-skeleton')).toBeInTheDocument()
+    expect(screen.queryByTestId('page-skeleton')).not.toBeInTheDocument()
+  })
+
+  it('shows the generic page skeleton as the Suspense fallback on non-lesson routes', async () => {
+    vi.resetModules()
+    const AppDynamic = (await import('../../src/App')).default
+
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <AppDynamic />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByTestId('page-skeleton')).toBeInTheDocument()
+    expect(screen.queryByTestId('lesson-skeleton')).not.toBeInTheDocument()
   })
 })

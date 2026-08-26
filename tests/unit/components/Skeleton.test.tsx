@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
-import Skeleton, { PageSkeleton } from '../../../src/components/Skeleton'
+import Skeleton, { PageSkeleton, LessonSkeleton } from '../../../src/components/Skeleton'
 
 describe('Skeleton', () => {
   let container: HTMLDivElement
@@ -58,6 +58,28 @@ describe('Skeleton', () => {
     expect(skeleton?.style.width).toBe('100px')
     expect(skeleton?.style.height).toBe('50px')
   })
+
+  it('does not apply boot-sequence styling by default', () => {
+    act(() => {
+      root?.render(<Skeleton />)
+    })
+
+    const skeleton = container.querySelector('.skeleton')
+    expect(skeleton?.classList.contains('skeleton-boot')).toBe(false)
+  })
+
+  it('applies the boot-sequence class and a per-line --index custom property when requested', () => {
+    act(() => {
+      root?.render(<Skeleton bootSequence count={3} bootIndex={2} />)
+    })
+
+    const skeletons = container.querySelectorAll('.skeleton')
+    expect(skeletons.length).toBe(3)
+    skeletons.forEach((skeleton, i) => {
+      expect(skeleton.classList.contains('skeleton-boot')).toBe(true)
+      expect((skeleton as HTMLElement).style.getPropertyValue('--index')).toBe(String(2 + i))
+    })
+  })
 })
 
 describe('PageSkeleton', () => {
@@ -94,5 +116,57 @@ describe('PageSkeleton', () => {
     // Check inner skeletons (heading, 3 pills, 1 block, 5 text, 1 block, 3 text) = 14 items
     const innerSkeletons = container.querySelectorAll('.skeleton')
     expect(innerSkeletons.length).toBeGreaterThan(0)
+  })
+})
+
+describe('LessonSkeleton', () => {
+  let container: HTMLDivElement
+  let root: ReturnType<typeof createRoot> | undefined
+
+  beforeEach(() => {
+    container = document.createElement('div')
+    document.body.appendChild(container)
+    root = createRoot(container)
+  })
+
+  afterEach(() => {
+    act(() => {
+      root?.unmount()
+    })
+    document.body.removeChild(container)
+  })
+
+  it('renders the lesson boot-sequence skeleton with correct ARIA roles', () => {
+    act(() => {
+      root?.render(<LessonSkeleton />)
+    })
+
+    const lessonSkeleton = container.querySelector('.lesson-skeleton')
+    expect(lessonSkeleton).toBeTruthy()
+    expect(lessonSkeleton?.getAttribute('role')).toBe('status')
+    expect(lessonSkeleton?.getAttribute('aria-label')).toBe('Loading lesson')
+
+    const srOnly = container.querySelector('.sr-only')
+    expect(srOnly?.textContent).toBe('Loading lesson…')
+  })
+
+  it('renders every line with the boot-sequence class and a strictly increasing --index', () => {
+    act(() => {
+      root?.render(<LessonSkeleton />)
+    })
+
+    const lines = Array.from(container.querySelectorAll('.skeleton'))
+    expect(lines.length).toBeGreaterThan(10)
+
+    const indices = lines.map((line) =>
+      Number((line as HTMLElement).style.getPropertyValue('--index')),
+    )
+
+    lines.forEach((line) => {
+      expect(line.classList.contains('skeleton-boot')).toBe(true)
+    })
+    // Top-to-bottom stagger: each line's index is unique and increasing in DOM order.
+    expect(indices).toEqual([...indices].sort((a, b) => a - b))
+    expect(new Set(indices).size).toBe(indices.length)
   })
 })

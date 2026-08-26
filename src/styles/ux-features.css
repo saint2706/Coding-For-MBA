@@ -63,9 +63,51 @@
   }
 }
 
+/* ---------- Boot-sequence skeleton (lesson route) ----------
+   Lines resolve top-to-bottom like a terminal printing output: staggered
+   opacity fade instead of the horizontal shimmer sweep above. Duration and
+   stagger both derive from --motion-duration-active-fast, so reduced-motion
+   users get every line at full opacity instantly (that token is 0ms there). */
+.skeleton-boot {
+  opacity: 0;
+  animation: skeletonBootIn var(--motion-duration-active-fast) var(--motion-easing-standard)
+    forwards;
+  animation-delay: calc(var(--index, 0) * var(--motion-duration-active-fast) * 0.5);
+}
+
+.skeleton-boot::after {
+  content: none;
+}
+
+@keyframes skeletonBootIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Mono-typeset vertical rhythm: tighter, even line spacing like monospace
+   print output, rather than the looser prose rhythm the shimmer skeleton
+   implies elsewhere — even though the placeholders carry no text. */
+.lesson-skeleton {
+  font-family: var(--font-mono);
+}
+
+.lesson-skeleton .skeleton-text {
+  margin-bottom: 0.5rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .skeleton::after {
     animation: none !important;
+  }
+
+  .skeleton-boot {
+    animation: none !important;
+    opacity: 1 !important;
   }
 
   ::view-transition-old(root),

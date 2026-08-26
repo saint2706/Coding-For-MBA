@@ -7,7 +7,11 @@
  * - Provide multiple variants (text, heading, card, block).
  * - Support custom dimensions and repeat counts.
  * - Render an accessible loading state (aria-hidden).
+ * - Support a "boot sequence" styling mode (lines fade in top-to-bottom,
+ *   staggered, instead of the default shimmer sweep) for the lesson route.
  */
+
+import type { CSSProperties } from 'react'
 
 interface SkeletonProps {
   /** Visual style variant. */
@@ -18,6 +22,18 @@ interface SkeletonProps {
   height?: string
   /** Number of skeleton elements to render. */
   count?: number
+  /**
+   * Terminal-flavored "boot sequence" styling: each rendered line fades in
+   * top-to-bottom with a staggered delay instead of the generic shimmer
+   * sweep. Used for the lesson-content Suspense fallback only.
+   */
+  bootSequence?: boolean
+  /**
+   * Stagger index of the first rendered line, so several `Skeleton` calls
+   * composed together (e.g. in `LessonSkeleton`) can share one continuous
+   * top-to-bottom sequence instead of each restarting at 0.
+   */
+  bootIndex?: number
 }
 
 /**
@@ -30,17 +46,35 @@ interface SkeletonProps {
  * @param {string} [props.width] - Optional custom width (CSS string).
  * @param {string} [props.height] - Optional custom height (CSS string).
  * @param {number} [props.count=1] - Number of skeleton elements to render.
+ * @param {boolean} [props.bootSequence=false] - Use the staggered boot-sequence fade instead of shimmer.
+ * @param {number} [props.bootIndex=0] - Stagger index of the first rendered line.
  * @returns {JSX.Element} The rendered skeleton items.
  */
-export default function Skeleton({ variant = 'text', width, height, count = 1 }: SkeletonProps) {
+export default function Skeleton({
+  variant = 'text',
+  width,
+  height,
+  count = 1,
+  bootSequence = false,
+  bootIndex = 0,
+}: SkeletonProps) {
   const items = Array.from({ length: count }, (_, i) => i)
 
-  const className = `skeleton skeleton-${variant}`
+  const className = `skeleton skeleton-${variant}${bootSequence ? ' skeleton-boot' : ''}`
 
   return (
     <>
       {items.map((i) => (
-        <div key={i} className={className} style={{ width, height }} aria-hidden="true" />
+        <div
+          key={i}
+          className={className}
+          style={
+            bootSequence
+              ? ({ width, height, '--index': bootIndex + i } as CSSProperties)
+              : { width, height }
+          }
+          aria-hidden="true"
+        />
       ))}
     </>
   )
@@ -51,6 +85,9 @@ export default function Skeleton({ variant = 'text', width, height, count = 1 }:
  *
  * Displays a comprehensive page skeleton with heading, metadata pills,
  * content blocks, and text lines to match typical page layout.
+ *
+ * Used as the default Suspense fallback for every route except `/lesson/:dayNum`,
+ * which uses `LessonSkeleton` instead — see `App.tsx`.
  *
  * @returns {JSX.Element} A full-page loading skeleton
  */
@@ -68,6 +105,77 @@ export function PageSkeleton() {
       <Skeleton variant="block" height="120px" />
       <Skeleton variant="text" count={3} />
       <span className="sr-only">Loading…</span>
+    </div>
+  )
+}
+
+/**
+ * Boot-sequence skeleton for the lesson-content Suspense fallback.
+ *
+ * Lesson content loading has no internal async phase of its own — lesson data
+ * is looked up synchronously from the bundled curriculum content the moment
+ * `Lesson` renders (see `src/utils/contentLoader.ts#getLesson`). The only
+ * asynchronous step is the route-level code-split chunk for the `Lesson` page
+ * itself (`React.lazy` in `App.tsx`), so this is a Suspense fallback, not an
+ * internal loading state owned by `Lesson.tsx`.
+ *
+ * Lines are shaped and ordered to roughly match `EditorialLessonHeader`
+ * (kicker, headline, deck, byline) plus the header controls row and the
+ * markdown article that follow it, so swapping in the real content doesn't
+ * shift the page. Each line fades in top-to-bottom with a staggered delay
+ * (terminal "boot print" feel) instead of the generic shimmer sweep.
+ *
+ * @returns {JSX.Element} A lesson-shaped loading skeleton
+ */
+export function LessonSkeleton() {
+  let cursor = 0
+  const nextIndex = (count = 1) => {
+    const start = cursor
+    cursor += count
+    return start
+  }
+
+  return (
+    <div className="page-skeleton lesson-skeleton" role="status" aria-label="Loading lesson">
+      {/* Breadcrumb */}
+      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="32%" height="12px" />
+      {/* Kicker (Phase N · Phase title) */}
+      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="40%" height="12px" />
+      {/* Headline */}
+      <Skeleton
+        variant="heading"
+        bootSequence
+        bootIndex={nextIndex()}
+        width="72%"
+        height="2.25rem"
+      />
+      {/* Deck (one-sentence objective), two lines */}
+      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="92%" height="18px" />
+      <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="58%" height="18px" />
+      {/* Byline (Day · Level · Run time · Read) */}
+      <div style={{ display: 'flex', gap: '1.75rem', marginTop: '0.875rem' }}>
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50px" height="14px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="60px" height="14px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="70px" height="14px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="60px" height="14px" />
+      </div>
+      {/* Header controls (complete button, mastery badge, tags) */}
+      <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', alignItems: 'center' }}>
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="140px" height="40px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="120px" height="24px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="70px" height="24px" />
+      </div>
+      {/* Article content */}
+      <Skeleton variant="block" bootSequence bootIndex={nextIndex()} height="180px" />
+      <Skeleton variant="text" bootSequence bootIndex={nextIndex(4)} count={4} />
+      <Skeleton variant="block" bootSequence bootIndex={nextIndex()} height="120px" />
+      <Skeleton variant="text" bootSequence bootIndex={nextIndex(3)} count={3} />
+      {/* Prev/next lesson nav */}
+      <div style={{ display: 'flex', gap: '1px', marginTop: '1.5rem' }}>
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50%" height="80px" />
+        <Skeleton variant="text" bootSequence bootIndex={nextIndex()} width="50%" height="80px" />
+      </div>
+      <span className="sr-only">Loading lesson…</span>
     </div>
   )
 }
