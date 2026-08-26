@@ -39,7 +39,7 @@ export function remarkCallouts() {
         hProperties: {
           className: ['callout', `callout-${type}`],
           dataCallout: type,
-          'aria-label': `${type} callout`,
+          ariaLabel: `${type} callout`,
         },
       }
     })

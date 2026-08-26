@@ -578,7 +578,7 @@ export const markdownComponents: Components = {
   p: ParagraphWithGlossary,
 }
 
-const lessonSanitizerSchema: RehypeSanitizeOptions = {
+export const lessonSanitizerSchema: RehypeSanitizeOptions = {
   tagNames: [
     'a',
     'blockquote',
