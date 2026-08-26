@@ -169,7 +169,7 @@ export default function SearchResults() {
         </div>
       ) : (
         <div className="search-empty-page glass-card">
-          <SearchEmptyIllustration />
+          <SearchEmptyIllustration variant="awaiting-input" />
           <p>Type at least 2 characters to search.</p>
           <p>Shortcut: press "/" to focus this box and Esc to clear.</p>
         </div>

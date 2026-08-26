@@ -16,8 +16,8 @@ describe('EmptyStateIllustrations', () => {
     it('renders a terminal prompt with a blinking cursor by default', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(false)
       const { container, getByText } = render(<SearchEmptyIllustration className="test-class" />)
-      expect(container.querySelector('.empty-state-illustration')).toBeDefined()
-      expect(container.querySelector('.test-class')).toBeDefined()
+      expect(container.querySelector('.empty-state-illustration')).not.toBeNull()
+      expect(container.querySelector('.test-class')).not.toBeNull()
       expect(getByText('no results found')).toBeDefined()
       const cursor = container.querySelector('.empty-state-cursor')
       expect(cursor).not.toBeNull()
@@ -28,6 +28,13 @@ describe('EmptyStateIllustrations', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(false)
       const { getByText } = render(<SearchEmptyIllustration query="cash flow" />)
       expect(getByText('no results for "cash flow"')).toBeDefined()
+    })
+
+    it('shows an "awaiting input" prompt, never "no results", before a search has run', () => {
+      vi.mocked(motion.useReducedMotion).mockReturnValue(false)
+      const { container, getByText } = render(<SearchEmptyIllustration variant="awaiting-input" />)
+      expect(getByText('enter a search term')).toBeDefined()
+      expect(container.textContent).not.toMatch(/no results/i)
     })
 
     it('collapses the cursor to static under reduced motion', () => {
@@ -57,8 +64,8 @@ describe('EmptyStateIllustrations', () => {
     it('renders a terminal prompt describing the filtered-out state', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(false)
       const { container, getByText } = render(<ExercisesEmptyIllustration className="test-class" />)
-      expect(container.querySelector('.empty-state-illustration')).toBeDefined()
-      expect(container.querySelector('.test-class')).toBeDefined()
+      expect(container.querySelector('.empty-state-illustration')).not.toBeNull()
+      expect(container.querySelector('.test-class')).not.toBeNull()
       expect(getByText('no exercises match these filters')).toBeDefined()
       expect(container.querySelector('.empty-state-cursor')).not.toBeNull()
     })
@@ -78,9 +85,9 @@ describe('EmptyStateIllustrations', () => {
     it('renders a distinct boot-style prompt', () => {
       vi.mocked(motion.useReducedMotion).mockReturnValue(false)
       const { container, getByText } = render(<FreshStartIllustration className="test-class" />)
-      expect(container.querySelector('.empty-state-illustration')).toBeDefined()
-      expect(container.querySelector('.empty-state-illustration--boot')).toBeDefined()
-      expect(container.querySelector('.test-class')).toBeDefined()
+      expect(container.querySelector('.empty-state-illustration')).not.toBeNull()
+      expect(container.querySelector('.empty-state-illustration--boot')).not.toBeNull()
+      expect(container.querySelector('.test-class')).not.toBeNull()
       expect(getByText('ready to start')).toBeDefined()
       expect(container.querySelector('.empty-state-cursor')).not.toBeNull()
     })

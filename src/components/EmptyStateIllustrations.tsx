@@ -55,18 +55,34 @@ function TerminalPrompt({ text, className, boot = false }: TerminalPromptProps) 
 }
 
 interface SearchEmptyIllustrationProps {
-  /** The search query to echo back in the prompt line, if any. */
+  /** The search query to echo back in the prompt line, when a search actually ran. */
   query?: string
+  /**
+   * `'no-results'` (default): a search ran and found nothing — echoes `query` if given.
+   * `'awaiting-input'`: no search has run yet (e.g. query too short) — must not claim
+   * "no results", since none were looked for.
+   */
+  variant?: 'no-results' | 'awaiting-input'
   className?: string
 }
 
 /**
- * Renders a terminal-prompt empty state for a search with no results.
- * @param props - Optional query text to echo and optional className.
+ * Renders a terminal-prompt empty state for the search page: either "no results"
+ * (a search ran and found nothing) or "awaiting input" (not enough query yet).
+ * @param props - Optional query text, variant, and className.
  * @returns A decorative prompt-style illustration.
  */
-export function SearchEmptyIllustration({ query, className = '' }: SearchEmptyIllustrationProps) {
-  const text = query ? `no results for "${query}"` : 'no results found'
+export function SearchEmptyIllustration({
+  query,
+  variant = 'no-results',
+  className = '',
+}: SearchEmptyIllustrationProps) {
+  const text =
+    variant === 'awaiting-input'
+      ? 'enter a search term'
+      : query
+        ? `no results for "${query}"`
+        : 'no results found'
   return <TerminalPrompt text={text} className={className} />
 }
 
