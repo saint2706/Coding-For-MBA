@@ -9,7 +9,7 @@
  * - Initialize global providers (Theme, etc.).
  */
 
-import { useState, useEffect, useLayoutEffect, lazy, Suspense } from 'react'
+import { useState, useEffect, useLayoutEffect, useCallback, lazy, Suspense } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import SkipToContent from './components/SkipToContent'
@@ -101,15 +101,24 @@ export default function App() {
     return () => window.removeEventListener('keydown', handler)
   }, [])
 
+  // Stable handler identities: KeyboardShortcutsOverlay's focus-restore effect
+  // depends on `onClose`, so a fresh inline function on every App render would
+  // re-run (and steal focus from) that effect on unrelated re-renders.
+  const closeSidebar = useCallback(() => setSidebarOpen(false), [])
+  const toggleSidebar = useCallback(() => setSidebarOpen((prev) => !prev), [])
+  const openShortcutsOverlay = useCallback(() => setShortcutsOverlayOpen(true), [])
+  const closeShortcutsOverlay = useCallback(() => setShortcutsOverlayOpen(false), [])
+  const closeCommandPalette = useCallback(() => setCommandPaletteOpen(false), [])
+
   return (
     <ThemeProvider>
       <div className="app-layout">
         <SkipToContent />
         <ScrollProgress isLesson={isLesson} targetSelector={isLesson ? 'article' : undefined} />
         <Suspense fallback={null}>
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
         </Suspense>
-        <Navbar sidebarOpen={sidebarOpen} onToggleSidebar={() => setSidebarOpen((prev) => !prev)} />
+        <Navbar sidebarOpen={sidebarOpen} onToggleSidebar={toggleSidebar} />
         <main className="main-content" id="main-content" tabIndex={-1}>
           <Suspense fallback={isLesson ? <LessonSkeleton /> : <PageSkeleton />}>
             <Routes location={location}>
@@ -134,14 +143,14 @@ export default function App() {
           <MobileNav />
           <KeyboardShortcutsOverlay
             isOpen={shortcutsOverlayOpen}
-            onOpen={() => setShortcutsOverlayOpen(true)}
-            onClose={() => setShortcutsOverlayOpen(false)}
+            onOpen={openShortcutsOverlay}
+            onClose={closeShortcutsOverlay}
           />
           {customCursorEnabled && <CustomCursor />}
           <SearchPalette
             isOpen={commandPaletteOpen}
-            onClose={() => setCommandPaletteOpen(false)}
-            onOpenShortcuts={() => setShortcutsOverlayOpen(true)}
+            onClose={closeCommandPalette}
+            onOpenShortcuts={openShortcutsOverlay}
           />
         </Suspense>
       </div>

@@ -34,7 +34,6 @@ import {
   getAdjacentLessons,
   difficultyConfig,
   getPhase,
-  getLessonsByPhase,
   getCurriculumMetadata,
 } from '../utils/contentLoader'
 import { setLastVisited } from '../utils/progressTracker'
@@ -52,15 +51,10 @@ import RelatedLessons from '../components/RelatedLessons'
 import NotePanel from '../components/NotePanel'
 import { toastInfo, toastSuccess } from '../utils/toast'
 import { isTypingInEditableElement } from '../utils/shortcuts'
-import { useGamificationStore } from '../stores/gamificationStore'
 import { useProgressStore } from '../stores/progressStore'
 import { useMasteryStore } from '../stores/masteryStore'
 import { useUserPreferencesStore } from '../stores/userPreferencesStore'
-import {
-  triggerSparkle,
-  triggerPhaseUnlockConfetti,
-  triggerCurriculumFireworks,
-} from '../utils/confetti'
+import { completeLesson } from '../utils/completeLesson'
 
 /**
  * Lesson page component displaying a single day's lesson.
@@ -139,54 +133,31 @@ export default function Lesson() {
 
   const handleToggleComplete = useCallback(() => {
     const day = dayNum ? dayTokenToProgressId(dayNum) : Number.NaN
-    const beforeCompleted = new Set(useProgressStore.getState().completedLessons)
-    const nowComplete = useProgressStore.getState().toggleLessonComplete(day)
+    const isCurrentlyComplete = useProgressStore.getState().isLessonComplete(day)
+
+    // The mutation (and, on completion, its XP/achievement/celebration side
+    // effects) always runs. `completeLesson` itself is idempotent — it only
+    // fires those side effects when the lesson wasn't already complete — so
+    // a rapid duplicate click can't double-award XP. Only this component's
+    // own toast is suppressed for rapid duplicate clicks, via the debounce
+    // check below.
+    if (isCurrentlyComplete) {
+      useProgressStore.getState().markLessonIncomplete(day)
+    } else {
+      completeLesson(day, { lesson })
+    }
 
     const now = Date.now()
     if (now - lastToastAtRef.current < 400) {
       return
     }
-
     lastToastAtRef.current = now
-    if (nowComplete) {
-      triggerSparkle()
+
+    if (isCurrentlyComplete) {
+      toastInfo('Marked as incomplete')
+    } else {
       toastSuccess('Progress saved ✓')
-      if (!beforeCompleted.has(day)) {
-        useGamificationStore.getState().awardLessonCompletion(day)
-      }
-
-      const afterCompleted = useProgressStore.getState().completedLessons
-      // ⚡ Bolt: Convert array to Set for O(1) lookups during phase completion check, eliminating O(N*M) bottleneck
-      const afterCompletedSet = new Set(afterCompleted)
-      const wasPhaseCompleted = lesson
-        ? getLessonsByPhase(lesson.phase).every((entry) =>
-            beforeCompleted.has(dayTokenToProgressId(entry.day)),
-          )
-        : false
-      const isPhaseCompleted = lesson
-        ? getLessonsByPhase(lesson.phase).every((entry) =>
-            afterCompletedSet.has(dayTokenToProgressId(entry.day)),
-          )
-        : false
-
-      if (lesson && !wasPhaseCompleted && isPhaseCompleted) {
-        // ⚡ Bolt: Convert O(N) phase iteration to an O(1) hash map lookup
-        const hasNextPhase = !!getPhase(lesson.phase + 1)
-        if (hasNextPhase) {
-          triggerPhaseUnlockConfetti()
-          toastSuccess(`Phase ${lesson.phase + 1} unlocked!`)
-        }
-      }
-
-      const totalLessonCount = getCurriculumMetadata().totalDays
-      if (afterCompleted.length === totalLessonCount) {
-        triggerCurriculumFireworks()
-        toastSuccess('Curriculum complete! Incredible work.')
-      }
-      return
     }
-
-    toastInfo('Marked as incomplete')
   }, [dayNum, lesson])
 
   // Keyboard shortcuts: ← prev, → next

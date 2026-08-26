@@ -4,24 +4,31 @@ import { createRoot } from 'react-dom/client'
 import Lesson from '../../../src/pages/Lesson'
 import { LessonSkeleton } from '../../../src/components/Skeleton'
 
-const { mockSetLastVisited, mockToastSuccess, mockToastInfo, mockFindInteractiveBlocks } =
-  vi.hoisted(() => ({
-    mockSetLastVisited: vi.fn(),
-    mockToastSuccess: vi.fn(),
-    mockToastInfo: vi.fn(),
-    mockFindInteractiveBlocks: vi.fn(
-      (): Array<{
-        type: string
-        startIndex: number
-        endIndex: number
-        data: { questionText: string; answer: string }
-      }> => [],
-    ),
-  }))
+const {
+  mockSetLastVisited,
+  mockToastSuccess,
+  mockToastInfo,
+  mockFindInteractiveBlocks,
+  mockCompleteLesson,
+} = vi.hoisted(() => ({
+  mockSetLastVisited: vi.fn(),
+  mockToastSuccess: vi.fn(),
+  mockToastInfo: vi.fn(),
+  mockFindInteractiveBlocks: vi.fn(
+    (): Array<{
+      type: string
+      startIndex: number
+      endIndex: number
+      data: { questionText: string; answer: string }
+    }> => [],
+  ),
+  mockCompleteLesson: vi.fn(),
+}))
 
 const mockGetLessonStats = vi.fn(() => ({ gotIt: 0, reviewAgain: 0, total: 0 }))
 
-const mockToggleLessonComplete = vi.fn()
+const mockIsLessonComplete = vi.fn(() => false)
+const mockMarkLessonIncomplete = vi.fn()
 const mockGetCompletedLessons = vi.fn(() => [])
 
 vi.mock('react-router-dom', () => ({
@@ -65,10 +72,15 @@ vi.mock('../../../src/stores/progressStore', () => ({
     {
       getState: () => ({
         completedLessons: mockGetCompletedLessons(),
-        toggleLessonComplete: mockToggleLessonComplete,
+        isLessonComplete: mockIsLessonComplete,
+        markLessonIncomplete: mockMarkLessonIncomplete,
       }),
     },
   ),
+}))
+
+vi.mock('../../../src/utils/completeLesson', () => ({
+  completeLesson: mockCompleteLesson,
 }))
 
 vi.mock('../../../src/utils/confetti', () => ({
@@ -117,6 +129,7 @@ describe('Lesson completion toasts', () => {
     mockGetCompletedLessons.mockReturnValue([])
     mockFindInteractiveBlocks.mockReturnValue([])
     mockGetLessonStats.mockReturnValue({ gotIt: 0, reviewAgain: 0, total: 0 })
+    mockIsLessonComplete.mockReturnValue(false)
   })
 
   it('renders the note panel for the current lesson', async () => {
@@ -223,10 +236,15 @@ describe('Lesson completion toasts', () => {
     let currentTime = 1000
     const nowSpy = vi.spyOn(Date, 'now').mockImplementation(() => currentTime)
 
-    mockToggleLessonComplete
+    // Click 1: lesson isn't complete yet -> takes the "complete" branch.
+    // Click 2: now complete -> takes the "incomplete" branch, but arrives
+    //   within the 400ms debounce window so its toast is suppressed.
+    // Click 3: still "complete" (click 2's toast was suppressed, not its
+    //   mutation) -> takes the "incomplete" branch again, past the window.
+    mockIsLessonComplete
+      .mockReturnValueOnce(false)
       .mockReturnValueOnce(true)
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(true)
 
     const container = document.createElement('div')
     document.body.appendChild(container)

@@ -30,6 +30,7 @@ import { useDebounce } from '../hooks/useDebounce'
 import { useUserPreferencesStore } from '../stores/userPreferencesStore'
 import { useProgressStore } from '../stores/progressStore'
 import { toastSuccess } from '../utils/toast'
+import { completeLesson } from '../utils/completeLesson'
 
 /**
  * Props for the SearchPalette component.
@@ -57,6 +58,10 @@ interface QuickAction {
 
 /** Matches `/lesson/:dayNum` and captures the raw day token. */
 const LESSON_PATH_PATTERN = /^\/lesson\/([^/]+)\/?$/
+
+/** Same focus-trap selector used by KeyboardShortcutsOverlay. */
+const focusableSelector =
+  'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 /**
  * Command palette search interface.
@@ -86,6 +91,7 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
   const [indexStatus, setIndexStatus] = useState(getSearchIndexStatus)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
+  const paletteRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -106,6 +112,57 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
       })
     }
   }, [isOpen])
+
+  /**
+   * Traps Tab focus within the palette while open, and restores focus to
+   * whatever had it beforehand once the palette closes — same idiom as
+   * `KeyboardShortcutsOverlay`.
+   */
+  useEffect(() => {
+    if (!isOpen) {
+      return
+    }
+
+    const priorFocus = document.activeElement as HTMLElement | null
+
+    const handleOpenKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        onClose()
+        return
+      }
+
+      if (event.key !== 'Tab' || !paletteRef.current) {
+        return
+      }
+
+      const focusables = Array.from(
+        paletteRef.current.querySelectorAll<HTMLElement>(focusableSelector),
+      )
+      if (focusables.length === 0) {
+        event.preventDefault()
+        return
+      }
+
+      const first = focusables[0]!
+      const last = focusables[focusables.length - 1]!
+      const active = document.activeElement
+
+      if (event.shiftKey && active === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    window.addEventListener('keydown', handleOpenKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleOpenKeyDown)
+      priorFocus?.focus()
+    }
+  }, [isOpen, onClose])
 
   /**
    * Computes search results from debounced query.
@@ -187,7 +244,7 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
         hint: '↵',
         icon: CheckCircle,
         onRun: () => {
-          useProgressStore.getState().markLessonComplete(lessonDay)
+          completeLesson(lessonDay)
           onClose()
           toastSuccess(`Day ${lessonDay} marked complete`)
         },
@@ -266,6 +323,9 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
    * Handles keyboard navigation within the search palette. Operates over a
    * single `activeIndex` shared by quick actions and search results, so
    * arrow keys/Enter behave identically regardless of which list is shown.
+   * Escape is handled separately by the focus-trap effect's window-level
+   * listener (so it works no matter which focusable element is active, not
+   * just the input), so it isn't duplicated here.
    *
    * @param e - Keyboard event
    */
@@ -282,10 +342,6 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
       case 'Enter':
         e.preventDefault()
         activateIndex(activeIndex)
-        break
-      case 'Escape':
-        e.preventDefault()
-        onClose()
         break
     }
   }
@@ -369,6 +425,7 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
   return (
     <div className="search-overlay" onClick={onClose} role="presentation">
       <div
+        ref={paletteRef}
         className="search-palette"
         onClick={(e) => e.stopPropagation()}
         role="dialog"

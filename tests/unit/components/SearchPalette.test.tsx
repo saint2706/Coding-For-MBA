@@ -8,6 +8,7 @@ const {
   mockNavigate,
   mockSetReadingMode,
   mockMarkLessonComplete,
+  mockCompleteLesson,
   mockToastSuccess,
   prefsState,
   progressState,
@@ -15,6 +16,7 @@ const {
   mockNavigate: vi.fn(),
   mockSetReadingMode: vi.fn(),
   mockMarkLessonComplete: vi.fn(),
+  mockCompleteLesson: vi.fn(),
   mockToastSuccess: vi.fn(),
   prefsState: { readingMode: false },
   progressState: { completedLessons: [] as number[] },
@@ -97,6 +99,10 @@ vi.mock('../../../src/stores/progressStore', () => ({
 vi.mock('../../../src/utils/toast', () => ({
   toastSuccess: mockToastSuccess,
   toastInfo: vi.fn(),
+}))
+
+vi.mock('../../../src/utils/completeLesson', () => ({
+  completeLesson: mockCompleteLesson,
 }))
 
 describe('SearchPalette', () => {
@@ -438,8 +444,10 @@ describe('SearchPalette', () => {
         fireEvent.click(action)
       })
 
-      expect(mockMarkLessonComplete).toHaveBeenCalledWith('5')
-      expect(progressState.completedLessons).toContain(5)
+      // Runs the shared completion pipeline (markLessonComplete, XP award,
+      // achievement/phase/curriculum celebrations — see completeLesson.test.ts)
+      // rather than mutating the progress store directly.
+      expect(mockCompleteLesson).toHaveBeenCalledWith('5')
       expect(mockToastSuccess).toHaveBeenCalledWith('Day 5 marked complete')
       expect(onClose).toHaveBeenCalled()
     })
@@ -483,6 +491,65 @@ describe('SearchPalette', () => {
 
       expect(queryByText('Go to Curriculum')).not.toBeNull()
       expect(queryByText('Test Lesson')).toBeNull()
+    })
+  })
+
+  describe('focus management', () => {
+    it('restores focus to the previously-focused element when it closes', () => {
+      const trigger = document.createElement('button')
+      trigger.textContent = 'Open search'
+      document.body.appendChild(trigger)
+      trigger.focus()
+      expect(document.activeElement).toBe(trigger)
+
+      const { rerender } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      act(() => {
+        rerender(
+          <MemoryRouter initialEntries={['/']}>
+            <SearchPalette isOpen={false} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+          </MemoryRouter>,
+        )
+      })
+
+      expect(document.activeElement).toBe(trigger)
+      trigger.remove()
+    })
+
+    it('traps Tab focus so it cannot escape to elements outside the palette', () => {
+      const outside = document.createElement('button')
+      outside.textContent = 'Outside'
+      document.body.appendChild(outside)
+
+      const { getByRole, getByLabelText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      const input = getByRole('textbox', { name: /Search/i })
+      const closeBtn = getByLabelText('Close search')
+
+      // Shift+Tab from the first focusable (input) should wrap to the last
+      // (close button), not escape the dialog.
+      input.focus()
+      act(() => {
+        fireEvent.keyDown(input, { key: 'Tab', shiftKey: true })
+      })
+      expect(document.activeElement).toBe(closeBtn)
+
+      // Tab from the last focusable (close button) should wrap back to the
+      // first (input), not escape to `outside`.
+      act(() => {
+        fireEvent.keyDown(closeBtn, { key: 'Tab' })
+      })
+      expect(document.activeElement).toBe(input)
+
+      outside.remove()
     })
   })
 })
