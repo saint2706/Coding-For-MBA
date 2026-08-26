@@ -4,6 +4,22 @@ import { MemoryRouter } from 'react-router-dom'
 import SearchPalette from '../../../src/components/SearchPalette'
 import * as searchIndex from '../../../src/utils/searchIndex'
 
+const {
+  mockNavigate,
+  mockSetReadingMode,
+  mockMarkLessonComplete,
+  mockToastSuccess,
+  prefsState,
+  progressState,
+} = vi.hoisted(() => ({
+  mockNavigate: vi.fn(),
+  mockSetReadingMode: vi.fn(),
+  mockMarkLessonComplete: vi.fn(),
+  mockToastSuccess: vi.fn(),
+  prefsState: { readingMode: false },
+  progressState: { completedLessons: [] as number[] },
+}))
+
 // Mock dependencies
 vi.mock('../../../src/utils/searchIndex', async () => {
   const actual = await vi.importActual('../../../src/utils/searchIndex')
@@ -38,7 +54,6 @@ vi.mock('../../../src/hooks/useDebounce', () => ({
   useDebounce: (val: string) => val,
 }))
 
-const mockNavigate = vi.fn()
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom')
   return {
@@ -47,10 +62,49 @@ vi.mock('react-router-dom', async () => {
   }
 })
 
+vi.mock('../../../src/stores/userPreferencesStore', () => ({
+  useUserPreferencesStore: Object.assign(
+    (selector: (state: { readingMode: boolean }) => unknown) => selector(prefsState),
+    {
+      getState: () => ({
+        readingMode: prefsState.readingMode,
+        setReadingMode: (value: boolean) => {
+          mockSetReadingMode(value)
+          prefsState.readingMode = value
+        },
+      }),
+    },
+  ),
+}))
+
+vi.mock('../../../src/stores/progressStore', () => ({
+  useProgressStore: Object.assign(
+    (selector: (state: { completedLessons: number[] }) => unknown) => selector(progressState),
+    {
+      getState: () => ({
+        completedLessons: progressState.completedLessons,
+        isLessonComplete: (day: string | number) =>
+          progressState.completedLessons.includes(Number(day)),
+        markLessonComplete: (day: string | number) => {
+          mockMarkLessonComplete(day)
+          progressState.completedLessons = [...progressState.completedLessons, Number(day)]
+        },
+      }),
+    },
+  ),
+}))
+
+vi.mock('../../../src/utils/toast', () => ({
+  toastSuccess: mockToastSuccess,
+  toastInfo: vi.fn(),
+}))
+
 describe('SearchPalette', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     window.HTMLElement.prototype.scrollIntoView = vi.fn()
+    prefsState.readingMode = false
+    progressState.completedLessons = []
   })
 
   afterEach(() => {
@@ -60,7 +114,7 @@ describe('SearchPalette', () => {
   it('renders nothing when closed', () => {
     const { container } = render(
       <MemoryRouter>
-        <SearchPalette isOpen={false} onClose={vi.fn()} />
+        <SearchPalette isOpen={false} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
     expect(container.innerHTML).toBe('')
@@ -69,7 +123,7 @@ describe('SearchPalette', () => {
   it('renders input when open', () => {
     const { getByRole } = render(
       <MemoryRouter>
-        <SearchPalette isOpen={true} onClose={vi.fn()} />
+        <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
     expect(getByRole('textbox', { name: /Search/i })).toBeDefined()
@@ -91,7 +145,7 @@ describe('SearchPalette', () => {
 
     const { getByRole, getByText } = render(
       <MemoryRouter>
-        <SearchPalette isOpen={true} onClose={vi.fn()} />
+        <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
 
@@ -105,7 +159,7 @@ describe('SearchPalette', () => {
     expect(getByText('Snippet of plain')).toBeDefined()
   })
 
-  it('handles keyboard navigation', () => {
+  it('handles keyboard navigation over search results', () => {
     vi.mocked(searchIndex.search).mockReturnValue([
       {
         item: { day: '01', title: 'Test Lesson 1', content: 'content1' },
@@ -118,7 +172,7 @@ describe('SearchPalette', () => {
     const onClose = vi.fn()
     const { getByRole, getAllByRole } = render(
       <MemoryRouter>
-        <SearchPalette isOpen={true} onClose={onClose} />
+        <SearchPalette isOpen={true} onClose={onClose} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
 
@@ -182,7 +236,7 @@ describe('SearchPalette', () => {
 
     const { getByRole, getByText } = render(
       <MemoryRouter>
-        <SearchPalette isOpen={true} onClose={vi.fn()} />
+        <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
 
@@ -206,7 +260,7 @@ describe('SearchPalette', () => {
 
     const { getByRole, getByText } = render(
       <MemoryRouter>
-        <SearchPalette isOpen={true} onClose={vi.fn()} />
+        <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
 
@@ -233,7 +287,7 @@ describe('SearchPalette', () => {
     const onClose = vi.fn()
     const { getByRole, getByText } = render(
       <MemoryRouter>
-        <SearchPalette isOpen={true} onClose={onClose} />
+        <SearchPalette isOpen={true} onClose={onClose} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
 
@@ -250,5 +304,185 @@ describe('SearchPalette', () => {
 
     expect(mockNavigate).toHaveBeenCalledWith('/lesson/03')
     expect(onClose).toHaveBeenCalled()
+  })
+
+  describe('quick actions (empty-query state)', () => {
+    it('shows quick actions instead of a blank/type-to-search state when opened with no query', () => {
+      const { getAllByRole, getByText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      // 4 nav actions + reading mode toggle + open shortcuts = 6 (no
+      // mark-complete action since we're not on a lesson route).
+      const options = getAllByRole('option')
+      expect(options).toHaveLength(6)
+      expect(getByText('Go to Curriculum')).toBeDefined()
+      expect(getByText('Go to Progress')).toBeDefined()
+      expect(getByText('Go to Exercises')).toBeDefined()
+      expect(getByText('Go to Settings')).toBeDefined()
+      expect(getByText('Turn reading mode on')).toBeDefined()
+      expect(getByText('Open keyboard shortcuts')).toBeDefined()
+    })
+
+    it('reflects the current reading-mode state in the toggle label', () => {
+      prefsState.readingMode = true
+
+      const { getByText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      expect(getByText('Turn reading mode off')).toBeDefined()
+    })
+
+    it('navigates to Curriculum when that quick action is run', () => {
+      const onClose = vi.fn()
+      const { getByText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={onClose} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      act(() => {
+        fireEvent.click(getByText('Go to Curriculum'))
+      })
+
+      expect(mockNavigate).toHaveBeenCalledWith('/curriculum')
+      expect(onClose).toHaveBeenCalled()
+    })
+
+    it('supports arrow-key navigation and Enter across quick actions, identically to search results', () => {
+      const onClose = vi.fn()
+      const { getByRole, getAllByRole } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={onClose} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      const input = getByRole('textbox', { name: /Search/i })
+      const options = getAllByRole('option')
+      expect(options[0]?.getAttribute('aria-selected')).toBe('true')
+
+      // Move down to the "Go to Progress" action (index 1) and activate it.
+      act(() => {
+        fireEvent.keyDown(input, { key: 'ArrowDown' })
+      })
+      expect(options[1]?.getAttribute('aria-selected')).toBe('true')
+
+      act(() => {
+        fireEvent.keyDown(input, { key: 'Enter' })
+      })
+
+      expect(mockNavigate).toHaveBeenCalledWith('/progress')
+      expect(onClose).toHaveBeenCalled()
+    })
+
+    it('toggles reading mode via getState() and reflects the flip on the store', () => {
+      const onClose = vi.fn()
+      const { getByText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={onClose} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      act(() => {
+        fireEvent.click(getByText('Turn reading mode on'))
+      })
+
+      expect(mockSetReadingMode).toHaveBeenCalledWith(true)
+      expect(prefsState.readingMode).toBe(true)
+      expect(onClose).toHaveBeenCalled()
+    })
+
+    it('opens the keyboard shortcuts overlay via the quick action', () => {
+      const onClose = vi.fn()
+      const onOpenShortcuts = vi.fn()
+      const { getByText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={onClose} onOpenShortcuts={onOpenShortcuts} />
+        </MemoryRouter>,
+      )
+
+      act(() => {
+        fireEvent.click(getByText('Open keyboard shortcuts'))
+      })
+
+      expect(onOpenShortcuts).toHaveBeenCalled()
+      expect(onClose).toHaveBeenCalled()
+    })
+
+    it('does not show a mark-complete action off a lesson page', () => {
+      const { queryByText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      expect(queryByText(/Mark Day .* complete/)).toBeNull()
+    })
+
+    it('shows and runs mark-lesson-complete only on an incomplete lesson page', () => {
+      const onClose = vi.fn()
+      const { getByText } = render(
+        <MemoryRouter initialEntries={['/lesson/5']}>
+          <SearchPalette isOpen={true} onClose={onClose} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      const action = getByText('Mark Day 5 complete')
+
+      act(() => {
+        fireEvent.click(action)
+      })
+
+      expect(mockMarkLessonComplete).toHaveBeenCalledWith('5')
+      expect(progressState.completedLessons).toContain(5)
+      expect(mockToastSuccess).toHaveBeenCalledWith('Day 5 marked complete')
+      expect(onClose).toHaveBeenCalled()
+    })
+
+    it('hides mark-lesson-complete once the lesson is already complete', () => {
+      progressState.completedLessons = [5]
+
+      const { queryByText } = render(
+        <MemoryRouter initialEntries={['/lesson/5']}>
+          <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      expect(queryByText('Mark Day 5 complete')).toBeNull()
+    })
+
+    it('switches from quick actions to search results without leaving stale options mounted', () => {
+      vi.mocked(searchIndex.search).mockReturnValue([
+        { item: { day: '01', title: 'Test Lesson', content: 'content' } },
+      ] as unknown as ReturnType<typeof searchIndex.search>)
+
+      const { getByRole, queryByText, getByText } = render(
+        <MemoryRouter initialEntries={['/']}>
+          <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
+        </MemoryRouter>,
+      )
+
+      expect(queryByText('Go to Curriculum')).not.toBeNull()
+
+      const input = getByRole('textbox', { name: /Search/i })
+      act(() => {
+        fireEvent.change(input, { target: { value: 'test' } })
+      })
+
+      expect(queryByText('Go to Curriculum')).toBeNull()
+      expect(getByText('Test Lesson')).toBeDefined()
+
+      act(() => {
+        fireEvent.change(input, { target: { value: '' } })
+      })
+
+      expect(queryByText('Go to Curriculum')).not.toBeNull()
+      expect(queryByText('Test Lesson')).toBeNull()
+    })
   })
 })

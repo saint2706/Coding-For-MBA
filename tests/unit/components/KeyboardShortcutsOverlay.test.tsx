@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { useState } from 'react'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import KeyboardShortcutsOverlay from '../../../src/components/KeyboardShortcutsOverlay'
@@ -11,6 +12,25 @@ vi.mock('../../../src/utils/shortcuts', () => ({
   ],
   isTypingInEditableElement: vi.fn(),
 }))
+
+/**
+ * `KeyboardShortcutsOverlay` is a controlled component: `isOpen` is owned by
+ * its parent (`App`), and the component reports its own `?` keyboard
+ * trigger via `onOpen` rather than managing local state. This harness
+ * mirrors that contract the same way `App` does, so the existing
+ * keyboard-driven behavior (open via `?`, close via Esc/backdrop/button)
+ * can still be exercised end-to-end.
+ */
+function ControlledHarness() {
+  const [isOpen, setIsOpen] = useState(false)
+  return (
+    <KeyboardShortcutsOverlay
+      isOpen={isOpen}
+      onOpen={() => setIsOpen(true)}
+      onClose={() => setIsOpen(false)}
+    />
+  )
+}
 
 describe('KeyboardShortcutsOverlay', () => {
   let container: HTMLDivElement
@@ -30,22 +50,16 @@ describe('KeyboardShortcutsOverlay', () => {
     vi.clearAllMocks()
   })
 
-  it('renders nothing initially', () => {
+  it('renders nothing when isOpen is false', () => {
     act(() => {
-      root?.render(<KeyboardShortcutsOverlay />)
+      root?.render(<KeyboardShortcutsOverlay isOpen={false} onOpen={vi.fn()} onClose={vi.fn()} />)
     })
     expect(container.innerHTML).toBe('')
   })
 
-  it('opens when ? is pressed', () => {
-    vi.mocked(shortcutsUtils.isTypingInEditableElement).mockReturnValue(false)
-
+  it('renders the dialog when isOpen is true', () => {
     act(() => {
-      root?.render(<KeyboardShortcutsOverlay />)
-    })
-
-    act(() => {
-      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+      root?.render(<KeyboardShortcutsOverlay isOpen={true} onOpen={vi.fn()} onClose={vi.fn()} />)
     })
 
     const dialog = container.querySelector('[role="dialog"]')
@@ -55,11 +69,29 @@ describe('KeyboardShortcutsOverlay', () => {
     expect(dialog?.textContent).toContain('Search')
   })
 
+  it('calls onOpen when ? is pressed (standalone, not just via the palette)', () => {
+    vi.mocked(shortcutsUtils.isTypingInEditableElement).mockReturnValue(false)
+
+    act(() => {
+      root?.render(<ControlledHarness />)
+    })
+
+    expect(container.querySelector('[role="dialog"]')).toBeNull()
+
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))
+    })
+
+    const dialog = container.querySelector('[role="dialog"]')
+    expect(dialog).toBeTruthy()
+    expect(dialog?.textContent).toContain('Keyboard shortcuts')
+  })
+
   it('does not open when typing in input', () => {
     vi.mocked(shortcutsUtils.isTypingInEditableElement).mockReturnValue(true)
 
     act(() => {
-      root?.render(<KeyboardShortcutsOverlay />)
+      root?.render(<ControlledHarness />)
     })
 
     act(() => {
@@ -74,7 +106,7 @@ describe('KeyboardShortcutsOverlay', () => {
     vi.mocked(shortcutsUtils.isTypingInEditableElement).mockReturnValue(false)
 
     act(() => {
-      root?.render(<KeyboardShortcutsOverlay />)
+      root?.render(<ControlledHarness />)
     })
 
     // Open it
@@ -98,7 +130,7 @@ describe('KeyboardShortcutsOverlay', () => {
     vi.mocked(shortcutsUtils.isTypingInEditableElement).mockReturnValue(false)
 
     act(() => {
-      root?.render(<KeyboardShortcutsOverlay />)
+      root?.render(<ControlledHarness />)
     })
 
     // Open it
@@ -120,7 +152,7 @@ describe('KeyboardShortcutsOverlay', () => {
     vi.mocked(shortcutsUtils.isTypingInEditableElement).mockReturnValue(false)
 
     act(() => {
-      root?.render(<KeyboardShortcutsOverlay />)
+      root?.render(<ControlledHarness />)
     })
 
     // Open it
@@ -142,11 +174,39 @@ describe('KeyboardShortcutsOverlay', () => {
     expect(dialog).toBeNull()
   })
 
+  it('opens when isOpen becomes true externally (e.g. triggered by the command palette)', () => {
+    act(() => {
+      root?.render(<KeyboardShortcutsOverlay isOpen={false} onOpen={vi.fn()} onClose={vi.fn()} />)
+    })
+    expect(container.querySelector('[role="dialog"]')).toBeNull()
+
+    act(() => {
+      root?.render(<KeyboardShortcutsOverlay isOpen={true} onOpen={vi.fn()} onClose={vi.fn()} />)
+    })
+
+    const dialog = container.querySelector('[role="dialog"]')
+    expect(dialog).toBeTruthy()
+  })
+
+  it('calls onClose (not a local setter) when closed via Esc while externally controlled', () => {
+    const onClose = vi.fn()
+
+    act(() => {
+      root?.render(<KeyboardShortcutsOverlay isOpen={true} onOpen={vi.fn()} onClose={onClose} />)
+    })
+
+    act(() => {
+      window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+    })
+
+    expect(onClose).toHaveBeenCalled()
+  })
+
   it('traps focus correctly', () => {
     vi.mocked(shortcutsUtils.isTypingInEditableElement).mockReturnValue(false)
 
     act(() => {
-      root?.render(<KeyboardShortcutsOverlay />)
+      root?.render(<ControlledHarness />)
     })
 
     // Open it

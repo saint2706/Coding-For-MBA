@@ -189,6 +189,44 @@
   color: var(--accent-tertiary);
 }
 
+/* ===== SEARCH PALETTE QUICK ACTIONS (empty-query state) ===== */
+
+.search-action-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.search-action-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.search-action-item.active .search-action-icon,
+.search-action-item:hover .search-action-icon {
+  color: var(--accent-primary);
+}
+
+.search-action-label {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.search-action-hint {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
 .search-empty {
   padding: 3rem 1.25rem;
   display: flex;

@@ -5,26 +5,50 @@
  *
  * Key Responsibilities:
  * - List all shortcuts grouped by scope (Global, Search, Lesson).
- * - Handle opening/closing via keyboard (Shift+?) and mouse.
+ * - Handle opening via its own keyboard listener (`?`) or an external
+ *   trigger (e.g. the command palette), and closing via keyboard or mouse.
  * - Manage focus trap within the dialog.
+ *
+ * `isOpen` is owned by the parent (`App`) rather than this component so
+ * other UI — namely `SearchPalette`'s "Open keyboard shortcuts" quick
+ * action — can open the overlay too. This component still owns its `?`
+ * keyboard trigger; it just reports the request via `onOpen` instead of
+ * flipping local state.
  */
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { SHORTCUTS, isTypingInEditableElement, type ShortcutDefinition } from '../utils/shortcuts'
 
 const focusableSelector =
   'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 /**
+ * Props for the KeyboardShortcutsOverlay component.
+ *
+ * @property isOpen - Whether the overlay is visible (owned by the parent).
+ * @property onOpen - Called when the overlay's own `?` shortcut fires.
+ * @property onClose - Called to close the overlay (Esc, backdrop, close button).
+ */
+interface KeyboardShortcutsOverlayProps {
+  isOpen: boolean
+  onOpen: () => void
+  onClose: () => void
+}
+
+/**
  * Keyboard Shortcuts Overlay Component
  *
  * A modal dialog displaying all available keyboard shortcuts.
- * Handled via a global keydown event listener.
+ * Opens via its own global `?` keydown listener or via `isOpen` being set
+ * true by a parent (e.g. the command palette).
  *
  * @returns {JSX.Element | null} The overlay modal, or null if closed.
  */
-export default function KeyboardShortcutsOverlay() {
-  const [isOpen, setIsOpen] = useState(false)
+export default function KeyboardShortcutsOverlay({
+  isOpen,
+  onOpen,
+  onClose,
+}: KeyboardShortcutsOverlayProps) {
   const dialogRef = useRef<HTMLDivElement>(null)
 
   const shortcutsByScope = useMemo(() => {
@@ -46,13 +70,13 @@ export default function KeyboardShortcutsOverlay() {
           return
         }
         event.preventDefault()
-        setIsOpen(true)
+        onOpen()
       }
     }
 
     window.addEventListener('keydown', handleGlobalKeyDown)
     return () => window.removeEventListener('keydown', handleGlobalKeyDown)
-  }, [])
+  }, [onOpen])
 
   useEffect(() => {
     if (!isOpen) {
@@ -67,7 +91,7 @@ export default function KeyboardShortcutsOverlay() {
     const handleOpenKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault()
-        setIsOpen(false)
+        onClose()
         return
       }
 
@@ -101,7 +125,7 @@ export default function KeyboardShortcutsOverlay() {
       window.removeEventListener('keydown', handleOpenKeyDown)
       priorFocus?.focus()
     }
-  }, [isOpen])
+  }, [isOpen, onClose])
 
   if (!isOpen) {
     return null
@@ -113,7 +137,7 @@ export default function KeyboardShortcutsOverlay() {
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget) {
-          setIsOpen(false)
+          onClose()
         }
       }}
     >
@@ -130,7 +154,7 @@ export default function KeyboardShortcutsOverlay() {
             type="button"
             className="shortcut-overlay-close"
             data-shortcuts-close
-            onClick={() => setIsOpen(false)}
+            onClick={onClose}
             aria-label="Close keyboard shortcuts"
           >
             Esc

@@ -2,12 +2,22 @@
  * SearchPalette Component
  *
  * A command palette-style search interface for quickly finding lessons
- * by title, content, tags, or concepts.
+ * by title, content, tags, or concepts — and for running quick actions
+ * (navigation, reading mode, mark-complete, keyboard shortcuts) when the
+ * query is empty.
  */
 
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { MagnifyingGlass, X } from '@phosphor-icons/react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import {
+  MagnifyingGlass,
+  X,
+  Compass,
+  BookOpen,
+  CheckCircle,
+  Keyboard,
+  type Icon,
+} from '@phosphor-icons/react'
 import {
   getSearchSnippet,
   getSearchIndexStatus,
@@ -17,34 +27,55 @@ import {
 } from '../utils/searchIndex'
 import { difficultyConfig } from '../utils/contentLoader'
 import { useDebounce } from '../hooks/useDebounce'
+import { useUserPreferencesStore } from '../stores/userPreferencesStore'
+import { useProgressStore } from '../stores/progressStore'
+import { toastSuccess } from '../utils/toast'
 
 /**
  * Props for the SearchPalette component.
  *
  * @property isOpen - Whether the search palette is visible
  * @property onClose - Callback to close the search palette
+ * @property onOpenShortcuts - Callback to open the keyboard shortcuts overlay
  */
 interface SearchPaletteProps {
   isOpen: boolean
   onClose: () => void
+  onOpenShortcuts: () => void
 }
+
+/**
+ * A single quick action shown in the palette when the query is empty.
+ */
+interface QuickAction {
+  id: string
+  label: string
+  hint?: string
+  icon: Icon
+  onRun: () => void
+}
+
+/** Matches `/lesson/:dayNum` and captures the raw day token. */
+const LESSON_PATH_PATTERN = /^\/lesson\/([^/]+)\/?$/
 
 /**
  * Command palette search interface.
  *
  * Features:
- * - Fuzzy search across lesson titles, content, and tags
- * - Keyboard navigation (arrow keys, enter, escape)
+ * - Quick actions (navigation, reading mode, mark-complete, shortcuts) when the query is empty
+ * - Fuzzy search across lesson titles, content, and tags once the user types
+ * - Keyboard navigation (arrow keys, enter, escape) unified across both lists
  * - Debounced search input
  * - Result highlighting and snippets
- * - Click or keyboard selection to navigate
+ * - Click or keyboard selection to navigate or run an action
  * - Modal overlay with click-outside to close
  *
  * @param isOpen - Controls visibility of the search palette
  * @param onClose - Function to close the palette
+ * @param onOpenShortcuts - Function to open the keyboard shortcuts overlay
  * @returns A modal search interface
  */
-export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
+export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: SearchPaletteProps) {
   const [query, setQuery] = useState('')
 
   // Memoize the reset condition to avoid unnecessary re-runs of useDebounce
@@ -56,6 +87,12 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const readingMode = useUserPreferencesStore((state) => state.readingMode)
+  const completedLessons = useProgressStore((state) => state.completedLessons)
+
+  const isEmptyQuery = query.trim().length === 0
 
   /**
    * Resets search state and focuses input when palette opens.
@@ -78,6 +115,101 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     if (trimmed.length < 2) return []
     return search(trimmed, 10)
   }, [debouncedQuery])
+
+  /**
+   * Builds the quick-actions list shown when the query is empty: navigation
+   * shortcuts, a reading-mode toggle, mark-current-lesson-complete (only on
+   * a lesson page that isn't already complete), and opening the keyboard
+   * shortcuts overlay. Depends on `readingMode`/`completedLessons` (read via
+   * hook selectors so labels/visibility stay fresh) but mutates through
+   * `getState()` at run-time so each action always acts on the latest state.
+   */
+  const quickActions: QuickAction[] = useMemo(() => {
+    const actions: QuickAction[] = [
+      {
+        id: 'goto-curriculum',
+        label: 'Go to Curriculum',
+        hint: '↵',
+        icon: Compass,
+        onRun: () => {
+          onClose()
+          navigate('/curriculum')
+        },
+      },
+      {
+        id: 'goto-progress',
+        label: 'Go to Progress',
+        hint: '↵',
+        icon: Compass,
+        onRun: () => {
+          onClose()
+          navigate('/progress')
+        },
+      },
+      {
+        id: 'goto-exercises',
+        label: 'Go to Exercises',
+        hint: '↵',
+        icon: Compass,
+        onRun: () => {
+          onClose()
+          navigate('/exercises')
+        },
+      },
+      {
+        id: 'goto-settings',
+        label: 'Go to Settings',
+        hint: '↵',
+        icon: Compass,
+        onRun: () => {
+          onClose()
+          navigate('/settings')
+        },
+      },
+      {
+        id: 'toggle-reading-mode',
+        label: readingMode ? 'Turn reading mode off' : 'Turn reading mode on',
+        hint: '↵',
+        icon: BookOpen,
+        onRun: () => {
+          const prefs = useUserPreferencesStore.getState()
+          prefs.setReadingMode(!prefs.readingMode)
+          onClose()
+        },
+      },
+    ]
+
+    const lessonDay = location.pathname.match(LESSON_PATH_PATTERN)?.[1]
+    if (lessonDay && !useProgressStore.getState().isLessonComplete(lessonDay)) {
+      actions.push({
+        id: 'mark-lesson-complete',
+        label: `Mark Day ${lessonDay} complete`,
+        hint: '↵',
+        icon: CheckCircle,
+        onRun: () => {
+          useProgressStore.getState().markLessonComplete(lessonDay)
+          onClose()
+          toastSuccess(`Day ${lessonDay} marked complete`)
+        },
+      })
+    }
+
+    actions.push({
+      id: 'open-shortcuts',
+      label: 'Open keyboard shortcuts',
+      hint: '↵',
+      icon: Keyboard,
+      onRun: () => {
+        onClose()
+        onOpenShortcuts()
+      },
+    })
+
+    return actions
+    // `completedLessons` isn't read directly — it's included so this list
+    // recomputes (and "Mark Day N complete" disappears) once the lesson is
+    // marked complete, since the visibility check below reads the store snapshot.
+  }, [readingMode, completedLessons, location.pathname, navigate, onClose, onOpenShortcuts])
 
   /**
    * Scrolls active result item into view when selection changes.
@@ -114,8 +246,26 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     [navigate, onClose],
   )
 
+  /** Number of entries in whichever list (quick actions or results) is active. */
+  const activeListLength = isEmptyQuery ? quickActions.length : results.length
+
+  /** Runs whichever entry — quick action or search result — is at `index`. */
+  const activateIndex = useCallback(
+    (index: number) => {
+      if (isEmptyQuery) {
+        quickActions[index]?.onRun()
+      } else {
+        const result = results[index]
+        if (result) navigateToResult(result)
+      }
+    },
+    [isEmptyQuery, quickActions, results, navigateToResult],
+  )
+
   /**
-   * Handles keyboard navigation within the search palette.
+   * Handles keyboard navigation within the search palette. Operates over a
+   * single `activeIndex` shared by quick actions and search results, so
+   * arrow keys/Enter behave identically regardless of which list is shown.
    *
    * @param e - Keyboard event
    */
@@ -123,7 +273,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault()
-        setActiveIndex((i) => Math.min(i + 1, results.length - 1))
+        setActiveIndex((i) => Math.min(i + 1, activeListLength - 1))
         break
       case 'ArrowUp':
         e.preventDefault()
@@ -131,9 +281,7 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
         break
       case 'Enter':
         e.preventDefault()
-        if (results[activeIndex]) {
-          navigateToResult(results[activeIndex])
-        }
+        activateIndex(activeIndex)
         break
       case 'Escape':
         e.preventDefault()
@@ -155,6 +303,26 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
     },
     [debouncedQuery],
   )
+
+  const renderedQuickActions = useMemo(() => {
+    return quickActions.map((action, index) => {
+      const ActionIcon = action.icon
+      return (
+        <div
+          key={action.id}
+          id={`search-result-${index}`}
+          className={`search-result-item search-action-item ${index === activeIndex ? 'active' : ''}`}
+          onClick={() => action.onRun()}
+          role="option"
+          aria-selected={index === activeIndex}
+        >
+          <ActionIcon className="search-action-icon" aria-hidden="true" />
+          <span className="search-action-label">{action.label}</span>
+          {action.hint && <kbd className="search-action-hint">{action.hint}</kbd>}
+        </div>
+      )
+    })
+  }, [quickActions, activeIndex])
 
   // ⚡ Bolt: Memoize the search results mapping to prevent recalculation
   // on every keystroke when debouncedQuery hasn't updated yet.
@@ -219,9 +387,11 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
             onKeyDown={handleKeyDown}
             aria-label="Search"
             aria-autocomplete="list"
-            aria-expanded={results.length > 0}
+            aria-expanded={activeListLength > 0}
             aria-controls="search-results"
-            aria-activedescendant={results.length > 0 ? `search-result-${activeIndex}` : undefined}
+            aria-activedescendant={
+              activeListLength > 0 ? `search-result-${activeIndex}` : undefined
+            }
           />
           <kbd className="search-kbd">ESC</kbd>
           <button
@@ -234,33 +404,57 @@ export default function SearchPalette({ isOpen, onClose }: SearchPaletteProps) {
           </button>
         </div>
 
-        {results.length > 0 && (
-          <div className="search-results" id="search-results" ref={listRef} role="listbox">
+        {isEmptyQuery && quickActions.length > 0 && (
+          <div
+            className="search-results"
+            id="search-results"
+            ref={listRef}
+            role="listbox"
+            aria-label="Quick actions"
+          >
+            {renderedQuickActions}
+          </div>
+        )}
+
+        {!isEmptyQuery && results.length > 0 && (
+          <div
+            className="search-results"
+            id="search-results"
+            ref={listRef}
+            role="listbox"
+            aria-label="Search results"
+          >
             {renderedResults}
           </div>
         )}
 
-        {debouncedQuery.trim().length >= 2 && results.length === 0 && !indexStatus.isReady && (
-          <div className="search-empty">
-            <p>
-              Indexing lessons… ({indexStatus.processedCount}/{indexStatus.totalCount})
-            </p>
-          </div>
-        )}
+        {!isEmptyQuery &&
+          debouncedQuery.trim().length >= 2 &&
+          results.length === 0 &&
+          !indexStatus.isReady && (
+            <div className="search-empty">
+              <p>
+                Indexing lessons… ({indexStatus.processedCount}/{indexStatus.totalCount})
+              </p>
+            </div>
+          )}
 
-        {debouncedQuery.trim().length >= 2 && results.length === 0 && indexStatus.isReady && (
-          <div className="search-empty">
-            <MagnifyingGlass className="search-empty-icon" aria-hidden="true" />
-            <p>No results found for &ldquo;{debouncedQuery}&rdquo;</p>
-          </div>
-        )}
+        {!isEmptyQuery &&
+          debouncedQuery.trim().length >= 2 &&
+          results.length === 0 &&
+          indexStatus.isReady && (
+            <div className="search-empty">
+              <MagnifyingGlass className="search-empty-icon" aria-hidden="true" />
+              <p>No results found for &ldquo;{debouncedQuery}&rdquo;</p>
+            </div>
+          )}
 
         <div className="search-footer">
           <span>
             <kbd>↑↓</kbd> Navigate
           </span>
           <span>
-            <kbd>↵</kbd> Open
+            <kbd>↵</kbd> {isEmptyQuery ? 'Run' : 'Open'}
           </span>
           <span>
             <kbd>ESC</kbd> Close

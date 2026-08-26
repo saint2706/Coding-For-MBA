@@ -41,17 +41,36 @@ vi.mock('../../src/components/MobileNav', () => ({
   default: () => <nav data-testid="mobile-nav">MobileNav</nav>,
 }))
 vi.mock('../../src/components/KeyboardShortcutsOverlay', () => ({
-  default: () => <div data-testid="keyboard-shortcuts">Shortcuts</div>,
+  default: ({ isOpen, onClose }: { isOpen: boolean; onOpen: () => void; onClose: () => void }) =>
+    isOpen ? (
+      <div data-testid="keyboard-shortcuts">
+        Shortcuts
+        <button onClick={onClose} data-testid="close-keyboard-shortcuts">
+          Close
+        </button>
+      </div>
+    ) : null,
 }))
 vi.mock('../../src/components/CustomCursor', () => ({
   default: () => <div data-testid="custom-cursor">Cursor</div>,
 }))
 vi.mock('../../src/components/SearchPalette', () => ({
-  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
+  default: ({
+    isOpen,
+    onClose,
+    onOpenShortcuts,
+  }: {
+    isOpen: boolean
+    onClose: () => void
+    onOpenShortcuts: () => void
+  }) =>
     isOpen ? (
       <div data-testid="search-palette">
         <button onClick={onClose} data-testid="close-search-palette">
           Close
+        </button>
+        <button onClick={onOpenShortcuts} data-testid="open-shortcuts-from-palette">
+          Open Shortcuts
         </button>
       </div>
     ) : null,
@@ -467,6 +486,34 @@ describe('App command palette shortcut', () => {
       screen.getByTestId('close-search-palette').click()
     })
     expect(screen.queryByTestId('search-palette')).not.toBeInTheDocument()
+  })
+
+  it('opens the keyboard shortcuts overlay from the command palette quick action', async () => {
+    await act(async () => {
+      render(
+        <MemoryRouter initialEntries={['/']}>
+          <App />
+        </MemoryRouter>,
+      )
+    })
+
+    expect(screen.queryByTestId('keyboard-shortcuts')).not.toBeInTheDocument()
+
+    await act(async () => {
+      fireEvent.keyDown(window, { key: 'k', ctrlKey: true })
+    })
+    expect(screen.getByTestId('search-palette')).toBeInTheDocument()
+
+    await act(async () => {
+      screen.getByTestId('open-shortcuts-from-palette').click()
+    })
+
+    expect(screen.getByTestId('keyboard-shortcuts')).toBeInTheDocument()
+
+    await act(async () => {
+      screen.getByTestId('close-keyboard-shortcuts').click()
+    })
+    expect(screen.queryByTestId('keyboard-shortcuts')).not.toBeInTheDocument()
   })
 })
 

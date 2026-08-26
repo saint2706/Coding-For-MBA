@@ -54,6 +54,7 @@ export default function App() {
   const customCursorEnabled = useUserPreferencesStore((state) => state.customCursorEnabled)
   const [sidebarOpen, setSidebarOpen] = useState(sidebarDefaultOpen)
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
+  const [shortcutsOverlayOpen, setShortcutsOverlayOpen] = useState(false)
   const location = useLocation()
 
   useLearningAnalytics(location.pathname)
@@ -131,9 +132,17 @@ export default function App() {
         </main>
         <Suspense fallback={null}>
           <MobileNav />
-          <KeyboardShortcutsOverlay />
+          <KeyboardShortcutsOverlay
+            isOpen={shortcutsOverlayOpen}
+            onOpen={() => setShortcutsOverlayOpen(true)}
+            onClose={() => setShortcutsOverlayOpen(false)}
+          />
           {customCursorEnabled && <CustomCursor />}
-          <SearchPalette isOpen={commandPaletteOpen} onClose={() => setCommandPaletteOpen(false)} />
+          <SearchPalette
+            isOpen={commandPaletteOpen}
+            onClose={() => setCommandPaletteOpen(false)}
+            onOpenShortcuts={() => setShortcutsOverlayOpen(true)}
+          />
         </Suspense>
       </div>
     </ThemeProvider>
