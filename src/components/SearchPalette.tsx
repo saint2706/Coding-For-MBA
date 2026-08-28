@@ -266,6 +266,7 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
     // `completedLessons` isn't read directly — it's included so this list
     // recomputes (and "Mark Day N complete" disappears) once the lesson is
     // marked complete, since the visibility check below reads the store snapshot.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [readingMode, completedLessons, location.pathname, navigate, onClose, onOpenShortcuts])
 
   /**
@@ -364,6 +365,7 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
     return quickActions.map((action, index) => {
       const ActionIcon = action.icon
       return (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus -- this is an aria-activedescendant listbox: keyboard activation runs through the input's onKeyDown (case 'Enter' -> activateIndex) below, not a per-option handler; the option itself is deliberately not a separate tab stop.
         <div
           key={action.id}
           id={`search-result-${index}`}
@@ -387,6 +389,7 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
       const diff =
         difficultyConfig[result.item.difficulty || 'beginner'] || difficultyConfig.beginner!
       return (
+        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus -- this is an aria-activedescendant listbox: keyboard activation runs through the input's onKeyDown (case 'Enter' -> activateIndex) below, not a per-option handler; the option itself is deliberately not a separate tab stop.
         <div
           key={result.item.day}
           id={`search-result-${index}`}
@@ -423,11 +426,16 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
   if (!isOpen) return null
 
   return (
-    <div className="search-overlay" onClick={onClose} role="presentation">
+    <div
+      className="search-overlay"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose()
+      }}
+      role="presentation"
+    >
       <div
         ref={paletteRef}
         className="search-palette"
-        onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-label="Search lessons"
         aria-modal="true"
@@ -437,6 +445,7 @@ export default function SearchPalette({ isOpen, onClose, onOpenShortcuts }: Sear
           <input
             ref={inputRef}
             type="text"
+            role="combobox"
             className="search-input"
             placeholder="Search lessons, topics, concepts…"
             value={query}

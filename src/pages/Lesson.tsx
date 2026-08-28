@@ -85,6 +85,30 @@ export default function Lesson() {
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completed = dayNum ? completedLessons.includes(dayTokenToProgressId(dayNum)) : false
 
+  // Aggregate Mastery Questions for FAQPage Schema. These hooks must run on
+  // every render (including when `lesson` is missing) to satisfy the Rules
+  // of Hooks, so they're placed above the `!lesson` early return below.
+  const interactiveBlocks = useMemo(
+    () => findInteractiveBlocks(lesson?.content ?? ''),
+    [lesson?.content],
+  )
+  const masteryQuestions = interactiveBlocks
+    .filter((block) => block.type === 'mastery')
+    .map((block) => {
+      const data = block.data as ParsedMasteryQuestion
+      return {
+        question: data.questionText,
+        answer: data.answer,
+      }
+    })
+  const masteryTotal = masteryQuestions.length
+  const masteredCount = useMasteryStore((state) =>
+    masteryTotal > 0 ? state.getLessonStats(lesson?.day ?? '', masteryTotal).gotIt : 0,
+  )
+  const reviewAgainCount = useMasteryStore((state) =>
+    masteryTotal > 0 ? state.getLessonStats(lesson?.day ?? '', masteryTotal).reviewAgain : 0,
+  )
+
   const lastToastAtRef = useRef(0)
 
   useEffect(() => {
@@ -195,18 +219,6 @@ export default function Lesson() {
   const lessonPath = `/lesson/${lesson.day}`
   const showSecondaryUi = !readingMode || nearBottom
 
-  // Aggregate Mastery Questions for FAQPage Schema
-  const interactiveBlocks = useMemo(() => findInteractiveBlocks(lesson.content), [lesson.content])
-  const masteryQuestions = interactiveBlocks
-    .filter((block) => block.type === 'mastery')
-    .map((block) => {
-      const data = block.data as ParsedMasteryQuestion
-      return {
-        question: data.questionText,
-        answer: data.answer,
-      }
-    })
-
   const jsonLdSchemas: Record<string, unknown>[] = [
     buildLessonSchema(
       lessonTitle,
@@ -221,13 +233,6 @@ export default function Lesson() {
     jsonLdSchemas.push(buildFAQSchema(masteryQuestions))
   }
 
-  const masteryTotal = masteryQuestions.length
-  const masteredCount = useMasteryStore((state) =>
-    masteryTotal > 0 ? state.getLessonStats(lesson.day, masteryTotal).gotIt : 0,
-  )
-  const reviewAgainCount = useMasteryStore((state) =>
-    masteryTotal > 0 ? state.getLessonStats(lesson.day, masteryTotal).reviewAgain : 0,
-  )
   const masteryAnsweredCount = masteredCount + reviewAgainCount
 
   return (

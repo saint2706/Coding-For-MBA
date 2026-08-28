@@ -132,7 +132,7 @@ describe('SearchPalette', () => {
         <SearchPalette isOpen={true} onClose={vi.fn()} onOpenShortcuts={vi.fn()} />
       </MemoryRouter>,
     )
-    expect(getByRole('textbox', { name: /Search/i })).toBeDefined()
+    expect(getByRole('combobox', { name: /Search/i })).toBeDefined()
   })
 
   it('shows results for a valid query', () => {
@@ -155,7 +155,7 @@ describe('SearchPalette', () => {
       </MemoryRouter>,
     )
 
-    const input = getByRole('textbox', { name: /Search/i })
+    const input = getByRole('combobox', { name: /Search/i })
 
     act(() => {
       fireEvent.change(input, { target: { value: 'test' } })
@@ -182,7 +182,7 @@ describe('SearchPalette', () => {
       </MemoryRouter>,
     )
 
-    const input = getByRole('textbox', { name: /Search/i })
+    const input = getByRole('combobox', { name: /Search/i })
 
     act(() => {
       fireEvent.change(input, { target: { value: 'test' } })
@@ -246,7 +246,7 @@ describe('SearchPalette', () => {
       </MemoryRouter>,
     )
 
-    const input = getByRole('textbox', { name: /Search/i })
+    const input = getByRole('combobox', { name: /Search/i })
 
     act(() => {
       fireEvent.change(input, { target: { value: 'te' } })
@@ -270,7 +270,7 @@ describe('SearchPalette', () => {
       </MemoryRouter>,
     )
 
-    const input = getByRole('textbox', { name: /Search/i })
+    const input = getByRole('combobox', { name: /Search/i })
 
     act(() => {
       fireEvent.change(input, { target: { value: 'nonexistent' } })
@@ -297,7 +297,7 @@ describe('SearchPalette', () => {
       </MemoryRouter>,
     )
 
-    const input = getByRole('textbox', { name: /Search/i })
+    const input = getByRole('combobox', { name: /Search/i })
 
     act(() => {
       fireEvent.change(input, { target: { value: 'click' } })
@@ -368,7 +368,7 @@ describe('SearchPalette', () => {
         </MemoryRouter>,
       )
 
-      const input = getByRole('textbox', { name: /Search/i })
+      const input = getByRole('combobox', { name: /Search/i })
       const options = getAllByRole('option')
       expect(options[0]?.getAttribute('aria-selected')).toBe('true')
 
@@ -477,7 +477,7 @@ describe('SearchPalette', () => {
 
       expect(queryByText('Go to Curriculum')).not.toBeNull()
 
-      const input = getByRole('textbox', { name: /Search/i })
+      const input = getByRole('combobox', { name: /Search/i })
       act(() => {
         fireEvent.change(input, { target: { value: 'test' } })
       })
@@ -531,7 +531,7 @@ describe('SearchPalette', () => {
         </MemoryRouter>,
       )
 
-      const input = getByRole('textbox', { name: /Search/i })
+      const input = getByRole('combobox', { name: /Search/i })
       const closeBtn = getByLabelText('Close search')
 
       // Shift+Tab from the first focusable (input) should wrap to the last

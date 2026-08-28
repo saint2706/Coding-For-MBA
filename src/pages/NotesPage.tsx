@@ -85,6 +85,7 @@ function NoteCard({
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             rows={5}
+            // eslint-disable-next-line jsx-a11y/no-autofocus -- moves focus into the textarea revealed by the user's own "Edit" click, not on page load
             autoFocus
             aria-label="Edit note content"
           />

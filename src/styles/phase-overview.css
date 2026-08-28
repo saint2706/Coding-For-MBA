@@ -237,17 +237,20 @@
   border-top: 1px solid var(--border-card);
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .phase-spread {
     grid-template-columns: 1fr;
   }
+
   .phase-spread-numeral {
     font-size: 6rem;
   }
+
   .lesson-row {
     grid-template-columns: 2.25rem 1fr auto;
     gap: 0.75rem;
   }
+
   .lesson-row-day,
   .lesson-row-duration {
     display: none;

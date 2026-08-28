@@ -282,10 +282,11 @@ describe('usePyodide', () => {
 
     const controller = new AbortController()
 
-    let resultPromise: Promise<{ output: string; error: string | null }>
-
     // Start execution
-    resultPromise = hookResult!.runPython('sleep', { signal: controller.signal })
+    const resultPromise: Promise<{ output: string; error: string | null }> = hookResult!.runPython(
+      'sleep',
+      { signal: controller.signal },
+    )
 
     // Abort immediately
     controller.abort()

@@ -33,6 +33,7 @@ export const normalizeAndValidateHref = (href?: string | null) => {
 
   // Remove control characters (ASCII 0-31, 127) and trim whitespace.
   // This neutralizes obfuscation attempts like "j\navascript:" or "jav\0ascript:".
+  // eslint-disable-next-line no-control-regex -- matching control characters is the point: this strips them to block obfuscated scheme sniffing
   const normalizedHref = href.replace(/[\x00-\x1F\x7F]/g, '').trim()
 
   if (!normalizedHref || normalizedHref.startsWith('//')) {

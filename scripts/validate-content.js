@@ -181,7 +181,6 @@ export function runValidation(lessonsDir = LESSONS_DIR, { strict = false } = {})
 
   console.log(`\n📋 Validating ${totalFiles} lesson files...\n`)
 
-  const phaseFiles = files.filter((file) => path.basename(file) === 'Phase_Overview.md')
   const lessonFiles = files.filter((file) => path.basename(file) === 'README.md')
   const phaseFileByDir = new Map()
   const phaseMetadata = new Map()

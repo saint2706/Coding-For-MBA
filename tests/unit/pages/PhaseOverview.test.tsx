@@ -37,12 +37,12 @@ vi.mock('motion/react', () => ({
   motion: {
     div: ({
       children,
-      whileInView,
-      initial,
-      viewport,
-      variants,
-      transition,
-      layoutId,
+      whileInView: _whileInView,
+      initial: _initial,
+      viewport: _viewport,
+      variants: _variants,
+      transition: _transition,
+      layoutId: _layoutId,
       ...props
     }: React.ComponentProps<'div'> & {
       whileInView?: unknown

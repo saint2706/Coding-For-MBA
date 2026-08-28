@@ -362,41 +362,41 @@ const ImageWithZoom = (props: JSX.IntrinsicElements['img'] & ExtraProps) => {
 
   return (
     <>
-      <img
-        loading={isHighPriority ? 'eager' : 'lazy'}
-        decoding="async"
-        fetchPriority={isHighPriority ? 'high' : undefined}
-        alt={rest.alt || 'Course image'}
-        className="zoomable-image"
+      <button
+        type="button"
+        className="zoomable-image-btn"
+        disabled={!rest.src}
         onClick={() => rest.src && setZoomed(true)}
-        {...rest}
-      />
+      >
+        <img
+          loading={isHighPriority ? 'eager' : 'lazy'}
+          decoding="async"
+          fetchPriority={isHighPriority ? 'high' : undefined}
+          alt={rest.alt || 'Course image'}
+          className="zoomable-image"
+          {...rest}
+        />
+      </button>
       {zoomed &&
         rest.src &&
         createPortal(
           <div
             className="image-zoom-overlay"
-            onClick={() => setZoomed(false)}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setZoomed(false)
+            }}
             role="presentation"
             aria-label={`Zoomed: ${rest.alt || 'image'}`}
           >
             <button
               type="button"
               className="image-zoom-close"
-              onClick={(e) => {
-                e.stopPropagation()
-                setZoomed(false)
-              }}
+              onClick={() => setZoomed(false)}
               aria-label="Close zoomed image"
             >
               ✕
             </button>
-            <img
-              src={rest.src}
-              alt={rest.alt || 'Course image'}
-              className="image-zoom-content"
-              onClick={(e) => e.stopPropagation()}
-            />
+            <img src={rest.src} alt={rest.alt || 'Course image'} className="image-zoom-content" />
           </div>,
           document.body,
         )}

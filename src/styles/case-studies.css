@@ -113,7 +113,7 @@
 }
 
 /* --- Responsive --- */
-@media (max-width: 600px) {
+@media (width <= 600px) {
   .cs-grid {
     grid-template-columns: 1fr;
   }
@@ -125,7 +125,7 @@
   .cs-tab {
     flex: 1;
     text-align: center;
-    padding: 0.5rem 0.5rem;
+    padding: 0.5rem;
     font-size: 0.8125rem;
   }
 }

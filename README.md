@@ -277,10 +277,10 @@ git clone https://github.com/saint2706/Coding-For-MBA.git
 cd Coding-For-MBA
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start the development server
-npm run dev
+pnpm run dev
 # → App runs at http://localhost:5173
 ```
 
@@ -288,17 +288,18 @@ npm run dev
 
 | Script | What it does |
 |--------|-------------|
-| `npm run dev` | Start local development server |
-| `npm run build` | Production build with typecheck and sitemap generation |
-| `npm run preview` | Preview the production build locally |
-| `npm run lint` | TypeScript compiler check |
-| `npm run format` | Format all code with Prettier |
-| `npm run validate-content` | Verify all 140 lesson files for integrity |
-| `npm test` | Run unit tests (Vitest) |
-| `npm run test:coverage` | Unit tests with coverage report |
-| `npm run test:e2e` | End-to-end tests with Playwright |
-| `npm run analyze` | Generate visual bundle report at `dist/stats.html` |
-| `npm run deploy` | Deploy to GitHub Pages |
+| `pnpm run dev` | Start local development server |
+| `pnpm run build` | Production build with typecheck and sitemap generation |
+| `pnpm run preview` | Preview the production build locally |
+| `pnpm run lint` | ESLint + Stylelint checks |
+| `pnpm run typecheck` | TypeScript compiler check |
+| `pnpm run format` | Format all code with Prettier |
+| `pnpm run validate-content` | Verify all 140 lesson files for integrity |
+| `pnpm test` | Run unit tests (Vitest) |
+| `pnpm run test:coverage` | Unit tests with coverage report |
+| `pnpm run test:e2e` | End-to-end tests with Playwright |
+| `pnpm run analyze` | Generate visual bundle report at `dist/stats.html` |
+| `pnpm run deploy` | Deploy to GitHub Pages |
 
 ---
 
@@ -378,7 +379,7 @@ Six key routes (home, curriculum, phase 1, lesson 1, progress, search) are teste
 To update snapshots after an intentional visual change:
 
 ```bash
-npm run test:e2e -- --project=chromium tests/e2e/visual-smoke.spec.ts --update-snapshots
+pnpm run test:e2e -- --project=chromium tests/e2e/visual-smoke.spec.ts --update-snapshots
 ```
 
 ---

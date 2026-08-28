@@ -34,7 +34,7 @@ jobs:
         uses: ./.github/actions/node-bootstrap
 
       - name: Validate content
-        run: npm run validate-content
+        run: pnpm run validate-content
 
   typecheck:
     runs-on: ubuntu-latest
@@ -49,10 +49,13 @@ jobs:
         uses: ./.github/actions/node-bootstrap
 
       - name: Check formatting
-        run: npm run format:check
+        run: pnpm run format:check
+
+      - name: Lint
+        run: pnpm run lint:ci
 
       - name: Typecheck
-        run: npm run typecheck
+        run: pnpm run typecheck
 
   unit-test:
     runs-on: ubuntu-latest
@@ -67,7 +70,7 @@ jobs:
         uses: ./.github/actions/node-bootstrap
 
       - name: Unit tests
-        run: npm test
+        run: pnpm test
 
   smoke:
     needs: [validate-content, typecheck, unit-test]
@@ -88,17 +91,17 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-playwright-
 
       - name: Install Playwright Chromium
         if: ${{ github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true' }}
-        run: npx playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium
 
       - name: Playwright smoke subset (Chromium)
         if: ${{ github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true' }}
-        run: npm run test:e2e -- --project=chromium --grep '@smoke' --pass-with-no-tests
+        run: pnpm run test:e2e -- --project=chromium --grep '@smoke' --pass-with-no-tests
 
       - name: Upload Playwright HTML report
         if: ${{ failure() && (github.event.inputs.run_playwright_smoke == 'true' || vars.RUN_NIGHTLY_PLAYWRIGHT_SMOKE == 'true') }}

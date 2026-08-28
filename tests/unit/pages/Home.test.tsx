@@ -59,6 +59,7 @@ vi.mock('../../../src/stores/progressStore', () => {
       completedLessons: number[]
       completedLessonsCount: () => number
       streakDays: () => number
+      completionDates: Record<number, string>
     }) => unknown,
   ) =>
     selector({
@@ -66,6 +67,7 @@ vi.mock('../../../src/stores/progressStore', () => {
       completedLessons: Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
       completedLessonsCount: () => mockGetCompletedCount(),
       streakDays: () => 0,
+      completionDates: {},
     })
   storeFn.getState = () => ({
     completedLessons: Array.from({ length: mockGetCompletedCount() }).map((_, i) => i + 1),
@@ -74,6 +76,12 @@ vi.mock('../../../src/stores/progressStore', () => {
   })
   return { useProgressStore: storeFn }
 })
+
+vi.mock('../../../src/stores/learningAnalyticsStore', () => ({
+  useLearningAnalyticsStore: (selector: (state: { todayLearningMs: () => number }) => unknown) =>
+    selector({ todayLearningMs: () => 0 }),
+  formatDuration: (ms: number) => (ms <= 0 ? '0m' : `${Math.round(ms / 60000)}m`),
+}))
 
 vi.mock('../../../src/utils/contentLoader', () => ({
   getCurriculumMetadata: () => ({ totalDays: 1, totalPhases: 1, totalLevels: 1 }),

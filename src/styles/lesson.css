@@ -503,10 +503,11 @@ mark.lesson-search-match-active {
   transition: opacity var(--transition-fast);
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .lesson-nav {
     grid-template-columns: 1fr;
   }
+
   .lesson-nav-btn.next {
     grid-column: 1;
     text-align: left;

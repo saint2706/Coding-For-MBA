@@ -25,12 +25,47 @@ import {
 } from '../utils/contentLoader'
 import { useProgressStore } from '../stores/progressStore'
 import { useGamificationStore } from '../stores/gamificationStore'
+import { useLearningAnalyticsStore, formatDuration } from '../stores/learningAnalyticsStore'
 import { dayTokenToProgressId } from '../utils/dayToken'
+import { streakBlocks } from '../utils/streakBlocks'
 import EditorialCover from '../components/EditorialCover'
 import TerminalDashboard from '../components/TerminalDashboard'
 
 function pad(n: number, width = 2): string {
   return String(n).padStart(width, '0')
+}
+
+function localDayKey(d: Date): string {
+  const year = d.getFullYear()
+  const month = `${d.getMonth() + 1}`.padStart(2, '0')
+  const day = `${d.getDate()}`.padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+/**
+ * Renders the most recent completion date as a coarse, day-granularity
+ * label ("Today" / "Yesterday" / "Aug 27") — matching the day-level
+ * precision `completionDates` actually stores, not a fabricated
+ * "N minutes ago" the app has no data to back up.
+ */
+function lastCompletionLabel(completionDates: Record<number, string> | undefined): string {
+  const dates = Object.values(completionDates ?? {})
+  if (dates.length === 0) return '—'
+
+  const mostRecent = dates.reduce((latest, current) => (current > latest ? current : latest))
+  const now = new Date()
+  const yesterday = new Date(now)
+  yesterday.setDate(yesterday.getDate() - 1)
+
+  if (mostRecent === localDayKey(now)) return 'Today'
+  if (mostRecent === localDayKey(yesterday)) return 'Yesterday'
+
+  const [year, month, day] = mostRecent.split('-').map(Number)
+  if (!year || !month || !day) return '—'
+  return new Date(year, month - 1, day).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+  })
 }
 
 /**
@@ -49,6 +84,8 @@ export default function Home() {
 
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const streakDays = useProgressStore((state) => state.streakDays())
+  const completionDates = useProgressStore((state) => state.completionDates)
+  const todayLearningMs = useLearningAnalyticsStore((state) => state.todayLearningMs())
   const xp = useGamificationStore((state) => state.xpTotal)
   const dailyChallenge = useGamificationStore((state) => state.dailyChallenge)
   const refreshDailyChallenge = useGamificationStore((state) => state.refreshDailyChallenge)
@@ -64,6 +101,8 @@ export default function Home() {
   // via a single accessor. We use completedCount × 4 as a conservative proxy that grows
   // with progress without inventing data.
   const conceptsMastered = completedCount * 4
+
+  const lastSessionLabel = useMemo(() => lastCompletionLabel(completionDates), [completionDates])
 
   useEffect(() => {
     refreshDailyChallenge()
@@ -202,6 +241,22 @@ export default function Home() {
             See the full curriculum
           </Link>
         </EditorialCover.Actions>
+
+        <EditorialCover.Meta>
+          <EditorialCover.MetaItem label="Today" value={formatDuration(todayLearningMs)} />
+          <EditorialCover.MetaItem
+            label="Streak"
+            value={
+              <>
+                <span className="cover-meta-blocks" aria-hidden="true">
+                  {streakBlocks(streakDays)}
+                </span>
+                {pad(streakDays)}d
+              </>
+            }
+          />
+          <EditorialCover.MetaItem label="Last session" value={lastSessionLabel} />
+        </EditorialCover.Meta>
       </EditorialCover>
 
       <hr className="hairline-strong cover-rule" />

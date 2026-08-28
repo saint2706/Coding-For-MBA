@@ -35,10 +35,14 @@ jobs:
 
       - name: Check formatting
         if: matrix.os == 'ubuntu-latest'
-        run: npm run format:check
+        run: pnpm run format:check
+
+      - name: Lint
+        if: matrix.os == 'ubuntu-latest'
+        run: pnpm run lint:ci
 
       - name: Typecheck
-        run: npm run lint:ci
+        run: pnpm run typecheck
 
   validate-content:
     runs-on: ubuntu-latest
@@ -55,7 +59,7 @@ jobs:
           node-version: 22.x
 
       - name: Validate content
-        run: npm run validate-content
+        run: pnpm run validate-content
 
   unit-test:
     runs-on: ${{ matrix.os }}
@@ -82,7 +86,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p test-results coverage
-          npm run test:coverage -- \
+          pnpm run test:coverage -- \
             --reporter=default \
             --reporter=junit \
             --outputFile.junit=./test-results/vitest-junit.xml \

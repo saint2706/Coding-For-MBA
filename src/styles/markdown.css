@@ -33,7 +33,7 @@
   font-weight: 320;
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .markdown-body > p:first-of-type::first-letter {
     font-size: 3em;
   }
@@ -252,7 +252,6 @@
   border-radius: var(--radius-sm);
   color: var(--accent-primary);
   overflow-wrap: anywhere;
-  word-break: break-word;
   font-variant-numeric: tabular-nums;
 }
 
@@ -268,7 +267,6 @@
   background: var(--bg-code);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  word-break: break-word;
 }
 
 .markdown-body pre code {
@@ -352,7 +350,6 @@
   line-height: 1.75 !important;
   white-space: inherit !important;
   overflow-wrap: anywhere !important;
-  word-break: break-word !important;
 }
 
 .markdown-body .code-block--wrapped pre code * {
@@ -364,7 +361,6 @@
 .markdown-body .code-block--wrapped code[class*='language-'] {
   white-space: pre-wrap !important;
   overflow-wrap: anywhere !important;
-  word-break: break-word !important;
 }
 
 .markdown-body .code-block--wrapped code[class*='language-'] * {
@@ -373,17 +369,15 @@
   word-break: inherit !important;
 }
 
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .markdown-body .code-block--wrapped pre {
     white-space: pre-wrap !important;
     overflow-wrap: anywhere !important;
-    word-break: break-word !important;
   }
 
   .markdown-body .code-block--wrapped pre code {
     white-space: pre-wrap !important;
     overflow-wrap: anywhere !important;
-    word-break: break-word !important;
     font-size: 0.8125rem !important;
     line-height: 1.6 !important;
   }
@@ -540,7 +534,7 @@
 
 .markdown-body details summary {
   padding: 0.75rem 1.25rem;
-  background: rgba(67, 97, 238, 0.06);
+  background: rgb(67 97 238 / 6%);
   cursor: pointer;
   font-weight: 600;
   color: var(--accent-tertiary);
@@ -566,7 +560,7 @@
 }
 
 .markdown-body details summary:hover {
-  background: rgba(67, 97, 238, 0.1);
+  background: rgb(67 97 238 / 10%);
 }
 
 .markdown-body details > *:not(summary) {
@@ -607,7 +601,7 @@
   scroll-margin-top: calc(var(--navbar-height) + 1.25rem);
 }
 
-@media (max-width: 900px) {
+@media (width <= 900px) {
   .markdown-body {
     max-width: 100%;
     font-size: clamp(0.98rem, 0.94rem + 0.28vw, 1.03rem);
@@ -764,6 +758,7 @@
 }
 
 /* ===== CODE BLOCK: DIFF + LINE HIGHLIGHTING ===== */
+
 /* Driven by fence meta conventions: ` ```diff `, ` ```python diff `, ` ```python {3,7-9} ` */
 
 .code-block-diff-badge {
@@ -790,7 +785,7 @@
   display: block;
   margin: 0 -1rem;
   padding: 0 1rem;
-  background: rgba(34, 197, 94, 0.14);
+  background: rgb(34 197 94 / 14%);
   border-left: 2px solid #22c55e;
 }
 
@@ -798,7 +793,7 @@
   display: block;
   margin: 0 -1rem;
   padding: 0 1rem;
-  background: rgba(239, 68, 68, 0.14);
+  background: rgb(239 68 68 / 14%);
   border-left: 2px solid #ef4444;
 }
 
@@ -818,7 +813,21 @@
   letter-spacing: var(--tracking-mono);
 }
 
+.zoomable-image-btn {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+  font: inherit;
+}
+
+.zoomable-image-btn:disabled {
+  cursor: default;
+}
+
 .zoomable-image {
+  display: block;
   cursor: zoom-in;
   transition: opacity var(--transition-fast);
 }
@@ -830,7 +839,7 @@
 .image-zoom-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.88);
+  background: rgb(0 0 0 / 88%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -844,6 +853,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -855,7 +865,7 @@
   object-fit: contain;
   border-radius: var(--radius-sm);
   cursor: default;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 25px 60px rgb(0 0 0 / 60%);
   animation: zoom-content-in 0.15s ease;
 }
 
@@ -864,6 +874,7 @@
     transform: scale(0.94);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -874,8 +885,8 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgb(255 255 255 / 12%);
+  border: 1px solid rgb(255 255 255 / 20%);
   border-radius: var(--radius-sm);
   color: white;
   cursor: pointer;
@@ -886,5 +897,5 @@
 }
 
 .image-zoom-close:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgb(255 255 255 / 22%);
 }

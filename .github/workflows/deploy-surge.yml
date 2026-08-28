@@ -25,13 +25,13 @@ jobs:
         uses: ./.github/actions/node-bootstrap
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
         env:
           VITE_BASE_PATH: /
           VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Install Surge
-        run: npm install --global surge@0.43.1
+        run: pnpm add --global surge@0.43.1
 
       - name: Deploy to Surge
         run: surge --project ./dist --domain coding-for-mba.surge.sh

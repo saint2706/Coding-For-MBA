@@ -132,7 +132,7 @@ Delete the entire `===== LEGACY PALETTES (preserved for backward compat) =====` 
 - [ ] Selecting each one visibly changes the whole app (nav, sidebar, cards, lesson reader) — spot-check Home, a Lesson page, and Progress dashboard in each palette.
 - [ ] A user with `peach-sorbet` (or any other legacy id) already in `localStorage` loads the app and lands on a coherent replacement palette (per the remap table) with no console errors and no broken/undefined CSS custom properties (check devtools computed styles for any token showing `unset` or empty).
 - [ ] `high-contrast` palette: run a contrast checker on body text (`--text-primary` on `--bg-primary`) and confirm ≥7:1. Confirm focus rings and `--border-active` are clearly visible against `--bg-card`.
-- [ ] `npm run typecheck` passes (the `ColorPalette` type is used in several places — search for `ColorPalette` and `useUserPreferencesStore` to confirm nothing else hardcodes the old enum, e.g. tests).
+- [ ] `pnpm run typecheck` passes (the `ColorPalette` type is used in several places — search for `ColorPalette` and `useUserPreferencesStore` to confirm nothing else hardcodes the old enum, e.g. tests).
 - [ ] Search the test suite (`tests/unit/**`) for references to any of the 7 removed palette ids or to `PALETTES` in `SettingsPage` and update those tests to match the new 5-entry array.
 
 **Effort:** M (mostly mechanical, but the new CSS blocks need care and the migration needs a real test).
@@ -152,7 +152,7 @@ Delete the entire `===== LEGACY PALETTES (preserved for backward compat) =====` 
 **Acceptance criteria:**
 - [ ] Both files show `#0b0b0c` for theme-color.
 - [ ] Load the app on a mobile browser (or Chrome DevTools device emulation) and confirm the address bar / OS chrome now tints dark ink instead of blue.
-- [ ] `npm run build` still succeeds (manifest.json is copied as a static asset — verify it's not schema-validated at build time in a way that would reject the change).
+- [ ] `pnpm run build` still succeeds (manifest.json is copied as a static asset — verify it's not schema-validated at build time in a way that would reject the change).
 
 **Effort:** S (literally two one-line edits, but don't skip manual verification — this is exactly the kind of "trivial" fix that's easy to typo).
 
@@ -579,7 +579,7 @@ SESSION: {sessionDuration} · STREAK: {streak}d · LAST SYNC: {relativeLastVisit
 - [ ] Filtering (phase/difficulty/keyword) works identically in both views.
 - [ ] Keyboard accessible: sortable headers are real `<button>`s (not `<div onClick>`), with `aria-sort` attributes reflecting current state.
 - [ ] Mobile: table view either horizontally scrolls in a contained way or the toggle defaults to card view below a breakpoint (a dense multi-column table on a narrow viewport is a real usability regression if not handled — decide and document which approach, don't ship an unresponsive table).
-- [ ] `npm run typecheck` and existing Exercises tests (check `tests/unit/` for an `Exercises.test.tsx` or similar) still pass — update tests to cover the new view if the existing suite only covers the card grid.
+- [ ] `pnpm run typecheck` and existing Exercises tests (check `tests/unit/` for an `Exercises.test.tsx` or similar) still pass — update tests to cover the new view if the existing suite only covers the card grid.
 
 **Effort:** L.
 
@@ -604,10 +604,10 @@ SESSION: {sessionDuration} · STREAK: {streak}d · LAST SYNC: {relativeLastVisit
 
 Run before considering *any* phase done:
 
-- [ ] `npm run typecheck` passes.
-- [ ] `npm run format:check` passes (or `npm run format` if it doesn't, then re-check the diff is what you expect).
-- [ ] `npm run test` passes; update/add tests for any component whose props, rendered output, or store schema changed (Phase 0.1's palette schema change and Phase 2's `SearchPalette` changes are the most likely to have existing test coverage that needs updating — search `tests/unit/` for references before assuming there's nothing to update).
-- [ ] `npm run build` succeeds.
+- [ ] `pnpm run typecheck` passes.
+- [ ] `pnpm run format:check` passes (or `pnpm run format` if it doesn't, then re-check the diff is what you expect).
+- [ ] `pnpm run test` passes; update/add tests for any component whose props, rendered output, or store schema changed (Phase 0.1's palette schema change and Phase 2's `SearchPalette` changes are the most likely to have existing test coverage that needs updating — search `tests/unit/` for references before assuming there's nothing to update).
+- [ ] `pnpm run build` succeeds.
 - [ ] Manually verify in a real browser (not just unit tests) for any visual change — this codebase's own session history shows a pattern of "tests pass but visual regression slipped through" being caught by manual browser verification; don't skip it.
 - [ ] For every new/changed color: check it resolves through a `var(--...)` token, not a literal hex, unless it's a documented deliberate exception (like Phase 0.1's `high-contrast` palette).
 - [ ] For every new animation/transition: verify `prefers-reduced-motion: reduce` behavior explicitly (OS setting or DevTools emulation), don't assume the existing token system (`--motion-duration-active-*`) automatically covers a hand-rolled animation that doesn't reference those tokens.

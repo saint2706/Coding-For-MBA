@@ -1,4 +1,5 @@
 /* ===== Print-Friendly Stylesheet ===== */
+
 /* Clean PDF / print output for offline study */
 
 @media print {
@@ -66,7 +67,7 @@
   code {
     font-size: 9pt !important;
     white-space: pre-wrap !important;
-    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
     border: 1px solid #ddd !important;
     background: #f8f8f8 !important;
     color: #333 !important;
@@ -84,16 +85,16 @@
   h1,
   h2,
   h3 {
-    page-break-after: avoid;
+    break-after: avoid;
     color: black !important;
   }
 
   .lesson-body {
-    page-break-inside: auto;
+    break-inside: auto;
   }
 
   img {
     max-width: 100% !important;
-    page-break-inside: avoid;
+    break-inside: avoid;
   }
 }
