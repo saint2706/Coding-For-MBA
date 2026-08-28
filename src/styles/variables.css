@@ -240,7 +240,7 @@
   --text-secondary: var(--ink-500);
   --text-muted: var(--ink-400);
   --text-heading: var(--ink-900);
-  --text-on-accent: var(--ink-900); /* signal lime is dark-only foreground */
+  --text-on-accent: var(--bone-50); /* accent-primary is ink here, so foreground must be light */
   --text-on-brand: var(--ink-900);
   --accent-primary: var(--ink-900); /* on light, ink is the primary */
   --accent-secondary: var(--ink-700);
