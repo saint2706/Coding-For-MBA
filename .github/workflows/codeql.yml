@@ -42,7 +42,7 @@ jobs:
         uses: ./.github/actions/node-bootstrap
 
       - name: Build project
-        run: npm run build
+        run: pnpm run build
 
       - name: Perform CodeQL Analysis
         # Code scanning / GitHub Advanced Security isn't enabled for this repo

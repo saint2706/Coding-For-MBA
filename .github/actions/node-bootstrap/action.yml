@@ -1,5 +1,5 @@
 name: Node bootstrap
-description: Configure Node.js with npm cache and install dependencies.
+description: Configure Node.js and pnpm, with caching, and install dependencies.
 inputs:
   node-version:
     description: Node.js version to install.
@@ -9,20 +9,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+
     - name: Setup Node
       uses: actions/setup-node@v7
       with:
         node-version: ${{ inputs.node-version }}
-        cache: npm
-
-    - name: Cache node_modules
-      id: npm-cache
-      uses: actions/cache@v6
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-modules-${{ inputs.node-version }}-${{ hashFiles('**/package-lock.json') }}
+        cache: pnpm
 
     - name: Install dependencies
-      if: steps.npm-cache.outputs.cache-hit != 'true'
       shell: bash
-      run: npm ci
+      run: pnpm install --frozen-lockfile

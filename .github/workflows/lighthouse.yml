@@ -27,15 +27,15 @@ jobs:
         uses: ./.github/actions/node-bootstrap
 
       - name: Build site
-        run: VITE_BASE_PATH=/ npm run build
+        run: VITE_BASE_PATH=/ pnpm run build
 
       - name: Serve dist
         run: |
-          VITE_BASE_PATH=/ npm run preview -- --host 127.0.0.1 >/tmp/serve.log 2>&1 &
-          npx --yes wait-on@9 http://127.0.0.1:4173
+          VITE_BASE_PATH=/ pnpm run preview -- --host 127.0.0.1 >/tmp/serve.log 2>&1 &
+          pnpm dlx wait-on@9 http://127.0.0.1:4173
 
       - name: Run Lighthouse CI
-        run: npx --yes @lhci/cli@0.15.x autorun --config=./lighthouserc.json
+        run: pnpm dlx @lhci/cli@0.15.x autorun --config=./lighthouserc.json
 
       - name: Upload Lighthouse report artifact
         if: always()

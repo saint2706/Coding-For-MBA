@@ -7,7 +7,7 @@
  * Uses rollup-plugin-visualizer (already a dev dependency).
  *
  * Usage:
- *   npm run analyze:report
+ *   pnpm run analyze:report
  *   node scripts/analyze-bundle.js
  */
 
@@ -23,7 +23,7 @@ const reportPath = resolve(root, 'dist/stats.html')
 console.log('🔍 Running bundle analysis build...\n')
 
 try {
-  execSync('npm run analyze', { cwd: root, stdio: 'inherit' })
+  execSync('pnpm run analyze', { cwd: root, stdio: 'inherit' })
 } catch {
   console.error('\n❌ Build failed. Fix errors and retry.')
   process.exit(1)
