@@ -86,7 +86,7 @@ jobs:
         shell: bash
         run: |
           mkdir -p test-results coverage
-          pnpm run test:coverage -- \
+          pnpm run test:coverage \
             --reporter=default \
             --reporter=junit \
             --outputFile.junit=./test-results/vitest-junit.xml \
