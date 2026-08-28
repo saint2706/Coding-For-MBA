@@ -533,6 +533,10 @@ describe('App Suspense fallback', () => {
 
     expect(screen.getByTestId('lesson-skeleton')).toBeInTheDocument()
     expect(screen.queryByTestId('page-skeleton')).not.toBeInTheDocument()
+
+    // Flush the lazy import's resolution inside act() now that the fallback
+    // has been observed, so the state update doesn't leak into a later test.
+    await act(async () => {})
   })
 
   it('shows the generic page skeleton as the Suspense fallback on non-lesson routes', async () => {
@@ -547,5 +551,9 @@ describe('App Suspense fallback', () => {
 
     expect(screen.getByTestId('page-skeleton')).toBeInTheDocument()
     expect(screen.queryByTestId('lesson-skeleton')).not.toBeInTheDocument()
+
+    // Flush the lazy import's resolution inside act() now that the fallback
+    // has been observed, so the state update doesn't leak into a later test.
+    await act(async () => {})
   })
 })
