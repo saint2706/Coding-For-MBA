@@ -1,6 +1,6 @@
 /* ===== ANIMATIONS ===== */
 
-@keyframes fadeInUp {
+@keyframes fade-in-up {
   from {
     opacity: 0;
     transform: translateY(16px);
@@ -13,11 +13,11 @@
 }
 
 .animate-in {
-  animation: fadeInUp var(--motion-duration-active-card-entrance) ease-out forwards;
+  animation: fade-in-up var(--motion-duration-active-card-entrance) ease-out forwards;
 }
 
 .phase-card {
-  animation: fadeInUp var(--motion-duration-active-standard) ease-out backwards;
+  animation: fade-in-up var(--motion-duration-active-standard) ease-out backwards;
 }
 
 .phase-card:nth-child(1) {

@@ -9,7 +9,9 @@
     "build": "node scripts/generate-llms-txt.js && node scripts/generate-sitemap.js && tsc -b && vite build",
     "analyze": "node scripts/generate-llms-txt.js && node scripts/generate-sitemap.js && tsc -b && vite build --mode analyze",
     "analyze:report": "node scripts/analyze-bundle.js",
-    "lint": "npm run typecheck",
+    "lint": "eslint . && stylelint \"src/**/*.css\"",
+    "lint:fix": "eslint . --fix && stylelint \"src/**/*.css\" --fix",
+    "lint:ci": "npm run lint",
     "typecheck": "tsc -b",
     "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" \"tests/unit/**/*.{ts,tsx}\"",
@@ -26,7 +28,6 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:report": "playwright show-report",
     "prepare": "husky",
-    "lint:ci": "npm run typecheck",
     "typecheck:staged": "node -e \"require('child_process').spawnSync('npm',['run','typecheck'],{stdio:'inherit',shell:true})\""
   },
   "dependencies": {
@@ -71,9 +72,24 @@
     "esbuild": "^0.28.1",
     "nanoid": "^3.3.18",
     "undici": "^7.29.0",
-    "postcss": "^8.5.26"
+    "postcss": "^8.5.26",
+    "eslint": {
+      "minimatch": "^10.2.6"
+    },
+    "@eslint/eslintrc": {
+      "minimatch": "^10.2.6"
+    },
+    "@eslint/config-array": {
+      "minimatch": "^10.2.6"
+    },
+    "eslint-plugin-jsx-a11y": {
+      "minimatch": {
+        "brace-expansion": "^1.1.12"
+      }
+    }
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.62.1",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.2",
@@ -88,6 +104,11 @@
     "@vitejs/plugin-react": "^6.1.0",
     "@vitest/coverage-v8": "^4.1.11",
     "beasties": "^0.4.2",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.5",
     "gh-pages": "^6.3.0",
     "globals": "^17.11.0",
     "husky": "^9.1.7",
@@ -95,13 +116,22 @@
     "lint-staged": "^17.3.0",
     "prettier": "^3.9.6",
     "rollup-plugin-visualizer": "^7.1.1",
+    "stylelint": "^17.14.1",
+    "stylelint-config-standard": "^40.0.0",
     "typescript": "~5.6.3",
+    "typescript-eslint": "^8.68.0",
     "vite": "^8.2.2",
     "vitest": "^4.1.11"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx,css,md,json}": [
       "prettier --write"
+    ],
+    "*.{ts,tsx,js,cjs}": [
+      "eslint --fix"
+    ],
+    "*.css": [
+      "stylelint --fix"
     ],
     "*.{ts,tsx}": [
       "npm run typecheck:staged"

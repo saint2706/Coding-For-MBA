@@ -280,16 +280,19 @@
   color: var(--accent-primary);
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .curriculum-phase-header {
     grid-template-columns: 1fr;
   }
+
   .curriculum-phase-num {
     font-size: 3.25rem;
   }
+
   .curriculum-day-link {
     grid-template-columns: 2rem 1fr;
   }
+
   .curriculum-day-num {
     display: none;
   }

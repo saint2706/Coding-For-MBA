@@ -89,12 +89,12 @@
   --accent-tertiary: var(--amber-500);
   --accent-signal: var(--signal-500);
   --accent-amber: var(--amber-500);
-  --accent-glow: rgba(212, 255, 63, 0.18);
+  --accent-glow: rgb(212 255 63 / 18%);
 
   /* Borders — hairline rules instead of card shadows */
-  --border-subtle: rgba(232, 228, 216, 0.08);
-  --border-card: rgba(232, 228, 216, 0.14);
-  --border-active: rgba(212, 255, 63, 0.45);
+  --border-subtle: rgb(232 228 216 / 8%);
+  --border-card: rgb(232 228 216 / 14%);
+  --border-active: rgb(212 255 63 / 45%);
   --rule-hairline: 1px solid var(--border-subtle);
   --rule-strong: 1px solid var(--border-card);
 
@@ -104,8 +104,8 @@
   --gradient-glow: none;
   --gradient-logo: none;
   --gradient-concept-bg:
-    radial-gradient(ellipse at 30% 20%, rgba(212, 255, 63, 0.06), transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(255, 176, 0, 0.04), transparent 50%);
+    radial-gradient(ellipse at 30% 20%, rgb(212 255 63 / 6%), transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgb(255 176 0 / 4%), transparent 50%);
 
   /* Reading-first palette (slightly warmer ink for longform) */
   --reading-theme-bg-primary: var(--ink-900);
@@ -116,14 +116,14 @@
   --reading-theme-accent-primary: var(--signal-300);
   --reading-theme-accent-secondary: var(--bone-300);
   --reading-theme-accent-tertiary: var(--amber-500);
-  --reading-theme-border-subtle: rgba(232, 228, 216, 0.06);
-  --reading-theme-border-card: rgba(232, 228, 216, 0.1);
-  --reading-theme-border-active: rgba(212, 255, 63, 0.32);
-  --reading-theme-accent-glow: rgba(212, 255, 63, 0.08);
+  --reading-theme-border-subtle: rgb(232 228 216 / 6%);
+  --reading-theme-border-card: rgb(232 228 216 / 10%);
+  --reading-theme-border-active: rgb(212 255 63 / 32%);
+  --reading-theme-accent-glow: rgb(212 255 63 / 8%);
 
   /* Shadows — kept minimal; hairlines preferred */
   --shadow-card: 0 1px 0 0 var(--border-subtle);
-  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 12px 32px rgb(0 0 0 / 50%);
   --shadow-glow: 0 0 0 1px var(--border-active);
 
   /* Layout — magazine-grade widths */
@@ -164,7 +164,7 @@
   /* Typography — only two families: distinctive serif × terminal mono.
      No Inter, no Roboto, no Arial. (frontend-design skill: avoid generic AI fonts.) */
   --font-display:
-    'Fraunces Variable', 'Fraunces', 'Iowan Old Style', 'Source Serif Pro', Georgia, serif;
+    'Fraunces Variable', 'Fraunces', 'Iowan Old Style', 'Source Serif Pro', georgia, serif;
   --font-body: var(--font-display);
   --font-mono:
     'JetBrains Mono Variable', 'JetBrains Mono', 'IBM Plex Mono', 'Berkeley Mono', ui-monospace,
@@ -206,24 +206,24 @@
   --accent-primary: var(--signal-500);
   --accent-secondary: var(--signal-300);
   --accent-tertiary: var(--amber-500);
-  --accent-glow: rgba(212, 255, 63, 0.18);
-  --border-subtle: rgba(232, 228, 216, 0.08);
-  --border-card: rgba(232, 228, 216, 0.14);
-  --border-active: rgba(212, 255, 63, 0.45);
+  --accent-glow: rgb(212 255 63 / 18%);
+  --border-subtle: rgb(232 228 216 / 8%);
+  --border-card: rgb(232 228 216 / 14%);
+  --border-active: rgb(212 255 63 / 45%);
   --gradient-hero: none;
   --gradient-card: none;
   --gradient-glow: none;
   --gradient-logo: none;
   --shadow-card: 0 1px 0 0 var(--border-subtle);
-  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 12px 32px rgb(0 0 0 / 50%);
   --shadow-glow: 0 0 0 1px var(--border-active);
   --reading-bg-primary: var(--ink-900);
   --reading-bg-surface: var(--ink-800);
   --reading-bg-code: var(--ink-700);
-  --reading-border-subtle: rgba(232, 228, 216, 0.06);
-  --reading-border-card: rgba(232, 228, 216, 0.1);
-  --reading-border-active: rgba(212, 255, 63, 0.32);
-  --reading-accent-glow: rgba(212, 255, 63, 0.08);
+  --reading-border-subtle: rgb(232 228 216 / 6%);
+  --reading-border-card: rgb(232 228 216 / 10%);
+  --reading-border-active: rgb(212 255 63 / 32%);
+  --reading-accent-glow: rgb(212 255 63 / 8%);
 }
 
 /* --- Bone Light — warm cream paper with ink type --- */
@@ -245,24 +245,25 @@
   --accent-primary: var(--ink-900); /* on light, ink is the primary */
   --accent-secondary: var(--ink-700);
   --accent-tertiary: var(--signal-700); /* darker lime as link color */
-  --accent-glow: rgba(11, 11, 12, 0.12);
-  --border-subtle: rgba(11, 11, 12, 0.1);
-  --border-card: rgba(11, 11, 12, 0.16);
+  --accent-glow: rgb(11 11 12 / 12%);
+  --border-subtle: rgb(11 11 12 / 10%);
+  --border-card: rgb(11 11 12 / 16%);
   --border-active: var(--ink-900);
   --gradient-hero: none;
   --gradient-card: none;
   --gradient-glow: none;
   --gradient-logo: none;
   --shadow-card: 0 1px 0 0 var(--border-subtle);
-  --shadow-elevated: 0 16px 40px rgba(11, 11, 12, 0.08);
+  --shadow-elevated: 0 16px 40px rgb(11 11 12 / 8%);
   --shadow-glow: 0 0 0 1px var(--ink-900);
   --reading-bg-primary: var(--bone-50);
   --reading-bg-surface: #fbfaf2;
   --reading-bg-code: var(--bone-200);
-  --reading-border-subtle: rgba(11, 11, 12, 0.08);
-  --reading-border-card: rgba(11, 11, 12, 0.12);
+  --reading-border-subtle: rgb(11 11 12 / 8%);
+  --reading-border-card: rgb(11 11 12 / 12%);
   --reading-border-active: var(--ink-900);
-  --reading-accent-glow: rgba(11, 11, 12, 0.04);
+  --reading-accent-glow: rgb(11 11 12 / 4%);
+
   /* Bone-light overrides the reading-theme tokens so .lesson-reading-surface
      doesn't fall back to dark values. */
   --reading-theme-bg-primary: var(--bone-50);
@@ -273,10 +274,10 @@
   --reading-theme-accent-primary: var(--ink-900);
   --reading-theme-accent-secondary: var(--ink-700);
   --reading-theme-accent-tertiary: var(--signal-700);
-  --reading-theme-border-subtle: rgba(11, 11, 12, 0.08);
-  --reading-theme-border-card: rgba(11, 11, 12, 0.12);
+  --reading-theme-border-subtle: rgb(11 11 12 / 8%);
+  --reading-theme-border-card: rgb(11 11 12 / 12%);
   --reading-theme-border-active: var(--ink-900);
-  --reading-theme-accent-glow: rgba(11, 11, 12, 0.04);
+  --reading-theme-accent-glow: rgb(11 11 12 / 4%);
 }
 
 /* ===== NEW PALETTES (Option A, Phase 0.1 — replace legacy 7) ===== */
@@ -300,24 +301,24 @@
   --accent-primary: var(--rose-500);
   --accent-secondary: var(--rose-300);
   --accent-tertiary: var(--amber-500);
-  --accent-glow: rgba(255, 79, 134, 0.18);
-  --border-subtle: rgba(232, 228, 216, 0.08);
-  --border-card: rgba(232, 228, 216, 0.14);
-  --border-active: rgba(255, 79, 134, 0.45);
+  --accent-glow: rgb(255 79 134 / 18%);
+  --border-subtle: rgb(232 228 216 / 8%);
+  --border-card: rgb(232 228 216 / 14%);
+  --border-active: rgb(255 79 134 / 45%);
   --gradient-hero: none;
   --gradient-card: none;
   --gradient-glow: none;
   --gradient-logo: none;
   --shadow-card: 0 1px 0 0 var(--border-subtle);
-  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 12px 32px rgb(0 0 0 / 50%);
   --shadow-glow: 0 0 0 1px var(--border-active);
   --reading-bg-primary: var(--ink-900);
   --reading-bg-surface: var(--ink-800);
   --reading-bg-code: var(--ink-700);
-  --reading-border-subtle: rgba(232, 228, 216, 0.06);
-  --reading-border-card: rgba(232, 228, 216, 0.1);
-  --reading-border-active: rgba(255, 79, 134, 0.32);
-  --reading-accent-glow: rgba(255, 79, 134, 0.08);
+  --reading-border-subtle: rgb(232 228 216 / 6%);
+  --reading-border-card: rgb(232 228 216 / 10%);
+  --reading-border-active: rgb(255 79 134 / 32%);
+  --reading-accent-glow: rgb(255 79 134 / 8%);
   --reading-theme-bg-primary: var(--ink-900);
   --reading-theme-bg-surface: var(--ink-800);
   --reading-theme-bg-card: var(--ink-800);
@@ -326,10 +327,10 @@
   --reading-theme-accent-primary: var(--rose-300);
   --reading-theme-accent-secondary: var(--bone-300);
   --reading-theme-accent-tertiary: var(--amber-500);
-  --reading-theme-border-subtle: rgba(232, 228, 216, 0.06);
-  --reading-theme-border-card: rgba(232, 228, 216, 0.1);
-  --reading-theme-border-active: rgba(255, 79, 134, 0.32);
-  --reading-theme-accent-glow: rgba(255, 79, 134, 0.08);
+  --reading-theme-border-subtle: rgb(232 228 216 / 6%);
+  --reading-theme-border-card: rgb(232 228 216 / 10%);
+  --reading-theme-border-active: rgb(255 79 134 / 32%);
+  --reading-theme-accent-glow: rgb(255 79 134 / 8%);
 }
 
 /* --- Signal Cyan (dark) — same ink/bone dark base as terminal-dark, cyan accent --- */
@@ -351,24 +352,24 @@
   --accent-primary: var(--cyan-500);
   --accent-secondary: var(--cyan-300);
   --accent-tertiary: var(--amber-500);
-  --accent-glow: rgba(34, 205, 250, 0.18);
-  --border-subtle: rgba(232, 228, 216, 0.08);
-  --border-card: rgba(232, 228, 216, 0.14);
-  --border-active: rgba(34, 205, 250, 0.45);
+  --accent-glow: rgb(34 205 250 / 18%);
+  --border-subtle: rgb(232 228 216 / 8%);
+  --border-card: rgb(232 228 216 / 14%);
+  --border-active: rgb(34 205 250 / 45%);
   --gradient-hero: none;
   --gradient-card: none;
   --gradient-glow: none;
   --gradient-logo: none;
   --shadow-card: 0 1px 0 0 var(--border-subtle);
-  --shadow-elevated: 0 12px 32px rgba(0, 0, 0, 0.5);
+  --shadow-elevated: 0 12px 32px rgb(0 0 0 / 50%);
   --shadow-glow: 0 0 0 1px var(--border-active);
   --reading-bg-primary: var(--ink-900);
   --reading-bg-surface: var(--ink-800);
   --reading-bg-code: var(--ink-700);
-  --reading-border-subtle: rgba(232, 228, 216, 0.06);
-  --reading-border-card: rgba(232, 228, 216, 0.1);
-  --reading-border-active: rgba(34, 205, 250, 0.32);
-  --reading-accent-glow: rgba(34, 205, 250, 0.08);
+  --reading-border-subtle: rgb(232 228 216 / 6%);
+  --reading-border-card: rgb(232 228 216 / 10%);
+  --reading-border-active: rgb(34 205 250 / 32%);
+  --reading-accent-glow: rgb(34 205 250 / 8%);
   --reading-theme-bg-primary: var(--ink-900);
   --reading-theme-bg-surface: var(--ink-800);
   --reading-theme-bg-card: var(--ink-800);
@@ -377,63 +378,63 @@
   --reading-theme-accent-primary: var(--cyan-300);
   --reading-theme-accent-secondary: var(--bone-300);
   --reading-theme-accent-tertiary: var(--amber-500);
-  --reading-theme-border-subtle: rgba(232, 228, 216, 0.06);
-  --reading-theme-border-card: rgba(232, 228, 216, 0.1);
-  --reading-theme-border-active: rgba(34, 205, 250, 0.32);
-  --reading-theme-accent-glow: rgba(34, 205, 250, 0.08);
+  --reading-theme-border-subtle: rgb(232 228 216 / 6%);
+  --reading-theme-border-card: rgb(232 228 216 / 10%);
+  --reading-theme-border-active: rgb(34 205 250 / 32%);
+  --reading-theme-accent-glow: rgb(34 205 250 / 8%);
 }
 
 /* --- High Contrast (light) — accessibility-first, AAA-target contrast.
    Deliberate exception to the "no pure black/white" rule — this palette
    exists specifically for users who need maximum contrast. --- */
 [data-palette='high-contrast'] {
-  --bg-primary: #ffffff;
-  --bg-secondary: #ffffff;
-  --bg-card: #ffffff;
+  --bg-primary: #fff;
+  --bg-secondary: #fff;
+  --bg-card: #fff;
   --bg-card-hover: var(--bone-100);
-  --bg-surface: #ffffff;
+  --bg-surface: #fff;
   --bg-code: var(--bone-100);
-  --surface-paper: #ffffff;
-  --surface-ink: #ffffff;
-  --text-primary: #000000;
+  --surface-paper: #fff;
+  --surface-ink: #fff;
+  --text-primary: #000;
   --text-secondary: var(--ink-700);
   --text-muted: var(--ink-500);
-  --text-heading: #000000;
-  --text-on-accent: #ffffff;
-  --text-on-brand: #000000;
-  --accent-primary: #000000;
+  --text-heading: #000;
+  --text-on-accent: #fff;
+  --text-on-brand: #000;
+  --accent-primary: #000;
   --accent-secondary: var(--ink-700);
   --accent-tertiary: var(--signal-700);
-  --accent-glow: rgba(0, 0, 0, 0.12);
-  --border-subtle: rgba(0, 0, 0, 0.16);
-  --border-card: rgba(0, 0, 0, 0.28);
-  --border-active: #000000;
+  --accent-glow: rgb(0 0 0 / 12%);
+  --border-subtle: rgb(0 0 0 / 16%);
+  --border-card: rgb(0 0 0 / 28%);
+  --border-active: #000;
   --gradient-hero: none;
   --gradient-card: none;
   --gradient-glow: none;
   --gradient-logo: none;
   --shadow-card: 0 1px 0 0 var(--border-subtle);
-  --shadow-elevated: 0 16px 40px rgba(0, 0, 0, 0.14);
-  --shadow-glow: 0 0 0 1px #000000;
-  --reading-bg-primary: #ffffff;
-  --reading-bg-surface: #ffffff;
+  --shadow-elevated: 0 16px 40px rgb(0 0 0 / 14%);
+  --shadow-glow: 0 0 0 1px #000;
+  --reading-bg-primary: #fff;
+  --reading-bg-surface: #fff;
   --reading-bg-code: var(--bone-100);
-  --reading-border-subtle: rgba(0, 0, 0, 0.12);
-  --reading-border-card: rgba(0, 0, 0, 0.2);
-  --reading-border-active: #000000;
-  --reading-accent-glow: rgba(0, 0, 0, 0.06);
-  --reading-theme-bg-primary: #ffffff;
-  --reading-theme-bg-surface: #ffffff;
-  --reading-theme-bg-card: #ffffff;
+  --reading-border-subtle: rgb(0 0 0 / 12%);
+  --reading-border-card: rgb(0 0 0 / 20%);
+  --reading-border-active: #000;
+  --reading-accent-glow: rgb(0 0 0 / 6%);
+  --reading-theme-bg-primary: #fff;
+  --reading-theme-bg-surface: #fff;
+  --reading-theme-bg-card: #fff;
   --reading-theme-bg-card-hover: var(--bone-100);
   --reading-theme-bg-code: var(--bone-100);
-  --reading-theme-accent-primary: #000000;
+  --reading-theme-accent-primary: #000;
   --reading-theme-accent-secondary: var(--ink-700);
   --reading-theme-accent-tertiary: var(--signal-700);
-  --reading-theme-border-subtle: rgba(0, 0, 0, 0.12);
-  --reading-theme-border-card: rgba(0, 0, 0, 0.2);
-  --reading-theme-border-active: #000000;
-  --reading-theme-accent-glow: rgba(0, 0, 0, 0.06);
+  --reading-theme-border-subtle: rgb(0 0 0 / 12%);
+  --reading-theme-border-card: rgb(0 0 0 / 20%);
+  --reading-theme-border-active: #000;
+  --reading-theme-accent-glow: rgb(0 0 0 / 6%);
 }
 
 @media (prefers-reduced-motion: reduce) {

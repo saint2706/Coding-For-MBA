@@ -139,6 +139,7 @@ const TableOfContents = memo(function TableOfContents({ content }: TableOfConten
         </button>
       )}
       <nav id={tocListId} className={isCompact ? `toc-panel ${isCompactOpen ? 'open' : ''}` : ''}>
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- listens for Escape bubbling up from the real focusable links inside (TocItem); the list itself isn't a tab stop */}
         <ul
           className="toc-list"
           onKeyDown={(event) => event.key === 'Escape' && setIsCompactOpen(false)}

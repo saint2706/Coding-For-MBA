@@ -80,6 +80,7 @@ function mergeCells(cells: readonly NotebookCell[]): MergedBlock[] {
 
 // --- Output rendering ---
 
+// eslint-disable-next-line no-control-regex -- \u001b (ESC) is the ANSI escape sequence itself, required to strip terminal color codes
 const ANSI_REGEX = /\u001b\[[0-9;]*m/g
 
 /**
