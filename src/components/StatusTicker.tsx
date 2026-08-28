@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom'
 import { useProgressStore } from '../stores/progressStore'
 import { useGamificationStore } from '../stores/gamificationStore'
 import { getCurriculumMetadata } from '../utils/contentLoader'
+import { streakBlocks } from '../utils/streakBlocks'
 
 function formatPath(pathname: string): string {
   if (pathname === '/') return 'home'
@@ -25,11 +26,6 @@ function formatPath(pathname: string): string {
       return seg
     })
     .join(' · ')
-}
-
-function streakBlocks(streak: number, max = 7): string {
-  const filled = Math.min(streak, max)
-  return '■'.repeat(filled) + '□'.repeat(Math.max(0, max - filled))
 }
 
 /**
