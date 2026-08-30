@@ -52,6 +52,18 @@
   margin: 0;
 }
 
+/* Streak as filled/unfilled mono block glyphs — shared visual language with
+   StatusTicker's navbar streak (see src/utils/streakBlocks.ts). */
+.progress-streak-blocks {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--accent-primary);
+  margin: 0.15rem 0;
+}
+
 /* Progress Bar */
 .progress-bar-wrapper {
   display: flex;
@@ -458,6 +470,104 @@
   background: var(--bg-card);
 }
 
+/* Recent Activity — terminal-style log of the most recently completed lessons */
+.recent-activity-card {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+}
+
+.recent-activity-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.recent-activity-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.375rem 1rem;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+}
+
+.recent-activity-link {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.recent-activity-link:hover {
+  text-decoration: underline;
+}
+
+.recent-activity-day {
+  flex-shrink: 0;
+  font-weight: 700;
+  color: var(--accent-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.recent-activity-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-activity-time {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* Heatmap cell tooltip — replaces the native `title` attribute with a styled,
+   hover/focus-triggered readout. Purely visual: the equivalent info is
+   already exposed to assistive tech via each cell's sr-only text. */
+.heatmap-tooltip {
+  position: fixed;
+  z-index: 50;
+  width: 220px;
+  padding: 0.5rem 0.65rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-elevated);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.4;
+  pointer-events: none;
+}
+
+.heatmap-tooltip-above {
+  transform: translateY(-100%);
+}
+
+.heatmap-tooltip-title {
+  margin: 0 0 0.2rem;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.heatmap-tooltip-meta {
+  margin: 0;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .mastery-review-list {
   margin: 0;
   padding: 0;
@@ -545,24 +655,6 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.875rem;
-}
-
-/* Settings callout on progress page */
-.settings-callout {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  margin-top: 2.5rem;
-  border-radius: var(--radius-lg);
-  flex-wrap: wrap;
-}
-
-.settings-callout p {
-  margin: 0.25rem 0 0;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
 }
 
 /* Notes page */

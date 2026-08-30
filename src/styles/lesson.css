@@ -522,8 +522,8 @@ mark.lesson-search-match-active {
   }
 }
 
-/* --- Persistent reading-position breadcrumb --- */
-/* Pinned just below the navbar; only shown once the masthead scrolls out
+/* --- Persistent reading-position breadcrumb ---
+   Pinned just below the navbar; only shown once the masthead scrolls out
    of view, so it never duplicates the masthead's own "Day N" byline. */
 
 .lesson-position-breadcrumb {
