@@ -323,6 +323,13 @@
   color: var(--accent-primary);
 }
 
+/* Amber is reserved for .phase-due above; using it here too would read as a
+   double "attention" signal on the same phase group, so in-progress gets a
+   neutral dim dot instead. */
+.day-link-prefix.in-progress {
+  color: var(--text-secondary);
+}
+
 .day-link-num {
   font-variant-numeric: tabular-nums;
   color: var(--text-muted);

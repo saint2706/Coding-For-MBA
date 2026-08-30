@@ -18,6 +18,7 @@ describe('SidebarPhaseGroup propsAreEqual optimization', () => {
     phase: { phase: 1, title: 'Phase 1', days: ['01'], content: '', path: '' },
     isActive: false,
     completedIdsJoined: '',
+    inProgressIdsJoined: '',
     dueCount: 0,
     currentPath: '/',
     onToggle: vi.fn(),
@@ -43,6 +44,10 @@ describe('SidebarPhaseGroup propsAreEqual optimization', () => {
 
   it('re-renders when completedIdsJoined changes for lessons in this phase', () => {
     expect(propsAreEqual(defaultProps, { ...defaultProps, completedIdsJoined: '1' })).toBe(false)
+  })
+
+  it('re-renders when inProgressIdsJoined changes for lessons in this phase', () => {
+    expect(propsAreEqual(defaultProps, { ...defaultProps, inProgressIdsJoined: '1' })).toBe(false)
   })
 
   describe('handles currentPath changes correctly', () => {

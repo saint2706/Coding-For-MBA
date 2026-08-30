@@ -13,7 +13,8 @@ vi.mock('../../../src/utils/contentLoader', () => ({
   phaseIcons: ['A', 'B'],
 }))
 
-// Mock store
+// Mock store — an untouched phase defaults to collapsed (see Sidebar.tsx's
+// isPhaseOpen: only a started-but-incomplete phase defaults to expanded).
 const useProgressStoreMock = vi.fn((selector) =>
   selector({ completedLessons: [] } as unknown as ReturnType<
     typeof import('../../../src/stores/progressStore').useProgressStore.getState
@@ -21,6 +22,11 @@ const useProgressStoreMock = vi.fn((selector) =>
 )
 vi.mock('../../../src/stores/progressStore', () => ({
   useProgressStore: (selector: (state: unknown) => unknown) => useProgressStoreMock(selector),
+}))
+
+vi.mock('../../../src/stores/learningAnalyticsStore', () => ({
+  useLearningAnalyticsStore: (selector: (state: unknown) => unknown) =>
+    selector({ timeByLessonDay: {} }),
 }))
 
 vi.mock('../../../src/utils/reviewTracker', () => ({

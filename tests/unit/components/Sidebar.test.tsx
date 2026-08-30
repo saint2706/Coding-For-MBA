@@ -2,10 +2,11 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { act } from 'react'
 import { createRoot } from 'react-dom/client'
 import Sidebar from '../../../src/components/Sidebar'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, useNavigate } from 'react-router-dom'
 
 import * as contentLoader from '../../../src/utils/contentLoader'
 import * as reviewTracker from '../../../src/utils/reviewTracker'
+import * as dayToken from '../../../src/utils/dayToken'
 
 // Mock dependencies
 vi.mock('../../../src/utils/contentLoader', async () => {
@@ -16,6 +17,7 @@ vi.mock('../../../src/utils/contentLoader', async () => {
     ...actual,
     getAllPhases: vi.fn(),
     getLessonsByPhase: vi.fn(),
+    getLesson: vi.fn(),
     getCurriculumMetadata: vi.fn(() => ({ totalDays: 163, totalPhases: 12, totalLevels: 4 })),
     phaseIcons: ['A', 'B'],
   }
@@ -29,6 +31,16 @@ const useProgressStoreMock = vi.fn((selector) =>
 )
 vi.mock('../../../src/stores/progressStore', () => ({
   useProgressStore: (selector: (state: unknown) => unknown) => useProgressStoreMock(selector),
+}))
+
+const useLearningAnalyticsStoreMock = vi.fn((selector) =>
+  selector({ timeByLessonDay: {} } as unknown as ReturnType<
+    typeof import('../../../src/stores/learningAnalyticsStore').useLearningAnalyticsStore.getState
+  >),
+)
+vi.mock('../../../src/stores/learningAnalyticsStore', () => ({
+  useLearningAnalyticsStore: (selector: (state: unknown) => unknown) =>
+    useLearningAnalyticsStoreMock(selector),
 }))
 
 vi.mock('../../../src/utils/dayToken', () => ({
@@ -149,6 +161,137 @@ describe('Sidebar', () => {
     // Check that visual parts are hidden
     const visualText = progressContainer?.querySelector('[aria-hidden="true"]')
     expect(visualText).not.toBeNull()
+  })
+
+  it('marks a started, non-completed lesson as in-progress using tracked time', () => {
+    vi.mocked(dayToken.dayTokenToProgressId).mockImplementation((token) => Number(token))
+    useProgressStoreMock.mockImplementation((selector) => selector({ completedLessons: [1] }))
+    useLearningAnalyticsStoreMock.mockImplementation((selector) =>
+      selector({ timeByLessonDay: { 2: 5000 } }),
+    )
+
+    act(() => {
+      root?.render(
+        <MemoryRouter initialEntries={['/phase/1']}>
+          <Sidebar isOpen={true} onClose={vi.fn()} />
+        </MemoryRouter>,
+      )
+    })
+
+    const dayLinks = Array.from(container.querySelectorAll('.day-link:not(.day-link--overview)'))
+    expect(dayLinks[0]?.querySelector('.day-link-prefix')?.classList.contains('completed')).toBe(
+      true,
+    )
+    expect(dayLinks[1]?.querySelector('.day-link-prefix')?.classList.contains('in-progress')).toBe(
+      true,
+    )
+  })
+
+  it('collapses a finished phase and an untouched phase, but expands a started-but-incomplete phase', () => {
+    vi.mocked(dayToken.dayTokenToProgressId).mockImplementation((token) => Number(token))
+    vi.mocked(contentLoader.getAllPhases).mockReturnValue([
+      { phase: 1, title: 'Phase 1', days: ['01', '02'] },
+      { phase: 2, title: 'Phase 2', days: ['03', '04'] },
+      { phase: 3, title: 'Phase 3', days: ['05', '06'] },
+    ] as unknown as ReturnType<typeof contentLoader.getAllPhases>)
+    vi.mocked(contentLoader.getLessonsByPhase).mockImplementation((phaseNum) => {
+      const byPhase: Record<number, Array<{ day: string; title: string; phase: number }>> = {
+        1: [
+          { day: '01', title: 'Lesson 1', phase: 1 },
+          { day: '02', title: 'Lesson 2', phase: 1 },
+        ],
+        2: [
+          { day: '03', title: 'Lesson 3', phase: 2 },
+          { day: '04', title: 'Lesson 4', phase: 2 },
+        ],
+        3: [
+          { day: '05', title: 'Lesson 5', phase: 3 },
+          { day: '06', title: 'Lesson 6', phase: 3 },
+        ],
+      }
+      return (byPhase[Number(phaseNum)] ?? []) as unknown as ReturnType<
+        typeof contentLoader.getLessonsByPhase
+      >
+    })
+    // Phase 1: fully complete. Phase 2: untouched. Phase 3: started but incomplete.
+    useProgressStoreMock.mockImplementation((selector) => selector({ completedLessons: [1, 2, 5] }))
+
+    act(() => {
+      root?.render(
+        <MemoryRouter initialEntries={['/']}>
+          <Sidebar isOpen={true} onClose={vi.fn()} />
+        </MemoryRouter>,
+      )
+    })
+
+    const toggles = Array.from(container.querySelectorAll('.phase-toggle'))
+    expect(toggles[0]?.getAttribute('aria-expanded')).toBe('false')
+    expect(toggles[1]?.getAttribute('aria-expanded')).toBe('false')
+    expect(toggles[2]?.getAttribute('aria-expanded')).toBe('true')
+  })
+
+  it('lets the current route win even after a different phase was manually opened', () => {
+    vi.mocked(dayToken.dayTokenToProgressId).mockImplementation((token) => Number(token))
+    vi.mocked(dayToken.normalizeDayToken).mockImplementation((token) => token as string)
+    vi.mocked(contentLoader.getAllPhases).mockReturnValue([
+      { phase: 1, title: 'Phase 1', days: ['01', '02'] },
+      { phase: 2, title: 'Phase 2', days: ['03', '04'] },
+    ] as unknown as ReturnType<typeof contentLoader.getAllPhases>)
+    vi.mocked(contentLoader.getLessonsByPhase).mockImplementation(
+      (phaseNum) =>
+        (phaseNum === 1
+          ? [
+              { day: '01', title: 'Lesson 1', phase: 1 },
+              { day: '02', title: 'Lesson 2', phase: 1 },
+            ]
+          : [
+              { day: '03', title: 'Lesson 3', phase: 2 },
+              { day: '04', title: 'Lesson 4', phase: 2 },
+            ]) as unknown as ReturnType<typeof contentLoader.getLessonsByPhase>,
+    )
+    useProgressStoreMock.mockImplementation((selector) => selector({ completedLessons: [1, 2] }))
+    vi.mocked(contentLoader.getLesson).mockImplementation((day) =>
+      day === '03'
+        ? ({ phase: 2 } as unknown as ReturnType<typeof contentLoader.getLesson>)
+        : undefined,
+    )
+
+    function Harness() {
+      const navigate = useNavigate()
+      return (
+        <>
+          <button type="button" data-testid="go" onClick={() => navigate('/lesson/03')}>
+            go
+          </button>
+          <Sidebar isOpen={true} onClose={vi.fn()} />
+        </>
+      )
+    }
+
+    act(() => {
+      root?.render(
+        <MemoryRouter initialEntries={['/']}>
+          <Harness />
+        </MemoryRouter>,
+      )
+    })
+
+    // Manually open phase 1 (complete, collapsed by default).
+    const phase1Toggle = container.querySelectorAll('.phase-toggle')[0] as HTMLButtonElement
+    act(() => {
+      phase1Toggle.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+    expect(phase1Toggle.getAttribute('aria-expanded')).toBe('true')
+
+    // Navigate to a lesson in phase 2 without unmounting — the route must win.
+    act(() => {
+      container
+        .querySelector('[data-testid="go"]')
+        ?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    })
+
+    const toggles = Array.from(container.querySelectorAll('.phase-toggle'))
+    expect(toggles[1]?.getAttribute('aria-expanded')).toBe('true')
   })
 
   it('opens phase automatically based on /lesson/:day route', () => {

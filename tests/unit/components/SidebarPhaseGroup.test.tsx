@@ -61,6 +61,7 @@ describe('SidebarPhaseGroup', () => {
     phase: { phase: 1, title: 'Foundations', days: ['01', '02'], content: '', path: '' },
     isActive: false,
     completedIdsJoined: '',
+    inProgressIdsJoined: '',
     dueCount: 0,
     currentPath: '/',
     onToggle: vi.fn(),
@@ -142,6 +143,43 @@ describe('SidebarPhaseGroup', () => {
     })
 
     expect(onToggleMock).toHaveBeenCalledWith(1)
+  })
+
+  it('shows an in-progress indicator for a started, non-completed lesson', () => {
+    act(() => {
+      root?.render(
+        <MemoryRouter>
+          <SidebarPhaseGroup {...defaultProps} isActive={true} inProgressIdsJoined="1" />
+        </MemoryRouter>,
+      )
+    })
+
+    const dayLinks = Array.from(container.querySelectorAll('.day-link:not(.day-link--overview)'))
+    const prefix = dayLinks[0]?.querySelector('.day-link-prefix')
+    expect(prefix?.classList.contains('in-progress')).toBe(true)
+    expect(prefix?.textContent).toBe('●')
+    expect(dayLinks[0]?.textContent).toContain('In progress.')
+  })
+
+  it('prefers completed over in-progress when a lesson is both', () => {
+    act(() => {
+      root?.render(
+        <MemoryRouter>
+          <SidebarPhaseGroup
+            {...defaultProps}
+            isActive={true}
+            completedIdsJoined="1"
+            inProgressIdsJoined="1"
+          />
+        </MemoryRouter>,
+      )
+    })
+
+    const dayLinks = Array.from(container.querySelectorAll('.day-link:not(.day-link--overview)'))
+    const prefix = dayLinks[0]?.querySelector('.day-link-prefix')
+    expect(prefix?.classList.contains('completed')).toBe(true)
+    expect(prefix?.classList.contains('in-progress')).toBe(false)
+    expect(prefix?.textContent).toBe('✓')
   })
 
   it('marks active link based on currentPath', () => {

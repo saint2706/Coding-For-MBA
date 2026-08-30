@@ -13,6 +13,8 @@ import { getAllPhases, getLessonsByPhase, getCurriculumMetadata } from '../utils
 import { getReviewDueCountByPhase, getReviewStreak } from '../utils/reviewTracker'
 import { normalizeDayToken, dayTokenToProgressId } from '../utils/dayToken'
 import { useProgressStore } from '../stores/progressStore'
+import { useLearningAnalyticsStore } from '../stores/learningAnalyticsStore'
+import { isPhaseComplete } from '../utils/phaseProgress'
 import SidebarPhaseGroup from './SidebarPhaseGroup'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 
@@ -71,34 +73,56 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     return null
   }, [location.pathname, phases])
 
-  const [manualOpen, setManualOpen] = useState<number | null>(null)
+  const [manualOverrides, setManualOverrides] = useState<Record<number, boolean>>({})
   const dueByPhase = useMemo(() => getReviewDueCountByPhase(), [])
   const reviewStreak = useMemo(() => getReviewStreak(), [])
 
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
+  const timeByLessonDay = useLearningAnalyticsStore((state) => state.timeByLessonDay)
 
-  const completedIdsByPhase = useMemo(() => {
-    const idsByPhase: Record<number, string> = {}
+  const { completedIdsByPhase, inProgressIdsByPhase, phaseDefaultOpenByPhase } = useMemo(() => {
+    const completedIds: Record<number, string> = {}
+    const inProgressIds: Record<number, string> = {}
+    const defaultOpen: Record<number, boolean> = {}
     for (let i = 0; i < phases.length; i++) {
       const phase = phases[i]
       if (!phase) continue
       const lessons = getLessonsByPhase(phase.phase)
-      const completedIds: string[] = []
+      const completed: string[] = []
+      const inProgress: string[] = []
       for (let j = 0; j < lessons.length; j++) {
         const l = lessons[j]
         if (!l) continue
         const id = dayTokenToProgressId(l.day)
         if (completedSet.has(id)) {
-          completedIds.push(String(id))
+          completed.push(String(id))
+        } else if ((timeByLessonDay[id] || 0) > 0) {
+          inProgress.push(String(id))
         }
       }
-      idsByPhase[phase.phase] = completedIds.join(',')
+      completedIds[phase.phase] = completed.join(',')
+      inProgressIds[phase.phase] = inProgress.join(',')
+      // Default open only for a phase actively in progress (started, not yet
+      // finished) — an untouched phase stays tidy, and a finished one collapses.
+      const isStarted = completed.length > 0
+      defaultOpen[phase.phase] = isStarted && !isPhaseComplete(completed.length, lessons.length)
     }
-    return idsByPhase
-  }, [phases, completedSet])
+    return {
+      completedIdsByPhase: completedIds,
+      inProgressIdsByPhase: inProgressIds,
+      phaseDefaultOpenByPhase: defaultOpen,
+    }
+  }, [phases, completedSet, timeByLessonDay])
 
-  const openPhase = manualOpen !== null ? manualOpen : derivedOpenPhase
+  // A phase whose route is currently active always wins; otherwise an explicit
+  // user toggle this session wins; otherwise a phase actively in progress
+  // defaults open and everything else (untouched or finished) defaults closed.
+  const isPhaseOpen = (phaseNum: number): boolean => {
+    if (phaseNum === derivedOpenPhase) return true
+    if (phaseNum in manualOverrides) return manualOverrides[phaseNum]!
+    return phaseDefaultOpenByPhase[phaseNum] ?? false
+  }
 
   useEffect(() => {
     const nav = navRef.current
@@ -115,7 +139,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   }, [location.pathname])
 
   const togglePhase = (phaseNum: number) => {
-    setManualOpen((prev) => (prev === phaseNum ? null : phaseNum))
+    setManualOverrides((prev) => ({ ...prev, [phaseNum]: !isPhaseOpen(phaseNum) }))
   }
 
   return (
@@ -230,8 +254,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               <SidebarPhaseGroup
                 key={phase.phase}
                 phase={phase}
-                isActive={openPhase === phase.phase}
+                isActive={isPhaseOpen(phase.phase)}
                 completedIdsJoined={completedIdsByPhase[phase.phase] ?? ''}
+                inProgressIdsJoined={inProgressIdsByPhase[phase.phase] ?? ''}
                 dueCount={dueByPhase[phase.phase] || 0}
                 currentPath={location.pathname}
                 onToggle={togglePhase}

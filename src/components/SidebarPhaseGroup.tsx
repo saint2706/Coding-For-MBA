@@ -18,6 +18,7 @@ interface SidebarPhaseGroupProps {
   phase: Phase
   isActive: boolean
   completedIdsJoined: string
+  inProgressIdsJoined: string
   dueCount: number
   currentPath: string
   onToggle: (phaseNum: number) => void
@@ -28,6 +29,7 @@ function SidebarPhaseGroup({
   phase,
   isActive,
   completedIdsJoined,
+  inProgressIdsJoined,
   dueCount,
   currentPath,
   onToggle,
@@ -38,9 +40,12 @@ function SidebarPhaseGroup({
   const phaseLabel = String(phase.phase).padStart(2, '0')
   const completedCount = completedIdsJoined ? completedIdsJoined.split(',').length : 0
 
-  // Reconstruct the Set from the primitive string prop to allow O(1) lookups during render
+  // Reconstruct the Sets from the primitive string props to allow O(1) lookups during render
   // without breaking React.memo props equality checks from the parent.
   const completedSet = new Set(completedIdsJoined ? completedIdsJoined.split(',').map(Number) : [])
+  const inProgressSet = new Set(
+    inProgressIdsJoined ? inProgressIdsJoined.split(',').map(Number) : [],
+  )
 
   return (
     <div className="phase-group">
@@ -122,19 +127,27 @@ function SidebarPhaseGroup({
                   aria-current={currentPath === `/lesson/${lesson.day}` ? 'page' : undefined}
                   {...createRoutePrefetchHandlers(`/lesson/${lesson.day}`)}
                 >
-                  <span
-                    className={`day-link-prefix ${completedSet.has(dayTokenToProgressId(lesson.day)) ? 'completed' : ''}`}
-                    aria-hidden="true"
-                  >
-                    {completedSet.has(dayTokenToProgressId(lesson.day)) ? '✓' : '·'}
-                  </span>
-                  <span className="day-link-num" aria-hidden="true">
-                    {lesson.day}
-                  </span>
-                  <span className="day-link-text">{lesson.title}</span>
-                  {completedSet.has(dayTokenToProgressId(lesson.day)) && (
-                    <span className="sr-only">Completed.</span>
-                  )}
+                  {(() => {
+                    const isCompleted = completedSet.has(dayTokenToProgressId(lesson.day))
+                    const isInProgress =
+                      !isCompleted && inProgressSet.has(dayTokenToProgressId(lesson.day))
+                    return (
+                      <>
+                        <span
+                          className={`day-link-prefix ${isCompleted ? 'completed' : ''} ${isInProgress ? 'in-progress' : ''}`}
+                          aria-hidden="true"
+                        >
+                          {isCompleted ? '✓' : isInProgress ? '●' : '·'}
+                        </span>
+                        <span className="day-link-num" aria-hidden="true">
+                          {lesson.day}
+                        </span>
+                        <span className="day-link-text">{lesson.title}</span>
+                        {isCompleted && <span className="sr-only">Completed.</span>}
+                        {isInProgress && <span className="sr-only">In progress.</span>}
+                      </>
+                    )
+                  })()}
                 </Link>
               </motion.div>
             ))}
@@ -181,6 +194,11 @@ function propsAreEqual(
 
   // Check if completion status of ANY lesson IN THIS PHASE changed
   if (prevProps.completedIdsJoined !== nextProps.completedIdsJoined) {
+    return false
+  }
+
+  // Check if in-progress status of ANY lesson IN THIS PHASE changed
+  if (prevProps.inProgressIdsJoined !== nextProps.inProgressIdsJoined) {
     return false
   }
 
