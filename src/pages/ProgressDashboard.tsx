@@ -62,25 +62,37 @@ export default function ProgressDashboard() {
     }
   }
 
+  // `timeByDate` isn't read directly below — each memo instead calls its own
+  // `.getState()` derived-stat method (to avoid recreating array/object
+  // references every render, which would otherwise re-trigger downstream
+  // effects). `timeByDate` is included purely as the recompute trigger.
   const timeByDate = useLearningAnalyticsStore((state) => state.timeByDate)
   const totalLearningMs = useMemo(
     () => useLearningAnalyticsStore.getState().totalLearningMs(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [timeByDate],
   )
   const thisWeekLearningMs = useMemo(
     () => useLearningAnalyticsStore.getState().weekLearningMs(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [timeByDate],
   )
   const todayLearningMs = useMemo(
     () => useLearningAnalyticsStore.getState().todayLearningMs(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [timeByDate],
   )
   const studyStreak = useMemo(
     () => useLearningAnalyticsStore.getState().studyStreakDays(5),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [timeByDate],
   )
   const completionStreak = useProgressStore((state) => state.streakDays())
-  const last7Days = useMemo(() => useLearningAnalyticsStore.getState().getLast7Days(), [timeByDate])
+  const last7Days = useMemo(
+    () => useLearningAnalyticsStore.getState().getLast7Days(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [timeByDate],
+  )
 
   const chartMax = Math.max(1, ...last7Days.map((item) => item.ms))
 
@@ -99,6 +111,8 @@ export default function ProgressDashboard() {
 
   const challengeLesson = getLesson(dailyChallenge.day)
 
+  // Same pattern as above: `masteryQuestionStatus` is the recompute trigger,
+  // not read directly — the derived list comes from a fresh `.getState()` call.
   const masteryQuestionStatus = useMasteryStore((state) => state.questionStatus)
   const reviewLessons = useMemo(
     () =>
@@ -111,6 +125,7 @@ export default function ProgressDashboard() {
             Boolean(entry.lesson),
         )
         .slice(0, 5),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [masteryQuestionStatus],
   )
 

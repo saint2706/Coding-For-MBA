@@ -31,8 +31,8 @@ graphify-out/
 # Claude Code agent worktrees (temporary, auto-generated)
 .claude/worktrees/
 
-# Lock files (project uses npm)
-pnpm-lock.yaml
+# Lock files (project uses pnpm)
+package-lock.json
 yarn.lock
 
 # Editor directories and files

@@ -121,7 +121,6 @@ Content
 ## Section 2
     `
     // Re-mock matchMedia to simulate small screen
-    let resizeCallback: (e: MediaQueryListEvent) => void
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: vi.fn().mockImplementation((query) => ({
@@ -130,9 +129,7 @@ Content
         onchange: null,
         addListener: vi.fn(),
         removeListener: vi.fn(),
-        addEventListener: vi.fn((event, cb) => {
-          resizeCallback = cb
-        }),
+        addEventListener: vi.fn(),
         removeEventListener: vi.fn(),
         dispatchEvent: vi.fn(),
       })),
@@ -143,7 +140,7 @@ Content
     })
 
     // Should be in compact mode, toggle button should exist
-    let toggleBtn = container.querySelector('.toc-toggle')
+    const toggleBtn = container.querySelector('.toc-toggle')
     expect(toggleBtn).toBeTruthy()
     expect(toggleBtn?.getAttribute('aria-expanded')).toBe('false')
 

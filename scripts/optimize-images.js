@@ -7,11 +7,11 @@
  * using the sharp library.
  *
  * Usage:
- *   npm run optimize:images
+ *   pnpm run optimize:images
  *   node scripts/optimize-images.js
  *
  * Prerequisites:
- *   npm install -D sharp
+ *   pnpm add -D sharp
  */
 
 import { readdirSync, existsSync } from 'node:fs'
@@ -28,7 +28,7 @@ async function optimizeImages() {
   try {
     sharp = (await import('sharp')).default
   } catch {
-    console.error('❌ sharp is not installed. Run: npm install -D sharp')
+    console.error('❌ sharp is not installed. Run: pnpm add -D sharp')
     process.exit(1)
   }
 

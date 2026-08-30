@@ -27,11 +27,11 @@ If you discover a security vulnerability in this project, please:
 
 - **Automated Scanning**: This project uses [GitHub Dependency Review](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review) to block pull requests that introduce high or critical vulnerabilities.
 - **Scheduled Updates**: [Dependabot](https://docs.github.com/en/code-security/dependabot) checks for dependency updates on **Thursdays at 1:00 PM IST** (configured in `.github/dependabot.yml`).
-- **Manual Audits**: Run `npm audit` locally to scan for known vulnerabilities:
+- **Manual Audits**: Run `pnpm audit` locally to scan for known vulnerabilities:
 
   ```bash
-  npm audit
-  npm audit fix
+  pnpm audit
+  pnpm audit fix
   ```
 
 ### Code Quality & Testing
@@ -81,17 +81,17 @@ git clone https://github.com/saint2706/Coding-For-MBA.git
 cd Coding-For-MBA
 
 # Install dependencies
-npm install
+pnpm install
 
 # Run security audit
-npm audit
+pnpm audit
 
 # Run tests (including security-adjacent checks)
-npm test
-npm run test:e2e
+pnpm test
+pnpm run test:e2e
 
 # Type check
-npm run typecheck
+pnpm run typecheck
 ```
 
 ## Known Limitations

@@ -31,7 +31,7 @@ jobs:
         uses: ./.github/actions/node-bootstrap
 
       - name: Build
-        run: npm run build
+        run: pnpm run build
         env:
           VITE_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 

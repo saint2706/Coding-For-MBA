@@ -16,7 +16,9 @@ function findMissingJSDoc(dir) {
         }
       }
     })
-  } catch (e) {}
+  } catch {
+    // Ignore unreadable directories and keep collecting from the rest.
+  }
   return files
 }
 

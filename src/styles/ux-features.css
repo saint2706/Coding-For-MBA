@@ -20,7 +20,7 @@
     transparent 72%
   );
   transform: translateX(-130%);
-  animation: skeletonShimmer var(--motion-duration-active-skeleton) infinite;
+  animation: skeleton-shimmer var(--motion-duration-active-skeleton) infinite;
 }
 
 .skeleton-text {
@@ -53,7 +53,7 @@
   padding: 0 var(--page-padding);
 }
 
-@keyframes skeletonShimmer {
+@keyframes skeleton-shimmer {
   0% {
     transform: translateX(-130%);
   }
@@ -70,7 +70,7 @@
    users get every line at full opacity instantly (that token is 0ms there). */
 .skeleton-boot {
   opacity: 0;
-  animation: skeletonBootIn var(--motion-duration-active-fast) var(--motion-easing-standard)
+  animation: skeleton-boot-in var(--motion-duration-active-fast) var(--motion-easing-standard)
     forwards;
   animation-delay: calc(var(--index, 0) * var(--motion-duration-active-fast) * 0.5);
 }
@@ -79,7 +79,7 @@
   content: none;
 }
 
-@keyframes skeletonBootIn {
+@keyframes skeleton-boot-in {
   from {
     opacity: 0;
   }
@@ -106,7 +106,7 @@
    skeleton's `.toc` placeholder, which exists only to reserve that column,
    must not render there either. Without this it shows as an orphaned
    full-width card pinned to the bottom of the viewport during loading. */
-@media (max-width: 1200px) {
+@media (width <= 1200px) {
   .lesson-skeleton .toc {
     display: none;
   }
@@ -141,7 +141,6 @@
   border-radius: var(--radius-sm);
   box-shadow: none;
   backdrop-filter: none;
-  -webkit-backdrop-filter: none;
 }
 
 /* ---------- Scroll Progress Indicator ---------- */
@@ -214,7 +213,7 @@
   color: var(--accent-primary);
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .mobile-nav {
     display: flex;
     justify-content: space-around;
@@ -495,7 +494,7 @@
 }
 
 /* Responsive */
-@media (max-width: 640px) {
+@media (width <= 640px) {
   .stats-hero-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -506,7 +505,7 @@
   position: fixed;
   inset: 0;
   z-index: 1200;
-  background: rgba(15, 23, 42, 0.55);
+  background: rgb(15 23 42 / 55%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -676,6 +675,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+
   /* Flex items default to min-width: auto, which lets a nowrap text node
      grow to its full min-content width and overflow the bordered box
      instead of truncating. min-width: 0 lets it shrink so the ellipsis
@@ -688,14 +688,14 @@
   width: 0.55em;
   height: 1.1em;
   background: var(--accent-primary);
-  animation: emptyStateBlink 1.1s step-end infinite;
+  animation: empty-state-blink 1.1s step-end infinite;
 }
 
 .empty-state-cursor--static {
   animation: none;
 }
 
-@keyframes emptyStateBlink {
+@keyframes empty-state-blink {
   0%,
   49% {
     opacity: 1;

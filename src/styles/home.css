@@ -129,6 +129,61 @@
   margin: clamp(2rem, 4vw, 3rem) 0;
 }
 
+/* --- Session readout row (StatusTicker's mono/tabular-nums language, hero-sized) --- */
+
+.cover-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.75rem;
+  margin: 0.25rem 0 0;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.cover-meta-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.cover-meta-item:not(:first-child) {
+  padding-left: 1.75rem;
+}
+
+.cover-meta-item:not(:first-child)::before {
+  content: '·';
+  position: absolute;
+  left: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.cover-meta-item dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cover-meta-item dd {
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cover-meta-blocks {
+  color: var(--accent-primary);
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+}
+
 /* --- Terminal Dashboard (six-tile grid) --- */
 
 .terminal-dashboard {
@@ -144,7 +199,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
-  padding: 1.125rem 1.25rem 1.125rem;
+  padding: 1.125rem 1.25rem;
   background: var(--surface-paper);
   text-decoration: none;
   color: var(--text-primary);
@@ -512,23 +567,28 @@
 
 /* --- Responsive --- */
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .cover-title {
     font-size: clamp(2.25rem, 11vw, 3.75rem);
   }
+
   .terminal-dashboard {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .phase-card-editorial {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
+
   .phase-card-numeral {
     font-size: 4rem;
   }
+
   .phase-card-arrow {
     display: none;
   }
+
   .phases-grid-editorial {
     grid-template-columns: 1fr;
   }

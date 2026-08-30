@@ -60,6 +60,7 @@ export default function Exercises() {
   const attempts = useQuizStore((state) => state.attempts)
   const lowScoringTopics = useMemo(
     () => useQuizStore.getState().getLowScoringTopics(60, 2).slice(0, 5),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `attempts` isn't read directly; see the comment above for why it's the recompute trigger.
     [attempts],
   )
 

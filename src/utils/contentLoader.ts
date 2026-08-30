@@ -948,7 +948,7 @@ export function getPrerequisiteLessons(lesson: Readonly<Lesson>): readonly Immut
 }
 
 /** Return top related lessons ranked by shared tags/concepts and phase proximity. */
-let relatedLessonsCache: Record<string, readonly ImmutableLesson[]> = {}
+const relatedLessonsCache: Record<string, readonly ImmutableLesson[]> = {}
 
 /**
  * Retrieves a list of related lessons for a given lesson based on shared tags.

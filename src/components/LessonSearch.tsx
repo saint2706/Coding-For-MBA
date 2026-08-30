@@ -148,8 +148,8 @@ export default function LessonSearch({ containerRef }: LessonSearchProps) {
   }, [isOpen, containerRef])
 
   useEffect(() => {
+    const container = containerRef.current
     return () => {
-      const container = containerRef.current
       if (container) clearHighlights(container)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

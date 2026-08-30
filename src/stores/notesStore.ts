@@ -24,12 +24,16 @@ const safeStorage: StateStorage = {
   setItem: (name, value) => {
     try {
       if (typeof window !== 'undefined') window.localStorage.setItem(name, value)
-    } catch {}
+    } catch {
+      // Ignore storage write failures (private mode, quota, etc.)
+    }
   },
   removeItem: (name) => {
     try {
       if (typeof window !== 'undefined') window.localStorage.removeItem(name)
-    } catch {}
+    } catch {
+      // Ignore storage delete failures.
+    }
   },
 }
 

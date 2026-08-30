@@ -9,7 +9,7 @@ Please take a moment to review this guide to ensure a smooth contribution proces
 ### Prerequisites
 
 - **Node.js**: Version 18 or higher.
-- **npm**: Comes with Node.js.
+- **pnpm**: Install via `corepack enable` (bundled with Node.js 16.13+) or see [pnpm.io/installation](https://pnpm.io/installation).
 - **Git**: For version control.
 
 ### Setup
@@ -24,13 +24,13 @@ Please take a moment to review this guide to ensure a smooth contribution proces
 2. **Install dependencies**:
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 3. **Start the development server**:
 
    ```bash
-   npm run dev
+   pnpm run dev
    ```
 
    The app will be available at `http://localhost:5173/` (or another port if 5173 is busy).
@@ -59,9 +59,10 @@ Please take a moment to review this guide to ensure a smooth contribution proces
 2. **Make your changes**. Ensure you follow the project code style.
 
 3. **Validate your changes**:
-   - Run type checks: `npm run typecheck`
-   - Format code: `npm run format`
-   - Verify content integrity: `npm run validate-content`
+   - Run type checks: `pnpm run typecheck`
+   - Run lint checks: `pnpm run lint`
+   - Format code: `pnpm run format`
+   - Verify content integrity: `pnpm run validate-content`
 
 4. **Commit your changes**:
    - Use clear, descriptive commit messages.
@@ -74,27 +75,27 @@ We use **Vitest** for unit testing and **Playwright** for end-to-end testing.
 - **Run unit tests**:
 
    ```bash
-   npm test
+   pnpm test
    ```
 
 - **Run unit tests in watch mode**:
 
    ```bash
-   npm run test:watch
+   pnpm run test:watch
    ```
 
 - **Run E2E tests**:
 
    ```bash
-   npm run test:e2e
+   pnpm run test:e2e
    ```
 
    *Note: E2E tests require the dev server to be running or built.*
 
 ## 🎨 Code Style
 
-- **Prettier**: We enforce code formatting with Prettier. Run `npm run format` before committing.
-- **TypeScript**: We use strict TypeScript configuration. Ensure `npm run typecheck` passes.
+- **Prettier**: We enforce code formatting with Prettier. Run `pnpm run format` before committing.
+- **TypeScript**: We use strict TypeScript configuration. Ensure `pnpm run typecheck` passes.
 
 ### JSDoc Requirements
 

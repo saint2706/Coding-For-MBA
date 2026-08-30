@@ -89,6 +89,7 @@ export default function NotePanel({ day }: NotePanelProps) {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             rows={4}
+            // eslint-disable-next-line jsx-a11y/no-autofocus -- moves focus into the textarea revealed by the user's own "Edit" click, not on page load
             autoFocus
             placeholder="Jot down a thought, question, or reminder about this lesson…"
             aria-label="Note content"

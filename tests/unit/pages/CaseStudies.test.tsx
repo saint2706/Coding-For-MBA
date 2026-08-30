@@ -29,10 +29,10 @@ vi.mock('motion/react', () => ({
   motion: {
     div: ({
       children,
-      layout,
-      initial,
-      animate,
-      transition,
+      layout: _layout,
+      initial: _initial,
+      animate: _animate,
+      transition: _transition,
       ...props
     }: React.ComponentProps<'div'> & {
       layout?: boolean

@@ -47,26 +47,9 @@ export default function PhaseOverview() {
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completedSet = useMemo(() => new Set(completedLessons), [completedLessons])
 
-  if (!phase) {
-    return (
-      <div className="page-container">
-        <SEOHead
-          title="Phase Not Found"
-          description="The requested phase does not exist in the Coding for MBA curriculum."
-          noIndex
-        />
-        <h1>Phase not found</h1>
-        <p>Phase {phaseNum} doesn&apos;t exist.</p>
-        <Link to="/">← Back to Home</Link>
-      </div>
-    )
-  }
-
-  const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
-  const phaseLabel = String(phase.phase).padStart(2, '0')
-  const hours = Math.round((phase.totalDuration || 0) / 60)
-  const notebook = getNotebook(phaseNum!)
-
+  // These hooks must run on every render (including when `phase` is missing)
+  // to satisfy the Rules of Hooks, so they're placed above the `!phase`
+  // early return below. Neither depends on `phase` itself.
   const completedInPhaseCount = useMemo(() => {
     let count = 0
     if (lessons) {
@@ -122,6 +105,26 @@ export default function PhaseOverview() {
       }),
     [lessons, completedSet, prefersReducedMotion],
   )
+
+  if (!phase) {
+    return (
+      <div className="page-container">
+        <SEOHead
+          title="Phase Not Found"
+          description="The requested phase does not exist in the Coding for MBA curriculum."
+          noIndex
+        />
+        <h1>Phase not found</h1>
+        <p>Phase {phaseNum} doesn&apos;t exist.</p>
+        <Link to="/">← Back to Home</Link>
+      </div>
+    )
+  }
+
+  const diff = difficultyConfig[phase.difficulty || 'beginner'] || difficultyConfig.beginner!
+  const phaseLabel = String(phase.phase).padStart(2, '0')
+  const hours = Math.round((phase.totalDuration || 0) / 60)
+  const notebook = getNotebook(phaseNum!)
 
   const completedPct = Math.round((completedInPhaseCount / Math.max(1, lessons.length)) * 100)
 
