@@ -146,9 +146,9 @@ describe('seoSchemas', () => {
       // Assert
       expect(schema['@context']).toBe('https://schema.org')
       expect(schema['@type']).toBe('Course')
-      expect(schema.name).toBe('Coding for MBA — 163-Day Technical Curriculum')
+      expect(schema.name).toBe('Coding for MBA — 162-Day Technical Curriculum')
       expect(schema.url).toBe(`${SITE_URL}/`)
-      expect(schema.numberOfCredits).toBe(163)
+      expect(schema.numberOfCredits).toBe(162)
 
       const provider = schema.provider as Record<string, unknown>
       expect(provider['@type']).toBe('Organization')
@@ -181,7 +181,7 @@ describe('seoSchemas', () => {
 
       const isPartOf = schema.isPartOf as Record<string, unknown>
       expect(isPartOf['@type']).toBe('Course')
-      expect(isPartOf.name).toBe('Coding for MBA — 163-Day Technical Curriculum')
+      expect(isPartOf.name).toBe('Coding for MBA — 162-Day Technical Curriculum')
 
       const about = schema.about as Record<string, unknown>
       expect(about['@type']).toBe('Thing')

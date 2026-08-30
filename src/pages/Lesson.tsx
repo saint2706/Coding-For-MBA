@@ -314,27 +314,29 @@ export default function Lesson() {
 
           {showSecondaryUi && (
             <div className="lesson-header-controls">
-              <button
-                type="button"
-                className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
-                onClick={handleToggleComplete}
-                aria-pressed={completed}
-                aria-label={completed ? 'Mark lesson as incomplete' : 'Mark lesson as complete'}
-              >
-                <span className="lesson-complete-glyph" aria-hidden="true">
-                  {completed ? '✓' : '○'}
-                </span>
-                {completed ? 'Completed' : 'Mark complete'}
-              </button>
-
-              {masteryTotal > 0 && (
-                <span
-                  className="mastery-progress-badge"
-                  aria-label={`${masteredCount} of ${masteryTotal} mastery checks mastered`}
+              <div className="lesson-controls-row">
+                <button
+                  type="button"
+                  className={`lesson-complete-btn ${completed ? 'completed' : ''}`}
+                  onClick={handleToggleComplete}
+                  aria-pressed={completed}
+                  aria-label={completed ? 'Mark lesson as incomplete' : 'Mark lesson as complete'}
                 >
-                  <Target aria-hidden="true" /> {masteredCount}/{masteryTotal} mastered
-                </span>
-              )}
+                  <span className="lesson-complete-glyph" aria-hidden="true">
+                    {completed ? '✓' : '○'}
+                  </span>
+                  {completed ? 'Completed' : 'Mark complete'}
+                </button>
+
+                {masteryTotal > 0 && (
+                  <span
+                    className="mastery-progress-badge"
+                    aria-label={`${masteredCount} of ${masteryTotal} mastery checks mastered`}
+                  >
+                    <Target aria-hidden="true" /> {masteredCount}/{masteryTotal} mastered
+                  </span>
+                )}
+              </div>
 
               {lesson.tags && lesson.tags.length > 0 && (
                 <div className="lesson-tags-row">

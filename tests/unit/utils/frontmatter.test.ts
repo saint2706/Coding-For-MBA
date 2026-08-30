@@ -50,4 +50,11 @@ describe('frontmatter parser parity', () => {
       expect(Object.getPrototypeOf(appResult.frontmatter)).toBeNull()
     },
   )
+
+  it('parses an empty inline array as [] rather than [0]', () => {
+    const raw = `---\ntitle: Lesson\nprerequisites: []\n---\nBody`
+    const { frontmatter } = parseMarkdown(raw)
+
+    expect(frontmatter.prerequisites).toEqual([])
+  })
 })

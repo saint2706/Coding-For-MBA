@@ -66,11 +66,14 @@ export interface ExtraFile {
   content: string
 }
 
-const lessonFiles = import.meta.glob('/content/lessons/**/README.md', {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-}) as Record<string, string>
+const lessonFiles = import.meta.glob(
+  ['/content/lessons/**/README.md', '!/content/lessons/**/extras/**'],
+  {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  },
+) as Record<string, string>
 
 const phaseFiles = import.meta.glob('/content/lessons/**/Phase_Overview.md', {
   query: '?raw',

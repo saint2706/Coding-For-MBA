@@ -14,48 +14,37 @@
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-  margin-top: 0.75rem;
-  padding: 0.625rem 0.875rem;
-  background: color-mix(in srgb, var(--amber-500) 6%, transparent);
-  border: 1px solid color-mix(in srgb, var(--amber-500) 15%, transparent);
-  border-radius: var(--radius-md);
 }
 
 .prerequisite-label {
-  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
   font-weight: 600;
-  color: var(--amber-500);
+  letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
 .prerequisite-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.1875rem 0.625rem;
-  background: color-mix(in srgb, var(--amber-500) 10%, transparent);
-  border: 1px solid color-mix(in srgb, var(--amber-500) 20%, transparent);
-  border-radius: 100px;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--amber-500);
+  padding: 0.2rem 0.55rem;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-mono);
+  color: var(--text-secondary);
   text-decoration: none;
   transition: all var(--transition-fast);
   white-space: nowrap;
 }
 
 .prerequisite-pill:hover {
-  background: color-mix(in srgb, var(--amber-500) 18%, transparent);
-  border-color: color-mix(in srgb, var(--amber-500) 40%, transparent);
-  color: var(--accent-tertiary);
-  transform: translateY(-1px);
-}
-
-.prerequisite-pill::before {
-  content: '📋';
-  font-size: 0.8125rem;
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
 }
 
 /* --- Related Lessons --- */
@@ -440,10 +429,6 @@
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .related-lesson-card:hover {
-    transform: none;
-  }
-
-  .prerequisite-pill:hover {
     transform: none;
   }
 

@@ -161,6 +161,18 @@ test words repeated `.repeat(120)
     warnSpy.mockRestore()
   })
 
+  it('excludes non-lesson README files (e.g. a phase extras/ folder) from the curriculum', () => {
+    const lessons = getAllLessons()
+    expect(lessons.some((lesson) => lesson.path.includes('/extras/'))).toBe(false)
+    expect(getLesson('0')).toBeUndefined()
+  })
+
+  it("resolves day 1's real prerequisites from content as empty, not a phantom day 0", () => {
+    const day1 = getLesson('1')
+    expect(day1).toBeDefined()
+    expect(getPrerequisiteLessons(day1!)).toEqual([])
+  })
+
   it('returns empty prerequisites when none are configured', () => {
     const baseLesson = getAllLessons()[0]
     expect(baseLesson).toBeDefined()
