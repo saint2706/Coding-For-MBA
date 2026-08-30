@@ -657,24 +657,6 @@
   font-size: 0.875rem;
 }
 
-/* Settings callout on progress page */
-.settings-callout {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  margin-top: 2.5rem;
-  border-radius: var(--radius-lg);
-  flex-wrap: wrap;
-}
-
-.settings-callout p {
-  margin: 0.25rem 0 0;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-}
-
 /* Notes page */
 .notes-list {
   display: flex;

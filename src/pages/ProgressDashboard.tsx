@@ -557,16 +557,6 @@ export default function ProgressDashboard() {
         </section>
       )}
 
-      <div className="settings-callout glass-card">
-        <div>
-          <strong>Preferences</strong>
-          <p>Customize palette, font size, reading mode, and more.</p>
-        </div>
-        <Link to="/settings" className="continue-banner-cta">
-          Open Settings
-        </Link>
-      </div>
-
       {/* Heatmap Grid */}
       <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
         <h2>Lesson Heatmap</h2>
