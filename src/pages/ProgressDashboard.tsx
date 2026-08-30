@@ -10,7 +10,8 @@
  * - Show detailed progress per phase.
  */
 
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { FocusEvent as ReactFocusEvent, MouseEvent as ReactMouseEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { ChartPie, Flame, Clock, Star } from '@phosphor-icons/react'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
@@ -23,6 +24,8 @@ import {
   getCurriculumMetadata,
 } from '../utils/contentLoader'
 import { dayTokenToProgressId } from '../utils/dayToken'
+import { streakBlocks } from '../utils/streakBlocks'
+import { formatRelativeDayLabel } from '../utils/relativeDate'
 import ProgressBar from '../components/ProgressBar'
 import Breadcrumb from '../components/Breadcrumb'
 import AnimatedCounter from '../components/AnimatedCounter'
@@ -33,6 +36,43 @@ import { ACHIEVEMENTS, useGamificationStore } from '../stores/gamificationStore'
 import { FreshStartIllustration } from '../components/EmptyStateIllustrations'
 import { useProgressStore } from '../stores/progressStore'
 import { useMasteryStore } from '../stores/masteryStore'
+
+type DashboardLesson = NonNullable<ReturnType<typeof getLesson>>
+
+interface HeatmapTooltipState {
+  lesson: DashboardLesson
+  done: boolean
+  timeMs: number
+  top: number
+  left: number
+  placement: 'above' | 'below'
+}
+
+const TOOLTIP_WIDTH = 220
+const TOOLTIP_MARGIN = 8
+const TOOLTIP_MIN_SPACE_ABOVE = 90
+
+// Stable fallback reference — `?? {}` inline would create a new object every
+// render and destabilize the useCallback/useMemo deps that read this value.
+const EMPTY_TIME_BY_LESSON_DAY: Record<number, number> = {}
+
+/** Clamps the tooltip within the viewport and flips below the cell when there's no room above. */
+function computeTooltipPosition(
+  rect: DOMRect,
+): Pick<HeatmapTooltipState, 'top' | 'left' | 'placement'> {
+  const left = Math.max(
+    TOOLTIP_MARGIN,
+    Math.min(
+      rect.left + rect.width / 2 - TOOLTIP_WIDTH / 2,
+      window.innerWidth - TOOLTIP_WIDTH - TOOLTIP_MARGIN,
+    ),
+  )
+
+  if (rect.top > TOOLTIP_MIN_SPACE_ABOVE) {
+    return { top: rect.top - TOOLTIP_MARGIN, left, placement: 'above' }
+  }
+  return { top: rect.bottom + TOOLTIP_MARGIN, left, placement: 'below' }
+}
 
 /**
  * Progress dashboard page component.
@@ -61,6 +101,48 @@ export default function ProgressDashboard() {
       useProgressStore.getState().clearAllProgress()
     }
   }
+
+  const completionDates = useProgressStore((state) => state.completionDates)
+  const timeByLessonDay =
+    useLearningAnalyticsStore((state) => state.timeByLessonDay) ?? EMPTY_TIME_BY_LESSON_DAY
+
+  const lessonByProgressId = useMemo(() => {
+    const map = new Map<number, DashboardLesson>()
+    for (const phase of phases) {
+      for (const lesson of getLessonsByPhase(phase.phase) || []) {
+        map.set(dayTokenToProgressId(lesson.day), lesson)
+      }
+    }
+    return map
+  }, [phases])
+
+  const recentActivity = useMemo(() => {
+    return Object.entries(completionDates ?? {})
+      .map(([id, dateKey]) => {
+        const lesson = lessonByProgressId.get(Number(id))
+        return lesson ? { lesson, dateKey } : null
+      })
+      .filter((entry): entry is { lesson: DashboardLesson; dateKey: string } => entry !== null)
+      .sort((a, b) => b.dateKey.localeCompare(a.dateKey))
+      .slice(0, 8)
+  }, [completionDates, lessonByProgressId])
+
+  const [heatmapTooltip, setHeatmapTooltip] = useState<HeatmapTooltipState | null>(null)
+
+  const showHeatmapTooltip = useCallback(
+    (
+      event: ReactMouseEvent<HTMLElement> | ReactFocusEvent<HTMLElement>,
+      lesson: DashboardLesson,
+      done: boolean,
+    ) => {
+      const rect = event.currentTarget.getBoundingClientRect()
+      const timeMs = timeByLessonDay[dayTokenToProgressId(lesson.day)] || 0
+      setHeatmapTooltip({ lesson, done, timeMs, ...computeTooltipPosition(rect) })
+    },
+    [timeByLessonDay],
+  )
+
+  const hideHeatmapTooltip = useCallback(() => setHeatmapTooltip(null), [])
 
   // `timeByDate` isn't read directly below — each memo instead calls its own
   // `.getState()` derived-stat method (to avoid recreating array/object
@@ -145,15 +227,20 @@ export default function ProgressDashboard() {
             <div className="heatmap-cells">
               {(lessons || []).map((lesson) => {
                 const done = completedSet.has(dayTokenToProgressId(lesson.day))
+                const timeMs = timeByLessonDay[dayTokenToProgressId(lesson.day)] || 0
                 return (
                   <Link
                     to={`/lesson/${lesson.day}`}
                     className={`heatmap-cell ${done ? 'done' : ''}`}
                     key={lesson.day}
-                    title={`Day ${lesson.day}: ${lesson.title}${done ? ' ✓' : ''}`}
+                    onMouseEnter={(event) => showHeatmapTooltip(event, lesson, done)}
+                    onMouseLeave={hideHeatmapTooltip}
+                    onFocus={(event) => showHeatmapTooltip(event, lesson, done)}
+                    onBlur={hideHeatmapTooltip}
                   >
                     <span className="sr-only">
                       Day {lesson.day}: {lesson.title} {done ? '(completed)' : '(not completed)'}
+                      {timeMs > 0 ? ` · ${formatDuration(timeMs)} spent` : ''}
                     </span>
                   </Link>
                 )
@@ -162,7 +249,7 @@ export default function ProgressDashboard() {
           </div>
         )
       }),
-    [phases, completedSet],
+    [phases, completedSet, timeByLessonDay, showHeatmapTooltip, hideHeatmapTooltip],
   )
 
   const renderedProgressPhases = useMemo(
@@ -246,6 +333,9 @@ export default function ProgressDashboard() {
           <Flame className="progress-mobile-stat-icon" aria-hidden="true" />
           <p className="progress-mobile-stat-value">
             <AnimatedCounter value={completionStreak} />
+          </p>
+          <p className="progress-streak-blocks" aria-hidden="true">
+            {streakBlocks(completionStreak)}
           </p>
           <p className="progress-mobile-stat-label">Day Streak</p>
         </div>
@@ -369,6 +459,9 @@ export default function ProgressDashboard() {
           </div>
           <div className="progress-stat-big">
             <span className="progress-stat-value">{completionStreak}</span>
+            <span className="progress-streak-blocks" aria-hidden="true">
+              {streakBlocks(completionStreak)}
+            </span>
             <span className="progress-stat-label">Completion Streak</span>
           </div>
         </div>
@@ -410,6 +503,33 @@ export default function ProgressDashboard() {
           })}
         </svg>
       </section>
+
+      {recentActivity.length > 0 && (
+        <section className="recent-activity-card" aria-labelledby="recent-activity-heading">
+          <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>
+            <h2 id="recent-activity-heading">Recent Activity</h2>
+            <p>Your most recently completed lessons.</p>
+          </div>
+
+          <ul className="recent-activity-list">
+            {recentActivity.map(({ lesson, dateKey }) => (
+              <li className="recent-activity-row" key={lesson.day}>
+                <Link
+                  to={`/lesson/${lesson.day}`}
+                  className="recent-activity-link"
+                  {...createRoutePrefetchHandlers(`/lesson/${lesson.day}`)}
+                >
+                  <span className="recent-activity-day">Day {lesson.day}</span>
+                  <span className="recent-activity-title">{lesson.title}</span>
+                </Link>
+                <span className="recent-activity-time">
+                  completed {formatRelativeDayLabel(dateKey)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
 
       {reviewLessons.length > 0 && (
         <section className="mastery-review-card" aria-labelledby="mastery-review-heading">
@@ -454,6 +574,22 @@ export default function ProgressDashboard() {
       </div>
 
       <div className="progress-heatmap">{renderedHeatmapPhases}</div>
+
+      {heatmapTooltip && (
+        <div
+          className={`heatmap-tooltip heatmap-tooltip-${heatmapTooltip.placement}`}
+          style={{ top: heatmapTooltip.top, left: heatmapTooltip.left }}
+          aria-hidden="true"
+        >
+          <p className="heatmap-tooltip-title">
+            Day {heatmapTooltip.lesson.day}: {heatmapTooltip.lesson.title}
+          </p>
+          <p className="heatmap-tooltip-meta">
+            {heatmapTooltip.done ? 'Completed' : 'Not completed'}
+            {heatmapTooltip.timeMs > 0 ? ` · ${formatDuration(heatmapTooltip.timeMs)} spent` : ''}
+          </p>
+        </div>
+      )}
 
       {/* Per-Phase Progress */}
       <div className="section-header" style={{ marginTop: '2.5rem', marginBottom: '1rem' }}>

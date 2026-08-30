@@ -24,6 +24,7 @@ vi.mock('../../../src/stores/progressStore', () => ({
         completedLessonsCount: () => 2,
         streakDays: () => 5,
         clearAllProgress: mockClearAllProgress,
+        completionDates: { 1: '2023-10-01', 2: '2023-10-02' },
       }
       return selector(state)
     }),
@@ -33,6 +34,7 @@ vi.mock('../../../src/stores/progressStore', () => ({
         completedLessonsCount: () => 2,
         streakDays: () => 5,
         clearAllProgress: mockClearAllProgress,
+        completionDates: { 1: '2023-10-01', 2: '2023-10-02' },
       }),
     },
   ),
@@ -43,6 +45,7 @@ vi.mock('../../../src/stores/learningAnalyticsStore', () => ({
     vi.fn((selector) => {
       const state = {
         timeByDate: { '2023-10-01': 3600000 },
+        timeByLessonDay: { 1: 600000 },
         totalLearningMs: () => 3600000,
         weekLearningMs: () => 3600000,
         todayLearningMs: () => 3600000,
@@ -62,6 +65,7 @@ vi.mock('../../../src/stores/learningAnalyticsStore', () => ({
     {
       getState: () => ({
         timeByDate: { '2023-10-01': 3600000 },
+        timeByLessonDay: { 1: 600000 },
         totalLearningMs: () => 3600000,
         weekLearningMs: () => 3600000,
         todayLearningMs: () => 3600000,
@@ -259,6 +263,71 @@ describe('ProgressDashboard', () => {
       </MemoryRouter>,
     )
     expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument()
+  })
+
+  it('renders the streak as block glyphs alongside the numeric count', async () => {
+    // Set state explicitly rather than relying on the module-level default —
+    // the "shows empty state" test above permanently overrides the mock's
+    // implementation (vi.restoreAllMocks() has no effect on a non-spy vi.fn()).
+    const { useProgressStore } = await import('../../../src/stores/progressStore')
+    ;(
+      useProgressStore as unknown as {
+        mockImplementation: (fn: (selector: (state: unknown) => unknown) => unknown) => void
+      }
+    ).mockImplementation((selector: (state: unknown) => unknown) =>
+      selector({
+        completedLessons: ['day-1', 'day-2'],
+        completedLessonsCount: () => 2,
+        streakDays: () => 3,
+        clearAllProgress: mockClearAllProgress,
+        completionDates: { 1: '2023-10-01', 2: '2023-10-02' },
+      }),
+    )
+
+    renderComponent()
+    await waitFor(() => expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument())
+    const blocks = document.querySelectorAll('.progress-streak-blocks')
+    expect(blocks.length).toBeGreaterThan(0)
+    expect(blocks[0]!.textContent).toBe('■■■□□□□')
+  })
+
+  it('renders a Recent Activity section from completionDates', async () => {
+    const { useProgressStore } = await import('../../../src/stores/progressStore')
+    ;(
+      useProgressStore as unknown as {
+        mockImplementation: (fn: (selector: (state: unknown) => unknown) => unknown) => void
+      }
+    ).mockImplementation((selector: (state: unknown) => unknown) =>
+      selector({
+        completedLessons: ['day-1', 'day-2'],
+        completedLessonsCount: () => 2,
+        streakDays: () => 5,
+        clearAllProgress: mockClearAllProgress,
+        completionDates: { 1: '2023-10-01', 2: '2023-10-02' },
+      }),
+    )
+
+    renderComponent()
+    await waitFor(() => expect(screen.getByText('Recent Activity')).toBeInTheDocument())
+    expect(
+      screen.getByText(
+        /completed today|completed yesterday|completed \d+ days ago|completed 2023-10-02/i,
+      ),
+    ).toBeInTheDocument()
+  })
+
+  it('shows a heatmap cell tooltip on hover and hides it on mouse leave', async () => {
+    renderComponent()
+    await waitFor(() => expect(screen.getAllByText('Your Progress')[0]).toBeInTheDocument())
+    const cell = document.querySelector('.heatmap-cell')
+    expect(cell).toBeTruthy()
+    expect(document.querySelector('.heatmap-tooltip')).not.toBeInTheDocument()
+
+    fireEvent.mouseEnter(cell!)
+    expect(document.querySelector('.heatmap-tooltip')).toBeInTheDocument()
+
+    fireEvent.mouseLeave(cell!)
+    expect(document.querySelector('.heatmap-tooltip')).not.toBeInTheDocument()
   })
 
   it('handles phases with undefined lessons safely', async () => {
