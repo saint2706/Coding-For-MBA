@@ -4,7 +4,7 @@
 
 ### Go from spreadsheets to AI engineering — free, self-paced, no setup required
 
-A structured 163-day curriculum for business professionals who want to build with data and AI, not just talk about it. Runs entirely in your browser.
+A structured 162-day curriculum for business professionals who want to build with data and AI, not just talk about it. Runs entirely in your browser.
 
 [**Begin Day 1 — Free →**](https://saint2706.github.io/Coding-For-MBA/#/lesson/1) &nbsp;·&nbsp; [**See All 12 Phases →**](https://saint2706.github.io/Coding-For-MBA/#/curriculum) &nbsp;·&nbsp; [**Open the App →**](https://saint2706.github.io/Coding-For-MBA)
 
@@ -24,7 +24,7 @@ A structured 163-day curriculum for business professionals who want to build wit
 - [Who This Is For](#who-this-is-for)
 - [What You Walk Away With](#what-you-walk-away-with)
 - [Common Questions](#common-questions)
-- [The Curriculum](#the-curriculum-12-phases-163-days)
+- [The Curriculum](#the-curriculum-12-phases-162-days)
 - [The Learning Platform](#the-learning-platform)
 - [Quick Start](#quick-start)
 - [Project Structure](#project-structure)
@@ -79,7 +79,7 @@ The curriculum is one connected path — not a collection of unrelated topics. E
 
 **Do I need a technical background?** No. The program starts at zero and defines every concept as it appears. Business and analytical thinking is the only prerequisite.
 
-**How long does each day take?** Lessons are designed for 45–90 minute focused sessions. The curriculum is self-paced — "163 days" is a goal, not a deadline.
+**How long does each day take?** Lessons are designed for 45–90 minute focused sessions. The curriculum is self-paced — "162 days" is a goal, not a deadline.
 
 **Do I need to install anything?** No. The learning platform runs in your browser, including the Python code runner. Open the app and start Day 1 immediately.
 
@@ -89,7 +89,7 @@ The curriculum is one connected path — not a collection of unrelated topics. E
 
 ---
 
-## The Curriculum: 12 Phases, 163 Days
+## The Curriculum: 12 Phases, 162 Days
 
 Difficulty increases deliberately across phases. You earn each concept before the next one arrives.
 
@@ -237,7 +237,7 @@ The in-browser Python runner, powered by Pyodide (Python compiled to WebAssembly
 
 Your progress saves locally. Open the app on any device and continue from your last lesson without logging in or syncing anything.
 
-Per-phase completion percentages let you see exactly where you stand across all 163 lessons at a glance.
+Per-phase completion percentages let you see exactly where you stand across all 162 lessons at a glance.
 
 ### Stay Motivated Without Gimmicks
 
