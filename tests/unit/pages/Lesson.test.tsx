@@ -108,6 +108,16 @@ vi.mock('../../../src/stores/masteryStore', () => ({
   ),
 }))
 vi.mock('../../../src/components/Breadcrumb', () => ({ default: () => null }))
+vi.mock('../../../src/components/LessonPositionBreadcrumb', () => ({
+  default: ({ day, totalDays, phaseNum }: { day: string; totalDays: number; phaseNum: number }) => (
+    <div
+      data-testid="lesson-position-breadcrumb"
+      data-day={day}
+      data-total-days={totalDays}
+      data-phase-num={phaseNum}
+    />
+  ),
+}))
 vi.mock('../../../src/components/BackToTop', () => ({ default: () => null }))
 vi.mock('../../../src/components/TableOfContents', () => ({ default: () => null }))
 vi.mock('../../../src/components/ReadingTime', () => ({ default: () => null }))
@@ -276,6 +286,36 @@ describe('Lesson completion toasts', () => {
     expect(mockToastInfo).toHaveBeenCalledTimes(1)
 
     nowSpy.mockRestore()
+    await act(async () => {
+      root.unmount()
+    })
+    document.body.removeChild(container)
+  })
+})
+
+describe('Lesson position breadcrumb', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockGetCompletedLessons.mockReturnValue([])
+    mockFindInteractiveBlocks.mockReturnValue([])
+    mockGetLessonStats.mockReturnValue({ gotIt: 0, reviewAgain: 0, total: 0 })
+  })
+
+  it('renders with the current lesson day, curriculum total, and phase', async () => {
+    const container = document.createElement('div')
+    document.body.appendChild(container)
+    const root = createRoot(container)
+
+    await act(async () => {
+      root.render(<Lesson />)
+    })
+
+    const breadcrumb = container.querySelector('[data-testid="lesson-position-breadcrumb"]')
+    expect(breadcrumb).toBeTruthy()
+    expect(breadcrumb?.getAttribute('data-day')).toBe('1B')
+    expect(breadcrumb?.getAttribute('data-total-days')).toBe('2')
+    expect(breadcrumb?.getAttribute('data-phase-num')).toBe('1')
+
     await act(async () => {
       root.unmount()
     })

@@ -513,3 +513,38 @@ mark.lesson-search-match-active {
     text-align: left;
   }
 }
+
+/* --- Persistent reading-position breadcrumb --- */
+/* Pinned just below the navbar; only shown once the masthead scrolls out
+   of view, so it never duplicates the masthead's own "Day N" byline. */
+
+.lesson-position-breadcrumb {
+  position: fixed;
+  top: var(--navbar-height);
+  left: var(--sidebar-width);
+  right: 0;
+  z-index: 150;
+  padding: 0.4rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: var(--tracking-mono);
+  color: var(--text-secondary);
+  background: var(--bg-surface);
+  border-bottom: var(--rule-hairline);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--motion-duration-active-fast) ease;
+}
+
+.lesson-position-breadcrumb.is-visible {
+  opacity: 1;
+}
+
+@media (width <= 1024px) {
+  .lesson-position-breadcrumb {
+    left: 0;
+  }
+}

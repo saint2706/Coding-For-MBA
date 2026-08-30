@@ -14,6 +14,7 @@ import { Target } from '@phosphor-icons/react'
 import { createRoutePrefetchHandlers } from '../utils/prefetchRoutes'
 import SEOHead from '../components/SEOHead'
 import EditorialLessonHeader from '../components/EditorialLessonHeader'
+import LessonPositionBreadcrumb from '../components/LessonPositionBreadcrumb'
 /**
  * Lesson Page
  *
@@ -81,6 +82,7 @@ export default function Lesson() {
   const [readingMode, setReadingMode] = useState(readingModePreference)
   const [nearBottom, setNearBottom] = useState(false)
   const articleRef = useRef<HTMLElement>(null)
+  const mastheadRef = useRef<HTMLElement>(null)
 
   const completedLessons = useProgressStore((state) => state.completedLessons)
   const completed = dayNum ? completedLessons.includes(dayTokenToProgressId(dayNum)) : false
@@ -251,6 +253,12 @@ export default function Lesson() {
           { name: `Day ${lesson.day}`, url: lessonPath },
         ]}
       />
+      <LessonPositionBreadcrumb
+        day={String(lesson.day)}
+        totalDays={getCurriculumMetadata().totalDays}
+        phaseNum={lesson.phase}
+        mastheadRef={mastheadRef}
+      />
       {/* Main content column */}
       <div className="lesson-main-content">
         {readingMode && (
@@ -291,6 +299,7 @@ export default function Lesson() {
             ]}
           />
           <EditorialLessonHeader
+            ref={mastheadRef}
             day={String(lesson.day)}
             title={lesson.title}
             phaseNum={lesson.phase}
